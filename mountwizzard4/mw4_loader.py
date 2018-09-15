@@ -30,18 +30,11 @@ import numpy as np
 import PyQt5
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-import skyfield.api
-import mountcontrol
 # local import
-from base import widget
-from media import resources
+from mw4_main import MountWizzard4
 
 
 BUILD = '0.1.dev0'
-
-
-class MountWizzard4(widget.MwWidget):
-    logger = logging.getLogger(__name__)
 
 
 class SplashScreen(PyQt5.QtCore.QObject):
@@ -131,8 +124,16 @@ class SplashScreen(PyQt5.QtCore.QObject):
             self._qapp.processEvents()
 
 
-# setting except hook to get stack traces into the log files
 def except_hook(typeException, valueException, tbackException):
+    """
+    except_hook implements a wrapper around except hook to log uncatched exceptions to the
+    log file. so during user phase I get all the exceptions and logs catched in the file.
+
+    :param typeException:
+    :param valueException:
+    :param tbackException:
+    :return: nothing
+    """
     result = traceback.format_exception(typeException, valueException, tbackException)
     logging.error('----------------------------------------------------------------------------------')
     logging.error('Logging an uncatched Exception')
@@ -144,6 +145,23 @@ def except_hook(typeException, valueException, tbackException):
 
 
 def main():
+    """
+    main prepares the loading of mountwizzard application. it prepares a splash screen
+    and handler the setup of the logger, bundle handling etc. in addition some information
+    about the system are written into the logfile to be able to debug in different conditions
+    the system environment.
+
+    :return: nothing
+    """
+    # now instantiate the application from QApplication
+    app = PyQt5.QtWidgets.QApplication(sys.argv)
+    # setting a splash pixel map for loading
+    splash_pix = PyQt5.QtGui.QPixmap(':/mw4.ico')
+    splash = SplashScreen(splash_pix, app)
+
+    # and start with a first splash screen
+    splash.showMessage('Start initialising')
+    splash.setValue(0)
     # checking workdir and if the system is started from frozen app
     if getattr(sys, 'frozen', False):
         # we are running in a bundle
@@ -161,13 +179,9 @@ def main():
         bundle_dir = os.path.dirname(os.path.abspath(__file__))
         frozen = False
 
-    # implement notify different to catch exception from event handler
-    app = PyQt5.QtWidgets.QApplication(sys.argv)
-    splash_pix = PyQt5.QtGui.QPixmap(':/mw4.ico')
-    splash = SplashScreen(splash_pix, app)
-    splash.showMessage('Start initialising')
-    splash.setValue(10)
-
+    # now setup the logging environment
+    splash.showMessage('Setup logging')
+    splash.setValue(20)
     warnings.filterwarnings("ignore")
     name = 'mount.{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
     handler = logging.FileHandler(name)
@@ -181,18 +195,18 @@ def main():
                         handlers=[handler],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
-    splash.showMessage('Checking work directories')
-    splash.setValue(20)
 
     # population the working directory with necessary subdir
+    splash.showMessage('Checking work directories')
+    splash.setValue(30)
 
+    # we put all the configurations and downloadable files for usage in the config dir
     if not os.path.isdir(os.getcwd() + '/config'):
         os.makedirs(os.getcwd() + '/config')
 
-    splash.showMessage('Starting logging')
-    splash.setValue(30)
-
     # start logging with basic system data for information
+    splash.showMessage('Logging environment')
+    splash.setValue(40)
     hostSummary = socket.gethostbyname_ex(socket.gethostname())
     logging.info('------------------------------------------------------------------------')
     logging.info('')
@@ -225,26 +239,24 @@ def main():
     logging.info('------------------------------------------------------------------------')
     logging.info('')
 
-    splash.showMessage('Checking work directories')
-    splash.setValue(40)
-
     # checking if writable
+    splash.showMessage('Checking work directories')
+    splash.setValue(50)
     if not os.access(os.getcwd(), os.W_OK):
         logging.error('no write access to workdir')
     if not os.access(os.getcwd() + '/config', os.W_OK):
         logging.error('no write access to /config')
 
-    splash.showMessage('Preparing application')
-    splash.setValue(50)
-
     # and finally starting the application
+    splash.showMessage('Preparing application')
+    splash.setValue(60)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon('mw.ico'))
     mountApp = MountWizzard4()
 
+    # starting gui
     splash.showMessage('Launching GUI')
     splash.setValue(80)
-
     mountApp.show()
 
     # end of splash screen

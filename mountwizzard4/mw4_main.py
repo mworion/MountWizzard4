@@ -26,7 +26,7 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 import skyfield.api
-import mountcontrol
+from mountcontrol.mount import Mount
 # local import
 from base import widget
 from media import resources
@@ -37,10 +37,24 @@ class MountWizzard4(widget.MWidget):
 
     def __init__(self):
         super().__init__()
+
         self.ui = PyQt5.uic.loadUi(os.getcwd() + '/mountwizzard4/gui/main.ui', self)
         self.initUI()
-
         self.ui.show()
 
+        self.mount = Mount('192.168.2.15')
+        self.mount.signals.pointDone.connect(self.updatePointGUI)
+        self.mount.signals.setDone.connect(self.updateSetGUI)
+        self.mount.startTimers()
+
     def quit(self):
+        self.mount.stopTimers()
+        PyQt5.QtCore.QCoreApplication.quit()
+
+    def updatePointGUI(self):
+        self.ui.altitude.setText(self.mount.obsSite.Alt)
+        self.ui.azimut.setText(self.mount.obsSite.Az)
+        self.ui.julianDate.setText(self.mount.obsSite.timeJD)
+
+    def updateSetGUI(self):
         pass

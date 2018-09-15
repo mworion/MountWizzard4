@@ -19,10 +19,12 @@
 ###########################################################
 # standard libraries
 import logging
+import os
 # external packages
 import PyQt5
 import PyQt5.QtCore
 import PyQt5.QtWidgets
+import PyQt5.uic
 import skyfield.api
 import mountcontrol
 # local import
@@ -32,3 +34,13 @@ from media import resources
 
 class MountWizzard4(widget.MWidget):
     logger = logging.getLogger(__name__)
+
+    def __init__(self):
+        super().__init__()
+        self.ui = PyQt5.uic.loadUi(os.getcwd() + '/mountwizzard4/gui/main.ui', self)
+        self.initUI()
+
+        self.ui.show()
+
+    def quit(self):
+        pass

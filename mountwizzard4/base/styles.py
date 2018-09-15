@@ -405,7 +405,7 @@ class MWStyles(object):
         color: #C0C0C0;
         border-width: 2px;
         border-color: rgb(16, 72, 96);
-        border-radius: 2px;
+        border-radius: 3px;
         border-style: outset;
         padding: 4px;
         padding-left: 4px;
@@ -416,7 +416,7 @@ class MWStyles(object):
         background: rgb(32, 144, 192);
     }
     QTabBar::tab:!selected {
-        margin-top: 4px;
+        margin-top: 2px;
     }
     QTabBar::tab:only-one {
         margin: 1;

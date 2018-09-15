@@ -45,14 +45,28 @@ class MountWizzard4(widget.MwWidget):
 
 
 class SplashScreen(PyQt5.QtCore.QObject):
+    """
+    Splash screen show an icon with a progress bar and could send messages to the text
+    set in the progress bar. Need the app and the icon as parameter
 
-    # Part from Maurizio D'Addona <mauritiusdadd@gmail.com> under license APL2.0
-    # Ported from PYQT4 to PYQT5
-    # Agreement for License (email from 04.07.2018):
-    # Hi Michel,
-    # sure, there is no problem for me. I'm glad you have found it useful.
-    # Best regards,
-    # Maurizio
+    Part from Maurizio D'Addona <mauritiusdadd@gmail.com> under license APL2.0
+    Ported from PYQT4 to PYQT5
+    Agreement for License (email from 04.07.2018):
+    Hi Michel,
+    sure, there is no problem for me. I'm glad you have found it useful.
+    Best regards,
+    Maurizio
+
+    """
+
+    __all__ = ['SplashScreen',
+               'close',
+               'setMaximum',
+               'setMinimum',
+               'setValue',
+               'showMessage',
+               'finish',
+               ]
 
     def __init__(self, pix, qapp=None):
         super().__init__()
@@ -61,51 +75,26 @@ class SplashScreen(PyQt5.QtCore.QObject):
         self._qss = PyQt5.QtWidgets.QSplashScreen(self._pxm,
                                                   (PyQt5.QtCore.Qt.WindowStaysOnTopHint
                                                    | PyQt5.QtCore.Qt.X11BypassWindowManagerHint))
-
         self._msg = ''
         self._maxv = 100.0
         self._minv = 0.0
         self._cval = 0.0
-
         self._qss.__drawContents__ = self._qss.drawContents
         self._qss.drawContents = self._drawContents
-
         self._qss.show()
-
         self.processEvents()
 
     def close(self):
         self.update()
         self._qss.close()
 
-    def setMaximum(self, val):
-        self._maxv = val
-        self.update()
-
-    def setMinimum(self, val):
-        self._minv = val
-        self.update()
-
     def setValue(self, val):
         for i in np.arange(self._cval, val, self._maxv / 100.0):
             self._cval = i
             self.update()
 
-    def maximum(self):
-        return self._maxv
-
-    def minimum(self):
-        return self._minv
-
-    def value(self):
-        return self._cval
-
-    def message(self):
-        return self._msg
-
     def showMessage(self, msg):
         self._msg = msg
-        # self._qss.showMessage(msg,QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeft,QtCore.Qt.white)
         self.update()
 
     def update(self):
@@ -113,10 +102,7 @@ class SplashScreen(PyQt5.QtCore.QObject):
         self.processEvents()
 
     def _drawContents(self, painter):
-        # self._qss.__drawContents__(painter)
-
         view_port = painter.viewport()
-
         w = view_port.right()
         h = view_port.bottom()
 

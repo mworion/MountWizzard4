@@ -30,5 +30,5 @@ from base import widget
 from media import resources
 
 
-class MountWizzard4(widget.MwWidget):
+class MountWizzard4(widget.MWidget):
     logger = logging.getLogger(__name__)

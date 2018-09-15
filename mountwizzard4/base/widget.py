@@ -19,10 +19,12 @@
 ###########################################################
 # standard libraries
 import logging
+import platform
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtGui
 # local imports
+from base import styles
 
 import time
 
@@ -190,15 +192,3 @@ class MwWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                            preset,
                            )
 
-
-# class for embed the matplotlib in pyqt5 framework
-class IntegrateMatplotlib(FigureCanvasQTAgg):
-
-    def __init__(self, parent=None):
-        helper = PyQt5.QtWidgets.QVBoxLayout(parent)
-        self.fig = matplotlib.figure.Figure(dpi=75, facecolor=(25 / 256, 25 / 256, 25 / 256))
-        FigureCanvasQTAgg.__init__(self, self.fig)
-        helper.setContentsMargins(0, 0, 0, 0)
-        self.setParent(parent)
-        FigureCanvasQTAgg.updateGeometry(self)
-        helper.addWidget(self)

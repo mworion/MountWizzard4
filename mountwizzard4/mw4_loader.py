@@ -187,11 +187,12 @@ def main():
     handler = logging.FileHandler(name)
     logging.basicConfig(level=logging.INFO,
                         format='[%(asctime)s.%(msecs)03d]'
-                               '[%(levelname)7s]'
-                               '[%(filename)22s]'
-                               '[%(lineno)5s]'
-                               '[%(funcName)20s]'
-                               '[%(threadName)10s] - %(message)s',
+                               + '[%(levelname)7s]'
+                               + '[%(filename)15s]'
+                               + '[%(lineno)5s]'
+                               + '[%(funcName)20s]'
+                               + '[%(threadName)10s]'
+                               + ' > %(message)s',
                         handlers=[handler],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
@@ -207,29 +208,30 @@ def main():
     # start logging with basic system data for information
     splash.showMessage('Logging environment')
     splash.setValue(40)
+    logging.info('------------------------------------------------------------------------')
+    logging.info('')
+    logging.info('MountWizzard {0} started !'.format(BUILD))
+    logging.info('')
+    logging.info('------------------------------------------------------------------------')
+    logging.info('Platform        : {0}'.format(platform.system()))
+    logging.info('Release         : {0}'.format(platform.release()))
+    logging.info('Machine         : {0}'.format(platform.machine()))
+    logging.info('CPU             : {0}'.format(platform.processor()))
+    logging.info('Python          : {0}'.format(platform.python_version()))
+    logging.info('PyQt5           : {0}'.format(PyQt5.QtCore.PYQT_VERSION_STR))
+    logging.info('Qt              : {0}'.format(PyQt5.QtCore.QT_VERSION_STR))
+
+    hostsList = socket.gethostbyname_ex(socket.gethostname())[2]
+    host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
+    for hostname in host:
+        logging.info('IP addr.        : {0}'.format(hostname))
+    logging.info('Node            : {0}'.format(platform.node()))
     hostSummary = socket.gethostbyname_ex(socket.gethostname())
-    logging.info('------------------------------------------------------------------------')
-    logging.info('')
-    logging.info('MountWizzard ' + BUILD + ' started !')
-    logging.info('')
-    logging.info('------------------------------------------------------------------------')
-    logging.info('Platform        : ' + platform.system())
-    logging.info('Release         : ' + platform.release())
-    logging.info('Version         : ' + platform.version())
-    logging.info('Machine         : ' + platform.machine())
-    logging.info('CPU             : ' + platform.processor())
-    logging.info('Python          : ' + platform.python_version())
-    logging.info('PyQt5           : ' + PyQt5.QtCore.PYQT_VERSION_STR)
-    logging.info('Qt              : ' + PyQt5.QtCore.QT_VERSION_STR)
-    host = [ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith('127.')][: 1]
-    for i in range(0, len(host)):
-        logging.info('IP addr. : ' + host[i])
-    logging.info('Node            : ' + platform.node())
     logging.info('Hosts....       : {0}'.format(hostSummary))
     if frozen:
-        logging.info('MountWizzard3 is running in a frozen environment')
+        logging.info('MountWizzard4 is running in a frozen environment')
     else:
-        logging.info('MountWizzard3 is running in a live environment')
+        logging.info('MountWizzard4 is running in a live environment')
     logging.info('Actual workdir  : {0}'.format(os.getcwd()))
     logging.info('Bundle dir      : {0}'.format(bundle_dir))
     logging.info('sys.argv[0]     : {0}'.format(sys.argv[0]))

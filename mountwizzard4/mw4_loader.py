@@ -185,7 +185,7 @@ def main():
     warnings.filterwarnings("ignore")
     name = 'mount.{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
     handler = logging.FileHandler(name)
-    logging.basicConfig(level=logging.INFO,
+    logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s.%(msecs)03d]'
                                + '[%(levelname)7s]'
                                + '[%(filename)15s]'

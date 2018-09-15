@@ -42,19 +42,24 @@ class MountWizzard4(widget.MWidget):
         self.initUI()
         self.ui.show()
 
-        self.mount = Mount('192.168.2.15')
-        self.mount.signals.pointDone.connect(self.updatePointGUI)
-        self.mount.signals.setDone.connect(self.updateSetGUI)
-        self.mount.startTimers()
+        #self.mount = Mount('192.168.2.15')
+        #self.mount.signals.pointDone.connect(self.updatePointGUI)
+        #self.mount.signals.setDone.connect(self.updateSetGUI)
+        #self.mount.startTimers()
 
     def quit(self):
-        self.mount.stopTimers()
-        PyQt5.QtCore.QCoreApplication.quit()
+        #self.mount.stopTimers()
+        # PyQt5.QtCore.QCoreApplication.quit()
+        pass
 
     def updatePointGUI(self):
-        self.ui.altitude.setText(self.mount.obsSite.Alt)
-        self.ui.azimut.setText(self.mount.obsSite.Az)
-        self.ui.julianDate.setText(self.mount.obsSite.timeJD)
+        print('pointing received')
+        if self.mount.obsSite.Alt:
+            print('alt')
+            self.ui.altitude.setText('{5.2f}'.format(self.mount.obsSite.Alt.degrees))
+        #self.ui.azimuth.setText('{5.2f}'.format(self.mount.obsSite.Az.degrees))
+        #if self.mount.obsSite.timeJD:
+        #    self.ui.julianDate.setText(self.mount.obsSite.timeJD.utc_strftime('%H:%M:%S'))
 
     def updateSetGUI(self):
-        pass
+        print('Setting received')

@@ -34,7 +34,8 @@ import PyQt5.QtWidgets
 # local import
 from mw4_main import MountWizzard4
 
-version = '0.1.dev0'
+BUILD = '0.1.dev0'
+version = 0.1
 frozen = False
 bundle_dir = ''
 
@@ -216,7 +217,7 @@ def main():
     splash.setValue(40)
     logging.info('------------------------------------------------------------------------')
     logging.info('')
-    logging.info('MountWizzard {0} started !'.format(version))
+    logging.info('MountWizzard {0} started !'.format(BUILD))
     logging.info('')
     logging.info('------------------------------------------------------------------------')
     logging.info('Platform        : {0}'.format(platform.system()))

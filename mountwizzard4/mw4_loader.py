@@ -34,10 +34,9 @@ import PyQt5.QtWidgets
 # local import
 from mw4_main import MountWizzard4
 
-print(PyQt5.__name__)
-
-
-BUILD = '0.1.dev0'
+version = '0.1.dev0'
+frozen = False
+bundle_dir = ''
 
 
 class SplashScreen(PyQt5.QtCore.QObject):
@@ -156,6 +155,8 @@ def main():
 
     :return: nothing
     """
+    global frozen
+    global bundle_dir
 
     # now instantiate the application from QApplication
     app = PyQt5.QtWidgets.QApplication(sys.argv)
@@ -215,7 +216,7 @@ def main():
     splash.setValue(40)
     logging.info('------------------------------------------------------------------------')
     logging.info('')
-    logging.info('MountWizzard {0} started !'.format(BUILD))
+    logging.info('MountWizzard {0} started !'.format(version))
     logging.info('')
     logging.info('------------------------------------------------------------------------')
     logging.info('Platform        : {0}'.format(platform.system()))

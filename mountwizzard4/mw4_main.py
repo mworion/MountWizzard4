@@ -41,7 +41,6 @@ class MountWizzard4(widget.MWidget):
                ]
     version = '0.1'
     logger = logging.getLogger(__name__)
-    logging.getLogger('apscheduler').setLevel(logging.WARNING)
 
     def __init__(self):
         super().__init__()

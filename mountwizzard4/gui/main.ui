@@ -212,7 +212,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="azimut">
+    <widget class="QLineEdit" name="azimuth">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -1294,7 +1294,7 @@
       <rect>
        <x>135</x>
        <y>340</y>
-       <width>91</width>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
@@ -1339,7 +1339,7 @@
       <rect>
        <x>135</x>
        <y>250</y>
-       <width>91</width>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
@@ -1420,7 +1420,7 @@
       <rect>
        <x>135</x>
        <y>280</y>
-       <width>91</width>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
@@ -1480,7 +1480,7 @@
       <rect>
        <x>135</x>
        <y>310</y>
-       <width>91</width>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
@@ -1535,7 +1535,7 @@
     <widget class="QLabel" name="label_64">
      <property name="geometry">
       <rect>
-       <x>230</x>
+       <x>220</x>
        <y>370</y>
        <width>31</width>
        <height>21</height>
@@ -1783,7 +1783,7 @@
       <rect>
        <x>135</x>
        <y>370</y>
-       <width>91</width>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
@@ -1831,7 +1831,7 @@
       <rect>
        <x>135</x>
        <y>400</y>
-       <width>91</width>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
@@ -1874,7 +1874,7 @@
     <widget class="QLabel" name="label_81">
      <property name="geometry">
       <rect>
-       <x>230</x>
+       <x>220</x>
        <y>400</y>
        <width>31</width>
        <height>21</height>
@@ -1889,6 +1889,42 @@
       <string>hPa</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_86">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>250</y>
+       <width>46</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>H:M:S</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_129">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>310</y>
+       <width>46</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>H:M:S</string>
+     </property>
+    </widget>
     <zorder>line_15</zorder>
     <zorder>line_16</zorder>
     <zorder>line_14</zorder>
@@ -1896,7 +1932,7 @@
     <zorder>line_13</zorder>
     <zorder>line_51</zorder>
     <zorder>RA</zorder>
-    <zorder>azimut</zorder>
+    <zorder>azimuth</zorder>
     <zorder>DEC</zorder>
     <zorder>altitude</zorder>
     <zorder>label_9</zorder>
@@ -1952,6 +1988,8 @@
     <zorder>refractionTemp</zorder>
     <zorder>refractionPress</zorder>
     <zorder>label_81</zorder>
+    <zorder>label_86</zorder>
+    <zorder>label_129</zorder>
    </widget>
    <widget class="QWidget" name="tab_4">
     <attribute name="title">

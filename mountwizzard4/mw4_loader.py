@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import logging
+import logging.config
 import os
 import sys
 import platform
@@ -32,6 +33,8 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 # local import
 from mw4_main import MountWizzard4
+
+print(PyQt5.__name__)
 
 
 BUILD = '0.1.dev0'
@@ -153,6 +156,7 @@ def main():
 
     :return: nothing
     """
+
     # now instantiate the application from QApplication
     app = PyQt5.QtWidgets.QApplication(sys.argv)
     # setting a splash pixel map for loading
@@ -184,19 +188,20 @@ def main():
     splash.setValue(20)
     warnings.filterwarnings("ignore")
     name = 'mount.{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
-    handler = logging.FileHandler(name)
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s.%(msecs)03d]'
-                               + '[%(levelname)7s]'
-                               + '[%(filename)15s]'
-                               + '[%(lineno)5s]'
-                               + '[%(funcName)20s]'
-                               + '[%(threadName)10s]'
-                               + ' > %(message)s',
-                        handlers=[handler],
+                               '[%(levelname)7s]'
+                               '[%(filename)15s]'
+                               '[%(lineno)5s]'
+                               '[%(funcName)20s]'
+                               '[%(threadName)10s]'
+                               ' > %(message)s',
+                        handlers=[logging.FileHandler(name)],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
-
+    # setting different log level for PyQt5 framework not to fill up the log file with
+    # unnecessary data
+    logging.getLogger('PyQt5').setLevel(logging.ERROR)
     # population the working directory with necessary subdir
     splash.showMessage('Checking work directories')
     splash.setValue(30)
@@ -253,7 +258,7 @@ def main():
     splash.showMessage('Preparing application')
     splash.setValue(60)
     sys.excepthook = except_hook
-    app.setWindowIcon(PyQt5.QtGui.QIcon('mw.ico'))
+    app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
     mountApp = MountWizzard4()
 
     # starting gui

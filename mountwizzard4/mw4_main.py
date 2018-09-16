@@ -33,7 +33,15 @@ from media import resources
 
 
 class MountWizzard4(widget.MWidget):
+    """
+    This is the docstring
+    """
+
+    __all__ = ['MountWizzard4',
+               ]
+    version = '0.1'
     logger = logging.getLogger(__name__)
+    logging.getLogger('apscheduler').setLevel(logging.WARNING)
 
     def __init__(self):
         super().__init__()
@@ -42,24 +50,31 @@ class MountWizzard4(widget.MWidget):
         self.initUI()
         self.ui.show()
 
-        #self.mount = Mount('192.168.2.15')
-        #self.mount.signals.pointDone.connect(self.updatePointGUI)
-        #self.mount.signals.setDone.connect(self.updateSetGUI)
-        #self.mount.startTimers()
+        self.mount = Mount('192.168.2.15', pathToTS=os.getcwd() + '/config')
+        self.mount.signals.pointDone.connect(self.updatePointGUI)
+        self.mount.signals.setDone.connect(self.updateSetGUI)
+        self.mount.startTimers()
 
     def quit(self):
-        #self.mount.stopTimers()
-        # PyQt5.QtCore.QCoreApplication.quit()
+        self.mount.stopTimers()
+        PyQt5.QtCore.QCoreApplication.quit()
         pass
 
     def updatePointGUI(self):
-        print('pointing received')
-        if self.mount.obsSite.Alt:
-            print('alt')
-            self.ui.altitude.setText('{5.2f}'.format(self.mount.obsSite.Alt.degrees))
-        #self.ui.azimuth.setText('{5.2f}'.format(self.mount.obsSite.Az.degrees))
-        #if self.mount.obsSite.timeJD:
-        #    self.ui.julianDate.setText(self.mount.obsSite.timeJD.utc_strftime('%H:%M:%S'))
+        obsSite = self.mount.obsSite
+
+        self.ui.altitude.setText('{0:5.2f}'.format(obsSite.Alt.degrees))
+        self.ui.azimuth.setText('{0:5.2f}'.format(obsSite.Az.degrees))
+
+        raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
+        raText = raFormat.format(*obsSite.raJNow.dms())
+        self.ui.RA.setText(raText)
+
+        decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
+        decText = decFormat.format(*obsSite.decJNow.signed_dms()[1:4],
+                                   sign='+' if obsSite.decJNow.degrees > 0 else '-')
+        self.ui.DEC.setText(decText)
+        self.ui.julianDate.setText(obsSite.timeJD.utc_strftime('%H:%M:%S'))
 
     def updateSetGUI(self):
-        print('Setting received')
+        pass

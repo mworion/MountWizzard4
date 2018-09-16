@@ -54,11 +54,10 @@ class MountWizzard4(object):
                                               )
         # get the window widgets up
         self.mainW = mountwizzard4.gui.mainW.MainWindow(self)
-        self.mainW.show()
-
         self.mount.signals.pointDone.connect(self.mainW.updatePointGUI)
         self.mount.signals.setDone.connect(self.mainW.updateSetGUI)
         self.mount.startTimers()
+        self.mainW.show()
 
     def quit(self):
         self.mount.stopTimers()

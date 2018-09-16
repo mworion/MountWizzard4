@@ -101,7 +101,7 @@ class MainWindow(base.widget.MWidget):
             self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
 
         if obs.timeSidereal is not None:
-            self.ui.timeSidereal.setText(obs.timeSidereal)
+            self.ui.timeSidereal.setText(obs.timeSidereal[:8])
 
     def updateSetGUI(self):
         """
@@ -137,3 +137,6 @@ class MainWindow(base.widget.MWidget):
 
         if sett.statusDualTracking is not None:
             self.ui.statusDualTracking.setText('ON' if sett.statusDualTracking else 'OFF')
+
+        if sett.statusRefraction is not None:
+            self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')

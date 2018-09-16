@@ -439,7 +439,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>250</y>
+       <y>340</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -481,7 +481,7 @@
      <property name="geometry">
       <rect>
        <x>280</x>
-       <y>250</y>
+       <y>340</y>
        <width>71</width>
        <height>21</height>
       </rect>
@@ -1554,7 +1554,7 @@
      <property name="geometry">
       <rect>
        <x>280</x>
-       <y>370</y>
+       <y>250</y>
        <width>66</width>
        <height>21</height>
       </rect>
@@ -1575,7 +1575,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>370</y>
+       <y>250</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1618,7 +1618,7 @@
       <rect>
        <x>280</x>
        <y>400</y>
-       <width>101</width>
+       <width>116</width>
        <height>21</height>
       </rect>
      </property>
@@ -1628,7 +1628,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Dual Tracking</string>
+      <string>Dual Axis Tracking</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="statusUnattendedFlip">
@@ -1638,7 +1638,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>340</y>
+       <y>370</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1680,7 +1680,7 @@
      <property name="geometry">
       <rect>
        <x>280</x>
-       <y>340</y>
+       <y>370</y>
        <width>101</width>
        <height>21</height>
       </rect>
@@ -1781,9 +1781,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>135</x>
+       <x>160</x>
        <y>370</y>
-       <width>81</width>
+       <width>56</width>
        <height>21</height>
       </rect>
      </property>
@@ -1829,9 +1829,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>135</x>
+       <x>160</x>
        <y>400</y>
-       <width>81</width>
+       <width>56</width>
        <height>21</height>
       </rect>
      </property>
@@ -1925,6 +1925,105 @@
       <string>H:M:S</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_130">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>280</y>
+       <width>46</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>H:M:S</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_133">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>250</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>°/s</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_222">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>340</y>
+       <width>46</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Y-M-D</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="statusRefraction">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>115</x>
+       <y>385</y>
+       <width>36</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>Status of dual tracking</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="inputMask">
+      <string/>
+     </property>
+     <property name="text">
+      <string>-</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
     <zorder>line_15</zorder>
     <zorder>line_16</zorder>
     <zorder>line_14</zorder>
@@ -1990,6 +2089,10 @@
     <zorder>label_81</zorder>
     <zorder>label_86</zorder>
     <zorder>label_129</zorder>
+    <zorder>label_130</zorder>
+    <zorder>label_133</zorder>
+    <zorder>label_222</zorder>
+    <zorder>statusRefraction</zorder>
    </widget>
    <widget class="QWidget" name="tab_4">
     <attribute name="title">
@@ -3128,7 +3231,7 @@ manually</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="statusRefraction">
+    <widget class="QLineEdit" name="statusRefraction1">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -4453,7 +4556,7 @@ manually</string>
     <zorder>le_rainRate</zorder>
     <zorder>label_66</zorder>
     <zorder>le_pressure</zorder>
-    <zorder>statusRefraction</zorder>
+    <zorder>statusRefraction1</zorder>
     <zorder>label_13</zorder>
     <zorder>label_72</zorder>
     <zorder>label_69</zorder>

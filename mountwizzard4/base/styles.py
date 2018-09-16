@@ -20,7 +20,7 @@
 # standard libraries
 import logging
 # external packages
-import PyQt5
+import PyQt5.QtGui
 
 
 class MWStyles(object):

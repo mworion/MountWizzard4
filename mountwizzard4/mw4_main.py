@@ -21,7 +21,6 @@
 import logging
 import os
 # external packages
-import PyQt5
 import PyQt5.QtCore
 # local import
 from mountcontrol.mount import Mount
@@ -30,7 +29,10 @@ from mountwizzard4.gui.mainW import MainWindow
 
 class MountWizzard4(object):
     """
-    This is the docstring
+    MountWizzard4 class is the main class for the application. it loads all windows and
+    classes needed to fulfil the work of mountwizzard. any gui work should be handled
+    through the window classes. main class is for setup, config, start, persist and
+    shutdown the application.
     """
 
     __all__ = ['MountWizzard4',

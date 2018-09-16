@@ -28,7 +28,6 @@ import datetime
 import warnings
 import numpy as np
 # external packages
-import PyQt5
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 # local import

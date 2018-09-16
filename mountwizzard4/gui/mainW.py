@@ -24,13 +24,11 @@ import datetime
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
-import skyfield.api
-from mountcontrol.mount import Mount
 # local import
 import mw4_global
 import base.widget
 import base.tpool
-from media import resources
+from mountcontrol.mount import Mount
 
 
 class MainWindow(base.widget.MWidget):
@@ -56,12 +54,28 @@ class MainWindow(base.widget.MWidget):
         self.ui = PyQt5.uic.loadUi(mw4_global.work_dir + '/mountwizzard4/gui/main.ui', self)
         self.initUI()
 
-    def quit(self):
+    def closeEvent(self, closeEvent):
+        """
+        we overwrite the close event of the window just for the main window to close the
+        application as well. because it does not make sense to have child windows open if
+        main is already closed.
+
+        :return:    nothing
+        """
+        self.showStatus = False
+        self.hide()
         self.app.quit()
 
     def updatePointGUI(self):
+        """
+        updatePointGUI update the gui upon events triggered be the reception of new data
+        from the mount. the mount data is polled, so we use this signal as well for the
+        update process.
+
+        :return:
+        """
         obs = self.app.mount.obsSite
-        self.ui.computerTime.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+        self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
 
         if obs.Alt is not None:
             self.ui.altitude.setText('{0:5.2f}'.format(obs.Alt.degrees))
@@ -83,5 +97,43 @@ class MainWindow(base.widget.MWidget):
         if obs.timeJD is not None:
             self.ui.julianDate.setText(obs.timeJD.utc_strftime('%H:%M:%S'))
 
+        if obs.pierside is not None:
+            self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
+
+        if obs.timeSidereal is not None:
+            self.ui.timeSidereal.setText(obs.timeSidereal)
+
     def updateSetGUI(self):
-        pass
+        """
+        updateSetGUI update the gui upon events triggered be the reception of new settings
+        from the mount. the mount data is polled, so we use this signal as well for the
+        update process.
+
+        :return:
+        """
+
+        sett = self.app.mount.sett
+
+        if sett.slewRate is not None:
+            self.ui.slewRate.setText('{0:2.0f}'.format(sett.slewRate))
+
+        if sett.timeToFlip is not None:
+            self.ui.timeToFlip.setText('{0:3.0f}'.format(sett.timeToFlip))
+
+        if sett.timeToMeridian() is not None:
+            self.ui.timeToMeridian.setText('{0:3.0f}'.format(sett.timeToMeridian()))
+
+        if sett.UTCExpire is not None:
+            self.ui.UTCExpire.setText(sett.UTCExpire)
+
+        if sett.refractionTemp is not None:
+            self.ui.refractionTemp.setText('{0:+4.1f}'.format(sett.refractionTemp))
+
+        if sett.refractionPress is not None:
+            self.ui.refractionPress.setText('{0:4.0f}'.format(sett.refractionPress))
+
+        if sett.statusUnattendedFlip is not None:
+            self.ui.statusUnattendedFlip.setText('ON' if sett.statusUnattendedFlip else 'OFF')
+
+        if sett.statusDualTracking is not None:
+            self.ui.statusDualTracking.setText('ON' if sett.statusDualTracking else 'OFF')

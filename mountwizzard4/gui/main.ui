@@ -1286,7 +1286,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QLineEdit" name="UTCDataExpiration">
+    <widget class="QLineEdit" name="UTCExpire">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -1331,7 +1331,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="computerTime">
+    <widget class="QLineEdit" name="timeComputer">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -1391,7 +1391,7 @@
       </font>
      </property>
      <property name="text">
-      <string>UTC valid until</string>
+      <string>UTC expires</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_151">
@@ -1412,7 +1412,7 @@
       <string>Computer Time</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="localSiderealTime">
+    <widget class="QLineEdit" name="timeSidereal">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -1631,7 +1631,7 @@
       <string>Dual Tracking</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="unattendedFlip">
+    <widget class="QLineEdit" name="statusUnattendedFlip">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -1694,7 +1694,7 @@
       <string>Unattended Flip</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="dualTrack">
+    <widget class="QLineEdit" name="statusDualTracking">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -1837,7 +1837,7 @@
      </property>
      <property name="font">
       <font>
-       <family>Courier</family>
+       <family>Arial</family>
        <pointsize>10</pointsize>
        <weight>50</weight>
        <bold>false</bold>
@@ -1968,11 +1968,11 @@
     <zorder>btn_mountPos5</zorder>
     <zorder>label_98</zorder>
     <zorder>groupBoxCoordinateSystems</zorder>
-    <zorder>UTCDataExpiration</zorder>
-    <zorder>computerTime</zorder>
+    <zorder>UTCExpire</zorder>
+    <zorder>timeComputer</zorder>
     <zorder>label_152</zorder>
     <zorder>label_151</zorder>
-    <zorder>localSiderealTime</zorder>
+    <zorder>timeSidereal</zorder>
     <zorder>label_7</zorder>
     <zorder>julianDate</zorder>
     <zorder>label_63</zorder>
@@ -1980,9 +1980,9 @@
     <zorder>label_28</zorder>
     <zorder>slewRate</zorder>
     <zorder>label_74</zorder>
-    <zorder>unattendedFlip</zorder>
+    <zorder>statusUnattendedFlip</zorder>
     <zorder>label_55</zorder>
-    <zorder>dualTrack</zorder>
+    <zorder>statusDualTracking</zorder>
     <zorder>label_232</zorder>
     <zorder>label_242</zorder>
     <zorder>refractionTemp</zorder>
@@ -3128,7 +3128,7 @@ manually</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_refractionStatus">
+    <widget class="QLineEdit" name="statusRefraction">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -4453,7 +4453,7 @@ manually</string>
     <zorder>le_rainRate</zorder>
     <zorder>label_66</zorder>
     <zorder>le_pressure</zorder>
-    <zorder>le_refractionStatus</zorder>
+    <zorder>statusRefraction</zorder>
     <zorder>label_13</zorder>
     <zorder>label_72</zorder>
     <zorder>label_69</zorder>

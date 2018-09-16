@@ -47,9 +47,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
 
     def closeEvent(self, closeEvent):
         self.showStatus = False
-        # if we close the main window, the application will be finished as well
-        if self.windowTitle().startswith('MountWizzard'):
-            self.quit()
+        self.hide()
 
     @staticmethod
     def widgetIcon(gui, icon):

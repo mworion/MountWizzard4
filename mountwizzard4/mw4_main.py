@@ -23,8 +23,9 @@ import os
 # external packages
 import PyQt5.QtCore
 # local import
-from mountcontrol.mount import Mount
-from mountwizzard4.gui.mainW import MainWindow
+import mw4_global
+import mountcontrol.mount
+import mountwizzard4.gui.mainW
 
 
 class MountWizzard4(object):
@@ -44,9 +45,15 @@ class MountWizzard4(object):
         super().__init__()
 
         # get the working horses up
-        self.mount = Mount('192.168.2.15', pathToTS=os.getcwd() + '/config')
+        pathToTs = mw4_global.work_dir + '/config'
+        print(pathToTs)
+        self.mount = mountcontrol.mount.Mount(host='192.168.2.15',
+                                              pathToTS=pathToTs,
+                                              expire=False,
+                                              verbose=False,
+                                              )
         # get the window widgets up
-        self.mainW = MainWindow(self)
+        self.mainW = mountwizzard4.gui.mainW.MainWindow(self)
         self.mainW.show()
 
         self.mount.signals.pointDone.connect(self.mainW.updatePointGUI)

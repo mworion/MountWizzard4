@@ -51,3 +51,6 @@ class MountWizzard4(object):
         self.mount.signals.setDone.connect(self.mainW.updateSetGUI)
         self.mount.startTimers()
 
+    def quit(self):
+        self.mount.stopTimers()
+        PyQt5.QtCore.QCoreApplication.quit()

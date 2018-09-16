@@ -52,9 +52,7 @@ class MainWindow(widget.MWidget):
         self.initUI()
 
     def quit(self):
-        self.app.mount.stopTimers()
-        PyQt5.QtCore.QCoreApplication.quit()
-
+        self.app.quit()
 
     def updatePointGUI(self):
         obs = self.app.mount.obsSite

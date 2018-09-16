@@ -125,6 +125,14 @@ class MainWindow(base.widget.MWidget):
 
         if sett.UTCExpire is not None:
             self.ui.UTCExpire.setText(sett.UTCExpire)
+            # coloring if close to end:
+            now = datetime.datetime.now()
+            expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
+            deltaYellow = datetime.timedelta(days=30)
+            if now > expire:
+                pass    # red
+            elif now > expire - deltaYellow:
+                pass    # yellow
 
         if sett.refractionTemp is not None:
             self.ui.refractionTemp.setText('{0:+4.1f}'.format(sett.refractionTemp))

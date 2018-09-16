@@ -32,12 +32,8 @@ import PyQt5
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 # local import
-from mw4_main import MountWizzard4
-
-BUILD = '0.1.dev0'
-version = 0.1
-frozen = False
-bundle_dir = ''
+import mw4_global
+import mw4_main
 
 
 class SplashScreen(PyQt5.QtCore.QObject):
@@ -156,8 +152,6 @@ def main():
 
     :return: nothing
     """
-    global frozen
-    global bundle_dir
 
     # now instantiate the application from QApplication
     app = PyQt5.QtWidgets.QApplication(sys.argv)
@@ -172,19 +166,21 @@ def main():
     if getattr(sys, 'frozen', False):
         # we are running in a bundle
         # noinspection PyProtectedMember
-        bundle_dir = sys._MEIPASS
+        mw4_global.bundle_dir = sys._MEIPASS
         # on mac we have to change path of working directory
         if platform.system() == 'Darwin':
             os.chdir(os.path.dirname(sys.executable))
             os.chdir('..')
             os.chdir('..')
             os.chdir('..')
-        frozen = True
+            mw4_global.frozen = True
     else:
         # we are running in a normal Python environment
-        bundle_dir = os.path.dirname(os.path.abspath(__file__))
-        frozen = False
+        mw4_global.bundle_dir = os.path.dirname(os.path.abspath(__file__))
+        mw4_global.frozen = False
 
+    # setting work dir:
+    mw4_global.work_dir = os.getcwd()
     # now setup the logging environment
     splash.showMessage('Setup logging')
     splash.setValue(20)
@@ -217,33 +213,30 @@ def main():
     splash.setValue(40)
     logging.info('------------------------------------------------------------------------')
     logging.info('')
-    logging.info('MountWizzard {0} started !'.format(BUILD))
+    logging.info('MountWizzard {0} started !'.format(mw4_global.BUILD))
     logging.info('')
     logging.info('------------------------------------------------------------------------')
-    logging.info('Platform        : {0}'.format(platform.system()))
-    logging.info('Release         : {0}'.format(platform.release()))
-    logging.info('Machine         : {0}'.format(platform.machine()))
-    logging.info('CPU             : {0}'.format(platform.processor()))
-    logging.info('Python          : {0}'.format(platform.python_version()))
-    logging.info('PyQt5           : {0}'.format(PyQt5.QtCore.PYQT_VERSION_STR))
-    logging.info('Qt              : {0}'.format(PyQt5.QtCore.QT_VERSION_STR))
+    logging.info('Platform         : {0}'.format(platform.system()))
+    logging.info('Release          : {0}'.format(platform.release()))
+    logging.info('Machine          : {0}'.format(platform.machine()))
+    logging.info('CPU              : {0}'.format(platform.processor()))
+    logging.info('Python           : {0}'.format(platform.python_version()))
+    logging.info('PyQt5            : {0}'.format(PyQt5.QtCore.PYQT_VERSION_STR))
+    logging.info('Qt               : {0}'.format(PyQt5.QtCore.QT_VERSION_STR))
 
     hostsList = socket.gethostbyname_ex(socket.gethostname())[2]
     host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
     for hostname in host:
-        logging.info('IP addr.        : {0}'.format(hostname))
-    logging.info('Node            : {0}'.format(platform.node()))
+        logging.info('IP addr.         : {0}'.format(hostname))
+    logging.info('Node             : {0}'.format(platform.node()))
     hostSummary = socket.gethostbyname_ex(socket.gethostname())
-    logging.info('Hosts....       : {0}'.format(hostSummary))
-    if frozen:
-        logging.info('MountWizzard4 is running in a frozen environment')
-    else:
-        logging.info('MountWizzard4 is running in a live environment')
-    logging.info('Actual workdir  : {0}'.format(os.getcwd()))
-    logging.info('Bundle dir      : {0}'.format(bundle_dir))
-    logging.info('sys.argv[0]     : {0}'.format(sys.argv[0]))
-    logging.info('sys.executable  : {0}'.format(sys.executable))
-    logging.info('os.path.basename: {0}'.format(os.path.basename(sys.argv[0])))
+    logging.info('Hosts....        : {0}'.format(hostSummary))
+    logging.info('Environment is   : {0}'.format('frozen' if mw4_global.frozen else 'live'))
+    logging.info('Actual workdir   : {0}'.format(mw4_global.work_dir))
+    logging.info('Bundle dir       : {0}'.format(mw4_global.bundle_dir))
+    logging.info('sys.argv[0]      : {0}'.format(sys.argv[0]))
+    logging.info('os.path.basename : {0}'.format(os.path.basename(sys.argv[0])))
+    logging.info('sys.executable   : {0}'.format(sys.executable))
 
     logging.info('------------------------------------------------------------------------')
     logging.info('')
@@ -261,12 +254,11 @@ def main():
     splash.setValue(60)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
-    mountApp = MountWizzard4()
+    mountApp = mw4_main.MountWizzard4()
 
     # starting gui
     splash.showMessage('Launching GUI')
     splash.setValue(80)
-    mountApp.show()
 
     # end of splash screen
     splash.showMessage('Finishing loading')

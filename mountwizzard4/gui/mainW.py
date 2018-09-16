@@ -28,13 +28,17 @@ import skyfield.api
 from mountcontrol.mount import Mount
 # local import
 import mw4_global
-from base import widget
+import base.widget
+import base.tpool
 from media import resources
 
 
-class MainWindow(widget.MWidget):
+class MainWindow(base.widget.MWidget):
     """
-    This is the docstring
+    the main window class handles the main menu as well as the show and no show part of
+    any other window. all necessary processing for functions of that gui will be linked
+    to this class. therefore window classes will have a threadpool for managing async
+    processing if needed.
     """
 
     __all__ = ['MainWindow',
@@ -46,7 +50,9 @@ class MainWindow(widget.MWidget):
         super().__init__()
 
         self.app = app
+        self.tPool = PyQt5.QtCore.QThreadPool()
 
+        # load and init the gui
         self.ui = PyQt5.uic.loadUi(mw4_global.work_dir + '/mountwizzard4/gui/main.ui', self)
         self.initUI()
 

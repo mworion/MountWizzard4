@@ -24,12 +24,11 @@ import platform
 import PyQt5.QtWidgets
 import PyQt5.QtGui
 # local imports
-from base import styles
+import base.styles
+import base.tpool
 
-import time
 
-
-class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
+class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
     """
     MWidget defines the common parts for all windows used in MountWizzard 4. namely the
     sizes and the styles. styles are defined separately in a css looking stylesheet.

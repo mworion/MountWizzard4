@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import os
+import datetime
 # external packages
 import PyQt5
 import PyQt5.QtCore
@@ -60,20 +61,28 @@ class MountWizzard4(widget.MWidget):
         pass
 
     def updatePointGUI(self):
-        obsSite = self.mount.obsSite
+        obs = self.mount.obsSite
+        self.ui.computerTime.setText(datetime.datetime.now().strftime('%H:%M:%S'))
 
-        self.ui.altitude.setText('{0:5.2f}'.format(obsSite.Alt.degrees))
-        self.ui.azimuth.setText('{0:5.2f}'.format(obsSite.Az.degrees))
+        if obs.Alt is not None:
+            self.ui.altitude.setText('{0:5.2f}'.format(obs.Alt.degrees))
 
-        raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-        raText = raFormat.format(*obsSite.raJNow.dms())
-        self.ui.RA.setText(raText)
+        if obs.Az is not None:
+            self.ui.azimuth.setText('{0:5.2f}'.format(obs.Az.degrees))
 
-        decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
-        decText = decFormat.format(*obsSite.decJNow.signed_dms()[1:4],
-                                   sign='+' if obsSite.decJNow.degrees > 0 else '-')
-        self.ui.DEC.setText(decText)
-        self.ui.julianDate.setText(obsSite.timeJD.utc_strftime('%H:%M:%S'))
+        if obs.raJNow is not None:
+            raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
+            raText = raFormat.format(*obs.raJNow.dms())
+            self.ui.RA.setText(raText)
+
+        if obs.decJNow is not None:
+            decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
+            decText = decFormat.format(*obs.decJNow.signed_dms()[1:4],
+                                       sign='+' if obs.decJNow.degrees > 0 else '-')
+            self.ui.DEC.setText(decText)
+
+        if obs.timeJD is not None:
+            self.ui.julianDate.setText(obs.timeJD.utc_strftime('%H:%M:%S'))
 
     def updateSetGUI(self):
         pass

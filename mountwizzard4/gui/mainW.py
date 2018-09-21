@@ -28,7 +28,7 @@ import PyQt5.uic
 import mw4_global
 import base.widget
 import base.tpool
-from mountcontrol.mount import Mount
+from mountcontrol.qtmount import Mount
 
 
 class MainWindow(base.widget.MWidget):

@@ -63,9 +63,8 @@ class SplashScreen(PyQt5.QtCore.QObject):
         super().__init__()
         self._qapp = qapp
         self._pxm = pix
-        self._qss = PyQt5.QtWidgets.QSplashScreen(self._pxm,
-                                                  (PyQt5.QtCore.Qt.WindowStaysOnTopHint
-                                                   | PyQt5.QtCore.Qt.X11BypassWindowManagerHint))
+        flags = (PyQt5.QtCore.Qt.WindowStaysOnTopHint | PyQt5.QtCore.Qt.X11BypassWindowManagerHint)
+        self._qss = PyQt5.QtWidgets.QSplashScreen(self._pxm, flags)
         self._msg = ''
         self._maxv = 100.0
         self._minv = 0.0
@@ -120,6 +119,7 @@ class SplashScreen(PyQt5.QtCore.QObject):
     def processEvents(self):
         if self._qapp is not None:
             self._qapp.processEvents()
+        PyQt5.QtWidgets.QApplication.processEvents()
 
 
 def except_hook(typeException, valueException, tbackException):
@@ -133,12 +133,12 @@ def except_hook(typeException, valueException, tbackException):
     :return: nothing
     """
     result = traceback.format_exception(typeException, valueException, tbackException)
-    logging.error('----------------------------------------------------------------------------------')
+    logging.error('----------------------------------------------------')
     logging.error('Logging an uncatched Exception')
-    logging.error('----------------------------------------------------------------------------------')
+    logging.error('----------------------------------------------------')
     for i in range(0, len(result)):
         logging.error(result[i].replace('\n', ''))
-    logging.error('----------------------------------------------------------------------------------')
+    logging.error('----------------------------------------------------')
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
@@ -152,15 +152,6 @@ def main():
     :return: nothing
     """
 
-    # now instantiate the application from QApplication
-    app = PyQt5.QtWidgets.QApplication(sys.argv)
-    # setting a splash pixel map for loading
-    splash_pix = PyQt5.QtGui.QPixmap(':/mw4.ico')
-    splash = SplashScreen(splash_pix, app)
-
-    # and start with a first splash screen
-    splash.showMessage('Start initialising')
-    splash.setValue(0)
     # checking workdir and if the system is started from frozen app
     if getattr(sys, 'frozen', False):
         # we are running in a bundle
@@ -178,6 +169,16 @@ def main():
         mw4_global.bundle_dir = os.path.dirname(os.path.abspath(__file__))
         mw4_global.frozen = False
 
+    # now instantiate the application from QApplication
+    PyQt5.QtWidgets.QApplication.setAttribute(PyQt5.QtCore.Qt.AA_EnableHighDpiScaling, True)
+    app = PyQt5.QtWidgets.QApplication(sys.argv)
+    # setting a splash pixel map for loading
+    splash_pix = PyQt5.QtGui.QPixmap(':/mw4.ico')
+    splash = SplashScreen(splash_pix, app)
+
+    # and start with a first splash screen
+    splash.showMessage('Start initialising')
+    splash.setValue(0)
     # setting work dir:
     mw4_global.work_dir = os.getcwd()
     # now setup the logging environment
@@ -254,6 +255,7 @@ def main():
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
     mountApp = mw4_main.MountWizzard4()
+    mountApp.mainW.show()
 
     # starting gui
     splash.showMessage('Launching GUI')
@@ -263,6 +265,7 @@ def main():
     splash.showMessage('Finishing loading')
     splash.setValue(100)
     splash.close()
+
     # quit app
     sys.exit(app.exec_())
 

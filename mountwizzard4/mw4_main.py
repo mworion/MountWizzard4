@@ -46,7 +46,6 @@ class MountWizzard4(object):
 
         # get the working horses up
         pathToTs = mw4_global.work_dir + '/config'
-        print(pathToTs)
         self.mount = mountcontrol.qtmount.Mount(host='192.168.2.15',
                                                 pathToTS=pathToTs,
                                                 expire=False,
@@ -54,11 +53,25 @@ class MountWizzard4(object):
                                                 )
         # get the window widgets up
         self.mainW = mountwizzard4.gui.mainW.MainWindow(self)
+        self.mainW.show()
         self.mount.signals.pointDone.connect(self.mainW.updatePointGUI)
         self.mount.signals.setDone.connect(self.mainW.updateSetGUI)
         self.mount.startTimers()
-        self.mainW.show()
+        self.mount.cyclePointing()
+        self.mount.cycleSetting()
+        self.mount.signals.gotAlign.connect(self.gotAlign)
+        self.mount.signals.gotNames.connect(self.gotNames)
+        self.mount.getAlign()
+        self.mount.getNames()
 
     def quit(self):
         self.mount.stopTimers()
         PyQt5.QtCore.QCoreApplication.quit()
+
+    def gotNames(self):
+        for name in self.mount.model.nameList:
+            print(name)
+
+    def gotAlign(self):
+        for star in self.mount.model.starList:
+            print(star)

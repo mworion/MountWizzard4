@@ -33,6 +33,7 @@ import PyQt5.QtWidgets
 # local import
 import mw4_global
 import mw4_main
+from mountwizzard4.media import resources
 
 
 class SplashScreen(PyQt5.QtCore.QObject):
@@ -52,18 +53,17 @@ class SplashScreen(PyQt5.QtCore.QObject):
 
     __all__ = ['SplashScreen',
                'close',
-               'setMaximum',
-               'setMinimum',
                'setValue',
                'showMessage',
                'finish',
                ]
 
-    def __init__(self, pix, qapp=None):
+    def __init__(self, pix=None, qapp=None):
         super().__init__()
         self._qapp = qapp
         self._pxm = pix
-        flags = (PyQt5.QtCore.Qt.WindowStaysOnTopHint | PyQt5.QtCore.Qt.X11BypassWindowManagerHint)
+        flags = (PyQt5.QtCore.Qt.WindowStaysOnTopHint
+                 | PyQt5.QtCore.Qt.X11BypassWindowManagerHint)
         self._qss = PyQt5.QtWidgets.QSplashScreen(self._pxm, flags)
         self._msg = ''
         self._maxv = 100.0
@@ -79,7 +79,7 @@ class SplashScreen(PyQt5.QtCore.QObject):
         self._qss.close()
 
     def setValue(self, val):
-        for i in np.arange(self._cval, val, self._maxv / 100.0):
+        for i in np.arange(self._cval, val, self._maxv / 5.0):
             self._cval = i
             self.update()
 
@@ -119,7 +119,6 @@ class SplashScreen(PyQt5.QtCore.QObject):
     def processEvents(self):
         if self._qapp is not None:
             self._qapp.processEvents()
-        PyQt5.QtWidgets.QApplication.processEvents()
 
 
 def except_hook(typeException, valueException, tbackException):
@@ -174,7 +173,7 @@ def main():
     app = PyQt5.QtWidgets.QApplication(sys.argv)
     # setting a splash pixel map for loading
     splash_pix = PyQt5.QtGui.QPixmap(':/mw4.ico')
-    splash = SplashScreen(splash_pix, app)
+    splash = SplashScreen(pix=splash_pix, qapp=app)
 
     # and start with a first splash screen
     splash.showMessage('Start initialising')

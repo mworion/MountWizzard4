@@ -1,3 +1,4 @@
+matplotlib
 PyQt5>=5.11.2
 numpy>=1.14.0
 skyfield==1.8

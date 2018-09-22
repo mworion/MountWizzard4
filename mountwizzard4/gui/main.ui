@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -8728,7 +8728,7 @@ manually</string>
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QWidget" name="model" native="true">
+    <widget class="QWidget" name="modelPolar" native="true">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -8934,7 +8934,7 @@ manually</string>
       <string>Save</string>
      </property>
     </widget>
-    <widget class="QListWidget" name="listModelName">
+    <widget class="QListWidget" name="nameList">
      <property name="geometry">
       <rect>
        <x>475</x>
@@ -9025,7 +9025,7 @@ manually</string>
     <zorder>label_124</zorder>
     <zorder>label_125</zorder>
     <zorder>line_46</zorder>
-    <zorder>model</zorder>
+    <zorder>modelPolar</zorder>
     <zorder>btn_cancelRunTargetRMSAlignment</zorder>
     <zorder>le_alignErrorRMS2</zorder>
     <zorder>label_75</zorder>
@@ -9034,7 +9034,7 @@ manually</string>
     <zorder>label_76</zorder>
     <zorder>btn_refreshAlignmentModel</zorder>
     <zorder>btn_saveModel</zorder>
-    <zorder>listModelName</zorder>
+    <zorder>nameList</zorder>
     <zorder>btn_loadModel</zorder>
     <zorder>btn_deleteModel</zorder>
     <zorder>checkShowErrorValues</zorder>

@@ -23,10 +23,22 @@ import platform
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtGui
+import matplotlib
+import numpy as np
+matplotlib.use('Qt5Agg')
+import matplotlib.pyplot
+import matplotlib.backends.backend_qt5agg as backend
 # local imports
 import mountwizzard4.base
 import mountwizzard4.base.styles
 import mountwizzard4.base.tpool
+
+
+version = '0.1'
+__all__ = [
+    'MWidget',
+    'IntMatplotlib',
+]
 
 
 class MWidget(PyQt5.QtWidgets.QWidget, mountwizzard4.base.styles.MWStyles):
@@ -104,3 +116,22 @@ class MWidget(PyQt5.QtWidgets.QWidget, mountwizzard4.base.styles.MWStyles):
         ui.setProperty(item, value)
         ui.style().unpolish(ui)
         ui.style().polish(ui)
+
+
+class IntMatplotlib(backend.FigureCanvasQTAgg):
+    """
+    IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5 application
+    gui. you call it with the parent widget, which is linked to matplotlib canvas of the same
+    size. the background is set to transparent, so you could layer multiple figures on top.
+
+    """
+
+    def __init__(self, parent=None):
+        helper = PyQt5.QtWidgets.QVBoxLayout(parent)
+        self.fig = matplotlib.figure.Figure(dpi=75,
+                                            facecolor=(25 / 256, 25 / 256, 25 / 256))
+        backend.FigureCanvasQTAgg.__init__(self, self.fig)
+        helper.setContentsMargins(0, 0, 0, 0)
+        self.setParent(parent)
+        backend.FigureCanvasQTAgg.updateGeometry(self)
+        helper.addWidget(self)

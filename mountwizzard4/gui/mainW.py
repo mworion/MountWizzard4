@@ -26,12 +26,12 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
 import mw4_global
-import base.widget
-import base.tpool
-from mountcontrol.qtmount import Mount
+import mountwizzard4.base.widget as mWidget
+import mountwizzard4.base.tpool
+import mountcontrol.qtmount as mControl
 
 
-class MainWindow(base.widget.MWidget):
+class MainWindow(mWidget.MWidget):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -54,13 +54,14 @@ class MainWindow(base.widget.MWidget):
         self.ui = PyQt5.uic.loadUi(mw4_global.work_dir + '/mountwizzard4/gui/main.ui', self)
         self.initUI()
         self.setupIcons()
+        self.polarPlot = mWidget.IntMatplotlib(self.ui.modelPolar)
         self.show()
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updatePointGUI)
         self.app.mount.signals.setDone.connect(self.updateSettingGUI)
         self.app.mount.signals.gotAlign.connect(self.gotAlign)
-        self.app.mount.signals.gotNames.connect(self.gotNames)
+        self.app.mount.signals.gotNames.connect(self.setNameList)
 
     def closeEvent(self, closeEvent):
         """
@@ -73,6 +74,11 @@ class MainWindow(base.widget.MWidget):
         self.showStatus = False
         self.hide()
         self.app.quit()
+
+    def gotAlign(self):
+        model = self.app.mount.model
+        for star in model.starList:
+            print(star.coord)
 
     def setupIcons(self):
         # show icon in main gui and add some icons for push buttons
@@ -197,12 +203,109 @@ class MainWindow(base.widget.MWidget):
         if sett.statusRefraction is not None:
             self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
 
-    def gotNames(self):
-        for name in self.app.mount.model.nameList:
-            # print(name)
-            pass
+    def setNameList(self):
+        """
+        setNameList populates the list of model names in the main window. before adding the
+        data, the existent list will be deleted.
+        :return: nothing
+        """
 
-    def gotAlign(self):
-        for star in self.app.mount.model.starList:
-            # print(star)
-            pass
+        model = self.app.mount.model
+        self.ui.nameList.clear()
+        for name in model.nameList:
+            self.ui.nameList.addItem(name)
+        self.ui.nameList.sortItems()
+        self.ui.nameList.update()
+
+    def showModelPolar(self):
+        """
+        showModelPolar draws a polar plot of the align model stars and their errors in
+        color.
+
+        :return:
+        """
+        wid = self.polarPlot
+        model = self.app.mount.model
+
+        # preparing the polar plot and the axes
+        wid.fig.clf()
+        wid.axes = wid.fig.add_subplot(1, 1, 1, polar=True)
+        wid.axes.grid(True,
+                      color='#404040',
+                      )
+        wid.axes.set_title('Actual Mount Model',
+                           color='white',
+                           fontweight='bold',
+                           pad=15,
+                           )
+        wid.fig.subplots_adjust(left=0.07,
+                                right=1,
+                                bottom=0.03,
+                                top=0.97,
+                                )
+        wid.axes.set_facecolor((32 / 256, 32 / 256, 32 / 256))
+        wid.axes.tick_params(axis='x',
+                             colors='#2090C0',
+                             labelsize=12,
+                             )
+        wid.axes.tick_params(axis='y',
+                             colors='#2090C0',
+                             labelsize=12,
+                             )
+        wid.axes.set_theta_zero_location('N')
+        wid.axes.set_theta_direction(-1)
+        wid.axes.set_yticks(range(0, 90, 10))
+        yLabel = ['', '', '', '', '', '', '', '', '', '']
+        wid.axes.set_yticklabels(yLabel,
+                                 color='#2090C0',
+                                 fontweight='bold')
+        wid.axes.set_rlabel_position(45)
+
+        # now send the data
+        #if model.starList:
+
+        azimuth = np.asarray(model.starList().coord)
+        altitude = np.asarray(self.workerMountDispatcher.data['ModelAltitude'])
+        cm = matplotlib.pyplot.cm.get_cmap('RdYlGn_r')
+        colors = numpy.asarray(self.workerMountDispatcher.data['ModelError'])
+        scaleErrorMax = max(colors)
+        scaleErrorMin = min(colors)
+        area = [200 if x >= max(colors) else 60 for x in
+                self.workerMountDispatcher.data['ModelError']]
+        theta = azimuth / 180.0 * math.pi
+        r = 90 - altitude
+        scatter = wid.axes.scatter(theta,
+                                   r,
+                                   c=colors,
+                                   vmin=scaleErrorMin,
+                                   vmax=scaleErrorMax,
+                                   s=area,
+                                   cmap=cm,
+                                   zorder=0,
+                                   )
+        if self.ui.checkShowErrorValues.isChecked():
+            for i in range(0, len(theta)):
+                text = '{0:3.1f}'.format(self.workerMountDispatcher.data['ModelError'][i])
+                wid.axes.annotate(text,
+                                  xy=(theta[i], r[i]),
+                                  color='#2090C0',
+                                  fontsize=9,
+                                  fontweight='bold',
+                                  zorder=1,
+                                  )
+        formatString = matplotlib.ticker.FormatStrFormatter('%1.0f')
+        colorbar = wid.fig.colorbar(scatter,
+                                    pad=0.1,
+                                    fraction=0.12,
+                                    aspect=25,
+                                    shrink=0.9,
+                                    format=formatString,
+                                    )
+        colorbar.set_label('Error [arcsec]', color='white')
+        yTicks = matplotlib.pyplot.getp(colorbar.ax.axes, 'yticklabels')
+        matplotlib.pyplot.setp(yTicks,
+                               color='#2090C0',
+                               fontweight='bold')
+        wid.axes.set_rmax(90)
+        wid.axes.set_rmin(0)
+        wid.draw()

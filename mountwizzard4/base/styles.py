@@ -106,7 +106,7 @@ class MWStyles(object):
         border-radius: 2px;
     }
     QLineEdit:disabled {
-        border-width: 1px;
+        border-width: 2px;
         border-color: #000000;
         border-style: flat;
         border-radius: 2px;
@@ -124,6 +124,21 @@ class MWStyles(object):
     QLineEdit[check='true'] {
         background-color: #101010;
         color: rgb(32, 144, 192);
+    }
+    QLineEdit[color='green'] {
+        border-width: 2px;
+        border-style: outset;
+        border-color: green;
+    }
+    QLineEdit[color='yellow'] {
+        border-width: 2px;
+        border-style: outset;
+        border-color: yellow;
+    }
+    QLineEdit[color='red'] {
+        border-width: 2px;
+        border-style: outset;
+        border-color: red;
     }
     QLineEdit#timeComputer {
         font-family: Arial;

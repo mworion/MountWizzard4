@@ -181,15 +181,18 @@ class MainWindow(mWidget.MWidget):
             self.ui.timeToMeridian.setText('{0:3.0f}'.format(sett.timeToMeridian()))
 
         if sett.UTCExpire is not None:
-            self.ui.UTCExpire.setText(sett.UTCExpire)
+            ui = self.ui.UTCExpire
+            ui.setText(sett.UTCExpire)
             # coloring if close to end:
             now = datetime.datetime.now()
             expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
             deltaYellow = datetime.timedelta(days=30)
             if now > expire:
-                pass    # red
+                self.changeStylesheet(ui, 'color', 'red')
             elif now > expire - deltaYellow:
-                pass    # yellow
+                self.changeStylesheet(ui, 'color', 'yellow')
+            else:
+                self.changeStylesheet(ui, 'color', '')
 
         if sett.refractionTemp is not None:
             self.ui.refractionTemp.setText('{0:+4.1f}'.format(sett.refractionTemp))

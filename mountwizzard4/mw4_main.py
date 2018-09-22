@@ -70,8 +70,10 @@ class MountWizzard4(object):
 
     def gotNames(self):
         for name in self.mount.model.nameList:
-            print(name)
+            # print(name)
+            pass
 
     def gotAlign(self):
         for star in self.mount.model.starList:
-            print(star)
+            # print(star)
+            pass

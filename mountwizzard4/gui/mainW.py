@@ -55,6 +55,12 @@ class MainWindow(base.widget.MWidget):
         self.initUI()
         self.show()
 
+        # connect signals for refreshing the gui
+        self.app.mount.signals.pointDone.connect(self.updatePointGUI)
+        self.app.mount.signals.setDone.connect(self.updateSettingGUI)
+        self.app.mount.signals.gotAlign.connect(self.gotAlign)
+        self.app.mount.signals.gotNames.connect(self.gotNames)
+
     def closeEvent(self, closeEvent):
         """
         we overwrite the close event of the window just for the main window to close the
@@ -149,3 +155,13 @@ class MainWindow(base.widget.MWidget):
 
         if sett.statusRefraction is not None:
             self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
+
+    def gotNames(self):
+        for name in self.mount.model.nameList:
+            # print(name)
+            pass
+
+    def gotAlign(self):
+        for star in self.mount.model.starList:
+            # print(star)
+            pass

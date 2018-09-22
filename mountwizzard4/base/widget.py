@@ -24,8 +24,8 @@ import platform
 import PyQt5.QtWidgets
 import PyQt5.QtGui
 # local imports
-import base.styles
-import base.tpool
+import mountwizzard4.base.styles
+import mountwizzard4.base.tpool
 
 
 class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):

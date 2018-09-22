@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3471,7 +3471,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>240</y>
+       <y>215</y>
        <width>21</width>
        <height>20</height>
       </rect>
@@ -3495,7 +3495,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>300</y>
+       <y>275</y>
        <width>101</width>
        <height>21</height>
       </rect>
@@ -3513,7 +3513,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>210</y>
+       <y>185</y>
        <width>121</width>
        <height>21</height>
       </rect>
@@ -3524,14 +3524,14 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>Meridian Lim Guide</string>
+      <string>Meridian Lim Track</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_104">
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>270</y>
+       <y>245</y>
        <width>21</width>
        <height>20</height>
       </rect>
@@ -3551,14 +3551,14 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_horizonLimitLow">
+    <widget class="QLineEdit" name="horizonLimitLow">
      <property name="enabled">
       <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>270</y>
+       <y>245</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -3609,7 +3609,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>300</y>
+       <y>275</y>
        <width>26</width>
        <height>20</height>
       </rect>
@@ -3629,14 +3629,14 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_meridianLimitGuide">
+    <widget class="QLineEdit" name="meridianLimitTrack">
      <property name="enabled">
       <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>210</y>
+       <y>185</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -3678,7 +3678,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>240</y>
+       <y>215</y>
        <width>121</width>
        <height>21</height>
       </rect>
@@ -3692,35 +3692,11 @@ manually</string>
       <string>Meridian Lim Slew</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_62">
-     <property name="geometry">
-      <rect>
-       <x>230</x>
-       <y>180</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>°/s</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>false</bool>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>270</y>
+       <y>245</y>
        <width>91</width>
        <height>21</height>
       </rect>
@@ -3734,14 +3710,14 @@ manually</string>
       <string>Horion Lim low</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_meridianLimitSlew">
+    <widget class="QLineEdit" name="meridianLimitSlew">
      <property name="enabled">
       <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>240</y>
+       <y>215</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -3779,59 +3755,14 @@ manually</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_slewRate">
+    <widget class="QLineEdit" name="horizonLimitHigh">
      <property name="enabled">
       <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>180</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="mouseTracking">
-      <bool>false</bool>
-     </property>
-     <property name="acceptDrops">
-      <bool>false</bool>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="inputMask">
-      <string/>
-     </property>
-     <property name="text">
-      <string>-</string>
-     </property>
-     <property name="cursorPosition">
-      <number>1</number>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="le_horizonLimitHigh">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>300</y>
+       <y>275</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -3876,7 +3807,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>210</y>
+       <y>185</y>
        <width>21</width>
        <height>20</height>
       </rect>
@@ -3896,29 +3827,11 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_17">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>180</y>
-       <width>66</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Slew Rate</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="btn_setUnattendedFlip_2">
      <property name="geometry">
       <rect>
        <x>325</x>
-       <y>210</y>
+       <y>185</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -3939,7 +3852,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>325</x>
-       <y>240</y>
+       <y>215</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -3960,7 +3873,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>325</x>
-       <y>270</y>
+       <y>245</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -3981,28 +3894,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>325</x>
-       <y>300</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Sets unattended flip on / off</string>
-     </property>
-     <property name="text">
-      <string>Set</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_setUnattendedFlip_6">
-     <property name="geometry">
-      <rect>
-       <x>325</x>
-       <y>180</y>
+       <y>275</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -4044,7 +3936,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>165</y>
+       <y>175</y>
        <width>366</width>
        <height>1</height>
       </rect>
@@ -4065,7 +3957,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>145</y>
+       <y>155</y>
        <width>161</width>
        <height>21</height>
       </rect>
@@ -4307,22 +4199,18 @@ manually</string>
     <zorder>label_20</zorder>
     <zorder>label_34</zorder>
     <zorder>label_104</zorder>
-    <zorder>le_horizonLimitLow</zorder>
+    <zorder>horizonLimitLow</zorder>
     <zorder>label_109</zorder>
-    <zorder>le_meridianLimitGuide</zorder>
+    <zorder>meridianLimitTrack</zorder>
     <zorder>label_65</zorder>
-    <zorder>label_62</zorder>
     <zorder>label_4</zorder>
-    <zorder>le_meridianLimitSlew</zorder>
-    <zorder>le_slewRate</zorder>
-    <zorder>le_horizonLimitHigh</zorder>
+    <zorder>meridianLimitSlew</zorder>
+    <zorder>horizonLimitHigh</zorder>
     <zorder>label_88</zorder>
-    <zorder>label_17</zorder>
     <zorder>btn_setUnattendedFlip_2</zorder>
     <zorder>btn_setUnattendedFlip_3</zorder>
     <zorder>btn_setUnattendedFlip_4</zorder>
     <zorder>btn_setUnattendedFlip_5</zorder>
-    <zorder>btn_setUnattendedFlip_6</zorder>
     <zorder>btn_setUnattendedFlip_7</zorder>
     <zorder>line_11</zorder>
     <zorder>label_77</zorder>

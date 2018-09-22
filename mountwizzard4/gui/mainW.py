@@ -66,6 +66,10 @@ class MainWindow(mWidget.MWidget):
         self.app.mount.signals.gotAlign.connect(self.showModelPolar)
         self.app.mount.signals.gotNames.connect(self.setNameList)
 
+        # connect gui signals
+        self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
+        self.ui.saveConfigQuit.clicked.connect(self.app.quit)
+
     def closeEvent(self, closeEvent):
         """
         we overwrite the close event of the window just for the main window to close the
@@ -170,6 +174,7 @@ class MainWindow(mWidget.MWidget):
         """
 
         sett = self.app.mount.sett
+        obs = self.app.mount.obsSite
 
         if sett.slewRate is not None:
             self.ui.slewRate.setText('{0:2.0f}'.format(sett.slewRate))
@@ -211,6 +216,23 @@ class MainWindow(mWidget.MWidget):
         if sett.statusRefraction is not None:
             self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
 
+        if sett.meridianLimitTrack is not None:
+            self.ui.meridianLimitTrack.setText(str(sett.meridianLimitTrack))
+
+        if sett.meridianLimitSlew is not None:
+            self.ui.meridianLimitSlew.setText(str(sett.meridianLimitSlew))
+
+        if sett.horizonLimitLow is not None:
+            self.ui.horizonLimitLow.setText(str(sett.horizonLimitLow))
+
+        if sett.horizonLimitHigh is not None:
+            self.ui.horizonLimitHigh.setText(str(sett.horizonLimitHigh))
+
+        if obs.location is not None:
+            self.ui.siteLongitude.setText(obs.location.longitude.dstr())
+            self.ui.siteLatitude.setText(obs.location.latitude.dstr())
+            self.ui.siteElevation.setText(str(obs.location.elevation.m))
+
     def setNameList(self):
         """
         setNameList populates the list of model names in the main window. before adding the
@@ -239,14 +261,13 @@ class MainWindow(mWidget.MWidget):
         # preparing the polar plot and the axes
         wid = self.clearPolar(self.polarPlot)
 
-        # now send the data
+        # now prepare the data
         if not model.starList:
             self.logger.error('no model data available for display')
             return
         altitude = []
         azimuth = []
         error = []
-
         for star in model.starList:
             alt, az = convert.topoToAltAz(star.coord.ra.hours,
                                           star.coord.dec.degrees,
@@ -254,10 +275,11 @@ class MainWindow(mWidget.MWidget):
             altitude.append(alt)
             azimuth.append(az)
             error.append(star.errorRMS)
-
         altitude = np.asarray(altitude)
         azimuth = np.asarray(azimuth)
         error = np.asarray(error)
+
+        # and plot it
         cm = matplotlib.pyplot.cm.get_cmap('RdYlGn_r')
         colors = np.asarray(error)
         scaleErrorMax = max(colors)
@@ -274,11 +296,12 @@ class MainWindow(mWidget.MWidget):
                                    cmap=cm,
                                    zorder=0,
                                    )
-        if False:
-            for i in range(0, len(theta)):
-                text = '{0:3.1f}'.format(self.workerMountDispatcher.data['ModelError'][i])
+        if self.ui.checkShowErrorValues.isChecked():
+            for star in model.starList:
+                text = '{0:3.1f}'.format(star.number)
                 wid.axes.annotate(text,
-                                  xy=(theta[i], r[i]),
+                                  xy=(theta[star.number-1],
+                                      r[star.number-1]),
                                   color='#2090C0',
                                   fontsize=9,
                                   fontweight='bold',

@@ -125,6 +125,12 @@ class MWStyles(object):
         background-color: #101010;
         color: rgb(32, 144, 192);
     }
+    QLineEdit#timeComputer {
+        font-family: Arial;
+        font-weight: bold;
+        font-size: 36pt;
+
+    }
     
     /* Checkboxes */
     QCheckBox {

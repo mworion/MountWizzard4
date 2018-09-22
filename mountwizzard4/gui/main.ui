@@ -438,9 +438,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>400</x>
+       <x>160</x>
        <y>340</y>
-       <width>46</width>
+       <width>56</width>
        <height>21</height>
       </rect>
      </property>
@@ -480,7 +480,7 @@
     <widget class="QLabel" name="label_18">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>10</x>
        <y>340</y>
        <width>71</width>
        <height>21</height>
@@ -498,7 +498,7 @@
     <widget class="QLabel" name="label_52">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>275</x>
        <y>310</y>
        <width>91</width>
        <height>20</height>
@@ -1036,7 +1036,7 @@
     <widget class="QLabel" name="label_90">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>275</x>
        <y>280</y>
        <width>101</width>
        <height>20</height>
@@ -1293,7 +1293,7 @@
      <property name="geometry">
       <rect>
        <x>135</x>
-       <y>340</y>
+       <y>310</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -1331,56 +1331,11 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="timeComputer">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>135</x>
-       <y>250</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="mouseTracking">
-      <bool>false</bool>
-     </property>
-     <property name="acceptDrops">
-      <bool>false</bool>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of UTC data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="inputMask">
-      <string/>
-     </property>
-     <property name="text">
-      <string>-</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_152">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>340</y>
+       <y>310</y>
        <width>96</width>
        <height>21</height>
       </rect>
@@ -1394,24 +1349,6 @@
       <string>UTC expires</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_151">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>250</y>
-       <width>126</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Computer Time</string>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="timeSidereal">
      <property name="enabled">
       <bool>false</bool>
@@ -1419,7 +1356,7 @@
      <property name="geometry">
       <rect>
        <x>135</x>
-       <y>280</y>
+       <y>250</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -1458,7 +1395,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>280</y>
+       <y>250</y>
        <width>116</width>
        <height>21</height>
       </rect>
@@ -1479,7 +1416,7 @@
      <property name="geometry">
       <rect>
        <x>135</x>
-       <y>310</y>
+       <y>280</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -1518,7 +1455,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>310</y>
+       <y>280</y>
        <width>81</width>
        <height>21</height>
       </rect>
@@ -1553,7 +1490,7 @@
     <widget class="QLabel" name="label_28">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>275</x>
        <y>250</y>
        <width>66</width>
        <height>21</height>
@@ -1616,8 +1553,8 @@
     <widget class="QLabel" name="label_74">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>400</y>
+       <x>275</x>
+       <y>370</y>
        <width>116</width>
        <height>21</height>
       </rect>
@@ -1638,7 +1575,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>370</y>
+       <y>340</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1679,8 +1616,8 @@
     <widget class="QLabel" name="label_55">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>370</y>
+       <x>275</x>
+       <y>340</y>
        <width>101</width>
        <height>21</height>
       </rect>
@@ -1701,7 +1638,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>400</y>
+       <y>370</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1889,29 +1826,11 @@
       <string>hPa</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_86">
-     <property name="geometry">
-      <rect>
-       <x>220</x>
-       <y>250</y>
-       <width>46</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>H:M:S</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_129">
      <property name="geometry">
       <rect>
        <x>220</x>
-       <y>310</y>
+       <y>280</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1929,7 +1848,7 @@
      <property name="geometry">
       <rect>
        <x>220</x>
-       <y>280</y>
+       <y>250</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1965,7 +1884,7 @@
      <property name="geometry">
       <rect>
        <x>220</x>
-       <y>340</y>
+       <y>310</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1985,9 +1904,9 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>115</x>
-       <y>385</y>
-       <width>36</width>
+       <x>400</x>
+       <y>400</y>
+       <width>46</width>
        <height>21</height>
       </rect>
      </property>
@@ -2022,6 +1941,24 @@
      </property>
      <property name="readOnly">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_86">
+     <property name="geometry">
+      <rect>
+       <x>275</x>
+       <y>400</y>
+       <width>126</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Refraction correction</string>
      </property>
     </widget>
     <zorder>line_15</zorder>
@@ -2068,9 +2005,7 @@
     <zorder>label_98</zorder>
     <zorder>groupBoxCoordinateSystems</zorder>
     <zorder>UTCExpire</zorder>
-    <zorder>timeComputer</zorder>
     <zorder>label_152</zorder>
-    <zorder>label_151</zorder>
     <zorder>timeSidereal</zorder>
     <zorder>label_7</zorder>
     <zorder>julianDate</zorder>
@@ -2087,12 +2022,12 @@
     <zorder>refractionTemp</zorder>
     <zorder>refractionPress</zorder>
     <zorder>label_81</zorder>
-    <zorder>label_86</zorder>
     <zorder>label_129</zorder>
     <zorder>label_130</zorder>
     <zorder>label_133</zorder>
     <zorder>label_222</zorder>
     <zorder>statusRefraction</zorder>
+    <zorder>label_86</zorder>
    </widget>
    <widget class="QWidget" name="tab_4">
     <attribute name="title">
@@ -17031,9 +16966,9 @@ manually</string>
   <widget class="QPushButton" name="btn_mountShutdown">
    <property name="geometry">
     <rect>
-     <x>440</x>
+     <x>525</x>
      <y>85</y>
-     <width>86</width>
+     <width>76</width>
      <height>26</height>
     </rect>
    </property>
@@ -17046,15 +16981,15 @@ manually</string>
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send shutdown command to the mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
-    <string>Shutdown</string>
+    <string>Off</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btn_mountBoot">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>55</y>
-     <width>86</width>
+     <x>445</x>
+     <y>85</y>
+     <width>76</width>
      <height>26</height>
     </rect>
    </property>
@@ -17067,7 +17002,7 @@ manually</string>
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the mount is connected via ethernet and is in the same subnet, from firmware 2.15.8 on the mount could be started by sending a WOL packet to the moutn computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
-    <string>Boot</string>
+    <string>ON</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="le_cameraStatusText">
@@ -17360,6 +17295,87 @@ manually</string>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="timeComputer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>445</x>
+     <y>30</y>
+     <width>156</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>24</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of UTC data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="inputMask">
+    <string/>
+   </property>
+   <property name="text">
+    <string>-</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="Line" name="line_37">
+   <property name="geometry">
+    <rect>
+     <x>445</x>
+     <y>25</y>
+     <width>156</width>
+     <height>1</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_151">
+   <property name="geometry">
+    <rect>
+     <x>445</x>
+     <y>5</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Power</string>
    </property>
   </widget>
  </widget>

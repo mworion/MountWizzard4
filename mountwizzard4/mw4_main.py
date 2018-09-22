@@ -53,14 +53,19 @@ class MountWizzard4(object):
                                                 )
         # get the window widgets up
         self.mainW = mountwizzard4.gui.mainW.MainWindow(self)
-        self.mainW.show()
+
+        # connect signals for refreshing the gui
         self.mount.signals.pointDone.connect(self.mainW.updatePointGUI)
-        self.mount.signals.setDone.connect(self.mainW.updateSetGUI)
-        self.mount.startTimers()
-        self.mount.cyclePointing()
-        self.mount.cycleSetting()
+        self.mount.signals.setDone.connect(self.mainW.updateSettingGUI)
         self.mount.signals.gotAlign.connect(self.gotAlign)
         self.mount.signals.gotNames.connect(self.gotNames)
+
+        # starting cyclic polling of mount data
+        self.mount.startTimers()
+
+        # get first data
+        self.mount.cyclePointing()
+        self.mount.cycleSetting()
         self.mount.getAlign()
         self.mount.getNames()
 
@@ -77,3 +82,6 @@ class MountWizzard4(object):
         for star in self.mount.model.starList:
             # print(star)
             pass
+
+    def setMountHost(self):
+        pass

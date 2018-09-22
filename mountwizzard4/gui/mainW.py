@@ -53,6 +53,7 @@ class MainWindow(base.widget.MWidget):
         # load and init the gui
         self.ui = PyQt5.uic.loadUi(mw4_global.work_dir + '/mountwizzard4/gui/main.ui', self)
         self.initUI()
+        self.show()
 
     def closeEvent(self, closeEvent):
         """
@@ -103,7 +104,7 @@ class MainWindow(base.widget.MWidget):
         if obs.timeSidereal is not None:
             self.ui.timeSidereal.setText(obs.timeSidereal[:8])
 
-    def updateSetGUI(self):
+    def updateSettingGUI(self):
         """
         updateSetGUI update the gui upon events triggered be the reception of new settings
         from the mount. the mount data is polled, so we use this signal as well for the

@@ -117,6 +117,49 @@ class MWidget(PyQt5.QtWidgets.QWidget, mountwizzard4.base.styles.MWStyles):
         ui.style().unpolish(ui)
         ui.style().polish(ui)
 
+    @staticmethod
+    def clearPolar(wid):
+        """
+        clearPolar clears and setups the canvas widget for drawing. it sets the labels, ticks
+        and some other ui styles.
+
+        :param      wid:    matplotlib canvas widget for drawing
+        :return:    wid     modified widget
+        """
+        wid.fig.clf()
+        wid.axes = wid.fig.add_subplot(1, 1, 1, polar=True)
+        wid.axes.grid(True,
+                      color='#404040',
+                      )
+        wid.axes.set_title('Actual Mount Model',
+                           color='white',
+                           fontweight='bold',
+                           pad=15,
+                           )
+        wid.fig.subplots_adjust(left=0.07,
+                                right=1,
+                                bottom=0.03,
+                                top=0.97,
+                                )
+        wid.axes.set_facecolor((32 / 256, 32 / 256, 32 / 256))
+        wid.axes.tick_params(axis='x',
+                             colors='#2090C0',
+                             labelsize=12,
+                             )
+        wid.axes.tick_params(axis='y',
+                             colors='#2090C0',
+                             labelsize=12,
+                             )
+        wid.axes.set_theta_zero_location('N')
+        wid.axes.set_theta_direction(-1)
+        wid.axes.set_yticks(range(0, 90, 10))
+        yLabel = ['', '', '', '', '', '', '', '', '', '']
+        wid.axes.set_yticklabels(yLabel,
+                                 color='#2090C0',
+                                 fontweight='bold')
+        wid.axes.set_rlabel_position(45)
+        return wid
+
 
 class IntMatplotlib(backend.FigureCanvasQTAgg):
     """

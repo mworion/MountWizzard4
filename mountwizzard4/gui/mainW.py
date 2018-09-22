@@ -24,11 +24,14 @@ import datetime
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+import numpy as np
+import matplotlib
 # local import
 import mw4_global
 import mountwizzard4.base.widget as mWidget
 import mountwizzard4.base.tpool
 import mountcontrol.qtmount as mControl
+import mountcontrol.convert as convert
 
 
 class MainWindow(mWidget.MWidget):
@@ -60,7 +63,7 @@ class MainWindow(mWidget.MWidget):
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updatePointGUI)
         self.app.mount.signals.setDone.connect(self.updateSettingGUI)
-        self.app.mount.signals.gotAlign.connect(self.gotAlign)
+        self.app.mount.signals.gotAlign.connect(self.showModelPolar)
         self.app.mount.signals.gotNames.connect(self.setNameList)
 
     def closeEvent(self, closeEvent):
@@ -93,6 +96,8 @@ class MainWindow(mWidget.MWidget):
         self.wIcon(self.ui.saveConfigQuit, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
+        self.wIcon(self.ui.startTracking, PyQt5.QtWidgets.QStyle.SP_DialogYesButton)
+        self.wIcon(self.ui.stopTracking, PyQt5.QtWidgets.QStyle.SP_DialogNoButton)
         """
         self.wIcon(self.ui.runInitialModel, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
         self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
@@ -109,8 +114,6 @@ class MainWindow(mWidget.MWidget):
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
-        self.wIcon(self.ui.startTracking, PyQt5.QtWidgets.QStyle.SP_DialogYesButton)
-        self.wIcon(self.ui.stopTracking, PyQt5.QtWidgets.QStyle.SP_DialogNoButton)
         self.wIcon(self.ui.loadModel, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
         self.wIcon(self.ui.saveModel, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.deleteModel, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
@@ -190,9 +193,11 @@ class MainWindow(mWidget.MWidget):
 
         if sett.refractionTemp is not None:
             self.ui.refractionTemp.setText('{0:+4.1f}'.format(sett.refractionTemp))
+            self.ui.refractionTemp1.setText('{0:+4.1f}'.format(sett.refractionTemp))
 
         if sett.refractionPress is not None:
-            self.ui.refractionPress.setText('{0:4.0f}'.format(sett.refractionPress))
+            self.ui.refractionPress.setText('{0:6.1f}'.format(sett.refractionPress))
+            self.ui.refractionPress1.setText('{0:6.1f}'.format(sett.refractionPress))
 
         if sett.statusUnattendedFlip is not None:
             self.ui.statusUnattendedFlip.setText('ON' if sett.statusUnattendedFlip else 'OFF')
@@ -224,55 +229,38 @@ class MainWindow(mWidget.MWidget):
 
         :return:
         """
-        wid = self.polarPlot
+
         model = self.app.mount.model
+        lat = self.app.mount.obsSite.location.latitude.degrees
 
         # preparing the polar plot and the axes
-        wid.fig.clf()
-        wid.axes = wid.fig.add_subplot(1, 1, 1, polar=True)
-        wid.axes.grid(True,
-                      color='#404040',
-                      )
-        wid.axes.set_title('Actual Mount Model',
-                           color='white',
-                           fontweight='bold',
-                           pad=15,
-                           )
-        wid.fig.subplots_adjust(left=0.07,
-                                right=1,
-                                bottom=0.03,
-                                top=0.97,
-                                )
-        wid.axes.set_facecolor((32 / 256, 32 / 256, 32 / 256))
-        wid.axes.tick_params(axis='x',
-                             colors='#2090C0',
-                             labelsize=12,
-                             )
-        wid.axes.tick_params(axis='y',
-                             colors='#2090C0',
-                             labelsize=12,
-                             )
-        wid.axes.set_theta_zero_location('N')
-        wid.axes.set_theta_direction(-1)
-        wid.axes.set_yticks(range(0, 90, 10))
-        yLabel = ['', '', '', '', '', '', '', '', '', '']
-        wid.axes.set_yticklabels(yLabel,
-                                 color='#2090C0',
-                                 fontweight='bold')
-        wid.axes.set_rlabel_position(45)
+        wid = self.clearPolar(self.polarPlot)
 
         # now send the data
-        #if model.starList:
+        if not model.starList:
+            self.logger.error('no model data available for display')
+            return
+        altitude = []
+        azimuth = []
+        error = []
 
-        azimuth = np.asarray(model.starList().coord)
-        altitude = np.asarray(self.workerMountDispatcher.data['ModelAltitude'])
+        for star in model.starList:
+            alt, az = convert.topoToAltAz(star.coord.ra.hours,
+                                          star.coord.dec.degrees,
+                                          lat)
+            altitude.append(alt)
+            azimuth.append(az)
+            error.append(star.errorRMS)
+
+        altitude = np.asarray(altitude)
+        azimuth = np.asarray(azimuth)
+        error = np.asarray(error)
         cm = matplotlib.pyplot.cm.get_cmap('RdYlGn_r')
-        colors = numpy.asarray(self.workerMountDispatcher.data['ModelError'])
+        colors = np.asarray(error)
         scaleErrorMax = max(colors)
         scaleErrorMin = min(colors)
-        area = [200 if x >= max(colors) else 60 for x in
-                self.workerMountDispatcher.data['ModelError']]
-        theta = azimuth / 180.0 * math.pi
+        area = [200 if x >= max(colors) else 60 for x in error]
+        theta = azimuth / 180.0 * np.pi
         r = 90 - altitude
         scatter = wid.axes.scatter(theta,
                                    r,
@@ -283,7 +271,7 @@ class MainWindow(mWidget.MWidget):
                                    cmap=cm,
                                    zorder=0,
                                    )
-        if self.ui.checkShowErrorValues.isChecked():
+        if False:
             for i in range(0, len(theta)):
                 text = '{0:3.1f}'.format(self.workerMountDispatcher.data['ModelError'][i])
                 wid.axes.annotate(text,

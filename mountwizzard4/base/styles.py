@@ -128,7 +128,7 @@ class MWStyles(object):
     QLineEdit#timeComputer {
         font-family: Arial;
         font-weight: bold;
-        font-size: 36pt;
+        font-size: 30pt;
 
     }
     

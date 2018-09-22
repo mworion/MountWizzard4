@@ -53,6 +53,7 @@ class MainWindow(base.widget.MWidget):
         # load and init the gui
         self.ui = PyQt5.uic.loadUi(mw4_global.work_dir + '/mountwizzard4/gui/main.ui', self)
         self.initUI()
+        self.setupIcons()
         self.show()
 
         # connect signals for refreshing the gui
@@ -72,6 +73,46 @@ class MainWindow(base.widget.MWidget):
         self.showStatus = False
         self.hide()
         self.app.quit()
+
+    def setupIcons(self):
+        # show icon in main gui and add some icons for push buttons
+        self.wIcon(self.ui.openMessageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
+        self.wIcon(self.ui.openAnalyseW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
+        self.wIcon(self.ui.openImageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
+        self.wIcon(self.ui.openHemisphereW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
+        self.wIcon(self.ui.openSatelliteW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
+        self.wIcon(self.ui.saveConfigAs, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
+        self.wIcon(self.ui.loadFrom, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
+        self.wIcon(self.ui.saveConfig, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
+        self.wIcon(self.ui.saveConfigQuit, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
+        self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
+        """
+        self.wIcon(self.ui.runInitialModel, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.cancelInitialModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.generateInitialPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.generateGridPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.generateMaxPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.generateNormalPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.generateMinPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.generateDSOPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.runFlexure, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
+        self.wIcon(self.ui.startTracking, PyQt5.QtWidgets.QStyle.SP_DialogYesButton)
+        self.wIcon(self.ui.stopTracking, PyQt5.QtWidgets.QStyle.SP_DialogNoButton)
+        self.wIcon(self.ui.loadModel, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
+        self.wIcon(self.ui.saveModel, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
+        self.wIcon(self.ui.deleteModel, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
+        """
+        pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
+        self.ui.picAZ.setPixmap(pixmap)
+        pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
+        self.ui.picALT.setPixmap(pixmap)
 
     def updatePointGUI(self):
         """
@@ -157,11 +198,11 @@ class MainWindow(base.widget.MWidget):
             self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
 
     def gotNames(self):
-        for name in self.mount.model.nameList:
+        for name in self.app.mount.model.nameList:
             # print(name)
             pass
 
     def gotAlign(self):
-        for star in self.mount.model.starList:
+        for star in self.app.mount.model.starList:
             # print(star)
             pass

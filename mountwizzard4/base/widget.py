@@ -24,11 +24,12 @@ import platform
 import PyQt5.QtWidgets
 import PyQt5.QtGui
 # local imports
+import mountwizzard4.base
 import mountwizzard4.base.styles
 import mountwizzard4.base.tpool
 
 
-class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
+class MWidget(PyQt5.QtWidgets.QWidget, mountwizzard4.base.styles.MWStyles):
     """
     MWidget defines the common parts for all windows used in MountWizzard 4. namely the
     sizes and the styles. styles are defined separately in a css looking stylesheet.
@@ -50,7 +51,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         self.hide()
 
     @staticmethod
-    def widgetIcon(gui, icon):
+    def wIcon(gui, icon):
         """
         widget icon adds an icon to a gui element like an button.
 
@@ -58,7 +59,9 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         :param      icon:       icon to be added
         :return:    nothing
         """
-        gui.setIcon(PyQt5.QtGui.QIcon(icon))
+
+        iconset = PyQt5.QtWidgets.qApp.style().standardIcon(icon)
+        gui.setIcon(PyQt5.QtGui.QIcon(iconset))
         gui.setProperty('iconset', True)
         gui.style().unpolish(gui)
         gui.style().polish(gui)

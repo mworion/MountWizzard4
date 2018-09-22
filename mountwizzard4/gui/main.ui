@@ -16658,7 +16658,7 @@ manually</string>
     </widget>
    </widget>
   </widget>
-  <widget class="QPushButton" name="btn_saveConfigQuit">
+  <widget class="QPushButton" name="saveConfigQuit">
    <property name="geometry">
     <rect>
      <x>705</x>
@@ -16682,7 +16682,7 @@ manually</string>
     <string>Save/Quit</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_saveConfig">
+  <widget class="QPushButton" name="saveConfig">
    <property name="geometry">
     <rect>
      <x>610</x>
@@ -16805,7 +16805,7 @@ manually</string>
     <string>Environ</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_openMessageWindow">
+  <widget class="QPushButton" name="openMessageW">
    <property name="geometry">
     <rect>
      <x>5</x>
@@ -16853,7 +16853,7 @@ manually</string>
     <string>Solver</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_loadFrom">
+  <widget class="QPushButton" name="loadFrom">
    <property name="geometry">
     <rect>
      <x>610</x>
@@ -16877,7 +16877,7 @@ manually</string>
     <string>Load</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_saveConfigAs">
+  <widget class="QPushButton" name="saveConfigAs">
    <property name="geometry">
     <rect>
      <x>705</x>
@@ -16963,7 +16963,7 @@ manually</string>
     <string>Profile</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_mountShutdown">
+  <widget class="QPushButton" name="mountOff">
    <property name="geometry">
     <rect>
      <x>525</x>
@@ -16984,7 +16984,7 @@ manually</string>
     <string>Off</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_mountBoot">
+  <widget class="QPushButton" name="mountOn">
    <property name="geometry">
     <rect>
      <x>445</x>
@@ -17183,7 +17183,7 @@ manually</string>
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_openHemisphereWindow">
+  <widget class="QPushButton" name="openHemisphereW">
    <property name="geometry">
     <rect>
      <x>95</x>
@@ -17208,7 +17208,7 @@ manually</string>
     <string>Hemis</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_openImageWindow">
+  <widget class="QPushButton" name="openImageW">
    <property name="geometry">
     <rect>
      <x>175</x>
@@ -17233,7 +17233,7 @@ manually</string>
     <string>Image</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_openSatelliteWindow">
+  <widget class="QPushButton" name="openSatelliteW">
    <property name="geometry">
     <rect>
      <x>350</x>
@@ -17254,10 +17254,10 @@ manually</string>
     <string notr="true"/>
    </property>
    <property name="text">
-    <string>TLE</string>
+    <string>Satellite</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_openAnalyseWindow">
+  <widget class="QPushButton" name="openAnalyseW">
    <property name="geometry">
     <rect>
      <x>260</x>
@@ -17312,9 +17312,9 @@ manually</string>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>24</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="mouseTracking">
@@ -17380,13 +17380,13 @@ manually</string>
   </widget>
  </widget>
  <tabstops>
-  <tabstop>btn_openMessageWindow</tabstop>
-  <tabstop>btn_mountBoot</tabstop>
-  <tabstop>btn_mountShutdown</tabstop>
-  <tabstop>btn_loadFrom</tabstop>
-  <tabstop>btn_saveConfigQuit</tabstop>
-  <tabstop>btn_saveConfig</tabstop>
-  <tabstop>btn_saveConfigAs</tabstop>
+  <tabstop>openMessageW</tabstop>
+  <tabstop>mountOn</tabstop>
+  <tabstop>mountOff</tabstop>
+  <tabstop>loadFrom</tabstop>
+  <tabstop>saveConfigQuit</tabstop>
+  <tabstop>saveConfig</tabstop>
+  <tabstop>saveConfigAs</tabstop>
   <tabstop>btn_flipMount</tabstop>
   <tabstop>btn_mountPos1</tabstop>
   <tabstop>btn_mountPos2</tabstop>

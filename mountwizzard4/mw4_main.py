@@ -66,6 +66,3 @@ class MountWizzard4(object):
     def quit(self):
         self.mount.stopTimers()
         PyQt5.QtCore.QCoreApplication.quit()
-
-    def setMountHost(self):
-        pass

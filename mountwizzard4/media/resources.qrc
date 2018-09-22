@@ -3,6 +3,7 @@
     <file>mw4.ico</file>
     <file>arrow-up.ico</file>
     <file>arrow-down.ico</file>
+    <file>checkmark.ico</file>
     <file>altitude1.png</file>
     <file>azimuth1.png</file>
 </qresource>

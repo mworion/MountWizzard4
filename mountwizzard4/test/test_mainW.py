@@ -55,8 +55,7 @@ class MainWindowTests(unittest.TestCase):
     #
     #
 
-    def test_updateFwGui(self):
-
+    def test_updateFwGui_productName(self):
         value = 'Test1234'
         self.mount.fw.productName = value
         self.mainW.updateFwGui()
@@ -64,7 +63,47 @@ class MainWindowTests(unittest.TestCase):
         value = None
         self.mount.fw.productName = value
         self.mainW.updateFwGui()
-        self.assertEqual(value, self.mainW.ui.productName.text())
+        self.assertEqual('-', self.mainW.ui.productName.text())
+
+    def test_updateFwGui_hwVersion(self):
+        value = 'Test1234'
+        self.mount.fw.hwVersion = value
+        self.mainW.updateFwGui()
+        self.assertEqual(value, self.mainW.ui.hwVersion.text())
+        value = None
+        self.mount.fw.hwVersion = value
+        self.mainW.updateFwGui()
+        self.assertEqual('-', self.mainW.ui.hwVersion.text())
+
+    def test_updateFwGui_numberString(self):
+        value = '2.15.18'
+        self.mount.fw.numberString = value
+        self.mainW.updateFwGui()
+        self.assertEqual(value, self.mainW.ui.numberString.text())
+        value = None
+        self.mount.fw.numberString = value
+        self.mainW.updateFwGui()
+        self.assertEqual('-', self.mainW.ui.numberString.text())
+
+    def test_updateFwGui_fwdate(self):
+        value = 'Test1234'
+        self.mount.fw.fwdate = value
+        self.mainW.updateFwGui()
+        self.assertEqual(value, self.mainW.ui.fwdate.text())
+        value = None
+        self.mount.fw.fwdate = value
+        self.mainW.updateFwGui()
+        self.assertEqual('-', self.mainW.ui.fwdate.text())
+
+    def test_updateFwGui_fwtime(self):
+        value = 'Test1234'
+        self.mount.fw.fwtime = value
+        self.mainW.updateFwGui()
+        self.assertEqual(value, self.mainW.ui.fwtime.text())
+        value = None
+        self.mount.fw.fwtime = value
+        self.mainW.updateFwGui()
+        self.assertEqual('-', self.mainW.ui.fwtime.text())
 
 
 

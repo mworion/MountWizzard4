@@ -141,30 +141,44 @@ class MainWindow(mWidget.MWidget):
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
 
         if obs.Alt is not None:
-            self.ui.altitude.setText('{0:5.2f}'.format(obs.Alt.degrees))
+            self.ui.ALT.setText('{0:5.2f}'.format(obs.Alt.degrees))
+        else:
+            self.ui.ALT.setText('-')
 
         if obs.Az is not None:
-            self.ui.azimuth.setText('{0:5.2f}'.format(obs.Az.degrees))
+            self.ui.AZ.setText('{0:5.2f}'.format(obs.Az.degrees))
+        else:
+            self.ui.AZ.setText('-')
 
         if obs.raJNow is not None:
             raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
             raText = raFormat.format(*obs.raJNow.dms())
             self.ui.RA.setText(raText)
+        else:
+            self.ui.RA.setText('-')
 
         if obs.decJNow is not None:
             decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
             decText = decFormat.format(*obs.decJNow.signed_dms()[1:4],
                                        sign='+' if obs.decJNow.degrees > 0 else '-')
             self.ui.DEC.setText(decText)
+        else:
+            self.ui.DEC.setText('-')
 
         if obs.timeJD is not None:
             self.ui.julianDate.setText(obs.timeJD.utc_strftime('%H:%M:%S'))
+        else:
+            self.ui.julianDate.setText('-')
 
         if obs.pierside is not None:
             self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
+        else:
+            self.ui.pierside.setText('-')
 
         if obs.timeSidereal is not None:
             self.ui.timeSidereal.setText(obs.timeSidereal[:8])
+        else:
+            self.ui.timeSidereal.setText('-')
 
     def updateSettingGUI(self):
         """

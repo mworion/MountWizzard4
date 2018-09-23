@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -212,7 +212,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="azimuth">
+    <widget class="QLineEdit" name="AZ">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -308,7 +308,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="altitude">
+    <widget class="QLineEdit" name="ALT">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -2031,9 +2031,9 @@
     <zorder>line_13</zorder>
     <zorder>line_51</zorder>
     <zorder>RA</zorder>
-    <zorder>azimuth</zorder>
+    <zorder>AZ</zorder>
     <zorder>DEC</zorder>
-    <zorder>altitude</zorder>
+    <zorder>ALT</zorder>
     <zorder>label_9</zorder>
     <zorder>label_10</zorder>
     <zorder>label_8</zorder>

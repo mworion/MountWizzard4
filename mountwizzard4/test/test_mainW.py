@@ -51,7 +51,7 @@ class MainWindowTests(unittest.TestCase):
 
     #
     #
-    # testing mainW gui
+    # testing mainW gui fw
     #
     #
 
@@ -105,5 +105,64 @@ class MainWindowTests(unittest.TestCase):
         self.mainW.updateFwGui()
         self.assertEqual('-', self.mainW.ui.fwtime.text())
 
+    #
+    #
+    # testing mainW gui model name
+    #
+    #
 
+    def test_setNameList(self):
+        value = ['Test1', 'test2', 'test3', 'test4']
+        self.mount.model.nameList = value
+        self.mainW.setNameList()
+        self.assertEqual(4, self.mainW.ui.nameList.count())
+        value = None
+        self.mount.model.nameList = value
+        self.mainW.setNameList()
+        self.assertEqual(0, self.mainW.ui.nameList.count())
 
+    #
+    #
+    # testing mainW gui pointing
+    #
+    #
+
+    def test_updatePointGui_alt(self):
+        value = '45'
+        self.mount.obsSite.Alt = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('45.00', self.mainW.ui.ALT.text())
+        value = None
+        self.mount.obsSite.Alt = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('-', self.mainW.ui.ALT.text())
+
+    def test_updatePointGui_az(self):
+        value = '45'
+        self.mount.obsSite.Az = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('45.00', self.mainW.ui.AZ.text())
+        value = None
+        self.mount.obsSite.Az = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('-', self.mainW.ui.AZ.text())
+
+    def test_updatePointGui_ra(self):
+        value = '45'
+        self.mount.obsSite.raJNow = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('45:00:00', self.mainW.ui.RA.text())
+        value = None
+        self.mount.obsSite.raJNow = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('-', self.mainW.ui.RA.text())
+
+    def test_updatePointGui_dec(self):
+        value = '45'
+        self.mount.obsSite.decJNow = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('+45:00:00', self.mainW.ui.DEC.text())
+        value = None
+        self.mount.obsSite.decJNow = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('-', self.mainW.ui.DEC.text())

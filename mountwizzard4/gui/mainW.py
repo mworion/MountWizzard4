@@ -65,11 +65,18 @@ class MainWindow(mWidget.MWidget):
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updatePointGUI)
         self.app.mount.signals.settDone.connect(self.updateSettingGUI)
-        self.app.mount.signals.alignDone.connect(self.updateAlignGui)
+
+        self.app.mount.signals.alignDone.connect(
+            lambda: self.updateAlignGui(self.app.mount.model))
+        self.app.mount.signals.alignDone.connect(
+            lambda: self.showModelPolar(self.app.mount.model,
+                                        self.app.mount.obsSite.location.latitude.degrees))
         self.app.mount.signals.namesDone.connect(self.setNameList)
 
         # connect gui signals
-        self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
+        self.ui.checkShowErrorValues.stateChanged.connect(
+            lambda: self.showModelPolar(self.app.mount.model,
+                                        self.app.mount.obsSite.location.latitude.degrees))
         self.ui.saveConfigQuit.clicked.connect(self.app.quit)
 
         # initial call for writing the gui
@@ -329,18 +336,14 @@ class MainWindow(mWidget.MWidget):
         self.ui.nameList.sortItems()
         self.ui.nameList.update()
 
-    def updateAlignGui(self):
+    def updateAlignGui(self, model):
         """
         updateAlignGui shows the data which is received through the getain command. this is
         mainly polar and ortho errors as well as basic model data.
 
+        :param      model: model data
         :return:    nothing
         """
-
-        # polar plot data is also received and should be shown
-        self.showModelPolar()
-
-        model = self.app.mount.model
 
         if model.numberStars is not None:
             self.ui.numberStars.setText(str(model.numberStars))
@@ -386,16 +389,15 @@ class MainWindow(mWidget.MWidget):
         else:
             self.ui.altitudeError.setText('-')
 
-    def showModelPolar(self):
+    def showModelPolar(self, model, lat):
         """
         showModelPolar draws a polar plot of the align model stars and their errors in
         color.
 
+        :param      model:  model data
+        :param      lat:    site latitude
         :return:
         """
-
-        model = self.app.mount.model
-        lat = self.app.mount.obsSite.location.latitude.degrees
 
         # preparing the polar plot and the axes
         wid = self.clearPolar(self.polarPlot)

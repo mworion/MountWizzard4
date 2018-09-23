@@ -20,6 +20,7 @@
 # standard libraries
 import unittest
 import os
+import time
 # external packages
 import PyQt5.QtTest
 import PyQt5.QtGui
@@ -48,6 +49,9 @@ class MainWindowTests(unittest.TestCase):
         mountwizzard4.mw4_global.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
         self.mount = mountcontrol.qtmount.Mount()
         self.mainW = mountwizzard4.gui.mainW.MainWindow(self)
+
+    def tearDown(self):
+        pass
 
     #
     #
@@ -196,3 +200,147 @@ class MainWindowTests(unittest.TestCase):
         self.mount.obsSite.timeSidereal = value
         self.mainW.updatePointGUI()
         self.assertEqual('-', self.mainW.ui.timeSidereal.text())
+
+    #
+    #
+    # testing mainW gui setting
+    #
+    #
+
+    def test_updateSetting_slewRate(self):
+        value = '15'
+        self.mount.sett.slewRate = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('15', self.mainW.ui.slewRate.text())
+        value = None
+        self.mount.sett.slewRate = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.slewRate.text())
+
+    def test_updateSetting_timeToFlip(self):
+        value = '15'
+        self.mount.sett.timeToFlip = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual(' 15', self.mainW.ui.timeToFlip.text())
+        value = None
+        self.mount.sett.timeToFlip = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.timeToFlip.text())
+
+    def test_updateSetting_UTCExpire(self):
+        value = '2018-10-05'
+        self.mount.sett.UTCExpire = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual(value, self.mainW.ui.UTCExpire.text())
+        value = None
+        self.mount.sett.UTCExpire = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.UTCExpire.text())
+
+    def test_updateSetting_refractionTemp(self):
+        value = '15'
+        self.mount.sett.refractionTemp = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('+15.0', self.mainW.ui.refractionTemp.text())
+        self.assertEqual('+15.0', self.mainW.ui.refractionTemp1.text())
+        value = None
+        self.mount.sett.refractionTemp = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.refractionTemp.text())
+        self.assertEqual('-', self.mainW.ui.refractionTemp1.text())
+
+    def test_updateSetting_refractionPress(self):
+        value = '1050.0'
+        self.mount.sett.refractionPress = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual(value, self.mainW.ui.refractionPress.text())
+        self.assertEqual(value, self.mainW.ui.refractionPress1.text())
+        value = None
+        self.mount.sett.refractionPress = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.refractionPress.text())
+        self.assertEqual('-', self.mainW.ui.refractionPress1.text())
+
+    def test_updateSetting_statusUnattendedFlip(self):
+        value = '1'
+        self.mount.sett.statusUnattendedFlip = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('ON', self.mainW.ui.statusUnattendedFlip.text())
+        value = None
+        self.mount.sett.statusUnattendedFlip = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('OFF', self.mainW.ui.statusUnattendedFlip.text())
+
+    def test_updateSetting_statusDualTracking(self):
+        value = '1'
+        self.mount.sett.statusDualTracking = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('ON', self.mainW.ui.statusDualTracking.text())
+        value = None
+        self.mount.sett.statusDualTracking = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('OFF', self.mainW.ui.statusDualTracking.text())
+
+    def test_updateSetting_statusRefraction(self):
+        value = '1'
+        self.mount.sett.statusRefraction = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('ON', self.mainW.ui.statusRefraction.text())
+        value = None
+        self.mount.sett.statusRefraction = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('OFF', self.mainW.ui.statusRefraction.text())
+
+    def test_updateSetting_meridianLimitTrack(self):
+        value = '15'
+        self.mount.sett.meridianLimitTrack = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('15.0', self.mainW.ui.meridianLimitTrack.text())
+        value = None
+        self.mount.sett.meridianLimitTrack = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.meridianLimitTrack.text())
+
+    def test_updateSetting_meridianLimitSlew(self):
+        value = '15'
+        self.mount.sett.meridianLimitSlew = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('15.0', self.mainW.ui.meridianLimitSlew.text())
+        value = None
+        self.mount.sett.meridianLimitSlew = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.meridianLimitSlew.text())
+
+    def test_updateSetting_horizonLimitLow(self):
+        value = '0'
+        self.mount.sett.horizonLimitLow = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('0.0', self.mainW.ui.horizonLimitLow.text())
+        value = None
+        self.mount.sett.horizonLimitLow = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.horizonLimitLow.text())
+
+    def test_updateSetting_horizonLimitHigh(self):
+        value = '50'
+        self.mount.sett.horizonLimitHigh = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('50.0', self.mainW.ui.horizonLimitHigh.text())
+        value = None
+        self.mount.sett.horizonLimitHigh = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.horizonLimitHigh.text())
+
+    def test_updateSetting_location(self):
+
+        self.mount.obsSite.location = ['49:00:00', '11:00:00', '500']
+        self.mainW.updateSettingGUI()
+        self.assertEqual('11deg 00\' 00.0\"', self.mainW.ui.siteLongitude.text())
+        self.assertEqual('49deg 00\' 00.0\"', self.mainW.ui.siteLatitude.text())
+        self.assertEqual('500.0', self.mainW.ui.siteElevation.text())
+
+        self.mount.obsSite.location = None
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.siteLongitude.text())
+        self.assertEqual('-', self.mainW.ui.siteLatitude.text())
+        self.assertEqual('-', self.mainW.ui.siteElevation.text())

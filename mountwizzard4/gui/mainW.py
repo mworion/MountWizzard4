@@ -194,12 +194,18 @@ class MainWindow(mWidget.MWidget):
 
         if sett.slewRate is not None:
             self.ui.slewRate.setText('{0:2.0f}'.format(sett.slewRate))
+        else:
+            self.ui.slewRate.setText('-')
 
         if sett.timeToFlip is not None:
             self.ui.timeToFlip.setText('{0:3.0f}'.format(sett.timeToFlip))
+        else:
+            self.ui.timeToFlip.setText('-')
 
         if sett.timeToMeridian() is not None:
             self.ui.timeToMeridian.setText('{0:3.0f}'.format(sett.timeToMeridian()))
+        else:
+            self.ui.timeToMeridian.setText('-')
 
         if sett.UTCExpire is not None:
             ui = self.ui.UTCExpire
@@ -214,40 +220,66 @@ class MainWindow(mWidget.MWidget):
                 self.changeStylesheet(ui, 'color', 'yellow')
             else:
                 self.changeStylesheet(ui, 'color', '')
+        else:
+            self.ui.UTCExpire.setText('-')
 
         if sett.refractionTemp is not None:
             self.ui.refractionTemp.setText('{0:+4.1f}'.format(sett.refractionTemp))
             self.ui.refractionTemp1.setText('{0:+4.1f}'.format(sett.refractionTemp))
+        else:
+            self.ui.refractionTemp.setText('-')
+            self.ui.refractionTemp1.setText('-')
 
         if sett.refractionPress is not None:
             self.ui.refractionPress.setText('{0:6.1f}'.format(sett.refractionPress))
             self.ui.refractionPress1.setText('{0:6.1f}'.format(sett.refractionPress))
+        else:
+            self.ui.refractionPress.setText('-')
+            self.ui.refractionPress1.setText('-')
 
         if sett.statusUnattendedFlip is not None:
             self.ui.statusUnattendedFlip.setText('ON' if sett.statusUnattendedFlip else 'OFF')
+        else:
+            self.ui.statusUnattendedFlip.setText('-')
 
         if sett.statusDualTracking is not None:
             self.ui.statusDualTracking.setText('ON' if sett.statusDualTracking else 'OFF')
+        else:
+            self.ui.statusDualTracking.setText('-')
 
         if sett.statusRefraction is not None:
             self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
+        else:
+            self.ui.statusRefraction.setText('-')
 
         if sett.meridianLimitTrack is not None:
             self.ui.meridianLimitTrack.setText(str(sett.meridianLimitTrack))
+        else:
+            self.ui.meridianLimitTrack.setText('-')
 
         if sett.meridianLimitSlew is not None:
             self.ui.meridianLimitSlew.setText(str(sett.meridianLimitSlew))
+        else:
+            self.ui.meridianLimitSlew.setText('-')
 
         if sett.horizonLimitLow is not None:
             self.ui.horizonLimitLow.setText(str(sett.horizonLimitLow))
+        else:
+            self.ui.horizonLimitLow.setText('-')
 
         if sett.horizonLimitHigh is not None:
             self.ui.horizonLimitHigh.setText(str(sett.horizonLimitHigh))
+        else:
+            self.ui.horizonLimitHigh.setText('-')
 
         if obs.location is not None:
             self.ui.siteLongitude.setText(obs.location.longitude.dstr())
             self.ui.siteLatitude.setText(obs.location.latitude.dstr())
             self.ui.siteElevation.setText(str(obs.location.elevation.m))
+        else:
+            self.ui.siteLongitude.setText('-')
+            self.ui.siteLatitude.setText('-')
+            self.ui.siteElevation.setText('-')
 
     def updateFwGui(self):
         """

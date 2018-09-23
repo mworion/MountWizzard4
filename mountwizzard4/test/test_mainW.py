@@ -166,3 +166,33 @@ class MainWindowTests(unittest.TestCase):
         self.mount.obsSite.decJNow = value
         self.mainW.updatePointGUI()
         self.assertEqual('-', self.mainW.ui.DEC.text())
+
+    def test_updatePointGui_jd(self):
+        value = '45'
+        self.mount.obsSite.timeJD = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('11:59:18', self.mainW.ui.timeJD.text())
+        value = None
+        self.mount.obsSite.timeJD = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('-', self.mainW.ui.timeJD.text())
+
+    def test_updatePointGui_pierside(self):
+        value = 'W'
+        self.mount.obsSite.pierside = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('WEST', self.mainW.ui.pierside.text())
+        value = None
+        self.mount.obsSite.pierside = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('-', self.mainW.ui.pierside.text())
+
+    def test_updatePointGui_sidereal(self):
+        value = '45'
+        self.mount.obsSite.timeSidereal = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('45', self.mainW.ui.timeSidereal.text())
+        value = None
+        self.mount.obsSite.timeSidereal = value
+        self.mainW.updatePointGUI()
+        self.assertEqual('-', self.mainW.ui.timeSidereal.text())

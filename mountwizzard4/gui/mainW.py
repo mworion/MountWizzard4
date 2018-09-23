@@ -166,9 +166,9 @@ class MainWindow(mWidget.MWidget):
             self.ui.DEC.setText('-')
 
         if obs.timeJD is not None:
-            self.ui.julianDate.setText(obs.timeJD.utc_strftime('%H:%M:%S'))
+            self.ui.timeJD.setText(obs.timeJD.utc_strftime('%H:%M:%S'))
         else:
-            self.ui.julianDate.setText('-')
+            self.ui.timeJD.setText('-')
 
         if obs.pierside is not None:
             self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')

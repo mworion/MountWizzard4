@@ -1409,7 +1409,7 @@
       <string>Local Sidereal Time </string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="julianDate">
+    <widget class="QLineEdit" name="timeJD">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -2071,7 +2071,7 @@
     <zorder>label_152</zorder>
     <zorder>timeSidereal</zorder>
     <zorder>label_7</zorder>
-    <zorder>julianDate</zorder>
+    <zorder>timeJD</zorder>
     <zorder>label_63</zorder>
     <zorder>label_64</zorder>
     <zorder>label_28</zorder>

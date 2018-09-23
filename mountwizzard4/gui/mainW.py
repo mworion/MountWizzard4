@@ -57,18 +57,23 @@ class MainWindow(mWidget.MWidget):
         self.ui = PyQt5.uic.loadUi(mw4_global.work_dir + '/mountwizzard4/gui/main.ui', self)
         self.initUI()
         self.setupIcons()
-        self.polarPlot = mWidget.IntMatplotlib(self.ui.modelPolar)
         self.show()
+
+        # defining the necessary instances of classes
+        self.polarPlot = mWidget.IntMatplotlib(self.ui.modelPolar)
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updatePointGUI)
         self.app.mount.signals.setDone.connect(self.updateSettingGUI)
-        self.app.mount.signals.gotAlign.connect(self.showModelPolar)
+        self.app.mount.signals.gotAlign.connect(self.updateAlignGui)
         self.app.mount.signals.gotNames.connect(self.setNameList)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
         self.ui.saveConfigQuit.clicked.connect(self.app.quit)
+
+        # initial call for writing the gui
+        self.updateFwGui()
 
     def closeEvent(self, closeEvent):
         """
@@ -78,14 +83,10 @@ class MainWindow(mWidget.MWidget):
 
         :return:    nothing
         """
+
         self.showStatus = False
         self.hide()
         self.app.quit()
-
-    def gotAlign(self):
-        model = self.app.mount.model
-        for star in model.starList:
-            print(star.coord)
 
     def setupIcons(self):
         # show icon in main gui and add some icons for push buttons
@@ -233,10 +234,35 @@ class MainWindow(mWidget.MWidget):
             self.ui.siteLatitude.setText(obs.location.latitude.dstr())
             self.ui.siteElevation.setText(str(obs.location.elevation.m))
 
+    def updateFwGui(self):
+        """
+        updateFwGui write all firmware data to the gui.
+
+        :return:
+        """
+
+        fw = self.app.mount.fw
+
+        if fw.productName is not None:
+            self.ui.productName.setText(fw.productName)
+
+        if fw.numberString is not None:
+            self.ui.numberString.setText(fw.numberString)
+
+        if fw.fwdate is not None:
+            self.ui.fwdate.setText(fw.fwdate)
+
+        if fw.fwtime is not None:
+            self.ui.fwtime.setText(fw.fwtime)
+
+        if fw.hwVersion is not None:
+            self.ui.hwVersion.setText(fw.hwVersion)
+
     def setNameList(self):
         """
         setNameList populates the list of model names in the main window. before adding the
         data, the existent list will be deleted.
+
         :return: nothing
         """
 
@@ -246,6 +272,45 @@ class MainWindow(mWidget.MWidget):
             self.ui.nameList.addItem(name)
         self.ui.nameList.sortItems()
         self.ui.nameList.update()
+
+    def updateAlignGui(self):
+        """
+        updateAlignGui shows the data which is received through the getain command. this is
+        mainly polar and ortho errors as well as basic model data.
+
+        :return:    nothing
+        """
+
+        # polar plot data is also received and should be shown
+        self.showModelPolar()
+
+        model = self.app.mount.model
+
+        if model.numberStars is not None:
+            self.ui.numberStars.setText(str(model.numberStars))
+            self.ui.numberStars1.setText(str(model.numberStars))
+
+        if model.terms is not None:
+            self.ui.terms.setText(str(model.terms))
+
+        if model.errorRMS is not None:
+            self.ui.errorRMS.setText(str(model.errorRMS))
+            self.ui.errorRMS1.setText(str(model.errorRMS))
+
+        if model.positionAngle is not None:
+            self.ui.positionAngle.setText('{0:5.1f}'.format(model.positionAngle.degrees))
+
+        if model.polarError is not None:
+            self.ui.polarError.setText(model.polarError.dstr(places=0))
+
+        if model.orthoError is not None:
+            self.ui.orthoError.setText(model.orthoError.dstr(places=0))
+
+        if model.azimuthError is not None:
+            self.ui.azimuthError.setText(model.azimuthError.dstr(places=0))
+
+        if model.altitudeError is not None:
+            self.ui.altitudeError.setText(model.altitudeError.dstr(places=0))
 
     def showModelPolar(self):
         """

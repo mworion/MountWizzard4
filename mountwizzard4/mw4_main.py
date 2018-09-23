@@ -61,6 +61,7 @@ class MountWizzard4(object):
         self.mount.obsSite.getLocation()
         self.mount.cyclePointing()
         self.mount.cycleSetting()
+        self.mount.model.workaroundAlign()
         self.mount.getAlign()
         self.mount.getNames()
 

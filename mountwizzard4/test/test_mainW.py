@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import unittest
+import unittest.mock as mock
 import os
 import time
 # external packages
@@ -27,8 +28,8 @@ import PyQt5.QtGui
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
-import mountwizzard4.gui.mainW
-import mountwizzard4.mw4_global
+import gui.mainW
+import mw4_global
 import mountcontrol.qtmount
 
 
@@ -46,9 +47,9 @@ class MainWindowTests(unittest.TestCase):
         pass
 
     def setUp(self):
-        mountwizzard4.mw4_global.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
+        mw4_global.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
         self.mount = mountcontrol.qtmount.Mount()
-        self.mainW = mountwizzard4.gui.mainW.MainWindow(self)
+        self.mainW = gui.mainW.MainWindow(self)
 
     def tearDown(self):
         pass
@@ -344,3 +345,118 @@ class MainWindowTests(unittest.TestCase):
         self.assertEqual('-', self.mainW.ui.siteLongitude.text())
         self.assertEqual('-', self.mainW.ui.siteLatitude.text())
         self.assertEqual('-', self.mainW.ui.siteElevation.text())
+
+    #
+    #
+    # testing mainW gui AlignGui
+    #
+    #
+
+    def test_updateAlignGui_numberStars(self):
+        with mock.patch.object(self.mainW, 'showModelPolar') as mMock:
+            mMock.return_value.showModelPolar.return_value = None
+
+            value = '50'
+            self.mount.model.numberStars = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('50', self.mainW.ui.numberStars.text())
+            self.assertEqual('50', self.mainW.ui.numberStars1.text())
+            value = None
+            self.mount.model.numberStars = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('-', self.mainW.ui.numberStars.text())
+            self.assertEqual('-', self.mainW.ui.numberStars1.text())
+
+    def test_updateAlignGui_altitudeError(self):
+        with mock.patch.object(self.mainW, 'showModelPolar') as mMock:
+            mMock.return_value.showModelPolar.return_value = None
+
+            value = '50'
+            self.mount.model.altitudeError = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('50deg 00\' 00.0\"', self.mainW.ui.altitudeError.text())
+            value = None
+            self.mount.model.altitudeError = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('-', self.mainW.ui.altitudeError.text())
+
+    def test_updateAlignGui_errorRMS(self):
+        with mock.patch.object(self.mainW, 'showModelPolar') as mMock:
+            mMock.return_value.showModelPolar.return_value = None
+
+            value = '50'
+            self.mount.model.errorRMS = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('50.0', self.mainW.ui.errorRMS.text())
+            self.assertEqual('50.0', self.mainW.ui.errorRMS1.text())
+            value = None
+            self.mount.model.errorRMS = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('-', self.mainW.ui.errorRMS.text())
+            self.assertEqual('-', self.mainW.ui.errorRMS1.text())
+
+    def test_updateAlignGui_azimuthError(self):
+        with mock.patch.object(self.mainW, 'showModelPolar') as mMock:
+            mMock.return_value.showModelPolar.return_value = None
+
+            value = '50'
+            self.mount.model.azimuthError = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('50deg 00\' 00.0\"', self.mainW.ui.azimuthError.text())
+            value = None
+            self.mount.model.azimuthError = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('-', self.mainW.ui.azimuthError.text())
+
+    def test_updateAlignGui_terms(self):
+        with mock.patch.object(self.mainW, 'showModelPolar') as mMock:
+            mMock.return_value.showModelPolar.return_value = None
+
+            value = '50'
+            self.mount.model.terms = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('50.0', self.mainW.ui.terms.text())
+            value = None
+            self.mount.model.terms = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('-', self.mainW.ui.terms.text())
+
+    def test_updateAlignGui_orthoError(self):
+        with mock.patch.object(self.mainW, 'showModelPolar') as mMock:
+            mMock.return_value.showModelPolar.return_value = None
+
+            value = '50'
+            self.mount.model.orthoError = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('50deg 00\' 00.0\"', self.mainW.ui.orthoError.text())
+            value = None
+            self.mount.model.orthoError = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('-', self.mainW.ui.orthoError.text())
+
+    def test_updateAlignGui_positionAngle(self):
+        with mock.patch.object(self.mainW, 'showModelPolar') as mMock:
+            mMock.return_value.showModelPolar.return_value = None
+
+            value = '50'
+            self.mount.model.positionAngle = value
+            self.mainW.updateAlignGui()
+            self.assertEqual(' 50.0', self.mainW.ui.positionAngle.text())
+            value = None
+            self.mount.model.positionAngle = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('-', self.mainW.ui.positionAngle.text())
+
+    def test_updateAlignGui_polarError(self):
+        with mock.patch.object(self.mainW, 'showModelPolar') as mMock:
+            mMock.return_value.showModelPolar.return_value = None
+
+            value = '50'
+            self.mount.model.polarError = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('50deg 00\' 00.0\"', self.mainW.ui.polarError.text())
+            value = None
+            self.mount.model.polarError = value
+            self.mainW.updateAlignGui()
+            self.assertEqual('-', self.mainW.ui.polarError.text())
+

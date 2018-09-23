@@ -64,9 +64,9 @@ class MainWindow(mWidget.MWidget):
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updatePointGUI)
-        self.app.mount.signals.setDone.connect(self.updateSettingGUI)
-        self.app.mount.signals.gotAlign.connect(self.updateAlignGui)
-        self.app.mount.signals.gotNames.connect(self.setNameList)
+        self.app.mount.signals.settDone.connect(self.updateSettingGUI)
+        self.app.mount.signals.alignDone.connect(self.updateAlignGui)
+        self.app.mount.signals.namesDone.connect(self.setNameList)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -345,28 +345,46 @@ class MainWindow(mWidget.MWidget):
         if model.numberStars is not None:
             self.ui.numberStars.setText(str(model.numberStars))
             self.ui.numberStars1.setText(str(model.numberStars))
+        else:
+            self.ui.numberStars.setText('-')
+            self.ui.numberStars1.setText('-')
 
         if model.terms is not None:
             self.ui.terms.setText(str(model.terms))
+        else:
+            self.ui.terms.setText('-')
 
         if model.errorRMS is not None:
             self.ui.errorRMS.setText(str(model.errorRMS))
             self.ui.errorRMS1.setText(str(model.errorRMS))
+        else:
+            self.ui.errorRMS.setText('-')
+            self.ui.errorRMS1.setText('-')
 
         if model.positionAngle is not None:
             self.ui.positionAngle.setText('{0:5.1f}'.format(model.positionAngle.degrees))
+        else:
+            self.ui.positionAngle.setText('-')
 
         if model.polarError is not None:
             self.ui.polarError.setText(model.polarError.dstr(places=0))
+        else:
+            self.ui.polarError.setText('-')
 
         if model.orthoError is not None:
             self.ui.orthoError.setText(model.orthoError.dstr(places=0))
+        else:
+            self.ui.orthoError.setText('-')
 
         if model.azimuthError is not None:
             self.ui.azimuthError.setText(model.azimuthError.dstr(places=0))
+        else:
+            self.ui.azimuthError.setText('-')
 
         if model.altitudeError is not None:
             self.ui.altitudeError.setText(model.altitudeError.dstr(places=0))
+        else:
+            self.ui.altitudeError.setText('-')
 
     def showModelPolar(self):
         """

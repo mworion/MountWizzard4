@@ -59,11 +59,10 @@ class MountWizzard4(object):
 
         # get first data
         self.mount.obsSite.getLocation()
-        self.mount.cyclePointing()
         self.mount.cycleSetting()
+        self.mount.getNames()
         self.mount.model.workaroundAlign()
         self.mount.getAlign()
-        self.mount.getNames()
 
     def quit(self):
         self.mount.stopTimers()

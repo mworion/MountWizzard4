@@ -33,7 +33,7 @@ import PyQt5.QtWidgets
 # local import
 import mw4_global
 import mw4_main
-import mountwizzard4.media.resources
+import media.resources
 
 
 class SplashScreen(PyQt5.QtCore.QObject):

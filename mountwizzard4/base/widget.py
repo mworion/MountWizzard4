@@ -29,9 +29,8 @@ matplotlib.use('Qt5Agg')
 import matplotlib.pyplot
 import matplotlib.backends.backend_qt5agg as backend
 # local imports
-import mountwizzard4.base
-import mountwizzard4.base.styles
-import mountwizzard4.base.tpool
+import base.styles
+import base.tpool
 
 
 version = '0.1'
@@ -41,7 +40,7 @@ __all__ = [
 ]
 
 
-class MWidget(PyQt5.QtWidgets.QWidget, mountwizzard4.base.styles.MWStyles):
+class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
     """
     MWidget defines the common parts for all windows used in MountWizzard 4. namely the
     sizes and the styles. styles are defined separately in a css looking stylesheet.

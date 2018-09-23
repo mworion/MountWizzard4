@@ -229,6 +229,26 @@ class MainWindowTests(unittest.TestCase):
         self.assertEqual('-', self.mainW.ui.timeToFlip.text())
 
     def test_updateSetting_UTCExpire(self):
+        value = '2020-10-05'
+        self.mount.sett.UTCExpire = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual(value, self.mainW.ui.UTCExpire.text())
+        value = None
+        self.mount.sett.UTCExpire = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.UTCExpire.text())
+
+    def test_updateSetting_UTCExpire1(self):
+        value = '2016-10-05'
+        self.mount.sett.UTCExpire = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual(value, self.mainW.ui.UTCExpire.text())
+        value = None
+        self.mount.sett.UTCExpire = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.UTCExpire.text())
+
+    def test_updateSetting_UTCExpire2(self):
         value = '2018-10-05'
         self.mount.sett.UTCExpire = value
         self.mainW.updateSettingGUI()
@@ -331,6 +351,18 @@ class MainWindowTests(unittest.TestCase):
         self.mount.sett.horizonLimitHigh = value
         self.mainW.updateSettingGUI()
         self.assertEqual('-', self.mainW.ui.horizonLimitHigh.text())
+
+    def test_updateSetting_timeToMeridian(self):
+        self.mount.sett.timeToFlip = '100'
+        self.mount.sett.meridianLimitTrack = '15'
+
+        self.mainW.updateSettingGUI()
+        self.assertEqual(' 40', self.mainW.ui.timeToMeridian.text())
+        value = None
+        self.mount.sett.timeToFlip = value
+        self.mount.sett.meridianLimitTrack = value
+        self.mainW.updateSettingGUI()
+        self.assertEqual('-', self.mainW.ui.timeToMeridian.text())
 
     def test_updateSetting_location(self):
 
@@ -460,3 +492,15 @@ class MainWindowTests(unittest.TestCase):
             self.mainW.updateAlignGui()
             self.assertEqual('-', self.mainW.ui.polarError.text())
 
+    #
+    #
+    # testing mainW gui AlignGui
+    #
+    #
+
+    def test_closeEvent(self):
+
+        self.mainW.showStatus = True
+        self.mainW.closeEvent(1)
+
+        self.assertEqual(False, self.mainW.showStatus)

@@ -27,10 +27,9 @@ import PyQt5.uic
 import numpy as np
 import matplotlib
 # local import
-import mountwizzard4.mw4_global
-import mountwizzard4.base.widget as mWidget
-import mountwizzard4.base.tpool
-import mountcontrol.qtmount as mControl
+import mw4_global
+import base.widget as mWidget
+import base.tpool
 import mountcontrol.convert as convert
 
 
@@ -54,7 +53,7 @@ class MainWindow(mWidget.MWidget):
         self.tPool = PyQt5.QtCore.QThreadPool()
 
         # load and init the gui
-        guiPath = mountwizzard4.mw4_global.work_dir + '/mountwizzard4/gui/main.ui'
+        guiPath = mw4_global.work_dir + '/mountwizzard4/gui/main.ui'
         self.ui = PyQt5.uic.loadUi(guiPath, self)
         self.initUI()
         self.setupIcons()

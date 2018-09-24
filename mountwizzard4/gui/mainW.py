@@ -66,6 +66,7 @@ class MainWindow(mWidget.MWidget):
         self.app.mount.signals.pointDone.connect(self.updatePointGUI)
         self.app.mount.signals.settDone.connect(self.updateSettingGUI)
         self.app.mount.signals.alignDone.connect(self.updateAlignGui)
+        self.app.mount.signals.alignDone.connect(self.showModelPolar)
         self.app.mount.signals.namesDone.connect(self.setNameList)
 
         # connect gui signals
@@ -342,9 +343,6 @@ class MainWindow(mWidget.MWidget):
         :return:    nothing
         """
 
-        # polar plot data is also received and should be shown
-        self.showModelPolar()
-
         model = self.app.mount.model
 
         if model.numberStars is not None:
@@ -400,7 +398,7 @@ class MainWindow(mWidget.MWidget):
         """
 
         if not self.app.mount.obsSite.location:
-            return
+            return False
         model = self.app.mount.model
         lat = self.app.mount.obsSite.location.latitude.degrees
 
@@ -410,7 +408,7 @@ class MainWindow(mWidget.MWidget):
         # now prepare the data
         if not model.starList:
             self.logger.error('no model data available for display')
-            return
+            return False
         altitude = []
         azimuth = []
         error = []
@@ -469,3 +467,4 @@ class MainWindow(mWidget.MWidget):
         wid.axes.set_rmax(90)
         wid.axes.set_rmin(0)
         wid.draw()
+        return True

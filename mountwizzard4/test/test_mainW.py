@@ -519,11 +519,24 @@ class MainWindowTests(unittest.TestCase):
     #
     #
 
-    def test_showModelPolar(self):
+    def test_showModelPolar1(self):
         self.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
-        self.mount.model.starList = ['21:52:58.95,+08*56:10.1,   5.7,201',
-                                     '21:06:10.79,+45*20:52.8,  12.1,329',
-                                     '23:13:58.02,+38*48:18.8,  31.0,162',
-                                     '17:43:41.26,+59*15:30.7,   8.4,005',
-                                     ]
-        self.mainW.showModelPolar()
+        self.mount.model._parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
+                                      '21:06:10.79,+45*20:52.8,  12.1,329',
+                                      '23:13:58.02,+38*48:18.8,  31.0,162',
+                                      '17:43:41.26,+59*15:30.7,   8.4,005',
+                                      ], 4)
+        self.mainW.ui.checkShowErrorValues.setChecked(True)
+        suc = self.mainW.showModelPolar()
+        self.assertEqual(True, suc)
+
+    def test_showModelPolar2(self):
+        self.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
+        self.mainW.ui.checkShowErrorValues.setChecked(True)
+        suc = self.mainW.showModelPolar()
+        self.assertEqual(False, suc)
+
+    def test_showModelPolar3(self):
+        self.mainW.ui.checkShowErrorValues.setChecked(True)
+        suc = self.mainW.showModelPolar()
+        self.assertEqual(False, suc)

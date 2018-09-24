@@ -223,12 +223,12 @@ def main():
     logging.info('PyQt5            : {0}'.format(PyQt5.QtCore.PYQT_VERSION_STR))
     logging.info('Qt               : {0}'.format(PyQt5.QtCore.QT_VERSION_STR))
 
-    hostsList = socket.gethostbyname_ex(socket.gethostname())[2]
+    hostSummary = socket.gethostbyname_ex(socket.gethostname())
+    hostsList = hostSummary[2]
     host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
     for hostname in host:
         logging.info('IP addr.         : {0}'.format(hostname))
     logging.info('Node             : {0}'.format(platform.node()))
-    hostSummary = socket.gethostbyname_ex(socket.gethostname())
     logging.info('Hosts....        : {0}'.format(hostSummary))
     logging.info('Environment is   : {0}'.format('frozen' if mw4_global.frozen else 'live'))
     logging.info('Actual workdir   : {0}'.format(mw4_global.work_dir))

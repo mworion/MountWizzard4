@@ -202,6 +202,14 @@ class MainWindowTests(unittest.TestCase):
         self.mainW.updatePointGUI()
         self.assertEqual('-', self.mainW.ui.timeSidereal.text())
 
+    def test_updatePointGui_statusText(self):
+        self.mount.obsSite.status = 6
+        self.mainW.updatePointGUI()
+        self.assertEqual('Slewing or going to stop', self.mainW.ui.statusText.text())
+        self.mount.obsSite.status = None
+        self.mainW.updatePointGUI()
+        self.assertEqual('-', self.mainW.ui.statusText.text())
+
     #
     #
     # testing mainW gui setting

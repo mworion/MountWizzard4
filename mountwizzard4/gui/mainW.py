@@ -179,6 +179,11 @@ class MainWindow(mWidget.MWidget):
         else:
             self.ui.timeSidereal.setText('-')
 
+        if obs.statusText() is not None:
+            self.ui.statusText.setText(obs.statusText())
+        else:
+            self.ui.statusText.setText('-')
+
     def updateSettingGUI(self):
         """
         updateSetGUI update the gui upon events triggered be the reception of new settings

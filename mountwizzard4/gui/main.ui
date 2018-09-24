@@ -67,7 +67,7 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <widget class="QLineEdit" name="le_mountStatus">
+  <widget class="QLineEdit" name="statusText">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>

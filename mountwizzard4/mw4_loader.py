@@ -222,14 +222,22 @@ def main():
     logging.info('Python           : {0}'.format(platform.python_version()))
     logging.info('PyQt5            : {0}'.format(PyQt5.QtCore.PYQT_VERSION_STR))
     logging.info('Qt               : {0}'.format(PyQt5.QtCore.QT_VERSION_STR))
-
-    hostSummary = socket.gethostbyname_ex(socket.gethostname())
-    hostsList = hostSummary[2]
-    host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
-    for hostname in host:
-        logging.info('IP addr.         : {0}'.format(hostname))
     logging.info('Node             : {0}'.format(platform.node()))
-    logging.info('Hosts....        : {0}'.format(hostSummary))
+
+    # in some environments I don't get a fully qualified host name
+    try:
+        hostSummary = socket.gethostbyname_ex(socket.gethostname())
+    except socket.herror:
+        logging.warning('Could not read properly host configuration')
+    except socket.gaierror:
+        logging.warning('Could not read properly host configuration')
+    else:
+        hostsList = hostSummary[2]
+        host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
+        for hostname in host:
+            logging.info('IP addr.         : {0}'.format(hostname))
+        logging.info('Hosts....        : {0}'.format(hostSummary))
+
     logging.info('Environment is   : {0}'.format('frozen' if mw4_global.frozen else 'live'))
     logging.info('Actual workdir   : {0}'.format(mw4_global.work_dir))
     logging.info('Bundle dir       : {0}'.format(mw4_global.bundle_dir))

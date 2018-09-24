@@ -236,7 +236,7 @@ def main():
         host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
         for hostname in host:
             logging.info('IP addr.         : {0}'.format(hostname))
-        logging.info('Hosts....        : {0}'.format(hostSummary))
+        logging.info('Hosts            : {0}'.format(hostSummary))
 
     logging.info('Environment is   : {0}'.format('frozen' if mw4_global.frozen else 'live'))
     logging.info('Actual workdir   : {0}'.format(mw4_global.work_dir))

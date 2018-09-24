@@ -48,7 +48,6 @@ class SplashScreen(PyQt5.QtCore.QObject):
     sure, there is no problem for me. I'm glad you have found it useful.
     Best regards,
     Maurizio
-
     """
 
     __all__ = ['SplashScreen',
@@ -131,6 +130,7 @@ def except_hook(typeException, valueException, tbackException):
     :param tbackException:
     :return: nothing
     """
+
     result = traceback.format_exception(typeException, valueException, tbackException)
     logging.error('----------------------------------------------------')
     logging.error('Logging an uncatched Exception')

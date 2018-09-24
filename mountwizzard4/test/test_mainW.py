@@ -512,3 +512,18 @@ class MainWindowTests(unittest.TestCase):
         self.mainW.closeEvent(1)
 
         self.assertEqual(False, self.mainW.showStatus)
+
+    #
+    #
+    # testing mainW gui model polar
+    #
+    #
+
+    def test_showModelPolar(self):
+        self.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
+        self.mount.model.starList = ['21:52:58.95,+08*56:10.1,   5.7,201',
+                                     '21:06:10.79,+45*20:52.8,  12.1,329',
+                                     '23:13:58.02,+38*48:18.8,  31.0,162',
+                                     '17:43:41.26,+59*15:30.7,   8.4,005',
+                                     ]
+        self.mainW.showModelPolar()

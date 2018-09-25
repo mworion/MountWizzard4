@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -658,7 +658,7 @@
       <string>Start Track</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_mountPark">
+    <widget class="QPushButton" name="mountPark">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -679,7 +679,7 @@
       <string>Park</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_mountUnpark">
+    <widget class="QPushButton" name="mountUnpark">
      <property name="geometry">
       <rect>
        <x>645</x>
@@ -761,7 +761,7 @@
       <string>Tracking / Flip</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_mountPos4">
+    <widget class="QPushButton" name="mountPos4">
      <property name="geometry">
       <rect>
        <x>645</x>
@@ -823,7 +823,7 @@
       <string>Parking</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_mountPos2">
+    <widget class="QPushButton" name="mountPos2">
      <property name="geometry">
       <rect>
        <x>645</x>
@@ -844,7 +844,7 @@
       <string>Park Pos2</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_mountPos3">
+    <widget class="QPushButton" name="mountPos3">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -865,7 +865,7 @@
       <string>Park Pos3</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_mountPos1">
+    <widget class="QPushButton" name="mountPos1">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -928,7 +928,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_stop">
+    <widget class="QPushButton" name="stop">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -949,7 +949,7 @@
       <string>STOP MOUNT</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_flipMount">
+    <widget class="QPushButton" name="flipMount">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -970,7 +970,7 @@
       <string>Flip</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_setTrackingLunar">
+    <widget class="QPushButton" name="setTrackingLunar">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -991,7 +991,7 @@
       <string>Lunar</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_setTrackingSolar">
+    <widget class="QPushButton" name="setTrackingSolar">
      <property name="geometry">
       <rect>
        <x>600</x>
@@ -1012,7 +1012,7 @@
       <string>Solar</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_setTrackingSidereal">
+    <widget class="QPushButton" name="setTrackingSidereal">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -1123,7 +1123,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_mountPos6">
+    <widget class="QPushButton" name="mountPos6">
      <property name="geometry">
       <rect>
        <x>645</x>
@@ -1144,7 +1144,7 @@
       <string>Park Pos6</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_mountPos5">
+    <widget class="QPushButton" name="mountPos5">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -2045,26 +2045,26 @@
     <zorder>label_61</zorder>
     <zorder>label_80</zorder>
     <zorder>startTracking</zorder>
-    <zorder>btn_mountPark</zorder>
-    <zorder>btn_mountUnpark</zorder>
+    <zorder>mountPark</zorder>
+    <zorder>mountUnpark</zorder>
     <zorder>label_83</zorder>
     <zorder>label_84</zorder>
-    <zorder>btn_mountPos4</zorder>
+    <zorder>mountPos4</zorder>
     <zorder>label_85</zorder>
-    <zorder>btn_mountPos2</zorder>
-    <zorder>btn_mountPos3</zorder>
-    <zorder>btn_mountPos1</zorder>
+    <zorder>mountPos2</zorder>
+    <zorder>mountPos3</zorder>
+    <zorder>mountPos1</zorder>
     <zorder>stopTracking</zorder>
-    <zorder>btn_stop</zorder>
-    <zorder>btn_flipMount</zorder>
-    <zorder>btn_setTrackingLunar</zorder>
-    <zorder>btn_setTrackingSolar</zorder>
-    <zorder>btn_setTrackingSidereal</zorder>
+    <zorder>stop</zorder>
+    <zorder>flipMount</zorder>
+    <zorder>setTrackingLunar</zorder>
+    <zorder>setTrackingSolar</zorder>
+    <zorder>setTrackingSidereal</zorder>
     <zorder>label_90</zorder>
     <zorder>timeToMeridian</zorder>
     <zorder>label_91</zorder>
-    <zorder>btn_mountPos6</zorder>
-    <zorder>btn_mountPos5</zorder>
+    <zorder>mountPos6</zorder>
+    <zorder>mountPos5</zorder>
     <zorder>label_98</zorder>
     <zorder>groupBoxCoordinateSystems</zorder>
     <zorder>UTCExpire</zorder>
@@ -5241,7 +5241,7 @@ manually</string>
       <string>Exposure Time of Camera</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_saveHorizonMaskAs">
+    <widget class="QPushButton" name="saveHorizonMaskAs">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -5268,7 +5268,7 @@ manually</string>
       <string>Save as</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_loadHorizonMask">
+    <widget class="QPushButton" name="loadHorizonMask">
      <property name="geometry">
       <rect>
        <x>540</x>
@@ -5292,7 +5292,7 @@ manually</string>
       <string>Load</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_saveHorizonMask">
+    <widget class="QPushButton" name="saveHorizonMask">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -5896,7 +5896,7 @@ manually</string>
       <double>50.000000000000000</double>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_runInitialModel">
+    <widget class="QPushButton" name="runInitialModel">
      <property name="geometry">
       <rect>
        <x>320</x>
@@ -5928,7 +5928,7 @@ manually</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_generateInitialPoints">
+    <widget class="QPushButton" name="generateInitialPoints">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -5980,7 +5980,7 @@ manually</string>
       <double>50.000000000000000</double>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_cancelInitialModel">
+    <widget class="QPushButton" name="cancelInitialModel">
      <property name="geometry">
       <rect>
        <x>320</x>
@@ -6687,7 +6687,7 @@ manually</string>
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_plateSolveSync">
+    <widget class="QPushButton" name="plateSolveSync">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -7149,10 +7149,10 @@ manually</string>
     <zorder>label_171</zorder>
     <zorder>label_170</zorder>
     <zorder>azimuthBase</zorder>
-    <zorder>btn_runInitialModel</zorder>
-    <zorder>btn_generateInitialPoints</zorder>
+    <zorder>runInitialModel</zorder>
+    <zorder>generateInitialPoints</zorder>
     <zorder>altitudeBase</zorder>
-    <zorder>btn_cancelInitialModel</zorder>
+    <zorder>cancelInitialModel</zorder>
     <zorder>label</zorder>
     <zorder>azimuthError</zorder>
     <zorder>positionAngle</zorder>
@@ -7175,7 +7175,7 @@ manually</string>
     <zorder>label_157</zorder>
     <zorder>label_160</zorder>
     <zorder>line_63</zorder>
-    <zorder>btn_plateSolveSync</zorder>
+    <zorder>plateSolveSync</zorder>
     <zorder>label_206</zorder>
     <zorder>numberBase</zorder>
     <zorder>line_64</zorder>
@@ -7200,7 +7200,7 @@ manually</string>
     <attribute name="title">
      <string>Full Model</string>
     </attribute>
-    <widget class="QPushButton" name="btn_generateGridPoints">
+    <widget class="QPushButton" name="generateGridPoints">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -7272,7 +7272,7 @@ manually</string>
       <string>Rows</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_generateNormalPoints">
+    <widget class="QPushButton" name="generateNormalPoints">
      <property name="geometry">
       <rect>
        <x>135</x>
@@ -7288,7 +7288,7 @@ manually</string>
       <string>Medium</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_generateMaxPoints">
+    <widget class="QPushButton" name="generateMaxPoints">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -7396,7 +7396,7 @@ manually</string>
       <double>10.000000000000000</double>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_runFullModel">
+    <widget class="QPushButton" name="runFullModel">
      <property name="geometry">
       <rect>
        <x>405</x>
@@ -7428,7 +7428,7 @@ manually</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_cancelFullModel">
+    <widget class="QPushButton" name="cancelFullModel">
      <property name="geometry">
       <rect>
        <x>405</x>
@@ -7463,7 +7463,7 @@ manually</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_generateDSOPoints">
+    <widget class="QPushButton" name="generateDSOPoints">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -7893,7 +7893,7 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_generateMinPoints">
+    <widget class="QPushButton" name="generateMinPoints">
      <property name="geometry">
       <rect>
        <x>260</x>
@@ -8062,7 +8062,7 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_showFullModelPoints">
+    <widget class="QPushButton" name="showFullModelPoints">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -8086,7 +8086,7 @@ manually</string>
       <string>Reload</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_saveFullModelPoints">
+    <widget class="QPushButton" name="saveFullModelPoints">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -8113,7 +8113,7 @@ manually</string>
       <string>Save</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_saveFullModelPointsAs">
+    <widget class="QPushButton" name="saveFullModelPointsAs">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -8140,7 +8140,7 @@ manually</string>
       <string>Save as</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_loadFullModelPoints">
+    <widget class="QPushButton" name="loadFullModelPoints">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -8315,7 +8315,7 @@ manually</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_runBatchModel">
+    <widget class="QPushButton" name="runBatchModel">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -8538,7 +8538,7 @@ manually</string>
       <string>Actual Time:</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_runBatchCombineModel">
+    <widget class="QPushButton" name="runBatchCombineModel">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -8561,17 +8561,17 @@ manually</string>
     <zorder>line_28</zorder>
     <zorder>line_34</zorder>
     <zorder>line_26</zorder>
-    <zorder>btn_generateGridPoints</zorder>
+    <zorder>generateGridPoints</zorder>
     <zorder>label_108</zorder>
     <zorder>label_179</zorder>
     <zorder>label_178</zorder>
-    <zorder>btn_generateNormalPoints</zorder>
-    <zorder>btn_generateMaxPoints</zorder>
+    <zorder>generateNormalPoints</zorder>
+    <zorder>generateMaxPoints</zorder>
     <zorder>numberGridPointsRow</zorder>
     <zorder>numberGridPointsCol</zorder>
-    <zorder>btn_runFullModel</zorder>
-    <zorder>btn_cancelFullModel</zorder>
-    <zorder>btn_generateDSOPoints</zorder>
+    <zorder>runFullModel</zorder>
+    <zorder>cancelFullModel</zorder>
+    <zorder>generateDSOPoints</zorder>
     <zorder>line_40</zorder>
     <zorder>numberHoursDSO</zorder>
     <zorder>label_181</zorder>
@@ -8587,7 +8587,7 @@ manually</string>
     <zorder>label_144</zorder>
     <zorder>label_202</zorder>
     <zorder>label_203</zorder>
-    <zorder>btn_generateMinPoints</zorder>
+    <zorder>generateMinPoints</zorder>
     <zorder>label_204</zorder>
     <zorder>line_38</zorder>
     <zorder>label_138</zorder>
@@ -8595,17 +8595,17 @@ manually</string>
     <zorder>label_136</zorder>
     <zorder>label_213</zorder>
     <zorder>le_modelFullPointsFileName</zorder>
-    <zorder>btn_showFullModelPoints</zorder>
-    <zorder>btn_saveFullModelPoints</zorder>
-    <zorder>btn_saveFullModelPointsAs</zorder>
-    <zorder>btn_loadFullModelPoints</zorder>
+    <zorder>showFullModelPoints</zorder>
+    <zorder>saveFullModelPoints</zorder>
+    <zorder>saveFullModelPointsAs</zorder>
+    <zorder>loadFullModelPoints</zorder>
     <zorder>le_modelingTimeEstimated</zorder>
     <zorder>label_35</zorder>
     <zorder>bar_modelingStatusPercent</zorder>
     <zorder>label_29</zorder>
     <zorder>label_216</zorder>
     <zorder>line_45</zorder>
-    <zorder>btn_runBatchModel</zorder>
+    <zorder>runBatchModel</zorder>
     <zorder>line_39</zorder>
     <zorder>label_205</zorder>
     <zorder>le_modelingTimeElapsed</zorder>
@@ -8613,7 +8613,7 @@ manually</string>
     <zorder>le_modelingTimeFinished</zorder>
     <zorder>le_modelingTimeActual</zorder>
     <zorder>label_60</zorder>
-    <zorder>btn_runBatchCombineModel</zorder>
+    <zorder>runBatchCombineModel</zorder>
    </widget>
    <widget class="QWidget" name="tab_8">
     <attribute name="title">
@@ -8988,7 +8988,7 @@ manually</string>
       <string>Refresh</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_saveModel">
+    <widget class="QPushButton" name="saveModel">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -9014,7 +9014,7 @@ manually</string>
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_loadModel">
+    <widget class="QPushButton" name="loadModel">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -9030,7 +9030,7 @@ manually</string>
       <string>Load</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_deleteModel">
+    <widget class="QPushButton" name="deleteModel">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -9070,7 +9070,7 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_refreshModelNames">
+    <widget class="QPushButton" name="refreshModel_2">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -9103,12 +9103,12 @@ manually</string>
     <zorder>numberStars1</zorder>
     <zorder>label_76</zorder>
     <zorder>refreshModel</zorder>
-    <zorder>btn_saveModel</zorder>
+    <zorder>saveModel</zorder>
     <zorder>nameList</zorder>
-    <zorder>btn_loadModel</zorder>
-    <zorder>btn_deleteModel</zorder>
+    <zorder>loadModel</zorder>
+    <zorder>deleteModel</zorder>
     <zorder>checkShowErrorValues</zorder>
-    <zorder>btn_refreshModelNames</zorder>
+    <zorder>refreshModel_2</zorder>
    </widget>
    <widget class="QWidget" name="tab_5">
     <attribute name="title">
@@ -10341,7 +10341,7 @@ manually</string>
       <string>Analyse - Flexure</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_cancelAnalyse">
+    <widget class="QPushButton" name="cancelAnalyse">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -10360,7 +10360,7 @@ manually</string>
       <string>Cancel Analyse Run</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_runFlexure">
+    <widget class="QPushButton" name="runFlexure">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -10700,7 +10700,7 @@ manually</string>
       <string>Analyse - Hysterese</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_runHysterese">
+    <widget class="QPushButton" name="runHysteresis">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -11195,7 +11195,7 @@ manually</string>
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_loadAnalyseData">
+    <widget class="QPushButton" name="loadAnalyseData">
      <property name="geometry">
       <rect>
        <x>405</x>
@@ -11298,8 +11298,8 @@ manually</string>
     <zorder>line_43</zorder>
     <zorder>line_52</zorder>
     <zorder>label_107</zorder>
-    <zorder>btn_cancelAnalyse</zorder>
-    <zorder>btn_runFlexure</zorder>
+    <zorder>cancelAnalyse</zorder>
+    <zorder>runFlexure</zorder>
     <zorder>label_174</zorder>
     <zorder>azimuthTimeChange</zorder>
     <zorder>label_175</zorder>
@@ -11312,7 +11312,7 @@ manually</string>
     <zorder>delayTimeFlexure</zorder>
     <zorder>label_115</zorder>
     <zorder>label_118</zorder>
-    <zorder>btn_runHysterese</zorder>
+    <zorder>runHysteresis</zorder>
     <zorder>label_182</zorder>
     <zorder>numberRunsHysterese</zorder>
     <zorder>label_183</zorder>
@@ -11330,7 +11330,7 @@ manually</string>
     <zorder>altitudeHysterese1</zorder>
     <zorder>label_186</zorder>
     <zorder>label_187</zorder>
-    <zorder>btn_loadAnalyseData</zorder>
+    <zorder>loadAnalyseData</zorder>
     <zorder>label_99</zorder>
     <zorder>line_29</zorder>
     <zorder>le_analyseFileName</zorder>
@@ -17252,21 +17252,21 @@ manually</string>
   <tabstop>saveConfigQuit</tabstop>
   <tabstop>saveConfig</tabstop>
   <tabstop>saveConfigAs</tabstop>
-  <tabstop>btn_flipMount</tabstop>
-  <tabstop>btn_mountPos1</tabstop>
-  <tabstop>btn_mountPos2</tabstop>
-  <tabstop>btn_mountPos3</tabstop>
-  <tabstop>btn_mountPos4</tabstop>
-  <tabstop>btn_mountPos5</tabstop>
-  <tabstop>btn_mountPos6</tabstop>
+  <tabstop>flipMount</tabstop>
+  <tabstop>mountPos1</tabstop>
+  <tabstop>mountPos2</tabstop>
+  <tabstop>mountPos3</tabstop>
+  <tabstop>mountPos4</tabstop>
+  <tabstop>mountPos5</tabstop>
+  <tabstop>mountPos6</tabstop>
   <tabstop>startTracking</tabstop>
   <tabstop>stopTracking</tabstop>
-  <tabstop>btn_setTrackingLunar</tabstop>
-  <tabstop>btn_setTrackingSolar</tabstop>
-  <tabstop>btn_setTrackingSidereal</tabstop>
-  <tabstop>btn_mountPark</tabstop>
-  <tabstop>btn_mountUnpark</tabstop>
-  <tabstop>btn_stop</tabstop>
+  <tabstop>setTrackingLunar</tabstop>
+  <tabstop>setTrackingSolar</tabstop>
+  <tabstop>setTrackingSidereal</tabstop>
+  <tabstop>mountPark</tabstop>
+  <tabstop>mountUnpark</tabstop>
+  <tabstop>stop</tabstop>
   <tabstop>checkAutoRefractionNone</tabstop>
   <tabstop>checkAutoRefractionContinous</tabstop>
   <tabstop>checkAutoRefractionNotTracking</tabstop>
@@ -17282,9 +17282,9 @@ manually</string>
   <tabstop>pixelSize</tabstop>
   <tabstop>focalLength</tabstop>
   <tabstop>astrometryDownsampling</tabstop>
-  <tabstop>btn_loadHorizonMask</tabstop>
-  <tabstop>btn_saveHorizonMask</tabstop>
-  <tabstop>btn_saveHorizonMaskAs</tabstop>
+  <tabstop>loadHorizonMask</tabstop>
+  <tabstop>saveHorizonMask</tabstop>
+  <tabstop>saveHorizonMaskAs</tabstop>
   <tabstop>checkUseFileHorizonLine</tabstop>
   <tabstop>checkUseMinimumHorizonLine</tabstop>
   <tabstop>altitudeMinimumHorizon</tabstop>
@@ -17293,31 +17293,31 @@ manually</string>
   <tabstop>btn_loadInitialModelPoints</tabstop>
   <tabstop>btn_saveInitialModelPoints</tabstop>
   <tabstop>btn_saveInitialModelPointsAs</tabstop>
-  <tabstop>btn_generateInitialPoints</tabstop>
+  <tabstop>generateInitialPoints</tabstop>
   <tabstop>altitudeBase</tabstop>
   <tabstop>azimuthBase</tabstop>
   <tabstop>numberBase</tabstop>
-  <tabstop>btn_runInitialModel</tabstop>
-  <tabstop>btn_cancelInitialModel</tabstop>
-  <tabstop>btn_plateSolveSync</tabstop>
-  <tabstop>btn_showFullModelPoints</tabstop>
-  <tabstop>btn_loadFullModelPoints</tabstop>
-  <tabstop>btn_saveFullModelPoints</tabstop>
-  <tabstop>btn_saveFullModelPointsAs</tabstop>
-  <tabstop>btn_generateGridPoints</tabstop>
+  <tabstop>runInitialModel</tabstop>
+  <tabstop>cancelInitialModel</tabstop>
+  <tabstop>plateSolveSync</tabstop>
+  <tabstop>showFullModelPoints</tabstop>
+  <tabstop>loadFullModelPoints</tabstop>
+  <tabstop>saveFullModelPoints</tabstop>
+  <tabstop>saveFullModelPointsAs</tabstop>
+  <tabstop>generateGridPoints</tabstop>
   <tabstop>numberGridPointsRow</tabstop>
   <tabstop>numberGridPointsCol</tabstop>
   <tabstop>altitudeMin</tabstop>
   <tabstop>altitudeMax</tabstop>
-  <tabstop>btn_generateMaxPoints</tabstop>
-  <tabstop>btn_generateNormalPoints</tabstop>
-  <tabstop>btn_generateMinPoints</tabstop>
-  <tabstop>btn_generateDSOPoints</tabstop>
+  <tabstop>generateMaxPoints</tabstop>
+  <tabstop>generateNormalPoints</tabstop>
+  <tabstop>generateMinPoints</tabstop>
+  <tabstop>generateDSOPoints</tabstop>
   <tabstop>numberHoursDSO</tabstop>
   <tabstop>numberPointsDSO</tabstop>
   <tabstop>numberHoursPreview</tabstop>
-  <tabstop>btn_runFullModel</tabstop>
-  <tabstop>btn_cancelFullModel</tabstop>
+  <tabstop>runFullModel</tabstop>
+  <tabstop>cancelFullModel</tabstop>
   <tabstop>deleteWorstPoint</tabstop>
   <tabstop>refreshModel</tabstop>
   <tabstop>runTargetRMS</tabstop>
@@ -17328,15 +17328,15 @@ manually</string>
   <tabstop>azimuthTimeChange</tabstop>
   <tabstop>numberRunsTimeChange</tabstop>
   <tabstop>delayTimeFlexure</tabstop>
-  <tabstop>btn_runFlexure</tabstop>
+  <tabstop>runFlexure</tabstop>
   <tabstop>altitudeHysterese1</tabstop>
   <tabstop>azimuthHysterese1</tabstop>
   <tabstop>altitudeHysterese2</tabstop>
   <tabstop>azimuthHysterese2</tabstop>
   <tabstop>numberRunsHysterese</tabstop>
   <tabstop>delayTimeHysterese</tabstop>
-  <tabstop>btn_runHysterese</tabstop>
-  <tabstop>btn_cancelAnalyse</tabstop>
+  <tabstop>runHysteresis</tabstop>
+  <tabstop>cancelAnalyse</tabstop>
   <tabstop>btn_relay1</tabstop>
   <tabstop>btn_relay2</tabstop>
   <tabstop>btn_relay3</tabstop>

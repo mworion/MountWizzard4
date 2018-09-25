@@ -105,7 +105,6 @@ class MainWindow(mWidget.MWidget):
         self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
         self.wIcon(self.ui.startTracking, PyQt5.QtWidgets.QStyle.SP_DialogYesButton)
         self.wIcon(self.ui.stopTracking, PyQt5.QtWidgets.QStyle.SP_DialogNoButton)
-        """
         self.wIcon(self.ui.runInitialModel, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
         self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
@@ -124,6 +123,7 @@ class MainWindow(mWidget.MWidget):
         self.wIcon(self.ui.loadModel, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
         self.wIcon(self.ui.saveModel, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.deleteModel, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
+        """
         """
         pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
         self.ui.picAZ.setPixmap(pixmap)

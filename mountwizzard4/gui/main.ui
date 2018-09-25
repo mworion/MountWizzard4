@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3495,7 +3495,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>275</y>
+       <y>245</y>
        <width>101</width>
        <height>21</height>
       </rect>
@@ -3558,7 +3558,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>245</y>
+       <y>275</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -3696,7 +3696,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>245</y>
+       <y>275</y>
        <width>91</width>
        <height>21</height>
       </rect>
@@ -3762,7 +3762,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>275</y>
+       <y>245</y>
        <width>51</width>
        <height>21</height>
       </rect>
@@ -16641,7 +16641,7 @@ manually</string>
   </widget>
   <widget class="QPushButton" name="mountConnected">
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="geometry">
     <rect>

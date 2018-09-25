@@ -116,8 +116,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         :return:
         """
 
-        ui.setProperty(item, value)
         ui.style().unpolish(ui)
+        ui.setProperty(item, value)
         ui.style().polish(ui)
 
     @staticmethod

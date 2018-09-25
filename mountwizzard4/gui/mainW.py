@@ -57,7 +57,6 @@ class MainWindow(mWidget.MWidget):
         self.ui = PyQt5.uic.loadUi(guiPath, self)
         self.initUI()
         self.setupIcons()
-        self.show()
 
         # defining the necessary instances of classes
         self.polarPlot = mWidget.IntMatplotlib(self.ui.modelPolar)
@@ -68,6 +67,7 @@ class MainWindow(mWidget.MWidget):
         self.app.mount.signals.alignDone.connect(self.updateAlignGui)
         self.app.mount.signals.alignDone.connect(self.showModelPolar)
         self.app.mount.signals.namesDone.connect(self.setNameList)
+        self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -75,6 +75,7 @@ class MainWindow(mWidget.MWidget):
 
         # initial call for writing the gui
         self.updateFwGui()
+        self.show()
 
     def closeEvent(self, closeEvent):
         """
@@ -128,6 +129,13 @@ class MainWindow(mWidget.MWidget):
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
         self.ui.picALT.setPixmap(pixmap)
+
+    def updateMountConnStat(self, status):
+        ui = self.ui.mountConnected
+        if status:
+            self.changeStylesheet(ui, 'color', 'green')
+        else:
+            self.changeStylesheet(ui, 'color', 'red')
 
     def updatePointGUI(self):
         """

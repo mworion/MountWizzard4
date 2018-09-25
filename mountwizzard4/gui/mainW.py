@@ -123,8 +123,7 @@ class MainWindow(mWidget.MWidget):
         self.wIcon(self.ui.loadModel, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
         self.wIcon(self.ui.saveModel, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.deleteModel, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
-        """
-        """
+
         pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')

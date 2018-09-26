@@ -129,7 +129,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         :return:    wid     modified widget
         """
         wid.fig.clf()
-        wid.axes = wid.fig.add_subplot(1, 1, 1, polar=True)
+        wid.axes = wid.fig.add_subplot(1,
+                                       1,
+                                       1,
+                                       polar=True)
         wid.axes.grid(True,
                       color='#404040',
                       )
@@ -173,10 +176,15 @@ class IntMatplotlib(backend.FigureCanvasQTAgg):
 
     def __init__(self, parent=None):
         helper = PyQt5.QtWidgets.QVBoxLayout(parent)
-        self.fig = matplotlib.figure.Figure(dpi=75,
-                                            facecolor=(25 / 256, 25 / 256, 25 / 256))
-        backend.FigureCanvasQTAgg.__init__(self, self.fig)
         helper.setContentsMargins(0, 0, 0, 0)
-        self.setParent(parent)
+        self.fig = matplotlib.figure.Figure(dpi=75,
+                                            facecolor=(25 / 256,
+                                                       25 / 256,
+                                                       25 / 256))
+        backend.FigureCanvasQTAgg.__init__(self, self.fig)
+        backend.FigureCanvasQTAgg.setSizePolicy(self,
+                                                PyQt5.QtWidgets.QSizePolicy.Expanding,
+                                                PyQt5.QtWidgets.QSizePolicy.Expanding
+                                                )
         backend.FigureCanvasQTAgg.updateGeometry(self)
         helper.addWidget(self)

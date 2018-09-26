@@ -24,7 +24,6 @@ import platform
 import PyQt5.QtWidgets
 import PyQt5.QtGui
 import matplotlib
-import numpy as np
 matplotlib.use('Qt5Agg')
 import matplotlib.pyplot
 import matplotlib.backends.backend_qt5agg as backend

@@ -55,10 +55,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         self.screenSizeX = PyQt5.QtWidgets.QDesktopWidget().screenGeometry().width()
         self.screenSizeY = PyQt5.QtWidgets.QDesktopWidget().screenGeometry().height()
         self.showStatus = False
-        # Say, "the default sans-serif font is COMIC SANS"
-        matplotlib.rcParams['font.sans-serif'] = "Arial"
-        # Then, "ALWAYS use sans-serif fonts"
-        matplotlib.rcParams['font.family'] = "Arial"
 
     def closeEvent(self, closeEvent):
         self.showStatus = False
@@ -128,6 +124,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         :param      wid:    matplotlib canvas widget for drawing
         :return:    wid     modified widget
         """
+
         wid.fig.clf()
         wid.axes = wid.fig.add_subplot(1,
                                        1,

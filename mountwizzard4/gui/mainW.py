@@ -46,6 +46,8 @@ class MainWindow(mWidget.MWidget):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
+    CYCLE_GUI = 1000
+
     def __init__(self, app):
         super().__init__()
 
@@ -76,6 +78,11 @@ class MainWindow(mWidget.MWidget):
         # initial call for writing the gui
         self.updateFwGui()
         self.show()
+
+        self.timerGui = PyQt5.QtCore.QTimer()
+        self.timerGui.setSingleShot(False)
+        self.timerGui.timeout.connect(self.updateGui)
+        self.timerGui.start(self.CYCLE_GUI)
 
     def closeEvent(self, closeEvent):
         """
@@ -136,6 +143,9 @@ class MainWindow(mWidget.MWidget):
         else:
             self.changeStylesheet(ui, 'color', 'red')
 
+    def updateGui(self):
+        self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+
     def updatePointGUI(self):
         """
         updatePointGUI update the gui upon events triggered be the reception of new data
@@ -145,7 +155,6 @@ class MainWindow(mWidget.MWidget):
         :return:
         """
         obs = self.app.mount.obsSite
-        self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
 
         if obs.Alt is not None:
             self.ui.ALT.setText('{0:5.2f}'.format(obs.Alt.degrees))

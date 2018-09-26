@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import logging
-import time
 # external packages
 import PyQt5.QtCore
 # local import

@@ -52,19 +52,15 @@ class MountWizzard4(object):
                                                 verbose=False,
                                                 )
         # get the window widgets up
-        print(time.time() - startT)
         self.mainW = gui.mainW.MainWindow(self)
-
         # starting cyclic polling of mount data
-        print(time.time() - startT)
         self.mount.startTimers()
-
-        # get first data
+        # get first data in order of first usage
+        self.mount.workaround()
         self.mount.getFW()
         self.mount.getLocation()
         self.mount.cycleSetting()
         self.mount.getNames()
-        self.mount.workaround()
         self.mount.getAlign()
 
     def quit(self):

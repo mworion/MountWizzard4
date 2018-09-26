@@ -43,7 +43,6 @@ class MountWizzard4(object):
 
     def __init__(self):
         super().__init__()
-        startT = time.time()
         # get the working horses up
         pathToTs = mw4_global.work_dir + '/config'
         self.mount = mountcontrol.qtmount.Mount(host='192.168.2.15',

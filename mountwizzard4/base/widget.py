@@ -172,12 +172,14 @@ class IntMatplotlib(backend.FigureCanvasQTAgg):
     """
 
     def __init__(self, parent=None):
+        # to avoid a white flash before drawing on top.
+        parent.setStyleSheet("background:transparent;")
         helper = PyQt5.QtWidgets.QVBoxLayout(parent)
         helper.setContentsMargins(0, 0, 0, 0)
         self.fig = matplotlib.figure.Figure(dpi=75,
                                             facecolor=(25 / 256,
                                                        25 / 256,
-                                                       25 / 256))
+                                                       25 / 256,))
         backend.FigureCanvasQTAgg.__init__(self, self.fig)
         backend.FigureCanvasQTAgg.setSizePolicy(self,
                                                 PyQt5.QtWidgets.QSizePolicy.Expanding,

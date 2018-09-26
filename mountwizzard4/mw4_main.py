@@ -19,7 +19,7 @@
 ###########################################################
 # standard libraries
 import logging
-import os
+import time
 # external packages
 import PyQt5.QtCore
 # local import
@@ -43,7 +43,7 @@ class MountWizzard4(object):
 
     def __init__(self):
         super().__init__()
-
+        startT = time.time()
         # get the working horses up
         pathToTs = mw4_global.work_dir + '/config'
         self.mount = mountcontrol.qtmount.Mount(host='192.168.2.15',
@@ -52,9 +52,11 @@ class MountWizzard4(object):
                                                 verbose=False,
                                                 )
         # get the window widgets up
+        print(time.time() - startT)
         self.mainW = gui.mainW.MainWindow(self)
 
         # starting cyclic polling of mount data
+        print(time.time() - startT)
         self.mount.startTimers()
 
         # get first data
@@ -62,7 +64,7 @@ class MountWizzard4(object):
         self.mount.getLocation()
         self.mount.cycleSetting()
         self.mount.getNames()
-        self.mount.model.workaroundAlign()
+        self.mount.workaround()
         self.mount.getAlign()
 
     def quit(self):

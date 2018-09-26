@@ -58,7 +58,8 @@ class MountWizzard4(object):
         self.mount.startTimers()
 
         # get first data
-        self.mount.obsSite.getLocation()
+        self.mount.getFW()
+        self.mount.getLocation()
         self.mount.cycleSetting()
         self.mount.getNames()
         self.mount.model.workaroundAlign()

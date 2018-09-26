@@ -53,6 +53,13 @@ class MountWizzard4(object):
         self.mainW = gui.mainW.MainWindow(self)
         # starting cyclic polling of mount data
         self.mount.startTimers()
+        self.loadStartData()
+
+    def quit(self):
+        self.mount.stopTimers()
+        PyQt5.QtCore.QCoreApplication.quit()
+
+    def loadStartData(self):
         # get first data in order of first usage
         self.mount.workaround()
         self.mount.getFW()
@@ -60,7 +67,3 @@ class MountWizzard4(object):
         self.mount.cycleSetting()
         self.mount.getNames()
         self.mount.getAlign()
-
-    def quit(self):
-        self.mount.stopTimers()
-        PyQt5.QtCore.QCoreApplication.quit()

@@ -69,6 +69,7 @@ class MainWindow(mWidget.MWidget):
         self.app.mount.signals.alignDone.connect(self.updateAlignGui)
         self.app.mount.signals.alignDone.connect(self.showModelPolar)
         self.app.mount.signals.namesDone.connect(self.setNameList)
+        self.app.mount.signals.fwDone.connect(self.updateFwGui)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
 
         # connect gui signals
@@ -140,6 +141,7 @@ class MainWindow(mWidget.MWidget):
         ui = self.ui.mountConnected
         if status:
             self.changeStylesheet(ui, 'color', 'green')
+            self.app.loadStartData()
         else:
             self.changeStylesheet(ui, 'color', 'red')
 

@@ -56,6 +56,30 @@ class MainWindowTests(unittest.TestCase):
 
     #
     #
+    # testing mainW gui updateMountConnStat
+    #
+    #
+
+    def test_updateMountConnStat(self):
+        suc = self.mainW.updateMountConnStat(True)
+        self.assertEqual(True, suc)
+        self.assertEqual('green', self.mainW.ui.mountConnected.property('color'))
+        suc = self.mainW.updateMountConnStat(False)
+        self.assertEqual(True, suc)
+        self.assertEqual('red', self.mainW.ui.mountConnected.property('color'))
+
+    #
+    #
+    # testing mainW gui update Gui
+    #
+    #
+
+    def test_updateGui(self):
+        suc = self.mainW.updateGui()
+        self.assertEqual(True, suc)
+
+    #
+    #
     # testing mainW gui fw
     #
     #

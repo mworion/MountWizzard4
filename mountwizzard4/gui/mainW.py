@@ -142,7 +142,6 @@ class MainWindow(mWidget.MWidget):
         ui = self.ui.mountConnected
         if status:
             self.changeStylesheet(ui, 'color', 'green')
-            self.app.loadStartData()
         else:
             self.changeStylesheet(ui, 'color', 'red')
         return True

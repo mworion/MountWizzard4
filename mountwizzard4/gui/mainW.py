@@ -136,6 +136,7 @@ class MainWindow(mWidget.MWidget):
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
         self.ui.picALT.setPixmap(pixmap)
+        return True
 
     def updateMountConnStat(self, status):
         ui = self.ui.mountConnected
@@ -144,9 +145,11 @@ class MainWindow(mWidget.MWidget):
             self.app.loadStartData()
         else:
             self.changeStylesheet(ui, 'color', 'red')
+        return True
 
     def updateGui(self):
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+        return True
 
     def updatePointGUI(self):
         """
@@ -202,6 +205,7 @@ class MainWindow(mWidget.MWidget):
             self.ui.statusText.setText(obs.statusText())
         else:
             self.ui.statusText.setText('-')
+        return True
 
     def updateSettingGUI(self):
         """
@@ -303,6 +307,7 @@ class MainWindow(mWidget.MWidget):
             self.ui.siteLongitude.setText('-')
             self.ui.siteLatitude.setText('-')
             self.ui.siteElevation.setText('-')
+        return True
 
     def updateFwGui(self):
         """
@@ -337,6 +342,7 @@ class MainWindow(mWidget.MWidget):
             self.ui.hwVersion.setText(fw.hwVersion)
         else:
             self.ui.hwVersion.setText('-')
+        return True
 
     def setNameList(self):
         """
@@ -352,6 +358,7 @@ class MainWindow(mWidget.MWidget):
             self.ui.nameList.addItem(name)
         self.ui.nameList.sortItems()
         self.ui.nameList.update()
+        return True
 
     def updateAlignGui(self):
         """
@@ -406,6 +413,7 @@ class MainWindow(mWidget.MWidget):
             self.ui.altitudeError.setText(model.altitudeError.dstr(places=0))
         else:
             self.ui.altitudeError.setText('-')
+        return True
 
     def showModelPolar(self):
         """

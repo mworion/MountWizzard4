@@ -61,7 +61,7 @@ class MainWindow(mWidget.MWidget):
         self.setupIcons()
 
         # defining the necessary instances of classes
-        self.polarPlot = mWidget.IntMatplotlib(self.ui.modelPolar)
+        self.polarPlot = self.integrateMatplotlib(self.ui.modelPolar)
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updatePointGUI)

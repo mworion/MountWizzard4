@@ -162,6 +162,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         wid.axes.set_rlabel_position(45)
         return wid
 
+    @staticmethod
     def integrateMatplotlib(ui):
         """
         IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5 application
@@ -178,13 +179,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
                                                 facecolor=(25 / 256,
                                                            25 / 256,
                                                            25 / 256,))
-        backend.FigureCanvasQTAgg.setSizePolicy(staticCanvas,
+        backend.FigureCanvasQTAgg.setSizePolicy(layout,
                                                 PyQt5.QtWidgets.QSizePolicy.Expanding,
                                                 PyQt5.QtWidgets.QSizePolicy.Expanding
                                                 )
         backend.FigureCanvasQTAgg.updateGeometry(staticCanvas)
         layout.addWidget(staticCanvas)
-        return ui
+        return layout
 
 
 class IntMatplotlib(backend.FigureCanvasQTAgg):

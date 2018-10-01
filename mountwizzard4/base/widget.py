@@ -162,6 +162,30 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         wid.axes.set_rlabel_position(45)
         return wid
 
+    def integrateMatplotlib(ui):
+        """
+        IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5 application
+        gui. you call it with the parent widget, which is linked to matplotlib canvas of the same
+        size. the background is set to transparent, so you could layer multiple figures on top.
+
+        """
+
+        # to avoid a white flash before drawing on top.
+        ui.setStyleSheet("background:transparent;")
+        layout = PyQt5.QtWidgets.QVBoxLayout(ui)
+        layout.setContentsMargins(0, 0, 0, 0)
+        staticCanvas = matplotlib.figure.Figure(dpi=75,
+                                                facecolor=(25 / 256,
+                                                           25 / 256,
+                                                           25 / 256,))
+        backend.FigureCanvasQTAgg.setSizePolicy(staticCanvas,
+                                                PyQt5.QtWidgets.QSizePolicy.Expanding,
+                                                PyQt5.QtWidgets.QSizePolicy.Expanding
+                                                )
+        backend.FigureCanvasQTAgg.updateGeometry(staticCanvas)
+        layout.addWidget(staticCanvas)
+        return ui
+
 
 class IntMatplotlib(backend.FigureCanvasQTAgg):
     """

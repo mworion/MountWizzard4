@@ -178,10 +178,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         layout = PyQt5.QtWidgets.QVBoxLayout(ui)
         layout.setContentsMargins(0, 0, 0, 0)
         staticCanvas = FigureCanvas(Figure(dpi=75,
-                                           facecolor=(25 / 256,
-                                                      25 / 256,
-                                                      25 / 256,
-                                                      )
+                                           facecolor=(0.1, 0.1, 0.1),
                                            )
                                     )
         FigureCanvasQTAgg.setSizePolicy(staticCanvas,

@@ -26,8 +26,9 @@ import PyQt5.QtGui
 import matplotlib
 matplotlib.use('Qt5Agg')
 import matplotlib.pyplot
-import matplotlib.backends.backend_qt5agg as backend
+from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 # local imports
 import base.styles
 import base.tpool
@@ -176,19 +177,18 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         ui.setStyleSheet("background:transparent;")
         layout = PyQt5.QtWidgets.QVBoxLayout(ui)
         layout.setContentsMargins(0, 0, 0, 0)
-        staticCanvas = FigureCanvas(
-            matplotlib.figure.Figure(dpi=75,
-                                     facecolor=(25 / 256,
-                                                25 / 256,
-                                                25 / 256,
-                                                )
-                                     )
-        )
-        backend.FigureCanvasQTAgg.setSizePolicy(staticCanvas,
-                                                PyQt5.QtWidgets.QSizePolicy.Expanding,
-                                                PyQt5.QtWidgets.QSizePolicy.Expanding
-                                                )
-        backend.FigureCanvasQTAgg.updateGeometry(staticCanvas)
+        staticCanvas = FigureCanvas(Figure(dpi=75,
+                                           facecolor=(25 / 256,
+                                                      25 / 256,
+                                                      25 / 256,
+                                                      )
+                                           )
+                                    )
+        FigureCanvasQTAgg.setSizePolicy(staticCanvas,
+                                        PyQt5.QtWidgets.QSizePolicy.Expanding,
+                                        PyQt5.QtWidgets.QSizePolicy.Expanding
+                                        )
+        FigureCanvasQTAgg.updateGeometry(staticCanvas)
         layout.addWidget(staticCanvas)
         return layout
 

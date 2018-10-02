@@ -156,7 +156,7 @@ class MainWindow(mWidget.MWidget):
         from the mount. the mount data is polled, so we use this signal as well for the
         update process.
 
-        :return:
+        :return:    True if ok for testing
         """
         obs = self.app.mount.obsSite
 
@@ -212,7 +212,7 @@ class MainWindow(mWidget.MWidget):
         from the mount. the mount data is polled, so we use this signal as well for the
         update process.
 
-        :return:
+        :return:    True if ok for testing
         """
 
         sett = self.app.mount.sett
@@ -312,7 +312,7 @@ class MainWindow(mWidget.MWidget):
         """
         updateFwGui write all firmware data to the gui.
 
-        :return:
+        :return:    True if ok for testing
         """
 
         fw = self.app.mount.fw
@@ -348,7 +348,7 @@ class MainWindow(mWidget.MWidget):
         setNameList populates the list of model names in the main window. before adding the
         data, the existent list will be deleted.
 
-        :return: nothing
+        :return:    True if ok for testing
         """
 
         model = self.app.mount.model
@@ -364,7 +364,7 @@ class MainWindow(mWidget.MWidget):
         updateAlignGui shows the data which is received through the getain command. this is
         mainly polar and ortho errors as well as basic model data.
 
-        :return:    nothing
+        :return:    True if ok for testing
         """
 
         model = self.app.mount.model
@@ -419,7 +419,7 @@ class MainWindow(mWidget.MWidget):
         showModelPolar draws a polar plot of the align model stars and their errors in
         color.
 
-        :return:
+        :return:    True if ok for testing
         """
 
         if not self.app.mount.obsSite.location:
@@ -428,7 +428,7 @@ class MainWindow(mWidget.MWidget):
         lat = self.app.mount.obsSite.location.latitude.degrees
 
         # preparing the polar plot and the axes
-        wid = self.clearPolar(self.polarPlot)
+        fig, axes = self.clearPolar(self.polarPlot)
 
         # now prepare the data
         if not model.starList:
@@ -456,40 +456,40 @@ class MainWindow(mWidget.MWidget):
         area = [200 if x >= max(colors) else 60 for x in error]
         theta = azimuth / 180.0 * np.pi
         r = 90 - altitude
-        scatter = wid.axes.scatter(theta,
-                                   r,
-                                   c=colors,
-                                   vmin=scaleErrorMin,
-                                   vmax=scaleErrorMax,
-                                   s=area,
-                                   cmap=cm,
-                                   zorder=0,
-                                   )
+        scatter = axes.scatter(theta,
+                               r,
+                               c=colors,
+                               vmin=scaleErrorMin,
+                               vmax=scaleErrorMax,
+                               s=area,
+                               cmap=cm,
+                               zorder=0,
+                               )
         if self.ui.checkShowErrorValues.isChecked():
             for star in model.starList:
                 text = '{0:3.1f}'.format(star.number)
-                wid.axes.annotate(text,
-                                  xy=(theta[star.number-1],
-                                      r[star.number-1]),
-                                  color='#2090C0',
-                                  fontsize=9,
-                                  fontweight='bold',
-                                  zorder=1,
-                                  )
+                axes.annotate(text,
+                              xy=(theta[star.number-1],
+                                  r[star.number-1]),
+                              color='#2090C0',
+                              fontsize=9,
+                              fontweight='bold',
+                              zorder=1,
+                              )
         formatString = matplotlib.ticker.FormatStrFormatter('%1.0f')
-        colorbar = wid.fig.colorbar(scatter,
-                                    pad=0.1,
-                                    fraction=0.12,
-                                    aspect=25,
-                                    shrink=0.9,
-                                    format=formatString,
-                                    )
+        colorbar = fig.colorbar(scatter,
+                                pad=0.1,
+                                fraction=0.12,
+                                aspect=25,
+                                shrink=0.9,
+                                format=formatString,
+                                )
         colorbar.set_label('Error [arcsec]', color='white')
         yTicks = matplotlib.pyplot.getp(colorbar.ax.axes, 'yticklabels')
         matplotlib.pyplot.setp(yTicks,
                                color='#2090C0',
                                fontweight='bold')
-        wid.axes.set_rmax(90)
-        wid.axes.set_rmin(0)
-        wid.draw()
+        axes.set_rmax(90)
+        axes.set_rmin(0)
+        axes.figure.canvas.draw()
         return True

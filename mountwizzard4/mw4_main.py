@@ -53,17 +53,21 @@ class MountWizzard4(object):
         self.mainW = gui.mainW.MainWindow(self)
         # starting cyclic polling of mount data
         self.mount.startTimers()
-        self.loadStartData()
+        self.mount.signals.mountUp.connect(self.loadData)
 
     def quit(self):
         self.mount.stopTimers()
         PyQt5.QtCore.QCoreApplication.quit()
 
-    def loadStartData(self):
-        # get first data in order of first usage
-        self.mount.workaround()
-        self.mount.getFW()
-        self.mount.getLocation()
-        self.mount.cycleSetting()
-        self.mount.getNames()
-        self.mount.getAlign()
+    def loadData(self, status):
+        if status:
+            print('mount is up')
+            self.mount.workaround()
+            self.mount.getFW()
+            self.mount.getLocation()
+            self.mount.cycleSetting()
+            self.mount.getNames()
+            self.mount.getAlign()
+        else:
+            # clear data in gui
+            pass

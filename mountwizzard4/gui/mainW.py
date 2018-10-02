@@ -71,6 +71,7 @@ class MainWindow(mWidget.MWidget):
         self.app.mount.signals.namesDone.connect(self.setNameList)
         self.app.mount.signals.fwDone.connect(self.updateFwGui)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
+        self.app.mount.signals.mountClear.connect(self.clearMountGui)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -82,7 +83,7 @@ class MainWindow(mWidget.MWidget):
 
         self.timerGui = PyQt5.QtCore.QTimer()
         self.timerGui.setSingleShot(False)
-        self.timerGui.timeout.connect(self.updateGui)
+        self.timerGui.timeout.connect(self.updateGuiCyclic)
         self.timerGui.start(self.CYCLE_GUI)
 
     def closeEvent(self, closeEvent):
@@ -138,6 +139,14 @@ class MainWindow(mWidget.MWidget):
         self.ui.picALT.setPixmap(pixmap)
         return True
 
+    def clearMountGui(self):
+        self.updateAlignGui()
+        self.updateFwGui()
+        self.updatePointGUI()
+        self.updateSettingGUI()
+        self.setNameList()
+        self.showModelPolar()
+
     def updateMountConnStat(self, status):
         ui = self.ui.mountConnected
         if status:
@@ -146,7 +155,7 @@ class MainWindow(mWidget.MWidget):
             self.changeStylesheet(ui, 'color', 'red')
         return True
 
-    def updateGui(self):
+    def updateGuiCyclic(self):
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         return True
 
@@ -423,6 +432,9 @@ class MainWindow(mWidget.MWidget):
         """
 
         if not self.app.mount.obsSite.location:
+            # clear the plot and return
+            fig, axes = self.clearPolar(self.polarPlot)
+            axes.figure.canvas.draw()
             return False
         model = self.app.mount.model
         lat = self.app.mount.obsSite.location.latitude.degrees

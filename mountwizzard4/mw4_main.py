@@ -61,7 +61,6 @@ class MountWizzard4(object):
 
     def loadData(self, status):
         if status:
-            print('mount is up')
             self.mount.workaround()
             self.mount.getFW()
             self.mount.getLocation()

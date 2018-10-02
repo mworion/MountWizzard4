@@ -27,6 +27,7 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 import matplotlib.pyplot
 import matplotlib.backends.backend_qt5agg as backend
+from matplotlib.backends.backend_qt5agg import FigureCanvas
 # local imports
 import base.styles
 import base.tpool
@@ -175,11 +176,15 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         ui.setStyleSheet("background:transparent;")
         layout = PyQt5.QtWidgets.QVBoxLayout(ui)
         layout.setContentsMargins(0, 0, 0, 0)
-        staticCanvas = matplotlib.figure.Figure(dpi=75,
-                                                facecolor=(25 / 256,
-                                                           25 / 256,
-                                                           25 / 256,))
-        backend.FigureCanvasQTAgg.setSizePolicy(layout,
+        staticCanvas = FigureCanvas(
+            matplotlib.figure.Figure(dpi=75,
+                                     facecolor=(25 / 256,
+                                                25 / 256,
+                                                25 / 256,
+                                                )
+                                     )
+        )
+        backend.FigureCanvasQTAgg.setSizePolicy(staticCanvas,
                                                 PyQt5.QtWidgets.QSizePolicy.Expanding,
                                                 PyQt5.QtWidgets.QSizePolicy.Expanding
                                                 )
@@ -187,28 +192,3 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         layout.addWidget(staticCanvas)
         return layout
 
-
-class IntMatplotlib(backend.FigureCanvasQTAgg):
-    """
-    IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5 application
-    gui. you call it with the parent widget, which is linked to matplotlib canvas of the same
-    size. the background is set to transparent, so you could layer multiple figures on top.
-
-    """
-
-    def __init__(self, parent=None):
-        # to avoid a white flash before drawing on top.
-        parent.setStyleSheet("background:transparent;")
-        helper = PyQt5.QtWidgets.QVBoxLayout(parent)
-        helper.setContentsMargins(0, 0, 0, 0)
-        self.fig = matplotlib.figure.Figure(dpi=75,
-                                            facecolor=(25 / 256,
-                                                       25 / 256,
-                                                       25 / 256,))
-        backend.FigureCanvasQTAgg.__init__(self, self.fig)
-        backend.FigureCanvasQTAgg.setSizePolicy(self,
-                                                PyQt5.QtWidgets.QSizePolicy.Expanding,
-                                                PyQt5.QtWidgets.QSizePolicy.Expanding
-                                                )
-        backend.FigureCanvasQTAgg.updateGeometry(self)
-        helper.addWidget(self)

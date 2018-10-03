@@ -81,7 +81,7 @@ class MainWindow(mWidget.MWidget):
         self.ui.mountOff.clicked.connect(self.mountShutdown)
 
         # initial call for writing the gui
-        self.updateFwGui()
+        self.updateMountConnStat(False)
         self.show()
 
         self.timerGui = PyQt5.QtCore.QTimer()

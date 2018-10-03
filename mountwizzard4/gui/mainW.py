@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import datetime
+import time
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -76,6 +77,8 @@ class MainWindow(mWidget.MWidget):
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
         self.ui.saveConfigQuit.clicked.connect(self.app.quit)
+        self.ui.mountOn.clicked.connect(self.mountBoot)
+        self.ui.mountOff.clicked.connect(self.mountShutdown)
 
         # initial call for writing the gui
         self.updateFwGui()
@@ -138,6 +141,18 @@ class MainWindow(mWidget.MWidget):
         pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
         self.ui.picALT.setPixmap(pixmap)
         return True
+
+    def mountBoot(self):
+        if self.app.mount.bootMount():
+            self.logger.info('Mount started')
+        else:
+            pass
+
+    def mountShutdown(self):
+        if self.app.mount.obsSite.shutdown():
+            self.logger.info('Mount shutdown')
+        else:
+            pass
 
     def clearMountGui(self):
         self.updateAlignGui()

@@ -45,6 +45,7 @@ class MountWizzard4(object):
         # get the working horses up
         pathToTs = mw4_global.work_dir + '/config'
         self.mount = mountcontrol.qtmount.Mount(host='192.168.2.15',
+                                                MAC='00.c0.08.87.35.db',
                                                 pathToTS=pathToTs,
                                                 expire=False,
                                                 verbose=False,

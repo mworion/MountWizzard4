@@ -436,6 +436,7 @@ class MainWindow(mWidget.MWidget):
             fig, axes = self.clearPolar(self.polarPlot)
             axes.figure.canvas.draw()
             return False
+
         model = self.app.mount.model
         lat = self.app.mount.obsSite.location.latitude.degrees
 

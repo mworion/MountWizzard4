@@ -2145,7 +2145,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>80</y>
        <width>121</width>
        <height>21</height>
       </rect>
@@ -2166,7 +2166,7 @@
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>50</y>
+       <y>80</y>
        <width>121</width>
        <height>21</height>
       </rect>
@@ -2214,7 +2214,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>50</y>
        <width>121</width>
        <height>21</height>
       </rect>
@@ -2235,7 +2235,7 @@
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>80</y>
+       <y>50</y>
        <width>121</width>
        <height>21</height>
       </rect>

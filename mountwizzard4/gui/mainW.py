@@ -176,6 +176,20 @@ class MainWindow(mWidget.MWidget):
 
     def updateGuiCyclic(self):
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+        # check tracking speed
+        if self.app.mount.sett.checkRateLunar():
+            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'true')
+            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'false')
+            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'false')
+        elif self.app.mount.sett.checkRateSidereal():
+            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'false')
+            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'true')
+            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'false')
+        elif self.app.mount.sett.checkRateSolar():
+            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'false')
+            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'false')
+            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'true')
+
         return True
 
     def updatePointGUI(self):

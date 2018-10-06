@@ -32,6 +32,7 @@ import mw4_global
 import base.widget as mWidget
 import base.tpool
 import mountcontrol.convert as convert
+from gui import main_ui
 
 
 class MainWindow(mWidget.MWidget):
@@ -56,8 +57,11 @@ class MainWindow(mWidget.MWidget):
         self.tPool = PyQt5.QtCore.QThreadPool()
 
         # load and init the gui
-        guiPath = mw4_global.work_dir + '/mountwizzard4/gui/main.ui'
-        self.ui = PyQt5.uic.loadUi(guiPath, self)
+        # guiPath = mw4_global.work_dir + '/mountwizzard4/gui/main.ui'
+        # self.ui = PyQt5.uic.loadUi(guiPath, self)
+        # precompiled gui
+        self.ui = main_ui.Ui_MainWindow()
+        self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
 

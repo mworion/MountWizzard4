@@ -48,7 +48,18 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
     standard screen size will be 800x600 pixel
     """
 
+    __all__ = ['closeEvent',
+               'wIcon',
+               'initUI',
+               'changeStyleSheet',
+               'clearPolar',
+               'integrateMatplotlib',
+               ]
+    version = '0.1'
     logger = logging.getLogger(__name__)
+
+    # central message and logging dispatching
+    message = PyQt5.QtCore.pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
@@ -193,4 +204,3 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         FigureCanvasQTAgg.updateGeometry(staticCanvas)
         layout.addWidget(staticCanvas)
         return staticCanvas
-

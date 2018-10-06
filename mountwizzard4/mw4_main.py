@@ -28,7 +28,7 @@ import gui.mainW
 import gui.messageW
 
 
-class MountWizzard4(object):
+class MountWizzard4(PyQt5.QtCore.QObject):
     """
     MountWizzard4 class is the main class for the application. it loads all windows and
     classes needed to fulfil the work of mountwizzard. any gui work should be handled
@@ -40,6 +40,9 @@ class MountWizzard4(object):
                ]
     version = '0.1'
     logger = logging.getLogger(__name__)
+
+    # central message and logging dispatching
+    message = PyQt5.QtCore.pyqtSignal(str, int)
 
     def __init__(self):
         super().__init__()

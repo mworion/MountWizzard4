@@ -573,26 +573,55 @@ class MainWindow(mWidget.MWidget):
         obsSite = self.app.mount.obsSite
         if obsSite.status == 0:
             suc = obsSite.stopTracking()
+            if not suc:
+                self.app.message.emit('Cannot stop tracking', 2)
+            else:
+                self.app.message.emit('Stopped tracking', 0)
         else:
             suc = obsSite.startTracking()
+            if not suc:
+                self.app.message.emit('Cannot start tracking', 2)
+            else:
+                self.app.message.emit('Started tracking', 0)
+
         return True
 
     def changePark(self):
         obsSite = self.app.mount.obsSite
         if obsSite.status == 5:
             suc = obsSite.unpark()
+            if not suc:
+                self.app.message.emit('Cannot unpark mount', 2)
+            else:
+                self.app.message.emit('Mount unparked', 0)
         else:
             suc = obsSite.park()
+            if not suc:
+                self.app.message.emit('Cannot park mount', 2)
+            else:
+                self.app.message.emit('Mount parked', 0)
         return True
 
     def setLunarTracking(self):
         obsSite = self.app.mount.obsSite
         suc = obsSite.setLunarTracking()
+        if not suc:
+            self.app.message.emit('Cannot set tracking to Lunar', 2)
+        else:
+            self.app.message.emit('Tracking set to Lunar', 0)
 
     def setSiderealTracking(self):
         obsSite = self.app.mount.obsSite
         suc = obsSite.setSiderealTracking()
+        if not suc:
+            self.app.message.emit('Cannot set tracking to Sidereal', 2)
+        else:
+            self.app.message.emit('Tracking set to Sidereal', 0)
 
     def setSolarTracking(self):
         obsSite = self.app.mount.obsSite
         suc = obsSite.setSolarTracking()
+        if not suc:
+            self.app.message.emit('Cannot set tracking to Solar', 2)
+        else:
+            self.app.message.emit('Tracking set to Solar', 0)

@@ -42,8 +42,19 @@ class MessageWindow(mWidget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
 
+        self.messColor = [self.COLOR_ASTRO,
+                          self.COLOR_WHITE,
+                          self.COLOR_YELLOW,
+                          self.COLOR_RED,
+                          ]
+        self.messFont = [PyQt5.QtGui.QFont.Normal,
+                         PyQt5.QtGui.QFont.Bold,
+                         PyQt5.QtGui.QFont.Normal,
+                         PyQt5.QtGui.QFont.Normal,
+                         ]
+
         # link gui blocks
-        self.message.connect(self.writeMessage)
+        self.app.message.connect(self.writeMessage)
         self.showWindow()
 
     def resizeEvent(self, QResizeEvent):
@@ -67,11 +78,12 @@ class MessageWindow(mWidget.MWidget):
         self.changeStylesheet(self.app.mainW.ui.openMessageW, 'running', 'true')
 
     @PyQt5.QtCore.pyqtSlot(str, int)
-    def writeMessage(self, message, type=0):
+    def writeMessage(self, message, mType=0):
         prefix = time.strftime('%H:%M:%S - ', time.localtime())
         message = prefix + message
-
         self.logger.info('Message window: {0}'.format(message))
-        self.ui.message.setTextColor(color)
+        self.ui.message.setTextColor(self.messColor[mType])
+        self.ui.message.setFontWeight(self.messFont[mType])
         self.ui.message.insertPlainText(message + '\n')
+        self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
 

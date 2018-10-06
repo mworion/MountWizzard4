@@ -928,7 +928,7 @@
       <string>Flip</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="setTrackingLunar">
+    <widget class="QPushButton" name="setLunarTracking">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -949,7 +949,7 @@
       <string>Lunar</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="setTrackingSolar">
+    <widget class="QPushButton" name="setSolarTracking">
      <property name="geometry">
       <rect>
        <x>600</x>
@@ -970,7 +970,7 @@
       <string>Solar</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="setTrackingSidereal">
+    <widget class="QPushButton" name="setSiderealTracking">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -2013,9 +2013,9 @@
     <zorder>mountPos1</zorder>
     <zorder>stop</zorder>
     <zorder>flipMount</zorder>
-    <zorder>setTrackingLunar</zorder>
-    <zorder>setTrackingSolar</zorder>
-    <zorder>setTrackingSidereal</zorder>
+    <zorder>setLunarTracking</zorder>
+    <zorder>setSolarTracking</zorder>
+    <zorder>setSiderealTracking</zorder>
     <zorder>label_90</zorder>
     <zorder>timeToMeridian</zorder>
     <zorder>label_91</zorder>
@@ -17216,9 +17216,9 @@ manually</string>
   <tabstop>mountPos5</tabstop>
   <tabstop>mountPos6</tabstop>
   <tabstop>tracking</tabstop>
-  <tabstop>setTrackingLunar</tabstop>
-  <tabstop>setTrackingSolar</tabstop>
-  <tabstop>setTrackingSidereal</tabstop>
+  <tabstop>setLunarTracking</tabstop>
+  <tabstop>setSolarTracking</tabstop>
+  <tabstop>setSiderealTracking</tabstop>
   <tabstop>park</tabstop>
   <tabstop>stop</tabstop>
   <tabstop>checkAutoRefractionNone</tabstop>

@@ -85,6 +85,9 @@ class MainWindow(mWidget.MWidget):
         self.ui.mountOff.clicked.connect(self.mountShutdown)
         self.ui.park.clicked.connect(self.changePark)
         self.ui.tracking.clicked.connect(self.changeTracking)
+        self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
+        self.ui.setSiderealTracking.clicked.connect(self.setSolarTracking)
+        self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -359,17 +362,17 @@ class MainWindow(mWidget.MWidget):
 
         # check tracking speed
         if self.app.mount.sett.checkRateLunar():
-            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'true')
-            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'false')
-            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'false')
+            self.changeStylesheet(self.ui.setLunarTracking, 'running', 'true')
+            self.changeStylesheet(self.ui.setSiderealTracking, 'running', 'false')
+            self.changeStylesheet(self.ui.setSolarTracking, 'running', 'false')
         elif self.app.mount.sett.checkRateSidereal():
-            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'false')
-            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'true')
-            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'false')
+            self.changeStylesheet(self.ui.setLunarTracking, 'running', 'false')
+            self.changeStylesheet(self.ui.setSiderealTracking, 'running', 'true')
+            self.changeStylesheet(self.ui.setSolarTracking, 'running', 'false')
         elif self.app.mount.sett.checkRateSolar():
-            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'false')
-            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'false')
-            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'true')
+            self.changeStylesheet(self.ui.setLunarTracking, 'running', 'false')
+            self.changeStylesheet(self.ui.setSiderealTracking, 'running', 'false')
+            self.changeStylesheet(self.ui.setSolarTracking, 'running', 'true')
 
         return True
 
@@ -580,3 +583,15 @@ class MainWindow(mWidget.MWidget):
         else:
             suc = obsSite.park()
         return True
+
+    def setLunarTracking(self):
+        obsSite = self.app.mount.obsSite
+        suc = obsSite.setLunarTracking()
+
+    def setSiderealTracking(self):
+        obsSite = self.app.mount.obsSite
+        suc = obsSite.setSiderealTracking()
+
+    def setSolarTracking(self):
+        obsSite = self.app.mount.obsSite
+        suc = obsSite.setSolarTracking()

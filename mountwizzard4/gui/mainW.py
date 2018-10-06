@@ -83,6 +83,8 @@ class MainWindow(mWidget.MWidget):
         self.ui.saveConfigQuit.clicked.connect(self.app.quit)
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
+        self.ui.park.clicked.connect(self.changePark)
+        self.ui.tracking.clicked.connect(self.changeTracking)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -107,6 +109,12 @@ class MainWindow(mWidget.MWidget):
         self.app.quit()
 
     def setupIcons(self):
+        """
+        setupIcons add icon from standard library to certain buttons for improving the
+        gui of the app.
+
+        :return:    True if success for test
+        """
         # show icon in main gui and add some icons for push buttons
         self.wIcon(self.ui.openMessageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
         self.wIcon(self.ui.openAnalyseW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
@@ -119,8 +127,6 @@ class MainWindow(mWidget.MWidget):
         self.wIcon(self.ui.saveConfigQuit, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
-        self.wIcon(self.ui.startTracking, PyQt5.QtWidgets.QStyle.SP_DialogYesButton)
-        self.wIcon(self.ui.stopTracking, PyQt5.QtWidgets.QStyle.SP_DialogNoButton)
         self.wIcon(self.ui.runInitialModel, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
         self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
@@ -176,20 +182,6 @@ class MainWindow(mWidget.MWidget):
 
     def updateGuiCyclic(self):
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-        # check tracking speed
-        if self.app.mount.sett.checkRateLunar():
-            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'true')
-            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'false')
-            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'false')
-        elif self.app.mount.sett.checkRateSidereal():
-            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'false')
-            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'true')
-            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'false')
-        elif self.app.mount.sett.checkRateSolar():
-            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'false')
-            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'false')
-            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'true')
-
         return True
 
     def updatePointGUI(self):
@@ -246,6 +238,22 @@ class MainWindow(mWidget.MWidget):
             self.ui.statusText.setText(obs.statusText())
         else:
             self.ui.statusText.setText('-')
+
+        if self.app.mount.obsSite.status == 0:
+            self.changeStylesheet(self.ui.tracking, 'running', 'true')
+        else:
+            self.changeStylesheet(self.ui.tracking, 'running', 'false')
+
+        if self.app.mount.obsSite.status == 5:
+            self.changeStylesheet(self.ui.park, 'running', 'true')
+        else:
+            self.changeStylesheet(self.ui.park, 'running', 'false')
+
+        if self.app.mount.obsSite.status == 1:
+            self.changeStylesheet(self.ui.stop, 'running', 'true')
+        else:
+            self.changeStylesheet(self.ui.stop, 'running', 'false')
+
         return True
 
     def updateSettingGUI(self):
@@ -348,6 +356,21 @@ class MainWindow(mWidget.MWidget):
             self.ui.siteLongitude.setText('-')
             self.ui.siteLatitude.setText('-')
             self.ui.siteElevation.setText('-')
+
+        # check tracking speed
+        if self.app.mount.sett.checkRateLunar():
+            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'true')
+            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'false')
+            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'false')
+        elif self.app.mount.sett.checkRateSidereal():
+            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'false')
+            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'true')
+            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'false')
+        elif self.app.mount.sett.checkRateSolar():
+            self.changeStylesheet(self.ui.setTrackingLunar, 'running', 'false')
+            self.changeStylesheet(self.ui.setTrackingSidereal, 'running', 'false')
+            self.changeStylesheet(self.ui.setTrackingSolar, 'running', 'true')
+
         return True
 
     def updateFwGui(self):
@@ -383,6 +406,7 @@ class MainWindow(mWidget.MWidget):
             self.ui.hwVersion.setText(fw.hwVersion)
         else:
             self.ui.hwVersion.setText('-')
+
         return True
 
     def setNameList(self):
@@ -459,7 +483,8 @@ class MainWindow(mWidget.MWidget):
     def showModelPolar(self):
         """
         showModelPolar draws a polar plot of the align model stars and their errors in
-        color.
+        color. the basic setup of the plot is taking place in the central widget class.
+        which is instantiated from there.
 
         :return:    True if ok for testing
         """
@@ -538,4 +563,20 @@ class MainWindow(mWidget.MWidget):
         axes.set_rmax(90)
         axes.set_rmin(0)
         axes.figure.canvas.draw()
+        return True
+
+    def changeTracking(self):
+        obsSite = self.app.mount.obsSite
+        if obsSite.status == 0:
+            suc = obsSite.stopTracking()
+        else:
+            suc = obsSite.startTracking()
+        return True
+
+    def changePark(self):
+        obsSite = self.app.mount.obsSite
+        if obsSite.status == 5:
+            suc = obsSite.unpark()
+        else:
+            suc = obsSite.park()
         return True

@@ -637,12 +637,12 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="startTracking">
+    <widget class="QPushButton" name="tracking">
      <property name="geometry">
       <rect>
        <x>505</x>
        <y>220</y>
-       <width>91</width>
+       <width>136</width>
        <height>31</height>
       </rect>
      </property>
@@ -655,15 +655,15 @@
       <string>Start tracking the mount</string>
      </property>
      <property name="text">
-      <string>Start Track</string>
+      <string>Tracking</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="mountPark">
+    <widget class="QPushButton" name="park">
      <property name="geometry">
       <rect>
        <x>505</x>
        <y>350</y>
-       <width>131</width>
+       <width>271</width>
        <height>31</height>
       </rect>
      </property>
@@ -676,28 +676,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Park mount in default position&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Park</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="mountUnpark">
-     <property name="geometry">
-      <rect>
-       <x>645</x>
-       <y>350</y>
-       <width>131</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Unpark the mount</string>
-     </property>
-     <property name="text">
-      <string>Unpark</string>
+      <string>Mount Park</string>
      </property>
     </widget>
     <widget class="Line" name="line_16">
@@ -886,27 +865,6 @@
       <string>Park Pos1</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="stopTracking">
-     <property name="geometry">
-      <rect>
-       <x>600</x>
-       <y>220</y>
-       <width>91</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Stop tracking mount</string>
-     </property>
-     <property name="text">
-      <string>Stop Track</string>
-     </property>
-    </widget>
     <widget class="Line" name="line_14">
      <property name="geometry">
       <rect>
@@ -952,9 +910,9 @@
     <widget class="QPushButton" name="flipMount">
      <property name="geometry">
       <rect>
-       <x>695</x>
+       <x>650</x>
        <y>220</y>
-       <width>81</width>
+       <width>126</width>
        <height>31</height>
       </rect>
      </property>
@@ -2044,9 +2002,8 @@
     <zorder>timeToFlip</zorder>
     <zorder>label_61</zorder>
     <zorder>label_80</zorder>
-    <zorder>startTracking</zorder>
-    <zorder>mountPark</zorder>
-    <zorder>mountUnpark</zorder>
+    <zorder>tracking</zorder>
+    <zorder>park</zorder>
     <zorder>label_83</zorder>
     <zorder>label_84</zorder>
     <zorder>mountPos4</zorder>
@@ -2054,7 +2011,6 @@
     <zorder>mountPos2</zorder>
     <zorder>mountPos3</zorder>
     <zorder>mountPos1</zorder>
-    <zorder>stopTracking</zorder>
     <zorder>stop</zorder>
     <zorder>flipMount</zorder>
     <zorder>setTrackingLunar</zorder>
@@ -17259,13 +17215,11 @@ manually</string>
   <tabstop>mountPos4</tabstop>
   <tabstop>mountPos5</tabstop>
   <tabstop>mountPos6</tabstop>
-  <tabstop>startTracking</tabstop>
-  <tabstop>stopTracking</tabstop>
+  <tabstop>tracking</tabstop>
   <tabstop>setTrackingLunar</tabstop>
   <tabstop>setTrackingSolar</tabstop>
   <tabstop>setTrackingSidereal</tabstop>
-  <tabstop>mountPark</tabstop>
-  <tabstop>mountUnpark</tabstop>
+  <tabstop>park</tabstop>
   <tabstop>stop</tabstop>
   <tabstop>checkAutoRefractionNone</tabstop>
   <tabstop>checkAutoRefractionContinous</tabstop>

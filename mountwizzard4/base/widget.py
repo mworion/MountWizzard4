@@ -100,9 +100,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         :return:    nothing
         """
 
-        self.setWindowFlags((self.windowFlags()
-                             | PyQt5.QtCore.Qt.CustomizeWindowHint)
-                            & ~PyQt5.QtCore.Qt.WindowMaximizeButtonHint)
+        self.setWindowFlags(self.windowFlags()
+                            )
         self.setMouseTracking(True)
         self.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
         if platform.system() == 'Darwin':

@@ -25,6 +25,7 @@ import PyQt5.QtCore
 import mw4_global
 import mountcontrol.qtmount
 import gui.mainW
+import gui.messageW
 
 
 class MountWizzard4(object):
@@ -52,6 +53,7 @@ class MountWizzard4(object):
                                                 )
         # get the window widgets up
         self.mainW = gui.mainW.MainWindow(self)
+        self.messageW = gui.messageW.MessageWindow(self)
         # starting cyclic polling of mount data
         self.mount.startTimers()
         # managing data

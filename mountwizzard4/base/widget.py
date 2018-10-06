@@ -59,7 +59,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
     logger = logging.getLogger(__name__)
 
     # central message and logging dispatching
-    message = PyQt5.QtCore.pyqtSignal(str)
+    message = PyQt5.QtCore.pyqtSignal(str, int)
 
     def __init__(self):
         super().__init__()

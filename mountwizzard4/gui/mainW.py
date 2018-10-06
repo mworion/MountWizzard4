@@ -628,8 +628,12 @@ class MainWindow(mWidget.MWidget):
             self.app.message.emit('Tracking set to Solar', 0)
 
     def loadProfile(self):
-        value, ext = self.selectFile(self,
-                                     'Open config file',
-                                     '/config',
-                                     'Config files (*.cfg)')
+        name, short, ext = self.openFile(self,
+                                         'Open config file',
+                                         '/config',
+                                         'Config files (*.cfg)')
+        print(name)
+        print(short)
+        print(ext)
+
 

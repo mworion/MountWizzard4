@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import platform
+import os
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtGui
@@ -224,34 +225,60 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         dlg.setGeometry(px, py + ph - dh, dw, dh)
         return dlg
 
-    @staticmethod
-    def openFile(window, title, folder, filterSet):
-        dlg = self.propareFileDialog(window)
-        dlg.setNameFilter(filterSet)
-        ext = ''
-        options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
-        value = dlg.getOpenFileName(dlg,
-                                    title,
-                                    mw4_global.work_dir + folder,
-                                    filterSet,
-                                    options=options)
-        name = value[0]
-        if len(name) > 0:
-            name, ext = os.path.splitext(name)
-        return name, ext
+    def openFile(self, window, title, folder, filterSet):
+        """
+        openFile handles a single file select with filter in a non native format.
 
-    @staticmethod
-    def saveFile(window, title, folder, filterSet):
-        dlg = self.propareFileDialog(window)
+        :param window:      parent window class
+        :param title:       title for the file dialog
+        :param folder:      starting folder for searching the file
+        :param filterSet:   file extension filter
+        :return:            name: full path for file else empty
+                            short: just file name without extension
+                            ext: extension of the file
+        """
+
+        dlg = self.prepareFileDialog(window)
         dlg.setNameFilter(filterSet)
-        ext = ''
         options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
-        value = dlg.getSaveFileName(dlg,
-                                    title,
-                                    mw4_global.work_dir + folder,
-                                    filterSet,
-                                    options=options)
+        name, _ = dlg.getOpenFileName(dlg,
+                                      title,
+                                      mw4_global.work_dir + folder,
+                                      filterSet,
+                                      options=options)
+
+        if len(name) > 0:
+            short, ext = os.path.splitext(name)
+            short = os.path.basename(short)
+        else:
+            short = ext = ''
+        return name, short, ext
+
+    def saveFile(self, window, title, folder, filterSet):
+        """
+        saveFile handles a single file save with filter in a non native format.
+
+        :param window:      parent window class
+        :param title:       title for the file dialog
+        :param folder:      starting folder for searching the file
+        :param filterSet:   file extension filter
+        :return:            name: full path for file else empty
+                            short: just file name without extension
+                            ext: extension of the file
+        """
+
+        dlg = self.prepareFileDialog(window)
+        dlg.setNameFilter(filterSet)
+        options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
+        name, _ = dlg.getSaveFileName(dlg,
+                                      title,
+                                      mw4_global.work_dir + folder,
+                                      filterSet,
+                                      options=options)
         name = value[0]
         if len(name) > 0:
-            name, ext = os.path.splitext(name)
-        return name, ext
+            short, ext = os.path.splitext(name)
+            short = os.path.basename(short)
+        else:
+            short = ext = ''
+        return name, short, ext

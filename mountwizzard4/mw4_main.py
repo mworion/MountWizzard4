@@ -66,6 +66,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # write basic data to message window
         self.message.emit('MountWizzard4 started', 1)
+        self.message.emit('Workdir is: {0}\n'.format(mw4_global.work_dir), 0)
 
     def quit(self):
         self.mount.stopTimers()

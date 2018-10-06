@@ -32,6 +32,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 # local imports
 import base.styles
 import base.tpool
+import mw4_global
 
 
 version = '0.1'
@@ -198,3 +199,51 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         FigureCanvasQTAgg.updateGeometry(staticCanvas)
         layout.addWidget(staticCanvas)
         return staticCanvas
+
+    @staticmethod
+    def prepareFileDialog(window):
+        dlg = PyQt5.QtWidgets.QFileDialog()
+        dlg.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
+        dlg.setStyleSheet('background-color: rgb(32,32,32); color: rgb(192,192,192)')
+        dlg.setViewMode(PyQt5.QtWidgets.QFileDialog.List)
+        dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
+        dlg.setModal(True)
+        ph = window.geometry().height()
+        px = window.geometry().x()
+        py = window.geometry().y()
+        dw = window.width()
+        dh = window.height()
+        dlg.setGeometry(px, py + ph - dh, dw, dh)
+        return dlg
+
+    @staticmethod
+    def openFile(window, title, folder, filterSet):
+        dlg = self.propareFileDialog(window)
+        dlg.setNameFilter(filterSet)
+        ext = ''
+        options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
+        value = dlg.getOpenFileName(dlg,
+                                    title,
+                                    mw4_global.work_dir + folder,
+                                    filterSet,
+                                    options=options)
+        name = value[0]
+        if len(name) > 0:
+            name, ext = os.path.splitext(name)
+        return name, ext
+
+    @staticmethod
+    def saveFile(window, title, folder, filterSet):
+        dlg = self.propareFileDialog(window)
+        dlg.setNameFilter(filterSet)
+        ext = ''
+        options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
+        value = dlg.getSaveFileName(dlg,
+                                    title,
+                                    mw4_global.work_dir + folder,
+                                    filterSet,
+                                    options=options)
+        name = value[0]
+        if len(name) > 0:
+            name, ext = os.path.splitext(name)
+        return name, ext

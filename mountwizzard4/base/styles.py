@@ -33,6 +33,8 @@ class MWStyles(object):
     COLOR_RED = PyQt5.QtGui.QColor(255, 0, 0)
     COLOR_ORANGE = PyQt5.QtGui.QColor(192, 96, 96)
     COLOR_BLACK = PyQt5.QtGui.QColor(0, 0, 0)
+    COLOR_BACKGROUND = PyQt5.QtGui.QColor(32, 32, 32)
+    COLOR_FRAME = PyQt5.QtGui.QColor(192, 192, 192)
 
     # define the basic style of the mountwizzard3 theme
     # rise the font size for retina displays

@@ -89,6 +89,7 @@ class MainWindow(mWidget.MWidget):
         self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
         self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
+        self.ui.loadFrom.clicked.connect(self.loadProfile)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -625,3 +626,10 @@ class MainWindow(mWidget.MWidget):
             self.app.message.emit('Cannot set tracking to Solar', 2)
         else:
             self.app.message.emit('Tracking set to Solar', 0)
+
+    def loadProfile(self):
+        value, ext = self.selectFile(self,
+                                     'Open config file',
+                                     '/config',
+                                     'Config files (*.cfg)')
+

@@ -202,12 +202,20 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
 
     @staticmethod
     def prepareFileDialog(window):
+        """
+        prepareFileDialog does some preparations for geometry and general settings
+
+        :param window:  parent class
+        :return:        dlg, the dialog widget
+        """
+
         dlg = PyQt5.QtWidgets.QFileDialog()
         dlg.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
         dlg.setStyleSheet('background-color: rgb(32,32,32); color: rgb(192,192,192)')
         dlg.setViewMode(PyQt5.QtWidgets.QFileDialog.List)
         dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
         dlg.setModal(True)
+        # position the window to parent in the center
         ph = window.geometry().height()
         px = window.geometry().x()
         py = window.geometry().y()

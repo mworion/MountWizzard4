@@ -54,13 +54,18 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                                 expire=False,
                                                 verbose=False,
                                                 )
+        # managing data
+        self.mount.signals.mountUp.connect(self.loadMountData)
+
         # get the window widgets up
         self.mainW = gui.mainW.MainWindow(self)
         self.messageW = gui.messageW.MessageWindow(self)
+
         # starting cyclic polling of mount data
         self.mount.startTimers()
-        # managing data
-        self.mount.signals.mountUp.connect(self.loadMountData)
+
+        # write basic data to message window
+        self.message.emit('MountWizzard4 started', 1)
 
     def quit(self):
         self.mount.stopTimers()

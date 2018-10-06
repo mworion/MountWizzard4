@@ -87,7 +87,7 @@ class MainWindow(mWidget.MWidget):
         self.ui.park.clicked.connect(self.changePark)
         self.ui.tracking.clicked.connect(self.changeTracking)
         self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
-        self.ui.setSiderealTracking.clicked.connect(self.setSolarTracking)
+        self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
 
         # initial call for writing the gui

@@ -64,6 +64,7 @@ class MainWindow(mWidget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
+        self.setWindowTitle('MountWizzard4   (' + mw4_global.BUILD + ')')
 
         # defining the necessary instances of classes
         self.polarPlot = self.integrateMatplotlib(self.ui.modelPolar)

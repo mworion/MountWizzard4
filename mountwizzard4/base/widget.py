@@ -104,8 +104,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
                              | PyQt5.QtCore.Qt.CustomizeWindowHint)
                             & ~PyQt5.QtCore.Qt.WindowMaximizeButtonHint)
         self.setMouseTracking(True)
-        # sizing in gui should be fixed, because I have a static layout
-        self.setFixedSize(800, 600)
         self.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
         if platform.system() == 'Darwin':
             self.setStyleSheet(self.MAC_STYLE + self.BASIC_STYLE)

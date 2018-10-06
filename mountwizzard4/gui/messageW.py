@@ -41,12 +41,6 @@ class MessageWindow(mWidget.MWidget):
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self)
         self.initUI()
-        # allow sizing of the window
-        self.setFixedSize(PyQt5.QtCore.QSize(16777215, 16777215))
-        self.setSizePolicy(PyQt5.QtWidgets.QSizePolicy.Ignored,
-                           PyQt5.QtWidgets.QSizePolicy.Ignored)
-        self.setMinimumSize(800, 200)
-        self.setMaximumSize(800, 16777215)
 
         # link gui blocks
         self.message.connect(self.writeMessage)
@@ -72,7 +66,8 @@ class MessageWindow(mWidget.MWidget):
         self.show()
         self.changeStylesheet(self.app.mainW.ui.openMessageW, 'running', 'true')
 
-    def writeMessage(self, message):
+    @PyQt5.QtCore.pyqtSlot(str, int)
+    def writeMessage(self, message, type=0):
         prefix = time.strftime('%H:%M:%S - ', time.localtime())
         message = prefix + message
 

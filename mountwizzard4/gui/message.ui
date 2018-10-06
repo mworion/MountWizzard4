@@ -10,6 +10,24 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>200</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>800</width>
+    <height>1600</height>
+   </size>
+  </property>
   <property name="font">
    <font>
     <family>Arial</family>
@@ -21,22 +39,28 @@
   <widget class="QTextBrowser" name="message">
    <property name="geometry">
     <rect>
-     <x>5</x>
-     <y>5</y>
-     <width>791</width>
-     <height>591</height>
+     <x>10</x>
+     <y>10</y>
+     <width>780</width>
+     <height>581</height>
     </rect>
    </property>
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+    <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
    <property name="minimumSize">
     <size>
-     <width>0</width>
-     <height>100</height>
+     <width>780</width>
+     <height>180</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>780</width>
+     <height>1580</height>
     </size>
    </property>
    <property name="font">

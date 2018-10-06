@@ -110,7 +110,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         :param      ui:     ui element, where the stylesheet has to be changed
         :param      item:   stylesheet attribute which has to be changes
         :param      value:  new value of the attribute
-        :return:
+        :return:    nothing
         """
 
         ui.style().unpolish(ui)
@@ -120,8 +120,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
     @staticmethod
     def clearPolar(widget):
         """
-        clearPolar clears and setups the canvas widget for drawing. it sets the labels, ticks
-        and some other ui styles.
+        clearPolar clears and setups the canvas widget for drawing. it sets the labels,
+        ticks and some other ui styles.
 
         :param      widget:    matplotlib canvas widget for drawing
         :return:    fig        figure in widget
@@ -169,10 +169,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
     @staticmethod
     def integrateMatplotlib(ui):
         """
-        IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5 application
-        gui. you call it with the parent widget, which is linked to matplotlib canvas of the same
-        size. the background is set to transparent, so you could layer multiple figures on top.
+        IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5
+        application gui. you call it with the parent widget, which is linked to matplotlib
+        canvas of the same size. the background is set to transparent, so you could layer
+        multiple figures on top.
 
+        :param      ui:             parent ui element, which is the reference for embedding
+        :return:    staticCanvas:   matplotlib reference as parent for figures
         """
 
         # to avoid a white flash before drawing on top.

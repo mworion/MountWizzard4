@@ -37,7 +37,6 @@ import base.tpool
 version = '0.1'
 __all__ = [
     'MWidget',
-    'IntMatplotlib',
 ]
 
 
@@ -55,6 +54,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
                'clearPolar',
                'integrateMatplotlib',
                ]
+
     version = '0.1'
     logger = logging.getLogger(__name__)
 

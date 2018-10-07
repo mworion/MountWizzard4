@@ -19,6 +19,8 @@
 ###########################################################
 # standard libraries
 import logging
+import os
+import json
 # external packages
 import PyQt5.QtCore
 # local import
@@ -101,7 +103,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if 'name' not in loadData:
             return False
         if loadData['name'] != name:
-            return
+            return False
         if loadData['version'] != '4.0':
             loadData = self.convertData(loadData)
         self.config = loadData

@@ -46,6 +46,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     def __init__(self):
         super().__init__()
+
+        # persistence management through dict
+        self.config = {}
+
         # get the working horses up
         pathToTs = mw4_global.work_dir + '/config'
         self.mount = mountcontrol.qtmount.Mount(host='192.168.2.15',
@@ -69,10 +73,79 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.message.emit('Workdir is: {0}\n'.format(mw4_global.work_dir), 0)
 
     def quit(self):
+        """
+        quit without saving persistence data
+
+        :return:    nothing
+        """
+
         self.mount.stopTimers()
         PyQt5.QtCore.QCoreApplication.quit()
 
+    def loadConfig(self, filePath, name):
+        """
+        loadConfig loads a json file from disk and stores it to the config dicts for
+        persistent data.
+
+        :param      filePath:   full path to the config file
+        :param      name:       name of the config file
+        :return:    success
+        """
+
+        if not os.path.isfile(filePath):
+            return False
+        with open(filePath, 'r') as data_file:
+            loadData = json.load(data_file)
+        if 'version' not in loadData:
+            return False
+        if 'name' not in loadData:
+            return False
+        if loadData['name'] != name:
+            return
+        if loadData['version'] != '4.0':
+            loadData = self.convertData(loadData)
+        self.config = loadData
+        return True
+
+    def saveConfig(self, filePath, name):
+        """
+        saveConfig saves a json file to disk from the config dicts for
+        persistent data.
+
+        :param      filePath:   full path to the config file
+        :param      name:       name of the config file
+        :return:    success
+        """
+
+        self.config['version'] = '4.0'
+        self.config['name'] = name
+
+        with open(filePath, 'w') as outfile:
+            # make the file human readable
+            json.dump(self.config,
+                      outfile,
+                      sort_keys=True,
+                      indent=4)
+        return True
+
+    def convertData(self, data):
+        """
+        convertDate tries to convert data from an older or newer version of the config
+        file to the actual needed one.
+
+        :param      data:   config data as dict
+        :return:    data:   config data as dict
+        """
+        return data
+
     def loadMountData(self, status):
+        """
+        loadMountData polls data from mount if connected otherwise clears all entries
+        in attributes.
+
+        :param      status: connection status to moutn computer
+        :return:    True if success for test
+        """
         if status:
             self.mount.workaround()
             self.mount.getFW()
@@ -82,3 +155,4 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.getAlign()
         else:
             self.mount.resetData()
+        return True

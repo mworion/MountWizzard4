@@ -202,6 +202,22 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         return staticCanvas
 
     @staticmethod
+    def extractNames(name):
+        """
+        extractName splits a given path to basename and extension
+        :param      name:   full path of file
+        :return:    short:  basename without extension
+                    ext:    extension
+        """
+
+        if len(name) > 0:
+            short, ext = os.path.splitext(name)
+            short = os.path.basename(short)
+        else:
+            short = ext = ''
+        return short, ext
+
+    @staticmethod
     def prepareFileDialog(window):
         """
         prepareFileDialog does some preparations for geometry and general settings
@@ -246,12 +262,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
                                       mw4_global.work_dir + folder,
                                       filterSet,
                                       options=options)
-
-        if len(name) > 0:
-            short, ext = os.path.splitext(name)
-            short = os.path.basename(short)
-        else:
-            short = ext = ''
+        short, ext = self.extractNames(name)
         return name, short, ext
 
     def saveFile(self, window, title, folder, filterSet):
@@ -275,10 +286,5 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
                                       mw4_global.work_dir + folder,
                                       filterSet,
                                       options=options)
-        name = value[0]
-        if len(name) > 0:
-            short, ext = os.path.splitext(name)
-            short = os.path.basename(short)
-        else:
-            short = ext = ''
+        short, ext = self.extractNames(name)
         return name, short, ext

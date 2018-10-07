@@ -57,6 +57,19 @@ class MessageWindow(mWidget.MWidget):
         self.app.message.connect(self.writeMessage)
         self.showWindow()
 
+    def initConfig(self):
+        x = self.app.config.get('messageWinPosX', 100)
+        y = self.app.config.get('messageWinPosY', 100)
+        if x > self.screenSizeX:
+            x = 0
+        if y > self.screenSizeY:
+            y = 0
+        self.move(x, y)
+
+    def storeConfig(self):
+        self.app.config['messageWinPosX'] = self.pos().x()
+        self.app.config['messageWinPosY'] = self.pos().y()
+
     def resizeEvent(self, QResizeEvent):
         super().resizeEvent(QResizeEvent)
         self.ui.message.setGeometry(10, 10, 780, self.height() - 20)

@@ -67,6 +67,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # get the window widgets up
         self.mainW = gui.mainW.MainWindow(self)
         self.messageW = gui.messageW.MessageWindow(self)
+        self.mainW.initConfig()
+        self.messageW.initConfig()
 
         # starting cyclic polling of mount data
         self.mount.startTimers()
@@ -83,6 +85,18 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         self.mount.stopTimers()
+        PyQt5.QtCore.QCoreApplication.quit()
+
+    def quitSave(self):
+        """
+        quit with saving persistence data
+
+        :return:    nothing
+        """
+
+        self.mount.stopTimers()
+        self.mainW.storeConfig()
+        self.messageW.storeConfig()
         PyQt5.QtCore.QCoreApplication.quit()
 
     def loadConfig(self, filePath=None):

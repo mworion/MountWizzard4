@@ -82,7 +82,7 @@ class MainWindow(mWidget.MWidget):
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
-        self.ui.saveConfigQuit.clicked.connect(self.app.quit)
+        self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
         self.ui.park.clicked.connect(self.changePark)
@@ -100,6 +100,21 @@ class MainWindow(mWidget.MWidget):
         self.timerGui.setSingleShot(False)
         self.timerGui.timeout.connect(self.updateGuiCyclic)
         self.timerGui.start(self.CYCLE_GUI)
+
+    def initConfig(self):
+        x = self.app.config.get('mainWinPosX', 100)
+        y = self.app.config.get('mainWinPosY', 100)
+        if x > self.screenSizeX:
+            x = 0
+        if y > self.screenSizeY:
+            y = 0
+        self.move(x, y)
+        self.ui.profile.setText(self.app.config.get('profile'))
+
+    def storeConfig(self):
+        self.app.config['mainWinPosX'] = self.pos().x()
+        self.app.config['mainWinPosY'] = self.pos().y()
+        self.app.config['profile'] = self.ui.profile.text()
 
     def closeEvent(self, closeEvent):
         """

@@ -49,7 +49,7 @@ class MainTests(unittest.TestCase):
     #
 
     def test_loadConfig_ok1(self):
-        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config.cfg'
+        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config0.cfg'
         name = 'config'
         mw4_global.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
         main = mw4_main.MountWizzard4()

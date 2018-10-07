@@ -125,9 +125,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         self.config['version'] = '4.0'
         self.config['name'] = name
+        configPath = mw4_global.config_dir + '/config.cfg'
 
         with open(filePath, 'w') as outfile:
             # make the file human readable
+            json.dump(self.config,
+                      outfile,
+                      sort_keys=True,
+                      indent=4)
+        with open(configPath, 'w') as outfile:
             json.dump(self.config,
                       outfile,
                       sort_keys=True,

@@ -180,6 +180,9 @@ def main():
     splash.setValue(0)
     # setting work dir:
     mw4_global.work_dir = os.getcwd()
+    mw4_global.config_dir = mw4_global.work_dir + '/config'
+    mw4_global.data_dir = mw4_global.work_dir + '/data'
+    mw4_global.image_dir = mw4_global.work_dir + '/image'
     # now setup the logging environment
     splash.showMessage('Setup logging')
     splash.setValue(20)
@@ -204,8 +207,14 @@ def main():
     splash.setValue(30)
 
     # we put all the configurations and downloadable files for usage in the config dir
-    if not os.path.isdir(os.getcwd() + '/config'):
-        os.makedirs(os.getcwd() + '/config')
+    if not os.path.isdir(mw4_global.work_dir):
+        os.makedirs(mw4_global.work_dir)
+    if not os.path.isdir(mw4_global.config_dir):
+        os.makedirs(mw4_global.config_dir)
+    if not os.path.isdir(mw4_global.data_dir):
+        os.makedirs(mw4_global.date_dir)
+    if not os.path.isdir(mw4_global.image_dir):
+        os.makedirs(mw4_global.image_dir)
 
     # start logging with basic system data for information
     splash.showMessage('Logging environment')
@@ -251,10 +260,14 @@ def main():
     # checking if writable
     splash.showMessage('Checking work directories')
     splash.setValue(50)
-    if not os.access(os.getcwd(), os.W_OK):
+    if not os.access(mw4_global.work_dir, os.W_OK):
         logging.error('no write access to workdir')
-    if not os.access(os.getcwd() + '/config', os.W_OK):
+    if not os.access(mw4_global.config_dir, os.W_OK):
         logging.error('no write access to /config')
+    if not os.access(mw4_global.data_dir, os.W_OK):
+        logging.error('no write access to /data')
+    if not os.access(mw4_global.image_dir, os.W_OK):
+        logging.error('no write access to /image')
 
     # and finally starting the application
     splash.showMessage('Preparing application')

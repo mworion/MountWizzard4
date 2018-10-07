@@ -74,8 +74,8 @@ class MainWindowTests(unittest.TestCase):
     #
     #
 
-    def test_updateGui(self):
-        suc = self.mainW.updateGui()
+    def test_updateGuiCyclic(self):
+        suc = self.mainW.updateGuiCyclic()
         self.assertEqual(True, suc)
 
     #

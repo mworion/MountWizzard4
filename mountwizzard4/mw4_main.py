@@ -67,8 +67,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # get the window widgets up
         self.mainW = gui.mainW.MainWindow(self)
         self.messageW = gui.messageW.MessageWindow(self)
-        self.mainW.initConfig()
-        self.messageW.initConfig()
 
         # starting cyclic polling of mount data
         self.mount.startTimers()
@@ -97,6 +95,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.stopTimers()
         self.mainW.storeConfig()
         self.messageW.storeConfig()
+        self.saveConfig()
         PyQt5.QtCore.QCoreApplication.quit()
 
     def loadConfig(self, filePath=None):
@@ -124,14 +123,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             return False
         # now we have the true file path
         filePath = loadData['filePath']
-        if not os.path.isfile(filePath):
-            return False
-        try:
-            with open(filePath, 'r') as data_file:
-                loadData = json.load(data_file)
-        except Exception as e:
-            self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
-            return False
+        if filePath is not None:
+            if not os.path.isfile(filePath):
+                return False
+            try:
+                with open(filePath, 'r') as data_file:
+                    loadData = json.load(data_file)
+            except Exception as e:
+                self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
+                return False
         if 'version' not in loadData:
             return False
         if loadData['version'] != '4.0':
@@ -139,7 +139,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config = loadData
         return True
 
-    def saveConfig(self, filePath):
+    def saveConfig(self, filePath=None):
         """
         saveConfig saves a json file to disk from the config dicts for
         persistent data.
@@ -151,12 +151,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config['version'] = '4.0'
         self.config['filePath'] = filePath
         configPath = mw4_global.config_dir + '/config.cfg'
-        with open(filePath, 'w') as outfile:
-            # make the file human readable
-            json.dump(self.config,
-                      outfile,
-                      sort_keys=True,
-                      indent=4)
+        if filePath is not None:
+            with open(filePath, 'w') as outfile:
+                # make the file human readable
+                json.dump(self.config,
+                          outfile,
+                          sort_keys=True,
+                          indent=4)
         with open(configPath, 'w') as outfile:
             json.dump(self.config,
                       outfile,

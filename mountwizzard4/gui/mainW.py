@@ -94,6 +94,7 @@ class MainWindow(mWidget.MWidget):
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
+        self.initConfig()
         self.show()
 
         self.timerGui = PyQt5.QtCore.QTimer()

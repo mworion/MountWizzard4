@@ -55,6 +55,7 @@ class MessageWindow(mWidget.MWidget):
 
         # link gui blocks
         self.app.message.connect(self.writeMessage)
+        self.initConfig()
         self.showWindow()
 
     def initConfig(self):

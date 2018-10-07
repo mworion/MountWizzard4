@@ -21,6 +21,7 @@
 import logging
 import datetime
 import time
+import json
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -632,8 +633,7 @@ class MainWindow(mWidget.MWidget):
                                          'Open config file',
                                          '/config',
                                          'Config files (*.cfg)')
-        print(name)
-        print(short)
-        print(ext)
+
+
 
 

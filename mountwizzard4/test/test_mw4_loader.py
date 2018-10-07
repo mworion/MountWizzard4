@@ -58,4 +58,3 @@ class LoaderTests(unittest.TestCase):
         splash.setValue(50)
         splash.setValue(90)
         splash.setValue(100)
-

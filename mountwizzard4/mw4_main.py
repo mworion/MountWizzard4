@@ -96,8 +96,12 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         if not os.path.isfile(filePath):
             return False
-        with open(filePath, 'r') as data_file:
-            loadData = json.load(data_file)
+        try:
+            with open(filePath, 'r') as data_file:
+                loadData = json.load(data_file)
+        except Exception as e:
+            self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
+            return False
         if 'version' not in loadData:
             return False
         if 'name' not in loadData:

@@ -212,7 +212,7 @@ def main():
     if not os.path.isdir(mw4_global.config_dir):
         os.makedirs(mw4_global.config_dir)
     if not os.path.isdir(mw4_global.data_dir):
-        os.makedirs(mw4_global.date_dir)
+        os.makedirs(mw4_global.data_dir)
     if not os.path.isdir(mw4_global.image_dir):
         os.makedirs(mw4_global.image_dir)
 

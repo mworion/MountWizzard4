@@ -16742,7 +16742,7 @@ manually</string>
     <string>Save as</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="le_configName">
+  <widget class="QLineEdit" name="profile">
    <property name="enabled">
     <bool>false</bool>
    </property>

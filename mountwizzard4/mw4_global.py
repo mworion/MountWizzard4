@@ -25,3 +25,6 @@ BUILD = '0.1.dev0'
 frozen = False
 bundle_dir = ''
 work_dir = ''
+config_dir = ''
+data_dir = ''
+image_dir = ''

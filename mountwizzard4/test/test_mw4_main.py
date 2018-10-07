@@ -51,58 +51,64 @@ class MainTests(unittest.TestCase):
 
     def test_loadConfig_ok1(self):
         filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config0.cfg'
-        name = 'config'
         main = mw4_main.MountWizzard4()
 
-        suc = main.loadConfig(filePath, name)
+        suc = main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
-        self.assertEqual('config', main.config['name'])
         self.assertEqual('4.0', main.config['version'])
+
+    def test_loadConfig_ok2(self):
+        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config0.cfg'
+        main = mw4_main.MountWizzard4()
+
+        suc = main.loadConfig(filePath=filePath)
+        self.assertEqual(True, suc)
+        self.assertEqual('4.0', main.config['version'])
+
+    def test_loadConfig_ok3(self):
+        main = mw4_main.MountWizzard4()
+
+        suc = main.loadConfig()
+        self.assertEqual(True, suc)
 
     def test_loadConfig_not_ok1(self):
         filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok1.cfg'
-        name = 'config'
         main = mw4_main.MountWizzard4()
 
-        suc = main.loadConfig(filePath, name)
-        self.assertEqual(False, suc)
+        suc = main.loadConfig(filePath=filePath)
+        self.assertEqual(True, suc)
 
     def test_loadConfig_not_ok2(self):
         filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok2.cfg'
-        name = 'config'
         main = mw4_main.MountWizzard4()
 
-        suc = main.loadConfig(filePath, name)
+        suc = main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok3(self):
         filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok3.cfg'
-        name = 'config'
         main = mw4_main.MountWizzard4()
 
-        suc = main.loadConfig(filePath, name)
+        suc = main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok4(self):
         filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok4.cfg'
-        name = 'config'
         main = mw4_main.MountWizzard4()
 
-        suc = main.loadConfig(filePath, name)
+        suc = main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok5(self):
         filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok5.cfg'
-        name = 'config'
         main = mw4_main.MountWizzard4()
 
-        suc = main.loadConfig(filePath, name)
+        suc = main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
-    def test_saveConfig(self):
+    def test_saveConfig_ok1(self):
         filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/test.cfg'
-        name = 'test'
         main = mw4_main.MountWizzard4()
 
-        suc = main.saveConfig(filePath, name)
+        suc = main.saveConfig(filePath=filePath)
         self.assertEqual(True, suc)

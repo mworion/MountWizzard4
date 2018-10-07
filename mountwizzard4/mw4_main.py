@@ -51,6 +51,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # persistence management through dict
         self.config = {}
+        self.loadConfig()
 
         # get the working horses up
         pathToTs = mw4_global.work_dir + '/config'
@@ -84,16 +85,31 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.stopTimers()
         PyQt5.QtCore.QCoreApplication.quit()
 
-    def loadConfig(self, filePath, name):
+    def loadConfig(self, filePath=None):
         """
         loadConfig loads a json file from disk and stores it to the config dicts for
         persistent data.
 
         :param      filePath:   full path to the config file
-        :param      name:       name of the config file
         :return:    success
         """
 
+        if filePath is None:
+            filePath = mw4_global.config_dir + '/config.cfg'
+        self.config = {}
+        if not os.path.isfile(filePath):
+            return False
+        try:
+            with open(filePath, 'r') as data_file:
+                loadData = json.load(data_file)
+        except Exception as e:
+            self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
+            return False
+        if 'filePath' not in loadData:
+            self.logger.error('Cannot load, because no file path in config.cfg')
+            return False
+        # now we have the true file path
+        filePath = loadData['filePath']
         if not os.path.isfile(filePath):
             return False
         try:
@@ -104,29 +120,23 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             return False
         if 'version' not in loadData:
             return False
-        if 'name' not in loadData:
-            return False
-        if loadData['name'] != name:
-            return False
         if loadData['version'] != '4.0':
             loadData = self.convertData(loadData)
         self.config = loadData
         return True
 
-    def saveConfig(self, filePath, name):
+    def saveConfig(self, filePath):
         """
         saveConfig saves a json file to disk from the config dicts for
         persistent data.
 
         :param      filePath:   full path to the config file
-        :param      name:       name of the config file
         :return:    success
         """
 
         self.config['version'] = '4.0'
-        self.config['name'] = name
+        self.config['filePath'] = filePath
         configPath = mw4_global.config_dir + '/config.cfg'
-
         with open(filePath, 'w') as outfile:
             # make the file human readable
             json.dump(self.config,
@@ -155,7 +165,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         loadMountData polls data from mount if connected otherwise clears all entries
         in attributes.
 
-        :param      status: connection status to moutn computer
+        :param      status: connection status to mount computer
         :return:    True if success for test
         """
         if status:

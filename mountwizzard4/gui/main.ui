@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -8944,7 +8944,7 @@ manually</string>
       <string>Refresh</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="saveModel">
+    <widget class="QPushButton" name="saveName">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -8970,7 +8970,7 @@ manually</string>
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="loadModel">
+    <widget class="QPushButton" name="loadName">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -8986,7 +8986,7 @@ manually</string>
       <string>Load</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="deleteModel">
+    <widget class="QPushButton" name="deleteName">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -9026,7 +9026,7 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="refreshModel_2">
+    <widget class="QPushButton" name="refreshName">
      <property name="geometry">
       <rect>
        <x>695</x>
@@ -9059,12 +9059,12 @@ manually</string>
     <zorder>numberStars1</zorder>
     <zorder>label_76</zorder>
     <zorder>refreshModel</zorder>
-    <zorder>saveModel</zorder>
+    <zorder>saveName</zorder>
     <zorder>nameList</zorder>
-    <zorder>loadModel</zorder>
-    <zorder>deleteModel</zorder>
+    <zorder>loadName</zorder>
+    <zorder>deleteName</zorder>
     <zorder>checkShowErrorValues</zorder>
-    <zorder>refreshModel_2</zorder>
+    <zorder>refreshName</zorder>
    </widget>
    <widget class="QWidget" name="tab_5">
     <attribute name="title">

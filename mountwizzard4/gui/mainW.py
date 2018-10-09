@@ -91,6 +91,8 @@ class MainWindow(mWidget.MWidget):
         self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
         self.ui.loadFrom.clicked.connect(self.loadProfile)
+        self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
+        self.ui.saveConfig.clicked.connect(self.saveProfile)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -170,9 +172,13 @@ class MainWindow(mWidget.MWidget):
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
-        self.wIcon(self.ui.loadModel, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
-        self.wIcon(self.ui.saveModel, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
-        self.wIcon(self.ui.deleteModel, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
+        self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
+        self.wIcon(self.ui.saveName, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
+        self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
+        self.wIcon(self.ui.refreshName, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
+        self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
 
         pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
         self.ui.picAZ.setPixmap(pixmap)
@@ -655,6 +661,33 @@ class MainWindow(mWidget.MWidget):
                                          'Open config file',
                                          '/config',
                                          'Config files (*.cfg)')
+        if not name:
+            return
+        suc = self.app.loadConfig(name)
+        if suc:
+            self.app.message.emit('Profile: [{0}] loaded'.format(short), 0)
+        else:
+            self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(short), 2)
+
+    def saveProfileAs(self):
+        name, short, ext = self.saveFile(self,
+                                         'Save config file',
+                                         '/config',
+                                         'Config files (*.cfg)')
+        if not name:
+            return
+        suc = self.app.saveConfig(name)
+        if suc:
+            self.app.message.emit('Profile: [{0}] saved'.format(short), 0)
+        else:
+            self.app.message.emit('Profile: [{0}] cannot no be saved'.format(short), 2)
+
+    def saveProfile(self):
+        suc = self.app.saveConfig()
+        if suc:
+            self.app.message.emit('Actual profile saved', 0)
+        else:
+            self.app.message.emit('Actual profile cannot not be saved', 2)
 
 
 

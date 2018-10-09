@@ -189,15 +189,15 @@ class MainWindow(mWidget.MWidget):
 
     def mountBoot(self):
         if self.app.mount.bootMount():
-            self.logger.info('Mount started')
+            self.app.message.emit('Mount booted', 0)
         else:
-            pass
+            self.app.message.emit('Mount cannot be booted', 2)
 
     def mountShutdown(self):
         if self.app.mount.obsSite.shutdown():
-            self.logger.info('Mount shutdown')
+            self.app.message.emit('Shutting mount down', 0)
         else:
-            pass
+            self.app.message.emit('Mount cannot be shutdown', 2)
 
     def clearMountGui(self):
         self.updateAlignGui()

@@ -69,6 +69,7 @@ class MainWindow(mWidget.MWidget):
 
         # defining the necessary instances of classes
         self.polarPlot = self.integrateMatplotlib(self.ui.modelPolar)
+        self.showModelPolar()
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updatePointGUI)
@@ -145,7 +146,7 @@ class MainWindow(mWidget.MWidget):
 
         :return:    True if success for test
         """
-        # show icon in main gui and add some icons for push buttons
+
         self.wIcon(self.ui.openMessageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
         self.wIcon(self.ui.openAnalyseW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
         self.wIcon(self.ui.openImageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
@@ -157,22 +158,22 @@ class MainWindow(mWidget.MWidget):
         self.wIcon(self.ui.saveConfigQuit, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
-        self.wIcon(self.ui.runInitialModel, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.runInitialModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelInitialModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.generateInitialPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
-        self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
-        self.wIcon(self.ui.generateGridPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
-        self.wIcon(self.ui.generateMaxPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
-        self.wIcon(self.ui.generateNormalPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
-        self.wIcon(self.ui.generateMinPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
-        self.wIcon(self.ui.generateDSOPoints, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
-        self.wIcon(self.ui.runFlexure, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
-        self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.generateInitialPoints, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.generateGridPoints, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.generateMaxPoints, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.generateNormalPoints, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.generateMinPoints, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.generateDSOPoints, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.runFlexure, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
-        self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_ArrowForward)
+        self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
         self.wIcon(self.ui.saveName, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
@@ -526,6 +527,11 @@ class MainWindow(mWidget.MWidget):
         if not self.app.mount.obsSite.location:
             # clear the plot and return
             fig, axes = self.clearPolar(self.polarPlot)
+            fig.subplots_adjust(left=0.1,
+                                right=0.9,
+                                bottom=0.1,
+                                top=0.85,
+                                )
             axes.figure.canvas.draw()
             return False
 

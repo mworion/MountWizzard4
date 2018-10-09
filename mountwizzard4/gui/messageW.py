@@ -35,7 +35,7 @@ class MessageWindow(mWidget.MWidget):
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):
-        super(MessageWindow, self).__init__()
+        super().__init__()
         self.app = app
         self.showStatus = False
         self.ui = message_ui.Ui_MessageDialog()
@@ -56,20 +56,28 @@ class MessageWindow(mWidget.MWidget):
         # link gui blocks
         self.app.message.connect(self.writeMessage)
         self.initConfig()
-        self.showWindow()
 
     def initConfig(self):
-        x = self.app.config.get('messageWinPosX', 100)
-        y = self.app.config.get('messageWinPosY', 100)
+        if 'messageW' not in self.app.config:
+            return
+        config = self.app.config['messageW']
+        x = config.get('winPosX', 100)
+        y = config.get('winPosY', 100)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:
             y = 0
         self.move(x, y)
+        if config.get('showStatus'):
+            self.showWindow()
 
     def storeConfig(self):
-        self.app.config['messageWinPosX'] = self.pos().x()
-        self.app.config['messageWinPosY'] = self.pos().y()
+        if 'messageW' not in self.app.config:
+            self.app.config['messageW'] = {}
+        config = self.app.config['messageW']
+        config['winPosX'] = self.pos().x()
+        config['winPosY'] = self.pos().y()
+        config['showStatus'] = self.showStatus
 
     def resizeEvent(self, QResizeEvent):
         super().resizeEvent(QResizeEvent)

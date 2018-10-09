@@ -68,6 +68,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW = gui.mainW.MainWindow(self)
         self.messageW = gui.messageW.MessageWindow(self)
 
+        # link cross widget gui signals
+        self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
+
         # starting cyclic polling of mount data
         self.mount.startTimers()
 

@@ -55,7 +55,7 @@ class MainWindow(mWidget.MWidget):
         super().__init__()
 
         self.app = app
-        self.tPool = PyQt5.QtCore.QThreadPool()
+        # self.tPool = PyQt5.QtCore.QThreadPool()
 
         # load and init the gui
         # guiPath = mw4_global.work_dir + '/mountwizzard4/gui/main.ui'
@@ -103,19 +103,25 @@ class MainWindow(mWidget.MWidget):
         self.timerGui.start(self.CYCLE_GUI)
 
     def initConfig(self):
-        x = self.app.config.get('mainWinPosX', 100)
-        y = self.app.config.get('mainWinPosY', 100)
+        if 'mainW' not in self.app.config:
+            return
+        config = self.app.config['mainW']
+        x = config.get('winPosX', 100)
+        y = config.get('winPosY', 100)
         if x > self.screenSizeX:
             x = 0
         if y > self.screenSizeY:
             y = 0
         self.move(x, y)
-        self.ui.profile.setText(self.app.config.get('profile'))
+        self.ui.profile.setText(config.get('profile'))
 
     def storeConfig(self):
-        self.app.config['mainWinPosX'] = self.pos().x()
-        self.app.config['mainWinPosY'] = self.pos().y()
-        self.app.config['profile'] = self.ui.profile.text()
+        if 'mainW' not in self.app.config:
+            self.app.config['mainW'] = {}
+        config = self.app.config['mainW']
+        config['winPosX'] = self.pos().x()
+        config['winPosY'] = self.pos().y()
+        config['profile'] = self.ui.profile.text()
 
     def closeEvent(self, closeEvent):
         """

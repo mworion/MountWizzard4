@@ -663,26 +663,28 @@ class MainWindow(mWidget.MWidget):
             self.app.message.emit('Tracking set to Solar', 0)
 
     def loadProfile(self):
-        name, short, ext = self.openFile(self,
-                                         'Open config file',
-                                         '/config',
-                                         'Config files (*.cfg)')
-        if not name:
+        filePath, name, ext = self.openFile(self,
+                                            'Open config file',
+                                            '/config',
+                                            'Config files (*.cfg)',
+                                            )
+        if not filePath:
             return
-        suc = self.app.loadConfig(name)
+        suc = self.app.loadConfig(filePath=filePath, name=name)
         if suc:
             self.app.message.emit('Profile: [{0}] loaded'.format(short), 0)
         else:
             self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(short), 2)
 
     def saveProfileAs(self):
-        name, short, ext = self.saveFile(self,
-                                         'Save config file',
-                                         '/config',
-                                         'Config files (*.cfg)')
-        if not name:
+        filePath, name, ext = self.saveFile(self,
+                                            'Save config file',
+                                            '/config',
+                                            'Config files (*.cfg)',
+                                            )
+        if not filePath:
             return
-        suc = self.app.saveConfig(name)
+        suc = self.app.saveConfig(filePath=filePath, name=name)
         if suc:
             self.app.message.emit('Profile: [{0}] saved'.format(short), 0)
         else:

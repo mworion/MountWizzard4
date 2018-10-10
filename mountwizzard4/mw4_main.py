@@ -101,7 +101,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.saveConfig()
         PyQt5.QtCore.QCoreApplication.quit()
 
-    def loadConfig(self, filePath=None):
+    def loadConfig(self, filePath=None, name=None):
         """
         loadConfig loads a json file from disk and stores it to the config dicts for
         persistent data.
@@ -112,7 +112,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         if filePath is None:
             filePath = mw4_global.config_dir + '/config.cfg'
-        self.config = {}
+        self.config = {'name': 'config'}
         if not os.path.isfile(filePath):
             return False
         try:
@@ -142,7 +142,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config = loadData
         return True
 
-    def saveConfig(self, filePath=None):
+    def saveConfig(self, filePath=None, name=None):
         """
         saveConfig saves a json file to disk from the config dicts for
         persistent data.
@@ -153,6 +153,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         self.config['version'] = '4.0'
         self.config['filePath'] = filePath
+        self.config['name'] = name
         configPath = mw4_global.config_dir + '/config.cfg'
         if filePath is not None:
             with open(filePath, 'w') as outfile:
@@ -161,6 +162,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                           outfile,
                           sort_keys=True,
                           indent=4)
+        if name is None:
+            self.config['name'] = 'config'
         with open(configPath, 'w') as outfile:
             json.dump(self.config,
                       outfile,

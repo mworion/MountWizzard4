@@ -48,6 +48,7 @@ class MainWindowTests(unittest.TestCase):
 
     def setUp(self):
         mw4_global.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
+        mw4_global.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
         self.mount = mountcontrol.qtmount.Mount()
         self.mainW = gui.mainW.MainWindow(self)
 

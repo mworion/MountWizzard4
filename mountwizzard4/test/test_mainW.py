@@ -23,7 +23,8 @@ import unittest.mock as mock
 import os
 import time
 # external packages
-import PyQt5.QtTest
+import pytest
+import pytestqt
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 import PyQt5.uic
@@ -49,6 +50,7 @@ class MainWindowTests(unittest.TestCase):
         mw4_global.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
         mw4_global.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
         self.main = mw4_main.MountWizzard4()
+        self.spy = PyQt5.QtTest.QSignalSpy(self.main.message)
 
     def tearDown(self):
         pass
@@ -565,45 +567,65 @@ class MainWindowTests(unittest.TestCase):
         suc = self.main.mainW.showModelPolar()
         self.assertEqual(False, suc)
 
-    #
-    #
-    # testing mainW gui change tracking
-    #
-    #
+#
+#
+# testing mainW gui change tracking
+#
+#
 
-    def test_changeTracking_ok1(self):
-        self.main.mount.obsSite.status = 5
 
-        with mock.patch.object(self.main.mount.obsSite, 'stopTracking') as mMock:
-            mMock.return_value.stopTracking.return_value = True
+mw4_global.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
+mw4_global.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
 
-            suc = self.main.mainW.changeTracking()
-            self.assertEqual(True, suc)
 
-    def test_changeTracking_ok2(self):
-        self.main.mount.obsSite.status = 5
+def test_changeTracking_ok1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.status = 0
 
-        with mock.patch.object(self.main.mount.obsSite, 'stopTracking') as mMock:
-            mMock.return_value.stopTracking.return_value = False
+    with mock.patch.object(app.mount.obsSite,
+                           'stopTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changeTracking()
+            assert True == suc
+        assert ['Cannot stop tracking', 2] == blocker.args
 
-            suc = self.main.mainW.changeTracking()
-            self.assertEqual(True, suc)
 
-    def test_changeTracking_ok3(self):
-        self.main.mount.obsSite.status = 1
+def test_changeTracking_ok2(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.status = 0
 
-        with mock.patch.object(self.main.mount.obsSite, 'startTracking') as mMock:
-            mMock.return_value.startTracking.return_value = True
+    with mock.patch.object(app.mount.obsSite,
+                           'stopTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changeTracking()
+            assert True == suc
+        assert ['Stopped tracking', 0] == blocker.args
 
-            suc = self.main.mainW.changeTracking()
-            self.assertEqual(True, suc)
 
-    def test_changeTracking_ok4(self):
-        self.main.mount.obsSite.status = 1
+def test_changeTracking_ok3(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.status = 1
 
-        with mock.patch.object(self.main.mount.obsSite, 'startTracking') as mMock:
-            mMock.return_value.startTracking.return_value = False
+    with mock.patch.object(app.mount.obsSite,
+                           'startTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changeTracking()
+            assert True == suc
+        assert ['Cannot start tracking', 2] == blocker.args
 
-            suc = self.main.mainW.changeTracking()
-            self.assertEqual(True, suc)
+
+def test_changeTracking_ok4(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.status = 1
+
+    with mock.patch.object(app.mount.obsSite,
+                           'startTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changeTracking()
+            assert True == suc
+        assert ['Started tracking', 0] == blocker.args
 

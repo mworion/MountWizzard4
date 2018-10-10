@@ -619,7 +619,6 @@ class MainWindow(mWidget.MWidget):
                 self.app.message.emit('Cannot start tracking', 2)
             else:
                 self.app.message.emit('Started tracking', 0)
-
         return True
 
     def changePark(self):

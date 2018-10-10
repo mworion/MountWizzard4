@@ -629,3 +629,55 @@ def test_changeTracking_ok4(qtbot):
             assert True == suc
         assert ['Started tracking', 0] == blocker.args
 
+
+def test_changePark_ok1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.status = 5
+
+    with mock.patch.object(app.mount.obsSite,
+                           'unpark',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changePark()
+            assert True == suc
+        assert ['Cannot unpark mount', 2] == blocker.args
+
+
+def test_changePark_ok2(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.status = 5
+
+    with mock.patch.object(app.mount.obsSite,
+                           'unpark',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changePark()
+            assert True == suc
+        assert ['Mount unparked', 0] == blocker.args
+
+
+def test_changePark_ok3(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.status = 1
+
+    with mock.patch.object(app.mount.obsSite,
+                           'park',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changePark()
+            assert True == suc
+        assert ['Cannot park mount', 2] == blocker.args
+
+
+def test_changePark_ok4(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.status = 1
+
+    with mock.patch.object(app.mount.obsSite,
+                           'park',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changePark()
+            assert True == suc
+        assert ['Mount parked', 0] == blocker.args
+

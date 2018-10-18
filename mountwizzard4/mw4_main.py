@@ -86,7 +86,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         self.mount.stopTimers()
-        PyQt5.QtCore.QCoreApplication.quit()
+        self.quit()
 
     def quitSave(self):
         """
@@ -99,9 +99,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.storeConfig()
         self.messageW.storeConfig()
         self.saveConfig()
-        PyQt5.QtCore.QCoreApplication.quit()
+        self.quit()
 
-    def loadConfig(self, filePath=None, name=None):
+    def loadConfig(self, filePath=None):
         """
         loadConfig loads a json file from disk and stores it to the config dicts for
         persistent data.
@@ -148,6 +148,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         persistent data.
 
         :param      filePath:   full path to the config file
+        :param      name:       name of the configuration
         :return:    success
         """
 
@@ -179,6 +180,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :param      data:   config data as dict
         :return:    data:   config data as dict
         """
+
         return data
 
     def loadMountData(self, status):

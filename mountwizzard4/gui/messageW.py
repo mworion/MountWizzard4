@@ -103,7 +103,7 @@ class MessageWindow(mWidget.MWidget):
     def writeMessage(self, message, mType=0):
         prefix = time.strftime('%H:%M:%S - ', time.localtime())
         message = prefix + message
-        self.logger.info('Message window: {0}'.format(message))
+        self.logger.info('Message window: [{0}]'.format(message))
         self.ui.message.setTextColor(self.messColor[mType])
         self.ui.message.setFontWeight(self.messFont[mType])
         self.ui.message.insertPlainText(message + '\n')

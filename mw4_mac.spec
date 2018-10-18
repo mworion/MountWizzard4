@@ -39,7 +39,6 @@ a = Analysis(['mountwizzard4/mw4_loader.py'],
     datas=[
         ],
     hiddenimports=[
-        'PyQt5.sip',       # not bundled for pyqt5 >5.11 anymore
         ],
     hookspath=[],
     runtime_hooks=[],

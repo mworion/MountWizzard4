@@ -86,7 +86,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         self.mount.stopTimers()
-        self.quit()
+        PyQt5.QtCore.QCoreApplication.quit()
 
     def quitSave(self):
         """
@@ -99,7 +99,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.storeConfig()
         self.messageW.storeConfig()
         self.saveConfig()
-        self.quit()
+        PyQt5.QtCore.QCoreApplication.quit()
 
     def loadConfig(self, filePath=None):
         """

@@ -94,6 +94,10 @@ class MainWindow(mWidget.MWidget):
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
+        self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
+        self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
+        self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
+        self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -116,6 +120,10 @@ class MainWindow(mWidget.MWidget):
         if y > self.screenSizeY:
             y = 0
         self.move(x, y)
+        self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
+        self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
+        self.ui.loglevelWarning.setChecked(config.get('loglevelWarning', False))
+        self.ui.loglevelError.setChecked(config.get('loglevelError', False))
         self.ui.profile.setText(config.get('profile'))
 
     def storeConfig(self):
@@ -124,6 +132,10 @@ class MainWindow(mWidget.MWidget):
         config = self.app.config['mainW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
+        config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
+        config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
+        config['loglevelWarning'] = self.ui.loglevelWarning.isChecked()
+        config['loglevelError'] = self.ui.loglevelError.isChecked()
         config['profile'] = self.ui.profile.text()
 
     def closeEvent(self, closeEvent):
@@ -695,6 +707,22 @@ class MainWindow(mWidget.MWidget):
             self.app.message.emit('Actual profile saved', 0)
         else:
             self.app.message.emit('Actual profile cannot not be saved', 2)
+
+    def setLoggingLevel(self):
+        """
+        Setting the log level according to the setting in the gui.
+
+        :return: nothing
+        """
+
+        if self.ui.loglevelDebug.isChecked():
+            logging.getLogger().setLevel(logging.DEBUG)
+        elif self.ui.loglevelInfo.isChecked():
+            logging.getLogger().setLevel(logging.INFO)
+        elif self.ui.loglevelWarning.isChecked():
+            logging.getLogger().setLevel(logging.WARNING)
+        elif self.ui.loglevelError.isChecked():
+            logging.getLogger().setLevel(logging.ERROR)
 
 
 

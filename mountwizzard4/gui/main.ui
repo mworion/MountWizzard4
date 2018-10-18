@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -4564,7 +4564,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>540</x>
-       <y>215</y>
+       <y>210</y>
        <width>211</width>
        <height>20</height>
       </rect>
@@ -4609,7 +4609,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>540</x>
-       <y>115</y>
+       <y>120</y>
        <width>211</width>
        <height>21</height>
       </rect>
@@ -4982,7 +4982,7 @@ manually</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Keep images from build</string>
+      <string>Keep images from modeling</string>
      </property>
      <property name="checked">
       <bool>false</bool>

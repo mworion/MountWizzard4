@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>9</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -11525,7 +11525,7 @@ manually</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -13572,500 +13572,6 @@ manually</string>
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="Uploads">
-      <attribute name="title">
-       <string>Uploads</string>
-      </attribute>
-      <widget class="QPushButton" name="btn_downloadEarthrotation">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>40</y>
-         <width>341</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download earth rotation data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Download Earth Rotation and UTC files</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_123">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>201</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Webservices for space data</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_17">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>30</y>
-         <width>361</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_downloadSpacestations">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>90</y>
-         <width>341</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download space stations TLE (please note: alternatively to Satellite)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Download Space Stations TLE Elements</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_downloadSatbrighest">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>130</y>
-         <width>341</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download Satellite TLE (please note: alternatively to space stations)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Download Brightest Satellite TLE Elements</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_downloadAsteroidsMPC5000">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>245</y>
-         <width>171</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download asteroids MPC file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Downl. Asteroids MPC5000</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_downloadComets">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>190</y>
-         <width>341</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download comets MPC file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Download Comets MPC File</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkEarthrotation">
-       <property name="geometry">
-        <rect>
-         <x>410</x>
-         <y>40</y>
-         <width>301</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upload earth rotation and UTC data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Upload  Earth Rotation and UTC files</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkTLE">
-       <property name="geometry">
-        <rect>
-         <x>410</x>
-         <y>110</y>
-         <width>301</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upload TLE elements&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Upload TLE Elements</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkAsteroids">
-       <property name="geometry">
-        <rect>
-         <x>410</x>
-         <y>245</y>
-         <width>301</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upload asteroids data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Upload Asteroids MPC File</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkComets">
-       <property name="geometry">
-        <rect>
-         <x>410</x>
-         <y>190</y>
-         <width>301</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Upload comets data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Upload Comets MPC File</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_uploadMount">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>350</y>
-         <width>341</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start upload with 10micron updater&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Upload to Mount</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_downloadAll">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>350</y>
-         <width>341</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download all files (please note satellite and space stations work alternatively)  &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Download All Files</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_47">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>11</width>
-         <height>381</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_134">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>10</y>
-         <width>171</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Mount uploads</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_19">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>30</y>
-         <width>341</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkFilterMPC">
-       <property name="geometry">
-        <rect>
-         <x>430</x>
-         <y>275</y>
-         <width>271</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check to filter Comets and Asteroids MPC File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Filter MPC Files with expression(s):</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_filterExpressionMPC">
-       <property name="geometry">
-        <rect>
-         <x>430</x>
-         <y>305</y>
-         <width>281</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;serach expression, separated with ','&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_downloadAsteroidsNEA">
-       <property name="geometry">
-        <rect>
-         <x>200</x>
-         <y>245</y>
-         <width>161</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download asteroids MPC file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Downl. Asteroids NEA</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_downloadAsteroidsTNO">
-       <property name="geometry">
-        <rect>
-         <x>200</x>
-         <y>285</y>
-         <width>161</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download asteroids MPC file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Downl. Asteroids TNO</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_downloadAsteroidsPHA">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>285</y>
-         <width>171</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download asteroids MPC file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Downl. Asteroids PHA</string>
-       </property>
-      </widget>
-      <zorder>line_17</zorder>
-      <zorder>line_19</zorder>
-      <zorder>btn_downloadEarthrotation</zorder>
-      <zorder>label_123</zorder>
-      <zorder>btn_downloadSpacestations</zorder>
-      <zorder>btn_downloadSatbrighest</zorder>
-      <zorder>btn_downloadAsteroidsMPC5000</zorder>
-      <zorder>btn_downloadComets</zorder>
-      <zorder>checkEarthrotation</zorder>
-      <zorder>checkTLE</zorder>
-      <zorder>checkAsteroids</zorder>
-      <zorder>checkComets</zorder>
-      <zorder>btn_uploadMount</zorder>
-      <zorder>btn_downloadAll</zorder>
-      <zorder>line_47</zorder>
-      <zorder>label_134</zorder>
-      <zorder>checkFilterMPC</zorder>
-      <zorder>le_filterExpressionMPC</zorder>
-      <zorder>btn_downloadAsteroidsNEA</zorder>
-      <zorder>btn_downloadAsteroidsTNO</zorder>
-      <zorder>btn_downloadAsteroidsPHA</zorder>
-     </widget>
      <widget class="QWidget" name="tab_10">
       <attribute name="title">
        <string>Position / Relay</string>
@@ -15985,7 +15491,7 @@ manually</string>
      </widget>
      <widget class="QWidget" name="tab_13">
       <attribute name="title">
-       <string>Audio Signals</string>
+       <string>Audio / Misc</string>
       </attribute>
       <widget class="QComboBox" name="soundMountSlewFinished">
        <property name="geometry">
@@ -16174,72 +15680,6 @@ manually</string>
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when mount stopped in emergency case&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
-     </widget>
-     <widget class="QWidget" name="tab_11">
-      <attribute name="title">
-       <string>Versions</string>
-      </attribute>
-      <widget class="QLabel" name="le_firmwareProductName_2">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>295</y>
-         <width>271</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>MountWizzard3 (C) 2016-18 MWORION</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_56">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>161</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Product versions</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_6">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>361</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
       <widget class="QGroupBox" name="logginLevel">
        <property name="geometry">
         <rect>
@@ -16349,49 +15789,6 @@ manually</string>
         </property>
        </widget>
       </widget>
-      <widget class="Line" name="line_57">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>11</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="Line" name="line_9">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>40</y>
-         <width>361</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_59">
        <property name="geometry">
         <rect>
@@ -16411,31 +15808,6 @@ manually</string>
        </property>
        <property name="text">
         <string>Misc settings</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_resetWindowSizes">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>225</y>
-         <width>176</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the image window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Collect Windows</string>
        </property>
       </widget>
       <widget class="QLabel" name="le_firmwareProductName_3">
@@ -16476,6 +15848,50 @@ manually</string>
         <string>pyqt5, pywinauto, matplotlib, wakeonlan,</string>
        </property>
       </widget>
+      <widget class="QLabel" name="le_firmwareProductName_2">
+       <property name="geometry">
+        <rect>
+         <x>405</x>
+         <y>295</y>
+         <width>271</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>MountWizzard3 (C) 2016-18 MWORION</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_resetWindowSizes">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>225</y>
+         <width>176</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the image window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Collect Windows</string>
+       </property>
+      </widget>
       <widget class="QLabel" name="le_firmwareProductName_5">
        <property name="geometry">
         <rect>
@@ -16493,6 +15909,27 @@ manually</string>
        </property>
        <property name="text">
         <string>numpy, requests, astropy, skyfield</string>
+       </property>
+      </widget>
+      <widget class="Line" name="line_9">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>40</y>
+         <width>361</width>
+         <height>1</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </widget>
@@ -17325,22 +16762,6 @@ manually</string>
   <tabstop>btn_setupAscomDomeDriver</tabstop>
   <tabstop>btn_setupAscomEnvironmentDriver</tabstop>
   <tabstop>btn_selectCatalogue</tabstop>
-  <tabstop>btn_downloadEarthrotation</tabstop>
-  <tabstop>btn_downloadSpacestations</tabstop>
-  <tabstop>btn_downloadSatbrighest</tabstop>
-  <tabstop>btn_downloadComets</tabstop>
-  <tabstop>btn_downloadAsteroidsMPC5000</tabstop>
-  <tabstop>btn_downloadAsteroidsNEA</tabstop>
-  <tabstop>btn_downloadAsteroidsPHA</tabstop>
-  <tabstop>btn_downloadAsteroidsTNO</tabstop>
-  <tabstop>btn_downloadAll</tabstop>
-  <tabstop>checkEarthrotation</tabstop>
-  <tabstop>checkTLE</tabstop>
-  <tabstop>checkComets</tabstop>
-  <tabstop>checkAsteroids</tabstop>
-  <tabstop>checkFilterMPC</tabstop>
-  <tabstop>le_filterExpressionMPC</tabstop>
-  <tabstop>btn_uploadMount</tabstop>
   <tabstop>le_parkPos1Text</tabstop>
   <tabstop>le_azParkPos1</tabstop>
   <tabstop>le_altParkPos1</tabstop>
@@ -17379,10 +16800,6 @@ manually</string>
   <tabstop>soundDomeSlewFinished</tabstop>
   <tabstop>soundMountAlert</tabstop>
   <tabstop>soundModelingFinished</tabstop>
-  <tabstop>loglevelDebug</tabstop>
-  <tabstop>loglevelInfo</tabstop>
-  <tabstop>loglevelWarning</tabstop>
-  <tabstop>loglevelError</tabstop>
   <tabstop>le_pinpointCatalogue</tabstop>
   <tabstop>cameraConnected</tabstop>
   <tabstop>environmentConnected</tabstop>

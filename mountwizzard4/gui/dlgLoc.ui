@@ -122,7 +122,7 @@
     <rect>
      <x>35</x>
      <y>155</y>
-     <width>171</width>
+     <width>176</width>
      <height>22</height>
     </rect>
    </property>
@@ -132,7 +132,7 @@
     </font>
    </property>
    <property name="decimals">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="maximum">
     <double>9000.000000000000000</double>
@@ -141,7 +141,7 @@
   <widget class="QDoubleSpinBox" name="latMin">
    <property name="geometry">
     <rect>
-     <x>95</x>
+     <x>100</x>
      <y>35</y>
      <width>46</width>
      <height>22</height>
@@ -162,7 +162,7 @@
   <widget class="QDoubleSpinBox" name="latSec">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>165</x>
      <y>35</y>
      <width>46</width>
      <height>22</height>
@@ -207,7 +207,7 @@
   <widget class="QDoubleSpinBox" name="lonMin">
    <property name="geometry">
     <rect>
-     <x>95</x>
+     <x>100</x>
      <y>95</y>
      <width>46</width>
      <height>22</height>
@@ -228,7 +228,7 @@
   <widget class="QDoubleSpinBox" name="lonSec">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>165</x>
      <y>95</y>
      <width>46</width>
      <height>22</height>
@@ -269,7 +269,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Longitude East=positive</string>
+    <string>Longitude   (East=positive)</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">

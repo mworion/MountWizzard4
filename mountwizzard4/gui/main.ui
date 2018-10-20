@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5483,7 +5483,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>435</x>
-       <y>120</y>
+       <y>210</y>
        <width>56</width>
        <height>26</height>
       </rect>
@@ -5521,7 +5521,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>270</x>
-       <y>120</y>
+       <y>210</y>
        <width>161</width>
        <height>26</height>
       </rect>
@@ -5539,7 +5539,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>270</x>
-       <y>155</y>
+       <y>245</y>
        <width>156</width>
        <height>26</height>
       </rect>
@@ -5557,7 +5557,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>435</x>
-       <y>155</y>
+       <y>245</y>
        <width>56</width>
        <height>26</height>
       </rect>
@@ -5594,8 +5594,8 @@ manually</string>
     <widget class="QCheckBox" name="checkUseBlindSolving">
      <property name="geometry">
       <rect>
-       <x>275</x>
-       <y>190</y>
+       <x>270</x>
+       <y>125</y>
        <width>231</width>
        <height>21</height>
       </rect>
@@ -5701,7 +5701,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>490</x>
-       <y>155</y>
+       <y>245</y>
        <width>16</width>
        <height>26</height>
       </rect>
@@ -5763,6 +5763,47 @@ manually</string>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_252">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>175</y>
+       <width>226</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>ASTROMETRY.NET configuration</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_75">
+     <property name="geometry">
+      <rect>
+       <x>270</x>
+       <y>195</y>
+       <width>250</width>
+       <height>3</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </widget>

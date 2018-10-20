@@ -681,3 +681,21 @@ def test_changePark_ok4(qtbot):
             assert True == suc
         assert ['Mount parked', 0] == blocker.args
 
+
+def test_setMeridianLimitTrack1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.meridianLimitTrack = None
+
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setMeridianLimitTrack()
+        assert False == suc
+
+
+def test_setMeridianLimitTrack2(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.meridianLimitTrack = 10
+
+    suc = app.mainW.setMeridianLimitTrack()
+    assert True == suc

@@ -26,6 +26,7 @@ import platform
 import socket
 import datetime
 import warnings
+import traceback
 import numpy as np
 # external packages
 import PyQt5.QtCore

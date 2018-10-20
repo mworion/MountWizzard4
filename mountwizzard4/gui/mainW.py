@@ -34,6 +34,7 @@ import base.widget as mWidget
 import base.tpool
 import mountcontrol.convert as convert
 from gui import main_ui
+from base.widget import InputDialog
 
 
 class MainWindow(mWidget.MWidget):
@@ -58,9 +59,6 @@ class MainWindow(mWidget.MWidget):
         # self.tPool = PyQt5.QtCore.QThreadPool()
 
         # load and init the gui
-        # guiPath = mw4_global.work_dir + '/mountwizzard4/gui/main.ui'
-        # self.ui = PyQt5.uic.loadUi(guiPath, self)
-        # precompiled gui
         self.ui = main_ui.Ui_MainWindow()
         self.ui.setupUi(self)
         self.initUI()
@@ -98,6 +96,10 @@ class MainWindow(mWidget.MWidget):
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
+        self.ui.setMeridianLimitTrack.clicked.connect(self.setMeridianLimitTrack)
+        self.ui.setMeridianLimitSlew.clicked.connect(self.setMeridianLimitSlew)
+        self.ui.setHorizonLimitHigh.clicked.connect(self.setHorizonLimitHigh)
+        self.ui.setHorizonLimitLow.clicked.connect(self.setHorizonLimitLow)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -724,6 +726,31 @@ class MainWindow(mWidget.MWidget):
         elif self.ui.loglevelError.isChecked():
             logging.getLogger().setLevel(logging.ERROR)
 
+    def setMeridianLimitTrack(self):
+        sett = self.app.mount.sett
+        msg = PyQt5.QtWidgets.QMessageBox
+        dlg = InputDialog()
+        actValue = sett.meridianLimitTrack
+        actValue = 15
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        value, okPressed = dlg.getInt(self,
+                                      title='Set Meridian Limit Track',
+                                      message='Value (0-20):',
+                                      actValue=actValue,
+                                      minValue=0,
+                                      maxValue=20,
+                                      stepValue=1)
+        return True
 
+    def setMeridianLimitSlew(self):
+        pass
 
+    def setHorizonLimitHigh(self):
+        pass
 
+    def setHorizonLimitLow(self):
+        pass

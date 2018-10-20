@@ -21,9 +21,12 @@
 import logging
 import platform
 import os
+import time
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtGui
+import PyQt5.QtCore
+import PyQt5.uic
 import matplotlib
 matplotlib.use('Qt5Agg')
 import matplotlib.pyplot
@@ -34,6 +37,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 import base.styles
 import base.tpool
 import mw4_global
+from gui import dlgInt_ui
 
 
 version = '0.1'
@@ -89,6 +93,17 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         gui.style().polish(gui)
         gui.setIconSize(PyQt5.QtCore.QSize(16, 16))
 
+    def getStyle(self):
+        """
+        getStyle return the actual stylesheet for the used platform
+
+        :return:    actual stylesheet string
+        """
+        if platform.system() == 'Darwin':
+            return self.MAC_STYLE + self.BASIC_STYLE
+        else:
+            return self.NON_MAC_STYLE + self.BASIC_STYLE
+
     def initUI(self):
         """
         init_UI makes the basic initialisation of the GUI. is sets the window flags
@@ -99,14 +114,11 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         :return:    nothing
         """
 
-        self.setWindowFlags(self.windowFlags()
-                            )
+        self.setWindowFlags(self.windowFlags())
+        style = self.getStyle()
+        self.setStyleSheet(style)
         self.setMouseTracking(True)
         self.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
-        if platform.system() == 'Darwin':
-            self.setStyleSheet(self.MAC_STYLE + self.BASIC_STYLE)
-        else:
-            self.setStyleSheet(self.NON_MAC_STYLE + self.BASIC_STYLE)
 
     @staticmethod
     def changeStylesheet(ui, item, value):
@@ -288,3 +300,47 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
                                       options=options)
         short, ext = self.extractNames(name)
         return name, short, ext
+
+
+class InputDialog(MWidget):
+    def __init__(self):
+        super().__init__()
+        self.ui = dlgInt_ui.Ui_InputDialog()
+        self.ui.setupUi(self)
+        self.initUI()
+        self.actValue = 0
+
+        self.ui.ok.clicked.connect(self.okPressed)
+        self.ui.cancel.clicked.connect(self.cancelPressed)
+
+    def getInt(self, window, title='', message='', actValue=0, minValue=0, maxValue=0,
+               stepValue=0):
+        # position the window to parent in the center
+        px = window.pos().x()
+        py = window.pos().y()
+        dw = window.width()
+        dh = window.height()
+        sw = self.width()
+        sh = self.height()
+        self.setGeometry(px + (dw - sw)/2, py + (dh - sh)/2, sw, sh)
+        # setup the dialog content
+        self.actValue = actValue
+        self.setWindowTitle(title)
+        self.ui.message.setText(message)
+        self.ui.value.setValue(actValue)
+        self.ui.value.setMinimum(minValue)
+        self.ui.value.setMaximum(maxValue)
+        self.ui.value.setSingleStep(stepValue)
+        self.setWindowModality(PyQt5.QtCore.Qt.WindowModal)
+        self.show()
+
+    def okPressed(self):
+        value = self.ui.value.value()
+        self.close()
+        return True, value
+
+    def cancelPressed(self):
+        value = self.actValue
+        self.close()
+        return True, value
+

@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>9</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3783,7 +3783,7 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_setUnattendedFlip_2">
+    <widget class="QPushButton" name="setMeridianLimitTrack">
      <property name="geometry">
       <rect>
        <x>325</x>
@@ -3804,7 +3804,7 @@ manually</string>
       <string>Set</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_setUnattendedFlip_3">
+    <widget class="QPushButton" name="setMeridianLimitSlew">
      <property name="geometry">
       <rect>
        <x>325</x>
@@ -3825,7 +3825,7 @@ manually</string>
       <string>Set</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_setUnattendedFlip_4">
+    <widget class="QPushButton" name="setHorizonLimitHigh">
      <property name="geometry">
       <rect>
        <x>325</x>
@@ -3846,7 +3846,7 @@ manually</string>
       <string>Set</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_setUnattendedFlip_5">
+    <widget class="QPushButton" name="setHorizonLimitLow">
      <property name="geometry">
       <rect>
        <x>325</x>
@@ -3867,7 +3867,7 @@ manually</string>
       <string>Set</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_setUnattendedFlip_7">
+    <widget class="QPushButton" name="setLocation">
      <property name="geometry">
       <rect>
        <x>325</x>
@@ -4534,11 +4534,11 @@ manually</string>
     <zorder>meridianLimitSlew</zorder>
     <zorder>horizonLimitHigh</zorder>
     <zorder>label_88</zorder>
-    <zorder>btn_setUnattendedFlip_2</zorder>
-    <zorder>btn_setUnattendedFlip_3</zorder>
-    <zorder>btn_setUnattendedFlip_4</zorder>
-    <zorder>btn_setUnattendedFlip_5</zorder>
-    <zorder>btn_setUnattendedFlip_7</zorder>
+    <zorder>setMeridianLimitTrack</zorder>
+    <zorder>setMeridianLimitSlew</zorder>
+    <zorder>setHorizonLimitHigh</zorder>
+    <zorder>setHorizonLimitLow</zorder>
+    <zorder>setLocation</zorder>
     <zorder>line_11</zorder>
     <zorder>label_77</zorder>
     <zorder>groupBox_4</zorder>

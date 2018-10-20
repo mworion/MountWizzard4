@@ -729,7 +729,6 @@ class MainWindow(mWidget.MWidget):
     def setMeridianLimitTrack(self):
         sett = self.app.mount.sett
         msg = PyQt5.QtWidgets.QMessageBox
-        dlg = InputDialog()
         actValue = sett.meridianLimitTrack
         actValue = 15
         if actValue is None:
@@ -737,14 +736,18 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        value, okPressed = dlg.getInt(self,
-                                      title='Set Meridian Limit Track',
-                                      message='Value (0-20):',
-                                      actValue=actValue,
-                                      minValue=0,
-                                      maxValue=20,
-                                      stepValue=1)
-        return True
+        dlg = InputDialog(self,
+                          title='Set Meridian Limit Track',
+                          message='Value (0-20):',
+                          actValue=actValue,
+                          minValue=0,
+                          maxValue=20,
+                          stepValue=1)
+        if dlg.exec_():
+            value = dlg.getValue()
+            return True
+        else:
+            return False
 
     def setMeridianLimitSlew(self):
         pass

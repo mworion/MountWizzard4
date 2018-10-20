@@ -302,20 +302,33 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         return name, short, ext
 
 
-class InputDialog(MWidget):
-    def __init__(self):
+class InputDialog(PyQt5.QtWidgets.QDialog, MWidget):
+    """
+    InputDialog implements a custom modal Input dialog for entering values.
+    """
+
+    __all__ = ['getValue',
+               ]
+
+    version = '0.1'
+    logger = logging.getLogger(__name__)
+
+    def __init__(self,
+                 window,
+                 title='',
+                 message='',
+                 actValue=0,
+                 minValue=0,
+                 maxValue=0,
+                 stepValue=0):
         super().__init__()
+        # setup the gui
         self.ui = dlgInt_ui.Ui_InputDialog()
         self.ui.setupUi(self)
-        self.initUI()
-        self.actValue = 0
-
+        # link the signals
         self.ui.ok.clicked.connect(self.okPressed)
         self.ui.cancel.clicked.connect(self.cancelPressed)
-
-    def getInt(self, window, title='', message='', actValue=0, minValue=0, maxValue=0,
-               stepValue=0):
-        # position the window to parent in the center
+        # position the window in the middle of the parent window
         px = window.pos().x()
         py = window.pos().y()
         dw = window.width()
@@ -335,12 +348,12 @@ class InputDialog(MWidget):
         self.show()
 
     def okPressed(self):
-        value = self.ui.value.value()
-        self.close()
-        return True, value
+        self.accept()
 
     def cancelPressed(self):
-        value = self.actValue
-        self.close()
-        return True, value
+        self.reject()
+
+    def getValue(self):
+        return self.ui.value.value()
+
 

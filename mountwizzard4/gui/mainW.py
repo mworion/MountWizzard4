@@ -100,6 +100,7 @@ class MainWindow(mWidget.MWidget):
         self.ui.setMeridianLimitSlew.clicked.connect(self.setMeridianLimitSlew)
         self.ui.setHorizonLimitHigh.clicked.connect(self.setHorizonLimitHigh)
         self.ui.setHorizonLimitLow.clicked.connect(self.setHorizonLimitLow)
+        self.ui.setSlewRate.clicked.connect(self.setSlewRate)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -842,6 +843,36 @@ class MainWindow(mWidget.MWidget):
         if dlg.exec_():
             value = dlg.getValue()
             obsSite.setHorizonLimitLow(value)
+            return True
+        else:
+            return False
+
+    def setSlewRate(self):
+        """
+        setSlewRate implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obsSite = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = sett.slewRate
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = InputDialog(self,
+                          title='Set Slew Rate',
+                          message='Value (1-20):',
+                          actValue=actValue,
+                          minValue=1,
+                          maxValue=20,
+                          stepValue=1)
+        if dlg.exec_():
+            value = dlg.getValue()
+            obsSite.setSlewRate(value)
             return True
         else:
             return False

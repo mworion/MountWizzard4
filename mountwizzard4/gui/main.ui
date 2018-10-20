@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -499,7 +499,7 @@
      <property name="geometry">
       <rect>
        <x>275</x>
-       <y>310</y>
+       <y>280</y>
        <width>91</width>
        <height>20</height>
       </rect>
@@ -523,7 +523,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>310</y>
+       <y>280</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -565,7 +565,7 @@
      <property name="geometry">
       <rect>
        <x>445</x>
-       <y>280</y>
+       <y>250</y>
        <width>31</width>
        <height>21</height>
       </rect>
@@ -995,7 +995,7 @@
      <property name="geometry">
       <rect>
        <x>275</x>
-       <y>280</y>
+       <y>250</y>
        <width>101</width>
        <height>20</height>
       </rect>
@@ -1019,7 +1019,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>280</y>
+       <y>250</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1061,7 +1061,7 @@
      <property name="geometry">
       <rect>
        <x>445</x>
-       <y>310</y>
+       <y>280</y>
        <width>31</width>
        <height>21</height>
       </rect>
@@ -1445,74 +1445,11 @@
       <string>°C</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_28">
-     <property name="geometry">
-      <rect>
-       <x>275</x>
-       <y>250</y>
-       <width>66</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Slew Rate</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="slewRate">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>400</x>
-       <y>250</y>
-       <width>46</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="mouseTracking">
-      <bool>false</bool>
-     </property>
-     <property name="acceptDrops">
-      <bool>false</bool>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="inputMask">
-      <string/>
-     </property>
-     <property name="text">
-      <string>-</string>
-     </property>
-     <property name="cursorPosition">
-      <number>1</number>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_74">
      <property name="geometry">
       <rect>
        <x>275</x>
-       <y>370</y>
+       <y>340</y>
        <width>116</width>
        <height>21</height>
       </rect>
@@ -1533,7 +1470,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>340</y>
+       <y>310</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1575,7 +1512,7 @@
      <property name="geometry">
       <rect>
        <x>275</x>
-       <y>340</y>
+       <y>310</y>
        <width>101</width>
        <height>21</height>
       </rect>
@@ -1596,7 +1533,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>370</y>
+       <y>340</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1820,24 +1757,6 @@
       <string>H:M:S</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_133">
-     <property name="geometry">
-      <rect>
-       <x>450</x>
-       <y>250</y>
-       <width>31</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>°/s</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_222">
      <property name="geometry">
       <rect>
@@ -1863,7 +1782,7 @@
      <property name="geometry">
       <rect>
        <x>400</x>
-       <y>400</y>
+       <y>370</y>
        <width>46</width>
        <height>21</height>
       </rect>
@@ -1905,7 +1824,7 @@
      <property name="geometry">
       <rect>
        <x>275</x>
-       <y>400</y>
+       <y>370</y>
        <width>126</width>
        <height>21</height>
       </rect>
@@ -1923,7 +1842,7 @@
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>340</y>
+       <y>310</y>
        <width>26</width>
        <height>21</height>
       </rect>
@@ -1944,7 +1863,7 @@
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>370</y>
+       <y>340</y>
        <width>26</width>
        <height>21</height>
       </rect>
@@ -1965,7 +1884,7 @@
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>400</y>
+       <y>370</y>
        <width>26</width>
        <height>21</height>
       </rect>
@@ -2030,8 +1949,6 @@
     <zorder>timeJD</zorder>
     <zorder>label_63</zorder>
     <zorder>label_64</zorder>
-    <zorder>label_28</zorder>
-    <zorder>slewRate</zorder>
     <zorder>label_74</zorder>
     <zorder>statusUnattendedFlip</zorder>
     <zorder>label_55</zorder>
@@ -2043,7 +1960,6 @@
     <zorder>label_81</zorder>
     <zorder>label_129</zorder>
     <zorder>label_130</zorder>
-    <zorder>label_133</zorder>
     <zorder>label_222</zorder>
     <zorder>statusRefraction</zorder>
     <zorder>label_86</zorder>
@@ -4478,6 +4394,108 @@ manually</string>
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QLineEdit" name="slewRate">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>305</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="inputMask">
+      <string/>
+     </property>
+     <property name="text">
+      <string>-</string>
+     </property>
+     <property name="cursorPosition">
+      <number>1</number>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_28">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>305</y>
+       <width>66</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Slew Rate</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_133">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>305</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>°/s</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="setSlewRate">
+     <property name="geometry">
+      <rect>
+       <x>325</x>
+       <y>305</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>Sets unattended flip on / off</string>
+     </property>
+     <property name="text">
+      <string>Set</string>
+     </property>
+    </widget>
     <zorder>line_8</zorder>
     <zorder>line_77</zorder>
     <zorder>siteElevation</zorder>
@@ -4555,6 +4573,10 @@ manually</string>
     <zorder>fwdate</zorder>
     <zorder>hwVersion</zorder>
     <zorder>fwtime</zorder>
+    <zorder>slewRate</zorder>
+    <zorder>label_28</zorder>
+    <zorder>label_133</zorder>
+    <zorder>setSlewRate</zorder>
    </widget>
    <widget class="QWidget" name="tab">
     <attribute name="title">

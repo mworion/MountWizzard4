@@ -722,7 +722,7 @@ def test_setMeridianLimitSlew2(qtbot):
 
 def test_setHorizonLimitHigh1(qtbot):
     app = mw4_main.MountWizzard4()
-    app.mount.sett.setHorizonLimitHigh = None
+    app.mount.sett.horizonLimitHigh = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -733,7 +733,7 @@ def test_setHorizonLimitHigh1(qtbot):
 
 def test_setHorizonLimitHigh2(qtbot):
     app = mw4_main.MountWizzard4()
-    app.mount.sett.setHorizonLimitHigh = 10
+    app.mount.sett.horizonLimitHigh = 10
 
     suc = app.mainW.setHorizonLimitHigh()
     assert False == suc
@@ -741,7 +741,7 @@ def test_setHorizonLimitHigh2(qtbot):
 
 def test_setHorizonLimitLow1(qtbot):
     app = mw4_main.MountWizzard4()
-    app.mount.sett.setHorizonLimitLow = None
+    app.mount.sett.horizonLimitLow = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -752,7 +752,26 @@ def test_setHorizonLimitLow1(qtbot):
 
 def test_setHorizonLimitLow2(qtbot):
     app = mw4_main.MountWizzard4()
-    app.mount.sett.setHorizonLimitLow = 10
+    app.mount.sett.horizonLimitLow = 10
 
     suc = app.mainW.setHorizonLimitLow()
+    assert False == suc
+
+
+def test_setSlewRate1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.slewRate = None
+
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setSlewRate()
+        assert False == suc
+
+
+def test_setSlewRate2(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.slewRate = 10
+
+    suc = app.mainW.setSlewRate()
     assert False == suc

@@ -698,4 +698,61 @@ def test_setMeridianLimitTrack2(qtbot):
     app.mount.sett.meridianLimitTrack = 10
 
     suc = app.mainW.setMeridianLimitTrack()
-    assert True == suc
+    assert False == suc
+
+
+def test_setMeridianLimitSlew1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.meridianLimitTrack = None
+
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setMeridianLimitSlew()
+        assert False == suc
+
+
+def test_setMeridianLimitSlew2(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.meridianLimitTrack = 10
+
+    suc = app.mainW.setMeridianLimitSlew()
+    assert False == suc
+
+
+def test_setHorizonLimitHigh1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.setHorizonLimitHigh = None
+
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setHorizonLimitHigh()
+        assert False == suc
+
+
+def test_setHorizonLimitHigh2(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.setHorizonLimitHigh = 10
+
+    suc = app.mainW.setHorizonLimitHigh()
+    assert False == suc
+
+
+def test_setHorizonLimitLow1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.setHorizonLimitLow = None
+
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setHorizonLimitLow()
+        assert False == suc
+
+
+def test_setHorizonLimitLow2(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.setHorizonLimitLow = 10
+
+    suc = app.mainW.setHorizonLimitLow()
+    assert False == suc

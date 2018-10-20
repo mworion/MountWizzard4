@@ -727,10 +727,16 @@ class MainWindow(mWidget.MWidget):
             logging.getLogger().setLevel(logging.ERROR)
 
     def setMeridianLimitTrack(self):
+        """
+        setMeridianLimitTrack implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
         sett = self.app.mount.sett
         msg = PyQt5.QtWidgets.QMessageBox
+        obsSite = self.app.mount.obsSite
         actValue = sett.meridianLimitTrack
-        actValue = 15
         if actValue is None:
             msg.critical(self,
                          'Error Message',
@@ -738,22 +744,104 @@ class MainWindow(mWidget.MWidget):
             return False
         dlg = InputDialog(self,
                           title='Set Meridian Limit Track',
-                          message='Value (0-20):',
+                          message='Value (-20-20):',
                           actValue=actValue,
-                          minValue=0,
+                          minValue=-20,
                           maxValue=20,
                           stepValue=1)
         if dlg.exec_():
             value = dlg.getValue()
+            obsSite.setMeridianLimitTrack(value)
             return True
         else:
             return False
 
     def setMeridianLimitSlew(self):
-        pass
+        """
+        setMeridianLimitSlew implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obsSite = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = sett.meridianLimitSlew
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = InputDialog(self,
+                          title='Set Meridian Limit Slew',
+                          message='Value (-20-20):',
+                          actValue=actValue,
+                          minValue=-20,
+                          maxValue=20,
+                          stepValue=1)
+        if dlg.exec_():
+            value = dlg.getValue()
+            obsSite.setMeridianLimitSlew(value)
+            return True
+        else:
+            return False
 
     def setHorizonLimitHigh(self):
-        pass
+        """
+        setHorizonLimitHigh implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obsSite = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = sett.horizonLimitHigh
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = InputDialog(self,
+                          title='Set Horizon Limit High',
+                          message='Value (0-90):',
+                          actValue=actValue,
+                          minValue=0,
+                          maxValue=90,
+                          stepValue=1)
+        if dlg.exec_():
+            value = dlg.getValue()
+            obsSite.setHorizonLimitHigh(value)
+            return True
+        else:
+            return False
 
     def setHorizonLimitLow(self):
-        pass
+        """
+        setHorizonLimitLow implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obsSite = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = sett.horizonLimitLow
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = InputDialog(self,
+                          title='Set Horizon Limit Low',
+                          message='Value (0-90):',
+                          actValue=actValue,
+                          minValue=0,
+                          maxValue=90,
+                          stepValue=1)
+        if dlg.exec_():
+            value = dlg.getValue()
+            obsSite.setHorizonLimitLow(value)
+            return True
+        else:
+            return False

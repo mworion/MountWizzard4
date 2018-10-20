@@ -307,7 +307,8 @@ class InputDialog(PyQt5.QtWidgets.QDialog, MWidget):
     InputDialog implements a custom modal Input dialog for entering values.
     """
 
-    __all__ = ['getValue',
+    __all__ = ['InputDialog',
+               'getValue',
                ]
 
     version = '0.1'

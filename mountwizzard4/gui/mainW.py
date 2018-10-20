@@ -593,7 +593,7 @@ class MainWindow(mWidget.MWidget):
                                )
         if self.ui.checkShowErrorValues.isChecked():
             for star in model.starList:
-                text = '{0:3.1f}'.format(star.number)
+                text = '{0:3.1f}'.format(star.errorRMS)
                 axes.annotate(text,
                               xy=(theta[star.number-1],
                                   r[star.number-1]),

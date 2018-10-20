@@ -34,7 +34,8 @@ import base.widget as mWidget
 import base.tpool
 import mountcontrol.convert as convert
 from gui import main_ui
-from base.widget import InputDialog
+from base.widget import InputValue
+from base.widget import InputLocation
 
 
 class MainWindow(mWidget.MWidget):
@@ -101,6 +102,7 @@ class MainWindow(mWidget.MWidget):
         self.ui.setHorizonLimitHigh.clicked.connect(self.setHorizonLimitHigh)
         self.ui.setHorizonLimitLow.clicked.connect(self.setHorizonLimitLow)
         self.ui.setSlewRate.clicked.connect(self.setSlewRate)
+        self.ui.setLocation.clicked.connect(self.setLocation)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -751,13 +753,13 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputDialog(self,
-                          title='Set Meridian Limit Track',
-                          message='Value (-20-20):',
-                          actValue=actValue,
-                          minValue=-20,
-                          maxValue=20,
-                          stepValue=1)
+        dlg = InputValue(window=self,
+                         title='Set Meridian Limit Track',
+                         message='Value (-20-20):',
+                         actValue=actValue,
+                         minValue=-20,
+                         maxValue=20,
+                         stepValue=1)
         if dlg.exec_():
             value = dlg.getValue()
             obsSite.setMeridianLimitTrack(value)
@@ -781,13 +783,13 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputDialog(self,
-                          title='Set Meridian Limit Slew',
-                          message='Value (-20-20):',
-                          actValue=actValue,
-                          minValue=-20,
-                          maxValue=20,
-                          stepValue=1)
+        dlg = InputValue(window=self,
+                         title='Set Meridian Limit Slew',
+                         message='Value (-20-20):',
+                         actValue=actValue,
+                         minValue=-20,
+                         maxValue=20,
+                         stepValue=1)
         if dlg.exec_():
             value = dlg.getValue()
             obsSite.setMeridianLimitSlew(value)
@@ -811,13 +813,13 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputDialog(self,
-                          title='Set Horizon Limit High',
-                          message='Value (0-90):',
-                          actValue=actValue,
-                          minValue=0,
-                          maxValue=90,
-                          stepValue=1)
+        dlg = InputValue(window=self,
+                         title='Set Horizon Limit High',
+                         message='Value (0-90):',
+                         actValue=actValue,
+                         minValue=0,
+                         maxValue=90,
+                         stepValue=1)
         if dlg.exec_():
             value = dlg.getValue()
             obsSite.setHorizonLimitHigh(value)
@@ -841,13 +843,13 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputDialog(self,
-                          title='Set Horizon Limit Low',
-                          message='Value (0-90):',
-                          actValue=actValue,
-                          minValue=0,
-                          maxValue=90,
-                          stepValue=1)
+        dlg = InputValue(window=self,
+                         title='Set Horizon Limit Low',
+                         message='Value (0-90):',
+                         actValue=actValue,
+                         minValue=0,
+                         maxValue=90,
+                         stepValue=1)
         if dlg.exec_():
             value = dlg.getValue()
             obsSite.setHorizonLimitLow(value)
@@ -871,16 +873,42 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputDialog(self,
-                          title='Set Slew Rate',
-                          message='Value (1-20):',
-                          actValue=actValue,
-                          minValue=1,
-                          maxValue=20,
-                          stepValue=1)
+        dlg = InputValue(window=self,
+                         title='Set Slew Rate',
+                         message='Value (1-20):',
+                         actValue=actValue,
+                         minValue=1,
+                         maxValue=20,
+                         stepValue=1)
         if dlg.exec_():
             value = dlg.getValue()
             obsSite.setSlewRate(value)
+            return True
+        else:
+            return False
+
+    def setLocation(self):
+        """
+        setLocation implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        obsSite = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = obsSite.location
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = InputLocation(window=self,
+                            location=actValue,
+                            )
+        if dlg.exec_():
+            value = dlg.getValue()
+            obsSite.setSite(value)
+            self.app.mount.getLocation()
             return True
         else:
             return False

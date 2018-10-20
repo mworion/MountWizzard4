@@ -33,11 +33,13 @@ import matplotlib.pyplot
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+import skyfield
 # local imports
 import base.styles
 import base.tpool
 import mw4_global
-from gui import dlgInt_ui
+from gui import dlgVal_ui
+from gui import dlgLoc_ui
 
 
 version = '0.1'
@@ -302,12 +304,12 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         return name, short, ext
 
 
-class InputDialog(PyQt5.QtWidgets.QDialog, MWidget):
+class InputValue(PyQt5.QtWidgets.QDialog, MWidget):
     """
-    InputDialog implements a custom modal Input dialog for entering values.
+    InputValue implements a custom modal Input dialog for entering number values.
     """
 
-    __all__ = ['InputDialog',
+    __all__ = ['InputValue',
                'getValue',
                ]
 
@@ -315,7 +317,7 @@ class InputDialog(PyQt5.QtWidgets.QDialog, MWidget):
     logger = logging.getLogger(__name__)
 
     def __init__(self,
-                 window,
+                 window=None,
                  title='',
                  message='',
                  actValue=0,
@@ -324,7 +326,7 @@ class InputDialog(PyQt5.QtWidgets.QDialog, MWidget):
                  stepValue=0):
         super().__init__()
         # setup the gui
-        self.ui = dlgInt_ui.Ui_InputDialog()
+        self.ui = dlgVal_ui.Ui_InputValue()
         self.ui.setupUi(self)
         # link the signals
         self.ui.ok.clicked.connect(self.okPressed)
@@ -358,3 +360,64 @@ class InputDialog(PyQt5.QtWidgets.QDialog, MWidget):
         return self.ui.value.value()
 
 
+class InputLocation(PyQt5.QtWidgets.QDialog, MWidget):
+    """
+    InputLocation implements a custom modal input dialog for entering location values.
+    """
+
+    __all__ = ['InputLocation',
+               'getValue',
+               ]
+
+    version = '0.1'
+    logger = logging.getLogger(__name__)
+
+    def __init__(self, window=None, location=None):
+        super().__init__()
+        # setup the gui
+        self.ui = dlgLoc_ui.Ui_InputLocation()
+        self.ui.setupUi(self)
+        # link the signals
+        self.ui.ok.clicked.connect(self.okPressed)
+        self.ui.cancel.clicked.connect(self.cancelPressed)
+        # position the window in the middle of the parent window
+        px = window.pos().x()
+        py = window.pos().y()
+        dw = window.width()
+        dh = window.height()
+        sw = self.width()
+        sh = self.height()
+        self.setGeometry(px + (dw - sw)/2, py + (dh - sh)/2, sw, sh)
+        # setup the dialog content
+        latSign, latDeg, latMin, latSec = location.latitude.signed_dms()
+        lonSign, lonDeg, lonMin, lonSec = location.longitude.signed_dms()
+        elev = location.elevation.m
+        self.ui.latDeg.setValue(latDeg * latSign)
+        self.ui.latMin.setValue(latMin)
+        self.ui.latSec.setValue(latSec)
+        self.ui.lonDeg.setValue(lonDeg * lonSign)
+        self.ui.lonMin.setValue(lonMin)
+        self.ui.lonSec.setValue(lonSec)
+        self.ui.elevation.setValue(elev)
+        self.setWindowModality(PyQt5.QtCore.Qt.WindowModal)
+        self.setWindowTitle('Set site location in mount')
+        self.show()
+
+    def okPressed(self):
+        self.accept()
+
+    def cancelPressed(self):
+        self.reject()
+
+    def getValue(self):
+        lat = self.ui.latDeg.value() \
+              + self.ui.latMin.value()/60 \
+              + self.ui.latSec.value()/3600
+        lon = self.ui.lonDeg.value() \
+              + self.ui.lonMin.value()/60 \
+              + self.ui.lonSec.value()/3600
+        elev = self.ui.elevation.value()
+        location = skyfield.toposlib.Topos(latitude_degrees=lat,
+                                           longitude_degrees=lon,
+                                           elevation_m=elev)
+        return location

@@ -127,6 +127,10 @@ class MainWindow(mWidget.MWidget):
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
         self.ui.loglevelWarning.setChecked(config.get('loglevelWarning', False))
         self.ui.loglevelError.setChecked(config.get('loglevelError', False))
+        self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
+        self.ui.checkRefracNone.setChecked(config.get('checkRefracNone', False))
+        self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
+        self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
         self.ui.profile.setText(config.get('profile'))
 
     def storeConfig(self):
@@ -139,7 +143,11 @@ class MainWindow(mWidget.MWidget):
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
         config['loglevelWarning'] = self.ui.loglevelWarning.isChecked()
         config['loglevelError'] = self.ui.loglevelError.isChecked()
-        config['profile'] = self.ui.profile.text()
+        config['loglevelError'] = self.ui.loglevelError.isChecked()
+        config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
+        config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
+        config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
+        config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
 
     def closeEvent(self, closeEvent):
         """

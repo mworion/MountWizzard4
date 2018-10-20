@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3257,7 +3257,7 @@ manually</string>
      <property name="title">
       <string>Update scheme</string>
      </property>
-     <widget class="QRadioButton" name="checkAutoRefractionContinous">
+     <widget class="QRadioButton" name="checkRefracCont">
       <property name="geometry">
        <rect>
         <x>15</x>
@@ -3284,7 +3284,7 @@ manually</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QRadioButton" name="checkAutoRefractionNotTracking">
+     <widget class="QRadioButton" name="checkRefracNoTrack">
       <property name="geometry">
        <rect>
         <x>15</x>
@@ -3311,7 +3311,7 @@ manually</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QRadioButton" name="checkAutoRefractionNone">
+     <widget class="QRadioButton" name="checkRefracNone">
       <property name="geometry">
        <rect>
         <x>15</x>
@@ -16680,9 +16680,9 @@ manually</string>
   <tabstop>setSiderealTracking</tabstop>
   <tabstop>park</tabstop>
   <tabstop>stop</tabstop>
-  <tabstop>checkAutoRefractionNone</tabstop>
-  <tabstop>checkAutoRefractionContinous</tabstop>
-  <tabstop>checkAutoRefractionNotTracking</tabstop>
+  <tabstop>checkRefracNone</tabstop>
+  <tabstop>checkRefracCont</tabstop>
+  <tabstop>checkRefracNoTrack</tabstop>
   <tabstop>btn_setRefractionParameters</tabstop>
   <tabstop>cameraExposure</tabstop>
   <tabstop>cameraBin</tabstop>

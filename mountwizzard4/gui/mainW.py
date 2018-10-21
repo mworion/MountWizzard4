@@ -935,9 +935,13 @@ class MainWindow(mWidget.MWidget):
                                 obs.location.longitude.dstr(),
                                 )
         if ok:
-            # obs.setSite(value)
-            self.app.mount.getLocation()
-            return True
+            if obs.setLongitude(value):
+                self.app.message.emit('Longitude: [{0}]'.format(value), 0)
+                self.app.mount.getLocation()
+                return True
+            else:
+                self.app.message.emit('Longitude cannot be set', 2)
+                return False
         else:
             return False
 
@@ -963,9 +967,13 @@ class MainWindow(mWidget.MWidget):
                                 obs.location.latitude.dstr(),
                                 )
         if ok:
-            # obs.setSite(value)
-            self.app.mount.getLocation()
-            return True
+            if obs.setLatitude(value):
+                self.app.message.emit('Latitude: [{0}]'.format(value), 0)
+                self.app.mount.getLocation()
+                return True
+            else:
+                self.app.message.emit('Latitude cannot be set', 2)
+                return False
         else:
             return False
 
@@ -993,8 +1001,11 @@ class MainWindow(mWidget.MWidget):
                                   1,
                                   )
         if ok:
-            # obs.setSite(obs.location)
-            self.app.mount.getLocation()
-            return True
+            if obs.setElevation(value):
+                self.app.message.emit('Elevation: [{0}]'.format(value), 0)
+                self.app.mount.getLocation()
+                return True
+            else:
+                self.app.message.emit('Elevation cannot be set', 2)
         else:
             return False

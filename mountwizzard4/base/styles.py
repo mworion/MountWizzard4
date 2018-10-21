@@ -107,6 +107,7 @@ class MWStyles(object):
         border-style: outset;
         border-radius: 2px;
     }
+
     QLineEdit:disabled {
         border-width: 2px;
         border-color: #000000;
@@ -219,6 +220,7 @@ class MWStyles(object):
         border-radius: 2px;
         padding-right: 2px;
     }
+    
     QDoubleSpinBox::up-button {
         subcontrol-origin: border;
         subcontrol-position: top right; /* position at the top right corner */

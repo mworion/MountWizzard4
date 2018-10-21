@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3699,111 +3699,6 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="setMeridianLimitTrack">
-     <property name="geometry">
-      <rect>
-       <x>325</x>
-       <y>185</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Sets unattended flip on / off</string>
-     </property>
-     <property name="text">
-      <string>Set</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="setMeridianLimitSlew">
-     <property name="geometry">
-      <rect>
-       <x>325</x>
-       <y>215</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Sets unattended flip on / off</string>
-     </property>
-     <property name="text">
-      <string>Set</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="setHorizonLimitHigh">
-     <property name="geometry">
-      <rect>
-       <x>325</x>
-       <y>245</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Sets unattended flip on / off</string>
-     </property>
-     <property name="text">
-      <string>Set</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="setHorizonLimitLow">
-     <property name="geometry">
-      <rect>
-       <x>325</x>
-       <y>275</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Sets unattended flip on / off</string>
-     </property>
-     <property name="text">
-      <string>Set</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="setLocation">
-     <property name="geometry">
-      <rect>
-       <x>325</x>
-       <y>50</y>
-       <width>51</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Sets unattended flip on / off</string>
-     </property>
-     <property name="text">
-      <string>Set</string>
-     </property>
-    </widget>
     <widget class="Line" name="line_11">
      <property name="geometry">
       <rect>
@@ -4475,27 +4370,6 @@ manually</string>
       <string>°/s</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="setSlewRate">
-     <property name="geometry">
-      <rect>
-       <x>325</x>
-       <y>305</y>
-       <width>51</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Sets unattended flip on / off</string>
-     </property>
-     <property name="text">
-      <string>Set</string>
-     </property>
-    </widget>
     <zorder>line_8</zorder>
     <zorder>line_77</zorder>
     <zorder>siteElevation</zorder>
@@ -4552,11 +4426,6 @@ manually</string>
     <zorder>meridianLimitSlew</zorder>
     <zorder>horizonLimitHigh</zorder>
     <zorder>label_88</zorder>
-    <zorder>setMeridianLimitTrack</zorder>
-    <zorder>setMeridianLimitSlew</zorder>
-    <zorder>setHorizonLimitHigh</zorder>
-    <zorder>setHorizonLimitLow</zorder>
-    <zorder>setLocation</zorder>
     <zorder>line_11</zorder>
     <zorder>label_77</zorder>
     <zorder>groupBox_4</zorder>
@@ -4576,7 +4445,6 @@ manually</string>
     <zorder>slewRate</zorder>
     <zorder>label_28</zorder>
     <zorder>label_133</zorder>
-    <zorder>setSlewRate</zorder>
    </widget>
    <widget class="QWidget" name="tab">
     <attribute name="title">

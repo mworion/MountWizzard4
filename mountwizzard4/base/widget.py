@@ -303,121 +303,30 @@ class MWidget(PyQt5.QtWidgets.QWidget, base.styles.MWStyles):
         short, ext = self.extractNames(name)
         return name, short, ext
 
+    @staticmethod
+    def clickable(widget):
+        """
+        It uses one filter object per label, which is created when the clickable()
+        function is called with the widget that is to be click-enabled. The function
+        returns a clicked() signal that actually belongs to the filter object. The caller
+        can connect this signal to a suitable callable object.
 
-class InputValue(PyQt5.QtWidgets.QDialog, MWidget):
-    """
-    InputValue implements a custom modal Input dialog for entering number values.
-    """
+        :param widget:      widget for what the event filter works
+        :return:            filtered event
+        """
 
-    __all__ = ['InputValue',
-               'getValue',
-               ]
+        class Filter(PyQt5.QtCore.QObject):
+            clicked = PyQt5.QtCore.pyqtSignal()
 
-    version = '0.1'
-    logger = logging.getLogger(__name__)
+            def eventFilter(self, obj, event):
+                if obj == widget:
+                    if event.type() == PyQt5.QtCore.QEvent.MouseButtonRelease:
+                        if obj.rect().contains(event.pos()):
+                            self.clicked.emit()
+                            # The developer can opt for .emit(obj) to get the object within the slot.
+                            return True
+                return False
 
-    def __init__(self,
-                 window=None,
-                 title='',
-                 message='',
-                 actValue=0,
-                 minValue=0,
-                 maxValue=0,
-                 stepValue=0):
-        super().__init__()
-        # setup the gui
-        self.ui = dlgVal_ui.Ui_InputValue()
-        self.ui.setupUi(self)
-        # link the signals
-        self.ui.ok.clicked.connect(self.okPressed)
-        self.ui.cancel.clicked.connect(self.cancelPressed)
-        # position the window in the middle of the parent window
-        px = window.pos().x()
-        py = window.pos().y()
-        dw = window.width()
-        dh = window.height()
-        sw = self.width()
-        sh = self.height()
-        self.setGeometry(px + (dw - sw)/2, py + (dh - sh)/2, sw, sh)
-        # setup the dialog content
-        self.actValue = actValue
-        self.setWindowTitle(title)
-        self.ui.message.setText(message)
-        self.ui.value.setValue(actValue)
-        self.ui.value.setMinimum(minValue)
-        self.ui.value.setMaximum(maxValue)
-        self.ui.value.setSingleStep(stepValue)
-        self.setWindowModality(PyQt5.QtCore.Qt.WindowModal)
-        self.show()
-
-    def okPressed(self):
-        self.accept()
-
-    def cancelPressed(self):
-        self.reject()
-
-    def getValue(self):
-        return self.ui.value.value()
-
-
-class InputLocation(PyQt5.QtWidgets.QDialog, MWidget):
-    """
-    InputLocation implements a custom modal input dialog for entering location values.
-    """
-
-    __all__ = ['InputLocation',
-               'getValue',
-               ]
-
-    version = '0.1'
-    logger = logging.getLogger(__name__)
-
-    def __init__(self, window=None, location=None):
-        super().__init__()
-        # setup the gui
-        self.ui = dlgLoc_ui.Ui_InputLocation()
-        self.ui.setupUi(self)
-        # link the signals
-        self.ui.ok.clicked.connect(self.okPressed)
-        self.ui.cancel.clicked.connect(self.cancelPressed)
-        # position the window in the middle of the parent window
-        px = window.pos().x()
-        py = window.pos().y()
-        dw = window.width()
-        dh = window.height()
-        sw = self.width()
-        sh = self.height()
-        self.setGeometry(px + (dw - sw)/2, py + (dh - sh)/2, sw, sh)
-        # setup the dialog content
-        latSign, latDeg, latMin, latSec = location.latitude.signed_dms()
-        lonSign, lonDeg, lonMin, lonSec = location.longitude.signed_dms()
-        elev = location.elevation.m
-        self.ui.latDeg.setValue(latDeg * latSign)
-        self.ui.latMin.setValue(latMin)
-        self.ui.latSec.setValue(latSec)
-        self.ui.lonDeg.setValue(lonDeg * lonSign)
-        self.ui.lonMin.setValue(lonMin)
-        self.ui.lonSec.setValue(lonSec)
-        self.ui.elevation.setValue(elev)
-        self.setWindowModality(PyQt5.QtCore.Qt.WindowModal)
-        self.setWindowTitle('Set site location in mount')
-        self.show()
-
-    def okPressed(self):
-        self.accept()
-
-    def cancelPressed(self):
-        self.reject()
-
-    def getValue(self):
-        lat = self.ui.latDeg.value() \
-              + self.ui.latMin.value()/60 \
-              + self.ui.latSec.value()/3600
-        lon = self.ui.lonDeg.value() \
-              + self.ui.lonMin.value()/60 \
-              + self.ui.lonSec.value()/3600
-        elev = self.ui.elevation.value()
-        location = skyfield.toposlib.Topos(latitude_degrees=lat,
-                                           longitude_degrees=lon,
-                                           elevation_m=elev)
-        return location
+        _filter = Filter(widget)
+        widget.installEventFilter(_filter)
+        return _filter.clicked

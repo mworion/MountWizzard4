@@ -34,8 +34,6 @@ import base.widget as mWidget
 import base.tpool
 import mountcontrol.convert as convert
 from gui import main_ui
-from base.widget import InputValue
-from base.widget import InputLocation
 
 
 class MainWindow(mWidget.MWidget):
@@ -97,12 +95,14 @@ class MainWindow(mWidget.MWidget):
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
-        self.ui.setMeridianLimitTrack.clicked.connect(self.setMeridianLimitTrack)
-        self.ui.setMeridianLimitSlew.clicked.connect(self.setMeridianLimitSlew)
-        self.ui.setHorizonLimitHigh.clicked.connect(self.setHorizonLimitHigh)
-        self.ui.setHorizonLimitLow.clicked.connect(self.setHorizonLimitLow)
-        self.ui.setSlewRate.clicked.connect(self.setSlewRate)
-        self.ui.setLocation.clicked.connect(self.setLocation)
+        self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
+        self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
+        self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
+        self.clickable(self.ui.horizonLimitLow).connect(self.setHorizonLimitLow)
+        self.clickable(self.ui.slewRate).connect(self.setSlewRate)
+        self.clickable(self.ui.siteLatitude).connect(self.setSiteLatitude)
+        self.clickable(self.ui.siteLongitude).connect(self.setSiteLongitude)
+        self.clickable(self.ui.siteElevation).connect(self.setSiteElevation)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -631,15 +631,15 @@ class MainWindow(mWidget.MWidget):
         return True
 
     def changeTracking(self):
-        obsSite = self.app.mount.obsSite
-        if obsSite.status == 0:
-            suc = obsSite.stopTracking()
+        obs = self.app.mount.obsSite
+        if obs.status == 0:
+            suc = obs.stopTracking()
             if not suc:
                 self.app.message.emit('Cannot stop tracking', 2)
             else:
                 self.app.message.emit('Stopped tracking', 0)
         else:
-            suc = obsSite.startTracking()
+            suc = obs.startTracking()
             if not suc:
                 self.app.message.emit('Cannot start tracking', 2)
             else:
@@ -647,15 +647,15 @@ class MainWindow(mWidget.MWidget):
         return True
 
     def changePark(self):
-        obsSite = self.app.mount.obsSite
-        if obsSite.status == 5:
-            suc = obsSite.unpark()
+        obs = self.app.mount.obsSite
+        if obs.status == 5:
+            suc = obs.unpark()
             if not suc:
                 self.app.message.emit('Cannot unpark mount', 2)
             else:
                 self.app.message.emit('Mount unparked', 0)
         else:
-            suc = obsSite.park()
+            suc = obs.park()
             if not suc:
                 self.app.message.emit('Cannot park mount', 2)
             else:
@@ -663,24 +663,24 @@ class MainWindow(mWidget.MWidget):
         return True
 
     def setLunarTracking(self):
-        obsSite = self.app.mount.obsSite
-        suc = obsSite.setLunarTracking()
+        obs = self.app.mount.obsSite
+        suc = obs.setLunarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Lunar', 2)
         else:
             self.app.message.emit('Tracking set to Lunar', 0)
 
     def setSiderealTracking(self):
-        obsSite = self.app.mount.obsSite
-        suc = obsSite.setSiderealTracking()
+        obs = self.app.mount.obsSite
+        suc = obs.setSiderealTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Sidereal', 2)
         else:
             self.app.message.emit('Tracking set to Sidereal', 0)
 
     def setSolarTracking(self):
-        obsSite = self.app.mount.obsSite
-        suc = obsSite.setSolarTracking()
+        obs = self.app.mount.obsSite
+        suc = obs.setSolarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Solar', 2)
         else:
@@ -746,23 +746,24 @@ class MainWindow(mWidget.MWidget):
 
         sett = self.app.mount.sett
         msg = PyQt5.QtWidgets.QMessageBox
-        obsSite = self.app.mount.obsSite
+        obs = self.app.mount.obsSite
         actValue = sett.meridianLimitTrack
         if actValue is None:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputValue(window=self,
-                         title='Set Meridian Limit Track',
-                         message='Value (-20-20):',
-                         actValue=actValue,
-                         minValue=-20,
-                         maxValue=20,
-                         stepValue=1)
-        if dlg.exec_():
-            value = dlg.getValue()
-            obsSite.setMeridianLimitTrack(value)
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Meridian Limit Track',
+                               'Value (-20-20):',
+                               actValue,
+                               -20,
+                               20,
+                               1,
+                               )
+        if ok:
+            obs.setMeridianLimitTrack(value)
             return True
         else:
             return False
@@ -775,7 +776,7 @@ class MainWindow(mWidget.MWidget):
         """
 
         sett = self.app.mount.sett
-        obsSite = self.app.mount.obsSite
+        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.meridianLimitSlew
         if actValue is None:
@@ -783,16 +784,17 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputValue(window=self,
-                         title='Set Meridian Limit Slew',
-                         message='Value (-20-20):',
-                         actValue=actValue,
-                         minValue=-20,
-                         maxValue=20,
-                         stepValue=1)
-        if dlg.exec_():
-            value = dlg.getValue()
-            obsSite.setMeridianLimitSlew(value)
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Meridian Limit Slew',
+                               'Value (-20-20):',
+                               actValue,
+                               -20,
+                               20,
+                               1,
+                               )
+        if ok:
+            obs.setMeridianLimitSlew(value)
             return True
         else:
             return False
@@ -805,7 +807,7 @@ class MainWindow(mWidget.MWidget):
         """
 
         sett = self.app.mount.sett
-        obsSite = self.app.mount.obsSite
+        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.horizonLimitHigh
         if actValue is None:
@@ -813,16 +815,17 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputValue(window=self,
-                         title='Set Horizon Limit High',
-                         message='Value (0-90):',
-                         actValue=actValue,
-                         minValue=0,
-                         maxValue=90,
-                         stepValue=1)
-        if dlg.exec_():
-            value = dlg.getValue()
-            obsSite.setHorizonLimitHigh(value)
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Horizon Limit High',
+                               'Value (0-90):',
+                               actValue,
+                               0,
+                               90,
+                               1,
+                               )
+        if ok:
+            obs.setHorizonLimitHigh(value)
             return True
         else:
             return False
@@ -835,7 +838,7 @@ class MainWindow(mWidget.MWidget):
         """
 
         sett = self.app.mount.sett
-        obsSite = self.app.mount.obsSite
+        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.horizonLimitLow
         if actValue is None:
@@ -843,16 +846,18 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputValue(window=self,
-                         title='Set Horizon Limit Low',
-                         message='Value (0-90):',
-                         actValue=actValue,
-                         minValue=0,
-                         maxValue=90,
-                         stepValue=1)
-        if dlg.exec_():
-            value = dlg.getValue()
-            obsSite.setHorizonLimitLow(value)
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Horizon Limit Low',
+                               'Value (0-90):',
+                               actValue,
+                               0,
+                               90,
+                               1,
+                               )
+        if ok:
+            obs.setHorizonLimitLow(value)
             return True
         else:
             return False
@@ -863,9 +868,8 @@ class MainWindow(mWidget.MWidget):
 
         :return:    success as bool if value could be changed
         """
-
         sett = self.app.mount.sett
-        obsSite = self.app.mount.obsSite
+        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.slewRate
         if actValue is None:
@@ -873,41 +877,103 @@ class MainWindow(mWidget.MWidget):
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputValue(window=self,
-                         title='Set Slew Rate',
-                         message='Value (1-20):',
-                         actValue=actValue,
-                         minValue=1,
-                         maxValue=20,
-                         stepValue=1)
-        if dlg.exec_():
-            value = dlg.getValue()
-            obsSite.setSlewRate(value)
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Slew Rate',
+                               'Value (1-20):',
+                               actValue,
+                               1,
+                               20,
+                               1,
+                               )
+        if ok:
+            obs.setSlewRate(value)
             return True
         else:
             return False
 
-    def setLocation(self):
+    def setSiteLongitude(self):
         """
-        setLocation implements a modal dialog for entering the value
+        setSiteLongitude implements a modal dialog for entering the value
 
         :return:    success as bool if value could be changed
         """
 
-        obsSite = self.app.mount.obsSite
+        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = obsSite.location
-        if actValue is None:
+        if obs.location is None:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when Mount not connected !')
             return False
-        dlg = InputLocation(window=self,
-                            location=actValue,
-                            )
-        if dlg.exec_():
-            value = dlg.getValue()
-            obsSite.setSite(value)
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getText(self,
+                                'Set Site Longitude',
+                                'Value:',
+                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                obs.location.latitude.dstr(),
+                                )
+        if ok:
+            # obs.setSite(value)
+            self.app.mount.getLocation()
+            return True
+        else:
+            return False
+
+    def setSiteLatitude(self):
+        """
+        setSiteLatitude implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        if obs.location is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getText(self,
+                                'Set Site Latitude',
+                                'Value: (East positive)',
+                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                obs.location.latitude.dstr(),
+                                )
+        if ok:
+            # obs.setSite(value)
+            self.app.mount.getLocation()
+            return True
+        else:
+            return False
+
+    def setSiteElevation(self):
+        """
+        setSiteElevation implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        if obs.location is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getDouble(self,
+                                  'Set Site Latitude',
+                                  'Value: (East positive)',
+                                  obs.location.elevation.m,
+                                  0,
+                                  8000,
+                                  1,
+                                  )
+        if ok:
+            # obs.setSite(value)
             self.app.mount.getLocation()
             return True
         else:

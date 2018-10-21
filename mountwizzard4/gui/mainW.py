@@ -763,8 +763,12 @@ class MainWindow(mWidget.MWidget):
                                1,
                                )
         if ok:
-            obs.setMeridianLimitTrack(value)
-            return True
+            if obs.setMeridianLimitTrack(value):
+                self.app.message.emit('Meridian Limit Track: [{0}]'.format(value), 0)
+                return True
+            else:
+                self.app.message.emit('Meridian Limit Track cannot be set', 2)
+                return False
         else:
             return False
 
@@ -794,8 +798,12 @@ class MainWindow(mWidget.MWidget):
                                1,
                                )
         if ok:
-            obs.setMeridianLimitSlew(value)
-            return True
+            if obs.setMeridianLimitSlew(value):
+                self.app.message.emit('Meridian Limit Slew: [{0}]'.format(value), 0)
+                return True
+            else:
+                self.app.message.emit('Meridian Limit Slew cannot be set', 2)
+                return False
         else:
             return False
 
@@ -825,8 +833,12 @@ class MainWindow(mWidget.MWidget):
                                1,
                                )
         if ok:
-            obs.setHorizonLimitHigh(value)
-            return True
+            if obs.setHorizonLimitHigh(value):
+                self.app.message.emit('Horizon Limit High: [{0}]'.format(value), 0)
+                return True
+            else:
+                self.app.message.emit('Horizon Limit High cannot be set', 2)
+                return False
         else:
             return False
 
@@ -857,8 +869,12 @@ class MainWindow(mWidget.MWidget):
                                1,
                                )
         if ok:
-            obs.setHorizonLimitLow(value)
-            return True
+            if obs.setHorizonLimitLow(value):
+                self.app.message.emit('Horizon Limit Low: [{0}]'.format(value), 0)
+                return True
+            else:
+                self.app.message.emit('Horizon Limit Low cannot be set', 2)
+                return False
         else:
             return False
 
@@ -888,8 +904,12 @@ class MainWindow(mWidget.MWidget):
                                1,
                                )
         if ok:
-            obs.setSlewRate(value)
-            return True
+            if obs.setSlewRate(value):
+                self.app.message.emit('Slew Rate: [{0}]'.format(value), 0)
+                return True
+            else:
+                return False
+                self.app.message.emit('Slew Rate cannot be set', 2)
         else:
             return False
 
@@ -910,9 +930,9 @@ class MainWindow(mWidget.MWidget):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Longitude',
-                                'Value:',
+                                'Value: (East positive)',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
-                                obs.location.latitude.dstr(),
+                                obs.location.longitude.dstr(),
                                 )
         if ok:
             # obs.setSite(value)
@@ -938,7 +958,7 @@ class MainWindow(mWidget.MWidget):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Latitude',
-                                'Value: (East positive)',
+                                'Value:',
                                 PyQt5.QtWidgets.QLineEdit.Normal,
                                 obs.location.latitude.dstr(),
                                 )
@@ -965,8 +985,8 @@ class MainWindow(mWidget.MWidget):
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getDouble(self,
-                                  'Set Site Latitude',
-                                  'Value: (East positive)',
+                                  'Set Site Elevation',
+                                  'Value: (meters)',
                                   obs.location.elevation.m,
                                   0,
                                   8000,

@@ -667,24 +667,30 @@ class MainWindow(mWidget.MWidget):
         suc = obs.setLunarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Lunar', 2)
+            return False
         else:
             self.app.message.emit('Tracking set to Lunar', 0)
+            return True
 
     def setSiderealTracking(self):
         obs = self.app.mount.obsSite
         suc = obs.setSiderealTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Sidereal', 2)
+            return False
         else:
             self.app.message.emit('Tracking set to Sidereal', 0)
+            return True
 
     def setSolarTracking(self):
         obs = self.app.mount.obsSite
         suc = obs.setSolarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Solar', 2)
+            return False
         else:
             self.app.message.emit('Tracking set to Solar', 0)
+            return True
 
     def loadProfile(self):
         filePath, name, ext = self.openFile(self,

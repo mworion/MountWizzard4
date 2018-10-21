@@ -682,6 +682,78 @@ def test_changePark_ok4(qtbot):
         assert ['Mount parked', 0] == blocker.args
 
 
+def test_setLunarTracking1(qtbot):
+    app = mw4_main.MountWizzard4()
+
+    with mock.patch.object(app.mount.obsSite,
+                           'setLunarTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setLunarTracking()
+            assert suc
+        assert ['Tracking set to Lunar', 0] == blocker.args
+
+
+def test_setLunarTracking2(qtbot):
+    app = mw4_main.MountWizzard4()
+
+    with mock.patch.object(app.mount.obsSite,
+                           'setLunarTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setLunarTracking()
+            assert not suc
+        assert ['Cannot set tracking to Lunar', 2] == blocker.args
+
+
+def test_setSiderealTracking1(qtbot):
+    app = mw4_main.MountWizzard4()
+
+    with mock.patch.object(app.mount.obsSite,
+                           'setSiderealTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setSiderealTracking()
+            assert suc
+        assert ['Tracking set to Sidereal', 0] == blocker.args
+
+
+def test_setSiderealTracking2(qtbot):
+    app = mw4_main.MountWizzard4()
+
+    with mock.patch.object(app.mount.obsSite,
+                           'setSiderealTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setSiderealTracking()
+            assert not suc
+        assert ['Cannot set tracking to Sidereal', 2] == blocker.args
+
+
+def test_setSolarTracking1(qtbot):
+    app = mw4_main.MountWizzard4()
+
+    with mock.patch.object(app.mount.obsSite,
+                           'setSolarTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setSolarTracking()
+            assert suc
+        assert ['Tracking set to Solar', 0] == blocker.args
+
+
+def test_setSolarTracking2(qtbot):
+    app = mw4_main.MountWizzard4()
+
+    with mock.patch.object(app.mount.obsSite,
+                           'setSolarTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setSolarTracking()
+            assert not suc
+        assert ['Cannot set tracking to Solar', 2] == blocker.args
+
+
 def test_setMeridianLimitTrack1(qtbot):
     app = mw4_main.MountWizzard4()
     app.mount.sett.meridianLimitTrack = None
@@ -1048,7 +1120,7 @@ def test_setElevation2(qtbot):
     app.mount.obsSite.location = lat, lon, elev
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
+                           'getDouble',
                            return_value=(10, True)):
         suc = app.mainW.setElevation()
         assert not suc
@@ -1062,7 +1134,7 @@ def test_setElevation3(qtbot):
     app.mount.obsSite.location = lat, lon, elev
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
+                           'getDouble',
                            return_value=(10, False)):
         suc = app.mainW.setElevation()
         assert not suc
@@ -1076,7 +1148,7 @@ def test_setElevation4(qtbot):
     app.mount.obsSite.location = lat, lon, elev
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
-                           'getInt',
+                           'getDouble',
                            return_value=(10, True)):
         with mock.patch.object(app.mount.obsSite,
                                'setElevation',

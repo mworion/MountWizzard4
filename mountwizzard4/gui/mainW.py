@@ -973,7 +973,7 @@ class MainWindow(mWidget.MWidget):
                                   1,
                                   )
         if ok:
-            # obs.setSite(value)
+            # obs.setSite(obs.location)
             self.app.mount.getLocation()
             return True
         else:

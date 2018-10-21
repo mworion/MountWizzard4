@@ -33,24 +33,5 @@ from base.widget import InputValue
 #
 #
 
-def test_InputValue_ok1(qtbot):
-    window = qtbot
-    title = 'test'
-    message = 'test'
-    actValue = 100
-    minValue = 0
-    maxValue = 200
-    stepValue = 1
-
-    window = InputValue(window=window,
-                        title=title,
-                        message=message,
-                        actValue=actValue,
-                        minValue=minValue,
-                        maxValue=maxValue,
-                        stepValue=stepValue,
-                        )
-    window.show()
-    qtbot.add_widget(window)
 
 

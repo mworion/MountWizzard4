@@ -100,9 +100,9 @@ class MainWindow(mWidget.MWidget):
         self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
         self.clickable(self.ui.horizonLimitLow).connect(self.setHorizonLimitLow)
         self.clickable(self.ui.slewRate).connect(self.setSlewRate)
-        self.clickable(self.ui.siteLatitude).connect(self.setSiteLatitude)
-        self.clickable(self.ui.siteLongitude).connect(self.setSiteLongitude)
-        self.clickable(self.ui.siteElevation).connect(self.setSiteElevation)
+        self.clickable(self.ui.siteLatitude).connect(self.setLatitude)
+        self.clickable(self.ui.siteLongitude).connect(self.setLongitude)
+        self.clickable(self.ui.siteElevation).connect(self.setElevation)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -908,12 +908,12 @@ class MainWindow(mWidget.MWidget):
                 self.app.message.emit('Slew Rate: [{0}]'.format(value), 0)
                 return True
             else:
-                return False
                 self.app.message.emit('Slew Rate cannot be set', 2)
+                return False
         else:
             return False
 
-    def setSiteLongitude(self):
+    def setLongitude(self):
         """
         setSiteLongitude implements a modal dialog for entering the value
 
@@ -945,7 +945,7 @@ class MainWindow(mWidget.MWidget):
         else:
             return False
 
-    def setSiteLatitude(self):
+    def setLatitude(self):
         """
         setSiteLatitude implements a modal dialog for entering the value
 
@@ -977,7 +977,7 @@ class MainWindow(mWidget.MWidget):
         else:
             return False
 
-    def setSiteElevation(self):
+    def setElevation(self):
         """
         setSiteElevation implements a modal dialog for entering the value
 

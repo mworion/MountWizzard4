@@ -218,10 +218,10 @@ class MainWindowTests(unittest.TestCase):
         self.assertEqual('-', self.main.mainW.ui.pierside.text())
 
     def test_updatePointGui_sidereal(self):
-        value = '45'
+        value = '45:45:45'
         self.main.mount.obsSite.timeSidereal = value
         self.main.mainW.updatePointGUI()
-        self.assertEqual('45', self.main.mainW.ui.timeSidereal.text())
+        self.assertEqual('45:45:45', self.main.mainW.ui.timeSidereal.text())
         value = None
         self.main.mount.obsSite.timeSidereal = value
         self.main.mainW.updatePointGUI()
@@ -587,7 +587,7 @@ def test_changeTracking_ok1(qtbot):
                            return_value=False):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.changeTracking()
-            assert True == suc
+            assert suc
         assert ['Cannot stop tracking', 2] == blocker.args
 
 
@@ -600,7 +600,7 @@ def test_changeTracking_ok2(qtbot):
                            return_value=True):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.changeTracking()
-            assert True == suc
+            assert suc
         assert ['Stopped tracking', 0] == blocker.args
 
 
@@ -613,7 +613,7 @@ def test_changeTracking_ok3(qtbot):
                            return_value=False):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.changeTracking()
-            assert True == suc
+            assert suc
         assert ['Cannot start tracking', 2] == blocker.args
 
 
@@ -626,7 +626,7 @@ def test_changeTracking_ok4(qtbot):
                            return_value=True):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.changeTracking()
-            assert True == suc
+            assert suc
         assert ['Started tracking', 0] == blocker.args
 
 
@@ -639,7 +639,7 @@ def test_changePark_ok1(qtbot):
                            return_value=False):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.changePark()
-            assert True == suc
+            assert suc
         assert ['Cannot unpark mount', 2] == blocker.args
 
 
@@ -652,7 +652,7 @@ def test_changePark_ok2(qtbot):
                            return_value=True):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.changePark()
-            assert True == suc
+            assert suc
         assert ['Mount unparked', 0] == blocker.args
 
 
@@ -665,7 +665,7 @@ def test_changePark_ok3(qtbot):
                            return_value=False):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.changePark()
-            assert True == suc
+            assert suc
         assert ['Cannot park mount', 2] == blocker.args
 
 
@@ -678,7 +678,7 @@ def test_changePark_ok4(qtbot):
                            return_value=True):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.changePark()
-            assert True == suc
+            assert suc
         assert ['Mount parked', 0] == blocker.args
 
 
@@ -690,34 +690,90 @@ def test_setMeridianLimitTrack1(qtbot):
                            'critical',
                            return_value=True):
         suc = app.mainW.setMeridianLimitTrack()
-        assert False == suc
+        assert not suc
 
 
 def test_setMeridianLimitTrack2(qtbot):
     app = mw4_main.MountWizzard4()
     app.mount.sett.meridianLimitTrack = 10
 
-    suc = app.mainW.setMeridianLimitTrack()
-    assert False == suc
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.setMeridianLimitTrack()
+        assert not suc
+
+
+def test_setMeridianLimitTrack3(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.meridianLimitTrack = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = app.mainW.setMeridianLimitTrack()
+        assert not suc
+
+
+def test_setMeridianLimitTrack4(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.meridianLimitTrack = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setMeridianLimitTrack',
+                               return_value=True):
+            suc = app.mainW.setMeridianLimitTrack()
+            assert suc
 
 
 def test_setMeridianLimitSlew1(qtbot):
     app = mw4_main.MountWizzard4()
-    app.mount.sett.meridianLimitTrack = None
+    app.mount.sett.meridianLimitSlew = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
         suc = app.mainW.setMeridianLimitSlew()
-        assert False == suc
+        assert not suc
 
 
 def test_setMeridianLimitSlew2(qtbot):
     app = mw4_main.MountWizzard4()
-    app.mount.sett.meridianLimitTrack = 10
+    app.mount.sett.meridianLimitSlew = 10
 
-    suc = app.mainW.setMeridianLimitSlew()
-    assert False == suc
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.setMeridianLimitSlew()
+        assert not suc
+
+
+def test_setMeridianLimitSlew3(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.meridianLimitSlew = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = app.mainW.setMeridianLimitSlew()
+        assert not suc
+
+
+def test_setMeridianLimitSlew4(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.meridianLimitSlew = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setMeridianLimitSlew',
+                               return_value=True):
+            suc = app.mainW.setMeridianLimitSlew()
+            assert suc
 
 
 def test_setHorizonLimitHigh1(qtbot):
@@ -728,15 +784,43 @@ def test_setHorizonLimitHigh1(qtbot):
                            'critical',
                            return_value=True):
         suc = app.mainW.setHorizonLimitHigh()
-        assert False == suc
+        assert not suc
 
 
 def test_setHorizonLimitHigh2(qtbot):
     app = mw4_main.MountWizzard4()
     app.mount.sett.horizonLimitHigh = 10
 
-    suc = app.mainW.setHorizonLimitHigh()
-    assert False == suc
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.setHorizonLimitHigh()
+        assert not suc
+
+
+def test_setHorizonLimitHigh3(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.horizonLimitHigh = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = app.mainW.setHorizonLimitHigh()
+        assert not suc
+
+
+def test_setHorizonLimitHigh4(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.horizonLimitHigh = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setHorizonLimitHigh',
+                               return_value=True):
+            suc = app.mainW.setHorizonLimitHigh()
+            assert suc
 
 
 def test_setHorizonLimitLow1(qtbot):
@@ -747,15 +831,43 @@ def test_setHorizonLimitLow1(qtbot):
                            'critical',
                            return_value=True):
         suc = app.mainW.setHorizonLimitLow()
-        assert False == suc
+        assert not suc
 
 
 def test_setHorizonLimitLow2(qtbot):
     app = mw4_main.MountWizzard4()
     app.mount.sett.horizonLimitLow = 10
 
-    suc = app.mainW.setHorizonLimitLow()
-    assert False == suc
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.setHorizonLimitLow()
+        assert not suc
+
+
+def test_setHorizonLimitLow3(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.horizonLimitLow = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = app.mainW.setHorizonLimitLow()
+        assert not suc
+
+
+def test_setHorizonLimitLow4(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.horizonLimitLow = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setHorizonLimitLow',
+                               return_value=True):
+            suc = app.mainW.setHorizonLimitLow()
+            assert suc
 
 
 def test_setSlewRate1(qtbot):
@@ -766,12 +878,208 @@ def test_setSlewRate1(qtbot):
                            'critical',
                            return_value=True):
         suc = app.mainW.setSlewRate()
-        assert False == suc
+        assert not suc
 
 
 def test_setSlewRate2(qtbot):
     app = mw4_main.MountWizzard4()
     app.mount.sett.slewRate = 10
 
-    suc = app.mainW.setSlewRate()
-    assert False == suc
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.setSlewRate()
+        assert not suc
+
+
+def test_setSlewRate3(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.slewRate = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = app.mainW.setSlewRate()
+        assert not suc
+
+
+def test_setSlewRate4(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.sett.slewRate = 10
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setSlewRate',
+                               return_value=True):
+            suc = app.mainW.setSlewRate()
+            assert suc
+
+
+def test_setLongitude1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.location = None
+
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setLongitude()
+        assert not suc
+
+
+def test_setLongitude2(qtbot):
+    app = mw4_main.MountWizzard4()
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.mount.obsSite.location = lat, lon, elev
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=(10, True)):
+        suc = app.mainW.setLongitude()
+        assert not suc
+
+
+def test_setLongitude3(qtbot):
+    app = mw4_main.MountWizzard4()
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.mount.obsSite.location = lat, lon, elev
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=(10, False)):
+        suc = app.mainW.setLongitude()
+        assert not suc
+
+
+def test_setLongitude4(qtbot):
+    app = mw4_main.MountWizzard4()
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.mount.obsSite.location = lat, lon, elev
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=(10, True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setLongitude',
+                               return_value=True):
+            suc = app.mainW.setLongitude()
+            assert suc
+
+
+def test_setLatitude1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.location = None
+
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setLatitude()
+        assert not suc
+
+
+def test_setLatitude2(qtbot):
+    app = mw4_main.MountWizzard4()
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.mount.obsSite.location = lat, lon, elev
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=(10, True)):
+        suc = app.mainW.setLatitude()
+        assert not suc
+
+
+def test_setLatitude3(qtbot):
+    app = mw4_main.MountWizzard4()
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.mount.obsSite.location = lat, lon, elev
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=(10, False)):
+        suc = app.mainW.setLatitude()
+        assert not suc
+
+
+def test_setLatitude4(qtbot):
+    app = mw4_main.MountWizzard4()
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.mount.obsSite.location = lat, lon, elev
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=(10, True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setLatitude',
+                               return_value=True):
+            suc = app.mainW.setLatitude()
+            assert suc
+
+
+def test_setElevation1(qtbot):
+    app = mw4_main.MountWizzard4()
+    app.mount.obsSite.location = None
+
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setElevation()
+        assert not suc
+
+
+def test_setElevation2(qtbot):
+    app = mw4_main.MountWizzard4()
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.mount.obsSite.location = lat, lon, elev
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.setElevation()
+        assert not suc
+
+
+def test_setElevation3(qtbot):
+    app = mw4_main.MountWizzard4()
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.mount.obsSite.location = lat, lon, elev
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, False)):
+        suc = app.mainW.setElevation()
+        assert not suc
+
+
+def test_setElevation4(qtbot):
+    app = mw4_main.MountWizzard4()
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.mount.obsSite.location = lat, lon, elev
+
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setElevation',
+                               return_value=True):
+            suc = app.mainW.setElevation()
+            assert suc

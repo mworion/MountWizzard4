@@ -23,7 +23,7 @@ import unittest
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 # local import
-import mw4_loader
+import mountwizzard4.mw4_loader
 
 
 class LoaderTests(unittest.TestCase):
@@ -52,7 +52,7 @@ class LoaderTests(unittest.TestCase):
 
     def test_splash_upcoming(self):
         value = PyQt5.QtGui.QPixmap(':/mw4.ico')
-        splash = mw4_loader.SplashScreen(value, self.test_app)
+        splash = mountwizzard4.mw4_loader.SplashScreen(value, self.test_app)
         splash.showMessage('test')
         splash.setValue(10)
         splash.setValue(50)

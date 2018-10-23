@@ -5,6 +5,4 @@ install:
     - pip install -r requirements.txt
 
 script:
-    - cd mountwizzard4
-    - cd test
-    - pytest -q test_mw4_loader.py
+    - pytest -q test_mainW.py

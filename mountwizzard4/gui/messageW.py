@@ -26,9 +26,9 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
-import mw4_global
-import base.widget as mWidget
-from gui import message_ui
+import mountwizzard4.mw4_global
+import mountwizzard4.base.widget as mWidget
+from mountwizzard4.gui import message_ui
 
 
 class MessageWindow(mWidget.MWidget):

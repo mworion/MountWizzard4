@@ -2,7 +2,9 @@ language: python
 python:
     - "3.6"
 install:
-    - pip install -r requirements
+    - pip install -r requirements.txt
 
 script:
-    - pytest
+    - cd mountwizzard4
+    - cd test
+    - pytest -q test_mw4_loader.py

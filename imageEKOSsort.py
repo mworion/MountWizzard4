@@ -24,4 +24,3 @@ for filename in glob.iglob(imagePath + '**/*.fits', recursive=True):
     print(newFilename)
     fd.close()
     copyfile(filename, newFilename)
-

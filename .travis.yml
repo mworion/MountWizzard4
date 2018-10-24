@@ -3,12 +3,7 @@ dist: trusty
 language: python
 python:
     - "3.6"
-addons:
-  apt:
-    packages:
-      - "python3-pip"
 install:
-    - pip3 install -r requirements.txt
-
+    - pip --allow-all-external install -r requirements.txt
 script:
     - pytest

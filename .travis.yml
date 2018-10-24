@@ -4,6 +4,6 @@ language: python
 python:
     - "3.6"
 install:
-    - pip install  --allow-all-external -r requirements.txt
+    - pip install -r requirements.txt
 script:
     - pytest

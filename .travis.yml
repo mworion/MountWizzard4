@@ -11,6 +11,7 @@ install:
     - pip install skyfield==1.9
     - pip install matplotlib==3.0.0
     - pip install mountcontrol-0.2.tar.gz
+    - pip install pytest-qt
 #     - pip3 install --no-cache-dir mountcontrol==0.2
 script:
     - pytest

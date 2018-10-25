@@ -28,8 +28,8 @@ import PyQt5.QtGui
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
-import mw4.glob as glob
-import mw4.mainApp as mainApp
+from mw4 import glob
+from mw4 import mainApp
 
 
 class MainWindowTests(unittest.TestCase):
@@ -46,8 +46,8 @@ class MainWindowTests(unittest.TestCase):
         pass
 
     def setUp(self):
-        glob.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
-        glob.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
+        glob.work_dir = '.'
+        glob.config_dir = './config'
         self.main = mainApp.MountWizzard4()
         self.spy = PyQt5.QtTest.QSignalSpy(self.main.message)
 
@@ -573,8 +573,8 @@ class MainWindowTests(unittest.TestCase):
 #
 
 
-glob.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
-glob.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
+glob.work_dir = '.'
+glob.config_dir = './config'
 
 
 def test_changeTracking_ok1(qtbot):

@@ -21,9 +21,10 @@
 import unittest
 # external packages
 import PyQt5.QtCore
+import skyfield
 # local import
-import mw4.mainApp as mainApp
-import mw4.glob as glob
+from mw4 import mainApp
+from mw4 import glob
 
 
 class MainTests(unittest.TestCase):
@@ -37,8 +38,8 @@ class MainTests(unittest.TestCase):
         pass
 
     def setUp(self):
-        glob.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
-        glob.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
+        glob.work_dir = '.'
+        glob.config_dir = './config'
         self.main = mainApp.MountWizzard4()
 
     def tearDown(self):
@@ -51,14 +52,14 @@ class MainTests(unittest.TestCase):
     #
 
     def test_loadConfig_ok1(self):
-        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config0.cfg'
+        filePath = 'config/config0.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
         self.assertEqual('4.0', self.main.config['version'])
 
     def test_loadConfig_ok2(self):
-        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config0.cfg'
+        filePath = 'config/config0.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
@@ -70,37 +71,37 @@ class MainTests(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_loadConfig_not_ok1(self):
-        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok1.cfg'
+        filePath = 'config/config_nok1.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
 
     def test_loadConfig_not_ok2(self):
-        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok2.cfg'
+        filePath = 'config/config_nok2.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok3(self):
-        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok3.cfg'
+        filePath = 'config/config_nok3.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok4(self):
-        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok4.cfg'
+        filePath = 'config/config_nok4.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok5(self):
-        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/config_nok5.cfg'
+        filePath = 'config/config_nok5.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_saveConfig_ok1(self):
-        filePath = '/Users/mw/PycharmProjects/MountWizzard4/config/test.cfg'
+        filePath = 'config/test.cfg'
 
         suc = self.main.saveConfig(filePath=filePath)
         self.assertEqual(True, suc)

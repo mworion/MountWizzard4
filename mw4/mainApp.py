@@ -24,10 +24,10 @@ import json
 # external packages
 import PyQt5.QtCore
 # local import
-import mountcontrol.qtmount
-import mw4.glob as glob
-import mw4.gui.mainW as mainW
-import mw4.gui.messageW as messageW
+from mountcontrol import qtmount
+from mw4 import glob
+from mw4.gui import mainW
+from mw4.gui import messageW
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -54,13 +54,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.loadConfig()
 
         # get the working horses up
-        pathToTs = glob.work_dir + '/config'
-        self.mount = mountcontrol.qtmount.Mount(host='192.168.2.15',
-                                                MAC='00.c0.08.87.35.db',
-                                                pathToTS=pathToTs,
-                                                expire=False,
-                                                verbose=False,
-                                                )
+        pathToTs = glob.config_dir
+        self.mount = qtmount.Mount(host='192.168.2.15',
+                                   MAC='00.c0.08.87.35.db',
+                                   pathToTS=pathToTs,
+                                   expire=True,
+                                   verbose=False,
+                                   )
         # managing data
         self.mount.signals.mountUp.connect(self.loadMountData)
 

@@ -35,9 +35,9 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 import skyfield
 # local imports
-import mw4.base.styles
-import mw4.base.tpool
-import mw4.glob
+from mw4.base import styles
+from mw4.base import tpool
+from mw4 import glob
 
 
 version = '0.1'
@@ -46,7 +46,7 @@ __all__ = [
 ]
 
 
-class MWidget(PyQt5.QtWidgets.QWidget, mw4.base.styles.MWStyles):
+class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
     """
     MWidget defines the common parts for all windows used in MountWizzard 4. namely the
     sizes and the styles. styles are defined separately in a css looking stylesheet.

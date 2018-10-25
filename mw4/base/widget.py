@@ -38,8 +38,6 @@ import skyfield
 import mw4.base.styles
 import mw4.base.tpool
 import mw4.glob
-from mw4.gui import dlgVal_ui
-from mw4.gui import dlgLoc_ui
 
 
 version = '0.1'

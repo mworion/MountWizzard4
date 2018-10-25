@@ -1,6 +1,8 @@
 sudo: false
 dist: xenial
 language: python
+virtualenv:
+  system_site_packages: true
 python:
     - "3.6.5"
 install:

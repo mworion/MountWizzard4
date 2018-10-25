@@ -32,8 +32,8 @@ import numpy as np
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 # local import
-import mw4.glob
-import mw4.main
+import mw4.glob as glob
+import mw4.mainApp as mainApp
 import mw4.media.resources
 
 
@@ -156,18 +156,18 @@ def main():
     if getattr(sys, 'frozen', False):
         # we are running in a bundle
         # noinspection PyProtectedMember
-        mw4.glob.bundle_dir = sys._MEIPASS
+        glob.bundle_dir = sys._MEIPASS
         # on mac we have to change path of working directory
         if platform.system() == 'Darwin':
             os.chdir(os.path.dirname(sys.executable))
             os.chdir('..')
             os.chdir('..')
             os.chdir('..')
-            mw4.glob.frozen = True
+            glob.frozen = True
     else:
         # we are running in a normal Python environment
-        mw4.glob.bundle_dir = os.path.dirname(os.path.abspath(__file__))
-        mw4.glob.frozen = False
+        glob.bundle_dir = os.path.dirname(os.path.abspath(__file__))
+        glob.frozen = False
 
     # now instantiate the application from QApplication
     PyQt5.QtWidgets.QApplication.setAttribute(PyQt5.QtCore.Qt.AA_EnableHighDpiScaling, True)
@@ -180,10 +180,10 @@ def main():
     splash.showMessage('Start initialising')
     splash.setValue(0)
     # setting work dir:
-    mw4.glob.work_dir = os.getcwd()
-    mw4.glob.config_dir = mw4.glob.work_dir + '/config'
-    mw4.glob.data_dir = mw4.glob.work_dir + '/data'
-    mw4.glob.image_dir = mw4.glob.work_dir + '/image'
+    glob.work_dir = os.getcwd()
+    glob.config_dir = glob.work_dir + '/config'
+    glob.data_dir = glob.work_dir + '/data'
+    glob.image_dir = glob.work_dir + '/image'
     # now setup the logging environment
     splash.showMessage('Setup logging')
     splash.setValue(20)
@@ -208,21 +208,21 @@ def main():
     splash.setValue(30)
 
     # we put all the configurations and downloadable files for usage in the config dir
-    if not os.path.isdir(mw4.glob.work_dir):
-        os.makedirs(mw4.glob.work_dir)
-    if not os.path.isdir(mw4.glob.config_dir):
-        os.makedirs(mw4.glob.config_dir)
-    if not os.path.isdir(mw4.glob.data_dir):
-        os.makedirs(mw4.glob.data_dir)
-    if not os.path.isdir(mw4.glob.image_dir):
-        os.makedirs(mw4.glob.image_dir)
+    if not os.path.isdir(glob.work_dir):
+        os.makedirs(glob.work_dir)
+    if not os.path.isdir(glob.config_dir):
+        os.makedirs(glob.config_dir)
+    if not os.path.isdir(glob.data_dir):
+        os.makedirs(glob.data_dir)
+    if not os.path.isdir(glob.image_dir):
+        os.makedirs(glob.image_dir)
 
     # start logging with basic system data for information
     splash.showMessage('Logging environment')
     splash.setValue(40)
     logging.info('------------------------------------------------------------------------')
     logging.info('')
-    logging.info('MountWizzard {0} started !'.format(mw4.glob.BUILD))
+    logging.info('MountWizzard {0} started !'.format(glob.BUILD))
     logging.info('')
     logging.info('------------------------------------------------------------------------')
     logging.info('Platform         : {0}'.format(platform.system()))
@@ -248,9 +248,9 @@ def main():
             logging.info('IP addr.         : {0}'.format(hostname))
         logging.info('Hosts            : {0}'.format(hostSummary))
 
-    logging.info('Environment is   : {0}'.format('frozen' if mw4.glob.frozen else 'live'))
-    logging.info('Actual workdir   : {0}'.format(mw4.glob.work_dir))
-    logging.info('Bundle dir       : {0}'.format(mw4.glob.bundle_dir))
+    logging.info('Environment is   : {0}'.format('frozen' if glob.frozen else 'live'))
+    logging.info('Actual workdir   : {0}'.format(glob.work_dir))
+    logging.info('Bundle dir       : {0}'.format(glob.bundle_dir))
     logging.info('sys.argv[0]      : {0}'.format(sys.argv[0]))
     logging.info('os.path.basename : {0}'.format(os.path.basename(sys.argv[0])))
     logging.info('sys.executable   : {0}'.format(sys.executable))
@@ -261,13 +261,13 @@ def main():
     # checking if writable
     splash.showMessage('Checking work directories')
     splash.setValue(50)
-    if not os.access(mw4.glob.work_dir, os.W_OK):
+    if not os.access(glob.work_dir, os.W_OK):
         logging.error('no write access to workdir')
-    if not os.access(mw4.glob.config_dir, os.W_OK):
+    if not os.access(glob.config_dir, os.W_OK):
         logging.error('no write access to /config')
-    if not os.access(mw4.glob.data_dir, os.W_OK):
+    if not os.access(glob.data_dir, os.W_OK):
         logging.error('no write access to /data')
-    if not os.access(mw4.glob.image_dir, os.W_OK):
+    if not os.access(glob.image_dir, os.W_OK):
         logging.error('no write access to /image')
 
     # and finally starting the application
@@ -275,7 +275,7 @@ def main():
     splash.setValue(60)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
-    mountApp = mw4.main.MountWizzard4()
+    mountApp = mainApp.MountWizzard4()
     mountApp.mainW.show()
 
     # starting gui

@@ -28,8 +28,8 @@ import PyQt5.QtGui
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
-import mw4.glob
-import mw4.main
+import mw4.glob as glob
+import mw4.mainApp as mainApp
 
 
 class MainWindowTests(unittest.TestCase):
@@ -46,9 +46,9 @@ class MainWindowTests(unittest.TestCase):
         pass
 
     def setUp(self):
-        mw4.glob.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
-        mw4.glob.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
-        self.main = mw4.main.MountWizzard4()
+        glob.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
+        glob.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
+        self.main = mainApp.MountWizzard4()
         self.spy = PyQt5.QtTest.QSignalSpy(self.main.message)
 
     def tearDown(self):
@@ -573,12 +573,12 @@ class MainWindowTests(unittest.TestCase):
 #
 
 
-mw4.glob.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
-mw4.glob.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
+glob.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
+glob.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
 
 
 def test_changeTracking_ok1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.status = 0
 
     with mock.patch.object(app.mount.obsSite,
@@ -591,7 +591,7 @@ def test_changeTracking_ok1(qtbot):
 
 
 def test_changeTracking_ok2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.status = 0
 
     with mock.patch.object(app.mount.obsSite,
@@ -604,7 +604,7 @@ def test_changeTracking_ok2(qtbot):
 
 
 def test_changeTracking_ok3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.status = 1
 
     with mock.patch.object(app.mount.obsSite,
@@ -617,7 +617,7 @@ def test_changeTracking_ok3(qtbot):
 
 
 def test_changeTracking_ok4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.status = 1
 
     with mock.patch.object(app.mount.obsSite,
@@ -630,7 +630,7 @@ def test_changeTracking_ok4(qtbot):
 
 
 def test_changePark_ok1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.status = 5
 
     with mock.patch.object(app.mount.obsSite,
@@ -643,7 +643,7 @@ def test_changePark_ok1(qtbot):
 
 
 def test_changePark_ok2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.status = 5
 
     with mock.patch.object(app.mount.obsSite,
@@ -656,7 +656,7 @@ def test_changePark_ok2(qtbot):
 
 
 def test_changePark_ok3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.status = 1
 
     with mock.patch.object(app.mount.obsSite,
@@ -669,7 +669,7 @@ def test_changePark_ok3(qtbot):
 
 
 def test_changePark_ok4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.status = 1
 
     with mock.patch.object(app.mount.obsSite,
@@ -682,7 +682,7 @@ def test_changePark_ok4(qtbot):
 
 
 def test_setLunarTracking1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
 
     with mock.patch.object(app.mount.obsSite,
                            'setLunarTracking',
@@ -694,7 +694,7 @@ def test_setLunarTracking1(qtbot):
 
 
 def test_setLunarTracking2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
 
     with mock.patch.object(app.mount.obsSite,
                            'setLunarTracking',
@@ -706,7 +706,7 @@ def test_setLunarTracking2(qtbot):
 
 
 def test_setSiderealTracking1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
 
     with mock.patch.object(app.mount.obsSite,
                            'setSiderealTracking',
@@ -718,7 +718,7 @@ def test_setSiderealTracking1(qtbot):
 
 
 def test_setSiderealTracking2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
 
     with mock.patch.object(app.mount.obsSite,
                            'setSiderealTracking',
@@ -730,7 +730,7 @@ def test_setSiderealTracking2(qtbot):
 
 
 def test_setSolarTracking1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
 
     with mock.patch.object(app.mount.obsSite,
                            'setSolarTracking',
@@ -742,7 +742,7 @@ def test_setSolarTracking1(qtbot):
 
 
 def test_setSolarTracking2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
 
     with mock.patch.object(app.mount.obsSite,
                            'setSolarTracking',
@@ -754,7 +754,7 @@ def test_setSolarTracking2(qtbot):
 
 
 def test_setMeridianLimitTrack1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.meridianLimitTrack = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -765,7 +765,7 @@ def test_setMeridianLimitTrack1(qtbot):
 
 
 def test_setMeridianLimitTrack2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.meridianLimitTrack = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -776,7 +776,7 @@ def test_setMeridianLimitTrack2(qtbot):
 
 
 def test_setMeridianLimitTrack3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.meridianLimitTrack = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -787,7 +787,7 @@ def test_setMeridianLimitTrack3(qtbot):
 
 
 def test_setMeridianLimitTrack4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.meridianLimitTrack = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -801,7 +801,7 @@ def test_setMeridianLimitTrack4(qtbot):
 
 
 def test_setMeridianLimitSlew1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.meridianLimitSlew = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -812,7 +812,7 @@ def test_setMeridianLimitSlew1(qtbot):
 
 
 def test_setMeridianLimitSlew2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.meridianLimitSlew = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -823,7 +823,7 @@ def test_setMeridianLimitSlew2(qtbot):
 
 
 def test_setMeridianLimitSlew3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.meridianLimitSlew = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -834,7 +834,7 @@ def test_setMeridianLimitSlew3(qtbot):
 
 
 def test_setMeridianLimitSlew4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.meridianLimitSlew = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -848,7 +848,7 @@ def test_setMeridianLimitSlew4(qtbot):
 
 
 def test_setHorizonLimitHigh1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.horizonLimitHigh = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -859,7 +859,7 @@ def test_setHorizonLimitHigh1(qtbot):
 
 
 def test_setHorizonLimitHigh2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.horizonLimitHigh = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -870,7 +870,7 @@ def test_setHorizonLimitHigh2(qtbot):
 
 
 def test_setHorizonLimitHigh3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.horizonLimitHigh = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -881,7 +881,7 @@ def test_setHorizonLimitHigh3(qtbot):
 
 
 def test_setHorizonLimitHigh4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.horizonLimitHigh = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -895,7 +895,7 @@ def test_setHorizonLimitHigh4(qtbot):
 
 
 def test_setHorizonLimitLow1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.horizonLimitLow = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -906,7 +906,7 @@ def test_setHorizonLimitLow1(qtbot):
 
 
 def test_setHorizonLimitLow2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.horizonLimitLow = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -917,7 +917,7 @@ def test_setHorizonLimitLow2(qtbot):
 
 
 def test_setHorizonLimitLow3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.horizonLimitLow = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -928,7 +928,7 @@ def test_setHorizonLimitLow3(qtbot):
 
 
 def test_setHorizonLimitLow4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.horizonLimitLow = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -942,7 +942,7 @@ def test_setHorizonLimitLow4(qtbot):
 
 
 def test_setSlewRate1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.slewRate = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -953,7 +953,7 @@ def test_setSlewRate1(qtbot):
 
 
 def test_setSlewRate2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.slewRate = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -964,7 +964,7 @@ def test_setSlewRate2(qtbot):
 
 
 def test_setSlewRate3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.slewRate = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -975,7 +975,7 @@ def test_setSlewRate3(qtbot):
 
 
 def test_setSlewRate4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.sett.slewRate = 10
 
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -989,7 +989,7 @@ def test_setSlewRate4(qtbot):
 
 
 def test_setLongitude1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.location = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -1000,7 +1000,7 @@ def test_setLongitude1(qtbot):
 
 
 def test_setLongitude2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -1014,7 +1014,7 @@ def test_setLongitude2(qtbot):
 
 
 def test_setLongitude3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -1028,7 +1028,7 @@ def test_setLongitude3(qtbot):
 
 
 def test_setLongitude4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -1045,7 +1045,7 @@ def test_setLongitude4(qtbot):
 
 
 def test_setLatitude1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.location = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -1056,7 +1056,7 @@ def test_setLatitude1(qtbot):
 
 
 def test_setLatitude2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -1070,7 +1070,7 @@ def test_setLatitude2(qtbot):
 
 
 def test_setLatitude3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -1084,7 +1084,7 @@ def test_setLatitude3(qtbot):
 
 
 def test_setLatitude4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -1101,7 +1101,7 @@ def test_setLatitude4(qtbot):
 
 
 def test_setElevation1(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     app.mount.obsSite.location = None
 
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -1112,7 +1112,7 @@ def test_setElevation1(qtbot):
 
 
 def test_setElevation2(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -1126,7 +1126,7 @@ def test_setElevation2(qtbot):
 
 
 def test_setElevation3(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -1140,7 +1140,7 @@ def test_setElevation3(qtbot):
 
 
 def test_setElevation4(qtbot):
-    app = mw4.main.MountWizzard4()
+    app = mainApp.MountWizzard4()
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'

@@ -26,12 +26,11 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
-import mw4.glob
-import mw4.base.widget as mWidget
+import mw4.base.widget as widget
 from mw4.gui import message_ui
 
 
-class MessageWindow(mWidget.MWidget):
+class MessageWindow(widget.MWidget):
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):

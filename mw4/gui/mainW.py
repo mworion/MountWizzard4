@@ -29,14 +29,14 @@ import PyQt5.uic
 import numpy as np
 import matplotlib
 # local import
-import mw4.glob
-import mw4.base.widget as mWidget
-import mw4.base.tpool
+import mw4.glob as glob
+import mw4.base.widget as widget
+import mw4.base.tpool as tpool
 import mountcontrol.convert as convert
 from mw4.gui import main_ui
 
 
-class MainWindow(mWidget.MWidget):
+class MainWindow(widget.MWidget):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -62,7 +62,7 @@ class MainWindow(mWidget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
-        self.setWindowTitle('MountWizzard4   (' + mw4.glob.BUILD + ')')
+        self.setWindowTitle('MountWizzard4   (' + glob.BUILD + ')')
 
         # defining the necessary instances of classes
         self.polarPlot = self.integrateMatplotlib(self.ui.modelPolar)

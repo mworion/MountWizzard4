@@ -22,8 +22,8 @@ import unittest
 # external packages
 import PyQt5.QtCore
 # local import
-import mw4.main
-import mw4.glob
+import mw4.mainApp as mainApp
+import mw4.glob as glob
 
 
 class MainTests(unittest.TestCase):
@@ -37,9 +37,9 @@ class MainTests(unittest.TestCase):
         pass
 
     def setUp(self):
-        mw4.glob.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
-        mw4.glob.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
-        self.main = mw4.main.MountWizzard4()
+        glob.work_dir = '/Users/mw/PycharmProjects/MountWizzard4'
+        glob.config_dir = '/Users/mw/PycharmProjects/MountWizzard4/config'
+        self.main = mainApp.MountWizzard4()
 
     def tearDown(self):
         pass

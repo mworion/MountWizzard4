@@ -24,10 +24,10 @@ import json
 # external packages
 import PyQt5.QtCore
 # local import
-import mountwizzard4.mw4_global
+import mw4.glob
 import mountcontrol.qtmount
-import mountwizzard4.gui.mainW
-import mountwizzard4.gui.messageW
+import mw4.gui.mainW
+import mw4.gui.messageW
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -54,7 +54,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.loadConfig()
 
         # get the working horses up
-        pathToTs = mountwizzard4.mw4_global.work_dir + '/config'
+        pathToTs = mw4.glob.work_dir + '/config'
         self.mount = mountcontrol.qtmount.Mount(host='192.168.2.15',
                                                 MAC='00.c0.08.87.35.db',
                                                 pathToTS=pathToTs,
@@ -65,8 +65,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get the window widgets up
-        self.mainW = mountwizzard4.gui.mainW.MainWindow(self)
-        self.messageW = mountwizzard4.gui.messageW.MessageWindow(self)
+        self.mainW = mw4.gui.mainW.MainWindow(self)
+        self.messageW = mw4.gui.messageW.MessageWindow(self)
 
         # link cross widget gui signals
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
@@ -76,7 +76,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # write basic data to message window
         self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('Workdir is: {0}'.format(mountwizzard4.mw4_global.work_dir), 1)
+        self.message.emit('Workdir is: {0}'.format(mw4.glob.work_dir), 1)
 
     def quit(self):
         """
@@ -111,7 +111,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         if filePath is None:
-            filePath = mountwizzard4.mw4_global.config_dir + '/config.cfg'
+            filePath = mw4.glob.config_dir + '/config.cfg'
         self.config = {'name': 'config'}
         if not os.path.isfile(filePath):
             return False
@@ -155,7 +155,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config['version'] = '4.0'
         self.config['filePath'] = filePath
         self.config['name'] = name
-        configPath = mountwizzard4.mw4_global.config_dir + '/config.cfg'
+        configPath = mw4.glob.config_dir + '/config.cfg'
         if filePath is not None:
             with open(filePath, 'w') as outfile:
                 # make the file human readable

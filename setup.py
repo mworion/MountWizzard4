@@ -1,16 +1,16 @@
 # from distutils.core import setup
 from setuptools import setup
-import mw4_global
+import glob
 import platform
 
 setup(
-    name='mountwizzard4',
-    version=mw4_global.BUILD,
+    name='mw4',
+    version=glob.BUILD,
     packages=[
-        'mountwizzard4',
-        'mountwizzard4.base',
-        'mountwizzard4.gui',
-        'mountwizzard4.media',
+        'mw4',
+        'mw4.base',
+        'mw4.gui',
+        'mw4.media',
         'mountwizzard3.test',
     ],
     python_requires='~=3.6.5',

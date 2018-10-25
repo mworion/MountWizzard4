@@ -29,11 +29,11 @@ import PyQt5.uic
 import numpy as np
 import matplotlib
 # local import
-import mountwizzard4.mw4_global
-import mountwizzard4.base.widget as mWidget
-import mountwizzard4.base.tpool
+import mw4.glob
+import mw4.base.widget as mWidget
+import mw4.base.tpool
 import mountcontrol.convert as convert
-from mountwizzard4.gui import main_ui
+from mw4.gui import main_ui
 
 
 class MainWindow(mWidget.MWidget):
@@ -62,7 +62,7 @@ class MainWindow(mWidget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
-        self.setWindowTitle('MountWizzard4   (' + mountwizzard4.mw4_global.BUILD + ')')
+        self.setWindowTitle('MountWizzard4   (' + mw4.glob.BUILD + ')')
 
         # defining the necessary instances of classes
         self.polarPlot = self.integrateMatplotlib(self.ui.modelPolar)

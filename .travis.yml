@@ -2,7 +2,7 @@ sudo: false
 dist: xenial
 language: python
 python:
-    - "3.6"
+    - "3.6.5"
 install:
     - wget https://files.pythonhosted.org/packages/d7/4e/3f83e570a9be5710490473fe09e394aa05d65083e20dcb594f952976109a/mountcontrol-0.2.tar.gz
     - pip install wakeonlan==1.1.6

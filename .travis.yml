@@ -5,7 +5,10 @@ python:
     - "3.6"
 install:
     - wget https://files.pythonhosted.org/packages/d7/4e/3f83e570a9be5710490473fe09e394aa05d65083e20dcb594f952976109a/mountcontrol-0.2.tar.gz
-    - pip install wakeonlan
+    - pip install wakeonlan==1.1.6
+    - pip install PyQt5==5.11.2
+    - pip install numpy==1.15.2
+    - pip installskyfield==1.9
     - pip install mountcontrol-0.2.tar.gz
     - pip install -r requirements.txt
 #     - pip3 install --no-cache-dir mountcontrol==0.2

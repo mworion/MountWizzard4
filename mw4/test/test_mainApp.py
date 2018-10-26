@@ -40,13 +40,14 @@ class MainTests(unittest.TestCase):
         pass
 
     def setUp(self):
+        global glob
         glob.work_dir = '.'
         glob.config_dir = './mw4/test/config'
 
         self.main = mainApp.MountWizzard4()
 
     def tearDown(self):
-        pass
+        self.main = None
 
     #
     #

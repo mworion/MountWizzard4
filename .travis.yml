@@ -13,4 +13,5 @@ install:
     - pip install mountcontrol-0.2.tar.gz
     - pip install pytest-qt
 script:
-    - pytest --verbose mw4/test/test_mainApp.py
+    - ls -la
+    - pytest --verbose --tb=long mw4/test/test_mainApp.py

@@ -46,7 +46,7 @@ class MainWindowTests(unittest.TestCase):
 
     def setUp(self):
         glob.work_dir = '.'
-        glob.config_dir = './config'
+        glob.config_dir = './mw4/test/config'
         self.main = mainApp.MountWizzard4()
         self.spy = PyQt5.QtTest.QSignalSpy(self.main.message)
 
@@ -573,7 +573,7 @@ class MainWindowTests(unittest.TestCase):
 
 
 glob.work_dir = '.'
-glob.config_dir = './config'
+glob.config_dir = './mw4/test/config'
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 

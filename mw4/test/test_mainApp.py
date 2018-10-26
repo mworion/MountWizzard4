@@ -42,13 +42,7 @@ class MainTests(unittest.TestCase):
 
     def setUp(self):
         glob.work_dir = '.'
-        glob.config_dir = './config'
-        shutil.copy(glob.work_dir + '/mw4/test/config_nok1.cfg', glob.config_dir)
-        shutil.copy(glob.work_dir + '/mw4/test/config_nok2.cfg', glob.config_dir)
-        shutil.copy(glob.work_dir + '/mw4/test/config_nok3.cfg', glob.config_dir)
-        shutil.copy(glob.work_dir + '/mw4/test/config_nok4.cfg', glob.config_dir)
-        shutil.copy(glob.work_dir + '/mw4/test/config_nok5.cfg', glob.config_dir)
-        shutil.copy(glob.work_dir + '/mw4/test/config_ok.cfg', glob.config_dir)
+        glob.config_dir = './mw4/test/config'
 
         self.main = mainApp.MountWizzard4()
 
@@ -62,14 +56,14 @@ class MainTests(unittest.TestCase):
     #
 
     def test_loadConfig_ok1(self):
-        filePath = 'config/config_ok.cfg'
+        filePath = 'mw4/test/config/config_ok.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
         self.assertEqual('4.0', self.main.config['version'])
 
     def test_loadConfig_ok2(self):
-        filePath = 'config/config_ok.cfg'
+        filePath = 'mw4/test/config/config_ok.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
@@ -81,37 +75,37 @@ class MainTests(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_loadConfig_not_ok1(self):
-        filePath = 'config/config_nok1.cfg'
+        filePath = 'mw4/test/config/config_nok1.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
 
     def test_loadConfig_not_ok2(self):
-        filePath = 'config/config_nok2.cfg'
+        filePath = 'mw4/testconfig/config_nok2.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok3(self):
-        filePath = 'config/config_nok3.cfg'
+        filePath = 'mw4/testconfig/config_nok3.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok4(self):
-        filePath = 'config/config_nok4.cfg'
+        filePath = 'mw4/test/config/config_nok4.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok5(self):
-        filePath = 'config/config_nok5.cfg'
+        filePath = 'mw4/test/config/config_nok5.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_saveConfig_ok1(self):
-        filePath = 'config/test.cfg'
+        filePath = 'mw4/test/config/test.cfg'
 
         suc = self.main.saveConfig(filePath=filePath)
         self.assertEqual(True, suc)

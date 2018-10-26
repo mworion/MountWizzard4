@@ -13,4 +13,4 @@ install:
     - pip install mountcontrol-0.2.tar.gz
     - pip install pytest-qt
 script:
-    - pytest
+    - pytest mw4/test/test_mainApp.py

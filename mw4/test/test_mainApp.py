@@ -20,6 +20,7 @@
 # standard libraries
 import unittest
 import locale
+import shutil
 # external packages
 import PyQt5.QtCore
 # local import
@@ -34,6 +35,7 @@ class MainTests(unittest.TestCase):
         cls.test_app = PyQt5.QtWidgets.QApplication([])
         locale.setlocale(locale.LC_ALL, 'en_US')
 
+
     @classmethod
     def tearDownClass(cls):
         pass
@@ -41,6 +43,13 @@ class MainTests(unittest.TestCase):
     def setUp(self):
         glob.work_dir = '.'
         glob.config_dir = './config'
+        shutil.copy(glob.work_dir + '/mw4/test/config_nok1.cfg', glob.config_dir)
+        shutil.copy(glob.work_dir + '/mw4/test/config_nok2.cfg', glob.config_dir)
+        shutil.copy(glob.work_dir + '/mw4/test/config_nok3.cfg', glob.config_dir)
+        shutil.copy(glob.work_dir + '/mw4/test/config_nok4.cfg', glob.config_dir)
+        shutil.copy(glob.work_dir + '/mw4/test/config_nok5.cfg', glob.config_dir)
+        shutil.copy(glob.work_dir + '/mw4/test/config_ok.cfg', glob.config_dir)
+
         self.main = mainApp.MountWizzard4()
 
     def tearDown(self):
@@ -53,14 +62,14 @@ class MainTests(unittest.TestCase):
     #
 
     def test_loadConfig_ok1(self):
-        filePath = 'config/config0.cfg'
+        filePath = 'config/config_ok.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
         self.assertEqual('4.0', self.main.config['version'])
 
     def test_loadConfig_ok2(self):
-        filePath = 'config/config0.cfg'
+        filePath = 'config/config_ok.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)

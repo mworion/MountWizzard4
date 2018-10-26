@@ -35,7 +35,7 @@ class MainWindowTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = PyQt5.QtWidgets.QApplication([])
-        locale.setlocale(locale.LC_ALL, 'en_US')
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
     @classmethod
     def tearDownClass(cls):

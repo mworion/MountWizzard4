@@ -14,19 +14,8 @@ install:
     - pip install mountcontrol-0.2.tar.gz
     - pip install pytest-qt
 script:
-    - ls -la
-    - pytest --verbose
-    - cd mw4
-    - ls -la
-    - cd test
-    - ls -la
-    - cd config
-    - ls -la
-    - cd ..
-    - cd ..
-    - cd ..
-    - pytest --verbose
 
+    - pytest --verbose
 
 notifications:
   email:

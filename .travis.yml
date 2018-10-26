@@ -3,6 +3,7 @@ dist: xenial
 language: python
 python:
     - "3.6.5"
+cache: pip
 install:
     - wget https://files.pythonhosted.org/packages/d7/4e/3f83e570a9be5710490473fe09e394aa05d65083e20dcb594f952976109a/mountcontrol-0.2.tar.gz
     - pip install wakeonlan==1.1.6
@@ -14,7 +15,7 @@ install:
     - pip install pytest-qt
 script:
     - ls -la
-    - pytest --verbose --tb=long ./mw4/test/test_mainApp.py
+    - pytest --verbose
     - cd mw4
     - ls -la
     - cd test
@@ -24,7 +25,7 @@ script:
     - cd ..
     - cd ..
     - cd ..
-    - pytest --verbose --tb=long ./mw4/test/test_mainApp1.py
+    - pytest --verbose
 
 
 notifications:

@@ -14,11 +14,13 @@ install:
     - pip install pytest-qt
 script:
     - ls -la
-    - pytest --verbose --tb=long mw4/test/test_mainApp.py
+    - pytest --verbose --tb=long ./mw4/test/test_mainApp.py
     - cd mw4
     - ls -la
     - cd test
     - ls -la
+    - cd config
+    - la -ls
 
 notifications:
   email:

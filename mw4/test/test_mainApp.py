@@ -35,7 +35,6 @@ class MainTests(unittest.TestCase):
         cls.test_app = PyQt5.QtWidgets.QApplication([])
         locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-
     @classmethod
     def tearDownClass(cls):
         pass
@@ -56,14 +55,14 @@ class MainTests(unittest.TestCase):
     #
 
     def test_loadConfig_ok1(self):
-        filePath = 'mw4/test/config/config_ok.cfg'
+        filePath = './mw4test/config/config_ok.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
         self.assertEqual('4.0', self.main.config['version'])
 
     def test_loadConfig_ok2(self):
-        filePath = 'mw4/test/config/config_ok.cfg'
+        filePath = './mw4test/config/config_ok.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
@@ -75,37 +74,37 @@ class MainTests(unittest.TestCase):
         self.assertEqual(True, suc)
 
     def test_loadConfig_not_ok1(self):
-        filePath = 'mw4/test/config/config_nok1.cfg'
+        filePath = './mw4test/config/config_nok1.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(True, suc)
 
     def test_loadConfig_not_ok2(self):
-        filePath = 'mw4/testconfig/config_nok2.cfg'
+        filePath = './mw4test/config/config_nok2.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok3(self):
-        filePath = 'mw4/testconfig/config_nok3.cfg'
+        filePath = './mw4test/config/config_nok3.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok4(self):
-        filePath = 'mw4/test/config/config_nok4.cfg'
+        filePath = './mw4test/config/config_nok4.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_loadConfig_not_ok5(self):
-        filePath = 'mw4/test/config/config_nok5.cfg'
+        filePath = './mw4test/config/config_nok5.cfg'
 
         suc = self.main.loadConfig(filePath=filePath)
         self.assertEqual(False, suc)
 
     def test_saveConfig_ok1(self):
-        filePath = 'mw4/test/config/test.cfg'
+        filePath = './mw4test/config/test.cfg'
 
         suc = self.main.saveConfig(filePath=filePath)
         self.assertEqual(True, suc)

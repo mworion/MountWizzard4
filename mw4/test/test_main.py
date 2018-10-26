@@ -19,9 +19,9 @@
 ###########################################################
 # standard libraries
 import unittest
+import locale
 # external packages
 import PyQt5.QtCore
-import skyfield
 # local import
 from mw4 import mainApp
 from mw4 import glob
@@ -32,6 +32,7 @@ class MainTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.test_app = PyQt5.QtWidgets.QApplication([])
+        locale.setlocale(locale.LC_ALL, 'en_US')
 
     @classmethod
     def tearDownClass(cls):

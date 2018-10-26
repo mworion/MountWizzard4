@@ -20,10 +20,8 @@
 # standard libraries
 import unittest
 import unittest.mock as mock
-import os
-import time
+import locale
 # external packages
-import pytestqt
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 import PyQt5.uic
@@ -37,6 +35,7 @@ class MainWindowTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = PyQt5.QtWidgets.QApplication([])
+        locale.setlocale(locale.LC_ALL, 'en_US')
 
     @classmethod
     def tearDownClass(cls):
@@ -575,6 +574,7 @@ class MainWindowTests(unittest.TestCase):
 
 glob.work_dir = '.'
 glob.config_dir = './config'
+locale.setlocale(locale.LC_ALL, 'en_US')
 
 
 def test_changeTracking_ok1(qtbot):

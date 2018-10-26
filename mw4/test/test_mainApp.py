@@ -28,84 +28,80 @@ from mw4 import mainApp
 from mw4 import glob
 
 
-class MainTests(unittest.TestCase):
+test_app = PyQt5.QtWidgets.QApplication([])
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-    @classmethod
-    def setUpClass(cls):
-        cls.test_app = PyQt5.QtWidgets.QApplication([])
-        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+glob.work_dir = '.'
+glob.config_dir = './mw4/test/config'
 
-    @classmethod
-    def tearDownClass(cls):
-        pass
+testApp = mainApp.MountWizzard4()
 
-    def setUp(self):
-        global glob
-        glob.work_dir = '.'
-        glob.config_dir = './mw4/test/config'
 
-        self.main = mainApp.MountWizzard4()
+#
+#
+# testing main
+#
+#
 
-    def tearDown(self):
-        self.main = None
+def test_loadConfig_ok1():
+    filePath = './mw4/test/config/config_ok.cfg'
 
-    #
-    #
-    # testing main
-    #
-    #
+    suc = testApp.loadConfig(filePath=filePath)
+    assert suc
+    assert '4.0' == testApp.config['version']
 
-    def test_loadConfig_ok1(self):
-        filePath = './mw4/test/config/config_ok.cfg'
 
-        suc = self.main.loadConfig(filePath=filePath)
-        self.assertEqual(True, suc)
-        self.assertEqual('4.0', self.main.config['version'])
+def test_loadConfig_ok2():
+    filePath = './mw4/test/config/config_ok.cfg'
 
-    def test_loadConfig_ok2(self):
-        filePath = './mw4/test/config/config_ok.cfg'
+    suc = testApp.loadConfig(filePath=filePath)
+    assert suc
+    assert '4.0' == testApp.config['version']
 
-        suc = self.main.loadConfig(filePath=filePath)
-        self.assertEqual(True, suc)
-        self.assertEqual('4.0', self.main.config['version'])
 
-    def test_loadConfig_ok3(self):
+def test_loadConfig_ok3():
 
-        suc = self.main.loadConfig()
-        self.assertEqual(True, suc)
+    suc = testApp.loadConfig()
+    assert suc
 
-    def test_loadConfig_not_ok1(self):
-        filePath = './mw4/test/config/config_nok1.cfg'
 
-        suc = self.main.loadConfig(filePath=filePath)
-        self.assertEqual(True, suc)
+def test_loadConfig_not_ok1():
+    filePath = './mw4/test/config/config_nok1.cfg'
 
-    def test_loadConfig_not_ok2(self):
-        filePath = './mw4/test/config/config_nok2.cfg'
+    suc = testApp.loadConfig(filePath=filePath)
+    assert suc
 
-        suc = self.main.loadConfig(filePath=filePath)
-        self.assertEqual(False, suc)
 
-    def test_loadConfig_not_ok3(self):
-        filePath = './mw4/test/config/config_nok3.cfg'
+def test_loadConfig_not_ok2():
+    filePath = './mw4/test/config/config_nok2.cfg'
 
-        suc = self.main.loadConfig(filePath=filePath)
-        self.assertEqual(False, suc)
+    suc = testApp.loadConfig(filePath=filePath)
+    assert not suc
 
-    def test_loadConfig_not_ok4(self):
-        filePath = './mw4/test/config/config_nok4.cfg'
 
-        suc = self.main.loadConfig(filePath=filePath)
-        self.assertEqual(False, suc)
+def test_loadConfig_not_ok3():
+    filePath = './mw4/test/config/config_nok3.cfg'
 
-    def test_loadConfig_not_ok5(self):
-        filePath = './mw4/test/config/config_nok5.cfg'
+    suc = testApp.loadConfig(filePath=filePath)
+    assert not suc
 
-        suc = self.main.loadConfig(filePath=filePath)
-        self.assertEqual(False, suc)
 
-    def test_saveConfig_ok1(self):
-        filePath = './mw4/test/config/test.cfg'
+def test_loadConfig_not_ok4():
+    filePath = './mw4/test/config/config_nok4.cfg'
 
-        suc = self.main.saveConfig(filePath=filePath)
-        self.assertEqual(True, suc)
+    suc = testApp.loadConfig(filePath=filePath)
+    assert not suc
+
+
+def test_loadConfig_not_ok5():
+    filePath = './mw4/test/config/config_nok5.cfg'
+
+    suc = testApp.loadConfig(filePath=filePath)
+    assert not suc
+
+
+def test_saveConfig_ok1():
+    filePath = './mw4/test/config/test.cfg'
+
+    suc = testApp.saveConfig(filePath=filePath)
+    assert suc

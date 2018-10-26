@@ -25,7 +25,7 @@ import json
 import PyQt5.QtCore
 # local import
 from mountcontrol import qtmount
-from mw4 import glob
+from mw4 import mw4_glob
 from mw4.gui import mainW
 from mw4.gui import messageW
 
@@ -54,7 +54,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.loadConfig()
 
         # get the working horses up
-        pathToTs = glob.config_dir
+        pathToTs = mw4_glob.config_dir
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
                                    pathToTS=pathToTs,
@@ -76,7 +76,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # write basic data to message window
         self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('Workdir is: {0}'.format(glob.work_dir), 1)
+        self.message.emit('Workdir is: {0}'.format(mw4_glob.work_dir), 1)
 
     def quit(self):
         """
@@ -111,7 +111,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         if filePath is None:
-            filePath = glob.config_dir + '/config.cfg'
+            filePath = mw4_glob.config_dir + '/config.cfg'
         self.config = {'name': 'config'}
         if not os.path.isfile(filePath):
             return False
@@ -155,7 +155,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config['version'] = '4.0'
         self.config['filePath'] = filePath
         self.config['name'] = name
-        configPath = glob.config_dir + '/config.cfg'
+        configPath = mw4_glob.config_dir + '/config.cfg'
         if filePath is not None:
             with open(filePath, 'w') as outfile:
                 # make the file human readable

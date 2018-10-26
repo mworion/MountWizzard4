@@ -1,11 +1,11 @@
 # from distutils.core import setup
 from setuptools import setup
-import glob
+import mw4_glob
 import platform
 
 setup(
     name='mw4',
-    version=glob.BUILD,
+    version=mw4_glob.BUILD,
     packages=[
         'mw4',
         'mw4.base',

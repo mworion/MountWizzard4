@@ -37,7 +37,7 @@ import skyfield
 # local imports
 from mw4.base import styles
 from mw4.base import tpool
-from mw4 import glob
+from mw4 import mw4_glob
 
 
 version = '0.1'

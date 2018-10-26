@@ -2,11 +2,11 @@ imagePath = '/Users/mw/Desktop/ngc7380/'
 destPath = imagePath + 'sort/'
 
 
-import glob
+import mw4_glob
 from astropy.io import fits as fits
 from shutil import copyfile
 
-for filename in glob.iglob(imagePath + '**/*.fits', recursive=True):
+for filename in mw4_glob.iglob(imagePath + '**/*.fits', recursive=True):
     fd = fits.open(name=filename)
     print(filename)
     newFilename = destPath + '{0}_{1}_{2}_{3:04d}_BIN_{4:01d}_{5}'\

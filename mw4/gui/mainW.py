@@ -30,7 +30,7 @@ import numpy as np
 import matplotlib
 # local import
 from mountcontrol import convert
-from mw4 import glob
+from mw4 import mw4_glob
 from mw4.base import widget
 from mw4.base import tpool
 from mw4.gui import main_ui
@@ -62,7 +62,7 @@ class MainWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
-        self.setWindowTitle('MountWizzard4   (' + glob.BUILD + ')')
+        self.setWindowTitle('MountWizzard4   (' + mw4_glob.BUILD + ')')
 
         # defining the necessary instances of classes
         self.polarPlot = self.integrateMatplotlib(self.ui.modelPolar)

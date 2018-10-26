@@ -25,14 +25,14 @@ import shutil
 import PyQt5.QtCore
 # local import
 from mw4 import mainApp
-from mw4 import glob
+from mw4 import mw4_glob
 
 
 test = PyQt5.QtWidgets.QApplication([])
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-glob.work_dir = '.'
-glob.config_dir = './mw4/test/config'
+mw4_glob.work_dir = '.'
+mw4_glob.config_dir = './mw4/test/config'
 
 test_app = mainApp.MountWizzard4()
 

@@ -20,7 +20,12 @@ script:
     - cd test
     - ls -la
     - cd config
-    - la -ls
+    - ls -la
+    - cd ..
+    - cd ..
+    - cd ..
+    - pytest --verbose --tb=long ./mw4/test/test_mainApp1.py
+
 
 notifications:
   email:

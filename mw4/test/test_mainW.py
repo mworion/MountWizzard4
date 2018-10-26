@@ -574,7 +574,7 @@ class MainWindowTests(unittest.TestCase):
 
 glob.work_dir = '.'
 glob.config_dir = './config'
-locale.setlocale(locale.LC_ALL, 'en_US')
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 
 def test_changeTracking_ok1(qtbot):

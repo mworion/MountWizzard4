@@ -18,43 +18,32 @@
 #
 ###########################################################
 # standard libraries
-import unittest
 # external packages
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 # local import
-import mw4.loader
+from mw4 import loader
+
+test_app = PyQt5.QtWidgets.QApplication([])
 
 
-class LoaderTests(unittest.TestCase):
+#
+#
+# testing loader imports
+#
+#
 
-    @classmethod
-    def setUpClass(cls):
-        cls.test_app = PyQt5.QtWidgets.QApplication([])
+def test_splash_icon():
+    value = PyQt5.QtGui.QPixmap(':/mw4.ico')
 
-    @classmethod
-    def tearDownClass(cls):
-        pass
+    assert not PyQt5.QtGui.QPixmap.isNull(value)
 
-    def setUp(self):
-        pass
 
-    #
-    #
-    # testing loader imports
-    #
-    #
-
-    def test_splash_icon(self):
-        value = PyQt5.QtGui.QPixmap(':/mw4.ico')
-
-        self.assertEqual(False, PyQt5.QtGui.QPixmap.isNull(value))
-
-    def test_splash_upcoming(self):
-        value = PyQt5.QtGui.QPixmap(':/mw4.ico')
-        splash = mw4.loader.SplashScreen(value, self.test_app)
-        splash.showMessage('test')
-        splash.setValue(10)
-        splash.setValue(50)
-        splash.setValue(90)
-        splash.setValue(100)
+def test_splash_upcoming():
+    value = PyQt5.QtGui.QPixmap(':/mw4.ico')
+    splash = loader.SplashScreen(value, test_app)
+    splash.showMessage('test')
+    splash.setValue(10)
+    splash.setValue(50)
+    splash.setValue(90)
+    splash.setValue(100)

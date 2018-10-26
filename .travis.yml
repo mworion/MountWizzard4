@@ -15,3 +15,11 @@ install:
 script:
     - ls -la
     - pytest --verbose --tb=long mw4/test/test_mainApp.py
+    - cd mw4
+    - ls -la
+    - cd test
+    - ls -la
+
+notifications:
+  email:
+    on_failure: never

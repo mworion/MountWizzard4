@@ -1124,3 +1124,26 @@ def test_toggleRelay2(qtbot):
         with qtbot.waitSignal(test_app.message) as blocker:
             suc = test_app.mainW.toggleRelay()
         assert ['Relay cannot be switched', 2] == blocker.args
+
+
+def test_enableRelay1(qtbot):
+    test_app.mainW.ui.checkEnableRelay.setChecked(True)
+    with mock.patch.object(test_app.relay,
+                           'startTimers',
+                           return_value=None):
+        with qtbot.waitSignal(test_app.message) as blocker:
+            suc = test_app.mainW.enableRelay()
+            assert suc
+        assert ['Relay enabled', 0] == blocker.args
+
+
+def test_enableRelay2(qtbot):
+    test_app.mainW.ui.checkEnableRelay.setChecked(False)
+    with mock.patch.object(test_app.relay,
+                           'startTimers',
+                           return_value=None):
+        with qtbot.waitSignal(test_app.message) as blocker:
+            suc = test_app.mainW.enableRelay()
+            assert suc
+        assert ['Relay disabled', 0] == blocker.args
+

@@ -1106,6 +1106,7 @@ class MainWindow(widget.MWidget):
         if not self.ui.checkEnableRelay.isChecked():
             self.app.message.emit('Relay box off', 2)
             return False
+        suc = False
         for i, button in enumerate(self.relayButton):
             if button != self.sender():
                 continue
@@ -1153,4 +1154,3 @@ class MainWindow(widget.MWidget):
 
     def mountMAC(self):
         self.app.mount.MAC = self.ui.mountMAC.text()
-

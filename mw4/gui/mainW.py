@@ -56,8 +56,8 @@ class MainWindow(widget.MWidget):
 
         self.app = app
         # self.tPool = PyQt5.QtCore.QThreadPool()
-        self.relayDropDowns = list()
-        self.relayButtons = list()
+        self.relayDropDown = list()
+        self.relayButton = list()
         self.relayText = list()
 
         # load and init the gui
@@ -140,6 +140,15 @@ class MainWindow(widget.MWidget):
         self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
         self.ui.profile.setText(config.get('profile'))
+        for i, line in enumerate(self.relayText):
+            key = 'relayText{0:1d}'.format(i)
+            line.setText(config.get(key, 'Relay{0:1d}'.format(i)))
+        for i, button in enumerate(self.relayButton):
+            key = 'relayText{0:1d}'.format(i)
+            button.setText(config.get(key, 'Relay{0:1d}'.format(i)))
+        for i, drop in enumerate(self.relayDropDown):
+            key = 'relayFun{0:1d}'.format(i)
+            drop.setCurrentIndex(config.get(key, 0))
 
     def storeConfig(self):
         if 'mainW' not in self.app.config:
@@ -156,7 +165,12 @@ class MainWindow(widget.MWidget):
         config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
         config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
         config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
-        for
+        for i, line in enumerate(self.relayText):
+            key = 'relayText{0:1d}'.format(i)
+            config[key] = line.text()
+        for i, drop in enumerate(self.relayDropDown):
+            key = 'relayFun{0:1d}'.format(i)
+            config[key] = drop.currentIndex()
 
     def closeEvent(self, closeEvent):
         """
@@ -1032,11 +1046,11 @@ class MainWindow(widget.MWidget):
         """
 
         for i in range(0, 8):
-            self.relayDropDowns.append(eval('self.ui.relayFun{0:1d}'.format(i)))
-            self.relayButtons.append(eval('self.ui.relayButton{0:1d}'.format(i)))
+            self.relayDropDown.append(eval('self.ui.relayFun{0:1d}'.format(i)))
+            self.relayButton.append(eval('self.ui.relayButton{0:1d}'.format(i)))
             self.relayText.append(eval('self.ui.relayText{0:1d}'.format(i)))
         # and setting the entries of the drop down menus
-        for dropDown in self.relayDropDowns:
+        for dropDown in self.relayDropDown:
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('Switch - Toggle')
             dropDown.addItem('Pulse 0.5 sec')
@@ -1050,7 +1064,7 @@ class MainWindow(widget.MWidget):
         """
 
         status = self.app.relay.status
-        for i, button in enumerate(self.relayButtons):
+        for i, button in enumerate(self.relayButton):
             if status[i]:
                 self.changeStylesheet(button, 'running', 'true')
             else:

@@ -63,9 +63,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    verbose=False,
                                    )
         # relay box
-        self.relay = kmRelay.KMRelay(host='192.168.2.14',
-                                     user='astro',
-                                     password='astro')
+        self.relay = kmRelay.KMRelay(host='192.168.2.15',
+                                     )
 
         # managing data
         self.mount.signals.mountUp.connect(self.loadMountData)

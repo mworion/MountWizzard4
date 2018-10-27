@@ -193,10 +193,14 @@ class KMRelay(PyQt5.QtCore.QObject):
         time.sleep(self.PULSEWIDTH)
         value2 = self.getRelay('/FF0{0:1d}00'.format(relayNumber + 1))
         if value1 is None or value2 is None:
-            self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
+            self.logger.error('Relay:{0}'.format(relayNumber))
             return False
         else:
-            return True
+            if value1.startswith('401 Unauthorized:'):
+                self.logger.error('Relay:{0} unauthorized'.format(relayNumber))
+                return False
+            else:
+                return True
 
     def switch(self, relayNumber):
         """
@@ -208,10 +212,15 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         value = self.getRelay('/relays.cgi?relay={0:1d}'.format(relayNumber + 1))
         if value is None:
-            self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
+            self.logger.error('Relay:{0}'.format(relayNumber))
             return False
         else:
-            return True
+            if value.startswith('401 Unauthorized:'):
+                self.logger.error('Relay:{0} unauthorized'.format(relayNumber))
+                return False
+            else:
+                print(value)
+                return True
 
     def set(self, relayNumber, value):
         """
@@ -228,7 +237,11 @@ class KMRelay(PyQt5.QtCore.QObject):
             outputFormat = '/FF0{0:1d}00'
         value = self.getRelay(outputFormat.format(relayNumber + 1))
         if value is None:
-            self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
+            self.logger.error('Relay:{0}'.format(relayNumber))
             return False
         else:
-            return True
+            if value.startswith('401 Unauthorized:'):
+                self.logger.error('Relay:{0} unauthorized'.format(relayNumber))
+                return False
+            else:
+                return True

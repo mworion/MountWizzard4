@@ -12140,7 +12140,7 @@ manually</string>
         <string>IP Address</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_mountIP">
+      <widget class="QLineEdit" name="mountHost">
        <property name="geometry">
         <rect>
          <x>100</x>
@@ -12182,7 +12182,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_mountMAC">
+      <widget class="QLineEdit" name="mountMAC">
        <property name="geometry">
         <rect>
          <x>200</x>
@@ -16667,8 +16667,8 @@ manually</string>
   <tabstop>relayButton5</tabstop>
   <tabstop>relayButton6</tabstop>
   <tabstop>relayButton7</tabstop>
-  <tabstop>le_mountIP</tabstop>
-  <tabstop>le_mountMAC</tabstop>
+  <tabstop>mountHost</tabstop>
+  <tabstop>mountMAC</tabstop>
   <tabstop>checkEnableINDI</tabstop>
   <tabstop>le_INDIServerIP</tabstop>
   <tabstop>le_INDIServerPort</tabstop>

@@ -114,6 +114,8 @@ class MainWindow(widget.MWidget):
         self.ui.relayHost.editingFinished.connect(self.relayHost)
         self.ui.relayUser.editingFinished.connect(self.relayUser)
         self.ui.relayPassword.editingFinished.connect(self.relayPassword)
+        self.ui.mountHost.editingFinished.connect(self.mountHost)
+        self.ui.mountMAC.editingFinished.connect(self.mountMAC)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -162,6 +164,10 @@ class MainWindow(widget.MWidget):
         self.relayUser()
         self.ui.relayPassword.setText(config.get('relayPassword', ''))
         self.relayPassword()
+        self.ui.mountHost.setText(config.get('mountHost', ''))
+        self.mountHost()
+        self.ui.mountMAC.setText(config.get('mountMAC', ''))
+        self.mountMAC()
 
     def storeConfig(self):
         if 'mainW' not in self.app.config:
@@ -188,6 +194,8 @@ class MainWindow(widget.MWidget):
         config['relayHost'] = self.ui.relayHost.text()
         config['relayUser'] = self.ui.relayUser.text()
         config['relayPassword'] = self.ui.relayPassword.text()
+        config['mountHost'] = self.ui.mountHost.text()
+        config['mountMAC'] = self.ui.mountMAC.text()
 
     def closeEvent(self, closeEvent):
         """
@@ -740,9 +748,9 @@ class MainWindow(widget.MWidget):
             return
         suc = self.app.loadConfig(filePath=filePath, name=name)
         if suc:
-            self.app.message.emit('Profile: [{0}] loaded'.format(short), 0)
+            self.app.message.emit('Profile: [{0}] loaded'.format(name), 0)
         else:
-            self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(short), 2)
+            self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(name), 2)
 
     def saveProfileAs(self):
         filePath, name, ext = self.saveFile(self,
@@ -754,9 +762,9 @@ class MainWindow(widget.MWidget):
             return
         suc = self.app.saveConfig(filePath=filePath, name=name)
         if suc:
-            self.app.message.emit('Profile: [{0}] saved'.format(short), 0)
+            self.app.message.emit('Profile: [{0}] saved'.format(name), 0)
         else:
-            self.app.message.emit('Profile: [{0}] cannot no be saved'.format(short), 2)
+            self.app.message.emit('Profile: [{0}] cannot no be saved'.format(name), 2)
 
     def saveProfile(self):
         suc = self.app.saveConfig()
@@ -1127,3 +1135,10 @@ class MainWindow(widget.MWidget):
 
     def relayPassword(self):
         self.app.relay.password = self.ui.relayPassword.text()
+
+    def mountHost(self):
+        self.app.mount.host = self.ui.mountHost.text()
+
+    def mountMAC(self):
+        self.app.mount.MAC = self.ui.mountMAC.text()
+

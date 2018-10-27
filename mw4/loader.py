@@ -31,6 +31,7 @@ import numpy as np
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
+import requests
 # local import
 from mw4 import mw4_glob
 from mw4 import mainApp
@@ -200,9 +201,11 @@ def main():
                         handlers=[logging.FileHandler(name)],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
-    # setting different log level for PyQt5 framework not to fill up the log file with
-    # unnecessary data
+    # setting different log level for imported packages to avoid unnecessary data
     logging.getLogger('PyQt5').setLevel(logging.ERROR)
+    logging.getLogger('requests').setLevel(logging.ERROR)
+    # urllib3 is used by requests
+    logging.getLogger('urllib3').setLevel(logging.ERROR)
     # population the working directory with necessary subdir
     splash.showMessage('Checking work directories')
     splash.setValue(30)

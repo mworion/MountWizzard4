@@ -179,6 +179,7 @@ class KMRelay(PyQt5.QtCore.QObject):
             value = [int(s) for s in value]
             self.status[value[0]-1] = value[1]
         self.statusReady.emit()
+        return True
 
     def pulse(self, relayNumber):
         """

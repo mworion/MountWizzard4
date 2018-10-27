@@ -168,6 +168,8 @@ class MainWindow(widget.MWidget):
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
+        self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
+        self.ui.checkJNow.setChecked(config.get('checkJNow', False))
 
     def storeConfig(self):
         if 'mainW' not in self.app.config:
@@ -196,6 +198,8 @@ class MainWindow(widget.MWidget):
         config['relayPassword'] = self.ui.relayPassword.text()
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
+        config['checkJ2000'] = self.ui.checkJ2000.isChecked()
+        config['checkJNow'] = self.ui.checkJNow.isChecked()
 
     def closeEvent(self, closeEvent):
         """

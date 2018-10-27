@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>9</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -1177,7 +1177,7 @@
      <property name="title">
       <string>Epoch coordinates</string>
      </property>
-     <widget class="QRadioButton" name="checkCoordinatesJNow">
+     <widget class="QRadioButton" name="checkJNow">
       <property name="geometry">
        <rect>
         <x>105</x>
@@ -1210,7 +1210,7 @@
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QRadioButton" name="checkCoordinatesJ2000">
+     <widget class="QRadioButton" name="checkJ2000">
       <property name="geometry">
        <rect>
         <x>15</x>

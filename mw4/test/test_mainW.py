@@ -25,6 +25,8 @@ import locale
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 import PyQt5.uic
+import PyQt5.QtTest
+import PyQt5.QtCore
 # local import
 from mw4 import mw4_glob
 from mw4 import mainApp
@@ -1087,3 +1089,38 @@ def test_setElevation4(qtbot):
                                return_value=True):
             suc = test_app.mainW.setElevation()
             assert suc
+
+
+def test_setupRelayGui(qtbot):
+    suc = test_app.mainW.setupRelayGui()
+    assert suc
+    assert 8 == len(test_app.mainW.relayDropDown)
+    assert 8 == len(test_app.mainW.relayText)
+    assert 8 == len(test_app.mainW.relayButton)
+    for dropDown in test_app.mainW.relayDropDown:
+        val = dropDown.count()
+        assert 2 == val
+
+
+def test_updateRelayGui(qtbot):
+    test_app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
+    suc = test_app.mainW.updateRelayGui()
+    assert suc
+
+
+def test_toggleRelay1(qtbot):
+    test_app.mainW.ui.checkEnableRelay.setChecked(False)
+    with qtbot.waitSignal(test_app.message) as blocker:
+        suc = test_app.mainW.toggleRelay()
+        assert not suc
+    assert ['Relay box off', 2] == blocker.args
+
+
+def test_toggleRelay2(qtbot):
+    test_app.mainW.ui.checkEnableRelay.setChecked(True)
+    with mock.patch.object(test_app.relay,
+                           'switch',
+                           return_value=False):
+        with qtbot.waitSignal(test_app.message) as blocker:
+            suc = test_app.mainW.toggleRelay()
+        assert ['Relay cannot be switched', 2] == blocker.args

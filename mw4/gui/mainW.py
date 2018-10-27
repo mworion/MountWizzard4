@@ -1074,12 +1074,16 @@ class MainWindow(widget.MWidget):
         :return: success for test
         """
 
+        self.relayDropDown = list()
+        self.relayButton = list()
+        self.relayText = list()
         for i in range(0, 8):
             self.relayDropDown.append(eval('self.ui.relayFun{0:1d}'.format(i)))
             self.relayButton.append(eval('self.ui.relayButton{0:1d}'.format(i)))
             self.relayText.append(eval('self.ui.relayText{0:1d}'.format(i)))
         # and setting the entries of the drop down menus
         for dropDown in self.relayDropDown:
+            dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('Switch - Toggle')
             dropDown.addItem('Pulse 0.5 sec')
@@ -1117,6 +1121,7 @@ class MainWindow(widget.MWidget):
             suc = self.app.relay.switch(i)
         if not suc:
             self.app.message.emit('Relay cannot be switched', 2)
+            return False
         self.app.relay.cyclePolling()
         return True
 

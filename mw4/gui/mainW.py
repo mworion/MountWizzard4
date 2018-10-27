@@ -157,8 +157,11 @@ class MainWindow(widget.MWidget):
             drop.setCurrentIndex(config.get(key, 0))
         self.ui.checkEnableRelay.setChecked(config.get('checkEnableRelay', False))
         self.ui.relayHost.setText(config.get('relayHost', ''))
+        self.relayHost()
         self.ui.relayUser.setText(config.get('relayUser', ''))
+        self.relayUser()
         self.ui.relayPassword.setText(config.get('relayPassword', ''))
+        self.relayPassword()
 
     def storeConfig(self):
         if 'mainW' not in self.app.config:

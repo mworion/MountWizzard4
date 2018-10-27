@@ -219,7 +219,6 @@ class KMRelay(PyQt5.QtCore.QObject):
                 self.logger.error('Relay:{0} unauthorized'.format(relayNumber))
                 return False
             else:
-                print(value)
                 return True
 
     def set(self, relayNumber, value):

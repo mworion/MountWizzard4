@@ -3,3 +3,4 @@ PyQt5==5.11.2
 numpy==1.15.2
 skyfield==1.9
 mountcontrol==0.2
+requests

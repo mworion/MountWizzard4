@@ -18,13 +18,14 @@
 #
 ###########################################################
 # standard libraries
+from unittest import mock
 # external packages
 import PyQt5.QtWidgets
 # local import
 from mw4.relay import kmRelay
 
 test = PyQt5.QtWidgets.QApplication([])
-
+host_ip = '192.168.2.14'
 
 #
 #
@@ -34,41 +35,41 @@ test = PyQt5.QtWidgets.QApplication([])
 
 
 def test_connect1(qtbot):
-    host = ('192.168.2.14', 80)
+    host = (host_ip, 80)
     relay = kmRelay.KMRelay(host)
     relay.user = 'astro'
     relay.password = 'astro'
-    value =relay.geturl('/status.xml')
+    value = relay.getRelay('/status.xml')
 
     assert len(value)
 
 
 def test_connect2(qtbot):
-    host = ('192.168.2.14', 80)
+    host = (host_ip, 80)
     relay = kmRelay.KMRelay(host)
     relay.user = 'astro'
     relay.password = ''
-    value = relay.geturl('/status.xml')
+    value = relay.getRelay('/status.xml')
 
     assert value.startswith('401 Unauthorized:')
 
 
 def test_connect3(qtbot):
-    host = ('192.168.2.14', 80)
+    host = (host_ip, 80)
     relay = kmRelay.KMRelay(host)
     relay.user = ''
     relay.password = 'astro'
-    value = relay.geturl('/status.xml')
+    value = relay.getRelay('/status.xml')
 
     assert value.startswith('401 Unauthorized:')
 
 
 def test_connect4(qtbot):
-    host = ('192.168.2.14', 8)
+    host = (host_ip, 8)
     relay = kmRelay.KMRelay(host)
     relay.user = ''
     relay.password = ''
-    value = relay.geturl('/status.xml')
+    value = relay.getRelay('/status.xml')
 
     assert value is None
 
@@ -78,25 +79,128 @@ def test_connect5(qtbot):
     relay = kmRelay.KMRelay(host)
     relay.user = ''
     relay.password = ''
-    value = relay.geturl('/status.xml')
+    value = relay.getRelay('/status.xml')
 
     assert value is None
 
 
 #
 #
-# testing relay values
+# testing relay values integration
 #
 #
 
-host = ('192.168.2.14', 80)
+
+host = (host_ip, 80)
 
 
-def test_connect(qtbot):
+def test_status1(qtbot):
     relay = kmRelay.KMRelay(host)
     relay.user = 'astro'
     relay.password = 'astro'
+    returnValue = """<response>
+                     <relay0>0</relay0>
+                     <relay1>0</relay1>
+                     <relay2>0</relay2>
+                     <relay3>0</relay3>
+                     <relay4>0</relay4>
+                     <relay5>0</relay5>
+                     <relay6>0</relay6>
+                     <relay7>0</relay7>
+                     <relay8>0</relay8>
+                     </response>"""
 
-    with qtbot.waitSignal(relay.statusReady) as blocker:
-        relay.cyclePolling()
-    assert [0, 0, 0, 1, 0, 0, 0, 0] == relay.status
+    with mock.patch.object(relay,
+                           'getRelay',
+                           return_value=returnValue):
+
+        for i in range(0, 9):
+            relay.set(i, 0)
+
+        with qtbot.waitSignal(relay.statusReady) as blocker:
+            relay.cyclePolling()
+        assert [0, 0, 0, 0, 0, 0, 0, 0] == relay.status
+
+
+def test_status2(qtbot):
+    relay = kmRelay.KMRelay(host)
+    relay.user = 'astro'
+    relay.password = 'astro'
+    returnValue = """<response>
+                     <relay0>1</relay0>
+                     <relay1>1</relay1>
+                     <relay2>1</relay2>
+                     <relay3>1</relay3>
+                     <relay4>1</relay4>
+                     <relay5>1</relay5>
+                     <relay6>1</relay6>
+                     <relay7>1</relay7>
+                     <relay8>1</relay8>
+                     </response>"""
+
+    with mock.patch.object(relay,
+                           'getRelay',
+                           return_value=returnValue):
+
+        for i in range(0, 9):
+            relay.set(i, 1)
+
+        with qtbot.waitSignal(relay.statusReady) as blocker:
+            relay.cyclePolling()
+        assert [1, 1, 1, 1, 1, 1, 1, 1] == relay.status
+
+
+def test_status3(qtbot):
+    relay = kmRelay.KMRelay(host)
+    relay.user = 'astro'
+    relay.password = 'astro'
+    returnValue = """<response>
+                     <relay0>1</relay0>
+                     <relay1>1</relay1>
+                     <relay2>1</relay2>
+                     <relay3>1</relay3>
+                     <relay4>1</relay4>
+                     <relay5>1</relay5>
+                     <relay6>1</relay6>
+                     <relay7>1</relay7>
+                     <relay8>1</relay8>
+                     </response>"""
+
+    with mock.patch.object(relay,
+                           'getRelay',
+                           return_value=returnValue):
+
+        for i in range(0, 9):
+            relay.switch(i)
+
+        with qtbot.waitSignal(relay.statusReady) as blocker:
+            relay.cyclePolling()
+        assert [1, 1, 1, 1, 1, 1, 1, 1] == relay.status
+
+
+def test_status4(qtbot):
+    relay = kmRelay.KMRelay(host)
+    relay.user = 'astro'
+    relay.password = 'astro'
+    returnValue = """<response>
+                     <relay0>0</relay0>
+                     <relay1>0</relay1>
+                     <relay2>0</relay2>
+                     <relay3>0</relay3>
+                     <relay4>0</relay4>
+                     <relay5>0</relay5>
+                     <relay6>0</relay6>
+                     <relay7>0</relay7>
+                     <relay8>0</relay8>
+                     </response>"""
+
+    with mock.patch.object(relay,
+                           'getRelay',
+                           return_value=returnValue):
+
+        for i in range(0, 9):
+            relay.pulse(i)
+
+        with qtbot.waitSignal(relay.statusReady) as blocker:
+            relay.cyclePolling()
+    assert [0, 0, 0, 0, 0, 0, 0, 0] == relay.status

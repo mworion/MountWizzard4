@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import re
+import time
 # external packages
 import PyQt5
 import requests
@@ -49,6 +50,9 @@ class KMRelay(PyQt5.QtCore.QObject):
 
     # timeout for requests
     TIMEOUT = 0.5
+
+    # width for pulse
+    PULSEWIDTH = 0.5
 
     # signal if correct status received and decoded
     statusReady = PyQt5.QtCore.pyqtSignal()
@@ -121,7 +125,15 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
         self.timer.stop()
 
-    def geturl(self, url):
+    def getRelay(self, url):
+        """
+        getRelay sets and reads data from the given host ip using the given
+        user and password
+
+        :param url: web address of relay box
+        :return: result: return values from web interface of box
+        """
+
         auth = requests.auth.HTTPBasicAuth(self._user,
                                            self._password)
         url = 'http://' + self._host[0] + ':' + str(self._host[1]) + url
@@ -137,7 +149,13 @@ class KMRelay(PyQt5.QtCore.QObject):
         return result
 
     def cyclePolling(self):
-        result = self.geturl('/status.xml')
+        """
+        cyclePolling reads the status of the relay status of each single relay.
+        with success the statusReady single is sent.
+
+        :return: nothing
+        """
+        result = self.getRelay('/status.xml')
         if result is None:
             return
         lines = result.splitlines()
@@ -150,19 +168,44 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.statusReady.emit()
 
     def pulse(self, relayNumber):
-        try:
-            self.geturl('/FF0{0:1d}01'.format(relayNumber))
-            time.sleep(1)
-            self.geturl('/FF0{0:1d}00'.format(relayNumber))
-        except Exception as e:
+        """
+        pulse switches a relay on for one second and off back.
+
+        :param relayNumber: number of relay to be pulsed, counting from 0 onwards
+        :return: nothing
+        """
+
+        value1 = self.getRelay('/FF0{0:1d}01'.format(relayNumber + 1))
+        time.sleep(self.PULSEWIDTH)
+        value2 = self.getRelay('/FF0{0:1d}00'.format(relayNumber + 1))
+        if value1 is None or value2 is None:
             self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
-        finally:
-            pass
 
     def switch(self, relayNumber):
-        try:
-            self.geturl('/relays.cgi?relay={0:1d}'.format(relayNumber))
-        except Exception as e:
+        """
+        switch toggles the relay stat (on, off)
+
+        :param relayNumber: number of relay to be pulsed, counting from 0 onwards
+        :return: nothing
+        """
+
+        value = self.getRelay('/relays.cgi?relay={0:1d}'.format(relayNumber + 1))
+        if value is None:
             self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
-        finally:
-            pass
+
+    def set(self, relayNumber, value):
+        """
+        set toggles the relay stat to the desired value (on, off)
+
+        :param relayNumber: number of relay to be pulsed, counting from 0 onwards
+        :param value: relay state.
+        :return: nothing
+        """
+        if value:
+            outputFormat = '/FF0{0:1d}01'
+        else:
+            outputFormat = '/FF0{0:1d}00'
+        value = self.getRelay(outputFormat.format(relayNumber + 1))
+        if value is None:
+            self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
+

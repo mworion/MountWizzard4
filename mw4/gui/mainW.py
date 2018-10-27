@@ -110,10 +110,14 @@ class MainWindow(widget.MWidget):
         self.clickable(self.ui.siteElevation).connect(self.setElevation)
         for button in self.relayButton:
             button.clicked.connect(self.toggleRelay)
+        self.ui.checkEnableRelay.clicked.connect(self.enableRelay)
+        self.ui.relayHost.editingFinished.connect(self.relayHost)
+        self.ui.relayUser.editingFinished.connect(self.relayUser)
+        self.ui.relayPassword.editingFinished.connect(self.relayPassword)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
-        self.app.relay.cyclePolling()
+        self.enableRelay()
         self.initConfig()
         self.show()
 
@@ -151,6 +155,10 @@ class MainWindow(widget.MWidget):
         for i, drop in enumerate(self.relayDropDown):
             key = 'relayFun{0:1d}'.format(i)
             drop.setCurrentIndex(config.get(key, 0))
+        self.ui.checkEnableRelay.setChecked(config.get('checkEnableRelay', False))
+        self.ui.relayHost.setText(config.get('relayHost', ''))
+        self.ui.relayUser.setText(config.get('relayUser', ''))
+        self.ui.relayPassword.setText(config.get('relayPassword', ''))
 
     def storeConfig(self):
         if 'mainW' not in self.app.config:
@@ -173,6 +181,10 @@ class MainWindow(widget.MWidget):
         for i, drop in enumerate(self.relayDropDown):
             key = 'relayFun{0:1d}'.format(i)
             config[key] = drop.currentIndex()
+        config['checkEnableRelay'] = self.ui.checkEnableRelay.isChecked()
+        config['relayHost'] = self.ui.relayHost.text()
+        config['relayUser'] = self.ui.relayUser.text()
+        config['relayPassword'] = self.ui.relayPassword.text()
 
     def closeEvent(self, closeEvent):
         """
@@ -1079,6 +1091,10 @@ class MainWindow(widget.MWidget):
 
         :return: success for test
         """
+
+        if not self.ui.checkEnableRelay.isChecked():
+            self.app.message.emit('Relay box off', 2)
+            return False
         for i, button in enumerate(self.relayButton):
             if button != self.sender():
                 continue
@@ -1087,3 +1103,24 @@ class MainWindow(widget.MWidget):
             self.app.message.emit('Relay cannot be switched', 2)
         self.app.relay.cyclePolling()
         return True
+
+    def enableRelay(self):
+        """
+        enableRelay allows to run the relay box.
+
+        :return: success for test
+        """
+        if self.ui.checkEnableRelay.isChecked():
+            self.app.relay.startTimers()
+        else:
+            self.app.relay.stopTimers()
+        return True
+
+    def relayHost(self):
+        self.app.relay.host = self.ui.relayHost.text()
+
+    def relayUser(self):
+        self.app.relay.user = self.ui.relayUser.text()
+
+    def relayPassword(self):
+        self.app.relay.password = self.ui.relayPassword.text()

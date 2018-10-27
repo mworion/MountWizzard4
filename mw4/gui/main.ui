@@ -11456,7 +11456,7 @@ manually</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -12942,7 +12942,7 @@ manually</string>
         <string>IP Address</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_relayPassword">
+      <widget class="QLineEdit" name="relayPassword">
        <property name="geometry">
         <rect>
          <x>585</x>
@@ -12984,7 +12984,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_relayUsername">
+      <widget class="QLineEdit" name="relayUser">
        <property name="geometry">
         <rect>
          <x>585</x>
@@ -13086,7 +13086,7 @@ manually</string>
         <string>Password</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_relayIP">
+      <widget class="QLineEdit" name="relayHost">
        <property name="geometry">
         <rect>
          <x>485</x>
@@ -16681,9 +16681,9 @@ manually</string>
   <tabstop>le_AstrometryAPIKey</tabstop>
   <tabstop>le_astrometryTimeout</tabstop>
   <tabstop>checkEnableRelay</tabstop>
-  <tabstop>le_relayIP</tabstop>
-  <tabstop>le_relayUsername</tabstop>
-  <tabstop>le_relayPassword</tabstop>
+  <tabstop>relayHost</tabstop>
+  <tabstop>relayUser</tabstop>
+  <tabstop>relayPassword</tabstop>
   <tabstop>checkEnableRemoteAccess</tabstop>
   <tabstop>le_remotePort</tabstop>
   <tabstop>pd_chooseImaging</tabstop>

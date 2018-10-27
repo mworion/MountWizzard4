@@ -1121,10 +1121,22 @@ class MainWindow(widget.MWidget):
 
         :return: success for test
         """
+
+        # get index for relay tab
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+
         if self.ui.checkEnableRelay.isChecked():
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            self.app.message.emit('Relay enabled', 0)
             self.app.relay.startTimers()
         else:
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.app.message.emit('Relay disabled', 0)
             self.app.relay.stopTimers()
+        # update the style for showing the Relay tab
+        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
+        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
         return True
 
     def relayHost(self):

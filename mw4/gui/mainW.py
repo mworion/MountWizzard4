@@ -58,6 +58,7 @@ class MainWindow(widget.MWidget):
         # self.tPool = PyQt5.QtCore.QThreadPool()
         self.relayDropDowns = list()
         self.relayButtons = list()
+        self.relayText = list()
 
         # load and init the gui
         self.ui = main_ui.Ui_MainWindow()
@@ -110,7 +111,7 @@ class MainWindow(widget.MWidget):
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
-        self.app.relay.
+        self.app.relay.cyclePolling()
         self.initConfig()
         self.show()
 
@@ -155,6 +156,7 @@ class MainWindow(widget.MWidget):
         config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
         config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
         config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
+        for
 
     def closeEvent(self, closeEvent):
         """
@@ -1022,18 +1024,35 @@ class MainWindow(widget.MWidget):
             return False
 
     def setupRelayGui(self):
+        """
+        setupRelayGui handles the build of list for relay handling. to keep many relay in
+        order i collect them in the list for list handling afterwards.
+
+        :return: success for test
+        """
+
         for i in range(0, 8):
             self.relayDropDowns.append(eval('self.ui.relayFun{0:1d}'.format(i)))
             self.relayButtons.append(eval('self.ui.relayButton{0:1d}'.format(i)))
+            self.relayText.append(eval('self.ui.relayText{0:1d}'.format(i)))
+        # and setting the entries of the drop down menus
         for dropDown in self.relayDropDowns:
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('Switch - Toggle')
             dropDown.addItem('Pulse 0.5 sec')
+        return True
 
     def updateRelayGui(self):
+        """
+        updateRelayGui changes the style of the button related to the state of the relay
+
+        :return: success for test
+        """
+
         status = self.app.relay.status
         for i, button in enumerate(self.relayButtons):
             if status[i]:
-                button.changStylesheet('running', 'true')
+                self.changeStylesheet(button, 'running', 'true')
             else:
-                button.changStylesheet('running', 'false')
+                self.changeStylesheet(button, 'running', 'false')
+        return True

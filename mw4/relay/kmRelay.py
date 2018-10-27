@@ -34,6 +34,8 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         >>> fw = KMRelay(
         >>>                 host=host
+        >>>                 user=user
+        >>>                 password=password
         >>>              )
     """
 
@@ -66,12 +68,14 @@ class KMRelay(PyQt5.QtCore.QObject):
 
     def __init__(self,
                  host=None,
+                 user=None,
+                 password=None,
                  ):
         super().__init__()
 
         self.host = host
-        self._user = None
-        self._password = None
+        self.user = user
+        self.password = password
         self.status = [0]*8
 
         self.timer = PyQt5.QtCore.QTimer()
@@ -141,6 +145,8 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: result: return values from web interface of box
         """
 
+        if self._host is None:
+            return None
         auth = requests.auth.HTTPBasicAuth(self._user,
                                            self._password)
         url = 'http://' + self._host[0] + ':' + str(self._host[1]) + url

@@ -84,6 +84,15 @@ def test_connect5(qtbot):
     assert value is None
 
 
+def test_connect6(qtbot):
+    relay = kmRelay.KMRelay(None)
+    relay.user = ''
+    relay.password = ''
+    value = relay.getRelay('/status.xml')
+
+    assert value is None
+
+
 #
 #
 # testing relay values integration

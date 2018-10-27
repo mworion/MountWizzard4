@@ -108,6 +108,8 @@ class MainWindow(widget.MWidget):
         self.clickable(self.ui.siteLatitude).connect(self.setLatitude)
         self.clickable(self.ui.siteLongitude).connect(self.setLongitude)
         self.clickable(self.ui.siteElevation).connect(self.setElevation)
+        for button in self.relayButton:
+            button.clicked.connect(self.toggleRelay)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -1069,4 +1071,19 @@ class MainWindow(widget.MWidget):
                 self.changeStylesheet(button, 'running', 'true')
             else:
                 self.changeStylesheet(button, 'running', 'false')
+        return True
+
+    def toggleRelay(self):
+        """
+        toggleRelay reads the button and toggles the relay on the box.
+
+        :return: success for test
+        """
+        for i, button in enumerate(self.relayButton):
+            if button != self.sender():
+                continue
+            suc = self.app.relay.switch(i)
+        if not suc:
+            self.app.message.emit('Relay cannot be switched', 2)
+        self.app.relay.cyclePolling()
         return True

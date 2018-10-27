@@ -193,6 +193,9 @@ class KMRelay(PyQt5.QtCore.QObject):
         value2 = self.getRelay('/FF0{0:1d}00'.format(relayNumber + 1))
         if value1 is None or value2 is None:
             self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
+            return False
+        else:
+            return True
 
     def switch(self, relayNumber):
         """
@@ -205,6 +208,9 @@ class KMRelay(PyQt5.QtCore.QObject):
         value = self.getRelay('/relays.cgi?relay={0:1d}'.format(relayNumber + 1))
         if value is None:
             self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
+            return False
+        else:
+            return True
 
     def set(self, relayNumber, value):
         """
@@ -222,3 +228,6 @@ class KMRelay(PyQt5.QtCore.QObject):
         value = self.getRelay(outputFormat.format(relayNumber + 1))
         if value is None:
             self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
+            return False
+        else:
+            return True

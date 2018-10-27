@@ -38,7 +38,14 @@ class KMRelay(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['KMRelay',
+               'startTimers',
+               'stopTimers',
+               'cyclePolling',
+               'pulse',
+               'switch',
+               'set',
                ]
+
     version = '0.1'
     logger = logging.getLogger(__name__)
 
@@ -201,6 +208,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :param value: relay state.
         :return: nothing
         """
+
         if value:
             outputFormat = '/FF0{0:1d}01'
         else:
@@ -208,4 +216,3 @@ class KMRelay(PyQt5.QtCore.QObject):
         value = self.getRelay(outputFormat.format(relayNumber + 1))
         if value is None:
             self.logger.error('Relay:{0}, error:{1}'.format(relayNumber, e))
-

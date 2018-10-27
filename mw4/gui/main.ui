@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>9</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -11242,7 +11242,7 @@ manually</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_relay1">
+    <widget class="QPushButton" name="relayButton0">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -11258,7 +11258,7 @@ manually</string>
       <string>Relay1</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_relay3">
+    <widget class="QPushButton" name="relayButton2">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -11274,7 +11274,7 @@ manually</string>
       <string>Relay3</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_relay2">
+    <widget class="QPushButton" name="relayButton1">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -11310,7 +11310,7 @@ manually</string>
       <string>Relays</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_relay4">
+    <widget class="QPushButton" name="relayButton3">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -11326,7 +11326,7 @@ manually</string>
       <string>Relay4</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_relay5">
+    <widget class="QPushButton" name="relayButton4">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -11342,7 +11342,7 @@ manually</string>
       <string>Relay5</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_relay6">
+    <widget class="QPushButton" name="relayButton5">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -11358,7 +11358,7 @@ manually</string>
       <string>Relay6</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_relay7">
+    <widget class="QPushButton" name="relayButton6">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -11374,7 +11374,7 @@ manually</string>
       <string>Relay7</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_relay8">
+    <widget class="QPushButton" name="relayButton7">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -11456,7 +11456,7 @@ manually</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -14432,7 +14432,7 @@ manually</string>
         <string>Text</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="relay2Text">
+      <widget class="QLineEdit" name="relayText1">
        <property name="geometry">
         <rect>
          <x>455</x>
@@ -14471,7 +14471,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QComboBox" name="relay2Function">
+      <widget class="QComboBox" name="relayFun1">
        <property name="geometry">
         <rect>
          <x>600</x>
@@ -14481,7 +14481,7 @@ manually</string>
         </rect>
        </property>
       </widget>
-      <widget class="QComboBox" name="relay7Function">
+      <widget class="QComboBox" name="relayFun6">
        <property name="geometry">
         <rect>
          <x>600</x>
@@ -14509,7 +14509,7 @@ manually</string>
         <string>8</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="relay1Text">
+      <widget class="QLineEdit" name="relayText0">
        <property name="geometry">
         <rect>
          <x>455</x>
@@ -14581,7 +14581,7 @@ manually</string>
         <string>Function</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="relay6Text">
+      <widget class="QLineEdit" name="relayText5">
        <property name="geometry">
         <rect>
          <x>455</x>
@@ -14620,7 +14620,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QComboBox" name="relay1Function">
+      <widget class="QComboBox" name="relayFun0">
        <property name="geometry">
         <rect>
          <x>600</x>
@@ -14630,7 +14630,7 @@ manually</string>
         </rect>
        </property>
       </widget>
-      <widget class="QComboBox" name="relay6Function">
+      <widget class="QComboBox" name="relayFun5">
        <property name="geometry">
         <rect>
          <x>600</x>
@@ -14640,7 +14640,7 @@ manually</string>
         </rect>
        </property>
       </widget>
-      <widget class="QComboBox" name="relay5Function">
+      <widget class="QComboBox" name="relayFun4">
        <property name="geometry">
         <rect>
          <x>600</x>
@@ -14650,7 +14650,7 @@ manually</string>
         </rect>
        </property>
       </widget>
-      <widget class="QLineEdit" name="relay4Text">
+      <widget class="QLineEdit" name="relayText3">
        <property name="geometry">
         <rect>
          <x>455</x>
@@ -14725,7 +14725,7 @@ manually</string>
         <string>1</string>
        </property>
       </widget>
-      <widget class="QComboBox" name="relay4Function">
+      <widget class="QComboBox" name="relayFun3">
        <property name="geometry">
         <rect>
          <x>600</x>
@@ -14735,7 +14735,7 @@ manually</string>
         </rect>
        </property>
       </widget>
-      <widget class="QComboBox" name="relay3Function">
+      <widget class="QComboBox" name="relayFun2">
        <property name="geometry">
         <rect>
          <x>600</x>
@@ -14784,7 +14784,7 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QLineEdit" name="relay8Text">
+      <widget class="QLineEdit" name="relayText7">
        <property name="geometry">
         <rect>
          <x>455</x>
@@ -14823,7 +14823,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="relay3Text">
+      <widget class="QLineEdit" name="relayText2">
        <property name="geometry">
         <rect>
          <x>455</x>
@@ -14916,7 +14916,7 @@ manually</string>
         <string>Text</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="relay7Text">
+      <widget class="QLineEdit" name="relayText6">
        <property name="geometry">
         <rect>
          <x>455</x>
@@ -14991,7 +14991,7 @@ manually</string>
         <string>5</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="relay5Text">
+      <widget class="QLineEdit" name="relayText4">
        <property name="geometry">
         <rect>
          <x>455</x>
@@ -15030,7 +15030,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QComboBox" name="relay8Function">
+      <widget class="QComboBox" name="relayFun7">
        <property name="geometry">
         <rect>
          <x>600</x>
@@ -15378,33 +15378,33 @@ manually</string>
       <zorder>le_azParkPos6</zorder>
       <zorder>line_83</zorder>
       <zorder>label_97</zorder>
-      <zorder>relay2Text</zorder>
-      <zorder>relay2Function</zorder>
-      <zorder>relay7Function</zorder>
+      <zorder>relayText1</zorder>
+      <zorder>relayFun1</zorder>
+      <zorder>relayFun6</zorder>
       <zorder>label_192</zorder>
-      <zorder>relay1Text</zorder>
+      <zorder>relayText0</zorder>
       <zorder>label_161</zorder>
       <zorder>label_195</zorder>
-      <zorder>relay6Text</zorder>
-      <zorder>relay1Function</zorder>
-      <zorder>relay6Function</zorder>
-      <zorder>relay5Function</zorder>
-      <zorder>relay4Text</zorder>
+      <zorder>relayText5</zorder>
+      <zorder>relayFun0</zorder>
+      <zorder>relayFun5</zorder>
+      <zorder>relayFun4</zorder>
+      <zorder>relayText3</zorder>
       <zorder>label_53</zorder>
       <zorder>label_36</zorder>
-      <zorder>relay4Function</zorder>
-      <zorder>relay3Function</zorder>
+      <zorder>relayFun3</zorder>
+      <zorder>relayFun2</zorder>
       <zorder>label_191</zorder>
-      <zorder>relay8Text</zorder>
-      <zorder>relay3Text</zorder>
+      <zorder>relayText7</zorder>
+      <zorder>relayText2</zorder>
       <zorder>label_150</zorder>
       <zorder>label_162</zorder>
       <zorder>label_41</zorder>
-      <zorder>relay7Text</zorder>
+      <zorder>relayText6</zorder>
       <zorder>label_101</zorder>
       <zorder>label_148</zorder>
-      <zorder>relay5Text</zorder>
-      <zorder>relay8Function</zorder>
+      <zorder>relayText4</zorder>
+      <zorder>relayFun7</zorder>
       <zorder>line_4</zorder>
       <zorder>line_22</zorder>
       <zorder>label_93</zorder>
@@ -16659,14 +16659,14 @@ manually</string>
   <tabstop>delayTimeHysterese</tabstop>
   <tabstop>runHysteresis</tabstop>
   <tabstop>cancelAnalyse</tabstop>
-  <tabstop>btn_relay1</tabstop>
-  <tabstop>btn_relay2</tabstop>
-  <tabstop>btn_relay3</tabstop>
-  <tabstop>btn_relay4</tabstop>
-  <tabstop>btn_relay5</tabstop>
-  <tabstop>btn_relay6</tabstop>
-  <tabstop>btn_relay7</tabstop>
-  <tabstop>btn_relay8</tabstop>
+  <tabstop>relayButton0</tabstop>
+  <tabstop>relayButton1</tabstop>
+  <tabstop>relayButton2</tabstop>
+  <tabstop>relayButton3</tabstop>
+  <tabstop>relayButton4</tabstop>
+  <tabstop>relayButton5</tabstop>
+  <tabstop>relayButton6</tabstop>
+  <tabstop>relayButton7</tabstop>
   <tabstop>le_mountIP</tabstop>
   <tabstop>le_mountMAC</tabstop>
   <tabstop>checkEnableINDI</tabstop>
@@ -16711,22 +16711,22 @@ manually</string>
   <tabstop>le_parkPos6Text</tabstop>
   <tabstop>le_azParkPos6</tabstop>
   <tabstop>le_altParkPos6</tabstop>
-  <tabstop>relay1Text</tabstop>
-  <tabstop>relay1Function</tabstop>
-  <tabstop>relay2Text</tabstop>
-  <tabstop>relay2Function</tabstop>
-  <tabstop>relay3Text</tabstop>
-  <tabstop>relay3Function</tabstop>
-  <tabstop>relay4Text</tabstop>
-  <tabstop>relay4Function</tabstop>
-  <tabstop>relay5Text</tabstop>
-  <tabstop>relay5Function</tabstop>
-  <tabstop>relay6Text</tabstop>
-  <tabstop>relay6Function</tabstop>
-  <tabstop>relay7Text</tabstop>
-  <tabstop>relay7Function</tabstop>
-  <tabstop>relay8Text</tabstop>
-  <tabstop>relay8Function</tabstop>
+  <tabstop>relayText0</tabstop>
+  <tabstop>relayFun0</tabstop>
+  <tabstop>relayText1</tabstop>
+  <tabstop>relayFun1</tabstop>
+  <tabstop>relayText2</tabstop>
+  <tabstop>relayFun2</tabstop>
+  <tabstop>relayText3</tabstop>
+  <tabstop>relayFun3</tabstop>
+  <tabstop>relayText4</tabstop>
+  <tabstop>relayFun4</tabstop>
+  <tabstop>relayText5</tabstop>
+  <tabstop>relayFun5</tabstop>
+  <tabstop>relayText6</tabstop>
+  <tabstop>relayFun6</tabstop>
+  <tabstop>relayText7</tabstop>
+  <tabstop>relayFun7</tabstop>
   <tabstop>soundMountSlewFinished</tabstop>
   <tabstop>soundDomeSlewFinished</tabstop>
   <tabstop>soundMountAlert</tabstop>

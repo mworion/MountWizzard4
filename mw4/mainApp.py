@@ -28,6 +28,7 @@ from mountcontrol import qtmount
 from mw4 import mw4_glob
 from mw4.gui import mainW
 from mw4.gui import messageW
+from mw4.relay import kmRelay
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -61,6 +62,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    expire=True,
                                    verbose=False,
                                    )
+        # relay box
+        self.relay = kmRelay.KMRelay()
+
         # managing data
         self.mount.signals.mountUp.connect(self.loadMountData)
 

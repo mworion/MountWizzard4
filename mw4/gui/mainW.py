@@ -56,6 +56,8 @@ class MainWindow(widget.MWidget):
 
         self.app = app
         # self.tPool = PyQt5.QtCore.QThreadPool()
+        self.relayDropDowns = list()
+        self.relayButtons = list()
 
         # load and init the gui
         self.ui = main_ui.Ui_MainWindow()
@@ -63,6 +65,7 @@ class MainWindow(widget.MWidget):
         self.initUI()
         self.setupIcons()
         self.setWindowTitle('MountWizzard4   (' + mw4_glob.BUILD + ')')
+        self.setupRelayGui()
 
         # defining the necessary instances of classes
         self.polarPlot = self.integrateMatplotlib(self.ui.modelPolar)
@@ -77,6 +80,7 @@ class MainWindow(widget.MWidget):
         self.app.mount.signals.fwDone.connect(self.updateFwGui)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.mount.signals.mountClear.connect(self.clearMountGui)
+        self.app.relay.statusReady.connect(self.updateRelayGui)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -106,6 +110,7 @@ class MainWindow(widget.MWidget):
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
+        self.app.relay.
         self.initConfig()
         self.show()
 
@@ -1015,3 +1020,20 @@ class MainWindow(widget.MWidget):
                 self.app.message.emit('Elevation cannot be set', 2)
         else:
             return False
+
+    def setupRelayGui(self):
+        for i in range(0, 8):
+            self.relayDropDowns.append(eval('self.ui.relayFun{0:1d}'.format(i)))
+            self.relayButtons.append(eval('self.ui.relayButton{0:1d}'.format(i)))
+        for dropDown in self.relayDropDowns:
+            dropDown.setView(PyQt5.QtWidgets.QListView())
+            dropDown.addItem('Switch - Toggle')
+            dropDown.addItem('Pulse 0.5 sec')
+
+    def updateRelayGui(self):
+        status = self.app.relay.status
+        for i, button in enumerate(self.relayButtons):
+            if status[i]:
+                button.changStylesheet('running', 'true')
+            else:
+                button.changStylesheet('running', 'false')

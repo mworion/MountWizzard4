@@ -1123,6 +1123,7 @@ def test_toggleRelay2(qtbot):
                            return_value=False):
         with qtbot.waitSignal(test_app.message) as blocker:
             suc = test_app.mainW.toggleRelay()
+            assert not suc
         assert ['Relay cannot be switched', 2] == blocker.args
 
 

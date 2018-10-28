@@ -28,6 +28,7 @@ from mountcontrol import qtmount
 from mw4 import mw4_glob
 from mw4.gui import mainW
 from mw4.gui import messageW
+from mw4.gui import hemisphereW
 from mw4.relay import kmRelay
 
 
@@ -72,6 +73,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # get the window widgets up
         self.mainW = mainW.MainWindow(self)
         self.messageW = messageW.MessageWindow(self)
+        self.hemisphereW = hemisphereW.HemisphereWindow(self)
 
         # link cross widget gui signals
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)

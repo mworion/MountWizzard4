@@ -30,30 +30,17 @@ from mw4.base import widget
 from mw4.gui import message_ui
 
 
-class MessageWindow(widget.MWidget):
+class HemisphereWindow(widget.MWidget):
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):
         super().__init__()
         self.app = app
         self.showStatus = False
-        self.ui = message_ui.Ui_MessageDialog()
+        self.ui = message_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
         self.initUI()
 
-        self.messColor = [self.COLOR_ASTRO,
-                          self.COLOR_WHITE,
-                          self.COLOR_YELLOW,
-                          self.COLOR_RED,
-                          ]
-        self.messFont = [PyQt5.QtGui.QFont.Normal,
-                         PyQt5.QtGui.QFont.Bold,
-                         PyQt5.QtGui.QFont.Normal,
-                         PyQt5.QtGui.QFont.Normal,
-                         ]
-
-        # link gui blocks
-        self.app.message.connect(self.writeMessage)
         self.initConfig()
 
     def initConfig(self):
@@ -84,7 +71,7 @@ class MessageWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
-        self.changeStylesheet(self.app.mainW.ui.openMessageW, 'running', 'false')
+        self.changeStylesheet(self.app.mainW.ui.openHemisphereW, 'running', 'false')
 
     def toggleWindow(self):
         self.showStatus = not self.showStatus
@@ -96,15 +83,4 @@ class MessageWindow(widget.MWidget):
     def showWindow(self):
         self.showStatus = True
         self.show()
-        self.changeStylesheet(self.app.mainW.ui.openMessageW, 'running', 'true')
-
-    @PyQt5.QtCore.pyqtSlot(str, int)
-    def writeMessage(self, message, mType=0):
-        prefix = time.strftime('%H:%M:%S - ', time.localtime())
-        message = prefix + message
-        self.logger.info('Message window: [{0}]'.format(message))
-        self.ui.message.setTextColor(self.messColor[mType])
-        self.ui.message.setFontWeight(self.messFont[mType])
-        self.ui.message.insertPlainText(message + '\n')
-        self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
-
+        self.changeStylesheet(self.app.mainW.ui.openHemisphereW, 'running', 'true')

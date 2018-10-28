@@ -30,6 +30,7 @@ from mw4.gui import mainW
 from mw4.gui import messageW
 from mw4.gui import hemisphereW
 from mw4.relay import kmRelay
+from mw4.build import build
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -71,6 +72,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get the window widgets up
+        self.data = build.Data()
         self.mainW = mainW.MainWindow(self)
         self.messageW = messageW.MessageWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)

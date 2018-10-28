@@ -46,35 +46,46 @@ def test_topoToAzAlt2():
 
 
 def test_genDecMin():
+    print('first')
     for a, b, c in build.genDecMin():
+        pass
         print(a, b, c)
 
 
 def test_genDecNorm():
     for a, b, c in build.genDecNorm():
-        print(a, b, c)
+        pass
+        # print(a, b, c)
 
 
 def test_genDecMax():
     for a, b, c in build.genDecMax():
-        print(a, b, c)
+        pass
+        # print(a, b, c)
 
 
 def test_genHaDec1():
+    print('second')
     for a, b in build.genHaDec(build.genDecMin):
+        pass
         print(a, b)
 
 
 def test_genHaDec2():
     for a, b in build.genHaDec(build.genDecNorm):
-        print(a, b)
+        pass
+        # print(a, b)
 
 
 def test_genHaDec3():
     for a, b in build.genHaDec(build.genDecMax):
-        print(a, b)
+        pass
+        # print(a, b)
 
 
 def test_convertPoint():
+    print('third')
+    i = 0
     for alt, az in build.convertPoint(build.genDecMin):
-        print(alt, az)
+        # print(i, alt, az)
+        i += 1

@@ -41,7 +41,7 @@ class Data(object):
     logger = logging.getLogger(__name__)
 
     def __init__(self,
-                 lat=0,
+                 lat=48,
                  ):
 
         self.lat = lat
@@ -79,12 +79,13 @@ class Data(object):
         ha = (ha * 360 / 24 + 360.0) % 360.0
         dec = np.radians(dec)
         ha = np.radians(ha)
+        lat = np.radians(lat)
         alt = np.arcsin(np.sin(dec) * np.sin(lat) + np.cos(dec) * np.cos(lat) * np.cos(ha))
         value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
-        value = np.clip(value, -1.0, 1.0)
+        # value = np.clip(value, -1.0, 1.0)
         A = np.arccos(value)
         if np.sin(ha) >= 0.0:
-            az = np.pi - A
+            az = 2*np.pi - A
         else:
             az = A
         az = np.degrees(az)
@@ -131,19 +132,18 @@ class Data(object):
             yield dec, step, side
 
     @staticmethod
-    def genHaDec(generator):
+    def genHaDec(generatorFun):
         # first direction
-        for dec, step, side in generator():
-            for ha in range(115, -125, -step):
-                if side:
-                    yield ha, dec
-        # reverse direction
-        for dec, step, side in generator():
-            for ha in range(- 125, 115, step):
-                if not side:
-                    yield ha, dec
+        for dec, step, side in generatorFun():
+            if side:
+                for ha in range(- 125, 115, step):
+                    yield ha / 10, dec
+            else:
+                for ha in range(115, -125, -step):
+                    yield ha / 10, dec
 
-    def convertPoint(self, generator):
-        for ha, dec in self.genHaDec(generator):
+    def convertPoint(self, generatorFun):
+        for ha, dec in self.genHaDec(generatorFun):
             alt, az = self.topoToAzAlt(ha, dec, self.lat)
-            yield alt, az
+            if alt > 0:
+                yield alt, az

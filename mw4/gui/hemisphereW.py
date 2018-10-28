@@ -184,7 +184,16 @@ class HemisphereWindow(widget.MWidget):
 
         # the static part (model points, horizon, celestial paths, meridian limits)
         self.clearAxes(axes, visible=True)
-
+        y, x = zip(*list(self.app.data.convertPoint(self.app.data.genDecMax)))
+        axes.plot(x, y,
+                  'o',
+                  markersize=9,
+                  fillstyle='none',
+                  color='#00A000')
+        for i, xy in enumerate(zip(x, y)):
+            axes.annotate('{0:2d}'.format(i+1),
+                          xy=xy,
+                          color='#E0E0E0')
         # now the moving part (pointing of mount, dome position)
         self.clearAxes(axesM, visible=False)
 

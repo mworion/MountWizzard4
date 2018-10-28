@@ -49,35 +49,35 @@ spy = PyQt5.QtTest.QSignalSpy(test_app.message)
 
 
 def test_resizeEvent(qtbot):
-    test_app.messageW.resizeEvent(None)
+    test_app.hemisphereW.resizeEvent(None)
 
 
 def test_closeEvent(qtbot):
-    test_app.messageW.closeEvent(None)
+    test_app.hemisphereW.closeEvent(None)
 
 
 def test_toggleWindow1(qtbot):
-    test_app.messageW.showStatus = True
-    with mock.patch.object(test_app.messageW,
+    test_app.hemisphereW.showStatus = True
+    with mock.patch.object(test_app.hemisphereW,
                            'close',
                            return_value=None):
-        test_app.messageW.toggleWindow()
-        assert not test_app.messageW.showStatus
+        test_app.hemisphereW.toggleWindow()
+        assert not test_app.hemisphereW.showStatus
 
 
 def test_toggleWindow2(qtbot):
-    test_app.messageW.showStatus = False
-    with mock.patch.object(test_app.messageW,
+    test_app.hemisphereW.showStatus = False
+    with mock.patch.object(test_app.hemisphereW,
                            'showWindow',
                            return_value=None):
-        test_app.messageW.toggleWindow()
-        assert test_app.messageW.showStatus
+        test_app.hemisphereW.toggleWindow()
+        assert test_app.hemisphereW.showStatus
 
 
 def test_showWindow1(qtbot):
-    test_app.messageW.showStatus = False
-    with mock.patch.object(test_app.messageW,
+    test_app.hemisphereW.showStatus = False
+    with mock.patch.object(test_app.hemisphereW,
                            'show',
                            return_value=None):
-        test_app.messageW.showWindow()
-        assert test_app.messageW.showStatus
+        test_app.hemisphereW.showWindow()
+        assert test_app.hemisphereW.showStatus

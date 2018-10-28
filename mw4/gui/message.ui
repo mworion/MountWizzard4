@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -25,7 +25,19 @@
   <property name="maximumSize">
    <size>
     <width>800</width>
-    <height>1600</height>
+    <height>1200</height>
+   </size>
+  </property>
+  <property name="sizeIncrement">
+   <size>
+    <width>10</width>
+    <height>10</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>10</width>
+    <height>10</height>
    </size>
   </property>
   <property name="font">
@@ -46,7 +58,7 @@
     </rect>
    </property>
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
@@ -60,7 +72,19 @@
    <property name="maximumSize">
     <size>
      <width>790</width>
-     <height>1580</height>
+     <height>1190</height>
+    </size>
+   </property>
+   <property name="sizeIncrement">
+    <size>
+     <width>10</width>
+     <height>10</height>
+    </size>
+   </property>
+   <property name="baseSize">
+    <size>
+     <width>10</width>
+     <height>10</height>
     </size>
    </property>
    <property name="font">

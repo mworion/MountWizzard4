@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -25,7 +25,19 @@
   <property name="maximumSize">
    <size>
     <width>1600</width>
-    <height>1600</height>
+    <height>1200</height>
+   </size>
+  </property>
+  <property name="sizeIncrement">
+   <size>
+    <width>10</width>
+    <height>10</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>10</width>
+    <height>10</height>
    </size>
   </property>
   <property name="font">
@@ -43,20 +55,38 @@
    <property name="geometry">
     <rect>
      <x>5</x>
-     <y>140</y>
-     <width>791</width>
-     <height>456</height>
+     <y>125</y>
+     <width>790</width>
+     <height>470</height>
     </rect>
    </property>
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>790</width>
+     <height>270</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1580</width>
+     <height>1070</height>
+    </size>
+   </property>
    <property name="sizeIncrement">
     <size>
-     <width>0</width>
+     <width>10</width>
+     <height>10</height>
+    </size>
+   </property>
+   <property name="baseSize">
+    <size>
+     <width>10</width>
      <height>10</height>
     </size>
    </property>
@@ -94,7 +124,7 @@
      <x>235</x>
      <y>10</y>
      <width>166</width>
-     <height>106</height>
+     <height>101</height>
     </rect>
    </property>
    <property name="title">
@@ -203,7 +233,7 @@
      <x>420</x>
      <y>10</y>
      <width>356</width>
-     <height>106</height>
+     <height>101</height>
     </rect>
    </property>
    <property name="title">
@@ -583,9 +613,9 @@
    <property name="geometry">
     <rect>
      <x>5</x>
-     <y>140</y>
-     <width>791</width>
-     <height>456</height>
+     <y>125</y>
+     <width>790</width>
+     <height>470</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -593,6 +623,30 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>790</width>
+     <height>270</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1580</width>
+     <height>1070</height>
+    </size>
+   </property>
+   <property name="sizeIncrement">
+    <size>
+     <width>10</width>
+     <height>10</height>
+    </size>
+   </property>
+   <property name="baseSize">
+    <size>
+     <width>10</width>
+     <height>10</height>
+    </size>
    </property>
    <property name="autoFillBackground">
     <bool>false</bool>
@@ -608,9 +662,9 @@
    <property name="geometry">
     <rect>
      <x>5</x>
-     <y>140</y>
-     <width>791</width>
-     <height>456</height>
+     <y>125</y>
+     <width>790</width>
+     <height>470</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -619,11 +673,51 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>790</width>
+     <height>270</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1580</width>
+     <height>1070</height>
+    </size>
+   </property>
+   <property name="sizeIncrement">
+    <size>
+     <width>10</width>
+     <height>10</height>
+    </size>
+   </property>
+   <property name="baseSize">
+    <size>
+     <width>10</width>
+     <height>10</height>
+    </size>
+   </property>
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
    <property name="styleSheet">
     <string notr="true"/>
+   </property>
+  </widget>
+  <widget class="Line" name="line_71">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>120</y>
+     <width>791</width>
+     <height>1</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
    </property>
   </widget>
   <zorder>btn_deletePoints</zorder>
@@ -635,6 +729,7 @@
   <zorder>checkShowMeridian</zorder>
   <zorder>hemisphereS</zorder>
   <zorder>hemisphereM</zorder>
+  <zorder>line_71</zorder>
  </widget>
  <resources/>
  <connections/>

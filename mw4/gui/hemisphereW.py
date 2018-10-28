@@ -25,6 +25,7 @@ import time
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+import numpy as np
 # local import
 from mw4.base import widget
 from mw4.gui import hemisphere_ui
@@ -52,22 +53,23 @@ class HemisphereWindow(widget.MWidget):
         self.initUI()
 
         # doing the matplotlib embedding
+        # for the alt az plane
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.hemisphereMat, True)
-
         # for the fast moving parts
         self.hemisphereMatM = self.embedMatplot(self.ui.hemisphereM)
         self.hemisphereMatM.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.hemisphereMatM, False)
-
         # for the stars in background
         self.hemisphereMatS = self.embedMatplot(self.ui.hemisphereS)
         self.hemisphereMatS.parentWidget().setStyleSheet(self.BACK)
         self.ui.hemisphereS.setVisible(False)
         self.clearRect(self.hemisphereMatS, False)
 
+        # initializing the plot
         self.initConfig()
+        self.drawHemisphere()
 
     def initConfig(self):
         if 'hemisphereW' not in self.app.config:
@@ -136,3 +138,55 @@ class HemisphereWindow(widget.MWidget):
         self.showStatus = True
         self.show()
         self.changeStylesheet(self.app.mainW.ui.openHemisphereW, 'running', 'true')
+
+    @staticmethod
+    def clearAxes(axes, visible=False):
+        axes.cla()
+        axes.set_facecolor((0, 0, 0, 0))
+        axes.set_xlim(0, 360)
+        axes.set_ylim(0, 90)
+        if not visible:
+            axes.set_axis_off()
+            return
+        axes.spines['bottom'].set_color('#2090C0')
+        axes.spines['top'].set_color('#2090C0')
+        axes.spines['left'].set_color('#2090C0')
+        axes.spines['right'].set_color('#2090C0')
+        axes.grid(True, color='#404040')
+        axes.set_facecolor((0, 0, 0, 0))
+        axes.tick_params(axis='x',
+                         colors='#2090C0',
+                         labelsize=12)
+        axes.set_xlim(0, 360)
+        axes.set_xticks(np.arange(0, 361, 30))
+        axes.set_ylim(0, 90)
+        axes.tick_params(axis='y',
+                         colors='#2090C0',
+                         which='both',
+                         labelleft='on',
+                         labelright='on',
+                         labelsize=12)
+        axes.set_xlabel('Azimuth in degrees',
+                        color='#2090C0',
+                        fontweight='bold',
+                        fontsize=12)
+        axes.set_ylabel('Altitude in degrees',
+                        color='#2090C0',
+                        fontweight='bold',
+                        fontsize=12)
+
+    def drawHemisphere(self):
+        # shortening the references
+        axes = self.hemisphereMat.figure.axes[0]
+        axesM = self.hemisphereMatM.figure.axes[0]
+        axesS = self.hemisphereMatS.figure.axes[0]
+
+        # the static part (model points, horizon, celestial paths, meridian limits)
+        self.clearAxes(axes, visible=True)
+
+        # now the moving part (pointing of mount, dome position)
+        self.clearAxes(axesM, visible=False)
+
+        # and the the star part (alignment stars)
+        self.clearAxes(axesS, visible=False)
+

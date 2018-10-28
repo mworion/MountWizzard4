@@ -21,6 +21,7 @@
 import unittest
 import unittest.mock as mock
 import locale
+import logging
 # external packages
 import PyQt5.QtGui
 import PyQt5.QtWidgets
@@ -38,6 +39,54 @@ mw4_glob.work_dir = '.'
 mw4_glob.config_dir = './mw4/test/config'
 test_app = mainApp.MountWizzard4()
 spy = PyQt5.QtTest.QSignalSpy(test_app.message)
+
+
+#
+#
+# testing mainW gui booting shutdown
+#
+#
+
+
+def test_mountBoot1(qtbot):
+    with mock.patch.object(test_app.mount,
+                           'bootMount',
+                           return_value=True):
+        with qtbot.waitSignal(test_app.message) as blocker:
+            suc = test_app.mainW.mountBoot()
+            assert suc
+        assert ['Mount booted', 0] == blocker.args
+
+
+def test_mountBoot2(qtbot):
+    with mock.patch.object(test_app.mount,
+                           'bootMount',
+                           return_value=False):
+        with qtbot.waitSignal(test_app.message) as blocker:
+            suc = test_app.mainW.mountBoot()
+            assert not suc
+        assert ['Mount cannot be booted', 2] == blocker.args
+
+
+def test_mountShutdown1(qtbot):
+    with mock.patch.object(test_app.mount.obsSite,
+                           'shutdown',
+                           return_value=True):
+        with qtbot.waitSignal(test_app.message) as blocker:
+            suc = test_app.mainW.mountShutdown()
+            assert suc
+        assert ['Shutting mount down', 0] == blocker.args
+
+
+def test_mountShutdown2(qtbot):
+    with mock.patch.object(test_app.mount.obsSite,
+                           'shutdown',
+                           return_value=False):
+        with qtbot.waitSignal(test_app.message) as blocker:
+            suc = test_app.mainW.mountShutdown()
+            assert not suc
+        assert ['Mount cannot be shutdown', 2] == blocker.args
+
 
 #
 #
@@ -427,6 +476,31 @@ def test_updateSetting_location():
     assert '-' == test_app.mainW.ui.siteLatitude.text()
     assert '-' == test_app.mainW.ui.siteElevation.text()
 
+
+def test_tracking_speed1():
+    with mock.patch.object(test_app.mount.sett,
+                           'checkRateLunar',
+                           return_value=True):
+        suc = test_app.mainW.updateSettingGUI()
+        assert suc
+
+
+def test_tracking_speed2():
+    with mock.patch.object(test_app.mount.sett,
+                           'checkRateSidereal',
+                           return_value=True):
+        suc = test_app.mainW.updateSettingGUI()
+        assert suc
+
+
+def test_tracking_speed3():
+    with mock.patch.object(test_app.mount.sett,
+                           'checkRateSolar',
+                           return_value=True):
+        suc = test_app.mainW.updateSettingGUI()
+        assert suc
+
+
 #
 #
 # testing mainW gui AlignGui
@@ -688,6 +762,120 @@ def test_changePark_ok4(qtbot):
             suc = test_app.mainW.changePark()
             assert suc
         assert ['Mount parked', 0] == blocker.args
+
+
+def test_saveProfile1(qtbot):
+    with mock.patch.object(test_app,
+                           'saveConfig',
+                           return_value=True):
+        with qtbot.waitSignal(test_app.message) as blocker:
+            test_app.mainW.saveProfile()
+        assert ['Actual profile saved', 0] == blocker.args
+
+
+def test_loadProfile1(qtbot):
+    with mock.patch.object(test_app.mainW,
+                           'openFile',
+                           return_value=('config', 'test', 'cfg')):
+        with mock.patch.object(test_app,
+                               'loadConfig',
+                               return_value=True):
+            with qtbot.waitSignal(test_app.message) as blocker:
+                suc = test_app.mainW.loadProfile()
+                assert suc
+            assert ['Profile: [test] loaded', 0] == blocker.args
+
+
+def test_loadProfile2(qtbot):
+    with mock.patch.object(test_app.mainW,
+                           'openFile',
+                           return_value=('config', 'test', 'cfg')):
+        with mock.patch.object(test_app,
+                               'loadConfig',
+                               return_value=False):
+            with qtbot.waitSignal(test_app.message) as blocker:
+                suc = test_app.mainW.loadProfile()
+                assert suc
+            assert ['Profile: [test] cannot no be loaded', 2] == blocker.args
+
+
+def test_loadProfile3(qtbot):
+    with mock.patch.object(test_app.mainW,
+                           'openFile',
+                           return_value=(None, 'test', 'cfg')):
+        suc = test_app.mainW.loadProfile()
+        assert not suc
+
+
+def test_saveProfileAs1(qtbot):
+    with mock.patch.object(test_app.mainW,
+                           'saveFile',
+                           return_value=('config', 'test', 'cfg')):
+        with mock.patch.object(test_app,
+                               'saveConfig',
+                               return_value=True):
+            with qtbot.waitSignal(test_app.message) as blocker:
+                suc = test_app.mainW.saveProfileAs()
+                assert suc
+            assert ['Profile: [test] saved', 0] == blocker.args
+
+
+def test_saveProfileAs2(qtbot):
+    with mock.patch.object(test_app.mainW,
+                           'saveFile',
+                           return_value=('config', 'test', 'cfg')):
+        with mock.patch.object(test_app,
+                               'saveConfig',
+                               return_value=False):
+            with qtbot.waitSignal(test_app.message) as blocker:
+                suc = test_app.mainW.saveProfileAs()
+                assert suc
+            assert ['Profile: [test] cannot no be saved', 2] == blocker.args
+
+
+def test_saveProfileAs3(qtbot):
+    with mock.patch.object(test_app.mainW,
+                           'saveFile',
+                           return_value=(None, 'test', 'cfg')):
+        suc = test_app.mainW.saveProfileAs()
+        assert not suc
+
+
+def test_saveProfile2(qtbot):
+    with mock.patch.object(test_app,
+                           'saveConfig',
+                           return_value=False):
+        with qtbot.waitSignal(test_app.message) as blocker:
+            test_app.mainW.saveProfile()
+        assert ['Actual profile cannot not be saved', 2] == blocker.args
+
+
+def test_setLoggingLevel1(qtbot):
+    test_app.mainW.ui.loglevelDebug.setChecked(True)
+    test_app.mainW.setLoggingLevel()
+    val = logging.getLogger().getEffectiveLevel()
+    assert val == 10
+
+
+def test_setLoggingLevel2(qtbot):
+    test_app.mainW.ui.loglevelInfo.setChecked(True)
+    test_app.mainW.setLoggingLevel()
+    val = logging.getLogger().getEffectiveLevel()
+    assert val == 20
+
+
+def test_setLoggingLevel3(qtbot):
+    test_app.mainW.ui.loglevelWarning.setChecked(True)
+    test_app.mainW.setLoggingLevel()
+    val = logging.getLogger().getEffectiveLevel()
+    assert val == 30
+
+
+def test_setLoggingLevel4(qtbot):
+    test_app.mainW.ui.loglevelError.setChecked(True)
+    test_app.mainW.setLoggingLevel()
+    val = logging.getLogger().getEffectiveLevel()
+    assert val == 40
 
 
 def test_setLunarTracking1(qtbot):
@@ -1148,3 +1336,37 @@ def test_enableRelay2(qtbot):
             assert suc
         assert ['Relay disabled', 0] == blocker.args
 
+
+def test_relayHost():
+    test_app.mainW.ui.relayHost.setText('test')
+    test_app.mainW.relayHost()
+
+    assert test_app.relay.host == ('test', 80)
+
+
+def test_relayUser():
+    test_app.mainW.ui.relayUser.setText('test')
+    test_app.mainW.relayUser()
+
+    assert test_app.relay.user == 'test'
+
+
+def test_relayPassword():
+    test_app.mainW.ui.relayPassword.setText('test')
+    test_app.mainW.relayPassword()
+
+    assert test_app.relay.password == 'test'
+
+
+def test_mountHost():
+    test_app.mainW.ui.mountHost.setText('test')
+    test_app.mainW.mountHost()
+
+    assert test_app.mount.host == ('test', 3492)
+
+
+def test_mountMAC():
+    test_app.mainW.ui.mountMAC.setText('00:00:00:00:00:00')
+    test_app.mainW.mountMAC()
+
+    assert test_app.mount.MAC == '00:00:00:00:00:00'

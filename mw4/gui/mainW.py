@@ -265,14 +265,18 @@ class MainWindow(widget.MWidget):
     def mountBoot(self):
         if self.app.mount.bootMount():
             self.app.message.emit('Mount booted', 0)
+            return True
         else:
             self.app.message.emit('Mount cannot be booted', 2)
+            return False
 
     def mountShutdown(self):
         if self.app.mount.obsSite.shutdown():
             self.app.message.emit('Shutting mount down', 0)
+            return True
         else:
             self.app.message.emit('Mount cannot be shutdown', 2)
+            return False
 
     def clearMountGui(self):
         self.updateAlignGui()
@@ -749,12 +753,13 @@ class MainWindow(widget.MWidget):
                                             'Config files (*.cfg)',
                                             )
         if not filePath:
-            return
+            return False
         suc = self.app.loadConfig(filePath=filePath, name=name)
         if suc:
             self.app.message.emit('Profile: [{0}] loaded'.format(name), 0)
         else:
             self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(name), 2)
+        return True
 
     def saveProfileAs(self):
         filePath, name, ext = self.saveFile(self,
@@ -763,14 +768,22 @@ class MainWindow(widget.MWidget):
                                             'Config files (*.cfg)',
                                             )
         if not filePath:
-            return
+            return False
         suc = self.app.saveConfig(filePath=filePath, name=name)
         if suc:
             self.app.message.emit('Profile: [{0}] saved'.format(name), 0)
         else:
             self.app.message.emit('Profile: [{0}] cannot no be saved'.format(name), 2)
+        return True
 
     def saveProfile(self):
+        """
+        saveProfile calls save profile in main and sends a message to the user about
+        success.
+
+        :return: nothing
+        """
+
         suc = self.app.saveConfig()
         if suc:
             self.app.message.emit('Actual profile saved', 0)

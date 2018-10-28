@@ -279,6 +279,11 @@ class MainWindow(widget.MWidget):
             return False
 
     def clearMountGui(self):
+        """
+        clearMountGui rewrites the gui in case of a special event needed for clearing up
+
+        :return: nothing
+        """
         self.updateAlignGui()
         self.updateFwGui()
         self.updatePointGUI()
@@ -295,6 +300,12 @@ class MainWindow(widget.MWidget):
         return True
 
     def updateGuiCyclic(self):
+        """
+        updateGuiCyclic update gui elements on regular bases (actually 1 second) for items,
+        which are not events based.
+
+        :return: success
+        """
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         return True
 

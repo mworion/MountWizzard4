@@ -69,7 +69,6 @@ class HemisphereWindow(widget.MWidget):
 
         # initializing the plot
         self.initConfig()
-        self.drawHemisphere()
 
     def initConfig(self):
         if 'hemisphereW' not in self.app.config:
@@ -136,6 +135,7 @@ class HemisphereWindow(widget.MWidget):
 
     def showWindow(self):
         self.showStatus = True
+        self.drawHemisphere()
         self.show()
         self.changeStylesheet(self.app.mainW.ui.openHemisphereW, 'running', 'true')
 

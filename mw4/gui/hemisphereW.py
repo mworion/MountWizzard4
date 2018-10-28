@@ -100,10 +100,6 @@ class MessageWindow(widget.MWidget):
 
     @PyQt5.QtCore.pyqtSlot(str, int)
     def writeMessage(self, message, mType=0):
-        if mType < 0:
-            return False
-        if mType > len(self.messColor):
-            return False
         prefix = time.strftime('%H:%M:%S - ', time.localtime())
         message = prefix + message
         self.logger.info('Message window: [{0}]'.format(message))
@@ -111,5 +107,4 @@ class MessageWindow(widget.MWidget):
         self.ui.message.setFontWeight(self.messFont[mType])
         self.ui.message.insertPlainText(message + '\n')
         self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
-        return True
 

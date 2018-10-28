@@ -54,6 +54,8 @@ class HemisphereWindow(widget.MWidget):
         if y > self.screenSizeY:
             y = 0
         self.move(x, y)
+        height = config.get('height', 600)
+        self.resize(800, height)
         if config.get('showStatus'):
             self.showWindow()
 
@@ -63,10 +65,25 @@ class HemisphereWindow(widget.MWidget):
         config = self.app.config['hemisphereW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
+        config['height'] = self.height()
         config['showStatus'] = self.showStatus
 
     def resizeEvent(self, QResizeEvent):
         super().resizeEvent(QResizeEvent)
+        # allow message window to be resized in height
+        self.ui.hemisphere.setGeometry(5, 130, self.width() - 10, self.height() - 140)
+        self.ui.hemisphereS.setGeometry(5, 130, self.width() - 10, self.height() - 140)
+        self.ui.hemisphereM.setGeometry(5, 130, self.width() - 10, self.height() - 140)
+
+        """
+        # getting position of axis
+        axesPos = self.hemisphereMatplotlib.axes.get_position()
+        # and using it fo the other plot widgets to be identically same size and position
+        self.hemisphereMatplotlibStar.axes.set_position(axesPos)
+        self.hemisphereMatplotlibMoving.axes.set_position(axesPos)
+        # size the header window as well
+        self.ui.hemisphereBackground.setGeometry(0, 0, self.width(), 126)
+        """
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)

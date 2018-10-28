@@ -39,10 +39,10 @@
   <widget class="QTextBrowser" name="message">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>780</width>
-     <height>581</height>
+     <x>5</x>
+     <y>5</y>
+     <width>790</width>
+     <height>591</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -53,13 +53,13 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>780</width>
-     <height>180</height>
+     <width>790</width>
+     <height>190</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>780</width>
+     <width>790</width>
      <height>1580</height>
     </size>
    </property>

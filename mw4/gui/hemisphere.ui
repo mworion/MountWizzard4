@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
-    <height>641</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,6 +15,18 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1600</width>
+    <height>1600</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -30,10 +42,10 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>130</y>
-     <width>771</width>
-     <height>501</height>
+     <x>5</x>
+     <y>140</y>
+     <width>791</width>
+     <height>456</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -74,22 +86,6 @@
    </property>
    <property name="text">
     <string>Clear Points</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="hemisphereBackground">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>791</width>
-     <height>126</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="color" stdset="0">
-    <string>blue</string>
    </property>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
@@ -580,16 +576,16 @@
     <string>Show meridian limits</string>
    </property>
   </widget>
-  <widget class="QWidget" name="hemisphereStar" native="true">
+  <widget class="QWidget" name="hemisphereS" native="true">
    <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>130</y>
-     <width>771</width>
-     <height>501</height>
+     <x>5</x>
+     <y>140</y>
+     <width>791</width>
+     <height>456</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -605,16 +601,16 @@
     <string notr="true"/>
    </property>
   </widget>
-  <widget class="QWidget" name="hemisphereMoving" native="true">
+  <widget class="QWidget" name="hemisphereM" native="true">
    <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>130</y>
-     <width>771</width>
-     <height>501</height>
+     <x>5</x>
+     <y>140</y>
+     <width>791</width>
+     <height>456</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -630,7 +626,6 @@
     <string notr="true"/>
    </property>
   </widget>
-  <zorder>hemisphereBackground</zorder>
   <zorder>btn_deletePoints</zorder>
   <zorder>groupBox_2</zorder>
   <zorder>hemisphere</zorder>
@@ -638,8 +633,8 @@
   <zorder>groupBox</zorder>
   <zorder>checkShowCelestial</zorder>
   <zorder>checkShowMeridian</zorder>
-  <zorder>hemisphereStar</zorder>
-  <zorder>hemisphereMoving</zorder>
+  <zorder>hemisphereS</zorder>
+  <zorder>hemisphereM</zorder>
  </widget>
  <resources/>
  <connections/>

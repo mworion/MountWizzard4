@@ -67,6 +67,8 @@ class MessageWindow(widget.MWidget):
         if y > self.screenSizeY:
             y = 0
         self.move(x, y)
+        height = config.get('height', 600)
+        self.resize(800, height)
         if config.get('showStatus'):
             self.showWindow()
 
@@ -76,11 +78,12 @@ class MessageWindow(widget.MWidget):
         config = self.app.config['messageW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
+        config['height'] = self.height()
         config['showStatus'] = self.showStatus
 
     def resizeEvent(self, QResizeEvent):
         super().resizeEvent(QResizeEvent)
-        self.ui.message.setGeometry(10, 10, 780, self.height() - 20)
+        self.ui.message.setGeometry(5, 5, 790, self.height() - 10)
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)

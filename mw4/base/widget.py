@@ -152,7 +152,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         axes = fig.add_subplot(1,
                                1,
                                1,
-                               polar=True)
+                               polar=True,
+                               facecolor='none')
         axes.grid(True,
                   color='#404040',
                   )
@@ -186,7 +187,41 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return fig, axes
 
     @staticmethod
-    def integrateMatplotlib(ui):
+    def clearRect(widget, visible):
+        """
+        clearRectVis clears and setups the canvas widget for drawing. it sets the labels,
+        ticks and some other ui styles.
+
+        :param      widget:    matplotlib canvas widget for drawing
+        :param      visible:   show axis grid
+        :return:    nothing
+        """
+
+        fig = widget.figure
+        fig.clf()
+        axes = fig.add_subplot(1,
+                               1,
+                               1,
+                               facecolor='none')
+        axes.grid(visible,
+                  color='#404040',
+                  )
+        fig.subplots_adjust(left=0.075,
+                            right=0.95,
+                            bottom=0.1,
+                            top=0.975,
+                            )
+        axes.tick_params(axis='x',
+                         colors='#2090C0',
+                         labelsize=12,
+                         )
+        axes.tick_params(axis='y',
+                         colors='#2090C0',
+                         labelsize=12,
+                         )
+
+    @staticmethod
+    def embedMatplot(ui):
         """
         IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5
         application gui. you call it with the parent widget, which is linked to matplotlib
@@ -202,13 +237,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         layout = PyQt5.QtWidgets.QVBoxLayout(ui)
         layout.setContentsMargins(0, 0, 0, 0)
         staticCanvas = FigureCanvas(Figure(dpi=75,
-                                           facecolor=(0.1, 0.1, 0.1),
+                                           facecolor='none',
+                                           frameon=False,
                                            )
                                     )
-        FigureCanvasQTAgg.setSizePolicy(staticCanvas,
-                                        PyQt5.QtWidgets.QSizePolicy.Expanding,
-                                        PyQt5.QtWidgets.QSizePolicy.Expanding
-                                        )
         FigureCanvasQTAgg.updateGeometry(staticCanvas)
         layout.addWidget(staticCanvas)
         return staticCanvas

@@ -31,6 +31,14 @@ from mw4.gui import message_ui
 
 
 class MessageWindow(widget.MWidget):
+    """
+    the message window class handles
+
+    """
+
+    __all__ = ['MessageWindow',
+               ]
+    version = '0.1'
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):

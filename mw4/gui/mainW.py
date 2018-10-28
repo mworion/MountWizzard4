@@ -69,7 +69,7 @@ class MainWindow(widget.MWidget):
         self.setupRelayGui()
 
         # defining the necessary instances of classes
-        self.polarPlot = self.integrateMatplotlib(self.ui.modelPolar)
+        self.polarPlot = self.embedMatplot(self.ui.modelPolar)
         self.showModelPolar()
 
         # connect signals for refreshing the gui

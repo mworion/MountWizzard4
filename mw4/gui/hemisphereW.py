@@ -31,7 +31,17 @@ from mw4.gui import hemisphere_ui
 
 
 class HemisphereWindow(widget.MWidget):
+    """
+    the hemisphere window class handles
+
+    """
+
+    __all__ = ['HemisphereWindow',
+               ]
+    version = '0.1'
     logger = logging.getLogger(__name__)
+
+    BACK = 'background-color: transparent;'
 
     def __init__(self, app):
         super().__init__()
@@ -40,6 +50,22 @@ class HemisphereWindow(widget.MWidget):
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
         self.initUI()
+
+        # doing the matplotlib embedding
+        self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
+        self.hemisphereMat.parentWidget().setStyleSheet(self.BACK)
+        self.clearRect(self.hemisphereMat, True)
+
+        # for the fast moving parts
+        self.hemisphereMatM = self.embedMatplot(self.ui.hemisphereM)
+        self.hemisphereMatM.parentWidget().setStyleSheet(self.BACK)
+        self.clearRect(self.hemisphereMatM, False)
+
+        # for the stars in background
+        self.hemisphereMatS = self.embedMatplot(self.ui.hemisphereS)
+        self.hemisphereMatS.parentWidget().setStyleSheet(self.BACK)
+        self.ui.hemisphereS.setVisible(False)
+        self.clearRect(self.hemisphereMatS, False)
 
         self.initConfig()
 
@@ -69,21 +95,31 @@ class HemisphereWindow(widget.MWidget):
         config['showStatus'] = self.showStatus
 
     def resizeEvent(self, QResizeEvent):
-        super().resizeEvent(QResizeEvent)
-        # allow message window to be resized in height
-        self.ui.hemisphere.setGeometry(5, 130, self.width() - 10, self.height() - 140)
-        self.ui.hemisphereS.setGeometry(5, 130, self.width() - 10, self.height() - 140)
-        self.ui.hemisphereM.setGeometry(5, 130, self.width() - 10, self.height() - 140)
+        """
+        resizeEvent changes the internal widget according to the resize of the window
+        the formulae of the calculation is:
+            spaces left right top button : 5 pixel
+            widget start in height at y = 130
 
+        :param QResizeEvent:
+        :return: nothing
         """
-        # getting position of axis
-        axesPos = self.hemisphereMatplotlib.axes.get_position()
-        # and using it fo the other plot widgets to be identically same size and position
-        self.hemisphereMatplotlibStar.axes.set_position(axesPos)
-        self.hemisphereMatplotlibMoving.axes.set_position(axesPos)
-        # size the header window as well
-        self.ui.hemisphereBackground.setGeometry(0, 0, self.width(), 126)
-        """
+
+        super().resizeEvent(QResizeEvent)
+        space = 5
+        startY = 130
+        self.ui.hemisphere.setGeometry(space,
+                                       startY - space,
+                                       self.width() - 2*space,
+                                       self.height() - startY)
+        self.ui.hemisphereS.setGeometry(space,
+                                        startY - space,
+                                        self.width() - 2*space,
+                                        self.height() - startY)
+        self.ui.hemisphereM.setGeometry(space,
+                                        startY - space,
+                                        self.width() - 2*space,
+                                        self.height() - startY)
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)

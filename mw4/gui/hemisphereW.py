@@ -147,7 +147,7 @@ class HemisphereWindow(widget.MWidget):
         axes.set_ylim(0, 90)
         if not visible:
             axes.set_axis_off()
-            return
+            return False
         axes.spines['bottom'].set_color('#2090C0')
         axes.spines['top'].set_color('#2090C0')
         axes.spines['left'].set_color('#2090C0')
@@ -163,8 +163,8 @@ class HemisphereWindow(widget.MWidget):
         axes.tick_params(axis='y',
                          colors='#2090C0',
                          which='both',
-                         labelleft='on',
-                         labelright='on',
+                         labelleft=True,
+                         labelright=True,
                          labelsize=12)
         axes.set_xlabel('Azimuth in degrees',
                         color='#2090C0',
@@ -174,6 +174,7 @@ class HemisphereWindow(widget.MWidget):
                         color='#2090C0',
                         fontweight='bold',
                         fontsize=12)
+        return True
 
     def drawHemisphere(self):
         # shortening the references

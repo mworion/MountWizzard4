@@ -76,8 +76,17 @@ def test_toggleWindow2(qtbot):
 
 def test_showWindow1(qtbot):
     test_app.hemisphereW.showStatus = False
-    with mock.patch.object(test_app.hemisphereW,
-                           'show',
-                           return_value=None):
-        test_app.hemisphereW.showWindow()
-        assert test_app.hemisphereW.showStatus
+    test_app.hemisphereW.showWindow()
+    assert test_app.hemisphereW.showStatus
+
+
+def test_clearAxes1(qtbot):
+    axes = test_app.hemisphereW.hemisphereMat.figure.axes[0]
+    suc = test_app.hemisphereW.clearAxes(axes, True)
+    assert suc
+
+
+def test_clearAxes2(qtbot):
+    axes = test_app.hemisphereW.hemisphereMat.figure.axes[0]
+    suc = test_app.hemisphereW.clearAxes(axes, False)
+    assert not suc

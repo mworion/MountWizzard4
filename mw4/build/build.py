@@ -75,19 +75,20 @@ class Data(object):
         self._pointFile = value
 
     @staticmethod
-    def topoToAzAlt(star, lat):
-        if not isinstance(star, skyfield.starlib.Star):
-            return None, None
-        ra = star.ra.hours
-        dec = star.dec.degrees
-        alt = np.arcsin(np.sin(dec) * np.sin(lat) + np.cos(dec) * np.cos(lat) * np.cos(ra))
+    def topoToAzAlt(ha, dec, lat):
+        ha = (ha * 360 / 24 + 360.0) % 360.0
+        dec = np.radians(dec)
+        ha = np.radians(ha)
+        alt = np.arcsin(np.sin(dec) * np.sin(lat) + np.cos(dec) * np.cos(lat) * np.cos(ha))
         value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
         value = np.clip(value, -1.0, 1.0)
         A = np.arccos(value)
-        if np.sin(ra) >= 0.0:
+        if np.sin(ha) >= 0.0:
             az = np.pi - A
         else:
             az = A
+        az = np.degrees(az)
+        alt = np.degrees(alt)
         return alt, az
 
     def addPoint(self):
@@ -142,5 +143,7 @@ class Data(object):
                 if not side:
                     yield ha, dec
 
-    def genMinPoints(self):
-        pass
+    def convertPoint(self, generator):
+        for ha, dec in self.genHaDec(generator):
+            alt, az = self.topoToAzAlt(ha, dec, self.lat)
+            yield alt, az

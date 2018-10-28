@@ -27,7 +27,7 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
 from mw4.base import widget
-from mw4.gui import message_ui
+from mw4.gui import hemisphere_ui
 
 
 class HemisphereWindow(widget.MWidget):
@@ -37,16 +37,16 @@ class HemisphereWindow(widget.MWidget):
         super().__init__()
         self.app = app
         self.showStatus = False
-        self.ui = message_ui.Ui_HemisphereDialog()
+        self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
         self.initUI()
 
         self.initConfig()
 
     def initConfig(self):
-        if 'messageW' not in self.app.config:
+        if 'hemisphereW' not in self.app.config:
             return
-        config = self.app.config['messageW']
+        config = self.app.config['hemisphereW']
         x = config.get('winPosX', 100)
         y = config.get('winPosY', 100)
         if x > self.screenSizeX:
@@ -58,16 +58,15 @@ class HemisphereWindow(widget.MWidget):
             self.showWindow()
 
     def storeConfig(self):
-        if 'messageW' not in self.app.config:
-            self.app.config['messageW'] = {}
-        config = self.app.config['messageW']
+        if 'hemisphereW' not in self.app.config:
+            self.app.config['hemisphereW'] = {}
+        config = self.app.config['hemisphereW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['showStatus'] = self.showStatus
 
     def resizeEvent(self, QResizeEvent):
         super().resizeEvent(QResizeEvent)
-        self.ui.message.setGeometry(10, 10, 780, self.height() - 20)
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)

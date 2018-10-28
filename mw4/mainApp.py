@@ -77,6 +77,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # link cross widget gui signals
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
+        self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
 
         # starting cyclic polling of mount data
         self.mount.startTimers()
@@ -105,6 +106,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.stopTimers()
         self.mainW.storeConfig()
         self.messageW.storeConfig()
+        self.hemisphereW.storeConfig()
         self.saveConfig()
         PyQt5.QtCore.QCoreApplication.quit()
 

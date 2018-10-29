@@ -278,12 +278,8 @@ def main():
     splash.setValue(60)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
-    mountApp = mainApp.MountWizzard4()
+    mountApp = mainApp.MountWizzard4(splash)
     mountApp.mainW.show()
-
-    # starting gui
-    splash.showMessage('Launching GUI')
-    splash.setValue(80)
 
     # end of splash screen
     splash.showMessage('Finishing loading')

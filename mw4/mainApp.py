@@ -49,14 +49,20 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     # central message and logging dispatching
     message = PyQt5.QtCore.pyqtSignal(str, int)
 
-    def __init__(self):
+    def __init__(self,
+                 splash=None,
+                 ):
         super().__init__()
 
         # persistence management through dict
         self.config = {}
+        splash.showMessage('Load configuration')
+        splash.setValue(65)
         self.loadConfig()
 
         # get the working horses up
+        splash.showMessage('Load mount')
+        splash.setValue(70)
         pathToTs = mw4_glob.config_dir
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
@@ -65,6 +71,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    verbose=False,
                                    )
         # relay box
+        splash.showMessage('Load relay')
+        splash.setValue(75)
         self.relay = kmRelay.KMRelay(host='192.168.2.15',
                                      )
 
@@ -72,9 +80,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get the window widgets up
+        splash.showMessage('Load main widget')
+        splash.setValue(80)
         self.data = build.Data()
         self.mainW = mainW.MainWindow(self)
+        splash.showMessage('Load message widget')
+        splash.setValue(85)
         self.messageW = messageW.MessageWindow(self)
+        splash.showMessage('Load hemisphere widget')
+        splash.setValue(90)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
 
         # link cross widget gui signals

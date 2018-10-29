@@ -133,7 +133,6 @@ class Data(object):
 
     @staticmethod
     def genHaDec(generatorFun):
-        # first direction
         for dec, step, side in generatorFun():
             if side:
                 for ha in range(- 125, 115, step):

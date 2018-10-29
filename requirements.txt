@@ -1,5 +1,6 @@
 matplotlib==3.0.1
 PyQt5==5.11.3
+PyQt5-sip==4.19.13
 numpy==1.15.3
 skyfield==1.9
 mountcontrol==0.2

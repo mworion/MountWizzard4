@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-import unittest
 import unittest.mock as mock
 import locale
 import logging

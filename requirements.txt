@@ -1,6 +1,7 @@
-matplotlib==3.0.0
-PyQt5==5.11.2
-numpy==1.15.2
+matplotlib==3.0.1
+PyQt5==5.11.3
+numpy==1.15.3
 skyfield==1.9
 mountcontrol==0.2
-requests
+requests==2.20.0
+requests_toolbelt==0.8.0

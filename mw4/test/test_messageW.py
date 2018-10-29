@@ -18,14 +18,10 @@
 #
 ###########################################################
 # standard libraries
-import unittest
 import unittest.mock as mock
 import locale
-import logging
 # external packages
-import PyQt5.QtGui
 import PyQt5.QtWidgets
-import PyQt5.uic
 import PyQt5.QtTest
 import PyQt5.QtCore
 # local import

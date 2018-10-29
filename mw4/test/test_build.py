@@ -20,7 +20,6 @@
 # standard libraries
 import unittest.mock as mock
 # external packages
-import numpy as np
 # local import
 from mw4.build import build
 

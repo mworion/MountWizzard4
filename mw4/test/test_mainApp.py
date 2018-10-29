@@ -18,9 +18,7 @@
 #
 ###########################################################
 # standard libraries
-import unittest
 import locale
-import shutil
 # external packages
 import PyQt5.QtCore
 # local import

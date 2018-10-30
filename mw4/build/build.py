@@ -135,10 +135,18 @@ class Data(object):
     def genHaDec(generatorFun):
         for dec, step, side in generatorFun():
             if side:
-                for ha in range(- 125, 115, step):
+                for ha in range(- 120, 0, step):
                     yield ha / 10, dec
             else:
-                for ha in range(115, -125, -step):
+                for ha in range(-5, -120, -step):
+                    yield ha / 10, dec
+        # todo: i reverse we have to make the revers order of dec list
+        for dec, step, side in generatorFun():
+            if side:
+                for ha in range(5, 120, step):
+                    yield ha / 10, dec
+            else:
+                for ha in range(120, 0, -step):
                     yield ha / 10, dec
 
     def convertPoint(self, generatorFun):

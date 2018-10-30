@@ -21,7 +21,6 @@
 import logging
 # external packages
 import numpy as np
-import skyfield
 # local imports
 
 
@@ -31,7 +30,7 @@ class Data(object):
     attributes. this includes horizon data, model points data and their persistence
 
         >>> fw = Data(
-        >>>           lat=None
+        >>>           lat=48
         >>>              )
     """
 
@@ -106,45 +105,49 @@ class Data(object):
 
     @staticmethod
     def genDecMin():
-        decList = (-15, 0, 15, 30, 45, 60, 75)
-        stepList = (15, 15, 15, 15, 15, 30, 30)
-        sideList = (1, 0, 1, 0, 1, 0, 1)
-
-        for dec, step, side in zip(decList, stepList, sideList):
-            yield dec, step, side
-
-    @staticmethod
-    def genDecNorm():
-        decList = (-15, 0, 15, 30, 45, 60, 75)
-        stepList = (10, 10, 10, 10, 10, 20, 20)
-        sideList = (1, 0, 1, 0, 1, 0, 1)
-
-        for dec, step, side in zip(decList, stepList, sideList):
-            yield dec, step, side
-
-    @staticmethod
-    def genDecMax():
-        decL = (-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85,
-                85, 75)
-        stepL = (10, -10, 10, -10, 10, -10, 10, -10, 10, -30, 30,
-                 30, -30)
-        startL = (-125, -5, -125, -5, -125, -5, -125, -5, -125, -5, -125,
-                  5, 125)
-        stopL = (0, -125, 0, -125, 0, -115, 0, -125, 0, -125, 0,
-                 125, 0)
+        decL = (-15, 0, 15, 30, 45, 60, 75,
+                75, 60, 45, 30, 15, 0, -15)
+        stepL = (15, -15, 15, -15, 15, -30, 30,
+                 30, -30, 15, -15, 15, -15, 15)
+        startL = (-120, -5, -120, -5, -120, -5, -120,
+                  5, 120, 5, 120, 5, 120, 5, 120, 5,)
+        stopL = (0, -120, 0, -120, 0, -120, 0,
+                 120, 0, 120, 0, 120, 0, 120)
 
         for dec, step, start, stop in zip(decL, stepL, startL, stopL):
             yield dec, step, start, stop
 
     @staticmethod
-    def genHaDec(generatorFun):
+    def genDecNorm():
+        decL = (-15, 0, 15, 30, 45, 60, 75,
+                75, 60, 45, 30, 15, 0, -15)
+        stepL = (10, -10, 10, -10, 10, -20, 20,
+                 20, -20, 10, -10, 10, -10, 10)
+        startL = (-120, -5, -120, -5, -120, -5, -120,
+                  5, 120, 5, 120, 5, 120, 5, 120, 5)
+        stopL = (0, -120, 0, -120, 0, -120, 0,
+                 120, 0, 120, 0, 120, 0, 120)
+
+        for dec, step, start, stop in zip(decL, stepL, startL, stopL):
+            yield dec, step, start, stop
+
+    @staticmethod
+    def genDecMax():
+        decL = (-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85,
+                85, 75, 65, 55, 45, 35, 25, 15, 5, -5, -15)
+        stepL = (10, -10, 10, -10, 10, -10, 10, -10, 10, -30, 30,
+                 30, -30, 10, -10, 10, -10, 10, -10, 10, -10, 10)
+        startL = (-120, -5, -120, -5, -120, -5, -120, -5, -120, -5, -120,
+                  5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120)
+        stopL = (0, -120, 0, -120, 0, -120, 0, -120, 0, -120, 0,
+                 120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0)
+
+        for dec, step, start, stop in zip(decL, stepL, startL, stopL):
+            yield dec, step, start, stop
+
+    def genGreaterCircle(self, generatorFun):
         for dec, step, start, stop in generatorFun():
             for ha in range(start, stop, step):
-                yield ha / 10, dec
-        # todo: i reverse we have to make the revers order of dec list
-
-    def convertPoint(self, generatorFun):
-        for ha, dec in self.genHaDec(generatorFun):
-            alt, az = self.topoToAzAlt(ha, dec, self.lat)
-            if alt > 0:
-                yield alt, az
+                alt, az = self.topoToAzAlt(ha/10, dec, self.lat)
+                if alt > 0:
+                    yield alt, az

@@ -124,30 +124,24 @@ class Data(object):
 
     @staticmethod
     def genDecMax():
-        decList = (-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85)
-        stepList = (10, 10, 10, 10, 10, 10, 10, 10, 10, 30, 30)
-        sideList = (1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1)
+        decL = (-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85,
+                85, 75)
+        stepL = (10, -10, 10, -10, 10, -10, 10, -10, 10, -30, 30,
+                 30, -30)
+        startL = (-125, -5, -125, -5, -125, -5, -125, -5, -125, -5, -125,
+                  5, 125)
+        stopL = (0, -125, 0, -125, 0, -115, 0, -125, 0, -125, 0,
+                 125, 0)
 
-        for dec, step, side in zip(decList, stepList, sideList):
-            yield dec, step, side
+        for dec, step, start, stop in zip(decL, stepL, startL, stopL):
+            yield dec, step, start, stop
 
     @staticmethod
     def genHaDec(generatorFun):
-        for dec, step, side in generatorFun():
-            if side:
-                for ha in range(- 120, 0, step):
-                    yield ha / 10, dec
-            else:
-                for ha in range(-5, -120, -step):
-                    yield ha / 10, dec
+        for dec, step, start, stop in generatorFun():
+            for ha in range(start, stop, step):
+                yield ha / 10, dec
         # todo: i reverse we have to make the revers order of dec list
-        for dec, step, side in generatorFun():
-            if side:
-                for ha in range(5, 120, step):
-                    yield ha / 10, dec
-            else:
-                for ha in range(120, 0, -step):
-                    yield ha / 10, dec
 
     def convertPoint(self, generatorFun):
         for ha, dec in self.genHaDec(generatorFun):

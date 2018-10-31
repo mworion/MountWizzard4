@@ -92,7 +92,10 @@ def test_genGreaterCircle1():
     build.lat = 48
     selection = 'min'
     for i, (alt, az) in enumerate(build.genGreaterCircle(selection)):
-        pass
+        assert alt <= 90
+        assert az <= 360
+        assert alt >= 0
+        assert az >= 0
     assert 44 == i
 
 
@@ -100,7 +103,10 @@ def test_genGreaterCircle2():
     build.lat = 48
     selection = 'norm'
     for i, (alt, az) in enumerate(build.genGreaterCircle(selection)):
-        pass
+        assert alt <= 90
+        assert az <= 360
+        assert alt >= 0
+        assert az >= 0
     assert 67 == i
 
 
@@ -108,7 +114,10 @@ def test_genGreaterCircle3():
     build.lat = 48
     selection = 'med'
     for i, (alt, az) in enumerate(build.genGreaterCircle(selection)):
-        pass
+        assert alt <= 90
+        assert az <= 360
+        assert alt >= 0
+        assert az >= 0
     assert 136 == i
 
 
@@ -116,5 +125,8 @@ def test_genGreaterCircle4():
     build.lat = 48
     selection = 'max'
     for i, (alt, az) in enumerate(build.genGreaterCircle(selection)):
-        pass
+        assert alt <= 90
+        assert az <= 360
+        assert alt >= 0
+        assert az >= 0
     assert 167 == i

@@ -7616,16 +7616,16 @@ manually</string>
       <number>0</number>
      </property>
      <property name="minimum">
-      <double>50.000000000000000</double>
+      <double>5.000000000000000</double>
      </property>
      <property name="maximum">
-      <double>90.000000000000000</double>
+      <double>85.000000000000000</double>
      </property>
      <property name="singleStep">
       <double>5.000000000000000</double>
      </property>
      <property name="value">
-      <double>80.000000000000000</double>
+      <double>75.000000000000000</double>
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="altitudeMin">
@@ -7654,10 +7654,10 @@ manually</string>
       <number>0</number>
      </property>
      <property name="minimum">
-      <double>20.000000000000000</double>
+      <double>5.000000000000000</double>
      </property>
      <property name="maximum">
-      <double>45.000000000000000</double>
+      <double>85.000000000000000</double>
      </property>
      <property name="singleStep">
       <double>5.000000000000000</double>

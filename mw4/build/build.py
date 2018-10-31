@@ -43,6 +43,8 @@ class DataPoint(object):
                'genInitial',
                'loadBuildP',
                'saveBuildP',
+               'loadHorizonP',
+               'saveHorizonP',
                ]
     version = '0.1'
     logger = logging.getLogger(__name__)
@@ -194,6 +196,13 @@ class DataPoint(object):
         self._horizonP = list()
 
     def loadBuildP(self):
+        """
+        loadBuildP loads a build pints file and stores the data in the buildP list.
+        necessary conversion are made.
+
+        :return: success
+        """
+
         fileName = mw4_glob.config_dir + self._buildPFile + '.bpts'
         if not os.path.isfile(fileName):
             return False
@@ -209,6 +218,12 @@ class DataPoint(object):
         return True
 
     def saveBuildP(self):
+        """
+        saveBuildP saves the actual build points list in a file in json dump format
+
+        :return: success
+        """
+
         fileName = mw4_glob.config_dir + self._buildPFile + '.bpts'
         with open(fileName, 'w') as handle:
             json.dump(self._buildP,
@@ -218,6 +233,13 @@ class DataPoint(object):
         return True
 
     def loadHorizonP(self):
+        """
+        loadHorizonP loads a build pints file and stores the data in the buildP list.
+        necessary conversion are made.
+
+        :return: success
+        """
+
         fileName = mw4_glob.config_dir + self._horizonPFile + '.hpts'
         if not os.path.isfile(fileName):
             return False
@@ -233,6 +255,12 @@ class DataPoint(object):
         return True
 
     def saveHorizonP(self):
+        """
+        saveHorizonP saves the actual build points list in a file in json dump format
+
+        :return: success
+        """
+
         fileName = mw4_glob.config_dir + self._horizonPFile + '.hpts'
         with open(fileName, 'w') as handle:
             json.dump(self._horizonP,

@@ -134,6 +134,15 @@ class Data(object):
         self._horizonP = list()
 
     def genHaDecParams(self, selection):
+        """
+        genHaDecParams selects the parameters for generating the boundaries for next
+        step processing greater circles. the parameters are sorted for different targets
+        actually for minimum slew distance between the points.
+
+        :param selection: type of model we would like to use
+        :return: yield tuple of dec value and step, start and stop for range
+        """
+
         if selection not in self.DEC or selection not in self.STEP:
             return
         decL = self.DEC[selection]
@@ -143,8 +152,16 @@ class Data(object):
             yield dec, step, start, stop
 
     def genGreaterCircle(self, selection):
+        """
+        genGreaterCircle takes the generated boundaries for the rang routine and
+        transforms ha, dec to alt az.
+
+        :param selection:
+        :return: yields alt, az tuples which are above horizon
+        """
         for dec, step, start, stop in self.genHaDecParams(selection):
             for ha in range(start, stop, step):
                 alt, az = self.topoToAzAlt(ha/10, dec, self.lat)
+                # only values with above horizon = 0
                 if alt > 0:
                     yield alt, az

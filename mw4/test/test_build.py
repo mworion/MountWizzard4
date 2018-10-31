@@ -23,7 +23,7 @@ import unittest.mock as mock
 # local import
 from mw4.build import build
 
-data = build.Data(lat=48)
+data = build.DataPoint(lat=48)
 
 
 def test_topoToAzAlt1():

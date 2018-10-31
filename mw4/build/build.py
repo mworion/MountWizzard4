@@ -24,17 +24,17 @@ import numpy as np
 # local imports
 
 
-class Data(object):
+class DataPoint(object):
     """
     The class Data inherits all information and handling of build data and other
     attributes. this includes horizon data, model points data and their persistence
 
-        >>> fw = Data(
+        >>> fw = DataPoint(
         >>>           lat=48
         >>>              )
     """
 
-    __all__ = ['Data',
+    __all__ = ['DataPoint',
                ]
     version = '0.1'
     logger = logging.getLogger(__name__)

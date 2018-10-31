@@ -87,7 +87,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if splash is not None:
             splash.showMessage('Load main widget')
             splash.setValue(80)
-        self.data = build.Data()
+        self.data = build.DataPoint()
         self.mainW = mainW.MainWindow(self)
         if splash is not None:
             splash.showMessage('Load message widget')

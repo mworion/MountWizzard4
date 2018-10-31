@@ -286,9 +286,9 @@ class DataPoint(object):
         westDec = list(reversed(eastDec))
         decL = eastDec + westDec
 
-        eastL = self.STEP[selection]
-        westL = list(reversed(eastL))
-        stepL = eastL + westL
+        eastStepL = self.STEP[selection]
+        westStepL = list(reversed(eastL))
+        stepL = eastStepL + westStepL
 
         for dec, step, start, stop in zip(decL, stepL, self.START, self.STOP):
             yield dec, step, start, stop

@@ -236,6 +236,8 @@ class DataPoint(object):
         of cols to be a factor of 2. reasonable values for the grid are 5 to 85 degrees.
         defined is only the east side of data, the west side will be mirrored to the
         east one.
+            the number of rows is 2 < x < 8
+            the number of columns is 2 < x < 15
 
         :param minAlt: altitude min
         :param maxAlt: altitude max
@@ -250,11 +252,15 @@ class DataPoint(object):
             return
         if not maxAlt > minAlt:
             return
+        if not 1 < numbRows < 9:
+            return
+        if not 1 < numbCols < 16:
+            return
         if numbCols % 2:
             return
 
         stepAlt = int((maxAlt - minAlt) / (numbRows - 1))
-        eastAlt = list(range(minAlt, maxAlt, stepAlt))
+        eastAlt = list(range(minAlt, maxAlt + 1, stepAlt))
         westAlt = list(reversed(eastAlt))
 
         stepAz = int(360 / numbCols)

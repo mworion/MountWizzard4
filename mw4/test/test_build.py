@@ -44,9 +44,6 @@ def test_topoToAzAlt2():
     assert az is not None
 
 
-
-
-
 def test_genHaDecParams1():
     selection = 'min'
     length = len(data.DEC[selection])
@@ -418,21 +415,75 @@ def test_genGrid6():
 
 
 def test_genGridData1():
-    for i, (alt, az) in enumerate(data.genGrid(minAlt=10,
-                                               maxAlt=40,
-                                               numbRows=4,
-                                               numbCols=4)):
-        val = i
-    assert 15 == i
+    val = list(data.genGrid(minAlt=10,
+                            maxAlt=40,
+                            numbRows=4,
+                            numbCols=4))
+    assert 16 == len(val)
 
 
-def test_genGridData1():
-    for i, (alt, az) in enumerate(data.genGrid(minAlt=10,
-                                               maxAlt=80,
-                                               numbRows=10,
-                                               numbCols=10)):
-        val = i
-    assert 99 == i
+def test_genGridData2():
+    val = list(data.genGrid(minAlt=5,
+                            maxAlt=85,
+                            numbRows=4,
+                            numbCols=4))
+    assert 16 == len(val)
+
+
+def test_genGridData3():
+    val = list(data.genGrid(minAlt=5,
+                            maxAlt=85,
+                            numbRows=8,
+                            numbCols=8))
+    assert 64 == len(val)
+
+
+def test_genGridData4():
+    val = list(data.genGrid(minAlt=10,
+                            maxAlt=40,
+                            numbRows=6,
+                            numbCols=6))
+    assert 36 == len(val)
+
+
+def test_genGridData5():
+    val = list(data.genGrid(minAlt=10,
+                            maxAlt=40,
+                            numbRows=6,
+                            numbCols=12))
+    assert 72 == len(val)
+
+
+def test_genGridData6():
+    val = list(data.genGrid(minAlt=10,
+                            maxAlt=40,
+                            numbRows=1,
+                            numbCols=12))
+    assert 0 == len(val)
+
+
+def test_genGridData7():
+    val = list(data.genGrid(minAlt=10,
+                            maxAlt=40,
+                            numbRows=5,
+                            numbCols=1))
+    assert 0 == len(val)
+
+
+def test_genGridData7():
+    val = list(data.genGrid(minAlt=10,
+                            maxAlt=40,
+                            numbRows=10,
+                            numbCols=12))
+    assert 0 == len(val)
+
+
+def test_genGridData8():
+    val = list(data.genGrid(minAlt=10,
+                            maxAlt=40,
+                            numbRows=6,
+                            numbCols=20))
+    assert 0 == len(val)
 
 
 def test_genInitial1():

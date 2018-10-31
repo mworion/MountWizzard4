@@ -22,8 +22,11 @@ import unittest.mock as mock
 # external packages
 # local import
 from mw4.build import build
+from mw4 import mw4_glob
 
 data = build.DataPoint(lat=48)
+mw4_glob.work_dir = '.'
+mw4_glob.config_dir = './mw4/test/config/'
 
 
 def test_topoToAzAlt1():
@@ -352,6 +355,76 @@ def test_delHorizonP4():
     suc = data.delHorizonP('1')
     assert not suc
     assert len(data.horizonP) == 157
+
+
+def test_saveBuildP():
+    data.buildPFile = 'test'
+    data.buildP = list(data.genGreaterCircle('min'))
+    suc = data.saveBuildP()
+    assert suc
+
+
+def test_loadBuildP1():
+    data.buildPFile = 'test'
+    data.buildP = list(data.genGreaterCircle('min'))
+    suc = data.saveBuildP()
+    assert suc
+    suc = data.loadBuildP()
+    assert suc
+    for i, (alt, az) in enumerate(data.genGreaterCircle('min')):
+        assert data.buildP[i][0] == alt
+        assert data.buildP[i][1] == az
+
+
+def test_loadBuildP2():
+    data.buildPFile = 'test'
+    data.buildP = list(data.genGreaterCircle('min'))
+    suc = data.saveBuildP()
+    assert suc
+    data.buildPFile = 'test1'
+    suc = data.loadBuildP()
+    assert not suc
+
+
+def test_loadBuildP3():
+    data.buildPFile = 'format_nok'
+    suc = data.loadBuildP()
+    assert not suc
+
+
+def test_saveHorizonP():
+    data.horizonPFile = 'test'
+    data.horizonP = list(data.genGreaterCircle('min'))
+    suc = data.saveHorizonP()
+    assert suc
+
+
+def test_loadHorizonP1():
+    data.horizonPFile = 'test'
+    data.horizonP = list(data.genGreaterCircle('min'))
+    suc = data.saveHorizonP()
+    assert suc
+    suc = data.loadHorizonP()
+    assert suc
+    for i, (alt, az) in enumerate(data.genGreaterCircle('min')):
+        assert data.horizonP[i][0] == alt
+        assert data.horizonP[i][1] == az
+
+
+def test_loadHorizonP2():
+    data.horizonPFile = 'test'
+    data.horizonP = list(data.genGreaterCircle('min'))
+    suc = data.saveHorizonP()
+    assert suc
+    data.horizonPFile = 'test1'
+    suc = data.loadHorizonP()
+    assert not suc
+
+
+def test_loadHorizonP3():
+    data.horizonPFile = 'format_nok'
+    suc = data.loadHorizonP()
+    assert not suc
 
 
 def test_genGrid1():

@@ -19,8 +19,10 @@
 ###########################################################
 # standard libraries
 import logging
+import os
 # external packages
 import numpy as np
+import json
 # local imports
 from mw4 import mw4_glob
 
@@ -192,12 +194,52 @@ class DataPoint(object):
         self._horizonP = list()
 
     def loadBuildP(self):
-        pass
+        fileName = mw4_glob.config_dir + self._buildPFile + '.bpts'
+        if not os.path.isfile(fileName):
+            return False
+        try:
+            with open(fileName, 'r') as handle:
+                value = json.load(handle)
+                # json makes list out of tuple, was to be reversed
+                value = [tuple(x) for x in value]
+                self._buildP = value
+        except Exception as e:
+            self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
+            return False
+        return True
 
     def saveBuildP(self):
-        fileName = mw4_glob.config_dir + self._buildPFile
-        with fopen(fileName, 'w'):
-            pass
+        fileName = mw4_glob.config_dir + self._buildPFile + '.bpts'
+        with open(fileName, 'w') as handle:
+            json.dump(self._buildP,
+                      handle,
+                      sort_keys=True,
+                      indent=4)
+        return True
+
+    def loadHorizonP(self):
+        fileName = mw4_glob.config_dir + self._horizonPFile + '.hpts'
+        if not os.path.isfile(fileName):
+            return False
+        try:
+            with open(fileName, 'r') as handle:
+                value = json.load(handle)
+                # json makes list out of tuple, was to be reversed
+                value = [tuple(x) for x in value]
+                self._buildP = value
+        except Exception as e:
+            self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
+            return False
+        return True
+
+    def saveHorizonP(self):
+        fileName = mw4_glob.config_dir + self._horizonPFile + '.hpts'
+        with open(fileName, 'w') as handle:
+            json.dump(self._horizonP,
+                      handle,
+                      sort_keys=True,
+                      indent=4)
+        return True
 
     def genHaDecParams(self, selection):
         """

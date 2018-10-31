@@ -27,11 +27,11 @@ import socket
 import datetime
 import warnings
 import traceback
-import numpy as np
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import requests
+import numpy as np
 # local import
 from mw4 import mw4_glob
 from mw4 import mainApp

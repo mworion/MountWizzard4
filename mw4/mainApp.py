@@ -90,13 +90,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.data = build.DataPoint()
         self.mainW = mainW.MainWindow(self)
         if splash is not None:
-            splash.showMessage('Load message widget')
-            splash.setValue(85)
-        self.messageW = messageW.MessageWindow(self)
-        if splash is not None:
             splash.showMessage('Load hemisphere widget')
             splash.setValue(90)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
+        if splash is not None:
+            splash.showMessage('Load message widget')
+            splash.setValue(85)
+        self.messageW = messageW.MessageWindow(self)
 
         # link cross widget gui signals
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)

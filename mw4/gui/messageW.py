@@ -91,7 +91,12 @@ class MessageWindow(widget.MWidget):
 
     def resizeEvent(self, QResizeEvent):
         super().resizeEvent(QResizeEvent)
-        self.ui.message.setGeometry(5, 5, 790, self.height() - 10)
+        space = 5
+        startY = 10
+        self.ui.message.setGeometry(space,
+                                    startY - space,
+                                    self.width() - 2*space,
+                                    self.height() - startY)
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
@@ -121,6 +126,6 @@ class MessageWindow(widget.MWidget):
         self.ui.message.setTextColor(self.messColor[mType])
         self.ui.message.setFontWeight(self.messFont[mType])
         self.ui.message.insertPlainText(message + '\n')
-        self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
+        # self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
         return True
 

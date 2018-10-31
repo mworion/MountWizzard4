@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7100,7 +7100,7 @@ manually</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a regular pattern with the given parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Generate a Grid of Model Points</string>
+      <string>Grid</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_108">
@@ -7108,7 +7108,7 @@ manually</string>
       <rect>
        <x>10</x>
        <y>110</y>
-       <width>171</width>
+       <width>276</width>
        <height>21</height>
       </rect>
      </property>
@@ -7120,7 +7120,7 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>Generate model points</string>
+      <string>Generate model build points in a grid</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_179">
@@ -7159,12 +7159,12 @@ manually</string>
       <string>Rows</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="generateNormalPoints">
+    <widget class="QPushButton" name="genBuildMed">
      <property name="geometry">
       <rect>
-       <x>135</x>
+       <x>105</x>
        <y>275</y>
-       <width>116</width>
+       <width>86</width>
        <height>31</height>
       </rect>
      </property>
@@ -7175,12 +7175,12 @@ manually</string>
       <string>Medium</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="generateMaxPoints">
+    <widget class="QPushButton" name="genBuildMax">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>275</y>
-       <width>116</width>
+       <width>86</width>
        <height>31</height>
       </rect>
      </property>
@@ -7780,12 +7780,12 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="generateMinPoints">
+    <widget class="QPushButton" name="genBuildMin">
      <property name="geometry">
       <rect>
-       <x>260</x>
+       <x>295</x>
        <y>275</y>
-       <width>116</width>
+       <width>86</width>
        <height>31</height>
       </rect>
      </property>
@@ -7855,7 +7855,7 @@ manually</string>
       <rect>
        <x>10</x>
        <y>250</y>
-       <width>311</width>
+       <width>361</width>
        <height>21</height>
       </rect>
      </property>
@@ -7867,7 +7867,7 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>Generate model points based on greater circles</string>
+      <string>Generate model build points based on greater circles</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_136">
@@ -7875,7 +7875,7 @@ manually</string>
       <rect>
        <x>10</x>
        <y>330</y>
-       <width>311</width>
+       <width>361</width>
        <height>21</height>
       </rect>
      </property>
@@ -7887,7 +7887,7 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>Generate model points based on tracks</string>
+      <string>Generate model build points based on tracks</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_213">
@@ -8444,6 +8444,22 @@ manually</string>
       <string>Combine two models and program</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="genBuildNorm">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>275</y>
+       <width>86</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: medium number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Norm</string>
+     </property>
+    </widget>
     <zorder>line_42</zorder>
     <zorder>line_28</zorder>
     <zorder>line_34</zorder>
@@ -8452,8 +8468,8 @@ manually</string>
     <zorder>label_108</zorder>
     <zorder>label_179</zorder>
     <zorder>label_178</zorder>
-    <zorder>generateNormalPoints</zorder>
-    <zorder>generateMaxPoints</zorder>
+    <zorder>genBuildMed</zorder>
+    <zorder>genBuildMax</zorder>
     <zorder>numberGridPointsRow</zorder>
     <zorder>numberGridPointsCol</zorder>
     <zorder>runFullModel</zorder>
@@ -8474,7 +8490,7 @@ manually</string>
     <zorder>label_144</zorder>
     <zorder>label_202</zorder>
     <zorder>label_203</zorder>
-    <zorder>generateMinPoints</zorder>
+    <zorder>genBuildMin</zorder>
     <zorder>label_204</zorder>
     <zorder>line_38</zorder>
     <zorder>label_138</zorder>
@@ -8501,6 +8517,7 @@ manually</string>
     <zorder>le_modelingTimeActual</zorder>
     <zorder>label_60</zorder>
     <zorder>runBatchCombineModel</zorder>
+    <zorder>genBuildNorm</zorder>
    </widget>
    <widget class="QWidget" name="tab_8">
     <attribute name="title">
@@ -16631,9 +16648,9 @@ manually</string>
   <tabstop>numberGridPointsCol</tabstop>
   <tabstop>altitudeMin</tabstop>
   <tabstop>altitudeMax</tabstop>
-  <tabstop>generateMaxPoints</tabstop>
-  <tabstop>generateNormalPoints</tabstop>
-  <tabstop>generateMinPoints</tabstop>
+  <tabstop>genBuildMax</tabstop>
+  <tabstop>genBuildMed</tabstop>
+  <tabstop>genBuildMin</tabstop>
   <tabstop>generateDSOPoints</tabstop>
   <tabstop>numberHoursDSO</tabstop>
   <tabstop>numberPointsDSO</tabstop>

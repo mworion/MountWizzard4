@@ -116,19 +116,45 @@ class Data(object):
         return alt, az
 
     def addBuildP(self):
-        pass
+        if not isinstance(value, list):
+            self.logger.error('malformed value: {0}'.format(value))
+            return
+        if len(value) != 2:
+            self.logger.error('malformed value: {0}'.format(value))
+            return
+        self._buildP.insert(len(self._buildP), value)
 
     def delBuildP(self):
-        pass
+        if not isinstance(value, (int, float)):
+            self.logger.error('malformed value: {0}'.format(value))
+            return
+        value = int(value)
+        if value < 0 or value > len(self._starList) - 1:
+            self.logger.error('invalid value: {0}'.format(value))
+            return
+        self._buildP.pop(value)
 
     def clearBuildP(self):
         self._buildP = list()
 
     def addHorizonP(self):
-        pass
+        if not isinstance(value, list):
+            self.logger.error('malformed value: {0}'.format(value))
+            return
+        if len(value) != 2:
+            self.logger.error('malformed value: {0}'.format(value))
+            return
+        self._horizonP.insert(len(self._horizonP), value)
 
     def delHorizonP(self):
-        pass
+        if not isinstance(value, (int, float)):
+            self.logger.error('malformed value: {0}'.format(value))
+            return
+        value = int(value)
+        if value < 0 or value > len(self._horizonP) - 1:
+            self.logger.error('invalid value: {0}'.format(value))
+            return
+        self._horizonP.pop(value)
 
     def clearHorizonP(self):
         self._horizonP = list()

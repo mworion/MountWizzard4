@@ -63,7 +63,7 @@ def test_genHaDecParams2():
 
 
 def test_genHaDecParams3():
-    selection = 'max'
+    selection = 'med'
     for i, (a, b, c, d) in enumerate(build.genHaDecParams(selection=selection)):
         assert a == build.DEC[selection][i]
         assert b == build.STEP[selection][i]
@@ -72,7 +72,7 @@ def test_genHaDecParams3():
 
 
 def test_genHaDecParams4():
-    selection = 'med'
+    selection = 'max'
     for i, (a, b, c, d) in enumerate(build.genHaDecParams(selection=selection)):
         assert a == build.DEC[selection][i]
         assert b == build.STEP[selection][i]

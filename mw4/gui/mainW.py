@@ -158,6 +158,7 @@ class MainWindow(widget.MWidget):
             key = 'relayFun{0:1d}'.format(i)
             drop.setCurrentIndex(config.get(key, 0))
         self.ui.checkEnableRelay.setChecked(config.get('checkEnableRelay', False))
+        self.enableRelay()
         self.ui.relayHost.setText(config.get('relayHost', ''))
         self.relayHost()
         self.ui.relayUser.setText(config.get('relayUser', ''))

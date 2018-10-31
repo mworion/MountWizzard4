@@ -143,7 +143,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         if filePath is None:
-            filePath = mw4_glob.config_dir + '/config.cfg'
+            filePath = mw4_glob.config_dir + 'config.cfg'
         self.config = {'name': 'config'}
         if not os.path.isfile(filePath):
             return False
@@ -187,7 +187,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config['version'] = '4.0'
         self.config['filePath'] = filePath
         self.config['name'] = name
-        configPath = mw4_glob.config_dir + '/config.cfg'
+        configPath = mw4_glob.config_dir + 'config.cfg'
         if filePath is not None:
             with open(filePath, 'w') as outfile:
                 # make the file human readable

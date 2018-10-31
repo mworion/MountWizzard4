@@ -182,9 +182,9 @@ def main():
     splash.setValue(0)
     # setting work dir:
     mw4_glob.work_dir = os.getcwd()
-    mw4_glob.config_dir = mw4_glob.work_dir + '/config'
-    mw4_glob.data_dir = mw4_glob.work_dir + '/data'
-    mw4_glob.image_dir = mw4_glob.work_dir + '/image'
+    mw4_glob.config_dir = mw4_glob.work_dir + '/config/'
+    mw4_glob.data_dir = mw4_glob.work_dir + '/data/'
+    mw4_glob.image_dir = mw4_glob.work_dir + '/image/'
     # now setup the logging environment
     splash.showMessage('Setup logging')
     splash.setValue(20)

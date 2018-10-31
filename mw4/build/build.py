@@ -22,6 +22,7 @@ import logging
 # external packages
 import numpy as np
 # local imports
+from mw4 import mw4_glob
 
 
 class DataPoint(object):
@@ -35,6 +36,11 @@ class DataPoint(object):
     """
 
     __all__ = ['DataPoint',
+               'genGreaterCircle',
+               'genGrid',
+               'genInitial',
+               'loadBuildP',
+               'saveBuildP',
                ]
     version = '0.1'
     logger = logging.getLogger(__name__)
@@ -184,6 +190,14 @@ class DataPoint(object):
 
     def clearHorizonP(self):
         self._horizonP = list()
+
+    def loadBuildP(self):
+        pass
+
+    def saveBuildP(self):
+        fileName = mw4_glob.config_dir + self._buildPFile
+        with fopen(fileName, 'w'):
+            pass
 
     def genHaDecParams(self, selection):
         """

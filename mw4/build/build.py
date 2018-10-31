@@ -223,5 +223,5 @@ class DataPoint(object):
             for ha in range(start, stop, step):
                 alt, az = self.topoToAzAlt(ha/10, dec, self.lat)
                 # only values with above horizon = 0
-                if alt > 0:
+                if alt > 0 and az < 360:
                     yield alt, az

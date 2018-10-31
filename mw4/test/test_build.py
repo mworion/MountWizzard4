@@ -96,7 +96,7 @@ def test_genGreaterCircle1():
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 44 == i
+    assert 42 == i
 
 
 def test_genGreaterCircle2():
@@ -107,7 +107,7 @@ def test_genGreaterCircle2():
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 67 == i
+    assert 65 == i
 
 
 def test_genGreaterCircle3():
@@ -118,7 +118,7 @@ def test_genGreaterCircle3():
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 136 == i
+    assert 134 == i
 
 
 def test_genGreaterCircle4():
@@ -129,19 +129,19 @@ def test_genGreaterCircle4():
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 167 == i
+    assert 165 == i
 
 
 def test_buildP1():
     data.buildP = ()
     data.buildP = list(data.genGreaterCircle('max'))
-    assert len(data.buildP) == 168
+    assert len(data.buildP) == 166
     data.buildP = list(data.genGreaterCircle('med'))
-    assert len(data.buildP) == 137
+    assert len(data.buildP) == 135
     data.buildP = list(data.genGreaterCircle('norm'))
-    assert len(data.buildP) == 68
+    assert len(data.buildP) == 66
     data.buildP = list(data.genGreaterCircle('min'))
-    assert len(data.buildP) == 45
+    assert len(data.buildP) == 43
 
 
 def test_addBuildP1():
@@ -160,40 +160,40 @@ def test_addBuildP1():
 def test_delBuildP1():
     data.buildP = ()
     data.buildP = list(data.genGreaterCircle('max'))
-    assert len(data.buildP) == 168
+    assert len(data.buildP) == 166
     suc = data.delBuildP(5)
     assert suc
-    assert len(data.buildP) == 167
+    assert len(data.buildP) == 165
     suc = data.delBuildP(0)
     assert suc
-    assert len(data.buildP) == 166
-    suc = data.delBuildP(165)
+    assert len(data.buildP) == 164
+    suc = data.delBuildP(163)
     assert suc
-    assert len(data.buildP) == 165
+    assert len(data.buildP) == 163
 
 
 def test_delBuildP2():
     data.buildP = ()
     data.buildP = list(data.genGreaterCircle('max'))
-    assert len(data.buildP) == 168
+    assert len(data.buildP) == 166
     suc = data.delBuildP(-5)
     assert not suc
-    assert len(data.buildP) == 168
+    assert len(data.buildP) == 166
 
 
 def test_delBuildP3():
     data.buildP = ()
     data.buildP = list(data.genGreaterCircle('max'))
-    assert len(data.buildP) == 168
+    assert len(data.buildP) == 166
     suc = data.delBuildP(170)
     assert not suc
-    assert len(data.buildP) == 168
+    assert len(data.buildP) == 166
 
 
 def test_delBuildP4():
     data.buildP = ()
     data.buildP = list(data.genGreaterCircle('max'))
-    assert len(data.buildP) == 168
+    assert len(data.buildP) == 166
     suc = data.delBuildP('1')
     assert not suc
-    assert len(data.buildP) == 168
+    assert len(data.buildP) == 166

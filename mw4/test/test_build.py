@@ -269,9 +269,29 @@ def test_genGrid5():
     assert not val
 
 
+def test_genGrid6():
+    val = True
+    for i, (alt, az) in enumerate(data.genGrid(minAlt=10,
+                                               maxAlt=90,
+                                               numbRows=4,
+                                               numbCols=4)):
+        val = False
+    assert val
+
+
 def test_genGridData1():
-    for alt, az in data.genGrid(minAlt=10,
-                                maxAlt=40,
-                                numbRows=4,
-                                numbCols=4):
-        pass
+    for i, (alt, az) in enumerate(data.genGrid(minAlt=10,
+                                               maxAlt=40,
+                                               numbRows=4,
+                                               numbCols=4)):
+        val = i
+    assert 15 == i
+
+
+def test_genGridData1():
+    for i, (alt, az) in enumerate(data.genGrid(minAlt=10,
+                                               maxAlt=80,
+                                               numbRows=10,
+                                               numbCols=10)):
+        val = i
+    assert 99 == i

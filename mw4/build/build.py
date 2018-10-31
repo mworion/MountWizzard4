@@ -227,7 +227,7 @@ class DataPoint(object):
                     yield alt, az
 
     @staticmethod
-    def genGrid(minAlt=5, maxAlt=90, numbRows=5, numbCols=6):
+    def genGrid(minAlt=5, maxAlt=85, numbRows=5, numbCols=6):
         """
         genGrid generates a grid of points and transforms ha, dec to alt az. with given
         limits in alt, the min and max will be used as a hard condition. on az there is
@@ -246,19 +246,32 @@ class DataPoint(object):
 
         if not 5 <= minAlt <= 85:
             return
+        if not 5 <= maxAlt <= 85:
+            return
         if not maxAlt > minAlt:
             return
         if numbCols % 2:
             return
 
         stepAlt = int((maxAlt - minAlt) / (numbRows - 1))
-        east = list(range(minAlt, maxAlt+1, stepAlt))
-        west = list(reversed(east))
-        altL = east + west
+        eastAlt = list(range(minAlt, maxAlt, stepAlt))
+        westAlt = list(reversed(eastAlt))
 
         stepAz = int(360 / numbCols)
         minAz = int(180 / numbCols)
-        maxAz = 360 - minAz + 1
-        for alt in altL:
-            for az in range(minAz, 360, stepAz):
-                yield alt, az
+        maxAz = 360 - minAz
+
+        for i, alt in enumerate(eastAlt):
+            if i % 2:
+                for az in range(minAz, 180, stepAz):
+                    yield alt, az
+            else:
+                for az in range(180 - minAz, 0, -stepAz):
+                    yield alt, az
+        for i, alt in enumerate(westAlt):
+            if i % 2:
+                for az in range(180 + minAz, 360, stepAz):
+                    yield alt, az
+            else:
+                for az in range(maxAz, 180, -stepAz):
+                    yield alt, az

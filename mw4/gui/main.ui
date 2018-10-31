@@ -7087,7 +7087,7 @@ manually</string>
     <attribute name="title">
      <string>Full Model</string>
     </attribute>
-    <widget class="QPushButton" name="generateGridPoints">
+    <widget class="QPushButton" name="genBuildGrid">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -7100,7 +7100,7 @@ manually</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a regular pattern with the given parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Grid</string>
+      <string>Generate Grid</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_108">
@@ -7350,7 +7350,7 @@ manually</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="generateDSOPoints">
+    <widget class="QPushButton" name="genBuildDSO">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -7363,7 +7363,7 @@ manually</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points along DSO track for a give time and other parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Generate DSO Track for Model Points</string>
+      <string>Generate DSO Track</string>
      </property>
     </widget>
     <widget class="Line" name="line_40">
@@ -8464,7 +8464,7 @@ manually</string>
     <zorder>line_28</zorder>
     <zorder>line_34</zorder>
     <zorder>line_26</zorder>
-    <zorder>generateGridPoints</zorder>
+    <zorder>genBuildGrid</zorder>
     <zorder>label_108</zorder>
     <zorder>label_179</zorder>
     <zorder>label_178</zorder>
@@ -8474,7 +8474,7 @@ manually</string>
     <zorder>numberGridPointsCol</zorder>
     <zorder>runFullModel</zorder>
     <zorder>cancelFullModel</zorder>
-    <zorder>generateDSOPoints</zorder>
+    <zorder>genBuildDSO</zorder>
     <zorder>line_40</zorder>
     <zorder>numberHoursDSO</zorder>
     <zorder>label_181</zorder>
@@ -16643,7 +16643,7 @@ manually</string>
   <tabstop>loadFullModelPoints</tabstop>
   <tabstop>saveFullModelPoints</tabstop>
   <tabstop>saveFullModelPointsAs</tabstop>
-  <tabstop>generateGridPoints</tabstop>
+  <tabstop>genBuildGrid</tabstop>
   <tabstop>numberGridPointsRow</tabstop>
   <tabstop>numberGridPointsCol</tabstop>
   <tabstop>altitudeMin</tabstop>
@@ -16651,7 +16651,7 @@ manually</string>
   <tabstop>genBuildMax</tabstop>
   <tabstop>genBuildMed</tabstop>
   <tabstop>genBuildMin</tabstop>
-  <tabstop>generateDSOPoints</tabstop>
+  <tabstop>genBuildDSO</tabstop>
   <tabstop>numberHoursDSO</tabstop>
   <tabstop>numberPointsDSO</tabstop>
   <tabstop>numberHoursPreview</tabstop>

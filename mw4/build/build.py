@@ -162,7 +162,7 @@ class DataPoint(object):
         self._horizonP = value
 
     def addHorizonP(self, value):
-        if not isinstance(value, list):
+        if not isinstance(value, tuple):
             self.logger.error('malformed value: {0}'.format(value))
             return False
         if len(value) != 2:

@@ -256,6 +256,107 @@ def test_delBuildP4():
     assert len(data.buildP) == 157
 
 
+def test_horizonP1():
+    data.horizonP = ()
+    data.horizonP = list(data.genGreaterCircle('max'))
+    assert len(data.horizonP) == 157
+    data.horizonP = list(data.genGreaterCircle('med'))
+    assert len(data.horizonP) == 106
+    data.horizonP = list(data.genGreaterCircle('norm'))
+    assert len(data.horizonP) == 61
+    data.horizonP = list(data.genGreaterCircle('min'))
+    assert len(data.horizonP) == 40
+
+
+def test_horizonP2():
+    data.horizonP = ()
+    data.horizonP = '456'
+    assert len(data.horizonP) == 0
+
+
+def test_horizonP3():
+    data.horizonP = ()
+    data.horizonP = [(1, 1), (1, 1), 'test']
+    assert len(data.horizonP) == 0
+
+
+def test_clearHorizonP():
+    data.horizonP = ()
+    data.horizonP = list(data.genGreaterCircle('max'))
+    assert len(data.horizonP) == 157
+    data.clearHorizonP()
+    assert len(data.horizonP) == 0
+
+
+def test_addHorizonP1():
+    data.horizonP = ()
+    suc = data.addHorizonP((10, 10))
+    assert suc
+    assert 1 == len(data.horizonP)
+    suc = data.addHorizonP((10, 10))
+    assert suc
+    assert 2 == len(data.horizonP)
+    suc = data.addHorizonP((10, 10))
+    assert suc
+    assert 3 == len(data.horizonP)
+
+
+def test_addHorizonP2():
+    data.horizonP = ()
+    suc = data.addHorizonP(10)
+    assert not suc
+    assert 0 == len(data.horizonP)
+
+
+def test_addHorizonP3():
+    data.horizonP = ()
+    suc = data.addHorizonP((10, 10, 10))
+    assert not suc
+    assert 0 == len(data.horizonP)
+
+
+def test_delHorizonP1():
+    data.horizonP = ()
+    data.horizonP = list(data.genGreaterCircle('max'))
+    assert len(data.horizonP) == 157
+    suc = data.delHorizonP(5)
+    assert suc
+    assert len(data.horizonP) == 156
+    suc = data.delHorizonP(0)
+    assert suc
+    assert len(data.horizonP) == 155
+    suc = data.delHorizonP(154)
+    assert suc
+    assert len(data.horizonP) == 154
+
+
+def test_delHorizonP2():
+    data.horizonP = ()
+    data.horizonP = list(data.genGreaterCircle('max'))
+    assert len(data.horizonP) == 157
+    suc = data.delHorizonP(-5)
+    assert not suc
+    assert len(data.horizonP) == 157
+
+
+def test_delHorizonP3():
+    data.horizonP = ()
+    data.horizonP = list(data.genGreaterCircle('max'))
+    assert len(data.horizonP) == 157
+    suc = data.delHorizonP(170)
+    assert not suc
+    assert len(data.horizonP) == 157
+
+
+def test_delHorizonP4():
+    data.horizonP = ()
+    data.horizonP = list(data.genGreaterCircle('max'))
+    assert len(data.horizonP) == 157
+    suc = data.delHorizonP('1')
+    assert not suc
+    assert len(data.horizonP) == 157
+
+
 def test_genGrid1():
     val = True
     for i, (alt, az) in enumerate(data.genGrid(minAlt=10,

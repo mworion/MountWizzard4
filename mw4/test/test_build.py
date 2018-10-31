@@ -23,13 +23,13 @@ import unittest.mock as mock
 # local import
 from mw4.build import build
 
-build = build.Data(lat=48)
+data = build.Data(lat=48)
 
 
 def test_topoToAzAlt1():
     ha = 12
     dec = 0
-    alt, az = build.topoToAzAlt(ha, dec, 0)
+    alt, az = data.topoToAzAlt(ha, dec, 0)
 
     assert alt is not None
     assert az is not None
@@ -38,7 +38,7 @@ def test_topoToAzAlt1():
 def test_topoToAzAlt2():
     ha = -12
     dec = 0
-    alt, az = build.topoToAzAlt(ha, dec, 0)
+    alt, az = data.topoToAzAlt(ha, dec, 0)
 
     assert alt is not None
     assert az is not None
@@ -46,52 +46,52 @@ def test_topoToAzAlt2():
 
 def test_genHaDecParams1():
     selection = 'min'
-    for i, (a, b, c, d) in enumerate(build.genHaDecParams(selection=selection)):
-        assert a == build.DEC[selection][i]
-        assert b == build.STEP[selection][i]
-        assert c == build.START[i]
-        assert d == build.STOP[i]
+    for i, (a, b, c, d) in enumerate(data.genHaDecParams(selection=selection)):
+        assert a == data.DEC[selection][i]
+        assert b == data.STEP[selection][i]
+        assert c == data.START[i]
+        assert d == data.STOP[i]
 
 
 def test_genHaDecParams2():
     selection = 'norm'
-    for i, (a, b, c, d) in enumerate(build.genHaDecParams(selection=selection)):
-        assert a == build.DEC[selection][i]
-        assert b == build.STEP[selection][i]
-        assert c == build.START[i]
-        assert d == build.STOP[i]
+    for i, (a, b, c, d) in enumerate(data.genHaDecParams(selection=selection)):
+        assert a == data.DEC[selection][i]
+        assert b == data.STEP[selection][i]
+        assert c == data.START[i]
+        assert d == data.STOP[i]
 
 
 def test_genHaDecParams3():
     selection = 'med'
-    for i, (a, b, c, d) in enumerate(build.genHaDecParams(selection=selection)):
-        assert a == build.DEC[selection][i]
-        assert b == build.STEP[selection][i]
-        assert c == build.START[i]
-        assert d == build.STOP[i]
+    for i, (a, b, c, d) in enumerate(data.genHaDecParams(selection=selection)):
+        assert a == data.DEC[selection][i]
+        assert b == data.STEP[selection][i]
+        assert c == data.START[i]
+        assert d == data.STOP[i]
 
 
 def test_genHaDecParams4():
     selection = 'max'
-    for i, (a, b, c, d) in enumerate(build.genHaDecParams(selection=selection)):
-        assert a == build.DEC[selection][i]
-        assert b == build.STEP[selection][i]
-        assert c == build.START[i]
-        assert d == build.STOP[i]
+    for i, (a, b, c, d) in enumerate(data.genHaDecParams(selection=selection)):
+        assert a == data.DEC[selection][i]
+        assert b == data.STEP[selection][i]
+        assert c == data.START[i]
+        assert d == data.STOP[i]
 
 
 def test_genHaDecParams5():
     selection = 'test'
     val = False
-    for i, (a, b, c, d) in enumerate(build.genHaDecParams(selection=selection)):
+    for i, (a, b, c, d) in enumerate(data.genHaDecParams(selection=selection)):
         val = True
     assert not val
 
 
 def test_genGreaterCircle1():
-    build.lat = 48
+    data.lat = 48
     selection = 'min'
-    for i, (alt, az) in enumerate(build.genGreaterCircle(selection)):
+    for i, (alt, az) in enumerate(data.genGreaterCircle(selection)):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -100,9 +100,9 @@ def test_genGreaterCircle1():
 
 
 def test_genGreaterCircle2():
-    build.lat = 48
+    data.lat = 48
     selection = 'norm'
-    for i, (alt, az) in enumerate(build.genGreaterCircle(selection)):
+    for i, (alt, az) in enumerate(data.genGreaterCircle(selection)):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -111,9 +111,9 @@ def test_genGreaterCircle2():
 
 
 def test_genGreaterCircle3():
-    build.lat = 48
+    data.lat = 48
     selection = 'med'
-    for i, (alt, az) in enumerate(build.genGreaterCircle(selection)):
+    for i, (alt, az) in enumerate(data.genGreaterCircle(selection)):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -122,9 +122,9 @@ def test_genGreaterCircle3():
 
 
 def test_genGreaterCircle4():
-    build.lat = 48
+    data.lat = 48
     selection = 'max'
-    for i, (alt, az) in enumerate(build.genGreaterCircle(selection)):
+    for i, (alt, az) in enumerate(data.genGreaterCircle(selection)):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -133,67 +133,67 @@ def test_genGreaterCircle4():
 
 
 def test_buildP1():
-    build.buildP = ()
-    build.buildP = list(build.genGreaterCircle('max'))
-    assert len(build.buildP) == 168
-    build.buildP = list(build.genGreaterCircle('med'))
-    assert len(build.buildP) == 137
-    build.buildP = list(build.genGreaterCircle('norm'))
-    assert len(build.buildP) == 68
-    build.buildP = list(build.genGreaterCircle('min'))
-    assert len(build.buildP) == 45
+    data.buildP = ()
+    data.buildP = list(data.genGreaterCircle('max'))
+    assert len(data.buildP) == 168
+    data.buildP = list(data.genGreaterCircle('med'))
+    assert len(data.buildP) == 137
+    data.buildP = list(data.genGreaterCircle('norm'))
+    assert len(data.buildP) == 68
+    data.buildP = list(data.genGreaterCircle('min'))
+    assert len(data.buildP) == 45
 
 
 def test_addBuildP1():
-    build.buildP = ()
-    suc = build.addBuildP((10, 10))
+    data.buildP = ()
+    suc = data.addBuildP((10, 10))
     assert suc
-    assert 1 == len(build.buildP)
-    suc = build.addBuildP((10, 10))
+    assert 1 == len(data.buildP)
+    suc = data.addBuildP((10, 10))
     assert suc
-    assert 2 == len(build.buildP)
-    suc = build.addBuildP((10, 10))
+    assert 2 == len(data.buildP)
+    suc = data.addBuildP((10, 10))
     assert suc
-    assert 3 == len(build.buildP)
+    assert 3 == len(data.buildP)
 
 
 def test_delBuildP1():
-    build.buildP = ()
-    build.buildP = list(build.genGreaterCircle('max'))
-    assert len(build.buildP) == 168
-    suc = build.delBuildP(5)
+    data.buildP = ()
+    data.buildP = list(data.genGreaterCircle('max'))
+    assert len(data.buildP) == 168
+    suc = data.delBuildP(5)
     assert suc
-    assert len(build.buildP) == 167
-    suc = build.delBuildP(0)
+    assert len(data.buildP) == 167
+    suc = data.delBuildP(0)
     assert suc
-    assert len(build.buildP) == 166
-    suc = build.delBuildP(165)
+    assert len(data.buildP) == 166
+    suc = data.delBuildP(165)
     assert suc
-    assert len(build.buildP) == 165
+    assert len(data.buildP) == 165
 
 
 def test_delBuildP2():
-    build.buildP = ()
-    build.buildP = list(build.genGreaterCircle('max'))
-    assert len(build.buildP) == 168
-    suc = build.delBuildP(-5)
+    data.buildP = ()
+    data.buildP = list(data.genGreaterCircle('max'))
+    assert len(data.buildP) == 168
+    suc = data.delBuildP(-5)
     assert not suc
-    assert len(build.buildP) == 168
+    assert len(data.buildP) == 168
 
 
 def test_delBuildP3():
-    build.buildP = ()
-    build.buildP = list(build.genGreaterCircle('max'))
-    assert len(build.buildP) == 168
-    suc = build.delBuildP(170)
+    data.buildP = ()
+    data.buildP = list(data.genGreaterCircle('max'))
+    assert len(data.buildP) == 168
+    suc = data.delBuildP(170)
     assert not suc
-    assert len(build.buildP) == 168
+    assert len(data.buildP) == 168
 
 
 def test_delBuildP4():
-    build.buildP = ()
-    build.buildP = list(build.genGreaterCircle('max'))
-    assert len(build.buildP) == 168
-    suc = build.delBuildP('1')
+    data.buildP = ()
+    data.buildP = list(data.genGreaterCircle('max'))
+    assert len(data.buildP) == 168
+    suc = data.delBuildP('1')
     assert not suc
-    assert len(build.buildP) == 168
+    assert len(data.buildP) == 168

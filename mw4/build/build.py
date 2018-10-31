@@ -39,29 +39,21 @@ class DataPoint(object):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
-    # data for generating greater circles
-    DEC = {'min': (-15, 0, 15, 30, 45, 60, 75,
-                   75, 60, 45, 30, 15, 0, -15),
-           'norm': (-15, 0, 15, 30, 45, 60, 75,
-                    75, 60, 45, 30, 15, 0, -15),
-           'med': (-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85,
-                   85, 75, 65, 55, 45, 35, 25, 15, 5, -5, -15),
-           'max': (-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85,
-                   85, 75, 65, 55, 45, 35, 25, 15, 5, -5, -15),
+    # data for generating greater circles, dec and step only for east, west is reversed
+    DEC = {'min': [-15, 0, 15, 30, 45, 60, 75],
+           'norm': [-15, 0, 15, 30, 45, 60, 75],
+           'med': [-15, -5, 5, 15, 25, 40, 55, 70, 85],
+           'max': [-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85],
            }
-    STEP = {'min': (15, -15, 15, -15, 15, -30, 30,
-                    30, -30, 15, -15, 15, -15, 15),
-            'norm': (10, -10, 10, -10, 10, -20, 20,
-                     20, -20, 10, -10, 10, -10, 10),
-            'med': (10, -10, 10, -10, 10, -10, 10, -30, 30,
-                    30, -30, 10, -10, 10, -10, 10, -10, 10),
-            'max': (10, -10, 10, -10, 10, -10, 10, -10, 10, -30, 30,
-                    30, -30, 10, -10, 10, -10, 10, -10, 10, -10, 10),
+    STEP = {'min': [15, -15, 15, -15, 15, -30, 30],
+            'norm': [10, -10, 10, -10, 10, -20, 20],
+            'med': [10, -10, 10, -10, 10, -10, 10, -30, 30],
+            'max': [10, -10, 10, -10, 10, -10, 10, -10, 10, -30, 30],
             }
-    START = (-120, -5, -120, -5, -120, -5, -120, -5, -120, -5, -120,
-             5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120)
-    STOP = (0, -120, 0, -120, 0, -120, 0, -120, 0, -120, 0,
-            120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0)
+    START = [-120, -5, -120, -5, -120, -5, -120, -5, -120, -5, -120,
+             5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120]
+    STOP = [0, -120, 0, -120, 0, -120, 0, -120, 0, -120, 0,
+            120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0]
 
     def __init__(self,
                  lat=48,
@@ -197,7 +189,8 @@ class DataPoint(object):
         """
         genHaDecParams selects the parameters for generating the boundaries for next
         step processing greater circles. the parameters are sorted for different targets
-        actually for minimum slew distance between the points.
+        actually for minimum slew distance between the points. defined is only the east
+        side of data, the west side will be mirrored to the east one.
 
         :param selection: type of model we would like to use
         :return: yield tuple of dec value and step, start and stop for range
@@ -205,23 +198,67 @@ class DataPoint(object):
 
         if selection not in self.DEC or selection not in self.STEP:
             return
-        decL = self.DEC[selection]
-        stepL = self.STEP[selection]
+        eastDec = self.DEC[selection]
+        westDec = list(reversed(eastDec))
+        decL = eastDec + westDec
+
+        eastL = self.STEP[selection]
+        westL = list(reversed(eastL))
+        stepL = eastL + westL
 
         for dec, step, start, stop in zip(decL, stepL, self.START, self.STOP):
             yield dec, step, start, stop
 
-    def genGreaterCircle(self, selection):
+    def genGreaterCircle(self, selection='norm'):
         """
         genGreaterCircle takes the generated boundaries for the rang routine and
-        transforms ha, dec to alt az.
+        transforms ha, dec to alt az. reasonable values for the alt az values
+        are 5 to 85 degrees.
 
         :param selection:
         :return: yields alt, az tuples which are above horizon
         """
+
         for dec, step, start, stop in self.genHaDecParams(selection):
             for ha in range(start, stop, step):
                 alt, az = self.topoToAzAlt(ha/10, dec, self.lat)
                 # only values with above horizon = 0
-                if alt > 0 and az < 360:
+                if 5 <= alt <= 85 and az < 360:
                     yield alt, az
+
+    @staticmethod
+    def genGrid(minAlt=5, maxAlt=90, numbRows=5, numbCols=6):
+        """
+        genGrid generates a grid of points and transforms ha, dec to alt az. with given
+        limits in alt, the min and max will be used as a hard condition. on az there is
+        not given limit, therefore a split over the whole space (omitting the meridian)
+        is done. the simplest way to avoid hitting the meridian is to enforce the number
+        of cols to be a factor of 2. reasonable values for the grid are 5 to 85 degrees.
+        defined is only the east side of data, the west side will be mirrored to the
+        east one.
+
+        :param minAlt: altitude min
+        :param maxAlt: altitude max
+        :param numbRows: numbRows
+        :param numbCols: numbCols
+        :return: yields alt, az tuples which are above horizon
+        """
+
+        if not 5 <= minAlt <= 85:
+            return
+        if not maxAlt > minAlt:
+            return
+        if numbCols % 2:
+            return
+
+        stepAlt = int((maxAlt - minAlt) / (numbRows - 1))
+        east = list(range(minAlt, maxAlt+1, stepAlt))
+        west = list(reversed(east))
+        altL = east + west
+
+        stepAz = int(360 / numbCols)
+        minAz = int(180 / numbCols)
+        maxAz = 360 - minAz + 1
+        for alt in altL:
+            for az in range(minAz, 360, stepAz):
+                yield alt, az

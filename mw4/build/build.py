@@ -39,15 +39,39 @@ class Data(object):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
+    # data for generating greater circles
+    DEC = {'min': (-15, 0, 15, 30, 45, 60, 75,
+                   75, 60, 45, 30, 15, 0, -15),
+           'norm': (-15, 0, 15, 30, 45, 60, 75,
+                    75, 60, 45, 30, 15, 0, -15),
+           'med': (-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85,
+                   85, 75, 65, 55, 45, 35, 25, 15, 5, -5, -15),
+           'max': (-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85,
+                   85, 75, 65, 55, 45, 35, 25, 15, 5, -5, -15),
+           }
+    STEP = {'min': (15, -15, 15, -15, 15, -30, 30,
+                    30, -30, 15, -15, 15, -15, 15),
+            'norm': (10, -10, 10, -10, 10, -20, 20,
+                     20, -20, 10, -10, 10, -10, 10),
+            'med': (10, -10, 10, -10, 10, -10, 10, -30, 30,
+                    30, -30, 10, -10, 10, -10, 10, -10, 10),
+            'max': (10, -10, 10, -10, 10, -10, 10, -10, 10, -30, 30,
+                    30, -30, 10, -10, 10, -10, 10, -10, 10, -10, 10),
+            }
+    START = (-120, -5, -120, -5, -120, -5, -120, -5, -120, -5, -120,
+             5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120)
+    STOP = (0, -120, 0, -120, 0, -120, 0, -120, 0, -120, 0,
+            120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0)
+
     def __init__(self,
                  lat=48,
                  ):
 
         self.lat = lat
-        self._horizonFile = None
-        self._pointFile = None
-        self._horizon = list()
-        self._point = list()
+        self._horizonPFile = None
+        self._buildPFile = None
+        self._horizonP = list()
+        self._buildP = list()
 
     @property
     def lat(self):
@@ -58,20 +82,20 @@ class Data(object):
         self._lat = value
 
     @property
-    def horizonFile(self):
-        return self._horizonFile
+    def horizonPFile(self):
+        return self._horizonPFile
 
-    @horizonFile.setter
-    def horizonFile(self, value):
-        self._horizonFile = value
+    @horizonPFile.setter
+    def horizonPFile(self, value):
+        self._horizonPFile = value
 
     @property
-    def pointFile(self):
-        return self._pointFile
+    def buildPFile(self):
+        return self._buildPFile
 
-    @pointFile.setter
-    def pointFile(self, value):
-        self._pointFile = value
+    @buildPFile.setter
+    def buildPFile(self, value):
+        self._buildPFile = value
 
     @staticmethod
     def topoToAzAlt(ha, dec, lat):
@@ -91,62 +115,35 @@ class Data(object):
         alt = np.degrees(alt)
         return alt, az
 
-    def addPoint(self):
+    def addBuildP(self):
         pass
 
-    def clearPointList(self):
-        self._point = list()
-
-    def addHorizon(self):
+    def delBuildP(self):
         pass
 
-    def clearHorizonList(self):
-        self._horizon = list()
+    def clearBuildP(self):
+        self._buildP = list()
 
-    @staticmethod
-    def genDecMin():
-        decL = (-15, 0, 15, 30, 45, 60, 75,
-                75, 60, 45, 30, 15, 0, -15)
-        stepL = (15, -15, 15, -15, 15, -30, 30,
-                 30, -30, 15, -15, 15, -15, 15)
-        startL = (-120, -5, -120, -5, -120, -5, -120,
-                  5, 120, 5, 120, 5, 120, 5, 120, 5,)
-        stopL = (0, -120, 0, -120, 0, -120, 0,
-                 120, 0, 120, 0, 120, 0, 120)
+    def addHorizonP(self):
+        pass
 
-        for dec, step, start, stop in zip(decL, stepL, startL, stopL):
+    def delHorizonP(self):
+        pass
+
+    def clearHorizonP(self):
+        self._horizonP = list()
+
+    def genHaDecParams(self, selection):
+        if selection not in self.DEC or selection not in self.STEP:
+            return
+        decL = self.DEC[selection]
+        stepL = self.STEP[selection]
+
+        for dec, step, start, stop in zip(decL, stepL, self.START, self.STOP):
             yield dec, step, start, stop
 
-    @staticmethod
-    def genDecNorm():
-        decL = (-15, 0, 15, 30, 45, 60, 75,
-                75, 60, 45, 30, 15, 0, -15)
-        stepL = (10, -10, 10, -10, 10, -20, 20,
-                 20, -20, 10, -10, 10, -10, 10)
-        startL = (-120, -5, -120, -5, -120, -5, -120,
-                  5, 120, 5, 120, 5, 120, 5, 120, 5)
-        stopL = (0, -120, 0, -120, 0, -120, 0,
-                 120, 0, 120, 0, 120, 0, 120)
-
-        for dec, step, start, stop in zip(decL, stepL, startL, stopL):
-            yield dec, step, start, stop
-
-    @staticmethod
-    def genDecMax():
-        decL = (-15, -5, 5, 15, 25, 35, 45, 55, 65, 75, 85,
-                85, 75, 65, 55, 45, 35, 25, 15, 5, -5, -15)
-        stepL = (10, -10, 10, -10, 10, -10, 10, -10, 10, -30, 30,
-                 30, -30, 10, -10, 10, -10, 10, -10, 10, -10, 10)
-        startL = (-120, -5, -120, -5, -120, -5, -120, -5, -120, -5, -120,
-                  5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120)
-        stopL = (0, -120, 0, -120, 0, -120, 0, -120, 0, -120, 0,
-                 120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0)
-
-        for dec, step, start, stop in zip(decL, stepL, startL, stopL):
-            yield dec, step, start, stop
-
-    def genGreaterCircle(self, generatorFun):
-        for dec, step, start, stop in generatorFun():
+    def genGreaterCircle(self, selection):
+        for dec, step, start, stop in self.genHaDecParams(selection):
             for ha in range(start, stop, step):
                 alt, az = self.topoToAzAlt(ha/10, dec, self.lat)
                 if alt > 0:

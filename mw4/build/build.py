@@ -115,6 +115,21 @@ class Data(object):
         alt = np.degrees(alt)
         return alt, az
 
+    @property
+    def buildP(self):
+        return self._buildP
+
+    @buildP.setter
+    def buildP(self, value):
+        if not isinstance(value, list):
+            self._buildP = list()
+            return
+        if not all([isinstance(x, tuple) for x in value]):
+            self.logger.error('malformed value: {0}'.format(value))
+            self._buildP = list()
+            return
+        self._buildP = value
+
     def addBuildP(self):
         if not isinstance(value, list):
             self.logger.error('malformed value: {0}'.format(value))
@@ -136,6 +151,21 @@ class Data(object):
 
     def clearBuildP(self):
         self._buildP = list()
+
+    @property
+    def horizonP(self):
+        return self._horizonP
+
+    @horizonP.setter
+    def horizonP(self, value):
+        if not isinstance(value, list):
+            self._horizonP = list()
+            return
+        if not all([isinstance(x, tuple) for x in value]):
+            self.logger.error('malformed value: {0}'.format(value))
+            self._horizonP = list()
+            return
+        self._horizonP = value
 
     def addHorizonP(self):
         if not isinstance(value, list):

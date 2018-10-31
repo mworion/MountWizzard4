@@ -184,7 +184,7 @@ class HemisphereWindow(widget.MWidget):
 
         # the static part (model points, horizon, celestial paths, meridian limits)
         self.clearAxes(axes, visible=True)
-        y, x = zip(*list(self.app.data.genGrid(numbRows=10,
+        y, x = zip(*list(self.app.data.genGrid(numbRows=8,
                                                numbCols=10)))
         axes.plot(x, y,
                   'o',

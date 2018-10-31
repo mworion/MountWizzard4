@@ -470,7 +470,7 @@ def test_genGridData7():
     assert 0 == len(val)
 
 
-def test_genGridData7():
+def test_genGridData8():
     val = list(data.genGrid(minAlt=10,
                             maxAlt=40,
                             numbRows=10,
@@ -478,7 +478,7 @@ def test_genGridData7():
     assert 0 == len(val)
 
 
-def test_genGridData8():
+def test_genGridData9():
     val = list(data.genGrid(minAlt=10,
                             maxAlt=40,
                             numbRows=6,

@@ -130,3 +130,70 @@ def test_genGreaterCircle4():
         assert alt >= 0
         assert az >= 0
     assert 167 == i
+
+
+def test_buildP1():
+    build.buildP = ()
+    build.buildP = list(build.genGreaterCircle('max'))
+    assert len(build.buildP) == 168
+    build.buildP = list(build.genGreaterCircle('med'))
+    assert len(build.buildP) == 137
+    build.buildP = list(build.genGreaterCircle('norm'))
+    assert len(build.buildP) == 68
+    build.buildP = list(build.genGreaterCircle('min'))
+    assert len(build.buildP) == 45
+
+
+def test_addBuildP1():
+    build.buildP = ()
+    suc = build.addBuildP((10, 10))
+    assert suc
+    assert 1 == len(build.buildP)
+    suc = build.addBuildP((10, 10))
+    assert suc
+    assert 2 == len(build.buildP)
+    suc = build.addBuildP((10, 10))
+    assert suc
+    assert 3 == len(build.buildP)
+
+
+def test_delBuildP1():
+    build.buildP = ()
+    build.buildP = list(build.genGreaterCircle('max'))
+    assert len(build.buildP) == 168
+    suc = build.delBuildP(5)
+    assert suc
+    assert len(build.buildP) == 167
+    suc = build.delBuildP(0)
+    assert suc
+    assert len(build.buildP) == 166
+    suc = build.delBuildP(165)
+    assert suc
+    assert len(build.buildP) == 165
+
+
+def test_delBuildP2():
+    build.buildP = ()
+    build.buildP = list(build.genGreaterCircle('max'))
+    assert len(build.buildP) == 168
+    suc = build.delBuildP(-5)
+    assert not suc
+    assert len(build.buildP) == 168
+
+
+def test_delBuildP3():
+    build.buildP = ()
+    build.buildP = list(build.genGreaterCircle('max'))
+    assert len(build.buildP) == 168
+    suc = build.delBuildP(170)
+    assert not suc
+    assert len(build.buildP) == 168
+
+
+def test_delBuildP4():
+    build.buildP = ()
+    build.buildP = list(build.genGreaterCircle('max'))
+    assert len(build.buildP) == 168
+    suc = build.delBuildP('1')
+    assert not suc
+    assert len(build.buildP) == 168

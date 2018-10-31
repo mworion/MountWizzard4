@@ -130,24 +130,26 @@ class Data(object):
             return
         self._buildP = value
 
-    def addBuildP(self):
-        if not isinstance(value, list):
+    def addBuildP(self, value):
+        if not isinstance(value, tuple):
             self.logger.error('malformed value: {0}'.format(value))
-            return
+            return False
         if len(value) != 2:
             self.logger.error('malformed value: {0}'.format(value))
-            return
+            return False
         self._buildP.insert(len(self._buildP), value)
+        return True
 
-    def delBuildP(self):
+    def delBuildP(self, value):
         if not isinstance(value, (int, float)):
             self.logger.error('malformed value: {0}'.format(value))
-            return
+            return False
         value = int(value)
-        if value < 0 or value > len(self._starList) - 1:
+        if value < 0 or value > len(self._buildP) - 1:
             self.logger.error('invalid value: {0}'.format(value))
-            return
+            return False
         self._buildP.pop(value)
+        return True
 
     def clearBuildP(self):
         self._buildP = list()
@@ -167,24 +169,26 @@ class Data(object):
             return
         self._horizonP = value
 
-    def addHorizonP(self):
+    def addHorizonP(self, value):
         if not isinstance(value, list):
             self.logger.error('malformed value: {0}'.format(value))
-            return
+            return False
         if len(value) != 2:
             self.logger.error('malformed value: {0}'.format(value))
-            return
+            return False
         self._horizonP.insert(len(self._horizonP), value)
+        return True
 
-    def delHorizonP(self):
+    def delHorizonP(self, value):
         if not isinstance(value, (int, float)):
             self.logger.error('malformed value: {0}'.format(value))
-            return
+            return False
         value = int(value)
         if value < 0 or value > len(self._horizonP) - 1:
             self.logger.error('invalid value: {0}'.format(value))
-            return
+            return False
         self._horizonP.pop(value)
+        return True
 
     def clearHorizonP(self):
         self._horizonP = list()

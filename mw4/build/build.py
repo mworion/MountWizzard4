@@ -275,3 +275,26 @@ class DataPoint(object):
             else:
                 for az in range(maxAz, 180, -stepAz):
                     yield alt, az
+
+    @staticmethod
+    def genInitial(alt=30, azStart=10, numb=3):
+        """
+        genInitial generates a number of initial points for the first step of modeling
+
+        :param alt:
+        :param azStart:
+        :param numb:
+        :return: yields alt, az tuples which are above horizon
+        """
+
+        if not 5 <= alt <= 85:
+            return
+        if not 2 < numb < 10:
+            return
+        if not 0 <= azStart < 360:
+            return
+
+        stepAz = int(360 / numb)
+
+        for az in range(azStart, 720, stepAz):
+            yield alt, az % 360

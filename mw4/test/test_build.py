@@ -44,6 +44,9 @@ def test_topoToAzAlt2():
     assert az is not None
 
 
+
+
+
 def test_genHaDecParams1():
     selection = 'min'
     length = len(data.DEC[selection])
@@ -164,6 +167,26 @@ def test_buildP1():
     assert len(data.buildP) == 40
 
 
+def test_buildP2():
+    data.buildP = ()
+    data.buildP = '456'
+    assert len(data.buildP) == 0
+
+
+def test_buildP3():
+    data.buildP = ()
+    data.buildP = [(1, 1), (1, 1), 'test']
+    assert len(data.buildP) == 0
+
+
+def test_clearBuildP():
+    data.buildP = ()
+    data.buildP = list(data.genGreaterCircle('max'))
+    assert len(data.buildP) == 157
+    data.clearBuildP()
+    assert len(data.buildP) == 0
+
+
 def test_addBuildP1():
     data.buildP = ()
     suc = data.addBuildP((10, 10))
@@ -175,6 +198,20 @@ def test_addBuildP1():
     suc = data.addBuildP((10, 10))
     assert suc
     assert 3 == len(data.buildP)
+
+
+def test_addBuildP2():
+    data.buildP = ()
+    suc = data.addBuildP(10)
+    assert not suc
+    assert 0 == len(data.buildP)
+
+
+def test_addBuildP3():
+    data.buildP = ()
+    suc = data.addBuildP((10, 10, 10))
+    assert not suc
+    assert 0 == len(data.buildP)
 
 
 def test_delBuildP1():
@@ -295,3 +332,53 @@ def test_genGridData1():
                                                numbCols=10)):
         val = i
     assert 99 == i
+
+
+def test_genInitial1():
+    val = True
+    for i, (alt, az) in enumerate(data.genInitial(alt=30,
+                                                  azStart=30,
+                                                  numb=5,
+                                                  )):
+        val = False
+    assert not val
+
+
+def test_genInitial2():
+    val = True
+    for i, (alt, az) in enumerate(data.genInitial(alt=0,
+                                                  azStart=30,
+                                                  numb=5,
+                                                  )):
+        val = False
+    assert val
+
+
+def test_genInitial3():
+    val = True
+    for i, (alt, az) in enumerate(data.genInitial(alt=30,
+                                                  azStart=-10,
+                                                  numb=5,
+                                                  )):
+        val = False
+    assert val
+
+
+def test_genInitial4():
+    val = True
+    for i, (alt, az) in enumerate(data.genInitial(alt=30,
+                                                  azStart=30,
+                                                  numb=2,
+                                                  )):
+        val = False
+    assert val
+
+
+def test_genInitial5():
+    val = True
+    for i, (alt, az) in enumerate(data.genInitial(alt=30,
+                                                  azStart=30,
+                                                  numb=30,
+                                                  )):
+        val = False
+    assert val

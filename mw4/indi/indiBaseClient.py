@@ -187,10 +187,10 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
     def getDevice(self, deviceName):
         return self.devices.get(deviceName, None)
 
-    def getDevices(self):
+    def getDevices(self, driverInterface):
         deviceList = list()
         for device in self.devices:
-            if device.getDriverInterface():
+            if device.getDriverInterface() | driverInterface:
                 deviceList.append(device)
         return deviceList
 

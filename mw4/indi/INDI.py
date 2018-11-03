@@ -58,9 +58,9 @@ class INDI:
         ISR_NOFMANY = 'AnyOfMany'
 
     class IPerm(enum.Enum):
-        IP_RO='ro'
-        IP_WO='wo'
-        IP_RW='rw'
+        IP_RO = 'ro'
+        IP_WO = 'wo'
+        IP_RW = 'rw'
 
     class BLOBHandling(enum.Enum):
         B_NEVER = 'Never'

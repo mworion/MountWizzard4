@@ -64,7 +64,7 @@ class IndiBaseMediator:
 
     def new_message(self, device, message_id):
         self.logger.info('new_message(id={0})'
-                         .format(message_id, device.message_queue(message_id)))
+                         .format(message_id, device.messageQueue(message_id)))
 
     def new_universal_message(self, message):
         self.logger.info('new_universal_message: {0}'.format(message))

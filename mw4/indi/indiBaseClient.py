@@ -84,7 +84,8 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
 
         self.parser = xml.etree.ElementTree.XMLPullParser(['start', 'end'])
         self.parser.feed('<fakeindiroot>')
-        for event, elem in self.parser.read_events():
+        # clear the event queue of parser, because we fed a fake root
+        for _, _ in self.parser.read_events():
             pass
 
     @property
@@ -143,7 +144,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
                 self.logger.error('Problem parsing event: {0}'.format(event))
             if self.curDepth > 0:
                 continue
-            # print('Parsed a', elem.tag, 'element')
+            print('Parsed ', elem.tag)
             if not self.dispatchCmd(elem):
                 self.logger.error('Problem parsing element {0}'.format(elem.tag))
 
@@ -156,7 +157,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
 
     def sendString(self, data):
         if self.socket:
-            print(data)
+            # print(data)
             self.socket.write(data.encode(encoding='ascii'))
             self.socket.flush()
 
@@ -196,7 +197,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
         if elem.tag == 'message':
             device_name = elem.get('device')
             if device_name in self.devices:
-                return self.devices[device_name].check_message(elem)
+                return self.devices[device_name].checkMessage(elem)
             # Universal message
             message = elem.get('message')
             if message == '':
@@ -224,7 +225,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
             self.logger.info('delProperty: device not found')
             return INDI.INDI_ERROR_TYPE.INDI_DEVICE_NOT_FOUND
         device = self.devices[device_name]
-        device.check_message(elem)
+        device.checkMessage(elem)
         prop_name = elem.get('name')
         if prop_name is not None:
             if prop_name == '' or prop_name not in device.properties:
@@ -260,9 +261,9 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
             device = self.devices[device_name]
         cmd = elem.tag[:3]
         if cmd == 'def':
-            return device.build_prop(elem)
+            return device.buildProp(elem)
         elif cmd == 'set':
-            return device.set_value(elem)
+            return device.setValue(elem)
         return False
 
     def sendNewProperty(self, p):

@@ -59,7 +59,7 @@ class BaseClient:
         if elem.tag=='message':
             device_name=elem.get('device')
             if device_name in self.devices:
-                return self.devices[device_name].check_message(elem)
+                return self.devices[device_name].checkMessage(elem)
             # Universal message
             message=elem.get('message')
             if message=='':
@@ -85,7 +85,7 @@ class BaseClient:
             self.logger.warn('delProperty: device not found')
             return INDI.INDI_ERROR_TYPE.INDI_DEVICE_NOT_FOUND
         device=self.devices[device_name]
-        device.check_message(elem)
+        device.checkMessage(elem)
         prop_name=elem.get('name')
         if not prop_name is None:
             if prop_name=='' or not prop_name in device.properties:
@@ -121,9 +121,9 @@ class BaseClient:
             device=self.devices[device_name]
         cmd=elem.tag[:3]
         if cmd == 'def':
-            return device.build_prop(elem)
+            return device.buildProp(elem)
         elif cmd == 'set':
-            return device.set_value(elem)
+            return device.setValue(elem)
         return False
     def send_string(self, s):
         if self.client_socket:

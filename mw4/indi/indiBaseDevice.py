@@ -21,7 +21,7 @@
 import logging
 import base64
 import zlib
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 # external packages
 # local imports
 from indi.INDI import INDI, IText, INumber, ISwitch, IBLOB, ILight, IVectorProperty
@@ -54,7 +54,7 @@ class IndiBaseDevice:
         self.name = None
         self.mediator = None
         self.logger = None
-        self.properties = OrderedDict()
+        self.properties = defaultdict()
         self.message_log = []
 
     def getDeviceName(self):
@@ -90,7 +90,7 @@ class IndiBaseDevice:
             return p.perm
         return INDI.ISRule.IP_RO
 
-    def check_message(self, elem):
+    def checkMessage(self, elem):
         message = elem.get('message')
         if not message or message == '':
             return True
@@ -102,15 +102,15 @@ class IndiBaseDevice:
             self.mediator.new_message(self, len(self.message_log) - 1)
         return True
 
-    def message_queue(self, index):
+    def messageQueue(self, index):
         if abs(index) >= len(self.message_log):
             return ''
         return self.message_log[index]
 
-    def last_message(self):
+    def lastMessage(self):
         return self.message_log[-1]
 
-    def build_prop(self, elem):
+    def buildProp(self, elem):
         device_name, prop_name = elem.get('device'), elem.get('name')
         label, group = elem.get('label'), elem.get('group')
         if not self.name:
@@ -119,8 +119,8 @@ class IndiBaseDevice:
             self.logger.error('Empty property name: {0}'.format(elem))
             return INDI.INDI_ERROR_TYPE.INDI_PROPERTY_INVALID
         if prop_name in self.properties:
-            self.logger.error('Duplicated Prop {0} in Dev {1}'
-                              .format(prop_name, device_name))
+            # self.logger.error('Duplicated Prop {0} in Dev {1}'
+            #                   .format(prop_name, device_name))
             return INDI.INDI_ERROR_TYPE.INDI_PROPERTY_DUPLICATED
         prop_type = IndiBaseDevice._prop_types[elem.tag[3:]]
         perm = None
@@ -137,7 +137,7 @@ class IndiBaseDevice:
                 rule = INDI.ISRule.ISR_10FMANY
         try:
             timeout = int(elem.get('timeout'))
-        except:
+        except Exception:
             timeout = None
         state = INDI.crackIndi(elem.get('state'), INDI.IPState)
         if not state:
@@ -189,14 +189,14 @@ class IndiBaseDevice:
                     maxvalue = INDI.f_scan_sexa(pelem.get('max').strip())
                     stepvalue = INDI.f_scan_sexa(pelem.get('step').strip())
                     value = INDI.f_scan_sexa(text_value)
-                    new_prop.vp[pelem_name]=INumber(pelem_name,
-                                                    pelem_label,
-                                                    numformat,
-                                                    minvalue,
-                                                    maxvalue,
-                                                    stepvalue,
-                                                    value,
-                                                    new_prop)
+                    new_prop.vp[pelem_name] = INumber(pelem_name,
+                                                      pelem_label,
+                                                      numformat,
+                                                      minvalue,
+                                                      maxvalue,
+                                                      stepvalue,
+                                                      value,
+                                                      new_prop)
                 elif prop_type == INDI.INDI_PROPERTY_TYPE.INDI_BLOB:
                     blobformat = pelem.get('format')
                     new_prop.vp[pelem_name] = IBLOB(pelem_name,
@@ -217,7 +217,7 @@ class IndiBaseDevice:
             self.mediator.new_property(new_prop)
         return True
 
-    def set_value(self, elem):
+    def setValue(self, elem):
         device_name, prop_name = elem.get('device'), elem.get('name')
         if prop_name == '':
             self.logger.error('Empty property name'+elem)
@@ -227,7 +227,7 @@ class IndiBaseDevice:
                               .format(prop_name, device_name))
             return INDI.INDI_ERROR_TYPE.INDI_PROPERTY_INVALID
         prop = self.properties[prop_name]
-        self.check_message(elem)
+        self.checkMessage(elem)
         state = elem.get('state')
         if state:
             prop.state = INDI.crackIndi(state, INDI.IPState)
@@ -276,7 +276,7 @@ class IndiBaseDevice:
                     if blobformat and size:
                         try:
                             blobsize = int(size)
-                        except:
+                        except Exception:
                             self.logger.warn('Cannot parse blob size for {0} in {1}'
                                              .format(elem_name, prop_name))
                             continue
@@ -287,7 +287,7 @@ class IndiBaseDevice:
                         elem.format = blobformat
                         try:
                             data = base64.b64decode(text_value)
-                        except:
+                        except Exception:
                             self.logger.warn('Unable to base64 decode {0} in {1}'
                                              .format(elem_name, prop_name))
                             continue

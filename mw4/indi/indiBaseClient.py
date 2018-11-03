@@ -21,12 +21,13 @@
 import logging
 import base64
 # external packages
-from PyQt5 import QtCore
-from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
+import PyQt5
+import PyQt5.QtNetwork
 import xml.etree.ElementTree
 # local import
-from mw4.indi import INDI
-from mw4.indi import indiBaseMediator
+from mw4.indi.INDI import *
+from mw4.indi.indiBaseMediator import IndiBaseMediator
+from mw4.indi.indiBaseDevice import IndiBaseDevice
 
 
 class IndiBaseClient(PyQt5.QtCore.QObject):
@@ -65,9 +66,9 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
                  ):
         super().__init__()
 
-        self._host = host
+        self.host = host
         if not mediator:
-            self.mediator = IndiBaseMediator(self.logger)
+            self.mediator = IndiBaseMediator()
         else:
             self.mediator = mediator
 
@@ -77,12 +78,14 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
         self.curChunk = []
         self.curDepth = 0
 
-        self.socket = QTcpSocket()
+        self.socket = PyQt5.QtNetwork.QTcpSocket()
         self.socket.readyRead.connect(self.handleReadyRead)
         self.socket.error.connect(self.handleError)
 
         self.parser = xml.etree.ElementTree.XMLPullParser(['start', 'end'])
         self.parser.feed('<fakeindiroot>')
+        for event, elem in self.parser.read_events():
+            pass
 
     @property
     def host(self):
@@ -109,12 +112,13 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
     def connect(self):
         if self.isConnected:
             return True
-        self.socket.connectToHost(self.host.decode(), self.port)
+        self.socket.connectToHost(*self._host)
         if not self.socket.waitForConnected(self.CONNECTION_TIMEOUT):
             self.isConnected = False
             return False
         self.isConnected = True
-        self.socket.write(b'<getProperties version="'+INDI.INDIV+b'"/>')
+        data = '<getProperties version="{0}" />'.format(INDI.INDIV)
+        self.sendString(data)
         return True
 
     def disconnect(self):
@@ -125,20 +129,21 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
         self.devices.clear()
         return True
 
-    @QtCore.pyqtSlot()
+    @PyQt5.QtCore.pyqtSlot()
     def handleReadyRead(self):
         buf = self.socket.readAll()
         self.parser.feed(buf)
         for event, elem in self.parser.read_events():
-            # print(event, elem.tag, elem.keys())
+            # print(self.curDepth, event, elem.tag, elem.keys(), '\n')
             if event == 'start':
                 self.curDepth += 1
             elif event == 'end':
                 self.curDepth -= 1
             else:
                 self.logger.error('Problem parsing event: {0}'.format(event))
-            if self.curDepth != 0:
+            if self.curDepth > 0:
                 continue
+            print('Parsed a', elem.tag, 'element')
             if not self.dispatchCmd(elem):
                 self.logger.error('Problem parsing element {0}'.format(elem.tag))
 
@@ -149,11 +154,13 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
         self.logger.warning('INDI client connection fault, error: {0}'.format(socketError))
         self.socket.close()
 
-    def sendString(self, s):
+    def sendString(self, data):
         if self.socket:
-            self.socket.write(s.encode(encoding='ascii'))
+            print(data.encode('ascii'))
+            self.socket.write(data.encode(encoding='ascii'))
+            self.socket.flush()
 
-    def send_one_blob(self, blob_name, blob_format, blobdata):
+    def sendOneBlob(self, blob_name, blob_format, blobdata):
         if not blobdata:
             blobdata = b''
         b64blob = base64.encodebytes(blobdata)
@@ -179,9 +186,9 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
     def getDevice(self, deviceName):
         return self.devices.get(deviceName, None)
 
-    def getDevices(self, deviceList, driverInterface):
+    def getDevices(self, deviceList):
         for dname, device in self.devices:
-            if device.getDriverInterface() | driverInterface:
+            if device.getDriverInterface():
                 deviceList.append(device)
         return len(deviceList) > 0
 
@@ -243,7 +250,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
             self.logger.info('dispatchCmd: device name is empty')
             return False
         if device_name not in self.devices:
-            device = BaseDevice()
+            device = IndiBaseDevice()
             device.name = device_name
             device.mediator = self.mediator
             device.logger = self.logger
@@ -258,44 +265,40 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
             return device.set_value(elem)
         return False
 
-    def send_string(self, s):
-        if self.client_socket:
-            self.client_socket.sendall(s.encode(encoding='ascii'))
-
     def sendNewProperty(self, p):
-        self.send_string("<new" + self._prop_tags[
+        self.sendString("<new" + self._prop_tags[
             p.type] + "\n  device='" + p.device.name + "'\n  name='" + p.name + "'>\n")
         for ename, elem in p.vp.items():
-            self.send_string(
+            self.sendString(
                 "<" + self._elem_tags[p.type] + " name='" + ename + "'>" + str(
                     elem) + "</" + self._elem_tags[p.type] + ">\n")
-        self.send_string("</new" + self._prop_tags[p.type] + ">\n")
+        self.sendString("</new" + self._prop_tags[p.type] + ">\n")
 
     def sendNewElem(self, p, e):
         # we need property p to simplify as it is in the parent e.{stnbl}vp member
-        self.send_string("<new" + self._prop_tags[
+        self.sendString("<new" + self._prop_tags[
             p.type] + "\n  device='" + p.device.name + "'\n  name='" + p.name + "'>\n")
-        self.send_string(
+        self.sendString(
             "<" + self._elem_tags[p.type] + " name='" + e.name + "'>" + str(e) + "</" +
             self._elem_tags[p.type] + ">\n")
-        self.send_string("</new" + self._prop_tags[p.type] + ">\n")
+        self.sendString("</new" + self._prop_tags[p.type] + ">\n")
 
     def startBlob(self, device_name, blobv_name, timestamp):
-        self.send_string("<newBLOBVector\n")
-        self.send_string("  device='" + device_name + "'\n")
-        self.send_string("  name='" + blobv_name + "'\n")
-        self.send_string("  timestamp='" + timestamp + "'>\n")
+        self.sendString("<newBLOBVector\n")
+        self.sendString("  device='" + device_name + "'\n")
+        self.sendString("  name='" + blobv_name + "'\n")
+        self.sendString("  timestamp='" + timestamp + "'>\n")
 
-    def finish_blob(self):
-        self.send_string("</newBLOBVector>\n")
+    def finishBlob(self):
+        self.sendString("</newBLOBVector>\n")
 
-    def send_blob(self, blob):
+    def sendBlob(self, blob):
         self.startBlob(blob.device.name, blob.name, datetime.datetime.now().isoformat())
         for b in blob.vp.values():
-            self.send_one_blob(b.name, b.format, b.blob)
-        self.finish_blob()
+            self.sendOneBlob(b.name, b.format, b.blob)
+        self.finishBlob()
 
-    def find_blob_mode(self, device, prop):
+    def findBlobMode(self, device, prop):
         if type(device) == str and device != "":
             device_name = device
         elif type(device) == str and device == "":
@@ -317,7 +320,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
 
     def getBlobMode(self, device, prop):
         bhandle = INDI.BLOBHandling.B_ALSO
-        bmode = self.find_blob_mode(device, prop)
+        bmode = self.findBlobMode(device, prop)
         if bmode:
             bhandle = bmode
         return bhandle
@@ -325,7 +328,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
     def setBlobMode(self, blob_handling, device, prop):
         if device is None or device == "":
             return
-        bmode = self.find_blob_mode(device, prop)
+        bmode = self.findBlobMode(device, prop)
         if type(device) == str:
             device_name = device
         else:
@@ -347,9 +350,9 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
             else:
                 return
         if prop_name != "":
-            self.send_string(
+            self.sendString(
                 "<enableBLOB device='" + device_name + "' name='" + prop_name + "'>" + str(
                     blob_handling.value) + "</enableBLOB>\n")
         else:
-            self.send_string("<enableBLOB device='" + device_name + "'>" + str(
+            self.sendString("<enableBLOB device='" + device_name + "'>" + str(
                 blob_handling.value) + "</enableBLOB>\n")

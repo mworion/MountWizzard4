@@ -29,7 +29,11 @@ from collections import OrderedDict
 class INDI:
     MAXINDIFILENAME = 64
     MAXINDIBUF = 49152
-    INDIV = b'1.7'
+    INDIV = '1.7'
+
+    _lf_pattern = '[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?'
+    _pattern = '('+_lf_pattern+')[^0-9]?('+_lf_pattern+')?[^0-9]?('+_lf_pattern+')?'
+    _reg_exp_sexa = re.compile(_pattern)
 
     class SP:
         CONNECTION = 'CONNECTION'
@@ -54,9 +58,9 @@ class INDI:
         ISR_NOFMANY = 'AnyOfMany'
 
     class IPerm(enum.Enum):
-        IP_RO = 'ro'
-        IP_WO = 'wo'
-        IP_RW = 'rw'
+        IP_RO='ro'
+        IP_WO='wo'
+        IP_RW='rw'
 
     class BLOBHandling(enum.Enum):
         B_NEVER = 'Never'
@@ -99,9 +103,6 @@ class INDI:
             if s == p.value:
                 return p
         return None
-    _lf_pattern = '[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?'
-    _pattern = '('+_lf_pattern+')[^0-9]?('+_lf_pattern+')?[^0-9]?('+_lf_pattern+')?'
-    _reg_exp_sexa = re.compile(_pattern)
 
     @staticmethod
     def f_scan_sexa(s):
@@ -191,7 +192,7 @@ class INDI:
     @staticmethod
     def IUFindOnSwitch(svp):
         for sp in svp.vp.values():
-            if sp.s == INDI.ISState.ISS_ON:
+            if sp.state == INDI.ISState.ISS_ON:
                 return sp
         return None
 
@@ -199,7 +200,7 @@ class INDI:
     def IUFindOnSwitchIndex(svp):
         index = 0
         for sp in svp.vp.values():
-            if sp.s == INDI.ISState.ISS_ON:
+            if sp.state == INDI.ISState.ISS_ON:
                 return index
             index += 1
         return -1
@@ -207,7 +208,7 @@ class INDI:
     @staticmethod
     def IUResetSwitch(svp):
         for sp in svp.vp.values():
-            sp.s = INDI.ISState.ISS_OFF
+            sp.state = INDI.ISState.ISS_OFF
 
 
 class IText:
@@ -248,7 +249,7 @@ class ISwitch:
         self.svp = parent
         self.aux = aux
 
-#    def __str__(self):
+    def __str__(self):
         return self.state.value
 
 
@@ -261,7 +262,7 @@ class ILight:
         self.aux = aux
 
     def __str__(self):
-        return self.s.value
+        return self.state.value
 
 
 class IBLOB:
@@ -297,7 +298,8 @@ class IVectorProperty:
         self.aux = None
 
     def __str__(self):
-        return '<IVectorProperty: '+(self.name) +', type='+str(self.type.value)+', device='+self.device.name+'>'
+        fmt = '<IVectorProperty: {0}, type: {1}, device: {2}>'
+        return fmt.format(self.name, self.type.value, self.device.name)
 
     def getGroupName(self):
         return self.group

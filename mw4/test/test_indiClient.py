@@ -71,9 +71,7 @@ client = indiBaseClient.IndiBaseClient('192.168.2.57')
 client.connect()
 client.setBlobMode(INDI.BLOBHandling.B_ALSO, 'CCD Simulator', None)
 rc = app.exec_()
-for device in client.devices:
-    print(device)
-    for properties in client.devices[device].properties:
-        print(properties)
+print(client.getDevice('CCD Simulator'))
+print(client.getDevices())
 client.disconnect()
 sys.exit(rc)

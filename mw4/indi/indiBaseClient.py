@@ -187,11 +187,12 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
     def getDevice(self, deviceName):
         return self.devices.get(deviceName, None)
 
-    def getDevices(self, deviceList):
-        for dname, device in self.devices:
+    def getDevices(self):
+        deviceList = list()
+        for device in self.devices:
             if device.getDriverInterface():
                 deviceList.append(device)
-        return len(deviceList) > 0
+        return deviceList
 
     def messageCmd(self, elem):
         if elem.tag == 'message':
@@ -357,3 +358,34 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
         else:
             self.sendString("<enableBLOB device='" + device_name + "'>" + str(
                 blob_handling.value) + "</enableBLOB>\n")
+
+    def setDriverConnection(self, status, device_name):
+        if not device_name or device_name == '' or device_name not in self.devices:
+            self.logger.info('setDriverConnection: device not found')
+            return INDI.INDI_ERROR_TYPE.INDI_DEVICE_NOT_FOUND
+        device = self.devices[device_name]
+        if INDI.SP.CONNECTION not in device.properties:
+            return False
+        prop_connection = device.properties[INDI.SP.CONNECTION]
+        if status:
+            if prop_connection.vp['CONNECT'].state == INDI.ISState.ISS_ON:
+                return True
+            prop_connection.state = INDI.IPState.IPS_BUSY
+            prop_connection.vp['CONNECT'].s = INDI.ISState.ISS_ON
+            prop_connection.vp['DISCONNECT'].s = INDI.ISState.ISS_OFF
+            self.send_new_property(prop_connection)
+            return True
+        else:
+            if prop_connection.vp['DISCONNECT'].state == INDI.ISState.ISS_ON:
+                return True
+            prop_connection.state = INDI.IPState.IPS_BUSY
+            prop_connection.vp['CONNECT'].s = INDI.ISState.ISS_OFF
+            prop_connection.vp['DISCONNECT'].s = INDI.ISState.ISS_ON
+            self.send_new_property(prop_connection)
+            return True
+
+    def connect_device(self, device_name):
+        return self.setDriverConnection(True, device_name)
+
+    def disconnect_device(self, device_name):
+        return self.setDriverConnection(False, device_name)

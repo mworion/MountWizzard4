@@ -216,7 +216,7 @@ class BaseClient:
 
      def set_driver_connection(self, status, device_name):
         if not device_name or device_name=='' or not device_name in self.devices:
-            self.logger.warn('set_driver_connection: device not found')
+            self.logger.warn('setDriverConnection: device not found')
             return INDI.INDI_ERROR_TYPE.INDI_DEVICE_NOT_FOUND
         device=self.devices[device_name]
         if not INDI.SP.CONNECTION in device.properties: return False

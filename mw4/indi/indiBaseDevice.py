@@ -119,7 +119,8 @@ class IndiBaseDevice:
             self.logger.error('Empty property name: {0}'.format(elem))
             return INDI.INDI_ERROR_TYPE.INDI_PROPERTY_INVALID
         if prop_name in self.properties:
-            self.logger.error('Duplicated Prop {0} in Dev {1}'.format(prop_name, device_name))
+            self.logger.error('Duplicated Prop {0} in Dev {1}'
+                              .format(prop_name, device_name))
             return INDI.INDI_ERROR_TYPE.INDI_PROPERTY_DUPLICATED
         prop_type = IndiBaseDevice._prop_types[elem.tag[3:]]
         perm = None
@@ -188,18 +189,29 @@ class IndiBaseDevice:
                     maxvalue = INDI.f_scan_sexa(pelem.get('max').strip())
                     stepvalue = INDI.f_scan_sexa(pelem.get('step').strip())
                     value = INDI.f_scan_sexa(text_value)
-                    new_prop.vp[pelem_name]=INumber(pelem_name, pelem_label, numformat,
-                                                    minvalue, maxvalue, stepvalue, value, new_prop)
+                    new_prop.vp[pelem_name]=INumber(pelem_name,
+                                                    pelem_label,
+                                                    numformat,
+                                                    minvalue,
+                                                    maxvalue,
+                                                    stepvalue,
+                                                    value,
+                                                    new_prop)
                 elif prop_type == INDI.INDI_PROPERTY_TYPE.INDI_BLOB:
                     blobformat = pelem.get('format')
-                    new_prop.vp[pelem_name] = IBLOB(pelem_name, pelem_label, blobformat,
-                                                  None, 0, 0, new_prop)
+                    new_prop.vp[pelem_name] = IBLOB(pelem_name,
+                                                    pelem_label,
+                                                    blobformat,
+                                                    None,
+                                                    0,
+                                                    0,
+                                                    new_prop)
             else:
-                self.logger.warn('Property '+ prop_name + ' has element with empty name')
+                self.logger.warn('Property {0} has empty name'.format(prop_name))
         if len(new_prop.vp) > 0:
             self.properties[prop_name] = new_prop
         else:
-            self.logger.warn('new property with no valid members: '+prop_name)
+            self.logger.warn('New property with no valid members: {0} '.format(prop_name))
             return INDI.INDI_ERROR_TYPE.INDI_PROPERTY_INVALID
         if self.mediator:
             self.mediator.new_property(new_prop)
@@ -210,8 +222,9 @@ class IndiBaseDevice:
         if prop_name == '':
             self.logger.error('Empty property name'+elem)
             return INDI.INDI_ERROR_TYPE.INDI_PROPERTY_INVALID
-        if not prop_name in self.properties:
-            self.logger.error('No property \''+prop_name+'\' in device '+ device_name)
+        if prop_name not in self.properties:
+            self.logger.error('No property {0} in device {1}'
+                              .format(prop_name, device_name))
             return INDI.INDI_ERROR_TYPE.INDI_PROPERTY_INVALID
         prop = self.properties[prop_name]
         self.check_message(elem)
@@ -230,8 +243,9 @@ class IndiBaseDevice:
         for pelem in elem.iter(IndiBaseDevice._elem_tags[prop.type]):
             elem_name = pelem.get('name')
             if elem_name:
-                if not elem_name in prop.vp:
-                    self.logger.warn('Can not set undefined element '+elem_name+' for property '+prop_name)
+                if elem_name not in prop.vp:
+                    self.logger.warn('Cannot set undefined element {0} for prop {1}'
+                                     .format(elem_name, prop_name))
                     continue
                 elem = prop.vp[elem_name]
                 text_value = ''.join(pelem.itertext()).strip()
@@ -250,9 +264,12 @@ class IndiBaseDevice:
                     if pelem.get('max'):
                         maxvalue = INDI.f_scan_sexa(pelem.get('max').strip())
                     value = INDI.f_scan_sexa(text_value.strip())
-                    if minvalue is not None: elem.min=minvalue
-                    if maxvalue is not None: elem.max=maxvalue
-                    if value is not None: elem.value=value
+                    if minvalue is not None:
+                        elem.min = minvalue
+                    if maxvalue is not None:
+                        elem.max = maxvalue
+                    if value is not None:
+                        elem.value = value
                 elif prop.type == INDI.INDI_PROPERTY_TYPE.INDI_BLOB:
                     blobformat = pelem.get('format')
                     size = pelem.get('size')
@@ -260,7 +277,8 @@ class IndiBaseDevice:
                         try:
                             blobsize = int(size)
                         except:
-                            self.logger.warn('Can not parse blob size for '+elem_name+' in '+prop_name)
+                            self.logger.warn('Cannot parse blob size for {0} in {1}'
+                                             .format(elem_name, prop_name))
                             continue
                         if blobsize == 0:
                             if self.mediator:
@@ -270,7 +288,8 @@ class IndiBaseDevice:
                         try:
                             data = base64.b64decode(text_value)
                         except:
-                            self.logger.warn('Unable to base64 decode '+elem_name+' in '+prop_name)
+                            self.logger.warn('Unable to base64 decode {0} in {1}'
+                                             .format(elem_name, prop_name))
                             continue
                         elem.bloblen = len(data)
                         if elem.format[-2:] == '.z':
@@ -281,14 +300,19 @@ class IndiBaseDevice:
                         if self.mediator:
                             self.mediator.new_blob(elem)
                     else:
-                        self.logger.warn('Can not parse blob for '+elem_name+' in '+prop_name)
+                        self.logger.warn('Cannot parse blob for {0} in {1}'
+                                         .format(elem_name, prop_name))
                         continue
             else:
                 self.logger.error('Empty property name'+elem)
                 continue
         if self.mediator:
-            if prop.type == INDI.INDI_PROPERTY_TYPE.INDI_SWITCH: self.mediator.new_switch(prop)
-            if prop.type == INDI.INDI_PROPERTY_TYPE.INDI_LIGHT: self.mediator.new_light(prop)
-            if prop.type == INDI.INDI_PROPERTY_TYPE.INDI_TEXT: self.mediator.new_text(prop)
-            if prop.type == INDI.INDI_PROPERTY_TYPE.INDI_NUMBER: self.mediator.new_number(prop)
+            if prop.type == INDI.INDI_PROPERTY_TYPE.INDI_SWITCH:
+                self.mediator.new_switch(prop)
+            if prop.type == INDI.INDI_PROPERTY_TYPE.INDI_LIGHT:
+                self.mediator.new_light(prop)
+            if prop.type == INDI.INDI_PROPERTY_TYPE.INDI_TEXT:
+                self.mediator.new_text(prop)
+            if prop.type == INDI.INDI_PROPERTY_TYPE.INDI_NUMBER:
+                self.mediator.new_number(prop)
         return True

@@ -33,21 +33,21 @@ class IndiBaseDevice:
         'NumberVector': INDI.INDI_PROPERTY_TYPE.INDI_NUMBER,
         'SwitchVector': INDI.INDI_PROPERTY_TYPE.INDI_SWITCH,
         'LightVector': INDI.INDI_PROPERTY_TYPE.INDI_LIGHT,
-        'BLOBVector': INDI.INDI_PROPERTY_TYPE.INDI_BLOB
+        'BLOBVector': INDI.INDI_PROPERTY_TYPE.INDI_BLOB,
     }
     _elem_def_tags = {
         INDI.INDI_PROPERTY_TYPE.INDI_TEXT: 'defText',
         INDI.INDI_PROPERTY_TYPE.INDI_NUMBER: 'defNumber',
         INDI.INDI_PROPERTY_TYPE.INDI_SWITCH: 'defSwitch',
         INDI.INDI_PROPERTY_TYPE.INDI_LIGHT: 'defLight',
-        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'defBLOB'
+        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'defBLOB',
     }
     _elem_tags = {
         INDI.INDI_PROPERTY_TYPE.INDI_TEXT: 'oneText',
         INDI.INDI_PROPERTY_TYPE.INDI_NUMBER: 'oneNumber',
         INDI.INDI_PROPERTY_TYPE.INDI_SWITCH: 'oneSwitch',
         INDI.INDI_PROPERTY_TYPE.INDI_LIGHT: 'oneLight',
-        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'oneBLOB'
+        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'oneBLOB',
     }
 
     def __init__(self):

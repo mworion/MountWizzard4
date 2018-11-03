@@ -50,14 +50,14 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
         INDI.INDI_PROPERTY_TYPE.INDI_NUMBER: 'NumberVector',
         INDI.INDI_PROPERTY_TYPE.INDI_SWITCH: 'SwitchVector',
         INDI.INDI_PROPERTY_TYPE.INDI_LIGHT: 'LightVector',
-        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'BLOBVector'
+        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'BLOBVector',
     }
     _elem_tags = {
         INDI.INDI_PROPERTY_TYPE.INDI_TEXT: 'oneText',
         INDI.INDI_PROPERTY_TYPE.INDI_NUMBER: 'oneNumber',
         INDI.INDI_PROPERTY_TYPE.INDI_SWITCH: 'oneSwitch',
         INDI.INDI_PROPERTY_TYPE.INDI_LIGHT: 'oneLight',
-        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'oneBLOB'
+        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'oneBLOB',
     }
 
     def __init__(self,
@@ -143,7 +143,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
                 self.logger.error('Problem parsing event: {0}'.format(event))
             if self.curDepth > 0:
                 continue
-            print('Parsed a', elem.tag, 'element')
+            # print('Parsed a', elem.tag, 'element')
             if not self.dispatchCmd(elem):
                 self.logger.error('Problem parsing element {0}'.format(elem.tag))
 
@@ -156,7 +156,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
 
     def sendString(self, data):
         if self.socket:
-            print(data.encode('ascii'))
+            print(data)
             self.socket.write(data.encode(encoding='ascii'))
             self.socket.flush()
 

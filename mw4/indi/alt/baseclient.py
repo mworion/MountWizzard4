@@ -49,7 +49,7 @@ class BaseClient:
         return self.devices.get(deviceName, None)
     def getDevices(self, deviceList, driverInterface):
         for dname, device in self.devices:
-            if device.getDriverInterface() | driverInterface:
+            if device._getDriverInterface() | driverInterface:
                 deviceList.append(device)
         return len(deviceList) > 0
     def message_cmd(self, elem):
@@ -105,7 +105,7 @@ class BaseClient:
             return True
         device_name=elem.get('device')
         if device_name=='':
-            self.logger.warn('dispatchCmd: device name is empty')
+            self.logger.warn('_dispatchCmd: device name is empty')
             return False
         if not device_name in self.devices:
             device=BaseDevice()

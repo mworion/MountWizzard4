@@ -33,6 +33,11 @@ class IndiBase(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['IndiBase',
+               'getDevice',
+               'getDevices',
+               'connect',
+               'disconnect',
+               'sendCmd',
                ]
 
     version = '0.1'
@@ -61,11 +66,10 @@ class IndiBase(PyQt5.QtCore.QObject):
 
     # signals
     newDevice = PyQt5.QtCore.pyqtSignal(str)
-    delDevice = PyQt5.QtCore.pyqtSignal()
+    delDevice = PyQt5.QtCore.pyqtSignal(str)
     newProperty = PyQt5.QtCore.pyqtSignal(str)
     delProperty = PyQt5.QtCore.pyqtSignal(str)
     newVector = PyQt5.QtCore.pyqtSignal(str)
-    newMessage = PyQt5.QtCore.pyqtSignal()
     connected = PyQt5.QtCore.pyqtSignal()
     disconnected = PyQt5.QtCore.pyqtSignal()
 
@@ -78,13 +82,10 @@ class IndiBase(PyQt5.QtCore.QObject):
 
         self.isConnected = False
         self.devices = dict()
-        self.blob_modes = dict()
-        self.curChunk = []
-        self.curDepth = 0
 
         self.socket = PyQt5.QtNetwork.QTcpSocket()
-        self.socket.readyRead.connect(self.handleReadyRead)
-        self.socket.error.connect(self.handleError)
+        self.socket.readyRead.connect(self._handleReadyRead)
+        self.socket.error.connect(self._handleError)
 
         self.parser = xml.etree.ElementTree.XMLPullParser(['start', 'end'])
         self.parser.feed('<fakeindiroot>')
@@ -120,7 +121,7 @@ class IndiBase(PyQt5.QtCore.QObject):
         value = self.checkFormat(value)
         self._host = value
 
-    def connect(self):
+    def connect(self, device=''):
         if self.isConnected:
             return True
         self.socket.connectToHost(*self._host)
@@ -128,9 +129,10 @@ class IndiBase(PyQt5.QtCore.QObject):
             self.isConnected = False
             return False
         self.isConnected = True
-        data = indiXML.clientGetProperties(indi_attr={'version': '1.7'})
-        self.sendData(data)
-        # todo: send get properties
+        data = indiXML.clientGetProperties(indi_attr={'version': '1.7',
+                                                      'device': device})
+        self.sendCmd(data)
+        self.connected.emit()
         return True
 
     def disconnect(self):
@@ -138,10 +140,11 @@ class IndiBase(PyQt5.QtCore.QObject):
             return True
         self.socket.close()
         self.isConnected = False
-        self.devices.clear()
+        self._clearDevices()
+        self.disconnected.emit()
         return True
 
-    def getDriverInterface(self, device):
+    def _getDriverInterface(self, device):
         val = self.devices[device].get('DRIVER_INFO', '')
         if val:
             interface = self.devices[device]['DRIVER_INFO'].get('DRIVER_INTERFACE', '')
@@ -155,11 +158,16 @@ class IndiBase(PyQt5.QtCore.QObject):
     def getDevices(self, driverInterface):
         deviceList = list()
         for device in self.devices:
-            if self.getDriverInterface(device) & driverInterface:
+            if self._getDriverInterface(device) & driverInterface:
                 deviceList.append(device)
         return deviceList
 
-    def dispatchCmd(self, elem):
+    def _clearDevices(self):
+        for device in self.devices:
+            del self.devices[device]
+            self.delDevice.emit(device)
+
+    def _dispatchCmd(self, elem):
         elem = indiXML.parseETree(elem)
         if 'device' not in elem.attr:
             self.logger.error('No device in elem: {0}'.format(elem))
@@ -232,7 +240,7 @@ class IndiBase(PyQt5.QtCore.QObject):
                 self.devices[device][defVector][elt.attr['name']] = elt.getValue()
 
     @PyQt5.QtCore.pyqtSlot()
-    def handleReadyRead(self):
+    def _handleReadyRead(self):
         buf = self.socket.readAll()
         self.parser.feed(buf)
         for event, elem in self.parser.read_events():
@@ -246,16 +254,16 @@ class IndiBase(PyQt5.QtCore.QObject):
             if self.curDepth > 0:
                 continue
             # print('Parsed ', elem.tag)
-            self.dispatchCmd(elem)
+            self._dispatchCmd(elem)
 
     @PyQt5.QtCore.pyqtSlot(PyQt5.QtNetwork.QAbstractSocket.SocketError)
-    def handleError(self, socketError):
+    def _handleError(self, socketError):
         if not self.isConnected:
             return
         self.logger.warning('INDI client connection fault, error: {0}'.format(socketError))
         self.socket.close()
 
-    def sendData(self, indiCommand):
+    def sendCmd(self, indiCommand):
         if self.socket:
             self.socket.write(indiCommand.toXML() + b'\n')
             self.socket.flush()

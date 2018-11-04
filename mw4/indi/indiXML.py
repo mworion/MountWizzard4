@@ -257,9 +257,11 @@ class SetBLOBVector(INDIVector):
 class Message(INDIBase):
     def __str__(self):
         if "message" in self.attr:
-            return INDIBase.__str__(self) + "\n  " + self.attr["message"]
+            return INDIBase.__str__(self) \
+                   + "\n  " + self.attr["message"]
         else:
-            return INDIBase.__str__(self) + "\n  empty message.\n"
+            return INDIBase.__str__(self) \
+                   + "\n  empty message.\n"
 
 
 class DelProperty(INDIBase):
@@ -314,7 +316,12 @@ class OneBLOB(INDIElement):
             self.value = base64.standard_b64decode(self.value)
 
     def __str__(self):
-        return INDIBase.__str__(self) + "\n    " + self.attr["size"] + "\n    " + self.attr["format"] + "\n"
+        return INDIBase.__str__(self) \
+               + "\n    " \
+               + self.attr["size"] \
+               + "\n    " \
+               + self.attr["format"] \
+               + "\n"
 
 
 #

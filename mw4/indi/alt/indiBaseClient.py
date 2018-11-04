@@ -172,7 +172,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
     def getDevices(self, driverInterface):
         deviceList = list()
         for device in self.devices:
-            if self.devices[device].getDriverInterface() & driverInterface:
+            if self.devices[device]._getDriverInterface() & driverInterface:
                 deviceList.append(device)
         return deviceList
 
@@ -231,7 +231,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
             return True
         device_name = elem.get('device')
         if device_name == '':
-            self.logger.info('dispatchCmd: device name is empty')
+            self.logger.info('_dispatchCmd: device name is empty')
             return False
         if device_name not in self.devices:
             device = IndiBaseDevice()

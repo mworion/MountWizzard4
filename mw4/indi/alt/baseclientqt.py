@@ -85,7 +85,7 @@ class BaseClientQt(QtCore.QObject, BaseClient):
             if self.current_depth==0:
                 #print('Parsed a', elem.tag,'element')
                 if not self.dispatch_command(elem):
-                    self.logger.error('Parser: dispatchCmd failed for element '+ elem.tag)
+                    self.logger.error('Parser: _dispatchCmd failed for element '+ elem.tag)
     @QtCore.pyqtSlot(QAbstractSocket.SocketError)
     def processSocketError(self, SocketError):
         if not self.is_connected:

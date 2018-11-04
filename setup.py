@@ -11,35 +11,21 @@ setup(
         'mw4.base',
         'mw4.gui',
         'mw4.media',
-        'mountwizzard3.test',
+        'mw4.test',
     ],
     python_requires='~=3.6.5',
     install_requires=[
-        'PyQt5==5.11.2',
-        'matplotlib==2.2.2',
-        'wakeonlan>=1.0.0',
-        'requests==2.18.4',
-        'astropy==3.0.3',
-        'numpy==1.15.2',
+        'PyQt5==5.11.3',
+        'matplotlib==3.0.1',
+        'requests==2.20.0',
+        'numpy==1.15.3',
         'requests_toolbelt==0.8.0',
         'skyfield==1.9',
     ]
-    # + (['pypiwin32==220'] if "Windows" == platform.system() else [])
-    # + (['pywinauto==0.6.4'] if "Windows" == platform.system() else [])
-    # + (['comtypes==1.1.1'] if "Windows" == platform.system() else [])
     ,
-    url='https://github.com/mworion/MountWizzard3-DIST',
+    url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',
     author='mw',
     author_email='michael@wuertenberger.org',
     description='tooling for a 10micron mount',
 )
-
-if platform.system() == 'Linux':
-    print('#############################################')
-    print('### Important hint:                       ###')
-    print('### There might be the need to install    ###')
-    print('### libfreetype6-dev manually as well     ###')
-    print('### sudo apt-get install libfreetype6-dev ###')
-    print('#############################################')
-

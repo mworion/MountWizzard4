@@ -792,11 +792,6 @@ def parseETree(etree):
     return type_spec["class"](type_spec["xml"], None, None, etree)
 
 
-def parseINDIXML(xml_string):
-    etree = ElementTree.fromstring(xml_string).getroot()
-    return parseETree(etree)
-
-
 # Create the functions for generating INDI command objects.
 
 deviceGetProperties = makeINDIFn("deviceGetProperties")

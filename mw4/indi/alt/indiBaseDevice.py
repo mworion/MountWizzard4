@@ -18,13 +18,12 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import base64
 import zlib
-from collections import OrderedDict, defaultdict
+from collections import defaultdict
 # external packages
 # local imports
-from indi.INDI import INDI, IText, INumber, ISwitch, IBLOB, ILight, IVectorProperty
+from indi.alt.INDI import INDI, IText, INumber, ISwitch, IBLOB, ILight, IVectorProperty
 
 
 class IndiBaseDevice:
@@ -89,6 +88,13 @@ class IndiBaseDevice:
         if p is not None:
             return p.perm
         return INDI.ISRule.IP_RO
+
+    def getDriverInterface(self):
+        if 'DRIVER_INFO' not in self.properties:
+            return False
+        if 'DRIVER_INTERFACE' not in self.properties['DRIVER_INFO'].vp:
+            return False
+        return int(self.properties['DRIVER_INFO'].vp['DRIVER_INTERFACE'].text)
 
     def checkMessage(self, elem):
         message = elem.get('message')

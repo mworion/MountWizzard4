@@ -18,16 +18,13 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import base64
 # external packages
 import PyQt5
 import PyQt5.QtNetwork
 import xml.etree.ElementTree
 # local import
-from mw4.indi.INDI import *
-from mw4.indi.indiBaseMediator import IndiBaseMediator
-from mw4.indi.indiBaseDevice import IndiBaseDevice
+from mw4.indi import indiXML
 
 
 class IndiBaseClient(PyQt5.QtCore.QObject):
@@ -44,21 +41,6 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
     DEFAULT_PORT = 7624
     # timeout for server
     CONNECTION_TIMEOUT = 2000
-
-    _prop_tags = {
-        INDI.INDI_PROPERTY_TYPE.INDI_TEXT: 'TextVector',
-        INDI.INDI_PROPERTY_TYPE.INDI_NUMBER: 'NumberVector',
-        INDI.INDI_PROPERTY_TYPE.INDI_SWITCH: 'SwitchVector',
-        INDI.INDI_PROPERTY_TYPE.INDI_LIGHT: 'LightVector',
-        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'BLOBVector',
-    }
-    _elem_tags = {
-        INDI.INDI_PROPERTY_TYPE.INDI_TEXT: 'oneText',
-        INDI.INDI_PROPERTY_TYPE.INDI_NUMBER: 'oneNumber',
-        INDI.INDI_PROPERTY_TYPE.INDI_SWITCH: 'oneSwitch',
-        INDI.INDI_PROPERTY_TYPE.INDI_LIGHT: 'oneLight',
-        INDI.INDI_PROPERTY_TYPE.INDI_BLOB: 'oneBLOB',
-    }
 
     def __init__(self,
                  host=None,
@@ -144,7 +126,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
                 self.logger.error('Problem parsing event: {0}'.format(event))
             if self.curDepth > 0:
                 continue
-            print('Parsed ', elem.tag)
+            # print('Parsed ', elem.tag)
             if not self.dispatchCmd(elem):
                 self.logger.error('Problem parsing element {0}'.format(elem.tag))
 
@@ -190,7 +172,7 @@ class IndiBaseClient(PyQt5.QtCore.QObject):
     def getDevices(self, driverInterface):
         deviceList = list()
         for device in self.devices:
-            if device.getDriverInterface() | driverInterface:
+            if self.devices[device].getDriverInterface() & driverInterface:
                 deviceList.append(device)
         return deviceList
 

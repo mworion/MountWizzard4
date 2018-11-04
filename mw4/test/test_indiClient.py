@@ -20,13 +20,12 @@
 # standard libraries
 import sys
 import logging
-from unittest import mock
 # external packages
 import PyQt5
 import PyQt5.QtWidgets
 # local import
-from mw4.indi import indiBaseClient
-from mw4.indi.INDI import *
+from mw4.indi import indiBase
+from mw4.indi import indiXML
 
 
 class TestQtIndi(PyQt5.QtWidgets.QWidget):
@@ -67,11 +66,10 @@ logging.info('start')
 
 app = PyQt5.QtWidgets.QApplication(sys.argv)
 widget = TestQtIndi()
-client = indiBaseClient.IndiBaseClient('192.168.2.57')
+client = indiBase.IndiBase('192.168.2.57')
 client.connect()
-client.setBlobMode(INDI.BLOBHandling.B_ALSO, 'CCD Simulator', None)
 rc = app.exec_()
+print(client.getDevices(client.CCD_INTERFACE))
 print(client.getDevice('CCD Simulator'))
-print(client.getDevices())
 client.disconnect()
 sys.exit(rc)

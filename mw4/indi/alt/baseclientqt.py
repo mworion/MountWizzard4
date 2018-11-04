@@ -18,7 +18,7 @@
 from PyQt5 import QtCore
 from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
 
-from indi.INDI import *
+from indi.alt.INDI import *
 from indi.indibase.baseclient import BaseClient
 
 import xml.etree.ElementTree

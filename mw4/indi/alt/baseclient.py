@@ -17,13 +17,10 @@
 
 import base64
 import datetime
-import logging
-import socket
 
-from indi.INDI import INDI
+from indi.alt.INDI import INDI
 from indi.indibase.basedevice import BaseDevice
-from indi.indibase.basemediator import BaseMediator
-from indi.client.listener import Listener
+
 
 class BaseClient:
     _prop_tags={

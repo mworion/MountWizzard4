@@ -24,7 +24,7 @@ import queue
 import os
 from xml.etree import ElementTree
 import PyQt5
-import indi.indi_xml as indiXML
+import indi.indiXML as indiXML
 import astropy.io.fits as pyfits
 from baseclasses import checkIP
 

@@ -32,7 +32,6 @@ from mw4 import mw4_glob
 from mw4 import mainApp
 
 test = PyQt5.QtWidgets.QApplication([])
-locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 mw4_glob.work_dir = '.'
 mw4_glob.config_dir = './mw4/test/config/'

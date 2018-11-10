@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import locale
 import logging
 # external packages
 import PyQt5.QtGui

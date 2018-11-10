@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-import locale
 # external packages
 import PyQt5.QtCore
 # local import
@@ -27,7 +26,6 @@ from mw4 import mw4_glob
 
 
 test = PyQt5.QtWidgets.QApplication([])
-locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 mw4_glob.work_dir = '.'
 mw4_glob.config_dir = './mw4/test/config/'

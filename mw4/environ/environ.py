@@ -30,6 +30,7 @@ class Environ(PyQt5.QtWidgets.QWidget):
     the class Environ inherits all information and handling of environment devices
 
         >>> fw = Environ(
+        >>>                 host=host
         >>>              )
     """
 
@@ -39,6 +40,27 @@ class Environ(PyQt5.QtWidgets.QWidget):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
+    ENVIRON = ''
+    SQM = ''
+    WEATHER = ''
+
     def __init__(self,
+                 host=None,
                  ):
         super().__init__()
+
+        self.host = host
+        self.client = indiBase.Client(host=self.host)
+        self.environDevice = None
+        self.sqmDevice = None
+        self.weatherDevice = None
+
+    def linkDevices(self, deviceName):
+        if not self.client:
+            return False
+        if deviceName == self.ENVIRON:
+            self.environDevice = self.client.getDevice(self.ENVIRON)
+        elif deviceName == self.SQM:
+            self.sqmDevice = self.client.getDevice(self.SQM)
+        elif deviceName == self.WEATHER:
+            self.weatherDevice = self.client.getDevice(self.WEATHER)

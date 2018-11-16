@@ -40,27 +40,54 @@ class Environ(PyQt5.QtWidgets.QWidget):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
-    ENVIRON = ''
-    SQM = ''
-    WEATHER = ''
-
     def __init__(self,
                  host=None,
+                 environName='',
+                 sqmName='',
+                 weatherName='',
                  ):
         super().__init__()
 
-        self.host = host
-        self.client = indiBase.Client(host=self.host)
+        self.client = indiBase.Client(host=host)
+
+        self.environName = environName
+        self.sqmName = sqmName
+        self.weatherName = weatherName
+
         self.environDevice = None
         self.sqmDevice = None
         self.weatherDevice = None
 
+    @property
+    def environName(self):
+        return self._environName
+
+    @environName.setter
+    def environName(self, value):
+        self._environName = value
+
+    @property
+    def sqmName(self):
+        return self._sqmName
+
+    @sqmName.setter
+    def sqmName(self, value):
+        self._sqmName = value
+
+    @property
+    def weatherName(self):
+        return self._weatherName
+
+    @weatherName.setter
+    def weatherName(self, value):
+        self._weatherName = value
+
     def linkDevices(self, deviceName):
         if not self.client:
             return False
-        if deviceName == self.ENVIRON:
-            self.environDevice = self.client.getDevice(self.ENVIRON)
-        elif deviceName == self.SQM:
-            self.sqmDevice = self.client.getDevice(self.SQM)
-        elif deviceName == self.WEATHER:
-            self.weatherDevice = self.client.getDevice(self.WEATHER)
+        if deviceName == self.environName:
+            self.environDevice = self.client.getDevice(self.environName)
+        elif deviceName == self.sqmName:
+            self.sqmDevice = self.client.getDevice(self.sqmName)
+        elif deviceName == self.weatherName:
+            self.weatherDevice = self.client.getDevice(self.weatherName)

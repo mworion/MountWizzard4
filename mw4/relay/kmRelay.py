@@ -158,6 +158,8 @@ class KMRelay(PyQt5.QtCore.QObject):
             self.logger.error('Error in request: {0}'.format(e))
             return None
         else:
+            if result.content is None:
+                return None
             result = result.content.decode()
         return result
 

@@ -31,6 +31,9 @@ class Environ(PyQt5.QtWidgets.QWidget):
 
         >>> fw = Environ(
         >>>                 host=host
+        >>>                 environName=environName
+        >>>                 sqmName=sqmName
+        >>>                 weatherName=weatherName
         >>>              )
     """
 
@@ -58,6 +61,10 @@ class Environ(PyQt5.QtWidgets.QWidget):
         self.sqmDevice = None
         self.weatherDevice = None
 
+        # link signals
+        self.client.signals.newDevice.connect(self.newDevice)
+        self.client.signals.removeDevice.connect(self.removeDevice)
+
     @property
     def environName(self):
         return self._environName
@@ -82,8 +89,14 @@ class Environ(PyQt5.QtWidgets.QWidget):
     def weatherName(self, value):
         self._weatherName = value
 
-    def linkDevices(self, deviceName):
-        if not self.client:
+    def newDevice(self, deviceName):
+        """
+
+        :param deviceName:
+        :return:
+        """
+
+        if not self.client.isServerConnected():
             return False
         if deviceName == self.environName:
             self.environDevice = self.client.getDevice(self.environName)
@@ -91,3 +104,19 @@ class Environ(PyQt5.QtWidgets.QWidget):
             self.sqmDevice = self.client.getDevice(self.sqmName)
         elif deviceName == self.weatherName:
             self.weatherDevice = self.client.getDevice(self.weatherName)
+
+    def removeDevice(self, deviceName):
+        """
+
+        :param deviceName:
+        :return:
+        """
+
+        if not self.client.isServerConnected():
+            return False
+        if deviceName == self.environName:
+            self.environDevice = None
+        elif deviceName == self.sqmName:
+            self.sqmDevice = None
+        elif deviceName == self.weatherName:
+            self.weatherDevice = None

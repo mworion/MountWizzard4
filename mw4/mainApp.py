@@ -23,14 +23,14 @@ import os
 import json
 # external packages
 import PyQt5.QtCore
-# local import
 from mountcontrol import qtmount
-import mw4_glob
-from gui import mainW
-from gui import messageW
-from gui import hemisphereW
-from relay import kmRelay
-from build import build
+# local import
+from mw4 import mw4_glob
+from mw4.gui import mainW
+from mw4.gui import messageW
+from mw4.gui import hemisphereW
+from mw4.relay import kmRelay
+from mw4.build import build
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -153,6 +153,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         except Exception as e:
             self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
             return False
+
         if 'filePath' not in loadData:
             self.logger.error('Cannot load, because no file path in config.cfg')
             return False
@@ -174,7 +175,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config = loadData
         return True
 
-    def saveConfig(self, filePath=None, name=None, ext=None):
+    def saveConfig(self, filePath=None, name=None, ext='.cfg'):
         """
         saveConfig saves a json file to disk from the config dicts for
         persistent data.
@@ -186,7 +187,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         self.config['version'] = '4.0'
-        self.config['filePath'] = filePath
+        self.config['filePath'] = filePath + ext
         self.config['name'] = name
         configPath = mw4_glob.config_dir + 'config.cfg'
         if filePath is not None:

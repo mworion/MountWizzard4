@@ -24,7 +24,7 @@ import os
 import numpy as np
 import json
 # local imports
-import mw4_glob
+from mw4 import mw4_glob
 
 
 class DataPoint(object):

@@ -28,12 +28,12 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 import numpy as np
 import matplotlib
-# local import
 from mountcontrol import convert
-import mw4_glob
-from base import widget
-from base import tpool
-from gui import main_ui
+# local import
+from mw4 import mw4_glob
+from mw4.base import widget
+from mw4.base import tpool
+from mw4.gui import main_ui
 
 
 class MainWindow(widget.MWidget):

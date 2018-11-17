@@ -97,7 +97,7 @@ def test_loadConfig_not_ok5():
 
 
 def test_saveConfig_ok1():
-    filePath = './mw4/test/config/test.cfg'
+    filePath = './mw4/test/config/test1'
 
-    suc = test_app.saveConfig(filePath=filePath)
+    suc = test_app.saveConfig(filePath=filePath, ext='.cfg')
     assert suc

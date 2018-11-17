@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3752,7 +3752,7 @@ manually</string>
      <property name="title">
       <string>Mount</string>
      </property>
-     <widget class="QLineEdit" name="refractionTemp_2">
+     <widget class="QLineEdit" name="refractionTemp1">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -3848,7 +3848,7 @@ manually</string>
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLineEdit" name="refractionPress_2">
+     <widget class="QLineEdit" name="refractionPress1">
       <property name="enabled">
        <bool>false</bool>
       </property>

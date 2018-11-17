@@ -32,8 +32,8 @@ pythonPath = '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6'
 distDir = '/Users/mw/PycharmProjects/MountWizzard4/dist'
 
 
-a = Analysis(['mountwizzard4/mw4_loader.py'],
-    pathex=['/Users/mw/PycharmProjects/MountWizzard4/mountwizzard4'],
+a = Analysis(['mw4/mw4_loader.py'],
+    pathex=['/Users/mw/PycharmProjects/MountWizzard4/mw4'],
     binaries=[
         ],
     datas=[
@@ -66,7 +66,7 @@ exe = EXE(pyz,
           console=True,
           # onefile=True,
           onefile=True,
-          icon='./mountwizzard4/media/mw4.icns',
+          icon='./mw4/media/mw4.icns',
           # exclude_binaries=True,
           )
 
@@ -87,7 +87,7 @@ if os.path.isfile(buildFile):
 app = BUNDLE(exe,
              name='MountWizzard4.app',
              version=4,
-             icon='./mountwizzard4/media/mw4.icns',
+             icon='./mw4/media/mw4.icns',
              bundle_identifier=None)
 
 #

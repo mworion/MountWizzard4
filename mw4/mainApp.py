@@ -174,13 +174,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config = loadData
         return True
 
-    def saveConfig(self, filePath=None, name=None):
+    def saveConfig(self, filePath=None, name=None, ext=None):
         """
         saveConfig saves a json file to disk from the config dicts for
         persistent data.
 
         :param      filePath:   full path to the config file
         :param      name:       name of the configuration
+        :param      ext:       extension of the file for configuration
         :return:    success
         """
 
@@ -189,7 +190,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config['name'] = name
         configPath = mw4_glob.config_dir + 'config.cfg'
         if filePath is not None:
-            with open(filePath, 'w') as outfile:
+            with open(filePath + ext, 'w') as outfile:
                 # make the file human readable
                 json.dump(self.config,
                           outfile,

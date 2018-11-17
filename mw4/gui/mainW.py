@@ -187,6 +187,7 @@ class MainWindow(widget.MWidget):
         config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
         config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
         config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
+        config['profile'] = self.ui.profile.text()
         for i, line in enumerate(self.relayText):
             key = 'relayText{0:1d}'.format(i)
             config[key] = line.text()
@@ -767,8 +768,9 @@ class MainWindow(widget.MWidget):
                                             )
         if not filePath:
             return False
-        suc = self.app.loadConfig(filePath=filePath, name=name)
+        suc = self.app.loadConfig(filePath=filePath)
         if suc:
+            self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] loaded'.format(name), 0)
         else:
             self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(name), 2)
@@ -782,8 +784,11 @@ class MainWindow(widget.MWidget):
                                             )
         if not filePath:
             return False
-        suc = self.app.saveConfig(filePath=filePath, name=name)
+        if not ext:
+            ext = '.cfg'
+        suc = self.app.saveConfig(filePath=filePath, name=name, ext=ext)
         if suc:
+            self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] saved'.format(name), 0)
         else:
             self.app.message.emit('Profile: [{0}] cannot no be saved'.format(name), 2)

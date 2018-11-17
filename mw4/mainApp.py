@@ -66,6 +66,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if splash is not None:
             splash.showMessage('Load mount')
             splash.setValue(70)
+
         pathToTs = mw4_glob.config_dir
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
@@ -119,7 +120,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.stopTimers()
         PyQt5.QtCore.QCoreApplication.quit()
 
-    def quitSave(self, name='config'):
+    def quitSave(self):
         """
         quit with saving persistence data
 
@@ -131,7 +132,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.storeConfig()
         self.messageW.storeConfig()
         self.hemisphereW.storeConfig()
-        self.saveConfig(name=name)
+        self.saveConfig()
         PyQt5.QtCore.QCoreApplication.quit()
 
     def loadConfig(self, filePath=None):
@@ -144,7 +145,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         if filePath is None:
-            filePath = mw4_glob.config_dir + 'config.cfg'
+            filePath = mw4_glob.config_dir + '/config.cfg'
         if not os.path.isfile(filePath):
             # new config necessary
             self.config = {'name': 'config',
@@ -196,11 +197,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # check necessary data available
         if filePath is None:
-            filePath = mw4_glob.config_dir + name + '.cfg'
+            filePath = mw4_glob.config_dir + '/' + name + '.cfg'
         self.config['filePath'] = filePath
         self.config['name'] = name
         # save the config
-        configPath = mw4_glob.config_dir + 'config.cfg'
+        configPath = mw4_glob.config_dir + '/' + 'config.cfg'
         with open(configPath, 'w') as outfile:
             json.dump(self.config,
                       outfile,

@@ -194,11 +194,12 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:    success
         """
 
+        # check necessary data available
         if filePath is None:
             filePath = mw4_glob.config_dir + name + '.cfg'
         self.config['filePath'] = filePath
         self.config['name'] = name
-
+        # save the config
         configPath = mw4_glob.config_dir + 'config.cfg'
         with open(configPath, 'w') as outfile:
             json.dump(self.config,

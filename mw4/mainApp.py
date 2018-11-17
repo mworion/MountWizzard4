@@ -70,7 +70,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
                                    pathToTS=pathToTs,
-                                   expire=True,
+                                   expire=False,
                                    verbose=False,
                                    )
         # relay box
@@ -119,10 +119,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.stopTimers()
         PyQt5.QtCore.QCoreApplication.quit()
 
-    def quitSave(self):
+    def quitSave(self, name='config'):
         """
         quit with saving persistence data
 
+        :param  name: name of configuration
         :return:    nothing
         """
 
@@ -130,7 +131,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.storeConfig()
         self.messageW.storeConfig()
         self.hemisphereW.storeConfig()
-        self.saveConfig()
+        self.saveConfig(name=name)
         PyQt5.QtCore.QCoreApplication.quit()
 
     def loadConfig(self, filePath=None):
@@ -144,62 +145,71 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         if filePath is None:
             filePath = mw4_glob.config_dir + 'config.cfg'
-        self.config = {'name': 'config'}
         if not os.path.isfile(filePath):
+            # new config necessary
+            self.config = {'name': 'config',
+                           'filePath': None,
+                           'version': '4.0',
+                           }
             return False
+        # now try to read existing config
         try:
             with open(filePath, 'r') as data_file:
                 loadData = json.load(data_file)
         except Exception as e:
             self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
             return False
-
-        if 'filePath' not in loadData:
-            self.logger.error('Cannot load, because no file path in config.cfg')
+        filePath = loadData.get('filePath', None)
+        if filePath is None:
             return False
-        # now we have the true file path
-        filePath = loadData['filePath']
-        if filePath is not None:
-            if not os.path.isfile(filePath):
-                return False
-            try:
-                with open(filePath, 'r') as data_file:
-                    loadData = json.load(data_file)
-            except Exception as e:
-                self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
-                return False
+        # config has reference to profile file
+        if not os.path.isfile(filePath):
+            # link is broken, we use the standard config data
+            self.config = loadData
+            return False
+        try:
+            with open(filePath, 'r') as data_file:
+                loadData = json.load(data_file)
+        except Exception as e:
+            self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
+            # file is broken, we use the standard config data
+            self.config = loadData
+            return False
         if 'version' not in loadData:
+            # data is missing, we use the standard config data
+            self.config = loadData
             return False
         if loadData['version'] != '4.0':
             loadData = self.convertData(loadData)
         self.config = loadData
         return True
 
-    def saveConfig(self, filePath=None, name=None, ext='.cfg'):
+    def saveConfig(self, filePath=None, name='config'):
         """
         saveConfig saves a json file to disk from the config dicts for
         persistent data.
 
         :param      filePath:   full path to the config file
         :param      name:       name of the configuration
-        :param      ext:       extension of the file for configuration
         :return:    success
         """
 
-        self.config['version'] = '4.0'
-        self.config['filePath'] = filePath + ext
+        if filePath is None:
+            filePath = mw4_glob.config_dir + name + '.cfg'
+        self.config['filePath'] = filePath
         self.config['name'] = name
+
         configPath = mw4_glob.config_dir + 'config.cfg'
-        if filePath is not None:
-            with open(filePath + ext, 'w') as outfile:
-                # make the file human readable
-                json.dump(self.config,
-                          outfile,
-                          sort_keys=True,
-                          indent=4)
-        if name is None:
-            self.config['name'] = 'config'
         with open(configPath, 'w') as outfile:
+            json.dump(self.config,
+                      outfile,
+                      sort_keys=True,
+                      indent=4)
+        # there is a link to another config file, so we save it too
+        if filePath is None:
+            return False
+        with open(filePath, 'w') as outfile:
+            # make the file human readable
             json.dump(self.config,
                       outfile,
                       sort_keys=True,

@@ -203,7 +203,7 @@ class DataPoint(object):
         :return: success
         """
 
-        fileName = mw4_glob.config_dir + self._buildPFile + '.bpts'
+        fileName = mw4_glob.config_dir + '/' + self._buildPFile + '.bpts'
         if not os.path.isfile(fileName):
             return False
         try:
@@ -224,7 +224,7 @@ class DataPoint(object):
         :return: success
         """
 
-        fileName = mw4_glob.config_dir + self._buildPFile + '.bpts'
+        fileName = mw4_glob.config_dir + '/' + self._buildPFile + '.bpts'
         with open(fileName, 'w') as handle:
             json.dump(self._buildP,
                       handle,
@@ -240,7 +240,7 @@ class DataPoint(object):
         :return: success
         """
 
-        fileName = mw4_glob.config_dir + self._horizonPFile + '.hpts'
+        fileName = mw4_glob.config_dir + '/' + self._horizonPFile + '.hpts'
         if not os.path.isfile(fileName):
             return False
         try:
@@ -261,7 +261,7 @@ class DataPoint(object):
         :return: success
         """
 
-        fileName = mw4_glob.config_dir + self._horizonPFile + '.hpts'
+        fileName = mw4_glob.config_dir + '/' + self._horizonPFile + '.hpts'
         with open(fileName, 'w') as handle:
             json.dump(self._horizonP,
                       handle,

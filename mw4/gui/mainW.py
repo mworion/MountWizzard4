@@ -970,6 +970,7 @@ class MainWindow(widget.MWidget):
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.slewRate
+        actValue = True
         if actValue is None:
             msg.critical(self,
                          'Error Message',

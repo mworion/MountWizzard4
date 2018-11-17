@@ -213,14 +213,12 @@ class MWStyles(object):
         background-color: #101010;
         color: rgb(32, 144, 192);
         text-align: right;
-
         border-color: #404040;
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
         padding-right: 2px;
     }
-    
     QDoubleSpinBox::up-button {
         subcontrol-origin: border;
         subcontrol-position: top right; /* position at the top right corner */
@@ -262,22 +260,6 @@ class MWStyles(object):
         border-radius: 2px;
         min - width: 10em;
     }
-
-    QInputDialog QPushButton {
-        background-color: #202020;
-        color: #C0C0C0;
-        border-color: #404040;
-        border-width: 1px;
-        border-style: outset;
-        border-radius: 2px;
-        min-width: 90px;
-        min-height: 25px;
-    }
-    QInputDialog QPushButton:default {
-        border-width: 2px;
-        border-color: rgb(32, 144, 192);
-    }
-
     QMessageBox QPushButton {
         background-color: #202020;
         color: #C0C0C0;
@@ -292,7 +274,6 @@ class MWStyles(object):
         border-width: 2px;
         border-color: rgb(32, 144, 192);
     }
-
     QListWidget {
         border-color: #404040;
         border-width: 1px;
@@ -302,7 +283,6 @@ class MWStyles(object):
         padding-left: 5px;
         padding-top: 5px;
     }
-
     QPushButton:pressed {
         border-color: #404040;
         border-width: 2px;
@@ -383,7 +363,7 @@ class MWStyles(object):
         width: 20px;
         height: 31px;
     }
-     QComboBox QListView {
+    QComboBox QListView {
         border-width: 2px;
         border-style: outset;
         border-color: #404040;
@@ -545,5 +525,19 @@ class MWStyles(object):
     QFileDialog QPushButton {
         min-width: 50px;
         min-height: 20px;
+    }
+    QInputDialog QPushButton {
+        background-color: #202020;
+        color: #C0C0C0;
+        border-color: #404040;
+        border-width: 1px;
+        border-style: outset;
+        border-radius: 2px;
+        min-width: 90px;
+        min-height: 25px;
+    }
+    QInputDialog QPushButton:default {
+        border-width: 2px;
+        border-color: rgb(32, 144, 192);
     }
     """

@@ -296,9 +296,9 @@ class MainWindow(widget.MWidget):
     def updateMountConnStat(self, status):
         ui = self.ui.mountConnected
         if status:
-            self.changeStylesheet(ui, 'color', 'green')
+            self.changeStyleDynamic(ui, 'color', 'green')
         else:
-            self.changeStylesheet(ui, 'color', 'red')
+            self.changeStyleDynamic(ui, 'color', 'red')
         return True
 
     def updateGuiCyclic(self):
@@ -367,19 +367,19 @@ class MainWindow(widget.MWidget):
             self.ui.statusText.setText('-')
 
         if self.app.mount.obsSite.status == 0:
-            self.changeStylesheet(self.ui.tracking, 'running', 'true')
+            self.changeStyleDynamic(self.ui.tracking, 'running', 'true')
         else:
-            self.changeStylesheet(self.ui.tracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.tracking, 'running', 'false')
 
         if self.app.mount.obsSite.status == 5:
-            self.changeStylesheet(self.ui.park, 'running', 'true')
+            self.changeStyleDynamic(self.ui.park, 'running', 'true')
         else:
-            self.changeStylesheet(self.ui.park, 'running', 'false')
+            self.changeStyleDynamic(self.ui.park, 'running', 'false')
 
         if self.app.mount.obsSite.status == 1:
-            self.changeStylesheet(self.ui.stop, 'running', 'true')
+            self.changeStyleDynamic(self.ui.stop, 'running', 'true')
         else:
-            self.changeStylesheet(self.ui.stop, 'running', 'false')
+            self.changeStyleDynamic(self.ui.stop, 'running', 'false')
 
         return True
 
@@ -418,11 +418,11 @@ class MainWindow(widget.MWidget):
             expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
             deltaYellow = datetime.timedelta(days=30)
             if now > expire:
-                self.changeStylesheet(ui, 'color', 'red')
+                self.changeStyleDynamic(ui, 'color', 'red')
             elif now > expire - deltaYellow:
-                self.changeStylesheet(ui, 'color', 'yellow')
+                self.changeStyleDynamic(ui, 'color', 'yellow')
             else:
-                self.changeStylesheet(ui, 'color', '')
+                self.changeStyleDynamic(ui, 'color', '')
         else:
             self.ui.UTCExpire.setText('-')
 
@@ -486,17 +486,17 @@ class MainWindow(widget.MWidget):
 
         # check tracking speed
         if self.app.mount.sett.checkRateLunar():
-            self.changeStylesheet(self.ui.setLunarTracking, 'running', 'true')
-            self.changeStylesheet(self.ui.setSiderealTracking, 'running', 'false')
-            self.changeStylesheet(self.ui.setSolarTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
+            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
         elif self.app.mount.sett.checkRateSidereal():
-            self.changeStylesheet(self.ui.setLunarTracking, 'running', 'false')
-            self.changeStylesheet(self.ui.setSiderealTracking, 'running', 'true')
-            self.changeStylesheet(self.ui.setSolarTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'true')
+            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
         elif self.app.mount.sett.checkRateSolar():
-            self.changeStylesheet(self.ui.setLunarTracking, 'running', 'false')
-            self.changeStylesheet(self.ui.setSiderealTracking, 'running', 'false')
-            self.changeStylesheet(self.ui.setSolarTracking, 'running', 'true')
+            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
+            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
 
         return True
 
@@ -1125,9 +1125,9 @@ class MainWindow(widget.MWidget):
         status = self.app.relay.status
         for i, button in enumerate(self.relayButton):
             if status[i]:
-                self.changeStylesheet(button, 'running', 'true')
+                self.changeStyleDynamic(button, 'running', 'true')
             else:
-                self.changeStylesheet(button, 'running', 'false')
+                self.changeStyleDynamic(button, 'running', 'false')
         return True
 
     def toggleRelay(self):

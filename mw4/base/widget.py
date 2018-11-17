@@ -121,9 +121,9 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         self.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
 
     @staticmethod
-    def changeStylesheet(ui, item, value):
+    def changeStyleDynamic(ui, item, value):
         """
-        changeStylesheet changes the stylesheet of a given uii element and makes it
+        changeStyleDynamic changes the stylesheet of a given uii element and makes it
         visible. therefore the element has to be unpolished and polished again.
 
         :param      ui:     ui element, where the stylesheet has to be changed

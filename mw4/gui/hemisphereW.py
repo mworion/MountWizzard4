@@ -124,7 +124,7 @@ class HemisphereWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
-        self.changeStylesheet(self.app.mainW.ui.openHemisphereW, 'running', 'false')
+        self.changeStyleDynamic(self.app.mainW.ui.openHemisphereW, 'running', 'false')
 
     def toggleWindow(self):
         self.showStatus = not self.showStatus
@@ -137,7 +137,7 @@ class HemisphereWindow(widget.MWidget):
         self.showStatus = True
         self.drawHemisphere()
         self.show()
-        self.changeStylesheet(self.app.mainW.ui.openHemisphereW, 'running', 'true')
+        self.changeStyleDynamic(self.app.mainW.ui.openHemisphereW, 'running', 'true')
 
     @staticmethod
     def clearAxes(axes, visible=False):

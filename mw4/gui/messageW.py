@@ -100,7 +100,7 @@ class MessageWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
-        self.changeStylesheet(self.app.mainW.ui.openMessageW, 'running', 'false')
+        self.changeStyleDynamic(self.app.mainW.ui.openMessageW, 'running', 'false')
 
     def toggleWindow(self):
         self.showStatus = not self.showStatus
@@ -112,7 +112,7 @@ class MessageWindow(widget.MWidget):
     def showWindow(self):
         self.showStatus = True
         self.show()
-        self.changeStylesheet(self.app.mainW.ui.openMessageW, 'running', 'true')
+        self.changeStyleDynamic(self.app.mainW.ui.openMessageW, 'running', 'true')
 
     @PyQt5.QtCore.pyqtSlot(str, int)
     def writeMessage(self, message, mType=0):

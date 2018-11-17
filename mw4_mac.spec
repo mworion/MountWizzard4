@@ -32,11 +32,11 @@ pythonPath = '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6'
 distDir = '/Users/mw/PycharmProjects/MountWizzard4/dist'
 
 
-a = Analysis(['mw4/mw4_loader.py'],
+a = Analysis(['mw4/loader.py'],
     pathex=['/Users/mw/PycharmProjects/MountWizzard4/mw4'],
     binaries=[
         ],
-    datas=[
+    datas=[('/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/skyfield/data', './skyfield/data'),
         ],
     hiddenimports=[
         ],
@@ -64,7 +64,6 @@ exe = EXE(pyz,
           strip=True,
           upx=False,
           console=True,
-          # onefile=True,
           onefile=True,
           icon='./mw4/media/mw4.icns',
           # exclude_binaries=True,

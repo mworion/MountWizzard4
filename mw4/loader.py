@@ -189,7 +189,7 @@ def main():
     splash.showMessage('Setup logging')
     splash.setValue(20)
     warnings.filterwarnings("ignore")
-    name = 'mount.{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
+    name = 'mw4-{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s.%(msecs)03d]'
                                '[%(levelname)7s]'

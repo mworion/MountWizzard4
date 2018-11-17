@@ -36,7 +36,7 @@ a = Analysis(['mw4/loader.py'],
     pathex=['/Users/mw/PycharmProjects/MountWizzard4/mw4'],
     binaries=[
         ],
-    datas=[('/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/skyfield/data', './skyfield/data'),
+    datas=[(pythonPath + '/site-packages/skyfield/data', './skyfield/data'),
         ],
     hiddenimports=[
         ],

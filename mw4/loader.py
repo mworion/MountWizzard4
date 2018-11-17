@@ -33,9 +33,9 @@ import PyQt5.QtWidgets
 import requests
 import numpy as np
 # local import
-from mw4 import mw4_glob
-from mw4 import mainApp
-from mw4.media import resources
+import mw4_glob
+import mainApp
+from media import resources
 
 
 class SplashScreen(PyQt5.QtCore.QObject):
@@ -73,6 +73,7 @@ class SplashScreen(PyQt5.QtCore.QObject):
         self._qss.__drawContents__ = self._qss.drawContents
         self._qss.drawContents = self._drawContents
         self._qss.show()
+        self._qss.raise_()
         self.processEvents()
 
     def close(self):

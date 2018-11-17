@@ -27,8 +27,8 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 import numpy as np
 # local import
-from mw4.base import widget
-from mw4.gui import hemisphere_ui
+from base import widget
+from gui import hemisphere_ui
 
 
 class HemisphereWindow(widget.MWidget):

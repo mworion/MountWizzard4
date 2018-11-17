@@ -25,12 +25,12 @@ import json
 import PyQt5.QtCore
 # local import
 from mountcontrol import qtmount
-from mw4 import mw4_glob
-from mw4.gui import mainW
-from mw4.gui import messageW
-from mw4.gui import hemisphereW
-from mw4.relay import kmRelay
-from mw4.build import build
+import mw4_glob
+from gui import mainW
+from gui import messageW
+from gui import hemisphereW
+from relay import kmRelay
+from build import build
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):

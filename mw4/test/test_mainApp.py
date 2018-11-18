@@ -33,7 +33,6 @@ mwGlob = {'workDir': '.',
           }
 test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
 
-
 #
 #
 # testing main

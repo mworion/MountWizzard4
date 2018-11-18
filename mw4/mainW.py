@@ -764,15 +764,15 @@ class MainWindow(widget.MWidget):
 
     def loadProfile(self):
         folder = self.app.mwGlob['configDir'] + '/config'
-        filePath, name, ext = self.openFile(self,
-                                            'Open config file',
-                                            folder,
-                                            'Config files (*.cfg)',
-                                            )
-        if not filePath:
+        configFilePath, name, ext = self.openFile(self,
+                                                  'Open config file',
+                                                  folder,
+                                                  'Config files (*.cfg)',
+                                                  )
+        if not configFilePath:
             return False
-        filePath = self.checkExtension(filePath, '.cfg')
-        suc = self.app.loadConfig(filePath=filePath)
+            configFilePath = self.checkExtension(configFilePath, '.cfg')
+        suc = self.app.loadConfig(configFilePath=configFilePath)
         if suc:
             self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] loaded'.format(name), 0)
@@ -782,15 +782,15 @@ class MainWindow(widget.MWidget):
 
     def saveProfileAs(self):
         folder = self.app.mwGlob['configDir'] + '/config'
-        filePath, name, ext = self.saveFile(self,
-                                            'Save config file',
-                                            folder,
-                                            'Config files (*.cfg)',
-                                            )
-        if not filePath:
+        configFilePath, name, ext = self.saveFile(self,
+                                                  'Save config file',
+                                                  folder,
+                                                  'Config files (*.cfg)',
+                                                  )
+        if not configFilePath:
             return False
-        filePath = self.checkExtension(filePath, '.cfg')
-        suc = self.app.saveConfig(filePath=filePath, name=name)
+        configFilePath = self.checkExtension(configFilePath, '.cfg')
+        suc = self.app.saveConfig(configFilePath=configFilePath, name=name)
         if suc:
             self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] saved'.format(name), 0)

@@ -51,60 +51,60 @@ def test_loadConfig_ok1():
 
 def test_loadConfig_ok2():
     # load ok config
-    filePath = './mw4/test/config/config_ok.cfg'
+    configFilePath = './mw4/test/config/config_ok.cfg'
 
-    suc = test_app.loadConfig(filePath=filePath)
+    suc = test_app.loadConfig(configFilePath=configFilePath)
     assert suc
     assert '4.0' == test_app.config['version']
     assert 'tester' == test_app.config['profileName']
 
 
 def test_loadConfig_ok3():
-    filePath = './mw4/test/config/config_ok.cfg'
+    configFilePath = './mw4/test/config/config_ok.cfg'
 
-    suc = test_app.loadConfig(filePath=filePath)
+    suc = test_app.loadConfig(configFilePath=configFilePath)
     assert suc
     assert '4.0' == test_app.config['version']
     assert 'tester' == test_app.config['profileName']
 
 
 def test_loadConfig_not_ok1():
-    filePath = './mw4/test/config/config_nok1.cfg'
+    configFilePath = './mw4/test/config/config_nok1.cfg'
 
-    suc = test_app.loadConfig(filePath=filePath)
+    suc = test_app.loadConfig(configFilePath=configFilePath)
     assert suc
 
 
 def test_loadConfig_not_ok2():
-    filePath = './mw4/test/config/config_nok2.cfg'
+    configFilePath = './mw4/test/config/config_nok2.cfg'
 
-    suc = test_app.loadConfig(filePath=filePath)
+    suc = test_app.loadConfig(configFilePath=configFilePath)
     assert not suc
 
 
 def test_loadConfig_not_ok3():
-    filePath = './mw4/test/config/config_nok3.cfg'
+    configFilePath = './mw4/test/config/config_nok3.cfg'
 
-    suc = test_app.loadConfig(filePath=filePath)
+    suc = test_app.loadConfig(configFilePath=configFilePath)
     assert not suc
 
 
 def test_loadConfig_not_ok4():
-    filePath = './mw4/test/config/config_nok4.cfg'
+    configFilePath = './mw4/test/config/config_nok4.cfg'
 
-    suc = test_app.loadConfig(filePath=filePath)
+    suc = test_app.loadConfig(configFilePath=configFilePath)
     assert not suc
 
 
 def test_loadConfig_not_ok5():
-    filePath = './mw4/test/config/config_nok5.cfg'
+    configFilePath = './mw4/test/config/config_nok5.cfg'
 
-    suc = test_app.loadConfig(filePath=filePath)
+    suc = test_app.loadConfig(configFilePath=configFilePath)
     assert not suc
 
 
 def test_saveConfig_ok1():
-    filePath = './mw4/test/config/test1.cfg'
+    configFilePath = './mw4/test/config/test1.cfg'
 
-    suc = test_app.saveConfig(filePath=filePath)
+    suc = test_app.saveConfig(configFilePath=configFilePath)
     assert suc

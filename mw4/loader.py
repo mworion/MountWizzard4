@@ -290,7 +290,7 @@ def main():
     splash.setValue(60)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
-    mountApp = mainApp.MountWizzard4(mwGlob, splash)
+    mountApp = mainApp.MountWizzard4(mwGlob)
     mountApp.mainW.show()
 
     # end of splash screen

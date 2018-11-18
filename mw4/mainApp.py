@@ -50,24 +50,16 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     def __init__(self,
                  mwGlob=None,
-                 splash=None,
                  ):
         super().__init__()
 
         self.mwGlob = mwGlob
+
         # persistence management through dict
         self.config = {}
-        # todo: how to handle the splash screen ?
-        if splash is not None:
-            splash.showMessage('Load configuration')
-            splash.setValue(65)
         self.loadConfig()
 
-        # get the working horses up
-        if splash is not None:
-            splash.showMessage('Load mount')
-            splash.setValue(70)
-
+        # get timing constant
         pathToTs = self.mwGlob['configDir']
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
@@ -75,29 +67,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    expire=False,
                                    verbose=False,
                                    )
-        # relay box
-        if splash is not None:
-            splash.showMessage('Load relay')
-            splash.setValue(75)
         self.relay = kmRelay.KMRelay(host='192.168.2.15',
                                      )
-
         # managing data
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get the window widgets up
-        if splash is not None:
-            splash.showMessage('Load main widget')
-            splash.setValue(80)
         self.data = build.DataPoint()
         self.mainW = mainW.MainWindow(self)
-        if splash is not None:
-            splash.showMessage('Load hemisphere widget')
-            splash.setValue(90)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
-        if splash is not None:
-            splash.showMessage('Load message widget')
-            splash.setValue(85)
         self.messageW = messageW.MessageWindow(self)
 
         # link cross widget gui signals

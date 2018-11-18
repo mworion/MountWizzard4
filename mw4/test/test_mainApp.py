@@ -41,25 +41,31 @@ test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
 
 
 def test_loadConfig_ok1():
-    filePath = './mw4/test/config/config_ok.cfg'
-
-    suc = test_app.loadConfig(filePath=filePath)
+    # new, no config
+    suc = test_app.loadConfig()
     assert suc
     assert '4.0' == test_app.config['version']
+    assert 'config' == test_app.config['profileName']
+    assert test_app.config['filePath']
 
 
 def test_loadConfig_ok2():
+    # load ok config
     filePath = './mw4/test/config/config_ok.cfg'
 
     suc = test_app.loadConfig(filePath=filePath)
     assert suc
     assert '4.0' == test_app.config['version']
+    assert 'tester' == test_app.config['profileName']
 
 
 def test_loadConfig_ok3():
+    filePath = './mw4/test/config/config_ok.cfg'
 
-    suc = test_app.loadConfig()
+    suc = test_app.loadConfig(filePath=filePath)
     assert suc
+    assert '4.0' == test_app.config['version']
+    assert 'tester' == test_app.config['profileName']
 
 
 def test_loadConfig_not_ok1():

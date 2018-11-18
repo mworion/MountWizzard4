@@ -138,7 +138,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         PyQt5.QtCore.QCoreApplication.quit()
 
     def defaultPath(self):
-        return self.mwGlob['configDir'] + '/config.cfg'
+        return self.mwGlob['configDir'] + '/config_nok6.cfg'
 
     def defaultConfig(self, config):
         config['profileName'] = 'config'
@@ -155,14 +155,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         if filePath is None:
-            filePath = self.mwGlob['configDir'] + '/config.cfg'
+            filePath = self.mwGlob['configDir'] + '/config_nok6.cfg'
         if not os.path.isfile(filePath):
             # new config necessary
             self.config = {'profileName': 'config',
                            'filePath': None,
                            'version': '4.0',
                            }
-            return False
+            return True
 
         # now try to read existing config
         try:

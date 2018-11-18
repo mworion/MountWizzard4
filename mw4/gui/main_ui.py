@@ -6976,7 +6976,7 @@ class Ui_MainWindow(object):
         self.le_firmwareProductName_5.setText(_translate("MainWindow", "numpy, requests, astropy, skyfield"))
         self.settingsTabWidget.setTabText(self.settingsTabWidget.indexOf(self.tab_13), _translate("MainWindow", "Audio / Misc"))
         self.mainTabWidget.setTabText(self.mainTabWidget.indexOf(self.tab_3), _translate("MainWindow", "Setting"))
-        self.saveConfigQuit.setToolTip(_translate("MainWindow", "Quits the tool and saves the settings data in config.cfg"))
+        self.saveConfigQuit.setToolTip(_translate("MainWindow", "Quits the tool and saves the settings data in config_nok6.cfg"))
         self.saveConfigQuit.setText(_translate("MainWindow", "Save/Quit"))
         self.saveConfig.setToolTip(_translate("MainWindow", "<html><head/><body><p>Saves the configuration under the current profile</p></body></html>"))
         self.saveConfig.setText(_translate("MainWindow", "Save"))

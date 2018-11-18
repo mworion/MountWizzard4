@@ -60,6 +60,7 @@ a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/fonts')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('PyQt5/Qt/translations')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('QtQuick')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('QtQml')]
+
 a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/sample_data')]
 a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/fonts')]
 a.datas = [x for x in a.datas if not x[0].startswith('PyQt5/Qt/translations')]

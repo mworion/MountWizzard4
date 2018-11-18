@@ -216,6 +216,7 @@ def main():
     # setting different log level for imported packages to avoid unnecessary data
     logging.getLogger('PyQt5').setLevel(logging.ERROR)
     logging.getLogger('requests').setLevel(logging.ERROR)
+    logging.getLogger('matplotlib').setLevel(logging.ERROR)
     # urllib3 is used by requests
     logging.getLogger('urllib3').setLevel(logging.ERROR)
     # population the working directory with necessary subdir

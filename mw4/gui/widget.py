@@ -21,7 +21,6 @@
 import logging
 import platform
 import os
-import time
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtGui
@@ -29,15 +28,11 @@ import PyQt5.QtCore
 import PyQt5.uic
 import matplotlib
 matplotlib.use('Qt5Agg')
-import matplotlib.pyplot
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-import skyfield
 # local imports
-from mw4.base import styles
-from mw4.base import tpool
-
+from gui import styles
 
 version = '0.1'
 __all__ = [

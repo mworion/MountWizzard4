@@ -20,8 +20,6 @@
 # standard libraries
 import logging
 import datetime
-import time
-import json
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -30,9 +28,8 @@ import numpy as np
 import matplotlib
 from mountcontrol import convert
 # local import
-from mw4.base import widget
-from mw4.base import tpool
-from mw4.gui import main_ui
+from gui import widget
+from gui import main_ui
 
 
 class MainWindow(widget.MWidget):

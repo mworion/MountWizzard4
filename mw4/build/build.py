@@ -24,7 +24,6 @@ import os
 import numpy as np
 import json
 # local imports
-from mw4 import mw4_glob
 
 
 class DataPoint(object):
@@ -66,9 +65,11 @@ class DataPoint(object):
             120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0]
 
     def __init__(self,
+                 app=None,
                  lat=48,
                  ):
 
+        self.app = app
         self.lat = lat
         self._horizonPFile = None
         self._buildPFile = None
@@ -203,7 +204,7 @@ class DataPoint(object):
         :return: success
         """
 
-        fileName = mw4_glob.config_dir + '/' + self._buildPFile + '.bpts'
+        fileName = self.mwGlob['configDir'] + '/' + self._buildPFile + '.bpts'
         if not os.path.isfile(fileName):
             return False
         try:
@@ -224,7 +225,7 @@ class DataPoint(object):
         :return: success
         """
 
-        fileName = mw4_glob.config_dir + '/' + self._buildPFile + '.bpts'
+        fileName = self.mwGlob['configDir'] + '/' + self._buildPFile + '.bpts'
         with open(fileName, 'w') as handle:
             json.dump(self._buildP,
                       handle,
@@ -240,7 +241,7 @@ class DataPoint(object):
         :return: success
         """
 
-        fileName = mw4_glob.config_dir + '/' + self._horizonPFile + '.hpts'
+        fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
         if not os.path.isfile(fileName):
             return False
         try:
@@ -261,7 +262,7 @@ class DataPoint(object):
         :return: success
         """
 
-        fileName = mw4_glob.config_dir + '/' + self._horizonPFile + '.hpts'
+        fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
         with open(fileName, 'w') as handle:
             json.dump(self._horizonP,
                       handle,

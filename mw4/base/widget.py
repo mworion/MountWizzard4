@@ -35,7 +35,6 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 import skyfield
 # local imports
-from mw4 import mw4_glob
 from mw4.base import styles
 from mw4.base import tpool
 

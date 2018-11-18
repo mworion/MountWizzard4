@@ -30,7 +30,6 @@ import numpy as np
 import matplotlib
 from mountcontrol import convert
 # local import
-from mw4 import mw4_glob
 from mw4.base import widget
 from mw4.base import tpool
 from mw4.gui import main_ui
@@ -65,7 +64,7 @@ class MainWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
-        self.setWindowTitle('MountWizzard4   (' + mw4_glob.BUILD + ')')
+        self.setWindowTitle('MountWizzard4   (' + self.app.mwGlob['build'] + ')')
         self.setupRelayGui()
 
         # defining the necessary instances of classes

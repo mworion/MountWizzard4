@@ -25,7 +25,6 @@ import json
 import PyQt5.QtCore
 from mountcontrol import qtmount
 # local import
-from mw4 import mw4_glob
 from mw4.gui import mainW
 from mw4.gui import messageW
 from mw4.gui import hemisphereW
@@ -50,10 +49,12 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     message = PyQt5.QtCore.pyqtSignal(str, int)
 
     def __init__(self,
+                 mwGlob={},
                  splash=None,
                  ):
         super().__init__()
 
+        self.mwGlob = mwGlob
         # persistence management through dict
         self.config = {}
         # todo: how to handle the splash screen ?
@@ -67,7 +68,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             splash.showMessage('Load mount')
             splash.setValue(70)
 
-        pathToTs = mw4_glob.config_dir
+        pathToTs = self.mwGlob['configDir']
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
                                    pathToTS=pathToTs,
@@ -108,7 +109,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # write basic data to message window
         self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('Workdir is: {0}'.format(mw4_glob.work_dir), 1)
+        self.message.emit('Workdir is: {0}'.format(self.mwGlob['workDir']), 1)
 
     def quit(self):
         """
@@ -145,7 +146,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         if filePath is None:
-            filePath = mw4_glob.config_dir + '/config.cfg'
+            filePath = self.mwGlob['configDir'] + '/config.cfg'
         if not os.path.isfile(filePath):
             # new config necessary
             self.config = {'name': 'config',
@@ -197,11 +198,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # check necessary data available
         if filePath is None:
-            filePath = mw4_glob.config_dir + '/' + name + '.cfg'
+            filePath = self.mwGlob['configDir'] + '/' + name + '.cfg'
         self.config['filePath'] = filePath
         self.config['name'] = name
         # save the config
-        configPath = mw4_glob.config_dir + '/' + 'config.cfg'
+        configPath = self.mwGlob['configDir'] + '/' + 'config.cfg'
         with open(configPath, 'w') as outfile:
             json.dump(self.config,
                       outfile,

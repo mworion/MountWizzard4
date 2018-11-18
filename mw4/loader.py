@@ -213,34 +213,34 @@ def main():
                         handlers=[logging.FileHandler(name)],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
+
     # setting different log level for imported packages to avoid unnecessary data
     logging.getLogger('PyQt5').setLevel(logging.ERROR)
     logging.getLogger('requests').setLevel(logging.ERROR)
     logging.getLogger('matplotlib').setLevel(logging.ERROR)
-    # urllib3 is used by requests
+    # urllib3 is used by requests, so we have to add this as well
     logging.getLogger('urllib3').setLevel(logging.ERROR)
+
     # population the working directory with necessary subdir
     splash.showMessage('Checking work directories')
     splash.setValue(30)
-
-    # we put all the configurations and downloadable files for usage in the config dir
     if not os.path.isdir(mwGlob['workDir']):
         os.makedirs(mwGlob['workDir'])
-    if not os.path.isdir(mwGlob['configDir']):
-        os.makedirs(mwGlob['configDir'])
-    if not os.path.isdir(mwGlob['dataDir']):
-        os.makedirs(mwGlob['dataDir'])
-    if not os.path.isdir(mwGlob['imageDir']):
-        os.makedirs(mwGlob['imageDir'])
-
-    # checking if writable
-    splash.showMessage('Checking work directories')
     if not os.access(mwGlob['workDir'], os.W_OK):
         logging.error('no write access to workdir')
+
+    if not os.path.isdir(mwGlob['configDir']):
+        os.makedirs(mwGlob['configDir'])
     if not os.access(mwGlob['configDir'], os.W_OK):
         logging.error('no write access to /config')
+
+    if not os.path.isdir(mwGlob['dataDir']):
+        os.makedirs(mwGlob['dataDir'])
     if not os.access(mwGlob['dataDir'], os.W_OK):
         logging.error('no write access to /data')
+
+    if not os.path.isdir(mwGlob['imageDir']):
+        os.makedirs(mwGlob['imageDir'])
     if not os.access(mwGlob['imageDir'], os.W_OK):
         logging.error('no write access to /image')
 

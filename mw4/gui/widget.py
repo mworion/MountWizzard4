@@ -295,7 +295,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
         name, _ = dlg.getOpenFileName(dlg,
                                       title,
-                                      mw4_glob.work_dir + folder,
+                                      folder,
                                       filterSet,
                                       options=options)
         short, ext = self.extractNames(name)
@@ -319,7 +319,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
         name, _ = dlg.getSaveFileName(dlg,
                                       title,
-                                      mw4_glob.work_dir + folder,
+                                      folder,
                                       filterSet,
                                       options=options)
         short, ext = self.extractNames(name)

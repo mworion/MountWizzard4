@@ -143,7 +143,7 @@ class MainWindow(widget.MWidget):
         self.ui.checkRefracNone.setChecked(config.get('checkRefracNone', False))
         self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
-        self.ui.profile.setText(config.get('profile'))
+        self.ui.profile.setText(self.app.config.get('profileName'))
         for i, line in enumerate(self.relayText):
             key = 'relayText{0:1d}'.format(i)
             line.setText(config.get(key, 'Relay{0:1d}'.format(i)))
@@ -756,14 +756,22 @@ class MainWindow(widget.MWidget):
             self.app.message.emit('Tracking set to Solar', 0)
             return True
 
+    @staticmethod
+    def checkExtension(filePath, ext):
+        if not filePath.endswith(ext):
+            filePath += ext
+        return filePath
+
     def loadProfile(self):
+        folder = self.app.mwGlob['configDir'] + '/config'
         filePath, name, ext = self.openFile(self,
                                             'Open config file',
-                                            '/config',
+                                            folder,
                                             'Config files (*.cfg)',
                                             )
         if not filePath:
             return False
+        filePath = self.checkExtension(filePath, '.cfg')
         suc = self.app.loadConfig(filePath=filePath)
         if suc:
             self.ui.profile.setText(name)
@@ -773,16 +781,16 @@ class MainWindow(widget.MWidget):
         return True
 
     def saveProfileAs(self):
+        folder = self.app.mwGlob['configDir'] + '/config'
         filePath, name, ext = self.saveFile(self,
                                             'Save config file',
-                                            '/config',
+                                            folder,
                                             'Config files (*.cfg)',
                                             )
         if not filePath:
             return False
-        if not ext:
-            ext = '.cfg'
-        suc = self.app.saveConfig(filePath=filePath, name=name, ext=ext)
+        filePath = self.checkExtension(filePath, '.cfg')
+        suc = self.app.saveConfig(filePath=filePath, name=name)
         if suc:
             self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] saved'.format(name), 0)

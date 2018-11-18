@@ -110,6 +110,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # write basic data to message window
         self.message.emit('MountWizzard4 started', 1)
         self.message.emit('Workdir is: {0}'.format(self.mwGlob['workDir']), 1)
+        self.message.emit('Profile [{0}] loaded'.format(self.config['profileName']), 0)
 
     def quit(self):
         """
@@ -136,6 +137,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.saveConfig()
         PyQt5.QtCore.QCoreApplication.quit()
 
+    def defaultPath(self):
+        return self.mwGlob['configDir'] + '/config.cfg'
+
+    def defaultConfig(self, config):
+        config['profileName'] = 'config'
+        config['filePath'] = self.defaultPath()
+        return config
+
     def loadConfig(self, filePath=None):
         """
         loadConfig loads a json file from disk and stores it to the config dicts for
@@ -149,11 +158,12 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             filePath = self.mwGlob['configDir'] + '/config.cfg'
         if not os.path.isfile(filePath):
             # new config necessary
-            self.config = {'name': 'config',
+            self.config = {'profileName': 'config',
                            'filePath': None,
                            'version': '4.0',
                            }
             return False
+
         # now try to read existing config
         try:
             with open(filePath, 'r') as data_file:
@@ -161,32 +171,30 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         except Exception as e:
             self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
             return False
-        filePath = loadData.get('filePath', None)
-        if filePath is None:
-            return False
+
         # config has reference to profile file
-        if not os.path.isfile(filePath):
-            # link is broken, we use the standard config data
-            self.config = loadData
-            return False
+        filePath = loadData.get('filePath', None)
         try:
             with open(filePath, 'r') as data_file:
                 loadData = json.load(data_file)
         except Exception as e:
+            self.config = self.defaultConfig(loadData)
             self.logger.error('Cannot parse: {0}, error: {1}'.format(filePath, e))
-            # file is broken, we use the standard config data
-            self.config = loadData
             return False
+
+        # check compatibility
         if 'version' not in loadData:
             # data is missing, we use the standard config data
-            self.config = loadData
+            self.config = self.defaultConfig(loadData)
             return False
+
         if loadData['version'] != '4.0':
             loadData = self.convertData(loadData)
+
         self.config = loadData
         return True
 
-    def saveConfig(self, filePath=None, name='config'):
+    def saveConfig(self, filePath=None, name=None):
         """
         saveConfig saves a json file to disk from the config dicts for
         persistent data.
@@ -197,12 +205,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         # check necessary data available
-        if filePath is None:
-            filePath = self.mwGlob['configDir'] + '/' + name + '.cfg'
+        if filePath is None or name is None:
+            name = self.config.get('profileName', 'config')
+            filePath = self.config.get('filePath', self.defaultPath())
         self.config['filePath'] = filePath
-        self.config['name'] = name
+        self.config['profileName'] = name
         # save the config
-        configPath = self.mwGlob['configDir'] + '/' + 'config.cfg'
+        configPath = self.defaultPath()
         with open(configPath, 'w') as outfile:
             json.dump(self.config,
                       outfile,

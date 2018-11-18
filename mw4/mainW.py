@@ -25,11 +25,11 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 import numpy as np
-import matplotlib
+import matplotlib.pyplot
 from mountcontrol import convert
 # local import
-from gui import widget
-from gui import main_ui
+from mw4.gui import widget
+from mw4.gui import main_ui
 
 
 class MainWindow(widget.MWidget):

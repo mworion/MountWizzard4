@@ -27,12 +27,11 @@ import PyQt5.QtGui
 import PyQt5.QtCore
 import PyQt5.uic
 import matplotlib
-matplotlib.use('Qt5Agg')
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 # local imports
-from gui import styles
+from . import styles
 
 version = '0.1'
 __all__ = [

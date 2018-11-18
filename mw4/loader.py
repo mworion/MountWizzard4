@@ -31,9 +31,11 @@ import traceback
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import numpy as np
+import matplotlib
+matplotlib.use('Qt5Agg')
 # local import
-import mainApp
-from gui.media import resources
+from mw4 import mainApp
+from mw4.gui.media import resources
 
 
 class SplashScreen(PyQt5.QtCore.QObject):

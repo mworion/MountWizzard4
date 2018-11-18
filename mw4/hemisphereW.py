@@ -22,8 +22,8 @@ import logging
 # external packages
 import numpy as np
 # local import
-from gui import widget
-from gui import hemisphere_ui
+from mw4.gui import widget
+from mw4.gui import hemisphere_ui
 
 
 class HemisphereWindow(widget.MWidget):

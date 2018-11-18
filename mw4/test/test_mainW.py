@@ -27,14 +27,15 @@ import PyQt5.uic
 import PyQt5.QtTest
 import PyQt5.QtCore
 # local import
-from mw4 import mw4_glob
 from mw4 import mainApp
 
 test = PyQt5.QtWidgets.QApplication([])
 
-mw4_glob.work_dir = '.'
-mw4_glob.config_dir = './mw4/test/config/'
-test_app = mainApp.MountWizzard4()
+mwGlob = {'workDir': '.',
+          'configDir': './mw4/test/config/',
+          'build': 'test',
+          }
+test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
 spy = PyQt5.QtTest.QSignalSpy(test_app.message)
 
 

@@ -22,15 +22,16 @@
 import PyQt5.QtCore
 # local import
 from mw4 import mainApp
-from mw4 import mw4_glob
 
 
 test = PyQt5.QtWidgets.QApplication([])
 
-mw4_glob.work_dir = '.'
-mw4_glob.config_dir = './mw4/test/config/'
 
-test_app = mainApp.MountWizzard4()
+mwGlob = {'workDir': '.',
+          'configDir': './mw4/test/config/',
+          'build': 'test',
+          }
+test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
 
 
 #

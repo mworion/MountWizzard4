@@ -116,7 +116,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         PyQt5.QtCore.QCoreApplication.quit()
 
     def defaultPath(self):
-        return self.mwGlob['configDir'] + '/config_nok6.cfg'
+        return self.mwGlob['configDir'] + '/config.cfg'
 
     def defaultConfig(self, config={}):
         config['profileName'] = 'config'
@@ -178,8 +178,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # check necessary data available
         if configFilePath is None or name is None:
             name = self.config.get('profileName', 'config')
-            referenceFilePath = self.config.get('filePath', self.defaultPath())
-        self.config['filePath'] = referenceFilePath
+            configFilePath = self.config.get('filePath', self.defaultPath())
+        self.config['filePath'] = configFilePath
         self.config['profileName'] = name
         # save the config
         defaultFilePath = self.defaultPath()
@@ -189,9 +189,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                       sort_keys=True,
                       indent=4)
         # there is a link to another config file, so we save it too
-        if referenceFilePath is None:
+        if configFilePath is None:
             return False
-        with open(referenceFilePath, 'w') as outfile:
+        with open(configFilePath, 'w') as outfile:
             # make the file human readable
             json.dump(self.config,
                       outfile,

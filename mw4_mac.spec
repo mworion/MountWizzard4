@@ -22,6 +22,8 @@
 #
 import os
 import shutil
+import sys
+sys.modules['FixTk'] = None
 DISTPATH = '../dist'
 WORKPATH = '../build'
 
@@ -29,6 +31,7 @@ BUILD_NO = '0.1.dev0'
 
 block_cipher = None
 pythonPath = '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6'
+sitePack = pythonPath + '/site-packages'
 distDir = '/Users/mw/PycharmProjects/MountWizzard4/dist'
 
 
@@ -36,18 +39,32 @@ a = Analysis(['mw4/loader.py'],
     pathex=['/Users/mw/PycharmProjects/MountWizzard4/mw4'],
     binaries=[
         ],
-    datas=[(pythonPath + '/site-packages/skyfield/data', './skyfield/data'),
+    datas=[(sitePack + '/skyfield/data', './skyfield/data'),
         ],
     hiddenimports=[
         ],
     hookspath=[],
     runtime_hooks=[],
-    excludes=[
+    excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter',
+
         ],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=block_cipher,
     )
+
+# remove unnecessary things to reduce size
+
+a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/sample_data')]
+a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/fonts')]
+a.binaries = [x for x in a.binaries if not x[0].startswith('PyQt5/Qt/translations')]
+a.binaries = [x for x in a.binaries if not x[0].startswith('QtQuick')]
+a.binaries = [x for x in a.binaries if not x[0].startswith('QtQml')]
+a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/sample_data')]
+a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/fonts')]
+a.datas = [x for x in a.datas if not x[0].startswith('PyQt5/Qt/translations')]
+a.datas = [x for x in a.datas if not x[0].startswith('QtQuick')]
+a.datas = [x for x in a.datas if not x[0].startswith('QtQml')]
 
 pyz = PYZ(a.pure,
         a.zipped_data,
@@ -63,15 +80,15 @@ exe = EXE(pyz,
           debug=True,
           strip=True,
           upx=False,
-          console=True,
+          console=False,
           onefile=True,
-          icon='./mw4/media/mw4.icns',
+          icon='./mw4/gui/media/mw4.icns',
           # exclude_binaries=True,
           )
 
 #
 # we have to prepare the build as there is an error when overwriting it
-# if file present, we have to delete it
+# if file present, we have to delete python3 --version
 #
 
 buildFile = distDir + '/MountWizzard4.app'
@@ -86,7 +103,7 @@ if os.path.isfile(buildFile):
 app = BUNDLE(exe,
              name='MountWizzard4.app',
              version=4,
-             icon='./mw4/media/mw4.icns',
+             icon='./mw4/gui/media/mw4.icns',
              bundle_identifier=None)
 
 #

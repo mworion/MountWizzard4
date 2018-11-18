@@ -39,6 +39,7 @@ test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
 #
 #
 
+
 def test_loadConfig_ok1():
     filePath = './mw4/test/config/config_ok.cfg'
 

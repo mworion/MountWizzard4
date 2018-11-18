@@ -21,12 +21,15 @@
 import unittest.mock as mock
 # external packages
 # local import
-from mw4.build import build
-from mw4 import mw4_glob
 
-data = build.DataPoint(lat=48)
-mw4_glob.work_dir = '.'
-mw4_glob.config_dir = './mw4/test/config/'
+from mw4.build import build
+
+mwGlob = {'workDir': '.',
+          'configDir': './mw4/test/config/',
+          'build': 'test',
+          }
+
+data = build.DataPoint(mwGlob=mwGlob, lat=48)
 
 
 def test_topoToAzAlt1():

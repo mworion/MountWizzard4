@@ -65,11 +65,11 @@ class DataPoint(object):
             120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0]
 
     def __init__(self,
-                 app=None,
+                 mwGlob=None,
                  lat=48,
                  ):
 
-        self.app = app
+        self.mwGlob = mwGlob
         self.lat = lat
         self._horizonPFile = None
         self._buildPFile = None

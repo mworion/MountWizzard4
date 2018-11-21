@@ -148,6 +148,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             return False
 
         referenceFilePath = defaultData.get('filePath', None)
+        if referenceFilePath is None:
+            return True
         try:
             with open(referenceFilePath, 'r') as referenceFile:
                 referenceData = json.load(referenceFile)
@@ -164,6 +166,17 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         self.config = self.convertData(referenceData)
         return True
+
+    def convertData(self, data):
+        """
+        convertDate tries to convert data from an older or newer version of the config
+        file to the actual needed one.
+
+        :param      data:   config data as dict
+        :return:    data:   config data as dict
+        """
+
+        return data
 
     def saveConfig(self, configFilePath=None, name=None):
         """
@@ -198,17 +211,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                       sort_keys=True,
                       indent=4)
         return True
-
-    def convertData(self, data):
-        """
-        convertDate tries to convert data from an older or newer version of the config
-        file to the actual needed one.
-
-        :param      data:   config data as dict
-        :return:    data:   config data as dict
-        """
-
-        return data
 
     def loadMountData(self, status):
         """

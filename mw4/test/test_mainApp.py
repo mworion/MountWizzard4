@@ -33,6 +33,9 @@ mwGlob = {'workDir': '.',
           'configDir': './mw4/test/config',
           'build': 'test',
           }
+config = mwGlob['configDir'] + '/config'
+if os.path.isdir(config):
+    os.remove(config)
 test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
 
 #
@@ -44,7 +47,7 @@ test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
 
 def test_loadConfig_ok1():
     # new, no config
-    config = mwGlob['configDir'] + '/config'
+    config = mwGlob['configDir'] + '/config.cfg'
     if os.path.isdir(config):
         os.remove(config)
     suc = test_app.loadConfig()
@@ -55,9 +58,9 @@ def test_loadConfig_ok1():
 
 
 def test_loadConfig_ok2():
-    # load existing basic ok config without filepath
+    # load existing basic config without filePath
     configTest = './mw4/test/config/config_ok.cfg'
-    config = mwGlob['configDir'] + '/config'
+    config = mwGlob['configDir'] + '/config.cfg'
     if os.path.isdir(config):
         os.remove(config)
     shutil.copy(configTest, config)
@@ -69,12 +72,24 @@ def test_loadConfig_ok2():
 
 
 def test_loadConfig_ok3():
-    configFilePath = './mw4/test/config/config_ok.cfg'
+    # load config from another file referenced
+    configTest = './mw4/test/config/config_ok_link.cfg'
+    config = mwGlob['configDir'] + '/config.cfg'
+    if os.path.isdir(config):
+        os.remove(config)
+    shutil.copy(configTest, config)
 
-    suc = test_app.loadConfig(configFilePath=configFilePath)
+    suc = test_app.loadConfig()
     assert suc
     assert '4.0' == test_app.config['version']
-    assert 'tester' == test_app.config['profileName']
+    assert 'link' == test_app.config['profileName']
+
+
+def test_loadConfig_ok4():
+    configFilePath = './mw4/test/config/config_nok2.cfg'
+
+    suc = test_app.loadConfig(configFilePath=configFilePath)
+    assert not suc
 
 
 def test_loadConfig_not_ok1():
@@ -82,13 +97,6 @@ def test_loadConfig_not_ok1():
 
     suc = test_app.loadConfig(configFilePath=configFilePath)
     assert suc
-
-
-def test_loadConfig_not_ok2():
-    configFilePath = './mw4/test/config/config_nok2.cfg'
-
-    suc = test_app.loadConfig(configFilePath=configFilePath)
-    assert not suc
 
 
 def test_loadConfig_not_ok3():

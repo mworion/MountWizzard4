@@ -37,14 +37,14 @@ config = mwGlob['configDir']
 
 test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
 
-test = os.listdir(config)
-for item in test:
+testdir = os.listdir(config)
+for item in testdir:
     if item.endswith('.cfg'):
         os.remove(os.path.join(config, item))
 
 #
 #
-# testing main
+# testing loading config
 #
 #
 
@@ -211,3 +211,63 @@ def test_loadConfig_not_ok5():
     assert not suc
     assert '4.0' == test_app.config['version']
     assert 'config' == test_app.config['profileName']
+
+#
+#
+# testing saving config
+#
+#
+
+
+def test_saveConfig_ok1():
+    # save default without reference
+    test_app.config = {
+        'profileName': 'config',
+        'version': '4.0',
+        'filePath': config + '/config.cfg'
+    }
+    suc = test_app.saveConfig()
+    assert suc
+
+
+def test_saveConfig_ok2():
+    # save default with reference
+    test_app.config = {
+        'profileName': 'reference',
+        'version': '4.0',
+        'filePath': config + '/reference.cfg'
+    }
+    suc = test_app.saveConfig()
+    assert suc
+
+
+def test_saveConfig_not_ok1():
+    # save with default name and wrong reference
+    test_app.config = {
+        'profileName': 'config',
+        'version': '4.0',
+        'filePath': config + '/reference.cfg'
+    }
+    suc = test_app.saveConfig()
+    assert not suc
+
+
+def test_saveConfig_not_ok2():
+    # save with reference name and missing file path
+    test_app.config = {
+        'profileName': 'reference',
+        'version': '4.0',
+    }
+    suc = test_app.saveConfig()
+    assert not suc
+
+
+def test_saveConfig_not_ok3():
+    # save default without reference without filePath
+    test_app.config = {
+        'profileName': 'config',
+        'version': '4.0',
+    }
+    suc = test_app.saveConfig()
+    assert not suc
+

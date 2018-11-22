@@ -186,22 +186,26 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         return data
 
-    def saveConfig(self, configFilePath=None, name=None):
+    def saveConfig(self, referenceFilePath=None):
         """
         saveConfig saves a json file to disk from the config dicts for
         persistent data.
 
-        :param      configFilePath:   full path to the config file
-        :param      name:       name of the configuration
+        :param      referenceFilePath:   full path to the config file
         :return:    success
         """
 
         # check necessary data available
-        if configFilePath is None or name is None:
-            name = self.config.get('profileName', 'config')
-            configFilePath = self.config.get('filePath', self.defaultPath())
-        self.config['filePath'] = configFilePath
-        self.config['profileName'] = name
+        defaultFilePath = self.config.get('filePath', '')
+        isDefaultConfigPath = defaultFilePath.endswith('config.cfg')
+        isReferenceName = (self.config['profileName'] == 'config')
+        if isReferenceName and not isDefaultConfigPath:
+            return False
+
+        if referenceFilePath is None:
+            referenceFilePath = self.config.get('filePath', None)
+        self.config['filePath'] = referenceFilePath
+
         # save the config
         defaultFilePath = self.defaultPath()
         with open(defaultFilePath, 'w') as outfile:
@@ -210,9 +214,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                       sort_keys=True,
                       indent=4)
         # there is a link to another config file, so we save it too
-        if configFilePath is None:
+        if referenceFilePath is None:
             return False
-        with open(configFilePath, 'w') as outfile:
+        with open(referenceFilePath, 'w') as outfile:
             # make the file human readable
             json.dump(self.config,
                       outfile,

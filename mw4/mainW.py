@@ -789,8 +789,9 @@ class MainWindow(widget.MWidget):
                                                   )
         if not configFilePath:
             return False
+        self.app.config['profileName'] = name
         configFilePath = self.checkExtension(configFilePath, '.cfg')
-        suc = self.app.saveConfig(configFilePath=configFilePath, name=name)
+        suc = self.app.saveConfig(configFilePath=configFilePath)
         if suc:
             self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] saved'.format(name), 0)

@@ -103,7 +103,6 @@ def test_loadConfig_ok3():
                   outfile,
                   sort_keys=True,
                   indent=4)
-
     suc = test_app.loadConfig()
     assert suc
     assert '4.0' == test_app.config['version']
@@ -149,3 +148,66 @@ def test_loadConfig_not_ok2():
     assert '4.0' == test_app.config['version']
     assert 'config' == test_app.config['profileName']
     assert 'filePath' in test_app.config
+
+
+def test_loadConfig_not_ok3():
+    # basic config not readable
+    test_app.config = {}
+    with open(config + '/config.cfg', 'w') as outfile:
+        outfile.write('test')
+
+    suc = test_app.loadConfig()
+    assert not suc
+    assert '4.0' == test_app.config['version']
+    assert 'config' == test_app.config['profileName']
+    assert 'filePath' in test_app.config
+
+
+def test_loadConfig_not_ok4():
+    # reference config not readable
+    test_app.config = {}
+    basic = {
+        'profileName': 'reference',
+        'version': '4.0',
+        'filePath': config + '/reference.cfg'
+    }
+    with open(config + '/config.cfg', 'w') as outfile:
+        json.dump(basic,
+                  outfile,
+                  sort_keys=True,
+                  indent=4)
+    with open(config + '/reference.cfg', 'w') as outfile:
+        outfile.write('test')
+    suc = test_app.loadConfig()
+    assert not suc
+    assert '4.0' == test_app.config['version']
+    assert 'config' == test_app.config['profileName']
+    assert 'filePath' in test_app.config
+
+
+def test_loadConfig_not_ok5():
+    # version not in referenced data
+    test_app.config = {}
+    basic = {
+        'profileName': 'reference',
+        'version': '4.0',
+        'filePath': config + '/reference.cfg'
+    }
+    with open(config + '/config.cfg', 'w') as outfile:
+        json.dump(basic,
+                  outfile,
+                  sort_keys=True,
+                  indent=4)
+    reference = {
+        'profileName': 'reference',
+        'filePath': config + '/reference.cfg'
+    }
+    with open(config + '/reference.cfg', 'w') as outfile:
+        json.dump(reference,
+                  outfile,
+                  sort_keys=True,
+                  indent=4)
+    suc = test_app.loadConfig()
+    assert not suc
+    assert '4.0' == test_app.config['version']
+    assert 'config' == test_app.config['profileName']

@@ -145,11 +145,17 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                 defaultData = json.load(configFile)
         except Exception as e:
             self.logger.error('Cannot parse: {0}, error: {1}'.format(configFile, e))
+            self.config = self.defaultConfig()
             return False
 
         referenceFilePath = defaultData.get('filePath', None)
         if referenceFilePath is None:
-            return True
+            self.config = self.defaultConfig()
+            return False
+        if not referenceFilePath.endswith('config.cfg') \
+                and defaultData.get('profileName')is 'config':
+            self.config = self.defaultConfig()
+            return False
         try:
             with open(referenceFilePath, 'r') as referenceFile:
                 referenceData = json.load(referenceFile)

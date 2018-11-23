@@ -80,17 +80,18 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
         self.messageW = messageW.MessageWindow(self)
 
+        # write basic data to message window
+        self.message.emit('MountWizzard4 started', 1)
+        self.message.emit('Workdir is: {0}'.format(self.mwGlob['workDir']), 1)
+        self.message.emit('Profile [{0}] loaded'.format(self.config['profileName']), 0)
+
         # link cross widget gui signals
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
         self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
 
         # starting cyclic polling of mount data
         self.mount.startTimers()
-
-        # write basic data to message window
-        self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('Workdir is: {0}'.format(self.mwGlob['workDir']), 1)
-        self.message.emit('Profile [{0}] loaded'.format(self.config['profileName']), 0)
+        self.environment.client.connectServer()
 
     def quit(self):
         """
@@ -106,7 +107,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
         quit with saving persistence data
 
-        :param  name: name of configuration
         :return:    nothing
         """
 

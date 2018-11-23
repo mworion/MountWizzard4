@@ -121,8 +121,9 @@ class Environment(PyQt5.QtWidgets.QWidget):
         elif deviceName == self.globalWeatherName:
             self.globalWeatherDevice = None
 
-    def connectDevice(self, device):
-        pass
-
-    def disconnectDevice(self, device):
-        pass
+    def reload(self):
+        if self.client.isServerConnected():
+            self.client.disconnectServer()
+        suc = self.client.connectServer()
+        self.client.watchDevice()
+        return suc

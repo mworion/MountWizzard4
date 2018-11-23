@@ -78,6 +78,8 @@ class MainWindow(widget.MWidget):
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.mount.signals.mountClear.connect(self.clearMountGui)
         self.app.relay.statusReady.connect(self.updateRelayGui)
+        self.app.environment.client.signals.serverConnected.connect(self.indiConnected)
+        self.app.environment.client.signals.serverDisconnected.connect(self.indiDisconnected)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -170,6 +172,7 @@ class MainWindow(widget.MWidget):
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
         self.ui.indiHost.setText(config.get('indiHost', ''))
+        self.indiHost()
         self.ui.globalWeatherName.setText(config.get('globalWeatherName', ''))
         self.ui.localWeatherName.setText(config.get('localWeatherName', ''))
         self.ui.sqmName.setText(config.get('sqmName', ''))
@@ -1215,12 +1218,25 @@ class MainWindow(widget.MWidget):
     def indiHost(self):
         host = self.ui.indiHost.text()
         self.app.environment.client.host = host
+        self.app.environment.reload()
 
     def localWeatherName(self):
-        self.app.environment.localWeatherName = self.ui.localWeatherName.text()
+        environ = self.app.environment
+        environ.localWeatherName = self.ui.localWeatherName.text()
+        suc = environ.reload()
+        if suc:
+            pass
+        else:
+            pass
 
     def globalWeatherName(self):
         self.app.environment.globalWeatherName = self.ui.globalWeatherName.text()
 
     def sqmName(self):
         self.app.environment.sqmName = self.ui.sqmName.text()
+
+    def indiConnected(self):
+        self.app.message.emit('INDI Server connected', 0)
+
+    def indiDisconnected(self):
+        self.app.message.emit('INDI Server disconnected', 0)

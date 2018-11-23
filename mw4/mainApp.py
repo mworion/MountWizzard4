@@ -30,6 +30,7 @@ from mw4 import messageW
 from mw4 import hemisphereW
 from mw4.relay import kmRelay
 from mw4.build import build
+from mw4.environ import environ
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -69,6 +70,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    )
         self.relay = kmRelay.KMRelay(host='192.168.2.15',
                                      )
+        self.environment = environ.Environment()
         # managing data
         self.mount.signals.mountUp.connect(self.loadMountData)
 

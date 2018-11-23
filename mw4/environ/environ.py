@@ -25,19 +25,19 @@ from indibase import indiBase
 # local imports
 
 
-class Environ(PyQt5.QtWidgets.QWidget):
+class Environment(PyQt5.QtWidgets.QWidget):
     """
     the class Environ inherits all information and handling of environment devices
 
-        >>> fw = Environ(
-        >>>                 host=host
-        >>>                 localWeatherName='MBox'
-        >>>                 sqmName='SQM'
-        >>>                 globalWeatherName='OpenWeather'
-        >>>              )
+        >>> fw = Environment(
+        >>>                  host=host
+        >>>                  localWeatherName='MBox'
+        >>>                  sqmName='SQM'
+        >>>                  globalWeatherName='OpenWeather'
+        >>>                 )
     """
 
-    __all__ = ['Environ',
+    __all__ = ['Environment',
                ]
 
     version = '0.1'
@@ -120,3 +120,9 @@ class Environ(PyQt5.QtWidgets.QWidget):
             self.sqmDevice = None
         elif deviceName == self.globalWeatherName:
             self.globalWeatherDevice = None
+
+    def connectDevice(self, device):
+        pass
+
+    def disconnectDevice(self, device):
+        pass

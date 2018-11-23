@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -2018,7 +2018,7 @@
       <rect>
        <x>10</x>
        <y>80</y>
-       <width>121</width>
+       <width>101</width>
        <height>21</height>
       </rect>
      </property>
@@ -2087,7 +2087,7 @@
       <rect>
        <x>10</x>
        <y>50</y>
-       <width>121</width>
+       <width>101</width>
        <height>21</height>
       </rect>
      </property>
@@ -2147,7 +2147,7 @@
       <rect>
        <x>10</x>
        <y>110</y>
-       <width>111</width>
+       <width>101</width>
        <height>21</height>
       </rect>
      </property>
@@ -11775,7 +11775,7 @@ manually</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -11785,7 +11785,7 @@ manually</string>
      </property>
      <widget class="QWidget" name="tab_12">
       <attribute name="title">
-       <string>Device Setup</string>
+       <string>Devices</string>
       </attribute>
       <widget class="Line" name="line_56">
        <property name="geometry">
@@ -11809,131 +11809,10 @@ manually</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QLabel" name="label_139">
-       <property name="geometry">
-        <rect>
-         <x>420</x>
-         <y>20</y>
-         <width>201</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Environment Local Weather</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_23">
-       <property name="geometry">
-        <rect>
-         <x>420</x>
-         <y>40</y>
-         <width>331</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="chooseLocalWeather">
-       <property name="geometry">
-        <rect>
-         <x>420</x>
-         <y>50</y>
-         <width>331</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the framework for getting environment data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_140">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>260</y>
-         <width>201</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Dome connection</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_60">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>280</y>
-         <width>331</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="chooseDome">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>290</y>
-         <width>331</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the framework for controlling a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="chooseCCD">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>50</y>
-         <width>331</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses which imaging application or framework should be used for modeling.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_143">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>20</y>
          <width>241</width>
          <height>21</height>
@@ -11947,15 +11826,15 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Imaging connection</string>
+        <string>INDI Devices</string>
        </property>
       </widget>
       <widget class="Line" name="line_50">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>40</y>
-         <width>331</width>
+         <width>361</width>
          <height>1</height>
         </rect>
        </property>
@@ -11971,25 +11850,12 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QComboBox" name="chooseSolver">
+      <widget class="Line" name="line_57">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>130</y>
-         <width>331</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses which astrometry / platesolving application or framework should be used for modeling.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_55">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>120</y>
-         <width>331</width>
+         <x>400</x>
+         <y>40</y>
+         <width>361</width>
          <height>1</height>
         </rect>
        </property>
@@ -12003,13 +11869,283 @@ manually</string>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_13">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Local Weather</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>80</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Global Weather</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_17">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Sky Quality</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="globalWeatherName">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>80</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="sqmName">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>110</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_19">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>140</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>CCD</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="ccdName">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>140</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_21">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>170</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Dome</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="domeName">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>170</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_149">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>100</y>
+         <x>400</x>
+         <y>20</y>
          <width>241</width>
          <height>21</height>
         </rect>
@@ -12025,112 +12161,49 @@ manually</string>
         <string>Astrometry connection</string>
        </property>
       </widget>
-      <widget class="QComboBox" name="chooseGlobalWeather">
+      <widget class="QLineEdit" name="localWeatherName">
        <property name="geometry">
         <rect>
-         <x>420</x>
-         <y>120</y>
-         <width>331</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the framework for getting environment data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_41">
-       <property name="geometry">
-        <rect>
-         <x>420</x>
-         <y>110</y>
-         <width>331</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_146">
-       <property name="geometry">
-        <rect>
-         <x>420</x>
-         <y>90</y>
-         <width>201</width>
+         <x>150</x>
+         <y>50</y>
+         <width>221</width>
          <height>21</height>
         </rect>
        </property>
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
-       <property name="text">
-        <string>Environment Global Weather</string>
+       <property name="mouseTracking">
+        <bool>false</bool>
        </property>
-      </widget>
-      <widget class="QComboBox" name="chooseSQM">
-       <property name="geometry">
-        <rect>
-         <x>420</x>
-         <y>190</y>
-         <width>331</width>
-         <height>31</height>
-        </rect>
+       <property name="acceptDrops">
+        <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the framework for getting environment data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string/>
        </property>
-      </widget>
-      <widget class="Line" name="line_47">
-       <property name="geometry">
-        <rect>
-         <x>420</x>
-         <y>180</y>
-         <width>331</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_198">
-       <property name="geometry">
-        <rect>
-         <x>420</x>
-         <y>160</y>
-         <width>201</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string>Environment Sky Quality</string>
+        <string/>
+       </property>
+       <property name="maxLength">
+        <number>50</number>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
        </property>
       </widget>
      </widget>
@@ -12141,7 +12214,7 @@ manually</string>
       <widget class="QLabel" name="label_mountMAC">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>65</y>
          <width>161</width>
          <height>21</height>
@@ -12159,9 +12232,9 @@ manually</string>
       <widget class="QLabel" name="label_mountIP">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>40</y>
-         <width>161</width>
+         <width>81</width>
          <height>21</height>
         </rect>
        </property>
@@ -12177,7 +12250,7 @@ manually</string>
       <widget class="QLineEdit" name="mountHost">
        <property name="geometry">
         <rect>
-         <x>100</x>
+         <x>120</x>
          <y>40</y>
          <width>251</width>
          <height>21</height>
@@ -12212,6 +12285,9 @@ manually</string>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="readOnly">
         <bool>false</bool>
        </property>
@@ -12219,7 +12295,7 @@ manually</string>
       <widget class="QLineEdit" name="mountMAC">
        <property name="geometry">
         <rect>
-         <x>200</x>
+         <x>220</x>
          <y>65</y>
          <width>151</width>
          <height>21</height>
@@ -12254,6 +12330,9 @@ manually</string>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="readOnly">
         <bool>false</bool>
        </property>
@@ -12261,7 +12340,7 @@ manually</string>
       <widget class="QLineEdit" name="le_remotePort">
        <property name="geometry">
         <rect>
-         <x>685</x>
+         <x>710</x>
          <y>220</y>
          <width>46</width>
          <height>21</height>
@@ -12299,6 +12378,9 @@ manually</string>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="readOnly">
         <bool>false</bool>
        </property>
@@ -12309,7 +12391,7 @@ manually</string>
       <widget class="QLabel" name="label_193">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>395</x>
          <y>160</y>
          <width>171</width>
          <height>21</height>
@@ -12329,7 +12411,7 @@ manually</string>
       <widget class="Line" name="line_49">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>395</x>
          <y>180</y>
          <width>361</width>
          <height>1</height>
@@ -12396,7 +12478,7 @@ manually</string>
       <widget class="QLabel" name="label_200">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>10</y>
          <width>291</width>
          <height>21</height>
@@ -12453,84 +12535,12 @@ manually</string>
         <string>Port Number</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkEnableINDI">
+      <widget class="QLineEdit" name="indiHost">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>120</x>
          <y>135</y>
-         <width>201</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable / disable the INDI subsystem.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Enable INDI client running</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_INDIServerPort">
-       <property name="geometry">
-        <rect>
-         <x>305</x>
-         <y>160</y>
-         <width>46</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>SizeHorCursor</cursorShape>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Port address of INDI server&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="inputMask">
-        <string/>
-       </property>
-       <property name="text">
-        <string>12345</string>
-       </property>
-       <property name="maxLength">
-        <number>5</number>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_INDIServerIP">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>160</y>
-         <width>191</width>
+         <width>251</width>
          <height>21</height>
         </rect>
        </property>
@@ -12563,6 +12573,9 @@ manually</string>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="readOnly">
         <bool>false</bool>
        </property>
@@ -12570,7 +12583,7 @@ manually</string>
       <widget class="QLabel" name="label_259">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>105</y>
          <width>211</width>
          <height>21</height>
@@ -12611,9 +12624,9 @@ manually</string>
       <widget class="QLabel" name="label_mountIP_3">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>160</y>
-         <width>51</width>
+         <x>10</x>
+         <y>135</y>
+         <width>81</width>
          <height>21</height>
         </rect>
        </property>
@@ -12629,7 +12642,7 @@ manually</string>
       <widget class="QLabel" name="label_260">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>395</x>
          <y>260</y>
          <width>281</width>
          <height>21</height>
@@ -12649,7 +12662,7 @@ manually</string>
       <widget class="Line" name="line_79">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>395</x>
          <y>280</y>
          <width>361</width>
          <height>1</height>
@@ -12667,28 +12680,10 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QLabel" name="label_mountIP_10">
-       <property name="geometry">
-        <rect>
-         <x>295</x>
-         <y>160</y>
-         <width>16</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>/</string>
-       </property>
-      </widget>
       <widget class="Line" name="line_48">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>400</x>
          <y>30</y>
          <width>361</width>
          <height>1</height>
@@ -12727,7 +12722,7 @@ manually</string>
       <widget class="QLineEdit" name="relayPassword">
        <property name="geometry">
         <rect>
-         <x>585</x>
+         <x>605</x>
          <y>120</y>
          <width>151</width>
          <height>21</height>
@@ -12762,6 +12757,9 @@ manually</string>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="readOnly">
         <bool>false</bool>
        </property>
@@ -12769,7 +12767,7 @@ manually</string>
       <widget class="QLineEdit" name="relayUser">
        <property name="geometry">
         <rect>
-         <x>585</x>
+         <x>605</x>
          <y>95</y>
          <width>151</width>
          <height>21</height>
@@ -12803,6 +12801,9 @@ manually</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
        </property>
        <property name="readOnly">
         <bool>false</bool>
@@ -12871,7 +12872,7 @@ manually</string>
       <widget class="QLineEdit" name="relayHost">
        <property name="geometry">
         <rect>
-         <x>485</x>
+         <x>505</x>
          <y>70</y>
          <width>251</width>
          <height>21</height>
@@ -12906,6 +12907,9 @@ manually</string>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="readOnly">
         <bool>false</bool>
        </property>
@@ -12913,7 +12917,7 @@ manually</string>
       <widget class="QLabel" name="label_141">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>400</x>
          <y>10</y>
          <width>306</width>
          <height>21</height>
@@ -12933,7 +12937,7 @@ manually</string>
       <widget class="QLineEdit" name="le_AstrometryAPIKey">
        <property name="geometry">
         <rect>
-         <x>480</x>
+         <x>475</x>
          <y>315</y>
          <width>161</width>
          <height>21</height>
@@ -12968,6 +12972,9 @@ manually</string>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="readOnly">
         <bool>false</bool>
        </property>
@@ -12975,7 +12982,7 @@ manually</string>
       <widget class="QLabel" name="label_mountIP_8">
        <property name="geometry">
         <rect>
-         <x>650</x>
+         <x>660</x>
          <y>315</y>
          <width>51</width>
          <height>21</height>
@@ -12993,7 +13000,7 @@ manually</string>
       <widget class="QLabel" name="label_mountIP_4">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>395</x>
          <y>290</y>
          <width>51</width>
          <height>21</height>
@@ -13011,7 +13018,7 @@ manually</string>
       <widget class="QLabel" name="label_mountIP_9">
        <property name="geometry">
         <rect>
-         <x>675</x>
+         <x>695</x>
          <y>290</y>
          <width>16</width>
          <height>21</height>
@@ -13029,9 +13036,9 @@ manually</string>
       <widget class="QLineEdit" name="le_astrometryTimeout">
        <property name="geometry">
         <rect>
-         <x>700</x>
+         <x>710</x>
          <y>315</y>
-         <width>31</width>
+         <width>46</width>
          <height>21</height>
         </rect>
        </property>
@@ -13064,6 +13071,9 @@ manually</string>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="readOnly">
         <bool>false</bool>
        </property>
@@ -13071,7 +13081,7 @@ manually</string>
       <widget class="QLineEdit" name="le_AstrometryPort">
        <property name="geometry">
         <rect>
-         <x>685</x>
+         <x>710</x>
          <y>290</y>
          <width>46</width>
          <height>21</height>
@@ -13109,6 +13119,9 @@ manually</string>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="readOnly">
         <bool>false</bool>
        </property>
@@ -13116,7 +13129,7 @@ manually</string>
       <widget class="QLabel" name="label_mountIP_13">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>395</x>
          <y>315</y>
          <width>51</width>
          <height>21</height>
@@ -13134,9 +13147,9 @@ manually</string>
       <widget class="QLineEdit" name="le_AstrometryHost">
        <property name="geometry">
         <rect>
-         <x>480</x>
+         <x>475</x>
          <y>290</y>
-         <width>191</width>
+         <width>211</width>
          <height>21</height>
         </rect>
        </property>
@@ -13168,6 +13181,9 @@ manually</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
        </property>
        <property name="readOnly">
         <bool>false</bool>
@@ -16340,9 +16356,7 @@ manually</string>
   <tabstop>relayButton7</tabstop>
   <tabstop>mountHost</tabstop>
   <tabstop>mountMAC</tabstop>
-  <tabstop>checkEnableINDI</tabstop>
-  <tabstop>le_INDIServerIP</tabstop>
-  <tabstop>le_INDIServerPort</tabstop>
+  <tabstop>indiHost</tabstop>
   <tabstop>le_AstrometryHost</tabstop>
   <tabstop>le_AstrometryPort</tabstop>
   <tabstop>le_AstrometryAPIKey</tabstop>
@@ -16353,10 +16367,6 @@ manually</string>
   <tabstop>relayPassword</tabstop>
   <tabstop>checkEnableRemoteAccess</tabstop>
   <tabstop>le_remotePort</tabstop>
-  <tabstop>chooseCCD</tabstop>
-  <tabstop>chooseSolver</tabstop>
-  <tabstop>chooseLocalWeather</tabstop>
-  <tabstop>chooseDome</tabstop>
   <tabstop>le_parkPos1Text</tabstop>
   <tabstop>le_azParkPos1</tabstop>
   <tabstop>le_altParkPos1</tabstop>

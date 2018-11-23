@@ -112,6 +112,10 @@ class MainWindow(widget.MWidget):
         self.ui.relayPassword.editingFinished.connect(self.relayPassword)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
+        self.ui.indiHost.editingFinished.connect(self.indiHost)
+        self.ui.localWeatherName.editingFinished.connect(self.localWeatherName)
+        self.ui.globalWeatherName.editingFinished.connect(self.globalWeatherName)
+        self.ui.sqmName.editingFinished.connect(self.sqmName)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -165,6 +169,10 @@ class MainWindow(widget.MWidget):
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
+        self.ui.indiHost.setText(config.get('indiHost', ''))
+        self.ui.globalWeatherName.setText(config.get('globalWeatherName', ''))
+        self.ui.localWeatherName.setText(config.get('localWeatherName', ''))
+        self.ui.sqmName.setText(config.get('sqmName', ''))
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
 
@@ -196,6 +204,10 @@ class MainWindow(widget.MWidget):
         config['relayPassword'] = self.ui.relayPassword.text()
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
+        config['indiHost'] = self.ui.indiHost.text()
+        config['localWeatherName'] = self.ui.localWeatherName.text()
+        config['globalWeatherName'] = self.ui.globalWeatherName.text()
+        config['sqmName'] = self.ui.sqmName.text()
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()
 
@@ -771,7 +783,7 @@ class MainWindow(widget.MWidget):
                                                   )
         if not configFilePath:
             return False
-            configFilePath = self.checkExtension(configFilePath, '.cfg')
+        configFilePath = self.checkExtension(configFilePath, '.cfg')
         suc = self.app.loadConfig(configFilePath=configFilePath)
         if suc:
             self.ui.profile.setText(name)
@@ -980,7 +992,6 @@ class MainWindow(widget.MWidget):
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.slewRate
-        actValue = True
         if actValue is None:
             msg.critical(self,
                          'Error Message',
@@ -1200,3 +1211,16 @@ class MainWindow(widget.MWidget):
 
     def mountMAC(self):
         self.app.mount.MAC = self.ui.mountMAC.text()
+
+    def indiHost(self):
+        host = self.ui.indiHost.text()
+        self.app.environment.client.host = host
+
+    def localWeatherName(self):
+        self.app.environment.localWeatherName = self.ui.localWeatherName.text()
+
+    def globalWeatherName(self):
+        self.app.environment.globalWeatherName = self.ui.globalWeatherName.text()
+
+    def sqmName(self):
+        self.app.environment.sqmName = self.ui.sqmName.text()

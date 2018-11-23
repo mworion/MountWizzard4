@@ -207,7 +207,7 @@ def main():
                                '[%(levelname)7s]'
                                '[%(filename)15s]'
                                '[%(lineno)5s]'
-                               '[%(funcName)25s]'
+                               '[%(funcName)20s]'
                                '[%(threadName)10s]'
                                ' > %(message)s',
                         handlers=[logging.FileHandler(name)],

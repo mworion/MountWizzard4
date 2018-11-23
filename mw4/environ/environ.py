@@ -31,9 +31,9 @@ class Environ(PyQt5.QtWidgets.QWidget):
 
         >>> fw = Environ(
         >>>                 host=host
-        >>>                 environName=environName
-        >>>                 sqmName=sqmName
-        >>>                 weatherName=weatherName
+        >>>                 localWeatherName='MBox'
+        >>>                 sqmName='SQM'
+        >>>                 globalWeatherName='OpenWeather'
         >>>              )
     """
 
@@ -45,33 +45,33 @@ class Environ(PyQt5.QtWidgets.QWidget):
 
     def __init__(self,
                  host=None,
-                 environName='',
+                 localWeatherName='',
                  sqmName='',
-                 weatherName='',
+                 globalWeatherName='',
                  ):
         super().__init__()
 
         self.client = indiBase.Client(host=host)
 
-        self.environName = environName
+        self.localWeatherName = localWeatherName
         self.sqmName = sqmName
-        self.weatherName = weatherName
+        self.globalWeatherName = globalWeatherName
 
-        self.environDevice = None
+        self.localWeatherDevice = None
         self.sqmDevice = None
-        self.weatherDevice = None
+        self.globalWeatherDevice = None
 
         # link signals
         self.client.signals.newDevice.connect(self.newDevice)
         self.client.signals.removeDevice.connect(self.removeDevice)
 
     @property
-    def environName(self):
-        return self._environName
+    def localWeatherName(self):
+        return self._localWeatherName
 
-    @environName.setter
-    def environName(self, value):
-        self._environName = value
+    @localWeatherName.setter
+    def localWeatherName(self, value):
+        self._localWeatherName = value
 
     @property
     def sqmName(self):
@@ -82,12 +82,12 @@ class Environ(PyQt5.QtWidgets.QWidget):
         self._sqmName = value
 
     @property
-    def weatherName(self):
-        return self._weatherName
+    def globalWeatherName(self):
+        return self._globalWeatherName
 
-    @weatherName.setter
-    def weatherName(self, value):
-        self._weatherName = value
+    @globalWeatherName.setter
+    def globalWeatherName(self, value):
+        self._globalWeatherName = value
 
     def newDevice(self, deviceName):
         """
@@ -98,12 +98,12 @@ class Environ(PyQt5.QtWidgets.QWidget):
 
         if not self.client.isServerConnected():
             return False
-        if deviceName == self.environName:
-            self.environDevice = self.client.getDevice(self.environName)
+        if deviceName == self.localWeatherName:
+            self.localWeatherDevice = self.client.getDevice(deviceName)
         elif deviceName == self.sqmName:
             self.sqmDevice = self.client.getDevice(self.sqmName)
-        elif deviceName == self.weatherName:
-            self.weatherDevice = self.client.getDevice(self.weatherName)
+        elif deviceName == self.globalWeatherName:
+            self.globalWeatherDevice = self.client.getDevice(deviceName)
 
     def removeDevice(self, deviceName):
         """
@@ -114,9 +114,9 @@ class Environ(PyQt5.QtWidgets.QWidget):
 
         if not self.client.isServerConnected():
             return False
-        if deviceName == self.environName:
-            self.environDevice = None
+        if deviceName == self.localWeatherName:
+            self.localWeatherDevice = None
         elif deviceName == self.sqmName:
             self.sqmDevice = None
-        elif deviceName == self.weatherName:
-            self.weatherDevice = None
+        elif deviceName == self.globalWeatherName:
+            self.globalWeatherDevice = None

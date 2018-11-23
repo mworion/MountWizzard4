@@ -5761,7 +5761,7 @@ manually</string>
       <double>0.000000000000000</double>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkUseBlindSolving">
+    <widget class="QCheckBox" name="checkOverwriteFITS">
      <property name="geometry">
       <rect>
        <x>270</x>
@@ -5782,7 +5782,7 @@ manually</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Use blind solving (SGPro)</string>
+      <string>Overwrite FITS data if present</string>
      </property>
      <property name="checked">
       <bool>false</bool>
@@ -11775,7 +11775,7 @@ manually</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -11785,7 +11785,7 @@ manually</string>
      </property>
      <widget class="QWidget" name="tab_12">
       <attribute name="title">
-       <string>Connections</string>
+       <string>Device Setup</string>
       </attribute>
       <widget class="Line" name="line_56">
        <property name="geometry">
@@ -11812,8 +11812,8 @@ manually</string>
       <widget class="QLabel" name="label_139">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>180</y>
+         <x>420</x>
+         <y>20</y>
          <width>201</width>
          <height>21</height>
         </rect>
@@ -11826,14 +11826,14 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Environment connection</string>
+        <string>Environment Local Weather</string>
        </property>
       </widget>
       <widget class="Line" name="line_23">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>200</y>
+         <x>420</x>
+         <y>40</y>
          <width>331</width>
          <height>1</height>
         </rect>
@@ -11850,11 +11850,11 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QComboBox" name="pd_chooseEnvironment">
+      <widget class="QComboBox" name="chooseLocalWeather">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>210</y>
+         <x>420</x>
+         <y>50</y>
          <width>331</width>
          <height>31</height>
         </rect>
@@ -11904,7 +11904,7 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QComboBox" name="pd_chooseDome">
+      <widget class="QComboBox" name="chooseDome">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -11917,7 +11917,7 @@ manually</string>
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the framework for controlling a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
-      <widget class="QComboBox" name="pd_chooseImaging">
+      <widget class="QComboBox" name="chooseCCD">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -11971,7 +11971,7 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QComboBox" name="pd_chooseAstrometry">
+      <widget class="QComboBox" name="chooseSolver">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -12025,240 +12025,24 @@ manually</string>
         <string>Astrometry connection</string>
        </property>
       </widget>
-     </widget>
-     <widget class="QWidget" name="ASCOM">
-      <attribute name="title">
-       <string>ASCOM / Win32 Drivers</string>
-      </attribute>
-      <widget class="QPushButton" name="btn_setupAscomDomeDriver">
+      <widget class="QComboBox" name="chooseGlobalWeather">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>95</y>
-         <width>101</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setup the ASCOM dome driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Setup</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_74">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>11</width>
-         <height>381</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_258">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>150</y>
-         <width>231</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>ASCOM observing conditions hub</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_setupAscomEnvironmentDriver">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>225</y>
-         <width>101</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setup the ASCOM Observing Conditions hub for environment data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Setup</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_261">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>20</y>
-         <width>231</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>ASCOM dome driver setup</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_ascomDomeDriverName">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>70</y>
+         <x>420</x>
+         <y>120</y>
          <width>331</width>
-         <height>21</height>
+         <height>31</height>
         </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text for relay&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>---</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the framework for getting environment data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_263">
+      <widget class="Line" name="line_41">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>45</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Driver Name</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_ascomEnvironmentDriverName">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>200</y>
-         <width>331</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text for relay&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>---</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_264">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>175</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Driver Name</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_81">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>40</y>
+         <x>420</x>
+         <y>110</y>
          <width>331</width>
          <height>1</height>
         </rect>
@@ -12275,11 +12059,44 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="Line" name="line_82">
+      <widget class="QLabel" name="label_146">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>170</y>
+         <x>420</x>
+         <y>90</y>
+         <width>201</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Environment Global Weather</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="chooseSQM">
+       <property name="geometry">
+        <rect>
+         <x>420</x>
+         <y>190</y>
+         <width>331</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the framework for getting environment data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="Line" name="line_47">
+       <property name="geometry">
+        <rect>
+         <x>420</x>
+         <y>180</y>
          <width>331</width>
          <height>1</height>
         </rect>
@@ -12296,12 +12113,12 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QLabel" name="label_262">
+      <widget class="QLabel" name="label_198">
        <property name="geometry">
         <rect>
-         <x>405</x>
-         <y>20</y>
-         <width>231</width>
+         <x>420</x>
+         <y>160</y>
+         <width>201</width>
          <height>21</height>
         </rect>
        </property>
@@ -12313,115 +12130,13 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>PinPoint settings</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_85">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>40</y>
-         <width>331</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_265">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>45</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Catalog:</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_pinpointCatalogue">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>70</y>
-         <width>331</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text for relay&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>---</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_selectCatalogue">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>95</y>
-         <width>101</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setup the ASCOM dome driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Choose</string>
+        <string>Environment Sky Quality</string>
        </property>
       </widget>
      </widget>
      <widget class="QWidget" name="tab_14">
       <attribute name="title">
-       <string>INDI / IP Drivers</string>
+       <string>IP Connections </string>
       </attribute>
       <widget class="QLabel" name="label_mountMAC">
        <property name="geometry">
@@ -12738,132 +12453,6 @@ manually</string>
         <string>Port Number</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_INDIStatus">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>240</y>
-         <width>251</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gives an indication if connection to indi server is established&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="maxLength">
-        <number>15</number>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_146">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>240</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>INDI Status</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_198">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>265</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>CCD</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_INDIEnvironment">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>315</y>
-         <width>251</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the driver name of Environment device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="maxLength">
-        <number>15</number>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
       <widget class="QCheckBox" name="checkEnableINDI">
        <property name="geometry">
         <rect>
@@ -12892,7 +12481,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>305</x>
-         <y>215</y>
+         <y>160</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -12940,7 +12529,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>215</y>
+         <y>160</y>
          <width>191</width>
          <height>21</height>
         </rect>
@@ -12978,24 +12567,6 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLabel" name="label_199">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>315</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Environment</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_259">
        <property name="geometry">
         <rect>
@@ -13014,51 +12585,6 @@ manually</string>
        </property>
        <property name="text">
         <string>Configuration of INDI cubsystem</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_INDICCD">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>265</y>
-         <width>251</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the driver name of CCD device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="maxLength">
-        <number>15</number>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
        </property>
       </widget>
       <widget class="Line" name="line_78">
@@ -13086,7 +12612,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>215</y>
+         <y>160</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -13098,69 +12624,6 @@ manually</string>
        </property>
        <property name="text">
         <string>IP / Port</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_211">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>340</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Dome</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_INDIDome">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>340</y>
-         <width>251</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the name of the Dome device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="maxLength">
-        <number>15</number>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
        </property>
       </widget>
       <widget class="QLabel" name="label_260">
@@ -13208,7 +12671,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>295</x>
-         <y>215</y>
+         <y>160</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -13707,117 +13170,6 @@ manually</string>
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_220">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>290</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Telescope</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_INDITelescope">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>290</y>
-         <width>251</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the name of the Dome device&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="maxLength">
-        <number>15</number>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkEnableINDIListening">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>160</y>
-         <width>201</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable / disable the INDI subsystem.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Enable INDI image listening</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkEnableINDISolving">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>185</y>
-         <width>256</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable / disable the INDI subsystem.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Enable INDI solving after image listening</string>
-       </property>
-       <property name="checked">
         <bool>false</bool>
        </property>
       </widget>
@@ -16991,10 +16343,6 @@ manually</string>
   <tabstop>checkEnableINDI</tabstop>
   <tabstop>le_INDIServerIP</tabstop>
   <tabstop>le_INDIServerPort</tabstop>
-  <tabstop>le_INDIStatus</tabstop>
-  <tabstop>le_INDICCD</tabstop>
-  <tabstop>le_INDIEnvironment</tabstop>
-  <tabstop>le_INDIDome</tabstop>
   <tabstop>le_AstrometryHost</tabstop>
   <tabstop>le_AstrometryPort</tabstop>
   <tabstop>le_AstrometryAPIKey</tabstop>
@@ -17005,13 +16353,10 @@ manually</string>
   <tabstop>relayPassword</tabstop>
   <tabstop>checkEnableRemoteAccess</tabstop>
   <tabstop>le_remotePort</tabstop>
-  <tabstop>pd_chooseImaging</tabstop>
-  <tabstop>pd_chooseAstrometry</tabstop>
-  <tabstop>pd_chooseEnvironment</tabstop>
-  <tabstop>pd_chooseDome</tabstop>
-  <tabstop>btn_setupAscomDomeDriver</tabstop>
-  <tabstop>btn_setupAscomEnvironmentDriver</tabstop>
-  <tabstop>btn_selectCatalogue</tabstop>
+  <tabstop>chooseCCD</tabstop>
+  <tabstop>chooseSolver</tabstop>
+  <tabstop>chooseLocalWeather</tabstop>
+  <tabstop>chooseDome</tabstop>
   <tabstop>le_parkPos1Text</tabstop>
   <tabstop>le_azParkPos1</tabstop>
   <tabstop>le_altParkPos1</tabstop>
@@ -17050,18 +16395,15 @@ manually</string>
   <tabstop>soundDomeSlewFinished</tabstop>
   <tabstop>soundMountAlert</tabstop>
   <tabstop>soundModelingFinished</tabstop>
-  <tabstop>le_pinpointCatalogue</tabstop>
   <tabstop>cameraConnected</tabstop>
   <tabstop>environmentConnected</tabstop>
   <tabstop>le_modelFullPointsFileName</tabstop>
   <tabstop>mountConnected</tabstop>
-  <tabstop>le_ascomEnvironmentDriverName</tabstop>
   <tabstop>le_modelInitialPointsFileName</tabstop>
   <tabstop>astrometryConnected</tabstop>
   <tabstop>settingsTabWidget</tabstop>
   <tabstop>domeConnected</tabstop>
   <tabstop>le_horizonPointsFileName</tabstop>
-  <tabstop>le_ascomDomeDriverName</tabstop>
   <tabstop>mainTabWidget</tabstop>
  </tabstops>
  <resources/>

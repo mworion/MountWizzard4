@@ -109,6 +109,25 @@ def test_loadConfig_ok3():
     assert 'reference' == test_app.config['profileName']
 
 
+def test_loadConfig_ok4():
+    # load config direct from another file
+    test_app.config = {}
+    reference = {
+        'profileName': 'reference',
+        'version': '4.0',
+        'filePath': config + '/reference.cfg'
+    }
+    with open(config + '/reference.cfg', 'w') as outfile:
+        json.dump(reference,
+                  outfile,
+                  sort_keys=True,
+                  indent=4)
+    suc = test_app.loadConfig(config + '/reference.cfg')
+    assert suc
+    assert '4.0' == test_app.config['version']
+    assert 'reference' == test_app.config['profileName']
+
+
 def test_loadConfig_not_ok1():
     # load existing basic config without filePath
     test_app.config = {}
@@ -239,6 +258,22 @@ def test_saveConfig_ok2():
     }
     suc = test_app.saveConfig()
     assert suc
+
+
+def test_saveConfig_ok3():
+    # save to new reference
+    test_app.config = {
+        'profileName': 'reference',
+        'version': '4.0',
+        'filePath': config + '/reference.cfg'
+    }
+    suc = test_app.saveConfig(config + '/reference.cfg')
+    assert suc
+    with open(config + '/config.cfg', 'r') as inFile:
+        a = json.load(inFile)
+        assert a['profileName'] == 'reference'
+        assert a['version'] == '4.0'
+        assert a['filePath'] == config + '/reference.cfg'
 
 
 def test_saveConfig_not_ok1():

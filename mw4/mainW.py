@@ -80,6 +80,7 @@ class MainWindow(widget.MWidget):
         self.app.relay.statusReady.connect(self.updateRelayGui)
         self.app.environment.client.signals.serverConnected.connect(self.indiConnected)
         self.app.environment.client.signals.serverDisconnected.connect(self.indiDisconnected)
+        self.app.environment.client.signals.newDevice.connect(self.newDevice)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -171,11 +172,19 @@ class MainWindow(widget.MWidget):
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
+
+        environ = self.app.environment
         self.ui.indiHost.setText(config.get('indiHost', ''))
-        self.indiHost()
+        environ.client.host = config.get('indiHost', '')
         self.ui.globalWeatherName.setText(config.get('globalWeatherName', ''))
+        environ.globalWeatherName = config.get('globalWeatherName', '')
         self.ui.localWeatherName.setText(config.get('localWeatherName', ''))
+        environ.localWeatherName = config.get('localWeatherName', '')
         self.ui.sqmName.setText(config.get('sqmName', ''))
+        environ.sqmName = config.get('sqmName', '')
+
+        self.ui.ccdName.setText(config.get('ccdName', ''))
+        self.ui.domeName.setText(config.get('domeName', ''))
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
 
@@ -211,6 +220,8 @@ class MainWindow(widget.MWidget):
         config['localWeatherName'] = self.ui.localWeatherName.text()
         config['globalWeatherName'] = self.ui.globalWeatherName.text()
         config['sqmName'] = self.ui.sqmName.text()
+        config['domeName'] = self.ui.domeName.text()
+        config['ccdName'] = self.ui.ccdName.text()
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()
 
@@ -1218,25 +1229,28 @@ class MainWindow(widget.MWidget):
     def indiHost(self):
         host = self.ui.indiHost.text()
         self.app.environment.client.host = host
-        self.app.environment.reload()
+        self.app.environment.restart()
 
     def localWeatherName(self):
         environ = self.app.environment
         environ.localWeatherName = self.ui.localWeatherName.text()
-        suc = environ.reload()
-        if suc:
-            pass
-        else:
-            pass
+        environ.restart()
 
     def globalWeatherName(self):
-        self.app.environment.globalWeatherName = self.ui.globalWeatherName.text()
+        environ = self.app.environment
+        environ.globalWeatherName = self.ui.globalWeatherName.text()
+        environ.restart()
 
     def sqmName(self):
-        self.app.environment.sqmName = self.ui.sqmName.text()
+        environ = self.app.environment
+        environ.sqmName = self.ui.sqmName.text()
+        environ.restart()
+
+    def newDevice(self, deviceName):
+        self.app.message.emit('INDI device [{0}] found'.format(deviceName), 0)
 
     def indiConnected(self):
-        self.app.message.emit('INDI Server connected', 0)
+        self.app.message.emit('INDI server connected', 0)
 
     def indiDisconnected(self):
-        self.app.message.emit('INDI Server disconnected', 0)
+        self.app.message.emit('INDI server disconnected', 0)

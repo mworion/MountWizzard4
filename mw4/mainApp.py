@@ -91,7 +91,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # starting cyclic polling of mount data
         self.mount.startTimers()
-        self.environment.client.connectServer()
+        self.environment.startCommunication()
 
     def quit(self):
         """

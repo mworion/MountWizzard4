@@ -81,6 +81,7 @@ class MainWindow(widget.MWidget):
         self.app.environment.client.signals.serverConnected.connect(self.indiConnected)
         self.app.environment.client.signals.serverDisconnected.connect(self.indiDisconnected)
         self.app.environment.client.signals.newDevice.connect(self.newDevice)
+        self.app.environment.client.signals.newProperty.connect(self.deviceConnected)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -332,6 +333,7 @@ class MainWindow(widget.MWidget):
         :return: success
         """
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+        self.deviceConnected()
         return True
 
     def updatePointGUI(self):
@@ -1229,22 +1231,22 @@ class MainWindow(widget.MWidget):
     def indiHost(self):
         host = self.ui.indiHost.text()
         self.app.environment.client.host = host
-        self.app.environment.restart()
+        self.app.environment.restartIndiServer()
 
     def localWeatherName(self):
         environ = self.app.environment
         environ.localWeatherName = self.ui.localWeatherName.text()
-        environ.restart()
+        environ.restartIndiServer()
 
     def globalWeatherName(self):
         environ = self.app.environment
         environ.globalWeatherName = self.ui.globalWeatherName.text()
-        environ.restart()
+        environ.restartIndiServer()
 
     def sqmName(self):
         environ = self.app.environment
         environ.sqmName = self.ui.sqmName.text()
-        environ.restart()
+        environ.restartIndiServer()
 
     def newDevice(self, deviceName):
         self.app.message.emit('INDI device [{0}] found'.format(deviceName), 0)
@@ -1254,3 +1256,10 @@ class MainWindow(widget.MWidget):
 
     def indiDisconnected(self):
         self.app.message.emit('INDI server disconnected', 0)
+
+    def deviceConnected(self):
+        environ = self.app.environment
+        deviceNameList = environ.client.getDevices()
+        for deviceName in deviceNameList:
+            device = environ.client.getDevice(deviceName)
+            status = device.getSwitch('CONNECTION')['CONNECT']

@@ -64,6 +64,7 @@ class Environment(PyQt5.QtWidgets.QWidget):
         # link signals
         self.client.signals.newDevice.connect(self.newDevice)
         self.client.signals.removeDevice.connect(self.removeDevice)
+        self.client.signals.newProperty.connect(self.connectDevice)
 
     @property
     def localWeatherName(self):
@@ -131,8 +132,20 @@ class Environment(PyQt5.QtWidgets.QWidget):
         if self.sqmName:
             self.client.watchDevice(self.sqmName)
 
-    def restart(self):
+    def restartIndiServer(self):
         if self.client.isServerConnected():
             self.client.disconnectServer()
         suc = self.client.connectServer()
         return suc
+
+    def connectDevice(self, deviceName, propertyName):
+        if propertyName != 'CONNECTION':
+            return
+        deviceList = [self.localWeatherName,
+                      self.globalWeatherName,
+                      self.sqmName
+                      ]
+        if deviceName in deviceList:
+            self.client.connectDevice(deviceName=deviceName)
+
+

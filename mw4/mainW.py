@@ -336,6 +336,8 @@ class MainWindow(widget.MWidget):
         """
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         self.deviceEnvironConnected()
+
+        self.app.environment.getFilteredRefracParams()
         return True
 
     def updatePointGUI(self):

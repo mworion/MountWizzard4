@@ -135,8 +135,7 @@ class Environment(PyQt5.QtWidgets.QWidget):
 
     def startCommunication(self):
         """
-        startCommunication adds a device on the watch list of the server and does a first
-        setup and config for the device. basically the update rates are set to 10 seconds.
+        startCommunication adds a device on the watch list of the server.
 
         :return: success of reconnecting to server
         """
@@ -230,6 +229,9 @@ class Environment(PyQt5.QtWidgets.QWidget):
         for global weather data as there is no dew point value available, it calculates
         it and stores it as value as well.
 
+        in addition it does a first setup and config for the device. basically the update
+        rates are set to 10 seconds if they are not on this level.
+
         :param deviceName:
         :param propertyName:
         :return:
@@ -245,6 +247,18 @@ class Environment(PyQt5.QtWidgets.QWidget):
             return False
 
         device = self.client.getDevice(deviceName)
+
+        # setting update parameters right if they are wrong
+        if deviceName in [self.globalWeatherName,
+                          self._localWeatherName,
+                          ]:
+            update = device.getNumber('WEATHER_UPDATE')
+            if update['PERIOD'] != 10:
+                update['PERIOD'] = 10
+                self.client.sendNewNumber(deviceName=deviceName,
+                                          propertyName='WEATHER_UPDATE',
+                                          elements=update)
+
         # calculate dew point globally
         if deviceName == self.globalWeatherName:
             temp = device.getNumber(propertyName).get('WEATHER_TEMPERATURE', 0)
@@ -255,6 +269,13 @@ class Environment(PyQt5.QtWidgets.QWidget):
         for element, value in device.getNumber(propertyName).items():
             data = deviceNameList[deviceName]
             data[element] = value
+
+            elArray = element + '_ARRAY'
+            if elArray not in data:
+                data[elArray] = np.full(100, value)
+            else:
+                data[elArray] = np.roll(data[elArray], 1)
+                data[elArray][0] = value
         return True
 
     def getFilteredRefracParams(self):
@@ -265,8 +286,11 @@ class Environment(PyQt5.QtWidgets.QWidget):
         :return:  temperature and pressure
         """
 
-        # now using the actual value
-        temp = self.localWeatherData['WEATHER_TEMPERATURE']
-        press = self.localWeatherData['WEATHER_BAROMETER']
+        isTemperature = 'WEATHER_TEMPERATURE_ARRAY' in self.localWeatherData
+        isPressure = 'WEATHER_BAROMETER_ARRAY' in self.localWeatherData
+        if isTemperature and isPressure:
+            temp = np.mean(self.localWeatherData['WEATHER_TEMPERATURE_ARRAY'][:10])
+            press = np.mean(self.localWeatherData['WEATHER_BAROMETER_ARRAY'][:10])
+            print(temp, press)
 
-        return temp, press
+        return

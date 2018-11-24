@@ -44,6 +44,9 @@ class Environment(PyQt5.QtWidgets.QWidget):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
+    # update rate to 10 seconds for setting indi server
+    UPDATE_RATE = 10
+
     def __init__(self,
                  host=None,
                  localWeatherName='',
@@ -98,6 +101,8 @@ class Environment(PyQt5.QtWidgets.QWidget):
 
     def newDevice(self, deviceName):
         """
+        newDevice is called whenever a new device entry is received in indi client. it
+        adds the device if the name fits to the given name in configuration.
 
         :param deviceName:
         :return:
@@ -129,6 +134,12 @@ class Environment(PyQt5.QtWidgets.QWidget):
             self.globalWeatherDevice = None
 
     def startCommunication(self):
+        """
+        startCommunication adds a device on the watch list of the server and does a first
+        setup and config for the device. basically the update rates are set to 10 seconds.
+
+        :return: success of reconnecting to server
+        """
         suc = self.client.connectServer()
         if self.localWeatherName:
             self.client.watchDevice(self.localWeatherName)
@@ -139,6 +150,12 @@ class Environment(PyQt5.QtWidgets.QWidget):
         return suc
 
     def reconnectIndiServer(self):
+        """
+        as it says.
+
+        :return: success of reconnecting to server
+        """
+
         if self.client.isServerConnected():
             self.client.disconnectServer()
         suc = self.startCommunication()

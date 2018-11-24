@@ -34,7 +34,7 @@ class Environment(PyQt5.QtWidgets.QWidget):
         >>>                  host=host
         >>>                  localWeatherName='MBox'
         >>>                  sqmName='SQM'
-        >>>                  globalWeatherName='OpenWeather'
+        >>>                  globalWeatherName='OpenWeatherMap'
         >>>                 )
     """
 
@@ -256,3 +256,17 @@ class Environment(PyQt5.QtWidgets.QWidget):
             data = deviceNameList[deviceName]
             data[element] = value
         return True
+
+    def getFilteredRefracParams(self):
+        """
+        getFilteredRefracParams filters local temperature and pressure with and moving
+        average filter over 5 minutes and returns the filtered values.
+
+        :return:  temperature and pressure
+        """
+
+        # now using the actual value
+        temp = self.localWeatherData['WEATHER_TEMPERATURE']
+        press = self.localWeatherData['WEATHER_BAROMETER']
+
+        return temp, press

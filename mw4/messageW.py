@@ -26,7 +26,7 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
 from mw4.gui import widget
-from mw4.gui import message_ui
+from mw4.gui.widgets import message_ui
 
 
 class MessageWindow(widget.MWidget):

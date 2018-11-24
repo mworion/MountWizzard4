@@ -29,7 +29,7 @@ import matplotlib.pyplot
 from mountcontrol import convert
 # local import
 from mw4.gui import widget
-from mw4.gui import main_ui
+from mw4.gui.widgets import main_ui
 
 
 class MainWindow(widget.MWidget):

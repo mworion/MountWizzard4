@@ -70,7 +70,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    )
         self.relay = kmRelay.KMRelay(host='192.168.2.15',
                                      )
-        self.environment = environ.Environment()
+        self.environment = environ.Environment(host='localhost')
         # managing data
         self.mount.signals.mountUp.connect(self.loadMountData)
 

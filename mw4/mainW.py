@@ -80,7 +80,7 @@ class MainWindow(widget.MWidget):
         self.app.relay.statusReady.connect(self.updateRelayGui)
         self.app.environment.client.signals.serverConnected.connect(self.indiEnvironConnected)
         self.app.environment.client.signals.serverDisconnected.connect(self.indiEnvironDisconnected)
-        self.app.environment.client.signals.newEnvironDevice.connect(self.newEnvironDevice)
+        self.app.environment.client.signals.newDevice.connect(self.newEnvironDevice)
         self.app.environment.client.signals.newProperty.connect(self.deviceEnvironConnected)
         self.app.environment.client.signals.removeDevice.connect(self.deviceEnvironConnected)
         self.app.environment.client.signals.newNumber.connect(self.updateEnvironGUI)
@@ -1256,8 +1256,8 @@ class MainWindow(widget.MWidget):
         self.app.message.emit('INDI server disconnected', 0)
 
     def deviceEnvironConnected(self):
-        uiList = {'local': self.ui.localWeatherName,
-                  'global': self.ui.globalWeatherName,
+        uiList = {'localWeather': self.ui.localWeatherName,
+                  'globalWeather': self.ui.globalWeatherName,
                   'sqm': self.ui.sqmName,
                   }
         statusColors = ['',
@@ -1271,7 +1271,7 @@ class MainWindow(widget.MWidget):
                                     statusColors[status],
                                     )
 
-    def updateEnvironGUI(self, deviceName, propertyName):
+    def updateEnvironGUI(self, deviceName):
         """
         updateEnvironGUI shows the data which is received through INDI client
 
@@ -1280,11 +1280,30 @@ class MainWindow(widget.MWidget):
 
         environ = self.app.environment
 
-        '''
-        if model.numberStars is not None:
-            self.ui.numberStars.setText(str(model.numberStars))
-            self.ui.numberStars1.setText(str(model.numberStars))
-        else:
-            self.ui.numberStars.setText('-')
-            self.ui.numberStars1.setText('-')
-        '''
+        if deviceName == environ.sqmName:
+            value = environ.sqmData.get('SKY_BRIGHTNESS', 0)
+            self.ui.SQR.setText('{0:5.2f}'.format(value))
+
+        if deviceName == environ.localWeatherName:
+            value = environ.localWeatherData.get('WEATHER_TEMPERATURE', 0)
+            self.ui.localTemp.setText('{0:4.1f}'.format(value))
+            value = environ.localWeatherData.get('WEATHER_BAROMETER', 0)
+            self.ui.localPress.setText('{0:5.1f}'.format(value))
+            value = environ.localWeatherData.get('WEATHER_DEWPOINT', 0)
+            self.ui.localDewPoint.setText('{0:4.1f}'.format(value))
+            value = environ.localWeatherData.get('WEATHER_HUMIDITY', 0)
+            self.ui.localHumidity.setText('{0:3.0f}'.format(value))
+
+        if deviceName == environ.globalWeatherName:
+            value = environ.globalWeatherData.get('WEATHER_TEMPERATURE', 0)
+            self.ui.globalTemp.setText('{0:4.1f}'.format(value))
+            value = environ.globalWeatherData.get('WEATHER_PRESSURE', 0)
+            self.ui.globalPress.setText('{0:5.1f}'.format(value))
+            value = environ.globalWeatherData.get('WEATHER_HUMIDITY', 0)
+            self.ui.globalHumidity.setText('{0:4.1f}'.format(value))
+            value = environ.globalWeatherData.get('WEATHER_CLOUD_COVER', 0)
+            self.ui.cloudCover.setText('{0:3.0f}'.format(value))
+            value = environ.globalWeatherData.get('WEATHER_WIND_SPEED', 0)
+            self.ui.windSpeed.setText('{0:3.0f}'.format(value))
+            value = environ.globalWeatherData.get('WEATHER_RAIN_HOUR', 0)
+            self.ui.rainRate.setText('{0:3.0f}'.format(value))

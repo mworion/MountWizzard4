@@ -61,12 +61,15 @@ class Environment(PyQt5.QtWidgets.QWidget):
         self.sqmDevice = None
         self.globalWeatherDevice = None
 
+        self.localWeatherData = {}
+        self.globalWeatherData = {}
+        self.sqmData = {}
+
         # link signals
-        self.client.signals.newEnvironDevice.connect(self.newDevice)
+        self.client.signals.newDevice.connect(self.newDevice)
         self.client.signals.removeDevice.connect(self.removeDevice)
         self.client.signals.newProperty.connect(self.connectDevice)
         self.client.signals.newNumber.connect(self.updateData)
-
 
     @property
     def localWeatherName(self):
@@ -151,8 +154,8 @@ class Environment(PyQt5.QtWidgets.QWidget):
             self.client.connectDevice(deviceName=deviceName)
 
     def getStatus(self):
-        deviceNameList = {'local': self.localWeatherName,
-                          'global': self.globalWeatherName,
+        deviceNameList = {'localWeather': self.localWeatherName,
+                          'globalWeather': self.globalWeatherName,
                           'sqm': self.sqmName,
                           }
 
@@ -168,4 +171,16 @@ class Environment(PyQt5.QtWidgets.QWidget):
                 yield deviceKey, 3
 
     def updateData(self, deviceName, propertyName):
-        print(deviceName, propertyName)
+        deviceNameList = {self.localWeatherName: self.localWeatherData,
+                          self.globalWeatherName: self.globalWeatherData,
+                          self.sqmName: self.sqmData,
+                          }
+        if deviceName not in deviceNameList.keys():
+            return False
+        if deviceName not in self.client.devices:
+            return False
+
+        device = self.client.getDevice(deviceName)
+        for element, value in device.getNumber(propertyName).items():
+            data = deviceNameList[deviceName]
+            data[element] = value

@@ -1260,15 +1260,10 @@ class MainWindow(widget.MWidget):
                   'globalWeather': self.ui.globalWeatherName,
                   'sqm': self.ui.sqmName,
                   }
-        statusColors = ['',
-                        'green',
-                        'yellow',
-                        'red',
-                        ]
-        for deviceKey, status in self.app.environment.getStatus():
+        for deviceKey, color in self.app.environment.getDeviceStatus():
             self.changeStyleDynamic(uiList[deviceKey],
                                     'color',
-                                    statusColors[status],
+                                    color,
                                     )
 
     def updateEnvironGUI(self, deviceName):

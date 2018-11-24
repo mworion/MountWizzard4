@@ -145,16 +145,33 @@ class Environment(PyQt5.QtWidgets.QWidget):
         return suc
 
     def connectDevice(self, deviceName, propertyName):
+        """
+        connectDevice is called when a new property is received and checks it against
+        property CONNECTION. if this is there, we could check the connection state of
+        a given device
+
+        :param deviceName:
+        :param propertyName:
+        :return: success if device could connect
+        """
         if propertyName != 'CONNECTION':
-            return
+            return False
         deviceList = [self.localWeatherName,
                       self.globalWeatherName,
                       self.sqmName
                       ]
         if deviceName in deviceList:
             self.client.connectDevice(deviceName=deviceName)
+        return True
 
-    def getStatus(self):
+    def getDeviceStatus(self):
+        """
+        getDeviceStatus is a generator for the connection state of the devices. it reads
+        the device status ot of the client and returns the deviceKey and the status value
+
+        :return: yields the device key and status
+        """
+
         deviceNameList = {'localWeather': self.localWeatherName,
                           'globalWeather': self.globalWeatherName,
                           'sqm': self.sqmName,
@@ -162,17 +179,17 @@ class Environment(PyQt5.QtWidgets.QWidget):
 
         for deviceKey, deviceName in deviceNameList.items():
             if deviceName not in self.client.devices:
-                yield deviceKey, 0
+                yield deviceKey, ''
                 continue
             device = self.client.getDevice(deviceName)
             status = device.getSwitch('CONNECTION')['CONNECT']
             if status:
-                yield deviceKey, 1
+                yield deviceKey, 'green'
             else:
-                yield deviceKey, 3
+                yield deviceKey, 'red'
 
     @staticmethod
-    def getDewPoint(t_air_c, rel_humidity):
+    def _getDewPoint(t_air_c, rel_humidity):
         """
         Compute the dew point in degrees Celsius
 
@@ -190,6 +207,17 @@ class Environment(PyQt5.QtWidgets.QWidget):
         return (B * alpha) / (A - alpha)
 
     def updateData(self, deviceName, propertyName):
+        """
+        updateData is called whenever a new number is received in client. it runs
+        through the device list and writes the number data to the according locations.
+        for global weather data as there is no dew point value available, it calculates
+        it and stores it as value as well.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
         deviceNameList = {self.localWeatherName: self.localWeatherData,
                           self.globalWeatherName: self.globalWeatherData,
                           self.sqmName: self.sqmData,
@@ -204,9 +232,10 @@ class Environment(PyQt5.QtWidgets.QWidget):
         if deviceName == self.globalWeatherName:
             temp = device.getNumber(propertyName).get('WEATHER_TEMPERATURE', 0)
             humidity = device.getNumber(propertyName).get('WEATHER_HUMIDITY', 0)
-            dewPoint = self.getDewPoint(temp, humidity)
+            dewPoint = self._getDewPoint(temp, humidity)
             self.globalWeatherData['WEATHER_DEWPOINT'] = dewPoint
 
         for element, value in device.getNumber(propertyName).items():
             data = deviceNameList[deviceName]
             data[element] = value
+        return True

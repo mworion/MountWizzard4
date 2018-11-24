@@ -109,7 +109,7 @@ def test_updateMountConnStat():
 
 
 def test_updateGuiCyclic():
-    suc = test_app.mainW.updateGuiCyclic()
+    suc = test_app.mainW.updateGUICyclic()
     assert suc
 
 #
@@ -512,12 +512,12 @@ def test_updateAlignGui_numberStars():
 
         value = '50'
         test_app.mount.model.numberStars = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '50' == test_app.mainW.ui.numberStars.text()
         assert '50' == test_app.mainW.ui.numberStars1.text()
         value = None
         test_app.mount.model.numberStars = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '-' == test_app.mainW.ui.numberStars.text()
         assert '-' == test_app.mainW.ui.numberStars1.text()
 
@@ -528,11 +528,11 @@ def test_updateAlignGui_altitudeError():
 
         value = '50'
         test_app.mount.model.altitudeError = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '50deg 00\' 00.0\"' == test_app.mainW.ui.altitudeError.text()
         value = None
         test_app.mount.model.altitudeError = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '-' == test_app.mainW.ui.altitudeError.text()
 
 
@@ -542,12 +542,12 @@ def test_updateAlignGui_errorRMS():
 
         value = '50'
         test_app.mount.model.errorRMS = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '50.0' == test_app.mainW.ui.errorRMS.text()
         assert '50.0' == test_app.mainW.ui.errorRMS1.text()
         value = None
         test_app.mount.model.errorRMS = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '-' == test_app.mainW.ui.errorRMS.text()
         assert '-' == test_app.mainW.ui.errorRMS1.text()
 
@@ -558,11 +558,11 @@ def test_updateAlignGui_azimuthError():
 
         value = '50'
         test_app.mount.model.azimuthError = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '50deg 00\' 00.0\"' == test_app.mainW.ui.azimuthError.text()
         value = None
         test_app.mount.model.azimuthError = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '-' == test_app.mainW.ui.azimuthError.text()
 
 
@@ -572,11 +572,11 @@ def test_updateAlignGui_terms():
 
         value = '50'
         test_app.mount.model.terms = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '50.0' == test_app.mainW.ui.terms.text()
         value = None
         test_app.mount.model.terms = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '-' == test_app.mainW.ui.terms.text()
 
 
@@ -586,11 +586,11 @@ def test_updateAlignGui_orthoError():
 
         value = '50'
         test_app.mount.model.orthoError = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '50deg 00\' 00.0\"' == test_app.mainW.ui.orthoError.text()
         value = None
         test_app.mount.model.orthoError = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '-' == test_app.mainW.ui.orthoError.text()
 
 
@@ -600,11 +600,11 @@ def test_updateAlignGui_positionAngle():
 
         value = '50'
         test_app.mount.model.positionAngle = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert ' 50.0' == test_app.mainW.ui.positionAngle.text()
         value = None
         test_app.mount.model.positionAngle = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '-' == test_app.mainW.ui.positionAngle.text()
 
 
@@ -614,11 +614,11 @@ def test_updateAlignGui_polarError():
 
         value = '50'
         test_app.mount.model.polarError = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '50deg 00\' 00.0\"' == test_app.mainW.ui.polarError.text()
         value = None
         test_app.mount.model.polarError = value
-        test_app.mainW.updateAlignGui()
+        test_app.mainW.updateAlignGUI()
         assert '-' == test_app.mainW.ui.polarError.text()
 
 #

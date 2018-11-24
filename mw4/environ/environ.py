@@ -62,9 +62,11 @@ class Environment(PyQt5.QtWidgets.QWidget):
         self.globalWeatherDevice = None
 
         # link signals
-        self.client.signals.newDevice.connect(self.newDevice)
+        self.client.signals.newEnvironDevice.connect(self.newDevice)
         self.client.signals.removeDevice.connect(self.removeDevice)
         self.client.signals.newProperty.connect(self.connectDevice)
+        self.client.signals.newNumber.connect(self.updateData)
+
 
     @property
     def localWeatherName(self):
@@ -123,19 +125,19 @@ class Environment(PyQt5.QtWidgets.QWidget):
             self.globalWeatherDevice = None
 
     def startCommunication(self):
-        self.client.connectServer()
-
+        suc = self.client.connectServer()
         if self.localWeatherName:
             self.client.watchDevice(self.localWeatherName)
         if self.globalWeatherName:
             self.client.watchDevice(self.globalWeatherName)
         if self.sqmName:
             self.client.watchDevice(self.sqmName)
+        return suc
 
-    def restartIndiServer(self):
+    def reconnectIndiServer(self):
         if self.client.isServerConnected():
             self.client.disconnectServer()
-        suc = self.client.connectServer()
+        suc = self.startCommunication()
         return suc
 
     def connectDevice(self, deviceName, propertyName):
@@ -148,4 +150,22 @@ class Environment(PyQt5.QtWidgets.QWidget):
         if deviceName in deviceList:
             self.client.connectDevice(deviceName=deviceName)
 
+    def getStatus(self):
+        deviceNameList = {'local': self.localWeatherName,
+                          'global': self.globalWeatherName,
+                          'sqm': self.sqmName,
+                          }
 
+        for deviceKey, deviceName in deviceNameList.items():
+            if deviceName not in self.client.devices:
+                yield deviceKey, 0
+                continue
+            device = self.client.getDevice(deviceName)
+            status = device.getSwitch('CONNECTION')['CONNECT']
+            if status:
+                yield deviceKey, 1
+            else:
+                yield deviceKey, 3
+
+    def updateData(self, deviceName, propertyName):
+        print(deviceName, propertyName)

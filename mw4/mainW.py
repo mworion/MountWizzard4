@@ -71,17 +71,19 @@ class MainWindow(widget.MWidget):
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updatePointGUI)
         self.app.mount.signals.settDone.connect(self.updateSettingGUI)
-        self.app.mount.signals.alignDone.connect(self.updateAlignGui)
+        self.app.mount.signals.alignDone.connect(self.updateAlignGUI)
         self.app.mount.signals.alignDone.connect(self.showModelPolar)
         self.app.mount.signals.namesDone.connect(self.setNameList)
         self.app.mount.signals.fwDone.connect(self.updateFwGui)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
-        self.app.mount.signals.mountClear.connect(self.clearMountGui)
+        self.app.mount.signals.mountClear.connect(self.clearMountGUI)
         self.app.relay.statusReady.connect(self.updateRelayGui)
-        self.app.environment.client.signals.serverConnected.connect(self.indiConnected)
-        self.app.environment.client.signals.serverDisconnected.connect(self.indiDisconnected)
-        self.app.environment.client.signals.newDevice.connect(self.newDevice)
-        self.app.environment.client.signals.newProperty.connect(self.deviceConnected)
+        self.app.environment.client.signals.serverConnected.connect(self.indiEnvironConnected)
+        self.app.environment.client.signals.serverDisconnected.connect(self.indiEnvironDisconnected)
+        self.app.environment.client.signals.newEnvironDevice.connect(self.newEnvironDevice)
+        self.app.environment.client.signals.newProperty.connect(self.deviceEnvironConnected)
+        self.app.environment.client.signals.removeDevice.connect(self.deviceEnvironConnected)
+        self.app.environment.client.signals.newNumber.connect(self.updateEnvironGUI)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -120,6 +122,7 @@ class MainWindow(widget.MWidget):
         self.ui.localWeatherName.editingFinished.connect(self.localWeatherName)
         self.ui.globalWeatherName.editingFinished.connect(self.globalWeatherName)
         self.ui.sqmName.editingFinished.connect(self.sqmName)
+        self.ui.reconnectIndiServer.clicked.connect(self.app.environment.reconnectIndiServer)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -129,7 +132,7 @@ class MainWindow(widget.MWidget):
 
         self.timerGui = PyQt5.QtCore.QTimer()
         self.timerGui.setSingleShot(False)
-        self.timerGui.timeout.connect(self.updateGuiCyclic)
+        self.timerGui.timeout.connect(self.updateGUICyclic)
         self.timerGui.start(self.CYCLE_GUI)
 
     def initConfig(self):
@@ -183,7 +186,6 @@ class MainWindow(widget.MWidget):
         environ.localWeatherName = config.get('localWeatherName', '')
         self.ui.sqmName.setText(config.get('sqmName', ''))
         environ.sqmName = config.get('sqmName', '')
-
         self.ui.ccdName.setText(config.get('ccdName', ''))
         self.ui.domeName.setText(config.get('domeName', ''))
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
@@ -304,13 +306,13 @@ class MainWindow(widget.MWidget):
             self.app.message.emit('Mount cannot be shutdown', 2)
             return False
 
-    def clearMountGui(self):
+    def clearMountGUI(self):
         """
-        clearMountGui rewrites the gui in case of a special event needed for clearing up
+        clearMountGUI rewrites the gui in case of a special event needed for clearing up
 
         :return: nothing
         """
-        self.updateAlignGui()
+        self.updateAlignGUI()
         self.updateFwGui()
         self.updatePointGUI()
         self.updateSettingGUI()
@@ -325,15 +327,15 @@ class MainWindow(widget.MWidget):
             self.changeStyleDynamic(ui, 'color', 'red')
         return True
 
-    def updateGuiCyclic(self):
+    def updateGUICyclic(self):
         """
-        updateGuiCyclic update gui elements on regular bases (actually 1 second) for items,
+        updateGUICyclic update gui elements on regular bases (actually 1 second) for items,
         which are not events based.
 
         :return: success
         """
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-        self.deviceConnected()
+        self.deviceEnvironConnected()
         return True
 
     def updatePointGUI(self):
@@ -577,9 +579,9 @@ class MainWindow(widget.MWidget):
         self.ui.nameList.update()
         return True
 
-    def updateAlignGui(self):
+    def updateAlignGUI(self):
         """
-        updateAlignGui shows the data which is received through the getain command. this is
+        updateAlignGUI shows the data which is received through the getain command. this is
         mainly polar and ortho errors as well as basic model data.
 
         :return:    True if ok for testing
@@ -1231,35 +1233,58 @@ class MainWindow(widget.MWidget):
     def indiHost(self):
         host = self.ui.indiHost.text()
         self.app.environment.client.host = host
-        self.app.environment.restartIndiServer()
 
     def localWeatherName(self):
         environ = self.app.environment
         environ.localWeatherName = self.ui.localWeatherName.text()
-        environ.restartIndiServer()
 
     def globalWeatherName(self):
         environ = self.app.environment
         environ.globalWeatherName = self.ui.globalWeatherName.text()
-        environ.restartIndiServer()
 
     def sqmName(self):
         environ = self.app.environment
         environ.sqmName = self.ui.sqmName.text()
-        environ.restartIndiServer()
 
-    def newDevice(self, deviceName):
+    def newEnvironDevice(self, deviceName):
         self.app.message.emit('INDI device [{0}] found'.format(deviceName), 0)
 
-    def indiConnected(self):
+    def indiEnvironConnected(self):
         self.app.message.emit('INDI server connected', 0)
 
-    def indiDisconnected(self):
+    def indiEnvironDisconnected(self):
         self.app.message.emit('INDI server disconnected', 0)
 
-    def deviceConnected(self):
+    def deviceEnvironConnected(self):
+        uiList = {'local': self.ui.localWeatherName,
+                  'global': self.ui.globalWeatherName,
+                  'sqm': self.ui.sqmName,
+                  }
+        statusColors = ['',
+                        'green',
+                        'yellow',
+                        'red',
+                        ]
+        for deviceKey, status in self.app.environment.getStatus():
+            self.changeStyleDynamic(uiList[deviceKey],
+                                    'color',
+                                    statusColors[status],
+                                    )
+
+    def updateEnvironGUI(self, deviceName, propertyName):
+        """
+        updateEnvironGUI shows the data which is received through INDI client
+
+        :return:    True if ok for testing
+        """
+
         environ = self.app.environment
-        deviceNameList = environ.client.getDevices()
-        for deviceName in deviceNameList:
-            device = environ.client.getDevice(deviceName)
-            status = device.getSwitch('CONNECTION')['CONNECT']
+
+        '''
+        if model.numberStars is not None:
+            self.ui.numberStars.setText(str(model.numberStars))
+            self.ui.numberStars1.setText(str(model.numberStars))
+        else:
+            self.ui.numberStars.setText('-')
+            self.ui.numberStars1.setText('-')
+        '''

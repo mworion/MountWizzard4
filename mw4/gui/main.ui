@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -1267,6 +1267,9 @@
      <property name="mouseTracking">
       <bool>false</bool>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="acceptDrops">
       <bool>false</bool>
      </property>
@@ -1486,6 +1489,9 @@
      <property name="mouseTracking">
       <bool>false</bool>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="acceptDrops">
       <bool>false</bool>
      </property>
@@ -1548,6 +1554,9 @@
      </property>
      <property name="mouseTracking">
       <bool>false</bool>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="acceptDrops">
       <bool>false</bool>
@@ -1797,6 +1806,9 @@
      </property>
      <property name="mouseTracking">
       <bool>false</bool>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="acceptDrops">
       <bool>false</bool>
@@ -3350,6 +3362,9 @@ manually</string>
      <property name="mouseTracking">
       <bool>false</bool>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="acceptDrops">
       <bool>false</bool>
      </property>
@@ -3427,6 +3442,9 @@ manually</string>
      </property>
      <property name="mouseTracking">
       <bool>false</bool>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="acceptDrops">
       <bool>false</bool>
@@ -3509,6 +3527,9 @@ manually</string>
      <property name="mouseTracking">
       <bool>false</bool>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="acceptDrops">
       <bool>false</bool>
      </property>
@@ -3553,6 +3574,9 @@ manually</string>
      </property>
      <property name="mouseTracking">
       <bool>false</bool>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="acceptDrops">
       <bool>false</bool>
@@ -4216,6 +4240,9 @@ manually</string>
      <property name="mouseTracking">
       <bool>false</bool>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="acceptDrops">
       <bool>false</bool>
      </property>
@@ -4843,6 +4870,9 @@ manually</string>
      </property>
      <property name="mouseTracking">
       <bool>false</bool>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="acceptDrops">
       <bool>false</bool>
@@ -7222,6 +7252,9 @@ manually</string>
      </property>
      <property name="mouseTracking">
       <bool>false</bool>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="acceptDrops">
       <bool>false</bool>
@@ -16240,6 +16273,9 @@ manually</string>
    </property>
    <property name="mouseTracking">
     <bool>false</bool>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
    </property>
    <property name="acceptDrops">
     <bool>false</bool>

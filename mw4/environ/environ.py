@@ -21,6 +21,7 @@
 import logging
 # external packages
 import PyQt5
+import numpy as np
 from indibase import indiBase
 # local imports
 
@@ -170,6 +171,24 @@ class Environment(PyQt5.QtWidgets.QWidget):
             else:
                 yield deviceKey, 3
 
+    @staticmethod
+    def getDewPoint(t_air_c, rel_humidity):
+        """
+        Compute the dew point in degrees Celsius
+
+        :param t_air_c: current ambient temperature in degrees Celsius
+        :type t_air_c: float
+        :param rel_humidity: relative humidity in %
+        :type rel_humidity: float
+        :return: the dew point in degrees Celsius
+        :rtype: float
+        """
+
+        A = 17.27
+        B = 237.7
+        alpha = ((A * t_air_c) / (B + t_air_c)) + np.log(rel_humidity / 100.0)
+        return (B * alpha) / (A - alpha)
+
     def updateData(self, deviceName, propertyName):
         deviceNameList = {self.localWeatherName: self.localWeatherData,
                           self.globalWeatherName: self.globalWeatherData,
@@ -181,6 +200,13 @@ class Environment(PyQt5.QtWidgets.QWidget):
             return False
 
         device = self.client.getDevice(deviceName)
+        # calculate dew point globally
+        if deviceName == self.globalWeatherName:
+            temp = device.getNumber(propertyName).get('WEATHER_TEMPERATURE', 0)
+            humidity = device.getNumber(propertyName).get('WEATHER_HUMIDITY', 0)
+            dewPoint = self.getDewPoint(temp, humidity)
+            self.globalWeatherData['WEATHER_DEWPOINT'] = dewPoint
+
         for element, value in device.getNumber(propertyName).items():
             data = deviceNameList[deviceName]
             data[element] = value

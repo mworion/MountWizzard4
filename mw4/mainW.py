@@ -1258,12 +1258,12 @@ class MainWindow(widget.MWidget):
         self.app.message.emit('INDI server disconnected', 0)
 
     def deviceEnvironConnected(self):
-        uiList = {'localWeather': self.ui.localWeatherName,
-                  'globalWeather': self.ui.globalWeatherName,
+        uiList = {'local': self.ui.localWeatherName,
+                  'global': self.ui.globalWeatherName,
                   'sqm': self.ui.sqmName,
                   }
-        for deviceKey, color in self.app.environment.getDeviceStatus():
-            self.changeStyleDynamic(uiList[deviceKey],
+        for wType, color in self.app.environment.getDeviceStatus():
+            self.changeStyleDynamic(uiList[wType],
                                     'color',
                                     color,
                                     )
@@ -1275,36 +1275,36 @@ class MainWindow(widget.MWidget):
         :return:    True if ok for testing
         """
 
-        environ = self.app.environment
+        envDev = self.app.environment.wDevice
 
-        if deviceName == environ.sqmName:
-            value = environ.sqmData.get('SKY_BRIGHTNESS', 0)
+        if deviceName == envDev['sqm']['name']:
+            value = envDev['sqm']['data'].get('SKY_BRIGHTNESS', 0)
             self.ui.SQR.setText('{0:5.2f}'.format(value))
 
-        if deviceName == environ.localWeatherName:
-            value = environ.localWeatherData.get('WEATHER_TEMPERATURE', 0)
+        if deviceName == envDev['local']['name']:
+            value = envDev['local']['data'].get('WEATHER_TEMPERATURE', 0)
             self.ui.localTemp.setText('{0:4.1f}'.format(value))
-            value = environ.localWeatherData.get('WEATHER_BAROMETER', 0)
+            value = envDev['local']['data'].get('WEATHER_BAROMETER', 0)
             self.ui.localPress.setText('{0:5.1f}'.format(value))
-            value = environ.localWeatherData.get('WEATHER_DEWPOINT', 0)
+            value = envDev['local']['data'].get('WEATHER_DEWPOINT', 0)
             self.ui.localDewPoint.setText('{0:4.1f}'.format(value))
-            value = environ.localWeatherData.get('WEATHER_HUMIDITY', 0)
+            value = envDev['local']['data'].get('WEATHER_HUMIDITY', 0)
             self.ui.localHumidity.setText('{0:3.0f}'.format(value))
 
-        if deviceName == environ.globalWeatherName:
-            value = environ.globalWeatherData.get('WEATHER_TEMPERATURE', 0)
+        if deviceName == envDev['global']['name']:
+            value = envDev['global']['data'].get('WEATHER_TEMPERATURE', 0)
             self.ui.globalTemp.setText('{0:4.1f}'.format(value))
-            value = environ.globalWeatherData.get('WEATHER_PRESSURE', 0)
+            value = envDev['global']['data'].get('WEATHER_PRESSURE', 0)
             self.ui.globalPress.setText('{0:5.1f}'.format(value))
-            value = environ.globalWeatherData.get('WEATHER_DEWPOINT', 0)
+            value = envDev['global']['data'].get('WEATHER_DEWPOINT', 0)
             self.ui.globalDewPoint.setText('{0:4.1f}'.format(value))
-            value = environ.globalWeatherData.get('WEATHER_HUMIDITY', 0)
+            value = envDev['global']['data'].get('WEATHER_HUMIDITY', 0)
             self.ui.globalHumidity.setText('{0:4.1f}'.format(value))
-            value = environ.globalWeatherData.get('WEATHER_CLOUD_COVER', 0)
+            value = envDev['global']['data'].get('WEATHER_CLOUD_COVER', 0)
             self.ui.cloudCover.setText('{0:3.0f}'.format(value))
-            value = environ.globalWeatherData.get('WEATHER_WIND_SPEED', 0)
+            value = envDev['global']['data'].get('WEATHER_WIND_SPEED', 0)
             self.ui.windSpeed.setText('{0:3.0f}'.format(value))
-            value = environ.globalWeatherData.get('WEATHER_RAIN_HOUR', 0)
+            value = envDev['global']['data'].get('WEATHER_RAIN_HOUR', 0)
             self.ui.rainVol.setText('{0:3.0f}'.format(value))
-            value = environ.globalWeatherData.get('WEATHER_SNOW_HOUR', 0)
+            value = envDev['global']['data'].get('WEATHER_SNOW_HOUR', 0)
             self.ui.snowVol.setText('{0:3.0f}'.format(value))

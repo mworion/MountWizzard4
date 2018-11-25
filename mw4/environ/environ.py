@@ -57,47 +57,50 @@ class Environment(PyQt5.QtWidgets.QWidget):
 
         self.client = indiBase.Client(host=host)
 
-        self.localWeatherName = localWeatherName
-        self.sqmName = sqmName
-        self.globalWeatherName = globalWeatherName
-
-        self.localWeatherDevice = None
-        self.sqmDevice = None
-        self.globalWeatherDevice = None
-
-        self.localWeatherData = {}
-        self.globalWeatherData = {}
-        self.sqmData = {}
+        self.wDevice = {'local': {'name': localWeatherName,
+                                  'data': {},
+                                  'device': None,
+                                  },
+                        'global': {'name': globalWeatherName,
+                                   'data': {},
+                                   'device': None,
+                                   },
+                        'sqm': {'name': sqmName,
+                                'data': {},
+                                'device': None,
+                                },
+                        }
 
         # link signals
         self.client.signals.newDevice.connect(self.newDevice)
         self.client.signals.removeDevice.connect(self.removeDevice)
         self.client.signals.newProperty.connect(self.connectDevice)
         self.client.signals.newNumber.connect(self.updateData)
+        self.client.signals.newNumber.connect(self._setUpdateRate)
 
     @property
     def localWeatherName(self):
-        return self._localWeatherName
+        return self.wDevice['local']['name']
 
     @localWeatherName.setter
     def localWeatherName(self, value):
-        self._localWeatherName = value
+        self.wDevice['local']['name'] = value
 
     @property
     def sqmName(self):
-        return self._sqmName
+        return self.wDevice['sqm']['name']
 
     @sqmName.setter
     def sqmName(self, value):
-        self._sqmName = value
+        self.wDevice['sqm']['name'] = value
 
     @property
     def globalWeatherName(self):
-        return self._globalWeatherName
+        return self.wDevice['global']['name']
 
     @globalWeatherName.setter
     def globalWeatherName(self, value):
-        self._globalWeatherName = value
+        self.wDevice['global']['name'] = value
 
     def newDevice(self, deviceName):
         """
@@ -110,15 +113,16 @@ class Environment(PyQt5.QtWidgets.QWidget):
 
         if not self.client.isServerConnected():
             return False
-        if deviceName == self.localWeatherName:
-            self.localWeatherDevice = self.client.getDevice(deviceName)
-        elif deviceName == self.sqmName:
-            self.sqmDevice = self.client.getDevice(self.sqmName)
-        elif deviceName == self.globalWeatherName:
-            self.globalWeatherDevice = self.client.getDevice(deviceName)
+
+        for wType in self.wDevice:
+            if deviceName != self.wDevice[wType]['name']:
+                continue
+            self.wDevice[wType]['device'] = self.client.getDevice(deviceName)
 
     def removeDevice(self, deviceName):
         """
+        removeDevice is called whenever a device is removed from indi client. it sets
+        the device entry to None
 
         :param deviceName:
         :return:
@@ -126,12 +130,11 @@ class Environment(PyQt5.QtWidgets.QWidget):
 
         if not self.client.isServerConnected():
             return False
-        if deviceName == self.localWeatherName:
-            self.localWeatherDevice = None
-        elif deviceName == self.sqmName:
-            self.sqmDevice = None
-        elif deviceName == self.globalWeatherName:
-            self.globalWeatherDevice = None
+
+        for wType in self.wDevice:
+            if deviceName != self.wDevice[wType]['name']:
+                continue
+            self.wDevice[wType]['device'] = None
 
     def startCommunication(self):
         """
@@ -139,13 +142,12 @@ class Environment(PyQt5.QtWidgets.QWidget):
 
         :return: success of reconnecting to server
         """
+
         suc = self.client.connectServer()
-        if self.localWeatherName:
-            self.client.watchDevice(self.localWeatherName)
-        if self.globalWeatherName:
-            self.client.watchDevice(self.globalWeatherName)
-        if self.sqmName:
-            self.client.watchDevice(self.sqmName)
+        for wType in self.wDevice:
+            if not self.wDevice[wType]['name']:
+                continue
+            self.client.watchDevice(self.wDevice[wType]['name'])
         return suc
 
     def reconnectIndiServer(self):
@@ -172,11 +174,10 @@ class Environment(PyQt5.QtWidgets.QWidget):
         """
         if propertyName != 'CONNECTION':
             return False
-        deviceList = [self.localWeatherName,
-                      self.globalWeatherName,
-                      self.sqmName
-                      ]
-        if deviceName in deviceList:
+
+        for wType in self.wDevice:
+            if deviceName != self.wDevice[wType]['name']:
+                continue
             self.client.connectDevice(deviceName=deviceName)
         return True
 
@@ -188,21 +189,41 @@ class Environment(PyQt5.QtWidgets.QWidget):
         :return: yields the device key and status
         """
 
-        deviceNameList = {'localWeather': self.localWeatherName,
-                          'globalWeather': self.globalWeatherName,
-                          'sqm': self.sqmName,
-                          }
-
-        for deviceKey, deviceName in deviceNameList.items():
-            if deviceName not in self.client.devices:
-                yield deviceKey, ''
+        for wType in self.wDevice:
+            device = self.wDevice[wType]['device']
+            if device is None:
+                yield wType, ''
                 continue
-            device = self.client.getDevice(deviceName)
             status = device.getSwitch('CONNECTION')['CONNECT']
             if status:
-                yield deviceKey, 'green'
+                yield wType, 'green'
             else:
-                yield deviceKey, 'red'
+                yield wType, 'red'
+
+    def _setUpdateRate(self, deviceName):
+        """
+        _setUpdateRate corrects the update rate of weather devices to get an defined
+        setting regardless, what is setup in server side.
+
+        :param deviceName:
+        :return:    success for test purpose
+        """
+
+        for wType in self.wDevice:
+            if deviceName != self.wDevice[wType]['name']:
+                continue
+            device = self.wDevice[wType]['device']
+            if device is None:
+                return False
+            if deviceName not in ['local', 'global']:
+                continue
+            update = device.getNumber('WEATHER_UPDATE')
+            if update['PERIOD'] != 10:
+                update['PERIOD'] = 10
+                self.client.sendNewNumber(deviceName=deviceName,
+                                          propertyName='WEATHER_UPDATE',
+                                          elements=update)
+        return True
 
     @staticmethod
     def _getDewPoint(t_air_c, rel_humidity):
@@ -237,45 +258,29 @@ class Environment(PyQt5.QtWidgets.QWidget):
         :return:
         """
 
-        deviceNameList = {self.localWeatherName: self.localWeatherData,
-                          self.globalWeatherName: self.globalWeatherData,
-                          self.sqmName: self.sqmData,
-                          }
-        if deviceName not in deviceNameList.keys():
-            return False
-        if deviceName not in self.client.devices:
-            return False
-
-        device = self.client.getDevice(deviceName)
-
-        # setting update parameters right if they are wrong
-        if deviceName in [self.globalWeatherName,
-                          self._localWeatherName,
-                          ]:
-            update = device.getNumber('WEATHER_UPDATE')
-            if update['PERIOD'] != 10:
-                update['PERIOD'] = 10
-                self.client.sendNewNumber(deviceName=deviceName,
-                                          propertyName='WEATHER_UPDATE',
-                                          elements=update)
+        for wType in self.wDevice:
+            device = self.client.getDevice(deviceName)
+            if device is None:
+                return False
+            if deviceName != self.wDevice[wType]['name']:
+                continue
+            for element, value in device.getNumber(propertyName).items():
+                data = self.wDevice[wType]['data']
+                data[element] = value
+                elArray = element + '_ARRAY'
+                if elArray not in data:
+                    data[elArray] = np.full(100, value)
+                else:
+                    data[elArray] = np.roll(data[elArray], 1)
+                    data[elArray][0] = value
 
         # calculate dew point globally
-        if deviceName == self.globalWeatherName:
+        if deviceName == self.wDevice['global']['name']:
             temp = device.getNumber(propertyName).get('WEATHER_TEMPERATURE', 0)
             humidity = device.getNumber(propertyName).get('WEATHER_HUMIDITY', 0)
             dewPoint = self._getDewPoint(temp, humidity)
-            self.globalWeatherData['WEATHER_DEWPOINT'] = dewPoint
+            self.wDevice['global']['data']['WEATHER_DEWPOINT'] = dewPoint
 
-        for element, value in device.getNumber(propertyName).items():
-            data = deviceNameList[deviceName]
-            data[element] = value
-
-            elArray = element + '_ARRAY'
-            if elArray not in data:
-                data[elArray] = np.full(100, value)
-            else:
-                data[elArray] = np.roll(data[elArray], 1)
-                data[elArray][0] = value
         return True
 
     def getFilteredRefracParams(self):
@@ -286,11 +291,11 @@ class Environment(PyQt5.QtWidgets.QWidget):
         :return:  temperature and pressure
         """
 
-        isTemperature = 'WEATHER_TEMPERATURE_ARRAY' in self.localWeatherData
-        isPressure = 'WEATHER_BAROMETER_ARRAY' in self.localWeatherData
+        isTemperature = 'WEATHER_TEMPERATURE_ARRAY' in self.wDevice['local']['data']
+        isPressure = 'WEATHER_BAROMETER_ARRAY' in self.wDevice['local']['data']
         if isTemperature and isPressure:
-            temp = np.mean(self.localWeatherData['WEATHER_TEMPERATURE_ARRAY'][:10])
-            press = np.mean(self.localWeatherData['WEATHER_BAROMETER_ARRAY'][:10])
+            temp = np.mean(self.wDevice['local']['data']['WEATHER_TEMPERATURE_ARRAY'][:10])
+            press = np.mean(self.wDevice['local']['data']['WEATHER_BAROMETER_ARRAY'][:10])
             print(temp, press)
 
         return

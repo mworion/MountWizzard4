@@ -1301,11 +1301,25 @@ class MainWindow(widget.MWidget):
                   'global': self.ui.globalWeatherName,
                   'sqm': self.ui.sqmName,
                   }
+        countR = 0
+        countSum = 0
         for wType, color in self.app.environment.getDeviceStatus():
-            self.changeStyleDynamic(uiList[wType],
-                                    'color',
-                                    color,
-                                    )
+            self.changeStyleDynamic(uiList[wType], 'color', color)
+            if color:
+                if color == 'red':
+                    countR += 1
+                countSum += 1
+        if countSum == 0:
+            status = 3
+        elif countR == 0:
+            status = 0
+        elif countR == countSum:
+            status = 2
+        else:
+            status = 1
+        statusColors = ['green', 'yellow', 'red', '']
+        ui = self.ui.environmentConnected
+        self.changeStyleDynamic(ui, 'color', statusColors[status])
 
     def updateEnvironGUI(self, deviceName):
         """

@@ -350,6 +350,7 @@ class MainWindow(widget.MWidget):
 
         :return: success if update happened
         """
+
         if not self.app.mount.mountUp:
             return False
         if self.ui.checkRefracNone.isChecked():
@@ -358,7 +359,6 @@ class MainWindow(widget.MWidget):
             if self.app.mount.obsSite.status != '0':
                 return False
         temp, press = self.app.environment.getFilteredRefracParams()
-        print(temp, press)
         if temp is None or press is None:
             return False
         suc = self.app.mount.obsSite.setRefractionParam(temperature=temp,
@@ -1347,3 +1347,11 @@ class MainWindow(widget.MWidget):
             self.ui.rainVol.setText('{0:3.0f}'.format(value))
             value = envDev['global']['data'].get('WEATHER_SNOW_HOUR', 0)
             self.ui.snowVol.setText('{0:3.0f}'.format(value))
+
+            # setting forecast color
+            forecast = int(envDev['global']['data'].get('WEATHER_FORECAST', 3))
+            forecastColors = ['green', 'yellow', 'red', '']
+            self.changeStyleDynamic(self.ui.timeComputer,
+                                    'color',
+                                    forecastColors[forecast],
+                                    )

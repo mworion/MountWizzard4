@@ -274,12 +274,12 @@ class Environment(PyQt5.QtWidgets.QWidget):
                     data[elArray] = np.roll(data[elArray], 1)
                     data[elArray][0] = value
 
-        # calculate dew point globally
-        if deviceName == self.wDevice['global']['name']:
-            temp = device.getNumber(propertyName).get('WEATHER_TEMPERATURE', 0)
-            humidity = device.getNumber(propertyName).get('WEATHER_HUMIDITY', 0)
-            dewPoint = self._getDewPoint(temp, humidity)
-            self.wDevice['global']['data']['WEATHER_DEWPOINT'] = dewPoint
+            # in case of global weather we calculate the dew point manually
+            if wType == 'global':
+                temp = self.wDevice[wType]['data']['WEATHER_TEMPERATURE']
+                humidity = self.wDevice[wType]['data']['WEATHER_HUMIDITY']
+                dewPoint = self._getDewPoint(temp, humidity)
+                self.wDevice['global']['data']['WEATHER_DEWPOINT'] = dewPoint
 
         return True
 

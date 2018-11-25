@@ -3,6 +3,6 @@ PyQt5==5.11.3
 PyQt5-sip==4.19.13
 numpy==1.15.3
 skyfield==1.9
-mountcontrol==0.2
+mountcontrol>=0.3
 requests==2.20.0
 requests_toolbelt==0.8.0

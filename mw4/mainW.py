@@ -354,10 +354,13 @@ class MainWindow(widget.MWidget):
             return False
         if self.ui.checkRefracNone.isChecked():
             return False
-        if self.ui.self.ui.checkRefracNone.isChecked():
+        if self.ui.checkRefracNone.isChecked():
             if self.app.mount.obsSite.status != '0':
                 return False
         temp, press = self.app.environment.getFilteredRefracParams()
+        print(temp, press)
+        if temp is None or press is None:
+            return False
         suc = self.app.mount.obsSite.setRefractionParam(temperature=temp,
                                                         pressure=press)
         if not suc:

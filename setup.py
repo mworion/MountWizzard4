@@ -9,8 +9,12 @@ setup(
     packages=[
         'mw4',
         'mw4.base',
+        'mw4.build',
+        'mw4.environ',
         'mw4.gui',
-        'mw4.media',
+        'mw4.gui.media',
+        'mw4.gui.widgets',
+        'mw4.relay',
         'mw4.test',
     ],
     python_requires='~=3.6.5',

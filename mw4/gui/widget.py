@@ -57,6 +57,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
+    TRAFFICLIGHTCOLORS = ['green', 'yellow', 'red', '']
+
     def __init__(self):
         super().__init__()
         self.palette = PyQt5.QtGui.QPalette()

@@ -1317,9 +1317,8 @@ class MainWindow(widget.MWidget):
             status = 2
         else:
             status = 1
-        statusColors = ['green', 'yellow', 'red', '']
         ui = self.ui.environmentConnected
-        self.changeStyleDynamic(ui, 'color', statusColors[status])
+        self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
 
     def updateEnvironGUI(self, deviceName):
         """
@@ -1366,10 +1365,9 @@ class MainWindow(widget.MWidget):
             if deviceName != 'OpenWeatherMap':
                 return
             forecast = int(envDev['global']['data'].get('WEATHER_FORECAST', 3))
-            forecastColors = ['green', 'yellow', 'red', '']
             self.changeStyleDynamic(self.ui.timeComputer,
                                     'color',
-                                    forecastColors[forecast],
+                                    self.TRAFFICLIGHTCOLOR[forecast],
                                     )
             forecastID = int(envDev['global']['data'].get('WEATHER_CODE', 0))
             text = self.app.environment.WEATHER_ID[forecastID][0]
@@ -1378,3 +1376,4 @@ class MainWindow(widget.MWidget):
             icon = PyQt5.QtGui.QPixmap(iconRef)
             self.ui.weatherForecastIcon.setPixmap(icon)
             self.ui.weatherForecast.setText(text)
+

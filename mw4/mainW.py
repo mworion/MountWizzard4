@@ -1348,10 +1348,20 @@ class MainWindow(widget.MWidget):
             value = envDev['global']['data'].get('WEATHER_SNOW_HOUR', 0)
             self.ui.snowVol.setText('{0:3.0f}'.format(value))
 
-            # setting forecast color
+            # setting forecast (only for open weather map)
+            if deviceName != 'OpenWeatherMap':
+                return
             forecast = int(envDev['global']['data'].get('WEATHER_FORECAST', 3))
             forecastColors = ['green', 'yellow', 'red', '']
             self.changeStyleDynamic(self.ui.timeComputer,
                                     'color',
                                     forecastColors[forecast],
                                     )
+            forecastID = int(envDev['global']['data'].get('WEATHER_CODE', 0))
+            text = self.app.environment.WEATHER_ID[forecastID][0]
+            iconID = self.app.environment.WEATHER_ID[forecastID][1]
+            iconRef = ':/' + iconID + '.png'
+            icon = PyQt5.QtGui.QPixmap(iconRef)
+            self.ui.weatherForecastIcon.setPixmap(icon)
+            self.ui.weatherForecast.setText(text)
+

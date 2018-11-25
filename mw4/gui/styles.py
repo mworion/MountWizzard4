@@ -96,6 +96,12 @@ class MWStyles(object):
         border-style: outset;
         border-radius: 2px;
     }
+    QLabel#weatherForecastIcon{
+        border-width: 1px;
+        border-radius: 2px;
+        padding: 3px;
+        background-color: rgb(18, 72, 96);
+    }
     
     /* QLine Edit*/
     QLineEdit {

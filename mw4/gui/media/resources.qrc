@@ -6,5 +6,23 @@
     <file>checkmark.ico</file>
     <file>altitude1.png</file>
     <file>azimuth1.png</file>
+    <file>01d.png</file>
+    <file>02d.png</file>
+    <file>03d.png</file>
+    <file>04d.png</file>
+    <file>09d.png</file>
+    <file>10d.png</file>
+    <file>11d.png</file>
+    <file>13d.png</file>
+    <file>50d.png</file>
+    <file>01n.png</file>
+    <file>02n.png</file>
+    <file>03n.png</file>
+    <file>04n.png</file>
+    <file>09n.png</file>
+    <file>10n.png</file>
+    <file>11n.png</file>
+    <file>13n.png</file>
+    <file>50n.png</file>
 </qresource>
 </RCC>

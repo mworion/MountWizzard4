@@ -438,7 +438,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>130</x>
        <y>340</y>
        <width>56</width>
        <height>21</height>
@@ -1250,7 +1250,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>135</x>
+       <x>105</x>
        <y>310</y>
        <width>81</width>
        <height>21</height>
@@ -1316,7 +1316,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>135</x>
+       <x>105</x>
        <y>250</y>
        <width>81</width>
        <height>21</height>
@@ -1357,7 +1357,7 @@
       <rect>
        <x>10</x>
        <y>250</y>
-       <width>116</width>
+       <width>101</width>
        <height>21</height>
       </rect>
      </property>
@@ -1367,7 +1367,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Local Sidereal Time </string>
+      <string>Local Sidereal</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="timeJD">
@@ -1376,7 +1376,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>135</x>
+       <x>105</x>
        <y>280</y>
        <width>81</width>
        <height>21</height>
@@ -1433,7 +1433,7 @@
     <widget class="QLabel" name="label_64">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>190</x>
        <y>370</y>
        <width>31</width>
        <height>21</height>
@@ -1622,7 +1622,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>130</x>
        <y>370</y>
        <width>56</width>
        <height>21</height>
@@ -1670,7 +1670,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>130</x>
        <y>400</y>
        <width>56</width>
        <height>21</height>
@@ -1715,7 +1715,7 @@
     <widget class="QLabel" name="label_81">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>190</x>
        <y>400</y>
        <width>31</width>
        <height>21</height>
@@ -1730,58 +1730,40 @@
       <string>hPa</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_129">
-     <property name="geometry">
-      <rect>
-       <x>220</x>
-       <y>280</y>
-       <width>46</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>H:M:S</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_130">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>190</x>
        <y>250</y>
-       <width>46</width>
+       <width>71</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>H:M:S</string>
+      <string>HH:MM:SS</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_222">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>190</x>
        <y>310</y>
-       <width>46</width>
+       <width>71</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>Y-M-D</string>
+      <string>YY-MM-DD</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="statusRefraction">
@@ -1913,6 +1895,24 @@
       <string>I/O</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_139">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>280</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>HH:MM:SS</string>
+     </property>
+    </widget>
     <zorder>line_15</zorder>
     <zorder>line_16</zorder>
     <zorder>line_14</zorder>
@@ -1970,7 +1970,6 @@
     <zorder>refractionTemp</zorder>
     <zorder>refractionPress</zorder>
     <zorder>label_81</zorder>
-    <zorder>label_129</zorder>
     <zorder>label_130</zorder>
     <zorder>label_222</zorder>
     <zorder>statusRefraction</zorder>
@@ -1978,6 +1977,7 @@
     <zorder>switchUnattendedFlip</zorder>
     <zorder>switchDualTracking</zorder>
     <zorder>switchRefraction</zorder>
+    <zorder>label_139</zorder>
    </widget>
    <widget class="QWidget" name="tab_4">
     <attribute name="title">
@@ -2444,7 +2444,7 @@
       </font>
      </property>
      <property name="text">
-      <string>mm/3h</string>
+      <string>mm / 3h</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -3194,7 +3194,7 @@ manually</string>
        <enum>Qt::LeftToRight</enum>
       </property>
       <property name="text">
-       <string>Continously with smooth filter</string>
+       <string>Continously (with filter)</string>
       </property>
       <property name="checked">
        <bool>false</bool>
@@ -4689,7 +4689,7 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>mm/3h</string>
+      <string>mm / 3h</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -15920,9 +15920,9 @@ manually</string>
   <widget class="QPushButton" name="mountOff">
    <property name="geometry">
     <rect>
-     <x>525</x>
+     <x>540</x>
      <y>85</y>
-     <width>71</width>
+     <width>56</width>
      <height>26</height>
     </rect>
    </property>
@@ -15943,7 +15943,7 @@ manually</string>
     <rect>
      <x>450</x>
      <y>85</y>
-     <width>71</width>
+     <width>56</width>
      <height>26</height>
     </rect>
    </property>
@@ -16251,6 +16251,82 @@ manually</string>
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
+  <widget class="Line" name="line_37">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>80</y>
+     <width>146</width>
+     <height>1</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="weatherForecast">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>60</y>
+     <width>146</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>weather forecast</string>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="weatherForecastIcon">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>85</y>
+     <width>26</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <property name="midLineWidth">
+    <number>0</number>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
   <widget class="QLineEdit" name="timeComputer">
    <property name="enabled">
     <bool>false</bool>
@@ -16258,17 +16334,17 @@ manually</string>
    <property name="geometry">
     <rect>
      <x>450</x>
-     <y>30</y>
+     <y>10</y>
      <width>146</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
+     <family>Courier New</family>
      <pointsize>36</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="mouseTracking">
@@ -16297,22 +16373,6 @@ manually</string>
    </property>
    <property name="readOnly">
     <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="Line" name="line_37">
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>25</y>
-     <width>146</width>
-     <height>1</height>
-    </rect>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
    </property>
   </widget>
  </widget>

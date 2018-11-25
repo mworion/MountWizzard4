@@ -109,7 +109,7 @@ def test_updateMountConnStat():
 
 
 def test_updateGuiCyclic():
-    suc = test_app.mainW.updateGUICyclic()
+    suc = test_app.mainW.updateGUI()
     assert suc
 
 #

@@ -46,6 +46,7 @@ class MainWindow(widget.MWidget):
     logger = logging.getLogger(__name__)
 
     CYCLE_GUI = 1000
+    CYCLE_TASK = 10000
 
     def __init__(self, app):
         super().__init__()
@@ -132,8 +133,12 @@ class MainWindow(widget.MWidget):
 
         self.timerGui = PyQt5.QtCore.QTimer()
         self.timerGui.setSingleShot(False)
-        self.timerGui.timeout.connect(self.updateGUICyclic)
+        self.timerGui.timeout.connect(self.updateGUI)
         self.timerGui.start(self.CYCLE_GUI)
+        self.timerTask = PyQt5.QtCore.QTimer()
+        self.timerTask.setSingleShot(False)
+        self.timerTask.timeout.connect(self.updateTask)
+        self.timerTask.start(self.CYCLE_TASK)
 
     def initConfig(self):
         if 'mainW' not in self.app.config:
@@ -327,17 +332,48 @@ class MainWindow(widget.MWidget):
             self.changeStyleDynamic(ui, 'color', 'red')
         return True
 
-    def updateGUICyclic(self):
+    def updateGUI(self):
         """
-        updateGUICyclic update gui elements on regular bases (actually 1 second) for items,
+        updateGUI update gui elements on regular bases (actually 1 second) for items,
         which are not events based.
 
         :return: success
         """
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         self.deviceEnvironConnected()
+        return True
 
-        self.app.environment.getFilteredRefracParams()
+    def updateRefractionParameters(self):
+        """
+        updateRefractionParameters takes the actual conditions for update into account and
+        does the update of the refraction parameters.
+
+        :return: success if update happened
+        """
+        if not self.app.mount.mountUp:
+            return False
+        if self.ui.checkRefracNone.isChecked():
+            return False
+        if self.ui.self.ui.checkRefracNone.isChecked():
+            if self.app.mount.obsSite.status != '0':
+                return False
+        temp, press = self.app.environment.getFilteredRefracParams()
+        suc = self.app.mount.obsSite.setRefractionParam(temperature=temp,
+                                                        pressure=press)
+        if not suc:
+            self.app.message.emit('Cannot perform refraction update', 2)
+            return False
+        return True
+
+    def updateTask(self):
+        """
+        updateTask calls tasks for items, which are not event based, like updating
+        refraction parameters.
+
+        :return: success for test purpose
+        """
+
+        self.updateRefractionParameters()
         return True
 
     def updatePointGUI(self):

@@ -296,6 +296,6 @@ class Environment(PyQt5.QtWidgets.QWidget):
         if isTemperature and isPressure:
             temp = np.mean(self.wDevice['local']['data']['WEATHER_TEMPERATURE_ARRAY'][:10])
             press = np.mean(self.wDevice['local']['data']['WEATHER_BAROMETER_ARRAY'][:10])
-            print(temp, press)
-
-        return
+            return temp, press
+        else:
+            return None, None

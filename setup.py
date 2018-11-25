@@ -25,6 +25,8 @@ setup(
         'numpy==1.15.3',
         'requests_toolbelt==0.8.0',
         'skyfield==1.9',
+        'mountcontrol>=0.3',
+        'indibase>=0.2',
     ]
     ,
     url='https://github.com/mworion/MountWizzard4',

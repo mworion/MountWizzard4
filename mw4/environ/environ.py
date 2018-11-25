@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import logging
+from datetime import datetime
 # external packages
 import PyQt5
 import numpy as np
@@ -193,6 +194,7 @@ class Environment(PyQt5.QtWidgets.QWidget):
             if deviceName != self.wDevice[wType]['name']:
                 continue
             self.wDevice[wType]['device'] = None
+            self.wDevice[wType]['data'] = {}
 
     def startCommunication(self):
         """
@@ -326,11 +328,15 @@ class Environment(PyQt5.QtWidgets.QWidget):
                 data = self.wDevice[wType]['data']
                 data[element] = value
                 elArray = element + '_ARRAY'
+                elTime = element + '_TIME'
                 if elArray not in data:
                     data[elArray] = np.full(100, value)
+                    data[elTime] = np.full(100, datetime.now())
                 else:
                     data[elArray] = np.roll(data[elArray], 1)
                     data[elArray][0] = value
+                    data[elTime] = np.roll(data[elTime], 1)
+                    data[elTime][0] = datetime.now()
 
             # in case of global weather we calculate the dew point manually
             if wType == 'global':

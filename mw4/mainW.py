@@ -1331,35 +1331,35 @@ class MainWindow(widget.MWidget):
         envDev = self.app.environment.wDevice
 
         if deviceName == envDev['sqm']['name']:
-            value = envDev['sqm']['data'].get('SKY_BRIGHTNESS', 0)
+            value = envDev['sqm']['data']['SKY_BRIGHTNESS']
             self.ui.SQR.setText('{0:5.2f}'.format(value))
 
         if deviceName == envDev['local']['name']:
-            value = envDev['local']['data'].get('WEATHER_TEMPERATURE', 0)
+            value = envDev['local']['data']['WEATHER_TEMPERATURE']
             self.ui.localTemp.setText('{0:4.1f}'.format(value))
-            value = envDev['local']['data'].get('WEATHER_BAROMETER', 0)
+            value = envDev['local']['data']['WEATHER_BAROMETER']
             self.ui.localPress.setText('{0:5.1f}'.format(value))
-            value = envDev['local']['data'].get('WEATHER_DEWPOINT', 0)
+            value = envDev['local']['data']['WEATHER_DEWPOINT']
             self.ui.localDewPoint.setText('{0:4.1f}'.format(value))
-            value = envDev['local']['data'].get('WEATHER_HUMIDITY', 0)
+            value = envDev['local']['data']['WEATHER_HUMIDITY']
             self.ui.localHumidity.setText('{0:3.0f}'.format(value))
 
         if deviceName == envDev['global']['name']:
-            value = envDev['global']['data'].get('WEATHER_TEMPERATURE', 0)
+            value = envDev['global']['data']['WEATHER_TEMPERATURE']
             self.ui.globalTemp.setText('{0:4.1f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_PRESSURE', 0)
+            value = envDev['global']['data']['WEATHER_PRESSURE']
             self.ui.globalPress.setText('{0:5.1f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_DEWPOINT', 0)
+            value = envDev['global']['data']['WEATHER_DEWPOINT']
             self.ui.globalDewPoint.setText('{0:4.1f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_HUMIDITY', 0)
+            value = envDev['global']['data']['WEATHER_HUMIDITY']
             self.ui.globalHumidity.setText('{0:4.1f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_CLOUD_COVER', 0)
+            value = envDev['global']['data']['WEATHER_CLOUD_COVER']
             self.ui.cloudCover.setText('{0:3.0f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_WIND_SPEED', 0)
+            value = envDev['global']['data']['WEATHER_WIND_SPEED']
             self.ui.windSpeed.setText('{0:3.0f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_RAIN_HOUR', 0)
+            value = envDev['global']['data']['WEATHER_RAIN_HOUR']
             self.ui.rainVol.setText('{0:3.0f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_SNOW_HOUR', 0)
+            value = envDev['global']['data']['WEATHER_SNOW_HOUR']
             self.ui.snowVol.setText('{0:3.0f}'.format(value))
 
             # setting forecast (only for open weather map)
@@ -1378,4 +1378,3 @@ class MainWindow(widget.MWidget):
             icon = PyQt5.QtGui.QPixmap(iconRef)
             self.ui.weatherForecastIcon.setPixmap(icon)
             self.ui.weatherForecast.setText(text)
-

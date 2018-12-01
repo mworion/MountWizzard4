@@ -1367,7 +1367,7 @@ class MainWindow(widget.MWidget):
             forecast = int(envDev['global']['data'].get('WEATHER_FORECAST', 3))
             self.changeStyleDynamic(self.ui.timeComputer,
                                     'color',
-                                    self.TRAFFICLIGHTCOLOR[forecast],
+                                    self.TRAFFICLIGHTCOLORS[forecast],
                                     )
             forecastID = int(envDev['global']['data'].get('WEATHER_CODE', 0))
             text = self.app.environment.WEATHER_ID[forecastID][0]

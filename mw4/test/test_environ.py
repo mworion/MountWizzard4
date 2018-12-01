@@ -23,6 +23,7 @@ from unittest import mock
 import PyQt5.QtWidgets
 # local import
 from mw4.environ import environ
+from indibase import indiBase
 
 test = PyQt5.QtWidgets.QApplication([])
 host_ip = 'astro-mount.fritz.box'
@@ -155,15 +156,48 @@ def test_startCommunication5():
                            return_value=False):
         suc = app.startCommunication()
         assert not suc
-        print(app.wDevice)
 
 
+def test_connectDevice1():
+    with mock.patch.object(app.client,
+                           'connectDevice',
+                           return_value=False):
+        suc = app.connectDevice('test', 'test')
+        assert not suc
 
 
+def test_connectDevice2():
+    with mock.patch.object(app.client,
+                           'connectDevice',
+                           return_value=False):
+        suc = app.connectDevice('test', 'CONNECTION')
+        assert not suc
 
 
-'''
-        with qtbot.waitSignal(relay.statusReady) as blocker:
-            relay.cyclePolling()
-    assert [0, 0, 0, 0, 0, 0, 0, 0] == relay.status
-'''
+def test_connectDevice3():
+    app.sqmName = 'SQM'
+    with mock.patch.object(app.client,
+                           'connectDevice',
+                           return_value=True):
+        suc = app.connectDevice('SQM', 'CONNECTION')
+        assert suc
+
+
+def test_connectDevice4():
+    app.sqmName = 'SQM'
+    with mock.patch.object(app.client,
+                           'connectDevice',
+                           return_value=False):
+        suc = app.connectDevice('SQM', 'CONNECTION')
+        assert not suc
+
+
+def test_getDeviceStatus1():
+    app.wDevice['sqm']['device'] = None
+    app.wDevice['local']['device'] = None
+    app.wDevice['global']['device'] = None
+
+    for wType, color in app.getDeviceStatus():
+        assert wType in ['sqm', 'local', 'global']
+        assert '' == color
+

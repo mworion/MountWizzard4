@@ -1334,31 +1334,31 @@ class MainWindow(widget.MWidget):
             self.ui.SQR.setText('{0:5.2f}'.format(value))
 
         if deviceName == envDev['local']['name']:
-            value = envDev['local']['data']['WEATHER_TEMPERATURE']
+            value = envDev['local']['data'].get('WEATHER_TEMPERATURE', 0)
             self.ui.localTemp.setText('{0:4.1f}'.format(value))
-            value = envDev['local']['data']['WEATHER_BAROMETER']
+            value = envDev['local']['data'].get('WEATHER_BAROMETER', 0)
             self.ui.localPress.setText('{0:5.1f}'.format(value))
-            value = envDev['local']['data']['WEATHER_DEWPOINT']
+            value = envDev['local']['data'].get('WEATHER_DEWPOINT', 0)
             self.ui.localDewPoint.setText('{0:4.1f}'.format(value))
-            value = envDev['local']['data']['WEATHER_HUMIDITY']
+            value = envDev['local']['data'].get('WEATHER_HUMIDITY', 0)
             self.ui.localHumidity.setText('{0:3.0f}'.format(value))
 
         if deviceName == envDev['global']['name']:
-            value = envDev['global']['data']['WEATHER_TEMPERATURE']
+            value = envDev['global']['data'].get('WEATHER_TEMPERATURE', 0)
             self.ui.globalTemp.setText('{0:4.1f}'.format(value))
-            value = envDev['global']['data']['WEATHER_PRESSURE']
+            value = envDev['global']['data'].get('WEATHER_PRESSURE', 0)
             self.ui.globalPress.setText('{0:5.1f}'.format(value))
-            value = envDev['global']['data']['WEATHER_DEWPOINT']
+            value = envDev['global']['data'].get('WEATHER_DEWPOINT', 0)
             self.ui.globalDewPoint.setText('{0:4.1f}'.format(value))
-            value = envDev['global']['data']['WEATHER_HUMIDITY']
+            value = envDev['global']['data'].get('WEATHER_HUMIDITY', 0)
             self.ui.globalHumidity.setText('{0:4.1f}'.format(value))
-            value = envDev['global']['data']['WEATHER_CLOUD_COVER']
+            value = envDev['global']['data'].get('WEATHER_CLOUD_COVER', 0)
             self.ui.cloudCover.setText('{0:3.0f}'.format(value))
-            value = envDev['global']['data']['WEATHER_WIND_SPEED']
+            value = envDev['global']['data'].get('WEATHER_WIND_SPEED', 0)
             self.ui.windSpeed.setText('{0:3.0f}'.format(value))
-            value = envDev['global']['data']['WEATHER_RAIN_HOUR']
+            value = envDev['global']['data'].get('WEATHER_RAIN_HOUR', 0)
             self.ui.rainVol.setText('{0:3.0f}'.format(value))
-            value = envDev['global']['data']['WEATHER_SNOW_HOUR']
+            value = envDev['global']['data'].get('WEATHER_SNOW_HOUR', 0)
             self.ui.snowVol.setText('{0:3.0f}'.format(value))
 
             # setting forecast (only for open weather map)

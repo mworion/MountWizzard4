@@ -208,6 +208,8 @@ class Environment(PyQt5.QtWidgets.QWidget):
         suc = self.client.connectServer()
         if not suc:
             return False
+
+        suc = False
         for wType in self.wDevice:
             if not self.wDevice[wType]['name']:
                 continue
@@ -241,11 +243,14 @@ class Environment(PyQt5.QtWidgets.QWidget):
         if propertyName != 'CONNECTION':
             return False
 
+        suc = False
         for wType in self.wDevice:
             if deviceName != self.wDevice[wType]['name']:
                 continue
-            self.client.connectDevice(deviceName=deviceName)
-        return True
+            suc = self.client.connectDevice(deviceName=deviceName)
+            if not suc:
+                return False
+        return suc
 
     def getDeviceStatus(self):
         """
@@ -345,16 +350,17 @@ class Environment(PyQt5.QtWidgets.QWidget):
                     data[elTime][0] = datetime.now()
 
             # in case of global weather we calculate the dew point manually
-            if wType == 'global':
-                data = self.wDevice[wType]['data']
-                if 'WEATHER_TEMPERATURE' not in data:
-                    continue
-                if 'WEATHER_HUMIDITY' not in data:
-                    continue
-                temp = data['WEATHER_TEMPERATURE']
-                humidity = data['WEATHER_HUMIDITY']
-                dewPoint = self._getDewPoint(temp, humidity)
-                self.wDevice['global']['data']['WEATHER_DEWPOINT'] = dewPoint
+            if wType != 'global':
+                continue
+            data = self.wDevice[wType]['data']
+            if 'WEATHER_TEMPERATURE' not in data:
+                continue
+            if 'WEATHER_HUMIDITY' not in data:
+                continue
+            temp = data['WEATHER_TEMPERATURE']
+            humidity = data['WEATHER_HUMIDITY']
+            dewPoint = self._getDewPoint(temp, humidity)
+            self.wDevice['global']['data']['WEATHER_DEWPOINT'] = dewPoint
 
         return True
 

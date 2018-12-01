@@ -303,14 +303,14 @@ class Environment(PyQt5.QtWidgets.QWidget):
         alpha = ((A * t_air_c) / (B + t_air_c)) + np.log(rel_humidity / 100.0)
         return (B * alpha) / (A - alpha)
 
-    def updateDataElements(self, device):
+    def updateDataElements(self, wType):
         """
         updateDataElements runs through all elements and writes the number data to the
         according locations.
         in addition it does a first setup and config for the device. basically the update
         rates are set to 10 seconds if they are not on this level.
 
-        :param device:
+        :param wType:
         :return:
         """
 
@@ -345,7 +345,7 @@ class Environment(PyQt5.QtWidgets.QWidget):
                 return False
             if deviceName != self.wDevice[wType]['name']:
                 continue
-            self.updateDataElements(device)
+            self.updateDataElements(wType)
 
             # in case of global weather we calculate the dew point manually
             if wType == 'global':

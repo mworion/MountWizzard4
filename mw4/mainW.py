@@ -30,6 +30,7 @@ from mountcontrol import convert
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import main_ui
+from mw4.base import transform
 
 
 class MainWindow(widget.MWidget):
@@ -400,26 +401,23 @@ class MainWindow(widget.MWidget):
         else:
             self.ui.AZ.setText('-')
 
-        if obs.raJNow is not None:
+        ra = obs.raJNow
+        dec = obs.decJNow
+        if self.ui.checkJ2000.isChecked():
+            if ra is not None and dec is not None and obs.timeJD is not None:
+                ra, dec = transform.JNowToJ2000(ra, dec, obs.timeJD)
+
+        if ra is not None:
             raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            if self.ui.checkJNow.isChecked():
-                raText = raFormat.format(*obs.raJNow.dms())
-            else:
-                conv = obs.raJNow.dms()
-                raText = raFormat.format(*conv)
+            raText = raFormat.format(*ra.dms())
             self.ui.RA.setText(raText)
         else:
             self.ui.RA.setText('-')
 
-        if obs.decJNow is not None:
+        if dec is not None:
             decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            if self.ui.checkJNow.isChecked():
-                decText = decFormat.format(*obs.decJNow.signed_dms()[1:4],
-                                           sign='+' if obs.decJNow.degrees > 0 else '-')
-            else:
-                conv = obs.decJNow.signed_dms()
-                decText = decFormat.format(*conv[1:4],
-                                           sign='+' if obs.decJNow.degrees > 0 else '-')
+            decText = decFormat.format(*dec.signed_dms()[1:4],
+                                       sign='+' if obs.decJNow.degrees > 0 else '-')
             self.ui.DEC.setText(decText)
         else:
             self.ui.DEC.setText('-')

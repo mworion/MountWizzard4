@@ -22,42 +22,38 @@ import skyfield.api
 _lock = Lock()
 
 
-def prepare(jd):
-    tai1, tai2 = ERFA.utctai(jd, 0)
-    tt1, tt2 = ERFA.taitt(tai1, tai2)
-    jdtt = tt1 + tt2
-    return jdtt
-
-
-def JNowToJ2000(ra, dec, jd):
-    with _lock():
-        jdtt = prepare(jd)
-        ra = ra.degrees
-        dec = dec.degrees
-        ra = ERFA.eraAnp(ra + ERFA.eraEo06a(jdtt, 0.0))
-        raConv, decConv, _ = ERFA.eraAtic13(ra,
-                                            dec,
-                                            jd,
-                                            0.0)
-        ra = skyfield.api.Angle(degrees=raConv)
-        dec = skyfield.api.Angle(degrees=decConv)
+def JNowToJ2000(ra, dec, timeJD):
+    with _lock:
+        jd = timeJD.tai
+        jdtt = timeJD.tt
+        ra = ra.radians
+        dec = dec.radians
+        print(ra, dec)
+        ra = ERFA.anp(ra + ERFA.eo06a(jdtt, 0.0))
+        raConv, decConv, _ = ERFA.atic13(ra,
+                                         dec,
+                                         jd,
+                                         0.0)
+        ra = skyfield.api.Angle(radians=raConv)
+        dec = skyfield.api.Angle(radians=decConv)
         return ra, dec
 
 
-def J2000ToJNow(ra, dec, jd):
-    with _lock():
-        ra = ra.degrees
-        dec = dec.degrees
-        raConv, decConv, eo = ERFA.eraAtci13(ra,
-                                             dec,
-                                             0,
-                                             0,
-                                             0,
-                                             0,
-                                             jd,
-                                             0)
-        raConv = ERFA.eraAnp(raConv - eo)
-        ra = skyfield.api.Angle(degrees=raConv)
-        dec = skyfield.api.Angle(degrees=decConv)
+def J2000ToJNow(ra, dec, timeJD):
+    with _lock:
+        jd = timeJD.tai
+        ra = ra.radians
+        dec = dec.radians
+        raConv, decConv, eo = ERFA.atci13(ra,
+                                          dec,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          jd,
+                                          0)
+        raConv = ERFA.anp(raConv - eo)
+        ra = skyfield.api.Angle(radians=raConv)
+        dec = skyfield.api.Angle(radians=decConv)
         return ra, dec
 

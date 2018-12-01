@@ -177,6 +177,7 @@ class Environment(PyQt5.QtWidgets.QWidget):
             if deviceName != self.wDevice[wType]['name']:
                 continue
             self.wDevice[wType]['device'] = self.client.getDevice(deviceName)
+        return True
 
     def removeDevice(self, deviceName):
         """
@@ -195,6 +196,7 @@ class Environment(PyQt5.QtWidgets.QWidget):
                 continue
             self.wDevice[wType]['device'] = None
             self.wDevice[wType]['data'] = {}
+        return True
 
     def startCommunication(self):
         """
@@ -204,10 +206,14 @@ class Environment(PyQt5.QtWidgets.QWidget):
         """
 
         suc = self.client.connectServer()
+        if not suc:
+            return False
         for wType in self.wDevice:
             if not self.wDevice[wType]['name']:
                 continue
-            self.client.watchDevice(self.wDevice[wType]['name'])
+            suc = self.client.watchDevice(self.wDevice[wType]['name'])
+            if not suc:
+                return False
         return suc
 
     def reconnectIndiServer(self):

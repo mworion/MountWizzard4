@@ -212,14 +212,13 @@ class Environment(PyQt5.QtWidgets.QWidget):
         if not suc:
             return False
 
-        suc = False
+        retValue = False
         for wType in self.wDevice:
             if not self.wDevice[wType]['name']:
                 continue
             suc = self.client.watchDevice(self.wDevice[wType]['name'])
-            if not suc:
-                return False
-        return suc
+            retValue = retValue and suc
+        return retValue
 
     def reconnectIndiServer(self):
         """
@@ -246,14 +245,12 @@ class Environment(PyQt5.QtWidgets.QWidget):
         if propertyName != 'CONNECTION':
             return False
 
-        suc = False
         for wType in self.wDevice:
             if deviceName != self.wDevice[wType]['name']:
                 continue
             suc = self.client.connectDevice(deviceName=deviceName)
-            if not suc:
-                return False
-        return suc
+            return suc
+        return False
 
     def _setUpdateRate(self, deviceName):
         """

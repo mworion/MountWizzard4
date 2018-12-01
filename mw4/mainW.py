@@ -1355,18 +1355,17 @@ class MainWindow(widget.MWidget):
             self.ui.weatherForecastIcon.setPixmap(icon)
             self.ui.weatherForecast.setText(text)
 
-    def _getStatusList(self):
-        names = [self.app.environment.wDevice['local']['name'],
-                 self.app.environment.wDevice['global']['name'],
-                 self.app.environment.wDevice['sqm']['name'],
-                 ]
-        uiList = [self.ui.localWeatherName,
-                  self.ui.globalWeatherName,
-                  self.ui.sqmName,
-                  ]
-        return names, uiList
+    @staticmethod
+    def updateEnvironMainStat(uiList):
+        """
+        updateEnvironMainStat collects the dynamic properties of all environ widgets
+        if mor than one is green -> color from red to yellow. if all are green -> result
+        will be green
 
-    def updateEnvironMainStat(self, uiList):
+        :param uiList:
+        :return: status according TRAFFIC LIGHTS
+        """
+
         countR = 0
         countSum = 0
         for ui in uiList:
@@ -1382,8 +1381,18 @@ class MainWindow(widget.MWidget):
             status = 2
         else:
             status = 1
-        ui = self.ui.environmentConnected
-        self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
+        return status
+
+    def _getStatusList(self):
+        names = [self.app.environment.wDevice['local']['name'],
+                 self.app.environment.wDevice['global']['name'],
+                 self.app.environment.wDevice['sqm']['name'],
+                 ]
+        uiList = [self.ui.localWeatherName,
+                  self.ui.globalWeatherName,
+                  self.ui.sqmName,
+                  ]
+        return names, uiList
 
     def deviceEnvironConnected(self, deviceName):
         names, uiList = self._getStatusList()
@@ -1391,7 +1400,9 @@ class MainWindow(widget.MWidget):
             if deviceName != name:
                 continue
             self.changeStyleDynamic(ui, 'color', 'green')
-        self.updateEnvironMainStat(uiList)
+        status = self.updateEnvironMainStat(uiList)
+        ui = self.ui.environmentConnected
+        self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
 
     def deviceEnvironDisconnected(self, deviceName):
         names, uiList = self._getStatusList()
@@ -1399,4 +1410,6 @@ class MainWindow(widget.MWidget):
             if deviceName != name:
                 continue
             self.changeStyleDynamic(ui, 'color', 'red')
-        self.updateEnvironMainStat(uiList)
+        status = self.updateEnvironMainStat(uiList)
+        ui = self.ui.environmentConnected
+        self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])

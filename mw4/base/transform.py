@@ -29,25 +29,25 @@ def prepare(jd):
     return jdtt
 
 
-def JNowToJ2000(star, jd):
+def JNowToJ2000(ra, dec, jd):
     with _lock():
         jdtt = prepare(jd)
-        ra = star.ra.degrees
-        dec = star.dec.degrees
+        ra = ra.degrees
+        dec = dec.degrees
         ra = ERFA.eraAnp(ra + ERFA.eraEo06a(jdtt, 0.0))
         raConv, decConv, _ = ERFA.eraAtic13(ra,
                                             dec,
                                             jd,
                                             0.0)
-        star = skyfield.api.Star(ra=raConv, dec=decConv)
-        return star
+        ra = skyfield.api.Angle(degrees=raConv)
+        dec = skyfield.api.Angle(degrees=decConv)
+        return ra, dec
 
 
-def J2000ToJNow(star, jd):
+def J2000ToJNow(ra, dec, jd):
     with _lock():
-        jdtt = prepare(jd)
-        ra = star.ra.degrees
-        dec = star.dec.degrees
+        ra = ra.degrees
+        dec = dec.degrees
         raConv, decConv, eo = ERFA.eraAtci13(ra,
                                              dec,
                                              0,
@@ -57,6 +57,7 @@ def J2000ToJNow(star, jd):
                                              jd,
                                              0)
         raConv = ERFA.eraAnp(raConv - eo)
-        star = skyfield.api.Star(ra=raConv, dec=decConv)
-        return star
+        ra = skyfield.api.Angle(degrees=raConv)
+        dec = skyfield.api.Angle(degrees=decConv)
+        return ra, dec
 

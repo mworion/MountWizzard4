@@ -402,15 +402,24 @@ class MainWindow(widget.MWidget):
 
         if obs.raJNow is not None:
             raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            raText = raFormat.format(*obs.raJNow.dms())
+            if self.ui.checkJNow.isChecked():
+                raText = raFormat.format(*obs.raJNow.dms())
+            else:
+                conv = obs.raJNow.dms()
+                raText = raFormat.format(*conv)
             self.ui.RA.setText(raText)
         else:
             self.ui.RA.setText('-')
 
         if obs.decJNow is not None:
             decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            decText = decFormat.format(*obs.decJNow.signed_dms()[1:4],
-                                       sign='+' if obs.decJNow.degrees > 0 else '-')
+            if self.ui.checkJNow.isChecked():
+                decText = decFormat.format(*obs.decJNow.signed_dms()[1:4],
+                                           sign='+' if obs.decJNow.degrees > 0 else '-')
+            else:
+                conv = obs.decJNow.signed_dms()
+                decText = decFormat.format(*conv[1:4],
+                                           sign='+' if obs.decJNow.degrees > 0 else '-')
             self.ui.DEC.setText(decText)
         else:
             self.ui.DEC.setText('-')

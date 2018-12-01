@@ -132,6 +132,20 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         ui.style().polish(ui)
 
     @staticmethod
+    def getStyleDynamic(ui, item):
+        """
+        changeStyleDynamic changes the stylesheet of a given uii element and makes it
+        visible. therefore the element has to be unpolished and polished again.
+
+        :param      ui:     ui element, where the stylesheet has to be changed
+        :param      item:   stylesheet attribute which has to be changes
+        :return:    value
+        """
+        # value = ui.getProperty(item)
+        a = 1
+        return value
+
+    @staticmethod
     def clearPolar(widget):
         """
         clearPolar clears and setups the canvas widget for drawing. it sets the labels,

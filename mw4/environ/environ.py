@@ -50,6 +50,7 @@ class Environment(PyQt5.QtWidgets.QWidget):
 
     # data from open weather map (id, [text, day icon, night icon]
     WEATHER_ID = {
+        000: ['error', '11d', '11d'],
         200: ['thunderstorm with light rain', '11d', '11n'],
         201: ['thunderstorm with rain', '11d', '11n'],
         202: ['thunderstorm with heavy rain', '11d', '11n'],
@@ -136,6 +137,8 @@ class Environment(PyQt5.QtWidgets.QWidget):
         self.client.signals.newProperty.connect(self.connectDevice)
         self.client.signals.newNumber.connect(self.updateData)
         self.client.signals.newNumber.connect(self._setUpdateRate)
+        # self.client.signals.deviceConnected(self._deviceConnected)
+        # self.client.signals.deviceDisconnected(self._deviceDisconnected)
 
     @property
     def localWeatherName(self):
@@ -251,25 +254,6 @@ class Environment(PyQt5.QtWidgets.QWidget):
             if not suc:
                 return False
         return suc
-
-    def getDeviceStatus(self):
-        """
-        getDeviceStatus is a generator for the connection state of the devices. it reads
-        the device status ot of the client and returns the deviceKey and the status value
-
-        :return: yields the device key and status
-        """
-
-        for wType in self.wDevice:
-            device = self.wDevice[wType]['device']
-            if device is None:
-                yield wType, ''
-                continue
-            status = device.getSwitch('CONNECTION')['CONNECT']
-            if status:
-                yield wType, 'green'
-            else:
-                yield wType, 'red'
 
     def _setUpdateRate(self, deviceName):
         """

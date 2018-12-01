@@ -70,21 +70,23 @@ class MainWindow(widget.MWidget):
         self.showModelPolar()
 
         # connect signals for refreshing the gui
-        self.app.mount.signals.pointDone.connect(self.updatePointGUI)
-        self.app.mount.signals.settDone.connect(self.updateSettingGUI)
-        self.app.mount.signals.alignDone.connect(self.updateAlignGUI)
-        self.app.mount.signals.alignDone.connect(self.showModelPolar)
-        self.app.mount.signals.namesDone.connect(self.setNameList)
-        self.app.mount.signals.fwDone.connect(self.updateFwGui)
-        self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
-        self.app.mount.signals.mountClear.connect(self.clearMountGUI)
+        ms = self.app.mount.signals
+        ms.pointDone.connect(self.updatePointGUI)
+        ms.settDone.connect(self.updateSettingGUI)
+        ms.alignDone.connect(self.updateAlignGUI)
+        ms.alignDone.connect(self.showModelPolar)
+        ms.namesDone.connect(self.setNameList)
+        ms.fwDone.connect(self.updateFwGui)
+        ms.mountUp.connect(self.updateMountConnStat)
+        ms.mountClear.connect(self.clearMountGUI)
         self.app.relay.statusReady.connect(self.updateRelayGui)
-        self.app.environment.client.signals.serverConnected.connect(self.indiEnvironConnected)
-        self.app.environment.client.signals.serverDisconnected.connect(self.indiEnvironDisconnected)
-        self.app.environment.client.signals.newDevice.connect(self.newEnvironDevice)
-        self.app.environment.client.signals.newProperty.connect(self.deviceEnvironConnected)
-        self.app.environment.client.signals.removeDevice.connect(self.deviceEnvironConnected)
-        self.app.environment.client.signals.newNumber.connect(self.updateEnvironGUI)
+        es = self.app.environment.client.signals
+        es.serverConnected.connect(self.indiEnvironConnected)
+        es.serverDisconnected.connect(self.indiEnvironDisconnected)
+        es.newDevice.connect(self.newEnvironDevice)
+        es.newNumber.connect(self.updateEnvironGUI)
+        es.deviceConnected.connect(self.deviceEnvironConnected)
+        es.deviceDisconnected.connect(self.deviceEnvironDisconnected)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -340,7 +342,6 @@ class MainWindow(widget.MWidget):
         :return: success
         """
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-        self.deviceEnvironConnected()
         return True
 
     def updateRefractionParameters(self):
@@ -1296,30 +1297,6 @@ class MainWindow(widget.MWidget):
     def indiEnvironDisconnected(self):
         self.app.message.emit('INDI server disconnected', 0)
 
-    def deviceEnvironConnected(self):
-        uiList = {'local': self.ui.localWeatherName,
-                  'global': self.ui.globalWeatherName,
-                  'sqm': self.ui.sqmName,
-                  }
-        countR = 0
-        countSum = 0
-        for wType, color in self.app.environment.getDeviceStatus():
-            self.changeStyleDynamic(uiList[wType], 'color', color)
-            if color:
-                if color == 'red':
-                    countR += 1
-                countSum += 1
-        if countSum == 0:
-            status = 3
-        elif countR == 0:
-            status = 0
-        elif countR == countSum:
-            status = 2
-        else:
-            status = 1
-        ui = self.ui.environmentConnected
-        self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
-
     def updateEnvironGUI(self, deviceName):
         """
         updateEnvironGUI shows the data which is received through INDI client
@@ -1377,3 +1354,49 @@ class MainWindow(widget.MWidget):
             icon = icon.scaled(25, 25, PyQt5.QtCore.Qt.KeepAspectRatio)
             self.ui.weatherForecastIcon.setPixmap(icon)
             self.ui.weatherForecast.setText(text)
+
+    def _getStatusList(self):
+        names = [self.app.environment.wDevice['local']['name'],
+                 self.app.environment.wDevice['global']['name'],
+                 self.app.environment.wDevice['sqm']['name'],
+                 ]
+        uiList = [self.ui.localWeatherName,
+                  self.ui.globalWeatherName,
+                  self.ui.sqmName,
+                  ]
+        return names, uiList
+
+    def updateEnvironMainStat(self, uiList):
+        countR = 0
+        countSum = 0
+        for ui in uiList:
+            color = ui.property('color')
+            if color == 'red':
+                countR += 1
+            countSum += 1
+        if countSum == 0:
+            status = 3
+        elif countR == 0:
+            status = 0
+        elif countR == countSum:
+            status = 2
+        else:
+            status = 1
+        ui = self.ui.environmentConnected
+        self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
+
+    def deviceEnvironConnected(self, deviceName):
+        names, uiList = self._getStatusList()
+        for name, ui in zip(names, uiList):
+            if deviceName != name:
+                continue
+            self.changeStyleDynamic(ui, 'color', 'green')
+        self.updateEnvironMainStat(uiList)
+
+    def deviceEnvironDisconnected(self, deviceName):
+        names, uiList = self._getStatusList()
+        for name, ui in zip(names, uiList):
+            if deviceName != name:
+                continue
+            self.changeStyleDynamic(ui, 'color', 'red')
+        self.updateEnvironMainStat(uiList)

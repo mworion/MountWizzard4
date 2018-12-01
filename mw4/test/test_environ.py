@@ -134,7 +134,7 @@ def test_startCommunication3():
                                'connectServer',
                                return_value=True):
             suc = app.startCommunication()
-            assert suc
+            assert not suc
             app.client.watchDevice.assert_called_with('MBox')
 
 
@@ -190,14 +190,3 @@ def test_connectDevice4():
                            return_value=False):
         suc = app.connectDevice('SQM', 'CONNECTION')
         assert not suc
-
-
-def test_getDeviceStatus1():
-    app.wDevice['sqm']['device'] = None
-    app.wDevice['local']['device'] = None
-    app.wDevice['global']['device'] = None
-
-    for wType, color in app.getDeviceStatus():
-        assert wType in ['sqm', 'local', 'global']
-        assert '' == color
-

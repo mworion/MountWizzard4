@@ -27,6 +27,7 @@ setup(
         'skyfield==1.9',
         'mountcontrol>=0.3',
         'indibase>=0.2',
+        'astropy==3.0.3'
     ]
     ,
     url='https://github.com/mworion/MountWizzard4',

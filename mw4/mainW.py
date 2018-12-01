@@ -1376,4 +1376,3 @@ class MainWindow(widget.MWidget):
             icon = PyQt5.QtGui.QPixmap(iconRef)
             self.ui.weatherForecastIcon.setPixmap(icon)
             self.ui.weatherForecast.setText(text)
-

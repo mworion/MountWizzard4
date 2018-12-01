@@ -303,18 +303,39 @@ class Environment(PyQt5.QtWidgets.QWidget):
         alpha = ((A * t_air_c) / (B + t_air_c)) + np.log(rel_humidity / 100.0)
         return (B * alpha) / (A - alpha)
 
-    def updateData(self, deviceName, propertyName):
+    def updateDataElements(self, device):
         """
-        updateData is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-        for global weather data as there is no dew point value available, it calculates
-        it and stores it as value as well.
-
+        updateDataElements runs through all elements and writes the number data to the
+        according locations.
         in addition it does a first setup and config for the device. basically the update
         rates are set to 10 seconds if they are not on this level.
 
+        :param device:
+        :return:
+        """
+
+        for element, value in device.getNumber(propertyName).items():
+            data = self.wDevice[wType]['data']
+            data[element] = value
+            elArray = element + '_ARRAY'
+            elTime = element + '_TIME'
+            if elArray not in data:
+                data[elArray] = np.full(100, value)
+                data[elTime] = np.full(100, datetime.now())
+            else:
+                data[elArray] = np.roll(data[elArray], 1)
+                data[elArray][0] = value
+                data[elTime] = np.roll(data[elTime], 1)
+                data[elTime][0] = datetime.now()
+
+    def updateData(self, deviceName):
+        """
+        updateData is called whenever a new number is received in client. it runs through
+        the device list and adds the necessary data.
+        for global weather data as there is no dew point value available, it calculates
+        it and stores it as value as well.
+
         :param deviceName:
-        :param propertyName:
         :return:
         """
 
@@ -324,19 +345,7 @@ class Environment(PyQt5.QtWidgets.QWidget):
                 return False
             if deviceName != self.wDevice[wType]['name']:
                 continue
-            for element, value in device.getNumber(propertyName).items():
-                data = self.wDevice[wType]['data']
-                data[element] = value
-                elArray = element + '_ARRAY'
-                elTime = element + '_TIME'
-                if elArray not in data:
-                    data[elArray] = np.full(100, value)
-                    data[elTime] = np.full(100, datetime.now())
-                else:
-                    data[elArray] = np.roll(data[elArray], 1)
-                    data[elArray][0] = value
-                    data[elTime] = np.roll(data[elTime], 1)
-                    data[elTime][0] = datetime.now()
+            self.updateDataElements(device)
 
             # in case of global weather we calculate the dew point manually
             if wType == 'global':
@@ -344,7 +353,6 @@ class Environment(PyQt5.QtWidgets.QWidget):
                 humidity = self.wDevice[wType]['data']['WEATHER_HUMIDITY']
                 dewPoint = self._getDewPoint(temp, humidity)
                 self.wDevice['global']['data']['WEATHER_DEWPOINT'] = dewPoint
-
         return True
 
     def getFilteredRefracParams(self):

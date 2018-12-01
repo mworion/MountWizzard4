@@ -22,17 +22,16 @@ import skyfield.api
 _lock = Lock()
 
 
-def prepare(obsSite):
-    jd = obsSite.timeJD
+def prepare(jd):
     tai1, tai2 = ERFA.utctai(jd, 0)
     tt1, tt2 = ERFA.taitt(tai1, tai2)
     jdtt = tt1 + tt2
-    return jd, jdtt
+    return jdtt
 
 
-def JNowToJ2000(star, obsSite):
+def JNowToJ2000(star, jd):
     with _lock():
-        jd, jdtt = prepare(obsSite)
+        jdtt = prepare(jd)
         ra = star.ra.degrees
         dec = star.dec.degrees
         ra = ERFA.eraAnp(ra + ERFA.eraEo06a(jdtt, 0.0))
@@ -44,9 +43,9 @@ def JNowToJ2000(star, obsSite):
         return star
 
 
-def J2000ToJNow(star, obsSite):
+def J2000ToJNow(star, jd):
     with _lock():
-        jd, jdtt = prepare(obsSite)
+        jdtt = prepare(jd)
         ra = star.ra.degrees
         dec = star.dec.degrees
         raConv, decConv, eo = ERFA.eraAtci13(ra,

@@ -951,7 +951,7 @@ def test_setMeridianLimitTrack2(qtbot):
                            'getInt',
                            return_value=(10, True)):
         suc = test_app.mainW.setMeridianLimitTrack()
-        assert not suc
+        assert suc
 
 
 def test_setMeridianLimitTrack3(qtbot):
@@ -990,7 +990,7 @@ def test_setMeridianLimitSlew2(qtbot):
                            'getInt',
                            return_value=(10, True)):
         suc = test_app.mainW.setMeridianLimitSlew()
-        assert not suc
+        assert suc
 
 
 def test_setMeridianLimitSlew3(qtbot):
@@ -1031,7 +1031,7 @@ def test_setHorizonLimitHigh2(qtbot):
                            'getInt',
                            return_value=(10, True)):
         suc = test_app.mainW.setHorizonLimitHigh()
-        assert not suc
+        assert suc
 
 
 def test_setHorizonLimitHigh3(qtbot):
@@ -1070,7 +1070,7 @@ def test_setHorizonLimitLow2(qtbot):
                            'getInt',
                            return_value=(10, True)):
         suc = test_app.mainW.setHorizonLimitLow()
-        assert not suc
+        assert suc
 
 
 def test_setHorizonLimitLow3(qtbot):
@@ -1109,7 +1109,7 @@ def test_setSlewRate2(qtbot):
                            'getInt',
                            return_value=(10, True)):
         suc = test_app.mainW.setSlewRate()
-        assert not suc
+        assert suc
 
 
 def test_setSlewRate3(qtbot):
@@ -1247,7 +1247,7 @@ def test_setElevation2(qtbot):
                            'getDouble',
                            return_value=(10, True)):
         suc = test_app.mainW.setElevation()
-        assert not suc
+        assert suc
 
 
 def test_setElevation3(qtbot):

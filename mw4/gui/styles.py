@@ -135,24 +135,24 @@ class MWStyles(object):
         color: rgb(32, 144, 192);
     }
     QLineEdit[color='green'] {
-        border-width: 2px;
+        border-width: 1px;
         border-style: outset;
         border-color: green;
     }
     QLineEdit[color='yellow'] {
-        border-width: 2px;
+        border-width: 1px;
         border-style: outset;
         border-color: yellow;
     }
     QLineEdit[color='red'] {
-        border-width: 2px;
+        border-width: 1px;
         border-style: outset;
         border-color: red;
     }
     QLineEdit#timeComputer {
         font-family: Arial;
         font-weight: bold;
-        font-size: 30pt;
+        font-size: 28pt;
 
     }
     

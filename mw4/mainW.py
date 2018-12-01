@@ -1365,7 +1365,7 @@ class MainWindow(widget.MWidget):
             if deviceName != 'OpenWeatherMap':
                 return
             forecast = int(envDev['global']['data'].get('WEATHER_FORECAST', 3))
-            self.changeStyleDynamic(self.ui.timeComputer,
+            self.changeStyleDynamic(self.ui.weatherForecast,
                                     'color',
                                     self.TRAFFICLIGHTCOLORS[forecast],
                                     )
@@ -1374,5 +1374,6 @@ class MainWindow(widget.MWidget):
             iconID = self.app.environment.WEATHER_ID[forecastID][1]
             iconRef = ':/' + iconID + '.png'
             icon = PyQt5.QtGui.QPixmap(iconRef)
+            icon = icon.scaled(25, 25, PyQt5.QtCore.Qt.KeepAspectRatio)
             self.ui.weatherForecastIcon.setPixmap(icon)
             self.ui.weatherForecast.setText(text)

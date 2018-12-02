@@ -409,7 +409,7 @@ class MainWindow(widget.MWidget):
 
         if ra is not None:
             raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            raText = raFormat.format(*ra.dms())
+            raText = raFormat.format(*ra.hms())
             self.ui.RA.setText(raText)
         else:
             self.ui.RA.setText('-')
@@ -417,7 +417,7 @@ class MainWindow(widget.MWidget):
         if dec is not None:
             decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
             decText = decFormat.format(*dec.signed_dms()[1:4],
-                                       sign='+' if obs.decJNow.degrees > 0 else '-')
+                                       sign='+' if dec.degrees > 0 else '-')
             self.ui.DEC.setText(decText)
         else:
             self.ui.DEC.setText('-')

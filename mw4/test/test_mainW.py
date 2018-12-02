@@ -1372,3 +1372,45 @@ def test_mountMAC():
     app.mainW.mountMAC()
 
     assert app.mount.MAC == '00:00:00:00:00:00'
+
+
+def test_indiHost():
+    app.mainW.ui.indiHost.setText('TEST')
+    app.mainW.indiHost()
+    assert app.environment.client.host == ('TEST', 7624)
+
+
+def test_localWeatherName():
+    app.mainW.ui.localWeatherName.setText('TEST')
+    app.mainW.localWeatherName()
+    assert 'TEST' == app.environment.wDevice['local']['name']
+
+
+def test_globalWeatherName():
+    app.mainW.ui.globalWeatherName.setText('TEST')
+    app.mainW.globalWeatherName()
+    assert 'TEST' == app.environment.wDevice['global']['name']
+
+
+def test_sqmWeatherName():
+    app.mainW.ui.sqmName.setText('TEST')
+    app.mainW.sqmName()
+    assert 'TEST' == app.environment.wDevice['sqm']['name']
+
+
+def test_newEnvironConnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        app.mainW.newEnvironDevice('test')
+    assert ['INDI device [test] found', 0] == blocker.args
+
+
+def test_indiEnvironConnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        app.mainW.indiEnvironConnected()
+    assert ['INDI server environment connected', 0] == blocker.args
+
+
+def test_indiEnvironDisconnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        app.mainW.indiEnvironDisconnected()
+    assert ['INDI server environment disconnected', 0] == blocker.args

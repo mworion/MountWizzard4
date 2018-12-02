@@ -19,18 +19,35 @@
 ###########################################################
 # standard libraries
 # external packages
+import PyQt5
 from skyfield import api
 from astropy import _erfa as ERFA
 # local import
+from mw4 import mainApp
 from mw4.base import transform
+
+test = PyQt5.QtWidgets.QApplication([])
+
+
+mwGlob = {'workDir': '.',
+          'configDir': './mw4/test/config',
+          'build': 'test',
+          }
+config = mwGlob['configDir']
+
+app = mainApp.MountWizzard4(mwGlob=mwGlob)
 
 
 def test_J2000toJNow():
-    ts = api.load.timescale()
+    load = api.Loader(mwGlob['configDir'],
+                      verbose=True,
+                      expire=True,
+                      )
+    ts = load.timescale()
     barnard = api.Star(ra_hours=(17, 57, 48.49803),
                        dec_degrees=(4, 41, 36.2072),
                        )
-    planets = api.load('de421.bsp')
+    planets = load('de421.bsp')
     earth = planets['earth']
 
     print()

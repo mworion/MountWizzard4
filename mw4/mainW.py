@@ -1299,10 +1299,10 @@ class MainWindow(widget.MWidget):
         self.app.message.emit('INDI device [{0}] found'.format(deviceName), 0)
 
     def indiEnvironConnected(self):
-        self.app.message.emit('INDI server connected', 0)
+        self.app.message.emit('INDI server environment connected', 0)
 
     def indiEnvironDisconnected(self):
-        self.app.message.emit('INDI server disconnected', 0)
+        self.app.message.emit('INDI server environment disconnected', 0)
 
     def updateEnvironGUI(self, deviceName):
         """

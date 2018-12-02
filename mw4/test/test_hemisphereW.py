@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+import pytest
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtTest
@@ -32,8 +33,20 @@ mwGlob = {'workDir': '.',
           'configDir': './mw4/test/config/',
           'build': 'test',
           }
-test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
-spy = PyQt5.QtTest.QSignalSpy(test_app.message)
+
+
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown():
+    print("MODULE SETUP!!!")
+    global spy
+    global app
+
+    app = mainApp.MountWizzard4(mwGlob=mwGlob)
+    spy = PyQt5.QtTest.QSignalSpy(app.message)
+    yield
+    print("MODULE TEARDOWN!!!")
+    spy = None
+    app = None
 
 
 #
@@ -44,44 +57,44 @@ spy = PyQt5.QtTest.QSignalSpy(test_app.message)
 
 
 def test_resizeEvent(qtbot):
-    test_app.hemisphereW.resizeEvent(None)
+    app.hemisphereW.resizeEvent(None)
 
 
 def test_closeEvent(qtbot):
-    test_app.hemisphereW.closeEvent(None)
+    app.hemisphereW.closeEvent(None)
 
 
 def test_toggleWindow1(qtbot):
-    test_app.hemisphereW.showStatus = True
-    with mock.patch.object(test_app.hemisphereW,
+    app.hemisphereW.showStatus = True
+    with mock.patch.object(app.hemisphereW,
                            'close',
                            return_value=None):
-        test_app.hemisphereW.toggleWindow()
-        assert not test_app.hemisphereW.showStatus
+        app.hemisphereW.toggleWindow()
+        assert not app.hemisphereW.showStatus
 
 
 def test_toggleWindow2(qtbot):
-    test_app.hemisphereW.showStatus = False
-    with mock.patch.object(test_app.hemisphereW,
+    app.hemisphereW.showStatus = False
+    with mock.patch.object(app.hemisphereW,
                            'showWindow',
                            return_value=None):
-        test_app.hemisphereW.toggleWindow()
-        assert test_app.hemisphereW.showStatus
+        app.hemisphereW.toggleWindow()
+        assert app.hemisphereW.showStatus
 
 
 def test_showWindow1(qtbot):
-    test_app.hemisphereW.showStatus = False
-    test_app.hemisphereW.showWindow()
-    assert test_app.hemisphereW.showStatus
+    app.hemisphereW.showStatus = False
+    app.hemisphereW.showWindow()
+    assert app.hemisphereW.showStatus
 
 
 def test_clearAxes1(qtbot):
-    axes = test_app.hemisphereW.hemisphereMat.figure.axes[0]
-    suc = test_app.hemisphereW.clearAxes(axes, True)
+    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
+    suc = app.hemisphereW.clearAxes(axes, True)
     assert suc
 
 
 def test_clearAxes2(qtbot):
-    axes = test_app.hemisphereW.hemisphereMat.figure.axes[0]
-    suc = test_app.hemisphereW.clearAxes(axes, False)
+    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
+    suc = app.hemisphereW.clearAxes(axes, False)
     assert not suc

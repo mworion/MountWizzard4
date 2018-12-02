@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+import pytest
 # external packages
 # local import
 
@@ -29,8 +30,16 @@ mwGlob = {'workDir': '.',
           'build': 'test',
           }
 
-data = build.DataPoint(mwGlob=mwGlob, lat=48)
 
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown():
+    print("MODULE SETUP!!!")
+    global data
+
+    data = build.DataPoint(mwGlob=mwGlob, lat=48)
+    yield
+    print("MODULE TEARDOWN!!!")
+    data = None
 
 def test_topoToAzAlt1():
     ha = 12

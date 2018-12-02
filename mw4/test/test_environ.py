@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 from unittest import mock
+import pytest
 # external packages
 import PyQt5.QtWidgets
 # local import
@@ -28,7 +29,15 @@ from indibase import indiBase
 test = PyQt5.QtWidgets.QApplication([])
 host_ip = 'astro-mount.fritz.box'
 
-app = environ.Environment(host_ip)
+
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown():
+    print("MODULE SETUP!!!")
+    global app
+    app = environ.Environment(host_ip)
+    yield
+    print("MODULE TEARDOWN!!!")
+    app = None
 
 
 def test_localWeatherName():

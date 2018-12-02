@@ -19,7 +19,7 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
-import locale
+import pytest
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtTest
@@ -33,10 +33,20 @@ mwGlob = {'workDir': '.',
           'configDir': './mw4/test/config/',
           'build': 'test',
           }
-test_app = mainApp.MountWizzard4(mwGlob=mwGlob)
-spy = PyQt5.QtTest.QSignalSpy(test_app.message)
 
 
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown():
+    print("MODULE SETUP!!!")
+    global spy
+    global app
+
+    app = mainApp.MountWizzard4(mwGlob=mwGlob)
+    spy = PyQt5.QtTest.QSignalSpy(app.message)
+    yield
+    print("MODULE TEARDOWN!!!")
+    spy = None
+    app = None
 #
 #
 # testing mainW gui booting shutdown
@@ -45,65 +55,65 @@ spy = PyQt5.QtTest.QSignalSpy(test_app.message)
 
 
 def test_resizeEvent(qtbot):
-    test_app.messageW.resizeEvent(None)
+    app.messageW.resizeEvent(None)
 
 
 def test_closeEvent(qtbot):
-    test_app.messageW.closeEvent(None)
+    app.messageW.closeEvent(None)
 
 
 def test_toggleWindow1(qtbot):
-    test_app.messageW.showStatus = True
-    with mock.patch.object(test_app.messageW,
+    app.messageW.showStatus = True
+    with mock.patch.object(app.messageW,
                            'close',
                            return_value=None):
-        test_app.messageW.toggleWindow()
-        assert not test_app.messageW.showStatus
+        app.messageW.toggleWindow()
+        assert not app.messageW.showStatus
 
 
 def test_toggleWindow2(qtbot):
-    test_app.messageW.showStatus = False
-    with mock.patch.object(test_app.messageW,
+    app.messageW.showStatus = False
+    with mock.patch.object(app.messageW,
                            'showWindow',
                            return_value=None):
-        test_app.messageW.toggleWindow()
-        assert test_app.messageW.showStatus
+        app.messageW.toggleWindow()
+        assert app.messageW.showStatus
 
 
 def test_showWindow1(qtbot):
-    test_app.messageW.showStatus = False
-    with mock.patch.object(test_app.messageW,
+    app.messageW.showStatus = False
+    with mock.patch.object(app.messageW,
                            'show',
                            return_value=None):
-        test_app.messageW.showWindow()
-        assert test_app.messageW.showStatus
+        app.messageW.showWindow()
+        assert app.messageW.showStatus
 
 
 def test_writeMessage1(qtbot):
-    test_app.messageW.ui.message.setText('')
-    suc = test_app.messageW.writeMessage('test', 0)
+    app.messageW.ui.message.setText('')
+    suc = app.messageW.writeMessage('test', 0)
     assert suc
-    val = test_app.messageW.ui.message.toPlainText()
+    val = app.messageW.ui.message.toPlainText()
     assert val.endswith('test\n')
 
 
 def test_writeMessage2(qtbot):
-    test_app.messageW.ui.message.setText('')
-    suc = test_app.messageW.writeMessage('test', 6)
+    app.messageW.ui.message.setText('')
+    suc = app.messageW.writeMessage('test', 6)
     assert not suc
 
 
 def test_writeMessage3(qtbot):
-    test_app.messageW.ui.message.setText('')
-    suc = test_app.messageW.writeMessage('', 0)
+    app.messageW.ui.message.setText('')
+    suc = app.messageW.writeMessage('', 0)
     assert suc
-    val = test_app.messageW.ui.message.toPlainText()
+    val = app.messageW.ui.message.toPlainText()
     assert val.endswith('\n')
 
 
 def test_writeMessage4(qtbot):
-    test_app.messageW.ui.message.setText('')
-    suc = test_app.messageW.writeMessage('test', -1)
+    app.messageW.ui.message.setText('')
+    suc = app.messageW.writeMessage('test', -1)
     assert not suc
 
 

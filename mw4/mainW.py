@@ -1391,6 +1391,12 @@ class MainWindow(widget.MWidget):
         return status
 
     def _getStatusList(self):
+        """
+        _getStatusList defines device names list and corresponding ui widgets
+
+        :return: list devices name, list of widgets
+        """
+
         names = [self.app.environment.wDevice['local']['name'],
                  self.app.environment.wDevice['global']['name'],
                  self.app.environment.wDevice['sqm']['name'],
@@ -1402,6 +1408,14 @@ class MainWindow(widget.MWidget):
         return names, uiList
 
     def deviceEnvironConnected(self, deviceName):
+        """
+        deviceEnvironConnected is called whenever a device is connected and used for setting
+        the device status right
+
+        :param deviceName: name of device connected
+        :return:
+        """
+
         names, uiList = self._getStatusList()
         for name, ui in zip(names, uiList):
             if deviceName != name:
@@ -1412,6 +1426,14 @@ class MainWindow(widget.MWidget):
         self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
 
     def deviceEnvironDisconnected(self, deviceName):
+        """
+        deviceEnvironDisconnected is called whenever a device is disconnected and used for
+        setting the device status right
+
+        :param deviceName: name of device disconnected
+        :return:
+        """
+
         names, uiList = self._getStatusList()
         for name, ui in zip(names, uiList):
             if deviceName != name:

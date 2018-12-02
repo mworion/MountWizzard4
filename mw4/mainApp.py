@@ -199,7 +199,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # check necessary data available
         defaultFilePath = self.config.get('filePath', '')
-        isDefaultConfigPath = defaultFilePath.endswith('config.cfg')
+        if defaultFilePath is not None:
+            isDefaultConfigPath = defaultFilePath.endswith('config.cfg')
+        else:
+            isDefaultConfigPath = False
         isReferenceName = (self.config['profileName'] == 'config')
         if isReferenceName and not isDefaultConfigPath:
             return False

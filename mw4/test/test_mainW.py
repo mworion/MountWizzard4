@@ -32,7 +32,7 @@ from mw4 import mainApp
 test = PyQt5.QtWidgets.QApplication([])
 
 mwGlob = {'workDir': '.',
-          'configDir': './mw4/test/config/',
+          'configDir': './mw4/test/config',
           'build': 'test',
           }
 app = mainApp.MountWizzard4(mwGlob=mwGlob)
@@ -649,11 +649,11 @@ def test_closeEvent():
 def test_showModelPolar1():
     app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     app.mount.model._parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
-                                      '21:06:10.79,+45*20:52.8,  12.1,329',
-                                      '23:13:58.02,+38*48:18.8,  31.0,162',
-                                      '17:43:41.26,+59*15:30.7,   8.4,005',
-                                      ],
-                                     4)
+                                 '21:06:10.79,+45*20:52.8,  12.1,329',
+                                 '23:13:58.02,+38*48:18.8,  31.0,162',
+                                 '17:43:41.26,+59*15:30.7,   8.4,005',
+                                 ],
+                                4)
     app.mainW.ui.checkShowErrorValues.setChecked(True)
     suc = app.mainW.showModelPolar()
     assert suc
@@ -1414,3 +1414,173 @@ def test_indiEnvironDisconnected(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
         app.mainW.indiEnvironDisconnected()
     assert ['INDI server environment disconnected', 0] == blocker.args
+
+
+def test_updateEnvironGUI_1():
+    app.environment.wDevice['sqm']['name'] = 'test'
+    app.environment.wDevice['sqm']['data']['SKY_BRIGHTNESS'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.SQR.text() == '10.50'
+
+
+def test_updateEnvironGUI_2():
+    app.environment.wDevice['local']['name'] = 'test'
+    app.environment.wDevice['local']['data']['WEATHER_TEMPERATURE'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.localTemp.text() == '10.5'
+
+
+def test_updateEnvironGUI_3():
+    app.environment.wDevice['local']['name'] = 'test'
+    app.environment.wDevice['local']['data']['WEATHER_BAROMETER'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.localPress.text() == ' 10.5'
+
+
+def test_updateEnvironGUI_4():
+    app.environment.wDevice['local']['name'] = 'test'
+    app.environment.wDevice['local']['data']['WEATHER_DEWPOINT'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.localDewPoint.text() == '10.5'
+
+
+def test_updateEnvironGUI_5():
+    app.environment.wDevice['local']['name'] = 'test'
+    app.environment.wDevice['local']['data']['WEATHER_HUMIDITY'] = 10
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.localHumidity.text() == ' 10'
+
+
+def test_updateEnvironGUI_6():
+    app.environment.wDevice['global']['name'] = 'test'
+    app.environment.wDevice['global']['data']['WEATHER_TEMPERATURE'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.globalTemp.text() == '10.5'
+
+
+def test_updateEnvironGUI_7():
+    app.environment.wDevice['global']['name'] = 'test'
+    app.environment.wDevice['global']['data']['WEATHER_PRESSURE'] = 10
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.globalPress.text() == ' 10.0'
+
+
+def test_updateEnvironGUI_8():
+    app.environment.wDevice['global']['name'] = 'test'
+    app.environment.wDevice['global']['data']['WEATHER_HUMIDITY'] = 10
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.globalHumidity.text() == '10.0'
+
+
+def test_updateEnvironGUI_9():
+    app.environment.wDevice['global']['name'] = 'test'
+    app.environment.wDevice['global']['data']['WEATHER_CLOUD_COVER'] = 10
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.cloudCover.text() == ' 10'
+
+
+def test_updateEnvironGUI_10():
+    app.environment.wDevice['global']['name'] = 'test'
+    app.environment.wDevice['global']['data']['WEATHER_WIND_SPEED'] = 10
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.windSpeed.text() == ' 10'
+
+
+def test_updateEnvironGUI_11():
+    app.environment.wDevice['global']['name'] = 'test'
+    app.environment.wDevice['global']['data']['WEATHER_RAIN_HOUR'] = 10
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.rainVol.text() == ' 10'
+
+
+def test_updateEnvironGUI_12():
+    app.environment.wDevice['global']['name'] = 'test'
+    app.environment.wDevice['global']['data']['WEATHER_SNOW_HOUR'] = 10
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.snowVol.text() == ' 10'
+
+
+def test_updateEnvironGUI_13():
+    app.environment.wDevice['global']['name'] = 'OpenWeatherMap'
+    app.environment.wDevice['global']['data']['WEATHER_SNOW_HOUR'] = 10
+    app.mainW.updateEnvironGUI('OpenWeatherMap')
+    assert app.mainW.ui.snowVol.text() == ' 10'
+
+
+def test_updateEnvironMainStat1():
+    uiList = [app.mainW.ui.localWeatherName,
+              app.mainW.ui.globalWeatherName,
+              app.mainW.ui.sqmName]
+    value = app.mainW.updateEnvironMainStat(uiList)
+    assert value == 3
+
+
+def test_updateEnvironMainStat2():
+    uiList = [app.mainW.ui.localWeatherName,
+              app.mainW.ui.globalWeatherName,
+              app.mainW.ui.sqmName]
+    uiList[0].setProperty('color', 'red')
+    value = app.mainW.updateEnvironMainStat(uiList)
+    assert value == 2
+
+
+def test_updateEnvironMainStat3():
+    uiList = [app.mainW.ui.localWeatherName,
+              app.mainW.ui.globalWeatherName,
+              app.mainW.ui.sqmName]
+    uiList[0].setProperty('color', 'red')
+    uiList[1].setProperty('color', 'green')
+    value = app.mainW.updateEnvironMainStat(uiList)
+    assert value == 1
+
+
+def test_updateEnvironMainStat4():
+    uiList = [app.mainW.ui.localWeatherName,
+              app.mainW.ui.globalWeatherName,
+              app.mainW.ui.sqmName]
+    uiList[0].setProperty('color', 'green')
+    uiList[1].setProperty('color', 'green')
+    value = app.mainW.updateEnvironMainStat(uiList)
+    assert value == 0
+
+
+def test_deviceEnvironConnected1():
+    app.environment.wDevice['sqm']['name'] = 'test'
+    app.mainW.deviceEnvironConnected('')
+    color = app.mainW.ui.sqmName.property('color')
+    assert color is None
+
+
+def test_deviceEnvironConnected2():
+    app.environment.wDevice['global']['name'] = 'test'
+    app.mainW.deviceEnvironConnected('test')
+    color = app.mainW.ui.globalWeatherName.property('color')
+    assert color == 'green'
+
+
+def test_deviceEnvironDisconnected1():
+    app.environment.wDevice['sqm']['name'] = 'test'
+    app.mainW.ui.sqmName.setProperty('color', None)
+    app.mainW.deviceEnvironDisconnected('')
+    color = app.mainW.ui.sqmName.property('color')
+    assert color is None
+
+
+def test_deviceEnvironDisconnected2():
+    app.environment.wDevice['global']['name'] = 'test'
+    app.mainW.deviceEnvironDisconnected('test')
+    color = app.mainW.ui.globalWeatherName.property('color')
+    assert color == 'red'
+
+'''
+def test_config():
+    app.config = {
+        'profileName': 'config',
+        'version': '4.0',
+        'filePath': None,
+        'mainW': {},
+    }
+    app.saveConfig()
+    app.mainW.initConfig()
+    app.mainW.storeConfig()
+'''

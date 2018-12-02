@@ -306,3 +306,14 @@ def test_saveConfig_not_ok3():
     suc = test_app.saveConfig()
     assert not suc
 
+
+def test_saveConfig_not_ok4():
+    # save default without reference without filePath
+    test_app.config = {
+        'profileName': 'config',
+        'version': '4.0',
+        'filePath': None,
+    }
+    suc = test_app.saveConfig()
+    assert not suc
+

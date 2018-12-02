@@ -1377,6 +1377,8 @@ class MainWindow(widget.MWidget):
         countSum = 0
         for ui in uiList:
             color = ui.property('color')
+            if color is None:
+                continue
             if color == 'red':
                 countR += 1
             countSum += 1

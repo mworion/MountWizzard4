@@ -24,16 +24,12 @@ _lock = Lock()
 
 def JNowToJ2000(ra, dec, timeJD):
     with _lock:
-        jdtt = timeJD.tt
-        jd = timeJD.ut1
-
         ra = ra.radians
         dec = dec.radians
 
-        delta = ERFA.eo06a(jdtt, 0.0)
-        ra = ERFA.anp(ra + delta)
+        ra = ERFA.anp(ra + ERFA.eo06a(timeJD.tt, 0.0))
 
-        raConv, decConv, _ = ERFA.atic13(ra, dec, jd, 0.0)
+        raConv, decConv, _ = ERFA.atic13(ra, dec, timeJD.ut1, 0.0)
 
         ra = skyfield.api.Angle(radians=raConv, preference='hours')
         dec = skyfield.api.Angle(radians=decConv, preference='degrees')
@@ -42,13 +38,10 @@ def JNowToJ2000(ra, dec, timeJD):
 
 def J2000ToJNow(ra, dec, timeJD):
     with _lock:
-
-        jd = timeJD.ut1
-
         ra = ra.radians
         dec = dec.radians
 
-        raConv, decConv, eo = ERFA.atci13(ra, dec, 0, 0, 0, 0, jd, 0)
+        raConv, decConv, eo = ERFA.atci13(ra, dec, 0, 0, 0, 0, timeJD.ut1, 0)
 
         raConv = ERFA.anp(raConv - eo)
         ra = skyfield.api.Angle(radians=raConv, preference='hours')

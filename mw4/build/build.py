@@ -304,15 +304,15 @@ class DataPoint(object):
         :return: yields alt, az tuples which are above horizon
         """
 
+        self.clearBuildP()
         for dec, step, start, stop in self.genHaDecParams(selection):
             for ha in range(start, stop, step):
                 alt, az = self.topoToAzAlt(ha/10, dec, self.lat)
                 # only values with above horizon = 0
                 if 5 <= alt <= 85 and az < 360:
-                    yield alt, az
+                    self.addBuildP((alt, az))
 
-    @staticmethod
-    def genGrid(minAlt=5, maxAlt=85, numbRows=5, numbCols=6):
+    def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6):
         """
         genGrid generates a grid of points and transforms ha, dec to alt az. with given
         limits in alt, the min and max will be used as a hard condition. on az there is
@@ -332,17 +332,22 @@ class DataPoint(object):
         """
 
         if not 5 <= minAlt <= 85:
-            return
+            return False
         if not 5 <= maxAlt <= 85:
-            return
+            return False
         if not maxAlt > minAlt:
-            return
+            return False
         if not 1 < numbRows < 9:
-            return
+            return False
         if not 1 < numbCols < 16:
-            return
+            return False
         if numbCols % 2:
-            return
+            return False
+
+        minAlt = int(minAlt)
+        maxAlt = int(maxAlt)
+        numbCols = int(numbCols)
+        numbRows = int(numbRows)
 
         stepAlt = int((maxAlt - minAlt) / (numbRows - 1))
         eastAlt = list(range(minAlt, maxAlt + 1, stepAlt))
@@ -352,20 +357,22 @@ class DataPoint(object):
         minAz = int(180 / numbCols)
         maxAz = 360 - minAz
 
+        self.clearBuildP()
         for i, alt in enumerate(eastAlt):
             if i % 2:
                 for az in range(minAz, 180, stepAz):
-                    yield alt, az
+                    self.addBuildP((alt, az))
             else:
                 for az in range(180 - minAz, 0, -stepAz):
-                    yield alt, az
+                    self.addBuildP((alt, az))
         for i, alt in enumerate(westAlt):
             if i % 2:
                 for az in range(180 + minAz, 360, stepAz):
-                    yield alt, az
+                    self.addBuildP((alt, az))
             else:
                 for az in range(maxAz, 180, -stepAz):
-                    yield alt, az
+                    self.addBuildP((alt, az))
+        return True
 
     @staticmethod
     def genInitial(alt=30, azStart=10, numb=3):
@@ -387,5 +394,6 @@ class DataPoint(object):
 
         stepAz = int(360 / numb)
 
+        self.clearBuildP()
         for az in range(azStart, 720, stepAz):
-            yield alt, az % 360
+            self.addBuildP((alt, az % 360))

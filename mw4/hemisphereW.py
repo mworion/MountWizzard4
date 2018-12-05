@@ -179,8 +179,12 @@ class HemisphereWindow(widget.MWidget):
 
         # the static part (model points, horizon, celestial paths, meridian limits)
         self.clearAxes(axes, visible=True)
-        y, x = zip(*list(self.app.data.genGrid(numbRows=8,
-                                               numbCols=10)))
+        self.clearAxes(axesM, visible=False)
+        self.clearAxes(axesS, visible=False)
+
+        if not self.app.data.buildP:
+            return False
+        y, x = zip(*self.app.data.buildP)
         axes.plot(x, y,
                   'o',
                   markersize=9,
@@ -191,8 +195,10 @@ class HemisphereWindow(widget.MWidget):
                           xy=xy,
                           color='#E0E0E0')
         # now the moving part (pointing of mount, dome position)
-        self.clearAxes(axesM, visible=False)
 
         # and the the star part (alignment stars)
-        self.clearAxes(axesS, visible=False)
 
+        # drawing the canvas
+        axes.figure.canvas.draw()
+        axesM.figure.canvas.draw()
+        axesS.figure.canvas.draw()

@@ -189,11 +189,12 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         :param      widget:    matplotlib canvas widget for drawing
         :param      visible:   show axis grid
-        :return:    nothing
+        :return:    fig        figure in widget
+        :return:    axes       axes in figure
         """
 
         fig = widget.figure
-        fig.clf()
+        # fig.clf()
         axes = fig.add_subplot(1,
                                1,
                                1,
@@ -214,6 +215,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                          colors='#2090C0',
                          labelsize=12,
                          )
+
 
     @staticmethod
     def embedMatplot(ui):

@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5941,7 +5941,7 @@ manually</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Reload</string>
+      <string>Generate</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btn_saveInitialModelPoints">
@@ -6326,10 +6326,10 @@ manually</string>
       <double>8.000000000000000</double>
      </property>
      <property name="singleStep">
-      <double>2.000000000000000</double>
+      <double>1.000000000000000</double>
      </property>
      <property name="value">
-      <double>4.000000000000000</double>
+      <double>5.000000000000000</double>
      </property>
     </widget>
     <widget class="Line" name="line_34">
@@ -6380,10 +6380,10 @@ manually</string>
       <double>15.000000000000000</double>
      </property>
      <property name="singleStep">
-      <double>1.000000000000000</double>
+      <double>2.000000000000000</double>
      </property>
      <property name="value">
-      <double>5.000000000000000</double>
+      <double>6.000000000000000</double>
      </property>
     </widget>
     <widget class="QPushButton" name="runFullModel">
@@ -7052,7 +7052,7 @@ manually</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="showFullModelPoints">
+    <widget class="QPushButton" name="genBuildFile">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -7073,7 +7073,7 @@ manually</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Reload</string>
+      <string>Generate</string>
      </property>
     </widget>
     <widget class="QPushButton" name="saveFullModelPoints">
@@ -7601,7 +7601,7 @@ manually</string>
     <zorder>label_136</zorder>
     <zorder>label_213</zorder>
     <zorder>le_modelFullPointsFileName</zorder>
-    <zorder>showFullModelPoints</zorder>
+    <zorder>genBuildFile</zorder>
     <zorder>saveFullModelPoints</zorder>
     <zorder>saveFullModelPointsAs</zorder>
     <zorder>loadFullModelPoints</zorder>
@@ -16401,7 +16401,7 @@ manually</string>
   <tabstop>runInitialModel</tabstop>
   <tabstop>cancelInitialModel</tabstop>
   <tabstop>plateSolveSync</tabstop>
-  <tabstop>showFullModelPoints</tabstop>
+  <tabstop>genBuildFile</tabstop>
   <tabstop>loadFullModelPoints</tabstop>
   <tabstop>saveFullModelPoints</tabstop>
   <tabstop>saveFullModelPointsAs</tabstop>

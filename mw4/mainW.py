@@ -127,6 +127,12 @@ class MainWindow(widget.MWidget):
         self.ui.globalWeatherName.editingFinished.connect(self.globalWeatherName)
         self.ui.sqmName.editingFinished.connect(self.sqmName)
         self.ui.reconnectIndiServer.clicked.connect(self.app.environment.reconnectIndiServer)
+        self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
+        self.ui.genBuildMax.clicked.connect(self.genBuildMax)
+        self.ui.genBuildMed.clicked.connect(self.genBuildMed)
+        self.ui.genBuildNorm.clicked.connect(self.genBuildNorm)
+        self.ui.genBuildMin.clicked.connect(self.genBuildMin)
+        self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -1444,3 +1450,35 @@ class MainWindow(widget.MWidget):
         status = self.updateEnvironMainStat(uiList)
         ui = self.ui.environmentConnected
         self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
+
+    def genBuildGrid(self):
+        row = self.ui.numberGridPointsRow.value()
+        col = self.ui.numberGridPointsCol.value()
+        minAlt = self.ui.altitudeMin.value()
+        maxAlt = self.ui.altitudeMax.value()
+        suc = self.app.data.genGrid(minAlt=minAlt,
+                                    maxAlt=maxAlt,
+                                    numbRows=row,
+                                    numbCols=col)
+        if suc:
+            self.app.hemisphereW.drawHemisphere()
+        else:
+            pass
+
+    def genBuildMax(self):
+        pass
+
+    def genBuildMed(self):
+        pass
+
+    def genBuildNorm(self):
+        pass
+
+    def genBuildMin(self):
+        pass
+
+    def genBuildDSO(self):
+        pass
+
+    def genBuldFile(self):
+        pass

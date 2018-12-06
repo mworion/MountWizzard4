@@ -311,6 +311,7 @@ class DataPoint(object):
                 # only values with above horizon = 0
                 if 5 <= alt <= 85 and az < 360:
                     self.addBuildP((alt, az))
+        return True
 
     def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6):
         """
@@ -374,8 +375,8 @@ class DataPoint(object):
                     self.addBuildP((alt, az))
         return True
 
-    @staticmethod
-    def genInitial(alt=30, azStart=10, numb=3):
+
+    def genInitial(self, alt=30, azStart=10, numb=3):
         """
         genInitial generates a number of initial points for the first step of modeling
 
@@ -386,14 +387,16 @@ class DataPoint(object):
         """
 
         if not 5 <= alt <= 85:
-            return
+            return False
         if not 2 < numb < 10:
-            return
+            return False
         if not 0 <= azStart < 360:
-            return
+            return False
 
         stepAz = int(360 / numb)
 
         self.clearBuildP()
         for az in range(azStart, 720, stepAz):
             self.addBuildP((alt, az % 360))
+
+        return True

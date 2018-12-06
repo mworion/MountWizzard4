@@ -1466,19 +1466,35 @@ class MainWindow(widget.MWidget):
             pass
 
     def genBuildMax(self):
-        pass
+        suc = self.app.data.genGreaterCircle(selection='max')
+        if suc:
+            self.app.hemisphereW.drawHemisphere()
+        else:
+            pass
 
     def genBuildMed(self):
-        pass
+        suc = self.app.data.genGreaterCircle(selection='med')
+        if suc:
+            self.app.hemisphereW.drawHemisphere()
+        else:
+            pass
 
     def genBuildNorm(self):
-        pass
+        suc = self.app.data.genGreaterCircle(selection='norm')
+        if suc:
+            self.app.hemisphereW.drawHemisphere()
+        else:
+            pass
 
     def genBuildMin(self):
-        pass
+        suc = self.app.data.genGreaterCircle(selection='min')
+        if suc:
+            self.app.hemisphereW.drawHemisphere()
+        else:
+            pass
 
     def genBuildDSO(self):
         pass
 
-    def genBuldFile(self):
+    def genBuildFile(self):
         pass

@@ -70,8 +70,8 @@ def test_genHaDecParams1():
             j = i
         assert a == data.DEC[selection][j]
         assert b == data.STEP[selection][j]
-        assert c == data.START[i]
-        assert d == data.STOP[i]
+        assert c == data.START[selection][i]
+        assert d == data.STOP[selection][i]
 
 
 def test_genHaDecParams2():
@@ -84,8 +84,8 @@ def test_genHaDecParams2():
             j = i
         assert a == data.DEC[selection][j]
         assert b == data.STEP[selection][j]
-        assert c == data.START[i]
-        assert d == data.STOP[i]
+        assert c == data.START[selection][i]
+        assert d == data.STOP[selection][i]
 
 
 def test_genHaDecParams3():
@@ -98,8 +98,8 @@ def test_genHaDecParams3():
             j = i
         assert a == data.DEC[selection][j]
         assert b == data.STEP[selection][j]
-        assert c == data.START[i]
-        assert d == data.STOP[i]
+        assert c == data.START[selection][i]
+        assert d == data.STOP[selection][i]
 
 
 def test_genHaDecParams4():
@@ -112,8 +112,8 @@ def test_genHaDecParams4():
             j = i
         assert a == data.DEC[selection][j]
         assert b == data.STEP[selection][j]
-        assert c == data.START[i]
-        assert d == data.STOP[i]
+        assert c == data.START[selection][i]
+        assert d == data.STOP[selection][i]
 
 
 def test_genHaDecParams5():
@@ -133,7 +133,7 @@ def test_genGreaterCircle1():
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 39 == i
+    assert 58 == i
 
 
 def test_genGreaterCircle2():
@@ -145,7 +145,7 @@ def test_genGreaterCircle2():
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 60 == i
+    assert 89 == i
 
 
 def test_genGreaterCircle3():
@@ -157,7 +157,7 @@ def test_genGreaterCircle3():
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 105 == i
+    assert 112 == i
 
 
 def test_genGreaterCircle4():
@@ -177,11 +177,11 @@ def test_buildP1():
     data.genGreaterCircle('max')
     assert len(data.buildP) == 157
     data.genGreaterCircle('med')
-    assert len(data.buildP) == 106
+    assert len(data.buildP) == 113
     data.genGreaterCircle('norm')
-    assert len(data.buildP) == 61
+    assert len(data.buildP) == 90
     data.genGreaterCircle('min')
-    assert len(data.buildP) == 40
+    assert len(data.buildP) == 59
 
 
 def test_buildP2():
@@ -280,13 +280,13 @@ def test_horizonP1():
     assert len(data.horizonP) == 157
     data.genGreaterCircle('med')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 106
+    assert len(data.horizonP) == 113
     data.genGreaterCircle('norm')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 61
+    assert len(data.horizonP) == 90
     data.genGreaterCircle('min')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 40
+    assert len(data.horizonP) == 59
 
 
 def test_horizonP2():

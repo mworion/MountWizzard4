@@ -59,10 +59,24 @@ class DataPoint(object):
             'med': [10, -10, 10, -10, 10, -10, 10, -30, 30],
             'max': [10, -10, 10, -10, 10, -10, 10, -10, 10, -30, 30],
             }
-    START = [-120, -5, -120, -5, -120, -5, -120, -5, -120, -5, -120,
-             5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5, 120]
-    STOP = [0, -120, 0, -120, 0, -120, 0, -120, 0, -120, 0,
-            120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0]
+    START = {'min': [-120, -5, -120, -5, -120, -5, -120,
+                     5, 120, 5, 120, 5, 120, 5],
+             'norm': [-120, -5, -120, -5, -120, -5, -120,
+                      5, 120, 5, 120, 5, 120, 5],
+             'med': [-120, -5, -120, -5, -120, -5, -120, -5, -120,
+                     5, 120, 5, 120, 5, 120, 5, 120, 5],
+             'max': [-120, -5, -120, -5, -120, -5, -120, -5, -120, -5, -120,
+                     5, 120, 5, 120, 5, 120, 5, 120, 5, 120, 5],
+             }
+    STOP = {'min': [0, -120, 0, -120, 0, -120, 0,
+                    120, 0, 120, 0, 120, 0, 120],
+            'norm': [0, -120, 0, -120, 0, -120, 0,
+                     120, 0, 120, 0, 120, 0, 120],
+            'med': [0, -120, 0, -120, 0, -120, 0, -120, 0,
+                    120, 0, 120, 0, 120, 0, 120, 0, 120, 0],
+            'max': [0, -120, 0, -120, 0, -120, 0, -120, 0, -120, 0,
+                    120, 0, 120, 0, 120, 0, 120, 0, 120, 0, 120, 0],
+            }
 
     def __init__(self,
                  mwGlob=None,
@@ -290,8 +304,10 @@ class DataPoint(object):
         eastStepL = self.STEP[selection]
         westStepL = list(reversed(eastStepL))
         stepL = eastStepL + westStepL
+        startL = self.START[selection]
+        stopL = self.STOP[selection]
 
-        for dec, step, start, stop in zip(decL, stepL, self.START, self.STOP):
+        for dec, step, start, stop in zip(decL, stepL, startL, stopL):
             yield dec, step, start, stop
 
     def genGreaterCircle(self, selection='norm'):
@@ -374,7 +390,6 @@ class DataPoint(object):
                 for az in range(maxAz, 180, -stepAz):
                     self.addBuildP((alt, az))
         return True
-
 
     def genInitial(self, alt=30, azStart=10, numb=3):
         """

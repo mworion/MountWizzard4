@@ -194,8 +194,23 @@ class HemisphereWindow(widget.MWidget):
         circleB = mpath.Path.unit_circle()
         circleS = mpath.Path.unit_circle()
         # concatenate the circle with an internal cutout of the star
-        verts = np.concatenate([circleB.vertices, 0.5 * circleS.vertices[::-1, ...]])
+        verts = np.concatenate([circleB.vertices, 0.5 * circleS.vertices])
         codes = np.concatenate([circleB.codes, circleS.codes])
+        marker = mpath.Path(verts, codes)
+        return marker
+
+    @staticmethod
+    def markerAltAz():
+        circleB = mpath.Path.unit_circle()
+        circleM = mpath.Path.unit_circle()
+        circleS = mpath.Path.unit_circle()
+        # concatenate the circle with an internal cutout of the star
+        verts = np.concatenate([circleB.vertices,
+                                0.8 * circleM.vertices,
+                                0.3 * circleS.vertices])
+        codes = np.concatenate([circleB.codes,
+                                circleM.codes,
+                                circleS.codes])
         marker = mpath.Path(verts, codes)
         return marker
 
@@ -226,7 +241,7 @@ class HemisphereWindow(widget.MWidget):
             # show line path pf slewing
             if self.ui.checkShowSlewPath.isChecked():
                 ls = ':'
-                lw = 0.5
+                lw = 1
             else:
                 ls = ''
                 lw = 0
@@ -243,7 +258,14 @@ class HemisphereWindow(widget.MWidget):
                                                          color='#E0E0E0',
                                                          zorder=-10)
         # now the moving part (pointing of mount, dome position)
-
+        axesM.plot(180, 45,
+                   zorder=10,
+                   color='#FF00FF',
+                   marker=self.markerAltAz(),
+                   markersize=25,
+                   linestyle='none',
+                   fillstyle='none',
+                   visible=True)
         # and the the star part (alignment stars)
 
         # drawing the canvas

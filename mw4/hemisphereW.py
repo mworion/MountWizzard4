@@ -317,9 +317,26 @@ class HemisphereWindow(widget.MWidget):
                                         color='#808080',
                                         visible=visible)
         # draw meridian limits
+        if self.app.mount.sett.meridianLimitSlew is not None:
+            slew = self.app.mount.sett.meridianLimitSlew
+        else:
+            slew = 0
         visible = self.ui.checkShowMeridian.isChecked()
-        self.meridianTrack = mpatches.Rectangle((180, 0),
-                                                1,
+        self.meridianSlew = mpatches.Rectangle((180 - slew, 0),
+                                               2 * slew,
+                                               90,
+                                               zorder=-5,
+                                               color='#FF000040',
+                                               lw=1,
+                                               fill=True,
+                                               visible=visible)
+        axes.add_patch(self.meridianSlew)
+        if self.app.mount.sett.meridianLimitTrack is not None:
+            track = self.app.mount.sett.meridianLimitTrack
+        else:
+            track = 0
+        self.meridianTrack = mpatches.Rectangle((180 - track, 0),
+                                                2 * track,
                                                 90,
                                                 zorder=-10,
                                                 color='#FFFF0040',
@@ -327,15 +344,6 @@ class HemisphereWindow(widget.MWidget):
                                                 fill=True,
                                                 visible=visible)
         axes.add_patch(self.meridianTrack)
-        self.meridianSlew = mpatches.Rectangle((180, 0),
-                                               1,
-                                               90,
-                                               zorder=-10,
-                                               color='#FF000040',
-                                               lw=1,
-                                               fill=True,
-                                               visible=visible)
-        axes.add_patch(self.meridianSlew)
 
         # now the moving part (pointing of mount, dome position)
         self.pointerAltAz, = axesM.plot(180, 45,

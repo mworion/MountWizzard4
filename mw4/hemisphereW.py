@@ -83,6 +83,8 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowCelestial.clicked.connect(self.updateCelestialPath)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.mount.signals.settDone.connect(self.updateMeridian)
+        self.app.mount.signals.settDone.connect(self.updateCelestialPath)
+        self.app.mount.signals.mountUp.connect(self.updateMountDown)
 
         # initializing the plot
         self.initConfig()
@@ -202,12 +204,16 @@ class HemisphereWindow(widget.MWidget):
         return True
 
     def drawCanvas(self):
-        axesM = self.hemisphereMat.figure.axes[0]
-        axesM.figure.canvas.draw()
+        axes = self.hemisphereMat.figure.axes[0]
+        axes.figure.canvas.draw()
 
     def drawCanvasMoving(self):
         axesM = self.hemisphereMatM.figure.axes[0]
         axesM.figure.canvas.draw()
+
+    def updateMountDown(self, status):
+        if not status:
+            self.drawHemisphere()
 
     def updateCelestialPath(self):
         self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
@@ -264,11 +270,11 @@ class HemisphereWindow(widget.MWidget):
         axesM = self.hemisphereMatM.figure.axes[0]
         axesS = self.hemisphereMatS.figure.axes[0]
 
-        # the static part (model points, horizon, celestial paths, meridian limits)
         self.clearAxes(axes, visible=True)
         self.clearAxes(axesM, visible=False)
         self.clearAxes(axesS, visible=False)
 
+        # the static part (model points, horizon, celestial paths, meridian limits)
         # drawing horizon
         if self.app.data.horizonP:
             y, x = zip(*self.app.data.horizonP)
@@ -278,7 +284,6 @@ class HemisphereWindow(widget.MWidget):
             # if self.ui.checkEditHorizonMask.isChecked():
             #    self.maskPlotMarker.set_marker('o')
             #    self.maskPlotMarker.set_color('#FF00FF')
-
         # drawing build points
         if self.app.data.buildP:
             y, x = zip(*self.app.data.buildP)
@@ -307,8 +312,9 @@ class HemisphereWindow(widget.MWidget):
                                                          zorder=10,
                                                          )
         # draw celestial equator
+        celestial = self.app.data.generateCelestialEquator()
         visible = self.ui.checkShowCelestial.isChecked()
-        y, x = zip(*self.app.data.generateCelestialEquator())
+        y, x = zip(*celestial)
         self.celestialPath, = axes.plot(x,
                                         y,
                                         '.',
@@ -356,6 +362,7 @@ class HemisphereWindow(widget.MWidget):
                                         clip_on=False,
                                         visible=False,
                                         )
+
         # and the the star part (alignment stars)
 
         # drawing the canvas

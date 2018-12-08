@@ -75,7 +75,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get the window widgets up
-        self.data = build.DataPoint()
+        self.data = build.DataPoint(self.config.get('latitudeTemp', 45))
         self.data.loadHorizonP()
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
@@ -90,9 +90,19 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
         self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
 
+        # link to update from mount signals
+        self.mount.signals.settDone.connect(self.updateLocation)
+
         # starting cyclic polling of mount data
         self.mount.startTimers()
         self.environment.startCommunication()
+
+    def storeConfig(self):
+        config = self.config
+        config['latitudeTemp'] = self.data.lat
+        self.mainW.storeConfig()
+        self.messageW.storeConfig()
+        self.hemisphereW.storeConfig()
 
     def quit(self):
         """
@@ -112,9 +122,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         self.mount.stopTimers()
-        self.mainW.storeConfig()
-        self.messageW.storeConfig()
-        self.hemisphereW.storeConfig()
         self.saveConfig()
         PyQt5.QtCore.QCoreApplication.quit()
 
@@ -208,6 +215,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if isReferenceName and not isDefaultConfigPath:
             return False
 
+        # gather all data
+        self.storeConfig()
+
+        # start saving it
         if referenceFilePath is None:
             referenceFilePath = self.config.get('filePath', None)
         self.config['filePath'] = referenceFilePath
@@ -248,3 +259,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         else:
             self.mount.resetData()
         return True
+
+    def updateLocation(self):
+        """
+        updateLocation updates the site location as soon as we have new data from the mount
+        until then, the last data from the config file is used.
+
+        :return:
+        """
+        location = self.mount.obsSite.location
+        if location is not None:
+            self.data.lat = location.latitude.degrees

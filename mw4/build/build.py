@@ -81,7 +81,7 @@ class DataPoint(object):
 
     def __init__(self,
                  mwGlob=None,
-                 lat=48,
+                 lat=51.476852,
                  ):
 
         self.mwGlob = mwGlob

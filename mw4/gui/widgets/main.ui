@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -6081,7 +6081,7 @@ manually</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Load</string>
+      <string>Select</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_127">
@@ -7151,7 +7151,7 @@ manually</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Load</string>
+      <string>Select</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="le_modelingTimeEstimated">
@@ -10576,7 +10576,7 @@ manually</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -12619,7 +12619,7 @@ manually</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkUseMinimumHorizonLine">
+      <widget class="QCheckBox" name="checkUseHorizonMin">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -12643,7 +12643,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkDeletePointsHorizonMask">
+      <widget class="QCheckBox" name="checkAutoDeletePoints">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -12764,7 +12764,7 @@ manually</string>
         <string>Save as</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkUseFileHorizonLine">
+      <widget class="QCheckBox" name="checkUseHorizonFile">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -12788,7 +12788,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_horizonPointsFileName">
+      <widget class="QLineEdit" name="horizonFileName">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -12946,7 +12946,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="altitudeMinimumHorizon">
+      <widget class="QDoubleSpinBox" name="altitudeHorizonMin">
        <property name="geometry">
         <rect>
          <x>175</x>

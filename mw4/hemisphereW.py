@@ -91,7 +91,6 @@ class HemisphereWindow(widget.MWidget):
         self.move(x, y)
         height = config.get('height', 600)
         self.resize(800, height)
-
         if config.get('showStatus'):
             self.showWindow()
 
@@ -196,6 +195,18 @@ class HemisphereWindow(widget.MWidget):
         self.clearAxes(axesM, visible=False)
         self.clearAxes(axesS, visible=False)
 
+        # drawing horizon
+        if not self.app.data.horizonP:
+            return False
+        y, x = zip(*self.app.data.horizonP)
+
+        self.horizonFill,  = axes.fill(x, y, color='#002000', zorder=-20)
+        self.horizonMarker,  = axes.plot(x, y, color='#006000', zorder=-20, lw=3)
+        #if self.ui.checkEditHorizonMask.isChecked():
+        #    self.maskPlotMarker.set_marker('o')
+        #    self.maskPlotMarker.set_color('#FF00FF')
+
+        # drawing build points
         if not self.app.data.buildP:
             return False
         y, x = zip(*self.app.data.buildP)

@@ -205,6 +205,12 @@ class MainWindow(widget.MWidget):
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
 
+        self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
+        self.ui.checkUseHorizonFile.setChecked(config.get('checkUseHorizonFile', False))
+        self.ui.checkUseHorizonMin.setChecked(config.get('checkUseHorizonMin', False))
+        self.ui.checkAutoDeletePoints.setChecked(config.get('checkAutoDeletePoints', False))
+        self.ui.altitudeHorizonMin.setValue(config.get('altitudeHorizonMin', 0))
+
     def storeConfig(self):
         if 'mainW' not in self.app.config:
             self.app.config['mainW'] = {}
@@ -241,6 +247,12 @@ class MainWindow(widget.MWidget):
         config['ccdName'] = self.ui.ccdName.text()
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()
+
+        config['horizonFileName'] = self.ui.horizonFileName.text()
+        config['checkUseHorizonFile'] = self.ui.checkUseHorizonFile.isChecked()
+        config['checkUseHorizonMin'] = self.ui.checkUseHorizonMin.isChecked()
+        config['checkAutoDeletePoints'] = self.ui.checkAutoDeletePoints.isChecked()
+        config['altitudeHorizonMin'] = self.ui.altitudeHorizonMin.value()
 
     def closeEvent(self, closeEvent):
         """

@@ -61,9 +61,7 @@ def test_topoToAzAlt2():
 def test_genHaDecParams1():
     selection = 'min'
     length = len(data.DEC[selection])
-    print()
     for i, (a, b, c, d) in enumerate(data.genHaDecParams(selection=selection)):
-        print(a,b,c,d)
         if i > length - 1:
             j = 2 * length - i - 1
         else:
@@ -452,6 +450,12 @@ def test_loadHorizonP2():
 
 def test_loadHorizonP3():
     data.horizonPFile = 'format_nok'
+    suc = data.loadHorizonP()
+    assert not suc
+
+
+def test_loadHorizonP4():
+    data.horizonPFile = None
     suc = data.loadHorizonP()
     assert not suc
 

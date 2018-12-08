@@ -47,6 +47,19 @@ class HemisphereWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
 
+        # attributes to be stored in class
+        self.pointerAltAz = None
+        self.pointerDome = None
+        self.pointsBuild = None
+        self.pointsBuildAnnotate = None
+        self.starsAlign = None
+        self.starsAlignAnnotate = None
+        self.horizonFill = None
+        self.horizonMarker = None
+        self.meridianSlew = None
+        self.meridianTrack = None
+        self.celestialPath = None
+
         # doing the matplotlib embedding
         # for the alt az plane
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
@@ -78,6 +91,7 @@ class HemisphereWindow(widget.MWidget):
         self.move(x, y)
         height = config.get('height', 600)
         self.resize(800, height)
+
         if config.get('showStatus'):
             self.showWindow()
 

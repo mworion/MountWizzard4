@@ -255,6 +255,8 @@ class DataPoint(object):
         :return: success
         """
 
+        if self._horizonPFile is None:
+            return False
         fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
         if not os.path.isfile(fileName):
             return False

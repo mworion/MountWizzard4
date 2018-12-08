@@ -76,6 +76,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # get the window widgets up
         self.data = build.DataPoint()
+        self.data.loadHorizonP()
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
         self.messageW = messageW.MessageWindow(self)

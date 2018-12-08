@@ -91,7 +91,9 @@ class HemisphereWindow(widget.MWidget):
             y = 0
         self.move(x, y)
         height = config.get('height', 600)
-        self.resize(800, height)
+        width = config.get('width', 800)
+        self.resize(width, height)
+        self.ui.checkShowSlewPath.setChecked(config.get('checkShowSlewPath', False))
         if config.get('showStatus'):
             self.showWindow()
 
@@ -102,7 +104,9 @@ class HemisphereWindow(widget.MWidget):
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
+        config['width'] = self.width()
         config['showStatus'] = self.showStatus
+        config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
 
     def resizeEvent(self, QResizeEvent):
         """
@@ -185,7 +189,8 @@ class HemisphereWindow(widget.MWidget):
                         fontsize=12)
         return True
 
-    def markerPoint(self):
+    @staticmethod
+    def markerPoint():
         circleB = mpath.Path.unit_circle()
         circleS = mpath.Path.unit_circle()
         # concatenate the circle with an internal cutout of the star
@@ -218,7 +223,8 @@ class HemisphereWindow(widget.MWidget):
         # drawing build points
         if self.app.data.buildP:
             y, x = zip(*self.app.data.buildP)
-            if False:
+            # show line path pf slewing
+            if self.ui.checkShowSlewPath.isChecked():
                 ls = ':'
                 lw = 0.5
             else:

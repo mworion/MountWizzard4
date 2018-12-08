@@ -100,7 +100,7 @@
   <widget class="QPushButton" name="btn_deletePoints">
    <property name="geometry">
     <rect>
-     <x>25</x>
+     <x>5</x>
      <y>15</y>
      <width>111</width>
      <height>31</height>
@@ -121,7 +121,7 @@
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
-     <x>235</x>
+     <x>290</x>
      <y>10</y>
      <width>166</width>
      <height>101</height>
@@ -212,9 +212,9 @@
   <widget class="QCheckBox" name="checkShowAlignmentStars">
    <property name="geometry">
     <rect>
-     <x>25</x>
-     <y>50</y>
-     <width>131</width>
+     <x>135</x>
+     <y>15</y>
+     <width>141</width>
      <height>21</height>
     </rect>
    </property>
@@ -230,9 +230,9 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>460</x>
      <y>10</y>
-     <width>356</width>
+     <width>331</width>
      <height>101</height>
     </rect>
    </property>
@@ -331,7 +331,7 @@
      <rect>
       <x>105</x>
       <y>60</y>
-      <width>241</width>
+      <width>221</width>
       <height>16</height>
      </rect>
     </property>
@@ -350,7 +350,7 @@
      <rect>
       <x>105</x>
       <y>40</y>
-      <width>241</width>
+      <width>221</width>
       <height>16</height>
      </rect>
     </property>
@@ -474,7 +474,7 @@
      <rect>
       <x>105</x>
       <y>80</y>
-      <width>241</width>
+      <width>221</width>
       <height>16</height>
      </rect>
     </property>
@@ -573,9 +573,9 @@
   <widget class="QCheckBox" name="checkShowCelestial">
    <property name="geometry">
     <rect>
-     <x>25</x>
-     <y>70</y>
-     <width>156</width>
+     <x>135</x>
+     <y>35</y>
+     <width>141</width>
      <height>21</height>
     </rect>
    </property>
@@ -591,9 +591,9 @@
   <widget class="QCheckBox" name="checkShowMeridian">
    <property name="geometry">
     <rect>
-     <x>25</x>
-     <y>90</y>
-     <width>156</width>
+     <x>135</x>
+     <y>55</y>
+     <width>141</width>
      <height>21</height>
     </rect>
    </property>
@@ -720,6 +720,24 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
+  <widget class="QCheckBox" name="checkShowSlewPath">
+   <property name="geometry">
+    <rect>
+     <x>135</x>
+     <y>75</y>
+     <width>141</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Show slew path</string>
+   </property>
+  </widget>
   <zorder>btn_deletePoints</zorder>
   <zorder>groupBox_2</zorder>
   <zorder>hemisphere</zorder>
@@ -730,6 +748,7 @@
   <zorder>hemisphereS</zorder>
   <zorder>hemisphereM</zorder>
   <zorder>line_71</zorder>
+  <zorder>checkShowSlewPath</zorder>
  </widget>
  <resources/>
  <connections/>

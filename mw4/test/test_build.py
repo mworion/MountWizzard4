@@ -155,7 +155,7 @@ def test_genGreaterCircle3():
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 112 == i
+    assert 109 == i
 
 
 def test_genGreaterCircle4():
@@ -167,15 +167,15 @@ def test_genGreaterCircle4():
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 156 == i
+    assert 152 == i
 
 
 def test_buildP1():
     data.buildP = ()
     data.genGreaterCircle('max')
-    assert len(data.buildP) == 157
+    assert len(data.buildP) == 153
     data.genGreaterCircle('med')
-    assert len(data.buildP) == 113
+    assert len(data.buildP) == 110
     data.genGreaterCircle('norm')
     assert len(data.buildP) == 90
     data.genGreaterCircle('min')
@@ -197,7 +197,7 @@ def test_buildP3():
 def test_clearBuildP():
     data.buildP = ()
     data.genGreaterCircle('max')
-    assert len(data.buildP) == 157
+    assert len(data.buildP) == 153
     data.clearBuildP()
     assert len(data.buildP) == 0
 
@@ -232,53 +232,53 @@ def test_addBuildP3():
 def test_delBuildP1():
     data.buildP = ()
     data.genGreaterCircle('max')
-    assert len(data.buildP) == 157
+    assert len(data.buildP) == 153
     suc = data.delBuildP(5)
     assert suc
-    assert len(data.buildP) == 156
+    assert len(data.buildP) == 152
     suc = data.delBuildP(0)
     assert suc
-    assert len(data.buildP) == 155
-    suc = data.delBuildP(154)
+    assert len(data.buildP) == 151
+    suc = data.delBuildP(150)
     assert suc
-    assert len(data.buildP) == 154
+    assert len(data.buildP) == 150
 
 
 def test_delBuildP2():
     data.buildP = ()
     data.genGreaterCircle('max')
-    assert len(data.buildP) == 157
+    assert len(data.buildP) == 153
     suc = data.delBuildP(-5)
     assert not suc
-    assert len(data.buildP) == 157
+    assert len(data.buildP) == 153
 
 
 def test_delBuildP3():
     data.buildP = ()
     data.genGreaterCircle('max')
-    assert len(data.buildP) == 157
+    assert len(data.buildP) == 153
     suc = data.delBuildP(170)
     assert not suc
-    assert len(data.buildP) == 157
+    assert len(data.buildP) == 153
 
 
 def test_delBuildP4():
     data.buildP = ()
     data.genGreaterCircle('max')
-    assert len(data.buildP) == 157
+    assert len(data.buildP) == 153
     suc = data.delBuildP('1')
     assert not suc
-    assert len(data.buildP) == 157
+    assert len(data.buildP) == 153
 
 
 def test_horizonP1():
     data.horizonP = ()
     data.genGreaterCircle('max')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 157
+    assert len(data.horizonP) == 153
     data.genGreaterCircle('med')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 113
+    assert len(data.horizonP) == 110
     data.genGreaterCircle('norm')
     data.horizonP = data.buildP
     assert len(data.horizonP) == 90
@@ -303,7 +303,7 @@ def test_clearHorizonP():
     data.horizonP = ()
     data.genGreaterCircle('max')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 157
+    assert len(data.horizonP) == 153
     data.clearHorizonP()
     assert len(data.horizonP) == 0
 
@@ -339,46 +339,46 @@ def test_delHorizonP1():
     data.horizonP = ()
     data.genGreaterCircle('max')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 157
+    assert len(data.horizonP) == 153
     suc = data.delHorizonP(5)
     assert suc
-    assert len(data.horizonP) == 156
+    assert len(data.horizonP) == 152
     suc = data.delHorizonP(0)
     assert suc
-    assert len(data.horizonP) == 155
-    suc = data.delHorizonP(154)
+    assert len(data.horizonP) == 151
+    suc = data.delHorizonP(150)
     assert suc
-    assert len(data.horizonP) == 154
+    assert len(data.horizonP) == 150
 
 
 def test_delHorizonP2():
     data.horizonP = ()
     data.genGreaterCircle('max')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 157
+    assert len(data.horizonP) == 153
     suc = data.delHorizonP(-5)
     assert not suc
-    assert len(data.horizonP) == 157
+    assert len(data.horizonP) == 153
 
 
 def test_delHorizonP3():
     data.horizonP = ()
     data.genGreaterCircle('max')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 157
+    assert len(data.horizonP) == 153
     suc = data.delHorizonP(170)
     assert not suc
-    assert len(data.horizonP) == 157
+    assert len(data.horizonP) == 153
 
 
 def test_delHorizonP4():
     data.horizonP = ()
     data.genGreaterCircle('max')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 157
+    assert len(data.horizonP) == 153
     suc = data.delHorizonP('1')
     assert not suc
-    assert len(data.horizonP) == 157
+    assert len(data.horizonP) == 153
 
 
 def test_saveBuildP():

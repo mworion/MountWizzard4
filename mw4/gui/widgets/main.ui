@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7312,7 +7312,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>305</y>
+       <y>355</y>
        <width>371</width>
        <height>31</height>
       </rect>
@@ -7328,7 +7328,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>295</y>
+       <y>345</y>
        <width>371</width>
        <height>1</height>
       </rect>
@@ -7344,7 +7344,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>275</y>
+       <y>325</y>
        <width>151</width>
        <height>21</height>
       </rect>
@@ -7535,7 +7535,7 @@ manually</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>345</y>
+       <y>395</y>
        <width>371</width>
        <height>31</height>
       </rect>

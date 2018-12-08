@@ -327,7 +327,8 @@ class DataPoint(object):
             for ha in range(start, stop, step):
                 alt, az = self.topoToAzAlt(ha/10, dec, self.lat)
                 # only values with above horizon = 0
-                if 5 <= alt <= 85 and az < 360:
+
+                if 5 <= alt <= 85 and 2 < az < 358:
                     self.addBuildP((alt, az))
         return True
 

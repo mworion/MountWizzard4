@@ -22,6 +22,7 @@ import logging
 # external packages
 import numpy as np
 import matplotlib.path as mpath
+import matplotlib.patches as mpatches
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import hemisphere_ui
@@ -78,7 +79,9 @@ class HemisphereWindow(widget.MWidget):
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
+        self.ui.checkShowMeridian.clicked.connect(self.updateMeridian)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
+        self.app.mount.signals.settDone.connect(self.updateMeridian)
 
         # initializing the plot
         self.initConfig()
@@ -98,6 +101,8 @@ class HemisphereWindow(widget.MWidget):
         width = config.get('width', 800)
         self.resize(width, height)
         self.ui.checkShowSlewPath.setChecked(config.get('checkShowSlewPath', False))
+        self.ui.checkShowMeridian.setChecked(config.get('checkShowMeridian', False))
+        self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         if config.get('showStatus'):
             self.showWindow()
 
@@ -111,6 +116,8 @@ class HemisphereWindow(widget.MWidget):
         config['width'] = self.width()
         config['showStatus'] = self.showStatus
         config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
+        config['checkShowMeridian'] = self.ui.checkShowMeridian.isChecked()
+        config['checkShowCelestial'] = self.ui.checkShowCelestial.isChecked()
 
     def resizeEvent(self, QResizeEvent):
         """
@@ -193,14 +200,33 @@ class HemisphereWindow(widget.MWidget):
                         fontsize=12)
         return True
 
+    def drawCanvas(self):
+        axesM = self.hemisphereMat.figure.axes[0]
+        axesM.figure.canvas.draw()
+
+    def drawCanvasMoving(self):
+        axesM = self.hemisphereMatM.figure.axes[0]
+        axesM.figure.canvas.draw()
+
+    def updateMeridian(self):
+        if self.showStatus:
+            slew = self.app.mount.sett.meridianLimitSlew
+            track = self.app.mount.sett.meridianLimitTrack
+            self.meridianTrack.set_visible(self.ui.checkShowMeridian.isChecked())
+            self.meridianSlew.set_visible(self.ui.checkShowMeridian.isChecked())
+            self.meridianTrack.set_xy((180 - track, 0))
+            self.meridianSlew.set_xy((180 - slew, 0))
+            self.meridianTrack.set_width(2 * track)
+            self.meridianSlew.set_width(2 * slew)
+            self.drawCanvas()
+
     def updatePointerAltAz(self):
         if self.showStatus:
-            axesM = self.hemisphereMatM.figure.axes[0]
             alt = self.app.mount.obsSite.Alt.degrees
             az = self.app.mount.obsSite.Az.degrees
             self.pointerAltAz.set_data((az, alt))
             self.pointerAltAz.set_visible(True)
-            axesM.figure.canvas.draw()
+            self.drawCanvasMoving()
 
     @staticmethod
     def markerPoint():
@@ -242,8 +268,8 @@ class HemisphereWindow(widget.MWidget):
         if self.app.data.horizonP:
             y, x = zip(*self.app.data.horizonP)
 
-            self.horizonFill, _ = axes.fill(x, y, color='#002000', zorder=-20)
-            self.horizonMarker, _ = axes.plot(x, y, color='#006000', zorder=-20, lw=3)
+            self.horizonFill, = axes.fill(x, y, color='#002000', zorder=-20)
+            self.horizonMarker, = axes.plot(x, y, color='#006000', zorder=-20, lw=3)
             # if self.ui.checkEditHorizonMask.isChecked():
             #    self.maskPlotMarker.set_marker('o')
             #    self.maskPlotMarker.set_color('#FF00FF')
@@ -258,15 +284,15 @@ class HemisphereWindow(widget.MWidget):
             else:
                 ls = ''
                 lw = 0
-            self.pointsBuild, _ = axes.plot(x, y,
-                                            marker=self.markerPoint(),
-                                            markersize=9,
-                                            linestyle=ls,
-                                            lw=lw,
-                                            fillstyle='none',
-                                            color='#00A000',
-                                            zorder=20,
-                                            )
+            self.pointsBuild, = axes.plot(x, y,
+                                          marker=self.markerPoint(),
+                                          markersize=9,
+                                          linestyle=ls,
+                                          lw=lw,
+                                          fillstyle='none',
+                                          color='#00A000',
+                                          zorder=20,
+                                          )
             for i, xy in enumerate(zip(x, y)):
                 self.pointsBuildAnnotate = axes.annotate('{0:2d}'.format(i+1),
                                                          xy=xy,
@@ -275,16 +301,43 @@ class HemisphereWindow(widget.MWidget):
                                                          color='#E0E0E0',
                                                          zorder=10,
                                                          )
+        # draw celestial equator
+        '''
+        celestial = self.app.workerModelingDispatcher.modelingRunner.modelPoints.celestialEquator
+        self.celestial, = axes.plot([i[0] for i in celestial], [i[1] for i in celestial], 
+                                   '.', markersize=1, fillstyle='none', color='#808080', visible=False)
+        '''
+        # draw meridian limits
+        self.meridianTrack = mpatches.Rectangle((180, 0),
+                                                1,
+                                                90,
+                                                zorder=-10,
+                                                color='#FFFF0040',
+                                                lw=1,
+                                                fill=True,
+                                                visible=False)
+        axes.add_patch(self.meridianTrack)
+        self.meridianSlew = mpatches.Rectangle((180, 0),
+                                               1,
+                                               90,
+                                               zorder=-10,
+                                               color='#FF000040',
+                                               lw=1,
+                                               fill=True,
+                                               visible=False)
+        axes.add_patch(self.meridianSlew)
+
         # now the moving part (pointing of mount, dome position)
         self.pointerAltAz, = axesM.plot(180, 45,
-                                          zorder=10,
-                                          color='#FF00FF',
-                                          marker=self.markerAltAz(),
-                                          markersize=25,
-                                          linestyle='none',
-                                          fillstyle='none',
-                                          visible=False,
-                                          )
+                                        zorder=10,
+                                        color='#FF00FF',
+                                        marker=self.markerAltAz(),
+                                        markersize=25,
+                                        linestyle='none',
+                                        fillstyle='none',
+                                        clip_on=False,
+                                        visible=False,
+                                        )
         # and the the star part (alignment stars)
 
         # drawing the canvas

@@ -100,10 +100,10 @@
   <widget class="QPushButton" name="btn_deletePoints">
    <property name="geometry">
     <rect>
-     <x>5</x>
+     <x>10</x>
      <y>15</y>
-     <width>111</width>
-     <height>31</height>
+     <width>96</width>
+     <height>96</height>
     </rect>
    </property>
    <property name="font">
@@ -208,24 +208,6 @@
      <string>Select PolarAlign</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QCheckBox" name="checkShowAlignmentStars">
-   <property name="geometry">
-    <rect>
-     <x>135</x>
-     <y>15</y>
-     <width>141</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Show align stars</string>
-   </property>
   </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
@@ -570,42 +552,6 @@
     </property>
    </widget>
   </widget>
-  <widget class="QCheckBox" name="checkShowCelestial">
-   <property name="geometry">
-    <rect>
-     <x>135</x>
-     <y>35</y>
-     <width>141</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Show celestial paths</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="checkShowMeridian">
-   <property name="geometry">
-    <rect>
-     <x>135</x>
-     <y>55</y>
-     <width>141</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Show meridian limits</string>
-   </property>
-  </widget>
   <widget class="QWidget" name="hemisphereS" native="true">
    <property name="enabled">
     <bool>true</bool>
@@ -720,35 +666,99 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkShowSlewPath">
+  <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
-     <x>135</x>
-     <y>75</y>
-     <width>141</width>
-     <height>21</height>
+     <x>115</x>
+     <y>10</y>
+     <width>166</width>
+     <height>101</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
+   <property name="title">
+    <string>Setup</string>
    </property>
-   <property name="text">
-    <string>Show slew path</string>
-   </property>
+   <widget class="QCheckBox" name="checkShowAlignmentStars">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>15</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Show align stars</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkShowCelestial">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>35</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Show celestial paths</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkShowSlewPath">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>75</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Show slew path</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkShowMeridian">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>55</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Show meridian limits</string>
+    </property>
+   </widget>
   </widget>
   <zorder>btn_deletePoints</zorder>
   <zorder>groupBox_2</zorder>
   <zorder>hemisphere</zorder>
-  <zorder>checkShowAlignmentStars</zorder>
   <zorder>groupBox</zorder>
-  <zorder>checkShowCelestial</zorder>
-  <zorder>checkShowMeridian</zorder>
   <zorder>hemisphereS</zorder>
   <zorder>hemisphereM</zorder>
   <zorder>line_71</zorder>
-  <zorder>checkShowSlewPath</zorder>
+  <zorder>groupBox_3</zorder>
  </widget>
  <resources/>
  <connections/>

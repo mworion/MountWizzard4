@@ -21,6 +21,7 @@
 import logging
 # external packages
 import numpy as np
+import matplotlib.path as mpath
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import hemisphere_ui
@@ -184,6 +185,15 @@ class HemisphereWindow(widget.MWidget):
                         fontsize=12)
         return True
 
+    def markerPoint(self):
+        circleB = mpath.Path.unit_circle()
+        circleS = mpath.Path.unit_circle()
+        # concatenate the circle with an internal cutout of the star
+        verts = np.concatenate([circleB.vertices, 0.5 * circleS.vertices[::-1, ...]])
+        codes = np.concatenate([circleB.codes, circleS.codes])
+        marker = mpath.Path(verts, codes)
+        return marker
+
     def drawHemisphere(self):
         # shortening the references
         axes = self.hemisphereMat.figure.axes[0]
@@ -208,15 +218,24 @@ class HemisphereWindow(widget.MWidget):
         # drawing build points
         if self.app.data.buildP:
             y, x = zip(*self.app.data.buildP)
-            axes.plot(x, y,
-                      'o',
-                      markersize=9,
-                      fillstyle='none',
-                      color='#00A000')
+            if False:
+                ls = ':'
+                lw = 0.5
+            else:
+                ls = ''
+                lw = 0
+            self.pointsBuild = axes.plot(x, y,
+                                         marker=self.markerPoint(),
+                                         markersize=9,
+                                         linestyle=ls,
+                                         lw=lw,
+                                         fillstyle='none',
+                                         color='#00A000')
             for i, xy in enumerate(zip(x, y)):
-                axes.annotate('{0:2d}'.format(i+1),
-                              xy=xy,
-                              color='#E0E0E0')
+                self.pointsBuildAnnotate = axes.annotate('{0:2d}'.format(i+1),
+                                                         xy=xy,
+                                                         color='#E0E0E0',
+                                                         zorder=-10)
         # now the moving part (pointing of mount, dome position)
 
         # and the the star part (alignment stars)

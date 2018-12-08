@@ -76,6 +76,10 @@ class HemisphereWindow(widget.MWidget):
         self.ui.hemisphereS.setVisible(False)
         self.clearRect(self.hemisphereMatS, False)
 
+        # signals for gui
+        self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
+        self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
+
         # initializing the plot
         self.initConfig()
 
@@ -189,6 +193,15 @@ class HemisphereWindow(widget.MWidget):
                         fontsize=12)
         return True
 
+    def updatePointerAltAz(self):
+        if self.showStatus:
+            axesM = self.hemisphereMatM.figure.axes[0]
+            alt = self.app.mount.obsSite.Alt.degrees
+            az = self.app.mount.obsSite.Az.degrees
+            self.pointerAltAz.set_data((az, alt))
+            self.pointerAltAz.set_visible(True)
+            axesM.figure.canvas.draw()
+
     @staticmethod
     def markerPoint():
         circleB = mpath.Path.unit_circle()
@@ -229,8 +242,8 @@ class HemisphereWindow(widget.MWidget):
         if self.app.data.horizonP:
             y, x = zip(*self.app.data.horizonP)
 
-            self.horizonFill,  = axes.fill(x, y, color='#002000', zorder=-20)
-            self.horizonMarker,  = axes.plot(x, y, color='#006000', zorder=-20, lw=3)
+            self.horizonFill, _ = axes.fill(x, y, color='#002000', zorder=-20)
+            self.horizonMarker, _ = axes.plot(x, y, color='#006000', zorder=-20, lw=3)
             # if self.ui.checkEditHorizonMask.isChecked():
             #    self.maskPlotMarker.set_marker('o')
             #    self.maskPlotMarker.set_color('#FF00FF')
@@ -245,27 +258,33 @@ class HemisphereWindow(widget.MWidget):
             else:
                 ls = ''
                 lw = 0
-            self.pointsBuild = axes.plot(x, y,
-                                         marker=self.markerPoint(),
-                                         markersize=9,
-                                         linestyle=ls,
-                                         lw=lw,
-                                         fillstyle='none',
-                                         color='#00A000')
+            self.pointsBuild, _ = axes.plot(x, y,
+                                            marker=self.markerPoint(),
+                                            markersize=9,
+                                            linestyle=ls,
+                                            lw=lw,
+                                            fillstyle='none',
+                                            color='#00A000',
+                                            zorder=20,
+                                            )
             for i, xy in enumerate(zip(x, y)):
                 self.pointsBuildAnnotate = axes.annotate('{0:2d}'.format(i+1),
                                                          xy=xy,
+                                                         xytext=(2, -10),
+                                                         textcoords='offset points',
                                                          color='#E0E0E0',
-                                                         zorder=-10)
+                                                         zorder=10,
+                                                         )
         # now the moving part (pointing of mount, dome position)
-        axesM.plot(180, 45,
-                   zorder=10,
-                   color='#FF00FF',
-                   marker=self.markerAltAz(),
-                   markersize=25,
-                   linestyle='none',
-                   fillstyle='none',
-                   visible=True)
+        self.pointerAltAz, = axesM.plot(180, 45,
+                                          zorder=10,
+                                          color='#FF00FF',
+                                          marker=self.markerAltAz(),
+                                          markersize=25,
+                                          linestyle='none',
+                                          fillstyle='none',
+                                          visible=False,
+                                          )
         # and the the star part (alignment stars)
 
         # drawing the canvas

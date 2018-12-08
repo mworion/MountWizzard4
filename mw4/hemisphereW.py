@@ -80,6 +80,7 @@ class HemisphereWindow(widget.MWidget):
         # signals for gui
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.checkShowMeridian.clicked.connect(self.updateMeridian)
+        self.ui.checkShowCelestial.clicked.connect(self.updateCelestialPath)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.mount.signals.settDone.connect(self.updateMeridian)
 
@@ -208,6 +209,10 @@ class HemisphereWindow(widget.MWidget):
         axesM = self.hemisphereMatM.figure.axes[0]
         axesM.figure.canvas.draw()
 
+    def updateCelestialPath(self):
+        self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
+        self.drawCanvas()
+
     def updateMeridian(self):
         if self.showStatus:
             slew = self.app.mount.sett.meridianLimitSlew
@@ -302,12 +307,17 @@ class HemisphereWindow(widget.MWidget):
                                                          zorder=10,
                                                          )
         # draw celestial equator
-        '''
-        celestial = self.app.workerModelingDispatcher.modelingRunner.modelPoints.celestialEquator
-        self.celestial, = axes.plot([i[0] for i in celestial], [i[1] for i in celestial], 
-                                   '.', markersize=1, fillstyle='none', color='#808080', visible=False)
-        '''
+        visible = self.ui.checkShowCelestial.isChecked()
+        y, x = zip(*self.app.data.generateCelestialEquator())
+        self.celestialPath, = axes.plot(x,
+                                        y,
+                                        '.',
+                                        markersize=1,
+                                        fillstyle='none',
+                                        color='#808080',
+                                        visible=visible)
         # draw meridian limits
+        visible = self.ui.checkShowMeridian.isChecked()
         self.meridianTrack = mpatches.Rectangle((180, 0),
                                                 1,
                                                 90,
@@ -315,7 +325,7 @@ class HemisphereWindow(widget.MWidget):
                                                 color='#FFFF0040',
                                                 lw=1,
                                                 fill=True,
-                                                visible=False)
+                                                visible=visible)
         axes.add_patch(self.meridianTrack)
         self.meridianSlew = mpatches.Rectangle((180, 0),
                                                1,
@@ -324,7 +334,7 @@ class HemisphereWindow(widget.MWidget):
                                                color='#FF000040',
                                                lw=1,
                                                fill=True,
-                                               visible=False)
+                                               visible=visible)
         axes.add_patch(self.meridianSlew)
 
         # now the moving part (pointing of mount, dome position)

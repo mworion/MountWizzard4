@@ -44,6 +44,7 @@ class DataPoint(object):
                'saveBuildP',
                'loadHorizonP',
                'saveHorizonP',
+               'generateCelestialEquator',
                ]
     version = '0.1'
     logger = logging.getLogger(__name__)
@@ -416,5 +417,21 @@ class DataPoint(object):
         self.clearBuildP()
         for az in range(azStart, 720, stepAz):
             self.addBuildP((alt, az % 360))
-
         return True
+
+    def generateCelestialEquator(self):
+        """
+        generateCelestialEquator calculates a line for greater circles like a celestial
+        equator for showing the paths in the hemisphere window.
+
+        :return: celestial equator
+        """
+
+        celestialEquator = list()
+        off = -5
+        for dec in range(-15, 90, 15):
+            for ha in range(120 + off, -120 + off, -2):
+                az, alt = self.topoToAzAlt(ha / 10, dec, self.lat)
+                if alt > 0:
+                    celestialEquator.append((az, alt))
+        return celestialEquator

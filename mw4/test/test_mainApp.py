@@ -39,16 +39,13 @@ config = mwGlob['configDir']
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global spy
     global app
     app = mainApp.MountWizzard4(mwGlob=mwGlob)
-    spy = PyQt5.QtTest.QSignalSpy(app.message)
     testdir = os.listdir(config)
     for item in testdir:
         if item.endswith('.cfg'):
             os.remove(os.path.join(config, item))
     yield
-    spy = None
     app = None
 
 

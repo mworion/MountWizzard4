@@ -216,8 +216,11 @@ class HemisphereWindow(widget.MWidget):
             self.drawHemisphere()
 
     def updateCelestialPath(self):
-        self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
-        self.drawCanvas()
+        if self.showStatus:
+            y, x = zip(*celestial)
+            celestial = self.app.data.generateCelestialEquator()
+            self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
+            self.drawCanvas()
 
     def updateMeridian(self):
         if self.showStatus:
@@ -312,11 +315,9 @@ class HemisphereWindow(widget.MWidget):
                                                          zorder=10,
                                                          )
         # draw celestial equator
-        celestial = self.app.data.generateCelestialEquator()
         visible = self.ui.checkShowCelestial.isChecked()
-        y, x = zip(*celestial)
-        self.celestialPath, = axes.plot(x,
-                                        y,
+        self.celestialPath, = axes.plot(0,
+                                        0,
                                         '.',
                                         markersize=1,
                                         fillstyle='none',

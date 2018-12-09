@@ -8,3 +8,4 @@ indibase>=0.2
 requests==2.20.0
 requests_toolbelt==0.8.0
 astropy==3.0.3
+pytest>=4.0.0

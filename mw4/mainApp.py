@@ -48,6 +48,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     # central message and logging dispatching
     message = PyQt5.QtCore.pyqtSignal(str, int)
+    signalUpdateLocation = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,
@@ -75,7 +76,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get the window widgets up
-        self.data = build.DataPoint(self.config.get('latitudeTemp', 45))
+        self.data = build.DataPoint(lat=self.config.get('latitudeTemp', 45))
         self.data.loadHorizonP()
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
@@ -282,5 +283,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         location = self.mount.obsSite.location
-        if location is not None:
-            self.data.lat = location.latitude.degrees
+        if location is None:
+            return
+        self.data.lat = location.latitude.degrees
+        if self.config['latitudeTemp'] == location.latitude.degrees:
+            return
+        self.config['latitudeTemp'] = location.latitude.degrees
+        self.signalUpdateLocation.emit()

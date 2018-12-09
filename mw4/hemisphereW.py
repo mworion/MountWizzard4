@@ -84,7 +84,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.mount.signals.settDone.connect(self.updateMeridian)
         self.app.mount.signals.settDone.connect(self.updateCelestialPath)
-        self.app.mount.signals.mountUp.connect(self.updateMountDown)
+        self.app.signalUpdateLocation.connect(self.clearHemisphere)
 
         # initializing the plot
         self.initConfig()
@@ -211,14 +211,8 @@ class HemisphereWindow(widget.MWidget):
         axesM = self.hemisphereMatM.figure.axes[0]
         axesM.figure.canvas.draw()
 
-    def updateMountDown(self, status):
-        if not status:
-            self.drawHemisphere()
-
     def updateCelestialPath(self):
         if self.showStatus:
-            celestial = self.app.data.generateCelestialEquator()
-            y, x = zip(*celestial)
             self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
             self.drawCanvas()
 
@@ -244,6 +238,12 @@ class HemisphereWindow(widget.MWidget):
 
     @staticmethod
     def markerPoint():
+        """
+        markerPoint constructs a custom marker for presentation of build points
+
+        :return: marker
+        """
+
         circleB = mpath.Path.unit_circle()
         circleS = mpath.Path.unit_circle()
         # concatenate the circle with an internal cutout of the star
@@ -254,6 +254,12 @@ class HemisphereWindow(widget.MWidget):
 
     @staticmethod
     def markerAltAz():
+        """
+        markerAltAz constructs a custom marker for AltAz pointer
+
+        :return: marker
+        """
+
         circleB = mpath.Path.unit_circle()
         circleM = mpath.Path.unit_circle()
         circleS = mpath.Path.unit_circle()
@@ -266,6 +272,16 @@ class HemisphereWindow(widget.MWidget):
                                 circleS.codes])
         marker = mpath.Path(verts, codes)
         return marker
+
+    def clearHemisphere(self):
+        """
+        clearHemisphere is called when after startup the location of the mount is changed
+        to reconstruct correctly the hemisphere window
+
+        :return:
+        """
+        self.app.data.clearBuildP()
+        self.drawHemisphere()
 
     def drawHemisphere(self):
         # shortening the references
@@ -316,8 +332,10 @@ class HemisphereWindow(widget.MWidget):
                                                          )
         # draw celestial equator
         visible = self.ui.checkShowCelestial.isChecked()
-        self.celestialPath, = axes.plot(0,
-                                        0,
+        celestial = self.app.data.generateCelestialEquator()
+        y, x = zip(*celestial)
+        self.celestialPath, = axes.plot(x,
+                                        y,
                                         '.',
                                         markersize=1,
                                         fillstyle='none',

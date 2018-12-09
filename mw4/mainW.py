@@ -869,7 +869,7 @@ class MainWindow(widget.MWidget):
         if not configFilePath:
             return False
         configFilePath = self.checkExtension(configFilePath, '.cfg')
-        suc = self.app.loadConfig(configFilePath=configFilePath)
+        suc = self.app.loadConfig(loadFilePath=configFilePath)
         if suc:
             self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] loaded'.format(name), 0)

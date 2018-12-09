@@ -84,7 +84,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # write basic data to message window
         self.message.emit('MountWizzard4 started', 1)
         self.message.emit('Workdir is: {0}'.format(self.mwGlob['workDir']), 1)
-        self.message.emit('Profile [{0}] loaded'.format(self.config['profileName']), 0)
+        self.message.emit('Profile [{0}] loaded'
+                          .format(self.config.get('profileName', 'empty')), 0)
 
         # link cross widget gui signals
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
@@ -134,58 +135,62 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         config['version'] = '4.0'
         return config
 
-    def loadConfig(self, configFilePath=None):
+    def loadConfig(self, loadFilePath=None):
         """
         loadConfig loads a json file from disk and stores it to the config dicts for
         persistent data. if a file path is given, that's the relevant file, otherwise
         loadConfig loads from th default file, which is config.cfg
 
-        :param      configFilePath:   full path to the config file including extension
+        :param      loadFilePath:   full path to the config file including extension
         :return:    success if file could be loaded
         """
 
-        if configFilePath is None:
-            configFilePath = self.defaultPath()
-        if not os.path.isfile(configFilePath):
+        # looking for file existence and creating new if necessary
+        if loadFilePath is None:
+            loadFilePath = self.defaultPath()
+        if not os.path.isfile(loadFilePath):
             self.config = self.defaultConfig()
             return True
 
+        # parsing the default file
         try:
-            with open(configFilePath, 'r') as configFile:
+            with open(loadFilePath, 'r') as configFile:
                 defaultData = json.load(configFile)
         except Exception as e:
-            self.logger.error('Cannot parse: {0}, error: {1}'.format(configFile, e))
+            self.logger.error('Cannot parse: {0}, error: {1}'.format(loadFilePath, e))
             self.config = self.defaultConfig()
             return False
 
-        referenceFilePath = defaultData.get('filePath', None)
-        if referenceFilePath is None:
-            self.config = self.defaultConfig()
-            return False
+        # loading default and finishing up
+        if defaultData['profileName'] == 'config':
+            self.config = self.convertData(defaultData)
+            self.config['filePath'] = self.defaultPath()
+            return True
 
-        isDefaultConfigPath = referenceFilePath.endswith('config.cfg')
-        isReferenceName = (defaultData['profileName'] == 'config')
-        if isReferenceName and not isDefaultConfigPath:
-            self.config = self.defaultConfig()
-            return False
+        # checking if reference to another file is available
+        referencedFilePath = defaultData['filePath']
         try:
-            with open(referenceFilePath, 'r') as referenceFile:
-                referenceData = json.load(referenceFile)
+            with open(referencedFilePath, 'r') as referencedFile:
+                referencedData = json.load(referencedFile)
         except Exception as e:
             self.config = self.defaultConfig(defaultData)
-            self.logger.error('Cannot parse: {0}, error: {1}'.format(referenceFilePath, e))
+            self.logger.error('Cannot parse: {0}, error: {1}'.format(referencedFilePath, e))
             return False
 
-        # check compatibility
-        if 'version' not in referenceData:
-            # data is missing, we use the standard config data
-            self.config = self.defaultConfig()
+        # check if reference is in referenced file
+        if 'filePath' not in referencedData:
+            self.config = self.convertData(defaultData)
+            self.config['filePath'] = self.defaultPath()
+            self.config['profileName'] = 'config'
+            self.logger.error('FilePath missing in: {0}'.format(referencedFilePath))
             return False
 
-        self.config = self.convertData(referenceData)
+        # now everything should be ok
+        self.config = self.convertData(referencedData)
         return True
 
-    def convertData(self, data):
+    @staticmethod
+    def convertData(data):
         """
         convertDate tries to convert data from an older or newer version of the config
         file to the actual needed one.
@@ -196,49 +201,50 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         return data
 
-    def saveConfig(self, referenceFilePath=None):
+    def saveConfig(self, saveFilePath=None):
         """
         saveConfig saves a json file to disk from the config dicts for
         persistent data.
 
-        :param      referenceFilePath:   full path to the config file
+        :param      saveFilePath:   full path to the config file
         :return:    success
         """
 
-        # check necessary data available
-        defaultFilePath = self.config.get('filePath', '')
-        if defaultFilePath is not None:
-            isDefaultConfigPath = defaultFilePath.endswith('config.cfg')
-        else:
-            isDefaultConfigPath = False
-        isReferenceName = (self.config['profileName'] == 'config')
-        if isReferenceName and not isDefaultConfigPath:
-            return False
-
-        # gather all data
+        # gather all data from modules
         self.storeConfig()
 
-        # start saving it
-        if referenceFilePath is None:
-            referenceFilePath = self.config.get('filePath', None)
-        self.config['filePath'] = referenceFilePath
+        # default i f profile is named config
+        if self.config['profileName'] == 'config':
+            saveFilePath = self.defaultPath()
+            self.config['filePath'] = saveFilePath
+
+        # default saving for reference
+        if saveFilePath is None:
+            saveFilePath = self.config.get('filePath', None)
+
+        # if still no reference is there, we make it named config
+        if saveFilePath is None:
+            saveFilePath = self.defaultPath()
+            self.config['filePath'] = saveFilePath
+            self.config['profileName'] = 'config'
+
+        # collect not all data
+        isReferenced = not saveFilePath.endswith('config.cfg')
 
         # save the config
-        defaultFilePath = self.defaultPath()
-        with open(defaultFilePath, 'w') as outfile:
+        filePath = self.defaultPath()
+        with open(filePath, 'w') as outfile:
             json.dump(self.config,
                       outfile,
                       sort_keys=True,
                       indent=4)
         # there is a link to another config file, so we save it too
-        if referenceFilePath is None:
-            return False
-        with open(referenceFilePath, 'w') as outfile:
-            # make the file human readable
-            json.dump(self.config,
-                      outfile,
-                      sort_keys=True,
-                      indent=4)
+        if isReferenced:
+            with open(saveFilePath, 'w') as outfile:
+                json.dump(self.config,
+                          outfile,
+                          sort_keys=True,
+                          indent=4)
         return True
 
     def loadMountData(self, status):

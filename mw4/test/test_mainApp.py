@@ -23,6 +23,7 @@ import json
 import pytest
 # external packages
 import PyQt5.QtCore
+import skyfield.api
 # local import
 from mw4 import mainApp
 
@@ -81,7 +82,6 @@ def test_loadConfig_2():
                   indent=4)
     suc = app.loadConfig()
     assert suc
-    print(app.config)
     assert app.config['version'] == '4.0'
     assert app.config['profileName'] == 'config'
     assert app.config['filePath'] == config + '/config.cfg'
@@ -418,3 +418,41 @@ def test_saveConfig_8():
     assert a['version'] == '4.0'
     assert a['filePath'] == config + '/config.cfg'
 
+
+def test_updateLocation_1(qtbot):
+
+    elev = 100
+    lon = 100
+    lat = 45
+    location = skyfield.api.Topos(longitude_degrees=lon,
+                                  latitude_degrees=lat,
+                                  elevation_m=elev)
+    app.mount.obsSite.location = location
+    app.config['latitudeTemp'] = 20.0
+    with qtbot.waitSignal(app.signalUpdateLocation) as blocker:
+        suc = app.updateLocation()
+        assert suc
+
+
+def test_updateLocation_2(qtbot):
+
+    elev = 100
+    lon = 100
+    lat = 45
+    location = skyfield.api.Topos(longitude_degrees=lon,
+                                  latitude_degrees=lat,
+                                  elevation_m=elev)
+    app.mount.obsSite.location = location
+    app.config['latitudeTemp'] = 45
+    with qtbot.assertNotEmitted(app.signalUpdateLocation):
+        suc = app.updateLocation()
+        assert suc
+
+
+def test_updateLocation_3(qtbot):
+
+    app.mount.obsSite.location = None
+    app.config['latitudeTemp'] = 45
+    with qtbot.assertNotEmitted(app.signalUpdateLocation):
+        suc = app.updateLocation()
+        assert not suc

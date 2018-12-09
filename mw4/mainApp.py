@@ -280,13 +280,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         updateLocation updates the site location as soon as we have new data from the mount
         until then, the last data from the config file is used.
 
-        :return:
+        :return: success
         """
         location = self.mount.obsSite.location
         if location is None:
-            return
+            return False
         self.data.lat = location.latitude.degrees
         if self.config['latitudeTemp'] == location.latitude.degrees:
-            return
+            return True
         self.config['latitudeTemp'] = location.latitude.degrees
         self.signalUpdateLocation.emit()
+        return True

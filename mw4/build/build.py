@@ -88,7 +88,7 @@ class DataPoint(object):
         self.lat = lat
         self._horizonPFile = None
         self._buildPFile = None
-        self._horizonP = list()
+        self._horizonP = [(0, 0), (0, 360)]
         self._buildP = list()
 
     @property
@@ -182,16 +182,22 @@ class DataPoint(object):
 
     @property
     def horizonP(self):
+        self._horizonP = sorted(self._horizonP, key=lambda x: x[1])
+        if self._horizonP[0] != (0, 0):
+            self._horizonP.insert(0, (0, 0))
+        horMax = len(self._horizonP)
+        if self._horizonP[horMax - 1] != (0, 360):
+            self._horizonP.insert(horMax, (0, 360))
         return self._horizonP
 
     @horizonP.setter
     def horizonP(self, value):
         if not isinstance(value, list):
-            self._horizonP = list()
+            self.clearHorizonP()
             return
         if not all([isinstance(x, tuple) for x in value]):
             self.logger.error('malformed value: {0}'.format(value))
-            self._horizonP = list()
+            self.clearHorizonP()
             return
         self._horizonP = value
 
@@ -225,7 +231,20 @@ class DataPoint(object):
         return True
 
     def clearHorizonP(self):
-        self._horizonP = list()
+        self._horizonP = [(0, 0), (0, 360)]
+
+    def deleteBelowHorizon(self):
+        x = range(0, 361)
+        y = numpy.interp(x,
+                         [i[0] for i in self._horizonP],
+                         [i[1] for i in self._horizonP],
+                         )
+        if point[1] > y[int(point[0])]:
+            return True
+        else:
+            return False
+
+        pass
 
     def loadBuildP(self):
         """
@@ -297,7 +316,7 @@ class DataPoint(object):
 
         fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
         with open(fileName, 'w') as handle:
-            json.dump(self._horizonP,
+            json.dump(self.horizonP,
                       handle,
                       sort_keys=True,
                       indent=4)

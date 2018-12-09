@@ -420,7 +420,6 @@ def test_saveConfig_8():
 
 
 def test_updateLocation_1(qtbot):
-
     elev = 100
     lon = 100
     lat = 45
@@ -429,13 +428,12 @@ def test_updateLocation_1(qtbot):
                                   elevation_m=elev)
     app.mount.obsSite.location = location
     app.config['latitudeTemp'] = 20.0
-    with qtbot.waitSignal(app.signalUpdateLocation) as blocker:
+    with qtbot.waitSignal(app.signalUpdateLocation):
         suc = app.updateLocation()
         assert suc
 
 
 def test_updateLocation_2(qtbot):
-
     elev = 100
     lon = 100
     lat = 45
@@ -450,9 +448,15 @@ def test_updateLocation_2(qtbot):
 
 
 def test_updateLocation_3(qtbot):
-
     app.mount.obsSite.location = None
     app.config['latitudeTemp'] = 45
     with qtbot.assertNotEmitted(app.signalUpdateLocation):
         suc = app.updateLocation()
         assert not suc
+
+
+def test_storeConfig_1():
+    app.data.lat = 20
+    suc = app.storeConfig()
+    assert suc
+    assert app.config['latitudeTemp'] == 20

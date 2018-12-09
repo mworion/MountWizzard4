@@ -100,11 +100,19 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.environment.startCommunication()
 
     def storeConfig(self):
+        """
+        storeConfig collects all persistent data from mainApp and it's submodules and stores
+        it in the persistence dictionary for later saving
+
+        :return: success for test purpose
+        """
+
         config = self.config
         config['latitudeTemp'] = self.data.lat
         self.mainW.storeConfig()
         self.messageW.storeConfig()
         self.hemisphereW.storeConfig()
+        return True
 
     def quit(self):
         """
@@ -130,7 +138,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     def defaultPath(self):
         return self.mwGlob['configDir'] + '/config.cfg'
 
-    def defaultConfig(self, config={}):
+    def defaultConfig(self, config=None):
+        if config is None:
+            config = dict()
         config['profileName'] = 'config'
         config['filePath'] = self.defaultPath()
         config['version'] = '4.0'

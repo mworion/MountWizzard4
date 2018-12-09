@@ -646,3 +646,43 @@ def test_genInitial5():
                           numb=30,
                           )
     assert not suc
+
+
+def test_isAboveHorizon():
+    data.clearHorizonP()
+    suc = data.isAboveHorizon((10, 50))
+    assert suc
+    suc = data.isAboveHorizon((10, 370))
+    assert suc
+    suc = data.isAboveHorizon((10, -50))
+    assert suc
+    suc = data.isAboveHorizon((-10, 50))
+    assert not suc
+
+
+def test_deleteBelowHorizon1():
+    data.clearHorizonP()
+    data.buildP = [(10, 10), (-5, 40), (40, 60)]
+    data.deleteBelowHorizon()
+    assert len(data.buildP) == 2
+
+
+def test_deleteBelowHorizon2():
+    data.clearHorizonP()
+    data.buildP = [(10, 10), (5, 40), (-40, 60)]
+    data.deleteBelowHorizon()
+    assert len(data.buildP) == 2
+
+
+def test_deleteBelowHorizon3():
+    data.clearHorizonP()
+    data.buildP = [(-10, 10), (5, 40), (40, 60)]
+    data.deleteBelowHorizon()
+    assert len(data.buildP) == 2
+
+
+def test_deleteBelowHorizon4():
+    data.clearHorizonP()
+    data.buildP = [(-10, 10), (-5, 40), (-40, 60)]
+    data.deleteBelowHorizon()
+    assert len(data.buildP) == 0

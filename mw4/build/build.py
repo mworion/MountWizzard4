@@ -233,18 +233,23 @@ class DataPoint(object):
     def clearHorizonP(self):
         self._horizonP = [(0, 0), (0, 360)]
 
-    def deleteBelowHorizon(self):
+    def isAboveHorizon(self, point):
+        if point[1] > 360:
+            point = (point[0], 360)
+        if point[1] < 0:
+            point = (point[0], 0)
         x = range(0, 361)
-        y = numpy.interp(x,
-                         [i[0] for i in self._horizonP],
-                         [i[1] for i in self._horizonP],
-                         )
-        if point[1] > y[int(point[0])]:
+        y = np.interp(x,
+                      [i[1] for i in self._horizonP],
+                      [i[0] for i in self._horizonP],
+                      )
+        if point[0] > y[int(point[1])]:
             return True
         else:
             return False
 
-        pass
+    def deleteBelowHorizon(self):
+        self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
 
     def loadBuildP(self):
         """

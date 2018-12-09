@@ -204,19 +204,47 @@ class HemisphereWindow(widget.MWidget):
         return True
 
     def drawCanvas(self):
+        """
+        drawCanvas retrieves the static content axes from widget and redraws the canvas
+
+        :return:
+        """
+
         axes = self.hemisphereMat.figure.axes[0]
         axes.figure.canvas.draw()
 
     def drawCanvasMoving(self):
+        """
+        drawCanvas retrieves the moving content axes from widget and redraws the canvas
+
+        :return:
+        """
+
         axesM = self.hemisphereMatM.figure.axes[0]
         axesM.figure.canvas.draw()
 
     def updateCelestialPath(self):
+        """
+        updateCelestialPath is called whenever an update of settings from mount are given.
+        it takes the actual values and corrects the point in window if window is in
+        show status.
+
+        :return: nothing
+        """
+
         if self.showStatus:
             self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
             self.drawCanvas()
 
     def updateMeridian(self):
+        """
+        updateMeridian is called whenever an update of settings from mount are given. it
+        takes the actual values and corrects the point in window if window is in
+        show status.
+
+        :return: nothing
+        """
+
         if self.showStatus:
             slew = self.app.mount.sett.meridianLimitSlew
             track = self.app.mount.sett.meridianLimitTrack
@@ -229,6 +257,14 @@ class HemisphereWindow(widget.MWidget):
             self.drawCanvas()
 
     def updatePointerAltAz(self):
+        """
+        updatePointerAltAz is called whenever an update of coordinates from mount are
+        given. it takes the actual values and corrects the point in window if window is in
+        show status.
+
+        :return: nothing
+        """
+
         if self.showStatus:
             alt = self.app.mount.obsSite.Alt.degrees
             az = self.app.mount.obsSite.Az.degrees

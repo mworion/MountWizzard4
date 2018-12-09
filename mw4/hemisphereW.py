@@ -217,8 +217,8 @@ class HemisphereWindow(widget.MWidget):
 
     def updateCelestialPath(self):
         if self.showStatus:
-            y, x = zip(*celestial)
             celestial = self.app.data.generateCelestialEquator()
+            y, x = zip(*celestial)
             self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
             self.drawCanvas()
 

@@ -34,7 +34,6 @@ mwGlob = {'workDir': '.',
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global data
-
     data = build.DataPoint(mwGlob=mwGlob, lat=48)
     yield
     data = None
@@ -229,6 +228,27 @@ def test_addBuildP3():
     assert 0 == len(data.buildP)
 
 
+def test_addBuildP4():
+    data.buildP = [(10, 10), (10, 10)]
+    suc = data.addBuildP((10, 10), position=1)
+    assert suc
+    assert len(data.buildP) == 3
+
+
+def test_addBuildP5():
+    data.buildP = [(10, 10), (10, 10)]
+    suc = data.addBuildP((10, 10), position=20)
+    assert suc
+    assert len(data.buildP) == 3
+
+
+def test_addBuildP6():
+    data.buildP = [(10, 10), (10, 10)]
+    suc = data.addBuildP((10, 10), position=-5)
+    assert suc
+    assert len(data.buildP) == 3
+
+
 def test_delBuildP1():
     data.buildP = ()
     data.genGreaterCircle('max')
@@ -325,14 +345,35 @@ def test_addHorizonP2():
     data.horizonP = ()
     suc = data.addHorizonP(10)
     assert not suc
-    assert 0 == len(data.horizonP)
+    assert len(data.horizonP) == 0
 
 
 def test_addHorizonP3():
     data.horizonP = ()
     suc = data.addHorizonP((10, 10, 10))
     assert not suc
-    assert 0 == len(data.horizonP)
+    assert len(data.horizonP) == 0
+
+
+def test_addHorizonP4():
+    data.horizonP = [(10, 10), (10, 10)]
+    suc = data.addHorizonP((10, 10), position=1)
+    assert suc
+    assert len(data.horizonP) == 3
+
+
+def test_addHorizonP5():
+    data.horizonP = [(10, 10), (10, 10)]
+    suc = data.addHorizonP((10, 10), position=20)
+    assert suc
+    assert len(data.horizonP) == 3
+
+
+def test_addHorizonP6():
+    data.horizonP = [(10, 10), (10, 10)]
+    suc = data.addHorizonP((10, 10), position=-5)
+    assert suc
+    assert len(data.horizonP) == 3
 
 
 def test_delHorizonP1():

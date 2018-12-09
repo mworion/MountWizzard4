@@ -148,25 +148,33 @@ class DataPoint(object):
             return
         self._buildP = value
 
-    def addBuildP(self, value):
+    def addBuildP(self, value, position=None):
         if not isinstance(value, tuple):
             self.logger.error('malformed value: {0}'.format(value))
             return False
         if len(value) != 2:
             self.logger.error('malformed value: {0}'.format(value))
             return False
-        self._buildP.insert(len(self._buildP), value)
+        if position is None:
+            position = len(self._buildP)
+        if not isinstance(position, (int, float)):
+            self.logger.error('malformed position: {0}'.format(position))
+            return False
+        position = int(position)
+        position = min(len(self._buildP), position)
+        position = max(0, position)
+        self._buildP.insert(position, value)
         return True
 
-    def delBuildP(self, value):
-        if not isinstance(value, (int, float)):
-            self.logger.error('malformed value: {0}'.format(value))
+    def delBuildP(self, position):
+        if not isinstance(position, (int, float)):
+            self.logger.error('malformed position: {0}'.format(position))
             return False
-        value = int(value)
-        if value < 0 or value > len(self._buildP) - 1:
-            self.logger.error('invalid value: {0}'.format(value))
+        position = int(position)
+        if position < 0 or position > len(self._buildP) - 1:
+            self.logger.error('invalid position: {0}'.format(position))
             return False
-        self._buildP.pop(value)
+        self._buildP.pop(position)
         return True
 
     def clearBuildP(self):
@@ -187,25 +195,33 @@ class DataPoint(object):
             return
         self._horizonP = value
 
-    def addHorizonP(self, value):
+    def addHorizonP(self, value, position=None):
         if not isinstance(value, tuple):
             self.logger.error('malformed value: {0}'.format(value))
             return False
         if len(value) != 2:
             self.logger.error('malformed value: {0}'.format(value))
             return False
-        self._horizonP.insert(len(self._horizonP), value)
+        if position is None:
+            position = len(self._horizonP)
+        if not isinstance(position, (int, float)):
+            self.logger.error('malformed position: {0}'.format(position))
+            return False
+        position = int(position)
+        position = min(len(self._horizonP), position)
+        position = max(0, position)
+        self._horizonP.insert(position, value)
         return True
 
-    def delHorizonP(self, value):
-        if not isinstance(value, (int, float)):
-            self.logger.error('malformed value: {0}'.format(value))
+    def delHorizonP(self, position):
+        if not isinstance(position, (int, float)):
+            self.logger.error('malformed position: {0}'.format(position))
             return False
-        value = int(value)
-        if value < 0 or value > len(self._horizonP) - 1:
-            self.logger.error('invalid value: {0}'.format(value))
+        position = int(position)
+        if position < 0 or position > len(self._horizonP) - 1:
+            self.logger.error('invalid position: {0}'.format(position))
             return False
-        self._horizonP.pop(value)
+        self._horizonP.pop(position)
         return True
 
     def clearHorizonP(self):

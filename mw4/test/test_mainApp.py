@@ -242,6 +242,27 @@ def test_loadConfig_9():
     assert 'filePath' in app.config
 
 
+def test_loadConfig_10():
+    # basic config with wrong profileName
+    app.config = {}
+    basic = {
+        'profileName': 'test',
+        'version': '4.0',
+        'filePath': config + '/config.cfg',
+    }
+    with open(config + '/config.cfg', 'w') as outfile:
+        json.dump(basic,
+                  outfile,
+                  sort_keys=True,
+                  indent=4)
+
+    suc = app.loadConfig()
+    assert suc
+    assert '4.0' == app.config['version']
+    assert 'config' == app.config['profileName']
+    assert 'filePath' in app.config
+
+
 #
 #
 # testing saving config
@@ -310,6 +331,28 @@ def test_saveConfig_3():
 
 
 def test_saveConfig_4():
+    # save to new reference
+    app.config = {
+        'profileName': 'reference',
+        'version': '4.0',
+        'filePath': config + '/config.cfg'
+    }
+    suc = app.saveConfig(config + '/reference.cfg')
+    assert suc
+    with open(config + '/config.cfg', 'r') as inFile:
+        a = json.load(inFile)
+    assert a['profileName'] == 'reference'
+    assert a['version'] == '4.0'
+    assert a['filePath'] == config + '/reference.cfg'
+    with open(config + '/reference.cfg', 'r') as infile:
+        res = json.load(infile)
+    assert suc
+    assert res['profileName'] == 'reference'
+    assert res['version'] == '4.0'
+    assert res['filePath'] == config + '/reference.cfg'
+
+
+def test_saveConfig_5():
     # save with default name and wrong reference
     # -> path should be added automatically as default path
     app.config = {
@@ -326,7 +369,7 @@ def test_saveConfig_4():
     assert a['filePath'] == config + '/config.cfg'
 
 
-def test_saveConfig_5():
+def test_saveConfig_6():
     # save with reference name and missing file path
     # -> path should be added automatically as default path
     app.config = {
@@ -343,7 +386,7 @@ def test_saveConfig_5():
     assert a['filePath'] == config + '/config.cfg'
 
 
-def test_saveConfig_6():
+def test_saveConfig_7():
     # save default without reference without filePath
     # -> path should be added automatically
     app.config = {
@@ -359,7 +402,7 @@ def test_saveConfig_6():
     assert a['filePath'] == config + '/config.cfg'
 
 
-def test_saveConfig_7():
+def test_saveConfig_8():
     # save default without reference with wrong filePath
     # -> path should be repaired automatically
     app.config = {

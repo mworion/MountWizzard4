@@ -169,6 +169,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # checking if reference to another file is available
         referencedFilePath = defaultData['filePath']
+
+        # check if reference ist still to default -> correct error
+        isDefault = referencedFilePath.endswith('config.cfg')
+        if isDefault:
+            self.config = self.convertData(defaultData)
+            self.config['profileName'] = 'config'
+            return True
+
+        # now loading referenced file
         try:
             with open(referencedFilePath, 'r') as referencedFile:
                 referencedData = json.load(referencedFile)
@@ -210,10 +219,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:    success
         """
 
-        # gather all data from modules
-        self.storeConfig()
-
-        # default i f profile is named config
+        # default if profile is named config
         if self.config['profileName'] == 'config':
             saveFilePath = self.defaultPath()
             self.config['filePath'] = saveFilePath
@@ -221,6 +227,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # default saving for reference
         if saveFilePath is None:
             saveFilePath = self.config.get('filePath', None)
+        else:
+            self.config['filePath'] = saveFilePath
 
         # if still no reference is there, we make it named config
         if saveFilePath is None:
@@ -228,7 +236,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.config['filePath'] = saveFilePath
             self.config['profileName'] = 'config'
 
-        # collect not all data
+        # check if we have to write two data sets
         isReferenced = not saveFilePath.endswith('config.cfg')
 
         # save the config

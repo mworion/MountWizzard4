@@ -132,6 +132,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         self.mount.stopTimers()
+        self.storeConfig()
         self.saveConfig()
         PyQt5.QtCore.QCoreApplication.quit()
 

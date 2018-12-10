@@ -232,9 +232,10 @@ class HemisphereWindow(widget.MWidget):
         :return: nothing
         """
 
-        if self.showStatus:
-            self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
-            self.drawCanvas()
+        if not self.showStatus:
+            return
+        self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
+        self.drawCanvas()
 
     def updateMeridian(self):
         """
@@ -245,16 +246,19 @@ class HemisphereWindow(widget.MWidget):
         :return: nothing
         """
 
-        if self.showStatus:
-            slew = self.app.mount.sett.meridianLimitSlew
-            track = self.app.mount.sett.meridianLimitTrack
-            self.meridianTrack.set_visible(self.ui.checkShowMeridian.isChecked())
-            self.meridianSlew.set_visible(self.ui.checkShowMeridian.isChecked())
-            self.meridianTrack.set_xy((180 - track, 0))
-            self.meridianSlew.set_xy((180 - slew, 0))
-            self.meridianTrack.set_width(2 * track)
-            self.meridianSlew.set_width(2 * slew)
-            self.drawCanvas()
+        if not self.showStatus:
+            return
+        slew = self.app.mount.sett.meridianLimitSlew
+        track = self.app.mount.sett.meridianLimitTrack
+        if slew is None or track is None:
+            return
+        self.meridianTrack.set_visible(self.ui.checkShowMeridian.isChecked())
+        self.meridianSlew.set_visible(self.ui.checkShowMeridian.isChecked())
+        self.meridianTrack.set_xy((180 - track, 0))
+        self.meridianSlew.set_xy((180 - slew, 0))
+        self.meridianTrack.set_width(2 * track)
+        self.meridianSlew.set_width(2 * slew)
+        self.drawCanvas()
 
     def updatePointerAltAz(self):
         """
@@ -265,12 +269,13 @@ class HemisphereWindow(widget.MWidget):
         :return: nothing
         """
 
-        if self.showStatus:
-            alt = self.app.mount.obsSite.Alt.degrees
-            az = self.app.mount.obsSite.Az.degrees
-            self.pointerAltAz.set_data((az, alt))
-            self.pointerAltAz.set_visible(True)
-            self.drawCanvasMoving()
+        if not self.showStatus:
+            return
+        alt = self.app.mount.obsSite.Alt.degrees
+        az = self.app.mount.obsSite.Az.degrees
+        self.pointerAltAz.set_data((az, alt))
+        self.pointerAltAz.set_visible(True)
+        self.drawCanvasMoving()
 
     @staticmethod
     def markerPoint():

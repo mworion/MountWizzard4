@@ -1,11 +1,10 @@
 # from distutils.core import setup
 from setuptools import setup
-import mw4_glob
-import platform
+from mw4.mainApp import MountWizzard4
 
 setup(
     name='mw4',
-    version=mw4_glob.BUILD,
+    version=MountWizzard4.version,
     packages=[
         'mw4',
         'mw4.base',
@@ -17,7 +16,7 @@ setup(
         'mw4.relay',
         'mw4.test',
     ],
-    python_requires='~=3.6.5',
+    python_requires='~=3.6.7',
     install_requires=[
         'PyQt5==5.11.3',
         'matplotlib==3.0.2',
@@ -26,7 +25,7 @@ setup(
         'requests_toolbelt==0.8.0',
         'skyfield==1.9',
         'mountcontrol>=0.4',
-        'indibase>=0.2',
+        'indibase>=0.3',
         'astropy==3.1',
         'pytest==4.0.1',
         'pytest-qt==3.2.1',

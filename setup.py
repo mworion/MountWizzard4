@@ -1,4 +1,22 @@
-# from distutils.core import setup
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+# Python  v3.6.7
+#
+# Michael Würtenberger
+# (c) 2018
+#
+# Licence APL2.0
+#
+###########################################################
 from setuptools import setup
 from mw4.mainApp import MountWizzard4
 

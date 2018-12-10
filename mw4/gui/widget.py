@@ -9,7 +9,7 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.6.5
+# Python  v3.6.7
 #
 # Michael Würtenberger
 # (c) 2018
@@ -26,7 +26,6 @@ import PyQt5.QtWidgets
 import PyQt5.QtGui
 import PyQt5.QtCore
 import PyQt5.uic
-import matplotlib
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg

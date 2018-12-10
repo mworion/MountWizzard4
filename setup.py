@@ -20,14 +20,16 @@ setup(
     python_requires='~=3.6.5',
     install_requires=[
         'PyQt5==5.11.3',
-        'matplotlib==3.0.1',
-        'requests==2.20.0',
-        'numpy==1.15.3',
+        'matplotlib==3.0.2',
+        'requests==2.21.0',
+        'numpy==1.15.4',
         'requests_toolbelt==0.8.0',
         'skyfield==1.9',
         'mountcontrol>=0.4',
         'indibase>=0.2',
-        'astropy==3.0.3'
+        'astropy==3.1',
+        'pytest==4.0.1',
+        'pytest-qt==3.2.1',
     ]
     ,
     url='https://github.com/mworion/MountWizzard4',

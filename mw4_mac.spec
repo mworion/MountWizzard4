@@ -24,7 +24,6 @@ import shutil
 # external packages
 import astropy
 # local import
-from mw4.mainApp import MountWizzard4
 
 # remove TK
 sys.modules['FixTk'] = None
@@ -34,7 +33,7 @@ DISTPATH = '../dist'
 WORKPATH = '../build'
 astropy_path, = astropy.__path__
 
-BUILD_NO = MountWizzard4.version
+BUILD_NO = '0.2dev0'
 
 block_cipher = None
 pythonPath = '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6'

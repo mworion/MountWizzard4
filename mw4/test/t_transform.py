@@ -98,4 +98,3 @@ def test_time():
         d_t = abs(jdtt - timeJD.tt - timeJD.dut1 / 86400) * 86400
 
         print('{0:10.4f}'.format(d_t))
-

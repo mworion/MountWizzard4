@@ -144,6 +144,59 @@ def except_hook(typeException, valueException, tbackException):
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
+def setDirectories(logging, mwGlob):
+    """
+
+    :param logging:
+    :param mwGlob:
+    :return:
+    """
+
+    if not os.path.isdir(mwGlob['workDir']):
+        os.makedirs(mwGlob['workDir'])
+    if not os.access(mwGlob['workDir'], os.W_OK):
+        logging.error('no write access to workdir')
+
+    if not os.path.isdir(mwGlob['configDir']):
+        os.makedirs(mwGlob['configDir'])
+    if not os.access(mwGlob['configDir'], os.W_OK):
+        logging.error('no write access to /config')
+
+    if not os.path.isdir(mwGlob['dataDir']):
+        os.makedirs(mwGlob['dataDir'])
+    if not os.access(mwGlob['dataDir'], os.W_OK):
+        logging.error('no write access to /data')
+
+    if not os.path.isdir(mwGlob['imageDir']):
+        os.makedirs(mwGlob['imageDir'])
+    if not os.access(mwGlob['imageDir'], os.W_OK):
+        logging.error('no write access to /image')
+
+
+def checkFrozen(mwGlob):
+    """
+
+    :param mwGlob:
+    :return:
+    """
+
+    if getattr(sys, 'frozen', False):
+        # we are running in a bundle
+        # noinspection PyProtectedMember
+        mwGlob['bundleDir'] = sys._MEIPASS
+        # on mac we have to change path of working directory
+        if platform.system() == 'Darwin':
+            os.chdir(os.path.dirname(sys.executable))
+            os.chdir('..')
+            os.chdir('..')
+            os.chdir('..')
+            mwGlob['frozen'] = True
+    else:
+        # we are running in a normal Python environment
+        mwGlob['bundleDir'] = os.path.dirname(os.path.abspath(__file__))
+        mwGlob['frozen'] = False
+
+
 def main():
     """
     main prepares the loading of mountwizzard application. it prepares a splash screen
@@ -166,21 +219,7 @@ def main():
     }
 
     # checking workdir and if the system is started from frozen app
-    if getattr(sys, 'frozen', False):
-        # we are running in a bundle
-        # noinspection PyProtectedMember
-        mwGlob['bundleDir'] = sys._MEIPASS
-        # on mac we have to change path of working directory
-        if platform.system() == 'Darwin':
-            os.chdir(os.path.dirname(sys.executable))
-            os.chdir('..')
-            os.chdir('..')
-            os.chdir('..')
-            mwGlob['frozen'] = True
-    else:
-        # we are running in a normal Python environment
-        mwGlob['bundleDir'] = os.path.dirname(os.path.abspath(__file__))
-        mwGlob['frozen'] = False
+    checkFrozen(mwGlob)
 
     # now instantiate the application from QApplication
     PyQt5.QtWidgets.QApplication.setAttribute(PyQt5.QtCore.Qt.AA_EnableHighDpiScaling, True)
@@ -224,25 +263,7 @@ def main():
     # population the working directory with necessary subdir
     splash.showMessage('Checking work directories')
     splash.setValue(30)
-    if not os.path.isdir(mwGlob['workDir']):
-        os.makedirs(mwGlob['workDir'])
-    if not os.access(mwGlob['workDir'], os.W_OK):
-        logging.error('no write access to workdir')
-
-    if not os.path.isdir(mwGlob['configDir']):
-        os.makedirs(mwGlob['configDir'])
-    if not os.access(mwGlob['configDir'], os.W_OK):
-        logging.error('no write access to /config')
-
-    if not os.path.isdir(mwGlob['dataDir']):
-        os.makedirs(mwGlob['dataDir'])
-    if not os.access(mwGlob['dataDir'], os.W_OK):
-        logging.error('no write access to /data')
-
-    if not os.path.isdir(mwGlob['imageDir']):
-        os.makedirs(mwGlob['imageDir'])
-    if not os.access(mwGlob['imageDir'], os.W_OK):
-        logging.error('no write access to /image')
+    setDirectories(logging, mwGlob)
 
     # start logging with basic system data for information
     splash.showMessage('Logging environment')

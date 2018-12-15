@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
 # external packages
 import PyQt5.QtGui
 
@@ -102,7 +101,6 @@ class MWStyles(object):
         padding: 3px;
         background-color: rgb(18, 72, 96);
     }
-    
     /* QLine Edit*/
     QLineEdit {
         background-color: #000000;
@@ -113,7 +111,6 @@ class MWStyles(object):
         border-style: outset;
         border-radius: 2px;
     }
-
     QLineEdit:disabled {
         border-width: 2px;
         border-color: #000000;
@@ -153,9 +150,7 @@ class MWStyles(object):
         font-family: Arial;
         font-weight: bold;
         font-size: 28pt;
-
     }
-    
     /* Checkboxes */
     QCheckBox {
         color: #C0C0C0;
@@ -175,7 +170,6 @@ class MWStyles(object):
         background-color: rgb(32, 144, 192);
         image: url(:/checkmark.ico);
     }
-
     /* Group Box */
     QGroupBox {
         background-color: #181818;
@@ -213,7 +207,6 @@ class MWStyles(object):
         background-color: rgb(32, 144, 192);
         image: url(:/checkmark.ico);
     }
-    
     /* Spin Boxes */
     QDoubleSpinBox {
         background-color: #101010;
@@ -255,7 +248,6 @@ class MWStyles(object):
         width: 12px;
         height: 16px;
     }
-    
     /* Push Buttons */
     QPushButton {
         background-color: #202020;
@@ -399,7 +391,6 @@ class MWStyles(object):
     QFrame[frameShape="5"] {/* vertical lines */
         color: rgb(16, 72, 96);
     }
-    
     /* tab widget */
     QTabWidget:pane {
         border-width: 2px;
@@ -436,7 +427,6 @@ class MWStyles(object):
         color: #404040;
         border-color: #202020;
     }
-    
     /* scroll bar */
     QScrollBar:vertical
     {   background-color: #202020;
@@ -492,7 +482,6 @@ class MWStyles(object):
     QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
     {   background: none;
     }    
-
     /* progress bar */
     QProgressBar {
         background-color: #101010;

@@ -271,8 +271,13 @@ class HemisphereWindow(widget.MWidget):
 
         if not self.showStatus:
             return
-        alt = self.app.mount.obsSite.Alt.degrees
-        az = self.app.mount.obsSite.Az.degrees
+        obsSite = self.app.mount.obsSite
+        if obsSite.Alt is None:
+            return
+        if obsSite.Az is None:
+            return
+        alt = obsSite.Alt.degrees
+        az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
         self.pointerAltAz.set_visible(True)
         self.drawCanvasMoving()

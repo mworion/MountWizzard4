@@ -127,4 +127,3 @@ class MessageWindow(widget.MWidget):
         self.ui.message.insertPlainText(message + '\n')
         # self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
         return True
-

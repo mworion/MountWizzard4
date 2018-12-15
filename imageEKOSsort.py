@@ -1,10 +1,9 @@
-imagePath = '/Users/mw/Desktop/ngc7380/'
-destPath = imagePath + 'sort/'
-
-
 import mw4_glob
 from astropy.io import fits as fits
 from shutil import copyfile
+
+imagePath = '/Users/mw/Desktop/ngc7380/'
+destPath = imagePath + 'sort/'
 
 for filename in mw4_glob.iglob(imagePath + '**/*.fits', recursive=True):
     fd = fits.open(name=filename)

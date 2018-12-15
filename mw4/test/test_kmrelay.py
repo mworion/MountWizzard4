@@ -126,7 +126,7 @@ def test_status1(qtbot):
         for i in range(0, 9):
             relay.set(i, 0)
 
-        with qtbot.waitSignal(relay.statusReady) as blocker:
+        with qtbot.waitSignal(relay.statusReady):
             relay.cyclePolling()
         assert [0, 0, 0, 0, 0, 0, 0, 0] == relay.status
 
@@ -154,7 +154,7 @@ def test_status2(qtbot):
         for i in range(0, 9):
             relay.set(i, 1)
 
-        with qtbot.waitSignal(relay.statusReady) as blocker:
+        with qtbot.waitSignal(relay.statusReady):
             relay.cyclePolling()
         assert [1, 1, 1, 1, 1, 1, 1, 1] == relay.status
 
@@ -182,7 +182,7 @@ def test_status3(qtbot):
         for i in range(0, 9):
             relay.switch(i)
 
-        with qtbot.waitSignal(relay.statusReady) as blocker:
+        with qtbot.waitSignal(relay.statusReady):
             relay.cyclePolling()
         assert [1, 1, 1, 1, 1, 1, 1, 1] == relay.status
 
@@ -210,6 +210,6 @@ def test_status4(qtbot):
         for i in range(0, 9):
             relay.pulse(i)
 
-        with qtbot.waitSignal(relay.statusReady) as blocker:
+        with qtbot.waitSignal(relay.statusReady):
             relay.cyclePolling()
     assert [0, 0, 0, 0, 0, 0, 0, 0] == relay.status

@@ -47,4 +47,3 @@ def J2000ToJNow(ra, dec, timeJD):
         ra = skyfield.api.Angle(radians=raConv, preference='hours')
         dec = skyfield.api.Angle(radians=decConv, preference='degrees')
         return ra, dec
-

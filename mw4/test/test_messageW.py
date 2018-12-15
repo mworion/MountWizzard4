@@ -113,4 +113,3 @@ def test_writeMessage4(qtbot):
     suc = app.messageW.writeMessage('test', -1)
     assert not suc
 
-

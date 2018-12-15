@@ -24,7 +24,6 @@ import pytest
 import PyQt5.QtWidgets
 # local import
 from mw4.environ import environ
-from indibase import indiBase
 
 test = PyQt5.QtWidgets.QApplication([])
 host_ip = 'astro-mount.fritz.box'

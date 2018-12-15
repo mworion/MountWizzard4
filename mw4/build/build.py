@@ -285,17 +285,22 @@ class DataPoint(object):
     def deleteBelowHorizon(self):
         self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
 
-    def loadBuildP(self):
+    def loadBuildP(self, fileName=None):
         """
         loadBuildP loads a build pints file and stores the data in the buildP list.
         necessary conversion are made.
 
+        :param fileName: name of file to be handled
         :return: success
         """
 
-        fileName = self.mwGlob['configDir'] + '/' + self._buildPFile + '.bpts'
+        if fileName is None:
+            if not self._buildPFile:
+                return False
+            fileName = self.mwGlob['configDir'] + '/' + self._buildPFile + '.bpts'
         if not os.path.isfile(fileName):
             return False
+
         try:
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
@@ -307,14 +312,19 @@ class DataPoint(object):
             return False
         return True
 
-    def saveBuildP(self):
+    def saveBuildP(self, fileName=None):
         """
         saveBuildP saves the actual build points list in a file in json dump format
 
+        :param fileName: name of file to be handled
         :return: success
         """
 
-        fileName = self.mwGlob['configDir'] + '/' + self._buildPFile + '.bpts'
+        if fileName is None:
+            if not self._buildPFile:
+                return False
+            fileName = self.mwGlob['configDir'] + '/' + self._buildPFile + '.bpts'
+
         with open(fileName, 'w') as handle:
             json.dump(self._buildP,
                       handle,
@@ -322,19 +332,22 @@ class DataPoint(object):
                       indent=4)
         return True
 
-    def loadHorizonP(self):
+    def loadHorizonP(self, fileName=None):
         """
         loadHorizonP loads a build pints file and stores the data in the buildP list.
         necessary conversion are made.
 
+        :param fileName: name of file to be handled
         :return: success
         """
 
-        if self._horizonPFile is None:
-            return False
-        fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
+        if fileName is None:
+            if not self._horizonPFile:
+                return False
+            fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
         if not os.path.isfile(fileName):
             return False
+
         try:
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
@@ -346,14 +359,19 @@ class DataPoint(object):
             return False
         return True
 
-    def saveHorizonP(self):
+    def saveHorizonP(self, fileName=None):
         """
         saveHorizonP saves the actual build points list in a file in json dump format
 
+        :param fileName: name of file to be handled
         :return: success
         """
 
-        fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
+        if fileName is None:
+            if not self._horizonPFile:
+                return False
+            fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
+
         with open(fileName, 'w') as handle:
             json.dump(self.horizonP,
                       handle,

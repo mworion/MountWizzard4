@@ -766,8 +766,8 @@ class MainWindow(widget.MWidget):
             for star in model.starList:
                 text = '{0:3.1f}'.format(star.errorRMS)
                 axes.annotate(text,
-                              xy=(theta[star.number-1],
-                                  r[star.number-1]),
+                              xy=(theta[star.number - 1],
+                                  r[star.number - 1]),
                               color='#2090C0',
                               fontsize=9,
                               fontweight='bold',

@@ -138,15 +138,15 @@ class HemisphereWindow(widget.MWidget):
         startY = 130
         self.ui.hemisphere.setGeometry(space,
                                        startY - space,
-                                       self.width() - 2*space,
+                                       self.width() - 2 * space,
                                        self.height() - startY)
         self.ui.hemisphereS.setGeometry(space,
                                         startY - space,
-                                        self.width() - 2*space,
+                                        self.width() - 2 * space,
                                         self.height() - startY)
         self.ui.hemisphereM.setGeometry(space,
                                         startY - space,
-                                        self.width() - 2*space,
+                                        self.width() - 2 * space,
                                         self.height() - startY)
 
     def closeEvent(self, closeEvent):

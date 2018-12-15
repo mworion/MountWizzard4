@@ -94,7 +94,7 @@ class MessageWindow(widget.MWidget):
         startY = 10
         self.ui.message.setGeometry(space,
                                     startY - space,
-                                    self.width() - 2*space,
+                                    self.width() - 2 * space,
                                     self.height() - startY)
 
     def closeEvent(self, closeEvent):

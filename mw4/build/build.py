@@ -126,7 +126,7 @@ class DataPoint(object):
         # value = np.clip(value, -1.0, 1.0)
         A = np.arccos(value)
         if np.sin(ha) >= 0.0:
-            az = 2*np.pi - A
+            az = 2 * np.pi - A
         else:
             az = A
         az = np.degrees(az)
@@ -366,7 +366,7 @@ class DataPoint(object):
         self.clearBuildP()
         for dec, step, start, stop in self.genHaDecParams(selection):
             for ha in range(start, stop, step):
-                alt, az = self.topoToAzAlt(ha/10, dec, self.lat)
+                alt, az = self.topoToAzAlt(ha / 10, dec, self.lat)
                 # only values with above horizon = 0
 
                 if 5 <= alt <= 85 and 2 < az < 358:

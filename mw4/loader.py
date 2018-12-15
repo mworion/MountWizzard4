@@ -62,8 +62,8 @@ class SplashScreen(PyQt5.QtCore.QObject):
         super().__init__()
         self._qapp = qapp
         self._pxm = pix
-        flags = (PyQt5.QtCore.Qt.WindowStaysOnTopHint
-                 | PyQt5.QtCore.Qt.X11BypassWindowManagerHint)
+        flags = (PyQt5.QtCore.Qt.WindowStaysOnTopHint |
+                 PyQt5.QtCore.Qt.X11BypassWindowManagerHint)
         self._qss = PyQt5.QtWidgets.QSplashScreen(self._pxm, flags)
         self._msg = ''
         self._maxv = 100.0

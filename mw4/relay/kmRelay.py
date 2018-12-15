@@ -76,7 +76,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.host = host
         self.user = user
         self.password = password
-        self.status = [0]*8
+        self.status = [0] * 8
 
         self.timer = PyQt5.QtCore.QTimer()
         self.timer.setSingleShot(False)
@@ -179,7 +179,7 @@ class KMRelay(PyQt5.QtCore.QObject):
             if not value:
                 continue
             value = [int(s) for s in value]
-            self.status[value[0]-1] = value[1]
+            self.status[value[0] - 1] = value[1]
         self.statusReady.emit()
         return True
 

@@ -215,7 +215,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                          labelsize=12,
                          )
 
-
     @staticmethod
     def embedMatplot(ui):
         """
@@ -348,7 +347,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                     if event.type() == PyQt5.QtCore.QEvent.MouseButtonRelease:
                         if obj.rect().contains(event.pos()):
                             self.clicked.emit()
-                            # The developer can opt for .emit(obj) to get the object within the slot.
                             return True
                 return False
 

@@ -373,6 +373,35 @@ class DataPoint(object):
                     self.addBuildP((alt, az))
         return True
 
+    @staticmethod
+    def genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
+        """
+        genGridGenerator generates the point values out of the given ranges of altitude
+        and azimuth
+
+        :param eastAlt:
+        :param westAlt:
+        :param minAz:
+        :param stepAz:
+        :param maxAz:
+        :return:
+        """
+
+        for i, alt in enumerate(eastAlt):
+            if i % 2:
+                for az in range(minAz, 180, stepAz):
+                    yield(alt, az)
+            else:
+                for az in range(180 - minAz, 0, -stepAz):
+                    yield(alt, az)
+        for i, alt in enumerate(westAlt):
+            if i % 2:
+                for az in range(180 + minAz, 360, stepAz):
+                    yield(alt, az)
+            else:
+                for az in range(maxAz, 180, -stepAz):
+                    yield(alt, az)
+
     def genGrid(self, minAlt=5, maxAlt=85, numbRows=5, numbCols=6):
         """
         genGrid generates a grid of points and transforms ha, dec to alt az. with given
@@ -419,20 +448,8 @@ class DataPoint(object):
         maxAz = 360 - minAz
 
         self.clearBuildP()
-        for i, alt in enumerate(eastAlt):
-            if i % 2:
-                for az in range(minAz, 180, stepAz):
-                    self.addBuildP((alt, az))
-            else:
-                for az in range(180 - minAz, 0, -stepAz):
-                    self.addBuildP((alt, az))
-        for i, alt in enumerate(westAlt):
-            if i % 2:
-                for az in range(180 + minAz, 360, stepAz):
-                    self.addBuildP((alt, az))
-            else:
-                for az in range(maxAz, 180, -stepAz):
-                    self.addBuildP((alt, az))
+        for point in self.genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
+            self.addBuildP(point)
         return True
 
     def genInitial(self, alt=30, azStart=10, numb=3):

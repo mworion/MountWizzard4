@@ -34,6 +34,7 @@ import numpy as np
 import matplotlib
 # local import
 from mw4 import mainApp
+from mw4.gui.media import resources
 matplotlib.use('Qt5Agg')
 
 

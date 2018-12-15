@@ -369,7 +369,7 @@ class HemisphereWindow(widget.MWidget):
                                           zorder=20,
                                           )
             for i, xy in enumerate(zip(x, y)):
-                self.pointsBuildAnnotate = axes.annotate('{0:2d}'.format(i+1),
+                self.pointsBuildAnnotate = axes.annotate('{0:2d}'.format(i + 1),
                                                          xy=xy,
                                                          xytext=(2, -10),
                                                          textcoords='offset points',

@@ -85,6 +85,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.settDone.connect(self.updateMeridian)
         self.app.mount.signals.settDone.connect(self.updateCelestialPath)
         self.app.signalUpdateLocation.connect(self.clearHemisphere)
+        self.ui.clearBuildP.clicked.connect(self.clearBuildP)
 
         # initializing the plot
         self.initConfig()
@@ -202,6 +203,10 @@ class HemisphereWindow(widget.MWidget):
                         fontweight='bold',
                         fontsize=12)
         return True
+
+    def clearBuildP(self):
+        self.app.data.clearBuildP()
+        self.drawHemisphere()
 
     def drawCanvas(self):
         """

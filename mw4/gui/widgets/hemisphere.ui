@@ -97,7 +97,7 @@
     <string notr="true"/>
    </property>
   </widget>
-  <widget class="QPushButton" name="btn_deletePoints">
+  <widget class="QPushButton" name="clearBuildP">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -751,7 +751,7 @@
     </property>
    </widget>
   </widget>
-  <zorder>btn_deletePoints</zorder>
+  <zorder>clearBuildP</zorder>
   <zorder>groupBox_2</zorder>
   <zorder>hemisphere</zorder>
   <zorder>groupBox</zorder>

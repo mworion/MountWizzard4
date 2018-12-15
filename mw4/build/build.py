@@ -42,8 +42,10 @@ class DataPoint(object):
                'genInitial',
                'loadBuildP',
                'saveBuildP',
+               'clearBuildP'
                'loadHorizonP',
                'saveHorizonP',
+               'clearHorizonP',
                'generateCelestialEquator',
                ]
     version = '0.1'
@@ -149,6 +151,13 @@ class DataPoint(object):
         self._buildP = value
 
     def addBuildP(self, value, position=None):
+        """
+
+        :param value:
+        :param position:
+        :return:
+        """
+
         if not isinstance(value, tuple):
             self.logger.error('malformed value: {0}'.format(value))
             return False
@@ -167,6 +176,12 @@ class DataPoint(object):
         return True
 
     def delBuildP(self, position):
+        """
+
+        :param position:
+        :return:
+        """
+
         if not isinstance(position, (int, float)):
             self.logger.error('malformed position: {0}'.format(position))
             return False
@@ -202,6 +217,13 @@ class DataPoint(object):
         self._horizonP = value
 
     def addHorizonP(self, value, position=None):
+        """
+
+        :param value:
+        :param position:
+        :return:
+        """
+
         if not isinstance(value, tuple):
             self.logger.error('malformed value: {0}'.format(value))
             return False
@@ -220,6 +242,12 @@ class DataPoint(object):
         return True
 
     def delHorizonP(self, position):
+        """
+
+        :param position:
+        :return:
+        """
+
         if not isinstance(position, (int, float)):
             self.logger.error('malformed position: {0}'.format(position))
             return False
@@ -234,6 +262,12 @@ class DataPoint(object):
         self._horizonP = [(0, 0), (0, 360)]
 
     def isAboveHorizon(self, point):
+        """
+
+        :param point:
+        :return:
+        """
+
         if point[1] > 360:
             point = (point[0], 360)
         if point[1] < 0:

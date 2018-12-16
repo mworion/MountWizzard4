@@ -307,10 +307,12 @@ class DataPoint(object):
                 # json makes list out of tuple, was to be reversed
                 value = [tuple(x) for x in value]
                 self._buildP = value
+            self._buildPFile = os.path.basename(fileName).split('.')[0]
         except Exception as e:
             self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
-        return True
+        else:
+            return True
 
     def saveBuildP(self, fileName=None):
         """
@@ -357,7 +359,8 @@ class DataPoint(object):
         except Exception as e:
             self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
-        return True
+        else:
+            return True
 
     def saveHorizonP(self, fileName=None):
         """

@@ -19,6 +19,9 @@
 ###########################################################
 # standard libraries
 import pytest
+import os
+import json
+import binascii
 # external packages
 # local import
 
@@ -33,6 +36,13 @@ mwGlob = {'workDir': '.',
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global data
+    config = mwGlob['configDir']
+    testdir = os.listdir(config)
+    for item in testdir:
+        if item.endswith('.bpts'):
+            os.remove(os.path.join(config, item))
+        if item.endswith('.hpts'):
+            os.remove(os.path.join(config, item))
     data = build.DataPoint(mwGlob=mwGlob, lat=48)
     yield
     data = None
@@ -115,7 +125,7 @@ def test_genHaDecParams4():
 def test_genHaDecParams5():
     selection = 'test'
     val = True
-    for i, (a, b, c, d) in enumerate(data.genHaDecParams(selection=selection)):
+    for i, (_, _, _, _) in enumerate(data.genHaDecParams(selection=selection)):
         val = False
     assert val
 
@@ -124,18 +134,20 @@ def test_genGreaterCircle1():
     data.lat = 48
     selection = 'min'
     data.genGreaterCircle(selection)
+    i = 0
     for i, (alt, az) in enumerate(data.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
         assert az >= 0
-    assert 58 == i
+    assert i == 58
 
 
 def test_genGreaterCircle2():
     data.lat = 48
     selection = 'norm'
     data.genGreaterCircle(selection)
+    i = 0
     for i, (alt, az) in enumerate(data.buildP):
         assert alt <= 90
         assert az <= 360
@@ -148,6 +160,7 @@ def test_genGreaterCircle3():
     data.lat = 48
     selection = 'med'
     data.genGreaterCircle(selection)
+    i = 0
     for i, (alt, az) in enumerate(data.buildP):
         assert alt <= 90
         assert az <= 360
@@ -160,6 +173,7 @@ def test_genGreaterCircle4():
     data.lat = 48
     selection = 'max'
     data.genGreaterCircle(selection)
+    i = 0
     for i, (alt, az) in enumerate(data.buildP):
         assert alt <= 90
         assert az <= 360
@@ -428,33 +442,66 @@ def test_saveBuildP():
     assert suc
 
 
-def test_loadBuildP1():
-    data.buildPFile = 'test'
-    data.genGreaterCircle('min')
-    suc = data.saveBuildP()
-    assert suc
-    suc = data.loadBuildP()
-    assert suc
-    data.genGreaterCircle('min')
-    for i, (alt, az) in enumerate(data.buildP):
-        assert data.buildP[i][0] == alt
-        assert data.buildP[i][1] == az
-
-
-def test_loadBuildP2():
-    data.buildPFile = 'test'
-    data.genGreaterCircle('min')
-    suc = data.saveBuildP()
-    assert suc
-    data.buildPFile = 'test1'
+def test_loadBuildP10():
+    # no fileName given
+    data.buildPFile = ''
     suc = data.loadBuildP()
     assert not suc
 
 
-def test_loadBuildP3():
-    data.buildPFile = 'format_nok'
+def test_loadBuildP11():
+    # wrong fileName given
+    data.buildPFile = 'format_not_ok'
     suc = data.loadBuildP()
     assert not suc
+
+
+def test_loadBuildP12():
+    # path with not existent file given
+    fileName = mwGlob['configDir'] + '/test.bpts'
+    suc = data.loadBuildP(fileName=fileName)
+    assert not suc
+
+
+def test_loadBuildP13():
+    # load file without path
+    fileName = mwGlob['configDir'] + '/test.bpts'
+    data.buildPFile = 'test'
+    values = [(1, 1), (2, 2)]
+    with open(fileName, 'w') as outfile:
+        json.dump(values,
+                  outfile,
+                  indent=4)
+    suc = data.loadBuildP()
+    assert suc
+    assert data.buildPFile == 'test'
+    assert data.buildP == values
+
+
+def test_loadBuildP14():
+    # load file with path
+    data.buildPFile = ''
+    fileName = mwGlob['configDir'] + '/test.bpts'
+    values = [(1, 1), (2, 2)]
+    with open(fileName, 'w') as outfile:
+        json.dump(values,
+                  outfile,
+                  indent=4)
+    suc = data.loadBuildP(fileName=fileName)
+    assert suc
+    assert data.buildPFile == 'test'
+    assert data.buildP == values
+
+
+def test_loadBuildP15():
+    # load with wrong content
+    data.buildPFile = ''
+    fileName = mwGlob['configDir'] + '/test.bpts'
+    with open(fileName, 'wb') as outfile:
+        outfile.write(binascii.unhexlify('9f'))
+    suc = data.loadBuildP(fileName=fileName)
+    assert not suc
+    assert data.buildP == []
 
 
 def test_saveHorizonP1():

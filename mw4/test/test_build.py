@@ -28,7 +28,7 @@ import binascii
 from mw4.build import build
 
 mwGlob = {'workDir': '.',
-          'configDir': './mw4/test/config/',
+          'configDir': './mw4/test/config',
           'build': 'test',
           }
 
@@ -442,28 +442,28 @@ def test_saveBuildP():
     assert suc
 
 
-def test_loadBuildP10():
+def test_loadBuildP_10():
     # no fileName given
     data.buildPFile = ''
     suc = data.loadBuildP()
     assert not suc
 
 
-def test_loadBuildP11():
+def test_loadBuildP_11():
     # wrong fileName given
     data.buildPFile = 'format_not_ok'
     suc = data.loadBuildP()
     assert not suc
 
 
-def test_loadBuildP12():
+def test_loadBuildP_12():
     # path with not existent file given
     fileName = mwGlob['configDir'] + '/test.bpts'
     suc = data.loadBuildP(fileName=fileName)
     assert not suc
 
 
-def test_loadBuildP13():
+def test_loadBuildP_13():
     # load file without path
     fileName = mwGlob['configDir'] + '/test.bpts'
     data.buildPFile = 'test'
@@ -478,7 +478,7 @@ def test_loadBuildP13():
     assert data.buildP == values
 
 
-def test_loadBuildP14():
+def test_loadBuildP_14():
     # load file with path
     data.buildPFile = ''
     fileName = mwGlob['configDir'] + '/test.bpts'
@@ -493,12 +493,23 @@ def test_loadBuildP14():
     assert data.buildP == values
 
 
-def test_loadBuildP15():
+def test_loadBuildP_15():
     # load with wrong content
     data.buildPFile = ''
     fileName = mwGlob['configDir'] + '/test.bpts'
     with open(fileName, 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
+    suc = data.loadBuildP(fileName=fileName)
+    assert not suc
+    assert data.buildP == []
+
+
+def test_loadBuildP_16():
+    # load with wrong content 2
+    data.buildPFile = ''
+    fileName = mwGlob['configDir'] + '/test.bpts'
+    with open(fileName, 'w') as outfile:
+        outfile.writelines('[test, ]],[]}')
     suc = data.loadBuildP(fileName=fileName)
     assert not suc
     assert data.buildP == []

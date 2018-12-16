@@ -522,26 +522,77 @@ def test_saveHorizonP1():
     assert suc
 
 
-def test_loadHorizonP2():
+def test_loadHorizonP_10():
+    # no fileName given
+    data.horizonPFile = ''
+    suc = data.loadHorizonP()
+    assert not suc
+
+
+def test_loadHorizonP_11():
+    # wrong fileName given
+    data.horizonPFile = 'format_not_ok'
+    suc = data.loadHorizonP()
+    assert not suc
+
+
+def test_loadHorizonP_12():
+    # path with not existent file given
+    fileName = mwGlob['configDir'] + '/test.hpts'
+    suc = data.loadHorizonP(fileName=fileName)
+    assert not suc
+
+
+def test_loadHorizonP_13():
+    # load file without path
+    fileName = mwGlob['configDir'] + '/test.hpts'
     data.horizonPFile = 'test'
-    data.genGreaterCircle('min')
-    suc = data.saveHorizonP()
+    values = [(1, 1), (2, 2)]
+    with open(fileName, 'w') as outfile:
+        json.dump(values,
+                  outfile,
+                  indent=4)
+    suc = data.loadHorizonP()
     assert suc
-    data.horizonPFile = 'test1'
-    suc = data.loadHorizonP()
+    assert data.horizonPFile == 'test'
+    assert data.horizonP == [(0, 0)] + values + [(0, 360)]
+
+
+def test_loadHorizonP_14():
+    # load file with path
+    data.horizonPFile = ''
+    fileName = mwGlob['configDir'] + '/test.hpts'
+    values = [(1, 1), (2, 2)]
+    with open(fileName, 'w') as outfile:
+        json.dump(values,
+                  outfile,
+                  indent=4)
+    suc = data.loadHorizonP(fileName=fileName)
+    assert suc
+    assert data.horizonPFile == 'test'
+    assert data.horizonP == [(0, 0)] + values + [(0, 360)]
+
+
+def test_loadHorizonP_15():
+    # load with wrong content
+    data.horizonPFile = ''
+    fileName = mwGlob['configDir'] + '/test.hpts'
+    with open(fileName, 'wb') as outfile:
+        outfile.write(binascii.unhexlify('9f'))
+    suc = data.loadHorizonP(fileName=fileName)
     assert not suc
+    assert data.horizonP == [(0, 0), (0, 360)]
 
 
-def test_loadHorizonP3():
-    data.horizonPFile = 'format_nok'
-    suc = data.loadHorizonP()
+def test_loadHorizonP_16():
+    # load with wrong content 2
+    data.horizonPFile = ''
+    fileName = mwGlob['configDir'] + '/test.hpts'
+    with open(fileName, 'w') as outfile:
+        outfile.writelines('[test, ]],[]}')
+    suc = data.loadHorizonP(fileName=fileName)
     assert not suc
-
-
-def test_loadHorizonP4():
-    data.horizonPFile = None
-    suc = data.loadHorizonP()
-    assert not suc
+    assert data.horizonP == [(0, 0), (0, 360)]
 
 
 def test_genGrid1():

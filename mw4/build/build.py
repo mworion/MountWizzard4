@@ -355,7 +355,8 @@ class DataPoint(object):
                 value = json.load(handle)
                 # json makes list out of tuple, was to be reversed
                 value = [tuple(x) for x in value]
-                self._buildP = value
+                self._horizonP = value
+            self._horizonPFile = os.path.basename(fileName).split('.')[0]
         except Exception as e:
             self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False

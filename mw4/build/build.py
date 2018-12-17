@@ -455,6 +455,7 @@ class DataPoint(object):
 
                 if 5 <= alt <= 85 and 2 < az < 358:
                     self.addBuildP((alt, az))
+        self.deleteBelowHorizon()
         return True
 
     @staticmethod
@@ -534,6 +535,7 @@ class DataPoint(object):
         self.clearBuildP()
         for point in self.genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
             self.addBuildP(point)
+        self.deleteBelowHorizon()
         return True
 
     def genInitial(self, alt=30, azStart=10, numb=3):
@@ -558,6 +560,7 @@ class DataPoint(object):
         self.clearBuildP()
         for az in range(azStart, 720, stepAz):
             self.addBuildP((alt, az % 360))
+        self.deleteBelowHorizon()
         return True
 
     def generateCelestialEquator(self):

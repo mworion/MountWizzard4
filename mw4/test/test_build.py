@@ -323,19 +323,19 @@ def test_delBuildP4():
 
 
 def test_horizonP1():
-    data.horizonP = ()
+    data.clearHorizonP()
     data.genGreaterCircle('max')
     data.horizonP = data.buildP
     assert len(data.horizonP) == 155
     data.genGreaterCircle('med')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 112
+    assert len(data.horizonP) == 56
     data.genGreaterCircle('norm')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 92
+    assert len(data.horizonP) == 37
     data.genGreaterCircle('min')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 61
+    assert len(data.horizonP) == 14
 
 
 def test_horizonP2():

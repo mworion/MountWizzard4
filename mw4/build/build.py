@@ -220,7 +220,7 @@ class DataPoint(object):
         self._horizonP = value
 
     @staticmethod
-    def testFormat(value):
+    def checkFormat(value):
         if not isinstance(value, list):
             return False
         if not all([isinstance(x, list) for x in value]):
@@ -327,7 +327,7 @@ class DataPoint(object):
             self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
 
-        suc = self.testFormat(value)
+        suc = self.checkFormat(value)
         if not suc:
             self.clearBuildP()
             return False
@@ -380,7 +380,7 @@ class DataPoint(object):
             self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
 
-        suc = self.testFormat(value)
+        suc = self.checkFormat(value)
         if not suc:
             self.clearHorizonP()
             return False

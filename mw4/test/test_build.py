@@ -182,6 +182,24 @@ def test_genGreaterCircle4():
     assert 152 == i
 
 
+def test_checkFormat_1():
+    a = [[1, 1], [1, 1]]
+    suc = data.checkFormat(a)
+    assert suc
+
+
+def test_checkFormat_2():
+    a = [[1, 1], [1]]
+    suc = data.checkFormat(a)
+    assert not suc
+
+
+def test_checkFormat_3():
+    a = [[1, 1], (1, 1)]
+    suc = data.checkFormat(a)
+    assert not suc
+
+
 def test_buildP1():
     data.buildP = ()
     data.genGreaterCircle('max')

@@ -219,6 +219,16 @@ class DataPoint(object):
             return
         self._horizonP = value
 
+    @staticmethod
+    def testFormat(value):
+        if not isinstance(value, list):
+            return False
+        if not all([isinstance(x, list) for x in value]):
+            return False
+        if not all([len(x) == 2 for x in value]):
+            return False
+        return True
+
     def addHorizonP(self, value, position=None):
         """
         addHorizonP extends the list of build points. the new point could be added at the
@@ -313,15 +323,19 @@ class DataPoint(object):
         try:
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
-                # json makes list out of tuple, was to be reversed
-                value = [tuple(x) for x in value]
-                self._buildP = value
-            self._buildPFile = os.path.basename(fileName).split('.')[0]
         except Exception as e:
             self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
-        else:
-            return True
+
+        suc = self.testFormat(value)
+        if not suc:
+            self.clearBuildP()
+            return False
+        # json makes list out of tuple, was to be reversed
+        value = [tuple(x) for x in value]
+        self._buildP = value
+        self._buildPFile = os.path.basename(fileName).split('.')[0]
+        return True
 
     def saveBuildP(self, fileName=None):
         """
@@ -362,15 +376,20 @@ class DataPoint(object):
         try:
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
-                # json makes list out of tuple, was to be reversed
-                value = [tuple(x) for x in value]
-                self._horizonP = value
-            self._horizonPFile = os.path.basename(fileName).split('.')[0]
         except Exception as e:
             self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
-        else:
-            return True
+
+        suc = self.testFormat(value)
+        if not suc:
+            self.clearHorizonP()
+            return False
+        # json makes list out of tuple, was to be reversed
+        value = [tuple(x) for x in value]
+        self._horizonP = value
+        self._horizonPFile = os.path.basename(fileName).split('.')[0]
+
+        return True
 
     def saveHorizonP(self, fileName=None):
         """

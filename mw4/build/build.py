@@ -152,6 +152,8 @@ class DataPoint(object):
 
     def addBuildP(self, value, position=None):
         """
+        addBuildP extends the list of build points. the new point could be added at the end
+        of the list (default) or in any location in the list.
 
         :param value:
         :param position:
@@ -177,6 +179,7 @@ class DataPoint(object):
 
     def delBuildP(self, position):
         """
+        delBuildP deletes one point from the build points list at the given index.
 
         :param position:
         :return:
@@ -218,6 +221,8 @@ class DataPoint(object):
 
     def addHorizonP(self, value, position=None):
         """
+        addHorizonP extends the list of build points. the new point could be added at the
+        end of the list (default) or in any location in the list.
 
         :param value:
         :param position:
@@ -243,6 +248,7 @@ class DataPoint(object):
 
     def delHorizonP(self, position):
         """
+        delHorizonP deletes one point from the build points list at the given index.
 
         :param position:
         :return:
@@ -263,6 +269,9 @@ class DataPoint(object):
 
     def isAboveHorizon(self, point):
         """
+        isAboveHorizon calculates for a given point the relationship to the actual horizon
+        and determines if this point is above the horizon line. for that there will be a
+        linear interpolation for the horizon line points.
 
         :param point:
         :return:

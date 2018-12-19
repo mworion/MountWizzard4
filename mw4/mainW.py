@@ -47,7 +47,7 @@ class MainWindow(widget.MWidget):
     logger = logging.getLogger(__name__)
 
     CYCLE_GUI = 1000
-    CYCLE_TASK = 10000
+    CYCLE_UPDATE_TASK = 10000
 
     def __init__(self, app):
         super().__init__()
@@ -147,7 +147,7 @@ class MainWindow(widget.MWidget):
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.updateTask)
-        self.timerTask.start(self.CYCLE_TASK)
+        self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
     def initConfig(self):
         if 'mainW' not in self.app.config:
@@ -366,7 +366,8 @@ class MainWindow(widget.MWidget):
     def updateRefractionParameters(self):
         """
         updateRefractionParameters takes the actual conditions for update into account and
-        does the update of the refraction parameters.
+        does the update of the refraction parameters. this could be done during when mount
+        is not in tracking state or continuously
 
         :return: success if update happened
         """
@@ -375,7 +376,7 @@ class MainWindow(widget.MWidget):
             return False
         if self.ui.checkRefracNone.isChecked():
             return False
-        if self.ui.checkRefracNone.isChecked():
+        if self.ui.checkRefracNoTrack.isChecked():
             if self.app.mount.obsSite.status != '0':
                 return False
         temp, press = self.app.environment.getFilteredRefracParams()

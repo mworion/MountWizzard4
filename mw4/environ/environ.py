@@ -173,9 +173,6 @@ class Environment(PyQt5.QtWidgets.QWidget):
         :return:
         """
 
-        if not self.client.isServerConnected():
-            return False
-
         for wType in self.wDevice:
             if deviceName != self.wDevice[wType]['name']:
                 continue
@@ -191,15 +188,13 @@ class Environment(PyQt5.QtWidgets.QWidget):
         :return:
         """
 
-        if not self.client.isServerConnected():
-            return False
-
         for wType in self.wDevice:
             if deviceName != self.wDevice[wType]['name']:
                 continue
             self.wDevice[wType]['device'] = None
             self.wDevice[wType]['data'] = {}
         return True
+    print('remove device')
 
     def startCommunication(self):
         """

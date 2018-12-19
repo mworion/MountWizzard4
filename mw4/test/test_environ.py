@@ -31,11 +31,9 @@ host_ip = 'astro-mount.fritz.box'
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    print("MODULE SETUP!!!")
     global app
     app = environ.Environment(host_ip)
     yield
-    print("MODULE TEARDOWN!!!")
     app = None
 
 
@@ -55,14 +53,6 @@ def test_sqmName():
     name = 'MBox'
     app.sqmName = name
     assert name == app.sqmName
-
-
-def test_newDevice1():
-    with mock.patch.object(app.client,
-                           'isServerConnected',
-                           return_value=False):
-        suc = app.newDevice('test')
-        assert not suc
 
 
 def test_newDevice2():
@@ -89,14 +79,6 @@ def test_newDevice3():
             suc = app.newDevice('Test')
             assert suc
             assert None is not app.wDevice['local']['device']
-
-
-def test_removeDevice1():
-    with mock.patch.object(app.client,
-                           'isServerConnected',
-                           return_value=False):
-        suc = app.removeDevice('test')
-        assert not suc
 
 
 def test_removeDevice2():

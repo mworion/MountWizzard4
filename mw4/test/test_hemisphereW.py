@@ -25,6 +25,8 @@ import json
 import PyQt5.QtWidgets
 import PyQt5.QtTest
 import PyQt5.QtCore
+import skyfield.api as api
+import matplotlib.path
 # local import
 from mw4 import mainApp
 
@@ -104,9 +106,9 @@ def test_clearAxes2(qtbot):
     assert not suc
 
 
-def test_clearPoints(qtbot):
+def test_clearHemisphere(qtbot):
     app.data.buildP = [(0, 0), (1, 0)]
-    app.hemisphereW.clearPoints()
+    app.hemisphereW.clearHemisphere()
     assert app.data.buildP == []
 
 
@@ -189,6 +191,8 @@ def test_updateMeridian_4(qtbot):
 def test_updatePointerAltAz_1(qtbot):
     app.hemisphereW.drawHemisphere()
     app.hemisphereW.showStatus = True
+    app.mount.obsSite.Alt = api.Angle(degrees=5)
+    app.mount.obsSite.Az = api.Angle(degrees=5)
     suc = app.hemisphereW.updatePointerAltAz()
     assert suc
 
@@ -215,3 +219,12 @@ def test_updatePointerAltAz_4(qtbot):
     suc = app.hemisphereW.updatePointerAltAz()
     assert not suc
 
+
+def test_markerPoint():
+    val = app.hemisphereW.markerPoint()
+    assert isinstance(val, matplotlib.path.Path)
+
+
+def test_markerAltAz():
+    val = app.hemisphereW.markerAltAz()
+    assert isinstance(val, matplotlib.path.Path)

@@ -152,6 +152,8 @@ class DataPoint(object):
 
     def addBuildP(self, value, position=None):
         """
+        addBuildP extends the list of build points. the new point could be added at the end
+        of the list (default) or in any location in the list.
 
         :param value:
         :param position:
@@ -177,6 +179,7 @@ class DataPoint(object):
 
     def delBuildP(self, position):
         """
+        delBuildP deletes one point from the build points list at the given index.
 
         :param position:
         :return:
@@ -216,8 +219,20 @@ class DataPoint(object):
             return
         self._horizonP = value
 
+    @staticmethod
+    def checkFormat(value):
+        if not isinstance(value, list):
+            return False
+        if not all([isinstance(x, list) for x in value]):
+            return False
+        if not all([len(x) == 2 for x in value]):
+            return False
+        return True
+
     def addHorizonP(self, value, position=None):
         """
+        addHorizonP extends the list of build points. the new point could be added at the
+        end of the list (default) or in any location in the list.
 
         :param value:
         :param position:
@@ -243,6 +258,7 @@ class DataPoint(object):
 
     def delHorizonP(self, position):
         """
+        delHorizonP deletes one point from the build points list at the given index.
 
         :param position:
         :return:
@@ -263,6 +279,9 @@ class DataPoint(object):
 
     def isAboveHorizon(self, point):
         """
+        isAboveHorizon calculates for a given point the relationship to the actual horizon
+        and determines if this point is above the horizon line. for that there will be a
+        linear interpolation for the horizon line points.
 
         :param point:
         :return:
@@ -304,15 +323,19 @@ class DataPoint(object):
         try:
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
-                # json makes list out of tuple, was to be reversed
-                value = [tuple(x) for x in value]
-                self._buildP = value
-            self._buildPFile = os.path.basename(fileName).split('.')[0]
         except Exception as e:
             self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
-        else:
-            return True
+
+        suc = self.checkFormat(value)
+        if not suc:
+            self.clearBuildP()
+            return False
+        # json makes list out of tuple, was to be reversed
+        value = [tuple(x) for x in value]
+        self._buildP = value
+        self._buildPFile = os.path.basename(fileName).split('.')[0]
+        return True
 
     def saveBuildP(self, fileName=None):
         """
@@ -353,15 +376,20 @@ class DataPoint(object):
         try:
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
-                # json makes list out of tuple, was to be reversed
-                value = [tuple(x) for x in value]
-                self._horizonP = value
-            self._horizonPFile = os.path.basename(fileName).split('.')[0]
         except Exception as e:
             self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
-        else:
-            return True
+
+        suc = self.checkFormat(value)
+        if not suc:
+            self.clearHorizonP()
+            return False
+        # json makes list out of tuple, was to be reversed
+        value = [tuple(x) for x in value]
+        self._horizonP = value
+        self._horizonPFile = os.path.basename(fileName).split('.')[0]
+
+        return True
 
     def saveHorizonP(self, fileName=None):
         """
@@ -427,6 +455,7 @@ class DataPoint(object):
 
                 if 5 <= alt <= 85 and 2 < az < 358:
                     self.addBuildP((alt, az))
+        self.deleteBelowHorizon()
         return True
 
     @staticmethod
@@ -506,6 +535,7 @@ class DataPoint(object):
         self.clearBuildP()
         for point in self.genGridGenerator(eastAlt, westAlt, minAz, stepAz, maxAz):
             self.addBuildP(point)
+        self.deleteBelowHorizon()
         return True
 
     def genInitial(self, alt=30, azStart=10, numb=3):
@@ -530,6 +560,7 @@ class DataPoint(object):
         self.clearBuildP()
         for az in range(azStart, 720, stepAz):
             self.addBuildP((alt, az % 360))
+        self.deleteBelowHorizon()
         return True
 
     def generateCelestialEquator(self):

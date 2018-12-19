@@ -1321,6 +1321,33 @@ class MainWindow(widget.MWidget):
         self.app.message.emit('INDI device [{0}] found'.format(deviceName), 0)
 
     def removeEnvironDevice(self, deviceName):
+        """
+        removeEnvironDevice clears the gui data and calls deviceEnvironment to update
+        the status of the device itself.
+
+        :param deviceName:
+        :return: nothing
+        """
+
+        envDev = self.app.environment.wDevice
+        if deviceName == envDev['sqm']['name']:
+            self.ui.SQR.setText('-')
+        if deviceName == envDev['local']['name']:
+            self.ui.localTemp.setText('-')
+            self.ui.localPress.setText('-')
+            self.ui.localDewPoint.setText('-')
+            self.ui.localHumidity.setText('-')
+        if deviceName == envDev['global']['name']:
+            self.ui.globalTemp.setText('-')
+            self.ui.globalPress.setText('-')
+            self.ui.globalDewPoint.setText('-')
+            self.ui.globalHumidity.setText('-')
+            self.ui.cloudCover.setText('-')
+            self.ui.windSpeed.setText('-')
+            self.ui.rainVol.setText('-')
+            self.ui.snowVol.setText('-')
+
+        self.deviceEnvironDisconnected(deviceName)
         self.app.message.emit('INDI device [{0}] removed'.format(deviceName), 0)
 
     def indiEnvironConnected(self):

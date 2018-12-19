@@ -391,6 +391,21 @@ class DataPoint(object):
 
         return True
 
+    @staticmethod
+    def checkBoundaries(points):
+        """
+        checkBoundaries removes point 0,0 and 0, 360 if present.
+
+        :param points:
+        :return: points
+        """
+
+        if points[0] == (0, 0):
+            del points[0]
+        if points[len(points) - 1] == (0, 360):
+            del points[-1]
+        return points
+
     def saveHorizonP(self, fileName=None):
         """
         saveHorizonP saves the actual build points list in a file in json dump format
@@ -403,9 +418,9 @@ class DataPoint(object):
             if not self._horizonPFile:
                 return False
             fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
-
+        points = self.checkBoundaries(self.horizonP)
         with open(fileName, 'w') as handle:
-            json.dump(self.horizonP,
+            json.dump(points,
                       handle,
                       sort_keys=True,
                       indent=4)

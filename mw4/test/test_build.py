@@ -22,6 +22,7 @@ import pytest
 import os
 import json
 import binascii
+import unittest.mock as mock
 # external packages
 # local import
 
@@ -196,6 +197,12 @@ def test_checkFormat_2():
 
 def test_checkFormat_3():
     a = [[1, 1], (1, 1)]
+    suc = data.checkFormat(a)
+    assert not suc
+
+
+def test_checkFormat_4():
+    a = 'test'
     suc = data.checkFormat(a)
     assert not suc
 
@@ -453,11 +460,18 @@ def test_delHorizonP4():
     assert len(data.horizonP) == 155
 
 
-def test_saveBuildP():
+def test_saveBuildP_10():
     data.buildPFile = 'test'
     data.genGreaterCircle('min')
     suc = data.saveBuildP()
     assert suc
+
+
+def test_saveBuildP_11():
+    data.buildPFile = ''
+    data.genGreaterCircle('min')
+    suc = data.saveBuildP()
+    assert not suc
 
 
 def test_loadBuildP_10():
@@ -533,11 +547,67 @@ def test_loadBuildP_16():
     assert data.buildP == []
 
 
-def test_saveHorizonP1():
+def test_loadBuildP_17():
+    # load file without path
+    fileName = mwGlob['configDir'] + '/test.bpts'
+    data.buildPFile = 'test'
+    values = [(1, 1), (2, 2)]
+    with open(fileName, 'w') as outfile:
+        json.dump(values,
+                  outfile,
+                  indent=4)
+    with mock.patch.object(data,
+                           'checkFormat',
+                           return_value=False):
+        suc = data.loadBuildP()
+        assert not suc
+
+
+def test_checkBoundaries_1():
+    points = [(0, 0), (0, 1), (0, 2), (0, 360)]
+    pointsRet = [(0, 1), (0, 2)]
+    value = data.checkBoundaries(points)
+    assert pointsRet == value
+
+
+def test_checkBoundaries_2():
+    points = [(0, 1), (0, 2), (0, 360)]
+    pointsRet = [(0, 1), (0, 2)]
+    value = data.checkBoundaries(points)
+    assert pointsRet == value
+
+
+def test_checkBoundaries_3():
+    points = [(0, 0), (0, 1), (0, 2)]
+    pointsRet = [(0, 1), (0, 2)]
+    value = data.checkBoundaries(points)
+    assert pointsRet == value
+
+
+def test_saveHorizonP_10():
     data.horizonPFile = 'test'
-    data.genGreaterCircle('min')
+    data._horizonP = [(0, 1), (0, 2)]
     suc = data.saveHorizonP()
     assert suc
+
+
+def test_saveHorizonP_11():
+    data.horizonPFile = ''
+    data._horizonP = [(0, 1), (0, 2)]
+    suc = data.saveHorizonP()
+    assert not suc
+
+
+def test_saveHorizonP_12():
+    data.horizonPFile = 'test'
+    data._horizonP = [(0, 0), (0, 1), (0, 2), (0, 360)]
+    suc = data.saveHorizonP()
+    assert suc
+    fileName = mwGlob['configDir'] + '/' + data.horizonPFile + '.hpts'
+    with open(fileName, 'r') as infile:
+        value = json.load(infile)
+        assert value[0] != [0, 0]
+        assert value[-1] != [0, 360]
 
 
 def test_loadHorizonP_10():
@@ -611,6 +681,22 @@ def test_loadHorizonP_16():
     suc = data.loadHorizonP(fileName=fileName)
     assert not suc
     assert data.horizonP == [(0, 0), (0, 360)]
+
+
+def test_loadHorizonP_17():
+    # load file without path
+    fileName = mwGlob['configDir'] + '/test.hpts'
+    data.horizonPFile = 'test'
+    values = [(1, 1), (2, 2)]
+    with open(fileName, 'w') as outfile:
+        json.dump(values,
+                  outfile,
+                  indent=4)
+    with mock.patch.object(data,
+                           'checkFormat',
+                           return_value=False):
+        suc = data.loadHorizonP()
+        assert not suc
 
 
 def test_genGrid1():

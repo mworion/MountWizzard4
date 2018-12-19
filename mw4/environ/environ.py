@@ -115,8 +115,8 @@ class Environment(PyQt5.QtWidgets.QWidget):
                  ):
         super().__init__()
 
+        self.indiServerUp = False
         self.client = indiBase.Client(host=host)
-
         self.wDevice = {'local': {'name': localWeatherName,
                                   'data': {},
                                   'device': None,
@@ -137,8 +137,8 @@ class Environment(PyQt5.QtWidgets.QWidget):
         self.client.signals.newProperty.connect(self.connectDevice)
         self.client.signals.newNumber.connect(self.updateData)
         self.client.signals.newNumber.connect(self._setUpdateRate)
-        # self.client.signals.deviceConnected(self._deviceConnected)
-        # self.client.signals.deviceDisconnected(self._deviceDisconnected)
+        self.client.signals.serverConnected.connect(self.serverConnected)
+        self.client.signals.serverDisconnected.connect(self.serverDisconnected)
 
     @property
     def localWeatherName(self):
@@ -163,6 +163,14 @@ class Environment(PyQt5.QtWidgets.QWidget):
     @globalWeatherName.setter
     def globalWeatherName(self, value):
         self.wDevice['global']['name'] = value
+
+    def serverConnected(self):
+        self.indiServerUp = True
+
+    def serverDisconnected(self):
+        self.indiServerUp = False
+        for wType in self.wDevice:
+            self.removeDevice(self.wDevice[wType]['name'])
 
     def newDevice(self, deviceName):
         """

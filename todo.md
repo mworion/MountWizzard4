@@ -2,8 +2,6 @@ ToDo list:
 
 - auto reconnect indi server
 - tests hemisphere window
-- tests build
-- load de421.bsp in general
 - edit horizon
 - edit build points
 - align stars

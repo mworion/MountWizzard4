@@ -23,6 +23,7 @@ import os
 import json
 # external packages
 import PyQt5.QtCore
+import skyfield
 from mountcontrol import qtmount
 # local import
 from mw4 import mainW
@@ -62,13 +63,19 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.loadConfig()
 
         # get timing constant
-        pathToTs = self.mwGlob['configDir']
+        pathToData = self.mwGlob['configDir']
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
-                                   pathToTS=pathToTs,
-                                   expire=False,
+                                   pathToData=pathToData,
+                                   expire=True,
                                    verbose=False,
                                    )
+        # get all planets for calculation
+        load = skyfield.api.Loader(pathToData,
+                                   verbose=True,
+                                   expire=False,
+                                   )
+        self.planets = load('de421.bsp')
         self.relay = kmRelay.KMRelay(host='192.168.2.15',
                                      )
         self.environment = environ.Environment(host='localhost')

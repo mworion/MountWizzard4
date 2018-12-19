@@ -909,4 +909,4 @@ def test_deleteBelowHorizon4():
 
 def test_generateCelestialEquator():
     value = data.generateCelestialEquator()
-    assert len(value) == 556
+    assert len(value) == 560

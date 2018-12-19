@@ -304,7 +304,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if location is None:
             return False
         self.data.lat = location.latitude.degrees
-        if self.config['latitudeTemp'] == location.latitude.degrees:
+        if self.config.get('latitudeTemp') == location.latitude.degrees:
             return True
         self.config['latitudeTemp'] = location.latitude.degrees
         self.signalUpdateLocation.emit()

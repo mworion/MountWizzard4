@@ -169,8 +169,6 @@ class Environment(PyQt5.QtWidgets.QWidget):
 
     def serverDisconnected(self):
         self.indiServerUp = False
-        for wType in self.wDevice:
-            self.removeDevice(self.wDevice[wType]['name'])
 
     def newDevice(self, deviceName):
         """
@@ -201,7 +199,6 @@ class Environment(PyQt5.QtWidgets.QWidget):
                 continue
             self.wDevice[wType]['device'] = None
             self.wDevice[wType]['data'] = {}
-        print('remove device', deviceName)
         return True
 
     def startCommunication(self):

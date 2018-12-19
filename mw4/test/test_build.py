@@ -747,6 +747,14 @@ def test_genGrid6():
     assert not suc
 
 
+def test_genGrid7():
+    suc = data.genGrid(minAlt=10,
+                       maxAlt=80,
+                       numbRows=4,
+                       numbCols=3)
+    assert not suc
+
+
 def test_genGridData1():
     data.genGrid(minAlt=10,
                  maxAlt=40,
@@ -897,3 +905,8 @@ def test_deleteBelowHorizon4():
     data.buildP = [(-10, 10), (-5, 40), (-40, 60)]
     data.deleteBelowHorizon()
     assert len(data.buildP) == 0
+
+
+def test_generateCelestialEquator():
+    value = data.generateCelestialEquator()
+    assert len(value) == 556

@@ -589,7 +589,7 @@ class DataPoint(object):
         celestialEquator = list()
         off = -5
         for dec in range(-15, 90, 15):
-            for ha in range(120 + off, -120 + off, -2):
+            for ha in range(- 120, 120, 3):
                 az, alt = self.topoToAzAlt(ha / 10, dec, self.lat)
                 if alt > 0:
                     celestialEquator.append((az, alt))

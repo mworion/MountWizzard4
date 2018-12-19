@@ -85,7 +85,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.settDone.connect(self.updateMeridian)
         self.app.mount.signals.settDone.connect(self.updateCelestialPath)
         self.app.signalUpdateLocation.connect(self.clearHemisphere)
-        self.ui.clearBuildP.clicked.connect(self.clearBuildP)
+        self.ui.clearBuildP.clicked.connect(self.clearPoints)
 
         # initializing the plot
         self.initConfig()
@@ -204,7 +204,7 @@ class HemisphereWindow(widget.MWidget):
                         fontsize=12)
         return True
 
-    def clearBuildP(self):
+    def clearPoints(self):
         self.app.data.clearBuildP()
         self.drawHemisphere()
 
@@ -212,21 +212,35 @@ class HemisphereWindow(widget.MWidget):
         """
         drawCanvas retrieves the static content axes from widget and redraws the canvas
 
-        :return:
+        :return: success for test
         """
 
         axes = self.hemisphereMat.figure.axes[0]
         axes.figure.canvas.draw()
+        return True
 
     def drawCanvasMoving(self):
         """
-        drawCanvas retrieves the moving content axes from widget and redraws the canvas
+        drawCanvasMoving retrieves the moving content axes from widget and redraws the
+        canvas
 
-        :return:
+        :return: success for test
         """
 
         axesM = self.hemisphereMatM.figure.axes[0]
         axesM.figure.canvas.draw()
+        return True
+
+    def drawCanvasStar(self):
+        """
+        drawCanvasStar retrieves the moving content axes from widget and redraws the canvas
+
+        :return: success for test
+        """
+
+        axesS = self.hemisphereMatM.figure.axes[0]
+        axesS.figure.canvas.draw()
+        return True
 
     def updateCelestialPath(self):
         """
@@ -234,13 +248,16 @@ class HemisphereWindow(widget.MWidget):
         it takes the actual values and corrects the point in window if window is in
         show status.
 
-        :return: nothing
+        :return: success for testing
         """
 
         if not self.showStatus:
-            return
+            return False
+        if self.celestialPath is None:
+            return False
         self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
         self.drawCanvas()
+        return True
 
     def updateMeridian(self):
         """
@@ -248,15 +265,15 @@ class HemisphereWindow(widget.MWidget):
         takes the actual values and corrects the point in window if window is in
         show status.
 
-        :return: nothing
+        :return: success
         """
 
         if not self.showStatus:
-            return
+            return False
         slew = self.app.mount.sett.meridianLimitSlew
         track = self.app.mount.sett.meridianLimitTrack
         if slew is None or track is None:
-            return
+            return False
         self.meridianTrack.set_visible(self.ui.checkShowMeridian.isChecked())
         self.meridianSlew.set_visible(self.ui.checkShowMeridian.isChecked())
         self.meridianTrack.set_xy((180 - track, 0))
@@ -264,6 +281,7 @@ class HemisphereWindow(widget.MWidget):
         self.meridianTrack.set_width(2 * track)
         self.meridianSlew.set_width(2 * slew)
         self.drawCanvas()
+        return True
 
     def updatePointerAltAz(self):
         """
@@ -275,17 +293,18 @@ class HemisphereWindow(widget.MWidget):
         """
 
         if not self.showStatus:
-            return
+            return False
         obsSite = self.app.mount.obsSite
         if obsSite.Alt is None:
-            return
+            return False
         if obsSite.Az is None:
-            return
+            return False
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
         self.pointerAltAz.set_visible(True)
         self.drawCanvasMoving()
+        return True
 
     @staticmethod
     def markerPoint():

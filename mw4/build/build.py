@@ -42,7 +42,7 @@ class DataPoint(object):
                'genInitial',
                'loadBuildP',
                'saveBuildP',
-               'clearBuildP'
+               'clearPoints'
                'loadHorizonP',
                'saveHorizonP',
                'clearHorizonP',

@@ -44,7 +44,7 @@ class Ui_HemisphereDialog(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.clearBuildP.setFont(font)
-        self.clearBuildP.setObjectName("clearBuildP")
+        self.clearBuildP.setObjectName("clearPoints")
         self.groupBox_2 = QtWidgets.QGroupBox(HemisphereDialog)
         self.groupBox_2.setGeometry(QtCore.QRect(290, 10, 166, 101))
         self.groupBox_2.setObjectName("groupBox_2")

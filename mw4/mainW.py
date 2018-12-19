@@ -85,6 +85,7 @@ class MainWindow(widget.MWidget):
         es.serverConnected.connect(self.indiEnvironConnected)
         es.serverDisconnected.connect(self.indiEnvironDisconnected)
         es.newDevice.connect(self.newEnvironDevice)
+        es.removeDevice.connect(self.removeEnvironDevice)
         es.newNumber.connect(self.updateEnvironGUI)
         es.deviceConnected.connect(self.deviceEnvironConnected)
         es.deviceDisconnected.connect(self.deviceEnvironDisconnected)
@@ -1318,6 +1319,9 @@ class MainWindow(widget.MWidget):
 
     def newEnvironDevice(self, deviceName):
         self.app.message.emit('INDI device [{0}] found'.format(deviceName), 0)
+
+    def removeEnvironDevice(self, deviceName):
+        self.app.message.emit('INDI device [{0}] removed'.format(deviceName), 0)
 
     def indiEnvironConnected(self):
         self.app.message.emit('INDI server environment connected', 0)

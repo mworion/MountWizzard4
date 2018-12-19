@@ -201,8 +201,8 @@ class Environment(PyQt5.QtWidgets.QWidget):
                 continue
             self.wDevice[wType]['device'] = None
             self.wDevice[wType]['data'] = {}
+        print('remove device', deviceName)
         return True
-    print('remove device')
 
     def startCommunication(self):
         """

@@ -83,8 +83,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get the window widgets up
-        self.data = build.DataPoint(lat=self.config.get('latitudeTemp', 45))
-        self.data.loadHorizonP()
+        self.data = build.DataPoint(lat=self.config.get('latitudeTemp', 45),
+                                    mwGlob=self.mwGlob,
+                                    )
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
         self.messageW = messageW.MessageWindow(self)

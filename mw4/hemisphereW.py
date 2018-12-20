@@ -89,6 +89,8 @@ class HemisphereWindow(widget.MWidget):
 
         # initializing the plot
         self.initConfig()
+        self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
+        self.app.data.loadHorizonP()
 
     def initConfig(self):
         if 'hemisphereW' not in self.app.config:
@@ -370,6 +372,7 @@ class HemisphereWindow(widget.MWidget):
             # if self.ui.checkEditHorizonMask.isChecked():
             #    self.maskPlotMarker.set_marker('o')
             #    self.maskPlotMarker.set_color('#FF00FF')
+
         # drawing build points
         if self.app.data.buildP:
             y, x = zip(*self.app.data.buildP)

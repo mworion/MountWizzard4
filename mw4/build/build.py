@@ -32,6 +32,7 @@ class DataPoint(object):
     attributes. this includes horizon data, model points data and their persistence
 
         >>> fw = DataPoint(
+        >>>           mwGlob=mwglob
         >>>           lat=48
         >>>              )
     """
@@ -353,7 +354,6 @@ class DataPoint(object):
         with open(fileName, 'w') as handle:
             json.dump(self._buildP,
                       handle,
-                      sort_keys=True,
                       indent=4)
         return True
 
@@ -388,7 +388,6 @@ class DataPoint(object):
         value = [tuple(x) for x in value]
         self._horizonP = value
         self._horizonPFile = os.path.basename(fileName).split('.')[0]
-
         return True
 
     @staticmethod
@@ -422,7 +421,6 @@ class DataPoint(object):
         with open(fileName, 'w') as handle:
             json.dump(points,
                       handle,
-                      sort_keys=True,
                       indent=4)
         return True
 

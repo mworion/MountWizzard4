@@ -73,6 +73,7 @@ class MainWindow(widget.MWidget):
         # connect signals for refreshing the gui
         ms = self.app.mount.signals
         ms.pointDone.connect(self.updatePointGUI)
+        ms.pointDone.connect(self.updateStatusGUI)
         ms.settDone.connect(self.updateSettingGUI)
         ms.alignDone.connect(self.updateAlignGUI)
         ms.alignDone.connect(self.showModelPolar)
@@ -342,6 +343,7 @@ class MainWindow(widget.MWidget):
         self.updateAlignGUI()
         self.updateFwGui()
         self.updatePointGUI()
+        self.updateStatusGUI()
         self.updateSettingGUI()
         self.setNameList()
         self.showModelPolar()
@@ -456,6 +458,18 @@ class MainWindow(widget.MWidget):
             self.ui.timeSidereal.setText(obs.timeSidereal[:8])
         else:
             self.ui.timeSidereal.setText('-')
+
+        return True
+
+    def updateStatusGUI(self):
+        """
+        updateStatusGUI update the gui upon events triggered be the reception of new data
+        from the mount. the mount data is polled, so we use this signal as well for the
+        update process.
+
+        :return:    True if ok for testing
+        """
+        obs = self.app.mount.obsSite
 
         if obs.statusText() is not None:
             self.ui.statusText.setText(obs.statusText())

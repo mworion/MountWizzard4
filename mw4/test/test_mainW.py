@@ -291,12 +291,12 @@ def test_updatePointGui_sidereal():
     assert '-' == app.mainW.ui.timeSidereal.text()
 
 
-def test_updatePointGui_statusText():
+def test_updateStatusGui_statusText():
     app.mount.obsSite.status = 6
-    app.mainW.updatePointGUI()
+    app.mainW.updateStatusGUI()
     assert 'Slewing or going to stop' == app.mainW.ui.statusText.text()
     app.mount.obsSite.status = None
-    app.mainW.updatePointGUI()
+    app.mainW.updateStatusGUI()
     assert '-' == app.mainW.ui.statusText.text()
 
 #

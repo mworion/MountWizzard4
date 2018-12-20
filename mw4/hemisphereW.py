@@ -88,6 +88,10 @@ class HemisphereWindow(widget.MWidget):
         self.app.signalUpdateLocation.connect(self.clearHemisphere)
         self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
         self.app.mainW.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
+        self.ui.checkEditNone.clicked.connect(lambda: self.setOperationMode('normal'))
+        self.ui.checkEditHorizonMask.clicked.connect(lambda: self.setOperationMode('horizon'))
+        self.ui.checkEditModelPoints.clicked.connect(lambda: self.setOperationMode('model'))
+        self.ui.checkPolarAlignment.clicked.connect(lambda: self.setOperationMode('polar'))
 
         if 'mainW' in self.app.config:
             self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
@@ -379,34 +383,43 @@ class HemisphereWindow(widget.MWidget):
 
     def setOperationMode(self, mode):
         """
+        setOperationMode changes the operation mode of the hemisphere window. depending
+        on the choice, colors and styles will be changed.
 
         :param mode: operation mode as text
         :return: success
         """
 
-        if mode == 'normal':
-            # reset the settings
+        # reset the settings
+        if self.horizonMarker is not None:
             self.horizonMarker.set_marker('None')
             self.horizonMarker.set_color('#006000')
+        if self.pointsBuild is not None:
             self.pointsBuild.set_color('#00A000')
-            # self.starsAlignment.set_color('#C0C000')
-            # self.starsAlignment.set_markersize(6)
-            for i in range(0, len(self.starsAnnotate)):
-                self.starsAnnotate[i].set_color('#808080')
-            self.ui.hemisphere.stackUnder(self.ui.hemisphereMoving)
-        elif mode == 'edit_model':
-            self.pointsPlotBig.set_color('#FF00FF')
-            self.ui.hemisphereMoving.stackUnder(self.ui.hemisphere)
-        elif mode == 'edit_horizon':
-            self.maskPlotMarker.set_marker('o')
-            self.maskPlotMarker.set_color('#FF00FF')
-            self.ui.hemisphereMoving.stackUnder(self.ui.hemisphere)
-        elif mode == 'polar_align':
-            self.starsAlignment.set_color('#FFFF00')
-            self.starsAlignment.set_markersize(12)
-            for i in range(0, len(self.starsAnnotate)):
-                self.starsAnnotate[i].set_color('#F0F0F0')
-            self.ui.hemisphere.stackUnder(self.ui.hemisphereMoving)
+        # self.starsAlignment.set_color('#C0C000')
+        # self.starsAlignment.set_markersize(6)
+        # for i in range(0, len(self.starsAnnotate)):
+        #    self.starsAnnotate[i].set_color('#808080')
+        self.ui.hemisphere.stackUnder(self.ui.hemisphereM)
+
+        # now choose the right styles
+        if mode == 'normal':
+            pass
+        elif mode == 'model':
+            if self.pointsBuild is not None:
+                self.pointsBuild.set_color('#FF00FF')
+            self.ui.hemisphereM.stackUnder(self.ui.hemisphere)
+        elif mode == 'horizon':
+            if self.horizonMarker is not None:
+                self.horizonMarker.set_marker('o')
+                self.horizonMarker.set_color('#FF00FF')
+            self.ui.hemisphereM.stackUnder(self.ui.hemisphere)
+        elif mode == 'polar':
+            # self.starsAlignment.set_color('#FFFF00')
+            # self.starsAlignment.set_markersize(12)
+            # for i in range(0, len(self.starsAnnotate)):
+            #    self.starsAnnotate[i].set_color('#F0F0F0')
+            self.ui.hemisphere.stackUnder(self.ui.hemisphereM)
         self.drawCanvas()
         return True
 

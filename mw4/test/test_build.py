@@ -336,13 +336,13 @@ def test_horizonP1():
     assert len(data.horizonP) == 155
     data.genGreaterCircle('med')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 56
+    assert len(data.horizonP) == 112
     data.genGreaterCircle('norm')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 37
+    assert len(data.horizonP) == 92
     data.genGreaterCircle('min')
     data.horizonP = data.buildP
-    assert len(data.horizonP) == 14
+    assert len(data.horizonP) == 61
 
 
 def test_horizonP2():

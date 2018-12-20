@@ -137,6 +137,7 @@ class MainWindow(widget.MWidget):
         self.ui.genBuildNorm.clicked.connect(self.genBuildNorm)
         self.ui.genBuildMin.clicked.connect(self.genBuildMin)
         self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
+        self.ui.checkAutoDeletePoints.clicked.connect(self.autoDeletePoints)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -1601,3 +1602,9 @@ class MainWindow(widget.MWidget):
 
     def genBuildFile(self):
         pass
+
+    def autoDeletePoints(self):
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
+        self.app.hemisphereW.drawHemisphere()
+

@@ -1553,38 +1553,48 @@ class MainWindow(widget.MWidget):
                                     maxAlt=maxAlt,
                                     numbRows=row,
                                     numbCols=col)
-        if suc:
+        if not suc:
+            return False
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
             self.app.hemisphereW.drawHemisphere()
-        else:
-            pass
+        return True
 
     def genBuildMax(self):
         suc = self.app.data.genGreaterCircle(selection='max')
-        if suc:
+        if not suc:
+            return False
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
             self.app.hemisphereW.drawHemisphere()
-        else:
-            pass
+        return True
 
     def genBuildMed(self):
         suc = self.app.data.genGreaterCircle(selection='med')
-        if suc:
+        if not suc:
+            return False
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
             self.app.hemisphereW.drawHemisphere()
-        else:
-            pass
+        return True
 
     def genBuildNorm(self):
         suc = self.app.data.genGreaterCircle(selection='norm')
-        if suc:
+        if not suc:
+            return False
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
             self.app.hemisphereW.drawHemisphere()
-        else:
-            pass
+        return True
 
     def genBuildMin(self):
         suc = self.app.data.genGreaterCircle(selection='min')
-        if suc:
+        if not suc:
+            return False
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
             self.app.hemisphereW.drawHemisphere()
-        else:
-            pass
+        return True
 
     def genBuildDSO(self):
         pass

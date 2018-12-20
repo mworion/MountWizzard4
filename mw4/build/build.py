@@ -468,7 +468,6 @@ class DataPoint(object):
 
                 if 5 <= alt <= 85 and 2 < az < 358:
                     self.addBuildP((alt, az))
-        self.deleteBelowHorizon()
         return True
 
     @staticmethod

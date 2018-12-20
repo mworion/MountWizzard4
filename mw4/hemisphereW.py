@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import logging
+import bisect
 # external packages
 import numpy as np
 import matplotlib.path as mpath
@@ -423,7 +424,54 @@ class HemisphereWindow(widget.MWidget):
         self.drawCanvas()
         return True
 
+    @staticmethod
+    def getIndexUnderPoint(event, xy, epsilon):
+        """
+
+        :param event: data of the mouse clicked event
+        :param xy: coordinates
+        :param epsilon:
+        :return: index or none
+        """
+
+        if len(xy) == 0:
+            return None
+        xt = np.asarray([i[0] for i in xy])
+        yt = np.asarray([i[1] for i in xy])
+        d = np.sqrt((xt - event.xdata)**2 / 16 + (yt - event.ydata)**2)
+        ind = d.argsort()[:1][0]
+        # position to far away
+        if d[ind] >= epsilon:
+            return None
+        return ind
+
+    @staticmethod
+    def getTwoIndUnderPointX(event, xy):
+        """
+
+        :param event: data of the mouse clicked event
+        :param xy: coordinates
+        :return: index or none
+        """
+
+        if len(xy) < 2:
+            return None
+        xt = [i[0] for i in xy]
+        return bisect.bisect_left(xt, event.xdata) - 1
+
     def drawHemisphere(self):
+        """
+        drawHemisphere is the basic renderer for all items and widgets in the hemisphere
+        window. it takes care of drawing the grid, enables three layers of transparent
+        widgets for static content, moving content and star maps. this is mainly done to
+        get a reasonable performance when redrawing the canvas. in addition it initializes
+        the objects for points markers, patches, lines etc. for making the window nice
+        and user friendly.
+        the user interaction on the hemisphere windows is done by the event handler of
+        matplotlib itself implementing an on Mouse handler, which takes care of functions.
+
+        :return: nothing
+        """
         # shortening the references
         axes = self.hemisphereMat.figure.axes[0]
         axesM = self.hemisphereMatM.figure.axes[0]

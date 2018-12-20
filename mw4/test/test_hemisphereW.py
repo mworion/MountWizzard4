@@ -251,3 +251,9 @@ def test_markerPoint():
 def test_markerAltAz():
     val = app.hemisphereW.markerAltAz()
     assert isinstance(val, matplotlib.path.Path)
+
+
+def test_drawHemisphere_1():
+    app.mainW.genBuildMin()
+    app.hemisphereW.drawHemisphere()
+

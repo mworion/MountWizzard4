@@ -1,7 +1,6 @@
 ToDo list:
 
 - auto reconnect indi server
-- tests hemisphere window
 - edit horizon
 - edit build points
 - align stars

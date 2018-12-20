@@ -243,6 +243,30 @@ def test_updatePointerAltAz_4(qtbot):
     assert not suc
 
 
+def test_updateDome_1(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.obsSite.Az = api.Angle(degrees=5)
+    suc = app.hemisphereW.updateDome()
+    assert suc
+
+
+def test_updateDome_2(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = False
+    app.mount.obsSite.Az = api.Angle(degrees=5)
+    suc = app.hemisphereW.updateDome()
+    assert not suc
+
+
+def test_updateDome_3(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.obsSite.Az = None
+    suc = app.hemisphereW.updateDome()
+    assert not suc
+
+
 def test_markerPoint():
     val = app.hemisphereW.markerPoint()
     assert isinstance(val, matplotlib.path.Path)
@@ -256,4 +280,3 @@ def test_markerAltAz():
 def test_drawHemisphere_1():
     app.mainW.genBuildMin()
     app.hemisphereW.drawHemisphere()
-

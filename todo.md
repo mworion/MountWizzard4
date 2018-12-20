@@ -3,6 +3,8 @@ ToDo list:
 - auto reconnect indi server
 - edit horizon points
 - edit build points
+- add dome support from indi
+- link dome to hemisphere
 - align stars
 - select and slew align stars
 - gui wording initial -> align Mount

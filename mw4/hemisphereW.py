@@ -82,14 +82,15 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowMeridian.clicked.connect(self.updateMeridian)
         self.ui.checkShowCelestial.clicked.connect(self.updateCelestialPath)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
+        self.app.mount.signals.pointDone.connect(self.updateDome)
         self.app.mount.signals.settDone.connect(self.updateMeridian)
         self.app.mount.signals.settDone.connect(self.updateCelestialPath)
         self.app.signalUpdateLocation.connect(self.clearHemisphere)
         self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
 
-        # initializing the plot
-        self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
-        self.app.data.loadHorizonP()
+        if 'mainW' in self.app.config:
+            self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
+            self.app.data.loadHorizonP()
         self.initConfig()
 
     def initConfig(self):
@@ -288,7 +289,7 @@ class HemisphereWindow(widget.MWidget):
         given. it takes the actual values and corrects the point in window if window is in
         show status.
 
-        :return: nothing
+        :return: success
         """
 
         if not self.showStatus:
@@ -302,6 +303,29 @@ class HemisphereWindow(widget.MWidget):
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
         self.pointerAltAz.set_visible(True)
+        self.drawCanvasMoving()
+        return True
+
+    def updateDome(self):
+        """
+        updateDome is called whenever an update of coordinates from dome are given.
+        it takes the actual values and corrects the point in window if window is in
+        show status.
+
+        :return: success
+        """
+
+        if not self.showStatus:
+            return False
+
+        # using mount for test
+        obsSite = self.app.mount.obsSite
+        if obsSite.Az is None:
+            return False
+        az = obsSite.Az.degrees
+
+        self.pointerDome.set_xy((az - 15, 0))
+        self.pointerDome.set_visible(True)
         self.drawCanvasMoving()
         return True
 
@@ -369,9 +393,9 @@ class HemisphereWindow(widget.MWidget):
 
             self.horizonFill, = axes.fill(x, y, color='#002000', zorder=-20)
             self.horizonMarker, = axes.plot(x, y, color='#006000', zorder=-20, lw=3)
-            # if self.ui.checkEditHorizonMask.isChecked():
-            #    self.maskPlotMarker.set_marker('o')
-            #    self.maskPlotMarker.set_color('#FF00FF')
+            if self.ui.checkEditHorizonMask.isChecked():
+                self.horizonMarker.set_marker('o')
+                self.horizonMarker.set_color('#FF00FF')
 
         # drawing build points
         if self.app.data.buildP:
@@ -392,6 +416,8 @@ class HemisphereWindow(widget.MWidget):
                                           color='#00A000',
                                           zorder=20,
                                           )
+            if self.ui.checkEditModelPoints.isChecked():
+                self.pointsBuild.set_color('#FF00FF')
             for i, xy in enumerate(zip(x, y)):
                 self.pointsBuildAnnotate = axes.annotate('{0:2d}'.format(i + 1),
                                                          xy=xy,
@@ -451,6 +477,16 @@ class HemisphereWindow(widget.MWidget):
                                         clip_on=False,
                                         visible=False,
                                         )
+        # adding pointer of dome if dome is present
+        self.pointerDome = mpatches.Rectangle((165, 0),
+                                              30,
+                                              90,
+                                              zorder=-30,
+                                              color='#40404080',
+                                              lw=3,
+                                              fill=True,
+                                              visible=False)
+        axesM.add_patch(self.pointerDome)
 
         # and the the star part (alignment stars)
 

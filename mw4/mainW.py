@@ -1558,7 +1558,7 @@ class MainWindow(widget.MWidget):
             return False
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
-            self.app.hemisphereW.drawHemisphere()
+        self.app.hemisphereW.drawHemisphere()
         return True
 
     def genBuildMax(self):
@@ -1567,7 +1567,7 @@ class MainWindow(widget.MWidget):
             return False
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
-            self.app.hemisphereW.drawHemisphere()
+        self.app.hemisphereW.drawHemisphere()
         return True
 
     def genBuildMed(self):
@@ -1576,7 +1576,7 @@ class MainWindow(widget.MWidget):
             return False
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
-            self.app.hemisphereW.drawHemisphere()
+        self.app.hemisphereW.drawHemisphere()
         return True
 
     def genBuildNorm(self):
@@ -1585,7 +1585,7 @@ class MainWindow(widget.MWidget):
             return False
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
-            self.app.hemisphereW.drawHemisphere()
+        self.app.hemisphereW.drawHemisphere()
         return True
 
     def genBuildMin(self):
@@ -1594,7 +1594,7 @@ class MainWindow(widget.MWidget):
             return False
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
-            self.app.hemisphereW.drawHemisphere()
+        self.app.hemisphereW.drawHemisphere()
         return True
 
     def genBuildDSO(self):
@@ -1607,4 +1607,3 @@ class MainWindow(widget.MWidget):
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
         self.app.hemisphereW.drawHemisphere()
-

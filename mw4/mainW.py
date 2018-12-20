@@ -75,6 +75,8 @@ class MainWindow(widget.MWidget):
         ms.pointDone.connect(self.updatePointGUI)
         ms.pointDone.connect(self.updateStatusGUI)
         ms.settDone.connect(self.updateSettingGUI)
+        ms.settDone.connect(self.updateSetStatGUI)
+        ms.settDone.connect(self.updateLocGUI)
         ms.alignDone.connect(self.updateAlignGUI)
         ms.alignDone.connect(self.showModelPolar)
         ms.namesDone.connect(self.setNameList)
@@ -153,7 +155,7 @@ class MainWindow(widget.MWidget):
 
     def initConfig(self):
         if 'mainW' not in self.app.config:
-            return
+            return False
         config = self.app.config['mainW']
         x = config.get('winPosX', 100)
         y = config.get('winPosY', 100)
@@ -212,6 +214,7 @@ class MainWindow(widget.MWidget):
         self.ui.checkUseHorizonMin.setChecked(config.get('checkUseHorizonMin', False))
         self.ui.checkAutoDeletePoints.setChecked(config.get('checkAutoDeletePoints', False))
         self.ui.altitudeHorizonMin.setValue(config.get('altitudeHorizonMin', 0))
+        return True
 
     def storeConfig(self):
         if 'mainW' not in self.app.config:
@@ -338,15 +341,19 @@ class MainWindow(widget.MWidget):
         """
         clearMountGUI rewrites the gui in case of a special event needed for clearing up
 
-        :return: nothing
+        :return: succes for test
         """
+
         self.updateAlignGUI()
         self.updateFwGui()
         self.updatePointGUI()
         self.updateStatusGUI()
         self.updateSettingGUI()
+        self.updateSetStatGUI()
+        self.updateLocGUI()
         self.setNameList()
         self.showModelPolar()
+        return True
 
     def updateMountConnStat(self, status):
         ui = self.ui.mountConnected
@@ -380,7 +387,7 @@ class MainWindow(widget.MWidget):
         if self.ui.checkRefracNone.isChecked():
             return False
         if self.ui.checkRefracNoTrack.isChecked():
-            if self.app.mount.obsSite.status != '0':
+            if self.app.mount.obsSite.status != 0:
                 return False
         temp, press = self.app.environment.getFilteredRefracParams()
         if temp is None or press is None:
@@ -503,7 +510,6 @@ class MainWindow(widget.MWidget):
         """
 
         sett = self.app.mount.sett
-        obs = self.app.mount.obsSite
 
         if sett.slewRate is not None:
             self.ui.slewRate.setText('{0:2.0f}'.format(sett.slewRate))
@@ -520,22 +526,6 @@ class MainWindow(widget.MWidget):
         else:
             self.ui.timeToMeridian.setText('-')
 
-        if sett.UTCExpire is not None:
-            ui = self.ui.UTCExpire
-            ui.setText(sett.UTCExpire)
-            # coloring if close to end:
-            now = datetime.datetime.now()
-            expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
-            deltaYellow = datetime.timedelta(days=30)
-            if now > expire:
-                self.changeStyleDynamic(ui, 'color', 'red')
-            elif now > expire - deltaYellow:
-                self.changeStyleDynamic(ui, 'color', 'yellow')
-            else:
-                self.changeStyleDynamic(ui, 'color', '')
-        else:
-            self.ui.UTCExpire.setText('-')
-
         if sett.refractionTemp is not None:
             self.ui.refractionTemp.setText('{0:+4.1f}'.format(sett.refractionTemp))
             self.ui.refractionTemp1.setText('{0:+4.1f}'.format(sett.refractionTemp))
@@ -549,21 +539,6 @@ class MainWindow(widget.MWidget):
         else:
             self.ui.refractionPress.setText('-')
             self.ui.refractionPress1.setText('-')
-
-        if sett.statusUnattendedFlip is not None:
-            self.ui.statusUnattendedFlip.setText('ON' if sett.statusUnattendedFlip else 'OFF')
-        else:
-            self.ui.statusUnattendedFlip.setText('-')
-
-        if sett.statusDualTracking is not None:
-            self.ui.statusDualTracking.setText('ON' if sett.statusDualTracking else 'OFF')
-        else:
-            self.ui.statusDualTracking.setText('-')
-
-        if sett.statusRefraction is not None:
-            self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
-        else:
-            self.ui.statusRefraction.setText('-')
 
         if sett.meridianLimitTrack is not None:
             self.ui.meridianLimitTrack.setText(str(sett.meridianLimitTrack))
@@ -585,14 +560,49 @@ class MainWindow(widget.MWidget):
         else:
             self.ui.horizonLimitHigh.setText('-')
 
-        if obs.location is not None:
-            self.ui.siteLongitude.setText(obs.location.longitude.dstr())
-            self.ui.siteLatitude.setText(obs.location.latitude.dstr())
-            self.ui.siteElevation.setText(str(obs.location.elevation.m))
+        return True
+
+    def updateSetStatGUI(self):
+        """
+        updateSetStatGUI update the gui upon events triggered be the reception of new
+        settings from the mount. the mount data is polled, so we use this signal as well
+        for the update process.
+
+        :return:    True if ok for testing
+        """
+
+        sett = self.app.mount.sett
+
+        if sett.UTCExpire is not None:
+            ui = self.ui.UTCExpire
+            ui.setText(sett.UTCExpire)
+            # coloring if close to end:
+            now = datetime.datetime.now()
+            expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
+            deltaYellow = datetime.timedelta(days=30)
+            if now > expire:
+                self.changeStyleDynamic(ui, 'color', 'red')
+            elif now > expire - deltaYellow:
+                self.changeStyleDynamic(ui, 'color', 'yellow')
+            else:
+                self.changeStyleDynamic(ui, 'color', '')
         else:
-            self.ui.siteLongitude.setText('-')
-            self.ui.siteLatitude.setText('-')
-            self.ui.siteElevation.setText('-')
+            self.ui.UTCExpire.setText('-')
+
+        if sett.statusUnattendedFlip is not None:
+            self.ui.statusUnattendedFlip.setText('ON' if sett.statusUnattendedFlip else 'OFF')
+        else:
+            self.ui.statusUnattendedFlip.setText('-')
+
+        if sett.statusDualTracking is not None:
+            self.ui.statusDualTracking.setText('ON' if sett.statusDualTracking else 'OFF')
+        else:
+            self.ui.statusDualTracking.setText('-')
+
+        if sett.statusRefraction is not None:
+            self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
+        else:
+            self.ui.statusRefraction.setText('-')
 
         # check tracking speed
         if self.app.mount.sett.checkRateLunar():
@@ -607,6 +617,28 @@ class MainWindow(widget.MWidget):
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
+
+        return True
+
+    def updateLocGUI(self):
+        """
+        updateLocGUI update the gui upon events triggered be the reception of new
+        settings from the mount. the mount data is polled, so we use this signal as well
+        for the update process.
+
+        :return:    True if ok for testing
+        """
+
+        obs = self.app.mount.obsSite
+
+        if obs.location is not None:
+            self.ui.siteLongitude.setText(obs.location.longitude.dstr())
+            self.ui.siteLatitude.setText(obs.location.latitude.dstr())
+            self.ui.siteElevation.setText(str(obs.location.elevation.m))
+        else:
+            self.ui.siteLongitude.setText('-')
+            self.ui.siteLatitude.setText('-')
+            self.ui.siteElevation.setText('-')
 
         return True
 
@@ -1363,6 +1395,7 @@ class MainWindow(widget.MWidget):
 
         self.deviceEnvironDisconnected(deviceName)
         self.app.message.emit('INDI device [{0}] removed'.format(deviceName), 0)
+        return True
 
     def indiEnvironConnected(self):
         self.app.message.emit('INDI server environment connected', 0)

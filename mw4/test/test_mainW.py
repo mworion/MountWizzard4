@@ -58,6 +58,25 @@ spy = PyQt5.QtTest.QSignalSpy(app.message)
 #
 #
 
+def test_initConfig_1():
+    app.config['mainW'] = {}
+    suc = app.mainW.initConfig()
+    assert suc
+
+
+def test_initConfig_2():
+    del app.config['mainW']
+    suc = app.mainW.initConfig()
+    assert not suc
+
+
+def test_initConfig_3():
+    app.config['mainW'] = {}
+    app.config['mainW']['winPosX'] = 10000
+    app.config['mainW']['winPosY'] = 10000
+    suc = app.mainW.initConfig()
+    assert suc
+
 
 def test_mountBoot1(qtbot):
     with mock.patch.object(app.mount,
@@ -121,9 +140,124 @@ def test_updateMountConnStat():
 #
 
 
-def test_updateGuiCyclic():
+def test_clearMountGUI():
+    suc = app.mainW.clearMountGUI()
+    assert suc
+
+
+def test_updateGui():
     suc = app.mainW.updateGUI()
     assert suc
+
+
+def test_updateTask():
+    suc = app.mainW.updateTask()
+    assert suc
+
+
+def test_updateRefractionParameters_1(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environment,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert suc
+
+
+def test_updateRefractionParameters_2(qtbot):
+    app.mount.mountUp = False
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environment,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_3(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(True)
+    app.mainW.ui.checkRefracNoTrack.setChecked(False)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environment,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_4(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '1'
+    with mock.patch.object(app.environment,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_5(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environment,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=False):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_6(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environment,
+                           'getFilteredRefracParams',
+                           return_value=(None, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_7(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environment,
+                           'getFilteredRefracParams',
+                           return_value=(10, None)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
 
 #
 #
@@ -328,36 +462,36 @@ def test_updateSetting_timeToFlip():
     assert '-' == app.mainW.ui.timeToFlip.text()
 
 
-def test_updateSetting_UTCExpire():
+def test_updateSettingExt_UTCExpire():
     value = '2020-10-05'
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
-def test_updateSetting_UTCExpire1():
+def test_updateSettingExt_UTCExpire1():
     value = '2016-10-05'
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
-def test_updateSetting_UTCExpire2():
+def test_updateSettingExt_UTCExpire2():
     value = '2018-10-05'
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
@@ -390,33 +524,33 @@ def test_updateSetting_refractionPress():
 def test_updateSetting_statusUnattendedFlip():
     value = '1'
     app.mount.sett.statusUnattendedFlip = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert 'ON' == app.mainW.ui.statusUnattendedFlip.text()
     value = None
     app.mount.sett.statusUnattendedFlip = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert 'OFF' == app.mainW.ui.statusUnattendedFlip.text()
 
 
 def test_updateSetting_statusDualTracking():
     value = '1'
     app.mount.sett.statusDualTracking = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert 'ON' == app.mainW.ui.statusDualTracking.text()
     value = None
     app.mount.sett.statusDualTracking = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert 'OFF' == app.mainW.ui.statusDualTracking.text()
 
 
 def test_updateSetting_statusRefraction():
     value = '1'
     app.mount.sett.statusRefraction = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert 'ON' == app.mainW.ui.statusRefraction.text()
     value = None
     app.mount.sett.statusRefraction = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSetStatGUI()
     assert 'OFF' == app.mainW.ui.statusRefraction.text()
 
 
@@ -477,16 +611,16 @@ def test_updateSetting_timeToMeridian():
     assert '-' == app.mainW.ui.timeToMeridian.text()
 
 
-def test_updateSetting_location():
+def test_updateSettingExt_location():
 
     app.mount.obsSite.location = ['49:00:00', '11:00:00', '500']
-    app.mainW.updateSettingGUI()
+    app.mainW.updateLocGUI()
     assert '11deg 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
     assert '49deg 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
     assert '500.0' == app.mainW.ui.siteElevation.text()
 
     app.mount.obsSite.location = None
-    app.mainW.updateSettingGUI()
+    app.mainW.updateLocGUI()
     assert '-' == app.mainW.ui.siteLongitude.text()
     assert '-' == app.mainW.ui.siteLatitude.text()
     assert '-' == app.mainW.ui.siteElevation.text()
@@ -1527,6 +1661,14 @@ def test_deviceEnvironDisconnected2():
     app.mainW.deviceEnvironDisconnected('test')
     color = app.mainW.ui.globalWeatherName.property('color')
     assert color == 'red'
+
+
+def test_removeEnvironDevice_1(qtbot):
+    app.environment.wDevice['global']['name'] = 'test'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.removeEnvironDevice('test')
+        assert suc
+    assert ['INDI device [test] removed', 0] == blocker.args
 
 
 def test_config():

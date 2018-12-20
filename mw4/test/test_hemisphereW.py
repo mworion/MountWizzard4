@@ -59,6 +59,29 @@ spy = PyQt5.QtTest.QSignalSpy(app.message)
 #
 #
 
+def test_config_0():
+    app.hemisphereW.storeConfig()
+
+
+def test_initConfig_1():
+    app.config['hemisphereW'] = {}
+    suc = app.hemisphereW.initConfig()
+    assert suc
+
+
+def test_initConfig_2():
+    del app.config['hemisphereW']
+    suc = app.hemisphereW.initConfig()
+    assert not suc
+
+
+def test_initConfig_3():
+    app.config['hemisphereW'] = {}
+    app.config['hemisphereW']['winPosX'] = 10000
+    app.config['hemisphereW']['winPosY'] = 10000
+    suc = app.hemisphereW.initConfig()
+    assert suc
+
 
 def test_resizeEvent(qtbot):
     app.hemisphereW.resizeEvent(None)

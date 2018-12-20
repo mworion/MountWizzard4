@@ -92,7 +92,7 @@ class HemisphereWindow(widget.MWidget):
 
     def initConfig(self):
         if 'hemisphereW' not in self.app.config:
-            return
+            return False
         config = self.app.config['hemisphereW']
         x = config.get('winPosX', 100)
         y = config.get('winPosY', 100)
@@ -109,6 +109,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         if config.get('showStatus'):
             self.showWindow()
+        return True
 
     def storeConfig(self):
         if 'hemisphereW' not in self.app.config:

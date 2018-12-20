@@ -425,19 +425,19 @@ class HemisphereWindow(widget.MWidget):
         return True
 
     @staticmethod
-    def getIndexUnderPoint(event, xy, epsilon):
+    def getIndexPoint(event, plane, epsilon):
         """
 
         :param event: data of the mouse clicked event
-        :param xy: coordinates
+        :param plane: coordinates as tuples (x, y)
         :param epsilon:
         :return: index or none
         """
 
-        if len(xy) == 0:
+        if len(plane) == 0:
             return None
-        xt = np.asarray([i[0] for i in xy])
-        yt = np.asarray([i[1] for i in xy])
+        xt = np.asarray([i[0] for i in plane])
+        yt = np.asarray([i[1] for i in plane])
         d = np.sqrt((xt - event.xdata)**2 / 16 + (yt - event.ydata)**2)
         ind = d.argsort()[:1][0]
         # position to far away
@@ -446,17 +446,17 @@ class HemisphereWindow(widget.MWidget):
         return ind
 
     @staticmethod
-    def getTwoIndUnderPointX(event, xy):
+    def getTwoIndexPointX(event, plane):
         """
 
         :param event: data of the mouse clicked event
-        :param xy: coordinates
+        :param plane: coordinates as tuples (x, y)
         :return: index or none
         """
 
-        if len(xy) < 2:
+        if len(plane) < 2:
             return None
-        xt = [i[0] for i in xy]
+        xt = [i[0] for i in plane]
         return bisect.bisect_left(xt, event.xdata) - 1
 
     def drawHemisphere(self):

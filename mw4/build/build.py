@@ -125,7 +125,7 @@ class DataPoint(object):
         lat = np.radians(lat)
         alt = np.arcsin(np.sin(dec) * np.sin(lat) + np.cos(dec) * np.cos(lat) * np.cos(ha))
         value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
-        # value = np.clip(value, -1.0, 1.0)
+        value = np.clip(value, -1.0, 1.0)
         A = np.arccos(value)
         if np.sin(ha) >= 0.0:
             az = 2 * np.pi - A

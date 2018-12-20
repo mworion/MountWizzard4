@@ -1,7 +1,7 @@
 ToDo list:
 
 - auto reconnect indi server
-- edit horizon
+- edit horizon points
 - edit build points
 - align stars
 - select and slew align stars

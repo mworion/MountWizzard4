@@ -88,9 +88,9 @@ class HemisphereWindow(widget.MWidget):
         self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
 
         # initializing the plot
-        self.initConfig()
         self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
         self.app.data.loadHorizonP()
+        self.initConfig()
 
     def initConfig(self):
         if 'hemisphereW' not in self.app.config:

@@ -36,7 +36,7 @@ mwGlob = {'workDir': '.',
           'build': 'test',
           }
 
-
+'''
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global spy
@@ -47,6 +47,10 @@ def module_setup_teardown():
     yield
     spy = None
     app = None
+'''
+app = mainApp.MountWizzard4(mwGlob=mwGlob)
+spy = PyQt5.QtTest.QSignalSpy(app.message)
+
 
 #
 #
@@ -669,6 +673,7 @@ def test_showModelPolar1():
 
 
 def test_showModelPolar2():
+    app = mainApp.MountWizzard4(mwGlob=mwGlob)
     app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     app.mainW.ui.checkShowErrorValues.setChecked(True)
     suc = app.mainW.showModelPolar()
@@ -676,6 +681,7 @@ def test_showModelPolar2():
 
 
 def test_showModelPolar3():
+    app = mainApp.MountWizzard4(mwGlob=mwGlob)
     app.mainW.ui.checkShowErrorValues.setChecked(True)
     suc = app.mainW.showModelPolar()
     assert not suc

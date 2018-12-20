@@ -36,19 +36,16 @@ mwGlob = {'workDir': '.',
           'build': 'test',
           }
 config = mwGlob['configDir']
+app = mainApp.MountWizzard4(mwGlob=mwGlob)
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app
     testdir = os.listdir(config)
     for item in testdir:
         if item.endswith('.cfg'):
             os.remove(os.path.join(config, item))
-    app = mainApp.MountWizzard4(mwGlob=mwGlob)
     yield
-    app = None
-
 
 #
 #

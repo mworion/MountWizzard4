@@ -34,7 +34,7 @@ mwGlob = {'workDir': '.',
           'build': 'test',
           }
 
-
+'''
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global spy
@@ -44,6 +44,10 @@ def module_setup_teardown():
     yield
     spy = None
     app = None
+'''
+app = mainApp.MountWizzard4(mwGlob=mwGlob)
+spy = PyQt5.QtTest.QSignalSpy(app.message)
+
 #
 #
 # testing mainW gui booting shutdown

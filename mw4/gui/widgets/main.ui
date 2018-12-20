@@ -12764,7 +12764,7 @@ manually</string>
         <string>Save as</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkUseHorizonFile">
+      <widget class="QCheckBox" name="checkUseHorizon">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -12782,7 +12782,7 @@ manually</string>
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use horizon mask file in hemisphere window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Use Horizon Mask File</string>
+        <string>Use Horizon Mask</string>
        </property>
        <property name="checked">
         <bool>false</bool>

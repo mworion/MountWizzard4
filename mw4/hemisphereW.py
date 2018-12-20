@@ -87,6 +87,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.settDone.connect(self.updateCelestialPath)
         self.app.signalUpdateLocation.connect(self.clearHemisphere)
         self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
+        self.app.mainW.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
 
         if 'mainW' in self.app.config:
             self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
@@ -421,7 +422,8 @@ class HemisphereWindow(widget.MWidget):
 
         # the static part (model points, horizon, celestial paths, meridian limits)
         # drawing horizon
-        if self.app.data.horizonP:
+        showHorizon = self.app.mainW.ui.checkUseHorizon.isChecked()
+        if self.app.data.horizonP and showHorizon:
             y, x = zip(*self.app.data.horizonP)
 
             self.horizonFill, = axes.fill(x, y, color='#002000', zorder=-20)

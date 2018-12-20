@@ -210,7 +210,7 @@ class MainWindow(widget.MWidget):
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
 
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
-        self.ui.checkUseHorizonFile.setChecked(config.get('checkUseHorizonFile', False))
+        self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.checkUseHorizonMin.setChecked(config.get('checkUseHorizonMin', False))
         self.ui.checkAutoDeletePoints.setChecked(config.get('checkAutoDeletePoints', False))
         self.ui.altitudeHorizonMin.setValue(config.get('altitudeHorizonMin', 0))
@@ -254,7 +254,7 @@ class MainWindow(widget.MWidget):
         config['checkJNow'] = self.ui.checkJNow.isChecked()
 
         config['horizonFileName'] = self.ui.horizonFileName.text()
-        config['checkUseHorizonFile'] = self.ui.checkUseHorizonFile.isChecked()
+        config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
         config['checkUseHorizonMin'] = self.ui.checkUseHorizonMin.isChecked()
         config['checkAutoDeletePoints'] = self.ui.checkAutoDeletePoints.isChecked()
         config['altitudeHorizonMin'] = self.ui.altitudeHorizonMin.value()

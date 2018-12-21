@@ -472,6 +472,14 @@ def test_delHorizonP4():
     assert len(data.horizonP) == 155
 
 
+def test_delHorizonP5():
+    data.horizonP = [(1, 1), (3, 3), (10, 10)]
+    suc = data.delHorizonP(position=0)
+    assert not suc
+    suc = data.delHorizonP(154)
+    assert not suc
+
+
 def test_saveBuildP_10():
     data.buildPFile = 'test'
     data.genGreaterCircle('min')

@@ -569,7 +569,8 @@ class HemisphereWindow(widget.MWidget):
             return False
 
         index = self.getIndexPointX(event=event, plane=data.horizonP) + 1
-        suc = data.addHorizonP((event.xdata, event.ydata), position=index)
+        suc = data.addHorizonP(value=(event.ydata, event.xdata),
+                               position=index)
         print('add horizon point: ', index + 1, ' was successful: ', suc)
         # now redraw plot
         y, x = zip(*self.app.data.horizonP)

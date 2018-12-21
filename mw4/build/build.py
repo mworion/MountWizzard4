@@ -201,14 +201,17 @@ class DataPoint(object):
     def clearBuildP(self):
         self._buildP = list()
 
-    @property
-    def horizonP(self):
-        self._horizonP = sorted(self._horizonP, key=lambda x: x[1])
+    def checkHorizonBoundaries(self):
         if self._horizonP[0] != (0, 0):
             self._horizonP.insert(0, (0, 0))
         horMax = len(self._horizonP)
         if self._horizonP[horMax - 1] != (0, 360):
             self._horizonP.insert(horMax, (0, 360))
+
+    @property
+    def horizonP(self):
+        self._horizonP = sorted(self._horizonP, key=lambda x: x[1])
+        self.checkHorizonBoundaries()
         return self._horizonP
 
     @horizonP.setter
@@ -221,6 +224,7 @@ class DataPoint(object):
             self.clearHorizonP()
             return
         self._horizonP = value
+        self.checkHorizonBoundaries()
 
     @staticmethod
     def checkFormat(value):
@@ -275,6 +279,10 @@ class DataPoint(object):
         position = int(position)
         if position < 0 or position > len(self._horizonP) - 1:
             self.logger.error('invalid position: {0}'.format(position))
+            return False
+        if self._horizonP[position] == (0, 0):
+            return False
+        if self._horizonP[position] == (0, 360):
             return False
         self._horizonP.pop(position)
         return True

@@ -516,6 +516,15 @@ class HemisphereWindow(widget.MWidget):
         return bisect.bisect_left(xt, event.xdata) - 1
 
     def onMouseNormal(self, event):
+        """
+        onMouseNormal handles the mouse event in normal mode. this means only a double
+        click is possible and offers the opportunity to slew the telescope to a certain
+        position in sky selected by the mouse.
+
+        :param event: mouse events
+        :return: success
+        """
+
         if event.inaxes is None:
             return False
         if not (event.button == 1 and event.dblclick):
@@ -534,16 +543,33 @@ class HemisphereWindow(widget.MWidget):
                              )
         if reply != msg.Yes:
             return False
+        # todo: slewing command for the mount
         print('slewing')
         return True
 
     def onMouseEdit(self, event):
+        """
+        onMouseEdit handles the mouse event in normal mode. this means depending on the
+        edit mode (horizon or model points) a left click adds a new point and right click
+        deletes the selected point.
+
+        :param event: mouse events
+        :return: success
+        """
         print('mouse edit clicked')
-        pass
 
     def onMouseStar(self, event):
+        """
+        onMouseStar handles the mouse event in polar align mode. this means only a right
+        click is possible and offers the opportunity to slew the telescope to the selected
+        star and start manual polar alignment.
+
+        :param event: mouse events
+        :return: success
+        """
+
+        # todo: star selection commands
         print('mouse star clicked')
-        pass
 
     def drawHemisphere(self):
         """

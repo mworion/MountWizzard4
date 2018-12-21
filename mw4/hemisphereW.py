@@ -641,13 +641,18 @@ class HemisphereWindow(widget.MWidget):
         axes = self.hemisphereMat.figure.axes[0].axes
 
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
+        # if no point found, add at the end
         if index is None:
             index = len(data.buildP)
+        # take the found point closer to the end of the list
         index += 1
         suc = data.addBuildP(value=(event.ydata, event.xdata),
                              position=index)
         if not suc:
             return False
+
+        # if succeeded, than add the data to the matplotlib hemisphere widget
+        # first the point
         x = event.xdata
         y = event.ydata
         if self.ui.checkShowSlewPath.isChecked():
@@ -670,6 +675,7 @@ class HemisphereWindow(widget.MWidget):
                                    )
             self.pointsBuild = newBuildP
 
+        # and than the annotation (number)
         xy = (x, y)
         newAnnotation = axes.annotate('4',
                                       xy=xy,
@@ -722,6 +728,7 @@ class HemisphereWindow(widget.MWidget):
         else:
             return False
 
+        # redraw the corrected canvas (new positions ans new numbers)
         if len(data.buildP):
             y, x = zip(*data.buildP)
         else:

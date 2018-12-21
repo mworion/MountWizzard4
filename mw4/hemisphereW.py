@@ -624,89 +624,81 @@ class HemisphereWindow(widget.MWidget):
         self.drawCanvas()
         return suc
 
-    def addBuildPoint(self, data=None, event=None, annotation=None):
+    def addBuildPoint(self, event=None):
         """
         addBuildPoint calculates from the position of the left mouse click the position
         where the next build point should be added. the coordinates are given from mouse
         click itself.
 
-        :param data: build point in tuples (alt, az)
         :param event: mouse event
-        :param annotation: text along build points as list of objects
         :return:
         """
 
-        if data is None:
-            return False
         if event is None:
             return False
 
+        data = self.app.data
+        annotate = self.pointsBuildAnnotate
+
         suc = data.addBuildP(value=(event.ydata, event.xdata))
-        if suc:
-            x = event.xdata
-            y = event.ydata
-            plot = self.hemisphereMat.figure.axes[0].axes.plot
-            if self.ui.checkShowSlewPath.isChecked():
-                ls = ':'
-                lw = 1
-            else:
-                ls = ''
-                lw = 0
-            if self.ui.checkEditBuildPoints.isChecked():
-                color = '#FF00FF'
-            else:
-                color = '#00A000'
-            if self.pointsBuild is None:
-                newBuildP, = plot(x,
-                                  y,
-                                  marker=self.markerPoint(),
-                                  markersize=9,
-                                  linestyle=ls,
-                                  lw=lw,
-                                  fillstyle='none',
-                                  color=color,
-                                  zorder=20,
-                                  )
-                self.pointsBuild = newBuildP
+        if not suc:
+            return False
+        x = event.xdata
+        y = event.ydata
+        plot = self.hemisphereMat.figure.axes[0].axes.plot
+        if self.ui.checkShowSlewPath.isChecked():
+            ls = ':'
+            lw = 1
+        else:
+            ls = ''
+            lw = 0
+        color = '#FF00FF'
+        if self.pointsBuild is None:
+            newBuildP, = plot(x,
+                              y,
+                              marker=self.markerPoint(),
+                              markersize=9,
+                              linestyle=ls,
+                              lw=lw,
+                              fillstyle='none',
+                              color=color,
+                              zorder=20,
+                              )
+            self.pointsBuild = newBuildP
 
-            xy = (y, x)
-            number = len(data.buildP) + 1
-            annotate = self.hemisphereMat.figure.axes[0].axes.annotate
-            newAnnotation = annotate('{0:2d}'.format(number),
-                                     xy=xy,
-                                     xytext=(2, -10),
-                                     textcoords='offset points',
-                                     color='#E0E0E0',
-                                     zorder=10,
-                                     )
-            if annotation is None:
-                annotation = list()
-            annotation.append(newAnnotation)
+        xy = (y, x)
+        annotation = self.hemisphereMat.figure.axes[0].axes.annotate
+        newAnnotation = annotation('4',
+                                   xy=xy,
+                                   xytext=(2, -10),
+                                   textcoords='offset points',
+                                   color='#E0E0E0',
+                                   zorder=10,
+                                   )
+        if annotate is None:
+            annotate = list()
+        annotate.append(newAnnotation)
+        return True
 
-        return suc
-
-    def deleteBuildPoint(self, data=None, event=None, annotation=None):
+    def deleteBuildPoint(self, event=None):
         """
         deleteBuildPoint selects the next build point in distance max and tries to
         delete it. there have to be at least 2 horizon point left.
 
-        :param data: build point in tuples (alt, az)
         :param event: mouse event
-        :param annotation: text along build points as list of objects
         :return: success
         """
 
-        if data is None:
-            return False
         if event is None:
             return False
-        if annotation is None:
-            return False
+
+        data = self.app.data
+        annotate = self.pointsBuildAnnotate
 
         index = self.getIndexPoint(event=event, plane=data.buildP)
         suc = data.delBuildP(position=index)
         if suc:
-            annotation[index].remove()
+            annotate.pop(index)
         return suc
 
     def editBuildPoints(self, event):
@@ -719,15 +711,19 @@ class HemisphereWindow(widget.MWidget):
         """
 
         data = self.app.data
-        annotation = self.pointsBuildAnnotate
+        annotate = self.pointsBuildAnnotate
+
         if event.button == 1:
-            suc = self.addBuildPoint(data=data, event=event, annotation=annotation)
+            suc = self.addBuildPoint(event=event)
         elif event.button == 3:
-            suc = self.deleteBuildPoint(data=data, event=event, annotation=annotation)
+            suc = self.deleteBuildPoint(event=event)
         else:
             return False
 
-        y, x = zip(*data.buildP)
+        if len(data.buildP):
+            y, x = zip(*data.buildP)
+        else:
+            y = x = []
         self.pointsBuild.set_data(x, y)
         for i, _ in enumerate(data.buildP):
             self.pointsBuildAnnotate[i].set_text('{0:2d}'.format(i + 1))

@@ -427,6 +427,9 @@ class HemisphereWindow(widget.MWidget):
     @staticmethod
     def getIndexPoint(event, plane, epsilon):
         """
+        getIndexPoint returns the index of the point which is nearest to the coordinate
+        of the mouse click when the click is in distance epsilon of the points. otherwise
+        no index will be returned.
 
         :param event: data of the mouse clicked event
         :param plane: coordinates as tuples (x, y)
@@ -446,8 +449,10 @@ class HemisphereWindow(widget.MWidget):
         return ind
 
     @staticmethod
-    def getTwoIndexPointX(event, plane):
+    def getIndexPointX(event, plane):
         """
+        getIndexPointX returns the index of the point which has a x coordinate closest to
+        the left of the x coordinate of the mouse click regardless which y coordinate it has
 
         :param event: data of the mouse clicked event
         :param plane: coordinates as tuples (x, y)

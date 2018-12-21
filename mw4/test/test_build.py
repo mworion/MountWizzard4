@@ -287,6 +287,12 @@ def test_addBuildP6():
     assert len(data.buildP) == 3
 
 
+def test_addBuildP7():
+    data.buildP = [(10, 10), (10, 10)]
+    suc = data.addBuildP(position=-5)
+    assert not suc
+
+
 def test_delBuildP1():
     data.buildP = ()
     data.genGreaterCircle('max')
@@ -412,6 +418,12 @@ def test_addHorizonP6():
     suc = data.addHorizonP((10, 10), position=-5)
     assert suc
     assert len(data.horizonP) == 5
+
+
+def test_addHorizonP7():
+    data.horizonP = [(10, 10), (10, 10)]
+    suc = data.addHorizonP(position=-5)
+    assert not suc
 
 
 def test_delHorizonP1():

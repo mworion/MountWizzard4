@@ -555,57 +555,52 @@ class HemisphereWindow(widget.MWidget):
         print('slewing')
         return True
 
-    def addHorizonPoint(self, index=None, horizon=None, event=None):
+    def addHorizonPoint(self, data=None, event=None):
         """
 
-        :param index:
-        :param horizon:
+        :param data:
         :param event:
         :return:
         """
 
-        if index is None:
-            return False
-        if horizon is None:
+        if data is None:
             return False
         if event is None:
             return False
-        '''
-        horizon.insert(index + 1, (event.xdata, event.ydata))
-        self.maskPlotMarker.set_data([i[0] for i in horizon], [i[1] for i in horizon])
-        x = [i[0] for i in horizon]
-        x.insert(0, 0)
-        x.append(360)
-        y = [i[1] for i in horizon]
-        y.insert(0, 0)
-        y.append(0)
-        self.maskPlotFill.set_xy(numpy.column_stack((x, y)))
-        '''
 
-    def deleteHorizonPoint(self, index=None, horizon=None):
+        index = self.getIndexPointX(event=event, plane=data.horizonP) + 1
+        suc = data.addHorizonP((event.xdata, event.ydata), position=index)
+        print('add horizon point: ', index + 1, ' was successful: ', suc)
+        # now redraw plot
+        y, x = zip(*self.app.data.horizonP)
+        self.horizonMarker.set_data(x, y)
+        self.horizonFill.set_xy(np.column_stack((x, y)))
+        self.drawCanvas()
+        return suc
+
+    def deleteHorizonPoint(self, data=None, event=None):
         """
 
-        :param index:
-        :param horizon:
+        :param data:
+        :param event:
         :return:
         """
 
-        if index is None:
+        if data is None:
             return False
-        if horizon is None:
+        if event is None:
             return False
 
-        if len(horizon) > 2:
-            del (horizon[ind])
+        index = self.getIndexPointX(event=event, plane=data.horizonP)
+        if len(data.horizonP) > 2:
+            suc = data.delHorizonP(position=index)
+        print('delete horizon point: ', index, ' was successful: ', suc)
         # now redraw plot
-        self.maskPlotMarker.set_data([i[0] for i in horizon], [i[1] for i in horizon])
-        x = [i[0] for i in horizon]
-        x.insert(0, 0)
-        x.append(360)
-        y = [i[1] for i in horizon]
-        y.insert(0, 0)
-        y.append(0)
-        self.maskPlotFill.set_xy(numpy.column_stack((x, y)))
+        y, x = zip(*self.app.data.horizonP)
+        self.horizonMarker.set_data(x, y)
+        self.horizonFill.set_xy(np.column_stack((x, y)))
+        self.drawCanvas()
+        return suc
 
     def editHorizonMask(self, event):
         """
@@ -614,15 +609,11 @@ class HemisphereWindow(widget.MWidget):
         :return:
         """
 
-        index = self.getIndexPointX(event=event, plane=horizonP)
-        if index is None:
-            return False
-        horizonP = self.app.data.horizonPP
-
-        if event.button == 3:
-            suc = self.addHorizonPoint(index=index, horizon=horizonP, event=event)
-        elif event.button == 1:
-            suc = self.deleteHorizonPoint(index=index, horizon=horizonP)
+        data = self.app.data
+        if event.button == 1:
+            suc = self.addHorizonPoint(data=data, event=event)
+        elif event.button == 3:
+            suc = self.deleteHorizonPoint(data=data, event=event)
         else:
             return False
         return suc
@@ -678,7 +669,6 @@ class HemisphereWindow(widget.MWidget):
             suc = self.editBuildPoints(event)
         else:
             return False
-        print('mouse edit clicked')
         return suc
 
     def onMouseStar(self, event):

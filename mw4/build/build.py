@@ -151,7 +151,7 @@ class DataPoint(object):
             return
         self._buildP = value
 
-    def addBuildP(self, value, position=None):
+    def addBuildP(self, value=None, position=None):
         """
         addBuildP extends the list of build points. the new point could be added at the end
         of the list (default) or in any location in the list.
@@ -161,6 +161,8 @@ class DataPoint(object):
         :return:
         """
 
+        if value is None:
+            return False
         if not isinstance(value, tuple):
             self.logger.error('malformed value: {0}'.format(value))
             return False
@@ -230,7 +232,7 @@ class DataPoint(object):
             return False
         return True
 
-    def addHorizonP(self, value, position=None):
+    def addHorizonP(self, value=None, position=None):
         """
         addHorizonP extends the list of build points. the new point could be added at the
         end of the list (default) or in any location in the list.
@@ -240,6 +242,8 @@ class DataPoint(object):
         :return:
         """
 
+        if value is None:
+            return False
         if not isinstance(value, tuple):
             self.logger.error('malformed value: {0}'.format(value))
             return False

@@ -494,14 +494,15 @@ class HemisphereWindow(widget.MWidget):
             return None
         if len(plane) == 0:
             return None
-        xt = np.asarray([i[0] for i in plane])
-        yt = np.asarray([i[1] for i in plane])
+        xt = np.asarray([i[1] for i in plane])
+        yt = np.asarray([i[0] for i in plane])
         d = np.sqrt((xt - event.xdata)**2 / 16 + (yt - event.ydata)**2)
-        ind = d.argsort()[:1][0]
+        index = d.argsort()[:1][0]
         # position to far away
-        if d[ind] >= epsilon:
+        if d[index] >= epsilon:
             return None
-        return ind
+        index = int(index)
+        return index
 
     @staticmethod
     def getIndexPointX(event=None, plane=None):
@@ -520,8 +521,9 @@ class HemisphereWindow(widget.MWidget):
             return None
         if len(plane) < 2:
             return None
-        xt = [i[0] for i in plane]
-        return bisect.bisect_left(xt, event.xdata) - 1
+        xt = [i[1] for i in plane]
+        index = int(bisect.bisect_left(xt, event.xdata) - 1)
+        return index
 
     def onMouseNormal(self, event):
         """
@@ -592,7 +594,7 @@ class HemisphereWindow(widget.MWidget):
         if event is None:
             return False
 
-        index = self.getIndexPointX(event=event, plane=data.horizonP)
+        index = self.getIndexPoint(event=event, plane=data.horizonP)
         if len(data.horizonP) > 2:
             suc = data.delHorizonP(position=index)
         print('delete horizon point: ', index, ' was successful: ', suc)
@@ -664,6 +666,8 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
+        if event.inaxes is None:
+            return
         if self.ui.checkEditHorizonMask.isChecked():
             suc = self.editHorizonMask(event)
         elif self.ui.checkEditBuildPoints.isChecked():
@@ -682,6 +686,8 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
+        if event.inaxes is None:
+            return
         # todo: star selection commands
         print('mouse star clicked')
 

@@ -82,9 +82,9 @@ class HemisphereWindow(widget.MWidget):
         self.pointerAltAz = None
         self.pointerDome = None
         self.pointsBuild = None
-        self.pointsBuildAnnotate = None
+        self.pointsBuildAnnotate = list()
         self.starsAlign = None
-        self.starsAlignAnnotate = None
+        self.starsAlignAnnotate = list()
         self.horizonFill = None
         self.horizonMarker = None
         self.meridianSlew = None
@@ -559,9 +559,12 @@ class HemisphereWindow(widget.MWidget):
 
     def addHorizonPoint(self, data=None, event=None):
         """
+        addHorizonPoint calculates from the position of the left mouse click the position
+        where the next horizon point should be added. the coordinates are given from mouse
+        click itself.
 
-        :param data:
-        :param event:
+        :param data: horizon point in tuples (alt, az)
+        :param event: mouse event
         :return:
         """
 
@@ -573,20 +576,19 @@ class HemisphereWindow(widget.MWidget):
         index = self.getIndexPointX(event=event, plane=data.horizonP) + 1
         suc = data.addHorizonP(value=(event.ydata, event.xdata),
                                position=index)
-        print('add horizon point: ', index + 1, ' was successful: ', suc)
-        # now redraw plot
         y, x = zip(*self.app.data.horizonP)
         self.horizonMarker.set_data(x, y)
         self.horizonFill.set_xy(np.column_stack((x, y)))
-        self.drawCanvas()
         return suc
 
     def deleteHorizonPoint(self, data=None, event=None):
         """
+        deleteHorizonPoint selects the next horizon point in distance max and tries to
+        delete it. there have to be at least 2 horizon point left.
 
-        :param data:
-        :param event:
-        :return:
+        :param data: horizon point in tuples (alt, az)
+        :param event: mouse event
+        :return: success
         """
 
         if data is None:
@@ -595,21 +597,21 @@ class HemisphereWindow(widget.MWidget):
             return False
 
         index = self.getIndexPoint(event=event, plane=data.horizonP)
+        suc = False
         if len(data.horizonP) > 2:
             suc = data.delHorizonP(position=index)
-        print('delete horizon point: ', index, ' was successful: ', suc)
-        # now redraw plot
         y, x = zip(*self.app.data.horizonP)
         self.horizonMarker.set_data(x, y)
         self.horizonFill.set_xy(np.column_stack((x, y)))
-        self.drawCanvas()
         return suc
 
     def editHorizonMask(self, event):
         """
+        editHorizonMask does dispatching the different mouse clicks for adding or deleting
+        horizon mask points and call the function accordingly.
 
-        :param event:
-        :return:
+        :param event: mouse event
+        :return: success
         """
 
         data = self.app.data
@@ -619,42 +621,118 @@ class HemisphereWindow(widget.MWidget):
             suc = self.deleteHorizonPoint(data=data, event=event)
         else:
             return False
+        self.drawCanvas()
+        return suc
+
+    def addBuildPoint(self, data=None, event=None, annotation=None):
+        """
+        addBuildPoint calculates from the position of the left mouse click the position
+        where the next build point should be added. the coordinates are given from mouse
+        click itself.
+
+        :param data: build point in tuples (alt, az)
+        :param event: mouse event
+        :param annotation: text along build points as list of objects
+        :return:
+        """
+
+        if data is None:
+            return False
+        if event is None:
+            return False
+
+        suc = data.addBuildP(value=(event.ydata, event.xdata))
+        if suc:
+            x = event.xdata
+            y = event.ydata
+            plot = self.hemisphereMat.figure.axes[0].axes.plot
+            if self.ui.checkShowSlewPath.isChecked():
+                ls = ':'
+                lw = 1
+            else:
+                ls = ''
+                lw = 0
+            if self.ui.checkEditBuildPoints.isChecked():
+                color = '#FF00FF'
+            else:
+                color = '#00A000'
+            if self.pointsBuild is None:
+                newBuildP, = plot(x,
+                                  y,
+                                  marker=self.markerPoint(),
+                                  markersize=9,
+                                  linestyle=ls,
+                                  lw=lw,
+                                  fillstyle='none',
+                                  color=color,
+                                  zorder=20,
+                                  )
+                self.pointsBuild = newBuildP
+
+            xy = (y, x)
+            number = len(data.buildP) + 1
+            annotate = self.hemisphereMat.figure.axes[0].axes.annotate
+            newAnnotation = annotate('{0:2d}'.format(number),
+                                     xy=xy,
+                                     xytext=(2, -10),
+                                     textcoords='offset points',
+                                     color='#E0E0E0',
+                                     zorder=10,
+                                     )
+            if annotation is None:
+                annotation = list()
+            annotation.append(newAnnotation)
+
+        return suc
+
+    def deleteBuildPoint(self, data=None, event=None, annotation=None):
+        """
+        deleteBuildPoint selects the next build point in distance max and tries to
+        delete it. there have to be at least 2 horizon point left.
+
+        :param data: build point in tuples (alt, az)
+        :param event: mouse event
+        :param annotation: text along build points as list of objects
+        :return: success
+        """
+
+        if data is None:
+            return False
+        if event is None:
+            return False
+        if annotation is None:
+            return False
+
+        index = self.getIndexPoint(event=event, plane=data.buildP)
+        suc = data.delBuildP(position=index)
+        if suc:
+            annotation[index].remove()
         return suc
 
     def editBuildPoints(self, event):
         """
+        editBuildPoints does dispatching the different mouse clicks for adding or deleting
+        build points and call the function accordingly.
 
-        :param event:
-        :return:
+        :param event: mouse event
+        :return: success
         """
 
-        '''
-        if self.ui.checkEditModelPoints.isChecked():
-            ind = self.get_ind_under_point(event, 2, points)
-        if self.ui.checkEditHorizonMask.isChecked():
-            ind = self.get_ind_under_point(event, 2, horizon)
-            indlow = self.get_two_ind_under_point_in_x(event, horizon)
-        if event.button == 3 and ind is not None and self.ui.checkEditModelPoints.isChecked():
-            if len(points) > 0:
-                del (points[ind])
-                self.annotate[ind].remove()
-                del (self.annotate[ind])
-            self.pointsPlotBig.set_data([i[0] for i in points], [i[1] for i in points])
-            self.pointsPlotSmall.set_data([i[0] for i in points], [i[1] for i in points])
-        if event.button == 1 and ind is None and self.ui.checkEditModelPoints.isChecked():
-            points.append((event.xdata, event.ydata))
-            if self.app.ui.checkSortPoints.isChecked():
-                self.app.workerModelingDispatcher.modelingRunner.modelPoints.sortPoints()
-            self.annotate.append(self.hemisphereMatplotlib.axes.annotate('', xy=(
-            event.xdata + self.offx, event.ydata + self.offy), color='#E0E0E0'))
-            self.pointsPlotBig.set_data([i[0] for i in points], [i[1] for i in points])
-            self.pointsPlotSmall.set_data([i[0] for i in points], [i[1] for i in points])
-        if self.ui.checkEditModelPoints.isChecked():
-            for i in range(0, len(points)):
-                self.annotate[i].set_text('{0:2d}'.format(i + 1))
-            self.app.messageQueue.put('ToModel>{0:02d}'.format(len(points)))
-        '''
-        return True
+        data = self.app.data
+        annotation = self.pointsBuildAnnotate
+        if event.button == 1:
+            suc = self.addBuildPoint(data=data, event=event, annotation=annotation)
+        elif event.button == 3:
+            suc = self.deleteBuildPoint(data=data, event=event, annotation=annotation)
+        else:
+            return False
+
+        y, x = zip(*data.buildP)
+        self.pointsBuild.set_data(x, y)
+        for i, _ in enumerate(data.buildP):
+            self.pointsBuildAnnotate[i].set_text('{0:2d}'.format(i + 1))
+        self.drawCanvas()
+        return suc
 
     def onMouseEdit(self, event):
         """
@@ -743,25 +821,28 @@ class HemisphereWindow(widget.MWidget):
             else:
                 ls = ''
                 lw = 0
+            if self.ui.checkEditBuildPoints.isChecked():
+                color = '#FF00FF'
+            else:
+                color = '#00A000'
             self.pointsBuild, = axes.plot(x, y,
                                           marker=self.markerPoint(),
                                           markersize=9,
                                           linestyle=ls,
                                           lw=lw,
                                           fillstyle='none',
-                                          color='#00A000',
+                                          color=color,
                                           zorder=20,
                                           )
-            if self.ui.checkEditModelPoints.isChecked():
-                self.pointsBuild.set_color('#FF00FF')
             for i, xy in enumerate(zip(x, y)):
-                self.pointsBuildAnnotate = axes.annotate('{0:2d}'.format(i + 1),
-                                                         xy=xy,
-                                                         xytext=(2, -10),
-                                                         textcoords='offset points',
-                                                         color='#E0E0E0',
-                                                         zorder=10,
-                                                         )
+                annotation = axes.annotate('{0:2d}'.format(i + 1),
+                                           xy=xy,
+                                           xytext=(2, -10),
+                                           textcoords='offset points',
+                                           color='#E0E0E0',
+                                           zorder=10,
+                                           )
+                self.pointsBuildAnnotate.append(annotation)
         # draw celestial equator
         visible = self.ui.checkShowCelestial.isChecked()
         celestial = self.app.data.generateCelestialEquator()

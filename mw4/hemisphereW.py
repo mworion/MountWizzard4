@@ -638,14 +638,13 @@ class HemisphereWindow(widget.MWidget):
             return False
 
         data = self.app.data
-        annotate = self.pointsBuildAnnotate
+        axes = self.hemisphereMat.figure.axes[0].axes
 
         suc = data.addBuildP(value=(event.ydata, event.xdata))
         if not suc:
             return False
         x = event.xdata
         y = event.ydata
-        plot = self.hemisphereMat.figure.axes[0].axes.plot
         if self.ui.checkShowSlewPath.isChecked():
             ls = ':'
             lw = 1
@@ -654,30 +653,29 @@ class HemisphereWindow(widget.MWidget):
             lw = 0
         color = '#FF00FF'
         if self.pointsBuild is None:
-            newBuildP, = plot(x,
-                              y,
-                              marker=self.markerPoint(),
-                              markersize=9,
-                              linestyle=ls,
-                              lw=lw,
-                              fillstyle='none',
-                              color=color,
-                              zorder=20,
-                              )
+            newBuildP, = axes.plot(x,
+                                   y,
+                                   marker=self.markerPoint(),
+                                   markersize=9,
+                                   linestyle=ls,
+                                   lw=lw,
+                                   fillstyle='none',
+                                   color=color,
+                                   zorder=20,
+                                   )
             self.pointsBuild = newBuildP
 
-        xy = (y, x)
-        annotation = self.hemisphereMat.figure.axes[0].axes.annotate
-        newAnnotation = annotation('4',
-                                   xy=xy,
-                                   xytext=(2, -10),
-                                   textcoords='offset points',
-                                   color='#E0E0E0',
-                                   zorder=10,
-                                   )
-        if annotate is None:
-            annotate = list()
-        annotate.append(newAnnotation)
+        xy = (x, y)
+        newAnnotation = axes.annotate('4',
+                                      xy=xy,
+                                      xytext=(2, -10),
+                                      textcoords='offset points',
+                                      color='#E0E0E0',
+                                      zorder=10,
+                                      )
+        if self.pointsBuildAnnotate is None:
+            self.pointsBuildAnnotate = list()
+        self.pointsBuildAnnotate.append(newAnnotation)
         return True
 
     def deleteBuildPoint(self, event=None):
@@ -693,12 +691,12 @@ class HemisphereWindow(widget.MWidget):
             return False
 
         data = self.app.data
-        annotate = self.pointsBuildAnnotate
 
         index = self.getIndexPoint(event=event, plane=data.buildP)
         suc = data.delBuildP(position=index)
         if suc:
-            annotate.pop(index)
+            self.pointsBuildAnnotate[index].remove()
+            del self.pointsBuildAnnotate[index]
         return suc
 
     def editBuildPoints(self, event):
@@ -711,7 +709,6 @@ class HemisphereWindow(widget.MWidget):
         """
 
         data = self.app.data
-        annotate = self.pointsBuildAnnotate
 
         if event.button == 1:
             suc = self.addBuildPoint(event=event)

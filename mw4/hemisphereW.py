@@ -492,6 +492,7 @@ class HemisphereWindow(widget.MWidget):
             return None
         if len(plane) == 0:
             return None
+
         xt = np.asarray([i[1] for i in plane])
         yt = np.asarray([i[0] for i in plane])
         d = np.sqrt((xt - event.xdata)**2 / 16 + (yt - event.ydata)**2)
@@ -519,6 +520,7 @@ class HemisphereWindow(widget.MWidget):
             return None
         if len(plane) < 2:
             return None
+
         xt = [i[1] for i in plane]
         index = int(bisect.bisect_left(xt, event.xdata) - 1)
         return index
@@ -613,12 +615,14 @@ class HemisphereWindow(widget.MWidget):
         """
 
         data = self.app.data
+
         if event.button == 1:
             suc = self.addHorizonPoint(data=data, event=event)
         elif event.button == 3:
             suc = self.deleteHorizonPoint(data=data, event=event)
         else:
             return False
+
         self.drawCanvas()
         return suc
 

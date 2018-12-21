@@ -640,7 +640,12 @@ class HemisphereWindow(widget.MWidget):
         data = self.app.data
         axes = self.hemisphereMat.figure.axes[0].axes
 
-        suc = data.addBuildP(value=(event.ydata, event.xdata))
+        index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
+        if index is None:
+            index = len(data.buildP)
+        index += 1
+        suc = data.addBuildP(value=(event.ydata, event.xdata),
+                             position=index)
         if not suc:
             return False
         x = event.xdata
@@ -675,7 +680,7 @@ class HemisphereWindow(widget.MWidget):
                                       )
         if self.pointsBuildAnnotate is None:
             self.pointsBuildAnnotate = list()
-        self.pointsBuildAnnotate.append(newAnnotation)
+        self.pointsBuildAnnotate.insert(index, newAnnotation)
         return True
 
     def deleteBuildPoint(self, event=None):

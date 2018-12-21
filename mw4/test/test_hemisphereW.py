@@ -282,12 +282,69 @@ def test_clearHemisphere(qtbot):
     assert app.data.buildP == []
 
 
-def test_setOperationMode():
+def test_setOperationMode_1():
     assert app.hemisphereW.MODE is not None
     assert 'normal' in app.hemisphereW.MODE
     assert 'build' in app.hemisphereW.MODE
     assert 'horizon' in app.hemisphereW.MODE
     assert 'star' in app.hemisphereW.MODE
+
+
+def test_setOperationMode_2():
+    class Test:
+        def set_marker(self, test):
+            pass
+
+        def set_color(self, test):
+            pass
+
+    app.hemisphereW.horizonMarker = Test()
+    app.hemisphereW.pointsBuild = Test()
+    suc = app.hemisphereW.setOperationMode('normal')
+    assert suc
+
+
+def test_setOperationMode_3():
+    class Test:
+        def set_marker(self, test):
+            pass
+
+        def set_color(self, test):
+            pass
+
+    app.hemisphereW.horizonMarker = Test()
+    app.hemisphereW.pointsBuild = Test()
+    suc = app.hemisphereW.setOperationMode('star')
+    assert suc
+
+
+def test_setOperationMode_4():
+    class Test:
+        def set_marker(self, test):
+            pass
+
+        def set_color(self, test):
+            pass
+
+    app.hemisphereW.horizonMarker = Test()
+    app.hemisphereW.pointsBuild = Test()
+    suc = app.hemisphereW.setOperationMode('build')
+    assert suc
+
+
+def test_getIndexPoint_0():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    plane = []
+    epsilon = 0
+    index = app.hemisphereW.getIndexPoint(event=event,
+                                          plane=plane,
+                                          epsilon=epsilon,
+                                          )
+    assert not index
 
 
 def test_getIndexPoint_1():
@@ -435,6 +492,88 @@ def test_getIndexPointX_6():
                                            plane=plane,
                                            )
     assert not index
+
+
+def test_onMouseNormal_0():
+    class Test:
+        pass
+    event = None
+    suc = app.hemisphereW.onMouseNormal(event=event)
+    assert not suc
+
+
+def test_onMouseNormal_1():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = None
+    suc = app.hemisphereW.onMouseNormal(event=event)
+    assert not suc
+
+
+def test_onMouseNormal_2():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 0
+    event.dblclick = False
+    suc = app.hemisphereW.onMouseNormal(event=event)
+    assert not suc
+
+
+def test_onMouseNormal_3():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = False
+    suc = app.hemisphereW.onMouseNormal(event=event)
+    assert not suc
+
+
+def test_onMouseNormal_4():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 0
+    event.dblclick = True
+    suc = app.hemisphereW.onMouseNormal(event=event)
+    assert not suc
+
+
+def test_onMouseNormal_5():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = True
+    event.xdata = 180
+    event.ydata = 45
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+        suc = app.hemisphereW.onMouseNormal(event=event)
+        assert not suc
+
+
+def test_onMouseNormal_6():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = True
+    event.xdata = 180
+    event.ydata = 45
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        suc = app.hemisphereW.onMouseNormal(event=event)
+        assert suc
 
 
 def test_drawHemisphere_1():

@@ -535,9 +535,11 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
+        if event is None:
+            return False
         if event.inaxes is None:
             return False
-        if not (event.button == 1 and event.dblclick):
+        if event.button != 1 or not event.dblclick:
             return False
 
         textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'

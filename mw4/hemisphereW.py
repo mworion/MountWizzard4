@@ -50,7 +50,7 @@ class HemisphereWindow(widget.MWidget):
                     starSize=6,
                     starColor='#00A000',
                     starAnnColor='#808080'),
-        model=dict(horMarker='None',
+        build=dict(horMarker='None',
                    horColor='#006000',
                    buildPColor='#FF00FF',
                    starSize=6,
@@ -119,7 +119,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mainW.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkEditNone.clicked.connect(lambda: self.setOperationMode('normal'))
         self.ui.checkEditHorizonMask.clicked.connect(lambda: self.setOperationMode('horizon'))
-        self.ui.checkEditBuildPoints.clicked.connect(lambda: self.setOperationMode('model'))
+        self.ui.checkEditBuildPoints.clicked.connect(lambda: self.setOperationMode('build'))
         self.ui.checkPolarAlignment.clicked.connect(lambda: self.setOperationMode('star'))
 
         if 'mainW' in self.app.config:
@@ -453,8 +453,6 @@ class HemisphereWindow(widget.MWidget):
         if self.horizonMarker is not None:
             self.horizonMarker.set_marker(self.MODE[ID]['horMarker'])
             self.horizonMarker.set_color(self.MODE[ID]['horColor'])
-        if self.pointsBuild is not None:
-            self.pointsBuild.set_color(self.MODE[ID]['buildPColor'])
         if self.pointsBuild is not None:
             self.pointsBuild.set_color(self.MODE[ID]['buildPColor'])
 

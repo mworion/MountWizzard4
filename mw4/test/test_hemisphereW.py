@@ -129,12 +129,6 @@ def test_clearAxes2(qtbot):
     assert not suc
 
 
-def test_clearHemisphere(qtbot):
-    app.data.buildP = [(0, 0), (1, 0)]
-    app.hemisphereW.clearHemisphere()
-    assert app.data.buildP == []
-
-
 def test_drawCanvas(qtbot):
     app.hemisphereW.drawHemisphere()
     suc = app.hemisphereW.drawCanvas()
@@ -275,6 +269,172 @@ def test_markerPoint():
 def test_markerAltAz():
     val = app.hemisphereW.markerAltAz()
     assert isinstance(val, matplotlib.path.Path)
+
+
+def test_markerStar():
+    val = app.hemisphereW.markerStar()
+    assert isinstance(val, matplotlib.path.Path)
+
+
+def test_clearHemisphere(qtbot):
+    app.data.buildP = [(0, 0), (1, 0)]
+    app.hemisphereW.clearHemisphere()
+    assert app.data.buildP == []
+
+
+def test_setOperationMode():
+    assert app.hemisphereW.MODE is not None
+    assert 'normal' in app.hemisphereW.MODE
+    assert 'build' in app.hemisphereW.MODE
+    assert 'horizon' in app.hemisphereW.MODE
+    assert 'star' in app.hemisphereW.MODE
+
+
+def test_getIndexPoint_1():
+    event = None
+    plane = None
+    epsilon = 0
+    index = app.hemisphereW.getIndexPoint(event=event,
+                                          plane=plane,
+                                          epsilon=epsilon,
+                                          )
+    assert not index
+
+
+def test_getIndexPoint_2():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    plane = None
+    epsilon = 0
+    index = app.hemisphereW.getIndexPoint(event=event,
+                                          plane=plane,
+                                          epsilon=epsilon,
+                                          )
+    assert not index
+
+
+def test_getIndexPoint_3():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    plane = [(45, 0), (45, 360)]
+    epsilon = 0
+    index = app.hemisphereW.getIndexPoint(event=event,
+                                          plane=plane,
+                                          epsilon=epsilon,
+                                          )
+    assert not index
+
+
+def test_getIndexPoint_4():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    plane = [(45, 0), (45, 360)]
+    epsilon = 200
+    index = app.hemisphereW.getIndexPoint(event=event,
+                                          plane=plane,
+                                          epsilon=epsilon,
+                                          )
+    assert index == 0
+
+
+def test_getIndexPoint_5():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 182
+    event.ydata = 45
+    plane = [(45, 0), (45, 360)]
+    epsilon = 200
+    index = app.hemisphereW.getIndexPoint(event=event,
+                                          plane=plane,
+                                          epsilon=epsilon,
+                                          )
+    assert index == 1
+
+
+def test_getIndexPointX_1():
+    class Test:
+        pass
+    event = None
+    plane = None
+    index = app.hemisphereW.getIndexPointX(event=event,
+                                           plane=plane,
+                                           )
+    assert not index
+
+
+def test_getIndexPointX_2():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 182
+    event.ydata = 45
+    plane = None
+    index = app.hemisphereW.getIndexPointX(event=event,
+                                           plane=plane,
+                                           )
+    assert not index
+
+
+def test_getIndexPointX_3():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    plane = [(45, 0), (45, 360)]
+    index = app.hemisphereW.getIndexPointX(event=event,
+                                           plane=plane,
+                                           )
+    assert index == 0
+
+
+def test_getIndexPointX_4():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 182
+    event.ydata = 45
+    plane = [(45, 0), (45, 360)]
+    index = app.hemisphereW.getIndexPointX(event=event,
+                                           plane=plane,
+                                           )
+    assert index == 0
+
+
+def test_getIndexPointX_5():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 182
+    event.ydata = 45
+    plane = [(45, 0), (45, 180), (45, 360)]
+    index = app.hemisphereW.getIndexPointX(event=event,
+                                           plane=plane,
+                                           )
+    assert index == 1
+
+
+def test_getIndexPointX_6():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 182
+    event.ydata = 45
+    plane = [(45, 0)]
+    index = app.hemisphereW.getIndexPointX(event=event,
+                                           plane=plane,
+                                           )
+    assert not index
 
 
 def test_drawHemisphere_1():

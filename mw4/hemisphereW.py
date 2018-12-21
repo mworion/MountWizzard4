@@ -21,6 +21,7 @@
 import logging
 import bisect
 # external packages
+import PyQt5
 import numpy as np
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
@@ -515,8 +516,26 @@ class HemisphereWindow(widget.MWidget):
         return bisect.bisect_left(xt, event.xdata) - 1
 
     def onMouseNormal(self, event):
-        print('mouse normal clicked')
-        pass
+        if event.inaxes is None:
+            return False
+        if not (event.button == 1 and event.dblclick):
+            return False
+
+        textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
+        azimuth = int(event.xdata)
+        altitude = int(event.ydata)
+        question = textFormat.format(azimuth, altitude)
+        msg = PyQt5.QtWidgets.QMessageBox
+        reply = msg.question(self,
+                             'Hemisphere direct slew',
+                             question,
+                             msg.Yes | msg.No,
+                             msg.No,
+                             )
+        if reply != msg.Yes:
+            return False
+        print('slewing')
+        return True
 
     def onMouseEdit(self, event):
         print('mouse edit clicked')

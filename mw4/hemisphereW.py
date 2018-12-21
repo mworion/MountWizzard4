@@ -61,12 +61,12 @@ class HemisphereWindow(widget.MWidget):
                      starSize=6,
                      starColor='#00A000',
                      starAnnColor='#808080'),
-        polar=dict(horMarker='None',
-                   horColor='#006000',
-                   buildPColor='#00A000',
-                   starSize=12,
-                   starColor='#FFFF00',
-                   starAnnColor='#F0F0F0')
+        star=dict(horMarker='None',
+                  horColor='#006000',
+                  buildPColor='#00A000',
+                  starSize=12,
+                  starColor='#FFFF00',
+                  starAnnColor='#F0F0F0')
     )
 
     def __init__(self, app):
@@ -102,7 +102,7 @@ class HemisphereWindow(widget.MWidget):
         # for the stars in background
         self.hemisphereMatS = self.embedMatplot(self.ui.hemisphereS)
         self.hemisphereMatS.parentWidget().setStyleSheet(self.BACK)
-        self.ui.hemisphereS.setVisible(False)
+        self.ui.hemisphereS.setVisible(True)
         self.clearRect(self.hemisphereMatS, False)
 
         # signals for gui
@@ -119,7 +119,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkEditNone.clicked.connect(lambda: self.setOperationMode('normal'))
         self.ui.checkEditHorizonMask.clicked.connect(lambda: self.setOperationMode('horizon'))
         self.ui.checkEditModelPoints.clicked.connect(lambda: self.setOperationMode('model'))
-        self.ui.checkPolarAlignment.clicked.connect(lambda: self.setOperationMode('polar'))
+        self.ui.checkPolarAlignment.clicked.connect(lambda: self.setOperationMode('star'))
 
         if 'mainW' in self.app.config:
             self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
@@ -400,6 +400,21 @@ class HemisphereWindow(widget.MWidget):
         marker = mpath.Path(verts, codes)
         return marker
 
+    @staticmethod
+    def markerStar():
+        """
+        markerStar constructs a custom marker for presentation of build points
+
+        :return: marker
+        """
+
+        star = mpath.Path.unit_regular_star(8)
+        # concatenate the circle with an internal cutout of the star
+        verts = np.concatenate([star.vertices])
+        codes = np.concatenate([star.codes])
+        marker = mpath.Path(verts, codes)
+        return marker
+
     def clearHemisphere(self):
         """
         clearHemisphere is called when after startup the location of the mount is changed
@@ -413,12 +428,27 @@ class HemisphereWindow(widget.MWidget):
     def setOperationMode(self, ID):
         """
         setOperationMode changes the operation mode of the hemisphere window(s) depending
-        on the choice, colors and styles will be changed.
+        on the choice, colors and styles will be changed. this also is valid for the stacking
+        order of the widgets
+
+        normal mode:    hemisphereM is on top,
+                        hemisphere is next,
+                        hemisphereS is bottom
+        edit mode:      hemisphere is on top,
+                        hemisphereM is next,
+                        hemisphereS is bottom
+        horizon mode:   hemisphere is on top,
+                        hemisphereM is next,
+                        hemisphereS is bottom
+        star mode:      hemisphereS is on top,
+                        hemisphereM is next,
+                        hemisphere is bottom
 
         :param ID: operation mode as text
         :return: success
         """
 
+        # styles
         if self.horizonMarker is not None:
             self.horizonMarker.set_marker(self.MODE[ID]['horMarker'])
             self.horizonMarker.set_color(self.MODE[ID]['horColor'])
@@ -426,6 +456,21 @@ class HemisphereWindow(widget.MWidget):
             self.pointsBuild.set_color(self.MODE[ID]['buildPColor'])
         if self.pointsBuild is not None:
             self.pointsBuild.set_color(self.MODE[ID]['buildPColor'])
+
+        # stacking of widgets in the right order for managing the mouse events right
+        if ID is 'star':
+            self.ui.hemisphere.raise_()
+            self.ui.hemisphereM.raise_()
+            self.ui.hemisphereS.raise_()
+        elif ID is 'normal':
+            self.ui.hemisphereS.raise_()
+            self.ui.hemisphere.raise_()
+            self.ui.hemisphereM.raise_()
+        else:
+            self.ui.hemisphereS.raise_()
+            self.ui.hemisphereM.raise_()
+            self.ui.hemisphere.raise_()
+
         self.drawCanvas()
         return True
 
@@ -469,16 +514,16 @@ class HemisphereWindow(widget.MWidget):
         xt = [i[0] for i in plane]
         return bisect.bisect_left(xt, event.xdata) - 1
 
+    def onMouseNormal(self, event):
+        print('mouse normal clicked')
+        pass
+
     def onMouseEdit(self, event):
         print('mouse edit clicked')
         pass
 
-    def onMouseSlew(self, event):
-        print('mouse slew clicked')
-        pass
-
-    def onMouseMove(self, event):
-        print('mouse move clicked')
+    def onMouseStar(self, event):
+        print('mouse star clicked')
         pass
 
     def drawHemisphere(self):
@@ -504,9 +549,12 @@ class HemisphereWindow(widget.MWidget):
         self.clearAxes(axesM, visible=False)
         self.clearAxes(axesS, visible=False)
         # setting the mouse handler
-        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event', self.onMouseEdit)
-        self.hemisphereMatS.figure.canvas.mpl_connect('button_press_event', self.onMouseSlew)
-        self.hemisphereMatM.figure.canvas.mpl_connect('button_press_event', self.onMouseMove)
+        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
+                                                     self.onMouseEdit)
+        self.hemisphereMatM.figure.canvas.mpl_connect('button_press_event',
+                                                      self.onMouseNormal)
+        self.hemisphereMatS.figure.canvas.mpl_connect('button_press_event',
+                                                      self.onMouseStar)
 
         # the static part (model points, horizon, celestial paths, meridian limits)
         # drawing horizon
@@ -612,6 +660,14 @@ class HemisphereWindow(widget.MWidget):
         axesM.add_patch(self.pointerDome)
 
         # and the the star part (alignment stars)
+        x = [10, 20, 30]
+        y = [10, 50, 10]
+        self.starsAlign, = axesS.plot(x, y,
+                                      marker=self.markerStar(),
+                                      markersize=9,
+                                      color='#FF00FF',
+                                      zorder=-20,
+                                      )
 
         # drawing the canvas
         axes.figure.canvas.draw()

@@ -97,7 +97,7 @@
     <string notr="true"/>
    </property>
   </widget>
-  <widget class="QPushButton" name="clearPoints">
+  <widget class="QPushButton" name="clearBuildP">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -151,7 +151,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QRadioButton" name="checkEditModelPoints">
+   <widget class="QRadioButton" name="checkEditBuildPoints">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -166,7 +166,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Edit Model Points</string>
+     <string>Edit Build Points</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="checkEditHorizonMask">
@@ -751,7 +751,7 @@
     </property>
    </widget>
   </widget>
-  <zorder>clearPoints</zorder>
+  <zorder>clearBuildP</zorder>
   <zorder>groupBox_2</zorder>
   <zorder>hemisphere</zorder>
   <zorder>groupBox</zorder>

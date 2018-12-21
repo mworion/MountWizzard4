@@ -119,7 +119,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mainW.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkEditNone.clicked.connect(lambda: self.setOperationMode('normal'))
         self.ui.checkEditHorizonMask.clicked.connect(lambda: self.setOperationMode('horizon'))
-        self.ui.checkEditModelPoints.clicked.connect(lambda: self.setOperationMode('model'))
+        self.ui.checkEditBuildPoints.clicked.connect(lambda: self.setOperationMode('model'))
         self.ui.checkPolarAlignment.clicked.connect(lambda: self.setOperationMode('star'))
 
         if 'mainW' in self.app.config:
@@ -476,7 +476,7 @@ class HemisphereWindow(widget.MWidget):
         return True
 
     @staticmethod
-    def getIndexPoint(event, plane, epsilon):
+    def getIndexPoint(event=None, plane=None, epsilon=2):
         """
         getIndexPoint returns the index of the point which is nearest to the coordinate
         of the mouse click when the click is in distance epsilon of the points. otherwise
@@ -488,6 +488,10 @@ class HemisphereWindow(widget.MWidget):
         :return: index or none
         """
 
+        if event is None:
+            return None
+        if plane is None:
+            return None
         if len(plane) == 0:
             return None
         xt = np.asarray([i[0] for i in plane])
@@ -500,7 +504,7 @@ class HemisphereWindow(widget.MWidget):
         return ind
 
     @staticmethod
-    def getIndexPointX(event, plane):
+    def getIndexPointX(event=None, plane=None):
         """
         getIndexPointX returns the index of the point which has a x coordinate closest to
         the left of the x coordinate of the mouse click regardless which y coordinate it has
@@ -510,6 +514,10 @@ class HemisphereWindow(widget.MWidget):
         :return: index or none
         """
 
+        if event is None:
+            return None
+        if plane is None:
+            return None
         if len(plane) < 2:
             return None
         xt = [i[0] for i in plane]
@@ -547,6 +555,113 @@ class HemisphereWindow(widget.MWidget):
         print('slewing')
         return True
 
+    def addHorizonPoint(self, index=None, horizon=None, event=None):
+        """
+
+        :param index:
+        :param horizon:
+        :param event:
+        :return:
+        """
+
+        if index is None:
+            return False
+        if horizon is None:
+            return False
+        if event is None:
+            return False
+        '''
+        horizon.insert(index + 1, (event.xdata, event.ydata))
+        self.maskPlotMarker.set_data([i[0] for i in horizon], [i[1] for i in horizon])
+        x = [i[0] for i in horizon]
+        x.insert(0, 0)
+        x.append(360)
+        y = [i[1] for i in horizon]
+        y.insert(0, 0)
+        y.append(0)
+        self.maskPlotFill.set_xy(numpy.column_stack((x, y)))
+        '''
+
+    def deleteHorizonPoint(self, index=None, horizon=None):
+        """
+
+        :param index:
+        :param horizon:
+        :return:
+        """
+
+        if index is None:
+            return False
+        if horizon is None:
+            return False
+
+        if len(horizon) > 2:
+            del (horizon[ind])
+        # now redraw plot
+        self.maskPlotMarker.set_data([i[0] for i in horizon], [i[1] for i in horizon])
+        x = [i[0] for i in horizon]
+        x.insert(0, 0)
+        x.append(360)
+        y = [i[1] for i in horizon]
+        y.insert(0, 0)
+        y.append(0)
+        self.maskPlotFill.set_xy(numpy.column_stack((x, y)))
+
+    def editHorizonMask(self, event):
+        """
+
+        :param event:
+        :return:
+        """
+
+        index = self.getIndexPointX(event=event, plane=horizonP)
+        if index is None:
+            return False
+        horizonP = self.app.data.horizonPP
+
+        if event.button == 3:
+            suc = self.addHorizonPoint(index=index, horizon=horizonP, event=event)
+        elif event.button == 1:
+            suc = self.deleteHorizonPoint(index=index, horizon=horizonP)
+        else:
+            return False
+        return suc
+
+    def editBuildPoints(self, event):
+        """
+
+        :param event:
+        :return:
+        """
+
+        '''
+        if self.ui.checkEditModelPoints.isChecked():
+            ind = self.get_ind_under_point(event, 2, points)
+        if self.ui.checkEditHorizonMask.isChecked():
+            ind = self.get_ind_under_point(event, 2, horizon)
+            indlow = self.get_two_ind_under_point_in_x(event, horizon)
+        if event.button == 3 and ind is not None and self.ui.checkEditModelPoints.isChecked():
+            if len(points) > 0:
+                del (points[ind])
+                self.annotate[ind].remove()
+                del (self.annotate[ind])
+            self.pointsPlotBig.set_data([i[0] for i in points], [i[1] for i in points])
+            self.pointsPlotSmall.set_data([i[0] for i in points], [i[1] for i in points])
+        if event.button == 1 and ind is None and self.ui.checkEditModelPoints.isChecked():
+            points.append((event.xdata, event.ydata))
+            if self.app.ui.checkSortPoints.isChecked():
+                self.app.workerModelingDispatcher.modelingRunner.modelPoints.sortPoints()
+            self.annotate.append(self.hemisphereMatplotlib.axes.annotate('', xy=(
+            event.xdata + self.offx, event.ydata + self.offy), color='#E0E0E0'))
+            self.pointsPlotBig.set_data([i[0] for i in points], [i[1] for i in points])
+            self.pointsPlotSmall.set_data([i[0] for i in points], [i[1] for i in points])
+        if self.ui.checkEditModelPoints.isChecked():
+            for i in range(0, len(points)):
+                self.annotate[i].set_text('{0:2d}'.format(i + 1))
+            self.app.messageQueue.put('ToModel>{0:02d}'.format(len(points)))
+        '''
+        return True
+
     def onMouseEdit(self, event):
         """
         onMouseEdit handles the mouse event in normal mode. this means depending on the
@@ -556,7 +671,15 @@ class HemisphereWindow(widget.MWidget):
         :param event: mouse events
         :return: success
         """
+
+        if self.ui.checkEditHorizonMask.isChecked():
+            suc = self.editHorizonMask(event)
+        elif self.ui.checkEditBuildPoints.isChecked():
+            suc = self.editBuildPoints(event)
+        else:
+            return False
         print('mouse edit clicked')
+        return suc
 
     def onMouseStar(self, event):
         """

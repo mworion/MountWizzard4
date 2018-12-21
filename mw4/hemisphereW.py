@@ -42,6 +42,33 @@ class HemisphereWindow(widget.MWidget):
 
     BACK = 'background-color: transparent;'
 
+    MODE = dict(
+        normal=dict(horMarker='None',
+                    horColor='#006000',
+                    buildPColor='#00A000',
+                    starSize=6,
+                    starColor='#00A000',
+                    starAnnColor='#808080'),
+        model=dict(horMarker='None',
+                   horColor='#006000',
+                   buildPColor='#FF00FF',
+                   starSize=6,
+                   starColor='#00A000',
+                   starAnnColor='#808080'),
+        horizon=dict(horMarker='o',
+                     horColor='#FF00FF',
+                     buildPColor='#00A000',
+                     starSize=6,
+                     starColor='#00A000',
+                     starAnnColor='#808080'),
+        polar=dict(horMarker='None',
+                   horColor='#006000',
+                   buildPColor='#00A000',
+                   starSize=12,
+                   starColor='#FFFF00',
+                   starAnnColor='#F0F0F0')
+    )
+
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -97,6 +124,7 @@ class HemisphereWindow(widget.MWidget):
         if 'mainW' in self.app.config:
             self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
             self.app.data.loadHorizonP()
+        self.setOperationMode('normal')
         self.initConfig()
 
     def initConfig(self):
@@ -382,45 +410,22 @@ class HemisphereWindow(widget.MWidget):
         self.app.data.clearBuildP()
         self.drawHemisphere()
 
-    def setOperationMode(self, mode):
+    def setOperationMode(self, ID):
         """
-        setOperationMode changes the operation mode of the hemisphere window. depending
+        setOperationMode changes the operation mode of the hemisphere window(s) depending
         on the choice, colors and styles will be changed.
 
-        :param mode: operation mode as text
+        :param ID: operation mode as text
         :return: success
         """
 
-        # reset the settings
         if self.horizonMarker is not None:
-            self.horizonMarker.set_marker('None')
-            self.horizonMarker.set_color('#006000')
+            self.horizonMarker.set_marker(self.MODE[ID]['horMarker'])
+            self.horizonMarker.set_color(self.MODE[ID]['horColor'])
         if self.pointsBuild is not None:
-            self.pointsBuild.set_color('#00A000')
-        # self.starsAlignment.set_color('#C0C000')
-        # self.starsAlignment.set_markersize(6)
-        # for i in range(0, len(self.starsAnnotate)):
-        #    self.starsAnnotate[i].set_color('#808080')
-        self.ui.hemisphere.stackUnder(self.ui.hemisphereM)
-
-        # now choose the right styles
-        if mode == 'normal':
-            pass
-        elif mode == 'model':
-            if self.pointsBuild is not None:
-                self.pointsBuild.set_color('#FF00FF')
-            self.ui.hemisphereM.stackUnder(self.ui.hemisphere)
-        elif mode == 'horizon':
-            if self.horizonMarker is not None:
-                self.horizonMarker.set_marker('o')
-                self.horizonMarker.set_color('#FF00FF')
-            self.ui.hemisphereM.stackUnder(self.ui.hemisphere)
-        elif mode == 'polar':
-            # self.starsAlignment.set_color('#FFFF00')
-            # self.starsAlignment.set_markersize(12)
-            # for i in range(0, len(self.starsAnnotate)):
-            #    self.starsAnnotate[i].set_color('#F0F0F0')
-            self.ui.hemisphere.stackUnder(self.ui.hemisphereM)
+            self.pointsBuild.set_color(self.MODE[ID]['buildPColor'])
+        if self.pointsBuild is not None:
+            self.pointsBuild.set_color(self.MODE[ID]['buildPColor'])
         self.drawCanvas()
         return True
 
@@ -464,6 +469,18 @@ class HemisphereWindow(widget.MWidget):
         xt = [i[0] for i in plane]
         return bisect.bisect_left(xt, event.xdata) - 1
 
+    def onMouseEdit(self, event):
+        print('mouse edit clicked')
+        pass
+
+    def onMouseSlew(self, event):
+        print('mouse slew clicked')
+        pass
+
+    def onMouseMove(self, event):
+        print('mouse move clicked')
+        pass
+
     def drawHemisphere(self):
         """
         drawHemisphere is the basic renderer for all items and widgets in the hemisphere
@@ -477,6 +494,7 @@ class HemisphereWindow(widget.MWidget):
 
         :return: nothing
         """
+
         # shortening the references
         axes = self.hemisphereMat.figure.axes[0]
         axesM = self.hemisphereMatM.figure.axes[0]
@@ -485,6 +503,10 @@ class HemisphereWindow(widget.MWidget):
         self.clearAxes(axes, visible=True)
         self.clearAxes(axesM, visible=False)
         self.clearAxes(axesS, visible=False)
+        # setting the mouse handler
+        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event', self.onMouseEdit)
+        self.hemisphereMatS.figure.canvas.mpl_connect('button_press_event', self.onMouseSlew)
+        self.hemisphereMatM.figure.canvas.mpl_connect('button_press_event', self.onMouseMove)
 
         # the static part (model points, horizon, celestial paths, meridian limits)
         # drawing horizon

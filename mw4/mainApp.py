@@ -44,7 +44,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     __all__ = ['MountWizzard4',
                ]
-    version = '0.1'
+    version = '0.3dev1'
     logger = logging.getLogger(__name__)
 
     # central message and logging dispatching
@@ -63,17 +63,17 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.loadConfig()
 
         # get timing constant
-        pathToData = self.mwGlob['configDir']
+        pathToData = self.mwGlob['dataDir']
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
                                    pathToData=pathToData,
                                    expire=True,
-                                   verbose=False,
+                                   verbose=True,
                                    )
         # get all planets for calculation
         load = skyfield.api.Loader(pathToData,
                                    verbose=True,
-                                   expire=False,
+                                   expire=True,
                                    )
         self.planets = load('de421.bsp')
         self.relay = kmRelay.KMRelay(host='192.168.2.15',

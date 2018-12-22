@@ -209,7 +209,7 @@ def main():
 
     # defining system wide definitions:
     mwGlob = {
-        'build': '0.1dev0',
+        'build': mainApp.MountWizzard4.version,
         'frozen': False,
         'bundleDir': '',
         'workDir': '',

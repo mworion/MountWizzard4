@@ -39,9 +39,10 @@ block_cipher = None
 pythonPath = '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6'
 sitePack = pythonPath + '/site-packages'
 distDir = '/Users/mw/PycharmProjects/MountWizzard4/dist'
+packageDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4'
 
 a = Analysis(['mw4/loader.py'],
-    pathex=['/Users/mw/PycharmProjects/MountWizzard4/mw4'],
+    pathex=[packageDir],
     binaries=[
         ],
     datas=[(sitePack + '/skyfield/data', './skyfield/data'),

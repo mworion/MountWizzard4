@@ -753,35 +753,26 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        if event.inaxes is None:
-            return
+        if not event.inaxes:
+            return False
         # todo: star selection commands
         print('mouse star clicked')
+        return True
 
-    def drawHemisphere(self):
+    def drawHemisphereStatic(self, axes=None):
         """
-        drawHemisphere is the basic renderer for all items and widgets in the hemisphere
-        window. it takes care of drawing the grid, enables three layers of transparent
-        widgets for static content, moving content and star maps. this is mainly done to
-        get a reasonable performance when redrawing the canvas. in addition it initializes
-        the objects for points markers, patches, lines etc. for making the window nice
-        and user friendly.
-        the user interaction on the hemisphere windows is done by the event handler of
-        matplotlib itself implementing an on Mouse handler, which takes care of functions.
+         drawHemisphereStatic renders the static part of the hemisphere window and puts
+         all drawing on the static plane. the content consist of:
+            - build points
+            - horizon mask
+            - celestial paths
+            - meridian limits
+        with all their styles an coloring
 
-        :return: nothing
+        :param axes: matplotlib axes object
+        :return:
         """
 
-        # shortening the references
-        axes = self.hemisphereMat.figure.axes[0]
-        axesM = self.hemisphereMatM.figure.axes[0]
-        axesS = self.hemisphereMatS.figure.axes[0]
-
-        self.clearAxes(axes, visible=True)
-        self.clearAxes(axesM, visible=False)
-        self.clearAxes(axesS, visible=False)
-
-        # the static part (model points, horizon, celestial paths, meridian limits)
         # drawing horizon
         showHorizon = self.app.mainW.ui.checkUseHorizon.isChecked()
         if self.app.data.horizonP and showHorizon:
@@ -825,6 +816,7 @@ class HemisphereWindow(widget.MWidget):
                                            zorder=10,
                                            )
                 self.pointsBuildAnnotate.append(annotation)
+
         # draw celestial equator
         visible = self.ui.checkShowCelestial.isChecked()
         celestial = self.app.data.generateCelestialEquator()
@@ -865,17 +857,29 @@ class HemisphereWindow(widget.MWidget):
                                                 visible=visible)
         axes.add_patch(self.meridianTrack)
 
-        # now the moving part (pointing of mount, dome position)
-        self.pointerAltAz, = axesM.plot(180, 45,
-                                        zorder=10,
-                                        color='#FF00FF',
-                                        marker=self.markerAltAz(),
-                                        markersize=25,
-                                        linestyle='none',
-                                        fillstyle='none',
-                                        clip_on=False,
-                                        visible=False,
-                                        )
+    def drawHemisphereMoving(self, axes=None):
+        """
+        drawHemisphereMoving is rendering the moving part which consists of:
+            - pointer: where the mount points to
+            - dome widget: which shows the position of the dome opening
+        the dynamic ones are located on a separate plane to improve rendering speed,
+        because we update this part very often.
+
+        :param axes: matplotlib axes object
+        :return:
+        """
+
+        # pointer
+        self.pointerAltAz, = axes.plot(180, 45,
+                                       zorder=10,
+                                       color='#FF00FF',
+                                       marker=self.markerAltAz(),
+                                       markersize=25,
+                                       linestyle='none',
+                                       fillstyle='none',
+                                       clip_on=False,
+                                       visible=False,
+                                       )
         # adding pointer of dome if dome is present
         self.pointerDome = mpatches.Rectangle((165, 0),
                                               30,
@@ -885,17 +889,57 @@ class HemisphereWindow(widget.MWidget):
                                               lw=3,
                                               fill=True,
                                               visible=False)
-        axesM.add_patch(self.pointerDome)
+        axes.add_patch(self.pointerDome)
 
+    def drawHemisphereStars(self, axes=None):
+        """
+        drawHemisphereStars is rendering the alignment star map. this moves over time with
+        the speed of earth turning. so we have to update the rendering, but on low speed
+        without having any user interaction.
+
+        :param axes: matplotlib axes object
+        :return:
+        """
+        # todo drawing of star field , actually only demo
         # and the the star part (alignment stars)
         x = [10, 20, 30]
         y = [10, 50, 10]
-        self.starsAlign, = axesS.plot(x, y,
-                                      marker=self.markerStar(),
-                                      markersize=9,
-                                      color='#FF00FF',
-                                      zorder=-20,
-                                      )
+        self.starsAlign, = axes.plot(x, y,
+                                     marker=self.markerStar(),
+                                     markersize=9,
+                                     color='#FF00FF',
+                                     zorder=-20,
+                                     )
+
+    def drawHemisphere(self):
+        """
+        drawHemisphere is the basic renderer for all items and widgets in the hemisphere
+        window. it takes care of drawing the grid, enables three layers of transparent
+        widgets for static content, moving content and star maps. this is mainly done to
+        get a reasonable performance when redrawing the canvas. in addition it initializes
+        the objects for points markers, patches, lines etc. for making the window nice
+        and user friendly.
+        the user interaction on the hemisphere windows is done by the event handler of
+        matplotlib itself implementing an on Mouse handler, which takes care of functions.
+
+        :return: nothing
+        """
+
+        # shortening the references
+        axes = self.hemisphereMat.figure.axes[0]
+        axesM = self.hemisphereMatM.figure.axes[0]
+        axesS = self.hemisphereMatS.figure.axes[0]
+
+        # clearing axes before drawing, only static visible, dynamic only when content
+        # is available. visibility is handled with their update method
+        self.clearAxes(axes, visible=True)
+        self.clearAxes(axesM, visible=False)
+        self.clearAxes(axesS, visible=False)
+
+        # calling renderer
+        self.drawHemisphereStatic(axes=axes)
+        self.drawHemisphereMoving(axes=axesM)
+        self.drawHemisphereStars(axes=axesS)
 
         # drawing the canvas
         axes.figure.canvas.draw()

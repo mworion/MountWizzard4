@@ -419,8 +419,6 @@ def test_getIndexPoint_5():
 
 
 def test_getIndexPointX_1():
-    class Test:
-        pass
     event = None
     plane = None
     index = app.hemisphereW.getIndexPointX(event=event,
@@ -498,7 +496,7 @@ def test_onMouseNormal_1():
     class Test:
         pass
     event = Test()
-    event.inaxes = None
+    event.inaxes = False
     suc = app.hemisphereW.onMouseNormal(event=event)
     assert not suc
 
@@ -631,6 +629,274 @@ def test_deleteHorizonPoint_3():
     app.data.horizonP = [(0, 0)]
     suc = app.hemisphereW.deleteHorizonPoint(data=app.data, event=event)
     assert not suc
+
+
+def test_editHorizonMask_1():
+    class Test:
+        def set_data(self, test, test1):
+            pass
+
+        def set_xy(self, test):
+            pass
+
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    event.button = 1
+    app.hemisphereW.horizonMarker = Test()
+    app.hemisphereW.horizonFill = Test()
+    suc = app.hemisphereW.editHorizonMask(data=app.data, event=event)
+    assert suc
+
+
+def test_editHorizonMask_2():
+    class Test:
+        def set_data(self, test, test1):
+            pass
+
+        def set_xy(self, test):
+            pass
+
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    event.button = 3
+    app.hemisphereW.horizonMarker = Test()
+    app.hemisphereW.horizonFill = Test()
+    suc = app.hemisphereW.editHorizonMask(data=app.data, event=event)
+    assert suc
+
+
+def test_editHorizonMask_3():
+    class Test:
+        def set_data(self, test, test1):
+            pass
+
+        def set_xy(self, test):
+            pass
+
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    event.button = 2
+    app.hemisphereW.horizonMarker = Test()
+    app.hemisphereW.horizonFill = Test()
+    suc = app.hemisphereW.editHorizonMask(data=app.data, event=event)
+    assert not suc
+
+
+def test_deleteBuildPointPoint_1():
+    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 10
+    event.ydata = 10
+    app.data.buildP = [(0, 0), (10, 10), (0, 360)]
+    suc = app.hemisphereW.deleteBuildPoint(data=app.data, event=event)
+    assert suc
+
+
+def test_deleteBuildPointPoint_2():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    app.data.buildP = [(0, 0), (10, 10), (0, 360)]
+    suc = app.hemisphereW.deleteBuildPoint(data=app.data, event=event)
+    assert not suc
+
+
+def test_editBuildPoints_1():
+    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+
+    class Test:
+        def set_data(self, test, test1):
+            pass
+
+        def set_xy(self, test):
+            pass
+
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    event.button = 1
+    app.hemisphereW.pointsBuild = Test()
+    suc = app.hemisphereW.editBuildPoints(data=app.data, event=event, axes=axes)
+    assert suc
+
+
+def test_editBuildPoints_2():
+    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+
+    class Test:
+        def set_data(self, test, test1):
+            pass
+
+        def set_xy(self, test):
+            pass
+
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    event.button = 3
+    app.hemisphereW.pointsBuild = Test()
+    suc = app.hemisphereW.editBuildPoints(data=app.data, event=event, axes=axes)
+    assert suc
+
+
+def test_editBuildPoints_3():
+    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+
+    class Test:
+        def set_data(self, test, test1):
+            pass
+
+        def set_xy(self, test):
+            pass
+
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    event.button = 2
+    app.hemisphereW.pointsBuild = Test()
+    suc = app.hemisphereW.editBuildPoints(data=app.data, event=event, axes=axes)
+    assert not suc
+
+
+def test_onMouseEdit_1():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = False
+    suc = app.hemisphereW.onMouseEdit(event=event)
+    assert not suc
+
+
+def test_onMouseEdit_2():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    suc = app.hemisphereW.onMouseEdit(event=event)
+    assert not suc
+
+
+def test_onMouseEdit_3():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    app.hemisphereW.ui.checkEditHorizonMask.setChecked(False)
+    app.hemisphereW.ui.checkEditBuildPoints.setChecked(False)
+    with mock.patch.object(app.hemisphereW,
+                           'editHorizonMask',
+                           return_value=True):
+        with mock.patch.object(app.hemisphereW,
+                               'editBuildPoints',
+                               return_value=True):
+            suc = app.hemisphereW.onMouseEdit(event=event)
+            assert not suc
+
+
+def test_onMouseEdit_4():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    app.hemisphereW.ui.checkEditHorizonMask.setChecked(True)
+    app.hemisphereW.ui.checkEditBuildPoints.setChecked(False)
+    with mock.patch.object(app.hemisphereW,
+                           'editHorizonMask',
+                           return_value=True):
+        with mock.patch.object(app.hemisphereW,
+                               'editBuildPoints',
+                               return_value=True):
+            suc = app.hemisphereW.onMouseEdit(event=event)
+            assert suc
+
+
+def test_onMouseEdit_5():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    app.hemisphereW.ui.checkEditHorizonMask.setChecked(False)
+    app.hemisphereW.ui.checkEditBuildPoints.setChecked(True)
+    with mock.patch.object(app.hemisphereW,
+                           'editHorizonMask',
+                           return_value=True):
+        with mock.patch.object(app.hemisphereW,
+                               'editBuildPoints',
+                               return_value=True):
+            suc = app.hemisphereW.onMouseEdit(event=event)
+            assert suc
+
+
+def test_onMouseEdit_6():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    app.hemisphereW.ui.checkEditHorizonMask.setChecked(True)
+    app.hemisphereW.ui.checkEditBuildPoints.setChecked(False)
+    with mock.patch.object(app.hemisphereW,
+                           'editHorizonMask',
+                           return_value=False):
+        with mock.patch.object(app.hemisphereW,
+                               'editBuildPoints',
+                               return_value=True):
+            suc = app.hemisphereW.onMouseEdit(event=event)
+            assert not suc
+
+
+def test_onMouseEdit_7():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    app.hemisphereW.ui.checkEditHorizonMask.setChecked(False)
+    app.hemisphereW.ui.checkEditBuildPoints.setChecked(True)
+    with mock.patch.object(app.hemisphereW,
+                           'editHorizonMask',
+                           return_value=True):
+        with mock.patch.object(app.hemisphereW,
+                               'editBuildPoints',
+                               return_value=False):
+            suc = app.hemisphereW.onMouseEdit(event=event)
+            assert not suc
+
+
+def test_onMouseStar_1():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = False
+    suc = app.hemisphereW.onMouseStar(event=event)
+    assert not suc
+
+
+def test_onMouseStar_2():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    suc = app.hemisphereW.onMouseStar(event=event)
+    assert suc
 
 
 def test_drawHemisphere_1():

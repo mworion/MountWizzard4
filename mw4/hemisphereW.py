@@ -394,6 +394,8 @@ class HemisphereWindow(widget.MWidget):
             return False
         if self.starsAlign is None:
             return False
+        if not self.ui.checkShowAlignStar.isChecked():
+            return False
         alt, az = self.calculateAlignStarPositions()
         self.starsAlign.set_data(az, alt)
         self.drawCanvasStar()

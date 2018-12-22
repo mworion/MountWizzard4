@@ -423,6 +423,9 @@ class HemisphereWindow(widget.MWidget):
 
         :return:
         """
+
+        self.pointsBuild = None
+        self.pointsBuildAnnotate = list()
         self.app.data.clearBuildP()
         self.drawHemisphere()
 

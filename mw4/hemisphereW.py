@@ -58,13 +58,13 @@ class HemisphereWindow(widget.MWidget):
                    starAnnColor='#808080'),
         horizon=dict(horMarker='o',
                      horColor='#FF00FF',
-                     buildPColor='#00A000',
+                     buildPColor='#004000',
                      starSize=6,
                      starColor='#00A000',
                      starAnnColor='#808080'),
         star=dict(horMarker='None',
-                  horColor='#006000',
-                  buildPColor='#00A000',
+                  horColor='#003000',
+                  buildPColor='#004000',
                   starSize=12,
                   starColor='#FFFF00',
                   starAnnColor='#F0F0F0')
@@ -125,7 +125,6 @@ class HemisphereWindow(widget.MWidget):
         if 'mainW' in self.app.config:
             self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
             self.app.data.loadHorizonP()
-        self.setOperationMode('normal')
         self.initConfig()
 
     def initConfig(self):
@@ -943,6 +942,16 @@ class HemisphereWindow(widget.MWidget):
         self.drawHemisphereStatic(axes=axes)
         self.drawHemisphereMoving(axes=axesM)
         self.drawHemisphereStars(axes=axesS)
+
+        if self.ui.checkEditNone.isChecked():
+            mode = 'normal'
+        elif self.ui.checkEditBuildPoints.isChecked():
+            mode = 'build'
+        elif self.ui.checkEditHorizonMask.isChecked():
+            mode = 'horizon'
+        elif self.ui.checkPolarAlignment.isChecked():
+            mode = 'star'
+        self.setOperationMode(mode)
 
         # drawing the canvas
         axes.figure.canvas.draw()

@@ -494,14 +494,6 @@ def test_getIndexPointX_6():
     assert not index
 
 
-def test_onMouseNormal_0():
-    class Test:
-        pass
-    event = None
-    suc = app.hemisphereW.onMouseNormal(event=event)
-    assert not suc
-
-
 def test_onMouseNormal_1():
     class Test:
         pass
@@ -574,6 +566,71 @@ def test_onMouseNormal_6():
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
         suc = app.hemisphereW.onMouseNormal(event=event)
         assert suc
+
+
+def test_addHorizonPoint_1():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
+    suc = app.hemisphereW.addHorizonPoint(data=app.data, event=event)
+    assert suc
+
+
+def test_addHorizonPoint_2():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    app.data.horizonP = [(0, 0)]
+    suc = app.hemisphereW.addHorizonPoint(data=app.data, event=event)
+    assert suc
+
+
+def test_addHorizonPoint_3():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    suc = app.hemisphereW.addHorizonPoint(data=app.data, event=event)
+    assert suc
+
+
+def test_deleteHorizonPoint_1():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 10
+    event.ydata = 10
+    app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
+    suc = app.hemisphereW.deleteHorizonPoint(data=app.data, event=event)
+    assert suc
+
+
+def test_deleteHorizonPoint_2():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
+    suc = app.hemisphereW.deleteHorizonPoint(data=app.data, event=event)
+    assert not suc
+
+
+def test_deleteHorizonPoint_3():
+    class Test:
+        pass
+    event = Test()
+    event.xdata = 180
+    event.ydata = 45
+    app.data.horizonP = [(0, 0)]
+    suc = app.hemisphereW.deleteHorizonPoint(data=app.data, event=event)
+    assert not suc
 
 
 def test_drawHemisphere_1():

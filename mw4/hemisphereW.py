@@ -535,9 +535,7 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        if event is None:
-            return False
-        if event.inaxes is None:
+        if not event.inaxes:
             return False
         if event.button != 1 or not event.dblclick:
             return False
@@ -565,22 +563,14 @@ class HemisphereWindow(widget.MWidget):
         where the next horizon point should be added. the coordinates are given from mouse
         click itself.
 
-        :param data: horizon point in tuples (alt, az)
+        :param data: point in tuples (alt, az)
         :param event: mouse event
         :return:
         """
 
-        if data is None:
-            return False
-        if event is None:
-            return False
-
         index = self.getIndexPointX(event=event, plane=data.horizonP) + 1
         suc = data.addHorizonP(value=(event.ydata, event.xdata),
                                position=index)
-        y, x = zip(*self.app.data.horizonP)
-        self.horizonMarker.set_data(x, y)
-        self.horizonFill.set_xy(np.column_stack((x, y)))
         return suc
 
     def deleteHorizonPoint(self, data=None, event=None):
@@ -588,35 +578,26 @@ class HemisphereWindow(widget.MWidget):
         deleteHorizonPoint selects the next horizon point in distance max and tries to
         delete it. there have to be at least 2 horizon point left.
 
-        :param data: horizon point in tuples (alt, az)
+        :param data: point in tuples (alt, az)
         :param event: mouse event
         :return: success
         """
-
-        if data is None:
-            return False
-        if event is None:
-            return False
 
         index = self.getIndexPoint(event=event, plane=data.horizonP)
         suc = False
         if len(data.horizonP) > 2:
             suc = data.delHorizonP(position=index)
-        y, x = zip(*self.app.data.horizonP)
-        self.horizonMarker.set_data(x, y)
-        self.horizonFill.set_xy(np.column_stack((x, y)))
         return suc
 
-    def editHorizonMask(self, event):
+    def editHorizonMask(self, data=None, event=None):
         """
         editHorizonMask does dispatching the different mouse clicks for adding or deleting
         horizon mask points and call the function accordingly.
 
+        :param data: point in tuples (alt, az)
         :param event: mouse event
         :return: success
         """
-
-        data = self.app.data
 
         if event.button == 1:
             suc = self.addHorizonPoint(data=data, event=event)
@@ -625,24 +606,24 @@ class HemisphereWindow(widget.MWidget):
         else:
             return False
 
+        y, x = zip(*data.horizonP)
+        self.horizonMarker.set_data(x, y)
+        self.horizonFill.set_xy(np.column_stack((x, y)))
+
         self.drawCanvas()
         return suc
 
-    def addBuildPoint(self, event=None):
+    def addBuildPoint(self, data=None, event=None, axes=None):
         """
         addBuildPoint calculates from the position of the left mouse click the position
         where the next build point should be added. the coordinates are given from mouse
         click itself.
 
+        :param data: point in tuples (alt, az)
         :param event: mouse event
+        :param axes: link to drawing axes in matplotlib
         :return:
         """
-
-        if event is None:
-            return False
-
-        data = self.app.data
-        axes = self.hemisphereMat.figure.axes[0].axes
 
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
         # if no point found, add at the end
@@ -693,19 +674,15 @@ class HemisphereWindow(widget.MWidget):
         self.pointsBuildAnnotate.insert(index, newAnnotation)
         return True
 
-    def deleteBuildPoint(self, event=None):
+    def deleteBuildPoint(self, data=None, event=None):
         """
         deleteBuildPoint selects the next build point in distance max and tries to
         delete it. there have to be at least 2 horizon point left.
 
+        :param data: point in tuples (alt, az)
         :param event: mouse event
         :return: success
         """
-
-        if event is None:
-            return False
-
-        data = self.app.data
 
         index = self.getIndexPoint(event=event, plane=data.buildP)
         suc = data.delBuildP(position=index)
@@ -714,21 +691,21 @@ class HemisphereWindow(widget.MWidget):
             del self.pointsBuildAnnotate[index]
         return suc
 
-    def editBuildPoints(self, event):
+    def editBuildPoints(self, data=None, event=None, axes=None):
         """
         editBuildPoints does dispatching the different mouse clicks for adding or deleting
         build points and call the function accordingly.
 
+        :param data: points in tuples (alt, az)
         :param event: mouse event
+        :param axes: link to drawing axes in matplotlib
         :return: success
         """
 
-        data = self.app.data
-
         if event.button == 1:
-            suc = self.addBuildPoint(event=event)
+            suc = self.addBuildPoint(data=data, event=event, axes=axes)
         elif event.button == 3:
-            suc = self.deleteBuildPoint(event=event)
+            suc = self.deleteBuildPoint(data=data, event=event)
         else:
             return False
 
@@ -753,12 +730,15 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        if event.inaxes is None:
-            return
+        data = self.app.data
+        axes = self.hemisphereMat.figure.axes[0].axes
+
+        if not event.inaxes:
+            return False
         if self.ui.checkEditHorizonMask.isChecked():
-            suc = self.editHorizonMask(event)
+            suc = self.editHorizonMask(event=event, data=data)
         elif self.ui.checkEditBuildPoints.isChecked():
-            suc = self.editBuildPoints(event)
+            suc = self.editBuildPoints(event=event, data=data, axes=axes)
         else:
             return False
         return suc
@@ -800,13 +780,6 @@ class HemisphereWindow(widget.MWidget):
         self.clearAxes(axes, visible=True)
         self.clearAxes(axesM, visible=False)
         self.clearAxes(axesS, visible=False)
-        # setting the mouse handler
-        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
-                                                     self.onMouseEdit)
-        self.hemisphereMatM.figure.canvas.mpl_connect('button_press_event',
-                                                      self.onMouseNormal)
-        self.hemisphereMatS.figure.canvas.mpl_connect('button_press_event',
-                                                      self.onMouseStar)
 
         # the static part (model points, horizon, celestial paths, meridian limits)
         # drawing horizon
@@ -928,3 +901,11 @@ class HemisphereWindow(widget.MWidget):
         axes.figure.canvas.draw()
         axesM.figure.canvas.draw()
         axesS.figure.canvas.draw()
+
+        # finally setting the mouse handler
+        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
+                                                     self.onMouseEdit)
+        self.hemisphereMatM.figure.canvas.mpl_connect('button_press_event',
+                                                      self.onMouseNormal)
+        self.hemisphereMatS.figure.canvas.mpl_connect('button_press_event',
+                                                      self.onMouseStar)

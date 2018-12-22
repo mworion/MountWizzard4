@@ -1,8 +1,10 @@
 ToDo list:
 
 - add dome support from indi
-- edit horizon points
-- edit build points
+- save horizon
+- load horizon
+- save buildP
+- load buildP
 - link dome to hemisphere
 - align stars
 - select and slew align stars

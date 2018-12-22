@@ -506,7 +506,6 @@ class HemisphereWindow(widget.MWidget):
             # self.starsAlignAnnotate.set_color(self.MODE[mode]['horMarker'])
             self.starsAlign.set_color(self.MODE[mode]['starColor'])
 
-
         # stacking of widgets in the right order for managing the mouse events right
         if mode is 'star':
             self.ui.hemisphere.raise_()
@@ -522,6 +521,7 @@ class HemisphereWindow(widget.MWidget):
             self.ui.hemisphere.raise_()
 
         self.drawCanvas()
+        self.drawCanvasStar()
         return True
 
     @staticmethod

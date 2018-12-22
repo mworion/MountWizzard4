@@ -24,7 +24,6 @@ import shutil
 # external packages
 import astropy
 # local import
-
 # remove TK
 sys.modules['FixTk'] = None
 
@@ -33,13 +32,12 @@ DISTPATH = '../dist'
 WORKPATH = '../build'
 astropy_path, = astropy.__path__
 
-BUILD_NO = '0.2dev0'
-
 block_cipher = None
 pythonPath = '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6'
 sitePack = pythonPath + '/site-packages'
 distDir = '/Users/mw/PycharmProjects/MountWizzard4/dist'
 packageDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4'
+importDir = '/Users/mw/PycharmProjects/MountWizzard4'
 
 a = Analysis(['mw4/loader.py'],
     pathex=[packageDir],
@@ -121,6 +119,11 @@ exe = EXE(pyz,
 # we have to prepare the build as there is an error when overwriting it
 # if file present, we have to delete python3 --version
 #
+
+sys.path.append(importDir)
+from mw4.mainApp import MountWizzard4
+BUILD_NO = MountWizzard4.version
+#BUILD_NO = '0.3dev1'
 
 buildFile = distDir + '/MountWizzard4.app'
 buildFileNumber = distDir + '/mountwizzard4-' + BUILD_NO + '.app'

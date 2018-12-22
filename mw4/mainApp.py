@@ -71,6 +71,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    expire=True,
                                    verbose=None,
                                    )
+        # set observer position to last one first
+        lat = self.config.get('topoLat', 51.47)
+        lon = self.config.get('topoLon', 0)
+        elev = self.config.get('topoElev', 46)
+        topo = skyfield.api.Topos(longitude_degrees=lon,
+                                  latitude_degrees=lat,
+                                  elevation_m=elev)
+        self.mount.obsSite.location = topo
+
         # get all planets for calculation
         load = skyfield.api.Loader(pathToData,
                                    expire=True,
@@ -87,7 +96,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get the window widgets up
-        self.data = build.DataPoint(lat=self.config.get('latitudeTemp', 45),
+        self.data = build.DataPoint(lat=lat,
                                     mwGlob=self.mwGlob,
                                     )
         self.mainW = mainW.MainWindow(self)
@@ -120,7 +129,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         config = self.config
-        config['latitudeTemp'] = self.data.lat
+        location = self.mount.obsSite.location
+        if location is not None:
+            config['topoLat'] = location.latitude.degrees
+            config['topoLon'] = location.longitude.degrees
+            config['topoElev'] = location.elevation.m
         self.mainW.storeConfig()
         self.messageW.storeConfig()
         self.hemisphereW.storeConfig()
@@ -305,6 +318,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         :return: success
         """
+
         location = self.mount.obsSite.location
         if location is None:
             return False
@@ -346,7 +360,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         if len(df) > 0:
             df = df[df['magnitude'] <= 2.5]
-            stars = skyfield.api.Star.from_dataframe(df)
+            stars = list()
+            for index, row in df.iterrows():
+                stars.append(skyfield.api.Star.from_dataframe(row))
             with open(pickleFileName, 'wb') as outfile:
                 pickle.dump(stars, outfile)
         else:

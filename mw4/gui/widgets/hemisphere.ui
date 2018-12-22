@@ -678,7 +678,7 @@
    <property name="title">
     <string>Setup</string>
    </property>
-   <widget class="QCheckBox" name="checkShowAlignmentStars">
+   <widget class="QCheckBox" name="checkShowAlignStar">
     <property name="geometry">
      <rect>
       <x>10</x>

@@ -48,19 +48,19 @@ class HemisphereWindow(widget.MWidget):
                     horColor='#006000',
                     buildPColor='#00A000',
                     starSize=6,
-                    starColor='#00A000',
+                    starColor='#C0C000',
                     starAnnColor='#808080'),
         build=dict(horMarker='None',
                    horColor='#006000',
                    buildPColor='#FF00FF',
                    starSize=6,
-                   starColor='#00A000',
+                   starColor='#C0C000',
                    starAnnColor='#808080'),
         horizon=dict(horMarker='o',
                      horColor='#FF00FF',
                      buildPColor='#004000',
                      starSize=6,
-                     starColor='#00A000',
+                     starColor='#C0C000',
                      starAnnColor='#808080'),
         star=dict(horMarker='None',
                   horColor='#003000',
@@ -121,6 +121,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
+        self.ui.checkShowAlignStar.clicked.connect(self.updateAlignStar)
 
         if 'mainW' in self.app.config:
             self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
@@ -144,6 +145,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowSlewPath.setChecked(config.get('checkShowSlewPath', False))
         self.ui.checkShowMeridian.setChecked(config.get('checkShowMeridian', False))
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
+        self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         if config.get('showStatus'):
             self.showWindow()
         return True
@@ -160,6 +162,7 @@ class HemisphereWindow(widget.MWidget):
         config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
         config['checkShowMeridian'] = self.ui.checkShowMeridian.isChecked()
         config['checkShowCelestial'] = self.ui.checkShowCelestial.isChecked()
+        config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
 
     def resizeEvent(self, QResizeEvent):
         """
@@ -363,6 +366,21 @@ class HemisphereWindow(widget.MWidget):
         self.drawCanvasMoving()
         return True
 
+    def updateAlignStar(self):
+        """
+        updateAlignStar is called whenever an update of coordinates from mount are
+        given. it takes the actual values and corrects the point in window if window is in
+        show status.
+
+        :return: success
+        """
+
+        if not self.showStatus:
+            return False
+        self.starsAlign.set_visible(self.ui.checkShowAlignStar.isChecked())
+        self.drawCanvasStar()
+        return True
+
     @staticmethod
     def markerPoint():
         """
@@ -450,6 +468,7 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
+        mode = ''
         if self.ui.checkEditNone.isChecked():
             mode = 'normal'
         elif self.ui.checkEditBuildPoints.isChecked():
@@ -910,15 +929,30 @@ class HemisphereWindow(widget.MWidget):
         :param axes: matplotlib axes object
         :return:
         """
-        # todo drawing of star field , actually only demo
-        # and the the star part (alignment stars)
-        x = [10, 20, 30]
-        y = [10, 50, 10]
-        self.starsAlign, = axes.plot(x, y,
+
+        visible = self.ui.checkShowAlignStar.isChecked()
+
+        # return True
+        earth = self.app.planets['earth']
+        location = self.app.mount.obsSite.location
+        observer = earth + location
+        time = self.app.mount.obsSite.ts.now()
+
+        altL = list()
+        azL = list()
+        for star in self.app.alignStars:
+            alt, az, d = observer.at(time).observe(star).apparent().altaz()
+            altL.append(alt.degrees)
+            azL.append(az.degrees)
+
+        self.starsAlign, = axes.plot(azL,
+                                     altL,
                                      marker=self.markerStar(),
                                      markersize=9,
-                                     color='#FF00FF',
+                                     linestyle='',
+                                     color='#C0C000',
                                      zorder=-20,
+                                     visible=visible,
                                      )
 
     def drawHemisphere(self):

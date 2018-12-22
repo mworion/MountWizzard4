@@ -41,26 +41,26 @@ class HemisphereWindow(widget.MWidget):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
+    CYCLE_GUI = 3000
     BACK = 'background-color: transparent;'
-
     MODE = dict(
         normal=dict(horMarker='None',
                     horColor='#006000',
                     buildPColor='#00A000',
                     starSize=6,
-                    starColor='#C0C000',
+                    starColor='#808000',
                     starAnnColor='#808080'),
         build=dict(horMarker='None',
                    horColor='#006000',
                    buildPColor='#FF00FF',
                    starSize=6,
-                   starColor='#C0C000',
+                   starColor='#808000',
                    starAnnColor='#808080'),
         horizon=dict(horMarker='o',
                      horColor='#FF00FF',
                      buildPColor='#004000',
                      starSize=6,
-                     starColor='#C0C000',
+                     starColor='#808000',
                      starAnnColor='#808080'),
         star=dict(horMarker='None',
                   horColor='#003000',
@@ -121,12 +121,16 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
-        self.ui.checkShowAlignStar.clicked.connect(self.updateAlignStar)
+        self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
 
         if 'mainW' in self.app.config:
             self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
             self.app.data.loadHorizonP()
         self.initConfig()
+        self.timerGui = PyQt5.QtCore.QTimer()
+        self.timerGui.setSingleShot(False)
+        self.timerGui.timeout.connect(self.updateGUI)
+        self.timerGui.start(self.CYCLE_GUI)
 
     def initConfig(self):
         if 'hemisphereW' not in self.app.config:
@@ -208,6 +212,17 @@ class HemisphereWindow(widget.MWidget):
         self.show()
         self.changeStyleDynamic(self.app.mainW.ui.openHemisphereW, 'running', 'true')
 
+    def updateGUI(self):
+        """
+        updateGUI update gui elements on regular bases (actually 10 second) for items,
+        which are not events based.
+
+        :return: success
+        """
+
+        self.updateAlignStar()
+        return True
+
     @staticmethod
     def clearAxes(axes, visible=False):
         axes.cla()
@@ -275,7 +290,7 @@ class HemisphereWindow(widget.MWidget):
         :return: success for test
         """
 
-        axesS = self.hemisphereMatM.figure.axes[0]
+        axesS = self.hemisphereMatS.figure.axes[0]
         axesS.figure.canvas.draw()
         return True
 
@@ -377,7 +392,10 @@ class HemisphereWindow(widget.MWidget):
 
         if not self.showStatus:
             return False
-        self.starsAlign.set_visible(self.ui.checkShowAlignStar.isChecked())
+        if self.starsAlign is None:
+            return False
+        alt, az = self.calculateAlignStarPositions()
+        self.starsAlign.set_data(az, alt)
         self.drawCanvasStar()
         return True
 
@@ -484,6 +502,10 @@ class HemisphereWindow(widget.MWidget):
             self.horizonMarker.set_color(self.MODE[mode]['horColor'])
         if self.pointsBuild is not None:
             self.pointsBuild.set_color(self.MODE[mode]['buildPColor'])
+        if self.starsAlign is not None:
+            # self.starsAlignAnnotate.set_color(self.MODE[mode]['horMarker'])
+            self.starsAlign.set_color(self.MODE[mode]['starColor'])
+
 
         # stacking of widgets in the right order for managing the mouse events right
         if mode is 'star':
@@ -920,6 +942,26 @@ class HemisphereWindow(widget.MWidget):
                                               visible=False)
         axes.add_patch(self.pointerDome)
 
+    def calculateAlignStarPositions(self):
+        """
+        calculateAlignStarPositions does from actual observer position the star coordinates
+        in alt, az for the given align stars
+
+        :return: alt, az: list of values
+        """
+
+        earth = self.app.planets['earth']
+        location = self.app.mount.obsSite.location
+        observer = earth + location
+        time = self.app.mount.obsSite.ts.now()
+        alt = list()
+        az = list()
+        for star in self.app.alignStars:
+            altElement, azElement, d = observer.at(time).observe(star).apparent().altaz()
+            alt.append(altElement.degrees)
+            az.append(azElement.degrees)
+        return alt, az
+
     def drawHemisphereStars(self, axes=None):
         """
         drawHemisphereStars is rendering the alignment star map. this moves over time with
@@ -931,26 +973,13 @@ class HemisphereWindow(widget.MWidget):
         """
 
         visible = self.ui.checkShowAlignStar.isChecked()
-
-        # return True
-        earth = self.app.planets['earth']
-        location = self.app.mount.obsSite.location
-        observer = earth + location
-        time = self.app.mount.obsSite.ts.now()
-
-        altL = list()
-        azL = list()
-        for star in self.app.alignStars:
-            alt, az, d = observer.at(time).observe(star).apparent().altaz()
-            altL.append(alt.degrees)
-            azL.append(az.degrees)
-
-        self.starsAlign, = axes.plot(azL,
-                                     altL,
+        alt, az = self.calculateAlignStarPositions()
+        self.starsAlign, = axes.plot(az,
+                                     alt,
                                      marker=self.markerStar(),
-                                     markersize=9,
+                                     markersize=7,
                                      linestyle='',
-                                     color='#C0C000',
+                                     color='#808000',
                                      zorder=-20,
                                      visible=visible,
                                      )

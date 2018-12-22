@@ -298,9 +298,10 @@ def test_setOperationMode_2():
         def set_color(self, test):
             pass
 
+    app.hemisphereW.ui.checkEditNone.setChecked(True)
     app.hemisphereW.horizonMarker = Test()
     app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.setOperationMode('normal')
+    suc = app.hemisphereW.setOperationMode()
     assert suc
 
 
@@ -312,9 +313,10 @@ def test_setOperationMode_3():
         def set_color(self, test):
             pass
 
+    app.hemisphereW.ui.checkPolarAlignment.setChecked(True)
     app.hemisphereW.horizonMarker = Test()
     app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.setOperationMode('star')
+    suc = app.hemisphereW.setOperationMode()
     assert suc
 
 
@@ -326,9 +328,26 @@ def test_setOperationMode_4():
         def set_color(self, test):
             pass
 
+    app.hemisphereW.ui.checkEditBuildPoints.setChecked(True)
     app.hemisphereW.horizonMarker = Test()
     app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.setOperationMode('build')
+    suc = app.hemisphereW.setOperationMode()
+    assert suc
+
+
+def test_setOperationMode_5():
+    class Test:
+        def set_marker(self, test):
+            pass
+
+        def set_color(self, test):
+            pass
+
+    app.hemisphereW.ui.checkEditHorizonMask.setChecked(True)
+    app.hemisphereW.horizonMarker = Test()
+    app.hemisphereW.pointsBuild = Test()
+    suc = app.hemisphereW.setOperationMode()
+    app.hemisphereW.ui.checkEditNone.setChecked(True)
     assert suc
 
 
@@ -900,5 +919,12 @@ def test_onMouseStar_2():
 
 
 def test_drawHemisphere_1():
+    class Test:
+        def set_marker(self, test):
+            pass
+
+        def set_color(self, test):
+            pass
+    app.hemisphereW.horizonMarker = Test()
     app.mainW.genBuildMin()
     app.hemisphereW.drawHemisphere()

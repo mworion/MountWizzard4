@@ -117,10 +117,10 @@ class HemisphereWindow(widget.MWidget):
         self.app.signalUpdateLocation.connect(self.clearHemisphere)
         self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
         self.app.mainW.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
-        self.ui.checkEditNone.clicked.connect(lambda: self.setOperationMode('normal'))
-        self.ui.checkEditHorizonMask.clicked.connect(lambda: self.setOperationMode('horizon'))
-        self.ui.checkEditBuildPoints.clicked.connect(lambda: self.setOperationMode('build'))
-        self.ui.checkPolarAlignment.clicked.connect(lambda: self.setOperationMode('star'))
+        self.ui.checkEditNone.clicked.connect(self.setOperationMode)
+        self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
+        self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
+        self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
 
         if 'mainW' in self.app.config:
             self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
@@ -428,7 +428,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.data.clearBuildP()
         self.drawHemisphere()
 
-    def setOperationMode(self, ID):
+    def setOperationMode(self):
         """
         setOperationMode changes the operation mode of the hemisphere window(s) depending
         on the choice, colors and styles will be changed. this also is valid for the stacking
@@ -447,23 +447,31 @@ class HemisphereWindow(widget.MWidget):
                         hemisphereM is next,
                         hemisphere is bottom
 
-        :param ID: operation mode as text
         :return: success
         """
 
+        if self.ui.checkEditNone.isChecked():
+            mode = 'normal'
+        elif self.ui.checkEditBuildPoints.isChecked():
+            mode = 'build'
+        elif self.ui.checkEditHorizonMask.isChecked():
+            mode = 'horizon'
+        elif self.ui.checkPolarAlignment.isChecked():
+            mode = 'star'
+
         # styles
         if self.horizonMarker is not None:
-            self.horizonMarker.set_marker(self.MODE[ID]['horMarker'])
-            self.horizonMarker.set_color(self.MODE[ID]['horColor'])
+            self.horizonMarker.set_marker(self.MODE[mode]['horMarker'])
+            self.horizonMarker.set_color(self.MODE[mode]['horColor'])
         if self.pointsBuild is not None:
-            self.pointsBuild.set_color(self.MODE[ID]['buildPColor'])
+            self.pointsBuild.set_color(self.MODE[mode]['buildPColor'])
 
         # stacking of widgets in the right order for managing the mouse events right
-        if ID is 'star':
+        if mode is 'star':
             self.ui.hemisphere.raise_()
             self.ui.hemisphereM.raise_()
             self.ui.hemisphereS.raise_()
-        elif ID is 'normal':
+        elif mode is 'normal':
             self.ui.hemisphereS.raise_()
             self.ui.hemisphere.raise_()
             self.ui.hemisphereM.raise_()
@@ -943,15 +951,7 @@ class HemisphereWindow(widget.MWidget):
         self.drawHemisphereMoving(axes=axesM)
         self.drawHemisphereStars(axes=axesS)
 
-        if self.ui.checkEditNone.isChecked():
-            mode = 'normal'
-        elif self.ui.checkEditBuildPoints.isChecked():
-            mode = 'build'
-        elif self.ui.checkEditHorizonMask.isChecked():
-            mode = 'horizon'
-        elif self.ui.checkPolarAlignment.isChecked():
-            mode = 'star'
-        self.setOperationMode(mode)
+        self.setOperationMode()
 
         # drawing the canvas
         axes.figure.canvas.draw()

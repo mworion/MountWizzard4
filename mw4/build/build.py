@@ -31,7 +31,7 @@ class DataPoint(object):
     The class Data inherits all information and handling of build data and other
     attributes. this includes horizon data, model points data and their persistence
 
-        >>> fw = DataPoint(
+        >>> data = DataPoint(
         >>>           mwGlob=mwglob
         >>>           lat=48
         >>>              )

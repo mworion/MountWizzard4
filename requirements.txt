@@ -10,3 +10,4 @@ requests_toolbelt==0.8.0
 astropy==3.1
 pytest==4.0.1
 pytest-qt=3.2.1
+pandas==0.23.4

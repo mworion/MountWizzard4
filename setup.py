@@ -48,6 +48,7 @@ setup(
         'pytest==4.0.1',
         'pytest-qt==3.2.1',
         'wakeonlan==1.1.6',
+        'pandas==0.23.4',
     ],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

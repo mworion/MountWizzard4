@@ -33,6 +33,8 @@ import PyQt5.QtWidgets
 import numpy as np
 import matplotlib
 matplotlib.use('Qt5Agg')
+import skyfield.iokit
+import pandas
 # local import
 from mw4 import mainApp
 from mw4.gui.media import resources
@@ -306,9 +308,31 @@ def main():
     logging.info('------------------------------------------------------------------------')
     logging.info('')
 
+    # loading leap seconds, spice kernel and hipparcos catalogue
+    splash.showMessage('Loading star and time data')
+    splash.setValue(60)
+    urls = [
+        'https://hpiers.obspm.fr/iers/bul/bulc/Leap_Second.dat',
+        'http://maia.usno.navy.mil/ser7/deltat.data',
+        'http://maia.usno.navy.mil/ser7/deltat.preds',
+        'ftp://ssd.jpl.nasa.gov/pub/eph/planets/bsp/de421.bsp',
+        'ftp://cdsarc.u-strasbg.fr/cats/I/239/hip_main.dat.gz',
+    ]
+    paths = [
+        'Leap_Second.dat',
+        'deltat.data',
+        'deltat.preds',
+        'de421.bsp',
+        'hip_main.dat.gz',
+    ]
+    for url, path in zip(urls, paths):
+        splash.showMessage('Loading {0}'.format(path))
+        skyfield.iokit.download(url,
+                                mwGlob['dataDir'] + '/' + path,
+                                verbose=True)
     # and finally starting the application
     splash.showMessage('Preparing application')
-    splash.setValue(60)
+    splash.setValue(80)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
     mountApp = mainApp.MountWizzard4(mwGlob)

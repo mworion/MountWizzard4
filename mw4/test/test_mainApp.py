@@ -33,6 +33,7 @@ test = PyQt5.QtWidgets.QApplication([])
 
 mwGlob = {'workDir': '.',
           'configDir': './mw4/test/config',
+          'dataDir': './mw4/test/config',
           'build': 'test',
           }
 config = mwGlob['configDir']
@@ -456,4 +457,4 @@ def test_storeConfig_1():
     app.data.lat = 20
     suc = app.storeConfig()
     assert suc
-    assert app.config['latitudeTemp'] == 20
+    assert app.config['topoLat'] == 20

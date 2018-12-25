@@ -41,7 +41,7 @@ class HemisphereWindow(widget.MWidget):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
-    CYCLE_GUI = 10000
+    CYCLE_GUI = 2000
     BACK = 'background-color: transparent;'
     MODE = dict(
         normal=dict(horMarker='None',
@@ -398,6 +398,10 @@ class HemisphereWindow(widget.MWidget):
             return False
         alt, az, hipNo = self.calculateAlignStarPositions()
         self.starsAlign.set_data(az, alt)
+
+        for i, starAnnotation in enumerate(self.starsAlignAnnotate):
+            starAnnotation.set_anncoords('data')
+            starAnnotation.set_position((az[i], alt[i]))
         self.drawCanvasStar()
         return True
 
@@ -829,17 +833,17 @@ class HemisphereWindow(widget.MWidget):
         # drawing horizon
         showHorizon = self.app.mainW.ui.checkUseHorizon.isChecked()
         if self.app.data.horizonP and showHorizon:
-            y, x = zip(*self.app.data.horizonP)
+            alt, az = zip(*self.app.data.horizonP)
 
-            self.horizonFill, = axes.fill(x, y, color='#002000', zorder=-20)
-            self.horizonMarker, = axes.plot(x, y, color='#006000', zorder=-20, lw=3)
+            self.horizonFill, = axes.fill(az, alt, color='#002000', zorder=-20)
+            self.horizonMarker, = axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
             if self.ui.checkEditHorizonMask.isChecked():
                 self.horizonMarker.set_marker('o')
                 self.horizonMarker.set_color('#FF00FF')
 
         # drawing build points
         if self.app.data.buildP:
-            y, x = zip(*self.app.data.buildP)
+            alt, az = zip(*self.app.data.buildP)
             # show line path pf slewing
             if self.ui.checkShowSlewPath.isChecked():
                 ls = ':'
@@ -851,7 +855,7 @@ class HemisphereWindow(widget.MWidget):
                 color = '#FF00FF'
             else:
                 color = '#00A000'
-            self.pointsBuild, = axes.plot(x, y,
+            self.pointsBuild, = axes.plot(az, alt,
                                           marker=self.markerPoint(),
                                           markersize=9,
                                           linestyle=ls,
@@ -861,9 +865,9 @@ class HemisphereWindow(widget.MWidget):
                                           zorder=20,
                                           )
             self.pointsBuildAnnotate = list()
-            for i, xy in enumerate(zip(x, y)):
+            for i, AltAz in enumerate(zip(az, alt)):
                 annotation = axes.annotate('{0:2d}'.format(i + 1),
-                                           xy=xy,
+                                           xy=AltAz,
                                            xytext=(2, -10),
                                            textcoords='offset points',
                                            color='#E0E0E0',
@@ -874,9 +878,9 @@ class HemisphereWindow(widget.MWidget):
         # draw celestial equator
         visible = self.ui.checkShowCelestial.isChecked()
         celestial = self.app.data.generateCelestialEquator()
-        y, x = zip(*celestial)
-        self.celestialPath, = axes.plot(x,
-                                        y,
+        alt, az = zip(*celestial)
+        self.celestialPath, = axes.plot(az,
+                                        alt,
                                         '.',
                                         markersize=1,
                                         fillstyle='none',
@@ -991,11 +995,12 @@ class HemisphereWindow(widget.MWidget):
                                      visible=visible,
                                      )
         for alt, az, hipNo in zip(alt, az, hipNo):
-            starName = self.app.data.hip.get(hipNo, '')
+            starName = self.app.data.hip.get(hipNo, str(hipNo))
             annotation = axes.annotate(starName,
                                        xy=(az, alt),
                                        xytext=(2, -10),
                                        textcoords='offset points',
+                                       xycoords='data',
                                        color='#808080',
                                        fontsize=12,
                                        clip_on=True)

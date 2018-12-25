@@ -31,6 +31,7 @@ test = PyQt5.QtWidgets.QApplication([])
 
 mwGlob = {'workDir': '.',
           'configDir': './mw4/test/config',
+          'dataDir': './mw4/test/data',
           'build': 'test',
           }
 config = mwGlob['configDir']
@@ -54,32 +55,57 @@ def test_J2000toJNow():
     for jd in range(2458240, 2459240, 100):
 
         timeTopo = ts.ut1_jd(jd)
-        timeTopoTT = ts.tt_jd(jd)
         astrometric = earth.at(timeTopo).observe(barnard).apparent()
-        astrometricTT = earth.at(timeTopoTT).observe(barnard).apparent()
         raJNow = barnard.ra
         decJNow = barnard.dec
 
         raERFA, decERFA = transform.J2000ToJNow(raJNow, decJNow, timeTopo)
-        raSKY, decSKY, dist = astrometricTT.radec(epoch=timeTopoTT)
-        raSKYTT, decSKYTT, dist = astrometric.radec(epoch=timeTopo)
+        raSKY, decSKY, dist = astrometric.radec(epoch=timeTopo)
 
-        raSKYTT = raSKYTT.hours
-        decSKYTT = decSKYTT.degrees
         raSKY = raSKY.hours
         decSKY = decSKY.degrees
         raERFA = raERFA.hours
         decERFA = decERFA.degrees
 
-        d_ra_tt = abs(raSKY - raSKYTT) * 3600
-        d_dec_tt = abs(decSKY - decSKYTT) * 3600
-        d_ra_ERFA = abs(raSKYTT - raERFA) * 3600
-        d_dec_ERFA = abs(decSKYTT - decERFA) * 3600
         d_ra = abs(raSKY - raERFA) * 3600
         d_dec = abs(decSKY - decERFA) * 3600
 
-        print('delta : ra:{0:8.8f} {1:8.8f} {2:8.8f}  dec:{3:8.8f} {4:8.8f} {5:8.8f}'
-              .format(d_ra_tt, d_ra_ERFA, d_ra, d_dec_tt, d_dec_ERFA, d_dec))
+        print('delta : ra:{0:8.8f} dec:{1:8.8f}'.format(d_ra, d_dec))
+
+
+def test_JNowToJ2000():
+    load = api.Loader(mwGlob['configDir'],
+                      verbose=True,
+                      expire=True,
+                      )
+    ts = load.timescale()
+    barnard = api.Star(ra_hours=(17, 57, 48.49803),
+                       dec_degrees=(4, 41, 36.2072),
+                       )
+    planets = load('de421.bsp')
+    earth = planets['earth']
+
+    print()
+    for jd in range(2458240, 2459240, 100):
+
+        timeTopo = ts.ut1_jd(jd)
+        raJNow = barnard.ra
+        decJNow = barnard.dec
+        raJNow, decJNow = transform.J2000ToJNow(raJNow, decJNow, timeTopo)
+
+        barnard_JNow = api.Star(ra=raJNow, dec=decJNow, epoch=timeTopo)
+        astrometricJNow = earth.at(ts.ut1_jd(2451545)).observe(barnard_JNow)
+        raJ2000, decJ2000, dist = barnard_JNow.cirs_radec(epoch=2451545.0)
+
+        raJ2000 = raJ2000.hours
+        decJ2000 = decJ2000.degrees
+        raRef = barnard.ra.hours
+        decRef = barnard.dec.degrees
+
+        d_ra = abs(raJ2000 - raRef) * 3600
+        d_dec = abs(decJ2000 - decRef) * 3600
+
+        print('delta : ra:{0:8.8f} dec:{1:8.8f}'.format(d_ra, d_dec))
 
 
 def test_time():

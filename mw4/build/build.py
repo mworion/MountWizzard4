@@ -48,6 +48,7 @@ class DataPoint(object):
                'saveHorizonP',
                'clearHorizonP',
                'generateCelestialEquator',
+               'hip',
                ]
     version = '0.1'
     logger = logging.getLogger(__name__)
@@ -110,7 +111,6 @@ class DataPoint(object):
         # : 'Gienah',
         # : 'Girtab',
         # : 'Gruid',
-        68702: 'Hadar',
         9884: 'Hamal',
         # : 'Herschels Garnet Star',
         72105: 'Izar',

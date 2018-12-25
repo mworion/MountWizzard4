@@ -396,7 +396,7 @@ class HemisphereWindow(widget.MWidget):
             return False
         if not self.ui.checkShowAlignStar.isChecked():
             return False
-        alt, az = self.calculateAlignStarPositions()
+        alt, az, hipNo = self.calculateAlignStarPositions()
         self.starsAlign.set_data(az, alt)
         self.drawCanvasStar()
         return True
@@ -860,6 +860,7 @@ class HemisphereWindow(widget.MWidget):
                                           color=color,
                                           zorder=20,
                                           )
+            self.pointsBuildAnnotate = list()
             for i, xy in enumerate(zip(x, y)):
                 annotation = axes.annotate('{0:2d}'.format(i + 1),
                                            xy=xy,
@@ -949,7 +950,7 @@ class HemisphereWindow(widget.MWidget):
         calculateAlignStarPositions does from actual observer position the star coordinates
         in alt, az for the given align stars
 
-        :return: alt, az: list of values
+        :return: list for alt, az and hipNo
         """
 
         earth = self.app.planets['earth']
@@ -958,11 +959,14 @@ class HemisphereWindow(widget.MWidget):
         time = self.app.mount.obsSite.ts.now()
         alt = list()
         az = list()
+        hipNo = list()
         for star in self.app.alignStars:
-            altElement, azElement, d = observer.at(time).observe(star).apparent().altaz()
-            alt.append(altElement.degrees)
-            az.append(azElement.degrees)
-        return alt, az
+            hipNoE, coord = list(star.items())[0]
+            altE, azE, d = observer.at(time).observe(coord).apparent().altaz()
+            alt.append(altE.degrees)
+            az.append(azE.degrees)
+            hipNo.append(hipNoE)
+        return alt, az, hipNo
 
     def drawHemisphereStars(self, axes=None):
         """
@@ -975,7 +979,8 @@ class HemisphereWindow(widget.MWidget):
         """
 
         visible = self.ui.checkShowAlignStar.isChecked()
-        alt, az = self.calculateAlignStarPositions()
+        self.starsAlignAnnotate = list()
+        alt, az, hipNo = self.calculateAlignStarPositions()
         self.starsAlign, = axes.plot(az,
                                      alt,
                                      marker=self.markerStar(),
@@ -985,6 +990,16 @@ class HemisphereWindow(widget.MWidget):
                                      zorder=-20,
                                      visible=visible,
                                      )
+        for alt, az, hipNo in zip(alt, az, hipNo):
+            starName = self.app.data.hip.get(hipNo, '')
+            annotation = axes.annotate(starName,
+                                       xy=(az, alt),
+                                       xytext=(2, -10),
+                                       textcoords='offset points',
+                                       color='#808080',
+                                       fontsize=12,
+                                       clip_on=True)
+            self.starsAlignAnnotate.append(annotation)
 
     def drawHemisphere(self):
         """

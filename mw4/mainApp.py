@@ -362,6 +362,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             df = df[df['magnitude'] <= 2.5]
             stars = list()
             for index, row in df.iterrows():
+                print(row.name)
                 stars.append({row.name: skyfield.api.Star.from_dataframe(row)})
             with open(pickleFileName, 'wb') as outfile:
                 pickle.dump(stars, outfile)

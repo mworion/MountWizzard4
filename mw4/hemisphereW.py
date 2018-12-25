@@ -998,7 +998,7 @@ class HemisphereWindow(widget.MWidget):
             starName = self.app.data.hip.get(hipNo, str(hipNo))
             annotation = axes.annotate(starName,
                                        xy=(az, alt),
-                                       xytext=(2, -10),
+                                       xytext=(0, 0),
                                        textcoords='offset points',
                                        xycoords='data',
                                        color='#808080',

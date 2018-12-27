@@ -21,7 +21,6 @@
 import logging
 import os
 import json
-import pickle
 # external packages
 import PyQt5.QtCore
 import skyfield
@@ -79,26 +78,26 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                   latitude_degrees=lat,
                                   elevation_m=elev)
         self.mount.obsSite.location = topo
-
+        self.mount.signals.mountUp.connect(self.loadMountData)
         # get all planets for calculation
         load = skyfield.api.Loader(pathToData,
                                    expire=True,
                                    verbose=None,
                                    )
         self.planets = load('de421.bsp')
-        # load bright stars from hipparcos
-        pathHipparcos = mwGlob['dataDir']
-        self.alignStars = self.loadAlignStars(pathHipparcos)
         self.relay = kmRelay.KMRelay(host='192.168.2.15',
                                      )
         self.environment = environ.Environment(host='localhost')
         # managing data
-        self.mount.signals.mountUp.connect(self.loadMountData)
-
-        # get the window widgets up
         self.data = build.DataPoint(lat=lat,
                                     mwGlob=self.mwGlob,
                                     )
+        # load stars from hipparcos
+        self.hipparcos = build.Hipparcos(self,
+                                         lat=lat,
+                                         mwGlob=self.mwGlob,
+                                         )
+        # get the window widgets up
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
         self.messageW = messageW.MessageWindow(self)
@@ -328,44 +327,3 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config['latitudeTemp'] = location.latitude.degrees
         self.signalUpdateLocation.emit()
         return True
-
-    @staticmethod
-    def loadAlignStars(path):
-        """
-        loadAlignStars uses the hipparcos catalogue for getting stars data for alignment
-        routines. if the catalog is present it filters the brightest stars (like in the
-        example in skyfield documentation) and derives a star list. if a star list is
-        generated, it will be saved as pickle persistent data as well. the second time
-        there is no need for loading all the hipparcos data, but just loading the pickle
-        persistence data. this improves speed. if new calculation has to be done, just
-        delete the hipparcos.pickle file under /data folder
-
-
-        :param path: path to hipparcos data without filenames
-        :return: stars: list of skyfield.api.Star objects
-        """
-
-        pickleFileName = path + '/hipparcos.pickle'
-        if os.path.isfile(pickleFileName):
-            with open(pickleFileName, 'rb') as infile:
-                stars = pickle.load(infile)
-            return stars
-
-        fileName = path + '/hip_main.dat.gz'
-        if not os.path.isfile(fileName):
-            return []
-
-        with skyfield.api.load.open(fileName) as f:
-            df = skyfield.data.hipparcos.load_dataframe(f)
-
-        if len(df) > 0:
-            df = df[df['magnitude'] <= 2.5]
-            stars = list()
-            for index, row in df.iterrows():
-                print(row.name)
-                stars.append({row.name: skyfield.api.Star.from_dataframe(row)})
-            with open(pickleFileName, 'wb') as outfile:
-                pickle.dump(stars, outfile)
-        else:
-            stars = []
-        return stars

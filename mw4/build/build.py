@@ -20,40 +20,62 @@
 # standard libraries
 import logging
 import os
+import pickle
 # external packages
 import numpy as np
 import json
 # local imports
 
+__all__ = ['topoToAltAz',
+           ]
 
-class DataPoint(object):
+version = '0.1'
+
+
+def topoToAltAz(ha, dec, lat):
+    """
+
+    :param ha:
+    :param dec:
+    :param lat:
+    :return:
+    """
+
+    ha = (ha * 360 / 24 + 360.0) % 360.0
+    dec = np.radians(dec)
+    ha = np.radians(ha)
+    lat = np.radians(lat)
+    alt = np.arcsin(np.sin(dec) * np.sin(lat) + np.cos(dec) * np.cos(lat) * np.cos(ha))
+    value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
+    value = np.clip(value, -1.0, 1.0)
+    A = np.arccos(value)
+    if np.sin(ha) >= 0.0:
+        az = 2 * np.pi - A
+    else:
+        az = A
+    az = np.degrees(az)
+    alt = np.degrees(alt)
+    return alt, az
+
+
+class Hipparcos(object):
     """
     The class Data inherits all information and handling of build data and other
     attributes. this includes horizon data, model points data and their persistence
 
-        >>> data = DataPoint(
-        >>>           mwGlob=mwglob
-        >>>           lat=48
-        >>>              )
+        >>> hip = Hipparcos(
+        >>>                 app=app
+        >>>                 mwGlob=mwglob
+        >>>                 lat=48
+        >>>                 )
     """
 
-    __all__ = ['DataPoint',
-               'genGreaterCircle',
-               'genGrid',
-               'genInitial',
-               'loadBuildP',
-               'saveBuildP',
-               'clearPoints'
-               'loadHorizonP',
-               'saveHorizonP',
-               'clearHorizonP',
-               'generateCelestialEquator',
-               'hip',
+    __all__ = ['Hipparcos',
                ]
     version = '0.1'
     logger = logging.getLogger(__name__)
 
-    hip = {
+    names = {
         7588: 'Achernar',
         60718: 'Acrux',
         33579: 'Adhara',
@@ -145,6 +167,117 @@ class DataPoint(object):
         34444: 'Wezen',
     }
 
+    def __init__(self,
+                 app=None,
+                 mwGlob=None,
+                 lat=51.476852,
+                 ):
+
+        self.app = app
+        self.mwGlob = mwGlob
+        self.lat = lat
+        self.alignStars = self.loadAlignStars(mwGlob['dataDir'])
+
+    @property
+    def lat(self):
+        return self._lat
+
+    @lat.setter
+    def lat(self, value):
+        self._lat = value
+
+    @staticmethod
+    def loadAlignStars(path):
+        """
+        loadAlignStars uses the hipparcos catalogue for getting stars data for alignment
+        routines. if the catalog is present it filters the brightest stars (like in the
+        example in skyfield documentation) and derives a star list. if a star list is
+        generated, it will be saved as pickle persistent data as well. the second time
+        there is no need for loading all the hipparcos data, but just loading the pickle
+        persistence data. this improves speed. if new calculation has to be done, just
+        delete the hipparcos.pickle file under /data folder
+
+
+        :param path: path to hipparcos data without filenames
+        :return: stars: list of skyfield.api.Star objects
+        """
+
+        pickleFileName = path + '/hipparcos.pickle'
+        if os.path.isfile(pickleFileName):
+            with open(pickleFileName, 'rb') as infile:
+                stars = pickle.load(infile)
+            return stars
+
+        fileName = path + '/hip_main.dat.gz'
+        if not os.path.isfile(fileName):
+            return []
+
+        with skyfield.api.load.open(fileName) as f:
+            df = skyfield.data.hipparcos.load_dataframe(f)
+
+        if len(df) > 0:
+            df = df[df['magnitude'] <= 2.5]
+            stars = list()
+            for index, row in df.iterrows():
+                print(row.name)
+                stars.append({row.name: skyfield.api.Star.from_dataframe(row)})
+            with open(pickleFileName, 'wb') as outfile:
+                pickle.dump(stars, outfile)
+        else:
+            stars = []
+        return stars
+
+    def calculateAlignStarPositions(self):
+        """
+        calculateAlignStarPositions does from actual observer position the star coordinates
+        in alt, az for the given align stars
+
+        :return: list for alt, az and hipNo
+        """
+
+        earth = self.app.planets['earth']
+        location = self.app.mount.obsSite.location
+        observer = earth + location
+        time = self.app.mount.obsSite.ts.now()
+        alt = list()
+        az = list()
+        hipNo = list()
+        for star in self.alignStars:
+            hipNoE, coord = list(star.items())[0]
+            altE, azE, d = observer.at(time).observe(coord).apparent().altaz()
+            alt.append(altE.degrees)
+            az.append(azE.degrees)
+            hipNo.append(hipNoE)
+        return alt, az, hipNo
+
+
+class DataPoint(object):
+    """
+    The class Data inherits all information and handling of build data and other
+    attributes. this includes horizon data, model points data and their persistence
+
+        >>> data = DataPoint(
+        >>>           mwGlob=mwglob
+        >>>           lat=48
+        >>>              )
+    """
+
+    __all__ = ['DataPoint',
+               'genGreaterCircle',
+               'genGrid',
+               'genInitial',
+               'loadBuildP',
+               'saveBuildP',
+               'clearPoints'
+               'loadHorizonP',
+               'saveHorizonP',
+               'clearHorizonP',
+               'generateCelestialEquator',
+               'hip',
+               ]
+    version = '0.1'
+    logger = logging.getLogger(__name__)
+
     # data for generating greater circles, dec and step only for east, west is reversed
     DEC = {'min': [-15, 0, 15, 30, 45, 60, 75],
            'norm': [-15, 0, 15, 30, 45, 60, 75],
@@ -210,24 +343,6 @@ class DataPoint(object):
     @buildPFile.setter
     def buildPFile(self, value):
         self._buildPFile = value
-
-    @staticmethod
-    def topoToAzAlt(ha, dec, lat):
-        ha = (ha * 360 / 24 + 360.0) % 360.0
-        dec = np.radians(dec)
-        ha = np.radians(ha)
-        lat = np.radians(lat)
-        alt = np.arcsin(np.sin(dec) * np.sin(lat) + np.cos(dec) * np.cos(lat) * np.cos(ha))
-        value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
-        value = np.clip(value, -1.0, 1.0)
-        A = np.arccos(value)
-        if np.sin(ha) >= 0.0:
-            az = 2 * np.pi - A
-        else:
-            az = A
-        az = np.degrees(az)
-        alt = np.degrees(alt)
-        return alt, az
 
     @property
     def buildP(self):
@@ -568,7 +683,7 @@ class DataPoint(object):
         self.clearBuildP()
         for dec, step, start, stop in self.genHaDecParams(selection):
             for ha in range(start, stop, step):
-                alt, az = self.topoToAzAlt(ha / 10, dec, self.lat)
+                alt, az = topoToAltAz(ha / 10, dec, self.lat)
                 # only values with above horizon = 0
 
                 if 5 <= alt <= 85 and 2 < az < 358:
@@ -689,7 +804,7 @@ class DataPoint(object):
         celestialEquator = list()
         for dec in range(-15, 90, 15):
             for ha in range(- 119, 120, 3):
-                az, alt = self.topoToAzAlt(ha / 10, dec, self.lat)
+                az, alt = topoToAltAz(ha / 10, dec, self.lat)
                 if alt > 0:
                     celestialEquator.append((az, alt))
         return celestialEquator

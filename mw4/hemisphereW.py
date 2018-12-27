@@ -396,7 +396,7 @@ class HemisphereWindow(widget.MWidget):
             return False
         if not self.ui.checkShowAlignStar.isChecked():
             return False
-        alt, az, hipNo = self.calculateAlignStarPositions()
+        alt, az, hipNo = self.app.hipparcos.calculateAlignStarPositions()
         self.starsAlign.set_data(az, alt)
 
         for i, starAnnotation in enumerate(self.starsAlignAnnotate):
@@ -949,29 +949,6 @@ class HemisphereWindow(widget.MWidget):
                                               visible=False)
         axes.add_patch(self.pointerDome)
 
-    def calculateAlignStarPositions(self):
-        """
-        calculateAlignStarPositions does from actual observer position the star coordinates
-        in alt, az for the given align stars
-
-        :return: list for alt, az and hipNo
-        """
-
-        earth = self.app.planets['earth']
-        location = self.app.mount.obsSite.location
-        observer = earth + location
-        time = self.app.mount.obsSite.ts.now()
-        alt = list()
-        az = list()
-        hipNo = list()
-        for star in self.app.alignStars:
-            hipNoE, coord = list(star.items())[0]
-            altE, azE, d = observer.at(time).observe(coord).apparent().altaz()
-            alt.append(altE.degrees)
-            az.append(azE.degrees)
-            hipNo.append(hipNoE)
-        return alt, az, hipNo
-
     def drawHemisphereStars(self, axes=None):
         """
         drawHemisphereStars is rendering the alignment star map. this moves over time with
@@ -984,7 +961,7 @@ class HemisphereWindow(widget.MWidget):
 
         visible = self.ui.checkShowAlignStar.isChecked()
         self.starsAlignAnnotate = list()
-        alt, az, hipNo = self.calculateAlignStarPositions()
+        alt, az, hipNo = self.app.hipparcos.calculateAlignStarPositions()
         self.starsAlign, = axes.plot(az,
                                      alt,
                                      marker=self.markerStar(),
@@ -995,7 +972,7 @@ class HemisphereWindow(widget.MWidget):
                                      visible=visible,
                                      )
         for alt, az, hipNo in zip(alt, az, hipNo):
-            starName = self.app.data.hip.get(hipNo, str(hipNo))
+            starName = self.app.hipparcos.names.get(hipNo, str(hipNo))
             annotation = axes.annotate(starName,
                                        xy=(az, alt),
                                        xytext=(0, 0),

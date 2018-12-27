@@ -28,6 +28,7 @@ import unittest.mock as mock
 
 from mw4.build import build
 
+
 mwGlob = {'workDir': '.',
           'configDir': './mw4/test/config',
           'build': 'test',
@@ -49,19 +50,19 @@ def module_setup_teardown():
     data = None
 
 
-def test_topoToAzAlt1():
+def test_topoToAltAz1():
     ha = 12
     dec = 0
-    alt, az = data.topoToAzAlt(ha, dec, 0)
+    alt, az = build.topoToAltAz(ha, dec, 0)
 
     assert alt is not None
     assert az is not None
 
 
-def test_topoToAzAlt2():
+def test_topoToAltAz2():
     ha = -12
     dec = 0
-    alt, az = data.topoToAzAlt(ha, dec, 0)
+    alt, az = build.topoToAltAz(ha, dec, 0)
 
     assert alt is not None
     assert az is not None

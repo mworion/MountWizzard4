@@ -13,6 +13,8 @@ ToDo list:
 - refraction manually push
 - gui button refraction manually not nice
 - alignment turn numbers left right missing
+- make tests for hipparcos
+- check architecture for hipparcos
 
 
 

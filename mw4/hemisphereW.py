@@ -41,7 +41,7 @@ class HemisphereWindow(widget.MWidget):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
-    CYCLE_GUI = 2000
+    CYCLE_GUI = 5000
     BACK = 'background-color: transparent;'
     MODE = dict(
         normal=dict(horMarker='None',

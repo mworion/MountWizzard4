@@ -20,11 +20,12 @@
 # standard libraries
 import logging
 import os
+import json
 import pickle
-import timeit
+import time
 # external packages
 import numpy as np
-import json
+import skyfield
 # local imports
 
 __all__ = ['topoToAltAz',
@@ -50,7 +51,7 @@ def topoToAltAz(ha, dec, lat):
     value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
     value = np.clip(value, -1.0, 1.0)
     A = np.arccos(value)
-    if np.sin(ha) >= 0.0:
+    if np.sin(ha) < 0.0:
         az = 2 * np.pi - A
     else:
         az = A
@@ -176,8 +177,16 @@ class Hipparcos(object):
         self.mwGlob = mwGlob
         self.lat = app.mount.obsSite.location.latitude.degrees
         self.alignStars = self.loadAlignStars(mwGlob['dataDir'])
-
-        # print(timeit.timeit('loadAlignStars(mwGlob["dataDir"])'))
+        '''
+        timeStart = time.time()
+        for i in range(0, 10):
+            self.calculateAlignStarPositions()
+        print(time.time()-timeStart)
+        '''
+        timeStart = time.time()
+        for i in range(0, 10):
+            self.calculateAlignStarPositions()
+        print(time.time()-timeStart)
 
 
     @property
@@ -219,10 +228,7 @@ class Hipparcos(object):
 
         if len(df) > 0:
             df = df[df['magnitude'] <= 2.5]
-            stars = list()
-            for index, row in df.iterrows():
-                print(row.name)
-                stars.append({row.name: skyfield.api.Star.from_dataframe(row)})
+            stars = skyfield.api.Star.from_dataframe(df)
             with open(pickleFileName, 'wb') as outfile:
                 pickle.dump(stars, outfile)
         else:
@@ -230,6 +236,33 @@ class Hipparcos(object):
         return stars
 
     def calculateAlignStarPositions(self):
+        """
+        calculateAlignStarPositions does from actual observer position the star coordinates
+        in alt, az for the given align stars
+
+        :return: list for alt, az and hipNo
+        """
+
+        earth = self.app.planets['earth']
+        location = self.app.mount.obsSite.location
+        lat = location.latitude.degrees
+        observer = earth + location
+        time = self.app.mount.obsSite.ts.now()
+        alt = list()
+        az = list()
+        hipNo = list()
+        positions = observer.at(time).observe(self.alignStars).radec()
+        ra = positions[0].hours
+        dec = positions[1].degrees
+        for ra, dec in zip(ra, dec):
+            # hipNoE, coord = list(star.items())[0]
+            altE, azE = topoToAltAz(ra, dec, lat)
+            alt.append(altE)
+            az.append(azE)
+            # hipNo.append(hipNoE)
+        return alt, az, hipNo
+
+    def calculateAlignStarPositionsOld(self):
         """
         calculateAlignStarPositions does from actual observer position the star coordinates
         in alt, az for the given align stars

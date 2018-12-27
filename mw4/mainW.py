@@ -778,7 +778,7 @@ class MainWindow(widget.MWidget):
 
         # now prepare the data
         if not model.starList:
-            self.logger.error('no model data available for display')
+            self.logger.warning('no model data available for display')
             return False
         altitude = []
         azimuth = []

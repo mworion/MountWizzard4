@@ -36,6 +36,7 @@ version = '0.1'
 
 def topoToAltAz(ha, dec, lat):
     """
+    topoToAltAz is derived from http://www.stargazing.net/kepler/altaz.html
 
     :param ha:
     :param dec:
@@ -51,7 +52,7 @@ def topoToAltAz(ha, dec, lat):
     value = (np.sin(dec) - np.sin(alt) * np.sin(lat)) / (np.cos(alt) * np.cos(lat))
     value = np.clip(value, -1.0, 1.0)
     A = np.arccos(value)
-    if np.sin(ha) < 0.0:
+    if np.sin(ha) >= 0.0:
         az = 2 * np.pi - A
     else:
         az = A

@@ -21,6 +21,7 @@
 import logging
 import os
 import pickle
+import timeit
 # external packages
 import numpy as np
 import json
@@ -66,7 +67,6 @@ class Hipparcos(object):
         >>> hip = Hipparcos(
         >>>                 app=app
         >>>                 mwGlob=mwglob
-        >>>                 lat=48
         >>>                 )
     """
 
@@ -170,13 +170,15 @@ class Hipparcos(object):
     def __init__(self,
                  app=None,
                  mwGlob=None,
-                 lat=51.476852,
                  ):
 
         self.app = app
         self.mwGlob = mwGlob
-        self.lat = lat
+        self.lat = app.mount.obsSite.location.latitude.degrees
         self.alignStars = self.loadAlignStars(mwGlob['dataDir'])
+
+        # print(timeit.timeit('loadAlignStars(mwGlob["dataDir"])'))
+
 
     @property
     def lat(self):
@@ -257,9 +259,9 @@ class DataPoint(object):
     attributes. this includes horizon data, model points data and their persistence
 
         >>> data = DataPoint(
-        >>>           mwGlob=mwglob
-        >>>           lat=48
-        >>>              )
+        >>>                  app=app,
+        >>>                  mwGlob=mwglob,
+        >>>                  )
     """
 
     __all__ = ['DataPoint',
@@ -309,12 +311,13 @@ class DataPoint(object):
             }
 
     def __init__(self,
+                 app=None,
                  mwGlob=None,
-                 lat=51.476852,
                  ):
 
+        self.app = app
         self.mwGlob = mwGlob
-        self.lat = lat
+        self.lat = app.mount.obsSite.location.latitude.degrees
         self._horizonPFile = None
         self._buildPFile = None
         self._horizonP = [(0, 0), (0, 360)]

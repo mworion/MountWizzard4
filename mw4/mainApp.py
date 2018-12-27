@@ -89,12 +89,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                      )
         self.environment = environ.Environment(host='localhost')
         # managing data
-        self.data = build.DataPoint(lat=lat,
+        self.data = build.DataPoint(self,
                                     mwGlob=self.mwGlob,
                                     )
         # load stars from hipparcos
         self.hipparcos = build.Hipparcos(self,
-                                         lat=lat,
                                          mwGlob=self.mwGlob,
                                          )
         # get the window widgets up

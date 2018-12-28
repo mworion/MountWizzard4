@@ -28,15 +28,15 @@ import numpy as np
 import skyfield
 # local imports
 
-__all__ = ['topoToAltAz',
+__all__ = ['HaDecToAltAz',
            ]
 
 version = '0.1'
 
 
-def topoToAltAz(ha, dec, lat):
+def HaDecToAltAz(ha, dec, lat):
     """
-    topoToAltAz is derived from http://www.stargazing.net/kepler/altaz.html
+    HaDecToAltAz is derived from http://www.stargazing.net/kepler/altaz.html
 
     :param ha:
     :param dec:
@@ -249,7 +249,7 @@ class Hipparcos(object):
         dec = positions[1].degrees
         for ra, dec in zip(ra, dec):
             # hipNoE, coord = list(star.items())[0]
-            altE, azE = topoToAltAz(ra, dec, lat)
+            altE, azE = HaDecToAltAz(ra, dec, lat)
             alt.append(altE)
             az.append(azE)
             # hipNo.append(hipNoE)
@@ -285,8 +285,8 @@ class DataPoint(object):
     attributes. this includes horizon data, model points data and their persistence
 
         >>> data = DataPoint(
-        >>>                  app=app,
         >>>                  mwGlob=mwglob,
+        >>>                  location=None,
         >>>                  )
     """
 
@@ -337,13 +337,12 @@ class DataPoint(object):
             }
 
     def __init__(self,
-                 app=None,
+                 location=None,
                  mwGlob=None,
                  ):
 
-        self.app = app
         self.mwGlob = mwGlob
-        self.lat = app.mount.obsSite.location.latitude.degrees
+        self.lat = location.latitude.degrees
         self._horizonPFile = None
         self._buildPFile = None
         self._horizonP = [(0, 0), (0, 360)]
@@ -712,7 +711,7 @@ class DataPoint(object):
         self.clearBuildP()
         for dec, step, start, stop in self.genHaDecParams(selection):
             for ha in range(start, stop, step):
-                alt, az = topoToAltAz(ha / 10, dec, self.lat)
+                alt, az = HaDecToAltAz(ha / 10, dec, self.lat)
                 # only values with above horizon = 0
 
                 if 5 <= alt <= 85 and 2 < az < 358:
@@ -833,7 +832,7 @@ class DataPoint(object):
         celestialEquator = list()
         for dec in range(-15, 90, 15):
             for ha in range(- 119, 120, 3):
-                az, alt = topoToAltAz(ha / 10, dec, self.lat)
+                az, alt = HaDecToAltAz(ha / 10, dec, self.lat)
                 if alt > 0:
                     celestialEquator.append((az, alt))
         return celestialEquator

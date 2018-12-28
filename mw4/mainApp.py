@@ -67,7 +67,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
                                    pathToData=pathToData,
-                                   expire=True,
+                                   expire=False,
                                    verbose=None,
                                    )
         # set observer position to last one first
@@ -81,7 +81,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
         # get all planets for calculation
         load = skyfield.api.Loader(pathToData,
-                                   expire=True,
+                                   expire=False,
                                    verbose=None,
                                    )
         self.planets = load('de421.bsp')
@@ -89,8 +89,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                      )
         self.environment = environ.Environment(host='localhost')
         # managing data
-        self.data = build.DataPoint(self,
+        self.data = build.DataPoint(
                                     mwGlob=self.mwGlob,
+                                    location=self.mount.obsSite.location,
                                     )
         # load stars from hipparcos
         self.hipparcos = build.Hipparcos(self,

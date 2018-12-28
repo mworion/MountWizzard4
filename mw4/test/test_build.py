@@ -24,6 +24,7 @@ import json
 import binascii
 import unittest.mock as mock
 # external packages
+import skyfield.api
 # local import
 
 from mw4.build import build
@@ -45,7 +46,10 @@ def module_setup_teardown():
             os.remove(os.path.join(config, item))
         if item.endswith('.hpts'):
             os.remove(os.path.join(config, item))
-    data = build.DataPoint(mwGlob=mwGlob, lat=48)
+    topo = skyfield.toposlib.Topos(longitude_degrees=11,
+                                   latitude_degrees=48,
+                                   elevation_m=500)
+    data = build.DataPoint(mwGlob=mwGlob, location=topo)
     yield
     data = None
 
@@ -53,7 +57,7 @@ def module_setup_teardown():
 def test_topoToAltAz1():
     ha = 12
     dec = 0
-    alt, az = build.topoToAltAz(ha, dec, 0)
+    alt, az = build.HaDecToAltAz(ha, dec, 0)
 
     assert alt is not None
     assert az is not None
@@ -62,7 +66,7 @@ def test_topoToAltAz1():
 def test_topoToAltAz2():
     ha = -12
     dec = 0
-    alt, az = build.topoToAltAz(ha, dec, 0)
+    alt, az = build.HaDecToAltAz(ha, dec, 0)
 
     assert alt is not None
     assert az is not None

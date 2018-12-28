@@ -15,6 +15,7 @@ ToDo list:
 - alignment turn numbers left right missing
 - make tests for hipparcos
 - check architecture for hipparcos
+- make logic, when align stars is on / of in conjunction with operation mode
 
 
 

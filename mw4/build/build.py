@@ -270,9 +270,10 @@ class Hipparcos(object):
         alt = list()
         az = list()
         hipNo = list()
+        obsAt = observer.at(time)
         for star in self.alignStars:
             hipNoE, coord = list(star.items())[0]
-            altE, azE, d = observer.at(time).observe(coord).apparent().altaz()
+            altE, azE, d = obsAt.observe(coord).apparent().altaz()
             alt.append(altE.degrees)
             az.append(azE.degrees)
             hipNo.append(hipNoE)

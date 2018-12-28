@@ -1,6 +1,7 @@
 import os
 import time
 import numpy as np
+import astropy._erfa as erfa
 import skyfield.api
 
 
@@ -117,7 +118,6 @@ if __name__ == "__main__":
     ts = load.timescale()
     planets = load('de421.bsp')
     starsDF, starsDict = loadStars(mwGlob['dataDir'])
-
     earth = planets['earth']
     location = skyfield.api.Topos(latitude_degrees=50,
                                   longitude_degrees=11,
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         altE, azE, d = observer.at(t).observe(coord).apparent().altaz()
         alt.append(altE.degrees)
         az.append(azE.degrees)
-    print(time.time() - timeStart)
+    print('standard: ', time.time() - timeStart)
 
     # standard version plus
     timeStart = time.time()
@@ -146,7 +146,9 @@ if __name__ == "__main__":
         altE, azE, d = obs.observe(coord).apparent().altaz()
         alt.append(altE.degrees)
         az.append(azE.degrees)
-    print(time.time() - timeStart)
+    print('standard opt: ', time.time() - timeStart)
+    az_SKY = az
+    alt_SKY = alt
 
     # improved version
     timeStart = time.time()
@@ -160,7 +162,7 @@ if __name__ == "__main__":
         altE, azE = topoToAltAz(ra, dec, 50)
         alt.append(altE)
         az.append(azE)
-    print(time.time() - timeStart)
+    print('improved: ', time.time() - timeStart)
 
     # improved version with scalar topo
     timeStart = time.time()
@@ -169,10 +171,78 @@ if __name__ == "__main__":
     ra = coord[0].hours
     dec = coord[1].degrees
     altE, azE = topoToAltAzNew(ra, dec, 50)
-    print(time.time() - timeStart)
+    print('scalar: ', time.time() - timeStart)
+
+    # version with astropy and erfa
+    timeStart = time.time()
+    alt = list()
+    az = list()
+    ra = starsDF.ra.radians
+    dec = starsDF.dec.radians
+    PR = starsDF.ra_mas_per_year
+    PD = starsDF.dec_mas_per_year
+    PX = starsDF.parallax_mas
+    RV = starsDF.radial_km_per_s
+    for ra, dec, pr, pd in zip(ra, dec, PR, PD):
+        aob, zob, hob, dob, rob, eo = erfa.atco13(ra,
+                                                  dec,
+                                                  pr,
+                                                  pd,
+                                                  PX,
+                                                  RV,
+                                                  t.ut1,
+                                                  0.0,
+                                                  t.dut1,
+                                                  location.longitude.radians,
+                                                  location.latitude.radians,
+                                                  location.elevation.m,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0)
+        azE = aob * 360 / 2 / np.pi
+        altE = 90.0 - zob * 360 / 2 /np.pi
+        alt.append(altE)
+        az.append(azE)
+    print('astropy: ', time.time() - timeStart)
+
+
+    # version with astropy and erfa and vector
+    timeStart = time.time()
+    ra = starsDF.ra.radians
+    dec = starsDF.dec.radians
+    PR = starsDF.ra_mas_per_year
+    PD = starsDF.dec_mas_per_year
+    PX = starsDF.parallax_mas
+    RV = starsDF.radial_km_per_s
+    aob, zob, hob, dob, rob, eo = erfa.atco13(ra,
+                                              dec,
+                                              PR,
+                                              PD,
+                                              PX,
+                                              RV,
+                                              t.ut1,
+                                              0.0,
+                                              t.dut1,
+                                              location.longitude.radians,
+                                              location.latitude.radians,
+                                              location.elevation.m,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0)
+    az_ERFA = aob * 360 / 2 / np.pi
+    alt_ERFA = 90.0 - zob * 360 / 2 / np.pi
+    print('astropy scalar: ', time.time() - timeStart)
+
+    print(alt_ERFA - alt_SKY, az_ERFA - az_SKY)
+
 
     # testing direction
-
     barnard = skyfield.api.Star(ra_hours=(17, 57, 48.49803),
                                 dec_degrees=(4, 41, 36.2072))
 

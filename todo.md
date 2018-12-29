@@ -11,11 +11,8 @@ ToDo list:
 - add dso path in mainW
 - add build file in mainW
 - refraction manually push
-- gui button refraction manually not nice
 - alignment turn numbers left right missing
 - make tests for hipparcos
-- check architecture for hipparcos
-- make logic, when align stars is on / of in conjunction with operation mode
 
 
 

@@ -62,13 +62,18 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # persistence management through dict
         self.config = {}
         self.loadConfig()
+        mainConfig = self.config.get('mainW', '')
+        if mainConfig:
+            expire = self.config['mainW'].get('expiresYes', True)
+        else:
+            expire = True
 
         # get timing constant
         pathToData = self.mwGlob['dataDir']
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
                                    pathToData=pathToData,
-                                   expire=False,
+                                   expire=expire,
                                    verbose=None,
                                    )
         # set observer position to last one first
@@ -82,7 +87,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
         # get all planets for calculation
         load = skyfield.api.Loader(pathToData,
-                                   expire=False,
+                                   expire=expire,
                                    verbose=None,
                                    )
         self.planets = load('de421.bsp')

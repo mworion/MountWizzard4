@@ -9,7 +9,6 @@ ToDo list:
 - select and slew align stars
 - add dso path calculation in build
 - add dso path in mainW
-- add build file in mainW
 - alignment turn numbers left right missing
 - make tests for hipparcos
 

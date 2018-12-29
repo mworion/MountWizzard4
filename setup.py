@@ -26,7 +26,7 @@ setup(
     packages=[
         'mw4',
         'mw4.base',
-        'mw4.build',
+        'mw4.modeldata',
         'mw4.environ',
         'mw4.gui',
         'mw4.gui.media',

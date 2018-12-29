@@ -401,7 +401,7 @@ def test_updatePointGui_jd2():
     value = None
     app.mount.obsSite.timeJD = value
     app.mainW.updatePointGUI()
-    assert '-' == app.mainW.ui.timeJD.text()
+    assert '-' != app.mainW.ui.timeJD.text()
 
 
 def test_updatePointGui_pierside():

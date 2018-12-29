@@ -99,9 +99,9 @@ class Hipparcos(object):
         self.az = aob * 360 / 2 / np.pi
         self.alt = 90.0 - zob * 360 / 2 / np.pi
 
-    def getAlignStarRaDecFromIndex(self, name):
+    def getAlignStarRaDecFromName(self, name):
         """
-        getAlignStarRaDecFromIndex does calculate the star coordinates from give data
+        getAlignStarRaDecFromName does calculate the star coordinates from give data
         out of generated star list. calculation routines are from astropy erfa. atco13 does
         the results based on proper motion, parallax and radial velocity and need J2000
         coordinates. because of using the hipparcos catalogue, which is based on J1991,
@@ -109,8 +109,10 @@ class Hipparcos(object):
         the alignstars file. there is no refraction data taken into account, because we need
         this only for display purpose and for this, the accuracy is more than sufficient.
 
+        the return values are in JNow epoch as the mount only handles this epoch !
+
         :param name: name of star
-        :return: values for ra, dec in hours / degrees
+        :return: values for ra, dec in hours / degrees in JNow epoch !
         """
 
         if name not in self.alignStars:

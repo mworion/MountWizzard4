@@ -25,6 +25,7 @@ import PyQt5
 import numpy as np
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
+import skyfield.api
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import hemisphere_ui
@@ -618,8 +619,8 @@ class HemisphereWindow(widget.MWidget):
             return False
 
         textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
-        azimuth = int(event.xdata)
-        altitude = int(event.ydata)
+        azimuth = int(event.xdata + 0.5)
+        altitude = int(event.ydata + 0.5)
         question = textFormat.format(azimuth, altitude)
         msg = PyQt5.QtWidgets.QMessageBox
         reply = msg.question(self,
@@ -630,9 +631,14 @@ class HemisphereWindow(widget.MWidget):
                              )
         if reply != msg.Yes:
             return False
-        # todo: slewing command for the mount
-        print('slewing')
-        return True
+        az = skyfield.api.Angle(degrees=azimuth)
+        alt = skyfield.api.Angle(degrees=altitude)
+        suc = self.app.mount.obsSite.slewAltAz(alt=alt, az=az, slewType='normal')
+        if not suc:
+            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
+        else:
+            self.app.message.emit('Slewing to: {0}, {1}'.format(azimuth, altitude), 0)
+        return suc
 
     def addHorizonPoint(self, data=None, event=None):
         """
@@ -840,8 +846,27 @@ class HemisphereWindow(widget.MWidget):
         index = self.getIndexPoint(event=event, plane=plane, epsilon=2)
         if index is None:
             return False
-        print(index, hip.name[index])
-        return True
+
+        name = hip.name[index]
+        textFormat = 'Do you want to slew the mount to:\n\n{0}'
+        question = textFormat.format(name)
+        msg = PyQt5.QtWidgets.QMessageBox
+        reply = msg.question(self,
+                             'Hemisphere polar align',
+                             question,
+                             msg.Yes | msg.No,
+                             msg.No,
+                             )
+        if reply != msg.Yes:
+            return False
+        ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
+        coord = skyfield.api.Star(ra_hours=ra, dec_degrees=dec)
+        suc = self.app.mount.obsSite.slewRaDec(target=coord, slewType='polar')
+        if not suc:
+            self.app.message.emit('Cannot slew to: {0}'.format(name), 2)
+        else:
+            self.app.message.emit('Slewing to: {0}'.format(name), 0)
+        return suc
 
     def drawHemisphereStatic(self, axes=None):
         """

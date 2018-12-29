@@ -63,7 +63,7 @@ class MainWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
-        self.setWindowTitle('MountWizzard4   (' + self.app.mwGlob['build'] + ')')
+        self.setWindowTitle('MountWizzard4   (' + self.app.mwGlob['modeldata'] + ')')
         self.setupRelayGui()
 
         # defining the necessary instances of classes
@@ -1256,7 +1256,7 @@ class MainWindow(widget.MWidget):
 
     def setupRelayGui(self):
         """
-        setupRelayGui handles the build of list for relay handling. to keep many relay in
+        setupRelayGui handles the modeldata of list for relay handling. to keep many relay in
         order i collect them in the list for list handling afterwards.
 
         :return: success for test

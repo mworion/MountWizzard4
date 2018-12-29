@@ -411,7 +411,7 @@ class HemisphereWindow(widget.MWidget):
     @staticmethod
     def markerPoint():
         """
-        markerPoint constructs a custom marker for presentation of build points
+        markerPoint constructs a custom marker for presentation of modeldata points
 
         :return: marker
         """
@@ -448,7 +448,7 @@ class HemisphereWindow(widget.MWidget):
     @staticmethod
     def markerStar():
         """
-        markerStar constructs a custom marker for presentation of build points
+        markerStar constructs a custom marker for presentation of modeldata points
 
         :return: marker
         """
@@ -692,7 +692,7 @@ class HemisphereWindow(widget.MWidget):
     def addBuildPoint(self, data=None, event=None, axes=None):
         """
         addBuildPoint calculates from the position of the left mouse click the position
-        where the next build point should be added. the coordinates are given from mouse
+        where the next modeldata point should be added. the coordinates are given from mouse
         click itself.
 
         :param data: point in tuples (alt, az)
@@ -752,7 +752,7 @@ class HemisphereWindow(widget.MWidget):
 
     def deleteBuildPoint(self, data=None, event=None):
         """
-        deleteBuildPoint selects the next build point in distance max and tries to
+        deleteBuildPoint selects the next modeldata point in distance max and tries to
         delete it. there have to be at least 2 horizon point left.
 
         :param data: point in tuples (alt, az)
@@ -770,7 +770,7 @@ class HemisphereWindow(widget.MWidget):
     def editBuildPoints(self, data=None, event=None, axes=None):
         """
         editBuildPoints does dispatching the different mouse clicks for adding or deleting
-        build points and call the function accordingly.
+        modeldata points and call the function accordingly.
 
         :param data: points in tuples (alt, az)
         :param event: mouse event
@@ -839,7 +839,7 @@ class HemisphereWindow(widget.MWidget):
         """
          drawHemisphereStatic renders the static part of the hemisphere window and puts
          all drawing on the static plane. the content consist of:
-            - build points
+            - modeldata points
             - horizon mask
             - celestial paths
             - meridian limits
@@ -860,7 +860,7 @@ class HemisphereWindow(widget.MWidget):
                 self.horizonMarker.set_marker('o')
                 self.horizonMarker.set_color('#FF00FF')
 
-        # drawing build points
+        # drawing modeldata points
         if self.app.data.buildP:
             alt, az = zip(*self.app.data.buildP)
             # show line path pf slewing

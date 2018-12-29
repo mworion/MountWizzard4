@@ -30,8 +30,8 @@ from mw4 import mainW
 from mw4 import messageW
 from mw4 import hemisphereW
 from mw4.relay import kmRelay
-from mw4.build import points
-from mw4.build import hipparcos
+from mw4.modeldata import points
+from mw4.modeldata import hipparcos
 from mw4.environ import environ
 
 

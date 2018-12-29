@@ -201,7 +201,7 @@ def make_test():
     mwGlob = {'workDir': '.',
               'configDir': '../test/config',
               'dataDir': '../test/config',
-              'build': 'test',
+              'modeldata': 'test',
               }
     load = skyfield.api.Loader(mwGlob['dataDir'],
                                expire=True,

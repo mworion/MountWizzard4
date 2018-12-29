@@ -27,12 +27,12 @@ import unittest.mock as mock
 import skyfield.api
 # local import
 
-from mw4.build import points
+from mw4.modeldata import points
 
 
 mwGlob = {'workDir': '.',
           'configDir': './mw4/test/config',
-          'build': 'test',
+          'modeldata': 'test',
           }
 
 

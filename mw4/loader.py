@@ -211,7 +211,7 @@ def main():
 
     # defining system wide definitions:
     mwGlob = {
-        'build': mainApp.MountWizzard4.version,
+        'modeldata': mainApp.MountWizzard4.version,
         'frozen': False,
         'bundleDir': '',
         'workDir': '',
@@ -272,7 +272,7 @@ def main():
     splash.setValue(40)
     logging.info('------------------------------------------------------------------------')
     logging.info('')
-    logging.info('MountWizzard {0} started !'.format(mwGlob['build']))
+    logging.info('MountWizzard {0} started !'.format(mwGlob['modeldata']))
     logging.info('')
     logging.info('------------------------------------------------------------------------')
     logging.info('Platform         : {0}'.format(platform.system()))

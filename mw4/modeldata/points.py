@@ -60,7 +60,7 @@ def HaDecToAltAz(ha, dec, lat):
 
 class DataPoint(object):
     """
-    The class Data inherits all information and handling of build data and other
+    The class Data inherits all information and handling of modeldata data and other
     attributes. this includes horizon data, model points data and their persistence
 
         >>> data = DataPoint(
@@ -168,7 +168,7 @@ class DataPoint(object):
 
     def addBuildP(self, value=None, position=None):
         """
-        addBuildP extends the list of build points. the new point could be added at the end
+        addBuildP extends the list of modeldata points. the new point could be added at the end
         of the list (default) or in any location in the list.
 
         :param value:
@@ -197,7 +197,7 @@ class DataPoint(object):
 
     def delBuildP(self, position):
         """
-        delBuildP deletes one point from the build points list at the given index.
+        delBuildP deletes one point from the modeldata points list at the given index.
 
         :param position:
         :return:
@@ -253,7 +253,7 @@ class DataPoint(object):
 
     def addHorizonP(self, value=None, position=None):
         """
-        addHorizonP extends the list of build points. the new point could be added at the
+        addHorizonP extends the list of modeldata points. the new point could be added at the
         end of the list (default) or in any location in the list.
 
         :param value:
@@ -282,7 +282,7 @@ class DataPoint(object):
 
     def delHorizonP(self, position):
         """
-        delHorizonP deletes one point from the build points list at the given index.
+        delHorizonP deletes one point from the modeldata points list at the given index.
 
         :param position:
         :return:
@@ -334,7 +334,7 @@ class DataPoint(object):
 
     def loadBuildP(self, fileName=None):
         """
-        loadBuildP loads a build pints file and stores the data in the buildP list.
+        loadBuildP loads a modeldata pints file and stores the data in the buildP list.
         necessary conversion are made.
 
         :param fileName: name of file to be handled
@@ -367,7 +367,7 @@ class DataPoint(object):
 
     def saveBuildP(self, fileName=None):
         """
-        saveBuildP saves the actual build points list in a file in json dump format
+        saveBuildP saves the actual modeldata points list in a file in json dump format
 
         :param fileName: name of file to be handled
         :return: success
@@ -386,7 +386,7 @@ class DataPoint(object):
 
     def loadHorizonP(self, fileName=None):
         """
-        loadHorizonP loads a build pints file and stores the data in the buildP list.
+        loadHorizonP loads a modeldata pints file and stores the data in the buildP list.
         necessary conversion are made.
 
         :param fileName: name of file to be handled
@@ -434,7 +434,7 @@ class DataPoint(object):
 
     def saveHorizonP(self, fileName=None):
         """
-        saveHorizonP saves the actual build points list in a file in json dump format
+        saveHorizonP saves the actual modeldata points list in a file in json dump format
 
         :param fileName: name of file to be handled
         :return: success

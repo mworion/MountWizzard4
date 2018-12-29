@@ -23,12 +23,12 @@ import logging
 import numpy as np
 import astropy._erfa as erfa
 # local imports
-from mw4.build.alignstars import generateAlignStars
+from mw4.modeldata.alignstars import generateAlignStars
 
 
 class Hipparcos(object):
     """
-    The class Data inherits all information and handling of build data and other
+    The class Data inherits all information and handling of modeldata data and other
     attributes. this includes horizon data, model points data and their persistence
 
         >>> hip = Hipparcos(

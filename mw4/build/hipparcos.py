@@ -51,14 +51,19 @@ class Hipparcos(object):
         self.mwGlob = mwGlob
         self.lat = app.mount.obsSite.location.latitude.degrees
         self.alignStars = generateAlignStars()
-        self.calculateAlignStarPositions()
+        self.calculateAlignStarPositionsAltAz()
 
-    def calculateAlignStarPositions(self):
+    def calculateAlignStarPositionsAltAz(self):
         """
-        calculateAlignStarPositions does from actual observer position the star coordinates
-        in alt, az for the given align stars
+        calculateAlignStarPositionsAltAz does calculate the star coordinates from give data
+        out of generated star list. calculation routines are from astropy erfa. atco13 does
+        the results based on proper motion, parallax and radial velocity and need J2000
+        coordinates. because of using the hipparcos catalogue, which is based on J1991,
+        25 epoch the pre calculation from J1991,25 to J2000 is done already when generating
+        the alignstars file. there is no refraction data taken into account, because we need
+        this only for display purpose and for this, the accuracy is more than sufficient.
 
-        :return: list for alt, az and hipNo
+        :return: lists for alt, az and name of star
         """
 
         location = self.app.mount.obsSite.location
@@ -88,3 +93,34 @@ class Hipparcos(object):
         alt = 90.0 - zob * 360 / 2 / np.pi
 
         return alt, az, name
+
+    def getAlignStarRaDecFromIndex(self, index):
+        """
+        getAlignStarRaDecFromIndex does calculate the star coordinates from give data
+        out of generated star list. calculation routines are from astropy erfa. atco13 does
+        the results based on proper motion, parallax and radial velocity and need J2000
+        coordinates. because of using the hipparcos catalogue, which is based on J1991,
+        25 epoch the pre calculation from J1991,25 to J2000 is done already when generating
+        the alignstars file. there is no refraction data taken into account, because we need
+        this only for display purpose and for this, the accuracy is more than sufficient.
+
+        :return: values for ra, dec in hours / degress
+        """
+
+        t = self.app.mount.obsSite.ts.now()
+        star = self.alignStars[index]
+        values = list(star.values())
+
+        ra, dec, eo = erfa.atci13(values[0],
+                                  values[1],
+                                  values[2],
+                                  values[3],
+                                  values[4],
+                                  values[5],
+                                  t.ut1,
+                                  0.0,
+                                  )
+        ra = self.ERFA.anp(ri - eo) * 24 / self.ERFA.D2PI
+        dec = di * 360 / self.ERFA.D2PI
+
+        return ra, dec

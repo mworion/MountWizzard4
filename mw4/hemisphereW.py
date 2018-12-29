@@ -400,7 +400,7 @@ class HemisphereWindow(widget.MWidget):
             return False
         if not self.ui.checkShowAlignStar.isChecked():
             return False
-        alt, az, name = self.app.hipparcos.calculateAlignStarPositions()
+        alt, az, name = self.app.hipparcos.calculateAlignStarPositionsAltAz()
         self.starsAlign.set_data(az, alt)
         for i, starAnnotation in enumerate(self.starsAlignAnnotate):
             starAnnotation.set_anncoords('data')
@@ -980,7 +980,7 @@ class HemisphereWindow(widget.MWidget):
 
         visible = self.ui.checkShowAlignStar.isChecked()
         self.starsAlignAnnotate = list()
-        alt, az, hipNo = self.app.hipparcos.calculateAlignStarPositions()
+        alt, az, hipNo = self.app.hipparcos.calculateAlignStarPositionsAltAz()
         self.starsAlign, = axes.plot(az,
                                      alt,
                                      marker=self.markerStar(),

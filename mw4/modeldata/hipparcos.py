@@ -28,8 +28,10 @@ from mw4.modeldata.alignstars import generateAlignStars
 
 class Hipparcos(object):
     """
-    The class Data inherits all information and handling of modeldata data and other
-    attributes. this includes horizon data, model points data and their persistence
+    The class Data inherits all information and handling of hipparcos data and other
+    attributes. this includes data about the alignment stars defined in generateAlignStars,
+    their ra dec coordinates, proper motion, parallax and radial velocity and the
+    calculation of data for display and slew commands
 
         >>> hip = Hipparcos(
         >>>                 app=app
@@ -38,6 +40,8 @@ class Hipparcos(object):
     """
 
     __all__ = ['Hipparcos',
+               'calculateAlignStarsPositionsAltAz',
+               'getAlignStarRaDecFromIndex',
                ]
     version = '0.2'
     logger = logging.getLogger(__name__)
@@ -51,7 +55,6 @@ class Hipparcos(object):
         self.mwGlob = mwGlob
         self.lat = app.mount.obsSite.location.latitude.degrees
         self.alignStars = generateAlignStars()
-        self.calculateAlignStarPositionsAltAz()
 
     def calculateAlignStarPositionsAltAz(self):
         """
@@ -67,7 +70,7 @@ class Hipparcos(object):
         """
 
         location = self.app.mount.obsSite.location
-        t = self.app.mount.obsSite.ts.now()
+        t = self.app.mount.obsSite.timeJD
         star = list(self.alignStars.values())
         name = list(self.alignStars.keys())
 
@@ -94,7 +97,7 @@ class Hipparcos(object):
 
         return alt, az, name
 
-    def getAlignStarRaDecFromIndex(self, index):
+    def getAlignStarRaDecFromIndex(self, name):
         """
         getAlignStarRaDecFromIndex does calculate the star coordinates from give data
         out of generated star list. calculation routines are from astropy erfa. atco13 does
@@ -104,12 +107,14 @@ class Hipparcos(object):
         the alignstars file. there is no refraction data taken into account, because we need
         this only for display purpose and for this, the accuracy is more than sufficient.
 
-        :return: values for ra, dec in hours / degress
+        :param name: name of star
+        :return: values for ra, dec in hours / degrees
         """
 
+        if name not in self.alignStars:
+            return None, None
         t = self.app.mount.obsSite.ts.now()
-        star = self.alignStars[index]
-        values = list(star.values())
+        values = self.alignStars[name]
 
         ra, dec, eo = erfa.atci13(values[0],
                                   values[1],
@@ -120,7 +125,7 @@ class Hipparcos(object):
                                   t.ut1,
                                   0.0,
                                   )
-        ra = self.ERFA.anp(ri - eo) * 24 / self.ERFA.D2PI
-        dec = di * 360 / self.ERFA.D2PI
+        ra = erfa.anp(ra - eo) * 24 / 2 / np.pi
+        dec = dec * 360 / 2 / np.pi
 
         return ra, dec

@@ -979,7 +979,9 @@ class HemisphereWindow(widget.MWidget):
                                        xycoords='data',
                                        color='#808080',
                                        fontsize=12,
-                                       clip_on=True)
+                                       clip_on=True,
+                                       visible=visible,
+                                       )
             self.starsAlignAnnotate.append(annotation)
 
     def drawHemisphere(self):

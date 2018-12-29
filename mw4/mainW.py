@@ -127,6 +127,7 @@ class MainWindow(widget.MWidget):
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.indiHost.editingFinished.connect(self.indiHost)
+        self.ui.btn_setRefractionParameters.clicked.connect(self.updateRefractionParameters)
         self.ui.localWeatherName.editingFinished.connect(self.localWeatherName)
         self.ui.globalWeatherName.editingFinished.connect(self.globalWeatherName)
         self.ui.sqmName.editingFinished.connect(self.sqmName)

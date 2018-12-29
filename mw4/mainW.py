@@ -43,7 +43,7 @@ class MainWindow(widget.MWidget):
 
     __all__ = ['MainWindow',
                ]
-    version = '0.1'
+    version = '0.5'
     logger = logging.getLogger(__name__)
 
     CYCLE_GUI = 1000

@@ -45,7 +45,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     __all__ = ['MountWizzard4',
                ]
-    version = '0.3dev1'
+    version = '0.4dev0'
     logger = logging.getLogger(__name__)
 
     # central message and logging dispatching
@@ -62,6 +62,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # persistence management through dict
         self.config = {}
         self.loadConfig()
+
+        # check if data for skyfield expires or not and get the status for it
         mainConfig = self.config.get('mainW', '')
         if mainConfig:
             expire = self.config['mainW'].get('expiresYes', True)

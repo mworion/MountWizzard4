@@ -74,6 +74,8 @@ class Hipparcos(object):
         """
 
         location = self.app.mount.obsSite.location
+        if location is None:
+            return False
         t = self.app.mount.obsSite.timeJD
         star = list(self.alignStars.values())
         self.name = list(self.alignStars.keys())
@@ -98,6 +100,7 @@ class Hipparcos(object):
                                                   0.0)
         self.az = aob * 360 / 2 / np.pi
         self.alt = 90.0 - zob * 360 / 2 / np.pi
+        return True
 
     def getAlignStarRaDecFromName(self, name):
         """

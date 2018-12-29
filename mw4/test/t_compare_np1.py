@@ -11,7 +11,7 @@ def loadStars(path):
         df = skyfield.data.hipparcos.load_dataframe(f)
 
     if len(df) > 0:
-        df = df[df['magnitude'] <= 2]
+        df = df[df['magnitude'] <= 3.5]
         print(len(df))
         starsDict = list()
         for index, row in df.iterrows():
@@ -62,12 +62,11 @@ if __name__ == "__main__":
     # mas * 3600000 / 360 * 2 * np.pi
     # mas/year  * 20000 * np.pi is radians / year
     # version with astropy and erfa and vector
-    timeStart = time.time()
     ra = starsDF.ra.radians
     dec = starsDF.dec.radians
-    PR = starsDF.ra_mas_per_year * 20000 * np.pi
-    PD = starsDF.dec_mas_per_year * 20000 * np.pi
-    PX = starsDF.parallax_mas
+    PR = starsDF.ra_mas_per_year / 3600000 * 2 * np.pi / 360
+    PD = starsDF.dec_mas_per_year / 3600000 * 2 * np.pi / 360
+    PX = starsDF.parallax_mas / 1000
     RV = starsDF.radial_km_per_s
 
     # J2000             = 2451544.5
@@ -76,6 +75,7 @@ if __name__ == "__main__":
     print('preparation')
     ra2, dec2, pr2, pd2, px2, rv2 = erfa.pmsafe(ra, dec, PR, PD, PX, RV,
                                                 2448347.5, 0.0, 2452544.5, 0.0)
+    timeStart = time.time()
     print('calculation')
     aob, zob, hob, dob, rob, eo = erfa.atco13(ra2,
                                               dec2,
@@ -98,4 +98,4 @@ if __name__ == "__main__":
     az_ERFA = aob * 360 / 2 / np.pi
     alt_ERFA = 90.0 - zob * 360 / 2 / np.pi
     print('astropy scalar: ', time.time() - timeStart)
-    print(np.mean(alt_ERFA - alt_SKY), np.mean(az_ERFA - az_SKY))
+    print(np.max(abs(alt_ERFA - alt_SKY)), np.max(abs(az_ERFA - az_SKY)))

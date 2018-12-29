@@ -123,11 +123,15 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
+        self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
 
         if 'mainW' in self.app.config:
             self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
             self.app.data.loadHorizonP()
         self.initConfig()
+        self.configOperationMode()
+
+        # setting up the timers
         self.timerGui = PyQt5.QtCore.QTimer()
         self.timerGui.setSingleShot(False)
         self.timerGui.timeout.connect(self.updateGUI)
@@ -469,6 +473,22 @@ class HemisphereWindow(widget.MWidget):
         self.pointsBuildAnnotate = list()
         self.app.data.clearBuildP()
         self.drawHemisphere()
+
+    def configOperationMode(self):
+        """
+        configOperationMode enables and disables the select PolarAlign button according
+        to the status of Show align stars. without showing align stars it does not make
+        sense to enable this function.
+
+        :return: nothing
+        """
+
+        if self.ui.checkShowAlignStar.isChecked():
+            self.ui.checkPolarAlignment.setEnabled(True)
+        else:
+            self.ui.checkPolarAlignment.setEnabled(False)
+            if self.ui.checkPolarAlignment.isChecked():
+                self.ui.checkEditNone.setChecked(True)
 
     def setOperationMode(self):
         """

@@ -1,4 +1,6 @@
+import time
 import skyfield.named_stars
+import skyfield.api
 import numpy as np
 import astropy._erfa as erfa
 
@@ -27,18 +29,16 @@ HEADER = '''
 # to show the alignment stars in mountwizzard
 #
 # standard libraries
-import logging
 # external packages
-import numpy as np
 # local import
 
 
-class AlignStars(object):
+def generateAlignStars():
     """
-    AlignStars is the class where the alignment stars which were present in the mount 
-    computer from hipparcos catalogue are stored. for a correct calculation we need beside
-    the J2000 coordinated the proper motion in ra and dec, the parallax and the radial 
-    velocity as the stars move over time. the data is calculated from the hipparcos 
+    generateAlignStars is the function where the alignment stars which were present in the 
+    mount computer from hipparcos catalogue are stored. for a correct calculation we need 
+    beside the J2000 coordinated the proper motion in ra and dec, the parallax and the 
+    radial velocity as the stars move over time. the data is calculated from the hipparcos 
     catalogue using skyfield library
     
     the data is written in 
@@ -49,32 +49,12 @@ class AlignStars(object):
     
     
     """
+    
     star = dict()
 '''
 
 FOOTER = '''
-    def __init__(self):
-        pass
-
-    def __getitem__(self, item):
-        if item in self.star:
-            return self.star[item]
-
-    def __missing__(self, key):
-        return None
-
-    def __iter__(self):
-        return iter(self.star)
-
-    def keys(self):
-        return self.star.keys()
-
-    def items(self):
-        return self.star.items()
-
-    def values(self):
-        return self.star.values()
-
+    return star
 
 '''
 
@@ -82,7 +62,7 @@ named_star_dict = {
     'Achernar': 7588,
     'Acrux': 60718,
     'Adhara': 33579,
-    'Agena': 68702,
+    # 'Agena': 68702,
     'Albireo': 95947,
     'Alcor': 65477,
     'Aldebaran': 21421,
@@ -98,21 +78,21 @@ named_star_dict = {
     'Alnilam': 26311,
     'Alnitak': 26727,
     'Alphard': 46390,
-    'Alphecca': 76267,
+    # 'Alphecca': 76267,
     'Alpheratz': 677,
     'Altair': 97649,
     'Aludra': 35904,
     'Ankaa': 2081,
     'Antares': 80763,
     'Arcturus': 69673,
-    'Arided': 102098,
-    'Aridif': 102098,
-    'Aspidiske': 45556,
+    # 'Arided': 102098,
+    # 'Aridif': 102098,
+    # 'Aspidiske': 45556,
     'Atria': 82273,
     'Avior': 41037,
     'Becrux': 62434,
     'Bellatrix': 25336,
-    'Benetnash': 67301,
+    # 'Benetnash': 67301,
     'Betelgeuse': 27989,
     'Birdun': 66657,
     'Canopus': 30438,
@@ -120,7 +100,7 @@ named_star_dict = {
     'Caph': 746,
     'Castor': 36850,
     'Deneb': 102098,
-    'Deneb Kaitos': 3419,
+    # 'Deneb Kaitos': 3419,
     'Denebola': 57632,
     'Diphda': 3419,
     'Dschubba': 78401,
@@ -129,7 +109,6 @@ named_star_dict = {
     'Elnath': 25428,
     'Enif': 107315,
     'Etamin': 87833,
-    'Erakis': 107259,
     'Fomalhaut': 113368,
     'Foramen': 93308,
     'Gacrux': 61084,
@@ -139,6 +118,7 @@ named_star_dict = {
     'Gruid': 112122,
     'Hadar': 68702,
     'Hamal': 9884,
+    "Herschel's Garnet Star": 107259,
     'Izar': 72105,
     'Kaus Australis': 90185,
     'Kochab': 72607,
@@ -152,53 +132,148 @@ named_star_dict = {
     'Menkent': 68933,
     'Merak': 53910,
     'Miaplacidus': 45238,
-    'Mimosa': 62434,
+    # 'Mimosa': 62434,
     'Mintaka': 25930,
     'Mira': 10826,
     'Mirach': 5447,
-    'Mirfak': 15863,
+    # 'Mirfak': 15863,
     'Mirzam': 30324,
     'Mizar': 65378,
     'Muhlifein': 61932,
-    'Murzim': 30324,
+    # 'Murzim': 30324,
     'Naos': 39429,
     'Nunki': 92855,
     'Peacock': 100751,
     'Phad': 58001,
-    'Phecda': 58001,
+    # 'Phecda': 58001,
     'Polaris': 11767,
     'Pollux': 37826,
     'Procyon': 37279,
-    'Ras Alhague': 86032,
+    # 'Ras Alhague': 86032,
     'Rasalhague': 86032,
     'Regor': 39953,
     'Regulus': 49669,
     'Rigel': 24436,
-    'Rigel Kent': 71683,
-    'Rigil Kentaurus': 71683,
+    # 'Rigel Kent': 71683,
+    # 'Rigil Kentaurus': 71683,
     'Sabik': 84012,
     'Sadira': 16537,
     'Sadr': 100453,
     'Saiph': 27366,
-    'Sargas': 86228,
+    # 'Sargas': 86228,
     'Scheat': 113881,
     'Schedar': 3179,
-    'Scutulum': 45556,
+    # 'Scutulum': 45556,
     'Shaula': 85927,
     'Sirius': 32349,
-    'Sirrah': 677,
+    # 'Sirrah': 677,
     'South Star': 104382,
     'Spica': 65474,
     'Suhail': 44816,
     'Thuban': 68756,
     'Toliman': 71683,
-    'Tseen She': 93308,
+    # 'Tseen She': 93308,
     'Tsih': 4427,
     'Turais': 45556,
     'Vega': 91262,
     'Wei': 82396,
     'Wezen': 34444,
 }
+
+
+def loadStars(path):
+    fileName = path + '/hip_main.dat.gz'
+    with skyfield.api.load.open(fileName) as f:
+        df = skyfield.data.hipparcos.load_dataframe(f)
+
+    if len(df) > 0:
+        df = df[df['magnitude'] <= 3.5]
+        print(len(df))
+        starsDict = list()
+        for index, row in df.iterrows():
+            starsDict.append({row.name: skyfield.api.Star.from_dataframe(row)})
+
+        starsDF = skyfield.api.Star.from_dataframe(df)
+
+    return starsDF, starsDict
+
+
+def make_test():
+    mwGlob = {'workDir': '.',
+              'configDir': '../test/config',
+              'dataDir': '../test/config',
+              'build': 'test',
+              }
+    load = skyfield.api.Loader(mwGlob['dataDir'],
+                               expire=True,
+                               verbose=None,
+                               )
+    ts = load.timescale()
+    planets = load('de421.bsp')
+    starsDF, starsDict = loadStars(mwGlob['dataDir'])
+    earth = planets['earth']
+    location = skyfield.api.Topos(latitude_degrees=50,
+                                  longitude_degrees=11,
+                                  elevation_m=500)
+    observer = earth + location
+    t = ts.now()
+
+    # standard version plus
+    timeStart = time.time()
+    alt = list()
+    az = list()
+    obs = observer.at(t)
+    for value in starsDict:
+        name, coord = list(value.items())[0]
+        altE, azE, d = obs.observe(coord).apparent().altaz()
+        alt.append(altE.degrees)
+        az.append(azE.degrees)
+    az_SKY = az
+    alt_SKY = alt
+    print('standard opt: ', time.time() - timeStart)
+
+    # mas / year to radians / year
+    # mas * 3600000 = degrees / year
+    # mas * 3600000 / 360 * 2 * np.pi
+    # mas/year  * 20000 * np.pi is radians / year
+    # version with astropy and erfa and vector
+    ra = starsDF.ra.radians
+    dec = starsDF.dec.radians
+    PR = starsDF.ra_mas_per_year / 3600000 * 2 * np.pi / 360
+    PD = starsDF.dec_mas_per_year / 3600000 * 2 * np.pi / 360
+    PX = starsDF.parallax_mas / 1000
+    RV = starsDF.radial_km_per_s
+
+    # J2000             = 2451544.5
+    # HIP = J1991,25    = 2448347.5
+
+    print('preparation')
+    ra2, dec2, pr2, pd2, px2, rv2 = erfa.pmsafe(ra, dec, PR, PD, PX, RV,
+                                                2448347.5, 0.0, 2452544.5, 0.0)
+    timeStart = time.time()
+    print('calculation')
+    aob, zob, hob, dob, rob, eo = erfa.atco13(ra2,
+                                              dec2,
+                                              pr2,
+                                              pd2,
+                                              px2,
+                                              rv2,
+                                              t.ut1,
+                                              0.0,
+                                              t.dut1,
+                                              location.longitude.radians,
+                                              location.latitude.radians,
+                                              location.elevation.m,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0,
+                                              0.0)
+    az_ERFA = aob * 360 / 2 / np.pi
+    alt_ERFA = 90.0 - zob * 360 / 2 / np.pi
+    print('astropy scalar: ', time.time() - timeStart)
+    print(np.max(abs(alt_ERFA - alt_SKY)), np.max(abs(az_ERFA - az_SKY)))
 
 
 def make_file():
@@ -237,10 +312,16 @@ def make_file():
                                                         2452544.5,
                                                         0.0,
                                                         )
-            lineA = "star['{0}'] = [{1}, {2}, {3}".format(name, ra2, dec2, pr2)
-            lineB = ", {0}, {1}, {2}]\n".format(pd2, px2, rv2)
-            print(lineA + lineB)
-            f.write('    ' + lineA + lineB)
+
+            if name.startswith('Hersch'):
+                name = 'Herschel Star'
+
+            lineA = "star['{0}'] = [{1}, {2}, {3},\n".format(name, ra2, dec2, pr2)
+            lineB = "               {0}, {1}, {2}]\n".format(pd2, px2, rv2)
+            print(name)
+            f.write('    ' + lineA)
+            spacer = ' ' * (len(name) - 3)
+            f.write('    ' + spacer + lineB)
         f.write(FOOTER)
 
 

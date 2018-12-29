@@ -396,9 +396,8 @@ class HemisphereWindow(widget.MWidget):
             return False
         if not self.ui.checkShowAlignStar.isChecked():
             return False
-        alt, az, hipNo = self.app.hipparcos.calculateAlignStarPositions()
+        alt, az, name = self.app.hipparcos.calculateAlignStarPositions()
         self.starsAlign.set_data(az, alt)
-
         for i, starAnnotation in enumerate(self.starsAlignAnnotate):
             starAnnotation.set_anncoords('data')
             starAnnotation.set_position((az[i], alt[i]))
@@ -971,9 +970,8 @@ class HemisphereWindow(widget.MWidget):
                                      zorder=-20,
                                      visible=visible,
                                      )
-        for alt, az, hipNo in zip(alt, az, hipNo):
-            starName = self.app.hipparcos.names.get(hipNo, str(hipNo))
-            annotation = axes.annotate(starName,
+        for alt, az, name in zip(alt, az, hipNo):
+            annotation = axes.annotate(name,
                                        xy=(az, alt),
                                        xytext=(0, 0),
                                        textcoords='offset points',

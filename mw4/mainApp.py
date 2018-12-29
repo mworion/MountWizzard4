@@ -30,7 +30,8 @@ from mw4 import mainW
 from mw4 import messageW
 from mw4 import hemisphereW
 from mw4.relay import kmRelay
-from mw4.build import build
+from mw4.build import points
+from mw4.build import hipparcos
 from mw4.environ import environ
 
 
@@ -89,14 +90,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                      )
         self.environment = environ.Environment(host='localhost')
         # managing data
-        self.data = build.DataPoint(
+        self.data = points.DataPoint(
                                     mwGlob=self.mwGlob,
                                     location=self.mount.obsSite.location,
                                     )
         # load stars from hipparcos
-        self.hipparcos = build.Hipparcos(self,
-                                         mwGlob=self.mwGlob,
-                                         )
+        self.hipparcos = hipparcos.Hipparcos(self,
+                                             mwGlob=self.mwGlob,
+                                             )
         # get the window widgets up
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)

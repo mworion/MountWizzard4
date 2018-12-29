@@ -21,11 +21,8 @@
 import logging
 import os
 import json
-import pickle
-import time
 # external packages
 import numpy as np
-import skyfield
 # local imports
 
 __all__ = ['HaDecToAltAz',

@@ -20,7 +20,6 @@
 # standard libraries
 import logging
 import bisect
-import time
 # external packages
 import PyQt5
 import numpy as np

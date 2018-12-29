@@ -25,11 +25,6 @@ import astropy._erfa as erfa
 # local imports
 from mw4.build.alignstars import generateAlignStars
 
-__all__ = ['HaDecToAltAz',
-           ]
-
-version = '0.1'
-
 
 class Hipparcos(object):
     """
@@ -44,7 +39,7 @@ class Hipparcos(object):
 
     __all__ = ['Hipparcos',
                ]
-    version = '0.1'
+    version = '0.2'
     logger = logging.getLogger(__name__)
 
     def __init__(self,
@@ -93,5 +88,3 @@ class Hipparcos(object):
         alt = 90.0 - zob * 360 / 2 / np.pi
 
         return alt, az, name
-
-

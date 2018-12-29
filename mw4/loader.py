@@ -32,11 +32,11 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import numpy as np
 import matplotlib
-matplotlib.use('Qt5Agg')
 import skyfield.iokit
 # local import
 from mw4 import mainApp
 from mw4.gui.media import resources
+matplotlib.use('Qt5Agg')
 
 
 class SplashScreen(PyQt5.QtCore.QObject):

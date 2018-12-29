@@ -10,7 +10,6 @@ ToDo list:
 - add dso path calculation in build
 - add dso path in mainW
 - add build file in mainW
-- refraction manually push
 - alignment turn numbers left right missing
 - make tests for hipparcos
 

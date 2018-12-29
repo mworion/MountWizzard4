@@ -29,21 +29,21 @@
 
 def generateAlignStars():
     """
-    generateAlignStars is the function where the alignment stars which were present in the 
-    mount computer from hipparcos catalogue are stored. for a correct calculation we need 
-    beside the J2000 coordinated the proper motion in ra and dec, the parallax and the 
-    radial velocity as the stars move over time. the data is calculated from the hipparcos 
+    generateAlignStars is the function where the alignment stars which were present in the
+    mount computer from hipparcos catalogue are stored. for a correct calculation we need
+    beside the J2000 coordinated the proper motion in ra and dec, the parallax and the
+    radial velocity as the stars move over time. the data is calculated from the hipparcos
     catalogue using skyfield library
-    
-    the data is written in 
+
+    the data is written in
     [name, hip no, ra, dec, ra proper motion, dec proper motion, parallax, radial velocity]
     based on J2000 epoch.
     the units are fitting erfa needs:
     [str, int, radians, radians, radians / year, radians/year, arc sec, km /s]
-    
-    
+
+
     """
-    
+
     star = dict()
     star['Achernar'] = [0.42636313743386084, -0.9989721040992605, 4.267359632399454e-07,
                         -1.9431237114262957e-07, 0.022680000001570513, 4.512483521476569e-05]
@@ -249,4 +249,3 @@ def generateAlignStars():
                      1.6144296383671154e-08, 0.0018199999999999514, 0.00019661873306528355]
 
     return star
-

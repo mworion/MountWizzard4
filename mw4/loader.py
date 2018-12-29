@@ -32,11 +32,11 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import numpy as np
 import matplotlib
+matplotlib.use('Qt5Agg')
 import skyfield.iokit
 # local import
 from mw4 import mainApp
 from mw4.gui.media import resources
-matplotlib.use('Qt5Agg')
 
 
 class SplashScreen(PyQt5.QtCore.QObject):
@@ -45,7 +45,8 @@ class SplashScreen(PyQt5.QtCore.QObject):
     set in the progress bar. Need the app and the icon as parameter
 
     Part from Maurizio D'Addona <mauritiusdadd@gmail.com> under license APL2.0
-    Ported from PYQT4 to PYQT5
+    Ported from PyQt4 to PyQt5
+
     Agreement for License (email from 04.07.2018):
     Hi Michel,
     sure, there is no problem for me. I'm glad you have found it useful.

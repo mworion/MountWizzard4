@@ -454,7 +454,9 @@ def test_updateLocation_3(qtbot):
 
 
 def test_storeConfig_1():
-    app.data.lat = 20
+    app.mount.obsSite.location = skyfield.toposlib.Topos(latitude_degrees=20,
+                                                         longitude_degrees=10,
+                                                         elevation_m=500)
     suc = app.storeConfig()
     assert suc
     assert app.config['topoLat'] == 20

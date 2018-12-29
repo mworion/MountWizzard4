@@ -53,8 +53,8 @@ def test_calculateAlignStarPositionsAltAz_1():
                         -1.9431237114262957e-07, 0.022680000001570513, 4.512483521476569e-05]
     data.alignStars = star
 
-    alt, az, name = data.calculateAlignStarPositionsAltAz()
-    assert ['Achernar'] == name
+    data.calculateAlignStarPositionsAltAz()
+    assert ['Achernar'] == data.name
 
 
 def test_calculateAlignStarPositionsAltAz_2():
@@ -65,8 +65,8 @@ def test_calculateAlignStarPositionsAltAz_2():
                      -7.141291885025191e-08, 0.010169999999992536, 0.00018371089505169385]
     data.alignStars = star
 
-    alt, az, name = data.calculateAlignStarPositionsAltAz()
-    assert ['Achernar', 'Acrux'] == name
+    data.calculateAlignStarPositionsAltAz()
+    assert ['Achernar', 'Acrux'] == data.name
 
 
 def test_getAlignStarRaDecFromIndex_1():

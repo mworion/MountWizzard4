@@ -54,7 +54,11 @@ class Hipparcos(object):
         self.app = app
         self.mwGlob = mwGlob
         self.lat = app.mount.obsSite.location.latitude.degrees
+        self.name = list()
+        self.alt = list()
+        self.az = list()
         self.alignStars = generateAlignStars()
+        self.calculateAlignStarPositionsAltAz()
 
     def calculateAlignStarPositionsAltAz(self):
         """
@@ -72,7 +76,7 @@ class Hipparcos(object):
         location = self.app.mount.obsSite.location
         t = self.app.mount.obsSite.timeJD
         star = list(self.alignStars.values())
-        name = list(self.alignStars.keys())
+        self.name = list(self.alignStars.keys())
 
         aob, zob, hob, dob, rob, eo = erfa.atco13([x[0] for x in star],
                                                   [x[1] for x in star],
@@ -92,10 +96,8 @@ class Hipparcos(object):
                                                   0.0,
                                                   0.0,
                                                   0.0)
-        az = aob * 360 / 2 / np.pi
-        alt = 90.0 - zob * 360 / 2 / np.pi
-
-        return alt, az, name
+        self.az = aob * 360 / 2 / np.pi
+        self.alt = 90.0 - zob * 360 / 2 / np.pi
 
     def getAlignStarRaDecFromIndex(self, name):
         """

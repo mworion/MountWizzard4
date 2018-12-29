@@ -400,11 +400,12 @@ class HemisphereWindow(widget.MWidget):
             return False
         if not self.ui.checkShowAlignStar.isChecked():
             return False
-        alt, az, name = self.app.hipparcos.calculateAlignStarPositionsAltAz()
-        self.starsAlign.set_data(az, alt)
+        hip = self.app.hipparcos
+        hip.calculateAlignStarPositionsAltAz()
+        self.starsAlign.set_data(hip.az, hip.alt)
         for i, starAnnotation in enumerate(self.starsAlignAnnotate):
             starAnnotation.set_anncoords('data')
-            starAnnotation.set_position((az[i], alt[i]))
+            starAnnotation.set_position((hip.az[i], hip.alt[i]))
         self.drawCanvasStar()
         return True
 
@@ -557,7 +558,7 @@ class HemisphereWindow(widget.MWidget):
         no index will be returned.
 
         :param event: data of the mouse clicked event
-        :param plane: coordinates as tuples (x, y)
+        :param plane: coordinates as tuples (alt, az)
         :param epsilon:
         :return: index or none
         """
@@ -831,8 +832,15 @@ class HemisphereWindow(widget.MWidget):
 
         if not event.inaxes:
             return False
-        # todo: star selection commands
-        print('mouse star clicked')
+        if event.button != 1:
+            return False
+
+        hip = self.app.hipparcos
+        plane = list(zip(hip.alt, hip.az))
+        index = self.getIndexPoint(event=event, plane=plane, epsilon=2)
+        if index is None:
+            return False
+        print(index, hip.name[index])
         return True
 
     def drawHemisphereStatic(self, axes=None):
@@ -980,9 +988,10 @@ class HemisphereWindow(widget.MWidget):
 
         visible = self.ui.checkShowAlignStar.isChecked()
         self.starsAlignAnnotate = list()
-        alt, az, hipNo = self.app.hipparcos.calculateAlignStarPositionsAltAz()
-        self.starsAlign, = axes.plot(az,
-                                     alt,
+        hip = self.app.hipparcos
+        hip.calculateAlignStarPositionsAltAz()
+        self.starsAlign, = axes.plot(hip.az,
+                                     hip.alt,
                                      marker=self.markerStar(),
                                      markersize=7,
                                      linestyle='',
@@ -990,7 +999,7 @@ class HemisphereWindow(widget.MWidget):
                                      zorder=-20,
                                      visible=visible,
                                      )
-        for alt, az, name in zip(alt, az, hipNo):
+        for alt, az, name in zip(hip.alt, hip.az, hip.name):
             annotation = axes.annotate(name,
                                        xy=(az, alt),
                                        xytext=(0, 0),

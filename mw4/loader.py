@@ -34,7 +34,6 @@ import numpy as np
 import matplotlib
 matplotlib.use('Qt5Agg')
 import skyfield.iokit
-import pandas
 # local import
 from mw4 import mainApp
 from mw4.gui.media import resources

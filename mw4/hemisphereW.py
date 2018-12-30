@@ -25,7 +25,6 @@ import PyQt5
 import numpy as np
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
-import skyfield.api
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import hemisphere_ui
@@ -630,9 +629,9 @@ class HemisphereWindow(widget.MWidget):
                              )
         if reply != msg.Yes:
             return False
-        az = skyfield.api.Angle(degrees=azimuth)
-        alt = skyfield.api.Angle(degrees=altitude)
-        suc = self.app.mount.obsSite.slewAltAz(alt=alt, az=az, slewType='normal')
+        suc = self.app.mount.obsSite.slewAltAz(alt_degrees=altitude,
+                                               az_degrees=azimuth,
+                                               slewType='normal')
         if not suc:
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
         else:
@@ -817,6 +816,9 @@ class HemisphereWindow(widget.MWidget):
 
         if not event.inaxes:
             return False
+        if event.dblclick:
+            return False
+
         if self.ui.checkEditHorizonMask.isChecked():
             suc = self.editHorizonMask(event=event, data=data)
         elif self.ui.checkEditBuildPoints.isChecked():
@@ -839,6 +841,8 @@ class HemisphereWindow(widget.MWidget):
             return False
         if event.button != 1:
             return False
+        if event.dblclick:
+            return False
 
         hip = self.app.hipparcos
         plane = list(zip(hip.alt, hip.az))
@@ -859,8 +863,9 @@ class HemisphereWindow(widget.MWidget):
         if reply != msg.Yes:
             return False
         ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
-        coord = skyfield.api.Star(ra_hours=ra, dec_degrees=dec)
-        suc = self.app.mount.obsSite.slewRaDec(target=coord, slewType='polar')
+        suc = self.app.mount.obsSite.slewRaDec(ra_hours=ra,
+                                               dec_degrees=dec,
+                                               slewType='polar')
         if not suc:
             self.app.message.emit('Cannot slew to: {0}'.format(name), 2)
         else:

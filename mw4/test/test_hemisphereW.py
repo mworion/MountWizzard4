@@ -27,6 +27,7 @@ import PyQt5.QtTest
 import PyQt5.QtCore
 import skyfield.api as api
 import matplotlib.path
+import mountcontrol
 # local import
 from mw4 import mainApp
 
@@ -582,8 +583,11 @@ def test_onMouseNormal_6():
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        suc = app.hemisphereW.onMouseNormal(event=event)
-        assert suc
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            suc = app.hemisphereW.onMouseNormal(event=event)
+            assert suc
 
 
 def test_addHorizonPoint_1():
@@ -812,6 +816,17 @@ def test_onMouseEdit_2():
         pass
     event = Test()
     event.inaxes = True
+    event.dblclick = False
+    suc = app.hemisphereW.onMouseEdit(event=event)
+    assert not suc
+
+
+def test_onMouseEdit_2b():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.dblclick = True
     suc = app.hemisphereW.onMouseEdit(event=event)
     assert not suc
 
@@ -821,6 +836,7 @@ def test_onMouseEdit_3():
         pass
     event = Test()
     event.inaxes = True
+    event.dblclick = False
     app.hemisphereW.ui.checkEditHorizonMask.setChecked(False)
     app.hemisphereW.ui.checkEditBuildPoints.setChecked(False)
     with mock.patch.object(app.hemisphereW,
@@ -838,6 +854,7 @@ def test_onMouseEdit_4():
         pass
     event = Test()
     event.inaxes = True
+    event.dblclick = False
     app.hemisphereW.ui.checkEditHorizonMask.setChecked(True)
     app.hemisphereW.ui.checkEditBuildPoints.setChecked(False)
     with mock.patch.object(app.hemisphereW,
@@ -855,6 +872,7 @@ def test_onMouseEdit_5():
         pass
     event = Test()
     event.inaxes = True
+    event.dblclick = False
     app.hemisphereW.ui.checkEditHorizonMask.setChecked(False)
     app.hemisphereW.ui.checkEditBuildPoints.setChecked(True)
     with mock.patch.object(app.hemisphereW,
@@ -872,6 +890,7 @@ def test_onMouseEdit_6():
         pass
     event = Test()
     event.inaxes = True
+    event.dblclick = False
     app.hemisphereW.ui.checkEditHorizonMask.setChecked(True)
     app.hemisphereW.ui.checkEditBuildPoints.setChecked(False)
     with mock.patch.object(app.hemisphereW,
@@ -889,6 +908,7 @@ def test_onMouseEdit_7():
         pass
     event = Test()
     event.inaxes = True
+    event.dblclick = False
     app.hemisphereW.ui.checkEditHorizonMask.setChecked(False)
     app.hemisphereW.ui.checkEditBuildPoints.setChecked(True)
     with mock.patch.object(app.hemisphereW,
@@ -906,6 +926,7 @@ def test_onMouseStar_1():
         pass
     event = Test()
     event.inaxes = False
+    event.dblclick = False
     suc = app.hemisphereW.onMouseStar(event=event)
     assert not suc
 
@@ -915,8 +936,128 @@ def test_onMouseStar_2():
         pass
     event = Test()
     event.inaxes = True
+    event.button = 3
+    event.dblclick = False
     suc = app.hemisphereW.onMouseStar(event=event)
-    assert suc
+    assert not suc
+
+
+def test_onMouseStar_3():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = True
+    suc = app.hemisphereW.onMouseStar(event=event)
+    assert not suc
+
+
+def test_onMouseStar_4():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = False
+    event.xdata = 180
+    event.ydata = 45
+    app.hipparcos.az = [180]
+    app.hipparcos.alt = [45]
+    app.hipparcos.name = ['test']
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+        suc = app.hemisphereW.onMouseStar(event=event)
+        assert not suc
+
+
+def test_onMouseStar_5():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = False
+    event.xdata = 180
+    event.ydata = 45
+    app.hipparcos.az = [180]
+    app.hipparcos.alt = [45]
+    app.hipparcos.name = ['test']
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            suc = app.hemisphereW.onMouseStar(event=event)
+            assert not suc
+
+
+def test_onMouseStar_6():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = False
+    event.xdata = 180
+    event.ydata = 45
+    app.hipparcos.az = [180]
+    app.hipparcos.alt = [45]
+    app.hipparcos.name = ['test']
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            with mock.patch.object(app.mount.obsSite,
+                                   'slewRaDec',
+                                   return_value=True):
+                suc = app.hemisphereW.onMouseStar(event=event)
+                assert suc
+
+
+def test_onMouseStar_7():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = False
+    event.xdata = 180
+    event.ydata = 45
+    app.hipparcos.az = []
+    app.hipparcos.alt = []
+    app.hipparcos.name = []
+    suc = app.hemisphereW.onMouseStar(event=event)
+    assert not suc
+
+
+def test_onMouseStar_8():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = False
+    event.xdata = 180
+    event.ydata = 45
+    app.hipparcos.az = [180]
+    app.hipparcos.alt = [45]
+    app.hipparcos.name = ['test']
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            with mock.patch.object(app.mount.obsSite,
+                                   'slewRaDec',
+                                   return_value=False):
+                suc = app.hemisphereW.onMouseStar(event=event)
+                assert not suc
 
 
 def test_drawHemisphere_1():

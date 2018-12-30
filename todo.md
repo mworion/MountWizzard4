@@ -6,7 +6,6 @@ ToDo list:
 - save buildP
 - load buildP
 - link dome to hemisphere
-- select and slew align stars
 - add dso path calculation in modeldata
 - add dso path in mainW
 - alignment turn numbers left right missing

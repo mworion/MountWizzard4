@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5094,7 +5094,7 @@ manually</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_alignKnobTurnAz">
+    <widget class="QLineEdit" name="azimuthTurns">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -5265,7 +5265,7 @@ manually</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_alignKnobTurnAlt">
+    <widget class="QLineEdit" name="altitudeTurns">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -6146,12 +6146,12 @@ manually</string>
     <zorder>label</zorder>
     <zorder>azimuthError</zorder>
     <zorder>positionAngle</zorder>
-    <zorder>le_alignKnobTurnAz</zorder>
+    <zorder>azimuthTurns</zorder>
     <zorder>polarError</zorder>
     <zorder>label_14</zorder>
     <zorder>label_153</zorder>
     <zorder>terms</zorder>
-    <zorder>le_alignKnobTurnAlt</zorder>
+    <zorder>altitudeTurns</zorder>
     <zorder>label_156</zorder>
     <zorder>label_158</zorder>
     <zorder>numberStars</zorder>

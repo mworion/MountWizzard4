@@ -773,11 +773,27 @@ def test_updateAlignGui_polarError():
         app.mainW.updateAlignGUI()
         assert '-' == app.mainW.ui.polarError.text()
 
-#
-#
-# testing mainW gui AlignGui
-#
-#
+
+def test_updateAlignGui_altitudeTurns():
+    value = 1.5
+    app.mount.model.altitudeTurns = value
+    app.mainW.updateAlignGUI()
+    assert '1.5' == app.mainW.ui.altitudeTurns.text()
+    value = None
+    app.mount.model.altitudeTurns = value
+    app.mainW.updateAlignGUI()
+    assert '-' == app.mainW.ui.altitudeTurns.text()
+
+
+def test_updateAlignGui_azimuthTurns():
+    value = 1.5
+    app.mount.model.azimuthTurns = value
+    app.mainW.updateAlignGUI()
+    assert '1.5' == app.mainW.ui.azimuthTurns.text()
+    value = None
+    app.mount.model.azimuthTurns = value
+    app.mainW.updateAlignGUI()
+    assert '-' == app.mainW.ui.azimuthTurns.text()
 
 
 def test_closeEvent():

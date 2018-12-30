@@ -752,6 +752,17 @@ class MainWindow(widget.MWidget):
             self.ui.altitudeError.setText(model.altitudeError.dstr(places=0))
         else:
             self.ui.altitudeError.setText('-')
+
+        if model.azimuthTurns is not None:
+            self.ui.azimuthTurns.setText('{0:3.1f}'.format(model.azimuthTurns))
+        else:
+            self.ui.azimuthTurns.setText('-')
+
+        if model.altitudeTurns is not None:
+            self.ui.altitudeTurns.setText('{0:3.1f}'.format(model.altitudeTurns))
+        else:
+            self.ui.altitudeTurns.setText('-')
+
         return True
 
     def showModelPolar(self):

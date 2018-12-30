@@ -8,7 +8,6 @@ ToDo list:
 - link dome to hemisphere
 - add dso path calculation in modeldata
 - add dso path in mainW
-- alignment turn numbers left right missing
 - test initConfig in mainApp
 
 

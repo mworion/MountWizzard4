@@ -33,7 +33,7 @@ WORKPATH = '../build'
 astropy_path, = astropy.__path__
 
 block_cipher = None
-pythonPath = '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6'
+pythonPath = '/Users/mw/PycharmProjects/MountWizzard4/venv/lib/Python3.6'
 sitePack = pythonPath + '/site-packages'
 distDir = '/Users/mw/PycharmProjects/MountWizzard4/dist'
 packageDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4'

@@ -417,42 +417,6 @@ def test_saveConfig_8():
     assert a['filePath'] == config + '/config.cfg'
 
 
-def test_updateLocation_1(qtbot):
-    elev = 100
-    lon = 100
-    lat = 45
-    location = skyfield.api.Topos(longitude_degrees=lon,
-                                  latitude_degrees=lat,
-                                  elevation_m=elev)
-    app.mount.obsSite.location = location
-    app.config['latitudeTemp'] = 20.0
-    with qtbot.waitSignal(app.signalUpdateLocation):
-        suc = app.updateLocation()
-        assert suc
-
-
-def test_updateLocation_2(qtbot):
-    elev = 100
-    lon = 100
-    lat = 45
-    location = skyfield.api.Topos(longitude_degrees=lon,
-                                  latitude_degrees=lat,
-                                  elevation_m=elev)
-    app.mount.obsSite.location = location
-    app.config['latitudeTemp'] = 45
-    with qtbot.assertNotEmitted(app.signalUpdateLocation):
-        suc = app.updateLocation()
-        assert suc
-
-
-def test_updateLocation_3(qtbot):
-    app.mount.obsSite.location = None
-    app.config['latitudeTemp'] = 45
-    with qtbot.assertNotEmitted(app.signalUpdateLocation):
-        suc = app.updateLocation()
-        assert not suc
-
-
 def test_storeConfig_1():
     app.mount.obsSite.location = skyfield.toposlib.Topos(latitude_degrees=20,
                                                          longitude_degrees=10,

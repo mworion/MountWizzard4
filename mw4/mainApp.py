@@ -118,8 +118,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         # check if data for skyfield expires or not and get the status for it
-        mainConfig = self.config.get('mainW', '')
-        if mainConfig:
+        if 'mainW' in self.config:
             expireData = self.config['mainW'].get('expiresYes', True)
         else:
             expireData = True

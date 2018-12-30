@@ -50,58 +50,44 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     # central message and logging dispatching
     message = PyQt5.QtCore.pyqtSignal(str, int)
-    signalUpdateLocation = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,
                  ):
         super().__init__()
 
+        # getting global app data
+        self.expireData = False
         self.mwGlob = mwGlob
-
+        pathToData = self.mwGlob['dataDir']
         # persistence management through dict
         self.config = {}
         self.loadConfig()
-
-        # check if data for skyfield expires or not and get the status for it
-        mainConfig = self.config.get('mainW', '')
-        if mainConfig:
-            expire = self.config['mainW'].get('expiresYes', True)
-        else:
-            expire = True
-
-        # get timing constant
-        pathToData = self.mwGlob['dataDir']
+        expireData, topo = self.initConfig()
+        # initialize commands to mount
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
                                    pathToData=pathToData,
-                                   expire=expire,
+                                   expire=expireData,
                                    verbose=None,
                                    )
-        # set observer position to last one first
-        lat = self.config.get('topoLat', 51.47)
-        lon = self.config.get('topoLon', 0)
-        elev = self.config.get('topoElev', 46)
-        topo = skyfield.api.Topos(longitude_degrees=lon,
-                                  latitude_degrees=lat,
-                                  elevation_m=elev)
+        # setting location to last know config
         self.mount.obsSite.location = topo
-        self.mount.signals.mountUp.connect(self.loadMountData)
         # get all planets for calculation
         load = skyfield.api.Loader(pathToData,
-                                   expire=expire,
+                                   expire=expireData,
                                    verbose=None,
                                    )
         self.planets = load('de421.bsp')
+
+        # loading other classes
         self.relay = kmRelay.KMRelay(host='192.168.2.15',
                                      )
         self.environment = environ.Environment(host='localhost')
-        # managing data
         self.data = points.DataPoint(
                                     mwGlob=self.mwGlob,
                                     location=self.mount.obsSite.location,
                                     )
-        # load stars from hipparcos
         self.hipparcos = hipparcos.Hipparcos(self,
                                              mwGlob=self.mwGlob,
                                              )
@@ -120,12 +106,30 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
         self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
 
-        # link to update from mount signals
-        self.mount.signals.settDone.connect(self.updateLocation)
-
         # starting cyclic polling of mount data
         self.mount.startTimers()
         self.environment.startCommunication()
+
+    def initConfig(self):
+        """
+
+        :return:
+        """
+
+        # check if data for skyfield expires or not and get the status for it
+        mainConfig = self.config.get('mainW', '')
+        if mainConfig:
+            expireData = self.config['mainW'].get('expiresYes', True)
+        else:
+            expireData = True
+        # set observer position to last one first
+        lat = self.config.get('topoLat', 51.47)
+        lon = self.config.get('topoLon', 0)
+        elev = self.config.get('topoElev', 46)
+        topo = skyfield.api.Topos(longitude_degrees=lon,
+                                  latitude_degrees=lat,
+                                  elevation_m=elev)
+        return expireData, topo
 
     def storeConfig(self):
         """
@@ -316,22 +320,4 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.getAlign()
         else:
             self.mount.resetData()
-        return True
-
-    def updateLocation(self):
-        """
-        updateLocation updates the site location as soon as we have new data from the mount
-        until then, the last data from the config file is used.
-
-        :return: success
-        """
-
-        location = self.mount.obsSite.location
-        if location is None:
-            return False
-        self.data.lat = location.latitude.degrees
-        if self.config.get('latitudeTemp') == location.latitude.degrees:
-            return True
-        self.config['latitudeTemp'] = location.latitude.degrees
-        self.signalUpdateLocation.emit()
         return True

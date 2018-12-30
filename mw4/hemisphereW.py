@@ -115,7 +115,6 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.pointDone.connect(self.updateDome)
         self.app.mount.signals.settDone.connect(self.updateMeridian)
         self.app.mount.signals.settDone.connect(self.updateCelestialPath)
-        self.app.signalUpdateLocation.connect(self.clearHemisphere)
         self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
         self.app.mainW.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkEditNone.clicked.connect(self.setOperationMode)

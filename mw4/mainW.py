@@ -754,12 +754,20 @@ class MainWindow(widget.MWidget):
             self.ui.altitudeError.setText('-')
 
         if model.azimuthTurns is not None:
-            self.ui.azimuthTurns.setText('{0:3.1f}'.format(model.azimuthTurns))
+            if model.azimuthTurns > 0:
+                formatText = '{0:3.1f} revs left'
+            else:
+                formatText = '{0:3.1f} revs right'
+            self.ui.azimuthTurns.setText(formatText.format(abs(model.azimuthTurns)))
         else:
             self.ui.azimuthTurns.setText('-')
 
         if model.altitudeTurns is not None:
-            self.ui.altitudeTurns.setText('{0:3.1f}'.format(model.altitudeTurns))
+            if model.altitudeTurns > 0:
+                formatText = '{0:3.1f} revs down'
+            else:
+                formatText = '{0:3.1f} revs up'
+            self.ui.altitudeTurns.setText(formatText.format(abs(model.altitudeTurns)))
         else:
             self.ui.altitudeTurns.setText('-')
 

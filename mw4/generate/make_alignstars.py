@@ -230,6 +230,8 @@ def make_test():
     az_SKY = az
     alt_SKY = alt
     print('standard opt: ', time.time() - timeStart)
+    b = obs.observe(starsDF)
+    c = b.apparent()
 
     # mas / year to radians / year
     # mas * 3600000 = degrees / year
@@ -325,4 +327,4 @@ def make_file():
 
 
 if __name__ == '__main__':
-    make_file()
+    make_test()

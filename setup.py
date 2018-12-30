@@ -45,8 +45,6 @@ setup(
         'mountcontrol>=0.61',
         'indibase>=0.3',
         'astropy==3.1',
-        'pytest==4.0.1',
-        'pytest-qt==3.2.1',
         'wakeonlan==1.1.6',
     ],
     url='https://github.com/mworion/MountWizzard4',

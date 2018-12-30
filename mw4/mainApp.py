@@ -106,9 +106,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
         self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
 
-        # starting cyclic polling of mount data
+        # starting mount communication
         self.mount.startTimers()
         self.environment.startCommunication()
+        self.mount.signals.mountUp.connect(self.loadMountData)
 
     def initConfig(self):
         """
@@ -122,7 +123,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             expireData = self.config['mainW'].get('expiresYes', True)
         else:
             expireData = True
-        # set observer position to last one first
+        # set observer position to last one first, to greenwich if not known
         lat = self.config.get('topoLat', 51.47)
         lon = self.config.get('topoLon', 0)
         elev = self.config.get('topoElev', 46)
@@ -319,5 +320,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.getNames()
             self.mount.getAlign()
         else:
+            location = self.mount.obsSite.location
             self.mount.resetData()
+            self.mount.obsSite.location = location
         return True

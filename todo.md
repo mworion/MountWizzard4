@@ -10,7 +10,7 @@ ToDo list:
 - add dso path calculation in modeldata
 - add dso path in mainW
 - alignment turn numbers left right missing
-- make tests for hipparcos
+- test initConfig in mainApp
 
 
 

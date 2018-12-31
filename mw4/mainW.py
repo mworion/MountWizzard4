@@ -162,6 +162,7 @@ class MainWindow(widget.MWidget):
         self.updateMountConnStat(False)
         self.enableRelay()
         self.initConfig()
+        self.setLoggingLevel()
         self.show()
 
         self.timerGui = PyQt5.QtCore.QTimer()
@@ -807,7 +808,10 @@ class MainWindow(widget.MWidget):
         :return:    True if ok for testing
         """
 
-        if not self.app.mount.obsSite.location:
+        model = self.app.mount.model
+        lat = self.app.mount.obsSite.location.latitude.degrees
+
+        if not model.starList:
             # clear the plot and return
             fig, axes = self.clearPolar(self.polarPlot)
             fig.subplots_adjust(left=0.1,
@@ -818,16 +822,9 @@ class MainWindow(widget.MWidget):
             axes.figure.canvas.draw()
             return False
 
-        model = self.app.mount.model
-        lat = self.app.mount.obsSite.location.latitude.degrees
-
         # preparing the polar plot and the axes
         fig, axes = self.clearPolar(self.polarPlot)
 
-        # now prepare the data
-        if not model.starList:
-            self.logger.warning('no model data available for display')
-            return False
         altitude = []
         azimuth = []
         error = []

@@ -5,6 +5,10 @@ ToDo list:
 - add dso path calculation in modeldata
 - add dso path in mainW
 - optimizing model functions (all) implement
+- tests for polar plot in mainW missing
+- astrometry
+- image widget
+- indi CCD camera
 
 
 nice to have:
@@ -15,7 +19,6 @@ nice to have:
 - astropy stretching
 - setting indi parameters
 - gui show indi device FL / pixels data in screen and choose which to use
-- gui wording initial -> align Mount
 - charts for long term value (plot chart for sensors) as popup
 - gui hemisphere does not size
 - gui hemisphere partitioning for progress bars

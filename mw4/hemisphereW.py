@@ -124,8 +124,8 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
 
         if 'mainW' in self.app.config:
-            self.app.data.horizonPFile = self.app.config['mainW'].get('horizonFileName')
-            self.app.data.loadHorizonP()
+            fileName = self.app.config['mainW'].get('horizonFileName')
+            self.app.data.loadHorizonP(fileName=fileName)
         self.initConfig()
         self.configOperationMode()
 

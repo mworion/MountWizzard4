@@ -185,6 +185,8 @@ class MainWindow(widget.MWidget):
         if y > self.screenSizeY:
             y = 0
         self.move(x, y)
+        self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
+        self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
         self.ui.loglevelWarning.setChecked(config.get('loglevelWarning', False))
@@ -245,6 +247,8 @@ class MainWindow(widget.MWidget):
         config = self.app.config['mainW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
+        config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
+        config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
         config['loglevelWarning'] = self.ui.loglevelWarning.isChecked()

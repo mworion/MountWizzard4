@@ -710,66 +710,72 @@ class MainWindow(widget.MWidget):
         model = self.app.mount.model
 
         if model.numberStars is not None:
-            self.ui.numberStars.setText(str(model.numberStars))
-            self.ui.numberStars1.setText(str(model.numberStars))
+            text = str(model.numberStars)
         else:
-            self.ui.numberStars.setText('-')
-            self.ui.numberStars1.setText('-')
+            text = '-'
+        self.ui.numberStars.setText(text)
+        self.ui.numberStars1.setText(text)
 
         if model.terms is not None:
-            self.ui.terms.setText(str(model.terms))
+            text = str(model.terms)
         else:
-            self.ui.terms.setText('-')
+            text = '-'
+        self.ui.terms.setText(text)
 
         if model.errorRMS is not None:
-            self.ui.errorRMS.setText(str(model.errorRMS))
-            self.ui.errorRMS1.setText(str(model.errorRMS))
+            text = str(model.errorRMS)
         else:
-            self.ui.errorRMS.setText('-')
-            self.ui.errorRMS1.setText('-')
+            text = '-'
+        self.ui.errorRMS.setText(text)
+        self.ui.errorRMS1.setText(text)
 
         if model.positionAngle is not None:
-            self.ui.positionAngle.setText('{0:5.1f}'.format(model.positionAngle.degrees))
+            text = '{0:5.1f}'.format(model.positionAngle.degrees)
         else:
-            self.ui.positionAngle.setText('-')
+            text = '-'
+        self.ui.positionAngle.setText(text)
 
         if model.polarError is not None:
-            self.ui.polarError.setText(model.polarError.dstr(places=0))
+            text = model.polarError.dstr(places=0)
         else:
-            self.ui.polarError.setText('-')
+            text = '-'
+        self.ui.polarError.setText(text)
 
         if model.orthoError is not None:
-            self.ui.orthoError.setText(model.orthoError.dstr(places=0))
+            text = model.orthoError.dstr(places=0)
         else:
-            self.ui.orthoError.setText('-')
+            text = '-'
+        self.ui.orthoError.setText(text)
 
         if model.azimuthError is not None:
-            self.ui.azimuthError.setText(model.azimuthError.dstr(places=0))
+            text = model.azimuthError.dstr(places=0)
         else:
-            self.ui.azimuthError.setText('-')
+            text = '-'
+        self.ui.azimuthError.setText(text)
 
         if model.altitudeError is not None:
-            self.ui.altitudeError.setText(model.altitudeError.dstr(places=0))
+            text = model.altitudeError.dstr(places=0)
         else:
-            self.ui.altitudeError.setText('-')
+            text = '-'
+        self.ui.altitudeError.setText(text)
 
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:
-                formatText = '{0:3.1f} revs left'
+                text = '{0:3.1f} revs left'.format(abs(model.azimuthTurns))
             else:
-                formatText = '{0:3.1f} revs right'
-            self.ui.azimuthTurns.setText(formatText.format(abs(model.azimuthTurns)))
+                text = '{0:3.1f} revs right'.format(abs(model.azimuthTurns))
         else:
-            self.ui.azimuthTurns.setText('-')
+            text = '-'
+        self.ui.azimuthTurns.setText(text)
 
         if model.altitudeTurns is not None:
             if model.altitudeTurns > 0:
-                formatText = '{0:3.1f} revs down'
+                text = '{0:3.1f} revs down'.format(abs(model.altitudeTurns))
             else:
-                formatText = '{0:3.1f} revs up'
-            self.ui.altitudeTurns.setText(formatText.format(abs(model.altitudeTurns)))
+                text = '{0:3.1f} revs up'.format(abs(model.altitudeTurns))
         else:
-            self.ui.altitudeTurns.setText('-')
+            text = '-'
+        self.ui.altitudeTurns.setText(text)
 
         return True
 

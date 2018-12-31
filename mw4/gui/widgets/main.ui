@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -4777,14 +4777,14 @@ manually</string>
    </widget>
    <widget class="QWidget" name="tab_15">
     <attribute name="title">
-     <string>Initial Model</string>
+     <string>Align Mount</string>
     </attribute>
     <widget class="QLabel" name="label_116">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>120</y>
-       <width>151</width>
+       <width>186</width>
        <height>21</height>
       </rect>
      </property>
@@ -4796,7 +4796,7 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>Generate Initial Points</string>
+      <string>Generate align build points</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_171">
@@ -4896,7 +4896,7 @@ manually</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Runs the base model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Run Initial Model</string>
+      <string>Run Align Model</string>
      </property>
     </widget>
     <widget class="Line" name="line_35">
@@ -4928,7 +4928,7 @@ manually</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates base points based on number, altitude and azimuth settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Generate Initial Points</string>
+      <string>Generate Align Build Points</string>
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="altitudeBase">
@@ -4983,7 +4983,7 @@ manually</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Cancel Model Run</string>
+      <string>Cancel Align Model Run</string>
      </property>
     </widget>
     <widget class="QLabel" name="label">
@@ -5920,12 +5920,12 @@ manually</string>
       <string>Fast Align</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_showInitialModelPoints">
+    <widget class="QPushButton" name="genAlignBuildFile">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>80</y>
-       <width>61</width>
+       <width>86</width>
        <height>26</height>
       </rect>
      </property>
@@ -5944,13 +5944,13 @@ manually</string>
       <string>Generate</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_saveInitialModelPoints">
+    <widget class="QPushButton" name="saveAlignBuildPoints">
      <property name="enabled">
       <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>165</x>
        <y>80</y>
        <width>61</width>
        <height>26</height>
@@ -5971,7 +5971,7 @@ manually</string>
       <string>Save</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_saveInitialModelPointsAs">
+    <widget class="QPushButton" name="saveAlignBuildPointsAs">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -5998,7 +5998,7 @@ manually</string>
       <string>Save as</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_modelInitialPointsFileName">
+    <widget class="QLineEdit" name="alignBuildPFileName">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -6057,13 +6057,13 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>Load Initial Model Points File</string>
+      <string>Load align build points file</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_loadInitialModelPoints">
+    <widget class="QPushButton" name="loadAlignBuildPoints">
      <property name="geometry">
       <rect>
-       <x>85</x>
+       <x>100</x>
        <y>80</y>
        <width>61</width>
        <height>26</height>
@@ -6177,18 +6177,18 @@ manually</string>
     <zorder>picALT</zorder>
     <zorder>line_66</zorder>
     <zorder>label_208</zorder>
-    <zorder>btn_showInitialModelPoints</zorder>
-    <zorder>btn_saveInitialModelPoints</zorder>
-    <zorder>btn_saveInitialModelPointsAs</zorder>
-    <zorder>le_modelInitialPointsFileName</zorder>
+    <zorder>genAlignBuildFile</zorder>
+    <zorder>saveAlignBuildPoints</zorder>
+    <zorder>saveAlignBuildPointsAs</zorder>
+    <zorder>alignBuildPFileName</zorder>
     <zorder>label_147</zorder>
-    <zorder>btn_loadInitialModelPoints</zorder>
+    <zorder>loadAlignBuildPoints</zorder>
     <zorder>label_127</zorder>
     <zorder>label_128</zorder>
    </widget>
    <widget class="QWidget" name="tab_6">
     <attribute name="title">
-     <string>Full Model</string>
+     <string>Build Model</string>
     </attribute>
     <widget class="QPushButton" name="genBuildGrid">
      <property name="geometry">
@@ -6998,7 +6998,7 @@ manually</string>
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>186</width>
+       <width>216</width>
        <height>21</height>
       </rect>
      </property>
@@ -7010,10 +7010,10 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>Load full model points file</string>
+      <string>Load full model build points file</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_modelFullPointsFileName">
+    <widget class="QLineEdit" name="buildPFileName">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -7057,7 +7057,7 @@ manually</string>
       <rect>
        <x>10</x>
        <y>70</y>
-       <width>81</width>
+       <width>111</width>
        <height>26</height>
       </rect>
      </property>
@@ -7076,13 +7076,13 @@ manually</string>
       <string>Generate</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="saveFullModelPoints">
+    <widget class="QPushButton" name="saveBuildPoints">
      <property name="enabled">
       <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>210</x>
        <y>70</y>
        <width>81</width>
        <height>26</height>
@@ -7103,13 +7103,13 @@ manually</string>
       <string>Save</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="saveFullModelPointsAs">
+    <widget class="QPushButton" name="saveBuildPointsAs">
      <property name="enabled">
       <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>295</x>
        <y>70</y>
        <width>81</width>
        <height>26</height>
@@ -7130,10 +7130,10 @@ manually</string>
       <string>Save as</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="loadFullModelPoints">
+    <widget class="QPushButton" name="loadBuildPoints">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>125</x>
        <y>70</y>
        <width>81</width>
        <height>26</height>
@@ -7600,11 +7600,11 @@ manually</string>
     <zorder>label_113</zorder>
     <zorder>label_136</zorder>
     <zorder>label_213</zorder>
-    <zorder>le_modelFullPointsFileName</zorder>
+    <zorder>buildPFileName</zorder>
     <zorder>genBuildFile</zorder>
-    <zorder>saveFullModelPoints</zorder>
-    <zorder>saveFullModelPointsAs</zorder>
-    <zorder>loadFullModelPoints</zorder>
+    <zorder>saveBuildPoints</zorder>
+    <zorder>saveBuildPointsAs</zorder>
+    <zorder>loadBuildPoints</zorder>
     <zorder>le_modelingTimeEstimated</zorder>
     <zorder>label_35</zorder>
     <zorder>bar_modelingStatusPercent</zorder>
@@ -16451,10 +16451,10 @@ manually</string>
   <tabstop>checkRefracCont</tabstop>
   <tabstop>checkRefracNoTrack</tabstop>
   <tabstop>btn_setRefractionParameters</tabstop>
-  <tabstop>btn_showInitialModelPoints</tabstop>
-  <tabstop>btn_loadInitialModelPoints</tabstop>
-  <tabstop>btn_saveInitialModelPoints</tabstop>
-  <tabstop>btn_saveInitialModelPointsAs</tabstop>
+  <tabstop>genAlignBuildFile</tabstop>
+  <tabstop>loadAlignBuildPoints</tabstop>
+  <tabstop>saveAlignBuildPoints</tabstop>
+  <tabstop>saveAlignBuildPointsAs</tabstop>
   <tabstop>generateInitialPoints</tabstop>
   <tabstop>altitudeBase</tabstop>
   <tabstop>azimuthBase</tabstop>
@@ -16463,9 +16463,9 @@ manually</string>
   <tabstop>cancelInitialModel</tabstop>
   <tabstop>plateSolveSync</tabstop>
   <tabstop>genBuildFile</tabstop>
-  <tabstop>loadFullModelPoints</tabstop>
-  <tabstop>saveFullModelPoints</tabstop>
-  <tabstop>saveFullModelPointsAs</tabstop>
+  <tabstop>loadBuildPoints</tabstop>
+  <tabstop>saveBuildPoints</tabstop>
+  <tabstop>saveBuildPointsAs</tabstop>
   <tabstop>genBuildGrid</tabstop>
   <tabstop>numberGridPointsRow</tabstop>
   <tabstop>numberGridPointsCol</tabstop>
@@ -16535,9 +16535,9 @@ manually</string>
   <tabstop>soundModelingFinished</tabstop>
   <tabstop>cameraConnected</tabstop>
   <tabstop>environmentConnected</tabstop>
-  <tabstop>le_modelFullPointsFileName</tabstop>
+  <tabstop>buildPFileName</tabstop>
   <tabstop>mountConnected</tabstop>
-  <tabstop>le_modelInitialPointsFileName</tabstop>
+  <tabstop>alignBuildPFileName</tabstop>
   <tabstop>astrometryConnected</tabstop>
   <tabstop>settingsTabWidget</tabstop>
   <tabstop>domeConnected</tabstop>

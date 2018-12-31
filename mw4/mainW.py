@@ -137,6 +137,7 @@ class MainWindow(widget.MWidget):
         self.ui.genBuildMed.clicked.connect(self.genBuildMed)
         self.ui.genBuildNorm.clicked.connect(self.genBuildNorm)
         self.ui.genBuildMin.clicked.connect(self.genBuildMin)
+        self.ui.genBuildFile.clicked.connect(self.genBuildFile)
         self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
         self.ui.checkAutoDeletePoints.clicked.connect(self.autoDeletePoints)
 

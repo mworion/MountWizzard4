@@ -812,10 +812,15 @@ class MainWindow(widget.MWidget):
         :return:    True if ok for testing
         """
 
+        # shortcuts
         model = self.app.mount.model
-        lat = self.app.mount.obsSite.location.latitude.degrees
+        location = self.app.mount.obsSite.location
 
-        if not model.starList:
+        # check entry conditions for displaying a polar plot
+        hasNoStars = len(model.starList) == 0
+        hasNoLocation = location is None
+
+        if hasNoStars or hasNoLocation:
             # clear the plot and return
             fig, axes = self.clearPolar(self.polarPlot)
             fig.subplots_adjust(left=0.1,
@@ -826,7 +831,8 @@ class MainWindow(widget.MWidget):
             axes.figure.canvas.draw()
             return False
 
-        # preparing the polar plot and the axes
+        # start with plotting
+        lat = location.latitude.degrees
         fig, axes = self.clearPolar(self.polarPlot)
 
         altitude = []

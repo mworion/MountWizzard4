@@ -4,7 +4,7 @@ ToDo list:
 - link dome to hemisphere
 - add dso path calculation in modeldata
 - add dso path in mainW
-
+- optimizing model functions (all) implement
 
 
 nice to have:

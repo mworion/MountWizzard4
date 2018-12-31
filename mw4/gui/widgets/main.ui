@@ -6399,7 +6399,7 @@ manually</string>
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run full alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Run Full Model</string>
+      <string>Run Model Build</string>
      </property>
     </widget>
     <widget class="Line" name="line_26">
@@ -6434,7 +6434,7 @@ manually</string>
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>Cancel Model Run</string>
+      <string>Cancel Model Build Run</string>
      </property>
     </widget>
     <widget class="Line" name="line_28">

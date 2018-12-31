@@ -551,28 +551,31 @@ class DataPoint(object):
             self.addBuildP(point)
         return True
 
-    def genAlign(self, alt=30, azStart=10, numb=3):
+    def genAlign(self, altBase=30, azBase=10, numberBase=3):
         """
         genAlign generates a number of initial points for the first step of modeling
 
-        :param alt:
-        :param azStart:
-        :param numb:
+        :param altBase:
+        :param azBase:
+        :param numberBase:
         :return: yields alt, az tuples which are above horizon
         """
 
-        if not 5 <= alt <= 85:
+        if not 5 <= altBase <= 85:
             return False
-        if not 2 < numb < 10:
+        if not 2 < numberBase < 10:
             return False
-        if not 0 <= azStart < 360:
+        if not 0 <= azBase < 360:
             return False
+        altBase = int(altBase)
+        azBase = int(azBase)
+        numberBase = int(numberBase)
 
-        stepAz = int(360 / numb)
+        stepAz = int(360 / numberBase)
 
         self.clearBuildP()
-        for az in range(azStart, 720, stepAz):
-            self.addBuildP((alt, az % 360))
+        for az in range(azBase, 360 + azBase, stepAz):
+            self.addBuildP((altBase, az % 360))
         return True
 
     def generateCelestialEquator(self):

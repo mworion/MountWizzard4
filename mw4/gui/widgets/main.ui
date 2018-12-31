@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -4851,7 +4851,7 @@ manually</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="azimuthBase">
+    <widget class="QDoubleSpinBox" name="azBase">
      <property name="geometry">
       <rect>
        <x>230</x>
@@ -4915,7 +4915,7 @@ manually</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="generateInitialPoints">
+    <widget class="QPushButton" name="genAlignBuild">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -4931,7 +4931,7 @@ manually</string>
       <string>Generate Align Build Points</string>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="altitudeBase">
+    <widget class="QDoubleSpinBox" name="altBase">
      <property name="geometry">
       <rect>
        <x>65</x>
@@ -6138,10 +6138,10 @@ manually</string>
     <zorder>label_116</zorder>
     <zorder>label_171</zorder>
     <zorder>label_170</zorder>
-    <zorder>azimuthBase</zorder>
+    <zorder>azBase</zorder>
     <zorder>runInitialModel</zorder>
-    <zorder>generateInitialPoints</zorder>
-    <zorder>altitudeBase</zorder>
+    <zorder>genAlignBuild</zorder>
+    <zorder>altBase</zorder>
     <zorder>cancelInitialModel</zorder>
     <zorder>label</zorder>
     <zorder>azimuthError</zorder>
@@ -10576,7 +10576,7 @@ manually</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -16455,9 +16455,9 @@ manually</string>
   <tabstop>loadAlignBuildPoints</tabstop>
   <tabstop>saveAlignBuildPoints</tabstop>
   <tabstop>saveAlignBuildPointsAs</tabstop>
-  <tabstop>generateInitialPoints</tabstop>
-  <tabstop>altitudeBase</tabstop>
-  <tabstop>azimuthBase</tabstop>
+  <tabstop>genAlignBuild</tabstop>
+  <tabstop>altBase</tabstop>
+  <tabstop>azBase</tabstop>
   <tabstop>numberBase</tabstop>
   <tabstop>runInitialModel</tabstop>
   <tabstop>cancelInitialModel</tabstop>

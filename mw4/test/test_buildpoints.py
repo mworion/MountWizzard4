@@ -790,43 +790,48 @@ def test_genGridData9():
 
 
 def test_genAlign1():
-    suc = data.genAlign(alt=30,
-                        azStart=30,
-                        numb=5,
+    suc = data.genAlign(altBase=30,
+                        azBase=30,
+                        numberBase=5,
                         )
     assert suc
+    assert 5 == len(data.buildP)
 
 
 def test_genAlign2():
-    suc = data.genAlign(alt=0,
-                        azStart=30,
-                        numb=5,
+    suc = data.genAlign(altBase=0,
+                        azBase=30,
+                        numberBase=5,
                         )
     assert not suc
+    assert 0 == len(data.buildP)
 
 
 def test_genAlign3():
-    suc = data.genAlign(alt=30,
-                        azStart=-10,
-                        numb=5,
+    suc = data.genAlign(altBase=30,
+                        azBase=-10,
+                        numberBase=5,
                         )
     assert not suc
+    assert 0 == len(data.buildP)
 
 
 def test_genAlign4():
-    suc = data.genAlign(alt=30,
-                        azStart=30,
-                        numb=2,
+    suc = data.genAlign(altBase=30,
+                        azBase=30,
+                        numberBase=2,
                         )
     assert not suc
+    assert 0 == len(data.buildP)
 
 
 def test_genAlign5():
-    suc = data.genAlign(alt=30,
-                        azStart=30,
-                        numb=30,
+    suc = data.genAlign(altBase=30,
+                        azBase=30,
+                        numberBase=30,
                         )
     assert not suc
+    assert 0 == len(data.buildP)
 
 
 def test_isAboveHorizon():

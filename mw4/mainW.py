@@ -138,7 +138,7 @@ class MainWindow(widget.MWidget):
         self.ui.genBuildNorm.clicked.connect(self.genBuildNorm)
         self.ui.genBuildMin.clicked.connect(self.genBuildMin)
         self.ui.genBuildFile.clicked.connect(self.genBuildFile)
-        self.ui.genAlignBuildFile.clicked.connect(self.genAlignBuildFile)
+        self.ui.genAlignBuild.clicked.connect(self.genAlignBuild)
         self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
@@ -312,7 +312,7 @@ class MainWindow(widget.MWidget):
         self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelInitialModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.generateInitialPoints, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genAlignBuild, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildMax, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
@@ -1602,6 +1602,28 @@ class MainWindow(widget.MWidget):
                                     maxAlt=maxAlt,
                                     numbRows=row,
                                     numbCols=col)
+        if not suc:
+            return False
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
+        self.app.hemisphereW.drawHemisphere()
+        return True
+
+    def genAlignBuild(self):
+        """
+        genAlignBuild generates a grid of point for model build based on gui data. the cols
+        have to be on even numbers.
+
+        :return: success
+        """
+
+        altBase = self.ui.altBase.value()
+        azBase = self.ui.azBase.value()
+        numberBase = self.ui.numberBase.value()
+        suc = self.app.data.genAlign(altBase=altBase,
+                                     azBase=azBase,
+                                     numberBase=numberBase,
+                                     )
         if not suc:
             return False
         if self.ui.checkAutoDeletePoints.isChecked():

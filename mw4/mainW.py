@@ -43,7 +43,7 @@ class MainWindow(widget.MWidget):
 
     __all__ = ['MainWindow',
                ]
-    version = '0.5'
+    version = '0.6'
     logger = logging.getLogger(__name__)
 
     CYCLE_GUI = 1000
@@ -221,6 +221,7 @@ class MainWindow(widget.MWidget):
         self.ui.checkAutoDeletePoints.setChecked(config.get('checkAutoDeletePoints', False))
         self.ui.altitudeHorizonMin.setValue(config.get('altitudeHorizonMin', 0))
         self.ui.buildPFileName.setText(config.get('buildPFileName', ''))
+        self.ui.alignBuildPFileName.setText(config.get('alignBuildPFileName', ''))
         return True
 
     def storeConfig(self):
@@ -266,6 +267,7 @@ class MainWindow(widget.MWidget):
         config['checkAutoDeletePoints'] = self.ui.checkAutoDeletePoints.isChecked()
         config['altitudeHorizonMin'] = self.ui.altitudeHorizonMin.value()
         config['buildPFileName'] = self.ui.buildPFileName.text()
+        config['alignBuildPFileName'] = self.ui.alignBuildPFileName.text()
 
     def closeEvent(self, closeEvent):
         """

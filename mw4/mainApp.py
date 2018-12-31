@@ -60,10 +60,12 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.expireData = False
         self.mwGlob = mwGlob
         pathToData = self.mwGlob['dataDir']
+
         # persistence management through dict
         self.config = {}
         self.loadConfig()
         expireData, topo = self.initConfig()
+
         # initialize commands to mount
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
@@ -71,8 +73,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    expire=expireData,
                                    verbose=None,
                                    )
+
         # setting location to last know config
         self.mount.obsSite.location = topo
+
         # get all planets for calculation
         load = skyfield.api.Loader(pathToData,
                                    expire=expireData,

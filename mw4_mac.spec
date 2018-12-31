@@ -123,7 +123,6 @@ exe = EXE(pyz,
 sys.path.append(importDir)
 from mw4.mainApp import MountWizzard4
 BUILD_NO = MountWizzard4.version
-#BUILD_NO = '0.3dev1'
 
 buildFile = distDir + '/MountWizzard4.app'
 buildFileNumber = distDir + '/mountwizzard4-' + BUILD_NO + '.app'

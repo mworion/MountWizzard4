@@ -789,43 +789,43 @@ def test_genGridData9():
     assert 0 == len(data.buildP)
 
 
-def test_genInitial1():
-    suc = data.genInitial(alt=30,
-                          azStart=30,
-                          numb=5,
-                          )
+def test_genAlign1():
+    suc = data.genAlign(alt=30,
+                        azStart=30,
+                        numb=5,
+                        )
     assert suc
 
 
-def test_genInitial2():
-    suc = data.genInitial(alt=0,
-                          azStart=30,
-                          numb=5,
-                          )
+def test_genAlign2():
+    suc = data.genAlign(alt=0,
+                        azStart=30,
+                        numb=5,
+                        )
     assert not suc
 
 
-def test_genInitial3():
-    suc = data.genInitial(alt=30,
-                          azStart=-10,
-                          numb=5,
-                          )
+def test_genAlign3():
+    suc = data.genAlign(alt=30,
+                        azStart=-10,
+                        numb=5,
+                        )
     assert not suc
 
 
-def test_genInitial4():
-    suc = data.genInitial(alt=30,
-                          azStart=30,
-                          numb=2,
-                          )
+def test_genAlign4():
+    suc = data.genAlign(alt=30,
+                        azStart=30,
+                        numb=2,
+                        )
     assert not suc
 
 
-def test_genInitial5():
-    suc = data.genInitial(alt=30,
-                          azStart=30,
-                          numb=30,
-                          )
+def test_genAlign5():
+    suc = data.genAlign(alt=30,
+                        azStart=30,
+                        numb=30,
+                        )
     assert not suc
 
 

@@ -551,9 +551,9 @@ class DataPoint(object):
             self.addBuildP(point)
         return True
 
-    def genInitial(self, alt=30, azStart=10, numb=3):
+    def genAlign(self, alt=30, azStart=10, numb=3):
         """
-        genInitial generates a number of initial points for the first step of modeling
+        genAlign generates a number of initial points for the first step of modeling
 
         :param alt:
         :param azStart:

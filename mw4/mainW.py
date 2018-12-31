@@ -1608,6 +1608,7 @@ class MainWindow(widget.MWidget):
 
         suc = self.app.data.genGreaterCircle(selection='max')
         if not suc:
+            self.app.message.emit('Build points [max] cannot be generated', 2)
             return False
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
@@ -1625,6 +1626,7 @@ class MainWindow(widget.MWidget):
 
         suc = self.app.data.genGreaterCircle(selection='med')
         if not suc:
+            self.app.message.emit('Build points [med] cannot be generated', 2)
             return False
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
@@ -1642,6 +1644,7 @@ class MainWindow(widget.MWidget):
 
         suc = self.app.data.genGreaterCircle(selection='norm')
         if not suc:
+            self.app.message.emit('Build points [norm] cannot be generated', 2)
             return False
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
@@ -1659,6 +1662,7 @@ class MainWindow(widget.MWidget):
 
         suc = self.app.data.genGreaterCircle(selection='min')
         if not suc:
+            self.app.message.emit('Build points [min] cannot be generated', 2)
             return False
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
@@ -1669,7 +1673,22 @@ class MainWindow(widget.MWidget):
         pass
 
     def genBuildFile(self):
-        pass
+        """
+        genBuildFile tries to load a give build point file and displays it for usage.
+
+        :return: success
+        """
+
+        filename = self.app.data.buildPFile
+        if filename is None:
+            self.app.message.emit('Build points file name not given', 2)
+            return False
+        suc = self.app.data.loadBuildP()
+        if not suc:
+            text = 'Build points file [{0}] could not be loaded'.format(filename)
+            self.app.message.emit(text, 2)
+            return False
+        return True
 
     def autoDeletePoints(self):
         """

@@ -30,7 +30,7 @@ from mw4 import mainW
 from mw4 import messageW
 from mw4 import hemisphereW
 from mw4.relay import kmRelay
-from mw4.modeldata import points
+from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
 from mw4.environ import environ
 
@@ -84,7 +84,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.relay = kmRelay.KMRelay(host='192.168.2.15',
                                      )
         self.environment = environ.Environment(host='localhost')
-        self.data = points.DataPoint(
+        self.data = buildpoints.DataPoint(
                                     mwGlob=self.mwGlob,
                                     location=self.mount.obsSite.location,
                                     )

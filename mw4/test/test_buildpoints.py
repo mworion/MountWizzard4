@@ -27,7 +27,7 @@ import unittest.mock as mock
 import skyfield.api
 # local import
 
-from mw4.modeldata import points
+from mw4.modeldata import buildpoints
 
 
 mwGlob = {'workDir': '.',
@@ -49,7 +49,7 @@ def module_setup_teardown():
     topo = skyfield.toposlib.Topos(longitude_degrees=11,
                                    latitude_degrees=48,
                                    elevation_m=500)
-    data = points.DataPoint(mwGlob=mwGlob, location=topo)
+    data = buildpoints.DataPoint(mwGlob=mwGlob, location=topo)
     yield
     data = None
 
@@ -57,7 +57,7 @@ def module_setup_teardown():
 def test_topoToAltAz1():
     ha = 12
     dec = 0
-    alt, az = points.HaDecToAltAz(ha, dec, 0)
+    alt, az = buildpoints.HaDecToAltAz(ha, dec, 0)
 
     assert alt is not None
     assert az is not None
@@ -66,7 +66,7 @@ def test_topoToAltAz1():
 def test_topoToAltAz2():
     ha = -12
     dec = 0
-    alt, az = points.HaDecToAltAz(ha, dec, 0)
+    alt, az = buildpoints.HaDecToAltAz(ha, dec, 0)
 
     assert alt is not None
     assert az is not None

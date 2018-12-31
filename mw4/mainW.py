@@ -142,6 +142,9 @@ class MainWindow(widget.MWidget):
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
+        self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
+        self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
+        self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
         self.ui.checkAutoDeletePoints.clicked.connect(self.autoDeletePoints)
 
         # initial call for writing the gui
@@ -1680,8 +1683,9 @@ class MainWindow(widget.MWidget):
 
     def loadBuildFile(self):
         """
+        loadBuildFile calls a file selector box and selects the filename to be loaded
 
-        :return:
+        :return: success
         """
 
         folder = self.app.mwGlob['configDir'] + '/config'
@@ -1702,22 +1706,24 @@ class MainWindow(widget.MWidget):
 
     def saveBuildFile(self):
         """
+        saveBuildFile calls saving the build file
 
-        :return:
+        :return: success
         """
 
         fileName = self.ui.buildPFileName.text()
         suc = self.app.data.saveBuildP(fileName=fileName)
         if suc:
-            self.app.message.emit('Build file [{0}] saved'.format(name), 0)
+            self.app.message.emit('Build file [{0}] saved'.format(fileName), 0)
         else:
-            self.app.message.emit('Build file [{0}] cannot no be saved'.format(name), 2)
+            self.app.message.emit('Build file [{0}] cannot no be saved'.format(fileName), 2)
         return True
 
     def saveBuildFileAs(self):
         """
+        saveBuildFileAs calls a file selector box and selects the filename to be save
 
-        :return:
+        :return: success
         """
 
         folder = self.app.mwGlob['configDir'] + '/config'
@@ -1768,4 +1774,66 @@ class MainWindow(widget.MWidget):
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
         self.app.hemisphereW.drawHemisphere()
+        return True
+
+    def loadHorizonMask(self):
+        """
+        loadHorizonMask calls a file selector box and selects the filename to be loaded
+
+        :return: success
+        """
+
+        folder = self.app.mwGlob['configDir'] + '/config'
+        loadFilePath, fileName, ext = self.openFile(self,
+                                                    'Open horizon mask file',
+                                                    folder,
+                                                    'Horizon mask files (*.hpts)',
+                                                    )
+        if not loadFilePath:
+            return False
+        suc = self.app.data.loadHorizonP(fileName=fileName)
+        if suc:
+            self.ui.horizonFileName.setText(fileName)
+            self.app.message.emit('Horizon mask [{0}] loaded'.format(fileName), 0)
+            self.app.hemisphereW.drawHemisphere()
+        else:
+            self.app.message.emit('Horizon mask [{0}] cannot no be loaded'.format(fileName), 2)
+        return True
+
+    def saveHorizonMask(self):
+        """
+        saveHorizonMask calls saving the build file
+
+        :return: success
+        """
+
+        fileName = self.ui.horizonFileName.text()
+        suc = self.app.data.saveHorizonP(fileName=fileName)
+        if suc:
+            self.app.message.emit('Horizon mask [{0}] saved'.format(fileName), 0)
+        else:
+            self.app.message.emit('Horizon mask [{0}] cannot no be saved'.format(fileName), 2)
+        return True
+
+    def saveHorizonMaskAs(self):
+        """
+        saveHorizonMaskAs calls a file selector box and selects the filename to be save
+
+        :return: success
+        """
+
+        folder = self.app.mwGlob['configDir'] + '/config'
+        saveFilePath, fileName, ext = self.saveFile(self,
+                                                    'Save horizon mask file',
+                                                    folder,
+                                                    'Horizon mask files (*.hpts)',
+                                                    )
+        if not saveFilePath:
+            return False
+        suc = self.app.data.saveHorizonP(fileName=fileName)
+        if suc:
+            self.ui.horizonFileName.setText(fileName)
+            self.app.message.emit('Horizon mask [{0}] saved'.format(fileName), 0)
+        else:
+            self.app.message.emit('Horizon mask [{0}] cannot no be saved'.format(fileName), 2)
         return True

@@ -346,7 +346,7 @@ class MainWindow(widget.MWidget):
         """
         clearMountGUI rewrites the gui in case of a special event needed for clearing up
 
-        :return: succes for test
+        :return: success for test
         """
 
         self.updateAlignGUI()
@@ -1575,6 +1575,13 @@ class MainWindow(widget.MWidget):
         self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
 
     def genBuildGrid(self):
+        """
+        genBuildGrid generates a grid of point for model build based on gui data. the cols
+        have to be on even numbers.
+
+        :return: success
+        """
+
         row = self.ui.numberGridPointsRow.value()
         col = self.ui.numberGridPointsCol.value()
         minAlt = self.ui.altitudeMin.value()
@@ -1591,6 +1598,14 @@ class MainWindow(widget.MWidget):
         return True
 
     def genBuildMax(self):
+        """
+        genBuildMax generates the point pattern based on greater circles for model build.
+        the point are calculated for the observers position. max goes for approx 100 points
+        effectively when removing the horizon.
+
+        :return: success
+        """
+
         suc = self.app.data.genGreaterCircle(selection='max')
         if not suc:
             return False
@@ -1600,6 +1615,14 @@ class MainWindow(widget.MWidget):
         return True
 
     def genBuildMed(self):
+        """
+        genBuildMed generates the point pattern based on greater circles for model build.
+        the point are calculated for the observers position. max goes for approx 70 points
+        effectively when removing the horizon.
+
+        :return: success
+        """
+
         suc = self.app.data.genGreaterCircle(selection='med')
         if not suc:
             return False
@@ -1609,6 +1632,14 @@ class MainWindow(widget.MWidget):
         return True
 
     def genBuildNorm(self):
+        """
+        genBuildNorm generates the point pattern based on greater circles for model build.
+        the point are calculated for the observers position. max goes for approx 40 points
+        effectively when removing the horizon.
+
+        :return: success
+        """
+
         suc = self.app.data.genGreaterCircle(selection='norm')
         if not suc:
             return False
@@ -1618,6 +1649,14 @@ class MainWindow(widget.MWidget):
         return True
 
     def genBuildMin(self):
+        """
+        genBuildMin generates the point pattern based on greater circles for model build.
+        the point are calculated for the observers position. min goes for approx 25 points
+        effectively when removing the horizon.
+
+        :return: success
+        """
+
         suc = self.app.data.genGreaterCircle(selection='min')
         if not suc:
             return False
@@ -1633,6 +1672,14 @@ class MainWindow(widget.MWidget):
         pass
 
     def autoDeletePoints(self):
+        """
+        autoDeletePoints removes all generated or visible build points below the horizon line
+        and redraws the hemisphere window.
+
+        :return: True for test purpose
+        """
+
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
         self.app.hemisphereW.drawHemisphere()
+        return True

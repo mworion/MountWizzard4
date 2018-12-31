@@ -1742,7 +1742,7 @@ class MainWindow(widget.MWidget):
         """
 
         fileName = self.ui.buildPFileName.text()
-        if filename is None:
+        if fileName is None:
             self.app.message.emit('Build points file name not given', 2)
             return False
         suc = self.app.data.loadBuildP(fileName=fileName)
@@ -1750,6 +1750,9 @@ class MainWindow(widget.MWidget):
             text = 'Build points file [{0}] could not be loaded'.format(filename)
             self.app.message.emit(text, 2)
             return False
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
+        self.app.hemisphereW.drawHemisphere()
         return True
 
     def autoDeletePoints(self):

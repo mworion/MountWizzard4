@@ -21,6 +21,7 @@
 import os
 import json
 import pytest
+import unittest.mock as mock
 # external packages
 import PyQt5.QtCore
 import skyfield.api
@@ -47,6 +48,91 @@ def module_setup_teardown():
         if item.endswith('.cfg'):
             os.remove(os.path.join(config, item))
     yield
+
+
+def test_initConfig_1():
+    app.config = {}
+    basic = {
+        'profileName': 'config',
+        'version': '4.0',
+        'filePath': config + '/config.cfg',
+        'mainW': {'expiresYes': True},
+        'topoLat': 10,
+        'topoLon': 10,
+        'topoElev': 10,
+    }
+    with open(config + '/config.cfg', 'w') as outfile:
+        json.dump(basic,
+                  outfile,
+                  sort_keys=True,
+                  indent=4)
+    suc = app.loadConfig()
+    assert suc
+    exp, topo = app.initConfig()
+    assert exp
+    assert 10 == topo.longitude.degrees
+    assert 10 == topo.latitude.degrees
+    assert 10 == topo.elevation.m
+
+
+def test_initConfig_2():
+    app.config = {}
+    basic = {
+        'profileName': 'config',
+        'version': '4.0',
+        'filePath': config + '/config.cfg',
+        'topoLat': 50,
+        'topoLon': 0,
+        'topoElev': 46,
+    }
+    with open(config + '/config.cfg', 'w') as outfile:
+        json.dump(basic,
+                  outfile,
+                  sort_keys=True,
+                  indent=4)
+    suc = app.loadConfig()
+    assert suc
+    exp, topo = app.initConfig()
+    assert exp
+    assert 0 == topo.longitude.degrees
+    assert 50 == topo.latitude.degrees
+    assert 46 == topo.elevation.m
+
+
+def test_initConfig_3():
+    app.config = {}
+    basic = {
+        'profileName': 'config',
+        'version': '4.0',
+        'filePath': config + '/config.cfg',
+        'mainW': {'expiresYes': False},
+    }
+    with open(config + '/config.cfg', 'w') as outfile:
+        json.dump(basic,
+                  outfile,
+                  sort_keys=True,
+                  indent=4)
+    suc = app.loadConfig()
+    assert suc
+    exp, topo = app.initConfig()
+    assert not exp
+    assert 0 == topo.longitude.degrees
+    assert 51.47 == topo.latitude.degrees
+    assert 46 == topo.elevation.m
+
+
+def test_quit_1():
+    with mock.patch.object(PyQt5.QtCore.QCoreApplication,
+                           'quit'):
+        suc = app.quit()
+        assert suc
+
+
+def test_quitSave_1():
+    with mock.patch.object(PyQt5.QtCore.QCoreApplication,
+                           'quit'):
+        suc = app.quitSave()
+        assert suc
 
 #
 #
@@ -424,3 +510,13 @@ def test_storeConfig_1():
     suc = app.storeConfig()
     assert suc
     assert app.config['topoLat'] == 20
+
+
+def test_loadMountData_1():
+    suc = app.loadMountData(True)
+    assert suc
+
+
+def test_loadMountData_2():
+    suc = app.loadMountData(False)
+    assert not suc

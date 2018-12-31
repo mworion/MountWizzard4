@@ -154,23 +154,25 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
         quit without saving persistence data
 
-        :return:    nothing
+        :return:    True for test purpose
         """
 
         self.mount.stopTimers()
         PyQt5.QtCore.QCoreApplication.quit()
+        return True
 
     def quitSave(self):
         """
         quit with saving persistence data
 
-        :return:    nothing
+        :return:    True for test purpose
         """
 
         self.mount.stopTimers()
         self.storeConfig()
         self.saveConfig()
         PyQt5.QtCore.QCoreApplication.quit()
+        return True
 
     def defaultPath(self):
         return self.mwGlob['configDir'] + '/config.cfg'
@@ -309,7 +311,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         in attributes.
 
         :param      status: connection status to mount computer
-        :return:    True if success for test
+        :return:    status how it was called
         """
         if status:
             self.mount.workaround()
@@ -318,8 +320,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.cycleSetting()
             self.mount.getNames()
             self.mount.getAlign()
+            return True
         else:
             location = self.mount.obsSite.location
             self.mount.resetData()
             self.mount.obsSite.location = location
-        return True
+            return False

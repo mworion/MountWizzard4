@@ -8,7 +8,6 @@ ToDo list:
 - link dome to hemisphere
 - add dso path calculation in modeldata
 - add dso path in mainW
-- test initConfig in mainApp
 
 
 
@@ -24,3 +23,4 @@ nice to have:
 - charts for long term value (plot chart for sensors) as popup
 - gui hemisphere does not size
 - gui hemisphere partitioning for progress bars
+- check if daylight timezone fits to the computer or set it up !

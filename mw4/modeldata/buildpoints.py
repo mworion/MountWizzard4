@@ -122,8 +122,6 @@ class DataPoint(object):
 
         self.mwGlob = mwGlob
         self.lat = location.latitude.degrees
-        self._horizonPFile = None
-        self._buildPFile = None
         self._horizonP = [(0, 0), (0, 360)]
         self._buildP = list()
 
@@ -134,14 +132,6 @@ class DataPoint(object):
     @lat.setter
     def lat(self, value):
         self._lat = value
-
-    @property
-    def horizonPFile(self):
-        return self._horizonPFile
-
-    @horizonPFile.setter
-    def horizonPFile(self, value):
-        self._horizonPFile = value
 
     @property
     def buildP(self):
@@ -382,9 +372,8 @@ class DataPoint(object):
         """
 
         if fileName is None:
-            if not self._horizonPFile:
-                return False
-            fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
+            return False
+        fileName = self.mwGlob['configDir'] + '/' + fileName + '.hpts'
         if not os.path.isfile(fileName):
             return False
 
@@ -402,7 +391,6 @@ class DataPoint(object):
         # json makes list out of tuple, was to be reversed
         value = [tuple(x) for x in value]
         self._horizonP = value
-        self._horizonPFile = os.path.basename(fileName).split('.')[0]
         return True
 
     @staticmethod
@@ -429,9 +417,8 @@ class DataPoint(object):
         """
 
         if fileName is None:
-            if not self._horizonPFile:
-                return False
-            fileName = self.mwGlob['configDir'] + '/' + self._horizonPFile + '.hpts'
+            return False
+        fileName = self.mwGlob['configDir'] + '/' + fileName + '.hpts'
         points = self.checkBoundaries(self.horizonP)
         with open(fileName, 'w') as handle:
             json.dump(points,

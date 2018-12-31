@@ -355,8 +355,7 @@ class DataPoint(object):
         self._buildP = value
         return True
 
-    @staticmethod
-    def saveBuildP(fileName=None):
+    def saveBuildP(self, fileName=None):
         """
         saveBuildP saves the actual modeldata points list in a file in json dump format
 
@@ -366,7 +365,7 @@ class DataPoint(object):
 
         if fileName is None:
             return False
-
+        fileName = self.mwGlob['configDir'] + '/' + fileName + '.bpts'
         with open(fileName, 'w') as handle:
             json.dump(fileName,
                       handle,

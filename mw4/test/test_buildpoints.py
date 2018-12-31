@@ -485,57 +485,33 @@ def test_delHorizonP5():
     assert not suc
 
 
-def test_saveBuildP_10():
-    data.buildPFile = 'test'
-    data.genGreaterCircle('min')
-    suc = data.saveBuildP()
-    assert suc
-
-
 def test_saveBuildP_11():
-    data.buildPFile = ''
     data.genGreaterCircle('min')
     suc = data.saveBuildP()
     assert not suc
 
 
-def test_loadBuildP_10():
-    # no fileName given
-    data.buildPFile = ''
-    suc = data.loadBuildP()
-    assert not suc
+def test_saveBuildP_12():
+    fileName = mwGlob['configDir'] + '/save_test.bpts'
+    data.genGreaterCircle('min')
+    suc = data.saveBuildP('save_test')
+    assert suc
+    assert os.path.isfile(fileName)
 
 
 def test_loadBuildP_11():
     # wrong fileName given
-    data.buildPFile = 'format_not_ok'
     suc = data.loadBuildP()
     assert not suc
 
 
 def test_loadBuildP_12():
     # path with not existent file given
-    fileName = mwGlob['configDir'] + '/test.bpts'
-    suc = data.loadBuildP(fileName=fileName)
+    suc = data.loadBuildP(fileName='test_file_not_there')
     assert not suc
 
 
 def test_loadBuildP_13():
-    # load file without path
-    fileName = mwGlob['configDir'] + '/test.bpts'
-    data.buildPFile = 'test'
-    values = [(1, 1), (2, 2)]
-    with open(fileName, 'w') as outfile:
-        json.dump(values,
-                  outfile,
-                  indent=4)
-    suc = data.loadBuildP()
-    assert suc
-    assert data.buildPFile == 'test'
-    assert data.buildP == values
-
-
-def test_loadBuildP_14():
     # load file with path
     data.buildPFile = ''
     fileName = mwGlob['configDir'] + '/test.bpts'
@@ -544,35 +520,34 @@ def test_loadBuildP_14():
         json.dump(values,
                   outfile,
                   indent=4)
-    suc = data.loadBuildP(fileName=fileName)
+    suc = data.loadBuildP(fileName='test')
     assert suc
-    assert data.buildPFile == 'test'
     assert data.buildP == values
 
 
-def test_loadBuildP_15():
+def test_loadBuildP_14():
     # load with wrong content
     data.buildPFile = ''
     fileName = mwGlob['configDir'] + '/test.bpts'
     with open(fileName, 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
-    suc = data.loadBuildP(fileName=fileName)
+    suc = data.loadBuildP(fileName='test')
     assert not suc
     assert data.buildP == []
 
 
-def test_loadBuildP_16():
+def test_loadBuildP_15():
     # load with wrong content 2
     data.buildPFile = ''
     fileName = mwGlob['configDir'] + '/test.bpts'
     with open(fileName, 'w') as outfile:
         outfile.writelines('[test, ]],[]}')
-    suc = data.loadBuildP(fileName=fileName)
+    suc = data.loadBuildP(fileName='test')
     assert not suc
     assert data.buildP == []
 
 
-def test_loadBuildP_17():
+def test_loadBuildP_16():
     # load file without path
     fileName = mwGlob['configDir'] + '/test.bpts'
     data.buildPFile = 'test'

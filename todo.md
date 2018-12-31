@@ -3,8 +3,6 @@ ToDo list:
 - add dome support from indi
 - save horizon
 - load horizon
-- save buildP
-- load buildP
 - link dome to hemisphere
 - add dso path calculation in modeldata
 - add dso path in mainW

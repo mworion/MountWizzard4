@@ -143,6 +143,7 @@ class MainWindow(widget.MWidget):
         self.ui.genBuildMin.clicked.connect(self.genBuildMin)
         self.ui.genBuildFile.clicked.connect(self.genBuildFile)
         self.ui.genAlignBuild.clicked.connect(self.genAlignBuild)
+        self.ui.genAlignBuildFile.clicked.connect(self.genAlignBuildFile)
         self.ui.altBase.valueChanged.connect(self.genAlignBuild)
         self.ui.azBase.valueChanged.connect(self.genAlignBuild)
         self.ui.numberBase.valueChanged.connect(self.genAlignBuild)

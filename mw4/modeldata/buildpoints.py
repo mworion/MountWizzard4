@@ -144,14 +144,6 @@ class DataPoint(object):
         self._horizonPFile = value
 
     @property
-    def buildPFile(self):
-        return self._buildPFile
-
-    @buildPFile.setter
-    def buildPFile(self, value):
-        self._buildPFile = value
-
-    @property
     def buildP(self):
         return self._buildP
 
@@ -342,9 +334,8 @@ class DataPoint(object):
         """
 
         if fileName is None:
-            if not self._buildPFile:
-                return False
-            fileName = self.mwGlob['configDir'] + '/' + self._buildPFile + '.bpts'
+            return False
+        fileName = self.mwGlob['configDir'] + '/' + fileName + '.bpts'
         if not os.path.isfile(fileName):
             return False
 
@@ -362,10 +353,10 @@ class DataPoint(object):
         # json makes list out of tuple, was to be reversed
         value = [tuple(x) for x in value]
         self._buildP = value
-        self._buildPFile = os.path.basename(fileName).split('.')[0]
         return True
 
-    def saveBuildP(self, fileName=None):
+    @staticmethod
+    def saveBuildP(fileName=None):
         """
         saveBuildP saves the actual modeldata points list in a file in json dump format
 
@@ -374,12 +365,10 @@ class DataPoint(object):
         """
 
         if fileName is None:
-            if not self._buildPFile:
-                return False
-            fileName = self.mwGlob['configDir'] + '/' + self._buildPFile + '.bpts'
+            return False
 
         with open(fileName, 'w') as handle:
-            json.dump(self._buildP,
+            json.dump(fileName,
                       handle,
                       indent=4)
         return True

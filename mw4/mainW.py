@@ -1671,7 +1671,33 @@ class MainWindow(widget.MWidget):
         return True
 
     def genBuildDSO(self):
-        pass
+        self.app.message.emit('Build points [DSO Path] is not implemented yet', 2)
+        return False
+
+    def saveBuildFileAs(self):
+        """
+
+        :return:
+        """
+
+        folder = self.app.mwGlob['configDir'] + '/config'
+        saveFilePath, name, ext = self.saveFile(self,
+                                                'Save build point file',
+                                                folder,
+                                                'Build point files (*.bpts)',
+                                                )
+        if not saveFilePath:
+            return False
+        # self.app.storeConfig()
+        saveFilePath = self.checkExtension(saveFilePath, '.bpts')
+        suc = self.app.data.saveConfig(saveFilePath=saveFilePath)
+        if suc:
+            self.app.config['buildPFileName'] = name
+            self.ui.buildPFileName.setText(name)
+            self.app.message.emit('File: [{0}] saved'.format(name), 0)
+        else:
+            self.app.message.emit('File: [{0}] cannot no be saved'.format(name), 2)
+        return True
 
     def genBuildFile(self):
         """
@@ -1680,11 +1706,11 @@ class MainWindow(widget.MWidget):
         :return: success
         """
 
-        filename = self.app.data.buildPFile
+        fileName = self.ui.buildPFileName.text()
         if filename is None:
             self.app.message.emit('Build points file name not given', 2)
             return False
-        suc = self.app.data.loadBuildP()
+        suc = self.app.data.loadBuildP(fileName=fileName)
         if not suc:
             text = 'Build points file [{0}] could not be loaded'.format(filename)
             self.app.message.emit(text, 2)

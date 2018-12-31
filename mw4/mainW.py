@@ -1593,6 +1593,19 @@ class MainWindow(widget.MWidget):
         ui = self.ui.environmentConnected
         self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
 
+    def autoDeletePoints(self):
+        """
+        autoDeletePoints removes all generated or visible build points below the horizon line
+        and redraws the hemisphere window.
+
+        :return: True for test purpose
+        """
+
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
+        self.app.hemisphereW.drawHemisphere()
+        return True
+
     def genBuildGrid(self):
         """
         genBuildGrid generates a grid of point for model build based on gui data. the cols
@@ -1611,9 +1624,7 @@ class MainWindow(widget.MWidget):
                                     numbCols=col)
         if not suc:
             return False
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
+        self.autoDeletePoints()
         return True
 
     def genAlignBuild(self):
@@ -1633,9 +1644,7 @@ class MainWindow(widget.MWidget):
                                      )
         if not suc:
             return False
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
+        self.autoDeletePoints()
         return True
 
     def genBuildMax(self):
@@ -1651,9 +1660,7 @@ class MainWindow(widget.MWidget):
         if not suc:
             self.app.message.emit('Build points [max] cannot be generated', 2)
             return False
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
+        self.autoDeletePoints()
         return True
 
     def genBuildMed(self):
@@ -1669,9 +1676,7 @@ class MainWindow(widget.MWidget):
         if not suc:
             self.app.message.emit('Build points [med] cannot be generated', 2)
             return False
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
+        self.autoDeletePoints()
         return True
 
     def genBuildNorm(self):
@@ -1687,9 +1692,7 @@ class MainWindow(widget.MWidget):
         if not suc:
             self.app.message.emit('Build points [norm] cannot be generated', 2)
             return False
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
+        self.autoDeletePoints()
         return True
 
     def genBuildMin(self):
@@ -1705,9 +1708,7 @@ class MainWindow(widget.MWidget):
         if not suc:
             self.app.message.emit('Build points [min] cannot be generated', 2)
             return False
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
+        self.autoDeletePoints()
         return True
 
     def genBuildDSO(self):
@@ -1745,6 +1746,9 @@ class MainWindow(widget.MWidget):
         """
 
         fileName = self.ui.buildPFileName.text()
+        if not fileName:
+            self.app.message.emit('Build points file name not given', 2)
+            return False
         suc = self.app.data.saveBuildP(fileName=fileName)
         if suc:
             self.app.message.emit('Build file [{0}] saved'.format(fileName), 0)
@@ -1783,17 +1787,15 @@ class MainWindow(widget.MWidget):
         """
 
         fileName = self.ui.buildPFileName.text()
-        if fileName is None:
+        if not fileName:
             self.app.message.emit('Build points file name not given', 2)
             return False
         suc = self.app.data.loadBuildP(fileName=fileName)
         if not suc:
-            text = 'Build points file [{0}] could not be loaded'.format(filename)
+            text = 'Build points file [{0}] could not be loaded'.format(fileName)
             self.app.message.emit(text, 2)
             return False
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
+        self.autoDeletePoints()
         return True
 
     def loadAlignBuildFile(self):
@@ -1828,6 +1830,9 @@ class MainWindow(widget.MWidget):
         """
 
         fileName = self.ui.alignBuildPFileName.text()
+        if not fileName:
+            self.app.message.emit('Align build points file name not given', 2)
+            return False
         suc = self.app.data.saveBuildP(fileName=fileName)
         if suc:
             self.app.message.emit('Align build file [{0}] saved'.format(fileName), 0)
@@ -1868,30 +1873,15 @@ class MainWindow(widget.MWidget):
         """
 
         fileName = self.ui.alignBuildPFileName.text()
-        if fileName is None:
+        if not fileName:
             self.app.message.emit('Align build points file name not given', 2)
             return False
         suc = self.app.data.loadBuildP(fileName=fileName)
         if not suc:
-            text = 'Align build points file [{0}] could not be loaded'.format(filename)
+            text = 'Align build points file [{0}] could not be loaded'.format(fileName)
             self.app.message.emit(text, 2)
             return False
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
-        return True
-
-    def autoDeletePoints(self):
-        """
-        autoDeletePoints removes all generated or visible build points below the horizon line
-        and redraws the hemisphere window.
-
-        :return: True for test purpose
-        """
-
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
+        self.autoDeletePoints()
         return True
 
     def loadHorizonMask(self):
@@ -1927,6 +1917,9 @@ class MainWindow(widget.MWidget):
         """
 
         fileName = self.ui.horizonFileName.text()
+        if not fileName:
+            self.app.message.emit('Horizon mask file name not given', 2)
+            return False
         suc = self.app.data.saveHorizonP(fileName=fileName)
         if suc:
             self.app.message.emit('Horizon mask [{0}] saved'.format(fileName), 0)

@@ -139,6 +139,9 @@ class MainWindow(widget.MWidget):
         self.ui.genBuildMin.clicked.connect(self.genBuildMin)
         self.ui.genBuildFile.clicked.connect(self.genBuildFile)
         self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
+        self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
+        self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
+        self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
         self.ui.checkAutoDeletePoints.clicked.connect(self.autoDeletePoints)
 
         # initial call for writing the gui
@@ -199,7 +202,6 @@ class MainWindow(widget.MWidget):
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
-
         environ = self.app.environment
         self.ui.indiHost.setText(config.get('indiHost', ''))
         environ.client.host = config.get('indiHost', '')
@@ -213,12 +215,12 @@ class MainWindow(widget.MWidget):
         self.ui.domeName.setText(config.get('domeName', ''))
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
-
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.checkUseHorizonMin.setChecked(config.get('checkUseHorizonMin', False))
         self.ui.checkAutoDeletePoints.setChecked(config.get('checkAutoDeletePoints', False))
         self.ui.altitudeHorizonMin.setValue(config.get('altitudeHorizonMin', 0))
+        self.ui.buildPFileName.setText(config.get('buildPFileName', ''))
         return True
 
     def storeConfig(self):
@@ -258,12 +260,12 @@ class MainWindow(widget.MWidget):
         config['ccdName'] = self.ui.ccdName.text()
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()
-
         config['horizonFileName'] = self.ui.horizonFileName.text()
         config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
         config['checkUseHorizonMin'] = self.ui.checkUseHorizonMin.isChecked()
         config['checkAutoDeletePoints'] = self.ui.checkAutoDeletePoints.isChecked()
         config['altitudeHorizonMin'] = self.ui.altitudeHorizonMin.value()
+        config['buildPFileName'] = self.ui.buildPFileName.text()
 
     def closeEvent(self, closeEvent):
         """
@@ -1674,6 +1676,42 @@ class MainWindow(widget.MWidget):
         self.app.message.emit('Build points [DSO Path] is not implemented yet', 2)
         return False
 
+    def loadBuildFile(self):
+        """
+
+        :return:
+        """
+
+        folder = self.app.mwGlob['configDir'] + '/config'
+        loadFilePath, fileName, ext = self.openFile(self,
+                                                    'Open build point file',
+                                                    folder,
+                                                    'Build point files (*.bpts)',
+                                                    )
+        if not loadFilePath:
+            return False
+        suc = self.app.data.loadBuildP(fileName=fileName)
+        if suc:
+            self.ui.buildPFileName.setText(fileName)
+            self.app.message.emit('Build file [{0}] loaded'.format(fileName), 0)
+        else:
+            self.app.message.emit('Build file [{0}] cannot no be loaded'.format(fileName), 2)
+        return True
+
+    def saveBuildFile(self):
+        """
+
+        :return:
+        """
+
+        fileName = self.ui.buildPFileName.text()
+        suc = self.app.data.saveBuildP(fileName=fileName)
+        if suc:
+            self.app.message.emit('Build file [{0}] saved'.format(name), 0)
+        else:
+            self.app.message.emit('Build file [{0}] cannot no be saved'.format(name), 2)
+        return True
+
     def saveBuildFileAs(self):
         """
 
@@ -1681,22 +1719,19 @@ class MainWindow(widget.MWidget):
         """
 
         folder = self.app.mwGlob['configDir'] + '/config'
-        saveFilePath, name, ext = self.saveFile(self,
-                                                'Save build point file',
-                                                folder,
-                                                'Build point files (*.bpts)',
-                                                )
+        saveFilePath, fileName, ext = self.saveFile(self,
+                                                    'Save build point file',
+                                                    folder,
+                                                    'Build point files (*.bpts)',
+                                                    )
         if not saveFilePath:
             return False
-        # self.app.storeConfig()
-        saveFilePath = self.checkExtension(saveFilePath, '.bpts')
-        suc = self.app.data.saveConfig(saveFilePath=saveFilePath)
+        suc = self.app.data.saveBuildP(fileName=fileName)
         if suc:
-            self.app.config['buildPFileName'] = name
-            self.ui.buildPFileName.setText(name)
-            self.app.message.emit('File: [{0}] saved'.format(name), 0)
+            self.ui.buildPFileName.setText(fileName)
+            self.app.message.emit('Build file [{0}] saved'.format(fileName), 0)
         else:
-            self.app.message.emit('File: [{0}] cannot no be saved'.format(name), 2)
+            self.app.message.emit('Build file [{0}] cannot no be saved'.format(fileName), 2)
         return True
 
     def genBuildFile(self):

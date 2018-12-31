@@ -367,7 +367,7 @@ class DataPoint(object):
             return False
         fileName = self.mwGlob['configDir'] + '/' + fileName + '.bpts'
         with open(fileName, 'w') as handle:
-            json.dump(fileName,
+            json.dump(self.buildP,
                       handle,
                       indent=4)
         return True

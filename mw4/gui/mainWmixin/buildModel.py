@@ -18,18 +18,10 @@
 #
 ###########################################################
 # standard libraries
-import logging
-import datetime
 # external packages
-import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
-import numpy as np
-import matplotlib.pyplot
 # local import
-from mw4.gui import widget
-from mw4.gui.widgets import main_ui
-from mw4.base import transform
 
 
 class BuildModel(object):
@@ -70,6 +62,7 @@ class BuildModel(object):
     def storeConfig(self):
         if 'mainW' not in self.app.config:
             self.app.config['mainW'] = {}
+        config = self.app.config['mainW']
         config['buildPFileName'] = self.ui.buildPFileName.text()
         config['numberGridPointsRow'] = self.ui.numberGridPointsRow.value()
         config['numberGridPointsCol'] = self.ui.numberGridPointsCol.value()

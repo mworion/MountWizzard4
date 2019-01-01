@@ -18,9 +18,7 @@
 #
 ###########################################################
 # standard libraries
-import logging
 # external packages
-import PyQt5.QtCore
 # local import
 
 

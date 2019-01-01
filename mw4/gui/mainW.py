@@ -31,11 +31,13 @@ from mountcontrol import convert
 from mw4.gui import widget
 from mw4.gui.widgets import main_ui
 from mw4.base import transform
-from mw4.gui.mainWmixin import _settHorizon
+from mw4.gui.mainWmixin import settHorizon
+from mw4.gui.mainWmixin import alignMount
 
 
 class MainWindow(widget.MWidget,
-                 _settHorizon.SettHorizon):
+                 settHorizon.SettHorizon,
+                 alignMount.AlignMount):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -144,22 +146,10 @@ class MainWindow(widget.MWidget,
         self.ui.genBuildNorm.clicked.connect(self.genBuildNorm)
         self.ui.genBuildMin.clicked.connect(self.genBuildMin)
         self.ui.genBuildFile.clicked.connect(self.genBuildFile)
-        self.ui.genAlignBuild.clicked.connect(self.genAlignBuild)
-        self.ui.genAlignBuildFile.clicked.connect(self.genAlignBuildFile)
-        self.ui.altBase.valueChanged.connect(self.genAlignBuild)
-        self.ui.azBase.valueChanged.connect(self.genAlignBuild)
-        self.ui.numberBase.valueChanged.connect(self.genAlignBuild)
         self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
-        self.ui.saveAlignBuildPoints.clicked.connect(self.saveAlignBuildFile)
-        self.ui.saveAlignBuildPointsAs.clicked.connect(self.saveAlignBuildFileAs)
-        self.ui.loadAlignBuildPoints.clicked.connect(self.loadAlignBuildFile)
-        self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
-        self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
-        self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
-        self.ui.checkAutoDeletePoints.clicked.connect(self.autoDeletePoints)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -346,6 +336,8 @@ class MainWindow(widget.MWidget,
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
         self.ui.picALT.setPixmap(pixmap)
+
+        super().setupIcons()
         return True
 
     def mountBoot(self):
@@ -371,7 +363,6 @@ class MainWindow(widget.MWidget,
         :return: success for test
         """
 
-        self.updateAlignGUI()
         self.updateFwGui()
         self.updatePointGUI()
         self.updateStatusGUI()
@@ -380,6 +371,8 @@ class MainWindow(widget.MWidget,
         self.updateLocGUI()
         self.setNameList()
         self.showModelPolar()
+
+        super().clearMountGUI()
         return True
 
     def updateMountConnStat(self, status):
@@ -1632,26 +1625,6 @@ class MainWindow(widget.MWidget,
         self.autoDeletePoints()
         return True
 
-    def genAlignBuild(self):
-        """
-        genAlignBuild generates a grid of point for model build based on gui data. the cols
-        have to be on even numbers.
-
-        :return: success
-        """
-
-        altBase = self.ui.altBase.value()
-        azBase = self.ui.azBase.value()
-        numberBase = self.ui.numberBase.value()
-        suc = self.app.data.genAlign(altBase=altBase,
-                                     azBase=azBase,
-                                     numberBase=numberBase,
-                                     )
-        if not suc:
-            return False
-        self.autoDeletePoints()
-        return True
-
     def genBuildMax(self):
         """
         genBuildMax generates the point pattern based on greater circles for model build.
@@ -1798,92 +1771,6 @@ class MainWindow(widget.MWidget,
         suc = self.app.data.loadBuildP(fileName=fileName)
         if not suc:
             text = 'Build points file [{0}] could not be loaded'.format(fileName)
-            self.app.message.emit(text, 2)
-            return False
-        self.autoDeletePoints()
-        return True
-
-    def loadAlignBuildFile(self):
-        """
-        loadAlignBuildFile calls a file selector box and selects the filename to be loaded
-
-        :return: success
-        """
-
-        folder = self.app.mwGlob['configDir'] + '/config'
-        loadFilePath, fileName, ext = self.openFile(self,
-                                                    'Open align build point file',
-                                                    folder,
-                                                    'Build point files (*.bpts)',
-                                                    )
-        if not loadFilePath:
-            return False
-        suc = self.app.data.loadBuildP(fileName=fileName)
-        if suc:
-            self.ui.alignBuildPFileName.setText(fileName)
-            self.app.message.emit('Align build file [{0}] loaded'.format(fileName), 0)
-        else:
-            self.app.message.emit('Align build file [{0}] cannot no be loaded'
-                                  .format(fileName), 2)
-        return True
-
-    def saveAlignBuildFile(self):
-        """
-        saveAlignBuildFile calls saving the build file
-
-        :return: success
-        """
-
-        fileName = self.ui.alignBuildPFileName.text()
-        if not fileName:
-            self.app.message.emit('Align build points file name not given', 2)
-            return False
-        suc = self.app.data.saveBuildP(fileName=fileName)
-        if suc:
-            self.app.message.emit('Align build file [{0}] saved'.format(fileName), 0)
-        else:
-            self.app.message.emit('Align build file [{0}] cannot no be saved'
-                                  .format(fileName), 2)
-        return True
-
-    def saveAlignBuildFileAs(self):
-        """
-        saveAlignBuildFileAs calls a file selector box and selects the filename to be save
-
-        :return: success
-        """
-
-        folder = self.app.mwGlob['configDir'] + '/config'
-        saveFilePath, fileName, ext = self.saveFile(self,
-                                                    'Save align build point file',
-                                                    folder,
-                                                    'Build point files (*.bpts)',
-                                                    )
-        if not saveFilePath:
-            return False
-        suc = self.app.data.saveBuildP(fileName=fileName)
-        if suc:
-            self.ui.alignBuildPFileName.setText(fileName)
-            self.app.message.emit('Align build file [{0}] saved'.format(fileName), 0)
-        else:
-            self.app.message.emit('Align build file [{0}] cannot no be saved'
-                                  .format(fileName), 2)
-        return True
-
-    def genAlignBuildFile(self):
-        """
-        genAlignBuildFile tries to load a give build point file and displays it for usage.
-
-        :return: success
-        """
-
-        fileName = self.ui.alignBuildPFileName.text()
-        if not fileName:
-            self.app.message.emit('Align build points file name not given', 2)
-            return False
-        suc = self.app.data.loadBuildP(fileName=fileName)
-        if not suc:
-            text = 'Align build points file [{0}] could not be loaded'.format(fileName)
             self.app.message.emit(text, 2)
             return False
         self.autoDeletePoints()

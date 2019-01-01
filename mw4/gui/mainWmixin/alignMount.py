@@ -1,0 +1,298 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+# Python  v3.6.7
+#
+# Michael Würtenberger
+# (c) 2018
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import logging
+import datetime
+# external packages
+import PyQt5.QtCore
+import PyQt5.QtWidgets
+import PyQt5.uic
+import numpy as np
+import matplotlib.pyplot
+from mountcontrol import convert
+# local import
+from mw4.gui import widget
+from mw4.gui.widgets import main_ui
+from mw4.base import transform
+from mw4.gui.mainWmixin import settHorizon
+
+
+class AlignMount(object):
+    """
+    the main window class handles the main menu as well as the show and no show part of
+    any other window. all necessary processing for functions of that gui will be linked
+    to this class. therefore window classes will have a threadpool for managing async
+    processing if needed.
+    """
+
+    __all__ = ['AlignMount',
+               ]
+    version = '0.6'
+    logger = logging.getLogger(__name__)
+
+    CYCLE_GUI = 1000
+    CYCLE_UPDATE_TASK = 10000
+
+    def __init__(self):
+        ms = self.app.mount.signals
+        ms.alignDone.connect(self.updateAlignGUI)
+        ms.namesDone.connect(self.setNameList)
+
+        self.ui.genAlignBuild.clicked.connect(self.genAlignBuild)
+        self.ui.genAlignBuildFile.clicked.connect(self.genAlignBuildFile)
+        self.ui.altBase.valueChanged.connect(self.genAlignBuild)
+        self.ui.azBase.valueChanged.connect(self.genAlignBuild)
+        self.ui.numberBase.valueChanged.connect(self.genAlignBuild)
+        self.ui.saveAlignBuildPoints.clicked.connect(self.saveAlignBuildFile)
+        self.ui.saveAlignBuildPointsAs.clicked.connect(self.saveAlignBuildFileAs)
+        self.ui.loadAlignBuildPoints.clicked.connect(self.loadAlignBuildFile)
+
+    def initConfig(self):
+        if 'mainW' not in self.app.config:
+            return False
+        config = self.app.config['mainW']
+        self.ui.alignBuildPFileName.setText(config.get('alignBuildPFileName', ''))
+        self.ui.altBase.setValue(config.get('altBase', 30))
+        self.ui.azBase.setValue(config.get('azBase', 45))
+        self.ui.numberBase.setValue(config.get('numberBase', 30))
+        return True
+
+    def storeConfig(self):
+        if 'mainW' not in self.app.config:
+            self.app.config['mainW'] = {}
+        config = self.app.config['mainW']
+        config['alignBuildPFileName'] = self.ui.alignBuildPFileName.text()
+        config['altBase'] = self.ui.altBase.value()
+        config['azBase'] = self.ui.azBase.value()
+        config['numberBase'] = self.ui.numberBase.value()
+
+        return True
+
+    def setupIcons(self):
+        """
+        setupIcons add icon from standard library to certain buttons for improving the
+        gui of the app.
+
+        :return:    True if success for test
+        """
+
+        self.wIcon(self.ui.genAlignBuild, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
+        self.ui.picAZ.setPixmap(pixmap)
+        pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
+        self.ui.picALT.setPixmap(pixmap)
+        return True
+
+    def clearMountGUI(self):
+        """
+        clearMountGUI rewrites the gui in case of a special event needed for clearing up
+
+        :return: success for test
+        """
+
+        self.updateAlignGUI()
+        return True
+
+    def updateAlignGUI(self):
+        """
+        updateAlignGUI shows the data which is received through the getain command. this is
+        mainly polar and ortho errors as well as basic model data.
+
+        :return:    True if ok for testing
+        """
+
+        model = self.app.mount.model
+
+        if model.numberStars is not None:
+            text = str(model.numberStars)
+        else:
+            text = '-'
+        self.ui.numberStars.setText(text)
+        self.ui.numberStars1.setText(text)
+
+        if model.terms is not None:
+            text = str(model.terms)
+        else:
+            text = '-'
+        self.ui.terms.setText(text)
+
+        if model.errorRMS is not None:
+            text = str(model.errorRMS)
+        else:
+            text = '-'
+        self.ui.errorRMS.setText(text)
+        self.ui.errorRMS1.setText(text)
+
+        if model.positionAngle is not None:
+            text = '{0:5.1f}'.format(model.positionAngle.degrees)
+        else:
+            text = '-'
+        self.ui.positionAngle.setText(text)
+
+        if model.polarError is not None:
+            text = model.polarError.dstr(places=0)
+        else:
+            text = '-'
+        self.ui.polarError.setText(text)
+
+        if model.orthoError is not None:
+            text = model.orthoError.dstr(places=0)
+        else:
+            text = '-'
+        self.ui.orthoError.setText(text)
+
+        if model.azimuthError is not None:
+            text = model.azimuthError.dstr(places=0)
+        else:
+            text = '-'
+        self.ui.azimuthError.setText(text)
+
+        if model.altitudeError is not None:
+            text = model.altitudeError.dstr(places=0)
+        else:
+            text = '-'
+        self.ui.altitudeError.setText(text)
+
+        if model.azimuthTurns is not None:
+            if model.azimuthTurns > 0:
+                text = '{0:3.1f} revs left'.format(abs(model.azimuthTurns))
+            else:
+                text = '{0:3.1f} revs right'.format(abs(model.azimuthTurns))
+        else:
+            text = '-'
+        self.ui.azimuthTurns.setText(text)
+
+        if model.altitudeTurns is not None:
+            if model.altitudeTurns > 0:
+                text = '{0:3.1f} revs down'.format(abs(model.altitudeTurns))
+            else:
+                text = '{0:3.1f} revs up'.format(abs(model.altitudeTurns))
+        else:
+            text = '-'
+        self.ui.altitudeTurns.setText(text)
+
+        return True
+
+    def genAlignBuild(self):
+        """
+        genAlignBuild generates a grid of point for model build based on gui data. the cols
+        have to be on even numbers.
+
+        :return: success
+        """
+
+        altBase = self.ui.altBase.value()
+        azBase = self.ui.azBase.value()
+        numberBase = self.ui.numberBase.value()
+        suc = self.app.data.genAlign(altBase=altBase,
+                                     azBase=azBase,
+                                     numberBase=numberBase,
+                                     )
+        if not suc:
+            return False
+        self.autoDeletePoints()
+        return True
+
+    def loadAlignBuildFile(self):
+        """
+        loadAlignBuildFile calls a file selector box and selects the filename to be loaded
+
+        :return: success
+        """
+
+        folder = self.app.mwGlob['configDir'] + '/config'
+        loadFilePath, fileName, ext = self.openFile(self,
+                                                    'Open align build point file',
+                                                    folder,
+                                                    'Build point files (*.bpts)',
+                                                    )
+        if not loadFilePath:
+            return False
+        suc = self.app.data.loadBuildP(fileName=fileName)
+        if suc:
+            self.ui.alignBuildPFileName.setText(fileName)
+            self.app.message.emit('Align build file [{0}] loaded'.format(fileName), 0)
+        else:
+            self.app.message.emit('Align build file [{0}] cannot no be loaded'
+                                  .format(fileName), 2)
+        return True
+
+    def saveAlignBuildFile(self):
+        """
+        saveAlignBuildFile calls saving the build file
+
+        :return: success
+        """
+
+        fileName = self.ui.alignBuildPFileName.text()
+        if not fileName:
+            self.app.message.emit('Align build points file name not given', 2)
+            return False
+        suc = self.app.data.saveBuildP(fileName=fileName)
+        if suc:
+            self.app.message.emit('Align build file [{0}] saved'.format(fileName), 0)
+        else:
+            self.app.message.emit('Align build file [{0}] cannot no be saved'
+                                  .format(fileName), 2)
+        return True
+
+    def saveAlignBuildFileAs(self):
+        """
+        saveAlignBuildFileAs calls a file selector box and selects the filename to be save
+
+        :return: success
+        """
+
+        folder = self.app.mwGlob['configDir'] + '/config'
+        saveFilePath, fileName, ext = self.saveFile(self,
+                                                    'Save align build point file',
+                                                    folder,
+                                                    'Build point files (*.bpts)',
+                                                    )
+        if not saveFilePath:
+            return False
+        suc = self.app.data.saveBuildP(fileName=fileName)
+        if suc:
+            self.ui.alignBuildPFileName.setText(fileName)
+            self.app.message.emit('Align build file [{0}] saved'.format(fileName), 0)
+        else:
+            self.app.message.emit('Align build file [{0}] cannot no be saved'
+                                  .format(fileName), 2)
+        return True
+
+    def genAlignBuildFile(self):
+        """
+        genAlignBuildFile tries to load a give build point file and displays it for usage.
+
+        :return: success
+        """
+
+        fileName = self.ui.alignBuildPFileName.text()
+        if not fileName:
+            self.app.message.emit('Align build points file name not given', 2)
+            return False
+        suc = self.app.data.loadBuildP(fileName=fileName)
+        if not suc:
+            text = 'Align build points file [{0}] could not be loaded'.format(fileName)
+            self.app.message.emit(text, 2)
+            return False
+        self.autoDeletePoints()
+        return True

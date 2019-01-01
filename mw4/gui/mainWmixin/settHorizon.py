@@ -46,6 +46,16 @@ class SettHorizon(object):
     version = '0.6'
     logger = logging.getLogger(__name__)
 
+    def __init__(self):
+        ms = self.app.mount.signals
+        ms.alignDone.connect(self.updateAlignGUI)
+        ms.namesDone.connect(self.setNameList)
+
+        self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
+        self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
+        self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
+        self.ui.checkAutoDeletePoints.clicked.connect(self.autoDeletePoints)
+
     def initConfig(self):
         if 'mainW' not in self.app.config:
             return False
@@ -66,6 +76,25 @@ class SettHorizon(object):
         config['checkUseHorizonMin'] = self.ui.checkUseHorizonMin.isChecked()
         config['checkAutoDeletePoints'] = self.ui.checkAutoDeletePoints.isChecked()
         config['altitudeHorizonMin'] = self.ui.altitudeHorizonMin.value()
+
+    def setupIcons(self):
+        """
+        setupIcons add icon from standard library to certain buttons for improving the
+        gui of the app.
+
+        :return:    True if success for test
+        """
+
+        return True
+
+    def clearMountGUI(self):
+        """
+        clearMountGUI rewrites the gui in case of a special event needed for clearing up
+
+        :return: success for test
+        """
+
+        return True
 
     def loadHorizonMask(self):
         """

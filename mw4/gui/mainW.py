@@ -31,9 +31,11 @@ from mountcontrol import convert
 from mw4.gui import widget
 from mw4.gui.widgets import main_ui
 from mw4.base import transform
+from mw4.gui.mainWmixin import _settHorizon
 
 
-class MainWindow(widget.MWidget):
+class MainWindow(widget.MWidget,
+                 _settHorizon.SettHorizon):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -233,13 +235,10 @@ class MainWindow(widget.MWidget):
         self.ui.domeName.setText(config.get('domeName', ''))
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
-        self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
-        self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
-        self.ui.checkUseHorizonMin.setChecked(config.get('checkUseHorizonMin', False))
-        self.ui.checkAutoDeletePoints.setChecked(config.get('checkAutoDeletePoints', False))
-        self.ui.altitudeHorizonMin.setValue(config.get('altitudeHorizonMin', 0))
         self.ui.buildPFileName.setText(config.get('buildPFileName', ''))
         self.ui.alignBuildPFileName.setText(config.get('alignBuildPFileName', ''))
+
+        super().initConfig()
         return True
 
     def storeConfig(self):
@@ -281,13 +280,11 @@ class MainWindow(widget.MWidget):
         config['ccdName'] = self.ui.ccdName.text()
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()
-        config['horizonFileName'] = self.ui.horizonFileName.text()
-        config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
-        config['checkUseHorizonMin'] = self.ui.checkUseHorizonMin.isChecked()
-        config['checkAutoDeletePoints'] = self.ui.checkAutoDeletePoints.isChecked()
-        config['altitudeHorizonMin'] = self.ui.altitudeHorizonMin.value()
         config['buildPFileName'] = self.ui.buildPFileName.text()
         config['alignBuildPFileName'] = self.ui.alignBuildPFileName.text()
+
+        super().storeConfig()
+        return True
 
     def closeEvent(self, closeEvent):
         """
@@ -1890,72 +1887,4 @@ class MainWindow(widget.MWidget):
             self.app.message.emit(text, 2)
             return False
         self.autoDeletePoints()
-        return True
-
-    def loadHorizonMask(self):
-        """
-        loadHorizonMask calls a file selector box and selects the filename to be loaded
-
-        :return: success
-        """
-
-        folder = self.app.mwGlob['configDir'] + '/config'
-        loadFilePath, fileName, ext = self.openFile(self,
-                                                    'Open horizon mask file',
-                                                    folder,
-                                                    'Horizon mask files (*.hpts)',
-                                                    )
-        if not loadFilePath:
-            return False
-        suc = self.app.data.loadHorizonP(fileName=fileName)
-        if suc:
-            self.ui.horizonFileName.setText(fileName)
-            self.app.message.emit('Horizon mask [{0}] loaded'.format(fileName), 0)
-            self.app.hemisphereW.drawHemisphere()
-        else:
-            self.app.message.emit('Horizon mask [{0}] cannot no be loaded'
-                                  .format(fileName), 2)
-        return True
-
-    def saveHorizonMask(self):
-        """
-        saveHorizonMask calls saving the build file
-
-        :return: success
-        """
-
-        fileName = self.ui.horizonFileName.text()
-        if not fileName:
-            self.app.message.emit('Horizon mask file name not given', 2)
-            return False
-        suc = self.app.data.saveHorizonP(fileName=fileName)
-        if suc:
-            self.app.message.emit('Horizon mask [{0}] saved'.format(fileName), 0)
-        else:
-            self.app.message.emit('Horizon mask [{0}] cannot no be saved'
-                                  .format(fileName), 2)
-        return True
-
-    def saveHorizonMaskAs(self):
-        """
-        saveHorizonMaskAs calls a file selector box and selects the filename to be save
-
-        :return: success
-        """
-
-        folder = self.app.mwGlob['configDir'] + '/config'
-        saveFilePath, fileName, ext = self.saveFile(self,
-                                                    'Save horizon mask file',
-                                                    folder,
-                                                    'Horizon mask files (*.hpts)',
-                                                    )
-        if not saveFilePath:
-            return False
-        suc = self.app.data.saveHorizonP(fileName=fileName)
-        if suc:
-            self.ui.horizonFileName.setText(fileName)
-            self.app.message.emit('Horizon mask [{0}] saved'.format(fileName), 0)
-        else:
-            self.app.message.emit('Horizon mask [{0}] cannot no be saved'
-                                  .format(fileName), 2)
         return True

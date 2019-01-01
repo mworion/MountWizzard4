@@ -150,15 +150,15 @@ class MainWindow(widget.MWidget,
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
 
-        # call the init function of the mixins
-        super().local__init__()
-
         # initial call for writing the gui
         self.updateMountConnStat(False)
         self.enableRelay()
         self.initConfig()
         self.setLoggingLevel()
         self.show()
+
+        # call the init function of the mixins
+        super().local__init__()
 
         self.timerGui = PyQt5.QtCore.QTimer()
         self.timerGui.setSingleShot(False)

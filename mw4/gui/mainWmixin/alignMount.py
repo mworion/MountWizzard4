@@ -49,7 +49,6 @@ class AlignMount(object):
     def local__init__(self):
         ms = self.app.mount.signals
         ms.alignDone.connect(self.updateAlignGUI)
-        ms.namesDone.connect(self.setNameList)
 
         self.ui.genAlignBuild.clicked.connect(self.genAlignBuild)
         self.ui.genAlignBuildFile.clicked.connect(self.genAlignBuildFile)

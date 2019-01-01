@@ -57,6 +57,8 @@ class SiteStatus(object):
         self.clickable(self.ui.siteLatitude).connect(self.setLatitude)
         self.clickable(self.ui.siteLongitude).connect(self.setLongitude)
         self.clickable(self.ui.siteElevation).connect(self.setElevation)
+        self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
+
 
     def initConfig(self):
         if 'mainW' not in self.app.config:

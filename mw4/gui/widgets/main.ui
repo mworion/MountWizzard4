@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -2597,7 +2597,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_setRefractionParameters">
+    <widget class="QPushButton" name="setRefractionManual">
      <property name="geometry">
       <rect>
        <x>680</x>
@@ -4719,7 +4719,7 @@ manually</string>
     <zorder>globalHumidity</zorder>
     <zorder>cloudCover</zorder>
     <zorder>label_67</zorder>
-    <zorder>btn_setRefractionParameters</zorder>
+    <zorder>setRefractionManual</zorder>
     <zorder>globalDewPoint</zorder>
     <zorder>label_71</zorder>
     <zorder>label_30</zorder>
@@ -16450,7 +16450,7 @@ manually</string>
   <tabstop>checkRefracNone</tabstop>
   <tabstop>checkRefracCont</tabstop>
   <tabstop>checkRefracNoTrack</tabstop>
-  <tabstop>btn_setRefractionParameters</tabstop>
+  <tabstop>setRefractionManual</tabstop>
   <tabstop>genAlignBuildFile</tabstop>
   <tabstop>loadAlignBuildPoints</tabstop>
   <tabstop>saveAlignBuildPoints</tabstop>

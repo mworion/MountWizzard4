@@ -31,17 +31,19 @@ from mountcontrol import convert
 from mw4.gui import widget
 from mw4.gui.widgets import main_ui
 from mw4.base import transform
-from mw4.gui.mainWmixin import settHorizon
-from mw4.gui.mainWmixin import alignMount
-from mw4.gui.mainWmixin import buildModel
-from mw4.gui.mainWmixin import siteStatus
+from mw4.gui.mainWmixin import tabSettHorizon
+from mw4.gui.mainWmixin import tabAlignMount
+from mw4.gui.mainWmixin import tabBuildModel
+from mw4.gui.mainWmixin import tabSiteStatus
+from mw4.gui.mainWmixin import tabRelay
 
 
 class MainWindow(widget.MWidget,
-                 settHorizon.SettHorizon,
-                 alignMount.AlignMount,
-                 buildModel.BuildModel,
-                 siteStatus.SiteStatus):
+                 tabSettHorizon.SettHorizon,
+                 tabAlignMount.AlignMount,
+                 tabBuildModel.BuildModel,
+                 tabSiteStatus.SiteStatus,
+                 tabRelay.Relay):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -72,7 +74,6 @@ class MainWindow(widget.MWidget,
         self.initUI()
         self.setupIcons()
         self.setWindowTitle('MountWizzard4   (' + self.app.mwGlob['modeldata'] + ')')
-        self.setupRelayGui()
 
         # defining the necessary instances of classes
         self.polarPlot = self.embedMatplot(self.ui.modelPolar)
@@ -87,7 +88,6 @@ class MainWindow(widget.MWidget,
         ms.fwDone.connect(self.updateFwGui)
         ms.mountUp.connect(self.updateMountConnStat)
         ms.mountClear.connect(self.clearMountGUI)
-        self.app.relay.statusReady.connect(self.updateRelayGui)
 
         # connect gui signals
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -106,8 +106,6 @@ class MainWindow(widget.MWidget,
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
-        for button in self.relayButton:
-            button.clicked.connect(self.toggleRelay)
         self.ui.checkEnableRelay.clicked.connect(self.enableRelay)
         self.ui.relayHost.editingFinished.connect(self.relayHost)
         self.ui.relayUser.editingFinished.connect(self.relayUser)
@@ -115,7 +113,6 @@ class MainWindow(widget.MWidget,
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.indiHost.editingFinished.connect(self.indiHost)
-        self.ui.btn_setRefractionParameters.clicked.connect(self.updateRefractionParameters)
         self.ui.localWeatherName.editingFinished.connect(self.localWeatherName)
         self.ui.globalWeatherName.editingFinished.connect(self.globalWeatherName)
         self.ui.sqmName.editingFinished.connect(self.sqmName)
@@ -123,7 +120,6 @@ class MainWindow(widget.MWidget,
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
-        self.enableRelay()
         self.initConfig()
         self.setLoggingLevel()
         self.show()
@@ -161,15 +157,6 @@ class MainWindow(widget.MWidget,
         self.ui.expiresNo.setChecked(config.get('expiresNo', False))
         self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
         self.ui.profile.setText(self.app.config.get('profileName'))
-        for i, line in enumerate(self.relayText):
-            key = 'relayText{0:1d}'.format(i)
-            line.setText(config.get(key, 'Relay{0:1d}'.format(i)))
-        for i, button in enumerate(self.relayButton):
-            key = 'relayText{0:1d}'.format(i)
-            button.setText(config.get(key, 'Relay{0:1d}'.format(i)))
-        for i, drop in enumerate(self.relayDropDown):
-            key = 'relayFun{0:1d}'.format(i)
-            drop.setCurrentIndex(config.get(key, 0))
         self.ui.checkEnableRelay.setChecked(config.get('checkEnableRelay', False))
         self.enableRelay()
         self.ui.relayHost.setText(config.get('relayHost', ''))
@@ -215,12 +202,6 @@ class MainWindow(widget.MWidget,
         config['expiresNo'] = self.ui.expiresNo.isChecked()
         config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
         config['profile'] = self.ui.profile.text()
-        for i, line in enumerate(self.relayText):
-            key = 'relayText{0:1d}'.format(i)
-            config[key] = line.text()
-        for i, drop in enumerate(self.relayDropDown):
-            key = 'relayFun{0:1d}'.format(i)
-            config[key] = drop.currentIndex()
         config['checkEnableRelay'] = self.ui.checkEnableRelay.isChecked()
         config['relayHost'] = self.ui.relayHost.text()
         config['relayUser'] = self.ui.relayUser.text()
@@ -758,27 +739,6 @@ class MainWindow(widget.MWidget,
                 self.changeStyleDynamic(button, 'running', 'true')
             else:
                 self.changeStyleDynamic(button, 'running', 'false')
-        return True
-
-    def toggleRelay(self):
-        """
-        toggleRelay reads the button and toggles the relay on the box.
-
-        :return: success for test
-        """
-
-        if not self.ui.checkEnableRelay.isChecked():
-            self.app.message.emit('Relay box off', 2)
-            return False
-        suc = False
-        for i, button in enumerate(self.relayButton):
-            if button != self.sender():
-                continue
-            suc = self.app.relay.switch(i)
-        if not suc:
-            self.app.message.emit('Relay cannot be switched', 2)
-            return False
-        self.app.relay.cyclePolling()
         return True
 
     def enableRelay(self):

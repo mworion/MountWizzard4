@@ -1128,42 +1128,6 @@ def test_setSolarTracking2(qtbot):
         assert ['Cannot set tracking to Solar', 2] == blocker.args
 
 
-def test_setupRelayGui(qtbot):
-    suc = app.mainW.setupRelayGui()
-    assert suc
-    assert 8 == len(app.mainW.relayDropDown)
-    assert 8 == len(app.mainW.relayText)
-    assert 8 == len(app.mainW.relayButton)
-    for dropDown in app.mainW.relayDropDown:
-        val = dropDown.count()
-        assert 2 == val
-
-
-def test_updateRelayGui(qtbot):
-    app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
-    suc = app.mainW.updateRelayGui()
-    assert suc
-
-
-def test_toggleRelay1(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(False)
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.toggleRelay()
-        assert not suc
-    assert ['Relay box off', 2] == blocker.args
-
-
-def test_toggleRelay2(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(True)
-    with mock.patch.object(app.relay,
-                           'switch',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.toggleRelay()
-            assert not suc
-        assert ['Relay cannot be switched', 2] == blocker.args
-
-
 def test_enableRelay1(qtbot):
     app.mainW.ui.checkEnableRelay.setChecked(True)
     with mock.patch.object(app.relay,

@@ -59,7 +59,6 @@ class SiteStatus(object):
         self.clickable(self.ui.siteElevation).connect(self.setElevation)
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
 
-
     def initConfig(self):
         if 'mainW' not in self.app.config:
             return False

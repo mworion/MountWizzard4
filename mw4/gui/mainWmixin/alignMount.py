@@ -31,7 +31,6 @@ from mountcontrol import convert
 from mw4.gui import widget
 from mw4.gui.widgets import main_ui
 from mw4.base import transform
-from mw4.gui.mainWmixin import settHorizon
 
 
 class AlignMount(object):
@@ -47,10 +46,7 @@ class AlignMount(object):
     version = '0.6'
     logger = logging.getLogger(__name__)
 
-    CYCLE_GUI = 1000
-    CYCLE_UPDATE_TASK = 10000
-
-    def __init__(self):
+    def local__init__(self):
         ms = self.app.mount.signals
         ms.alignDone.connect(self.updateAlignGUI)
         ms.namesDone.connect(self.setNameList)

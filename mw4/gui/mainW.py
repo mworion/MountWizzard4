@@ -228,7 +228,6 @@ class MainWindow(widget.MWidget,
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
         self.ui.buildPFileName.setText(config.get('buildPFileName', ''))
-        self.ui.alignBuildPFileName.setText(config.get('alignBuildPFileName', ''))
 
         super().initConfig()
         return True

@@ -81,7 +81,6 @@ class MainWindow(widget.MWidget,
         ms.settDone.connect(self.updateSettingGUI)
         ms.settDone.connect(self.updateSetStatGUI)
         ms.settDone.connect(self.updateLocGUI)
-        ms.alignDone.connect(self.updateAlignGUI)
         ms.alignDone.connect(self.showModelPolar)
         ms.namesDone.connect(self.setNameList)
         ms.fwDone.connect(self.updateFwGui)

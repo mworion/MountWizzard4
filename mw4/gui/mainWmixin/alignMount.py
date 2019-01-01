@@ -70,7 +70,6 @@ class AlignMount(object):
         config['altBase'] = self.ui.altBase.value()
         config['azBase'] = self.ui.azBase.value()
         config['numberBase'] = self.ui.numberBase.value()
-
         return True
 
     def setupIcons(self):

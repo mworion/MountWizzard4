@@ -314,8 +314,6 @@ class MainWindow(widget.MWidget,
         self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelInitialModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.genAlignBuild, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildMax, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildMed, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
@@ -333,11 +331,6 @@ class MainWindow(widget.MWidget,
         self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
         self.wIcon(self.ui.refreshName, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
         self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
-
-        pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
-        self.ui.picAZ.setPixmap(pixmap)
-        pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
-        self.ui.picALT.setPixmap(pixmap)
 
         super().setupIcons()
         return True

@@ -19,18 +19,11 @@
 ###########################################################
 # standard libraries
 import logging
-import datetime
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
-import numpy as np
-import matplotlib.pyplot
-from mountcontrol import convert
 # local import
-from mw4.gui import widget
-from mw4.gui.widgets import main_ui
-from mw4.base import transform
 
 
 class AlignMount(object):

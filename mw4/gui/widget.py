@@ -53,9 +53,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                'integrateMatplotlib',
                ]
 
-    version = '0.1'
-    logger = logging.getLogger(__name__)
-
     TRAFFICLIGHTCOLORS = ['green', 'yellow', 'red', '']
 
     def __init__(self):

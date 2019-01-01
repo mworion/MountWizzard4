@@ -34,11 +34,6 @@ class AlignMount(object):
     processing if needed.
     """
 
-    __all__ = ['AlignMount',
-               ]
-    version = '0.6'
-    logger = logging.getLogger(__name__)
-
     def local__init__(self):
         ms = self.app.mount.signals
         ms.alignDone.connect(self.updateAlignGUI)

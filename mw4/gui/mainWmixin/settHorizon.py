@@ -32,11 +32,6 @@ class SettHorizon(object):
     processing if needed.
     """
 
-    __all__ = ['SettHorizon',
-               ]
-    version = '0.6'
-    logger = logging.getLogger(__name__)
-
     def __init__(self):
         ms = self.app.mount.signals
         ms.alignDone.connect(self.updateAlignGUI)

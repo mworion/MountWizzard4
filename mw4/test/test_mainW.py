@@ -68,7 +68,7 @@ def test_initConfig_1():
 def test_initConfig_2():
     del app.config['mainW']
     suc = app.mainW.initConfig()
-    assert not suc
+    assert suc
 
 
 def test_initConfig_3():
@@ -248,94 +248,6 @@ def test_saveProfile2(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             app.mainW.saveProfile()
         assert ['Actual profile cannot not be saved', 2] == blocker.args
-
-
-def test_setLoggingLevel1(qtbot):
-    app.mainW.ui.loglevelDebug.setChecked(True)
-    app.mainW.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
-    assert val == 10
-
-
-def test_setLoggingLevel2(qtbot):
-    app.mainW.ui.loglevelInfo.setChecked(True)
-    app.mainW.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
-    assert val == 20
-
-
-def test_setLoggingLevel3(qtbot):
-    app.mainW.ui.loglevelWarning.setChecked(True)
-    app.mainW.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
-    assert val == 30
-
-
-def test_setLoggingLevel4(qtbot):
-    app.mainW.ui.loglevelError.setChecked(True)
-    app.mainW.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
-    assert val == 40
-
-
-def test_setLunarTracking1(qtbot):
-    with mock.patch.object(app.mount.obsSite,
-                           'setLunarTracking',
-                           return_value=True):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.setLunarTracking()
-            assert suc
-        assert ['Tracking set to Lunar', 0] == blocker.args
-
-
-def test_setLunarTracking2(qtbot):
-    with mock.patch.object(app.mount.obsSite,
-                           'setLunarTracking',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.setLunarTracking()
-            assert not suc
-        assert ['Cannot set tracking to Lunar', 2] == blocker.args
-
-
-def test_setSiderealTracking1(qtbot):
-    with mock.patch.object(app.mount.obsSite,
-                           'setSiderealTracking',
-                           return_value=True):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.setSiderealTracking()
-            assert suc
-        assert ['Tracking set to Sidereal', 0] == blocker.args
-
-
-def test_setSiderealTracking2(qtbot):
-    with mock.patch.object(app.mount.obsSite,
-                           'setSiderealTracking',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.setSiderealTracking()
-            assert not suc
-        assert ['Cannot set tracking to Sidereal', 2] == blocker.args
-
-
-def test_setSolarTracking1(qtbot):
-    with mock.patch.object(app.mount.obsSite,
-                           'setSolarTracking',
-                           return_value=True):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.setSolarTracking()
-            assert suc
-        assert ['Tracking set to Solar', 0] == blocker.args
-
-
-def test_setSolarTracking2(qtbot):
-    with mock.patch.object(app.mount.obsSite,
-                           'setSolarTracking',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.setSolarTracking()
-            assert not suc
-        assert ['Cannot set tracking to Solar', 2] == blocker.args
 
 
 def test_enableRelay1(qtbot):

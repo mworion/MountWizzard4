@@ -341,3 +341,63 @@ def test_changePark_ok4(qtbot):
             suc = app.mainW.changePark()
             assert suc
         assert ['Mount parked', 0] == blocker.args
+
+
+def test_setLunarTracking1(qtbot):
+    with mock.patch.object(app.mount.obsSite,
+                           'setLunarTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setLunarTracking()
+            assert suc
+        assert ['Tracking set to Lunar', 0] == blocker.args
+
+
+def test_setLunarTracking2(qtbot):
+    with mock.patch.object(app.mount.obsSite,
+                           'setLunarTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setLunarTracking()
+            assert not suc
+        assert ['Cannot set tracking to Lunar', 2] == blocker.args
+
+
+def test_setSiderealTracking1(qtbot):
+    with mock.patch.object(app.mount.obsSite,
+                           'setSiderealTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setSiderealTracking()
+            assert suc
+        assert ['Tracking set to Sidereal', 0] == blocker.args
+
+
+def test_setSiderealTracking2(qtbot):
+    with mock.patch.object(app.mount.obsSite,
+                           'setSiderealTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setSiderealTracking()
+            assert not suc
+        assert ['Cannot set tracking to Sidereal', 2] == blocker.args
+
+
+def test_setSolarTracking1(qtbot):
+    with mock.patch.object(app.mount.obsSite,
+                           'setSolarTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setSolarTracking()
+            assert suc
+        assert ['Tracking set to Solar', 0] == blocker.args
+
+
+def test_setSolarTracking2(qtbot):
+    with mock.patch.object(app.mount.obsSite,
+                           'setSolarTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.setSolarTracking()
+            assert not suc
+        assert ['Cannot set tracking to Solar', 2] == blocker.args

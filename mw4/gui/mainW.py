@@ -34,10 +34,12 @@ from mw4.gui.mainWmixin import tabSiteStatus
 from mw4.gui.mainWmixin import tabRelay
 from mw4.gui.mainWmixin import tabMount
 from mw4.gui.mainWmixin import tabManageModel
+from mw4.gui.mainWmixin import tabSettMisc
 
 
 class MainWindow(widget.MWidget,
                  tabSettHorizon.SettHorizon,
+                 tabSettMisc.Misc,
                  tabAlignMount.AlignMount,
                  tabBuildModel.BuildModel,
                  tabSiteStatus.SiteStatus,
@@ -88,10 +90,6 @@ class MainWindow(widget.MWidget,
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
-        self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
-        self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
-        self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
-        self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
         self.ui.checkEnableRelay.clicked.connect(self.enableRelay)
         self.ui.relayHost.editingFinished.connect(self.relayHost)
         self.ui.relayUser.editingFinished.connect(self.relayUser)
@@ -131,12 +129,6 @@ class MainWindow(widget.MWidget,
         self.move(x, y)
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
-        self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
-        self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
-        self.ui.loglevelWarning.setChecked(config.get('loglevelWarning', False))
-        self.ui.loglevelError.setChecked(config.get('loglevelError', False))
-        self.ui.expiresYes.setChecked(config.get('expiresYes', True))
-        self.ui.expiresNo.setChecked(config.get('expiresNo', False))
         self.ui.profile.setText(self.app.config.get('profileName'))
         self.ui.checkEnableRelay.setChecked(config.get('checkEnableRelay', False))
         self.enableRelay()
@@ -162,8 +154,6 @@ class MainWindow(widget.MWidget,
         self.ui.ccdName.setText(config.get('ccdName', ''))
         self.ui.domeName.setText(config.get('domeName', ''))
 
-        self.setLoggingLevel()
-
         super().initConfig()
         return True
 
@@ -175,12 +165,6 @@ class MainWindow(widget.MWidget,
         config['winPosY'] = self.pos().y()
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
-        config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
-        config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
-        config['loglevelWarning'] = self.ui.loglevelWarning.isChecked()
-        config['loglevelError'] = self.ui.loglevelError.isChecked()
-        config['expiresYes'] = self.ui.expiresYes.isChecked()
-        config['expiresNo'] = self.ui.expiresNo.isChecked()
         config['profile'] = self.ui.profile.text()
         config['checkEnableRelay'] = self.ui.checkEnableRelay.isChecked()
         config['relayHost'] = self.ui.relayHost.text()
@@ -388,22 +372,6 @@ class MainWindow(widget.MWidget,
             self.app.message.emit('Actual profile saved', 0)
         else:
             self.app.message.emit('Actual profile cannot not be saved', 2)
-
-    def setLoggingLevel(self):
-        """
-        Setting the log level according to the setting in the gui.
-
-        :return: nothing
-        """
-
-        if self.ui.loglevelDebug.isChecked():
-            logging.getLogger().setLevel(logging.DEBUG)
-        elif self.ui.loglevelInfo.isChecked():
-            logging.getLogger().setLevel(logging.INFO)
-        elif self.ui.loglevelWarning.isChecked():
-            logging.getLogger().setLevel(logging.WARNING)
-        elif self.ui.loglevelError.isChecked():
-            logging.getLogger().setLevel(logging.ERROR)
 
     def setupRelayGui(self):
         """

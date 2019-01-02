@@ -25,31 +25,31 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
-from mw4.gui import widget
-from mw4.gui.widgets import main_ui
-from mw4.gui.mainWmixin import tabMount
-from mw4.gui.mainWmixin import tabSiteStatus
-from mw4.gui.mainWmixin import tabAlignMount
-from mw4.gui.mainWmixin import tabBuildModel
-from mw4.gui.mainWmixin import tabManageModel
-from mw4.gui.mainWmixin import tabRelay
-from mw4.gui.mainWmixin import tabSettIndi
-from mw4.gui.mainWmixin import tabSettHorizon
-from mw4.gui.mainWmixin import tabSettRelay
-from mw4.gui.mainWmixin import tabSettMisc
+from mw4.gui.widget import MWidget
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.mainWmixin.tabMount import Mount
+from mw4.gui.mainWmixin.tabSiteStatus import SiteStatus
+from mw4.gui.mainWmixin.tabAlignMount import AlignMount
+from mw4.gui.mainWmixin.tabBuildModel import BuildModel
+from mw4.gui.mainWmixin.tabManageModel import ManageModel
+from mw4.gui.mainWmixin.tabRelay import Relay
+from mw4.gui.mainWmixin.tabSettIndi import SettIndi
+from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
+from mw4.gui.mainWmixin.tabSettRelay import SettRelay
+from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 
 
-class MainWindow(widget.MWidget,
-                 tabMount.Mount,
-                 tabSiteStatus.SiteStatus,
-                 tabAlignMount.AlignMount,
-                 tabBuildModel.BuildModel,
-                 tabManageModel.ManageModel,
-                 tabRelay.Relay,
-                 tabSettIndi.INDI,
-                 tabSettHorizon.SettHorizon,
-                 tabSettRelay.Relay,
-                 tabSettMisc.Misc,
+class MainWindow(MWidget,
+                 Mount,
+                 SiteStatus,
+                 AlignMount,
+                 BuildModel,
+                 ManageModel,
+                 Relay,
+                 SettIndi,
+                 SettHorizon,
+                 SettRelay,
+                 SettMisc,
                  ):
     """
     the main window class handles the main menu as well as the show and no show part of
@@ -68,14 +68,26 @@ class MainWindow(widget.MWidget,
 
     def __init__(self, app):
         self.app = app
-        self.config = {}
         super().__init__()
+
         # load and init the gui
-        self.ui = main_ui.Ui_MainWindow()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
         self.setWindowTitle('MountWizzard4   (' + self.app.mwGlob['modeldata'] + ')')
+
+        # local init of following
+        Mount.__init__(self)
+        SiteStatus.__init__(self)
+        AlignMount.__init__(self)
+        BuildModel.__init__(self)
+        ManageModel.__init__(self)
+        Relay.__init__(self)
+        SettIndi.__init__(self)
+        SettHorizon.__init__(self)
+        SettRelay.__init__(self)
+        SettMisc.__init__(self)
 
         # polarPlot ui instance has to be defined central, not in the mixins
         self.polarPlot = self.embedMatplot(self.ui.modelPolar)
@@ -129,7 +141,16 @@ class MainWindow(widget.MWidget,
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
 
-        super().initConfig()
+        Mount.initConfig(self)
+        SiteStatus.initConfig(self)
+        AlignMount.initConfig(self)
+        BuildModel.initConfig(self)
+        ManageModel.initConfig(self)
+        Relay.initConfig(self)
+        SettIndi.initConfig(self)
+        SettHorizon.initConfig(self)
+        SettRelay.initConfig(self)
+        SettMisc.initConfig(self)
         return True
 
     def storeConfig(self):
@@ -144,7 +165,16 @@ class MainWindow(widget.MWidget,
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
 
-        super().storeConfig()
+        Mount.storeConfig(self)
+        SiteStatus.storeConfig(self)
+        AlignMount.storeConfig(self)
+        BuildModel.storeConfig(self)
+        ManageModel.storeConfig(self)
+        Relay.storeConfig(self)
+        SettIndi.storeConfig(self)
+        SettHorizon.storeConfig(self)
+        SettRelay.storeConfig(self)
+        SettMisc.storeConfig(self)
         return True
 
     def closeEvent(self, closeEvent):
@@ -187,7 +217,16 @@ class MainWindow(widget.MWidget,
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
 
-        super().setupIcons()
+        Mount.setupIcons(self)
+        SiteStatus.setupIcons(self)
+        AlignMount.setupIcons(self)
+        BuildModel.setupIcons(self)
+        ManageModel.setupIcons(self)
+        Relay.setupIcons(self)
+        SettIndi.setupIcons(self)
+        SettHorizon.setupIcons(self)
+        SettRelay.setupIcons(self)
+        SettMisc.setupIcons(self)
         return True
 
     def mountBoot(self):
@@ -215,7 +254,17 @@ class MainWindow(widget.MWidget,
 
         self.updateStatusGUI()
 
-        super().clearMountGUI()
+        Mount.clearMountGUI(self)
+        SiteStatus.clearMountGUI(self)
+        AlignMount.clearMountGUI(self)
+        BuildModel.clearMountGUI(self)
+        ManageModel.clearMountGUI(self)
+        Relay.clearMountGUI(self)
+        SettIndi.clearMountGUI(self)
+        SettHorizon.clearMountGUI(self)
+        SettRelay.clearMountGUI(self)
+        SettMisc.clearMountGUI(self)
+
         return True
 
     def updateMountConnStat(self, status):
@@ -354,5 +403,5 @@ class MainWindow(widget.MWidget,
 
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
-        self.app.hemisphereW.drawHemisphere()
+        self.app.redrawHemisphere.emit()
         return True

@@ -50,6 +50,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     # central message and logging dispatching
     message = PyQt5.QtCore.pyqtSignal(str, int)
+    redrawHemisphere = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,

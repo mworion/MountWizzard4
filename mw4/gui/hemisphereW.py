@@ -110,6 +110,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.checkShowMeridian.clicked.connect(self.updateMeridian)
         self.ui.checkShowCelestial.clicked.connect(self.updateCelestialPath)
+        self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.mount.signals.pointDone.connect(self.updateDome)
         self.app.mount.signals.settDone.connect(self.updateMeridian)

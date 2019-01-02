@@ -37,7 +37,6 @@ class ManageModel(object):
     """
 
     def __init__(self):
-
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPolar)
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
@@ -60,7 +59,6 @@ class ManageModel(object):
 
         :return:    True if success for test
         """
-
         self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
@@ -68,7 +66,6 @@ class ManageModel(object):
         self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
         self.wIcon(self.ui.refreshName, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
         self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
-
         return True
 
     def clearMountGUI(self):
@@ -77,7 +74,6 @@ class ManageModel(object):
 
         :return: success for test
         """
-
         self.setNameList()
         self.showModelPolar()
         return True

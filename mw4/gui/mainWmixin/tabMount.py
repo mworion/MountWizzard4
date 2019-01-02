@@ -48,14 +48,12 @@ class Mount(object):
         config = self.app.config['mainW']
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
-
         return True
 
     def storeConfig(self):
         config = self.app.config['mainW']
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()
-
         return True
 
     def setupIcons(self):
@@ -65,7 +63,6 @@ class Mount(object):
 
         :return:    True if success for test
         """
-
         self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
         return True
 
@@ -75,7 +72,6 @@ class Mount(object):
 
         :return: success for test
         """
-
         self.updatePointGUI()
         return True
 

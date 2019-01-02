@@ -72,7 +72,6 @@ class SiteStatus(object):
         config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
         config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
         config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
-
         return True
 
     def setupIcons(self):
@@ -90,7 +89,6 @@ class SiteStatus(object):
 
         :return: success for test
         """
-
         self.updateSettingGUI()
         self.updateSetStatGUI()
         self.updateLocGUI()

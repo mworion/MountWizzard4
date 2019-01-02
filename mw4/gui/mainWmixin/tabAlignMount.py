@@ -39,9 +39,9 @@ class AlignMount(object):
 
         self.ui.genAlignBuild.clicked.connect(self.genAlignBuild)
         self.ui.genAlignBuildFile.clicked.connect(self.genAlignBuildFile)
-        self.ui.altBase.valueChanged.connect(self.genAlignBuild)
-        self.ui.azBase.valueChanged.connect(self.genAlignBuild)
-        self.ui.numberBase.valueChanged.connect(self.genAlignBuild)
+        self.ui.altBase.editingFinished.connect(self.genAlignBuild)
+        self.ui.azBase.editingFinished.connect(self.genAlignBuild)
+        self.ui.numberBase.editingFinished.connect(self.genAlignBuild)
         self.ui.saveAlignBuildPoints.clicked.connect(self.saveAlignBuildFile)
         self.ui.saveAlignBuildPointsAs.clicked.connect(self.saveAlignBuildFileAs)
         self.ui.loadAlignBuildPoints.clicked.connect(self.loadAlignBuildFile)

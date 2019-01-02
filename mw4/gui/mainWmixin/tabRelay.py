@@ -42,26 +42,10 @@ class Relay(object):
 
     def initConfig(self):
         config = self.app.config['mainW']
-        for button in self.relayButton:
-            button.clicked.connect(self.toggleRelay)
-        for i, button in enumerate(self.relayButton):
-            key = 'relayText{0:1d}'.format(i)
-            button.setText(config.get(key, 'Relay{0:1d}'.format(i)))
-        for i, drop in enumerate(self.relayDropDown):
-            key = 'relayFun{0:1d}'.format(i)
-            drop.setCurrentIndex(config.get(key, 0))
-        self.enableRelay()
         return True
 
     def storeConfig(self):
         config = self.app.config['mainW']
-        for i, line in enumerate(self.relayText):
-            key = 'relayText{0:1d}'.format(i)
-            config[key] = line.text()
-        for i, drop in enumerate(self.relayDropDown):
-            key = 'relayFun{0:1d}'.format(i)
-            config[key] = drop.currentIndex()
-
         return True
 
     def setupIcons(self):
@@ -79,7 +63,6 @@ class Relay(object):
 
         :return: success for test
         """
-
         return True
 
     def toggleRelay(self):

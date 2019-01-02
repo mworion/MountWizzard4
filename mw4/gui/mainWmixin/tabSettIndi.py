@@ -22,7 +22,7 @@
 # local import
 
 
-class INDI(object):
+class SettIndi(object):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -50,7 +50,6 @@ class INDI(object):
         environ.sqmName = config.get('sqmName', '')
         self.ui.ccdName.setText(config.get('ccdName', ''))
         self.ui.domeName.setText(config.get('domeName', ''))
-
         return True
 
     def storeConfig(self):
@@ -61,7 +60,6 @@ class INDI(object):
         config['sqmName'] = self.ui.sqmName.text()
         config['domeName'] = self.ui.domeName.text()
         config['ccdName'] = self.ui.ccdName.text()
-
         return True
 
     def setupIcons(self):
@@ -79,7 +77,6 @@ class INDI(object):
 
         :return: success for test
         """
-
         return True
 
     def indiHost(self):

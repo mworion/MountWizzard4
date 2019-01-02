@@ -23,7 +23,7 @@ import logging
 # local import
 
 
-class Misc(object):
+class SettMisc(object):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -46,7 +46,6 @@ class Misc(object):
         self.ui.expiresYes.setChecked(config.get('expiresYes', True))
         self.ui.expiresNo.setChecked(config.get('expiresNo', False))
         self.setLoggingLevel()
-
         return True
 
     def storeConfig(self):
@@ -57,7 +56,6 @@ class Misc(object):
         config['loglevelError'] = self.ui.loglevelError.isChecked()
         config['expiresYes'] = self.ui.expiresYes.isChecked()
         config['expiresNo'] = self.ui.expiresNo.isChecked()
-
         return True
 
     def setupIcons(self):
@@ -75,7 +73,6 @@ class Misc(object):
 
         :return: success for test
         """
-
         return True
 
     def setLoggingLevel(self):

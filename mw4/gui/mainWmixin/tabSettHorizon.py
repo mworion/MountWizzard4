@@ -64,7 +64,6 @@ class SettHorizon(object):
 
         :return:    True if success for test
         """
-
         return True
 
     def clearMountGUI(self):
@@ -73,7 +72,6 @@ class SettHorizon(object):
 
         :return: success for test
         """
-
         return True
 
     def loadHorizonMask(self):

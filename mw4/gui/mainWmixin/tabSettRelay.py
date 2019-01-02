@@ -25,7 +25,7 @@ import PyQt5.uic
 # local import
 
 
-class Relay(object):
+class SettRelay(object):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -34,10 +34,14 @@ class Relay(object):
     """
 
     def __init__(self):
+        self.relayDropDown = list()
+        self.relayButton = list()
+        self.relayText = list()
         self.ui.checkEnableRelay.clicked.connect(self.enableRelay)
         self.ui.relayHost.editingFinished.connect(self.relayHost)
         self.ui.relayUser.editingFinished.connect(self.relayUser)
         self.ui.relayPassword.editingFinished.connect(self.relayPassword)
+        self.setupRelayGui()
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -49,7 +53,18 @@ class Relay(object):
         self.relayUser()
         self.ui.relayPassword.setText(config.get('relayPassword', ''))
         self.relayPassword()
-
+        for button in self.relayButton:
+            button.clicked.connect(self.toggleRelay)
+        for i, line in enumerate(self.relayText):
+            key = 'relayText{0:1d}'.format(i)
+            line.setText(config.get(key, 'Relay{0:1d}'.format(i)))
+        for i, button in enumerate(self.relayButton):
+            key = 'relayText{0:1d}'.format(i)
+            button.setText(config.get(key, 'Relay{0:1d}'.format(i)))
+        for i, drop in enumerate(self.relayDropDown):
+            key = 'relayFun{0:1d}'.format(i)
+            drop.setCurrentIndex(config.get(key, 0))
+        self.enableRelay()
         return True
 
     def storeConfig(self):
@@ -58,7 +73,12 @@ class Relay(object):
         config['relayHost'] = self.ui.relayHost.text()
         config['relayUser'] = self.ui.relayUser.text()
         config['relayPassword'] = self.ui.relayPassword.text()
-
+        for i, line in enumerate(self.relayText):
+            key = 'relayText{0:1d}'.format(i)
+            config[key] = line.text()
+        for i, drop in enumerate(self.relayDropDown):
+            key = 'relayFun{0:1d}'.format(i)
+            config[key] = drop.currentIndex()
         return True
 
     def setupIcons(self):
@@ -76,7 +96,6 @@ class Relay(object):
 
         :return: success for test
         """
-
         return True
 
     def setupRelayGui(self):
@@ -87,9 +106,6 @@ class Relay(object):
         :return: success for test
         """
 
-        self.relayDropDown = list()
-        self.relayButton = list()
-        self.relayText = list()
         for i in range(0, 8):
             self.relayDropDown.append(eval('self.ui.relayFun{0:1d}'.format(i)))
             self.relayButton.append(eval('self.ui.relayButton{0:1d}'.format(i)))

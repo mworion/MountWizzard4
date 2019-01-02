@@ -30,12 +30,12 @@ from mountcontrol import convert
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import main_ui
-from mw4.base import transform
 from mw4.gui.mainWmixin import tabSettHorizon
 from mw4.gui.mainWmixin import tabAlignMount
 from mw4.gui.mainWmixin import tabBuildModel
 from mw4.gui.mainWmixin import tabSiteStatus
 from mw4.gui.mainWmixin import tabRelay
+from mw4.gui.mainWmixin import tabMount
 
 
 class MainWindow(widget.MWidget,
@@ -43,7 +43,8 @@ class MainWindow(widget.MWidget,
                  tabAlignMount.AlignMount,
                  tabBuildModel.BuildModel,
                  tabSiteStatus.SiteStatus,
-                 tabRelay.Relay):
+                 tabRelay.Relay,
+                 tabMount.Mount):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -81,7 +82,6 @@ class MainWindow(widget.MWidget,
 
         # connect signals for refreshing the gui
         ms = self.app.mount.signals
-        ms.pointDone.connect(self.updatePointGUI)
         ms.pointDone.connect(self.updateStatusGUI)
         ms.alignDone.connect(self.showModelPolar)
         ms.namesDone.connect(self.setNameList)
@@ -94,11 +94,6 @@ class MainWindow(widget.MWidget,
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
-        self.ui.park.clicked.connect(self.changePark)
-        self.ui.tracking.clicked.connect(self.changeTracking)
-        self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
-        self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
-        self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
@@ -180,8 +175,6 @@ class MainWindow(widget.MWidget,
         environ.sqmName = config.get('sqmName', '')
         self.ui.ccdName.setText(config.get('ccdName', ''))
         self.ui.domeName.setText(config.get('domeName', ''))
-        self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
-        self.ui.checkJNow.setChecked(config.get('checkJNow', False))
 
         super().initConfig()
         return True
@@ -214,8 +207,6 @@ class MainWindow(widget.MWidget,
         config['sqmName'] = self.ui.sqmName.text()
         config['domeName'] = self.ui.domeName.text()
         config['ccdName'] = self.ui.ccdName.text()
-        config['checkJ2000'] = self.ui.checkJ2000.isChecked()
-        config['checkJNow'] = self.ui.checkJNow.isChecked()
 
         super().storeConfig()
         return True
@@ -259,7 +250,6 @@ class MainWindow(widget.MWidget,
         self.wIcon(self.ui.runFlexure, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
         self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
@@ -294,8 +284,6 @@ class MainWindow(widget.MWidget,
         :return: success for test
         """
 
-        self.updateFwGui()
-        self.updatePointGUI()
         self.updateStatusGUI()
         self.setNameList()
         self.showModelPolar()
@@ -332,64 +320,6 @@ class MainWindow(widget.MWidget,
         self.updateRefractionParameters()
         return True
 
-    def updatePointGUI(self):
-        """
-        updatePointGUI update the gui upon events triggered be the reception of new data
-        from the mount. the mount data is polled, so we use this signal as well for the
-        update process.
-
-        :return:    True if ok for testing
-        """
-        obs = self.app.mount.obsSite
-
-        if obs.Alt is not None:
-            self.ui.ALT.setText('{0:5.2f}'.format(obs.Alt.degrees))
-        else:
-            self.ui.ALT.setText('-')
-
-        if obs.Az is not None:
-            self.ui.AZ.setText('{0:5.2f}'.format(obs.Az.degrees))
-        else:
-            self.ui.AZ.setText('-')
-
-        ra = obs.raJNow
-        dec = obs.decJNow
-        if self.ui.checkJ2000.isChecked():
-            if ra is not None and dec is not None and obs.timeJD is not None:
-                ra, dec = transform.JNowToJ2000(ra, dec, obs.timeJD)
-
-        if ra is not None:
-            raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            raText = raFormat.format(*ra.hms())
-            self.ui.RA.setText(raText)
-        else:
-            self.ui.RA.setText('-')
-
-        if dec is not None:
-            decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            decText = decFormat.format(*dec.signed_dms()[1:4],
-                                       sign='+' if dec.degrees > 0 else '-')
-            self.ui.DEC.setText(decText)
-        else:
-            self.ui.DEC.setText('-')
-
-        if obs.timeJD is not None:
-            self.ui.timeJD.setText(obs.timeJD.utc_strftime('%H:%M:%S'))
-        else:
-            self.ui.timeJD.setText('-')
-
-        if obs.pierside is not None:
-            self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
-        else:
-            self.ui.pierside.setText('-')
-
-        if obs.timeSidereal is not None:
-            self.ui.timeSidereal.setText(obs.timeSidereal[:8])
-        else:
-            self.ui.timeSidereal.setText('-')
-
-        return True
-
     def updateStatusGUI(self):
         """
         updateStatusGUI update the gui upon events triggered be the reception of new data
@@ -419,42 +349,6 @@ class MainWindow(widget.MWidget,
             self.changeStyleDynamic(self.ui.stop, 'running', 'true')
         else:
             self.changeStyleDynamic(self.ui.stop, 'running', 'false')
-
-        return True
-
-    def updateFwGui(self):
-        """
-        updateFwGui write all firmware data to the gui.
-
-        :return:    True if ok for testing
-        """
-
-        fw = self.app.mount.fw
-
-        if fw.productName is not None:
-            self.ui.productName.setText(fw.productName)
-        else:
-            self.ui.productName.setText('-')
-
-        if fw.numberString is not None:
-            self.ui.numberString.setText(fw.numberString)
-        else:
-            self.ui.numberString.setText('-')
-
-        if fw.fwdate is not None:
-            self.ui.fwdate.setText(fw.fwdate)
-        else:
-            self.ui.fwdate.setText('-')
-
-        if fw.fwtime is not None:
-            self.ui.fwtime.setText(fw.fwtime)
-        else:
-            self.ui.fwtime.setText('-')
-
-        if fw.hwVersion is not None:
-            self.ui.hwVersion.setText(fw.hwVersion)
-        else:
-            self.ui.hwVersion.setText('-')
 
         return True
 

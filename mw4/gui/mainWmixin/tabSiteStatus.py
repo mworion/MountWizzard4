@@ -97,6 +97,7 @@ class SiteStatus(object):
         self.updateSettingGUI()
         self.updateSetStatGUI()
         self.updateLocGUI()
+        self.updateFwGui()
         return True
 
     def updateRefractionParameters(self):
@@ -264,6 +265,42 @@ class SiteStatus(object):
             self.ui.siteLongitude.setText('-')
             self.ui.siteLatitude.setText('-')
             self.ui.siteElevation.setText('-')
+
+        return True
+
+    def updateFwGui(self):
+        """
+        updateFwGui write all firmware data to the gui.
+
+        :return:    True if ok for testing
+        """
+
+        fw = self.app.mount.fw
+
+        if fw.productName is not None:
+            self.ui.productName.setText(fw.productName)
+        else:
+            self.ui.productName.setText('-')
+
+        if fw.numberString is not None:
+            self.ui.numberString.setText(fw.numberString)
+        else:
+            self.ui.numberString.setText('-')
+
+        if fw.fwdate is not None:
+            self.ui.fwdate.setText(fw.fwdate)
+        else:
+            self.ui.fwdate.setText('-')
+
+        if fw.fwtime is not None:
+            self.ui.fwtime.setText(fw.fwtime)
+        else:
+            self.ui.fwtime.setText('-')
+
+        if fw.hwVersion is not None:
+            self.ui.hwVersion.setText(fw.hwVersion)
+        else:
+            self.ui.hwVersion.setText('-')
 
         return True
 

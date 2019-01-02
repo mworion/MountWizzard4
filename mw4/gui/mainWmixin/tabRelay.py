@@ -40,8 +40,6 @@ class Relay(object):
         self.enableRelay()
 
     def initConfig(self):
-        if 'mainW' not in self.app.config:
-            return False
         config = self.app.config['mainW']
         for button in self.relayButton:
             button.clicked.connect(self.toggleRelay)
@@ -54,8 +52,6 @@ class Relay(object):
         return True
 
     def storeConfig(self):
-        if 'mainW' not in self.app.config:
-            self.app.config['mainW'] = {}
         config = self.app.config['mainW']
         for i, line in enumerate(self.relayText):
             key = 'relayText{0:1d}'.format(i)

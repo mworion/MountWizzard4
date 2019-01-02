@@ -45,8 +45,6 @@ class Mount(object):
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
 
     def initConfig(self):
-        if 'mainW' not in self.app.config:
-            return False
         config = self.app.config['mainW']
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
@@ -54,8 +52,6 @@ class Mount(object):
         return True
 
     def storeConfig(self):
-        if 'mainW' not in self.app.config:
-            self.app.config['mainW'] = {}
         config = self.app.config['mainW']
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()

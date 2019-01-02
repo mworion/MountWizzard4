@@ -60,8 +60,6 @@ class SiteStatus(object):
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
 
     def initConfig(self):
-        if 'mainW' not in self.app.config:
-            return False
         config = self.app.config['mainW']
         self.ui.checkRefracNone.setChecked(config.get('checkRefracNone', False))
         self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
@@ -69,8 +67,6 @@ class SiteStatus(object):
         return True
 
     def storeConfig(self):
-        if 'mainW' not in self.app.config:
-            self.app.config['mainW'] = {}
         config = self.app.config['mainW']
         config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
         config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()

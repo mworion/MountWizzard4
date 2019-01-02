@@ -41,8 +41,6 @@ class SettHorizon(object):
         self.ui.checkAutoDeletePoints.clicked.connect(self.autoDeletePoints)
 
     def initConfig(self):
-        if 'mainW' not in self.app.config:
-            return False
         config = self.app.config['mainW']
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
@@ -52,8 +50,6 @@ class SettHorizon(object):
         return True
 
     def storeConfig(self):
-        if 'mainW' not in self.app.config:
-            self.app.config['mainW'] = {}
         config = self.app.config['mainW']
         config['horizonFileName'] = self.ui.horizonFileName.text()
         config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()

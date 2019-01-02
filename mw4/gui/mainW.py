@@ -61,6 +61,7 @@ class MainWindow(widget.MWidget,
 
     def __init__(self, app):
         self.app = app
+        self.config = {}
         super().__init__()
         # load and init the gui
         self.ui = main_ui.Ui_MainWindow()
@@ -68,9 +69,9 @@ class MainWindow(widget.MWidget,
         self.initUI()
         self.setupIcons()
         self.setWindowTitle('MountWizzard4   (' + self.app.mwGlob['modeldata'] + ')')
-        self.polarPlot = self.embedMatplot(self.ui.modelPolar)
 
-        # self.tPool = PyQt5.QtCore.QThreadPool()
+        # polarPlot ui instance has to be defined central, not in the mixins
+        self.polarPlot = self.embedMatplot(self.ui.modelPolar)
 
         # connect signals for refreshing the gui
         ms = self.app.mount.signals
@@ -106,7 +107,6 @@ class MainWindow(widget.MWidget,
         # initial call for writing the gui
         self.updateMountConnStat(False)
         self.initConfig()
-        self.setLoggingLevel()
         self.show()
 
         self.timerGui = PyQt5.QtCore.QTimer()
@@ -120,7 +120,7 @@ class MainWindow(widget.MWidget,
 
     def initConfig(self):
         if 'mainW' not in self.app.config:
-            return False
+            self.app.config['mainW'] = {}
         config = self.app.config['mainW']
         x = config.get('winPosX', 100)
         y = config.get('winPosY', 100)
@@ -161,6 +161,8 @@ class MainWindow(widget.MWidget,
         environ.sqmName = config.get('sqmName', '')
         self.ui.ccdName.setText(config.get('ccdName', ''))
         self.ui.domeName.setText(config.get('domeName', ''))
+
+        self.setLoggingLevel()
 
         super().initConfig()
         return True

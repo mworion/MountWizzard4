@@ -49,8 +49,6 @@ class BuildModel(object):
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
 
     def initConfig(self):
-        if 'mainW' not in self.app.config:
-            return False
         config = self.app.config['mainW']
         self.ui.buildPFileName.setText(config.get('buildPFileName', ''))
         self.ui.numberGridPointsRow.setValue(config.get('numberGridPointsRow', 5))
@@ -60,8 +58,6 @@ class BuildModel(object):
         return True
 
     def storeConfig(self):
-        if 'mainW' not in self.app.config:
-            self.app.config['mainW'] = {}
         config = self.app.config['mainW']
         config['buildPFileName'] = self.ui.buildPFileName.text()
         config['numberGridPointsRow'] = self.ui.numberGridPointsRow.value()

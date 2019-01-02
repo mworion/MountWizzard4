@@ -47,8 +47,6 @@ class AlignMount(object):
         self.ui.loadAlignBuildPoints.clicked.connect(self.loadAlignBuildFile)
 
     def initConfig(self):
-        if 'mainW' not in self.app.config:
-            return False
         config = self.app.config['mainW']
         self.ui.alignBuildPFileName.setText(config.get('alignBuildPFileName', ''))
         self.ui.altBase.setValue(config.get('altBase', 30))
@@ -57,8 +55,6 @@ class AlignMount(object):
         return True
 
     def storeConfig(self):
-        if 'mainW' not in self.app.config:
-            self.app.config['mainW'] = {}
         config = self.app.config['mainW']
         config['alignBuildPFileName'] = self.ui.alignBuildPFileName.text()
         config['altBase'] = self.ui.altBase.value()

@@ -43,16 +43,12 @@ class ManageModel(object):
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
 
     def initConfig(self):
-        if 'mainW' not in self.app.config:
-            return False
         config = self.app.config['mainW']
         self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
         self.showModelPolar()
         return True
 
     def storeConfig(self):
-        if 'mainW' not in self.app.config:
-            self.app.config['mainW'] = {}
         config = self.app.config['mainW']
         config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
         return True

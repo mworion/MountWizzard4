@@ -196,3 +196,163 @@ def test_genAlignBuildFile_4(qtbot):
                            return_value=True):
         suc = app.mainW.genAlignBuildFile()
         assert suc
+
+
+def test_updateAlignGui_numberStars():
+    with mock.patch.object(app.mainW, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.mount.model.numberStars = value
+        app.mainW.updateAlignGUI()
+        assert '50' == app.mainW.ui.numberStars.text()
+        assert '50' == app.mainW.ui.numberStars1.text()
+        value = None
+        app.mount.model.numberStars = value
+        app.mainW.updateAlignGUI()
+        assert '-' == app.mainW.ui.numberStars.text()
+        assert '-' == app.mainW.ui.numberStars1.text()
+
+
+def test_updateAlignGui_altitudeError():
+    with mock.patch.object(app.mainW, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.mount.model.altitudeError = value
+        app.mainW.updateAlignGUI()
+        assert '50deg 00\' 00.0\"' == app.mainW.ui.altitudeError.text()
+        value = None
+        app.mount.model.altitudeError = value
+        app.mainW.updateAlignGUI()
+        assert '-' == app.mainW.ui.altitudeError.text()
+
+
+def test_updateAlignGui_errorRMS():
+    with mock.patch.object(app.mainW, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.mount.model.errorRMS = value
+        app.mainW.updateAlignGUI()
+        assert '50.0' == app.mainW.ui.errorRMS.text()
+        assert '50.0' == app.mainW.ui.errorRMS1.text()
+        value = None
+        app.mount.model.errorRMS = value
+        app.mainW.updateAlignGUI()
+        assert '-' == app.mainW.ui.errorRMS.text()
+        assert '-' == app.mainW.ui.errorRMS1.text()
+
+
+def test_updateAlignGui_azimuthError():
+    with mock.patch.object(app.mainW, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.mount.model.azimuthError = value
+        app.mainW.updateAlignGUI()
+        assert '50deg 00\' 00.0\"' == app.mainW.ui.azimuthError.text()
+        value = None
+        app.mount.model.azimuthError = value
+        app.mainW.updateAlignGUI()
+        assert '-' == app.mainW.ui.azimuthError.text()
+
+
+def test_updateAlignGui_terms():
+    with mock.patch.object(app.mainW, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.mount.model.terms = value
+        app.mainW.updateAlignGUI()
+        assert '50.0' == app.mainW.ui.terms.text()
+        value = None
+        app.mount.model.terms = value
+        app.mainW.updateAlignGUI()
+        assert '-' == app.mainW.ui.terms.text()
+
+
+def test_updateAlignGui_orthoError():
+    with mock.patch.object(app.mainW, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.mount.model.orthoError = value
+        app.mainW.updateAlignGUI()
+        assert '50deg 00\' 00.0\"' == app.mainW.ui.orthoError.text()
+        value = None
+        app.mount.model.orthoError = value
+        app.mainW.updateAlignGUI()
+        assert '-' == app.mainW.ui.orthoError.text()
+
+
+def test_updateAlignGui_positionAngle():
+    with mock.patch.object(app.mainW, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.mount.model.positionAngle = value
+        app.mainW.updateAlignGUI()
+        assert ' 50.0' == app.mainW.ui.positionAngle.text()
+        value = None
+        app.mount.model.positionAngle = value
+        app.mainW.updateAlignGUI()
+        assert '-' == app.mainW.ui.positionAngle.text()
+
+
+def test_updateAlignGui_polarError():
+    with mock.patch.object(app.mainW, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.mount.model.polarError = value
+        app.mainW.updateAlignGUI()
+        assert '50deg 00\' 00.0\"' == app.mainW.ui.polarError.text()
+        value = None
+        app.mount.model.polarError = value
+        app.mainW.updateAlignGUI()
+        assert '-' == app.mainW.ui.polarError.text()
+
+
+def test_updateAlignGui_altitudeTurns_1():
+    value = 1.5
+    app.mount.model.altitudeTurns = value
+    app.mainW.updateAlignGUI()
+    assert '1.5 revs down' == app.mainW.ui.altitudeTurns.text()
+    value = None
+    app.mount.model.altitudeTurns = value
+    app.mainW.updateAlignGUI()
+    assert '-' == app.mainW.ui.altitudeTurns.text()
+
+
+def test_updateAlignGui_altitudeTurns_2():
+    value = -1.5
+    app.mount.model.altitudeTurns = value
+    app.mainW.updateAlignGUI()
+    assert '1.5 revs up' == app.mainW.ui.altitudeTurns.text()
+    value = None
+    app.mount.model.altitudeTurns = value
+    app.mainW.updateAlignGUI()
+    assert '-' == app.mainW.ui.altitudeTurns.text()
+
+
+def test_updateAlignGui_azimuthTurns_1():
+    value = 1.5
+    app.mount.model.azimuthTurns = value
+    app.mainW.updateAlignGUI()
+    assert '1.5 revs left' == app.mainW.ui.azimuthTurns.text()
+    value = None
+    app.mount.model.azimuthTurns = value
+    app.mainW.updateAlignGUI()
+    assert '-' == app.mainW.ui.azimuthTurns.text()
+
+
+def test_updateAlignGui_azimuthTurns_2():
+    value = -1.5
+    app.mount.model.azimuthTurns = value
+    app.mainW.updateAlignGUI()
+    assert '1.5 revs right' == app.mainW.ui.azimuthTurns.text()
+    value = None
+    app.mount.model.azimuthTurns = value
+    app.mainW.updateAlignGUI()
+    assert '-' == app.mainW.ui.azimuthTurns.text()

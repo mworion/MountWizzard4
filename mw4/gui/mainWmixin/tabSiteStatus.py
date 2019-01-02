@@ -34,7 +34,7 @@ class SiteStatus(object):
     processing if needed.
     """
 
-    def local__init__(self):
+    def __init__(self):
         ms = self.app.mount.signals
         ms.settDone.connect(self.updateSettingGUI)
         ms.settDone.connect(self.updateSetStatGUI)

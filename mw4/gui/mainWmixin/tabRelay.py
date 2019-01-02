@@ -30,7 +30,11 @@ class Relay(object):
     processing if needed.
     """
 
-    def local__init__(self):
+    def __init__(self):
+        self.relayDropDown = list()
+        self.relayButton = list()
+        self.relayText = list()
+
         self.setupRelayGui()
         self.app.relay.statusReady.connect(self.updateRelayGui)
         self.enableRelay()
@@ -99,4 +103,19 @@ class Relay(object):
             self.app.message.emit('Relay cannot be switched', 2)
             return False
         self.app.relay.cyclePolling()
+        return True
+
+    def updateRelayGui(self):
+        """
+        updateRelayGui changes the style of the button related to the state of the relay
+
+        :return: success for test
+        """
+
+        status = self.app.relay.status
+        for i, button in enumerate(self.relayButton):
+            if status[i]:
+                self.changeStyleDynamic(button, 'running', 'true')
+            else:
+                self.changeStyleDynamic(button, 'running', 'false')
         return True

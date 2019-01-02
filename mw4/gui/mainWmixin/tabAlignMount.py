@@ -33,7 +33,7 @@ class AlignMount(object):
     processing if needed.
     """
 
-    def local__init__(self):
+    def __init__(self):
         ms = self.app.mount.signals
         ms.alignDone.connect(self.updateAlignGUI)
 

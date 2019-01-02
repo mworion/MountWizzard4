@@ -1,0 +1,198 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+# Python  v3.6.7
+#
+# Michael Würtenberger
+# (c) 2018
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+# external packages
+import PyQt5.QtCore
+import PyQt5.QtWidgets
+import PyQt5.uic
+import numpy as np
+import matplotlib.pyplot
+from mountcontrol import convert
+# local import
+
+
+class ManageModel(object):
+    """
+    the main window class handles the main menu as well as the show and no show part of
+    any other window. all necessary processing for functions of that gui will be linked
+    to this class. therefore window classes will have a threadpool for managing async
+    processing if needed.
+    """
+
+    def __init__(self):
+
+        ms = self.app.mount.signals
+        ms.alignDone.connect(self.showModelPolar)
+        self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
+
+    def initConfig(self):
+        if 'mainW' not in self.app.config:
+            return False
+        config = self.app.config['mainW']
+        self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
+        self.showModelPolar()
+        return True
+
+    def storeConfig(self):
+        if 'mainW' not in self.app.config:
+            self.app.config['mainW'] = {}
+        config = self.app.config['mainW']
+        config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
+        return True
+
+    def setupIcons(self):
+        """
+        setupIcons add icon from standard library to certain buttons for improving the
+        gui of the app.
+
+        :return:    True if success for test
+        """
+
+        self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
+        self.wIcon(self.ui.saveName, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
+        self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
+        self.wIcon(self.ui.refreshName, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
+        self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
+
+        return True
+
+    def clearMountGUI(self):
+        """
+        clearMountGUI rewrites the gui in case of a special event needed for clearing up
+
+        :return: success for test
+        """
+
+        self.setNameList()
+        self.showModelPolar()
+        return True
+
+    def setNameList(self):
+        """
+        setNameList populates the list of model names in the main window. before adding the
+        data, the existent list will be deleted.
+
+        :return:    True if ok for testing
+        """
+
+        model = self.app.mount.model
+        self.ui.nameList.clear()
+        for name in model.nameList:
+            self.ui.nameList.addItem(name)
+        self.ui.nameList.sortItems()
+        self.ui.nameList.update()
+        return True
+
+    def showModelPolar(self):
+        """
+        showModelPolar draws a polar plot of the align model stars and their errors in
+        color. the basic setup of the plot is taking place in the central widget class.
+        which is instantiated from there.
+
+        :return:    True if ok for testing
+        """
+
+        # shortcuts
+        model = self.app.mount.model
+        location = self.app.mount.obsSite.location
+
+        # check entry conditions for displaying a polar plot
+        if model.starList is None:
+            hasNoStars = True
+        else:
+            hasNoStars = len(model.starList) == 0
+        hasNoLocation = location is None
+
+        if hasNoStars or hasNoLocation:
+            # clear the plot and return
+            fig, axes = self.clearPolar(self.polarPlot)
+            fig.subplots_adjust(left=0.1,
+                                right=0.9,
+                                bottom=0.1,
+                                top=0.85,
+                                )
+            axes.figure.canvas.draw()
+            return False
+
+        # start with plotting
+        lat = location.latitude.degrees
+        fig, axes = self.clearPolar(self.polarPlot)
+
+        altitude = []
+        azimuth = []
+        error = []
+        for star in model.starList:
+            alt, az = convert.topoToAltAz(star.coord.ra.hours,
+                                          star.coord.dec.degrees,
+                                          lat)
+            altitude.append(alt)
+            azimuth.append(az)
+            error.append(star.errorRMS)
+        altitude = np.asarray(altitude)
+        azimuth = np.asarray(azimuth)
+        error = np.asarray(error)
+
+        # and plot it
+        cm = matplotlib.pyplot.cm.get_cmap('RdYlGn_r')
+        colors = np.asarray(error)
+        scaleErrorMax = max(colors)
+        scaleErrorMin = min(colors)
+        area = [200 if x >= max(colors) else 60 for x in error]
+        theta = azimuth / 180.0 * np.pi
+        r = 90 - altitude
+        scatter = axes.scatter(theta,
+                               r,
+                               c=colors,
+                               vmin=scaleErrorMin,
+                               vmax=scaleErrorMax,
+                               s=area,
+                               cmap=cm,
+                               zorder=0,
+                               )
+        if self.ui.checkShowErrorValues.isChecked():
+            for star in model.starList:
+                text = '{0:3.1f}'.format(star.errorRMS)
+                axes.annotate(text,
+                              xy=(theta[star.number - 1],
+                                  r[star.number - 1]),
+                              color='#2090C0',
+                              fontsize=9,
+                              fontweight='bold',
+                              zorder=1,
+                              )
+        formatString = matplotlib.ticker.FormatStrFormatter('%1.0f')
+        colorbar = fig.colorbar(scatter,
+                                pad=0.1,
+                                fraction=0.12,
+                                aspect=25,
+                                shrink=0.9,
+                                format=formatString,
+                                )
+        colorbar.set_label('Error [arcsec]', color='white')
+        yTicks = matplotlib.pyplot.getp(colorbar.ax.axes, 'yticklabels')
+        matplotlib.pyplot.setp(yTicks,
+                               color='#2090C0',
+                               fontweight='bold')
+        axes.set_rmax(90)
+        axes.set_rmin(0)
+        axes.figure.canvas.draw()
+        return True

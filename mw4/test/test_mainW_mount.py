@@ -142,3 +142,202 @@ def test_updateStatusGui_statusText():
     app.mainW.updateStatusGUI()
     assert '-' == app.mainW.ui.statusText.text()
 
+
+def test_updateSetting_slewRate():
+    value = '15'
+    app.mount.sett.slewRate = value
+    app.mainW.updateSettingGUI()
+    assert '15' == app.mainW.ui.slewRate.text()
+    value = None
+    app.mount.sett.slewRate = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.slewRate.text()
+
+
+def test_updateSetting_timeToFlip():
+    value = '15'
+    app.mount.sett.timeToFlip = value
+    app.mainW.updateSettingGUI()
+    assert ' 15' == app.mainW.ui.timeToFlip.text()
+    value = None
+    app.mount.sett.timeToFlip = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.timeToFlip.text()
+
+
+def test_updateSettingExt_UTCExpire():
+    value = '2020-10-05'
+    app.mount.sett.UTCExpire = value
+    app.mainW.updateSetStatGUI()
+    assert value == app.mainW.ui.UTCExpire.text()
+    value = None
+    app.mount.sett.UTCExpire = value
+    app.mainW.updateSetStatGUI()
+    assert '-' == app.mainW.ui.UTCExpire.text()
+
+
+def test_updateSettingExt_UTCExpire1():
+    value = '2016-10-05'
+    app.mount.sett.UTCExpire = value
+    app.mainW.updateSetStatGUI()
+    assert value == app.mainW.ui.UTCExpire.text()
+    value = None
+    app.mount.sett.UTCExpire = value
+    app.mainW.updateSetStatGUI()
+    assert '-' == app.mainW.ui.UTCExpire.text()
+
+
+def test_updateSettingExt_UTCExpire2():
+    value = '2018-10-05'
+    app.mount.sett.UTCExpire = value
+    app.mainW.updateSetStatGUI()
+    assert value == app.mainW.ui.UTCExpire.text()
+    value = None
+    app.mount.sett.UTCExpire = value
+    app.mainW.updateSetStatGUI()
+    assert '-' == app.mainW.ui.UTCExpire.text()
+
+
+def test_updateSetting_statusUnattendedFlip():
+    value = '1'
+    app.mount.sett.statusUnattendedFlip = value
+    app.mainW.updateSetStatGUI()
+    assert 'ON' == app.mainW.ui.statusUnattendedFlip.text()
+    value = None
+    app.mount.sett.statusUnattendedFlip = value
+    app.mainW.updateSetStatGUI()
+    assert 'OFF' == app.mainW.ui.statusUnattendedFlip.text()
+
+
+def test_updateSetting_statusDualTracking():
+    value = '1'
+    app.mount.sett.statusDualTracking = value
+    app.mainW.updateSetStatGUI()
+    assert 'ON' == app.mainW.ui.statusDualTracking.text()
+    value = None
+    app.mount.sett.statusDualTracking = value
+    app.mainW.updateSetStatGUI()
+    assert 'OFF' == app.mainW.ui.statusDualTracking.text()
+
+
+def test_updateSetting_statusRefraction():
+    value = '1'
+    app.mount.sett.statusRefraction = value
+    app.mainW.updateSetStatGUI()
+    assert 'ON' == app.mainW.ui.statusRefraction.text()
+    value = None
+    app.mount.sett.statusRefraction = value
+    app.mainW.updateSetStatGUI()
+    assert 'OFF' == app.mainW.ui.statusRefraction.text()
+
+
+def test_tracking_speed1():
+    with mock.patch.object(app.mount.sett,
+                           'checkRateLunar',
+                           return_value=True):
+        suc = app.mainW.updateSettingGUI()
+        assert suc
+
+
+def test_tracking_speed2():
+    with mock.patch.object(app.mount.sett,
+                           'checkRateSidereal',
+                           return_value=True):
+        suc = app.mainW.updateSettingGUI()
+        assert suc
+
+
+def test_tracking_speed3():
+    with mock.patch.object(app.mount.sett,
+                           'checkRateSolar',
+                           return_value=True):
+        suc = app.mainW.updateSettingGUI()
+        assert suc
+
+
+def test_changeTracking_ok1(qtbot):
+    app.mount.obsSite.status = 0
+    with mock.patch.object(app.mount.obsSite,
+                           'stopTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changeTracking()
+            assert suc
+        assert ['Cannot stop tracking', 2] == blocker.args
+
+
+def test_changeTracking_ok2(qtbot):
+    app.mount.obsSite.status = 0
+    with mock.patch.object(app.mount.obsSite,
+                           'stopTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changeTracking()
+            assert suc
+        assert ['Stopped tracking', 0] == blocker.args
+
+
+def test_changeTracking_ok3(qtbot):
+    app.mount.obsSite.status = 1
+    with mock.patch.object(app.mount.obsSite,
+                           'startTracking',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changeTracking()
+            assert suc
+        assert ['Cannot start tracking', 2] == blocker.args
+
+
+def test_changeTracking_ok4(qtbot):
+    app.mount.obsSite.status = 1
+    with mock.patch.object(app.mount.obsSite,
+                           'startTracking',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changeTracking()
+            assert suc
+        assert ['Started tracking', 0] == blocker.args
+
+
+def test_changePark_ok1(qtbot):
+    app.mount.obsSite.status = 5
+    with mock.patch.object(app.mount.obsSite,
+                           'unpark',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changePark()
+            assert suc
+        assert ['Cannot unpark mount', 2] == blocker.args
+
+
+def test_changePark_ok2(qtbot):
+    app.mount.obsSite.status = 5
+    with mock.patch.object(app.mount.obsSite,
+                           'unpark',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changePark()
+            assert suc
+        assert ['Mount unparked', 0] == blocker.args
+
+
+def test_changePark_ok3(qtbot):
+    app.mount.obsSite.status = 1
+    with mock.patch.object(app.mount.obsSite,
+                           'park',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changePark()
+            assert suc
+        assert ['Cannot park mount', 2] == blocker.args
+
+
+def test_changePark_ok4(qtbot):
+    app.mount.obsSite.status = 1
+    with mock.patch.object(app.mount.obsSite,
+                           'park',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.changePark()
+            assert suc
+        assert ['Mount parked', 0] == blocker.args

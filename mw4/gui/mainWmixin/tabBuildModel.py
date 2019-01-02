@@ -32,7 +32,7 @@ class BuildModel(object):
     processing if needed.
     """
 
-    def local__init__(self):
+    def __init__(self):
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)

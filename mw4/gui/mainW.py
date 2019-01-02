@@ -24,9 +24,6 @@ import datetime
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
-import numpy as np
-import matplotlib.pyplot
-from mountcontrol import convert
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import main_ui
@@ -36,6 +33,7 @@ from mw4.gui.mainWmixin import tabBuildModel
 from mw4.gui.mainWmixin import tabSiteStatus
 from mw4.gui.mainWmixin import tabRelay
 from mw4.gui.mainWmixin import tabMount
+from mw4.gui.mainWmixin import tabManageModel
 
 
 class MainWindow(widget.MWidget,
@@ -44,7 +42,8 @@ class MainWindow(widget.MWidget,
                  tabBuildModel.BuildModel,
                  tabSiteStatus.SiteStatus,
                  tabRelay.Relay,
-                 tabMount.Mount):
+                 tabMount.Mount,
+                 tabManageModel.ManageModel):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -61,36 +60,27 @@ class MainWindow(widget.MWidget,
     CYCLE_UPDATE_TASK = 10000
 
     def __init__(self, app):
-        super().__init__()
-
         self.app = app
-        # self.tPool = PyQt5.QtCore.QThreadPool()
-        self.relayDropDown = list()
-        self.relayButton = list()
-        self.relayText = list()
-
+        super().__init__()
         # load and init the gui
         self.ui = main_ui.Ui_MainWindow()
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
         self.setWindowTitle('MountWizzard4   (' + self.app.mwGlob['modeldata'] + ')')
-
-        # defining the necessary instances of classes
         self.polarPlot = self.embedMatplot(self.ui.modelPolar)
-        self.showModelPolar()
+
+        # self.tPool = PyQt5.QtCore.QThreadPool()
 
         # connect signals for refreshing the gui
         ms = self.app.mount.signals
         ms.pointDone.connect(self.updateStatusGUI)
-        ms.alignDone.connect(self.showModelPolar)
         ms.namesDone.connect(self.setNameList)
         ms.fwDone.connect(self.updateFwGui)
         ms.mountUp.connect(self.updateMountConnStat)
         ms.mountClear.connect(self.clearMountGUI)
 
         # connect gui signals
-        self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
@@ -118,9 +108,6 @@ class MainWindow(widget.MWidget,
         self.initConfig()
         self.setLoggingLevel()
         self.show()
-
-        # call the init function of the mixins
-        super().local__init__()
 
         self.timerGui = PyQt5.QtCore.QTimer()
         self.timerGui.setSingleShot(False)
@@ -150,7 +137,6 @@ class MainWindow(widget.MWidget,
         self.ui.loglevelError.setChecked(config.get('loglevelError', False))
         self.ui.expiresYes.setChecked(config.get('expiresYes', True))
         self.ui.expiresNo.setChecked(config.get('expiresNo', False))
-        self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
         self.ui.profile.setText(self.app.config.get('profileName'))
         self.ui.checkEnableRelay.setChecked(config.get('checkEnableRelay', False))
         self.enableRelay()
@@ -193,7 +179,6 @@ class MainWindow(widget.MWidget,
         config['loglevelError'] = self.ui.loglevelError.isChecked()
         config['expiresYes'] = self.ui.expiresYes.isChecked()
         config['expiresNo'] = self.ui.expiresNo.isChecked()
-        config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
         config['profile'] = self.ui.profile.text()
         config['checkEnableRelay'] = self.ui.checkEnableRelay.isChecked()
         config['relayHost'] = self.ui.relayHost.text()
@@ -250,13 +235,6 @@ class MainWindow(widget.MWidget,
         self.wIcon(self.ui.runFlexure, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
-        self.wIcon(self.ui.saveName, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
-        self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
-        self.wIcon(self.ui.refreshName, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
-        self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
 
         super().setupIcons()
         return True
@@ -285,8 +263,6 @@ class MainWindow(widget.MWidget,
         """
 
         self.updateStatusGUI()
-        self.setNameList()
-        self.showModelPolar()
 
         super().clearMountGUI()
         return True
@@ -351,176 +327,6 @@ class MainWindow(widget.MWidget,
             self.changeStyleDynamic(self.ui.stop, 'running', 'false')
 
         return True
-
-    def setNameList(self):
-        """
-        setNameList populates the list of model names in the main window. before adding the
-        data, the existent list will be deleted.
-
-        :return:    True if ok for testing
-        """
-
-        model = self.app.mount.model
-        self.ui.nameList.clear()
-        for name in model.nameList:
-            self.ui.nameList.addItem(name)
-        self.ui.nameList.sortItems()
-        self.ui.nameList.update()
-        return True
-
-    def showModelPolar(self):
-        """
-        showModelPolar draws a polar plot of the align model stars and their errors in
-        color. the basic setup of the plot is taking place in the central widget class.
-        which is instantiated from there.
-
-        :return:    True if ok for testing
-        """
-
-        # shortcuts
-        model = self.app.mount.model
-        location = self.app.mount.obsSite.location
-
-        # check entry conditions for displaying a polar plot
-        hasNoStars = len(model.starList) == 0
-        hasNoLocation = location is None
-
-        if hasNoStars or hasNoLocation:
-            # clear the plot and return
-            fig, axes = self.clearPolar(self.polarPlot)
-            fig.subplots_adjust(left=0.1,
-                                right=0.9,
-                                bottom=0.1,
-                                top=0.85,
-                                )
-            axes.figure.canvas.draw()
-            return False
-
-        # start with plotting
-        lat = location.latitude.degrees
-        fig, axes = self.clearPolar(self.polarPlot)
-
-        altitude = []
-        azimuth = []
-        error = []
-        for star in model.starList:
-            alt, az = convert.topoToAltAz(star.coord.ra.hours,
-                                          star.coord.dec.degrees,
-                                          lat)
-            altitude.append(alt)
-            azimuth.append(az)
-            error.append(star.errorRMS)
-        altitude = np.asarray(altitude)
-        azimuth = np.asarray(azimuth)
-        error = np.asarray(error)
-
-        # and plot it
-        cm = matplotlib.pyplot.cm.get_cmap('RdYlGn_r')
-        colors = np.asarray(error)
-        scaleErrorMax = max(colors)
-        scaleErrorMin = min(colors)
-        area = [200 if x >= max(colors) else 60 for x in error]
-        theta = azimuth / 180.0 * np.pi
-        r = 90 - altitude
-        scatter = axes.scatter(theta,
-                               r,
-                               c=colors,
-                               vmin=scaleErrorMin,
-                               vmax=scaleErrorMax,
-                               s=area,
-                               cmap=cm,
-                               zorder=0,
-                               )
-        if self.ui.checkShowErrorValues.isChecked():
-            for star in model.starList:
-                text = '{0:3.1f}'.format(star.errorRMS)
-                axes.annotate(text,
-                              xy=(theta[star.number - 1],
-                                  r[star.number - 1]),
-                              color='#2090C0',
-                              fontsize=9,
-                              fontweight='bold',
-                              zorder=1,
-                              )
-        formatString = matplotlib.ticker.FormatStrFormatter('%1.0f')
-        colorbar = fig.colorbar(scatter,
-                                pad=0.1,
-                                fraction=0.12,
-                                aspect=25,
-                                shrink=0.9,
-                                format=formatString,
-                                )
-        colorbar.set_label('Error [arcsec]', color='white')
-        yTicks = matplotlib.pyplot.getp(colorbar.ax.axes, 'yticklabels')
-        matplotlib.pyplot.setp(yTicks,
-                               color='#2090C0',
-                               fontweight='bold')
-        axes.set_rmax(90)
-        axes.set_rmin(0)
-        axes.figure.canvas.draw()
-        return True
-
-    def changeTracking(self):
-        obs = self.app.mount.obsSite
-        if obs.status == 0:
-            suc = obs.stopTracking()
-            if not suc:
-                self.app.message.emit('Cannot stop tracking', 2)
-            else:
-                self.app.message.emit('Stopped tracking', 0)
-        else:
-            suc = obs.startTracking()
-            if not suc:
-                self.app.message.emit('Cannot start tracking', 2)
-            else:
-                self.app.message.emit('Started tracking', 0)
-        return True
-
-    def changePark(self):
-        obs = self.app.mount.obsSite
-        if obs.status == 5:
-            suc = obs.unpark()
-            if not suc:
-                self.app.message.emit('Cannot unpark mount', 2)
-            else:
-                self.app.message.emit('Mount unparked', 0)
-        else:
-            suc = obs.park()
-            if not suc:
-                self.app.message.emit('Cannot park mount', 2)
-            else:
-                self.app.message.emit('Mount parked', 0)
-        return True
-
-    def setLunarTracking(self):
-        obs = self.app.mount.obsSite
-        suc = obs.setLunarTracking()
-        if not suc:
-            self.app.message.emit('Cannot set tracking to Lunar', 2)
-            return False
-        else:
-            self.app.message.emit('Tracking set to Lunar', 0)
-            return True
-
-    def setSiderealTracking(self):
-        obs = self.app.mount.obsSite
-        suc = obs.setSiderealTracking()
-        if not suc:
-            self.app.message.emit('Cannot set tracking to Sidereal', 2)
-            return False
-        else:
-            self.app.message.emit('Tracking set to Sidereal', 0)
-            return True
-
-    def setSolarTracking(self):
-        obs = self.app.mount.obsSite
-        suc = obs.setSolarTracking()
-        if not suc:
-            self.app.message.emit('Cannot set tracking to Solar', 2)
-            return False
-        else:
-            self.app.message.emit('Tracking set to Solar', 0)
-            return True
 
     @staticmethod
     def checkExtension(filePath, ext):
@@ -618,21 +424,6 @@ class MainWindow(widget.MWidget,
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('Switch - Toggle')
             dropDown.addItem('Pulse 0.5 sec')
-        return True
-
-    def updateRelayGui(self):
-        """
-        updateRelayGui changes the style of the button related to the state of the relay
-
-        :return: success for test
-        """
-
-        status = self.app.relay.status
-        for i, button in enumerate(self.relayButton):
-            if status[i]:
-                self.changeStyleDynamic(button, 'running', 'true')
-            else:
-                self.changeStyleDynamic(button, 'running', 'false')
         return True
 
     def enableRelay(self):

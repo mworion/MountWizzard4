@@ -34,7 +34,7 @@ class Mount(object):
     processing if needed.
     """
 
-    def local__init__(self):
+    def __init__(self):
         ms = self.app.mount.signals
         ms.pointDone.connect(self.updatePointGUI)
 
@@ -140,3 +140,65 @@ class Mount(object):
             self.ui.timeSidereal.setText('-')
 
         return True
+
+    def changeTracking(self):
+        obs = self.app.mount.obsSite
+        if obs.status == 0:
+            suc = obs.stopTracking()
+            if not suc:
+                self.app.message.emit('Cannot stop tracking', 2)
+            else:
+                self.app.message.emit('Stopped tracking', 0)
+        else:
+            suc = obs.startTracking()
+            if not suc:
+                self.app.message.emit('Cannot start tracking', 2)
+            else:
+                self.app.message.emit('Started tracking', 0)
+        return True
+
+    def changePark(self):
+        obs = self.app.mount.obsSite
+        if obs.status == 5:
+            suc = obs.unpark()
+            if not suc:
+                self.app.message.emit('Cannot unpark mount', 2)
+            else:
+                self.app.message.emit('Mount unparked', 0)
+        else:
+            suc = obs.park()
+            if not suc:
+                self.app.message.emit('Cannot park mount', 2)
+            else:
+                self.app.message.emit('Mount parked', 0)
+        return True
+
+    def setLunarTracking(self):
+        obs = self.app.mount.obsSite
+        suc = obs.setLunarTracking()
+        if not suc:
+            self.app.message.emit('Cannot set tracking to Lunar', 2)
+            return False
+        else:
+            self.app.message.emit('Tracking set to Lunar', 0)
+            return True
+
+    def setSiderealTracking(self):
+        obs = self.app.mount.obsSite
+        suc = obs.setSiderealTracking()
+        if not suc:
+            self.app.message.emit('Cannot set tracking to Sidereal', 2)
+            return False
+        else:
+            self.app.message.emit('Tracking set to Sidereal', 0)
+            return True
+
+    def setSolarTracking(self):
+        obs = self.app.mount.obsSite
+        suc = obs.setSolarTracking()
+        if not suc:
+            self.app.message.emit('Cannot set tracking to Solar', 2)
+            return False
+        else:
+            self.app.message.emit('Tracking set to Solar', 0)
+            return True

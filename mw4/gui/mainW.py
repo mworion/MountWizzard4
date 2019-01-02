@@ -27,27 +27,30 @@ import PyQt5.uic
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import main_ui
-from mw4.gui.mainWmixin import tabSettHorizon
+from mw4.gui.mainWmixin import tabMount
+from mw4.gui.mainWmixin import tabSiteStatus
 from mw4.gui.mainWmixin import tabAlignMount
 from mw4.gui.mainWmixin import tabBuildModel
-from mw4.gui.mainWmixin import tabSiteStatus
-from mw4.gui.mainWmixin import tabRelay
-from mw4.gui.mainWmixin import tabMount
 from mw4.gui.mainWmixin import tabManageModel
-from mw4.gui.mainWmixin import tabSettMisc
+from mw4.gui.mainWmixin import tabRelay
+from mw4.gui.mainWmixin import tabSettIndi
+from mw4.gui.mainWmixin import tabSettHorizon
 from mw4.gui.mainWmixin import tabSettRelay
+from mw4.gui.mainWmixin import tabSettMisc
 
 
 class MainWindow(widget.MWidget,
-                 tabSettHorizon.SettHorizon,
-                 tabSettMisc.Misc,
-                 tabSettRelay.Relay,
+                 tabMount.Mount,
+                 tabSiteStatus.SiteStatus,
                  tabAlignMount.AlignMount,
                  tabBuildModel.BuildModel,
-                 tabSiteStatus.SiteStatus,
+                 tabManageModel.ManageModel,
                  tabRelay.Relay,
-                 tabMount.Mount,
-                 tabManageModel.ManageModel):
+                 tabSettIndi.INDI,
+                 tabSettHorizon.SettHorizon,
+                 tabSettRelay.Relay,
+                 tabSettMisc.Misc,
+                 ):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -80,8 +83,6 @@ class MainWindow(widget.MWidget,
         # connect signals for refreshing the gui
         ms = self.app.mount.signals
         ms.pointDone.connect(self.updateStatusGUI)
-        ms.namesDone.connect(self.setNameList)
-        ms.fwDone.connect(self.updateFwGui)
         ms.mountUp.connect(self.updateMountConnStat)
         ms.mountClear.connect(self.clearMountGUI)
 
@@ -94,11 +95,6 @@ class MainWindow(widget.MWidget,
         self.ui.saveConfig.clicked.connect(self.saveProfile)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
-        self.ui.indiHost.editingFinished.connect(self.indiHost)
-        self.ui.localWeatherName.editingFinished.connect(self.localWeatherName)
-        self.ui.globalWeatherName.editingFinished.connect(self.globalWeatherName)
-        self.ui.sqmName.editingFinished.connect(self.sqmName)
-        self.ui.reconnectIndiServer.clicked.connect(self.app.environment.reconnectIndiServer)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -132,17 +128,6 @@ class MainWindow(widget.MWidget,
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
-        environ = self.app.environment
-        self.ui.indiHost.setText(config.get('indiHost', ''))
-        environ.client.host = config.get('indiHost', '')
-        self.ui.globalWeatherName.setText(config.get('globalWeatherName', ''))
-        environ.globalWeatherName = config.get('globalWeatherName', '')
-        self.ui.localWeatherName.setText(config.get('localWeatherName', ''))
-        environ.localWeatherName = config.get('localWeatherName', '')
-        self.ui.sqmName.setText(config.get('sqmName', ''))
-        environ.sqmName = config.get('sqmName', '')
-        self.ui.ccdName.setText(config.get('ccdName', ''))
-        self.ui.domeName.setText(config.get('domeName', ''))
 
         super().initConfig()
         return True
@@ -158,12 +143,6 @@ class MainWindow(widget.MWidget,
         config['profile'] = self.ui.profile.text()
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
-        config['indiHost'] = self.ui.indiHost.text()
-        config['localWeatherName'] = self.ui.localWeatherName.text()
-        config['globalWeatherName'] = self.ui.globalWeatherName.text()
-        config['sqmName'] = self.ui.sqmName.text()
-        config['domeName'] = self.ui.domeName.text()
-        config['ccdName'] = self.ui.ccdName.text()
 
         super().storeConfig()
         return True
@@ -364,22 +343,6 @@ class MainWindow(widget.MWidget,
 
     def mountMAC(self):
         self.app.mount.MAC = self.ui.mountMAC.text()
-
-    def indiHost(self):
-        host = self.ui.indiHost.text()
-        self.app.environment.client.host = host
-
-    def localWeatherName(self):
-        environ = self.app.environment
-        environ.localWeatherName = self.ui.localWeatherName.text()
-
-    def globalWeatherName(self):
-        environ = self.app.environment
-        environ.globalWeatherName = self.ui.globalWeatherName.text()
-
-    def sqmName(self):
-        environ = self.app.environment
-        environ.sqmName = self.ui.sqmName.text()
 
     def autoDeletePoints(self):
         """

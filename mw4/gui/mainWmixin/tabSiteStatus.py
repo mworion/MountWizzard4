@@ -39,6 +39,7 @@ class SiteStatus(object):
         ms.settDone.connect(self.updateSettingGUI)
         ms.settDone.connect(self.updateSetStatGUI)
         ms.settDone.connect(self.updateLocGUI)
+        ms.fwDone.connect(self.updateFwGui)
 
         es = self.app.environment.client.signals
         es.serverConnected.connect(self.indiEnvironConnected)

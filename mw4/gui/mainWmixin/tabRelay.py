@@ -34,10 +34,11 @@ class Relay(object):
         self.relayDropDown = list()
         self.relayButton = list()
         self.relayText = list()
-
         self.setupRelayGui()
+
+        ms = self.app.mount.signals
+        ms.namesDone.connect(self.setNameList)
         self.app.relay.statusReady.connect(self.updateRelayGui)
-        self.enableRelay()
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -49,6 +50,7 @@ class Relay(object):
         for i, drop in enumerate(self.relayDropDown):
             key = 'relayFun{0:1d}'.format(i)
             drop.setCurrentIndex(config.get(key, 0))
+        self.enableRelay()
         return True
 
     def storeConfig(self):

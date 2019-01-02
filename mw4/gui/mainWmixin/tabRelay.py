@@ -34,7 +34,6 @@ class Relay(object):
         self.relayDropDown = list()
         self.relayButton = list()
         self.relayText = list()
-        self.setupRelayGui()
 
         ms = self.app.mount.signals
         ms.namesDone.connect(self.setNameList)

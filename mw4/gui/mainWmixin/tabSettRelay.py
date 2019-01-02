@@ -105,7 +105,6 @@ class SettRelay(object):
         :return: success for test
         """
 
-        print('setupRelaisGui')
         for i in range(0, 8):
             self.relayDropDown.append(eval('self.ui.relayFun{0:1d}'.format(i)))
             self.relayButton.append(eval('self.ui.relayButton{0:1d}'.format(i)))

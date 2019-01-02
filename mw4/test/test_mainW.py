@@ -250,49 +250,6 @@ def test_saveProfile2(qtbot):
         assert ['Actual profile cannot not be saved', 2] == blocker.args
 
 
-def test_enableRelay1(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(True)
-    with mock.patch.object(app.relay,
-                           'startTimers',
-                           return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableRelay()
-            assert suc
-        assert ['Relay enabled', 0] == blocker.args
-
-
-def test_enableRelay2(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(False)
-    with mock.patch.object(app.relay,
-                           'startTimers',
-                           return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableRelay()
-            assert suc
-        assert ['Relay disabled', 0] == blocker.args
-
-
-def test_relayHost():
-    app.mainW.ui.relayHost.setText('test')
-    app.mainW.relayHost()
-
-    assert app.relay.host == ('test', 80)
-
-
-def test_relayUser():
-    app.mainW.ui.relayUser.setText('test')
-    app.mainW.relayUser()
-
-    assert app.relay.user == 'test'
-
-
-def test_relayPassword():
-    app.mainW.ui.relayPassword.setText('test')
-    app.mainW.relayPassword()
-
-    assert app.relay.password == 'test'
-
-
 def test_mountHost():
     app.mainW.ui.mountHost.setText('test')
     app.mainW.mountHost()

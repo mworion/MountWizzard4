@@ -35,11 +35,13 @@ from mw4.gui.mainWmixin import tabRelay
 from mw4.gui.mainWmixin import tabMount
 from mw4.gui.mainWmixin import tabManageModel
 from mw4.gui.mainWmixin import tabSettMisc
+from mw4.gui.mainWmixin import tabSettRelay
 
 
 class MainWindow(widget.MWidget,
                  tabSettHorizon.SettHorizon,
                  tabSettMisc.Misc,
+                 tabSettRelay.Relay,
                  tabAlignMount.AlignMount,
                  tabBuildModel.BuildModel,
                  tabSiteStatus.SiteStatus,
@@ -90,10 +92,6 @@ class MainWindow(widget.MWidget,
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
-        self.ui.checkEnableRelay.clicked.connect(self.enableRelay)
-        self.ui.relayHost.editingFinished.connect(self.relayHost)
-        self.ui.relayUser.editingFinished.connect(self.relayUser)
-        self.ui.relayPassword.editingFinished.connect(self.relayPassword)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.indiHost.editingFinished.connect(self.indiHost)
@@ -130,14 +128,6 @@ class MainWindow(widget.MWidget,
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
         self.ui.profile.setText(self.app.config.get('profileName'))
-        self.ui.checkEnableRelay.setChecked(config.get('checkEnableRelay', False))
-        self.enableRelay()
-        self.ui.relayHost.setText(config.get('relayHost', ''))
-        self.relayHost()
-        self.ui.relayUser.setText(config.get('relayUser', ''))
-        self.relayUser()
-        self.ui.relayPassword.setText(config.get('relayPassword', ''))
-        self.relayPassword()
         self.ui.mountHost.setText(config.get('mountHost', ''))
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
@@ -166,10 +156,6 @@ class MainWindow(widget.MWidget,
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
         config['profile'] = self.ui.profile.text()
-        config['checkEnableRelay'] = self.ui.checkEnableRelay.isChecked()
-        config['relayHost'] = self.ui.relayHost.text()
-        config['relayUser'] = self.ui.relayUser.text()
-        config['relayPassword'] = self.ui.relayPassword.text()
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
         config['indiHost'] = self.ui.indiHost.text()
@@ -372,62 +358,6 @@ class MainWindow(widget.MWidget,
             self.app.message.emit('Actual profile saved', 0)
         else:
             self.app.message.emit('Actual profile cannot not be saved', 2)
-
-    def setupRelayGui(self):
-        """
-        setupRelayGui handles the modeldata of list for relay handling. to keep many relay in
-        order i collect them in the list for list handling afterwards.
-
-        :return: success for test
-        """
-
-        self.relayDropDown = list()
-        self.relayButton = list()
-        self.relayText = list()
-        for i in range(0, 8):
-            self.relayDropDown.append(eval('self.ui.relayFun{0:1d}'.format(i)))
-            self.relayButton.append(eval('self.ui.relayButton{0:1d}'.format(i)))
-            self.relayText.append(eval('self.ui.relayText{0:1d}'.format(i)))
-        # and setting the entries of the drop down menus
-        for dropDown in self.relayDropDown:
-            dropDown.clear()
-            dropDown.setView(PyQt5.QtWidgets.QListView())
-            dropDown.addItem('Switch - Toggle')
-            dropDown.addItem('Pulse 0.5 sec')
-        return True
-
-    def enableRelay(self):
-        """
-        enableRelay allows to run the relay box.
-
-        :return: success for test
-        """
-
-        # get index for relay tab
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-
-        if self.ui.checkEnableRelay.isChecked():
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-            self.app.message.emit('Relay enabled', 0)
-            self.app.relay.startTimers()
-        else:
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-            self.app.message.emit('Relay disabled', 0)
-            self.app.relay.stopTimers()
-        # update the style for showing the Relay tab
-        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
-        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
-        return True
-
-    def relayHost(self):
-        self.app.relay.host = self.ui.relayHost.text()
-
-    def relayUser(self):
-        self.app.relay.user = self.ui.relayUser.text()
-
-    def relayPassword(self):
-        self.app.relay.password = self.ui.relayPassword.text()
 
     def mountHost(self):
         self.app.mount.host = self.ui.mountHost.text()

@@ -37,11 +37,13 @@ class SettRelay(object):
         self.relayDropDown = list()
         self.relayButton = list()
         self.relayText = list()
+        self.setupRelayGui()
         self.ui.checkEnableRelay.clicked.connect(self.enableRelay)
         self.ui.relayHost.editingFinished.connect(self.relayHost)
         self.ui.relayUser.editingFinished.connect(self.relayUser)
         self.ui.relayPassword.editingFinished.connect(self.relayPassword)
-        self.setupRelayGui()
+        for button in self.relayButton:
+            button.clicked.connect(self.toggleRelay)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -53,8 +55,6 @@ class SettRelay(object):
         self.relayUser()
         self.ui.relayPassword.setText(config.get('relayPassword', ''))
         self.relayPassword()
-        for button in self.relayButton:
-            button.clicked.connect(self.toggleRelay)
         for i, line in enumerate(self.relayText):
             key = 'relayText{0:1d}'.format(i)
             line.setText(config.get(key, 'Relay{0:1d}'.format(i)))
@@ -64,7 +64,6 @@ class SettRelay(object):
         for i, drop in enumerate(self.relayDropDown):
             key = 'relayFun{0:1d}'.format(i)
             drop.setCurrentIndex(config.get(key, 0))
-        self.enableRelay()
         return True
 
     def storeConfig(self):
@@ -106,6 +105,7 @@ class SettRelay(object):
         :return: success for test
         """
 
+        print('setupRelaisGui')
         for i in range(0, 8):
             self.relayDropDown.append(eval('self.ui.relayFun{0:1d}'.format(i)))
             self.relayButton.append(eval('self.ui.relayButton{0:1d}'.format(i)))

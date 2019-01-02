@@ -53,6 +53,29 @@ app = mainApp.MountWizzard4(mwGlob=mwGlob)
 spy = PyQt5.QtTest.QSignalSpy(app.message)
 
 
+def test_setupRelayGui(qtbot):
+    app.mainW.relayButton = list()
+    app.mainW.relayDropDown = list()
+    app.mainW.relayText = list()
+    suc = app.mainW.setupRelayGui()
+    assert suc
+    assert 8 == len(app.mainW.relayDropDown)
+    assert 8 == len(app.mainW.relayText)
+    assert 8 == len(app.mainW.relayButton)
+    for dropDown in app.mainW.relayDropDown:
+        val = dropDown.count()
+        assert 2 == val
+
+
+def test_updateRelayGui(qtbot):
+    app.mainW.relayButton = list()
+    app.mainW.relayDropDown = list()
+    app.mainW.relayText = list()
+    app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
+    suc = app.mainW.updateRelayGui()
+    assert suc
+
+
 def test_enableRelay1(qtbot):
     app.mainW.ui.checkEnableRelay.setChecked(True)
     with mock.patch.object(app.relay,

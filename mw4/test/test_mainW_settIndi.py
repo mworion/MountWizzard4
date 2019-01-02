@@ -52,3 +52,27 @@ def module_setup_teardown():
 app = mainApp.MountWizzard4(mwGlob=mwGlob)
 spy = PyQt5.QtTest.QSignalSpy(app.message)
 
+
+def test_indiHost():
+    app.mainW.ui.indiHost.setText('TEST')
+    app.mainW.indiHost()
+    assert app.environment.client.host == ('TEST', 7624)
+
+
+def test_localWeatherName():
+    app.mainW.ui.localWeatherName.setText('TEST')
+    app.mainW.localWeatherName()
+    assert 'TEST' == app.environment.wDevice['local']['name']
+
+
+def test_globalWeatherName():
+    app.mainW.ui.globalWeatherName.setText('TEST')
+    app.mainW.globalWeatherName()
+    assert 'TEST' == app.environment.wDevice['global']['name']
+
+
+def test_sqmWeatherName():
+    app.mainW.ui.sqmName.setText('TEST')
+    app.mainW.sqmName()
+    assert 'TEST' == app.environment.wDevice['sqm']['name']
+

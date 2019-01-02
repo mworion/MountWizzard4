@@ -119,13 +119,6 @@ def test_mountShutdown2(qtbot):
         assert ['Mount cannot be shutdown', 2] == blocker.args
 
 
-#
-#
-# testing mainW gui updateMountConnStat
-#
-#
-
-
 def test_updateMountConnStat():
     suc = app.mainW.updateMountConnStat(True)
     assert suc
@@ -133,12 +126,6 @@ def test_updateMountConnStat():
     suc = app.mainW.updateMountConnStat(False)
     assert suc
     assert 'red' == app.mainW.ui.mountConnected.property('color')
-
-#
-#
-# testing mainW gui update Gui
-#
-#
 
 
 def test_clearMountGUI():
@@ -262,30 +249,6 @@ def test_mountMAC():
     app.mainW.mountMAC()
 
     assert app.mount.MAC == '00:00:00:00:00:00'
-
-
-def test_indiHost():
-    app.mainW.ui.indiHost.setText('TEST')
-    app.mainW.indiHost()
-    assert app.environment.client.host == ('TEST', 7624)
-
-
-def test_localWeatherName():
-    app.mainW.ui.localWeatherName.setText('TEST')
-    app.mainW.localWeatherName()
-    assert 'TEST' == app.environment.wDevice['local']['name']
-
-
-def test_globalWeatherName():
-    app.mainW.ui.globalWeatherName.setText('TEST')
-    app.mainW.globalWeatherName()
-    assert 'TEST' == app.environment.wDevice['global']['name']
-
-
-def test_sqmWeatherName():
-    app.mainW.ui.sqmName.setText('TEST')
-    app.mainW.sqmName()
-    assert 'TEST' == app.environment.wDevice['sqm']['name']
 
 
 def test_config():

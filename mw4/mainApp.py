@@ -26,9 +26,9 @@ import PyQt5.QtCore
 import skyfield
 from mountcontrol import qtmount
 # local import
-from mw4 import mainW
-from mw4 import messageW
-from mw4 import hemisphereW
+from mw4.gui import mainW
+from mw4.gui import messageW
+from mw4.gui import hemisphereW
 from mw4.relay import kmRelay
 from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
@@ -50,6 +50,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     # central message and logging dispatching
     message = PyQt5.QtCore.pyqtSignal(str, int)
+    redrawHemisphere = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,

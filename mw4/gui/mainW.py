@@ -126,9 +126,11 @@ class MainWindow(MWidget,
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
     def initConfig(self):
-        if 'mainW' not in self.app.config:
-            self.app.config['mainW'] = {}
-        config = self.app.config['mainW']
+        config = self.app.config
+        self.ui.profile.setText(config.get('profileName'))
+        if 'mainW' not in config:
+            config['mainW'] = {}
+        config = config['mainW']
         x = config.get('winPosX', 100)
         y = config.get('winPosY', 100)
         if x > self.screenSizeX:
@@ -157,9 +159,11 @@ class MainWindow(MWidget,
         return True
 
     def storeConfig(self):
-        if 'mainW' not in self.app.config:
-            self.app.config['mainW'] = {}
-        config = self.app.config['mainW']
+        config = self.app.config
+        config['profileName'] = self.ui.profile.text()
+        if 'mainW' not in config:
+            config['mainW'] = {}
+        config = config['mainW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
@@ -346,10 +350,9 @@ class MainWindow(MWidget,
                                                 folder,
                                                 'Config files (*.cfg)',
                                                 )
-        if not loadFilePath:
+        if not name:
             return False
-        loadFilePath = self.checkExtension(loadFilePath, '.cfg')
-        suc = self.app.loadConfig(loadFilePath=loadFilePath)
+        suc = self.app.loadConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] loaded'.format(name), 0)
@@ -364,12 +367,11 @@ class MainWindow(MWidget,
                                                 folder,
                                                 'Config files (*.cfg)',
                                                 )
-        if not saveFilePath:
+        if not name:
             return False
         self.app.storeConfig()
         self.app.config['profileName'] = name
-        saveFilePath = self.checkExtension(saveFilePath, '.cfg')
-        suc = self.app.saveConfig(saveFilePath=saveFilePath)
+        suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] saved'.format(name), 0)

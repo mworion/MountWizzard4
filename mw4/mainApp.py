@@ -212,7 +212,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         if not os.path.isfile(fileName):
             self.config = self.defaultConfig()
-            return True
+            if name == 'config':
+                self.logger.error('Config file {0} not existing'.format(fileName))
+                return True
+            else:
+                return False
 
         # parsing the default file
         try:
@@ -223,12 +227,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.config = self.defaultConfig()
             return False
 
-        if configData.get('profileName', '') != 'config':
-            configData['profileName'] = 'config'
-
         # check if reference ist still to default -> correcting
         if configData.get('reference', '') == 'config':
             del configData['reference']
+        elif not configData.get('reference', ''):
+            configData['profileName'] = 'config'
 
         # loading default and finishing up
         if configData['profileName'] == 'config':
@@ -236,27 +239,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             return True
 
         # checking if reference to another file is available
-        refName = configData['reference']
-
-        # now loading referenced fileName
-        refFileName = configDir + '/' + refName + '.cfg'
-        try:
-            with open(refFileName, 'r') as referencedFile:
-                referencedData = json.load(referencedFile)
-        except Exception as e:
-            if configData.get('reference', ''):
-                del configData['reference']
-            self.config = self.defaultConfig(configData)
-            self.logger.error('Cannot parse: {0}, error: {1}'.format(refFileName, e))
-            return False
-
-        # check if reference is in referenced file
-        if 'reference' not in referencedData:
-            referencedData['reference'] = refName
-
-        # now everything should be ok
-        self.config = self.convertData(referencedData)
-        return True
+        refName = configData.get('reference', 'config')
+        if refName != name:
+            suc = self.loadConfig(refName)
+        else:
+            self.config = configData
+            return True
+        return suc
 
     @staticmethod
     def convertData(data):
@@ -279,35 +268,26 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:    success
         """
 
-        # default if profile is named config
-        if self.config['profileName'] == 'config':
-            saveFilePath = self.defaultPath()
-            self.config['filePath'] = saveFilePath
+        configDir = self.mwGlob['configDir']
+
+        if self.config.get('profileName', '') == 'config':
+            if 'reference' in self.config:
+                del self.config['reference']
 
         # default saving for reference
-        if saveFilePath is None:
-            saveFilePath = self.config.get('filePath', None)
-        else:
-            self.config['filePath'] = saveFilePath
+        if name is None:
+            name = self.config.get('reference', 'config')
 
-        # if still no reference is there, we make it named config
-        if saveFilePath is None:
-            saveFilePath = self.defaultPath()
-            self.config['filePath'] = saveFilePath
-
-        # check if we have to write two data sets
-        isReferenced = not saveFilePath.endswith('config.cfg')
-
-        # save the config
-        filePath = self.defaultPath()
-        with open(filePath, 'w') as outfile:
+        fileName = configDir + '/' + name + '.cfg'
+        with open(fileName, 'w') as outfile:
             json.dump(self.config,
                       outfile,
                       sort_keys=True,
                       indent=4)
-        # there is a link to another config file, so we save it too
-        if isReferenced:
-            with open(saveFilePath, 'w') as outfile:
+        # if we save a reference first, we have to save the config as well
+        if name != 'config':
+            fileName = configDir + '/config.cfg'
+            with open(fileName, 'w') as outfile:
                 json.dump(self.config,
                           outfile,
                           sort_keys=True,

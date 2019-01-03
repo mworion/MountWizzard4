@@ -326,7 +326,6 @@ def test_saveConfig_1():
     app.config = {
         'profileName': 'config',
         'version': '4.0',
-        'filePath': config + '/config.cfg'
     }
     suc = app.saveConfig()
     with open(config + '/config.cfg', 'r') as infile:
@@ -334,29 +333,29 @@ def test_saveConfig_1():
     assert suc
     assert res['profileName'] == 'config'
     assert res['version'] == '4.0'
-    assert res['filePath'] == config + '/config.cfg'
+    assert 'reference' not in res
 
 
 def test_saveConfig_2():
     # save default with reference
     app.config = {
-        'profileName': 'reference',
+        'profileName': 'ext_file',
         'version': '4.0',
-        'filePath': config + '/reference.cfg'
+        'reference': 'ext_file'
     }
     suc = app.saveConfig()
     with open(config + '/config.cfg', 'r') as infile:
         res = json.load(infile)
     assert suc
-    assert res['profileName'] == 'reference'
+    assert res['profileName'] == 'ext_file'
     assert res['version'] == '4.0'
-    assert res['filePath'] == config + '/reference.cfg'
-    with open(config + '/reference.cfg', 'r') as infile:
+    assert res['reference'] == 'ext_file'
+    with open(config + '/ext_file.cfg', 'r') as infile:
         res = json.load(infile)
     assert suc
-    assert res['profileName'] == 'reference'
+    assert res['profileName'] == 'ext_file'
     assert res['version'] == '4.0'
-    assert res['filePath'] == config + '/reference.cfg'
+    assert res['reference'] == 'ext_file'
 
 
 def test_saveConfig_3():
@@ -364,43 +363,43 @@ def test_saveConfig_3():
     app.config = {
         'profileName': 'reference',
         'version': '4.0',
-        'filePath': config + '/reference.cfg'
+        'reference': 'ext_file'
     }
-    suc = app.saveConfig(config + '/reference.cfg')
+    suc = app.saveConfig('ext_file')
     assert suc
     with open(config + '/config.cfg', 'r') as inFile:
         a = json.load(inFile)
     assert a['profileName'] == 'reference'
     assert a['version'] == '4.0'
-    assert a['filePath'] == config + '/reference.cfg'
-    with open(config + '/reference.cfg', 'r') as infile:
+    assert a['reference'] == 'ext_file'
+    with open(config + '/ext_file.cfg', 'r') as infile:
         res = json.load(infile)
     assert suc
     assert res['profileName'] == 'reference'
     assert res['version'] == '4.0'
-    assert res['filePath'] == config + '/reference.cfg'
+    assert res['reference'] == 'ext_file'
 
 
 def test_saveConfig_4():
     # save to new reference
     app.config = {
-        'profileName': 'reference',
+        'profileName': 'ext_file',
         'version': '4.0',
-        'filePath': config + '/config.cfg'
+        'reference': 'ext_file'
     }
-    suc = app.saveConfig(config + '/reference.cfg')
+    suc = app.saveConfig('ext_file')
     assert suc
     with open(config + '/config.cfg', 'r') as inFile:
         a = json.load(inFile)
-    assert a['profileName'] == 'reference'
+    assert a['profileName'] == 'ext_file'
     assert a['version'] == '4.0'
-    assert a['filePath'] == config + '/reference.cfg'
-    with open(config + '/reference.cfg', 'r') as infile:
+    assert a['reference'] == 'ext_file'
+    with open(config + '/ext_file.cfg', 'r') as infile:
         res = json.load(infile)
     assert suc
-    assert res['profileName'] == 'reference'
+    assert res['profileName'] == 'ext_file'
     assert res['version'] == '4.0'
-    assert res['filePath'] == config + '/reference.cfg'
+    assert res['reference'] == 'ext_file'
 
 
 def test_saveConfig_5():
@@ -409,7 +408,7 @@ def test_saveConfig_5():
     app.config = {
         'profileName': 'config',
         'version': '4.0',
-        'filePath': config + '/reference.cfg'
+        'reference': 'ext_file'
     }
     suc = app.saveConfig()
     assert suc
@@ -417,57 +416,7 @@ def test_saveConfig_5():
         a = json.load(inFile)
     assert a['profileName'] == 'config'
     assert a['version'] == '4.0'
-    assert a['filePath'] == config + '/config.cfg'
-
-
-def test_saveConfig_6():
-    # save with reference name and missing file path
-    # -> path should be added automatically as default path
-    app.config = {
-        'profileName': 'reference',
-        'version': '4.0',
-    }
-    suc = app.saveConfig()
-    assert suc
-
-    with open(config + '/config.cfg', 'r') as inFile:
-        a = json.load(inFile)
-    assert a['profileName'] == 'config'
-    assert a['version'] == '4.0'
-    assert a['filePath'] == config + '/config.cfg'
-
-
-def test_saveConfig_7():
-    # save default without reference without filePath
-    # -> path should be added automatically
-    app.config = {
-        'profileName': 'config',
-        'version': '4.0',
-    }
-    suc = app.saveConfig()
-    assert suc
-    with open(config + '/config.cfg', 'r') as inFile:
-        a = json.load(inFile)
-    assert a['profileName'] == 'config'
-    assert a['version'] == '4.0'
-    assert a['filePath'] == config + '/config.cfg'
-
-
-def test_saveConfig_8():
-    # save default without reference with wrong filePath
-    # -> path should be repaired automatically
-    app.config = {
-        'profileName': 'config',
-        'version': '4.0',
-        'filePath': None,
-    }
-    suc = app.saveConfig()
-    assert suc
-    with open(config + '/config.cfg', 'r') as inFile:
-        a = json.load(inFile)
-    assert a['profileName'] == 'config'
-    assert a['version'] == '4.0'
-    assert a['filePath'] == config + '/config.cfg'
+    assert 'reference' not in a
 
 
 def test_storeConfig_1():

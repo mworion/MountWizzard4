@@ -21,6 +21,7 @@
 import logging
 import os
 import json
+import pkg_resources
 # external packages
 import PyQt5.QtCore
 import skyfield
@@ -103,9 +104,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # write basic data to message window
         self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('Workdir is: {0}'.format(self.mwGlob['workDir']), 1)
-        self.message.emit('Profile [{0}] loaded'
-                          .format(self.config.get('profileName', 'empty')), 0)
+        self.message.emit('build: [{0}]'.format(self.version), 1)
+        verMC = pkg_resources.get_distribution('mountcontrol').version
+        self.message.emit('mountcontrol version: [{0}]'.format(verMC), 1)
+        verIB = pkg_resources.get_distribution('indibase').version
+        self.message.emit('indibase version: [{0}]'.format(verIB), 1)
+        self.message.emit('Workdir is: [{0}]'.format(self.mwGlob['workDir']), 1)
+        profile = self.config.get('profileName', '-')
+        self.message.emit('Profile [{0}] loaded'.format(profile), 1)
 
         # link cross widget gui signals
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)

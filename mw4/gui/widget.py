@@ -294,6 +294,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         dlg = self.prepareFileDialog(window)
         dlg.setNameFilter(filterSet)
+        dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
         options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
         name, _ = dlg.getOpenFileName(dlg,
                                       title,

@@ -189,7 +189,7 @@ def test_loadProfile2(qtbot):
 def test_loadProfile3(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
-                           return_value=(None, 'test', 'cfg')):
+                           return_value=(None, None, 'cfg')):
         suc = app.mainW.loadProfile()
         assert not suc
 
@@ -223,7 +223,7 @@ def test_saveProfileAs2(qtbot):
 def test_saveProfileAs3(qtbot):
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=(None, 'test', 'cfg')):
+                           return_value=(None, None, 'cfg')):
         suc = app.mainW.saveProfileAs()
         assert not suc
 

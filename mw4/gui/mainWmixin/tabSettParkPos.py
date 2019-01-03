@@ -100,7 +100,7 @@ class SettParkPos(object):
         """
 
         # generate the button list and text entry for later use
-        for i in range(0, 6):
+        for i in range(0, 8):
             self.posButtons.append(eval('self.ui.posButton{0:1d}'.format(i)))
             self.posTexts.append(eval('self.ui.posText{0:1d}'.format(i)))
             self.posAlt.append(eval('self.ui.posAlt{0:1d}'.format(i)))

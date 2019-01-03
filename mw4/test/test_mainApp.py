@@ -55,7 +55,6 @@ def test_initConfig_1():
     basic = {
         'profileName': 'config',
         'version': '4.0',
-        'filePath': config + '/config.cfg',
         'mainW': {'expiresYes': True},
         'topoLat': 10,
         'topoLon': 10,
@@ -80,7 +79,6 @@ def test_initConfig_2():
     basic = {
         'profileName': 'config',
         'version': '4.0',
-        'filePath': config + '/config.cfg',
         'topoLat': 50,
         'topoLon': 0,
         'topoElev': 46,
@@ -104,7 +102,6 @@ def test_initConfig_3():
     basic = {
         'profileName': 'config',
         'version': '4.0',
-        'filePath': config + '/config.cfg',
         'mainW': {'expiresYes': False},
     }
     with open(config + '/config.cfg', 'w') as outfile:
@@ -148,7 +145,7 @@ def test_loadConfig_1():
     assert suc
     assert app.config['version'] == '4.0'
     assert app.config['profileName'] == 'config'
-    assert 'filePath' in app.config
+    assert 'reference' not in app.config
 
 
 def test_loadConfig_2():
@@ -157,7 +154,6 @@ def test_loadConfig_2():
     basic = {
         'profileName': 'config',
         'version': '4.0',
-        'filePath': config + '/config.cfg',
     }
     with open(config + '/config.cfg', 'w') as outfile:
         json.dump(basic,
@@ -168,7 +164,7 @@ def test_loadConfig_2():
     assert suc
     assert app.config['version'] == '4.0'
     assert app.config['profileName'] == 'config'
-    assert app.config['filePath'] == config + '/config.cfg'
+    assert 'reference' not in app.config
 
 
 def test_loadConfig_3():
@@ -180,14 +176,15 @@ def test_loadConfig_3():
     assert not suc
     assert app.config['version'] == '4.0'
     assert app.config['profileName'] == 'config'
-    assert app.config['filePath'] == config + '/config.cfg'
+    assert 'reference' not in app.config
 
 
 def test_loadConfig_4():
-    # load existing basic config with error missing filePath
+    # load existing basic config with existing reference to config
     # -> auto correcting this issue
     app.config = {}
     basic = {
+        'reference': 'config',
         'profileName': 'config',
         'version': '4.0',
     }
@@ -201,16 +198,16 @@ def test_loadConfig_4():
     assert suc
     assert app.config['version'] == '4.0'
     assert app.config['profileName'] == 'config'
-    assert app.config['filePath'] == config + '/config.cfg'
+    assert 'reference' not in app.config
 
 
 def test_loadConfig_5():
     # load existing config from another file referenced
     app.config = {}
     basic = {
-        'profileName': 'reference',
+        'profileName': 'ext_file',
         'version': '4.0',
-        'filePath': config + '/reference.cfg'
+        'reference': 'ext_file'
     }
     with open(config + '/config.cfg', 'w') as outfile:
         json.dump(basic,
@@ -218,11 +215,11 @@ def test_loadConfig_5():
                   sort_keys=True,
                   indent=4)
     reference = {
-        'profileName': 'reference',
+        'profileName': 'ext_file',
         'version': '4.0',
-        'filePath': config + '/reference.cfg'
+        'reference': 'ext_file'
     }
-    with open(config + '/reference.cfg', 'w') as outfile:
+    with open(config + '/ext_file.cfg', 'w') as outfile:
         json.dump(reference,
                   outfile,
                   sort_keys=True,
@@ -230,66 +227,37 @@ def test_loadConfig_5():
     suc = app.loadConfig()
     assert suc
     assert app.config['version'] == '4.0'
-    assert app.config['profileName'] == 'reference'
-    assert app.config['filePath'] == config + '/reference.cfg'
+    assert app.config['profileName'] == 'ext_file'
+    assert app.config['reference'] == 'ext_file'
 
 
 def test_loadConfig_6():
-    # load existing config from another file referenced with error in filepath in reference
-    app.config = {}
-    basic = {
-        'profileName': 'reference',
-        'version': '4.0',
-        'filePath': config + '/reference.cfg'
-    }
-    with open(config + '/config.cfg', 'w') as outfile:
-        json.dump(basic,
-                  outfile,
-                  sort_keys=True,
-                  indent=4)
-    reference = {
-        'profileName': 'reference',
-        'version': '4.0',
-    }
-    with open(config + '/reference.cfg', 'w') as outfile:
-        json.dump(reference,
-                  outfile,
-                  sort_keys=True,
-                  indent=4)
-    suc = app.loadConfig()
-    assert not suc
-    assert app.config['version'] == '4.0'
-    assert app.config['profileName'] == 'config'
-    assert app.config['filePath'] == config + '/config.cfg'
-
-
-def test_loadConfig_7():
     # load config direct from referenced file
     app.config = {}
     reference = {
-        'profileName': 'reference',
+        'profileName': 'ext_file',
         'version': '4.0',
-        'filePath': config + '/reference.cfg'
+        'reference': 'ext_file'
     }
-    with open(config + '/reference.cfg', 'w') as outfile:
+    with open(config + '/ext_file.cfg', 'w') as outfile:
         json.dump(reference,
                   outfile,
                   sort_keys=True,
                   indent=4)
-    suc = app.loadConfig(config + '/reference.cfg')
+    suc = app.loadConfig('ext_file')
     assert suc
     assert app.config['version'] == '4.0'
-    assert app.config['profileName'] == 'reference'
-    assert app.config['filePath'] == config + '/reference.cfg'
+    assert app.config['profileName'] == 'ext_file'
+    assert app.config['reference'] == 'ext_file'
 
 
-def test_loadConfig_8():
-    # basic config with wrong filePath
+def test_loadConfig_7():
+    # basic config with wrong reference
     app.config = {}
     basic = {
-        'profileName': 'config',
+        'profileName': 'ext_file',
         'version': '4.0',
-        'filePath': config + '/test.cfg',
+        'reference': 'test',
     }
     with open(config + '/config.cfg', 'w') as outfile:
         json.dump(basic,
@@ -298,41 +266,40 @@ def test_loadConfig_8():
                   indent=4)
 
     suc = app.loadConfig()
-    assert suc
+    assert not suc
     assert '4.0' == app.config['version']
     assert 'config' == app.config['profileName']
-    assert 'filePath' in app.config
+    assert 'reference' not in app.config
 
 
-def test_loadConfig_9():
+def test_loadConfig_8():
     # reference config not readable
     app.config = {}
     basic = {
         'profileName': 'reference',
         'version': '4.0',
-        'filePath': config + '/reference.cfg'
+        'reference': 'ext_file'
     }
     with open(config + '/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
                   indent=4)
-    with open(config + '/reference.cfg', 'w') as outfile:
+    with open(config + '/ext_file.cfg', 'w') as outfile:
         outfile.write('test')
     suc = app.loadConfig()
     assert not suc
     assert '4.0' == app.config['version']
     assert 'config' == app.config['profileName']
-    assert 'filePath' in app.config
+    assert 'reference' not in app.config
 
 
-def test_loadConfig_10():
+def test_loadConfig_9():
     # basic config with wrong profileName
     app.config = {}
     basic = {
         'profileName': 'test',
         'version': '4.0',
-        'filePath': config + '/config.cfg',
     }
     with open(config + '/config.cfg', 'w') as outfile:
         json.dump(basic,
@@ -344,7 +311,7 @@ def test_loadConfig_10():
     assert suc
     assert '4.0' == app.config['version']
     assert 'config' == app.config['profileName']
-    assert 'filePath' in app.config
+    assert 'reference' not in app.config
 
 
 #

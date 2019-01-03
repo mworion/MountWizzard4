@@ -34,11 +34,11 @@ class Relay(object):
         self.app.relay.statusReady.connect(self.updateRelayGui)
 
     def initConfig(self):
-        config = self.app.config['mainW']
+        # config = self.app.config['mainW']
         return True
 
     def storeConfig(self):
-        config = self.app.config['mainW']
+        # config = self.app.config['mainW']
         return True
 
     def setupIcons(self):

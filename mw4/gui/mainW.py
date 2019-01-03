@@ -35,6 +35,7 @@ from mw4.gui.mainWmixin.tabManageModel import ManageModel
 from mw4.gui.mainWmixin.tabRelay import Relay
 from mw4.gui.mainWmixin.tabSettIndi import SettIndi
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
+from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
 from mw4.gui.mainWmixin.tabSettRelay import SettRelay
 from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 
@@ -48,6 +49,7 @@ class MainWindow(MWidget,
                  Relay,
                  SettIndi,
                  SettHorizon,
+                 SettParkPos,
                  SettRelay,
                  SettMisc,
                  ):
@@ -86,6 +88,7 @@ class MainWindow(MWidget,
         Relay.__init__(self)
         SettIndi.__init__(self)
         SettHorizon.__init__(self)
+        SettParkPos.__init__(self)
         SettRelay.__init__(self)
         SettMisc.__init__(self)
 
@@ -135,7 +138,6 @@ class MainWindow(MWidget,
         self.move(x, y)
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
-        self.ui.profile.setText(self.app.config.get('profileName'))
         self.ui.mountHost.setText(config.get('mountHost', ''))
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
@@ -149,6 +151,7 @@ class MainWindow(MWidget,
         Relay.initConfig(self)
         SettIndi.initConfig(self)
         SettHorizon.initConfig(self)
+        SettParkPos.initConfig(self)
         SettRelay.initConfig(self)
         SettMisc.initConfig(self)
         return True
@@ -161,7 +164,6 @@ class MainWindow(MWidget,
         config['winPosY'] = self.pos().y()
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
-        config['profile'] = self.ui.profile.text()
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
 
@@ -173,6 +175,7 @@ class MainWindow(MWidget,
         Relay.storeConfig(self)
         SettIndi.storeConfig(self)
         SettHorizon.storeConfig(self)
+        SettParkPos.storeConfig(self)
         SettRelay.storeConfig(self)
         SettMisc.storeConfig(self)
         return True
@@ -225,6 +228,7 @@ class MainWindow(MWidget,
         Relay.setupIcons(self)
         SettIndi.setupIcons(self)
         SettHorizon.setupIcons(self)
+        SettParkPos.setupIcons(self)
         SettRelay.setupIcons(self)
         SettMisc.setupIcons(self)
         return True
@@ -262,6 +266,7 @@ class MainWindow(MWidget,
         Relay.clearMountGUI(self)
         SettIndi.clearMountGUI(self)
         SettHorizon.clearMountGUI(self)
+        SettParkPos.clearMountGUI(self)
         SettRelay.clearMountGUI(self)
         SettMisc.clearMountGUI(self)
 

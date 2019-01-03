@@ -191,7 +191,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     def defaultConfig(self, config=None):
         if config is None:
             config = dict()
-        config['profileName'] = 'config'
         config['filePath'] = self.defaultPath()
         config['version'] = '4.0'
         return config
@@ -223,6 +222,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             return False
 
         # loading default and finishing up
+        if 'mainW' not in defaultData:
+            return False
         if defaultData['profileName'] == 'config':
             self.config = self.convertData(defaultData)
             self.config['filePath'] = self.defaultPath()
@@ -235,7 +236,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         isDefault = referencedFilePath.endswith('config.cfg')
         if isDefault:
             self.config = self.convertData(defaultData)
-            self.config['profileName'] = 'config'
             return True
 
         # now loading referenced file
@@ -251,7 +251,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if 'filePath' not in referencedData:
             self.config = self.convertData(defaultData)
             self.config['filePath'] = self.defaultPath()
-            self.config['profileName'] = 'config'
             self.logger.error('FilePath missing in: {0}'.format(referencedFilePath))
             return False
 
@@ -295,7 +294,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if saveFilePath is None:
             saveFilePath = self.defaultPath()
             self.config['filePath'] = saveFilePath
-            self.config['profileName'] = 'config'
 
         # check if we have to write two data sets
         isReferenced = not saveFilePath.endswith('config.cfg')

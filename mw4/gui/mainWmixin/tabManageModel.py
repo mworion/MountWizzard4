@@ -39,6 +39,8 @@ class ManageModel(object):
     def __init__(self):
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPolar)
+        ms.namesDone.connect(self.setNameList)
+
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
 
     def initConfig(self):

@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -740,7 +740,7 @@
       <string>Tracking / Flip</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="mountPos4">
+    <widget class="QPushButton" name="posButton3">
      <property name="geometry">
       <rect>
        <x>645</x>
@@ -758,7 +758,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Park Pos4</string>
+      <string>Park Pos3</string>
      </property>
     </widget>
     <widget class="Line" name="line_15">
@@ -802,7 +802,7 @@
       <string>Parking</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="mountPos2">
+    <widget class="QPushButton" name="posButton1">
      <property name="geometry">
       <rect>
        <x>645</x>
@@ -820,10 +820,10 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Park Pos2</string>
+      <string>Park Pos1</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="mountPos3">
+    <widget class="QPushButton" name="posButton2">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -841,10 +841,10 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Park Pos3</string>
+      <string>Park Pos2</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="mountPos1">
+    <widget class="QPushButton" name="posButton0">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -862,7 +862,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Park Pos1</string>
+      <string>Park Pos0</string>
      </property>
     </widget>
     <widget class="Line" name="line_14">
@@ -1081,7 +1081,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="mountPos6">
+    <widget class="QPushButton" name="posButton5">
      <property name="geometry">
       <rect>
        <x>645</x>
@@ -1099,10 +1099,10 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Park Pos6</string>
+      <string>Park Pos5</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="mountPos5">
+    <widget class="QPushButton" name="posButton4">
      <property name="geometry">
       <rect>
        <x>505</x>
@@ -1120,7 +1120,7 @@
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
-      <string>Park Pos5</string>
+      <string>Park Pos4</string>
      </property>
     </widget>
     <widget class="Line" name="line_51">
@@ -1937,11 +1937,11 @@
     <zorder>park</zorder>
     <zorder>label_83</zorder>
     <zorder>label_84</zorder>
-    <zorder>mountPos4</zorder>
+    <zorder>posButton3</zorder>
     <zorder>label_85</zorder>
-    <zorder>mountPos2</zorder>
-    <zorder>mountPos3</zorder>
-    <zorder>mountPos1</zorder>
+    <zorder>posButton1</zorder>
+    <zorder>posButton2</zorder>
+    <zorder>posButton0</zorder>
     <zorder>stop</zorder>
     <zorder>flipMount</zorder>
     <zorder>setLunarTracking</zorder>
@@ -1950,8 +1950,8 @@
     <zorder>label_90</zorder>
     <zorder>timeToMeridian</zorder>
     <zorder>label_91</zorder>
-    <zorder>mountPos6</zorder>
-    <zorder>mountPos5</zorder>
+    <zorder>posButton5</zorder>
+    <zorder>posButton4</zorder>
     <zorder>label_98</zorder>
     <zorder>groupBoxCoordinateSystems</zorder>
     <zorder>UTCExpire</zorder>
@@ -10576,7 +10576,7 @@ manually</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -12987,9 +12987,9 @@ manually</string>
      </widget>
      <widget class="QWidget" name="tab_10">
       <attribute name="title">
-       <string>Slew Positions</string>
+       <string>ParkPos</string>
       </attribute>
-      <widget class="QLineEdit" name="le_altParkPos3">
+      <widget class="QLineEdit" name="posAlt2">
        <property name="geometry">
         <rect>
          <x>235</x>
@@ -13028,7 +13028,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_parkPos3Text">
+      <widget class="QLineEdit" name="posText2">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -13067,7 +13067,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_parkPos1Text">
+      <widget class="QLineEdit" name="posText0">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -13124,7 +13124,7 @@ manually</string>
         <string>Configuration of fixed park positions </string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_azParkPos3">
+      <widget class="QLineEdit" name="posAz2">
        <property name="geometry">
         <rect>
          <x>315</x>
@@ -13163,7 +13163,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_parkPos2Text">
+      <widget class="QLineEdit" name="posText1">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -13202,7 +13202,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_azParkPos1">
+      <widget class="QLineEdit" name="posAz0">
        <property name="geometry">
         <rect>
          <x>315</x>
@@ -13241,7 +13241,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_altParkPos4">
+      <widget class="QLineEdit" name="posAlt3">
        <property name="geometry">
         <rect>
          <x>235</x>
@@ -13280,7 +13280,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_altParkPos1">
+      <widget class="QLineEdit" name="posAlt0">
        <property name="geometry">
         <rect>
          <x>235</x>
@@ -13323,7 +13323,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>70</y>
+         <y>100</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -13337,7 +13337,7 @@ manually</string>
         <string>Button 1</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_altParkPos2">
+      <widget class="QLineEdit" name="posAlt1">
        <property name="geometry">
         <rect>
          <x>235</x>
@@ -13380,7 +13380,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>160</y>
+         <y>190</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -13398,7 +13398,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>100</y>
+         <y>130</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -13412,7 +13412,7 @@ manually</string>
         <string>Button 2</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_azParkPos2">
+      <widget class="QLineEdit" name="posAz1">
        <property name="geometry">
         <rect>
          <x>315</x>
@@ -13472,7 +13472,7 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_azParkPos4">
+      <widget class="QLineEdit" name="posAz3">
        <property name="geometry">
         <rect>
          <x>315</x>
@@ -13511,7 +13511,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_parkPos4Text">
+      <widget class="QLineEdit" name="posText3">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -13554,7 +13554,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>160</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -13568,7 +13568,7 @@ manually</string>
         <string>Button 3</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_azParkPos5">
+      <widget class="QLineEdit" name="posAz4">
        <property name="geometry">
         <rect>
          <x>315</x>
@@ -13611,7 +13611,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>220</y>
+         <y>70</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -13622,10 +13622,10 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Button 6</string>
+        <string>Button 0</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_altParkPos6">
+      <widget class="QLineEdit" name="posAlt5">
        <property name="geometry">
         <rect>
          <x>235</x>
@@ -13686,7 +13686,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>190</y>
+         <y>220</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -13700,7 +13700,7 @@ manually</string>
         <string>Button 5</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_altParkPos5">
+      <widget class="QLineEdit" name="posAlt4">
        <property name="geometry">
         <rect>
          <x>235</x>
@@ -13739,7 +13739,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_parkPos6Text">
+      <widget class="QLineEdit" name="posText5">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -13778,7 +13778,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_parkPos5Text">
+      <widget class="QLineEdit" name="posText4">
        <property name="geometry">
         <rect>
          <x>80</x>
@@ -13835,7 +13835,7 @@ manually</string>
         <string>Azimuth</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_azParkPos6">
+      <widget class="QLineEdit" name="posAz5">
        <property name="geometry">
         <rect>
          <x>315</x>
@@ -14202,33 +14202,33 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <zorder>le_altParkPos3</zorder>
-      <zorder>le_parkPos3Text</zorder>
-      <zorder>le_parkPos1Text</zorder>
+      <zorder>posAlt2</zorder>
+      <zorder>posText2</zorder>
+      <zorder>posText0</zorder>
       <zorder>label_54</zorder>
-      <zorder>le_azParkPos3</zorder>
-      <zorder>le_parkPos2Text</zorder>
-      <zorder>le_azParkPos1</zorder>
-      <zorder>le_altParkPos4</zorder>
-      <zorder>le_altParkPos1</zorder>
+      <zorder>posAz2</zorder>
+      <zorder>posText1</zorder>
+      <zorder>posAz0</zorder>
+      <zorder>posAlt3</zorder>
+      <zorder>posAlt0</zorder>
       <zorder>label_2</zorder>
-      <zorder>le_altParkPos2</zorder>
+      <zorder>posAlt1</zorder>
       <zorder>label_50</zorder>
       <zorder>label_44</zorder>
-      <zorder>le_azParkPos2</zorder>
-      <zorder>le_azParkPos4</zorder>
-      <zorder>le_parkPos4Text</zorder>
+      <zorder>posAz1</zorder>
+      <zorder>posAz3</zorder>
+      <zorder>posText3</zorder>
       <zorder>label_47</zorder>
-      <zorder>le_azParkPos5</zorder>
+      <zorder>posAz4</zorder>
       <zorder>label_92</zorder>
-      <zorder>le_altParkPos6</zorder>
+      <zorder>posAlt5</zorder>
       <zorder>label_94</zorder>
       <zorder>label_95</zorder>
-      <zorder>le_altParkPos5</zorder>
-      <zorder>le_parkPos6Text</zorder>
-      <zorder>le_parkPos5Text</zorder>
+      <zorder>posAlt4</zorder>
+      <zorder>posText5</zorder>
+      <zorder>posText4</zorder>
       <zorder>label_132</zorder>
-      <zorder>le_azParkPos6</zorder>
+      <zorder>posAz5</zorder>
       <zorder>line_83</zorder>
       <zorder>label_97</zorder>
       <zorder>line_4</zorder>
@@ -16435,12 +16435,12 @@ manually</string>
   <tabstop>saveConfig</tabstop>
   <tabstop>saveConfigAs</tabstop>
   <tabstop>flipMount</tabstop>
-  <tabstop>mountPos1</tabstop>
-  <tabstop>mountPos2</tabstop>
-  <tabstop>mountPos3</tabstop>
-  <tabstop>mountPos4</tabstop>
-  <tabstop>mountPos5</tabstop>
-  <tabstop>mountPos6</tabstop>
+  <tabstop>posButton0</tabstop>
+  <tabstop>posButton1</tabstop>
+  <tabstop>posButton2</tabstop>
+  <tabstop>posButton3</tabstop>
+  <tabstop>posButton4</tabstop>
+  <tabstop>posButton5</tabstop>
   <tabstop>tracking</tabstop>
   <tabstop>setLunarTracking</tabstop>
   <tabstop>setSolarTracking</tabstop>
@@ -16511,24 +16511,24 @@ manually</string>
   <tabstop>mountMAC</tabstop>
   <tabstop>checkEnableRemoteAccess</tabstop>
   <tabstop>le_remotePort</tabstop>
-  <tabstop>le_parkPos1Text</tabstop>
-  <tabstop>le_azParkPos1</tabstop>
-  <tabstop>le_altParkPos1</tabstop>
-  <tabstop>le_parkPos2Text</tabstop>
-  <tabstop>le_azParkPos2</tabstop>
-  <tabstop>le_altParkPos2</tabstop>
-  <tabstop>le_parkPos3Text</tabstop>
-  <tabstop>le_azParkPos3</tabstop>
-  <tabstop>le_altParkPos3</tabstop>
-  <tabstop>le_parkPos4Text</tabstop>
-  <tabstop>le_azParkPos4</tabstop>
-  <tabstop>le_altParkPos4</tabstop>
-  <tabstop>le_parkPos5Text</tabstop>
-  <tabstop>le_azParkPos5</tabstop>
-  <tabstop>le_altParkPos5</tabstop>
-  <tabstop>le_parkPos6Text</tabstop>
-  <tabstop>le_azParkPos6</tabstop>
-  <tabstop>le_altParkPos6</tabstop>
+  <tabstop>posText0</tabstop>
+  <tabstop>posAz0</tabstop>
+  <tabstop>posAlt0</tabstop>
+  <tabstop>posText1</tabstop>
+  <tabstop>posAz1</tabstop>
+  <tabstop>posAlt1</tabstop>
+  <tabstop>posText2</tabstop>
+  <tabstop>posAz2</tabstop>
+  <tabstop>posAlt2</tabstop>
+  <tabstop>posText3</tabstop>
+  <tabstop>posAz3</tabstop>
+  <tabstop>posAlt3</tabstop>
+  <tabstop>posText4</tabstop>
+  <tabstop>posAz4</tabstop>
+  <tabstop>posAlt4</tabstop>
+  <tabstop>posText5</tabstop>
+  <tabstop>posAz5</tabstop>
+  <tabstop>posAlt5</tabstop>
   <tabstop>soundMountSlewFinished</tabstop>
   <tabstop>soundDomeSlewFinished</tabstop>
   <tabstop>soundMountAlert</tabstop>

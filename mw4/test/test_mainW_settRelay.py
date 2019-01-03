@@ -67,25 +67,6 @@ def test_setupRelayGui(qtbot):
         assert 2 == val
 
 
-def test_updateRelayGui(qtbot):
-    app.mainW.relayButton = list()
-    app.mainW.relayDropDown = list()
-    app.mainW.relayText = list()
-    app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
-    suc = app.mainW.updateRelayGui()
-    assert suc
-
-
-def test_enableRelay1(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(True)
-    with mock.patch.object(app.relay,
-                           'startTimers',
-                           return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableRelay()
-            assert suc
-        assert ['Relay enabled', 0] == blocker.args
-
 
 def test_enableRelay2(qtbot):
     app.mainW.ui.checkEnableRelay.setChecked(False)
@@ -96,6 +77,25 @@ def test_enableRelay2(qtbot):
             suc = app.mainW.enableRelay()
             assert suc
         assert ['Relay disabled', 0] == blocker.args
+
+
+def test_toggleRelay1(qtbot):
+    app.mainW.ui.checkEnableRelay.setChecked(False)
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.toggleRelay()
+        assert not suc
+    assert ['Relay box off', 2] == blocker.args
+
+
+def test_toggleRelay2(qtbot):
+    app.mainW.ui.checkEnableRelay.setChecked(True)
+    with mock.patch.object(app.relay,
+                           'switch',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.toggleRelay()
+            assert not suc
+        assert ['Relay cannot be switched', 2] == blocker.args
 
 
 def test_relayHost():

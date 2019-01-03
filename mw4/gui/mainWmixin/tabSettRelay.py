@@ -34,15 +34,22 @@ class SettRelay(object):
     """
 
     def __init__(self):
-        self.relayDropDown = list()
-        self.relayButton = list()
-        self.relayText = list()
+        # define lists for the entries
+        self.relayDropDownIndex = list()
+        self.relayTexts = list()
+        self.relayButtons = list()
+
+        # dynamically generate the widgets
         self.setupRelayGui()
+
+        # make the gui signals linked to slots
         self.ui.checkEnableRelay.clicked.connect(self.enableRelay)
         self.ui.relayHost.editingFinished.connect(self.relayHost)
         self.ui.relayUser.editingFinished.connect(self.relayUser)
         self.ui.relayPassword.editingFinished.connect(self.relayPassword)
-        for button in self.relayButton:
+        for relayText in self.relayTexts:
+            relayText.editingFinished.connect(self.updateRelayButtonText)
+        for button in self.relayButtons:
             button.clicked.connect(self.toggleRelay)
 
     def initConfig(self):
@@ -55,15 +62,13 @@ class SettRelay(object):
         self.relayUser()
         self.ui.relayPassword.setText(config.get('relayPassword', ''))
         self.relayPassword()
-        for i, line in enumerate(self.relayText):
-            key = 'relayText{0:1d}'.format(i)
-            line.setText(config.get(key, 'Relay{0:1d}'.format(i)))
-        for i, button in enumerate(self.relayButton):
-            key = 'relayText{0:1d}'.format(i)
-            button.setText(config.get(key, 'Relay{0:1d}'.format(i)))
-        for i, drop in enumerate(self.relayDropDown):
-            key = 'relayFun{0:1d}'.format(i)
-            drop.setCurrentIndex(config.get(key, 0))
+        for i, textField in enumerate(self.relayTexts):
+            keyConfig = 'relay{0:1d}buttonText'.format(i)
+            textField.setText(config.get(keyConfig, 'Relay {0:1d}'.format(i)))
+        for i, index in enumerate(self.relayDropDownIndex):
+            keyConfig = 'relay{0:1d}index'.format(i)
+            index.setCurrentIndex(config.get(keyConfig, 0))
+        self.updateRelayButtonText()
         return True
 
     def storeConfig(self):
@@ -72,12 +77,12 @@ class SettRelay(object):
         config['relayHost'] = self.ui.relayHost.text()
         config['relayUser'] = self.ui.relayUser.text()
         config['relayPassword'] = self.ui.relayPassword.text()
-        for i, line in enumerate(self.relayText):
-            key = 'relayText{0:1d}'.format(i)
-            config[key] = line.text()
-        for i, drop in enumerate(self.relayDropDown):
-            key = 'relayFun{0:1d}'.format(i)
-            config[key] = drop.currentIndex()
+        for i, textField in enumerate(self.relayTexts):
+            keyConfig = 'relay{0:1d}buttonText'.format(i)
+            config[keyConfig] = textField.text()
+        for i, index in enumerate(self.relayDropDownIndex):
+            keyConfig = 'relay{0:1d}index'.format(i)
+            config[keyConfig] = index.currentIndex()
         return True
 
     def setupIcons(self):
@@ -105,17 +110,26 @@ class SettRelay(object):
         :return: success for test
         """
 
+        # generate the button list and text entry for later use
         for i in range(0, 8):
-            self.relayDropDown.append(eval('self.ui.relayFun{0:1d}'.format(i)))
-            self.relayButton.append(eval('self.ui.relayButton{0:1d}'.format(i)))
-            self.relayText.append(eval('self.ui.relayText{0:1d}'.format(i)))
+            self.relayButtons.append(eval('self.ui.relayButton{0:1d}'.format(i)))
+            self.relayTexts.append(eval('self.ui.relayText{0:1d}'.format(i)))
+
+        # dynamically generate the drop down menus and set the index
+        for i in range(0, 8):
+            self.relayDropDownIndex.append(eval('self.ui.relayFun{0:1d}'.format(i)))
+
         # and setting the entries of the drop down menus
-        for dropDown in self.relayDropDown:
+        for dropDown in self.relayDropDownIndex:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('Switch - Toggle')
             dropDown.addItem('Pulse 0.5 sec')
         return True
+
+    def updateRelayButtonText(self):
+        for button, textField in zip(self.relayButtons, self.relayTexts):
+            button.setText(textField.text())
 
     def enableRelay(self):
         """
@@ -139,6 +153,27 @@ class SettRelay(object):
         # update the style for showing the Relay tab
         self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
         self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
+        return True
+
+    def toggleRelay(self):
+        """
+        toggleRelay reads the button and toggles the relay on the box.
+
+        :return: success for test
+        """
+
+        if not self.ui.checkEnableRelay.isChecked():
+            self.app.message.emit('Relay box off', 2)
+            return False
+        suc = False
+        for i, button in enumerate(self.relayButtons):
+            if button != self.sender():
+                continue
+            suc = self.app.relay.switch(i)
+        if not suc:
+            self.app.message.emit('Relay cannot be switched', 2)
+            return False
+        self.app.relay.cyclePolling()
         return True
 
     def relayHost(self):

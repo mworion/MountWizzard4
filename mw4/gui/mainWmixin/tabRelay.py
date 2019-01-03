@@ -31,12 +31,6 @@ class Relay(object):
     """
 
     def __init__(self):
-        self.relayDropDown = list()
-        self.relayButton = list()
-        self.relayText = list()
-
-        ms = self.app.mount.signals
-        ms.namesDone.connect(self.setNameList)
         self.app.relay.statusReady.connect(self.updateRelayGui)
 
     def initConfig(self):
@@ -64,27 +58,6 @@ class Relay(object):
         """
         return True
 
-    def toggleRelay(self):
-        """
-        toggleRelay reads the button and toggles the relay on the box.
-
-        :return: success for test
-        """
-
-        if not self.ui.checkEnableRelay.isChecked():
-            self.app.message.emit('Relay box off', 2)
-            return False
-        suc = False
-        for i, button in enumerate(self.relayButton):
-            if button != self.sender():
-                continue
-            suc = self.app.relay.switch(i)
-        if not suc:
-            self.app.message.emit('Relay cannot be switched', 2)
-            return False
-        self.app.relay.cyclePolling()
-        return True
-
     def updateRelayGui(self):
         """
         updateRelayGui changes the style of the button related to the state of the relay
@@ -92,9 +65,8 @@ class Relay(object):
         :return: success for test
         """
 
-        status = self.app.relay.status
-        for i, button in enumerate(self.relayButton):
-            if status[i]:
+        for status, button in zip(self.app.relay.status, self.relayButtons):
+            if status:
                 self.changeStyleDynamic(button, 'running', 'true')
             else:
                 self.changeStyleDynamic(button, 'running', 'false')

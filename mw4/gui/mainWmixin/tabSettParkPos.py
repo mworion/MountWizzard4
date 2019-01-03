@@ -44,7 +44,6 @@ class SettParkPos(object):
         self.setupParkPosGui()
         for posText in self.posTexts:
             posText.editingFinished.connect(self.updateParkPosButtonText)
-
         for button in self.posButtons:
             button.clicked.connect(self.slewToParkPos)
 

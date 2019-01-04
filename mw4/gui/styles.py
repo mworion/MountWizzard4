@@ -508,9 +508,18 @@ class MWStyles(object):
         border-style: outset;
         margin: -5px;
     }
-    QFileDialog QListView {
+    QFileDialog QListView:enabled {
         background-color: #101010;
-        color: #C0C0C0;
+        color: rgb(32, 144, 192);
+        text-align: right;
+        border-width: 1px;
+        border-color: #404040;
+        border-style: outset;
+        border-radius: 2px;
+    }
+    QFileDialog QListView:disabled {
+        background-color: #101010;
+        color: #606060;
         text-align: right;
         border-width: 1px;
         border-color: #404040;

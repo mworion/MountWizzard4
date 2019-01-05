@@ -6034,7 +6034,7 @@ class Ui_MainWindow(object):
         self.timeComputer.setGeometry(QtCore.QRect(450, 10, 146, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(28)
+        font.setPointSize(24)
         font.setBold(False)
         font.setWeight(50)
         self.timeComputer.setFont(font)
@@ -6928,7 +6928,7 @@ class Ui_MainWindow(object):
         self.openAnalyseW.setToolTip(_translate("MainWindow", "<html><head/><body><p>Opens the analyse window for checking measurements and modlelling data.</p></body></html>"))
         self.openAnalyseW.setText(_translate("MainWindow", "Analyse"))
         self.timeComputer.setToolTip(_translate("MainWindow", "<html><head/><body><p>Status of UTC data</p></body></html>"))
-        self.timeComputer.setText(_translate("MainWindow", "-"))
+        self.timeComputer.setText(_translate("MainWindow", "00:00:00"))
         self.weatherForecast.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:400;\">Actual used profile</span></p></body></html>"))
         self.weatherForecast.setText(_translate("MainWindow", "weather forecast"))
 

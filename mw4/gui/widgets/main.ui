@@ -16772,7 +16772,7 @@ manually</string>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>28</pointsize>
+     <pointsize>24</pointsize>
      <weight>50</weight>
      <bold>false</bold>
     </font>
@@ -16796,7 +16796,7 @@ manually</string>
     <string/>
    </property>
    <property name="text">
-    <string>-</string>
+    <string>00:00:00</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

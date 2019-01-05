@@ -44,7 +44,7 @@ class MWStyles(object):
         font-style: normal;
         font-size: 13pt;
     }
-    QWidget[large='true'] {
+    QLineEdit[large='true'] {
         font-size: 36pt;
     }
     QGroupBox{
@@ -60,8 +60,8 @@ class MWStyles(object):
         font-style: normal;
         font-size: 10pt;
     }
-    QWidget[large='true'] {
-        font-size: 16pt;
+    QLineEdit[large='true'] {
+        font-size: 24pt;
     } 
     QGroupBox{
         font-family: Arial;

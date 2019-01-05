@@ -40,24 +40,24 @@ packageDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4'
 importDir = '/Users/mw/PycharmProjects/MountWizzard4'
 
 a = Analysis(['mw4/loader.py'],
-    pathex=[packageDir],
-    binaries=[
-        ],
-    datas=[
-           (sitePack + '/skyfield/data', './skyfield/data'),
-           (astropy_path, 'astropy'),
-        ],
-    hiddenimports=[
-        ],
-    hookspath=[],
-    runtime_hooks=[],
-    excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter',
-              'astropy',
-        ],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
-    )
+             pathex=[packageDir],
+             binaries=[
+                 ],
+             datas=[
+                    (sitePack + '/skyfield/data', './skyfield/data'),
+                    (astropy_path, 'astropy'),
+                 ],
+             hiddenimports=[
+                 ],
+             hookspath=[],
+             runtime_hooks=[],
+             excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter',
+                       'astropy',
+                 ],
+             win_no_prefer_redirects=False,
+             win_private_assemblies=False,
+             cipher=block_cipher,
+             )
 
 # remove thing to reduce size and number of files in package (have to be extracted)
 a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/sample_data')]

@@ -256,21 +256,27 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             short = ext = ''
         return short, ext
 
-    def prepareFileDialog(self, window):
+    def prepareFileDialog(self, window, enableDir):
         """
         prepareFileDialog does some preparations for geometry and general settings
 
         :param window:  parent class
+        :param enableDir:   allows dir selection in file box
         :return:        dlg, the dialog widget
         """
 
         dlg = PyQt5.QtWidgets.QFileDialog()
         dlg.setOptions(PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog)
+        dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
         dlg.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
         dlg.setStyleSheet(self.getStyle())
         dlg.setViewMode(PyQt5.QtWidgets.QFileDialog.List)
-        dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
         dlg.setModal(True)
+
+        if enableDir:
+            dlg.setFilter(PyQt5.QtCore.QDir.Files | PyQt5.QtCore.QDir.AllDirs)
+        else:
+            dlg.setFilter(PyQt5.QtCore.QDir.Files)
 
         # remove unnecessary widgets from the file selector box
         dlg.findChildren(PyQt5.QtWidgets.QListView, 'sidebar')[0].setVisible(False)
@@ -293,7 +299,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setGeometry(px + 0.5 * (pw - width), py + 0.5 * (ph - height), 400, 400)
         return dlg
 
-    def openFile(self, window, title, folder, filterSet):
+    def openFile(self, window, title, folder, filterSet, enableDir=False):
         """
         openFile handles a single file select with filter in a non native format.
 
@@ -301,13 +307,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         :param title:       title for the file dialog
         :param folder:      starting folder for searching the file
         :param filterSet:   file extension filter
+        :param enableDir:   allows dir selection in file box
         :return:            name: full path for file else empty
                             short: just file name without extension
                             ext: extension of the file
         """
 
-        dlg = self.prepareFileDialog(window)
-        dlg.setFilter(PyQt5.QtCore.QDir.Files)
+        dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptOpen)
 
         dlg.setWindowTitle(title)
@@ -319,7 +325,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         short, ext = self.extractNames(filePath)
         return filePath, short, ext
 
-    def saveFile(self, window, title, folder, filterSet):
+    def saveFile(self, window, title, folder, filterSet, enableDir=False):
         """
         saveFile handles a single file save with filter in a non native format.
 
@@ -327,13 +333,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         :param title:       title for the file dialog
         :param folder:      starting folder for searching the file
         :param filterSet:   file extension filter
+        :param enableDir:   allows dir selection in file box
         :return:            name: full path for file else empty
                             short: just file name without extension
                             ext: extension of the file
         """
 
-        dlg = self.prepareFileDialog(window)
-        dlg.setFilter(PyQt5.QtCore.QDir.Files)
+        dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptSave)
 
         dlg.setWindowTitle(title)

@@ -44,7 +44,9 @@ class MWStyles(object):
         font-style: normal;
         font-size: 13pt;
     }
-    QLineEdit[large='true'] {
+    QWidget [large='true'] {
+        font-family: Arial;
+        font-style: normal;
         font-size: 36pt;
     }
     QGroupBox{
@@ -60,7 +62,9 @@ class MWStyles(object):
         font-style: normal;
         font-size: 10pt;
     }
-    QLineEdit[large='true'] {
+    QWidget [large='true'] {
+        font-family: Arial;
+        font-style: normal;
         font-size: 24pt;
     } 
     QGroupBox{
@@ -145,11 +149,6 @@ class MWStyles(object):
         border-width: 1px;
         border-style: outset;
         border-color: red;
-    }
-    QLineEdit#timeComputer {
-        font-family: Arial;
-        font-weight: bold;
-        font-size: 28pt;
     }
     /* Checkboxes */
     QCheckBox {

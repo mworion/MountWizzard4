@@ -318,17 +318,20 @@ def main():
         'ftp://ssd.jpl.nasa.gov/pub/eph/planets/bsp/de421.bsp',
         'ftp://cdsarc.u-strasbg.fr/cats/I/239/hip_main.dat.gz',
     ]
-    paths = [
+    files = [
         'Leap_Second.dat',
         'deltat.data',
         'deltat.preds',
         'de421.bsp',
         'hip_main.dat.gz',
     ]
-    for url, path in zip(urls, paths):
-        splash.showMessage('Loading {0}'.format(path))
+    for url, file in zip(urls, files):
+        splash.showMessage('Loading {0}'.format(file))
+        filePath = mwGlob['dataDir'] + '/' + file
+        if os.path.isfile(filePath):
+            continue
         skyfield.iokit.download(url,
-                                mwGlob['dataDir'] + '/' + path,
+                                filePath,
                                 verbose=True)
     # and finally starting the application
     splash.showMessage('Preparing application')

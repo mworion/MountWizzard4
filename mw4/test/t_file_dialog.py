@@ -6,11 +6,6 @@ import mw4.gui.widget as widget
 from mw4.gui.media import resources
 
 
-class NativeDialog(QtWidgets.QFileDialog):
-    def __init__(self):
-        super().__init__()
-
-
 class HelloWindow(QtWidgets.QMainWindow, widget.MWidget):
     def __init__(self):
         super().__init__()
@@ -55,4 +50,4 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     mainWin = HelloWindow()
     mainWin.show()
-    sys.exit(app.exec_())
+    # sys.exit(app.exec_())

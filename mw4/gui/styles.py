@@ -248,6 +248,48 @@ class MWStyles(object):
         width: 12px;
         height: 16px;
     }
+    /* Spin Boxes */
+    QSpinBox {
+        background-color: #101010;
+        color: rgb(32, 144, 192);
+        text-align: right;
+        border-color: #404040;
+        border-width: 1px;
+        border-style: outset;
+        border-radius: 2px;
+        padding-right: 2px;
+        height: 24px;
+    }
+    QSpinBox::up-button {
+        subcontrol-origin: border;
+        subcontrol-position: top right; /* position at the top right corner */
+        width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+        border-width: 1px;
+        border-radius: 2px;
+        border-color: #404040;
+        border-style: outset;
+        background-color: #181818;
+    }
+    QSpinBox::up-arrow {
+        image: url(:/arrow-up.ico);
+        width: 16px;
+        height: 16px;
+    }
+    QSpinBox::down-button {
+        subcontrol-origin: border;
+        subcontrol-position: bottom right; /* position at the top right corner */
+        width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+        border-width: 1px;
+        border-style: outset;
+        border-radius: 2px;
+        border-color: #404040;
+        background-color: #181818;
+    }
+    QSpinBox::down-arrow {
+        image: url(:/arrow-down.ico);
+        width: 16px;
+        height: 16px;
+    }
     /* Push Buttons */
     QPushButton {
         background-color: #202020;

@@ -42,24 +42,27 @@ packageDir = '/Users/astro/PycharmProjects/MountWizzard4/mw4'
 importDir = '/Users/astro/PycharmProjects/MountWizzard4'
 
 a = Analysis([packageDir + '/loader.py'],
-    pathex=[packageDir],
-    binaries=[
-        ],
-    datas=[
-           (sitePack + '/skyfield/data', './skyfield/data'),
-           (astropy_path, 'astropy'),
-        ],
-    hiddenimports=['shelve',
-        ],
-    hookspath=[],
-    runtime_hooks=[],
-    excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter',
-              'astropy',
-        ],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
-    )
+             pathex=[packageDir],
+             binaries=[
+                 ],
+             datas=[
+                 (sitePack + '/skyfield/data', './skyfield/data'),
+                 (astropy_path, 'astropy'),
+                 # (sitePack + '/mountcontrol', './mountcontrol'),
+                 # (sitePack + '/indibase', './indibase'),
+             ],
+             hiddenimports=[
+                 'shelve',
+                 ],
+             hookspath=[],
+             runtime_hooks=[],
+             excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter',
+                       'astropy',
+                       ],
+             win_no_prefer_redirects=False,
+             win_private_assemblies=False,
+             cipher=block_cipher,
+             )
 
 # remove thing to reduce size and number of files in package (have to be extracted)
 a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/sample_data')]
@@ -95,9 +98,9 @@ a.datas = [x for x in a.datas if not x[0].startswith('astropy/vo')]
 
 
 pyz = PYZ(a.pure,
-        a.zipped_data,
-        cipher=block_cipher,
-        )
+          a.zipped_data,
+          cipher=block_cipher,
+          )
 
 exe = EXE(pyz,
           a.scripts,
@@ -128,7 +131,7 @@ print(BUILD_NO)
 
 app = BUNDLE(exe,
              name='MountWizzard4.exe',
-             version=3,
+             version=4,
              icon='./mw4/gui/media/mw4.ico',
              bundle_identifier=None)
 

@@ -35,6 +35,8 @@ astropy_path, = astropy.__path__
 block_cipher = None
 pythonPath = '/Users/astro/Envs/mw4/Lib'
 sitePack = pythonPath + '/site-packages'
+
+
 distDir = '/Users/astro/PycharmProjects/MountWizzard4/dist'
 packageDir = '/Users/astro/PycharmProjects/MountWizzard4/mw4'
 importDir = '/Users/astro/PycharmProjects/MountWizzard4'
@@ -43,7 +45,9 @@ a = Analysis([packageDir + '/loader.py'],
     pathex=[packageDir],
     binaries=[
         ],
-    datas=[(astropy_path, 'astropy'),
+    datas=[
+           (sitePack + '/skyfield/data', './skyfield/data'),
+           (astropy_path, 'astropy'),
         ],
     hiddenimports=['shelve',
         ],

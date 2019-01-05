@@ -43,7 +43,8 @@ a = Analysis(['mw4/loader.py'],
     pathex=[packageDir],
     binaries=[
         ],
-    datas=[(sitePack + '/skyfield/data', './skyfield/data'),
+    datas=[
+           (sitePack + '/skyfield/data', './skyfield/data'),
            (astropy_path, 'astropy'),
         ],
     hiddenimports=[

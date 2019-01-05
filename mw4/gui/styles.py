@@ -61,7 +61,7 @@ class MWStyles(object):
         font-size: 10pt;
     }
     QWidget[large='true'] {
-        font-size: 28pt;
+        font-size: 24pt;
     } 
     QGroupBox{
         font-family: Arial;

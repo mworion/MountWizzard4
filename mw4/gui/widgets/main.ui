@@ -16771,8 +16771,8 @@ manually</string>
    </property>
    <property name="font">
     <font>
-     <family>Courier New</family>
-     <pointsize>36</pointsize>
+     <family>Arial</family>
+     <pointsize>28</pointsize>
      <weight>50</weight>
      <bold>false</bold>
     </font>
@@ -16802,6 +16802,9 @@ manually</string>
     <set>Qt::AlignCenter</set>
    </property>
    <property name="readOnly">
+    <bool>true</bool>
+   </property>
+   <property name="large" stdset="0">
     <bool>true</bool>
    </property>
   </widget>

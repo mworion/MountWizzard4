@@ -195,7 +195,7 @@ class AlignMount(object):
         :return: success
         """
 
-        folder = self.app.mwGlob['configDir'] + '/config'
+        folder = self.app.mwGlob['configDir']
         loadFilePath, fileName, ext = self.openFile(self,
                                                     'Open align build point file',
                                                     folder,
@@ -238,7 +238,7 @@ class AlignMount(object):
         :return: success
         """
 
-        folder = self.app.mwGlob['configDir'] + '/config'
+        folder = self.app.mwGlob['configDir']
         saveFilePath, fileName, ext = self.saveFile(self,
                                                     'Save align build point file',
                                                     folder,

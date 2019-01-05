@@ -265,18 +265,32 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         """
 
         dlg = PyQt5.QtWidgets.QFileDialog()
+        dlg.setOptions(PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog)
         dlg.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
         dlg.setStyleSheet(self.getStyle())
         dlg.setViewMode(PyQt5.QtWidgets.QFileDialog.List)
         dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
         dlg.setModal(True)
+
+        # remove unnecessary widgets from the file selector box
+        dlg.findChildren(PyQt5.QtWidgets.QListView, 'sidebar')[0].setVisible(False)
+        dlg.findChildren(PyQt5.QtWidgets.QComboBox, 'lookInCombo')[0].setVisible(False)
+        dlg.findChildren(PyQt5.QtWidgets.QLabel, 'lookInLabel')[0].setVisible(False)
+        dlg.findChildren(PyQt5.QtWidgets.QWidget, 'backButton')[0].setVisible(False)
+        dlg.findChildren(PyQt5.QtWidgets.QWidget, 'forwardButton')[0].setVisible(False)
+        dlg.findChildren(PyQt5.QtWidgets.QWidget, 'toParentButton')[0].setVisible(False)
+        dlg.findChildren(PyQt5.QtWidgets.QWidget, 'newFolderButton')[0].setVisible(False)
+        dlg.findChildren(PyQt5.QtWidgets.QWidget, 'listModeButton')[0].setVisible(False)
+        dlg.findChildren(PyQt5.QtWidgets.QWidget, 'detailModeButton')[0].setVisible(False)
+
         # position the window to parent in the center
+        width = 400
+        height = 400
         ph = window.geometry().height()
+        pw = window.geometry().width()
         px = window.geometry().x()
         py = window.geometry().y()
-        dw = window.width()
-        dh = window.height()
-        dlg.setGeometry(px, py + ph - dh, dw, dh)
+        dlg.setGeometry(px + 0.5 * (pw - width), py + 0.5 * (ph - height), 400, 400)
         return dlg
 
     def openFile(self, window, title, folder, filterSet):
@@ -293,14 +307,17 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         """
 
         dlg = self.prepareFileDialog(window)
-        options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
-        name, _ = dlg.getOpenFileName(dlg,
-                                      title,
-                                      folder,
-                                      filterSet,
-                                      options=options)
-        short, ext = self.extractNames(name)
-        return name, short, ext
+        dlg.setFilter(PyQt5.QtCore.QDir.Files)
+        dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptOpen)
+
+        dlg.setWindowTitle(title)
+        dlg.setNameFilter(filterSet)
+        dlg.setDirectory(folder)
+
+        dlg.exec_()
+        filePath = dlg.selectedFiles()
+        short, ext = self.extractNames(filePath)
+        return filePath, short, ext
 
     def saveFile(self, window, title, folder, filterSet):
         """
@@ -316,14 +333,17 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         """
 
         dlg = self.prepareFileDialog(window)
-        options = PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog
-        name, _ = dlg.getSaveFileName(dlg,
-                                      title,
-                                      folder,
-                                      filterSet,
-                                      options=options)
-        short, ext = self.extractNames(name)
-        return name, short, ext
+        dlg.setFilter(PyQt5.QtCore.QDir.Files)
+        dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptSave)
+
+        dlg.setWindowTitle(title)
+        dlg.setNameFilter(filterSet)
+        dlg.setDirectory(folder)
+
+        dlg.exec_()
+        filePath = dlg.selectedFiles()
+        short, ext = self.extractNames(filePath)
+        return filePath, short, ext
 
     @staticmethod
     def clickable(widget):

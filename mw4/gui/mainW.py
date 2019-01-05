@@ -344,7 +344,7 @@ class MainWindow(MWidget,
         return filePath
 
     def loadProfile(self):
-        folder = self.app.mwGlob['configDir'] + '/config'
+        folder = self.app.mwGlob['configDir']
         loadFilePath, name, ext = self.openFile(self,
                                                 'Open config file',
                                                 folder,
@@ -361,7 +361,7 @@ class MainWindow(MWidget,
         return True
 
     def saveProfileAs(self):
-        folder = self.app.mwGlob['configDir'] + '/config'
+        folder = self.app.mwGlob['configDir']
         saveFilePath, name, ext = self.saveFile(self,
                                                 'Save config file',
                                                 folder,

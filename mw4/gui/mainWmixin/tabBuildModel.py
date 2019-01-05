@@ -185,7 +185,7 @@ class BuildModel(object):
         :return: success
         """
 
-        folder = self.app.mwGlob['configDir'] + '/config'
+        folder = self.app.mwGlob['configDir']
         loadFilePath, fileName, ext = self.openFile(self,
                                                     'Open build point file',
                                                     folder,
@@ -226,7 +226,7 @@ class BuildModel(object):
         :return: success
         """
 
-        folder = self.app.mwGlob['configDir'] + '/config'
+        folder = self.app.mwGlob['configDir']
         saveFilePath, fileName, ext = self.saveFile(self,
                                                     'Save build point file',
                                                     folder,

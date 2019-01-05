@@ -81,7 +81,7 @@ class SettHorizon(object):
         :return: success
         """
 
-        folder = self.app.mwGlob['configDir'] + '/config'
+        folder = self.app.mwGlob['configDir']
         loadFilePath, fileName, ext = self.openFile(self,
                                                     'Open horizon mask file',
                                                     folder,
@@ -125,7 +125,7 @@ class SettHorizon(object):
         :return: success
         """
 
-        folder = self.app.mwGlob['configDir'] + '/config'
+        folder = self.app.mwGlob['configDir']
         saveFilePath, fileName, ext = self.saveFile(self,
                                                     'Save horizon mask file',
                                                     folder,

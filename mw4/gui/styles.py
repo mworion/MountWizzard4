@@ -519,7 +519,7 @@ class MWStyles(object):
     }
     QFileDialog QListView:disabled {
         background-color: #101010;
-        color: #606060;
+        color: #404040;
         text-align: right;
         border-width: 1px;
         border-color: #404040;

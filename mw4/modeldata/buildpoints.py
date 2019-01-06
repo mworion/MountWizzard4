@@ -563,7 +563,7 @@ class DataPoint(object):
 
         if not 5 <= altBase <= 85:
             return False
-        if not 2 < numberBase < 10:
+        if not 2 < numberBase < 11:
             return False
         if not 0 <= azBase < 360:
             return False

@@ -407,5 +407,13 @@ class ManageModel(object):
         return True
 
     def cancelTargetRMS(self):
+        """
+        cancelTargetRMS just resets the running Flag for RMS target optimization -> enables
+        the stop of optimization.
+
+        :return:
+        """
+
         self.runningTargetRMS = False
         self.changeStyleDynamic(self.ui.cancelTargetRMS, 'cancel', 'true')
+        return True

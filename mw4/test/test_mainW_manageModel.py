@@ -53,6 +53,30 @@ app = mainApp.MountWizzard4(mwGlob=mwGlob)
 spy = PyQt5.QtTest.QSignalSpy(app.message)
 
 
+def test_initConfig_1():
+    app.config['mainW'] = {}
+    app.mainW.initConfig()
+    assert app.mainW.ui.targetRMS.value() == 99
+    assert not app.mainW.ui.checkShowErrorValues.isChecked()
+
+
+def test_storeConfig_1():
+    app.mainW.ui.targetRMS.setValue(33)
+    app.mainW.ui.checkShowErrorValues.setChecked(True)
+    app.mainW.storeConfig()
+    conf = app.config['mainW']
+    assert conf['checkShowErrorValues']
+    assert 33 == conf['targetRMS']
+
+
+def test_setupIcons():
+    assert app.mainW.setupIcons()
+
+
+def test_clearMountGui():
+    assert app.mainW.clearMountGUI()
+
+
 def test_setNameList():
     value = ['Test1', 'test2', 'test3', 'test4']
     app.mount.model.nameList = value
@@ -91,3 +115,204 @@ def test_showModelPolar3():
     suc = app.mainW.showModelPolar()
     assert not suc
 
+
+def test_showModelPolar4():
+    app = mainApp.MountWizzard4(mwGlob=mwGlob)
+    app.mainW.ui.checkShowErrorValues.setChecked(True)
+    app.mount.model.starList = ()
+    suc = app.mainW.showModelPolar()
+    assert not suc
+
+
+def test_refreshName_1():
+    with mock.patch.object(app.mount,
+                           'getNames',
+                           return_value=True):
+        suc = app.mainW.refreshName()
+        assert suc
+        suc = app.mainW.clearRefreshName()
+        assert suc
+
+
+def test_refreshName_2(qtbot):
+    suc = app.mainW.refreshName()
+    assert suc
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.refreshName()
+        assert suc
+        assert ['Model names refreshed', 0] == blocker.args
+
+
+def test_loadName_1(qtbot):
+    with mock.patch.object(app.mainW.ui.nameList,
+                           'currentItem',
+                           return_value=None):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.loadName()
+            assert not suc
+            assert ['No model name selected', 2] == blocker.args
+
+
+def test_loadName_2(qtbot):
+    class Test:
+        pass
+
+        @staticmethod
+        def text():
+            return 'test'
+    with mock.patch.object(app.mainW.ui.nameList,
+                           'currentItem',
+                           return_value=Test):
+        with mock.patch.object(app.mount.model,
+                               'loadName',
+                               return_value=True):
+            with qtbot.waitSignal(app.message) as blocker:
+                suc = app.mainW.loadName()
+                assert suc
+                assert ['Model [test] loaded', 0] == blocker.args
+
+
+def test_loadName_3(qtbot):
+    class Test:
+        pass
+
+        @staticmethod
+        def text():
+            return 'test'
+    with mock.patch.object(app.mainW.ui.nameList,
+                           'currentItem',
+                           return_value=Test):
+        with mock.patch.object(app.mount.model,
+                               'loadName',
+                               return_value=False):
+            with qtbot.waitSignal(app.message) as blocker:
+                suc = app.mainW.loadName()
+                assert not suc
+                assert ['Model [test] cannot be loaded', 2] == blocker.args
+
+
+def test_saveName_1(qtbot):
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('', True)):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.saveName()
+            assert not suc
+            assert ['No model name given', 2] == blocker.args
+
+
+def test_saveName_2(qtbot):
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=(None, True)):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.saveName()
+            assert not suc
+            assert ['No model name given', 2] == blocker.args
+
+
+def test_saveName_3(qtbot):
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('test', False)):
+        with qtbot.assertNotEmitted(app.message):
+            suc = app.mainW.saveName()
+            assert not suc
+
+
+def test_saveName_4(qtbot):
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('test', True)):
+        with mock.patch.object(app.mount.model,
+                               'storeName',
+                               return_value=False):
+            with qtbot.waitSignal(app.message) as blocker:
+                suc = app.mainW.saveName()
+                assert not suc
+                assert ['Model [test] cannot be saved', 2] == blocker.args
+
+
+def test_saveName_5(qtbot):
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=('test', True)):
+        with mock.patch.object(app.mount.model,
+                               'storeName',
+                               return_value=True):
+            with qtbot.waitSignal(app.message) as blocker:
+                suc = app.mainW.saveName()
+                assert suc
+                assert ['Model [test] saved', 0] == blocker.args
+
+
+def test_deleteName_1(qtbot):
+    with mock.patch.object(app.mainW.ui.nameList,
+                           'currentItem',
+                           return_value=None):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.deleteName()
+            assert not suc
+            assert ['No model name selected', 2] == blocker.args
+
+
+def test_deleteName_2(qtbot):
+    class Test:
+        pass
+
+        @staticmethod
+        def text():
+            return 'test'
+    with mock.patch.object(app.mainW.ui.nameList,
+                           'currentItem',
+                           return_value=Test):
+        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                               'question',
+                               return_value=PyQt5.QtWidgets.QMessageBox.No):
+            with qtbot.assertNotEmitted(app.message):
+                suc = app.mainW.deleteName()
+                assert not suc
+
+
+def test_deleteName_3(qtbot):
+    class Test:
+        pass
+
+        @staticmethod
+        def text():
+            return 'test'
+    with mock.patch.object(app.mainW.ui.nameList,
+                           'currentItem',
+                           return_value=Test):
+        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                               'question',
+                               return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+            with mock.patch.object(app.mount.model,
+                                   'deleteName',
+                                   return_value=True):
+                with qtbot.waitSignal(app.message) as blocker:
+                    suc = app.mainW.deleteName()
+                    assert suc
+                    assert ['Model [test] deleted', 0] == blocker.args
+
+
+def test_deleteName_4(qtbot):
+    class Test:
+        pass
+
+        @staticmethod
+        def text():
+            return 'test'
+    with mock.patch.object(app.mainW.ui.nameList,
+                           'currentItem',
+                           return_value=Test):
+        with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                               'question',
+                               return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+            with mock.patch.object(app.mount.model,
+                                   'deleteName',
+                                   return_value=False):
+                with qtbot.waitSignal(app.message) as blocker:
+                    suc = app.mainW.deleteName()
+                    assert not suc
+                    assert ['Model [test] cannot be deleted', 2] == blocker.args

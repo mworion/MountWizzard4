@@ -120,10 +120,7 @@ class ManageModel(object):
         location = self.app.mount.obsSite.location
 
         # check entry conditions for displaying a polar plot
-        if model.starList is None:
-            hasNoStars = True
-        else:
-            hasNoStars = len(model.starList) == 0
+        hasNoStars = model.starList is None or not model.starList
         hasNoLocation = location is None
 
         if hasNoStars or hasNoLocation:
@@ -252,9 +249,10 @@ class ManageModel(object):
         if not suc:
             self.app.message.emit('Model [{0}] cannot be loaded'.format(modelName), 2)
             return False
-        self.app.message.emit('Model [{0}] loaded'.format(modelName), 0)
-        self.refreshModel()
-        return True
+        else:
+            self.app.message.emit('Model [{0}] loaded'.format(modelName), 0)
+            self.refreshModel()
+            return True
 
     def saveName(self):
         """
@@ -281,9 +279,10 @@ class ManageModel(object):
         if not suc:
             self.app.message.emit('Model [{0}] cannot be saved'.format(modelName), 2)
             return False
-        self.app.message.emit('Model [{0}] saved'.format(modelName), 0)
-        self.refreshName()
-        return True
+        else:
+            self.app.message.emit('Model [{0}] saved'.format(modelName), 0)
+            self.refreshName()
+            return True
 
     def deleteName(self):
         """
@@ -311,9 +310,10 @@ class ManageModel(object):
         if not suc:
             self.app.message.emit('Model [{0}] cannot be deleted'.format(modelName), 2)
             return False
-        self.app.message.emit('Model [{0}] deleted'.format(modelName), 0)
-        self.refreshName()
-        return True
+        else:
+            self.app.message.emit('Model [{0}] deleted'.format(modelName), 0)
+            self.refreshName()
+            return True
 
     def clearRefreshModel(self):
         """

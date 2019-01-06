@@ -194,22 +194,35 @@ class ManageModel(object):
 
     def clearRefreshName(self):
         """
+        clearRefreshName is the buddy function for refreshName
 
-        :return:
+        :return: True for test purpose
         """
 
         self.changeStyleDynamic(self.ui.refreshName, 'running', 'false')
         self.ui.deleteWorstPoint.setEnabled(True)
+        self.ui.runTargetRMS.setEnabled(True)
+        self.ui.cancelTargetRMS.setEnabled(True)
+        self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.namesDone.disconnect(self.clearRefreshName)
+        return True
 
     def refreshName(self):
         """
+        refreshName disables interfering functions in gui and start reloading the
+        names list for model in the mount computer. it connects a link to clearRefreshNames
+        which enables the former disabled gui buttons and removes the link to the method.
+        after it triggers the refresh of names, it finished, because behaviour is event
+        driven
 
-        :return:
+        :return: True for test purpose
         """
 
         self.app.mount.signals.namesDone.connect(self.clearRefreshName)
         self.ui.deleteWorstPoint.setEnabled(False)
+        self.ui.runTargetRMS.setEnabled(False)
+        self.ui.cancelTargetRMS.setEnabled(False)
+        self.ui.clearModel.setEnabled(False)
         self.changeStyleDynamic(self.ui.refreshName, 'running', 'true')
         self.app.mount.getNames()
-
+        return True

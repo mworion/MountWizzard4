@@ -125,6 +125,30 @@ class SplashScreen(PyQt5.QtCore.QObject):
             self._qapp.processEvents()
 
 
+class MyApp(PyQt5.QtWidgets.QApplication):
+    """
+    MyApp implements a custom notify handler to log errors, when C++ classes and python
+    wrapper in PyQt5 environment mismatch. mostly this relates to the situation when a
+    C++ object is already deleted, but the python wrapper still exists. so far I know
+    that's the only chance to log this issues.
+
+    """
+
+    def notify(self, obj, event):
+        try:
+            returnValue = PyQt5.QtWidgets.QApplication.notify(self, obj, event)
+        except Exception as e:
+            logging.error('----------------------------------------------------')
+            logging.error('Event: {0}'.format(event))
+            logging.error('EventType: {0}'.format(event.type()))
+            logging.error('Exception error in event loop: {0}'.format(e))
+            logging.error('----------------------------------------------------')
+            returnValue = False
+        finally:
+            pass
+        return returnValue
+
+
 def except_hook(typeException, valueException, tbackException):
     """
     except_hook implements a wrapper around except hook to log uncatched exceptions to the
@@ -225,7 +249,10 @@ def main():
 
     # now instantiate the application from QApplication
     PyQt5.QtWidgets.QApplication.setAttribute(PyQt5.QtCore.Qt.AA_EnableHighDpiScaling, True)
-    app = PyQt5.QtWidgets.QApplication(sys.argv)
+
+    # implement notify different to catch exception from event handler
+    app = MyApp(sys.argv)
+    # app = PyQt5.QtWidgets.QApplication(sys.argv)
     # setting a splash pixel map for loading
     splash_pix = PyQt5.QtGui.QPixmap(':/mw4.ico')
     splash = SplashScreen(pix=splash_pix, qapp=app)

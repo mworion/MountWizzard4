@@ -367,8 +367,6 @@ class ManageModel(object):
             wStar = mount.model.starList[wIndex]
             suc = mount.model.deletePoint(wStar.number)
             if not suc:
-                # todo: why sometime a deletion does not work, but when proceeding it's OK
-                # todo: actually increased timeout time from 2 to 5 secs
                 self.runningTargetRMS = False
                 self.app.message.emit(f'Star [{wStar.number}] cannot be deleted', 2)
             else:

@@ -316,3 +316,10 @@ def test_deleteName_4(qtbot):
                     suc = app.mainW.deleteName()
                     assert not suc
                     assert ['Model [test] cannot be deleted', 2] == blocker.args
+
+
+def test_cancelTargetRMS():
+    app.mainW.runningTargetRMS = True
+    suc = app.mainW.cancelTargetRMS()
+    assert suc
+    assert not app.mainW.runningTargetRMS

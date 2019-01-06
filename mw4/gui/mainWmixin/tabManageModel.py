@@ -328,7 +328,7 @@ class ManageModel(object):
         self.ui.cancelTargetRMS.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
-        self.app.message.emit('Model names refreshed', 0)
+        self.app.message.emit('Align model data refreshed', 0)
         return True
 
     def refreshModel(self):

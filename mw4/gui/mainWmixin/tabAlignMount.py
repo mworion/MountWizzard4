@@ -51,7 +51,7 @@ class AlignMount(object):
         self.ui.alignBuildPFileName.setText(config.get('alignBuildPFileName', ''))
         self.ui.altBase.setValue(config.get('altBase', 30))
         self.ui.azBase.setValue(config.get('azBase', 45))
-        self.ui.numberBase.setValue(config.get('numberBase', 30))
+        self.ui.numberBase.setValue(config.get('numberBase', 3))
         return True
 
     def storeConfig(self):

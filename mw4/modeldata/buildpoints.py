@@ -571,7 +571,7 @@ class DataPoint(object):
         azBase = int(azBase)
         numberBase = int(numberBase)
 
-        stepAz = int(360 / numberBase)
+        stepAz = int(360 / (numberBase - 1))
 
         self.clearBuildP()
         for az in range(azBase, 360 + azBase, stepAz):

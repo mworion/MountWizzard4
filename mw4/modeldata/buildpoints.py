@@ -579,7 +579,7 @@ class DataPoint(object):
         for i in range(0, numberBase):
             az = azBase + i * stepAz
             if az > 360:
-            self.addBuildP((altBase, az % 360))
+                self.addBuildP((altBase, az % 360))
         return True
 
     def generateCelestialEquator(self):

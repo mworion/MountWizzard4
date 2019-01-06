@@ -43,7 +43,10 @@ class ManageModel(object):
 
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
         self.ui.refreshName.clicked.connect(self.refreshName)
+        self.ui.refreshModel.clicked.connect(self.refreshModel)
         self.ui.loadName.clicked.connect(self.loadName)
+        self.ui.saveName.clicked.connect(self.saveName)
+        self.ui.deleteName.clicked.connect(self.deleteName)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -233,8 +236,11 @@ class ManageModel(object):
 
     def loadName(self):
         """
+        loadName take the given name and loads the stored model as the actual alignment
+        model for the mount. after that it refreshes the alignment model data in
+        mountwizzard
 
-        :return:
+        :return: success
         """
 
         if self.ui.nameList.currentItem() is None:
@@ -247,6 +253,65 @@ class ManageModel(object):
             return False
         self.app.message.emit('Model [{0}] loaded'.format(modelName), 0)
         self.refreshModel()
+        return True
+
+    def saveName(self):
+        """
+        saveName take the given name and saves the actual alignment model to the model
+        database in the mount computer. after that it refreshes the list of the alignment
+        model names in mountwizzard.
+
+        :return: success
+        """
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        modelName, ok = dlg.getText(self,
+                                    'Save model',
+                                    'New model name',
+                                    PyQt5.QtWidgets.QLineEdit.Normal,
+                                    '',
+                                    )
+        if modelName is None or not modelName:
+            self.app.message.emit('No model name given', 2)
+            return False
+        if not ok:
+            return False
+        suc = self.app.mount.model.storeName(modelName)
+        if not suc:
+            self.app.message.emit('Model [{0}] cannot be saved'.format(modelName), 2)
+            return False
+        self.app.message.emit('Model [{0}] saved'.format(modelName), 0)
+        self.refreshName()
+        return True
+
+    def deleteName(self):
+        """
+        deleteName take the given name and deletes it from the model database in the
+        mount computer. after that it refreshes the list of the alignment model names in
+        mountwizzard.
+
+        :return: success
+        """
+
+        if self.ui.nameList.currentItem() is None:
+            self.app.message.emit('No model name selected', 2)
+            return False
+        modelName = self.ui.nameList.currentItem().text()
+        msg = PyQt5.QtWidgets.QMessageBox
+        reply = msg.question(self,
+                             'Delete model',
+                             'Delete model from database?',
+                             msg.Yes | msg.No,
+                             msg.No,
+                             )
+        if reply != msg.Yes:
+            return False
+        suc = self.app.mount.model.deleteName(modelName)
+        if not suc:
+            self.app.message.emit('Model [{0}] cannot be deleted'.format(modelName), 2)
+            return False
+        self.app.message.emit('Model [{0}] deleted'.format(modelName), 0)
+        self.refreshName()
         return True
 
     def clearRefreshModel(self):
@@ -283,4 +348,5 @@ class ManageModel(object):
         self.ui.clearModel.setEnabled(False)
         self.changeStyleDynamic(self.ui.refreshModel, 'running', 'true')
         self.app.mount.getAlign()
+        return True
 

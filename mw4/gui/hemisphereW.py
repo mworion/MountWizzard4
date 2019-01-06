@@ -103,7 +103,6 @@ class HemisphereWindow(widget.MWidget):
         # for the stars in background
         self.hemisphereMatS = self.embedMatplot(self.ui.hemisphereS)
         self.hemisphereMatS.parentWidget().setStyleSheet(self.BACK)
-        self.ui.hemisphereS.setVisible(True)
         self.clearRect(self.hemisphereMatS, False)
 
         # signals for gui
@@ -154,6 +153,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowMeridian.setChecked(config.get('checkShowMeridian', False))
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
+        self.clearHemisphere()
         if config.get('showStatus'):
             self.showWindow()
         return True

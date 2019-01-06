@@ -37,6 +37,7 @@ class ManageModel(object):
     """
 
     def __init__(self):
+        self.runningTargetRMS = False
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPolar)
         ms.namesDone.connect(self.setNameList)
@@ -47,6 +48,8 @@ class ManageModel(object):
         self.ui.loadName.clicked.connect(self.loadName)
         self.ui.saveName.clicked.connect(self.saveName)
         self.ui.deleteName.clicked.connect(self.deleteName)
+        self.ui.runTargetRMS.clicked.connect(self.runTargetRMS)
+        self.ui.cancelTargetRMS.clicked.connect(self.cancelTargetRMS)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -204,7 +207,6 @@ class ManageModel(object):
         """
 
         self.changeStyleDynamic(self.ui.refreshName, 'running', 'false')
-        self.ui.refreshModel.setEnabled(True)
         self.ui.deleteName.setEnabled(True)
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
@@ -224,7 +226,6 @@ class ManageModel(object):
         """
 
         self.app.mount.signals.namesDone.connect(self.clearRefreshName)
-        self.ui.refreshModel.setEnabled(False)
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
         self.ui.loadName.setEnabled(False)
@@ -339,12 +340,54 @@ class ManageModel(object):
         :return: True for test purpose
         """
 
+        self.changeStyleDynamic(self.ui.refreshModel, 'running', 'true')
         self.app.mount.signals.alignDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.runTargetRMS.setEnabled(False)
         self.ui.cancelTargetRMS.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
-        self.changeStyleDynamic(self.ui.refreshModel, 'running', 'true')
         self.app.mount.getAlign()
         return True
 
+    def clearRunTargetRMS(self):
+        """
+        clearRunTargetRMS is the buddy function for runTargetRMS
+
+        :return: True for test purpose
+        """
+
+        if self.runningTargetRMS:
+            self.app.mount.getAlign()
+        else:
+            self.changeStyleDynamic(self.ui.runTargetRMS, 'running', 'false')
+            self.ui.deleteWorstPoint.setEnabled(True)
+            self.ui.clearModel.setEnabled(True)
+            self.ui.refreshModel.setEnabled(True)
+            self.app.mount.signals.alignDone.disconnect(self.clearRunTargetRMS)
+            self.app.message.emit('Optimizing done', 0)
+            self.changeStyleDynamic(self.ui.cancelTargetRMS, 'cancel', 'false')
+        return True
+
+    def runTargetRMS(self):
+        """
+        refreshModel disables interfering functions in gui and start reloading the
+        alignment model from the mount computer. it connects a link to clearRefreshModel
+        which enables the former disabled gui buttons and removes the link to the method.
+        after it triggers the refresh of names, it finished, because behaviour is event
+        driven
+
+        :return: True for test purpose
+        """
+
+        self.runningTargetRMS = True
+        self.app.mount.signals.alignDone.connect(self.clearRunTargetRMS)
+        self.ui.deleteWorstPoint.setEnabled(False)
+        self.ui.clearModel.setEnabled(False)
+        self.ui.refreshModel.setEnabled(False)
+        self.changeStyleDynamic(self.ui.runTargetRMS, 'running', 'true')
+        self.clearRunTargetRMS()
+        return True
+
+    def cancelTargetRMS(self):
+        self.runningTargetRMS = False
+        self.changeStyleDynamic(self.ui.cancelTargetRMS, 'cancel', 'true')

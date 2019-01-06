@@ -306,8 +306,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.getFW()
             self.mount.getLocation()
             self.mount.cycleSetting()
-            self.mount.getNames()
-            self.mount.getAlign()
+            self.mainW.refreshName()
+            self.mainW.refreshModel()
             return True
         else:
             location = self.mount.obsSite.location

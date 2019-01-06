@@ -71,22 +71,6 @@ def test_genBuildGrid_2():
     assert not suc
 
 
-def test_genAlignBuild_1():
-    app.mainW.ui.altBase.setValue(50)
-    app.mainW.ui.azBase.setValue(30)
-    app.mainW.ui.numberBase.setValue(5)
-    suc = app.mainW.genAlignBuild()
-    assert suc
-
-
-def test_genAlignBuild_2():
-    app.mainW.ui.altBase.setValue(50)
-    app.mainW.ui.azBase.setValue(30)
-    app.mainW.ui.numberBase.setValue(30)
-    suc = app.mainW.genAlignBuild()
-    assert not suc
-
-
 def test_genBuildMax_1(qtbot):
     app.mainW.ui.checkAutoDeletePoints.setChecked(False)
     with qtbot.assertNotEmitted(app.message):

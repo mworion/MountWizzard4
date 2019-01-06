@@ -198,6 +198,22 @@ def test_genAlignBuildFile_4(qtbot):
         assert suc
 
 
+def test_genAlignBuild_1():
+    app.mainW.ui.altBase.setValue(50)
+    app.mainW.ui.azBase.setValue(30)
+    app.mainW.ui.numberBase.setValue(5)
+    suc = app.mainW.genAlignBuild()
+    assert suc
+
+
+def test_genAlignBuild_2():
+    app.mainW.ui.altBase.setValue(50)
+    app.mainW.ui.azBase.setValue(30)
+    app.mainW.ui.numberBase.setValue(30)
+    suc = app.mainW.genAlignBuild()
+    assert suc
+
+
 def test_updateAlignGui_numberStars():
     with mock.patch.object(app.mainW, 'showModelPolar') as mMock:
         mMock.return_value.showModelPolar.return_value = None

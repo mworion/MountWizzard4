@@ -204,11 +204,10 @@ class ManageModel(object):
         """
 
         self.changeStyleDynamic(self.ui.refreshName, 'running', 'false')
-        self.ui.deleteWorstPoint.setEnabled(True)
-        self.ui.runTargetRMS.setEnabled(True)
-        self.ui.cancelTargetRMS.setEnabled(True)
-        self.ui.clearModel.setEnabled(True)
         self.ui.refreshModel.setEnabled(True)
+        self.ui.deleteName.setEnabled(True)
+        self.ui.saveName.setEnabled(True)
+        self.ui.loadName.setEnabled(True)
         self.app.mount.signals.namesDone.disconnect(self.clearRefreshName)
         self.app.message.emit('Model names refreshed', 0)
         return True
@@ -225,11 +224,10 @@ class ManageModel(object):
         """
 
         self.app.mount.signals.namesDone.connect(self.clearRefreshName)
-        self.ui.deleteWorstPoint.setEnabled(False)
-        self.ui.runTargetRMS.setEnabled(False)
-        self.ui.cancelTargetRMS.setEnabled(False)
-        self.ui.clearModel.setEnabled(False)
         self.ui.refreshModel.setEnabled(False)
+        self.ui.deleteName.setEnabled(False)
+        self.ui.saveName.setEnabled(False)
+        self.ui.loadName.setEnabled(False)
         self.changeStyleDynamic(self.ui.refreshName, 'running', 'true')
         self.app.mount.getNames()
         return True

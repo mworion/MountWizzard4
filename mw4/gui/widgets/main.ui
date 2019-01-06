@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5740,9 +5740,9 @@ manually</string>
     <widget class="QLabel" name="label_206">
      <property name="geometry">
       <rect>
-       <x>125</x>
+       <x>105</x>
        <y>225</y>
-       <width>101</width>
+       <width>121</width>
        <height>26</height>
       </rect>
      </property>
@@ -5752,7 +5752,7 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>Number of points</string>
+      <string>Numver points (3-10)</string>
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="numberBase">

@@ -54,12 +54,14 @@ class ManageModel(object):
     def initConfig(self):
         config = self.app.config['mainW']
         self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
+        self.ui.targetRMS.setValue(config.get('targetRMS', 99))
         self.showModelPolar()
         return True
 
     def storeConfig(self):
         config = self.app.config['mainW']
         config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
+        config['targetRMS'] = self.ui.targetRMS.value()
         return True
 
     def setupIcons(self):
@@ -356,16 +358,31 @@ class ManageModel(object):
         :return: True for test purpose
         """
 
+        mount = self.app.mount
+        if mount.model.errorRMS < self.ui.targetRMS.value():
+            self.runningTargetRMS = False
+
         if self.runningTargetRMS:
-            self.app.mount.getAlign()
+            wIndex = mount.model.starList.index(max(mount.model.starList))
+            wStar = mount.model.starList[wIndex]
+            suc = mount.model.deletePoint(wStar.number)
+            if not suc:
+                # todo: why sometime a deletion does not work, but when proceeding it's OK
+                # todo: actually increased timeout time from 2 to 5 secs
+                self.runningTargetRMS = False
+                self.app.message.emit(f'Star [{wStar.number}] cannot be deleted', 2)
+            else:
+                text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
+                self.app.message.emit(text, 0)
+            mount.getAlign()
         else:
             self.changeStyleDynamic(self.ui.runTargetRMS, 'running', 'false')
             self.ui.deleteWorstPoint.setEnabled(True)
             self.ui.clearModel.setEnabled(True)
             self.ui.refreshModel.setEnabled(True)
-            self.app.mount.signals.alignDone.disconnect(self.clearRunTargetRMS)
-            self.app.message.emit('Optimizing done', 0)
+            mount.signals.alignDone.disconnect(self.clearRunTargetRMS)
             self.changeStyleDynamic(self.ui.cancelTargetRMS, 'cancel', 'false')
+            self.app.message.emit('Optimizing done', 0)
         return True
 
     def runTargetRMS(self):
@@ -379,6 +396,7 @@ class ManageModel(object):
         :return: True for test purpose
         """
 
+        self.app.message.emit('Start optimizing model', 0)
         self.runningTargetRMS = True
         self.app.mount.signals.alignDone.connect(self.clearRunTargetRMS)
         self.ui.deleteWorstPoint.setEnabled(False)

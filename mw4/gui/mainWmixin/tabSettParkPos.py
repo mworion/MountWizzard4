@@ -47,7 +47,7 @@ class SettParkPos(object):
     def initConfig(self):
         config = self.app.config['mainW']
         for i, textField in enumerate(self.posTexts):
-            keyConfig = 'pos{0:1d}buttonText'.format(i)
+            keyConfig = 'posText{0:1d}'.format(i)
             textField.setText(config.get(keyConfig, 'Park Pos {0:1d}'.format(i)))
         for i, textField in enumerate(self.posAlt):
             keyConfig = 'posAlt{0:1d}'.format(i)
@@ -61,7 +61,7 @@ class SettParkPos(object):
     def storeConfig(self):
         config = self.app.config['mainW']
         for i, textField in enumerate(self.posTexts):
-            keyConfig = 'pos{0:1d}buttonText'.format(i)
+            keyConfig = 'posText{0:1d}'.format(i)
             config[keyConfig] = textField.text()
         for i, textField in enumerate(self.posAlt):
             keyConfig = 'posAlt{0:1d}'.format(i)
@@ -115,8 +115,8 @@ class SettParkPos(object):
                                             self.posAz,
                                             ):
             if button == self.sender():
-                print('slewing to {0}: {1}, {2}'.format(posText.text(),
-                                                        alt.text(),
-                                                        az.text(),
-                                                        )
-                      )
+                suc = self.app.mount.obsSite.slewAltAz(alt_degrees=alt,
+                                                       az_degrees=az,
+                                                       slewType='normal')
+                return suc
+        return False

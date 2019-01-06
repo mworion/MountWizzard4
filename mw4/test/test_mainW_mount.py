@@ -53,6 +53,16 @@ app = mainApp.MountWizzard4(mwGlob=mwGlob)
 spy = PyQt5.QtTest.QSignalSpy(app.message)
 
 
+def test_initConfig_1():
+    config = app.config['mainW']
+    for i in range(0, 8):
+        config[f'posText{i:1d}'] = 'test'
+        config[f'posAlt{i:1d}'] = str(i)
+        config[f'posAz{i:1d}'] = str(i)
+    app.mainW.initConfig()
+    assert app.mainW.ui.posText0.text() == 'test'
+
+
 def test_updatePointGui_alt():
     value = '45'
     app.mount.obsSite.Alt = value
@@ -401,3 +411,45 @@ def test_setSolarTracking2(qtbot):
             suc = app.mainW.setSolarTracking()
             assert not suc
         assert ['Cannot set tracking to Solar', 2] == blocker.args
+
+
+def test_slewParkPos_1(qtbot):
+    buttons = range(0, 8)
+    app.mainW.posButtons = buttons
+    with mock.patch.object(app.mount.obsSite,
+                           'slewAltAz',
+                           return_value=True):
+        for button in buttons:
+            with mock.patch.object(app.mainW,
+                                   'sender',
+                                   return_value=button):
+                suc = app.mainW.slewToParkPos()
+                assert suc
+
+
+def test_slewParkPos_2(qtbot):
+    buttons = range(0, 8)
+    app.mainW.posButtons = buttons
+    with mock.patch.object(app.mount.obsSite,
+                           'slewAltAz',
+                           return_value=False):
+        for button in buttons:
+            with mock.patch.object(app.mainW,
+                                   'sender',
+                                   return_value=button):
+                suc = app.mainW.slewToParkPos()
+                assert not suc
+
+
+def test_slewParkPos_3(qtbot):
+    buttons = range(0, 8)
+    app.mainW.posButtons = buttons
+    with mock.patch.object(app.mount.obsSite,
+                           'slewAltAz',
+                           return_value=False):
+        for button in buttons:
+            with mock.patch.object(app.mainW,
+                                   'sender',
+                                   return_value=None):
+                suc = app.mainW.slewToParkPos()
+                assert not suc

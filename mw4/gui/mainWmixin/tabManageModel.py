@@ -42,6 +42,7 @@ class ManageModel(object):
         ms.namesDone.connect(self.setNameList)
 
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
+        self.ui.refreshName.clicked.connect(self.refreshName)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -190,3 +191,25 @@ class ManageModel(object):
         axes.set_rmin(0)
         axes.figure.canvas.draw()
         return True
+
+    def clearRefreshName(self):
+        """
+
+        :return:
+        """
+
+        self.changeStyleDynamic(self.ui.refreshName, 'running', 'false')
+        self.ui.deleteWorstPoint.setEnabled(True)
+        self.app.mount.signals.namesDone.disconnect(self.clearRefreshName)
+
+    def refreshName(self):
+        """
+
+        :return:
+        """
+
+        self.app.mount.signals.namesDone.connect(self.clearRefreshName)
+        self.ui.deleteWorstPoint.setEnabled(False)
+        self.changeStyleDynamic(self.ui.refreshName, 'running', 'true')
+        self.app.mount.getNames()
+

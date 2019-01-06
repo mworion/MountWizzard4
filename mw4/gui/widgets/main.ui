@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -16392,9 +16392,9 @@ manually</string>
   <widget class="QPushButton" name="mountOff">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>530</x>
      <y>85</y>
-     <width>56</width>
+     <width>66</width>
      <height>26</height>
     </rect>
    </property>
@@ -16415,7 +16415,7 @@ manually</string>
     <rect>
      <x>450</x>
      <y>85</y>
-     <width>56</width>
+     <width>71</width>
      <height>26</height>
     </rect>
    </property>
@@ -16723,82 +16723,6 @@ manually</string>
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="weatherForecastIcon">
-   <property name="geometry">
-    <rect>
-     <x>510</x>
-     <y>86</y>
-     <width>25</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="layoutDirection">
-    <enum>Qt::LeftToRight</enum>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Box</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Sunken</enum>
-   </property>
-   <property name="lineWidth">
-    <number>1</number>
-   </property>
-   <property name="midLineWidth">
-    <number>0</number>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="weatherForecast">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>63</y>
-     <width>146</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>9</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="mouseTracking">
-    <bool>false</bool>
-   </property>
-   <property name="focusPolicy">
-    <enum>Qt::NoFocus</enum>
-   </property>
-   <property name="acceptDrops">
-    <bool>false</bool>
-   </property>
-   <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Actual used profile&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="text">
-    <string>weather forecast</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="readOnly">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="timeComputer">
    <property name="enabled">
     <bool>false</bool>
@@ -16806,7 +16730,7 @@ manually</string>
    <property name="geometry">
     <rect>
      <x>450</x>
-     <y>10</y>
+     <y>30</y>
      <width>146</width>
      <height>51</height>
     </rect>

@@ -43,6 +43,7 @@ class ManageModel(object):
 
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
         self.ui.refreshName.clicked.connect(self.refreshName)
+        self.ui.loadName.clicked.connect(self.loadName)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -204,7 +205,9 @@ class ManageModel(object):
         self.ui.runTargetRMS.setEnabled(True)
         self.ui.cancelTargetRMS.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
+        self.ui.refreshModel.setEnabled(True)
         self.app.mount.signals.namesDone.disconnect(self.clearRefreshName)
+        self.app.message.emit('Model names refreshed', 0)
         return True
 
     def refreshName(self):
@@ -223,6 +226,61 @@ class ManageModel(object):
         self.ui.runTargetRMS.setEnabled(False)
         self.ui.cancelTargetRMS.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
+        self.ui.refreshModel.setEnabled(False)
         self.changeStyleDynamic(self.ui.refreshName, 'running', 'true')
         self.app.mount.getNames()
         return True
+
+    def loadName(self):
+        """
+
+        :return:
+        """
+
+        if self.ui.nameList.currentItem() is None:
+            self.app.message.emit('No model name selected', 2)
+            return False
+        modelName = self.ui.nameList.currentItem().text()
+        suc = self.app.mount.model.loadName(modelName)
+        if not suc:
+            self.app.message.emit('Model [{0}] cannot be loaded'.format(modelName), 2)
+            return False
+        self.app.message.emit('Model [{0}] loaded'.format(modelName), 0)
+        self.refreshModel()
+        return True
+
+    def clearRefreshModel(self):
+        """
+        clearRefreshModel is the buddy function for refreshModel
+
+        :return: True for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.refreshModel, 'running', 'false')
+        self.ui.deleteWorstPoint.setEnabled(True)
+        self.ui.runTargetRMS.setEnabled(True)
+        self.ui.cancelTargetRMS.setEnabled(True)
+        self.ui.clearModel.setEnabled(True)
+        self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
+        self.app.message.emit('Model names refreshed', 0)
+        return True
+
+    def refreshModel(self):
+        """
+        refreshModel disables interfering functions in gui and start reloading the
+        alignment model from the mount computer. it connects a link to clearRefreshModel
+        which enables the former disabled gui buttons and removes the link to the method.
+        after it triggers the refresh of names, it finished, because behaviour is event
+        driven
+
+        :return: True for test purpose
+        """
+
+        self.app.mount.signals.alignDone.connect(self.clearRefreshModel)
+        self.ui.deleteWorstPoint.setEnabled(False)
+        self.ui.runTargetRMS.setEnabled(False)
+        self.ui.cancelTargetRMS.setEnabled(False)
+        self.ui.clearModel.setEnabled(False)
+        self.changeStyleDynamic(self.ui.refreshModel, 'running', 'true')
+        self.app.mount.getAlign()
+

@@ -77,7 +77,7 @@ class MainWindow(MWidget,
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
-        self.setWindowTitle('MountWizzard4   (' + self.app.mwGlob['modeldata'] + ')')
+        self.setWindowTitle('MountWizzard4')
 
         # local init of following
         Mount.__init__(self)

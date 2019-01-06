@@ -103,10 +103,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # write basic data to message window
         self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('build: [{0}]'.format(self.version), 1)
+        self.message.emit('build version: [{0}]'.format(self.version), 1)
+        verMC = self.mount.version
+        verIB = self.environment.client.version
+        self.message.emit('mountcontrol version: [{0}]'.format(verMC), 1)
+        self.message.emit('indibase version: [{0}]'.format(verIB), 1)
         self.message.emit('Workdir is: [{0}]'.format(self.mwGlob['workDir']), 1)
         profile = self.config.get('profileName', '-')
-        self.message.emit('Profile [{0}] loaded'.format(profile), 1)
+        self.message.emit('Profile [{0}] loaded'.format(profile), 0)
 
         # link cross widget gui signals
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)

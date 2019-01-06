@@ -553,7 +553,9 @@ class DataPoint(object):
 
     def genAlign(self, altBase=30, azBase=10, numberBase=3):
         """
-        genAlign generates a number of initial points for the first step of modeling
+        genAlign generates a number of initial points for the first step of modeling. it
+        adjusts the first align point in a matter, that the starting point is the closest
+        to az = 0.
 
         :param altBase:
         :param azBase:
@@ -567,14 +569,16 @@ class DataPoint(object):
             return False
         if not 0 <= azBase < 360:
             return False
+
+        stepAz = int(360 / numberBase)
         altBase = int(altBase)
-        azBase = int(azBase)
+        azBase = int(azBase) % stepAz
         numberBase = int(numberBase)
 
-        stepAz = int(360 / (numberBase - 1))
-
         self.clearBuildP()
-        for az in range(azBase, 360 + azBase, stepAz):
+        for i in range(0, numberBase):
+            az = azBase + i * stepAz
+            if az > 360:
             self.addBuildP((altBase, az % 360))
         return True
 

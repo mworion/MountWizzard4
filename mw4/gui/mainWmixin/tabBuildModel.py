@@ -34,10 +34,10 @@ class BuildModel(object):
 
     def __init__(self):
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
-        self.ui.numberGridPointsCol.editingFinished.connect(self.genBuildGrid)
-        self.ui.numberGridPointsRow.editingFinished.connect(self.genBuildGrid)
-        self.ui.altitudeMin.editingFinished.connect(self.genBuildGrid)
-        self.ui.altitudeMax.editingFinished.connect(self.genBuildGrid)
+        self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
+        self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
+        self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
+        self.ui.altitudeMax.valueChanged.connect(self.genBuildGrid)
         self.ui.genBuildMax.clicked.connect(self.genBuildMax)
         self.ui.genBuildMed.clicked.connect(self.genBuildMed)
         self.ui.genBuildNorm.clicked.connect(self.genBuildNorm)

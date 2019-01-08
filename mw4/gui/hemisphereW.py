@@ -470,7 +470,6 @@ class HemisphereWindow(widget.MWidget):
         """
 
         self.pointsBuild = None
-        self.pointsBuildAnnotate = list()
         self.app.data.clearBuildP()
         self.drawHemisphere()
 

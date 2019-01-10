@@ -34,6 +34,7 @@ from mw4.relay import kmRelay
 from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
 from mw4.environ import environ
+from mw4 import measuredata
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -97,6 +98,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.hipparcos = hipparcos.Hipparcos(self,
                                              mwGlob=self.mwGlob,
                                              )
+        self.measure = measuredata.MeasureData(self)
         # get the window widgets up
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
@@ -317,16 +319,3 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.resetData()
             self.mount.obsSite.location = location
             return False
-
-    def clearData(self):
-        data = self.measureW.data
-        data['time'] = list()
-        data['y'] = list()
-
-    def appendData(self):
-        obs = self.mount.obsSite
-        data = self.measureW.data
-        if obs.raJNow is None:
-            return
-        data['time'].append(obs.timeJD.utc_strftime('%H:%M:%S'))
-        data['y'].append(obs.raJNow.hours)

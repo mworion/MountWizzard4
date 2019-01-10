@@ -42,6 +42,7 @@ class MeasureWindow(widget.MWidget):
     logger = logging.getLogger(__name__)
 
     BACK = 'background-color: transparent;'
+    CYCLE_UPDATE_TASK = 1000
 
     def __init__(self, app):
         super().__init__()
@@ -64,6 +65,11 @@ class MeasureWindow(widget.MWidget):
         self.measureMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.measureMat, True)
         self.initConfig()
+
+        self.timerTask = PyQt5.QtCore.QTimer()
+        self.timerTask.setSingleShot(False)
+        self.timerTask.timeout.connect(self.drawMeasure)
+        self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
     def initConfig(self):
         if 'measureW' not in self.app.config:
@@ -205,10 +211,12 @@ class MeasureWindow(widget.MWidget):
             return False
         if not self.data:
             return False
-        axes.plot(self.data['time'],
-                  self.data['y'],
+        axes.autoscale_view(scalex=True, scaley=True)
+        data = self.app.measure.mData
+        axes.plot(data['time'][-50:],
+                  data['y'][-50:],
                   marker='o',
-                  markersize=9,
+                  markersize=5,
                   fillstyle='none',
                   color='#E0E0E0',
                   )

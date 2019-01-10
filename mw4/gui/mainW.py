@@ -292,6 +292,7 @@ class MainWindow(MWidget,
         :return: success
         """
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+        self.app.appendData()
         return True
 
     def updateTask(self):

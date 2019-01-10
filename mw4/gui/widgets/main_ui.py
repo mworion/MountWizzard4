@@ -5906,13 +5906,13 @@ class Ui_MainWindow(object):
         self.label_102.setFont(font)
         self.label_102.setObjectName("label_102")
         self.mountOff = QtWidgets.QPushButton(MainWindow)
-        self.mountOff.setGeometry(QtCore.QRect(530, 85, 66, 26))
+        self.mountOff.setGeometry(QtCore.QRect(545, 85, 51, 26))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.mountOff.setFont(font)
         self.mountOff.setObjectName("mountOff")
         self.mountOn = QtWidgets.QPushButton(MainWindow)
-        self.mountOn.setGeometry(QtCore.QRect(450, 85, 71, 26))
+        self.mountOn.setGeometry(QtCore.QRect(450, 85, 56, 26))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.mountOn.setFont(font)
@@ -6036,6 +6036,12 @@ class Ui_MainWindow(object):
         self.timeComputer.setReadOnly(True)
         self.timeComputer.setProperty("large", True)
         self.timeComputer.setObjectName("timeComputer")
+        self.measure = QtWidgets.QPushButton(MainWindow)
+        self.measure.setGeometry(QtCore.QRect(510, 85, 31, 26))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.measure.setFont(font)
+        self.measure.setObjectName("measure")
 
         self.retranslateUi(MainWindow)
         self.mainTabWidget.setCurrentIndex(4)
@@ -6903,6 +6909,8 @@ class Ui_MainWindow(object):
         self.openAnalyseW.setText(_translate("MainWindow", "Analyse"))
         self.timeComputer.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:400;\">Altitude</span></p></body></html>"))
         self.timeComputer.setText(_translate("MainWindow", "time"))
+        self.measure.setToolTip(_translate("MainWindow", "<html><head/><body><p>Send shutdown command to the mount.</p></body></html>"))
+        self.measure.setText(_translate("MainWindow", "M"))
 
 
 if __name__ == "__main__":

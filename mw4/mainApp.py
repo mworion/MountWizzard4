@@ -29,6 +29,7 @@ from mountcontrol import qtmount
 from mw4.gui import mainW
 from mw4.gui import messageW
 from mw4.gui import hemisphereW
+from mw4.gui import measureW
 from mw4.relay import kmRelay
 from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
@@ -100,6 +101,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
         self.messageW = messageW.MessageWindow(self)
+        self.measureW = measureW.MeasureWindow(self)
 
         # write basic data to message window
         self.message.emit('MountWizzard4 started', 1)
@@ -115,6 +117,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # link cross widget gui signals
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
         self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
+        self.mainW.ui.measure.clicked.connect(self.measureW.showWindow)
 
         # starting mount communication
         self.mount.startTimers()
@@ -314,3 +317,16 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.resetData()
             self.mount.obsSite.location = location
             return False
+
+    def clearData(self):
+        data = self.measureW.data
+        data['time'] = list()
+        data['y'] = list()
+
+    def appendData(self):
+        obs = self.mount.obsSite
+        data = self.measureW.data
+        if obs.raJNow is None:
+            return
+        data['time'].append(obs.timeJD.utc_strftime('%H:%M:%S'))
+        data['y'].append(obs.raJNow.hours)

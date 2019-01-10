@@ -27,7 +27,7 @@ import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 # local import
 from mw4.gui import widget
-from mw4.gui.widgets import hemisphere_ui
+from mw4.gui.widgets import measure_ui
 
 
 class MeasureWindow(widget.MWidget):
@@ -41,23 +41,28 @@ class MeasureWindow(widget.MWidget):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
-    CYCLE_GUI = 3000
     BACK = 'background-color: transparent;'
 
     def __init__(self, app):
         super().__init__()
         self.app = app
         self.showStatus = False
-        self.ui = hemisphere_ui.Ui_HemisphereDialog()
+        self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.data = {
+            'title': 'Title',
+            'xlabel': 'x-axis',
+            'ylabel': 'y-axis',
+            'time': list(),
+            'y': list(),
+        }
 
         # doing the matplotlib embedding
         # for the alt az plane
-        self.measure = self.embedMatplot(self.ui.measure)
+        self.measureMat = self.embedMatplot(self.ui.measure)
         self.measureMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.measureMat, True)
-
         self.initConfig()
 
     def initConfig(self):
@@ -101,7 +106,7 @@ class MeasureWindow(widget.MWidget):
 
         super().resizeEvent(QResizeEvent)
         space = 5
-        startY = 130
+        startY = 5
         self.ui.measure.setGeometry(space,
                                     startY - space,
                                     self.width() - 2 * space,
@@ -131,15 +136,13 @@ class MeasureWindow(widget.MWidget):
 
         :return: success
         """
-
+        self.appendData()
         return True
 
     @staticmethod
-    def clearAxes(axes, visible=False):
+    def clearAxes(axes, visible=False, title=None, xlabel=None, ylabel=None):
         axes.cla()
         axes.set_facecolor((0, 0, 0, 0))
-        axes.set_xlim(0, 360)
-        axes.set_ylim(0, 90)
         if not visible:
             axes.set_axis_off()
             return False
@@ -152,34 +155,22 @@ class MeasureWindow(widget.MWidget):
         axes.tick_params(axis='x',
                          colors='#2090C0',
                          labelsize=12)
-        axes.set_xlim(0, 360)
-        axes.set_xticks(np.arange(0, 361, 30))
-        axes.set_ylim(0, 90)
+        '''
         axes.tick_params(axis='y',
                          colors='#2090C0',
                          which='both',
                          labelleft=True,
                          labelright=True,
                          labelsize=12)
-        axes.set_xlabel('Azimuth in degrees',
+        '''
+        axes.set_xlabel(xlabel,
                         color='#2090C0',
                         fontweight='bold',
                         fontsize=12)
-        axes.set_ylabel('Altitude in degrees',
+        axes.set_ylabel(ylabel,
                         color='#2090C0',
                         fontweight='bold',
                         fontsize=12)
-        return True
-
-    def drawCanvas(self):
-        """
-        drawCanvas retrieves the static content axes from widget and redraws the canvas
-
-        :return: success for test
-        """
-
-        axes = self.measureMat.figure.axes[0]
-        axes.figure.canvas.draw()
         return True
 
     def drawMeasure(self):
@@ -197,12 +188,30 @@ class MeasureWindow(widget.MWidget):
         """
 
         # shortening the references
-        axes = self.hemisphereMat.figure.axes[0]
+        axes = self.measureMat.figure.axes[0]
 
         # clearing axes before drawing, only static visible, dynamic only when content
         # is available. visibility is handled with their update method
-        self.clearAxes(axes, visible=True)
-
+        title = self.data['title'],
+        xlabel = self.data['xlabel'],
+        ylabel = self.data['ylabel'],
+        self.clearAxes(axes,
+                       visible=True,
+                       title=title,
+                       xlabel=xlabel,
+                       ylabel=ylabel,
+                       )
+        if self.data is None:
+            return False
+        if not self.data:
+            return False
+        axes.plot(self.data['time'],
+                  self.data['y'],
+                  marker='o',
+                  markersize=9,
+                  fillstyle='none',
+                  color='#E0E0E0',
+                  )
         # drawing the canvas
         axes.figure.canvas.draw()
 

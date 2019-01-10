@@ -27,7 +27,7 @@ from indibase import indiBase
 # local imports
 
 
-class Environment(PyQt5.QtWidgets.QWidget):
+class Environment(object):
     """
     the class Environ inherits all information and handling of environment devices
 

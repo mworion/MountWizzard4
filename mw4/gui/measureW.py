@@ -43,6 +43,8 @@ class MeasureWindow(widget.MWidget):
 
     BACK = 'background-color: transparent;'
     CYCLE_UPDATE_TASK = 1000
+    NUMBER_POINTS = 50
+    NUMBER_XTICKS = 8
 
     def __init__(self, app):
         super().__init__()
@@ -52,6 +54,7 @@ class MeasureWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
 
+        self.mutexDraw = PyQt5.QtCore.QMutex()
         self.diagram = {
             'ui': [self.ui.tp03m,
                    self.ui.tp10m,
@@ -60,41 +63,45 @@ class MeasureWindow(widget.MWidget):
                    self.ui.tp03h,
                    self.ui.tp10h,
                    ],
-            'step': [1,
-                     3,
-                     10,
-                     20,
-                     50,
-                     200,
-                     ],
-            'units': ['20s',
-                      '1m',
-                      '3m',
-                      '5m',
-                      '20m',
-                      '1h',
+            'cycle': [1,
+                      2,
+                      5,
+                      10,
+                      20,
+                      50,
+                      100,
                       ],
-            'grid': [9,
-                     10,
-                     9,
-                     10,
-                     10,
-                     20,
-                     10,
-                     ]
         }
+        self.measureSet = {
+            'title': ['Environment',
+                      'RaDec Stability',
+                      'Sky Quality',
+                      ],
+            'ylabel': ['Temperature',
+                       'arcsec',
+                       'mpas',
+                       ],
+        }
+        self.measureSetCheck = 0
+        self.timeWindowCheck = 0
 
         # doing the matplotlib embedding
-        # for the alt az plane
         self.measureMat = self.embedMatplot(self.ui.measure)
         self.measureMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.measureMat, True)
-        self.initConfig()
+
+        self.ui.tp03m.clicked.connect(lambda: self.drawMeasure(0))
+        self.ui.tp10m.clicked.connect(lambda: self.drawMeasure(1))
+        self.ui.tp30m.clicked.connect(lambda: self.drawMeasure(2))
+        self.ui.tp01h.clicked.connect(lambda: self.drawMeasure(3))
+        self.ui.tp03h.clicked.connect(lambda: self.drawMeasure(4))
+        self.ui.tp10h.clicked.connect(lambda: self.drawMeasure(5))
 
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
-        self.timerTask.timeout.connect(self.drawMeasure)
+        self.timerTask.timeout.connect(lambda: self.drawMeasure(self.timeWindowCheck))
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
+        self.initConfig()
 
     def initConfig(self):
         if 'measureW' not in self.app.config:
@@ -155,31 +162,12 @@ class MeasureWindow(widget.MWidget):
 
     def showWindow(self):
         self.showStatus = True
-        self.drawMeasure()
+        self.drawMeasure(0)
         self.show()
 
-    def drawMeasure(self):
-        """
-        drawHemisphere is the basic renderer for all items and widgets in the hemisphere
-        window. it takes care of drawing the grid, enables three layers of transparent
-        widgets for static content, moving content and star maps. this is mainly done to
-        get a reasonable performance when redrawing the canvas. in addition it initializes
-        the objects for points markers, patches, lines etc. for making the window nice
-        and user friendly.
-        the user interaction on the hemisphere windows is done by the event handler of
-        matplotlib itself implementing an on Mouse handler, which takes care of functions.
-
-        :return: nothing
-        """
-
-        if not self.showStatus:
-            return False
-
+    def clearPlot(self):
         # shortening the references
         axes = self.measureMat.figure.axes[0]
-
-        # clearing axes before drawing, only static visible, dynamic only when content
-        # is available. visibility is handled with their update method
         axes.cla()
         axes.set_facecolor((0, 0, 0, 0))
         axes.spines['bottom'].set_color('#2090C0')
@@ -188,63 +176,60 @@ class MeasureWindow(widget.MWidget):
         axes.spines['right'].set_color('#2090C0')
         axes.grid(True, color='#404040')
         axes.set_facecolor((0, 0, 0, 0))
+
+    def drawMeasure(self, timeWindow=0):
+        """
+
+        :return: nothing
+        """
+
+        if not self.showStatus:
+            return False
+        if not self.mutexDraw.tryLock():
+            return False
+
+        self.timeWindowCheck = timeWindow
+        for i, button in enumerate(self.diagram['ui']):
+            if i == timeWindow:
+                self.changeStyleDynamic(button, 'running', 'true')
+            else:
+                self.changeStyleDynamic(button, 'running', 'false')
+
+        cycle = self.diagram['cycle'][timeWindow]
+        self.timerTask.stop()
+        self.timerTask.start(cycle * 1000)
+        self.clearPlot()
+
+        axes = self.measureMat.figure.axes[0]
         axes.tick_params(axis='x',
                          colors='#2090C0',
                          labelsize=12)
-        axes.set_xlabel('time',
+        axes.set_xlabel(self.measureSet['title'][0],
                         color='#2090C0',
                         fontweight='bold',
                         fontsize=12)
-        axes.set_ylabel('temp',
+        axes.set_ylabel(self.measureSet['ylabel'][0],
                         color='#2090C0',
                         fontweight='bold',
                         fontsize=12)
 
-        axes.autoscale_view(scalex=True, scaley=True)
         data = self.app.measure.mData
-        if 'time' not in data:
-            return
 
-        '''
-        y = data['raJNow'][-50:]
-        if len(y) == 0:
-            return
-        y = y - y[0]
-        axes.plot(data['time'][-50:],
+        start = -self.NUMBER_POINTS * cycle
+        ratio = cycle * int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
+
+        time = data['time'][start:-1:cycle]
+        time_ticks = data['time'][start:-1:ratio]
+        y = data['temp'][start:-1:cycle]
+
+        axes.plot(time,
                   y,
                   marker='o',
                   markersize=3,
                   fillstyle='none',
                   color='#E0E0E0',
                   )
-        y = data['decJNow'][-50:]
-        y = y - y[0]
-        axes.plot(data['time'][-50:],
-                  y,
-                  marker='o',
-                  markersize=3,
-                  fillstyle='none',
-                  color='#E0E0E0',
-                  )
-        axes.plot(data['time'][-50:],
-                  data['press'][-50:],
-                  marker='o',
-                  markersize=3,
-                  fillstyle='none',
-                  color='#00E000',
-                  )
-        axes.plot(data['time'][-50:],
-                  data['sqr'][-50:],
-                  marker='o',
-                  markersize=3,
-                  fillstyle='none',
-                  color='#E00000',
-                  )
-        '''
+        axes.set_xticks(time_ticks)
 
-        # drawing the canvas
         axes.figure.canvas.draw()
-
-        # finally setting the mouse handler
-        # self.measureMat.figure.canvas.mpl_connect('button_press_event',
-        #                                           self.onMouse)
+        self.mutexDraw.unlock()

@@ -6044,7 +6044,7 @@ class Ui_MainWindow(object):
         self.measure.setObjectName("measure")
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(4)
+        self.mainTabWidget.setCurrentIndex(0)
         self.settingsTabWidget.setCurrentIndex(5)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.openMessageW, self.mountOn)

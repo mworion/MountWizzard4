@@ -112,7 +112,7 @@ class MeasureWindow(widget.MWidget):
 
         super().resizeEvent(QResizeEvent)
         space = 5
-        startY = 5
+        startY = 95
         self.ui.measure.setGeometry(space,
                                     startY - space,
                                     self.width() - 2 * space,
@@ -145,40 +145,6 @@ class MeasureWindow(widget.MWidget):
         self.appendData()
         return True
 
-    @staticmethod
-    def clearAxes(axes, visible=False, title=None, xlabel=None, ylabel=None):
-        axes.cla()
-        axes.set_facecolor((0, 0, 0, 0))
-        if not visible:
-            axes.set_axis_off()
-            return False
-        axes.spines['bottom'].set_color('#2090C0')
-        axes.spines['top'].set_color('#2090C0')
-        axes.spines['left'].set_color('#2090C0')
-        axes.spines['right'].set_color('#2090C0')
-        axes.grid(True, color='#404040')
-        axes.set_facecolor((0, 0, 0, 0))
-        axes.tick_params(axis='x',
-                         colors='#2090C0',
-                         labelsize=12)
-        '''
-        axes.tick_params(axis='y',
-                         colors='#2090C0',
-                         which='both',
-                         labelleft=True,
-                         labelright=True,
-                         labelsize=12)
-        '''
-        axes.set_xlabel(xlabel,
-                        color='#2090C0',
-                        fontweight='bold',
-                        fontsize=12)
-        axes.set_ylabel(ylabel,
-                        color='#2090C0',
-                        fontweight='bold',
-                        fontsize=12)
-        return True
-
     def drawMeasure(self):
         """
         drawHemisphere is the basic renderer for all items and widgets in the hemisphere
@@ -193,33 +159,76 @@ class MeasureWindow(widget.MWidget):
         :return: nothing
         """
 
+        if not self.showStatus:
+            return False
+
         # shortening the references
         axes = self.measureMat.figure.axes[0]
 
         # clearing axes before drawing, only static visible, dynamic only when content
         # is available. visibility is handled with their update method
-        title = self.data['title'],
-        xlabel = self.data['xlabel'],
-        ylabel = self.data['ylabel'],
-        self.clearAxes(axes,
-                       visible=True,
-                       title=title,
-                       xlabel=xlabel,
-                       ylabel=ylabel,
-                       )
-        if self.data is None:
-            return False
-        if not self.data:
-            return False
+        axes.cla()
+        axes.set_facecolor((0, 0, 0, 0))
+        axes.spines['bottom'].set_color('#2090C0')
+        axes.spines['top'].set_color('#2090C0')
+        axes.spines['left'].set_color('#2090C0')
+        axes.spines['right'].set_color('#2090C0')
+        axes.grid(True, color='#404040')
+        axes.set_facecolor((0, 0, 0, 0))
+        axes.tick_params(axis='x',
+                         colors='#2090C0',
+                         labelsize=12)
+        axes.set_xlabel('time',
+                        color='#2090C0',
+                        fontweight='bold',
+                        fontsize=12)
+        axes.set_ylabel('temp',
+                        color='#2090C0',
+                        fontweight='bold',
+                        fontsize=12)
+
         axes.autoscale_view(scalex=True, scaley=True)
         data = self.app.measure.mData
+        if 'time' not in data:
+            return
+
+        '''
+        y = data['raJNow'][-50:]
+        if len(y) == 0:
+            return
+        y = y - y[0]
         axes.plot(data['time'][-50:],
-                  data['y'][-50:],
+                  y,
                   marker='o',
-                  markersize=5,
+                  markersize=3,
                   fillstyle='none',
                   color='#E0E0E0',
                   )
+        y = data['decJNow'][-50:]
+        y = y - y[0]
+        axes.plot(data['time'][-50:],
+                  y,
+                  marker='o',
+                  markersize=3,
+                  fillstyle='none',
+                  color='#E0E0E0',
+                  )
+        axes.plot(data['time'][-50:],
+                  data['press'][-50:],
+                  marker='o',
+                  markersize=3,
+                  fillstyle='none',
+                  color='#00E000',
+                  )
+        axes.plot(data['time'][-50:],
+                  data['sqr'][-50:],
+                  marker='o',
+                  markersize=3,
+                  fillstyle='none',
+                  color='#E00000',
+                  )
+        '''
+
         # drawing the canvas
         axes.figure.canvas.draw()
 

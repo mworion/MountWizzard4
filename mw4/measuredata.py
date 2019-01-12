@@ -21,6 +21,7 @@
 import logging
 # external packages
 import PyQt5
+import numpy as np
 # local imports
 
 
@@ -47,8 +48,14 @@ class MeasureData(PyQt5.QtCore.QObject):
         super().__init__()
         self.app = app
         self.mData = {
-            'time': list(),
-            'y': list(),
+            'time': np.empty(shape=[0, 1]),
+            'temp': np.empty(shape=[0, 1]),
+            'hum': np.empty(shape=[0, 1]),
+            'press': np.empty(shape=[0, 1]),
+            'dew': np.empty(shape=[0, 1]),
+            'sqr': np.empty(shape=[0, 1]),
+            'raJNow': np.empty(shape=[0, 1]),
+            'decJNow': np.empty(shape=[0, 1]),
         }
 
         self.timerTask = PyQt5.QtCore.QTimer()
@@ -58,11 +65,23 @@ class MeasureData(PyQt5.QtCore.QObject):
 
     def measureTask(self):
         obs = self.app.mount.obsSite
-        if obs.raJNow is None:
-            return
-        self.mData['time'].append(obs.timeJD.utc_strftime('%H:%M:%S'))
-        self.mData['y'].append(obs.raJNow.hours)
+        envTemp = self.app.environment.wDevice['local']['data'].get('WEATHER_TEMPERATURE', 0)
+        envPress = self.app.environment.wDevice['local']['data'].get('WEATHER_BAROMETER', 0)
+        envDew = self.app.environment.wDevice['local']['data'].get('WEATHER_DEWPOINT', 0)
+        envHum = self.app.environment.wDevice['local']['data'].get('WEATHER_HUMIDITY', 0)
+        envSQR = self.app.environment.wDevice['sqm']['data'].get('SKY_BRIGHTNESS', 0)
+        dat = self.mData
+        dat['time'] = np.append(dat['time'], obs.timeJD.utc_strftime('%H:%M:%S'))
+        dat['temp'] = np.append(dat['temp'], envTemp)
+        dat['hum'] = np.append(dat['hum'], envHum)
+        dat['press'] = np.append(dat['press'], envPress)
+        dat['dew'] = np.append(dat['dew'], envDew)
+        dat['sqr'] = np.append(dat['sqr'], envSQR)
+        if obs.raJNow is not None:
+            dat['raJNow'] = np.append(dat['raJNow'], obs.raJNow.hours * 3600)
+            dat['decJNow'] = np.append(dat['decJNow'], obs.decJNow.degrees * 3600)
+        else:
+            dat['raJNow'] = np.append(dat['raJNow'], 0)
+            dat['decJNow'] = np.append(dat['decJNow'], 0)
+        return True
 
-    def clearData(self):
-        self.mData['time'] = list()
-        self.mData['y'] = list()

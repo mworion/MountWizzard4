@@ -163,6 +163,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.storeConfig()
         self.messageW.storeConfig()
         self.hemisphereW.storeConfig()
+        self.measureW.storeConfig()
         return True
 
     def quit(self):

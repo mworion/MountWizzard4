@@ -45,8 +45,8 @@ class Environment(object):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
-    # update rate to 10 seconds for setting indi server
-    UPDATE_RATE = 10
+    # update rate to 1 seconds for setting indi server
+    UPDATE_RATE = 1
 
     def __init__(self,
                  host=None,
@@ -211,8 +211,8 @@ class Environment(object):
             if deviceName not in ['local', 'global']:
                 continue
             update = device.getNumber('WEATHER_UPDATE')
-            if update['PERIOD'] != 10:
-                update['PERIOD'] = 10
+            if update['PERIOD'] != UPDATE_RATE:
+                update['PERIOD'] = UPDATE_RATE
                 self.client.sendNewNumber(deviceName=deviceName,
                                           propertyName='WEATHER_UPDATE',
                                           elements=update)

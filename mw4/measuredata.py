@@ -27,7 +27,8 @@ import numpy as np
 
 class MeasureData(PyQt5.QtCore.QObject):
     """
-    the class MeasureData inherits all information and handling of environment devices
+    the class MeasureData inherits all information and handling of data management and
+    storage
 
         >>> mData = MeasureData(
         >>>                 )

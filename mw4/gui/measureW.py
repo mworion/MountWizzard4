@@ -51,12 +51,37 @@ class MeasureWindow(widget.MWidget):
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
         self.initUI()
-        self.data = {
-            'title': 'Title',
-            'xlabel': 'x-axis',
-            'ylabel': 'y-axis',
-            'time': list(),
-            'y': list(),
+
+        self.diagram = {
+            'ui': [self.ui.tp03m,
+                   self.ui.tp10m,
+                   self.ui.tp30m,
+                   self.ui.tp01h,
+                   self.ui.tp03h,
+                   self.ui.tp10h,
+                   ],
+            'step': [1,
+                     3,
+                     10,
+                     20,
+                     50,
+                     200,
+                     ],
+            'units': ['20s',
+                      '1m',
+                      '3m',
+                      '5m',
+                      '20m',
+                      '1h',
+                      ],
+            'grid': [9,
+                     10,
+                     9,
+                     10,
+                     10,
+                     20,
+                     10,
+                     ]
         }
 
         # doing the matplotlib embedding
@@ -84,6 +109,9 @@ class MeasureWindow(widget.MWidget):
         self.move(x, y)
         height = config.get('height', 600)
         width = config.get('width', 800)
+
+        # todo: initialize the old setup
+
         self.resize(width, height)
         if config.get('showStatus'):
             self.showWindow()
@@ -98,6 +126,10 @@ class MeasureWindow(widget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
         config['showStatus'] = self.showStatus
+
+        # todo: save actual status
+
+        return True
 
     def resizeEvent(self, QResizeEvent):
         """
@@ -120,30 +152,11 @@ class MeasureWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
-        # self.changeStyleDynamic(self.app.mainW.ui.openHemisphereW, 'running', 'false')
-
-    def toggleWindow(self):
-        self.showStatus = not self.showStatus
-        if self.showStatus:
-            self.showWindow()
-        else:
-            self.close()
 
     def showWindow(self):
         self.showStatus = True
         self.drawMeasure()
         self.show()
-        # self.changeStyleDynamic(self.app.mainW.ui.openHemisphereW, 'running', 'true')
-
-    def updateGUI(self):
-        """
-        updateGUI update gui elements on regular bases (actually 10 second) for items,
-        which are not events based.
-
-        :return: success
-        """
-        self.appendData()
-        return True
 
     def drawMeasure(self):
         """

@@ -85,4 +85,3 @@ class MeasureData(PyQt5.QtCore.QObject):
             dat['raJNow'] = np.append(dat['raJNow'], 0)
             dat['decJNow'] = np.append(dat['decJNow'], 0)
         return True
-

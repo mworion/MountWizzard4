@@ -19,12 +19,9 @@
 ###########################################################
 # standard libraries
 import logging
-import bisect
 # external packages
 import PyQt5
 import numpy as np
-import matplotlib.path as mpath
-import matplotlib.patches as mpatches
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import measure_ui
@@ -36,7 +33,7 @@ class MeasureWindow(widget.MWidget):
 
     """
 
-    __all__ = ['HemisphereWindow',
+    __all__ = ['MeasureWindow',
                ]
     version = '0.1'
     logger = logging.getLogger(__name__)

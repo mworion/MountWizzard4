@@ -21,7 +21,6 @@
 import logging
 from datetime import datetime
 # external packages
-import PyQt5
 import numpy as np
 from indibase import indiBase
 # local imports
@@ -211,8 +210,8 @@ class Environment(object):
             if deviceName not in ['local', 'global']:
                 continue
             update = device.getNumber('WEATHER_UPDATE')
-            if update['PERIOD'] != UPDATE_RATE:
-                update['PERIOD'] = UPDATE_RATE
+            if update['PERIOD'] != self.UPDATE_RATE:
+                update['PERIOD'] = self.UPDATE_RATE
                 self.client.sendNewNumber(deviceName=deviceName,
                                           propertyName='WEATHER_UPDATE',
                                           elements=update)

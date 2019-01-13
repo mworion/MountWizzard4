@@ -216,16 +216,13 @@ class MeasureWindow(widget.MWidget):
                 self.changeStyleDynamic(button, 'running', 'false')
         self.drawMeasure()
 
-    def clearPlot(self, title='default', ylabel=('', '')):
+    def clearPlot(self):
         # shortening the references
+        color1 = '#2090C0'
         fig = self.measureMat.figure
         axe0 = fig.axes[0]
         axe1 = fig.axes[1]
 
-        color1 = '#2090C0'
-        color2 = '#209020'
-        color1grid = '#104860'
-        color2grid = '#104810'
         fig.subplots_adjust(left=0.1,
                             right=0.9,
                             bottom=0.1,
@@ -234,40 +231,130 @@ class MeasureWindow(widget.MWidget):
 
         axe0.cla()
         axe0.set_facecolor((0, 0, 0, 0))
-        axe0.grid(True, color=color1grid)
         axe0.set_facecolor((0, 0, 0, 0))
         axe0.tick_params(axis='x',
                          colors=color1,
                          labelsize=12)
-        axe0.set_title(title,
-                       color=color1,
-                       fontweight='bold',
-                       fontsize=12)
-        axe0.set_xlabel('time',
-                        color=color1,
-                        fontweight='bold',
-                        fontsize=12)
-        axe0.set_ylabel(ylabel[0],
-                        color=color1,
-                        fontweight='bold',
-                        fontsize=12)
         axe1.cla()
-        if not ylabel[1]:
-            return
         axe1.set_facecolor((0, 0, 0, 0))
         axe1.spines['bottom'].set_color(color1)
         axe1.spines['top'].set_color(color1)
         axe1.spines['left'].set_color(color1)
         axe1.spines['right'].set_color(color1)
-        axe1.grid(True, color=color2grid)
-        axe1.set_facecolor((0, 0, 0, 0))
         axe1.tick_params(axis='y',
-                         colors=color2,
+                         colors=color1,
                          labelsize=12)
-        axe1.set_ylabel(ylabel[1],
-                        color=color2,
+
+    def drawRaDecStability(self):
+        self.clearPlot()
+        axe0 = self.measureMat.figure.axes[0]
+        axe1 = self.measureMat.figure.axes[1]
+        data = self.app.measure.mData
+        cycle = self.diagram['cycle'][self.timeWindowCheck]
+        start = -self.NUMBER_POINTS * cycle
+        time = data['time'][start:-1:cycle]
+        yLeft = data['raJNow'][start:-1:cycle]
+        yRight = data['decJNow'][start:-1:cycle]
+        title = self.measureSet['title'][self.measureSetCheck]
+        ylabelLeft = self.measureSet['ylabel1'][self.measureSetCheck]
+        ylabelRight = self.measureSet['ylabel2'][self.measureSetCheck]
+        colorLeft = '#2090C0'
+        colorRight = '#209020'
+
+        axe0.set_title(title,
+                       color=colorLeft,
+                       fontweight='bold',
+                       fontsize=12)
+        axe0.set_xlabel('Time [datetime]',
+                        color=colorLeft,
                         fontweight='bold',
                         fontsize=12)
+        axe0.set_ylabel(ylabelLeft,
+                        color=colorLeft,
+                        fontweight='bold',
+                        fontsize=12)
+        axe1.set_ylabel(ylabelRight,
+                        color=colorRight,
+                        fontweight='bold',
+                        fontsize=12)
+        axe0.plot(time,
+                  yLeft,
+                  marker='o',
+                  markersize=1,
+                  color=colorLeft,
+                  )
+        axe0.set_ylim(-15, 20)
+        axe1.plot(time,
+                  yRight,
+                  marker='o',
+                  markersize=1,
+                  color=colorRight,
+                  )
+        axe0.set_ylim(-0.1, 0.1)
+        axe1.set_ylim(-0.1, 0.1)
+        axe0.grid(True, color=colorLeft, alpha=0.5)
+        axe1.grid(False, color=colorRight, alpha=0.5)
+
+    def drawMeasureEnvironment(self):
+
+        self.clearPlot()
+        axe0 = self.measureMat.figure.axes[0]
+        axe1 = self.measureMat.figure.axes[1]
+        data = self.app.measure.mData
+        cycle = self.diagram['cycle'][self.timeWindowCheck]
+        start = -self.NUMBER_POINTS * cycle
+        time = data['time'][start:-1:cycle]
+        yLeft = data['temp'][start:-1:cycle]
+        yLeft2 = data['dew'][start:-1:cycle]
+        yRight = data['press'][start:-1:cycle]
+        title = self.measureSet['title'][self.measureSetCheck]
+        ylabelLeft = self.measureSet['ylabel1'][self.measureSetCheck]
+        ylabelRight = self.measureSet['ylabel2'][self.measureSetCheck]
+        colorLeft = '#2090C0'
+        colorLeft2 = '#9020C0'
+        colorRight = '#209020'
+
+        axe0.set_title(title,
+                       color=colorLeft,
+                       fontweight='bold',
+                       fontsize=12)
+        axe0.set_xlabel('Time [datetime]',
+                        color=colorLeft,
+                        fontweight='bold',
+                        fontsize=12)
+        axe0.set_ylabel(ylabelLeft,
+                        color=colorLeft,
+                        fontweight='bold',
+                        fontsize=12)
+        axe1.set_ylabel(ylabelRight,
+                        color=colorRight,
+                        fontweight='bold',
+                        fontsize=12)
+        axe0.plot(time,
+                  yLeft,
+                  marker='o',
+                  markersize=1,
+                  color=colorLeft,
+                  )
+        axe0.plot(time,
+                  yLeft2,
+                  marker='o',
+                  markersize=1,
+                  color=colorLeft2,
+                  )
+        axe1.plot(time,
+                  yRight,
+                  marker='o',
+                  markersize=1,
+                  color=colorRight,
+                  )
+        axe0.set_ylim(-10, 25)
+        axe1.set_ylim(800, 1050)
+        axe0.grid(True, color=colorLeft, alpha=0.5)
+        axe1.grid(False, color=colorRight, alpha=0.5)
+
+    def drawSQR(self):
+        pass
 
     def drawMeasure(self):
         """
@@ -275,14 +362,6 @@ class MeasureWindow(widget.MWidget):
         :return: nothing
         """
 
-        color1 = '#2090C0'
-        color2 = '#209020'
-        title = self.measureSet['title'][self.measureSetCheck]
-        ylabel1 = self.measureSet['ylabel1'][self.measureSetCheck]
-        ylabel2 = self.measureSet['ylabel2'][self.measureSetCheck]
-        self.clearPlot(title=title,
-                       ylabel=(ylabel1, ylabel2)
-                       )
         if not self.showStatus:
             return False
         data = self.app.measure.mData
@@ -298,48 +377,29 @@ class MeasureWindow(widget.MWidget):
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
 
-        start = -self.NUMBER_POINTS * cycle
         grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
         ratio = cycle * grid
-        time = data['time'][start:-1:cycle]
         time_end = data['time'][-1]
-
-        if self.measureSetCheck == 0:
-            y1 = data['raJNow'][start:-1:cycle]
-            y2 = data['decJNow'][start:-1:cycle]
-        elif self.measureSetCheck == 1:
-            y1 = data['temp'][start:-1:cycle]
-            y2 = data['press'][start:-1:cycle]
-        else:
-            y1 = data['sqr'][start:-1:cycle]
 
         time_ticks = np.arange(-self.NUMBER_XTICKS, 1, 1)
         time_ticks = time_ticks * ratio * 1000000
         time_ticks = time_ticks + time_end
         time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
 
+        if self.measureSetCheck == 0:
+            self.drawRaDecStability()
+        elif self.measureSetCheck == 1:
+            self.drawMeasureEnvironment()
+        else:
+            self.drawSQR()
+
         axe0.set_xticks(time_ticks)
         axe0.set_xticklabels(time_labels)
         axe0.set_xlim(time_ticks[0], time_ticks[-1])
+        axe1.set_xticks(time_ticks)
+        axe1.set_xticklabels(time_labels)
+        axe1.set_xlim(time_ticks[0], time_ticks[-1])
 
-        axe0.plot(time,
-                  y1,
-                  marker='o',
-                  markersize=2,
-                  fillstyle='none',
-                  color=color1,
-                  )
-        if ylabel2:
-            axe1.plot(time,
-                      y2,
-                      marker='o',
-                      markersize=2,
-                      fillstyle='none',
-                      color=color2,
-                      )
-            axe1.set_xticks(time_ticks)
-            axe1.set_xticklabels(time_labels)
-            axe1.set_xlim(time_ticks[0], time_ticks[-1])
         axe0.figure.canvas.draw()
         axe1.figure.canvas.draw()
         self.mutexDraw.unlock()

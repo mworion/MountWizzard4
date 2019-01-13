@@ -72,7 +72,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         envHum = self.app.environment.wDevice['local']['data'].get('WEATHER_HUMIDITY', 0)
         envSQR = self.app.environment.wDevice['sqm']['data'].get('SKY_BRIGHTNESS', 0)
         dat = self.mData
-        dat['time'] = np.append(dat['time'], obs.timeJD)
+        dat['time'] = np.append(dat['time'], obs.timeJD.utc_datetime())
         dat['temp'] = np.append(dat['temp'], envTemp)
         dat['hum'] = np.append(dat['hum'], envHum)
         dat['press'] = np.append(dat['press'], envPress)

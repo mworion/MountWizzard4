@@ -109,7 +109,7 @@ class SiteStatus(object):
         if self.ui.checkRefracNone.isChecked():
             return False
         if self.ui.checkRefracNoTrack.isChecked():
-            if self.app.mount.obsSite.status != 0:
+            if self.app.mount.obsSite.status == 0:
                 return False
         temp, press = self.app.environment.getFilteredRefracParams()
         if temp is None or press is None:

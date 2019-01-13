@@ -92,6 +92,6 @@ class MeasureData(PyQt5.QtCore.QObject):
             dat['raJNow'] = np.append(dat['raJNow'], obs.raJNow.hours * 3600 - self.raRef)
             dat['decJNow'] = np.append(dat['decJNow'], obs.decJNow.degrees * 3600 - self.decRef)
         else:
-            dat['raJNow'] = np.append(dat['raJNow'], NaN)
-            dat['decJNow'] = np.append(dat['decJNow'], NaN)
+            dat['raJNow'] = np.append(dat['raJNow'], 0)
+            dat['decJNow'] = np.append(dat['decJNow'], 0)
         return True

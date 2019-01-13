@@ -22,7 +22,7 @@
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 # local import
-from mw4 import loader
+from mw4.gui import splash
 
 test = PyQt5.QtWidgets.QApplication([])
 
@@ -41,9 +41,9 @@ def test_splash_icon():
 
 def test_splash_upcoming():
     value = PyQt5.QtGui.QPixmap(':/mw4.ico')
-    splash = loader.SplashScreen(value, test)
-    splash.showMessage('test')
-    splash.setValue(10)
-    splash.setValue(50)
-    splash.setValue(90)
-    splash.setValue(100)
+    splashW = splash.SplashScreen(value, test)
+    splashW.showMessage('test')
+    splashW.setValue(10)
+    splashW.setValue(50)
+    splashW.setValue(90)
+    splashW.setValue(100)

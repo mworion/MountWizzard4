@@ -72,6 +72,10 @@ class MeasureWindow(widget.MWidget):
                       ],
         }
         self.measureSet = {
+            'ui': [self.ui.ms0,
+                   self.ui.ms1,
+                   self.ui.ms2,
+                   ],
             'title': ['RaDec Stability',
                       'Environment',
                       'Sky Quality',
@@ -94,20 +98,13 @@ class MeasureWindow(widget.MWidget):
         self.clearRect(self.measureMat, True)
         self.measureMat.figure.axes[0].twinx()
 
-        for i, ui in enumerate(self.diagram['ui']):
-            value = self.diagram['cycle'][i] * self.NUMBER_POINTS
-            if value < 3000:
-                text = '{0:2d} min'.format(int(value/60))
-            else:
-                text = '{0:2d} hrs'.format(int(value / 3600))
-            ui.setText(text)
-        self.ui.tp0.clicked.connect(lambda: self.drawMeasure(0))
-        self.ui.tp1.clicked.connect(lambda: self.drawMeasure(1))
-        self.ui.tp2.clicked.connect(lambda: self.drawMeasure(2))
-        self.ui.tp3.clicked.connect(lambda: self.drawMeasure(3))
-        self.ui.tp4.clicked.connect(lambda: self.drawMeasure(4))
-        self.ui.tp5.clicked.connect(lambda: self.drawMeasure(5))
-        self.ui.tp6.clicked.connect(lambda: self.drawMeasure(6))
+        self.ui.tp0.clicked.connect(lambda: self.setTimeWindow(0))
+        self.ui.tp1.clicked.connect(lambda: self.setTimeWindow(1))
+        self.ui.tp2.clicked.connect(lambda: self.setTimeWindow(2))
+        self.ui.tp3.clicked.connect(lambda: self.setTimeWindow(3))
+        self.ui.tp4.clicked.connect(lambda: self.setTimeWindow(4))
+        self.ui.tp5.clicked.connect(lambda: self.setTimeWindow(5))
+        self.ui.tp6.clicked.connect(lambda: self.setTimeWindow(6))
 
         self.ui.ms0.clicked.connect(lambda: self.setMeasureSet(0))
         self.ui.ms1.clicked.connect(lambda: self.setMeasureSet(1))
@@ -115,9 +112,28 @@ class MeasureWindow(widget.MWidget):
 
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
-        self.timerTask.timeout.connect(lambda: self.drawMeasure(self.timeWindowCheck))
+        self.timerTask.timeout.connect(self.drawMeasure)
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
         self.initConfig()
+
+    def prepareButtons(self):
+        for i, ui in enumerate(self.diagram['ui']):
+            value = self.diagram['cycle'][i] * self.NUMBER_POINTS
+            if value < 3000:
+                text = '{0:2d} min'.format(int(value/60))
+            else:
+                text = '{0:2d} hrs'.format(int(value / 3600))
+            ui.setText(text)
+        for i, button in enumerate(self.diagram['ui']):
+            if i == 0:
+                self.changeStyleDynamic(button, 'running', 'true')
+            else:
+                self.changeStyleDynamic(button, 'running', 'false')
+        for i, button in enumerate(self.measureSet['ui']):
+            if i == 0:
+                self.changeStyleDynamic(button, 'running', 'true')
+            else:
+                self.changeStyleDynamic(button, 'running', 'false')
 
     def initConfig(self):
         if 'measureW' not in self.app.config:
@@ -136,6 +152,7 @@ class MeasureWindow(widget.MWidget):
         # todo: initialize the old setup
 
         self.resize(width, height)
+        self.prepareButtons()
         if config.get('showStatus'):
             self.showWindow()
         return True
@@ -178,11 +195,26 @@ class MeasureWindow(widget.MWidget):
 
     def showWindow(self):
         self.showStatus = True
-        self.drawMeasure(0)
+        self.drawMeasure()
         self.show()
+
+    def setTimeWindow(self, number):
+        self.timeWindowCheck = number
+        for i, button in enumerate(self.diagram['ui']):
+            if i == timeWindow:
+                self.changeStyleDynamic(button, 'running', 'true')
+            else:
+                self.changeStyleDynamic(button, 'running', 'false')
+        self.drawMeasure()
 
     def setMeasureSet(self, number):
         self.measureSetCheck = number
+        for i, button in enumerate(self.measureSet['ui']):
+            if i == number:
+                self.changeStyleDynamic(button, 'running', 'true')
+            else:
+                self.changeStyleDynamic(button, 'running', 'false')
+        self.drawMeasure()
 
     def clearPlot(self, title='default', ylabel=('', '')):
         # shortening the references
@@ -237,7 +269,7 @@ class MeasureWindow(widget.MWidget):
                         fontweight='bold',
                         fontsize=12)
 
-    def drawMeasure(self, timeWindow=0):
+    def drawMeasure(self):
         """
 
         :return: nothing
@@ -259,14 +291,7 @@ class MeasureWindow(widget.MWidget):
         if not self.mutexDraw.tryLock():
             return False
 
-        self.timeWindowCheck = timeWindow
-        for i, button in enumerate(self.diagram['ui']):
-            if i == timeWindow:
-                self.changeStyleDynamic(button, 'running', 'true')
-            else:
-                self.changeStyleDynamic(button, 'running', 'false')
-
-        cycle = self.diagram['cycle'][timeWindow]
+        cycle = self.diagram['cycle'][self.timeWindowCheck]
         self.timerTask.stop()
         self.timerTask.start(cycle * 1000)
 

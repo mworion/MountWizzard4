@@ -219,9 +219,9 @@ class MeasureWindow(widget.MWidget):
                         color=color1,
                         fontweight='bold',
                         fontsize=12)
+        axe1.cla()
         if not ylabel[1]:
             return
-        axe1.cla()
         axe1.set_facecolor((0, 0, 0, 0))
         axe1.spines['bottom'].set_color(color1)
         axe1.spines['top'].set_color(color1)
@@ -285,6 +285,8 @@ class MeasureWindow(widget.MWidget):
         elif self.measureSetCheck == 1:
             y1 = data['temp'][start:-1:cycle]
             y2 = data['press'][start:-1:cycle]
+        else:
+            y1 = data['sqr'][start:-1:cycle]
 
         time_ticks = np.arange(-self.NUMBER_XTICKS, 1, 1)
         time_ticks = time_ticks * ratio * 1000000

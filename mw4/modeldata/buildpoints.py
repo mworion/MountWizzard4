@@ -64,9 +64,8 @@ class DataPoint(object):
     attributes. this includes horizon data, model points data and their persistence
 
         >>> data = DataPoint(
+        >>>                  app=None,
         >>>                  mwGlob=mwglob,
-        >>>                  location=None,
-        >>>                  setting=None,
         >>>                  )
     """
 
@@ -117,45 +116,14 @@ class DataPoint(object):
             }
 
     def __init__(self,
+                 app=None,
                  mwGlob=None,
-                 location=None,
-                 setting=None,
                  ):
 
         self.mwGlob = mwGlob
-        self.lat = location.latitude.degrees
-        self.horizonLimitHigh = setting.horizonLimitHigh
-        self.horizonLimitLow = setting.horizonLimitLow
+        self.app = app
         self._horizonP = [(0, 0), (0, 360)]
         self._buildP = list()
-
-    @property
-    def lat(self):
-        return self._lat
-
-    @lat.setter
-    def lat(self, value):
-        self._lat = value
-
-    @property
-    def horizonLimitHigh(self):
-        return self._horizonLimitHigh
-
-    @horizonLimitHigh.setter
-    def horizonLimitHigh(self, value):
-        if value is None:
-            value = 90
-        self._horizonLimitHigh = value
-
-    @property
-    def horizonLimitLow(self):
-        return self._horizonLimitLow
-
-    @horizonLimitLow.setter
-    def horizonLimitLow(self, value):
-        if value is None:
-            value = 0
-        self._horizonLimitLow = value
 
     @property
     def buildP(self):
@@ -195,7 +163,17 @@ class DataPoint(object):
         if not isinstance(position, (int, float)):
             self.logger.error('malformed position: {0}'.format(position))
             return False
-        if self.horizonLimitHigh < value[0] < self.horizonLimitLow:
+        if self.app.mount.sett.horizonLimitHigh is not None:
+            high = self.app.mount.sett.horizonLimitHigh
+        else:
+            high = 90
+        if self.app.mount.sett.horizonLimitLow is not None:
+            low = self.app.mount.sett.horizonLimitLow
+        else:
+            low = 0
+        if value[0] > high:
+            return False
+        if value[0] < low:
             return False
         position = int(position)
         position = min(len(self._buildP), position)
@@ -489,9 +467,10 @@ class DataPoint(object):
         """
 
         self.clearBuildP()
+        lat = self.app.mount.obsSite.location.latitude.degrees
         for dec, step, start, stop in self.genHaDecParams(selection):
             for ha in range(start, stop, step):
-                alt, az = HaDecToAltAz(ha / 10, dec, self.lat)
+                alt, az = HaDecToAltAz(ha / 10, dec, lat)
                 # only values with above horizon = 0
 
                 if 5 <= alt <= 85 and 2 < az < 358:
@@ -616,9 +595,10 @@ class DataPoint(object):
         """
 
         celestialEquator = list()
+        lat = self.app.mount.obsSite.location.latitude.degrees
         for dec in range(-15, 90, 15):
             for ha in range(- 119, 120, 3):
-                az, alt = HaDecToAltAz(ha / 10, dec, self.lat)
+                az, alt = HaDecToAltAz(ha / 10, dec, lat)
                 if alt > 0:
                     celestialEquator.append((az, alt))
         return celestialEquator

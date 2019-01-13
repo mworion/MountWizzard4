@@ -124,8 +124,8 @@ class DataPoint(object):
 
         self.mwGlob = mwGlob
         self.lat = location.latitude.degrees
-        self.maxAltitude = setting.horizonLimitHigh
-        self.minAltitude = setting.horizonLimitLow
+        self.horizonLimitHigh = setting.horizonLimitHigh
+        self.horizonLimitLow = setting.horizonLimitLow
         self._horizonP = [(0, 0), (0, 360)]
         self._buildP = list()
 
@@ -174,6 +174,8 @@ class DataPoint(object):
             position = len(self._buildP)
         if not isinstance(position, (int, float)):
             self.logger.error('malformed position: {0}'.format(position))
+            return False
+        if self.horizonLimitHigh < value[0] < self.horizonLimitLow:
             return False
         position = int(position)
         position = min(len(self._buildP), position)

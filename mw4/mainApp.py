@@ -94,6 +94,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.data = buildpoints.DataPoint(
                                     mwGlob=self.mwGlob,
                                     location=self.mount.obsSite.location,
+                                    setting=self.mount.sett,
                                     )
         self.hipparcos = hipparcos.Hipparcos(self,
                                              mwGlob=self.mwGlob,

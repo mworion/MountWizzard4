@@ -38,6 +38,11 @@ mwGlob = {'workDir': '.',
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
+    class Test:
+        pass
+    test = Test()
+    test.horizonLimitHigh = 90
+    test.horizonLimitLow = 0
     global data
     config = mwGlob['configDir']
     testdir = os.listdir(config)
@@ -48,8 +53,12 @@ def module_setup_teardown():
             os.remove(os.path.join(config, item))
     topo = skyfield.toposlib.Topos(longitude_degrees=11,
                                    latitude_degrees=48,
-                                   elevation_m=500)
-    data = buildpoints.DataPoint(mwGlob=mwGlob, location=topo)
+                                   elevation_m=500,
+                                   )
+    data = buildpoints.DataPoint(mwGlob=mwGlob,
+                                 location=topo,
+                                 setting=test,
+                                 )
     yield
     data = None
 

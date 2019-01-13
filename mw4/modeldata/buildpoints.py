@@ -66,6 +66,7 @@ class DataPoint(object):
         >>> data = DataPoint(
         >>>                  mwGlob=mwglob,
         >>>                  location=None,
+        >>>                  setting=None,
         >>>                  )
     """
 
@@ -116,12 +117,15 @@ class DataPoint(object):
             }
 
     def __init__(self,
-                 location=None,
                  mwGlob=None,
+                 location=None,
+                 setting=None,
                  ):
 
         self.mwGlob = mwGlob
         self.lat = location.latitude.degrees
+        self.maxAltitude = setting.horizonLimitHigh
+        self.minAltitude = setting.horizonLimitLow
         self._horizonP = [(0, 0), (0, 360)]
         self._buildP = list()
 

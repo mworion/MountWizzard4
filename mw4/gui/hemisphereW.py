@@ -89,6 +89,8 @@ class HemisphereWindow(widget.MWidget):
         self.horizonMarker = None
         self.meridianSlew = None
         self.meridianTrack = None
+        self.horizonLimitHigh = None
+        self.horizonLimitLow = None
         self.celestialPath = None
 
         # doing the matplotlib embedding
@@ -113,6 +115,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.mount.signals.pointDone.connect(self.updateDome)
         self.app.mount.signals.settDone.connect(self.updateMeridian)
+        self.app.mount.signals.settDone.connect(self.updateHorizonLimits)
         self.app.mount.signals.settDone.connect(self.updateCelestialPath)
         self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
         self.app.mainW.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
@@ -336,6 +339,28 @@ class HemisphereWindow(widget.MWidget):
         self.meridianSlew.set_xy((180 - slew, 0))
         self.meridianTrack.set_width(2 * track)
         self.meridianSlew.set_width(2 * slew)
+        self.drawCanvas()
+        return True
+
+    def updateHorizonLimits(self):
+        """
+        updateMeridian is called whenever an update of settings from mount are given. it
+        takes updateHorizonLimits actual values and corrects the point in window if window
+        is in show status.
+
+        :return: success
+        """
+
+        if not self.showStatus:
+            return False
+        high = self.app.mount.sett.horizonLimitHigh
+        low = self.app.mount.sett.horizonLimitLow
+        if high is None or low is None:
+            return False
+        self.horizonLimitHigh.set_xy((0, high))
+        self.horizonLimitHigh.set_height(90 - high)
+        self.horizonLimitLow.set_xy((0, 0))
+        self.horizonLimitLow.set_height(low)
         self.drawCanvas()
         return True
 
@@ -952,9 +977,8 @@ class HemisphereWindow(widget.MWidget):
                                                2 * slew,
                                                90,
                                                zorder=-5,
-                                               color='#FF000040',
-                                               lw=1,
-                                               fill=True,
+                                               color='#00408080',
+                                               edgecolor='auto',
                                                visible=visible)
         axes.add_patch(self.meridianSlew)
         if self.app.mount.sett.meridianLimitTrack is not None:
@@ -965,11 +989,33 @@ class HemisphereWindow(widget.MWidget):
                                                 2 * track,
                                                 90,
                                                 zorder=-10,
-                                                color='#FFFF0040',
-                                                lw=1,
-                                                fill=True,
+                                                color='#80800080',
                                                 visible=visible)
         axes.add_patch(self.meridianTrack)
+
+        # draw altitude limits
+        if self.app.mount.sett.horizonLimitHigh is not None:
+            high = self.app.mount.sett.horizonLimitHigh
+        else:
+            high = 90
+        if self.app.mount.sett.horizonLimitLow is not None:
+            low = self.app.mount.sett.horizonLimitLow
+        else:
+            low = 0
+        self.horizonLimitHigh = mpatches.Rectangle((0, high),
+                                                   360,
+                                                   90 - high,
+                                                   zorder=-30,
+                                                   color='#60383880',
+                                                   visible=True)
+        self.horizonLimitLow = mpatches.Rectangle((0, 0),
+                                                  360,
+                                                  low,
+                                                  zorder=-30,
+                                                  color='#60383880',
+                                                  visible=True)
+        axes.add_patch(self.horizonLimitHigh)
+        axes.add_patch(self.horizonLimitLow)
 
     def drawHemisphereMoving(self, axes=None):
         """

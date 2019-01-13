@@ -201,7 +201,7 @@ class MeasureWindow(widget.MWidget):
     def setTimeWindow(self, number):
         self.timeWindowCheck = number
         for i, button in enumerate(self.diagram['ui']):
-            if i == timeWindow:
+            if i == number:
                 self.changeStyleDynamic(button, 'running', 'true')
             else:
                 self.changeStyleDynamic(button, 'running', 'false')

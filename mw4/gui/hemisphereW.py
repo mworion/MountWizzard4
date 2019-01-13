@@ -977,7 +977,7 @@ class HemisphereWindow(widget.MWidget):
                                                2 * slew,
                                                90,
                                                zorder=-5,
-                                               color='#00408080',
+                                               color='#00008080',
                                                edgecolor='auto',
                                                visible=visible)
         axes.add_patch(self.meridianSlew)

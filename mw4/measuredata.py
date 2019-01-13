@@ -48,6 +48,8 @@ class MeasureData(PyQt5.QtCore.QObject):
                  ):
         super().__init__()
         self.app = app
+        self.raRef = None
+        self.decRef = None
         self.mData = {
             'time': np.empty(shape=[0, 1], dtype='datetime64'),
             'temp': np.empty(shape=[0, 1]),
@@ -80,10 +82,14 @@ class MeasureData(PyQt5.QtCore.QObject):
         dat['press'] = np.append(dat['press'], envPress)
         dat['dew'] = np.append(dat['dew'], envDew)
         dat['sqr'] = np.append(dat['sqr'], envSQR)
-        if obs.raJNow is not None:
-            dat['raJNow'] = np.append(dat['raJNow'], obs.raJNow.hours * 3600)
-            dat['decJNow'] = np.append(dat['decJNow'], obs.decJNow.degrees * 3600)
+        if obs.raJNow is not None and obs.status == 0:
+            if self.raRef is None:
+                self.raRef = obs.raJNow.hours * 3600
+            if self.decRef is None:
+                self.decRef = obs.decJNow.degrees * 3600
+            dat['raJNow'] = np.append(dat['raJNow'], obs.raJNow.hours * 3600 - self.raRef)
+            dat['decJNow'] = np.append(dat['decJNow'], obs.decJNow.degrees * 3600 - self.decRef)
         else:
-            dat['raJNow'] = np.append(dat['raJNow'], 0)
-            dat['decJNow'] = np.append(dat['decJNow'], 0)
+            dat['raJNow'] = np.append(dat['raJNow'], NaN)
+            dat['decJNow'] = np.append(dat['decJNow'], NaN)
         return True

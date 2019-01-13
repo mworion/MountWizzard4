@@ -72,16 +72,16 @@ class MeasureWindow(widget.MWidget):
                       ],
         }
         self.measureSet = {
-            'title': ['Environment',
-                      'RaDec Stability',
+            'title': ['RaDec Stability',
+                      'Environment',
                       'Sky Quality',
                       ],
-            'ylabel1': ['Temperature',
-                        'arcsec',
-                        'mpas',
+            'ylabel1': ['delta RA [arcsec]',
+                        'Temperature [°C]',
+                        'Sky Quality [mpas]',
                         ],
-            'ylabel2': ['Pressure',
-                        'arcsec',
+            'ylabel2': ['delta DEC [arcsec]',
+                        'Pressure [hPas]',
                         '',
                         ],
         }
@@ -108,6 +108,10 @@ class MeasureWindow(widget.MWidget):
         self.ui.tp4.clicked.connect(lambda: self.drawMeasure(4))
         self.ui.tp5.clicked.connect(lambda: self.drawMeasure(5))
         self.ui.tp6.clicked.connect(lambda: self.drawMeasure(6))
+
+        self.ui.ms0.clicked.connect(lambda: self.setMeasureSet(0))
+        self.ui.ms1.clicked.connect(lambda: self.setMeasureSet(1))
+        self.ui.ms2.clicked.connect(lambda: self.setMeasureSet(2))
 
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
@@ -176,6 +180,9 @@ class MeasureWindow(widget.MWidget):
         self.showStatus = True
         self.drawMeasure(0)
         self.show()
+
+    def setMeasureSet(self, number):
+        self.measureSetCheck = number
 
     def clearPlot(self, title='default', ylabel=('', '')):
         # shortening the references
@@ -271,8 +278,13 @@ class MeasureWindow(widget.MWidget):
         ratio = cycle * grid
         time = data['time'][start:-1:cycle]
         time_end = data['time'][-1]
-        y1 = data['temp'][start:-1:cycle]
-        y2 = data['press'][start:-1:cycle]
+
+        if self.measureSetCheck == 0:
+            y1 = data['raJNow'][start:-1:cycle]
+            y2 = data['decJNow'][start:-1:cycle]
+        elif self.measureSetCheck == 1:
+            y1 = data['temp'][start:-1:cycle]
+            y2 = data['press'][start:-1:cycle]
 
         time_ticks = np.arange(-self.NUMBER_XTICKS, 1, 1)
         time_ticks = time_ticks * ratio * 1000000

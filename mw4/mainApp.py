@@ -88,8 +88,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.planets = load('de421.bsp')
 
         # loading other classes
-        self.relay = kmRelay.KMRelay(host='192.168.2.15',
-                                     )
+        self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environment = environ.Environment(host='localhost')
         self.data = buildpoints.DataPoint(
                                     mwGlob=self.mwGlob,
@@ -107,14 +106,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.measureW = measureW.MeasureWindow(self)
 
         # write basic data to message window
-        self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('build version: [{0}]'.format(self.version), 1)
         verMC = self.mount.version
         verIB = self.environment.client.version
+        profile = self.config.get('profileName', '-')
+        self.message.emit('MountWizzard4 started', 1)
+        self.message.emit('build version: [{0}]'.format(self.version), 1)
         self.message.emit('mountcontrol version: [{0}]'.format(verMC), 1)
         self.message.emit('indibase version: [{0}]'.format(verIB), 1)
         self.message.emit('Workdir is: [{0}]'.format(self.mwGlob['workDir']), 1)
-        profile = self.config.get('profileName', '-')
         self.message.emit('Profile [{0}] loaded'.format(profile), 0)
 
         # link cross widget gui signals
@@ -126,6 +125,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.startTimers()
         self.environment.startCommunication()
         self.mount.signals.mountUp.connect(self.loadMountData)
+        self.mount.signals.settDone.connect(self.updateHorizonLimits)
 
     def initConfig(self):
         """
@@ -321,3 +321,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.resetData()
             self.mount.obsSite.location = location
             return False
+
+    def updateHorizonLimits(self):
+        self.data.horizonLimitHigh = self.mount.sett.horizonLimitHigh
+        self.data.horizonLimitLow = self.mount.sett.horizonLimitLow

@@ -138,6 +138,26 @@ class DataPoint(object):
         self._lat = value
 
     @property
+    def horizonLimitHigh(self):
+        return self._horizonLimitHigh
+
+    @horizonLimitHigh.setter
+    def horizonLimitHigh(self, value):
+        if value is None:
+            value = 90
+        self._horizonLimitHigh = value
+
+    @property
+    def horizonLimitLow(self):
+        return self._horizonLimitLow
+
+    @horizonLimitLow.setter
+    def horizonLimitLow(self, value):
+        if value is None:
+            value = 0
+        self._horizonLimitLow = value
+
+    @property
     def buildP(self):
         return self._buildP
 

@@ -48,10 +48,11 @@ class SplashScreen(PyQt5.QtCore.QObject):
                'finish',
                ]
 
-    def __init__(self, pix=None, qapp=None):
+    def __init__(self, application=None):
         super().__init__()
-        self._qapp = qapp
-        self._pxm = pix
+        self._qapp = application
+        self._pxm = PyQt5.QtGui.QPixmap(':/mw4.ico')
+
         flags = (PyQt5.QtCore.Qt.WindowStaysOnTopHint |
                  PyQt5.QtCore.Qt.X11BypassWindowManagerHint)
         self._qss = PyQt5.QtWidgets.QSplashScreen(self._pxm, flags)

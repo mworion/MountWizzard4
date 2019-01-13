@@ -133,6 +133,8 @@ def checkFrozen(mwGlob):
         mwGlob['bundleDir'] = os.path.dirname(os.path.abspath(__file__))
         mwGlob['frozen'] = False
 
+# def
+
 
 def main():
     """
@@ -163,10 +165,9 @@ def main():
 
     # implement notify different to catch exception from event handler
     app = MyApp(sys.argv)
-    # app = PyQt5.QtWidgets.QApplication(sys.argv)
+
     # setting a splash pixel map for loading
-    splash_pix = PyQt5.QtGui.QPixmap(':/mw4.ico')
-    splashW = splash.SplashScreen(pix=splash_pix, qapp=app)
+    splashW = splash.SplashScreen(application=app)
 
     # and start with a first splash screen
     splashW.showMessage('Start initialising')

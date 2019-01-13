@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import logging
+from datetime import datetime as dt
 # external packages
 import PyQt5
 import numpy as np
@@ -40,7 +41,7 @@ class MeasureWindow(widget.MWidget):
 
     BACK = 'background-color: transparent;'
     CYCLE_UPDATE_TASK = 1000
-    NUMBER_POINTS = 50
+    NUMBER_POINTS = 500
     NUMBER_XTICKS = 8
 
     def __init__(self, app):
@@ -53,20 +54,21 @@ class MeasureWindow(widget.MWidget):
 
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.diagram = {
-            'ui': [self.ui.tp03m,
-                   self.ui.tp10m,
-                   self.ui.tp30m,
-                   self.ui.tp01h,
-                   self.ui.tp03h,
-                   self.ui.tp10h,
+            'ui': [self.ui.tp0,
+                   self.ui.tp1,
+                   self.ui.tp2,
+                   self.ui.tp3,
+                   self.ui.tp4,
+                   self.ui.tp5,
+                   self.ui.tp6,
                    ],
             'cycle': [1,
                       2,
-                      5,
-                      10,
-                      20,
-                      50,
-                      100,
+                      4,
+                      8,
+                      16,
+                      32,
+                      64,
                       ],
         }
         self.measureSet = {
@@ -87,12 +89,20 @@ class MeasureWindow(widget.MWidget):
         self.measureMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.measureMat, True)
 
-        self.ui.tp03m.clicked.connect(lambda: self.drawMeasure(0))
-        self.ui.tp10m.clicked.connect(lambda: self.drawMeasure(1))
-        self.ui.tp30m.clicked.connect(lambda: self.drawMeasure(2))
-        self.ui.tp01h.clicked.connect(lambda: self.drawMeasure(3))
-        self.ui.tp03h.clicked.connect(lambda: self.drawMeasure(4))
-        self.ui.tp10h.clicked.connect(lambda: self.drawMeasure(5))
+        for i, ui in enumerate(self.diagram['ui']):
+            value = self.diagram['cycle'][i] * self.NUMBER_POINTS
+            if value < 3000:
+                text = '{0:2d} min'.format(int(value/60))
+            else:
+                text = '{0:2d} hrs'.format(int(value / 3600))
+            ui.setText(text)
+        self.ui.tp0.clicked.connect(lambda: self.drawMeasure(0))
+        self.ui.tp1.clicked.connect(lambda: self.drawMeasure(1))
+        self.ui.tp2.clicked.connect(lambda: self.drawMeasure(2))
+        self.ui.tp3.clicked.connect(lambda: self.drawMeasure(3))
+        self.ui.tp4.clicked.connect(lambda: self.drawMeasure(4))
+        self.ui.tp5.clicked.connect(lambda: self.drawMeasure(5))
+        self.ui.tp6.clicked.connect(lambda: self.drawMeasure(6))
 
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
@@ -201,7 +211,11 @@ class MeasureWindow(widget.MWidget):
         axes.tick_params(axis='x',
                          colors='#2090C0',
                          labelsize=12)
-        axes.set_xlabel(self.measureSet['title'][0],
+        axes.set_title(self.measureSet['title'][0],
+                       color='#2090C0',
+                       fontweight='bold',
+                       fontsize=12)
+        axes.set_xlabel('time',
                         color='#2090C0',
                         fontweight='bold',
                         fontsize=12)
@@ -211,13 +225,16 @@ class MeasureWindow(widget.MWidget):
                         fontsize=12)
 
         data = self.app.measure.mData
+        if len(data['time']) == 0:
+            self.mutexDraw.unlock()
+            return False
 
         start = -self.NUMBER_POINTS * cycle
-        ratio = cycle * int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
-
+        grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
+        ratio = cycle * grid
         time = data['time'][start:-1:cycle]
-        time_ticks = data['time'][start:-1:ratio]
         y = data['temp'][start:-1:cycle]
+        time_end = data['time'][-1]
 
         axes.plot(time,
                   y,
@@ -226,7 +243,14 @@ class MeasureWindow(widget.MWidget):
                   fillstyle='none',
                   color='#E0E0E0',
                   )
+
+        time_ticks = np.arange(-self.NUMBER_XTICKS, 1, 1)
+        time_ticks = time_ticks * ratio * 1000000
+        time_ticks = time_ticks + time_end
+        time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
         axes.set_xticks(time_ticks)
+        axes.set_xticklabels(time_labels)
+        axes.set_xlim(time_ticks[0], time_ticks[-1])
 
         axes.figure.canvas.draw()
         self.mutexDraw.unlock()

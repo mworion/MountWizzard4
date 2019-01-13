@@ -133,53 +133,25 @@ def checkFrozen(mwGlob):
         mwGlob['bundleDir'] = os.path.dirname(os.path.abspath(__file__))
         mwGlob['frozen'] = False
 
-# def
 
-
-def main():
-    """
-    main prepares the loading of mountwizzard application. it prepares a splash screen
-    and handler the setup of the logger, bundle handling etc. in addition some information
-    about the system are written into the logfile to be able to debug in different conditions
-    the system environment.
-
-    :return: nothing
+def setupWorkDirs(mwGlob):
     """
 
-    # defining system wide definitions:
-    mwGlob = {
-        'modeldata': mainApp.MountWizzard4.version,
-        'frozen': False,
-        'bundleDir': '',
-        'workDir': '',
-        'configDir': '',
-        'dataDir': '',
-        'imageDir': '',
-    }
-
-    # checking workdir and if the system is started from frozen app
-    checkFrozen(mwGlob)
-
-    # now instantiate the application from QApplication
-    PyQt5.QtWidgets.QApplication.setAttribute(PyQt5.QtCore.Qt.AA_EnableHighDpiScaling, True)
-
-    # implement notify different to catch exception from event handler
-    app = MyApp(sys.argv)
-
-    # setting a splash pixel map for loading
-    splashW = splash.SplashScreen(application=app)
-
-    # and start with a first splash screen
-    splashW.showMessage('Start initialising')
-    splashW.setValue(0)
-    # setting work dir:
+    :param mwGlob:
+    :return: mwGlob
+    """
     mwGlob['workDir'] = os.getcwd()
     mwGlob['configDir'] = os.getcwd() + '/config'
     mwGlob['dataDir'] = os.getcwd() + '/data'
     mwGlob['imageDir'] = os.getcwd() + '/image'
-    # now setup the logging environment
-    splashW.showMessage('Setup logging')
-    splashW.setValue(20)
+    return mwGlob
+
+
+def setupLogging():
+    """
+
+    :return: true for test purpose
+    """
     warnings.filterwarnings("ignore")
     name = 'mw4-{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
     logging.basicConfig(level=logging.DEBUG,
@@ -200,15 +172,15 @@ def main():
     logging.getLogger('matplotlib').setLevel(logging.ERROR)
     # urllib3 is used by requests, so we have to add this as well
     logging.getLogger('urllib3').setLevel(logging.ERROR)
+    return True
 
-    # population the working directory with necessary subdir
-    splashW.showMessage('Checking work directories')
-    splashW.setValue(30)
-    setDirectories(logging, mwGlob)
 
-    # start logging with basic system data for information
-    splashW.showMessage('Logging environment')
-    splashW.setValue(40)
+def writeSystemInfo():
+    """
+
+    :return: true for test purpose
+    """
+
     logging.info('------------------------------------------------------------------------')
     logging.info('')
     logging.info('MountWizzard {0} started !'.format(mwGlob['modeldata']))
@@ -246,10 +218,14 @@ def main():
 
     logging.info('------------------------------------------------------------------------')
     logging.info('')
+    return True
 
-    # loading leap seconds, spice kernel and hipparcos catalogue
-    splashW.showMessage('Loading star and time data')
-    splashW.setValue(60)
+
+def preloadDataFiles():
+    """
+
+    :return: True fpr test purpose
+    """
     urls = [
         'https://hpiers.obspm.fr/iers/bul/bulc/Leap_Second.dat',
         'http://maia.usno.navy.mil/ser7/deltat.data',
@@ -272,6 +248,60 @@ def main():
         skyfield.iokit.download(url,
                                 filePath,
                                 verbose=True)
+    return True
+
+
+def main():
+    """
+    main prepares the loading of mountwizzard application. it prepares a splash screen
+    and handler the setup of the logger, bundle handling etc. in addition some information
+    about the system are written into the logfile to be able to debug in different conditions
+    the system environment.
+
+    :return: nothing
+    """
+
+    # defining system wide definitions:
+    mwGlob = {
+        'modeldata': mainApp.MountWizzard4.version,
+        'frozen': False,
+        'bundleDir': '',
+        'workDir': '',
+        'configDir': '',
+        'dataDir': '',
+        'imageDir': '',
+    }
+
+    # checking workdir and if the system is started from frozen app
+    checkFrozen(mwGlob)
+    app = MyApp(sys.argv)
+    splashW = splash.SplashScreen(application=app)
+
+    # and start with a first splash screen
+    splashW.showMessage('Start initialising')
+    splashW.setValue(0)
+    mwGlob = setupWorkDirs(mwGlob)
+
+    # now setup the logging environment
+    splashW.showMessage('Setup logging')
+    splashW.setValue(20)
+    setupLogging()
+
+    # population the working directory with necessary subdir
+    splashW.showMessage('Checking work directories')
+    splashW.setValue(30)
+    setDirectories(logging, mwGlob)
+
+    # start logging with basic system data for information
+    splashW.showMessage('Write system info to log')
+    splashW.setValue(40)
+    writeSystemInfo()
+
+    # loading leap seconds, spice kernel and hipparcos catalogue
+    splashW.showMessage('Loading star and time data')
+    splashW.setValue(60)
+    preloadDataFiles()
+
     # and finally starting the application
     splashW.showMessage('Preparing application')
     splashW.setValue(80)

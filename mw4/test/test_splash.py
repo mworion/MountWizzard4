@@ -40,8 +40,7 @@ def test_splash_icon():
 
 
 def test_splash_upcoming():
-    value = PyQt5.QtGui.QPixmap(':/mw4.ico')
-    splashW = splash.SplashScreen(value, test)
+    splashW = splash.SplashScreen(test)
     splashW.showMessage('test')
     splashW.setValue(10)
     splashW.setValue(50)

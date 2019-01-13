@@ -175,7 +175,7 @@ def setupLogging():
     return True
 
 
-def writeSystemInfo():
+def writeSystemInfo(mwGlob):
     """
 
     :return: true for test purpose
@@ -221,7 +221,7 @@ def writeSystemInfo():
     return True
 
 
-def preloadDataFiles():
+def preloadDataFiles(mwGlob=None, splashW=None):
     """
 
     :return: True fpr test purpose
@@ -295,12 +295,12 @@ def main():
     # start logging with basic system data for information
     splashW.showMessage('Write system info to log')
     splashW.setValue(40)
-    writeSystemInfo()
+    writeSystemInfo(mwGlob)
 
     # loading leap seconds, spice kernel and hipparcos catalogue
     splashW.showMessage('Loading star and time data')
     splashW.setValue(60)
-    preloadDataFiles()
+    preloadDataFiles(mwGlob=mwGlob, splashW=splashW)
 
     # and finally starting the application
     splashW.showMessage('Preparing application')

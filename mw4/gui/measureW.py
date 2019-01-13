@@ -290,8 +290,8 @@ class MeasureWindow(widget.MWidget):
                   markersize=1,
                   color=colorRight,
                   )
-        axe0.set_ylim(-0.1, 0.1)
-        axe1.set_ylim(-0.1, 0.1)
+        axe0.set_ylim(-1, 1)
+        axe1.set_ylim(-1, 1)
         axe0.grid(True, color=colorLeft, alpha=0.5)
         axe1.grid(False, color=colorRight, alpha=0.5)
 

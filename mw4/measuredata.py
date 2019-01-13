@@ -66,11 +66,13 @@ class MeasureData(PyQt5.QtCore.QObject):
 
     def measureTask(self):
         obs = self.app.mount.obsSite
-        envTemp = self.app.environment.wDevice['local']['data'].get('WEATHER_TEMPERATURE', 0)
+        envTemp = self.app.environment.wDevice['local']['data'].get('WEATHER_TEMPERATURE', -99)
         envPress = self.app.environment.wDevice['local']['data'].get('WEATHER_BAROMETER', 0)
         envDew = self.app.environment.wDevice['local']['data'].get('WEATHER_DEWPOINT', 0)
         envHum = self.app.environment.wDevice['local']['data'].get('WEATHER_HUMIDITY', 0)
         envSQR = self.app.environment.wDevice['sqm']['data'].get('SKY_BRIGHTNESS', 0)
+        if envTemp == -99:
+            return False
         dat = self.mData
         dat['time'] = np.append(dat['time'], np.datetime64(obs.timeJD.utc_datetime()))
         dat['temp'] = np.append(dat['temp'], envTemp)

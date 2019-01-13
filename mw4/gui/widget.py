@@ -214,6 +214,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                          colors='#2090C0',
                          labelsize=12,
                          )
+        return fig, axes
 
     @staticmethod
     def embedMatplot(ui):

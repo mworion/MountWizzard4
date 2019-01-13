@@ -81,10 +81,9 @@ def except_hook(typeException, valueException, tbackException):
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
-def setDirectories(logging, mwGlob):
+def setDirectories(mwGlob=None):
     """
 
-    :param logging:
     :param mwGlob:
     :return:
     """
@@ -110,7 +109,7 @@ def setDirectories(logging, mwGlob):
         logging.error('no write access to /image')
 
 
-def checkFrozen(mwGlob):
+def checkFrozen(mwGlob=None):
     """
 
     :param mwGlob:
@@ -134,7 +133,7 @@ def checkFrozen(mwGlob):
         mwGlob['frozen'] = False
 
 
-def setupWorkDirs(mwGlob):
+def setupWorkDirs(mwGlob=None):
     """
 
     :param mwGlob:
@@ -175,7 +174,7 @@ def setupLogging():
     return True
 
 
-def writeSystemInfo(mwGlob):
+def writeSystemInfo(mwGlob=None):
     """
 
     :return: true for test purpose
@@ -280,7 +279,7 @@ def main():
     # and start with a first splash screen
     splashW.showMessage('Start initialising')
     splashW.setValue(0)
-    mwGlob = setupWorkDirs(mwGlob)
+    mwGlob = setupWorkDirs(mwGlob=mwGlob)
 
     # now setup the logging environment
     splashW.showMessage('Setup logging')
@@ -290,12 +289,12 @@ def main():
     # population the working directory with necessary subdir
     splashW.showMessage('Checking work directories')
     splashW.setValue(30)
-    setDirectories(logging, mwGlob)
+    setDirectories(mwGlob=mwGlob)
 
     # start logging with basic system data for information
     splashW.showMessage('Write system info to log')
     splashW.setValue(40)
-    writeSystemInfo(mwGlob)
+    writeSystemInfo(mwGlob=mwGlob)
 
     # loading leap seconds, spice kernel and hipparcos catalogue
     splashW.showMessage('Loading star and time data')

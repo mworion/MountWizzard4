@@ -191,6 +191,11 @@ class Mount(object):
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
 
+        print('connection: ', sett.typeConnection)
+        print('gps sync: ', sett.gpsSynced)
+        print('MAC: ', sett.addressLanMAC)
+        print('MACW: ', sett.addressWirelessMAC)
+
         return True
 
     def changeTracking(self):

@@ -13,4 +13,4 @@ coverage==4.5.2
 flake8==3.6.0
 pyinstaller==3.4
 indibase==0.31
-mountcontrol==0.68
+mountcontrol==0.69

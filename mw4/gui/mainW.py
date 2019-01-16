@@ -98,6 +98,7 @@ class MainWindow(MWidget,
         # connect signals for refreshing the gui
         ms = self.app.mount.signals
         ms.pointDone.connect(self.updateStatusGUI)
+        ms.settDone.connect(self.setMountMAC)
         ms.mountUp.connect(self.updateMountConnStat)
         ms.mountClear.connect(self.clearMountGUI)
 
@@ -399,6 +400,21 @@ class MainWindow(MWidget,
 
     def mountMAC(self):
         self.app.mount.MAC = self.ui.mountMAC.text()
+
+    def setMountMAC(self):
+        sett = self.app.mount.sett
+        if sett.addressLanMAC is not None and sett.addressLanMAC:
+            self.app.mount.MAC = sett.addressLanMAC
+        if self.app.mount.MAC is not None:
+            self.ui.mountMAC.setText(self.app.mount.MAC)
+        typeConnectionTexts = ['serial RS-232 port',
+                               'GPS or GPS/RS-232 port',
+                               'cabled LAN port',
+                               'wireless LAN',
+                               ]
+        if sett.typeConnection is not None:
+            text = typeConnectionTexts[sett.typeConnection]
+            self.ui.mountTypeConnection.setText(text)
 
     def autoDeletePoints(self):
         """

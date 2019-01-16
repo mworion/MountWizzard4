@@ -178,15 +178,15 @@ class Mount(object):
             self.ui.statusRefraction.setText('-')
 
         # check tracking speed
-        if self.app.mount.sett.checkRateLunar():
+        if sett.checkRateLunar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
-        elif self.app.mount.sett.checkRateSidereal():
+        elif sett.checkRateSidereal():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
-        elif self.app.mount.sett.checkRateSolar():
+        elif sett.checkRateSolar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')

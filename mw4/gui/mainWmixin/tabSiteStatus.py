@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-import datetime
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -37,7 +36,6 @@ class SiteStatus(object):
     def __init__(self):
         ms = self.app.mount.signals
         ms.settDone.connect(self.updateSettingGUI)
-        ms.settDone.connect(self.updateSetStatGUI)
         ms.settDone.connect(self.updateLocGUI)
         ms.fwDone.connect(self.updateFwGui)
 
@@ -180,64 +178,6 @@ class SiteStatus(object):
             self.ui.horizonLimitHigh.setText(str(sett.horizonLimitHigh))
         else:
             self.ui.horizonLimitHigh.setText('-')
-
-        return True
-
-    def updateSetStatGUI(self):
-        """
-        updateSetStatGUI update the gui upon events triggered be the reception of new
-        settings from the mount. the mount data is polled, so we use this signal as well
-        for the update process.
-
-        :return:    True if ok for testing
-        """
-
-        sett = self.app.mount.sett
-
-        if sett.UTCExpire is not None:
-            ui = self.ui.UTCExpire
-            ui.setText(sett.UTCExpire)
-            # coloring if close to end:
-            now = datetime.datetime.now()
-            expire = datetime.datetime.strptime(sett.UTCExpire, '%Y-%m-%d')
-            deltaYellow = datetime.timedelta(days=30)
-            if now > expire:
-                self.changeStyleDynamic(ui, 'color', 'red')
-            elif now > expire - deltaYellow:
-                self.changeStyleDynamic(ui, 'color', 'yellow')
-            else:
-                self.changeStyleDynamic(ui, 'color', '')
-        else:
-            self.ui.UTCExpire.setText('-')
-
-        if sett.statusUnattendedFlip is not None:
-            self.ui.statusUnattendedFlip.setText('ON' if sett.statusUnattendedFlip else 'OFF')
-        else:
-            self.ui.statusUnattendedFlip.setText('-')
-
-        if sett.statusDualTracking is not None:
-            self.ui.statusDualTracking.setText('ON' if sett.statusDualTracking else 'OFF')
-        else:
-            self.ui.statusDualTracking.setText('-')
-
-        if sett.statusRefraction is not None:
-            self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
-        else:
-            self.ui.statusRefraction.setText('-')
-
-        # check tracking speed
-        if self.app.mount.sett.checkRateLunar():
-            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
-            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
-            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
-        elif self.app.mount.sett.checkRateSidereal():
-            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
-            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'true')
-            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
-        elif self.app.mount.sett.checkRateSolar():
-            self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
-            self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
-            self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
 
         return True
 

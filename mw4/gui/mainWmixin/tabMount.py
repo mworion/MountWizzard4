@@ -177,6 +177,11 @@ class Mount(object):
         else:
             self.ui.statusRefraction.setText('-')
 
+        if sett.gpsSynced is not None:
+            self.ui.statusGPSSynced.setText('YES' if sett.gpsSynced else 'NO')
+        else:
+            self.ui.statusGPSSynced.setText('-')
+
         # check tracking speed
         if sett.checkRateLunar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
@@ -190,12 +195,6 @@ class Mount(object):
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
-
-        print('connection: ', sett.typeConnection)
-        print('gps sync: ', sett.gpsSynced)
-        print('MAC: ', sett.addressLanMAC)
-        print('MACW: ', sett.addressWirelessMAC)
-
         return True
 
     def changeTracking(self):

@@ -20,7 +20,6 @@
 # standard libraries
 import logging
 import subprocess
-import time
 import os
 import platform
 # external packages
@@ -197,7 +196,7 @@ class Astrometry(object):
         result = subprocess.getoutput(command + image2xyOptions)
         self.logger.debug('image2xy: ', result)
         if not result.startswith('simplexy: found'):
-            return false, None, None
+            return False
 
         extendedOptions = f' --config {configPath} {xyPath}'
         options = baseOptions + extendedOptions + solveOptions

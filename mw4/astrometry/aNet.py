@@ -19,6 +19,9 @@
 ###########################################################
 # standard libraries
 import logging
+import subprocess
+import time
+from astropy.io import fits
 # external packages
 # local imports
 
@@ -205,6 +208,24 @@ Note that most output files can be disabled by setting the filename to "none".
 '''
 
 
+def convertToHMS(value):
+    value = value.split('.')
+    value = value[0].split(' ')
+    value = f'{value[0]}:{value[1]}:{value[2]}'
+    return value
+
+
+def convertToDMS(value):
+    value = value.split('.')
+    value = value[0].split(' ')
+    if int(value[0]) < 0:
+        sign = '-'
+    else:
+        sign = '+'
+    value = f'{sign}{value[0]}:{value[1]}:{value[2]}'
+    return value
+
+
 def solve():
     """
     Solve uses the astrometry.net solver capabilities. The intention is to use an offline
@@ -239,7 +260,55 @@ def solve():
 
     :return: nothing
     """
+    fitsFile = 'NGC7380.fits'
+    # fitsFile = 'm51.fit'
+    pathToCommandLine = '/Applications/kstars.app/Contents/MacOS/astrometry/bin/'
+    pathToMW = '/Users/mw/PycharmProjects/MountWizzard4/'
+    pathToData = pathToMW + 'data/'
+    # pathToConfig = pathToMW + 'config/'
+
+    start = time.time()
+    # generating the command line for image2xy
+    command = pathToCommandLine + 'image2xy'
+    filePath_xy = pathToData + 'temp.xy'
+    filePath_fits = pathToMW + fitsFile
+    fText = ' -O -o {0} {1}'
+    options_image2xy = fText.format(filePath_xy, filePath_fits)
+    print(command, options_image2xy)
+    result = subprocess.getoutput(command + options_image2xy)
+    print('results: ', result)
+
+    # opening fits file for header
+    with fits.open(filePath_fits) as fitsHandle:
+        fitsHeader = fitsHandle[0].header
+        scale = fitsHeader.get('scale', '0')
+        ra = fitsHeader.get('OBJCTRA', '')
+        dec = fitsHeader.get('OBJCTDEC', '')
+
+    ra = convertToHMS(ra)
+    dec = convertToDMS(dec)
+    scale_low = float(scale) * 0.9
+    scale_high = float(scale) * 1.1
+
+    print(ra, dec, scale)
+
+    # generating command line for solve-field
+    baseOption = '--overwrite --no-plots --no-remove-lines --no-verify-uniformize'
+    baseOption += ' --uniformize 0 --sort-column FLUX --scale-units app'
+    baseOption += f' --scale-low {scale_low} --scale-high {scale_high}'
+    baseOption += f' --ra {ra} --dec {dec} --radius 1'
+    baseOption += ' --crpix-center --cpulimit 30'
+
+    filePath_config = pathToCommandLine + 'astrometry.cfg'
+    command = pathToCommandLine + 'solve-field'
+    fText = ' {0} --config {1} {2}'
+    options_solveField = fText.format(baseOption, filePath_config, filePath_xy)
+    print(options_solveField)
+    result = subprocess.getoutput(command + options_solveField)
+    print('results: ', result)
+
+    print(time.time() - start)
 
 
 if __name__ == "__main__":
-    pass
+    solve()

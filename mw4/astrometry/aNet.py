@@ -21,11 +21,13 @@
 import logging
 import subprocess
 import time
-from astropy.io import fits
+import os
 # external packages
+from astropy.io import fits
 # local imports
 
 
+logger = logging.getLogger()
 '''
 image2xy options:
 Usage: image2xy [options] fitsname.fits 
@@ -226,7 +228,56 @@ def convertToDMS(value):
     return value
 
 
-def solve():
+def readCheckFitsData(fitsPath):
+    """
+
+    :param fitsPath:
+    :return:
+    """
+    with fits.open(fitsPath) as fitsHandle:
+        fitsHeader = fitsHandle[0].header
+        scale = fitsHeader.get('scale', '0')
+        ra = fitsHeader.get('OBJCTRA', '')
+        dec = fitsHeader.get('OBJCTDEC', '')
+    ra = convertToHMS(ra)
+    dec = convertToDMS(dec)
+    scaleLow = float(scale) * 0.9
+    scaleHigh = float(scale) * 1.1
+
+    if scale == 0:
+        return ''
+    if not ra or not dec:
+        return ''
+    options = f' --scale-low {scaleLow} --scale-high {scaleHigh}'
+    options += f' --ra {ra} --dec {dec} --radius 1'
+    return options
+
+
+def addWCSDataToFits(fitsPath='', wcsPath=''):
+    """
+
+    :param fitsPath: path to the fits file, where the wcs header should be put
+    :param wcsPath: path to th fits file with wcs header
+    :return: success
+    """
+
+    if not fitsPath or not wcsPath:
+        return False
+
+    with fits.open(fitsPath) as fitsHandle:
+        fitsHeader = fitsHandle[0].header
+        with fits.open(wcsPath) as wcsHandle:
+            wcsHeader = wcsHandle[0].header
+            for key, value in wcsHeader.items():
+                if key.startswith('COMMENT'):
+                    continue
+                if key.startswith('HISTORY'):
+                    continue
+                fitsHeader[key] = value
+    return True
+
+
+def solve(binDir='', fitsPath='', dataDir='', solveOptions=''):
     """
     Solve uses the astrometry.net solver capabilities. The intention is to use an offline
     solving capability, so we need a installed instance. As we go multi platform and we
@@ -258,57 +309,59 @@ def solve():
         --config <config> (config file name, usually astrometry.cfg)
         xy (the output file from image2xy)
 
-    :return: nothing
+
+    :param binDir: directory with astrometry.net binaries
+    :param fitsPath:  full path to fits file
+    :param dataDir: directory for temp data
+    :param solveOptions: option for solving
+    :return: suc, coords, wcsHeader
     """
+    baseOptions = ' --overwrite --no-plots --no-remove-lines --no-verify-uniformize'
+    baseOptions += ' --uniformize 0 --sort-column FLUX --scale-units app'
+    baseOptions += ' --crpix-center --cpulimit 60'
+
+    command = binDir + 'image2xy'
+    xyPath = dataDir + 'temp.xy'
+    configPath = binDir + 'astrometry.cfg'
+    solvedPath = dataDir + 'temp.solved'
+    wcsPath = dataDir + 'temp.wcs'
+
+    image2xyOptions = f' -O -o {xyPath} {fitsPath}'
+    result = subprocess.getoutput(command + image2xyOptions)
+    logger.debug('image2xy: ', result)
+    if not result.startswith('simplexy: found'):
+        return false, None, None
+
+    extendedOptions = f' --config {configPath} {xyPath}'
+    options = baseOptions + extendedOptions + solveOptions
+    command = binDir + 'solve-field'
+
+    result = subprocess.getoutput(command + options)
+    logger.debug('solve-field: ', result)
+
+    if os.path.isfile(solvedPath) and os.path.isfile(wcsPath):
+        return True
+    else:
+        return False
+
+
+if __name__ == "__main__":
     fitsFile = 'NGC7380.fits'
     # fitsFile = 'm51.fit'
     pathToCommandLine = '/Applications/kstars.app/Contents/MacOS/astrometry/bin/'
     pathToMW = '/Users/mw/PycharmProjects/MountWizzard4/'
     pathToData = pathToMW + 'data/'
-    # pathToConfig = pathToMW + 'config/'
-
-    start = time.time()
-    # generating the command line for image2xy
-    command = pathToCommandLine + 'image2xy'
-    filePath_xy = pathToData + 'temp.xy'
     filePath_fits = pathToMW + fitsFile
-    fText = ' -O -o {0} {1}'
-    options_image2xy = fText.format(filePath_xy, filePath_fits)
-    print(command, options_image2xy)
-    result = subprocess.getoutput(command + options_image2xy)
-    print('results: ', result)
 
-    # opening fits file for header
-    with fits.open(filePath_fits) as fitsHandle:
-        fitsHeader = fitsHandle[0].header
-        scale = fitsHeader.get('scale', '0')
-        ra = fitsHeader.get('OBJCTRA', '')
-        dec = fitsHeader.get('OBJCTDEC', '')
+    fitsOptions = readCheckFitsData(filePath_fits)
 
-    ra = convertToHMS(ra)
-    dec = convertToDMS(dec)
-    scale_low = float(scale) * 0.9
-    scale_high = float(scale) * 1.1
+    result = solve(binDir=pathToCommandLine,
+                   fitsPath=filePath_fits,
+                   dataDir=pathToData,
+                   solveOptions=fitsOptions)
 
-    print(ra, dec, scale)
+    print(result)
 
-    # generating command line for solve-field
-    baseOption = '--overwrite --no-plots --no-remove-lines --no-verify-uniformize'
-    baseOption += ' --uniformize 0 --sort-column FLUX --scale-units app'
-    baseOption += f' --scale-low {scale_low} --scale-high {scale_high}'
-    baseOption += f' --ra {ra} --dec {dec} --radius 1'
-    baseOption += ' --crpix-center --cpulimit 30'
-
-    filePath_config = pathToCommandLine + 'astrometry.cfg'
-    command = pathToCommandLine + 'solve-field'
-    fText = ' {0} --config {1} {2}'
-    options_solveField = fText.format(baseOption, filePath_config, filePath_xy)
-    print(options_solveField)
-    result = subprocess.getoutput(command + options_solveField)
-    print('results: ', result)
-
-    print(time.time() - start)
-
-
-if __name__ == "__main__":
-    solve()
+    wcsPath = pathToData + 'temp.wcs'
+    addWCSDataToFits(fitsPath=filePath_fits,
+                     wcsPath=wcsPath)

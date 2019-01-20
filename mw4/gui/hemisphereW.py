@@ -978,7 +978,6 @@ class HemisphereWindow(widget.MWidget):
                                                90,
                                                zorder=-5,
                                                color='#00008080',
-                                               edgecolor='auto',
                                                visible=visible)
         axes.add_patch(self.meridianSlew)
         if self.app.mount.sett.meridianLimitTrack is not None:

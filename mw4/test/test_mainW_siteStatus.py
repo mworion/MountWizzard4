@@ -585,7 +585,7 @@ def test_updateRefractionParameters_1(qtbot):
                                'setRefractionParam',
                                return_value=True):
             suc = app.mainW.updateRefractionParameters()
-            assert suc
+            assert not suc
 
 
 def test_updateRefractionParameters_2(qtbot):
@@ -630,7 +630,7 @@ def test_updateRefractionParameters_4(qtbot):
                                'setRefractionParam',
                                return_value=True):
             suc = app.mainW.updateRefractionParameters()
-            assert not suc
+            assert suc
 
 
 def test_updateRefractionParameters_5(qtbot):

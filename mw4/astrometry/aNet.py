@@ -211,6 +211,11 @@ Note that most output files can be disabled by setting the filename to "none".
 
 
 def convertToHMS(value):
+    """
+
+    :param value:
+    :return: converted value as string
+    """
     value = value.split('.')
     value = value[0].split(' ')
     value = f'{value[0]}:{value[1]}:{value[2]}'
@@ -218,6 +223,11 @@ def convertToHMS(value):
 
 
 def convertToDMS(value):
+    """
+
+    :param value:
+    :return: converted value as string
+    """
     value = value.split('.')
     value = value[0].split(' ')
     if int(value[0]) < 0:
@@ -231,9 +241,10 @@ def convertToDMS(value):
 def readCheckFitsData(fitsPath):
     """
 
-    :param fitsPath:
-    :return:
+    :param fitsPath: fits file with image data
+    :return: options as string for adding them to solve-field
     """
+
     with fits.open(fitsPath) as fitsHandle:
         fitsHeader = fitsHandle[0].header
         scale = fitsHeader.get('scale', '0')
@@ -256,7 +267,7 @@ def readCheckFitsData(fitsPath):
 def addWCSDataToFits(fitsPath='', wcsPath=''):
     """
 
-    :param fitsPath: path to the fits file, where the wcs header should be put
+    :param fitsPath: path to the fits file, where the wcs header should be embedded
     :param wcsPath: path to th fits file with wcs header
     :return: success
     """

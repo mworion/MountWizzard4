@@ -67,6 +67,11 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
     def measureTask(self):
+        """
+
+        :return: success
+        """
+
         obs = self.app.mount.obsSite
         envTemp = self.app.environment.wDevice['local']['data'].get('WEATHER_TEMPERATURE', -99)
         envPress = self.app.environment.wDevice['local']['data'].get('WEATHER_BAROMETER', 0)

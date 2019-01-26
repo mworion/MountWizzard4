@@ -202,9 +202,12 @@ class MeasureWindow(widget.MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self):
+        if not self.app.mainW.ui.checkMeasurement.isChecked():
+            return False
         self.showStatus = True
         self.drawMeasure()
         self.show()
+        return True
 
     def setTimeWindow(self, number):
         self.timeWindowCheck = number

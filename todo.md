@@ -25,7 +25,6 @@ necessary feature list:
 - mountcontrol: adding TLE commands and tests
 - measure window (grid, colors, gui)
 - measure window sqr
-- enable / disable measurement in settings
 - optimizing model functions (all) implement
 
 

@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3396,7 +3396,7 @@ manually</string>
       <rect>
        <x>10</x>
        <y>245</y>
-       <width>101</width>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
@@ -3603,7 +3603,7 @@ manually</string>
       <rect>
        <x>10</x>
        <y>275</y>
-       <width>91</width>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
@@ -3613,7 +3613,7 @@ manually</string>
       </font>
      </property>
      <property name="text">
-      <string>Horion Lim low</string>
+      <string>Horizon Lim low</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="meridianLimitSlew">
@@ -4382,7 +4382,7 @@ manually</string>
       <rect>
        <x>10</x>
        <y>305</y>
-       <width>66</width>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
@@ -15725,7 +15725,7 @@ manually</string>
         <rect>
          <x>190</x>
          <y>50</y>
-         <width>161</width>
+         <width>181</width>
          <height>21</height>
         </rect>
        </property>
@@ -15736,7 +15736,7 @@ manually</string>
       <widget class="QLabel" name="label_210">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>20</y>
          <width>161</width>
          <height>21</height>
@@ -15756,9 +15756,9 @@ manually</string>
       <widget class="Line" name="line_24">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>40</y>
-         <width>331</width>
+         <width>361</width>
          <height>1</height>
         </rect>
        </property>
@@ -15801,7 +15801,7 @@ manually</string>
         <rect>
          <x>190</x>
          <y>110</y>
-         <width>161</width>
+         <width>181</width>
          <height>21</height>
         </rect>
        </property>
@@ -15814,7 +15814,7 @@ manually</string>
         <rect>
          <x>190</x>
          <y>80</y>
-         <width>161</width>
+         <width>181</width>
          <height>21</height>
         </rect>
        </property>
@@ -15825,7 +15825,7 @@ manually</string>
       <widget class="QLabel" name="label_212">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>50</y>
          <width>136</width>
          <height>21</height>
@@ -15843,7 +15843,7 @@ manually</string>
       <widget class="QLabel" name="label_214">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>80</y>
          <width>136</width>
          <height>21</height>
@@ -15861,7 +15861,7 @@ manually</string>
       <widget class="QLabel" name="label_215">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>110</y>
          <width>136</width>
          <height>21</height>
@@ -15879,7 +15879,7 @@ manually</string>
       <widget class="QLabel" name="label_217">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>140</y>
          <width>136</width>
          <height>21</height>
@@ -15899,7 +15899,7 @@ manually</string>
         <rect>
          <x>190</x>
          <y>140</y>
-         <width>161</width>
+         <width>181</width>
          <height>21</height>
         </rect>
        </property>
@@ -16040,9 +16040,9 @@ manually</string>
       <widget class="QLabel" name="le_firmwareProductName_3">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>10</x>
          <y>330</y>
-         <width>271</width>
+         <width>361</width>
          <height>21</height>
         </rect>
        </property>
@@ -16059,9 +16059,9 @@ manually</string>
       <widget class="QLabel" name="le_firmwareProductName_4">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>10</x>
          <y>345</y>
-         <width>321</width>
+         <width>361</width>
          <height>21</height>
         </rect>
        </property>
@@ -16078,7 +16078,7 @@ manually</string>
       <widget class="QLabel" name="le_firmwareProductName_2">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>10</x>
          <y>315</y>
          <width>271</width>
          <height>21</height>
@@ -16097,8 +16097,8 @@ manually</string>
       <widget class="QPushButton" name="btn_resetWindowSizes">
        <property name="geometry">
         <rect>
-         <x>55</x>
-         <y>245</y>
+         <x>10</x>
+         <y>220</y>
          <width>176</width>
          <height>26</height>
         </rect>
@@ -16122,9 +16122,9 @@ manually</string>
       <widget class="QLabel" name="le_firmwareProductName_5">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>10</x>
          <y>360</y>
-         <width>321</width>
+         <width>361</width>
          <height>21</height>
         </rect>
        </property>
@@ -16480,7 +16480,7 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkMeasurements">
+      <widget class="QCheckBox" name="checkMeasurement">
        <property name="geometry">
         <rect>
          <x>405</x>
@@ -16501,7 +16501,7 @@ manually</string>
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>Measurments in background</string>
+        <string>Measurements in background</string>
        </property>
        <property name="checked">
         <bool>false</bool>

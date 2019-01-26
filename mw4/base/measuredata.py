@@ -79,7 +79,8 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         :return: success
         """
-
+        if not self.app.mainW.ui.checkMeasurement.isChecked():
+            return False
         # gathering the environment data
         obs = self.app.mount.obsSite
         envTemp = self.app.environment.wDevice['local']['data'].get('WEATHER_TEMPERATURE', 0)

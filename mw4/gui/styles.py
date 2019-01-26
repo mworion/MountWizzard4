@@ -115,12 +115,6 @@ class MWStyles(object):
         border-style: outset;
         border-radius: 2px;
     }
-    QLineEdit:disabled {
-        border-width: 2px;
-        border-color: #000000;
-        border-style: flat;
-        border-radius: 2px;
-    }
     QLineEdit {
         border-width: 1px;
         border-color: red;
@@ -149,6 +143,13 @@ class MWStyles(object):
         border-width: 1px;
         border-style: outset;
         border-color: red;
+    }
+    QLineEdit:read-only {
+        background-color: #202020;
+        border-width: 2px;
+        border-color: #000000;
+        border-style: flat;
+        border-radius: 2px;
     }
     /* Checkboxes */
     QCheckBox {

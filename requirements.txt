@@ -12,5 +12,5 @@ pytest-qt==3.2.2
 coverage==4.5.2
 flake8==3.6.0
 pyinstaller==3.4
-indibase==0.31
+indibase==0.4
 mountcontrol==0.69

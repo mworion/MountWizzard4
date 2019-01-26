@@ -314,8 +314,9 @@ class MeasureWindow(widget.MWidget):
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
 
-        colorLeft = '#2090C0'
-        colorRight = '#209020'
+        colorTitle = '#2090C0'
+        colorLeft = '#A0A0A0'
+        colorRight = '#30B030'
         colorGrid = '#404040'
         title = 'RaDec Stability'
         ylabelLeft = 'delta RA [arcsec]'
@@ -329,34 +330,33 @@ class MeasureWindow(widget.MWidget):
         yRight = data['decJNow'][start:-1:cycle]
 
         axe0.set_title(title,
-                       color=colorLeft,
+                       color=colorTitle,
                        fontweight='bold',
                        fontsize=12)
         axe0.set_xlabel('Time [datetime]',
+                        color=colorTitle,
+                        fontweight='bold',
+                        fontsize=12)
+        axe0.set_ylabel(ylabelLeft,
                         color=colorLeft,
                         fontweight='bold',
                         fontsize=12)
-        l0, = axe0.set_ylabel(ylabelLeft,
-                              color=colorLeft,
-                              fontweight='bold',
-                              fontsize=12)
-        l1, = axe1.set_ylabel(ylabelRight,
-                              color=colorRight,
-                              fontweight='bold',
-                              fontsize=12)
-        axe0.plot(time,
-                  yLeft,
-                  marker='o',
-                  markersize=1,
-                  color=colorLeft,
-                  )
-        axe0.set_ylim(-15, 20)
-        axe1.plot(time,
-                  yRight,
-                  marker='o',
-                  markersize=1,
-                  color=colorRight,
-                  )
+        axe1.set_ylabel(ylabelRight,
+                        color=colorRight,
+                        fontweight='bold',
+                        fontsize=12)
+        l0, = axe0.plot(time,
+                        yLeft,
+                        marker='o',
+                        markersize=1,
+                        color=colorLeft,
+                        )
+        l1, = axe1.plot(time,
+                        yRight,
+                        marker='o',
+                        markersize=1,
+                        color=colorRight,
+                        )
         axe0.set_ylim(-1, 1)
         axe1.set_ylim(-1, 1)
         axe0.grid(True, color=colorGrid, alpha=0.5)
@@ -378,9 +378,10 @@ class MeasureWindow(widget.MWidget):
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
 
-        colorLeft = '#2090C0'
-        colorLeft2 = '#9020C0'
-        colorRight = '#209020'
+        colorLeft = '#A0A0A0'
+        colorRight = '#30B030'
+        colorLeft2 = '#B030B0'
+        colorTitle = '#2090C0'
         colorGrid = '#404040'
         title = 'Environment'
         ylabelLeft = 'Temperature [°C]'
@@ -396,11 +397,11 @@ class MeasureWindow(widget.MWidget):
         yRight = data['press'][start:-1:cycle]
 
         axe0.set_title(title,
-                       color=colorLeft,
+                       color=colorTitle,
                        fontweight='bold',
                        fontsize=12)
         axe0.set_xlabel('Time [datetime]',
-                        color=colorLeft,
+                        color=colorTitle,
                         fontweight='bold',
                         fontsize=12)
         axe0.set_ylabel(ylabelLeft,
@@ -447,7 +448,8 @@ class MeasureWindow(widget.MWidget):
 
         axe0 = self.measureMat.figure.axes[0]
 
-        colorLeft = '#2090C0'
+        colorLeft = '#A0A0A0'
+        colorTitle = '#2090C0'
         colorGrid = '#404040'
         title = 'Sky Quality'
         ylabelLeft = 'Sky Quality [mpas]'
@@ -459,11 +461,11 @@ class MeasureWindow(widget.MWidget):
         yLeft = data['sqr'][start:-1:cycle]
 
         axe0.set_title(title,
-                       color=colorLeft,
+                       color=colorTitle,
                        fontweight='bold',
                        fontsize=12)
         axe0.set_xlabel('Time [datetime]',
-                        color=colorLeft,
+                        color=colorTitle,
                         fontweight='bold',
                         fontsize=12)
         axe0.set_ylabel(ylabelLeft,

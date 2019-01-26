@@ -34,7 +34,7 @@ from mw4.relay import kmRelay
 from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
 from mw4.environ import environ
-from base import measuredata
+from mw4.base import measuredata
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):

@@ -37,7 +37,7 @@ class MeasureData(PyQt5.QtCore.QObject):
     __all__ = ['MeasureData',
                ]
 
-    version = '0.1'
+    version = '0.2'
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
@@ -50,7 +50,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.app = app
         self.raRef = None
         self.decRef = None
-        self.mData = {
+        self.data = {
             'time': np.empty(shape=[0, 1], dtype='datetime64'),
             'temp': np.empty(shape=[0, 1]),
             'hum': np.empty(shape=[0, 1]),
@@ -81,14 +81,13 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         # gathering the environment data
         obs = self.app.mount.obsSite
-        envTemp = self.app.environment.wDevice['local']['data'].get('WEATHER_TEMPERATURE', -99)
+        envTemp = self.app.environment.wDevice['local']['data'].get('WEATHER_TEMPERATURE', 0)
         envPress = self.app.environment.wDevice['local']['data'].get('WEATHER_BAROMETER', 0)
-        envPress = round(envPress, 1)
         envDew = self.app.environment.wDevice['local']['data'].get('WEATHER_DEWPOINT', 0)
         envHum = self.app.environment.wDevice['local']['data'].get('WEATHER_HUMIDITY', 0)
         envSQR = self.app.environment.wDevice['sqm']['data'].get('SKY_BRIGHTNESS', 0)
 
-        # gathering the mount data
+        # gathering the mount data. data will only be != 0 if mount is tracking
         if obs.raJNow is not None:
             if obs.status == 0:
                 if self.raRef is None:
@@ -107,7 +106,7 @@ class MeasureData(PyQt5.QtCore.QObject):
             decJNow = 0
 
         # writing data to dict
-        dat = self.mData
+        dat = self.data
         timeStamp = obs.timeJD.utc_datetime()
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
         dat['temp'] = np.append(dat['temp'], envTemp)

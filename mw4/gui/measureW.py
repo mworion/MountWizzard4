@@ -261,7 +261,7 @@ class MeasureWindow(widget.MWidget):
         self.clearPlot()
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
-        data = self.app.measure.mData
+        data = self.app.measure.data
         cycle = self.diagram['cycle'][self.timeWindowCheck]
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
@@ -312,7 +312,7 @@ class MeasureWindow(widget.MWidget):
         self.clearPlot()
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
-        data = self.app.measure.mData
+        data = self.app.measure.data
         cycle = self.diagram['cycle'][self.timeWindowCheck]
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]

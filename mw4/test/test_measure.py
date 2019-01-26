@@ -23,16 +23,24 @@ import pytest
 # external packages
 import PyQt5.QtWidgets
 # local import
-from mw4.base import measuredata
+from mw4 import mainApp
 
 test = PyQt5.QtWidgets.QApplication([])
-host_ip = 'astro-mount.fritz.box'
+
+mwGlob = {'workDir': '.',
+          'configDir': './mw4/test/config',
+          'dataDir': './mw4/test/config',
+          'modeldata': 'test',
+          }
+app = mainApp.MountWizzard4(mwGlob=mwGlob)
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app
-    app = environ.Environment(host_ip)
     yield
-    app = None
 
+
+def test_measureTask_1():
+    app.environment.wDevice['local']['data'] = {}
+    app.measure._measureTask()
+    assert 0 == app.measure.data['temp']

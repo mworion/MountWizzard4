@@ -23,8 +23,6 @@ necessary feature list:
 - indi telescope / dome separate host
 - indi CCD camera separate host
 - mountcontrol: adding TLE commands and tests
-- measure window (grid, colors, gui)
-- measure window sqr
 - optimizing model functions (all) implement
 
 

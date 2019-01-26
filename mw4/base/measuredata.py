@@ -59,6 +59,7 @@ class MeasureData(PyQt5.QtCore.QObject):
             'sqr': np.empty(shape=[0, 1]),
             'raJNow': np.empty(shape=[0, 1]),
             'decJNow': np.empty(shape=[0, 1]),
+            'status': np.empty(shape=[0, 1]),
         }
 
         self.timerTask = PyQt5.QtCore.QTimer()
@@ -81,8 +82,11 @@ class MeasureData(PyQt5.QtCore.QObject):
         """
         if not self.app.mainW.ui.checkMeasurement.isChecked():
             return False
-        # gathering the environment data
+
+        dat = self.data
         obs = self.app.mount.obsSite
+
+        # gathering the environment data
         envTemp = self.app.environment.wDevice['local']['data'].get('WEATHER_TEMPERATURE', 0)
         envPress = self.app.environment.wDevice['local']['data'].get('WEATHER_BAROMETER', 0)
         envDew = self.app.environment.wDevice['local']['data'].get('WEATHER_DEWPOINT', 0)
@@ -91,7 +95,7 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         # gathering the mount data. data will only be != 0 if mount is tracking
         if obs.raJNow is not None:
-            if obs.status == 0:
+            if np.mean(dat['status'][-3] == 0):
                 if self.raRef is None:
                     self.raRef = obs.raJNow.hours * 3600
                 if self.decRef is None:
@@ -99,16 +103,16 @@ class MeasureData(PyQt5.QtCore.QObject):
                 raJNow = obs.raJNow.hours * 3600 - self.raRef
                 decJNow = obs.decJNow.degrees * 3600 - self.decRef
             else:
-                self.raRef = None
-                self.decRef = None
                 raJNow = 0
                 decJNow = 0
+            if obs.status != 0:
+                self.raRef = None
+                self.decRef = None
         else:
             raJNow = 0
             decJNow = 0
 
         # writing data to dict
-        dat = self.data
         timeStamp = obs.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
         dat['temp'] = np.append(dat['temp'], envTemp)
@@ -118,5 +122,6 @@ class MeasureData(PyQt5.QtCore.QObject):
         dat['sqr'] = np.append(dat['sqr'], envSQR)
         dat['raJNow'] = np.append(dat['raJNow'], raJNow)
         dat['decJNow'] = np.append(dat['decJNow'], decJNow)
+        dat['status'] = np.append(dat['status'], obs.status)
 
         return True

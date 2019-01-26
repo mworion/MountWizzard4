@@ -500,18 +500,20 @@ class MeasureWindow(widget.MWidget):
 
         if not self.showStatus:
             return False
+
         data = self.app.measure.data
+
         if len(data['time']) == 0:
+            for axe in self.measureMat.figure.axes:
+                axe.set_visible(False)
             return False
+
         if not self.mutexDraw.tryLock():
             return False
 
         cycle = self.diagram['cycle'][self.timeIndex]
         self.timerTask.stop()
         self.timerTask.start(cycle * 1000)
-
-        axe0 = self.measureMat.figure.axes[0]
-        axe1 = self.measureMat.figure.axes[1]
 
         grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
         ratio = cycle * grid
@@ -531,13 +533,10 @@ class MeasureWindow(widget.MWidget):
         else:
             pass
 
-        axe0.set_xticks(time_ticks)
-        axe0.set_xticklabels(time_labels)
-        axe0.set_xlim(time_ticks[0], time_ticks[-1])
-        axe1.set_xticks(time_ticks)
-        axe1.set_xticklabels(time_labels)
-        axe1.set_xlim(time_ticks[0], time_ticks[-1])
+        for axe in self.measureMat.figure.axes:
+            axe.set_xticks(time_ticks)
+            axe.set_xticklabels(time_labels)
+            axe.set_xlim(time_ticks[0], time_ticks[-1])
+            axe.figure.canvas.draw()
 
-        axe0.figure.canvas.draw()
-        axe1.figure.canvas.draw()
         self.mutexDraw.unlock()

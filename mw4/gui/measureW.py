@@ -89,8 +89,8 @@ class MeasureWindow(widget.MWidget):
                         '',
                         ],
         }
-        self.measureSetCheck = 0
-        self.timeWindowCheck = 0
+        self.measureIndex = 0
+        self.timeIndex = 0
 
         # doing the matplotlib embedding
         self.measureMat = self.embedMatplot(self.ui.measure)
@@ -124,25 +124,6 @@ class MeasureWindow(widget.MWidget):
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
         self.initConfig()
 
-    def prepareButtons(self):
-        for i, ui in enumerate(self.diagram['ui']):
-            value = self.diagram['cycle'][i] * self.NUMBER_POINTS
-            if value < 3000:
-                text = '{0:2d} min'.format(int(value / 60))
-            else:
-                text = '{0:2d} hrs'.format(int(value / 3600))
-            ui.setText(text)
-        for i, button in enumerate(self.diagram['ui']):
-            if i == 0:
-                self.changeStyleDynamic(button, 'running', 'true')
-            else:
-                self.changeStyleDynamic(button, 'running', 'false')
-        for i, button in enumerate(self.measureSet['ui']):
-            if i == 0:
-                self.changeStyleDynamic(button, 'running', 'true')
-            else:
-                self.changeStyleDynamic(button, 'running', 'false')
-
     def initConfig(self):
         if 'measureW' not in self.app.config:
             return False
@@ -160,7 +141,7 @@ class MeasureWindow(widget.MWidget):
         # todo: initialize the old setup
 
         self.resize(width, height)
-        self.prepareButtons()
+        self.setupButtons()
         if config.get('showStatus'):
             self.showWindow()
         return True
@@ -209,27 +190,91 @@ class MeasureWindow(widget.MWidget):
         self.show()
         return True
 
-    def setTimeWindow(self, number):
-        self.timeWindowCheck = number
+    def setupButtons(self):
+        """
+        setupButtons prepares the dynamic content od the buttons in measurement window. it
+        write the bottom texts and number as well as the coloring for the actual setting
+
+        :return: success for test purpose
+        """
+
+        for i, ui in enumerate(self.diagram['ui']):
+            value = self.diagram['cycle'][i] * self.NUMBER_POINTS
+            if value < 3000:
+                text = '{0:2d} min'.format(int(value / 60))
+            else:
+                text = '{0:2d} hrs'.format(int(value / 3600))
+            ui.setText(text)
+
         for i, button in enumerate(self.diagram['ui']):
-            if i == number:
+            if i == 0:
                 self.changeStyleDynamic(button, 'running', 'true')
             else:
                 self.changeStyleDynamic(button, 'running', 'false')
-        self.drawMeasure()
 
-    def setMeasureSet(self, number):
-        self.measureSetCheck = number
         for i, button in enumerate(self.measureSet['ui']):
-            if i == number:
+            if i == 0:
+                self.changeStyleDynamic(button, 'running', 'true')
+            else:
+                self.changeStyleDynamic(button, 'running', 'false')
+
+        return True
+
+    def setTimeWindow(self, index):
+        """
+
+        :param index: index of time window set
+        :return: success
+        """
+
+        if index < 0:
+            return False
+        if index > len(self.diagram['ui']):
+            return False
+
+        self.timeIndex = index
+        for i, button in enumerate(self.diagram['ui']):
+            if i == index:
                 self.changeStyleDynamic(button, 'running', 'true')
             else:
                 self.changeStyleDynamic(button, 'running', 'false')
         self.drawMeasure()
+        return True
 
-    def openShowMeasureSet(self, number):
-        self.setMeasureSet(number)
-        self.showWindow()
+    def setMeasureSet(self, index):
+        """
+
+        :param index: index of time window set
+        :return: success
+        """
+
+        if index < 0:
+            return False
+        if index > len(self.measureSet['ui']):
+            return False
+
+        self.measureIndex = index
+        for i, button in enumerate(self.measureSet['ui']):
+            if i == index:
+                self.changeStyleDynamic(button, 'running', 'true')
+            else:
+                self.changeStyleDynamic(button, 'running', 'false')
+        self.drawMeasure()
+        return True
+
+    def openShowMeasureSet(self, index):
+        """
+
+        :param index: index of time window set
+        :return: success
+        """
+
+        suc = self.setMeasureSet(index)
+        if suc:
+            self.showWindow()
+            return True
+        else:
+            return False
 
     def clearPlot(self):
         # shortening the references
@@ -265,14 +310,14 @@ class MeasureWindow(widget.MWidget):
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
         data = self.app.measure.data
-        cycle = self.diagram['cycle'][self.timeWindowCheck]
+        cycle = self.diagram['cycle'][self.timeIndex]
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
         yLeft = data['raJNow'][start:-1:cycle]
         yRight = data['decJNow'][start:-1:cycle]
-        title = self.measureSet['title'][self.measureSetCheck]
-        ylabelLeft = self.measureSet['ylabel1'][self.measureSetCheck]
-        ylabelRight = self.measureSet['ylabel2'][self.measureSetCheck]
+        title = self.measureSet['title'][self.measureIndex]
+        ylabelLeft = self.measureSet['ylabel1'][self.measureIndex]
+        ylabelRight = self.measureSet['ylabel2'][self.measureIndex]
         colorLeft = '#2090C0'
         colorRight = '#209020'
 
@@ -316,15 +361,15 @@ class MeasureWindow(widget.MWidget):
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
         data = self.app.measure.data
-        cycle = self.diagram['cycle'][self.timeWindowCheck]
+        cycle = self.diagram['cycle'][self.timeIndex]
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
         yLeft = data['temp'][start:-1:cycle]
         yLeft2 = data['dewTemp'][start:-1:cycle]
         yRight = data['press'][start:-1:cycle]
-        title = self.measureSet['title'][self.measureSetCheck]
-        ylabelLeft = self.measureSet['ylabel1'][self.measureSetCheck]
-        ylabelRight = self.measureSet['ylabel2'][self.measureSetCheck]
+        title = self.measureSet['title'][self.measureIndex]
+        ylabelLeft = self.measureSet['ylabel1'][self.measureIndex]
+        ylabelRight = self.measureSet['ylabel2'][self.measureIndex]
         colorLeft = '#2090C0'
         colorLeft2 = '#9020C0'
         colorRight = '#209020'
@@ -385,7 +430,7 @@ class MeasureWindow(widget.MWidget):
         if not self.mutexDraw.tryLock():
             return False
 
-        cycle = self.diagram['cycle'][self.timeWindowCheck]
+        cycle = self.diagram['cycle'][self.timeIndex]
         self.timerTask.stop()
         self.timerTask.start(cycle * 1000)
 
@@ -401,9 +446,9 @@ class MeasureWindow(widget.MWidget):
         time_ticks = time_ticks + time_end
         time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
 
-        if self.measureSetCheck == 0:
+        if self.measureIndex == 0:
             self.drawRaDecStability()
-        elif self.measureSetCheck == 1:
+        elif self.measureIndex == 1:
             self.drawMeasureEnvironment()
         else:
             self.drawSQR()

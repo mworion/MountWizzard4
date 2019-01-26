@@ -55,13 +55,7 @@ app = mainApp.MountWizzard4(mwGlob=mwGlob)
 spy = PyQt5.QtTest.QSignalSpy(app.message)
 
 
-#
-#
-# testing mainW gui booting shutdown
-#
-#
-
-def test_config_0():
+def test_storeConfig_1():
     app.hemisphereW.storeConfig()
 
 

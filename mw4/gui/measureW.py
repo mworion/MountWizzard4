@@ -164,10 +164,10 @@ class MeasureWindow(widget.MWidget):
         super().resizeEvent(QResizeEvent)
         space = 5
         startY = 95
-        #self.ui.measure.setGeometry(space,
-        #                            startY - space,
-        #                            self.width() - 2 * space,
-        #                            self.height() - startY)
+        self.ui.measure.setGeometry(space,
+                                    startY - space,
+                                    self.width() - 2 * space,
+                                    self.height() - startY)
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
@@ -332,8 +332,8 @@ class MeasureWindow(widget.MWidget):
         axe0.set_title(title,
                        color=colorTitle,
                        fontweight='bold',
-                       fontsize=12)
-        axe0.set_xlabel('Time [datetime]',
+                       fontsize=16)
+        axe0.set_xlabel('Time [HH:MM:SS - UTC]',
                         color=colorTitle,
                         fontweight='bold',
                         fontsize=12)
@@ -364,6 +364,7 @@ class MeasureWindow(widget.MWidget):
                              [ylabelLeft, ylabelRight],
                              facecolor='#000000',
                              edgecolor='#2090C0',
+                             fontsize='large',
                              )
         for text in legend.get_texts():
             text.set_color('#2090C0')
@@ -399,8 +400,8 @@ class MeasureWindow(widget.MWidget):
         axe0.set_title(title,
                        color=colorTitle,
                        fontweight='bold',
-                       fontsize=12)
-        axe0.set_xlabel('Time [datetime]',
+                       fontsize=16)
+        axe0.set_xlabel('Time [HH:MM:SS - UTC]',
                         color=colorTitle,
                         fontweight='bold',
                         fontsize=12)
@@ -463,8 +464,8 @@ class MeasureWindow(widget.MWidget):
         axe0.set_title(title,
                        color=colorTitle,
                        fontweight='bold',
-                       fontsize=12)
-        axe0.set_xlabel('Time [datetime]',
+                       fontsize=16)
+        axe0.set_xlabel('Time [HH:MM:SS - UTC]',
                         color=colorTitle,
                         fontweight='bold',
                         fontsize=12)

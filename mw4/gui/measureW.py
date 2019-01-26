@@ -128,7 +128,7 @@ class MeasureWindow(widget.MWidget):
         for i, ui in enumerate(self.diagram['ui']):
             value = self.diagram['cycle'][i] * self.NUMBER_POINTS
             if value < 3000:
-                text = '{0:2d} min'.format(int(value/60))
+                text = '{0:2d} min'.format(int(value / 60))
             else:
                 text = '{0:2d} hrs'.format(int(value / 3600))
             ui.setText(text)

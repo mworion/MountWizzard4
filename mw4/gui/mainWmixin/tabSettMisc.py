@@ -130,13 +130,13 @@ class SettMisc(object):
         :return: nothing
         """
 
-        if self.ui.loglevelDebug.isChecked():
+        if self.ui.loglevelDebugIB.isChecked():
             logging.getLogger('indibase').setLevel(logging.DEBUG)
-        elif self.ui.loglevelInfo.isChecked():
+        elif self.ui.loglevelInfoIB.isChecked():
             logging.getLogger('indibase').setLevel(logging.INFO)
-        elif self.ui.loglevelWarning.isChecked():
+        elif self.ui.loglevelWarningIB.isChecked():
             logging.getLogger('indibase').setLevel(logging.WARNING)
-        elif self.ui.loglevelError.isChecked():
+        elif self.ui.loglevelErrorIB.isChecked():
             logging.getLogger('indibase').setLevel(logging.ERROR)
 
     def setLoggingLevelMC(self):
@@ -146,11 +146,11 @@ class SettMisc(object):
         :return: nothing
         """
 
-        if self.ui.loglevelDebug.isChecked():
+        if self.ui.loglevelDebugMC.isChecked():
             logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
-        elif self.ui.loglevelInfo.isChecked():
+        elif self.ui.loglevelInfoMC.isChecked():
             logging.getLogger('mountcontrol').setLevel(logging.INFO)
-        elif self.ui.loglevelWarning.isChecked():
+        elif self.ui.loglevelWarningMC.isChecked():
             logging.getLogger('mountcontrol').setLevel(logging.WARNING)
-        elif self.ui.loglevelError.isChecked():
+        elif self.ui.loglevelErrorMC.isChecked():
             logging.getLogger('mountcontrol').setLevel(logging.ERROR)

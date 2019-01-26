@@ -110,6 +110,14 @@ class MeasureWindow(widget.MWidget):
         self.ui.ms1.clicked.connect(lambda: self.setMeasureSet(1))
         self.ui.ms2.clicked.connect(lambda: self.setMeasureSet(2))
 
+        mainW = self.app.mainW.ui
+        self.clickable(mainW.RA).connect(lambda: self.openShowMeasureSet(0))
+        self.clickable(mainW.DEC).connect(lambda: self.openShowMeasureSet(0))
+        self.clickable(mainW.localTemp).connect(lambda: self.openShowMeasureSet(1))
+        self.clickable(mainW.localPress).connect(lambda: self.openShowMeasureSet(1))
+        self.clickable(mainW.localDewPoint).connect(lambda: self.openShowMeasureSet(1))
+        self.clickable(mainW.SQR).connect(lambda: self.openShowMeasureSet(2))
+
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.drawMeasure)
@@ -215,6 +223,10 @@ class MeasureWindow(widget.MWidget):
             else:
                 self.changeStyleDynamic(button, 'running', 'false')
         self.drawMeasure()
+
+    def openShowMeasureSet(self, number):
+        self.setMeasureSet(number)
+        self.showWindow()
 
     def clearPlot(self):
         # shortening the references

@@ -117,7 +117,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # link cross widget gui signals as all ui widgets have to be present
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
         self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
-        self.mainW.ui.measure.clicked.connect(self.measureW.showWindow)
 
         # starting mount communication
         self.mount.startTimers()

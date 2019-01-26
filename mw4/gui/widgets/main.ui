@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -16792,9 +16792,9 @@ manually</string>
   <widget class="QPushButton" name="mountOff">
    <property name="geometry">
     <rect>
-     <x>545</x>
+     <x>530</x>
      <y>85</y>
-     <width>51</width>
+     <width>66</width>
      <height>26</height>
     </rect>
    </property>
@@ -16815,7 +16815,7 @@ manually</string>
     <rect>
      <x>450</x>
      <y>85</y>
-     <width>56</width>
+     <width>71</width>
      <height>26</height>
     </rect>
    </property>
@@ -17172,27 +17172,6 @@ manually</string>
    </property>
    <property name="large" stdset="0">
     <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="measure">
-   <property name="geometry">
-    <rect>
-     <x>510</x>
-     <y>85</y>
-     <width>31</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send shutdown command to the mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="text">
-    <string>M</string>
    </property>
   </widget>
  </widget>

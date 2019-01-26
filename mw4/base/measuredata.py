@@ -30,7 +30,7 @@ class MeasureData(PyQt5.QtCore.QObject):
     the class MeasureData inherits all information and handling of data management and
     storage
 
-        >>> mData = MeasureData(
+        >>> measure = MeasureData(
         >>>                 )
     """
 
@@ -53,9 +53,9 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.data = {
             'time': np.empty(shape=[0, 1], dtype='datetime64'),
             'temp': np.empty(shape=[0, 1]),
-            'hum': np.empty(shape=[0, 1]),
+            'humidity': np.empty(shape=[0, 1]),
             'press': np.empty(shape=[0, 1]),
-            'dew': np.empty(shape=[0, 1]),
+            'dewTemp': np.empty(shape=[0, 1]),
             'sqr': np.empty(shape=[0, 1]),
             'raJNow': np.empty(shape=[0, 1]),
             'decJNow': np.empty(shape=[0, 1]),
@@ -71,6 +71,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         _measureTask runs all necessary pre processing and collecting task to assemble a
         large dict of lists, where all measurement data is stored. the intention later on
         would be to store and export this data.
+        the time object is related to the time held in mount computer and is in utc timezone.
 
         data sources are:
             environment
@@ -107,12 +108,12 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         # writing data to dict
         dat = self.data
-        timeStamp = obs.timeJD.utc_datetime()
+        timeStamp = obs.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
         dat['temp'] = np.append(dat['temp'], envTemp)
-        dat['hum'] = np.append(dat['hum'], envHum)
+        dat['humidity'] = np.append(dat['humidity'], envHum)
         dat['press'] = np.append(dat['press'], envPress)
-        dat['dew'] = np.append(dat['dew'], envDew)
+        dat['dewTemp'] = np.append(dat['dewTemp'], envDew)
         dat['sqr'] = np.append(dat['sqr'], envSQR)
         dat['raJNow'] = np.append(dat['raJNow'], raJNow)
         dat['decJNow'] = np.append(dat['decJNow'], decJNow)

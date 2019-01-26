@@ -31,6 +31,8 @@ import traceback
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import skyfield.iokit
+import mountcontrol
+import indibase
 # local import
 from mw4 import mainApp
 from mw4.gui import splash
@@ -166,6 +168,8 @@ def setupLogging():
                         )
 
     # setting different log level for imported packages to avoid unnecessary data
+    logging.getLogger('mountcontrol').setLevel(logging.WARNING)
+    logging.getLogger('indibase').setLevel(logging.WARNING)
     logging.getLogger('PyQt5').setLevel(logging.ERROR)
     logging.getLogger('requests').setLevel(logging.ERROR)
     logging.getLogger('matplotlib').setLevel(logging.ERROR)

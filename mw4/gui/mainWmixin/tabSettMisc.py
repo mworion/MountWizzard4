@@ -65,6 +65,8 @@ class SettMisc(object):
         self.ui.expiresYes.setChecked(config.get('expiresYes', True))
         self.ui.expiresNo.setChecked(config.get('expiresNo', False))
         self.setLoggingLevel()
+        self.setLoggingLevelIB()
+        self.setLoggingLevelMC()
         return True
 
     def storeConfig(self):

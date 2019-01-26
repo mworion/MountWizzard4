@@ -15907,24 +15907,24 @@ manually</string>
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when mount stopped in emergency case&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
-      <widget class="QGroupBox" name="logginLevel">
+      <widget class="QGroupBox" name="logLevelMW">
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>60</y>
-         <width>176</width>
+         <y>50</y>
+         <width>111</width>
          <height>111</height>
         </rect>
        </property>
        <property name="title">
-        <string>Choose Log Level</string>
+        <string>MountWizzard</string>
        </property>
        <widget class="QRadioButton" name="loglevelDebug">
         <property name="geometry">
          <rect>
           <x>15</x>
           <y>25</y>
-          <width>121</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
@@ -15940,7 +15940,7 @@ manually</string>
          <string>Debug</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
        <widget class="QRadioButton" name="loglevelInfo">
@@ -15948,7 +15948,7 @@ manually</string>
          <rect>
           <x>15</x>
           <y>45</y>
-          <width>76</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
@@ -15964,7 +15964,7 @@ manually</string>
          <string>Info</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QRadioButton" name="loglevelWarning">
@@ -15972,7 +15972,7 @@ manually</string>
          <rect>
           <x>15</x>
           <y>65</y>
-          <width>106</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
@@ -15996,7 +15996,7 @@ manually</string>
          <rect>
           <x>15</x>
           <y>85</y>
-          <width>106</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
@@ -16034,14 +16034,14 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Misc settings</string>
+        <string>Log Levels</string>
        </property>
       </widget>
       <widget class="QLabel" name="le_firmwareProductName_3">
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>335</y>
+         <y>330</y>
          <width>271</width>
          <height>21</height>
         </rect>
@@ -16060,7 +16060,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>350</y>
+         <y>345</y>
          <width>321</width>
          <height>21</height>
         </rect>
@@ -16079,7 +16079,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>320</y>
+         <y>315</y>
          <width>271</width>
          <height>21</height>
         </rect>
@@ -16097,8 +16097,8 @@ manually</string>
       <widget class="QPushButton" name="btn_resetWindowSizes">
        <property name="geometry">
         <rect>
-         <x>585</x>
-         <y>65</y>
+         <x>400</x>
+         <y>280</y>
          <width>176</width>
          <height>26</height>
         </rect>
@@ -16123,7 +16123,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>365</y>
+         <y>360</y>
          <width>321</width>
          <height>21</height>
         </rect>
@@ -16163,7 +16163,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>175</y>
+         <y>200</y>
          <width>176</width>
          <height>66</height>
         </rect>
@@ -16219,6 +16219,266 @@ manually</string>
          <bool>true</bool>
         </property>
        </widget>
+      </widget>
+      <widget class="QGroupBox" name="logLevelMW_2">
+       <property name="geometry">
+        <rect>
+         <x>525</x>
+         <y>50</y>
+         <width>111</width>
+         <height>111</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>INDI Base</string>
+       </property>
+       <widget class="QRadioButton" name="loglevelDebugIB">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>25</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Debug</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="loglevelInfoIB">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>45</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Info</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="loglevelWarningIB">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>65</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Warning</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="loglevelErrorIB">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>85</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Error</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="logLevelMW_3">
+       <property name="geometry">
+        <rect>
+         <x>650</x>
+         <y>50</y>
+         <width>111</width>
+         <height>111</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>MountControl</string>
+       </property>
+       <widget class="QRadioButton" name="loglevelDebugMC">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>25</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Debug</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="loglevelInfoMC">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>45</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Info</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="loglevelWarningMC">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>65</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Warning</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="loglevelErrorMC">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>85</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Error</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_62">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>175</y>
+         <width>161</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Misc</string>
+       </property>
+      </widget>
+      <widget class="Line" name="line_17">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>195</y>
+         <width>361</width>
+         <height>1</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
       </widget>
      </widget>
     </widget>

@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -16097,8 +16097,8 @@ manually</string>
       <widget class="QPushButton" name="btn_resetWindowSizes">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>280</y>
+         <x>55</x>
+         <y>245</y>
          <width>176</width>
          <height>26</height>
         </rect>
@@ -16169,7 +16169,7 @@ manually</string>
         </rect>
        </property>
        <property name="title">
-        <string>Choose Data Updates</string>
+        <string>Data Updates</string>
        </property>
        <widget class="QRadioButton" name="expiresYes">
         <property name="geometry">
@@ -16478,6 +16478,33 @@ manually</string>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkMeasurements">
+       <property name="geometry">
+        <rect>
+         <x>405</x>
+         <y>280</y>
+         <width>346</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Checked if you would like to keep the images of modeling session</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Measurments in background</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </widget>

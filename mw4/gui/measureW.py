@@ -317,7 +317,7 @@ class MeasureWindow(widget.MWidget):
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
         yLeft = data['temp'][start:-1:cycle]
-        yLeft2 = data['dew'][start:-1:cycle]
+        yLeft2 = data['dewTemp'][start:-1:cycle]
         yRight = data['press'][start:-1:cycle]
         title = self.measureSet['title'][self.measureSetCheck]
         ylabelLeft = self.measureSet['ylabel1'][self.measureSetCheck]
@@ -376,7 +376,7 @@ class MeasureWindow(widget.MWidget):
 
         if not self.showStatus:
             return False
-        data = self.app.measure.mData
+        data = self.app.measure.data
         if len(data['time']) == 0:
             return False
         if not self.mutexDraw.tryLock():

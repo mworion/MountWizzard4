@@ -75,19 +75,7 @@ class MeasureWindow(widget.MWidget):
             'ui': [self.ui.ms0,
                    self.ui.ms1,
                    self.ui.ms2,
-                   ],
-            'title': ['RaDec Stability',
-                      'Environment',
-                      'Sky Quality',
-                      ],
-            'ylabel1': ['delta RA [arcsec]',
-                        'Temperature [°C]',
-                        'Sky Quality [mpas]',
-                        ],
-            'ylabel2': ['delta DEC [arcsec]',
-                        'Pressure [hPas]',
-                        '',
-                        ],
+                   ]
         }
         self.measureIndex = 0
         self.timeIndex = 0
@@ -96,6 +84,8 @@ class MeasureWindow(widget.MWidget):
         self.measureMat = self.embedMatplot(self.ui.measure)
         self.measureMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.measureMat, True)
+        # adding two axes (getting 3 in total)
+        self.measureMat.figure.axes[0].twinx()
         self.measureMat.figure.axes[0].twinx()
 
         self.ui.tp0.clicked.connect(lambda: self.setTimeWindow(0))
@@ -174,10 +164,10 @@ class MeasureWindow(widget.MWidget):
         super().resizeEvent(QResizeEvent)
         space = 5
         startY = 95
-        self.ui.measure.setGeometry(space,
-                                    startY - space,
-                                    self.width() - 2 * space,
-                                    self.height() - startY)
+        #self.ui.measure.setGeometry(space,
+        #                            startY - space,
+        #                            self.width() - 2 * space,
+        #                            self.height() - startY)
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
@@ -276,50 +266,67 @@ class MeasureWindow(widget.MWidget):
         else:
             return False
 
-    def clearPlot(self):
-        # shortening the references
-        color1 = '#2090C0'
+    def clearPlot(self, numbAxes=None):
+
+        if numbAxes < 1:
+            return False
+        if numbAxes > 3:
+            return False
+
+        color = '#2090C0'
+
         fig = self.measureMat.figure
-        axe0 = fig.axes[0]
-        axe1 = fig.axes[1]
 
-        fig.subplots_adjust(left=0.1,
-                            right=0.9,
-                            bottom=0.1,
-                            top=0.95,
-                            )
+        if 0 < numbAxes < 3:
+            fig.subplots_adjust(left=0.1,
+                                right=0.9,
+                                bottom=0.1,
+                                top=0.95,
+                                )
+        elif numbAxes == 3:
+            fig.subplots_adjust(left=0.1,
+                                right=0.8,
+                                bottom=0.1,
+                                top=0.95,
+                                )
 
-        axe0.cla()
-        axe0.set_facecolor((0, 0, 0, 0))
-        axe0.set_facecolor((0, 0, 0, 0))
-        axe0.tick_params(axis='x',
-                         colors=color1,
-                         labelsize=12)
-        axe1.cla()
-        axe1.set_facecolor((0, 0, 0, 0))
-        axe1.spines['bottom'].set_color(color1)
-        axe1.spines['top'].set_color(color1)
-        axe1.spines['left'].set_color(color1)
-        axe1.spines['right'].set_color(color1)
-        axe1.tick_params(axis='y',
-                         colors=color1,
-                         labelsize=12)
+        for i, axe in enumerate(fig.axes):
+            axe.cla()
+            if i < numbAxes:
+                axe.set_visible(True)
+            else:
+                axe.set_visible(False)
+            axe.set_facecolor((0, 0, 0, 0))
+            axe.tick_params(axis='both',
+                            colors=color,
+                            labelsize=12)
+            axe.set_facecolor((0, 0, 0, 0))
+            axe.spines['bottom'].set_color(color)
+            axe.spines['top'].set_color(color)
+            axe.spines['left'].set_color(color)
+            axe.spines['right'].set_color(color)
+        return True
 
     def drawRaDecStability(self):
-        self.clearPlot()
+        if not self.clearPlot(numbAxes=2):
+            return False
+
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
+
+        colorLeft = '#2090C0'
+        colorRight = '#209020'
+        colorGrid = '#404040'
+        title = 'RaDec Stability'
+        ylabelLeft = 'delta RA [arcsec]'
+        ylabelRight = 'delta DEC [arcsec]'
+
         data = self.app.measure.data
         cycle = self.diagram['cycle'][self.timeIndex]
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
         yLeft = data['raJNow'][start:-1:cycle]
         yRight = data['decJNow'][start:-1:cycle]
-        title = self.measureSet['title'][self.measureIndex]
-        ylabelLeft = self.measureSet['ylabel1'][self.measureIndex]
-        ylabelRight = self.measureSet['ylabel2'][self.measureIndex]
-        colorLeft = '#2090C0'
-        colorRight = '#209020'
 
         axe0.set_title(title,
                        color=colorLeft,
@@ -329,14 +336,14 @@ class MeasureWindow(widget.MWidget):
                         color=colorLeft,
                         fontweight='bold',
                         fontsize=12)
-        axe0.set_ylabel(ylabelLeft,
-                        color=colorLeft,
-                        fontweight='bold',
-                        fontsize=12)
-        axe1.set_ylabel(ylabelRight,
-                        color=colorRight,
-                        fontweight='bold',
-                        fontsize=12)
+        l0, = axe0.set_ylabel(ylabelLeft,
+                              color=colorLeft,
+                              fontweight='bold',
+                              fontsize=12)
+        l1, = axe1.set_ylabel(ylabelRight,
+                              color=colorRight,
+                              fontweight='bold',
+                              fontsize=12)
         axe0.plot(time,
                   yLeft,
                   marker='o',
@@ -352,14 +359,34 @@ class MeasureWindow(widget.MWidget):
                   )
         axe0.set_ylim(-1, 1)
         axe1.set_ylim(-1, 1)
-        axe0.grid(True, color=colorLeft, alpha=0.5)
-        axe1.grid(False, color=colorRight, alpha=0.5)
+        axe0.grid(True, color=colorGrid, alpha=0.5)
+        legend = axe0.legend([l0, l1],
+                             [ylabelLeft, ylabelRight],
+                             facecolor='#000000',
+                             edgecolor='#2090C0',
+                             )
+        for text in legend.get_texts():
+            text.set_color('#2090C0')
+
+        return True
 
     def drawMeasureEnvironment(self):
 
-        self.clearPlot()
+        if not self.clearPlot(numbAxes=2):
+            return False
+
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
+
+        colorLeft = '#2090C0'
+        colorLeft2 = '#9020C0'
+        colorRight = '#209020'
+        colorGrid = '#404040'
+        title = 'Environment'
+        ylabelLeft = 'Temperature [°C]'
+        ylabelLeft2 = 'Dew Temperature [°C]'
+        ylabelRight = 'Pressure [hPas]'
+
         data = self.app.measure.data
         cycle = self.diagram['cycle'][self.timeIndex]
         start = -self.NUMBER_POINTS * cycle
@@ -367,12 +394,6 @@ class MeasureWindow(widget.MWidget):
         yLeft = data['temp'][start:-1:cycle]
         yLeft2 = data['dewTemp'][start:-1:cycle]
         yRight = data['press'][start:-1:cycle]
-        title = self.measureSet['title'][self.measureIndex]
-        ylabelLeft = self.measureSet['ylabel1'][self.measureIndex]
-        ylabelRight = self.measureSet['ylabel2'][self.measureIndex]
-        colorLeft = '#2090C0'
-        colorLeft2 = '#9020C0'
-        colorRight = '#209020'
 
         axe0.set_title(title,
                        color=colorLeft,
@@ -390,31 +411,83 @@ class MeasureWindow(widget.MWidget):
                         color=colorRight,
                         fontweight='bold',
                         fontsize=12)
-        axe0.plot(time,
-                  yLeft,
-                  marker='o',
-                  markersize=1,
-                  color=colorLeft,
-                  )
-        axe0.plot(time,
-                  yLeft2,
-                  marker='o',
-                  markersize=1,
-                  color=colorLeft2,
-                  )
-        axe1.plot(time,
-                  yRight,
-                  marker='o',
-                  markersize=1,
-                  color=colorRight,
-                  )
+        l0, = axe0.plot(time,
+                        yLeft,
+                        marker='o',
+                        markersize=1,
+                        color=colorLeft,
+                        )
+        l1, = axe0.plot(time,
+                        yLeft2,
+                        marker='o',
+                        markersize=1,
+                        color=colorLeft2,
+                        )
+        l2, = axe1.plot(time,
+                        yRight,
+                        marker='o',
+                        markersize=1,
+                        color=colorRight,
+                        )
         axe0.set_ylim(-10, 25)
         axe1.set_ylim(800, 1050)
-        axe0.grid(True, color=colorLeft, alpha=0.5)
-        axe1.grid(False, color=colorRight, alpha=0.5)
+        axe0.grid(True, color=colorGrid, alpha=0.5)
+        legend = axe0.legend([l0, l1, l2],
+                             [ylabelLeft, ylabelLeft2, ylabelRight],
+                             facecolor='#000000',
+                             edgecolor='#2090C0',
+                             )
+        for text in legend.get_texts():
+            text.set_color('#2090C0')
+        return True
 
     def drawSQR(self):
-        self.clearPlot()
+        if not self.clearPlot(numbAxes=1):
+            return False
+
+        axe0 = self.measureMat.figure.axes[0]
+
+        colorLeft = '#2090C0'
+        colorGrid = '#404040'
+        title = 'Sky Quality'
+        ylabelLeft = 'Sky Quality [mpas]'
+
+        data = self.app.measure.data
+        cycle = self.diagram['cycle'][self.timeIndex]
+        start = -self.NUMBER_POINTS * cycle
+        time = data['time'][start:-1:cycle]
+        yLeft = data['sqr'][start:-1:cycle]
+
+        axe0.set_title(title,
+                       color=colorLeft,
+                       fontweight='bold',
+                       fontsize=12)
+        axe0.set_xlabel('Time [datetime]',
+                        color=colorLeft,
+                        fontweight='bold',
+                        fontsize=12)
+        axe0.set_ylabel(ylabelLeft,
+                        color=colorLeft,
+                        fontweight='bold',
+                        fontsize=12)
+
+        l0, = axe0.plot(time,
+                        yLeft,
+                        marker='o',
+                        markersize=1,
+                        color=colorLeft,
+                        )
+
+        axe0.set_ylim(10, 21)
+        axe0.grid(True, color=colorGrid, alpha=0.5)
+        legend = axe0.legend([l0],
+                             [ylabelLeft],
+                             facecolor='#000000',
+                             edgecolor='#2090C0',
+                             )
+        for text in legend.get_texts():
+            text.set_color('#2090C0')
+        return True
 
     def drawMeasure(self):
         """
@@ -450,8 +523,10 @@ class MeasureWindow(widget.MWidget):
             self.drawRaDecStability()
         elif self.measureIndex == 1:
             self.drawMeasureEnvironment()
-        else:
+        elif self.measureIndex == 2:
             self.drawSQR()
+        else:
+            pass
 
         axe0.set_xticks(time_ticks)
         axe0.set_xticklabels(time_labels)

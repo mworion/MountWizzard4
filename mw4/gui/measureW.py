@@ -366,7 +366,7 @@ class MeasureWindow(widget.MWidget):
         axe1.grid(False, color=colorRight, alpha=0.5)
 
     def drawSQR(self):
-        pass
+        self.clearPlot()
 
     def drawMeasure(self):
         """

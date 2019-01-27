@@ -67,6 +67,42 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.timerTask.timeout.connect(self._measureTask)
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
+    def _calculateReference(self):
+        """
+        _calculateReference run the states to get the calculation with references for
+        RaDec deviations better stable. it takes into account, when the mount is tracking
+        and when we calculate the offset (ref) to make the deviations balanced to zero
+
+        :return: raJNow, decJNow
+        """
+
+        dat = self.data
+        obs = self.app.mount.obsSite
+
+        raJNow = 0
+        decJNow = 0
+        if obs.raJNow is None:
+            return raJNow, decJNow
+
+        length = len(dat['status'])
+        period = min(length, 5)
+        hasMean = length > 0 and period > 0
+        if not hasMean:
+            return raJNow, decJNow
+
+        if np.mean(dat['status'][-period:]) == 0:
+            if self.raRef is None:
+                self.raRef = obs.raJNow.hours * 3600
+            if self.decRef is None:
+                self.decRef = obs.decJNow.degrees * 3600
+            raJNow = obs.raJNow.hours * 3600 - self.raRef
+            decJNow = obs.decJNow.degrees * 3600 - self.decRef
+        else:
+            self.raRef = None
+            self.decRef = None
+
+        return raJNow, decJNow
+
     def _measureTask(self):
         """
         _measureTask runs all necessary pre processing and collecting task to assemble a
@@ -93,25 +129,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         envHum = self.app.environment.wDevice['local']['data'].get('WEATHER_HUMIDITY', 0)
         envSQR = self.app.environment.wDevice['sqm']['data'].get('SKY_BRIGHTNESS', 0)
 
-        # gathering the mount data. data will only be != 0 if mount is tracking
-        if obs.raJNow is not None:
-            length = len(dat['status'])
-            period = min(length, 5)
-            if np.mean(dat['status'][-period] == 0):
-                if self.raRef is None:
-                    self.raRef = obs.raJNow.hours * 3600
-                if self.decRef is None:
-                    self.decRef = obs.decJNow.degrees * 3600
-                raJNow = obs.raJNow.hours * 3600 - self.raRef
-                decJNow = obs.decJNow.degrees * 3600 - self.decRef
-            else:
-                raJNow = 0
-                decJNow = 0
-                self.raRef = None
-                self.decRef = None
-        else:
-            raJNow = 0
-            decJNow = 0
+        raJNow, decJNow = self._calculateReference()
 
         # writing data to dict
         timeStamp = obs.timeJD.utc_datetime().replace(tzinfo=None)

@@ -54,9 +54,9 @@ class Astrometry(object):
             self.binPath = '/usr/bin'
             cfgPath = '/usr/share/astrometry'
         elif platform.system() == 'Windows':
-            os.getenv('LOCALAPPDATA')
-            self.binPath = ''
-            cfgPath = '/usr/share/astrometry'
+            base = os.getenv('LOCALAPPDATA').replace('\\', '/')
+            self.binPath = base + '/cygwin_ansvr/lib/astrometry/bin'
+            cfgPath = base + '/cygwin_ansvr/usr/share/astrometry/data'
 
         cfgFile = self.dataPath + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
@@ -203,7 +203,7 @@ class Astrometry(object):
         wcsPath = self.dataPath + '/temp.wcs'
 
         image2xyOptions = f' -O -o {xyPath} {fitsPath}'
-        result = subprocess.getoutput(command + image2xyOptions)
+        subprocess.run(command + image2xyOptions, capture_output=True)
         self.logger.debug('image2xy: ', result)
         if not result.startswith('simplexy: found'):
             return False
@@ -223,15 +223,16 @@ class Astrometry(object):
 
 if __name__ == "__main__":
     fitsFile = '/NGC7380.fits'
-    # fitsFile = '/m51.fit'
-    mwGlob = {'workDir': '.',
-              'configDir': './config',
-              'dataDir': './data',
+    # fitsFile = '/m51.
+    workdir = os.getcwd().replace('\\', '/')
+    mwGlob = {'workDir': workdir,
+              'configDir': workdir + '/config',
+              'dataDir': workdir + '/data',
               'modeldata': 'test',
               }
 
     astrometry = Astrometry(mwGlob)
-    pathToMW = '/Users/mw/PycharmProjects/MountWizzard4'
+    pathToMW = os.getcwd().replace('\\', '/')
     dataPath = pathToMW + 'data'
     fitsPath = pathToMW + fitsFile
 

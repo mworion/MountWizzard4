@@ -53,16 +53,6 @@ app = mainApp.MountWizzard4(mwGlob=mwGlob)
 spy = PyQt5.QtTest.QSignalSpy(app.message)
 
 
-def test_initConfig_1():
-    config = app.config['mainW']
-    for i in range(0, 8):
-        config[f'posText{i:1d}'] = 'test'
-        config[f'posAlt{i:1d}'] = str(i)
-        config[f'posAz{i:1d}'] = str(i)
-    app.mainW.initConfig()
-    assert app.mainW.ui.posText0.text() == 'test'
-
-
 def test_updatePointGui_alt():
     value = '45'
     app.mount.obsSite.Alt = value

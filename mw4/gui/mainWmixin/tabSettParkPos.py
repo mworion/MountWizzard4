@@ -115,8 +115,15 @@ class SettParkPos(object):
                                             self.posAz,
                                             ):
             if button == self.sender():
-                suc = self.app.mount.obsSite.slewAltAz(alt_degrees=alt,
-                                                       az_degrees=az,
+                altValue = float(alt.text())
+                azValue = float(az.text())
+                posTextValue = posText.text()
+                suc = self.app.mount.obsSite.slewAltAz(alt_degrees=altValue,
+                                                       az_degrees=azValue,
                                                        slewType='normal')
+                if suc:
+                    self.app.message.emit('Slew to [{0}]'.format(posTextValue), 0)
+                else:
+                    self.app.message.emit('Cannot slew to [{0}]'.format(posTextValue), 2)
                 return suc
         return False

@@ -95,7 +95,9 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         # gathering the mount data. data will only be != 0 if mount is tracking
         if obs.raJNow is not None:
-            if np.mean(dat['status'][-3] == 0):
+            length = len(dat['status'])
+            period = min(length, 5)
+            if np.mean(dat['status'][-period] == 0):
                 if self.raRef is None:
                     self.raRef = obs.raJNow.hours * 3600
                 if self.decRef is None:
@@ -105,7 +107,6 @@ class MeasureData(PyQt5.QtCore.QObject):
             else:
                 raJNow = 0
                 decJNow = 0
-            if obs.status != 0:
                 self.raRef = None
                 self.decRef = None
         else:

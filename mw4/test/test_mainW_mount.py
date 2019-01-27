@@ -405,7 +405,8 @@ def test_setSolarTracking2(qtbot):
 
 def test_slewParkPos_1(qtbot):
     class Test:
-        def text(self):
+        @staticmethod
+        def text():
             return '1'
     buttons = range(0, 8)
     alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
@@ -445,17 +446,17 @@ def test_slewParkPos_3(qtbot):
     with mock.patch.object(app.mount.obsSite,
                            'slewAltAz',
                            return_value=False):
-        for button in buttons:
-            with mock.patch.object(app.mainW,
-                                   'sender',
-                                   return_value=None):
-                suc = app.mainW.slewToParkPos()
-                assert not suc
+        with mock.patch.object(app.mainW,
+                               'sender',
+                               return_value=None):
+            suc = app.mainW.slewToParkPos()
+            assert not suc
 
 
 def test_slewParkPos_4(qtbot):
     class Test:
-        def text(self):
+        @staticmethod
+        def text():
             return '1'
     buttons = range(0, 8)
     alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
@@ -466,8 +467,8 @@ def test_slewParkPos_4(qtbot):
 
     with qtbot.waitSignal(app.message) as blocker:
         with mock.patch.object(app.mount.obsSite,
-                           'slewAltAz',
-                           return_value=True):
+                               'slewAltAz',
+                               return_value=True):
             for button in buttons:
                 with mock.patch.object(app.mainW,
                                        'sender',
@@ -479,7 +480,8 @@ def test_slewParkPos_4(qtbot):
 
 def test_slewParkPos_5(qtbot):
     class Test:
-        def text(self):
+        @staticmethod
+        def text():
             return '1'
     buttons = range(0, 8)
     alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
@@ -490,8 +492,8 @@ def test_slewParkPos_5(qtbot):
 
     with qtbot.waitSignal(app.message) as blocker:
         with mock.patch.object(app.mount.obsSite,
-                           'slewAltAz',
-                           return_value=False):
+                               'slewAltAz',
+                               return_value=False):
             for button in buttons:
                 with mock.patch.object(app.mainW,
                                        'sender',

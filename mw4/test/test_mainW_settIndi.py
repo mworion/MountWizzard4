@@ -54,8 +54,8 @@ spy = PyQt5.QtTest.QSignalSpy(app.message)
 
 
 def test_indiHost():
-    app.mainW.ui.indiHost.setText('TEST')
-    app.mainW.indiHost()
+    app.mainW.ui.indiHostEnvironment.setText('TEST')
+    app.mainW.indiHostEnvironment()
     assert app.environment.client.host == ('TEST', 7624)
 
 

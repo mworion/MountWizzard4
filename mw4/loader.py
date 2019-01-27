@@ -28,6 +28,8 @@ import datetime
 import warnings
 import traceback
 # external packages
+import matplotlib
+matplotlib.use('Qt5Agg')
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import skyfield.iokit

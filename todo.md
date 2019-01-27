@@ -1,7 +1,6 @@
 problems occurred list:
 
 - mountcontrol overflow pointing
-- setting indi cycle time
 - tests for model manage
 - mountcontrol: tests for all commands available
 - tests for polar plot in mainW missing

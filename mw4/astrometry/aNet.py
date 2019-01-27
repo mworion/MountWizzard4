@@ -192,9 +192,6 @@ class Astrometry(object):
         :param solveOptions: option for solving
         :return: suc, coords, wcsHeader
         """
-        baseOptions = ' --overwrite --no-plots --no-remove-lines --no-verify-uniformize'
-        baseOptions += ' --uniformize 0 --sort-column FLUX --scale-units app'
-        baseOptions += ' --crpix-center --cpulimit 60'
 
         command = self.binPath + '/image2xy'
         xyPath = self.dataPath + '/temp.xy'
@@ -202,18 +199,22 @@ class Astrometry(object):
         solvedPath = self.dataPath + '/temp.solved'
         wcsPath = self.dataPath + '/temp.wcs'
 
-        image2xyOptions = f' -O -o {xyPath} {fitsPath}'
-        subprocess.run(command + image2xyOptions, capture_output=True)
+        result = subprocess.run([command, '-O', '-o', xyPath, fitsPath], stdout=False)
         self.logger.debug('image2xy: ', result)
-        if not result.startswith('simplexy: found'):
+        if result.returncode:
             return False
 
+        options = self.binPath + '/solve-field'
+        options += ' --overwrite --no-plots --no-remove-lines --no-verify-uniformize'
+        options += ' --uniformize 0 --sort-column FLUX --scale-units app'
+        options += ' --crpix-center --cpulimit 60'
         extendedOptions = f' --config {configPath} {xyPath}'
-        options = baseOptions + extendedOptions + solveOptions
-        command = self.binPath + '/solve-field'
+        command = options + extendedOptions + solveOptions
 
-        result = subprocess.getoutput(command + options)
+        result = subprocess.run(command.split(' '), stdout=False)
         self.logger.debug('solve-field: ', result)
+        if result.returncode:
+            return False
 
         if os.path.isfile(solvedPath) and os.path.isfile(wcsPath):
             return True

@@ -23,7 +23,9 @@ necessary feature list:
 - indi CCD camera separate host
 - mountcontrol: adding TLE commands and tests
 - optimizing model functions (all) implement
-
+- auto sort points
+- labels to button
+- tab order
 
 nice to have:
 

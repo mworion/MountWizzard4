@@ -33,6 +33,13 @@ class SettIndi(object):
     def __init__(self):
         self.ui.indiHostEnvironment.editingFinished.connect(self.indiHostEnvironment)
         self.ui.reconnectEnvironment.clicked.connect(self.app.environment.reconnectIndiServer)
+
+        self.ui.indiHostImaging.editingFinished.connect(self.indiHostImaging)
+        # self.ui.reconnectImaging.clicked.connect(self.app.xxx.reconnectIndiServer)
+
+        self.ui.indiHostDome.editingFinished.connect(self.indiHostDome)
+        # self.ui.reconnectDome.clicked.connect(self.app.xxx.reconnectIndiServer)
+
         self.ui.localWeatherName.editingFinished.connect(self.localWeatherName)
         self.ui.globalWeatherName.editingFinished.connect(self.globalWeatherName)
         self.ui.sqmName.editingFinished.connect(self.sqmName)
@@ -41,8 +48,10 @@ class SettIndi(object):
         config = self.app.config['mainW']
         environ = self.app.environment
 
-        environ.client.host = config.get('indiHostEnvironment', '')
-        self.ui.indiHostEnvironment.setText(environ.client.host)
+        host = config.get('indiHostEnvironment', '')
+        environ.client.host = host
+        self.ui.indiHostEnvironment.setText(host)
+
         environ.globalWeatherName = config.get('globalWeatherName', '')
         self.ui.globalWeatherName.setText(environ.globalWeatherName)
         environ.localWeatherName = config.get('localWeatherName', '')
@@ -50,8 +59,17 @@ class SettIndi(object):
         environ.sqmName = config.get('sqmName', '')
         self.ui.sqmName.setText(environ.sqmName)
 
+        host = config.get('indiHostImaging', '')
+        # xxx.client.host = host
+        self.ui.indiHostImaging.setText(host)
         self.ui.ccdName.setText(config.get('ccdName', ''))
+
+        host = config.get('indiHostDome', '')
+        # xxx.client.host = host
+        self.ui.indiHostDome.setText(host)
         self.ui.domeName.setText(config.get('domeName', ''))
+        self.ui.telescopeName.setText(config.get('telescopeName', ''))
+
         return True
 
     def storeConfig(self):
@@ -61,9 +79,13 @@ class SettIndi(object):
         config['globalWeatherName'] = self.ui.globalWeatherName.text()
         config['sqmName'] = self.ui.sqmName.text()
 
-        config['domeName'] = self.ui.domeName.text()
-
+        config['indiHostImaging'] = self.ui.indiHostImaging.text()
         config['ccdName'] = self.ui.ccdName.text()
+
+        config['indiHostDome'] = self.ui.indiHostDome.text()
+        config['domeName'] = self.ui.domeName.text()
+        config['telescopeName'] = self.ui.telescopeName.text()
+
         return True
 
     def setupIcons(self):
@@ -98,3 +120,11 @@ class SettIndi(object):
     def sqmName(self):
         environ = self.app.environment
         environ.sqmName = self.ui.sqmName.text()
+
+    def indiHostImaging(self):
+        host = self.ui.indiHostImaging.text()
+        # self.app.xxx.client.host = host
+
+    def indiHostDome(self):
+        host = self.ui.indiHostDome.text()
+        # self.app.xxx.client.host = host

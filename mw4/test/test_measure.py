@@ -139,3 +139,12 @@ def test_calculateReference_5():
     assert app.measure.raRef is not None
     assert app.measure.decRef is not None
 
+
+def test_calculateReference_6():
+    app.measure.raRef = 0
+    app.measure.decRef = 0
+    app.mount.obsSite.raJNow = 1
+    app.mount.obsSite.decJNow = 1
+    ra, dec = app.measure._calculateReference()
+    assert ra == 0
+    assert dec == 0

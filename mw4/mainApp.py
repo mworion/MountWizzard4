@@ -305,7 +305,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:    status how it was called
         """
         if status:
-            self.mount.workaround()
+            # self.mount.workaround()
             self.mount.getFW()
             self.mount.getLocation()
             self.mount.cycleSetting()

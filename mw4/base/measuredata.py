@@ -87,10 +87,18 @@ class MeasureData(PyQt5.QtCore.QObject):
         length = len(dat['status'])
         period = min(length, 5)
         hasMean = length > 0 and period > 0
+
         if not hasMean:
             return raJNow, decJNow
 
-        if np.mean(dat['status'][-period:]) == 0:
+        periodData = dat['status'][-period:]
+        hasValidData = all(x is not None for x in periodData)
+        if hasValidData:
+            meanIsZero = periodData.mean() == 0
+
+        trackingIsStable = hasValidData and meanIsZero
+
+        if trackingIsStable:
             if self.raRef is None:
                 self.raRef = obs.raJNow.hours * 3600
             if self.decRef is None:

@@ -76,7 +76,7 @@ class Environment(object):
         self.client.signals.removeDevice.connect(self.removeDevice)
         self.client.signals.newProperty.connect(self.connectDevice)
         self.client.signals.newNumber.connect(self.updateData)
-        self.client.signals.newNumber.connect(self._setUpdateRate)
+        self.client.signals.deviceConnected.connect(self._setUpdateRate)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)
 
@@ -207,7 +207,7 @@ class Environment(object):
             device = self.wDevice[wType]['device']
             if device is None:
                 return False
-            if deviceName not in ['local', 'global']:
+            if wType not in ['local', 'global']:
                 continue
             update = device.getNumber('WEATHER_UPDATE')
             if update['PERIOD'] != self.UPDATE_RATE:

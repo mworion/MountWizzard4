@@ -357,8 +357,8 @@ class MeasureWindow(widget.MWidget):
                         markersize=1,
                         color=colorRight,
                         )
-        axe0.set_ylim(-1, 1)
-        axe1.set_ylim(-1, 1)
+        axe0.set_ylim(-0.4, 0.4)
+        axe1.set_ylim(-4, 4)
         axe0.grid(True, color=colorGrid, alpha=0.5)
         legend = axe0.legend([l0, l1],
                              [ylabelLeft, ylabelRight],

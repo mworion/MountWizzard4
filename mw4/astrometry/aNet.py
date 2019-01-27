@@ -200,6 +200,7 @@ class Astrometry(object):
         wcsPath = self.dataPath + '/temp.wcs'
 
         result = subprocess.run([command, '-O', '-o', xyPath, fitsPath], stdout=False)
+
         self.logger.debug('image2xy: ', result)
         if result.returncode:
             return False
@@ -212,6 +213,7 @@ class Astrometry(object):
         command = options + extendedOptions + solveOptions
 
         result = subprocess.run(command.split(' '), stdout=False)
+
         self.logger.debug('solve-field: ', result)
         if result.returncode:
             return False

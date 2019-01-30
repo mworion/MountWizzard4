@@ -59,9 +59,11 @@ class Astrometry(object):
         elif platform.system() == 'Windows':
             base = os.getenv('LOCALAPPDATA').replace('\\', '/')
             binPath = base + '/cygwin_ansvr/lib/astrometry/bin'
+            self.runPath = base + '/run'
             self.binPathSolveField = binPath + '/solve-field.exe'
-            self.binPathImage2xy = binPath + + '/image2xy.exe'
+            self.binPathImage2xy = binPath + '/image2xy.exe'
             self.indexPath = base + '/cygwin_ansvr/usr/share/astrometry/data'
+            os.environ['COMSPEC'] = 'C:\\Windows\\system32\\cmd.exe'
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
@@ -221,36 +223,45 @@ class Astrometry(object):
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
 
-        result = subprocess.run([self.binPathImage2xy,
-                                 '-O',
-                                 '-o',
-                                 xyPath,
-                                 fitsPath],
-                                stdout=False)
+        runnable = [self.binPathImage2xy,
+                    '-O',
+                    '-o',
+                    xyPath,
+                    fitsPath]
+        if platform.system() == 'Windows':
+            runnable = runnable.insert(0, self.runPath)
+        result = subprocess.run(runnable,
+                                stdout=False,
+                                shell=True,
+                                )
 
         self.logger.debug('image2xy: ', result)
         if result.returncode:
             return False
 
-        result = subprocess.run([self.binPathSolveField,
-                                 '--overwrite',
-                                 '--no-plots',
-                                 '--no-remove-lines',
-                                 '--no-verify-uniformize',
-                                 '--overwrite',
-                                 '--no-plots',
-                                 '--no-remove-lines',
-                                 '--no-verify-uniformize',
-                                 '--uniformize', '0',
-                                 '--sort-column', 'FLUX',
-                                 '--scale-units', 'app',
-                                 '--crpix-center',
-                                 '--cpulimit', '60',
-                                 '--config',
-                                 configPath,
-                                 xyPath,
-                                 # solveOptions.split(' '),
-                                 ],
+        runnable = [self.binPathSolveField,
+                    '--overwrite',
+                    '--no-plots',
+                    '--no-remove-lines',
+                    '--no-verify-uniformize',
+                    '--overwrite',
+                    '--no-plots',
+                    '--no-remove-lines',
+                    '--no-verify-uniformize',
+                    '--uniformize', '0',
+                    '--sort-column', 'FLUX',
+                    '--scale-units', 'app',
+                    '--crpix-center',
+                    '--cpulimit', '60',
+                    '--config',
+                    configPath,
+                    xyPath,
+                    ]
+        if platform.system() == 'Windows':
+            runnable = runnable.insert(0, self.runPath)
+        if solveOptions:
+            runnable = runnable.append(solveOptions.split())
+        result = subprocess.run(runnable,
                                 stdout=False)
 
         self.logger.debug('solve-field: ', result)
@@ -265,7 +276,7 @@ class Astrometry(object):
 
 if __name__ == "__main__":
     fitsFile = 'NGC7380.fits'
-    fitsFile = 'm51.fit'
+    # fitsFile = 'm51.fit'
     workDir = os.getcwd().replace('\\', '/')
     tempDir = workDir + '/data'
 

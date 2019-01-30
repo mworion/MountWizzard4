@@ -21,6 +21,7 @@
 import logging
 import subprocess
 import os
+import glob
 import platform
 # external packages
 from astropy.io import fits
@@ -46,25 +47,25 @@ class Astrometry(object):
         self.tempDir = tempDir
 
         if platform.system() == 'Darwin':
-            binPath = '/Applications/kstars.app/Contents/MacOS/astrometry/bin/'
-            self.binPathSolveField = binPath + 'solve-field'
-            self.binPathImage2xy = binPath + 'image2xy'
-            cfgPath = '/Users/mw/Library/Application Support/Astrometry'
+            binPath = '/Applications/kstars.app/Contents/MacOS/astrometry/bin'
+            self.binPathSolveField = binPath + '/solve-field'
+            self.binPathImage2xy = binPath + '/image2xy'
+            self.indexPath = '/Users/mw/Library/Application Support/Astrometry'
         elif platform.system() == 'Linux':
-            binPath = '/usr/bin/'
-            self.binPathSolveField = binPath + 'solve-field'
-            self.binPathImage2xy = binPath + 'image2xy'
-            cfgPath = '/usr/share/astrometry'
+            binPath = '/usr/bin'
+            self.binPathSolveField = binPath + '/solve-field'
+            self.binPathImage2xy = binPath + '/image2xy'
+            self.indexPath = '/usr/share/astrometry'
         elif platform.system() == 'Windows':
             base = os.getenv('LOCALAPPDATA').replace('\\', '/')
-            binPath = base + '/cygwin_ansvr/lib/astrometry/bin/'
-            self.binPathSolveField = binPath + 'solve-field.exe'
-            self.binPathImage2xy = binPath + + 'image2xy.exe'
-            cfgPath = base + '/cygwin_ansvr/usr/share/astrometry/data'
+            binPath = base + '/cygwin_ansvr/lib/astrometry/bin'
+            self.binPathSolveField = binPath + '/solve-field.exe'
+            self.binPathImage2xy = binPath + + '/image2xy.exe'
+            self.indexPath = base + '/cygwin_ansvr/usr/share/astrometry/data'
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
-            outFile.write('cpulimit 300\nadd_path {0}\nautoindex\n'.format(cfgPath))
+            outFile.write('cpulimit 300\nadd_path {0}\nautoindex\n'.format(self.indexPath))
 
     @staticmethod
     def convertToHMS(value):
@@ -106,7 +107,10 @@ class Astrometry(object):
         if not os.path.isfile(self.binPathImage2xy):
             self.logger.error(f'{self.binPathImage2xy} not found')
             return False
-        self.logger.info('solve-field and image2xy is available')
+        if not glob.glob(self.indexPath + '/index-4*.fits'):
+            self.logger.error('no index files found')
+            return False
+        self.logger.info('solve-field, image2xy and index files available')
         return True
 
     def readCheckFitsData(self, fitsPath='', optionalScale=0):
@@ -269,8 +273,8 @@ if __name__ == "__main__":
 
     fitsPath = workDir + '/' + fitsFile
 
+    print(astrometry.checkAvailability())
     fitsOptions = astrometry.readCheckFitsData(fitsPath=fitsPath)
-
     result = astrometry.solve(fitsPath=fitsPath,
                               solveOptions=fitsOptions)
 

@@ -63,7 +63,7 @@ class Astrometry(object):
             self.binPathSolveField = binPath + '/solve-field.exe'
             self.binPathImage2xy = binPath + '/image2xy.exe'
             self.indexPath = base + '/cygwin_ansvr/usr/share/astrometry/data'
-            os.environ['COMSPEC'] = 'C:\\Windows\\system32\\cmd.exe'
+            # os.environ['COMSPEC'] = 'C:\\Windows\\system32\\cmd.exe'
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
@@ -229,7 +229,7 @@ class Astrometry(object):
                     xyPath,
                     fitsPath]
         if platform.system() == 'Windows':
-            runnable = runnable.insert(0, self.runPath)
+            runnable.insert(0, self.runPath)
         result = subprocess.run(runnable,
                                 stdout=False,
                                 shell=True,
@@ -258,9 +258,9 @@ class Astrometry(object):
                     xyPath,
                     ]
         if platform.system() == 'Windows':
-            runnable = runnable.insert(0, self.runPath)
+            runnable.insert(0, self.runPath)
         if solveOptions:
-            runnable = runnable.append(solveOptions.split())
+            runnable.append(solveOptions.split())
         result = subprocess.run(runnable,
                                 stdout=False)
 

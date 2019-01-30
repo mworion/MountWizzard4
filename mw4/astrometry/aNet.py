@@ -31,7 +31,7 @@ class Astrometry(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
 
-        >>> astrometry = Astrometry(mwGlob=mwGlob,
+        >>> astrometry = Astrometry(tempDir=tempDir,
         >>>                         )
 
     """
@@ -42,23 +42,27 @@ class Astrometry(object):
     version = '0.31'
     logger = logging.getLogger(__name__)
 
-    def __init__(self, mwGlob):
-        self.mwGlob = mwGlob
-        self.dataPath = self.mwGlob['dataDir']
-        self.wcsPath = self.mwGlob['dataDir']
+    def __init__(self, tempDir):
+        self.tempDir = tempDir
 
         if platform.system() == 'Darwin':
-            self.binPath = '/Applications/kstars.app/Contents/MacOS/astrometry/bin'
+            binPath = '/Applications/kstars.app/Contents/MacOS/astrometry/bin/'
+            self.binPathSolveField = binPath + 'solve-field'
+            self.binPathImage2xy = binPath + 'image2xy'
             cfgPath = '/Users/mw/Library/Application Support/Astrometry'
         elif platform.system() == 'Linux':
-            self.binPath = '/usr/bin'
+            binPath = '/usr/bin/'
+            self.binPathSolveField = binPath + 'solve-field'
+            self.binPathImage2xy = binPath + 'image2xy'
             cfgPath = '/usr/share/astrometry'
         elif platform.system() == 'Windows':
             base = os.getenv('LOCALAPPDATA').replace('\\', '/')
-            self.binPath = base + '/cygwin_ansvr/lib/astrometry/bin'
+            binPath = base + '/cygwin_ansvr/lib/astrometry/bin/'
+            self.binPathSolveField = binPath + 'solve-field.exe'
+            self.binPathImage2xy = binPath + + 'image2xy.exe'
             cfgPath = base + '/cygwin_ansvr/usr/share/astrometry/data'
 
-        cfgFile = self.dataPath + '/astrometry.cfg'
+        cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
             outFile.write('cpulimit 300\nadd_path {0}\nautoindex\n'.format(cfgPath))
 
@@ -89,6 +93,21 @@ class Astrometry(object):
             sign = '+'
         value = f'{sign}{value[0]}:{value[1]}:{value[2]}'
         return value
+
+    def checkAvailability(self):
+        """
+
+        :return: True if local solve and components is available
+        """
+
+        if not os.path.isfile(self.binPathSolveField):
+            self.logger.error(f'{self.binPathSolveField} not found')
+            return False
+        if not os.path.isfile(self.binPathImage2xy):
+            self.logger.error(f'{self.binPathImage2xy} not found')
+            return False
+        self.logger.info('solve-field and image2xy is available')
+        return True
 
     def readCheckFitsData(self, fitsPath='', optionalScale=0):
         """
@@ -141,7 +160,7 @@ class Astrometry(object):
         if not fitsPath:
             return False
 
-        wcsFile = self.wcsPath + '/temp.wcs'
+        wcsFile = self.tempDir + '/temp.wcs'
         with fits.open(fitsPath) as fitsHandle:
             fitsHeader = fitsHandle[0].header
             with fits.open(wcsFile) as wcsHandle:
@@ -193,26 +212,42 @@ class Astrometry(object):
         :return: suc, coords, wcsHeader
         """
 
-        command = self.binPath + '/image2xy'
-        xyPath = self.dataPath + '/temp.xy'
-        configPath = self.dataPath + '/astrometry.cfg'
-        solvedPath = self.dataPath + '/temp.solved'
-        wcsPath = self.dataPath + '/temp.wcs'
+        xyPath = self.tempDir + '/temp.xy'
+        configPath = self.tempDir + '/astrometry.cfg'
+        solvedPath = self.tempDir + '/temp.solved'
+        wcsPath = self.tempDir + '/temp.wcs'
 
-        result = subprocess.run([command, '-O', '-o', xyPath, fitsPath], stdout=False)
+        result = subprocess.run([self.binPathImage2xy,
+                                 '-O',
+                                 '-o',
+                                 xyPath,
+                                 fitsPath],
+                                stdout=False)
 
         self.logger.debug('image2xy: ', result)
         if result.returncode:
             return False
 
-        options = self.binPath + '/solve-field'
-        options += ' --overwrite --no-plots --no-remove-lines --no-verify-uniformize'
-        options += ' --uniformize 0 --sort-column FLUX --scale-units app'
-        options += ' --crpix-center --cpulimit 60'
-        extendedOptions = f' --config {configPath} {xyPath}'
-        command = options + extendedOptions + solveOptions
-
-        result = subprocess.run(command.split(' '), stdout=False)
+        result = subprocess.run([self.binPathSolveField,
+                                 '--overwrite',
+                                 '--no-plots',
+                                 '--no-remove-lines',
+                                 '--no-verify-uniformize',
+                                 '--overwrite',
+                                 '--no-plots',
+                                 '--no-remove-lines',
+                                 '--no-verify-uniformize',
+                                 '--uniformize', '0',
+                                 '--sort-column', 'FLUX',
+                                 '--scale-units', 'app',
+                                 '--crpix-center',
+                                 '--cpulimit', '60',
+                                 '--config',
+                                 configPath,
+                                 xyPath,
+                                 # solveOptions.split(' '),
+                                 ],
+                                stdout=False)
 
         self.logger.debug('solve-field: ', result)
         if result.returncode:
@@ -225,19 +260,14 @@ class Astrometry(object):
 
 
 if __name__ == "__main__":
-    fitsFile = '/NGC7380.fits'
-    # fitsFile = '/m51.
-    workdir = os.getcwd().replace('\\', '/')
-    mwGlob = {'workDir': workdir,
-              'configDir': workdir + '/config',
-              'dataDir': workdir + '/data',
-              'modeldata': 'test',
-              }
+    fitsFile = 'NGC7380.fits'
+    fitsFile = 'm51.fit'
+    workDir = os.getcwd().replace('\\', '/')
+    tempDir = workDir + '/data'
 
-    astrometry = Astrometry(mwGlob)
-    pathToMW = os.getcwd().replace('\\', '/')
-    dataPath = pathToMW + 'data'
-    fitsPath = pathToMW + fitsFile
+    astrometry = Astrometry(tempDir=tempDir)
+
+    fitsPath = workDir + '/' + fitsFile
 
     fitsOptions = astrometry.readCheckFitsData(fitsPath=fitsPath)
 

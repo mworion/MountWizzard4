@@ -230,9 +230,7 @@ class Astrometry(object):
                     fitsPath]
         if platform.system() == 'Windows':
             runnable.insert(0, self.runPath)
-        result = subprocess.run(runnable,
-                                stdout=False,
-                                shell=True,
+        result = subprocess.run(args=runnable
                                 )
 
         self.logger.debug('image2xy: ', result)
@@ -260,9 +258,9 @@ class Astrometry(object):
         if platform.system() == 'Windows':
             runnable.insert(0, self.runPath)
         if solveOptions:
-            runnable.append(solveOptions.split())
-        result = subprocess.run(runnable,
-                                stdout=False)
+            for option in solveOptions.split():
+                runnable.append(option)
+        result = subprocess.run(args=runnable)
 
         self.logger.debug('solve-field: ', result)
         if result.returncode:

@@ -56,7 +56,7 @@ class Astrometry(object):
             self.binPathSolveField = binPath + '/solve-field'
             self.binPathImage2xy = binPath + '/image2xy'
             self.indexPath = '/usr/share/astrometry'
-        elif platform.system() == 'Windows':
+        else:
             self.binPathSolveField = ''
             self.binPathImage2xy = ''
             self.indexPath = ''
@@ -280,9 +280,9 @@ if __name__ == "__main__":
     fitsPath = workDir + '/' + fitsFile
 
     print(astrometry.checkAvailability())
+
     fitsOptions = astrometry.readCheckFitsData(fitsPath=fitsPath)
     result = astrometry.solve(fitsPath=fitsPath,
                               solveOptions=fitsOptions)
-
     astrometry.addWCSDataToFits(fitsPath=fitsPath)
     print(result)

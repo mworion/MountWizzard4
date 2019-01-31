@@ -57,13 +57,9 @@ class Astrometry(object):
             self.binPathImage2xy = binPath + '/image2xy'
             self.indexPath = '/usr/share/astrometry'
         elif platform.system() == 'Windows':
-            base = os.getenv('LOCALAPPDATA').replace('\\', '/')
-            binPath = base + '/cygwin_ansvr/lib/astrometry/bin'
-            self.runPath = base + '/run'
-            self.binPathSolveField = binPath + '/solve-field.exe'
-            self.binPathImage2xy = binPath + '/image2xy.exe'
-            self.indexPath = base + '/cygwin_ansvr/usr/share/astrometry/data'
-            # os.environ['COMSPEC'] = 'C:\\Windows\\system32\\cmd.exe'
+            self.binPathSolveField = ''
+            self.binPathImage2xy = ''
+            self.indexPath = ''
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
@@ -230,8 +226,9 @@ class Astrometry(object):
                     fitsPath]
         if platform.system() == 'Windows':
             runnable.insert(0, self.runPath)
-        result = subprocess.run(args=runnable
-                                )
+        with open(os.devnull, 'w') as devnull:
+            result = subprocess.run(args=runnable,
+                                    stdout=devnull)
 
         self.logger.debug('image2xy: ', result)
         if result.returncode:
@@ -255,12 +252,12 @@ class Astrometry(object):
                     configPath,
                     xyPath,
                     ]
-        if platform.system() == 'Windows':
-            runnable.insert(0, self.runPath)
         if solveOptions:
             for option in solveOptions.split():
                 runnable.append(option)
-        result = subprocess.run(args=runnable)
+        with open(os.devnull, 'w') as devnull:
+            result = subprocess.run(args=runnable,
+                                    stdout=devnull)
 
         self.logger.debug('solve-field: ', result)
         if result.returncode:

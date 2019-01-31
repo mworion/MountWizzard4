@@ -28,16 +28,16 @@ from astropy.io import fits
 # local imports
 
 
-class Astrometry(object):
+class AstrometryNet(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
 
-        >>> astrometry = Astrometry(tempDir=tempDir,
+        >>> astrometry = AstrometryNet(tempDir=tempDir,
         >>>                         )
 
     """
 
-    __all__ = ['Astrometry',
+    __all__ = ['AstrometryNet',
                ]
 
     version = '0.31'
@@ -275,7 +275,7 @@ if __name__ == "__main__":
     workDir = os.getcwd().replace('\\', '/')
     tempDir = workDir + '/data'
 
-    astrometry = Astrometry(tempDir=tempDir)
+    astrometry = AstrometryNet(tempDir=tempDir)
 
     fitsPath = workDir + '/' + fitsFile
 

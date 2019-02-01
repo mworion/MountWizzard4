@@ -261,6 +261,7 @@ def main():
         'configDir': '',
         'dataDir': '',
         'imageDir': '',
+        'tempDir': '',
     }
 
     # checking workdir and if the system is started from frozen app

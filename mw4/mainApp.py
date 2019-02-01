@@ -21,6 +21,7 @@
 import logging
 import os
 import json
+import platform
 # external packages
 import PyQt5.QtCore
 import skyfield
@@ -35,6 +36,7 @@ from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
 from mw4.environ import environ
 from mw4.base import measuredata
+from mw4.astrometry import astrometryKstars
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -97,6 +99,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                              mwGlob=self.mwGlob,
                                              )
         self.measure = measuredata.MeasureData(self)
+        if platform.system() in ['Darwin', 'Linux']:
+            self.plateSolve = astrometryKstars.AstrometryKstars(mwGlob['tempDir'])
+        else:
+            self.plateSolve = None
         # get the window widgets up
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)

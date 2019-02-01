@@ -90,30 +90,11 @@ def setDirectories(mwGlob=None):
     :return:
     """
 
-    if not os.path.isdir(mwGlob['workDir']):
-        os.makedirs(mwGlob['workDir'])
-    if not os.access(mwGlob['workDir'], os.W_OK):
-        logging.error('no write access to workdir')
-
-    if not os.path.isdir(mwGlob['configDir']):
-        os.makedirs(mwGlob['configDir'])
-    if not os.access(mwGlob['configDir'], os.W_OK):
-        logging.error('no write access to /config')
-
-    if not os.path.isdir(mwGlob['dataDir']):
-        os.makedirs(mwGlob['dataDir'])
-    if not os.access(mwGlob['dataDir'], os.W_OK):
-        logging.error('no write access to /data')
-
-    if not os.path.isdir(mwGlob['imageDir']):
-        os.makedirs(mwGlob['imageDir'])
-    if not os.access(mwGlob['imageDir'], os.W_OK):
-        logging.error('no write access to /image')
-
-    if not os.path.isdir(mwGlob['tempDir']):
-        os.makedirs(mwGlob['tempDir'])
-    if not os.access(mwGlob['tempDir'], os.W_OK):
-        logging.error('no write access to /temp')
+    for dirPath in ['workDir', 'configDir', 'imageDir', 'tempDir']:
+        if not os.path.isdir(mwGlob[dirPath]):
+            os.makedirs(mwGlob[dirPath])
+        if not os.access(mwGlob[dirPath], os.W_OK):
+            logging.error('no write access to {0}'.format(dirPath))
 
 
 def checkFrozen(mwGlob=None):

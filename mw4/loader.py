@@ -110,6 +110,9 @@ def setDirectories(mwGlob=None):
     if not os.access(mwGlob['imageDir'], os.W_OK):
         logging.error('no write access to /image')
 
+    if not mwGlob['tempDir'].isValid():
+        logging.error('no valid temp dir')
+
 
 def checkFrozen(mwGlob=None):
     """
@@ -145,6 +148,8 @@ def setupWorkDirs(mwGlob=None):
     mwGlob['configDir'] = os.getcwd() + '/config'
     mwGlob['dataDir'] = os.getcwd() + '/data'
     mwGlob['imageDir'] = os.getcwd() + '/image'
+    temp = PyQt5.QtCore.QTemporaryDir()
+    mwGlob['tempDir'] = temp
     return mwGlob
 
 

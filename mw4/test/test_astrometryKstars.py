@@ -98,9 +98,9 @@ def test_convertToHMS_3():
 
 def test_convertToHMS_4():
     app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
-    value = '12.00.34'
+    value = '12 00 34 34'
     ret = app.convertToHMS(value)
-    assert ret == '12:00:34'
+    assert ret is None
 
 
 def test_convertToHMS_5():
@@ -129,3 +129,46 @@ def test_convertToDMS_2():
     value = -90.0
     ret = app.convertToDMS(value)
     assert ret == '-90:00:00'
+
+
+def test_convertToDMS_3():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '45 45 45'
+    ret = app.convertToDMS(value)
+    assert ret == '+45:45:45'
+
+
+def test_convertToDMS_4():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '45 45 45 50'
+    ret = app.convertToDMS(value)
+    assert ret is None
+
+
+def test_convertToDMS_5():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '45:45:45'
+    ret = app.convertToDMS(value)
+    assert ret == '+45:45:45'
+
+
+def test_convertToDMS_6():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '45 45 45.345'
+    ret = app.convertToDMS(value)
+    assert ret == '+45:45:45'
+
+
+def test_convertToDMS_7():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '++45 45 45'
+    ret = app.convertToDMS(value)
+    assert ret is None
+
+
+def test_convertToDMS_8():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '-45 45 45.345'
+    ret = app.convertToDMS(value)
+    assert ret == '-45:45:45'
+

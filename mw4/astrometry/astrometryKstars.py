@@ -79,7 +79,6 @@ class AstrometryKstars(object):
             return None
         # managing different coding
         value = value.replace('*', ' ')
-        value = value.replace('.', ' ')
         value = value.replace(':', ' ')
         value = value.replace('deg', ' ')
         value = value.replace('"', ' ')
@@ -132,12 +131,11 @@ class AstrometryKstars(object):
 
         if not isinstance(value, float):
             value = self.stringToDegree(value)
+            if value is None:
+                return None
             angle = Angle(hours=value, preference='hours')
         else:
             angle = Angle(degrees=value, preference='hours')
-
-        if angle is None:
-            return None
 
         t = Angle.signed_hms(angle)
         value = '{0:02.0f}:{1:02.0f}:{2:02.0f}'.format(t[1], t[2], t[3])
@@ -168,10 +166,11 @@ class AstrometryKstars(object):
 
         if not isinstance(value, float):
             value = self.stringToDegree(value)
-        angle = Angle(degrees=value, preference='degrees')
 
-        if angle is None:
+        if value is None:
             return None
+
+        angle = Angle(degrees=value, preference='degrees')
 
         t = Angle.signed_dms(angle)
         sign = '+' if angle.degrees > 0 else '-'

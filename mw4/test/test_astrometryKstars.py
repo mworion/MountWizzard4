@@ -201,3 +201,11 @@ def test_checkAvailability_4():
     app.indexPath = ''
     suc = app.checkAvailability()
     assert not suc
+
+
+def test_solve_1():
+    fitsPath = './mw4/test/config/m51.fit'
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    fitsOptions = app.readCheckFitsData(fitsPath=fitsPath)
+    suc = app.solve(fitsPath=fitsPath, solveOptions=fitsOptions)
+    assert suc

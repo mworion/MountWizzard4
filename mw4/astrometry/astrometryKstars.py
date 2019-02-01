@@ -67,8 +67,7 @@ class AstrometryKstars(object):
         with open(cfgFile, 'w+') as outFile:
             outFile.write('cpulimit 300\nadd_path {0}\nautoindex\n'.format(self.indexPath))
 
-    @staticmethod
-    def stringToDegree(value):
+    def stringToDegree(self, value):
         if not isinstance(value, str):
             return None
         if not len(value):
@@ -87,7 +86,7 @@ class AstrometryKstars(object):
         try:
             value = [float(x) for x in value]
         except Exception as e:
-            self.logger.debug('error: {0}, caller: {1}, value: {2}'.format(e, ca, value))
+            self.logger.debug('error: {0}, value: {1}'.format(e, value))
             return None
         sign = 1 if value[0] > 0 else -1
         value[0] = abs(value[0])
@@ -310,11 +309,17 @@ class AstrometryKstars(object):
                     fitsPath]
         if platform.system() == 'Windows':
             runnable.insert(0, self.runPath)
-        with open(os.devnull, 'w') as devnull:
-            result = subprocess.run(args=runnable,
-                                    stdout=devnull)
 
-        self.logger.debug('image2xy: ', result)
+        result = subprocess.run(args=runnable,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+
+        self.logger.debug('image2xy: ',
+                          result.returncode,
+                          result.stderr.decode(),
+                          result.stdout.decode().replace('\n', ' '),
+                          )
+
         if result.returncode:
             return False
 
@@ -339,11 +344,15 @@ class AstrometryKstars(object):
         if solveOptions:
             for option in solveOptions.split():
                 runnable.append(option)
-        with open(os.devnull, 'w') as devnull:
-            result = subprocess.run(args=runnable,
-                                    stdout=devnull)
 
-        self.logger.debug('solve-field: ', result)
+        result = subprocess.run(args=runnable,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+
+        self.logger.debug('solve-field: ',
+                          result.returncode,
+                          result.stderr.decode(),
+                          result.stdout.decode().replace('\n', ' '))
         if result.returncode:
             return False
 

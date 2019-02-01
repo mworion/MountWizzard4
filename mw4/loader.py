@@ -127,6 +127,7 @@ def setupWorkDirs(mwGlob=None):
     :param mwGlob:
     :return: mwGlob
     """
+
     mwGlob['workDir'] = os.getcwd()
     mwGlob['configDir'] = os.getcwd() + '/config'
     mwGlob['dataDir'] = os.getcwd() + '/data'

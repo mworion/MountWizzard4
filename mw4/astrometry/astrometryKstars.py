@@ -351,22 +351,3 @@ class AstrometryKstars(object):
             return True
         else:
             return False
-
-
-if __name__ == "__main__":
-    fitsFile = 'NGC7380.fits'
-    # fitsFile = 'm51.fit'
-    workDir = os.getcwd().replace('\\', '/')
-    tempDir = workDir + '/data'
-
-    astrometry = AstrometryKstars(tempDir=tempDir)
-
-    fitsPath = workDir + '/' + fitsFile
-
-    print(astrometry.checkAvailability())
-
-    fitsOptions = astrometry.readCheckFitsData(fitsPath=fitsPath)
-    result = astrometry.solve(fitsPath=fitsPath,
-                              solveOptions=fitsOptions)
-    astrometry.addWCSDataToFits(fitsPath=fitsPath)
-    print(result)

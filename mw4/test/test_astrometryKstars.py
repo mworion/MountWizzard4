@@ -172,3 +172,32 @@ def test_convertToDMS_8():
     ret = app.convertToDMS(value)
     assert ret == '-45:45:45'
 
+
+def test_checkAvailability_1():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    suc = app.checkAvailability()
+    assert suc
+
+
+def test_checkAvailability_2():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    app.indexPath = ''
+    app.binPathImage2xy = ''
+    app.binPathSolveField = ''
+    suc = app.checkAvailability()
+    assert not suc
+
+
+def test_checkAvailability_3():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    app.indexPath = ''
+    app.binPathImage2xy = ''
+    suc = app.checkAvailability()
+    assert not suc
+
+
+def test_checkAvailability_4():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    app.indexPath = ''
+    suc = app.checkAvailability()
+    assert not suc

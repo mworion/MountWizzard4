@@ -79,6 +79,7 @@ class AstrometryKstars(object):
             return None
         # managing different coding
         value = value.replace('*', ' ')
+        value = value.replace('.', ' ')
         value = value.replace(':', ' ')
         value = value.replace('deg', ' ')
         value = value.replace('"', ' ')
@@ -87,7 +88,7 @@ class AstrometryKstars(object):
         try:
             value = [float(x) for x in value]
         except Exception as e:
-            logger.debug('error: {0}, caller: {1}, value: {2}'.format(e, ca, value))
+            self.logger.debug('error: {0}, caller: {1}, value: {2}'.format(e, ca, value))
             return None
         sign = 1 if value[0] > 0 else -1
         value[0] = abs(value[0])
@@ -129,10 +130,11 @@ class AstrometryKstars(object):
         :return: converted value as string
         """
 
-        if isinstance(value, float):
-            angle = Angle(degrees=value, preference='hours')
+        if not isinstance(value, float):
+            value = self.stringToDegree(value)
+            angle = Angle(hours=value, preference='hours')
         else:
-            angle = self.stringToDegree(value)
+            angle = Angle(degrees=value, preference='hours')
 
         if angle is None:
             return None
@@ -164,10 +166,9 @@ class AstrometryKstars(object):
         :return: converted value as string
         """
 
-        if isinstance(value, float):
-            angle = Angle(degrees=value, preference='degrees')
-        else:
-            angle = self.stringToDegree(value)
+        if not isinstance(value, float):
+            value = self.stringToDegree(value)
+        angle = Angle(degrees=value, preference='degrees')
 
         if angle is None:
             return None

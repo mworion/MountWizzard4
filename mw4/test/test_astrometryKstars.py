@@ -82,11 +82,39 @@ def test_convertToHMS_1():
     assert ret == '12:00:00'
 
 
-def test_convertToHMS_1():
+def test_convertToHMS_2():
     app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
     value = -180.0
     ret = app.convertToHMS(value)
     assert ret == '12:00:00'
+
+
+def test_convertToHMS_3():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '12 00 34'
+    ret = app.convertToHMS(value)
+    assert ret == '12:00:34'
+
+
+def test_convertToHMS_4():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '12.00.34'
+    ret = app.convertToHMS(value)
+    assert ret == '12:00:34'
+
+
+def test_convertToHMS_5():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '12:00:34'
+    ret = app.convertToHMS(value)
+    assert ret == '12:00:34'
+
+
+def test_convertToHMS_6():
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    value = '12:00:34.356'
+    ret = app.convertToHMS(value)
+    assert ret == '12:00:34'
 
 
 def test_convertToDMS_1():

@@ -48,9 +48,12 @@ class ImageWindow(widget.MWidget):
         super().__init__()
         self.app = app
         self.showStatus = False
+
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
         self.initUI()
+
+        self.setupDropDownGui()
 
         self.imageMat = self.embedMatplot(self.ui.image)
         self.imageMat.parentWidget().setStyleSheet(self.BACK)
@@ -74,6 +77,9 @@ class ImageWindow(widget.MWidget):
         self.resize(width, height)
         if config.get('showStatus'):
             self.showWindow()
+        self.ui.color.setCurrentIndex(config.get('color', 0))
+        self.ui.zoom.setCurrentIndex(config.get('zoom', 0))
+        self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
         return True
 
     def storeConfig(self):
@@ -85,6 +91,9 @@ class ImageWindow(widget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
         config['showStatus'] = self.showStatus
+        config['color'] = self.ui.color.currentIndex()
+        config['zoom'] = self.ui.zoom.currentIndex()
+        config['stretch'] = self.ui.stretch.currentIndex()
         return True
 
     def resizeEvent(self, QResizeEvent):
@@ -121,4 +130,34 @@ class ImageWindow(widget.MWidget):
         self.showStatus = True
         self.show()
         self.changeStyleDynamic(self.app.mainW.ui.openImageW, 'running', 'true')
+        return True
+
+    def setupDropDownGui(self):
+        """
+        setupDropDownGui handles the population of list for image handling.
+
+        :return: success for test
+        """
+
+        self.ui.color.clear()
+        self.ui.color.setView(PyQt5.QtWidgets.QListView())
+        self.ui.color.addItem('Grey')
+        self.ui.color.addItem('Cool')
+        self.ui.color.addItem('Rainbow')
+        self.ui.color.addItem('Spectral')
+
+        self.ui.zoom.clear()
+        self.ui.zoom.setView(PyQt5.QtWidgets.QListView())
+        self.ui.zoom.addItem('Zoom 1x')
+        self.ui.zoom.addItem('Zoom 2x')
+        self.ui.zoom.addItem('Zoom 4x')
+        self.ui.zoom.addItem('Zoom 8x')
+
+        self.ui.stretch.clear()
+        self.ui.stretch.setView(PyQt5.QtWidgets.QListView())
+        self.ui.stretch.addItem('Low')
+        self.ui.stretch.addItem('Mid')
+        self.ui.stretch.addItem('High')
+        self.ui.stretch.addItem('Super')
+
         return True

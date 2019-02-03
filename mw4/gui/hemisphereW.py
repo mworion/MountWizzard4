@@ -897,20 +897,7 @@ class HemisphereWindow(widget.MWidget):
             self.app.message.emit('Slewing to: {0}'.format(name), 0)
         return suc
 
-    def drawHemisphereStatic(self, axes=None):
-        """
-         drawHemisphereStatic renders the static part of the hemisphere window and puts
-         all drawing on the static plane. the content consist of:
-            - modeldata points
-            - horizon mask
-            - celestial paths
-            - meridian limits
-        with all their styles an coloring
-
-        :param axes: matplotlib axes object
-        :return:
-        """
-
+    def _staticHorizon(self, axes=None):
         # drawing horizon
         showHorizon = self.app.mainW.ui.checkUseHorizon.isChecked()
         if self.app.data.horizonP and showHorizon:
@@ -922,6 +909,7 @@ class HemisphereWindow(widget.MWidget):
                 self.horizonMarker.set_marker('o')
                 self.horizonMarker.set_color('#FF00FF')
 
+    def _staticModelData(self, axes=None):
         # drawing modeldata points
         if self.app.data.buildP:
             alt, az = zip(*self.app.data.buildP)
@@ -956,6 +944,7 @@ class HemisphereWindow(widget.MWidget):
                                            )
                 self.pointsBuildAnnotate.append(annotation)
 
+    def _staticCelestialEquator(self, axes=None):
         # draw celestial equator
         visible = self.ui.checkShowCelestial.isChecked()
         celestial = self.app.data.generateCelestialEquator()
@@ -992,6 +981,7 @@ class HemisphereWindow(widget.MWidget):
                                                 visible=visible)
         axes.add_patch(self.meridianTrack)
 
+    def _staticAltitudeLimits(self, axes=None):
         # draw altitude limits
         if self.app.mount.sett.horizonLimitHigh is not None:
             high = self.app.mount.sett.horizonLimitHigh
@@ -1015,6 +1005,25 @@ class HemisphereWindow(widget.MWidget):
                                                   visible=True)
         axes.add_patch(self.horizonLimitHigh)
         axes.add_patch(self.horizonLimitLow)
+
+    def drawHemisphereStatic(self, axes=None):
+        """
+         drawHemisphereStatic renders the static part of the hemisphere window and puts
+         all drawing on the static plane. the content consist of:
+            - modeldata points
+            - horizon mask
+            - celestial paths
+            - meridian limits
+        with all their styles an coloring
+
+        :param axes: matplotlib axes object
+        :return:
+        """
+
+        self._staticHorizon(axes=axes)
+        self._staticModelData(axes=axes)
+        self._staticCelestialEquator(axes=axes)
+        self._staticAltitudeLimits(axes=axes)
 
     def drawHemisphereMoving(self, axes=None):
         """

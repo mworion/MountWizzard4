@@ -122,9 +122,11 @@ class SettIndi(object):
         environ.sqmName = self.ui.sqmName.text()
 
     def indiHostImaging(self):
-        host = self.ui.indiHostImaging.text()
+        pass
+        # host = self.ui.indiHostImaging.text()
         # self.app.xxx.client.host = host
 
     def indiHostDome(self):
-        host = self.ui.indiHostDome.text()
+        pass
+        # host = self.ui.indiHostDome.text()
         # self.app.xxx.client.host = host

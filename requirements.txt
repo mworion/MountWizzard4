@@ -5,7 +5,7 @@ PyQt5==5.11.3
 PyQt5-sip==4.19.13
 requests==2.21.0
 requests_toolbelt==0.8.0
-skyfield==1.9
+skyfield==1.10
 wakeonlan==1.1.6
 pytest==4.0.2
 pytest-qt==3.2.2

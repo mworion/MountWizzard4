@@ -209,3 +209,6 @@ def test_solve_1():
     fitsOptions = app.readCheckFitsData(fitsPath=fitsPath)
     suc = app.solve(fitsPath=fitsPath, solveOptions=fitsOptions)
     assert suc
+    suc = app.addWCSDataToFits(fitsPath=fitsPath)
+    assert suc
+

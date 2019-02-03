@@ -236,7 +236,8 @@ class AstrometryKstars(object):
     def addWCSDataToFits(self, fitsPath=''):
         """
         addWCSDataToFits reads the fits file containing the wcs data output from solve-field
-        and embeds it to the given fits file with image
+        and embeds it to the given fits file with image. it removes all entries starting with
+        some keywords given in selection. we starting with COMMENT and HISTORY
 
         :param fitsPath: path to the fits file, where the wcs header should be embedded
         :return: success
@@ -245,17 +246,14 @@ class AstrometryKstars(object):
         if not fitsPath:
             return False
 
+        remove = ['COMMENT', 'HISTORY']
+
         wcsFile = self.tempDir + '/temp.wcs'
         with fits.open(fitsPath) as fitsHandle:
             fitsHeader = fitsHandle[0].header
             with fits.open(wcsFile) as wcsHandle:
                 wcsHeader = wcsHandle[0].header
-                for key, value in wcsHeader.items():
-                    if key.startswith('COMMENT'):
-                        continue
-                    if key.startswith('HISTORY'):
-                        continue
-                    fitsHeader[key] = value
+                fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
         return True
 
     def solve(self, fitsPath='', solveOptions=''):

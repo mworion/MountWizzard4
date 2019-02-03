@@ -42,12 +42,15 @@ class MeasureData(PyQt5.QtCore.QObject):
 
     # update rate to 1 seconds for setting indi server
     CYCLE_UPDATE_TASK = 1000
+    # maximum size of measurement task
+    MAXSIZE = 24 * 60 * 60
 
     def __init__(self,
                  app,
                  ):
         super().__init__()
         self.app = app
+        self.mutexMeasure = PyQt5.QtCore.QMutex()
         self.raRef = None
         self.decRef = None
         self.data = {
@@ -111,6 +114,22 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         return raJNow, decJNow
 
+    def _checkSize(self):
+        """
+        _reduceSize keep tracking of memory usage of the measurement. if the measurement
+        get s too much data, it split the history by half and only keeps the latest only
+        for work.
+
+        :return: True if splitting happens
+        """
+
+        if len(self.data['time']) < self.MAXSIZE:
+            return False
+
+        for measure in self.data:
+            self.data[measure] = np.split(self.data[measure], 2)[1]
+        return True
+
     def _measureTask(self):
         """
         _measureTask runs all necessary pre processing and collecting task to assemble a
@@ -124,8 +143,15 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         :return: success
         """
+
         if not self.app.mainW.ui.checkMeasurement.isChecked():
             return False
+
+        if not self.mutexMeasure.tryLock():
+            self.logger.info('overrun in measure')
+            return False
+
+        self._checkSize()
 
         dat = self.data
         obs = self.app.mount.obsSite
@@ -151,4 +177,5 @@ class MeasureData(PyQt5.QtCore.QObject):
         dat['decJNow'] = np.append(dat['decJNow'], decJNow)
         dat['status'] = np.append(dat['status'], obs.status)
 
+        self.mutexMeasure.unlock()
         return True

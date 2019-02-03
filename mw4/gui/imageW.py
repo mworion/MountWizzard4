@@ -243,8 +243,9 @@ class ImageWindow(widget.MWidget):
                     norm=norm,
                     cmap=colorMap,
                     zorder=-10,
+                    origin='lower',
                     )
-
+        axes.plot()
         axes.grid(True,
                   color=color,
                   ls='solid',
@@ -272,18 +273,22 @@ class ImageWindow(widget.MWidget):
                        color=color,
                        )
 
-        axes.figure.canvas.draw()
-        return
-
-        '''
         lon = axes.coords[0]
         lat = axes.coords[1]
         lon.set_major_formatter('dd:mm:ss.s')
         lat.set_major_formatter('dd:mm')
+        lon.set_ticks_position('bt')
+        lon.set_ticklabel_position('bt')
+        lon.set_axislabel_position('bt')
+        lat.set_ticks_position('lr')
+        lat.set_ticklabel_position('lr')
+        lat.set_axislabel_position('lr')
+        axes.figure.canvas.draw()
+        return
+
         '''
 
 
-        '''
         overlay = axes.get_coords_overlay('fk5')
         overlay.grid(color=colorGrid,
                      ls='dotted',

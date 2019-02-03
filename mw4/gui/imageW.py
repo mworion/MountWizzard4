@@ -22,6 +22,7 @@ import logging
 import os
 # external packages
 import PyQt5
+from astropy.io import fits
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
@@ -59,7 +60,7 @@ class ImageWindow(widget.MWidget):
         self.imageMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.imageMat, True)
 
-        self.ui.load.clicked.connect(self.loadImage)
+        self.ui.load.clicked.connect(self.selectImage)
 
         self.initConfig()
 
@@ -168,10 +169,10 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def loadImage(self):
+    def selectImage(self):
         folder = self.app.mwGlob['imageDir']
         loadFilePath, name, ext = self.openFile(self,
-                                                'Open image file',
+                                                'Select image file',
                                                 folder,
                                                 'FITS files (*.fit*)',
                                                 enableDir=True,
@@ -183,7 +184,35 @@ class ImageWindow(widget.MWidget):
         if suc:
             self.ui.imageFileName.setText(name)
             self.imageFileName = loadFilePath
+
             self.app.message.emit('Image [{0}] loaded'.format(name), 0)
         else:
             self.app.message.emit('Image [{0}] cannot no be loaded'.format(name), 2)
         return True
+
+    def showFitsImage(self):
+        # fits file ahs to be there
+        if not os.path.isfile(filename):
+            return
+        # image window has to be present
+        if not self.showStatus:
+            return
+        try:
+            fitsFileHandle = pyfits.open(filename)
+            error = False
+        except Exception as e:
+            error = True
+            if fitsFileHandle:
+                fitsFileHandle.close()
+            self.logger.error('File {0} could not be loaded, error: {1}'.format(self.imagePath, e))
+        finally:
+            if error:
+                return
+        self.image = copy.copy(fitsFileHandle[0].data)
+        fitsFileHandle.close()
+        strechMode = self.getStrechMode()
+        colorMode = self.getColorMode()
+        zoomMode = self.getZoomMode()
+        worker = Worker(self.calculateImage, self.image, strechMode, colorMode, zoomMode)
+        worker.signals.result.connect(self.signalDisplayImage)
+        self.threadpool.start(worker)

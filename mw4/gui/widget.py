@@ -250,12 +250,15 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                     ext:    extension
         """
 
+        if not name:
+            return '', '', ''
+        name = name[0]
         if len(name) > 0:
             short, ext = os.path.splitext(name)
             short = os.path.basename(short)
         else:
             short = ext = ''
-        return short, ext
+        return name, short, ext
 
     def prepareFileDialog(self, window, enableDir):
         """
@@ -320,11 +323,12 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(folder)
+        dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
 
         dlg.exec_()
         filePath = dlg.selectedFiles()
-        short, ext = self.extractNames(filePath)
-        return filePath, short, ext
+        full, short, ext = self.extractNames(filePath)
+        return full, short, ext
 
     def saveFile(self, window, title, folder, filterSet, enableDir=False):
         """
@@ -349,8 +353,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         dlg.exec_()
         filePath = dlg.selectedFiles()
-        short, ext = self.extractNames(filePath)
-        return filePath, short, ext
+        full, short, ext = self.extractNames(filePath)
+        return full, short, ext
 
     @staticmethod
     def clickable(widget):

@@ -350,6 +350,7 @@ class MainWindow(MWidget,
                                                 'Open config file',
                                                 folder,
                                                 'Config files (*.cfg)',
+                                                enableDir=False,
                                                 )
         if not name:
             return False
@@ -367,6 +368,7 @@ class MainWindow(MWidget,
                                                 'Save config file',
                                                 folder,
                                                 'Config files (*.cfg)',
+                                                enableDir=False,
                                                 )
         if not name:
             return False

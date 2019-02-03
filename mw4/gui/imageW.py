@@ -19,10 +19,9 @@
 ###########################################################
 # standard libraries
 import logging
-from datetime import datetime as dt
+import os
 # external packages
 import PyQt5
-import numpy as np
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
@@ -48,6 +47,7 @@ class ImageWindow(widget.MWidget):
         super().__init__()
         self.app = app
         self.showStatus = False
+        self.imageFileName = ''
 
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
@@ -58,6 +58,8 @@ class ImageWindow(widget.MWidget):
         self.imageMat = self.embedMatplot(self.ui.image)
         self.imageMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.imageMat, True)
+
+        self.ui.load.clicked.connect(self.loadImage)
 
         self.initConfig()
 
@@ -80,6 +82,9 @@ class ImageWindow(widget.MWidget):
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.zoom.setCurrentIndex(config.get('zoom', 0))
         self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
+        self.imageFileName = config.get('imageFileName', '')
+        full, short, ext = self.extractNames([self.imageFileName])
+        self.ui.imageFileName.setText(short)
         return True
 
     def storeConfig(self):
@@ -94,6 +99,7 @@ class ImageWindow(widget.MWidget):
         config['color'] = self.ui.color.currentIndex()
         config['zoom'] = self.ui.zoom.currentIndex()
         config['stretch'] = self.ui.stretch.currentIndex()
+        config['imageFileName'] = self.imageFileName
         return True
 
     def resizeEvent(self, QResizeEvent):
@@ -160,4 +166,24 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.addItem('High')
         self.ui.stretch.addItem('Super')
 
+        return True
+
+    def loadImage(self):
+        folder = self.app.mwGlob['imageDir']
+        loadFilePath, name, ext = self.openFile(self,
+                                                'Open image file',
+                                                folder,
+                                                'FITS files (*.fit*)',
+                                                enableDir=True,
+                                                )
+        if not name:
+            return False
+        # suc = self.app.loadConfig(name=name)
+        suc = True
+        if suc:
+            self.ui.imageFileName.setText(name)
+            self.imageFileName = loadFilePath
+            self.app.message.emit('Image [{0}] loaded'.format(name), 0)
+        else:
+            self.app.message.emit('Image [{0}] cannot no be loaded'.format(name), 2)
         return True

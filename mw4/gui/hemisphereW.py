@@ -898,53 +898,76 @@ class HemisphereWindow(widget.MWidget):
         return suc
 
     def _staticHorizon(self, axes=None):
-        # drawing horizon
-        showHorizon = self.app.mainW.ui.checkUseHorizon.isChecked()
-        if self.app.data.horizonP and showHorizon:
-            alt, az = zip(*self.app.data.horizonP)
+        """
 
-            self.horizonFill, = axes.fill(az, alt, color='#002000', zorder=-20)
-            self.horizonMarker, = axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
-            if self.ui.checkEditHorizonMask.isChecked():
-                self.horizonMarker.set_marker('o')
-                self.horizonMarker.set_color('#FF00FF')
+        :param axes: matplotlib axes object
+        :return:
+        """
+
+        showHorizon = self.app.mainW.ui.checkUseHorizon.isChecked()
+
+        if not (self.app.data.horizonP and showHorizon):
+            return False
+
+        alt, az = zip(*self.app.data.horizonP)
+
+        self.horizonFill, = axes.fill(az, alt, color='#002000', zorder=-20)
+        self.horizonMarker, = axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
+        if self.ui.checkEditHorizonMask.isChecked():
+            self.horizonMarker.set_marker('o')
+            self.horizonMarker.set_color('#FF00FF')
+        return True
 
     def _staticModelData(self, axes=None):
-        # drawing modeldata points
-        if self.app.data.buildP:
-            alt, az = zip(*self.app.data.buildP)
-            # show line path pf slewing
-            if self.ui.checkShowSlewPath.isChecked():
-                ls = ':'
-                lw = 1
-            else:
-                ls = ''
-                lw = 0
-            if self.ui.checkEditBuildPoints.isChecked():
-                color = '#FF00FF'
-            else:
-                color = '#00A000'
-            self.pointsBuild, = axes.plot(az, alt,
-                                          marker=self.markerPoint(),
-                                          markersize=9,
-                                          linestyle=ls,
-                                          lw=lw,
-                                          fillstyle='none',
-                                          color=color,
-                                          zorder=20,
-                                          )
-            self.pointsBuildAnnotate = list()
-            for i, AltAz in enumerate(zip(az, alt)):
-                annotation = axes.annotate('{0:2d}'.format(i + 1),
-                                           xy=AltAz,
-                                           xytext=(2, -10),
-                                           textcoords='offset points',
-                                           color='#E0E0E0',
-                                           zorder=10,
-                                           )
-                self.pointsBuildAnnotate.append(annotation)
+        """
+
+        :param axes: matplotlib axes object
+        :return: success
+        """
+
+        if not self.app.data.buildP:
+            return False
+
+        alt, az = zip(*self.app.data.buildP)
+        # show line path pf slewing
+        if self.ui.checkShowSlewPath.isChecked():
+            ls = ':'
+            lw = 1
+        else:
+            ls = ''
+            lw = 0
+        if self.ui.checkEditBuildPoints.isChecked():
+            color = '#FF00FF'
+        else:
+            color = '#00A000'
+        self.pointsBuild, = axes.plot(az, alt,
+                                      marker=self.markerPoint(),
+                                      markersize=9,
+                                      linestyle=ls,
+                                      lw=lw,
+                                      fillstyle='none',
+                                      color=color,
+                                      zorder=20,
+                                      )
+        self.pointsBuildAnnotate = list()
+        for i, AltAz in enumerate(zip(az, alt)):
+            annotation = axes.annotate('{0:2d}'.format(i + 1),
+                                       xy=AltAz,
+                                       xytext=(2, -10),
+                                       textcoords='offset points',
+                                       color='#E0E0E0',
+                                       zorder=10,
+                                       )
+            self.pointsBuildAnnotate.append(annotation)
+        return True
 
     def _staticCelestialEquator(self, axes=None):
+        """
+
+        :param axes: matplotlib axes object
+        :return: success
+        """
+
         # draw celestial equator
         visible = self.ui.checkShowCelestial.isChecked()
         celestial = self.app.data.generateCelestialEquator()
@@ -956,6 +979,15 @@ class HemisphereWindow(widget.MWidget):
                                         fillstyle='none',
                                         color='#808080',
                                         visible=visible)
+        return True
+
+    def _staticMeridianLimits(self, axes=None):
+        """
+
+        :param axes: matplotlib axes object
+        :return: success
+        """
+
         # draw meridian limits
         if self.app.mount.sett.meridianLimitSlew is not None:
             slew = self.app.mount.sett.meridianLimitSlew
@@ -980,9 +1012,15 @@ class HemisphereWindow(widget.MWidget):
                                                 color='#80800080',
                                                 visible=visible)
         axes.add_patch(self.meridianTrack)
+        return True
 
     def _staticAltitudeLimits(self, axes=None):
-        # draw altitude limits
+        """
+
+        :param axes: matplotlib axes object
+        :return: success
+        """
+
         if self.app.mount.sett.horizonLimitHigh is not None:
             high = self.app.mount.sett.horizonLimitHigh
         else:
@@ -1005,6 +1043,7 @@ class HemisphereWindow(widget.MWidget):
                                                   visible=True)
         axes.add_patch(self.horizonLimitHigh)
         axes.add_patch(self.horizonLimitLow)
+        return True
 
     def drawHemisphereStatic(self, axes=None):
         """
@@ -1023,6 +1062,7 @@ class HemisphereWindow(widget.MWidget):
         self._staticHorizon(axes=axes)
         self._staticModelData(axes=axes)
         self._staticCelestialEquator(axes=axes)
+        self._staticMeridianLimits(axes=axes)
         self._staticAltitudeLimits(axes=axes)
 
     def drawHemisphereMoving(self, axes=None):

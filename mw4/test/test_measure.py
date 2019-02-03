@@ -25,14 +25,8 @@ import numpy as np
 import PyQt5.QtWidgets
 # local import
 from mw4 import mainApp
-
-test = PyQt5.QtWidgets.QApplication([])
-
-mwGlob = {'workDir': '.',
-          'configDir': './mw4/test/config',
-          'dataDir': './mw4/test/config',
-          'modeldata': 'test',
-          }
+from mw4.test.test_setupQt import setupQt
+app, spy, mwGlob, test = setupQt()
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -148,3 +142,17 @@ def test_calculateReference_6():
     ra, dec = app.measure._calculateReference()
     assert ra == 0
     assert dec == 0
+
+
+def test_checkSize_1():
+    app.measure.data['time'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.MAXSIZE = 20
+    suc = app.measure._checkSize()
+    assert not suc
+
+
+def test_checkSize_2():
+    app.measure.data['time'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.MAXSIZE = 5
+    suc = app.measure._checkSize()
+    assert suc

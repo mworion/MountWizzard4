@@ -28,16 +28,11 @@ import PyQt5
 import skyfield.api
 # local import
 from mw4 import mainApp
-
 from mw4.modeldata import buildpoints
+from mw4.test.test_setupQt import setupQt
 
-test = PyQt5.QtWidgets.QApplication([])
-mwGlob = {'workDir': '.',
-          'configDir': './mw4/test/config',
-          'dataDir': './mw4/test/config',
-          'modeldata': 'test',
-          }
-app = mainApp.MountWizzard4(mwGlob=mwGlob)
+global app, spy, mwGlob, test
+app, spy, mwGlob, test = setupQt()
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -305,17 +305,17 @@ class AstrometryKstars(object):
                     '-o',
                     xyPath,
                     fitsPath]
-        if platform.system() == 'Windows':
-            runnable.insert(0, self.runPath)
 
         result = subprocess.run(args=runnable,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
 
-        self.logger.debug('image2xy: ',
-                          result.returncode,
-                          result.stderr.decode(),
-                          result.stdout.decode().replace('\n', ' '),
+        self.logger.debug('image2xy return code: '
+                          + str(result.returncode)
+                          + ' stderr: '
+                          + result.stderr.decode()
+                          + ' stdout: '
+                          + result.stdout.decode().replace('\n', ' ')
                           )
 
         if result.returncode:
@@ -347,10 +347,13 @@ class AstrometryKstars(object):
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
 
-        self.logger.debug('solve-field: ',
-                          result.returncode,
-                          result.stderr.decode(),
-                          result.stdout.decode().replace('\n', ' '))
+        self.logger.debug('solve-field return code: '
+                          + str(result.returncode)
+                          + ' stderr: '
+                          + result.stderr.decode()
+                          + ' stdout: '
+                          + result.stdout.decode().replace('\n', ' ')
+                          )
         if result.returncode:
             return False
 

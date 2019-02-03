@@ -27,14 +27,10 @@ import skyfield.api
 from mw4 import mainApp
 
 from mw4.modeldata import hipparcos
+from mw4.test.test_setupQt import setupQt
+app, spy, mwGlob, test = setupQt()
 
-test = PyQt5.QtWidgets.QApplication([])
-mwGlob = {'workDir': '.',
-          'configDir': './mw4/test/config',
-          'dataDir': './mw4/test/config',
-          'modeldata': 'test',
-          }
-app = mainApp.MountWizzard4(mwGlob=mwGlob)
+
 topo = skyfield.toposlib.Topos(longitude_degrees=11,
                                latitude_degrees=48,
                                elevation_m=500)

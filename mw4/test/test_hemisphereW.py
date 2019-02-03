@@ -30,29 +30,8 @@ import matplotlib.path
 import mountcontrol
 # local import
 from mw4 import mainApp
-
-test = PyQt5.QtWidgets.QApplication([])
-
-mwGlob = {'workDir': '.',
-          'configDir': './mw4/test/config/',
-          'dataDir': './mw4/test/config/',
-          'modeldata': 'test',
-          }
-
-'''
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
-    global spy
-    global app
-    app = mainApp.MountWizzard4(mwGlob=mwGlob)
-    spy = PyQt5.QtTest.QSignalSpy(app.message)
-    yield
-    spy = None
-    app = None
-'''
-
-app = mainApp.MountWizzard4(mwGlob=mwGlob)
-spy = PyQt5.QtTest.QSignalSpy(app.message)
+from mw4.test.test_setupQt import setupQt
+app, spy, mwGlob, test = setupQt()
 
 
 def test_storeConfig_1():

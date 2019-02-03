@@ -26,8 +26,10 @@ import platform
 # external packages
 # local import
 from mw4.astrometry import astrometryKstars
+from mw4.test.test_setupQt import setupQt
+app, spy, mwGlob, test = setupQt()
 
-tempDir = './mw4/test/temp'
+tempDir = mwGlob['tempDir']
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -209,6 +211,7 @@ def test_solve_1():
     fitsOptions = app.readCheckFitsData(fitsPath=fitsPath)
     suc = app.solve(fitsPath=fitsPath, solveOptions=fitsOptions)
     assert suc
+    return
     suc = app.addWCSDataToFits(fitsPath=fitsPath)
     assert suc
 

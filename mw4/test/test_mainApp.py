@@ -27,22 +27,16 @@ import PyQt5.QtCore
 import skyfield.api
 # local import
 from mw4 import mainApp
+from mw4.test.test_setupQt import setupQt
 
-
-test = PyQt5.QtWidgets.QApplication([])
-
-
-mwGlob = {'workDir': '.',
-          'configDir': './mw4/test/config',
-          'dataDir': './mw4/test/config',
-          'modeldata': 'test',
-          }
-config = mwGlob['configDir']
-app = mainApp.MountWizzard4(mwGlob=mwGlob)
+global app, spy, mwGlob
+app, spy, mwGlob, test = setupQt()
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
+    global config
+    config = mwGlob['configDir']
     testdir = os.listdir(config)
     for item in testdir:
         if item.endswith('.cfg'):

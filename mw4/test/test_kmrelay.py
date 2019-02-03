@@ -23,8 +23,10 @@ from unittest import mock
 import PyQt5.QtWidgets
 # local import
 from mw4.relay import kmRelay
+from mw4.test.test_setupQt import setupQt
+app, spy, mwGlob, test = setupQt()
 
-test = PyQt5.QtWidgets.QApplication([])
+
 host_ip = '192.168.2.14'
 
 #

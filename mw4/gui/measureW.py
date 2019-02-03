@@ -30,7 +30,7 @@ from mw4.gui.widgets import measure_ui
 
 class MeasureWindow(widget.MWidget):
     """
-    the hemisphere window class handles
+    the measure window class handles
 
     """
 

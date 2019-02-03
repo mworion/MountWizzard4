@@ -89,6 +89,16 @@ class MessageWindow(widget.MWidget):
         config['showStatus'] = self.showStatus
 
     def resizeEvent(self, QResizeEvent):
+        """
+        resizeEvent changes the internal widget according to the resize of the window
+        the formulae of the calculation is:
+            spaces left right top button : 5 pixel
+            widget start in height at y = 130
+
+        :param QResizeEvent:
+        :return: nothing
+        """
+
         super().resizeEvent(QResizeEvent)
         space = 5
         startY = 10
@@ -113,7 +123,6 @@ class MessageWindow(widget.MWidget):
         self.show()
         self.changeStyleDynamic(self.app.mainW.ui.openMessageW, 'running', 'true')
 
-    @PyQt5.QtCore.pyqtSlot(str, int)
     def writeMessage(self, message, mType=0):
         if mType < 0:
             return False

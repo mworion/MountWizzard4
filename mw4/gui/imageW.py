@@ -121,5 +121,4 @@ class ImageWindow(widget.MWidget):
         self.showStatus = True
         self.show()
         self.changeStyleDynamic(self.app.mainW.ui.openImageW, 'running', 'true')
-
         return True

@@ -249,7 +249,7 @@ class AstrometryKstars(object):
         remove = ['COMMENT', 'HISTORY']
 
         wcsFile = self.tempDir + '/temp.wcs'
-        with fits.open(fitsPath) as fitsHandle:
+        with fits.open(fitsPath, mode='update') as fitsHandle:
             fitsHeader = fitsHandle[0].header
             with fits.open(wcsFile) as wcsHandle:
                 wcsHeader = wcsHandle[0].header

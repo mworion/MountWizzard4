@@ -23,6 +23,10 @@ import os
 # external packages
 import PyQt5
 from astropy.io import fits
+from astropy.wcs import WCS
+from astropy.visualization import MinMaxInterval
+from astropy.visualization import SqrtStretch
+from astropy.visualization import ImageNormalize
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
@@ -49,6 +53,7 @@ class ImageWindow(widget.MWidget):
         self.app = app
         self.showStatus = False
         self.imageFileName = ''
+        self.image = None
 
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
@@ -58,9 +63,9 @@ class ImageWindow(widget.MWidget):
 
         self.imageMat = self.embedMatplot(self.ui.image)
         self.imageMat.parentWidget().setStyleSheet(self.BACK)
-        self.clearRect(self.imageMat, True)
 
         self.ui.load.clicked.connect(self.selectImage)
+        self.ui.color.currentIndexChanged.connect(self.showFitsImage)
 
         self.initConfig()
 
@@ -86,6 +91,7 @@ class ImageWindow(widget.MWidget):
         self.imageFileName = config.get('imageFileName', '')
         full, short, ext = self.extractNames([self.imageFileName])
         self.ui.imageFileName.setText(short)
+        self.showFitsImage()
         return True
 
     def storeConfig(self):
@@ -184,35 +190,111 @@ class ImageWindow(widget.MWidget):
         if suc:
             self.ui.imageFileName.setText(name)
             self.imageFileName = loadFilePath
-
+            self.showFitsImage()
             self.app.message.emit('Image [{0}] loaded'.format(name), 0)
         else:
             self.app.message.emit('Image [{0}] cannot no be loaded'.format(name), 2)
         return True
 
     def showFitsImage(self):
-        # fits file ahs to be there
-        if not os.path.isfile(filename):
-            return
-        # image window has to be present
+        """
+
+        :return:
+        """
+
         if not self.showStatus:
-            return
-        try:
-            fitsFileHandle = pyfits.open(filename)
-            error = False
-        except Exception as e:
-            error = True
-            if fitsFileHandle:
-                fitsFileHandle.close()
-            self.logger.error('File {0} could not be loaded, error: {1}'.format(self.imagePath, e))
-        finally:
-            if error:
-                return
-        self.image = copy.copy(fitsFileHandle[0].data)
-        fitsFileHandle.close()
-        strechMode = self.getStrechMode()
-        colorMode = self.getColorMode()
-        zoomMode = self.getZoomMode()
-        worker = Worker(self.calculateImage, self.image, strechMode, colorMode, zoomMode)
-        worker.signals.result.connect(self.signalDisplayImage)
-        self.threadpool.start(worker)
+            return False
+
+        if not os.path.isfile(self.imageFileName):
+            return False
+
+        with fits.open(self.imageFileName) as fitsHandle:
+            self.image = fitsHandle[0].data
+            scale = fitsHandle[0].header.get('SCALE', 0)
+            ra = fitsHandle[0].header.get('RA', 0)
+            dec = fitsHandle[0].header.get('DEC', 0)
+            ccdTemp = fitsHandle[0].header.get('CCD-TEMP', 0)
+            wcs = WCS(fitsHandle[0].header)
+
+        self.ui.ra.setText(f'{ra:6.2f}')
+        self.ui.dec.setText(f'{dec:6.2f}')
+        self.ui.scale.setText(f'{scale:4.2f}')
+        self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
+
+        colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
+        colorMapIndex = self.ui.color.currentIndex()
+        colorMap = colorMaps[colorMapIndex]
+        color = '#2090C0'
+        colorLeft = '#A0A0A0'
+        colorRight = '#30B030'
+        colorGrid = '#404040'
+
+        self.imageMat.figure.clf()
+        self.imageMat.figure.add_axes([0.1, 0.1, 0.8, 0.8],
+                                      projection=wcs,
+                                      )
+        axes = self.imageMat.figure.axes[0]
+
+        norm = ImageNormalize(self.image,
+                              interval=MinMaxInterval(),
+                              stretch=SqrtStretch())
+
+        axes.imshow(self.image,
+                    norm=norm,
+                    cmap=colorMap,
+                    zorder=-10,
+                    )
+
+        axes.grid(True,
+                  color=color,
+                  ls='solid',
+                  alpha=0.5,
+                  )
+
+        axes.tick_params(axis='x',
+                         colors=color,
+                         labelsize=12,
+                         )
+
+        axes.tick_params(axis='y',
+                         colors=color,
+                         labelsize=12,
+                         labelleft=True,
+                         )
+
+        axes.set_xlabel('Galactic Longitude',
+                        color=color,
+                        )
+        axes.set_ylabel('Galactic Latitude',
+                        color=color,
+                        )
+        axes.set_title('WCS Test',
+                       color=color,
+                       )
+
+        axes.figure.canvas.draw()
+        return
+
+        '''
+        lon = axes.coords[0]
+        lat = axes.coords[1]
+        lon.set_major_formatter('dd:mm:ss.s')
+        lat.set_major_formatter('dd:mm')
+        '''
+
+
+        '''
+        overlay = axes.get_coords_overlay('fk5')
+        overlay.grid(color=colorGrid,
+                     ls='dotted',
+                     )
+        overlay[0].set_axislabel('Right Ascension (J2000)',
+                                 color=color,
+                                 fontweight='bold',
+                                 fontsize=12)
+        overlay[1].set_axislabel('Declination (J2000)',
+                                 color=color,
+                                 fontweight='bold',
+                                 fontsize=12)
+        '''
+

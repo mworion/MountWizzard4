@@ -207,11 +207,11 @@ def test_checkAvailability_4():
 
 def test_solve_1():
     fitsPath = './mw4/test/config/m51.fit'
+    fitsPath = './NGC7380.fits'
     app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
     fitsOptions = app.readCheckFitsData(fitsPath=fitsPath)
     suc = app.solve(fitsPath=fitsPath, solveOptions=fitsOptions)
     assert suc
-    return
     suc = app.addWCSDataToFits(fitsPath=fitsPath)
     assert suc
 

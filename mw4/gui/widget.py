@@ -193,7 +193,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         """
 
         fig = widget.figure
-        # fig.clf()
+        fig.clf()
         axes = fig.add_subplot(1,
                                1,
                                1,

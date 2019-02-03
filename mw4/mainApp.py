@@ -31,6 +31,7 @@ from mw4.gui import mainW
 from mw4.gui import messageW
 from mw4.gui import hemisphereW
 from mw4.gui import measureW
+from mw4.gui import imageW
 from mw4.relay import kmRelay
 from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
@@ -108,6 +109,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
         self.messageW = messageW.MessageWindow(self)
         self.measureW = measureW.MeasureWindow(self)
+        self.imageW = imageW.ImageWindow(self)
 
         # write basic data to message window
         verMC = self.mount.version
@@ -123,6 +125,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # link cross widget gui signals as all ui widgets have to be present
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
         self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
+        self.mainW.ui.openImageW.clicked.connect(self.imageW.toggleWindow)
 
         # starting mount communication
         self.mount.startTimers()
@@ -165,6 +168,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             config['topoElev'] = location.elevation.m
         self.mainW.storeConfig()
         self.messageW.storeConfig()
+        self.imageW.storeConfig()
         self.hemisphereW.storeConfig()
         self.measureW.storeConfig()
         return True

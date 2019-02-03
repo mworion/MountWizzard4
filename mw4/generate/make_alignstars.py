@@ -221,6 +221,7 @@ def make_test():
     timeStart = time.time()
     alt = list()
     az = list()
+    """
     obs = observer.at(t)
     for value in starsDict:
         name, coord = list(value.items())[0]
@@ -230,8 +231,13 @@ def make_test():
     az_SKY = az
     alt_SKY = alt
     print('standard opt: ', time.time() - timeStart)
-    b = obs.observe(starsDF)
-    c = b.apparent()
+    """
+    # standard version plus
+    timeStart = time.time()
+    alt, az, dist = observer.at(t).observe(starsDF).apparent().altaz()
+    az_SKY_new = az.degrees
+    alt_SKY_new = alt.hours
+    print('skyfield master: ', time.time() - timeStart)
 
     # mas / year to radians / year
     # mas * 3600000 = degrees / year
@@ -274,7 +280,10 @@ def make_test():
     az_ERFA = aob * 360 / 2 / np.pi
     alt_ERFA = 90.0 - zob * 360 / 2 / np.pi
     print('astropy scalar: ', time.time() - timeStart)
+    print('error skyfield standard')
     print(np.max(abs(alt_ERFA - alt_SKY)), np.max(abs(az_ERFA - az_SKY)))
+    print('error skyfield_new')
+    print(np.max(abs(alt_ERFA - alt_SKY_new)), np.max(abs(az_ERFA - az_SKY_new)))
 
 
 def make_file():

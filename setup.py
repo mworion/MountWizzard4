@@ -42,7 +42,7 @@ setup(
         'requests==2.21.0',
         'numpy==1.15.4',
         'requests_toolbelt==0.8.0',
-        'skyfield==1.10 ,
+        'skyfield==1.10',
         'mountcontrol>=0.62',
         'indibase>=0.3',
         'astropy==3.1',

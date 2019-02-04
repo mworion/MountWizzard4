@@ -141,6 +141,7 @@ class ImageWindow(widget.MWidget):
 
     def showWindow(self):
         self.showStatus = True
+        self.showFitsImage()
         self.show()
         self.changeStyleDynamic(self.app.mainW.ui.openImageW, 'running', 'true')
         return True
@@ -215,6 +216,8 @@ class ImageWindow(widget.MWidget):
             dec = fitsHandle[0].header.get('DEC', 0)
             ccdTemp = fitsHandle[0].header.get('CCD-TEMP', 0)
             wcs = WCS(fitsHandle[0].header)
+
+        print(wcs.wcs.print_contents())
 
         self.ui.ra.setText(f'{ra:6.2f}')
         self.ui.dec.setText(f'{dec:6.2f}')

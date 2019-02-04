@@ -23,7 +23,7 @@ import os
 # external packages
 import PyQt5
 from astropy.io import fits
-from astropy.wcs import WCS
+from astropy.wcs import WCS, validate
 from astropy.visualization import MinMaxInterval
 from astropy.visualization import SqrtStretch
 from astropy.visualization import ImageNormalize
@@ -211,18 +211,30 @@ class ImageWindow(widget.MWidget):
 
         with fits.open(self.imageFileName) as fitsHandle:
             self.image = fitsHandle[0].data
-            scale = fitsHandle[0].header.get('SCALE', 0)
-            ra = fitsHandle[0].header.get('RA', 0)
-            dec = fitsHandle[0].header.get('DEC', 0)
-            ccdTemp = fitsHandle[0].header.get('CCD-TEMP', 0)
+            _object = fitsHandle[0].header.get('OBJECT', 0)
+            _ra = fitsHandle[0].header.get('RA', 0)
+            _dec = fitsHandle[0].header.get('DEC', 0)
+            _scale = fitsHandle[0].header.get('SCALE', 0)
+            _ccdTemp = fitsHandle[0].header.get('CCD-TEMP', 0)
+            _expTime = fitsHandle[0].header.get('EXPOSURE', 0)
+            _filter = fitsHandle[0].header.get('FILTER', 0)
+            _binX = fitsHandle[0].header.get('XBINNING', 0)
+            _binY = fitsHandle[0].header.get('YBINNING', 0)
+            _sqm = fitsHandle[0].header.get('SQM', 0)
+
             wcs = WCS(fitsHandle[0].header)
+            print(validate(fitsHandle))
 
-        print(wcs.wcs.print_contents())
-
-        self.ui.ra.setText(f'{ra:6.2f}')
-        self.ui.dec.setText(f'{dec:6.2f}')
-        self.ui.scale.setText(f'{scale:4.2f}')
-        self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
+        self.ui.object.setText(f'{_object}')
+        self.ui.ra.setText(f'{_ra:6.2f}')
+        self.ui.dec.setText(f'{_dec:6.2f}')
+        self.ui.scale.setText(f'{_scale:4.2f}')
+        self.ui.ccdTemp.setText(f'{_ccdTemp:4.1f}')
+        self.ui.expTime.setText(f'{_expTime:3.0f}')
+        self.ui.filter.setText(f'{_filter}')
+        self.ui.binX.setText(f'{_binX:1.0f}')
+        self.ui.binY.setText(f'{_binY:1.0f}')
+        self.ui.sqm.setText(f'{_sqm:5.2f}')
 
         colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
         colorMapIndex = self.ui.color.currentIndex()

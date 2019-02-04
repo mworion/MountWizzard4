@@ -198,18 +198,10 @@ def loadStars(path):
 
 
 def make_test():
-    mwGlob = {'workDir': '.',
-              'configDir': '../test/config',
-              'dataDir': '../test/config',
-              'modeldata': 'test',
-              }
-    load = skyfield.api.Loader(mwGlob['dataDir'],
-                               expire=True,
-                               verbose=None,
-                               )
-    ts = load.timescale()
-    planets = load('de421.bsp')
-    starsDF, starsDict = loadStars(mwGlob['dataDir'])
+
+    ts = skyfield.api.load.timescale()
+    planets = skyfield.api.load('de421.bsp')
+    starsDF, starsDict = loadStars('.')
     earth = planets['earth']
     location = skyfield.api.Topos(latitude_degrees=50,
                                   longitude_degrees=11,
@@ -286,6 +278,32 @@ def make_test():
     print(np.max(abs(alt_ERFA - alt_SKY_new)), np.max(abs(az_ERFA - az_SKY_new)))
 
 
+def testBrandon():
+    ts = skyfield.api.load.timescale()
+    planets = skyfield.api.load('de421.bsp')
+    fileName = './hip_main.dat.gz'
+
+    with skyfield.api.load.open(fileName) as f:
+        df = skyfield.data.hipparcos.load_dataframe(f)
+
+    starsDF = skyfield.api.Star.from_dataframe(df)
+
+    earth = planets['earth']
+    location = skyfield.api.Topos(latitude_degrees=50,
+                                  longitude_degrees=11,
+                                  elevation_m=500)
+    observer = earth + location
+    t = ts.now()
+
+    # this calculation works
+    ra, dec, dist = observer.at(t).observe(starsDF).radec()
+    print(ra, dec, dist)
+
+    # this calculation throws the named error
+    alt, az, dist = observer.at(t).observe(starsDF).apparent().altaz()
+    print(alt, au, dist)
+
+
 def make_file():
     with open('alignstars.py', 'w') as f:
         f.write(HEADER)
@@ -336,4 +354,4 @@ def make_file():
 
 
 if __name__ == '__main__':
-    make_test()
+    testBrandon()

@@ -44,6 +44,8 @@ class SettIndi(object):
         self.ui.globalWeatherName.editingFinished.connect(self.globalWeatherName)
         self.ui.sqmName.editingFinished.connect(self.sqmName)
 
+        self.app.environment.client.signals.newMessage.connect(self.indiMessage)
+
     def initConfig(self):
         config = self.app.config['mainW']
         environ = self.app.environment
@@ -69,6 +71,9 @@ class SettIndi(object):
         self.ui.indiHostDome.setText(host)
         self.ui.domeName.setText(config.get('domeName', ''))
         self.ui.telescopeName.setText(config.get('telescopeName', ''))
+        self.ui.environmentMessage.setChecked(config.get('environmentMessage', False))
+        self.ui.imagingMessage.setChecked(config.get('imagingMessage', False))
+        self.ui.telescopeMessage.setChecked(config.get('telescopeMessage', False))
 
         return True
 
@@ -78,13 +83,14 @@ class SettIndi(object):
         config['localWeatherName'] = self.ui.localWeatherName.text()
         config['globalWeatherName'] = self.ui.globalWeatherName.text()
         config['sqmName'] = self.ui.sqmName.text()
-
         config['indiHostImaging'] = self.ui.indiHostImaging.text()
         config['ccdName'] = self.ui.ccdName.text()
-
         config['indiHostDome'] = self.ui.indiHostDome.text()
         config['domeName'] = self.ui.domeName.text()
         config['telescopeName'] = self.ui.telescopeName.text()
+        config['environmentMessage'] = self.ui.environmentMessage.isChecked()
+        config['imagingMessage'] = self.ui.imagingMessage.isChecked()
+        config['telescopeMessage'] = self.ui.telescopeMessage.isChecked()
 
         return True
 
@@ -130,3 +136,13 @@ class SettIndi(object):
         pass
         # host = self.ui.indiHostDome.text()
         # self.app.xxx.client.host = host
+
+    def indiMessage(self, device, text):
+        """
+
+        :param device:
+        :param text:
+        :return:
+        """
+        if self.ui.environmentMessage.isChecked():
+            self.app.message.emit(device + ' -> ' + text, 0)

@@ -10889,7 +10889,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>320</y>
+         <y>330</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -10910,7 +10910,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>150</x>
-         <y>320</y>
+         <y>330</y>
          <width>221</width>
          <height>21</height>
         </rect>
@@ -11214,7 +11214,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>260</y>
+         <y>270</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -11232,7 +11232,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>295</x>
-         <y>260</y>
+         <y>270</y>
          <width>76</width>
          <height>21</height>
         </rect>
@@ -11257,7 +11257,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>310</y>
+         <y>320</y>
          <width>361</width>
          <height>1</height>
         </rect>
@@ -11278,7 +11278,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>230</y>
+         <y>240</y>
          <width>211</width>
          <height>21</height>
         </rect>
@@ -11298,7 +11298,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>250</y>
+         <y>260</y>
          <width>361</width>
          <height>1</height>
         </rect>
@@ -11319,7 +11319,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>290</y>
+         <y>300</y>
          <width>241</width>
          <height>21</height>
         </rect>
@@ -11339,7 +11339,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>70</x>
-         <y>260</y>
+         <y>270</y>
          <width>221</width>
          <height>21</height>
         </rect>
@@ -11611,6 +11611,87 @@ manually</string>
        </property>
        <property name="text">
         <string>Telescope</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="environmentMessage">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>200</y>
+         <width>231</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Show messages</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="imagingMessage">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>360</y>
+         <width>231</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Show messages</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="telescopeMessage">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>170</y>
+         <width>231</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Show messages</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </widget>

@@ -137,6 +137,10 @@ class SettIndi(object):
         # host = self.ui.indiHostDome.text()
         # self.app.xxx.client.host = host
 
+    @staticmethod
+    def _remove_prefix(text, prefix):
+        return text[text.startswith(prefix) and len(prefix):]
+
     def indiMessage(self, device, text):
         """
 
@@ -145,4 +149,11 @@ class SettIndi(object):
         :return:
         """
         if self.ui.environmentMessage.isChecked():
-            self.app.message.emit(device + ' -> ' + text, 0)
+            if text.startswith('[WARNING]'):
+                text = self._remove_prefix(text, '[WARNING]')
+                self.app.message.emit(device + ' -> ' + text, 0)
+            elif text.startswith('[ERROR]'):
+                text = self._remove_prefix(text, '[ERROR]')
+                self.app.message.emit(device + ' -> ' + text, 2)
+            else:
+                self.app.message.emit(device + ' -> ' + text, 0)

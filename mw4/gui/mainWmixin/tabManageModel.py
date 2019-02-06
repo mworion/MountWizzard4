@@ -45,6 +45,7 @@ class ManageModel(object):
         self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
         self.ui.refreshName.clicked.connect(self.refreshName)
         self.ui.refreshModel.clicked.connect(self.refreshModel)
+        self.ui.clearModel.clicked.connect(self.clearModel)
         self.ui.loadName.clicked.connect(self.loadName)
         self.ui.saveName.clicked.connect(self.saveName)
         self.ui.deleteName.clicked.connect(self.deleteName)
@@ -415,3 +416,28 @@ class ManageModel(object):
         self.runningTargetRMS = False
         self.changeStyleDynamic(self.ui.cancelTargetRMS, 'cancel', 'true')
         return True
+
+    def clearModel(self):
+        """
+        clearModel removes the actual alignment model.
+
+        :return:
+        """
+
+        msg = PyQt5.QtWidgets.QMessageBox
+        reply = msg.question(self,
+                             'Clear model',
+                             'Clear actual alignment model?',
+                             msg.Yes | msg.No,
+                             msg.No,
+                             )
+        if reply == msg.No:
+            return False
+        suc = self.app.mount.model.clearAlign()
+        if not suc:
+            self.app.message.emit('Actual model cannot be cleared', 2)
+            return False
+        else:
+            self.app.message.emit('Actual model cleared', 0)
+            self.refreshModel()
+            return True

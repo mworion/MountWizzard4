@@ -224,6 +224,10 @@ class ImageWindow(widget.MWidget):
 
             wcs = WCS(fitsHandle[0].header)
             print(validate(fitsHandle))
+            print(wcs.is_celestial)
+            print(wcs.has_celestial)
+            print(wcs.has_distortion)
+            print(wcs.get_axis_types())
 
         self.ui.object.setText(f'{_object}')
         self.ui.ra.setText(f'{_ra:6.2f}')

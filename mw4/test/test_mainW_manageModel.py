@@ -303,3 +303,37 @@ def test_cancelTargetRMS():
     suc = app.mainW.cancelTargetRMS()
     assert suc
     assert not app.mainW.runningTargetRMS
+
+
+def test_clearModel_1(qtbot):
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.No):
+            suc = app.mainW.clearModel()
+            assert not suc
+
+
+def test_clearModel_2(qtbot):
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(app.mount.model,
+                               'clearAlign',
+                               return_value=False):
+            with qtbot.waitSignal(app.message) as blocker:
+                suc = app.mainW.clearModel()
+                assert not suc
+                assert ['Actual model cannot be cleared', 2] == blocker.args
+
+
+def test_clearModel_3(qtbot):
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(app.mount.model,
+                               'clearAlign',
+                               return_value=True):
+            with qtbot.waitSignal(app.message) as blocker:
+                suc = app.mainW.clearModel()
+                assert suc
+                assert ['Actual model cleared', 0] == blocker.args

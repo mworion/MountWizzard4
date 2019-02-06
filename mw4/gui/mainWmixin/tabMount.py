@@ -45,6 +45,7 @@ class Mount(object):
         self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
         self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
+        self.ui.stop.clicked.connect(self.stop)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -257,4 +258,14 @@ class Mount(object):
             return False
         else:
             self.app.message.emit('Tracking set to Solar', 0)
+            return True
+
+    def stop(self):
+        obs = self.app.mount.obsSite
+        suc = obs.stop()
+        if not suc:
+            self.app.message.emit('Cannot stop mount', 2)
+            return False
+        else:
+            self.app.message.emit('Mount stopped', 0)
             return True

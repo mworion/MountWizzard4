@@ -481,3 +481,23 @@ def test_slewParkPos_5(qtbot):
                     suc = app.mainW.slewToParkPos()
                     assert not suc
             assert ['Cannot slew to [Park Pos 0]', 2] == blocker.args
+
+
+def test_stop1(qtbot):
+    with mock.patch.object(app.mount.obsSite,
+                           'stop',
+                           return_value=True):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.stop()
+            assert suc
+        assert ['Mount stopped', 0] == blocker.args
+
+
+def test_stop2(qtbot):
+    with mock.patch.object(app.mount.obsSite,
+                           'stop',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.stop()
+            assert not suc
+        assert ['Cannot stop mount', 2] == blocker.args

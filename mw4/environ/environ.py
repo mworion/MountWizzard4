@@ -210,7 +210,7 @@ class Environment(object):
             if wType not in ['local', 'global']:
                 continue
             update = device.getNumber('WEATHER_UPDATE')
-            if update['PERIOD'] != self.UPDATE_RATE:
+            if update.get('PERIOD', 0) != self.UPDATE_RATE:
                 update['PERIOD'] = self.UPDATE_RATE
                 self.client.sendNewNumber(deviceName=deviceName,
                                           propertyName='WEATHER_UPDATE',

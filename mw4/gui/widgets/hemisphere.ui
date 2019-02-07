@@ -205,7 +205,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Select PolarAlign</string>
+     <string>Polar/Ortho Align</string>
     </property>
    </widget>
   </widget>

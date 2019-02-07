@@ -276,7 +276,7 @@ class Ui_HemisphereDialog(object):
         self.checkEditNone.setText(_translate("HemisphereDialog", "Normal mode"))
         self.checkEditBuildPoints.setText(_translate("HemisphereDialog", "Edit Build Points"))
         self.checkEditHorizonMask.setText(_translate("HemisphereDialog", "Edit Horizon Mask"))
-        self.checkPolarAlignment.setText(_translate("HemisphereDialog", "Select PolarAlign"))
+        self.checkPolarAlignment.setText(_translate("HemisphereDialog", "Polar/Ortho Align"))
         self.groupBox.setTitle(_translate("HemisphereDialog", "Mode Build Progress"))
         self.label_100.setText(_translate("HemisphereDialog", "Slewed:"))
         self.le_numberPointsImaged.setToolTip(_translate("HemisphereDialog", "<html><head/><body><p><span style=\" font-size:10pt;\">Progress in modeling.</span></p></body></html>"))

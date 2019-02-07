@@ -864,7 +864,11 @@ class HemisphereWindow(widget.MWidget):
 
         if not event.inaxes:
             return False
-        if event.button != 1:
+        if event.button == 1:
+            alignType = 'polar'
+        elif event.button == 3:
+            alignType = 'ortho'
+        else:
             return False
         if event.dblclick:
             return False
@@ -876,21 +880,22 @@ class HemisphereWindow(widget.MWidget):
             return False
 
         name = hip.name[index]
+        ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
+
         textFormat = 'Do you want to slew the mount to:\n\n{0}'
         question = textFormat.format(name)
         msg = PyQt5.QtWidgets.QMessageBox
         reply = msg.question(self,
-                             'Hemisphere polar align',
+                             f'Hemisphere {alignType} align',
                              question,
                              msg.Yes | msg.No,
                              msg.No,
                              )
         if reply != msg.Yes:
             return False
-        ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
         suc = self.app.mount.obsSite.slewRaDec(ra_hours=ra,
                                                dec_degrees=dec,
-                                               slewType='polar')
+                                               slewType=f'{alignType}')
         if not suc:
             self.app.message.emit('Cannot slew to: {0}'.format(name), 2)
         else:

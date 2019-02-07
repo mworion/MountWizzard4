@@ -909,7 +909,7 @@ def test_onMouseStar_2():
         pass
     event = Test()
     event.inaxes = True
-    event.button = 3
+    event.button = 2
     event.dblclick = False
     suc = app.hemisphereW.onMouseStar(event=event)
     assert not suc
@@ -1031,6 +1031,31 @@ def test_onMouseStar_8():
                                    return_value=False):
                 suc = app.hemisphereW.onMouseStar(event=event)
                 assert not suc
+
+
+def test_onMouseStar_9():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 3
+    event.dblclick = False
+    event.xdata = 180
+    event.ydata = 45
+    app.hipparcos.az = [180]
+    app.hipparcos.alt = [45]
+    app.hipparcos.name = ['test']
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            with mock.patch.object(app.mount.obsSite,
+                                   'slewRaDec',
+                                   return_value=True):
+                suc = app.hemisphereW.onMouseStar(event=event)
+                assert suc
 
 
 def test_drawHemisphere_1():

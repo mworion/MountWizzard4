@@ -74,6 +74,9 @@ a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/samp')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/modeling')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/table')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/vo')]
+a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/wcs/tests')]
+a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/visualization/tests')]
+a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/utils/tests')]
 
 # same to datas
 a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/sample_data')]
@@ -90,12 +93,15 @@ a.datas = [x for x in a.datas if not x[0].startswith('astropy/samp')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/modeling')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/table')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/vo')]
+a.datas = [x for x in a.datas if not x[0].startswith('astropy/wcs/tests')]
+a.datas = [x for x in a.datas if not x[0].startswith('astropy/visualization/tests')]
+a.datas = [x for x in a.datas if not x[0].startswith('astropy/utils/tests')]
 
 
 pyz = PYZ(a.pure,
-        a.zipped_data,
-        cipher=block_cipher,
-        )
+          a.zipped_data,
+          cipher=block_cipher,
+          )
 
 exe = EXE(pyz,
           a.scripts,

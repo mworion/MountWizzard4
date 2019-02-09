@@ -23,7 +23,7 @@ import os
 # external packages
 import PyQt5
 from astropy.io import fits
-from astropy.wcs import WCS, validate
+from astropy import wcs
 from astropy.visualization import MinMaxInterval
 from astropy.visualization import SqrtStretch
 from astropy.visualization import ImageNormalize
@@ -67,7 +67,7 @@ class ImageWindow(widget.MWidget):
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
-        self.app.plateSolve.signals.solveDone.connect(self.showFitsImage)
+        self.app.plateSolve.signals.solveDone.connect(self.solveDone)
 
         self.initConfig()
 
@@ -127,7 +127,7 @@ class ImageWindow(widget.MWidget):
         startY = 130
         self.ui.image.setGeometry(space,
                                   startY - space,
-                                  self.width() - 2 * space,
+                                  self.width() - 100 - 2 * space,
                                   self.height() - startY)
 
     def closeEvent(self, closeEvent):
@@ -179,6 +179,13 @@ class ImageWindow(widget.MWidget):
         return True
 
     def selectImage(self):
+        """
+        selectImage does a dialog to choose a FITS file for viewing. The file will not
+        be loaded, just the full filepath will be stored.
+
+        :return: success
+        """
+
         folder = self.app.mwGlob['imageDir']
         loadFilePath, name, ext = self.openFile(self,
                                                 'Select image file',
@@ -188,24 +195,77 @@ class ImageWindow(widget.MWidget):
                                                 )
         if not name:
             return False
-        # suc = self.app.loadConfig(name=name)
-        suc = True
-        if suc:
-            self.ui.imageFileName.setText(name)
-            self.imageFileName = loadFilePath
-            self.showFitsImage()
-            self.app.message.emit('Image [{0}] loaded'.format(name), 0)
-        else:
-            self.app.message.emit('Image [{0}] cannot no be loaded'.format(name), 2)
+        self.ui.imageFileName.setText(name)
+        self.imageFileName = loadFilePath
+        self.showFitsImage()
+        self.app.message.emit('Image [{0}] selected'.format(name), 0)
         return True
 
     def solveImage(self):
         self.app.plateSolve.solveFits(fitsPath=self.imageFileName)
+        self.changeStyleDynamic(self.ui.solve, 'running', 'true')
+        self.ui.expose.setEnabled(False)
+        self.ui.exposeN.setEnabled(False)
+        self.ui.load.setEnabled(False)
+
+    def solveDone(self):
+        self.changeStyleDynamic(self.ui.solve, 'running', 'false')
+        self.ui.expose.setEnabled(True)
+        self.ui.exposeN.setEnabled(True)
+        self.ui.load.setEnabled(True)
+        self.showFitsImage()
+
+    def writeHeaderToGui(self, header=None):
+        """
+
+        :param header: header of fits file
+        :return: hasCelestial, hasDistortion
+        """
+
+        name = header.get('OBJECT', 0)
+        ra = header.get('RA', 0) * 24 / 360
+        dec = header.get('DEC', 0)
+        scale = header.get('SCALE', 0)
+        ccdTemp = header.get('CCD-TEMP', 0)
+        expTime = header.get('EXPOSURE', 0)
+        filterCCD = header.get('FILTER', 0)
+        binX = header.get('XBINNING', 0)
+        binY = header.get('YBINNING', 0)
+        sqm = max(header.get('SQM', 0),
+                  header.get('SKY-QLTY', 0),
+                  )
+        rotation = header.get('ANGLE', 0)
+        self.ui.object.setText(f'{name}')
+        self.ui.ra.setText(f'{ra:7.3f}')
+        self.ui.dec.setText(f'{dec:7.3f}')
+        self.ui.rotation.setText(f'{rotation:5.2f}')
+        self.ui.scale.setText(f'{scale:5.3f}')
+        self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
+        self.ui.expTime.setText(f'{expTime:5.1f}')
+        self.ui.filter.setText(f'{filterCCD}')
+        self.ui.binX.setText(f'{binX:1.0f}')
+        self.ui.binY.setText(f'{binY:1.0f}')
+        self.ui.sqm.setText(f'{sqm:5.2f}')
+
+        wcsObject = wcs.WCS(header)
+        hasCelestial = wcsObject.has_celestial
+        status = ('true' if hasCelestial else 'false')
+        self.changeStyleDynamic(self.ui.hasCelestial, 'running', status)
+
+        hasDistortion = wcsObject.has_distortion
+        status = ('true' if hasDistortion else 'false')
+        self.changeStyleDynamic(self.ui.hasDistortion, 'running', status)
+
+        for key, value in header.items():
+            pass
+            # print(key, value)
+
+        return hasDistortion, wcsObject
 
     def showFitsImage(self):
         """
 
-        :return:
+        :return: success
         """
 
         if not self.showStatus:
@@ -216,34 +276,9 @@ class ImageWindow(widget.MWidget):
 
         with fits.open(self.imageFileName) as fitsHandle:
             self.image = fitsHandle[0].data
-            _object = fitsHandle[0].header.get('OBJECT', 0)
-            _ra = fitsHandle[0].header.get('RA', 0)
-            _dec = fitsHandle[0].header.get('DEC', 0)
-            _scale = fitsHandle[0].header.get('SCALE', 0)
-            _ccdTemp = fitsHandle[0].header.get('CCD-TEMP', 0)
-            _expTime = fitsHandle[0].header.get('EXPOSURE', 0)
-            _filter = fitsHandle[0].header.get('FILTER', 0)
-            _binX = fitsHandle[0].header.get('XBINNING', 0)
-            _binY = fitsHandle[0].header.get('YBINNING', 0)
-            _sqm = fitsHandle[0].header.get('SQM', 0)
+            header = fitsHandle[0].header
 
-            wcs = WCS(fitsHandle[0].header)
-            print(validate(fitsHandle))
-            print(wcs.is_celestial)
-            print(wcs.has_celestial)
-            print(wcs.has_distortion)
-            print(wcs.get_axis_types())
-
-        self.ui.object.setText(f'{_object}')
-        self.ui.ra.setText(f'{_ra:6.2f}')
-        self.ui.dec.setText(f'{_dec:6.2f}')
-        self.ui.scale.setText(f'{_scale:4.2f}')
-        self.ui.ccdTemp.setText(f'{_ccdTemp:4.1f}')
-        self.ui.expTime.setText(f'{_expTime:3.0f}')
-        self.ui.filter.setText(f'{_filter}')
-        self.ui.binX.setText(f'{_binX:1.0f}')
-        self.ui.binY.setText(f'{_binY:1.0f}')
-        self.ui.sqm.setText(f'{_sqm:5.2f}')
+        hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
 
         colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
         colorMapIndex = self.ui.color.currentIndex()
@@ -254,9 +289,14 @@ class ImageWindow(widget.MWidget):
         colorGrid = '#404040'
 
         self.imageMat.figure.clf()
-        self.imageMat.figure.add_axes([0.1, 0.1, 0.8, 0.8],
-                                      projection=wcs,
-                                      )
+
+        if hasDistortion:
+            projection = wcsObject
+        else:
+            projection = None
+        self.imageMat.figure.add_subplot(111,
+                                         projection=projection,
+                                         )
         axes = self.imageMat.figure.axes[0]
 
         norm = ImageNormalize(self.image,
@@ -293,38 +333,14 @@ class ImageWindow(widget.MWidget):
         axes.set_ylabel('Galactic Latitude',
                         color=color,
                         )
-        axes.set_title('WCS Test',
-                       color=color,
-                       )
-        '''
-        lon = axes.coords[0]
-        lat = axes.coords[1]
-        lon.set_major_formatter('dd:mm:ss.s')
-        lat.set_major_formatter('dd:mm')
-        lon.set_ticks_position('bt')
-        lon.set_ticklabel_position('bt')
-        lon.set_axislabel_position('bt')
-        lat.set_ticks_position('lr')
-        lat.set_ticklabel_position('lr')
-        lat.set_axislabel_position('lr')
-        '''
+
+        if hasDistortion:
+            lon = axes.coords[0]
+            lat = axes.coords[1]
+            lon.set_major_formatter('dd:mm:ss.s')
+            lat.set_major_formatter('dd:mm')
+
         axes.figure.canvas.draw()
         return
 
-        '''
-
-
-        overlay = axes.get_coords_overlay('fk5')
-        overlay.grid(color=colorGrid,
-                     ls='dotted',
-                     )
-        overlay[0].set_axislabel('Right Ascension (J2000)',
-                                 color=color,
-                                 fontweight='bold',
-                                 fontsize=12)
-        overlay[1].set_axislabel('Declination (J2000)',
-                                 color=color,
-                                 fontweight='bold',
-                                 fontsize=12)
-        '''
 

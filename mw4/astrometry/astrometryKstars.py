@@ -30,6 +30,7 @@ from astropy.io import fits
 from astropy.wcs import WCS
 import astropy.wcs
 from PyQt5.QtTest import QTest
+import numpy as np
 # local imports
 from mw4.base import tpool
 
@@ -294,7 +295,8 @@ class AstrometryKstars(object):
             ra = fitsHeader.get('CRVAL1')
             dec = fitsHeader.get('CRVAL2')
             scale = astropy.wcs.utils.proj_plane_pixel_scales(wcsObject)[0] * 3600
-            angle = 0
+            CD1_1 = fitsHeader.get('CD1_1', 0)
+            angle = np.degrees(np.arccos(CD1_1))
         ra = ra * 24 / 360
         return ra, dec, angle, scale
 
@@ -452,7 +454,6 @@ class AstrometryKstars(object):
         worker.signals.result.connect(self.solveResult)
         worker.signals.finished.connect(self.clearSolve)
         self.threadPool.start(worker)
-        print('worker started')
         return True
 
 

@@ -26,6 +26,7 @@ import platform
 # external packages
 from skyfield.api import Angle
 from astropy.io import fits
+from astropy.wcs import WCS
 # local imports
 
 
@@ -256,6 +257,25 @@ class AstrometryKstars(object):
                 fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
         return True
 
+    def getSolutionFromWCS(self):
+        """
+        addWCSDataToFits reads the fits file containing the wcs data output from solve-field
+        and embeds it to the given fits file with image. it removes all entries starting with
+        some keywords given in selection. we starting with COMMENT and HISTORY
+
+        :return: success
+        """
+
+        wcsFile = self.tempDir + '/temp.wcs'
+        with fits.open(wcsFile) as wcsHandle:
+            wcsHeader = wcsHandle[0].header
+            wcsObject = WCS(wcsHeader)
+            ra = wcsHeader.get('CRVAL1')
+            dec = wcsHeader.get('CRVAL2')
+        angle = 0
+        scale = 0
+        return ra, dec, angle, scale
+
     def solve(self, fitsPath='', solveOptions=''):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
@@ -308,7 +328,8 @@ class AstrometryKstars(object):
 
         result = subprocess.run(args=runnable,
                                 stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE)
+                                stderr=subprocess.PIPE,
+                                )
 
         self.logger.debug('image2xy return code: '
                           + str(result.returncode)
@@ -345,7 +366,8 @@ class AstrometryKstars(object):
 
         result = subprocess.run(args=runnable,
                                 stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE)
+                                stderr=subprocess.PIPE,
+                                )
 
         self.logger.debug('solve-field return code: '
                           + str(result.returncode)

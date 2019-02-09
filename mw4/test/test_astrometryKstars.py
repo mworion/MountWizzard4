@@ -214,4 +214,6 @@ def test_solve_1():
     assert suc
     suc = app.addWCSDataToFits(fitsPath=fitsPath)
     assert suc
+    ra, dec, angle, scale = solution.split()
+    print(ra, dec, angle, scale)
 

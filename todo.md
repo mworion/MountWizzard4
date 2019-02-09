@@ -1,7 +1,6 @@
 problems occurred list:
 
 - mountcontrol overflow pointing
-- tests for model manage
 - mountcontrol: tests for all commands available
 - tests for polar plot in mainW missing
 
@@ -16,7 +15,6 @@ necessary feature list:
 - astrometry online
 - astrometry threads
 - astrometry configs
-- local astrometry: multi platform
 - image widget
 - indi CCD camera
 - indi telescope / dome separate host
@@ -37,4 +35,3 @@ nice to have:
 - gui show indi device FL / pixels data in screen and choose which to use
 - gui hemisphere partitioning for progress bars (sizable ?)
 - check if daylight timezone fits to the computer or set it up !
-- check if get Properties needed to be implemented in indibase

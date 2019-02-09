@@ -45,6 +45,7 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
     version = '0.1'
 
     solveDone = PyQt5.QtCore.pyqtSignal()
+    solveResult = PyQt5.QtCore.pyqtSignal(object)
 
 
 class AstrometryKstars(object):
@@ -404,6 +405,8 @@ class AstrometryKstars(object):
             self.logger.error('Image [{0}] could not be solved'.format(fitsPath))
             return 0, 0, 0, 0
 
+        self._addWCSDataToFits(fitsPath=fitsPath)
+
         ra, dec, angle, scale = self._getSolutionFromFits(fitsPath=fitsPath)
         return ra, dec, angle, scale
 
@@ -419,8 +422,11 @@ class AstrometryKstars(object):
         self.mutexSolve.unlock()
         self.signals.solveDone.emit()
 
-    def resultSolve(self, obj):
-        print(obj)
+    def solveDone(self):
+        self.signals.solveDone.emit()
+
+    def solveResult(self, obj):
+        self.signals.solveResult.emit(obj)
 
     def solveFits(self, fitsPath=''):
         """
@@ -443,7 +449,7 @@ class AstrometryKstars(object):
             return False
 
         worker = tpool.Worker(self.solve, fitsPath=fitsPath)
-        worker.signals.result.connect(self.resultSolve)
+        worker.signals.result.connect(self.solveResult)
         worker.signals.finished.connect(self.clearSolve)
         self.threadPool.start(worker)
         print('worker started')

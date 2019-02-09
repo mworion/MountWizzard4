@@ -102,7 +102,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                              )
         self.measure = measuredata.MeasureData(self)
         if platform.system() in ['Darwin', 'Linux']:
-            self.plateSolve = astrometryKstars.AstrometryKstars(mwGlob['tempDir'])
+            self.plateSolve = astrometryKstars.AstrometryKstars(mwGlob['tempDir'],
+                                                                self.threadPool)
         else:
             self.plateSolve = None
         # get the window widgets up

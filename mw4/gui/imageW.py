@@ -66,6 +66,8 @@ class ImageWindow(widget.MWidget):
 
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.solve.clicked.connect(self.solveImage)
+        self.app.plateSolve.signals.solveDone.connect(self.showFitsImage)
 
         self.initConfig()
 
@@ -197,6 +199,9 @@ class ImageWindow(widget.MWidget):
             self.app.message.emit('Image [{0}] cannot no be loaded'.format(name), 2)
         return True
 
+    def solveImage(self):
+        self.app.plateSolve.solveFits(fitsPath=self.imageFileName)
+
     def showFitsImage(self):
         """
 
@@ -291,7 +296,7 @@ class ImageWindow(widget.MWidget):
         axes.set_title('WCS Test',
                        color=color,
                        )
-
+        '''
         lon = axes.coords[0]
         lat = axes.coords[1]
         lon.set_major_formatter('dd:mm:ss.s')
@@ -302,6 +307,7 @@ class ImageWindow(widget.MWidget):
         lat.set_ticks_position('lr')
         lat.set_ticklabel_position('lr')
         lat.set_axislabel_position('lr')
+        '''
         axes.figure.canvas.draw()
         return
 

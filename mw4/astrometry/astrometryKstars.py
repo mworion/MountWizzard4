@@ -24,10 +24,27 @@ import os
 import glob
 import platform
 # external packages
+import PyQt5.QtWidgets
 from skyfield.api import Angle
 from astropy.io import fits
 from astropy.wcs import WCS
+import astropy.wcs
+from PyQt5.QtTest import QTest
 # local imports
+from mw4.base import tpool
+
+
+class AstrometrySignals(PyQt5.QtCore.QObject):
+    """
+    The AstrometrySignals class offers a list of signals to be used and instantiated by the
+    Worker class to get signals for error, finished and result to be transferred to the
+    caller back
+    """
+
+    __all__ = ['AstrometrySignals']
+    version = '0.1'
+
+    solveDone = PyQt5.QtCore.pyqtSignal()
 
 
 class AstrometryKstars(object):
@@ -35,6 +52,7 @@ class AstrometryKstars(object):
     the class Astrometry inherits all information and handling of astrometry.net handling
 
         >>> astrometry = AstrometryKstars(tempDir=tempDir,
+        >>>                               threadPool=threadpool
         >>>                         )
 
     """
@@ -45,8 +63,11 @@ class AstrometryKstars(object):
     version = '0.4'
     logger = logging.getLogger(__name__)
 
-    def __init__(self, tempDir):
+    def __init__(self, tempDir, threadPool):
         self.tempDir = tempDir
+        self.threadPool = threadPool
+        self.mutexSolve = PyQt5.QtCore.QMutex()
+        self.signals = AstrometrySignals()
 
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME')
@@ -195,9 +216,9 @@ class AstrometryKstars(object):
         self.logger.info('solve-field, image2xy and index files available')
         return True
 
-    def readCheckFitsData(self, fitsPath='', optionalScale=0):
+    def _readCheckFitsData(self, fitsPath='', optionalScale=0):
         """
-        readCheckFitsData reads the fits file with the image and tries to get some key
+        _readCheckFitsData reads the fits file with the image and tries to get some key
         fields out of the header for preparing the solver. necessary data are
 
             - 'SCALE': pixel scale in arcsec per pixel
@@ -234,9 +255,9 @@ class AstrometryKstars(object):
         options += f' --ra {ra} --dec {dec} --radius 1'
         return options
 
-    def addWCSDataToFits(self, fitsPath=''):
+    def _addWCSDataToFits(self, fitsPath=''):
         """
-        addWCSDataToFits reads the fits file containing the wcs data output from solve-field
+        _addWCSDataToFits reads the fits file containing the wcs data output from solve-field
         and embeds it to the given fits file with image. it removes all entries starting with
         some keywords given in selection. we starting with COMMENT and HISTORY
 
@@ -257,26 +278,26 @@ class AstrometryKstars(object):
                 fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
         return True
 
-    def getSolutionFromWCS(self):
+    @staticmethod
+    def _getSolutionFromFits(fitsPath=''):
         """
-        addWCSDataToFits reads the fits file containing the wcs data output from solve-field
-        and embeds it to the given fits file with image. it removes all entries starting with
-        some keywords given in selection. we starting with COMMENT and HISTORY
+        _getSolutionFromWCS reads the fits file containing the wcs data and returns the
+        basic data needed
 
-        :return: success
+        :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
         """
 
-        wcsFile = self.tempDir + '/temp.wcs'
-        with fits.open(wcsFile) as wcsHandle:
-            wcsHeader = wcsHandle[0].header
-            wcsObject = WCS(wcsHeader)
-            ra = wcsHeader.get('CRVAL1')
-            dec = wcsHeader.get('CRVAL2')
-        angle = 0
-        scale = 0
+        with fits.open(fitsPath) as fitsHandle:
+            fitsHeader = fitsHandle[0].header
+            wcsObject = WCS(fitsHeader).celestial
+            ra = fitsHeader.get('CRVAL1')
+            dec = fitsHeader.get('CRVAL2')
+            scale = astropy.wcs.utils.proj_plane_pixel_scales(wcsObject)[0] * 3600
+            angle = 0
+        ra = ra * 24 / 360
         return ra, dec, angle, scale
 
-    def solve(self, fitsPath='', solveOptions=''):
+    def solve(self, fitsPath=''):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -311,7 +332,6 @@ class AstrometryKstars(object):
 
 
         :param fitsPath:  full path to fits file
-        :param solveOptions: option for solving
         :return: suc, coords, wcsHeader
         """
 
@@ -319,6 +339,8 @@ class AstrometryKstars(object):
         configPath = self.tempDir + '/astrometry.cfg'
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
+
+        solveOptions = self._readCheckFitsData(fitsPath=fitsPath)
 
         runnable = [self.binPathImage2xy,
                     '-O',
@@ -340,7 +362,7 @@ class AstrometryKstars(object):
                           )
 
         if result.returncode:
-            return False
+            return 0, 0, 0, 0
 
         runnable = [self.binPathSolveField,
                     '--overwrite',
@@ -360,9 +382,8 @@ class AstrometryKstars(object):
                     configPath,
                     xyPath,
                     ]
-        if solveOptions:
-            for option in solveOptions.split():
-                runnable.append(option)
+        for option in solveOptions.split():
+            runnable.append(option)
 
         result = subprocess.run(args=runnable,
                                 stdout=subprocess.PIPE,
@@ -377,9 +398,68 @@ class AstrometryKstars(object):
                           + result.stdout.decode().replace('\n', ' ')
                           )
         if result.returncode:
+            return 0, 0, 0, 0
+
+        if not (os.path.isfile(solvedPath) and os.path.isfile(wcsPath)):
+            self.logger.error('Image [{0}] could not be solved'.format(fitsPath))
+            return 0, 0, 0, 0
+
+        ra, dec, angle, scale = self._getSolutionFromFits(fitsPath=fitsPath)
+        return ra, dec, angle, scale
+
+    def clearSolve(self):
+        """
+        the cyclic or long lasting tasks for solving the image should not run
+        twice for the same data at the same time. so there is a mutex to prevent this
+        behaviour.
+
+        :return:
+        """
+
+        self.mutexSolve.unlock()
+        self.signals.solveDone.emit()
+
+    def resultSolve(self, obj):
+        print(obj)
+
+    def solveFits(self, fitsPath=''):
+        """
+
+        :param fitsPath:
+        :return:
+        """
+
+        if not os.path.isfile(fitsPath):
+            self.signals.solveDone.emit()
+            return False
+        if not self.checkAvailability():
+            self.signals.solveDone.emit()
             return False
 
-        if os.path.isfile(solvedPath) and os.path.isfile(wcsPath):
-            return True
-        else:
+        if not self.mutexSolve.tryLock():
+            print('overrun')
+            self.logger.info('overrun in solve')
+            self.signals.solveDone.emit()
             return False
+
+        worker = tpool.Worker(self.solve, fitsPath=fitsPath)
+        worker.signals.result.connect(self.resultSolve)
+        worker.signals.finished.connect(self.clearSolve)
+        self.threadPool.start(worker)
+        print('worker started')
+        return True
+
+
+if __name__ == '__main__':
+    test = PyQt5.QtWidgets.QApplication([])
+
+    threadPol = PyQt5.QtCore.QThreadPool()
+    fitsPath = './mw4/test/config/m51.fit'
+    tempDir = './mw4/test/temp/'
+
+    astro = AstrometryKstars(tempDir=tempDir,
+                             threadPool=threadPol)
+
+    suc = astro.solveFits(fitsPath=fitsPath)
+    print(suc)
+    QTest.qWait(5000)

@@ -65,6 +65,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # getting global app data
         self.expireData = False
         self.mwGlob = mwGlob
+        self.threadPool = PyQt5.QtCore.QThreadPool()
         pathToData = self.mwGlob['dataDir']
 
         # persistence management through dict

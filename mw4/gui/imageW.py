@@ -269,8 +269,13 @@ class ImageWindow(widget.MWidget):
 
     def zoomImage(self, image=None, wcsObject=None):
         """
+        zoomImage cutouts a portion of the original image to zoom in the image itself.
+        it returns a copy of the image with an updated wcs content. we have to be careful
+        about the use of Cutout2D, because they are mixing x and y coordinates. so position
+        is in (x, y), but size ind in (y, x)
 
         :param image:
+        :param wcsObject:
         :return:
         """
 

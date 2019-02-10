@@ -262,6 +262,97 @@ class ImageWindow(widget.MWidget):
 
         return hasDistortion, wcsObject
 
+    def zoomImage(self, image=None):
+        sizeX, sizeY = imageOrig.shape
+        colorMapIndex = self.ui.color.currentIndex()
+        # calculate the cropping parameters
+        if zoomMode == 12:
+            minx = int(sizeX * 7 / 16)
+            maxx = minx + int(sizeX / 8)
+            miny = int(sizeY * 7 / 16)
+            maxy = miny + int(sizeY / 8)
+        elif zoomMode == 25:
+            minx = int(sizeX * 3 / 8)
+            maxx = minx + int(sizeX / 4)
+            miny = int(sizeY * 3 / 8)
+            maxy = miny + int(sizeY / 4)
+        elif zoomMode == 50:
+            minx = int(sizeX / 4)
+            maxx = minx + int(sizeX / 2)
+            miny = int(sizeY / 4)
+            maxy = miny + int(sizeY / 2)
+        else:
+            minx = 0
+            maxx = sizeX
+            miny = 0
+            maxy = sizeY
+        # crop image
+        image = imageOrig[minx:maxx, miny:maxy]
+        return image
+
+    def stretchImage(self, image=None):
+        norm = ImageNormalize(image,
+                              interval=MinMaxInterval(),
+                              stretch=SqrtStretch())
+        return norm
+
+    def colorImage(self):
+        """
+
+        :return: color map
+        """
+
+        colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
+        colorMapIndex = self.ui.color.currentIndex()
+        colorMap = colorMaps[colorMapIndex]
+        return colorMap
+
+    def clearImage(self, hasDistortion=False, wcsObject=None):
+        """
+
+        :param wcsObject:
+        :param hasDistortion:
+        :return: axes object
+        """
+
+        colorBlue = '#2090C0'
+        self.imageMat.figure.clf()
+        if hasDistortion:
+            projection = wcsObject
+        else:
+            projection = None
+        self.imageMat.figure.add_subplot(111,
+                                         projection=projection,
+                                         )
+        axes = self.imageMat.figure.axes[0]
+        axes.grid(True,
+                  color=colorBlue,
+                  ls='solid',
+                  alpha=0.5,
+                  )
+        axes.tick_params(axis='x',
+                         colors=colorBlue,
+                         labelsize=12,
+                         )
+        axes.tick_params(axis='y',
+                         colors=colorBlue,
+                         labelsize=12,
+                         labelleft=True,
+                         )
+        axes.set_xlabel('Galactic Longitude',
+                        color=colorBlue,
+                        )
+        axes.set_ylabel('Galactic Latitude',
+                        color=colorBlue,
+                        )
+        if hasDistortion:
+            lon = axes.coords[0]
+            lat = axes.coords[1]
+            lon.set_major_formatter('dd:mm:ss.s')
+            lat.set_major_formatter('dd:mm')
+
+        return axes
+
     def showFitsImage(self):
         """
 
@@ -279,66 +370,17 @@ class ImageWindow(widget.MWidget):
             header = fitsHandle[0].header
 
         hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
+        axes = self.clearImage(hasDistortion=hasDistortion, wcsObject=wcsObject)
 
-        colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
-        colorMapIndex = self.ui.color.currentIndex()
-        colorMap = colorMaps[colorMapIndex]
-        color = '#2090C0'
-        colorLeft = '#A0A0A0'
-        colorRight = '#30B030'
-        colorGrid = '#404040'
-
-        self.imageMat.figure.clf()
-
-        if hasDistortion:
-            projection = wcsObject
-        else:
-            projection = None
-        self.imageMat.figure.add_subplot(111,
-                                         projection=projection,
-                                         )
-        axes = self.imageMat.figure.axes[0]
-
-        norm = ImageNormalize(self.image,
-                              interval=MinMaxInterval(),
-                              stretch=SqrtStretch())
+        # image = self.zoomImage(image=self.image)
+        norm = self.stretchImage(image=self.image)
+        colorMap = self.colorImage()
 
         axes.imshow(self.image,
                     norm=norm,
                     cmap=colorMap,
-                    zorder=-10,
                     origin='lower',
                     )
-        axes.plot()
-        axes.grid(True,
-                  color=color,
-                  ls='solid',
-                  alpha=0.5,
-                  )
-
-        axes.tick_params(axis='x',
-                         colors=color,
-                         labelsize=12,
-                         )
-
-        axes.tick_params(axis='y',
-                         colors=color,
-                         labelsize=12,
-                         labelleft=True,
-                         )
-
-        axes.set_xlabel('Galactic Longitude',
-                        color=color,
-                        )
-        axes.set_ylabel('Galactic Latitude',
-                        color=color,
-                        )
-
-        if hasDistortion:
-            lon = axes.coords[0]
-            lat = axes.coords[1]
-            lon.set_major_formatter('dd:mm:ss.s')
-            lat.set_major_formatter('dd:mm')
 
         axes.figure.canvas.draw()
         return

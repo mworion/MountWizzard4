@@ -24,9 +24,11 @@ import os
 import PyQt5
 from astropy.io import fits
 from astropy import wcs
+from astropy.nddata import Cutout2D
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization import SqrtStretch
 from astropy.visualization import ImageNormalize
+import numpy as np
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
@@ -224,7 +226,7 @@ class ImageWindow(widget.MWidget):
         :return: hasCelestial, hasDistortion
         """
 
-        name = header.get('OBJECT', 0)
+        name = header.get('OBJECT', '').upper()
         ra = header.get('RA', 0) * 24 / 360
         dec = header.get('DEC', 0)
         scale = header.get('SCALE', 0)
@@ -265,32 +267,23 @@ class ImageWindow(widget.MWidget):
         return hasDistortion, wcsObject
 
     def zoomImage(self, image=None):
-        sizeX, sizeY = imageOrig.shape
-        colorMapIndex = self.ui.color.currentIndex()
-        # calculate the cropping parameters
-        if zoomMode == 12:
-            minx = int(sizeX * 7 / 16)
-            maxx = minx + int(sizeX / 8)
-            miny = int(sizeY * 7 / 16)
-            maxy = miny + int(sizeY / 8)
-        elif zoomMode == 25:
-            minx = int(sizeX * 3 / 8)
-            maxx = minx + int(sizeX / 4)
-            miny = int(sizeY * 3 / 8)
-            maxy = miny + int(sizeY / 4)
-        elif zoomMode == 50:
-            minx = int(sizeX / 4)
-            maxx = minx + int(sizeX / 2)
-            miny = int(sizeY / 4)
-            maxy = miny + int(sizeY / 2)
-        else:
-            minx = 0
-            maxx = sizeX
-            miny = 0
-            maxy = sizeY
-        # crop image
-        image = imageOrig[minx:maxx, miny:maxy]
-        return image
+        """
+
+        :param image:
+        :return:
+        """
+
+        zoomIndex = self.ui.zoom.currentIndex()
+        if zoomIndex == 0:
+            return image
+
+        sizeX, sizeY = image.shape
+        factor = np.exp2(zoomIndex)
+        position = (int(sizeX / 2), int(sizeY / 2))
+        size = (int(sizeX / factor), int(sizeY / factor))
+        cutout = Cutout2D(image, position=position, size=size)
+
+        return cutout.data
 
     def stretchImage(self, image=None):
         """
@@ -384,6 +377,7 @@ class ImageWindow(widget.MWidget):
             lat = axes.coords[1]
             lon.set_major_formatter('dd:mm:ss.s')
             lat.set_major_formatter('dd:mm')
+            axes.plot()
 
         return axes
 
@@ -408,11 +402,11 @@ class ImageWindow(widget.MWidget):
         hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
         axes = self.clearImage(hasDistortion=hasDistortion, wcsObject=wcsObject)
 
-        # image = self.zoomImage(image=self.image)
-        norm = self.stretchImage(image=self.image)
+        image = self.zoomImage(image=self.image)
+        norm = self.stretchImage(image=image)
         colorMap = self.colorImage()
 
-        axes.imshow(self.image,
+        axes.imshow(image,
                     norm=norm,
                     cmap=colorMap,
                     origin='lower',

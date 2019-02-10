@@ -332,7 +332,7 @@ class Ui_ImageDialog(object):
         self.groupBox_2.setGeometry(QtCore.QRect(10, 75, 316, 41))
         self.groupBox_2.setObjectName("groupBox_2")
         self.color = QtWidgets.QComboBox(self.groupBox_2)
-        self.color.setGeometry(QtCore.QRect(105, 15, 96, 22))
+        self.color.setGeometry(QtCore.QRect(110, 15, 96, 22))
         self.color.setCurrentText("")
         self.color.setObjectName("color")
         self.stretch = QtWidgets.QComboBox(self.groupBox_2)

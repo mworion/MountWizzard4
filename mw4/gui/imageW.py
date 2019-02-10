@@ -267,7 +267,7 @@ class ImageWindow(widget.MWidget):
 
         return hasDistortion, wcsObject
 
-    def zoomImage(self, image=None):
+    def zoomImage(self, image=None, wcsObject=None):
         """
 
         :param image:
@@ -278,11 +278,16 @@ class ImageWindow(widget.MWidget):
         if zoomIndex == 0:
             return image
 
-        sizeX, sizeY = image.shape
+        sizeY, sizeX = image.shape
         factor = np.exp2(zoomIndex)
         position = (int(sizeX / 2), int(sizeY / 2))
-        size = (int(sizeX / factor), int(sizeY / factor))
-        cutout = Cutout2D(image, position=position, size=size, copy=True)
+        size = (int(sizeY / factor), int(sizeX / factor))
+        cutout = Cutout2D(image,
+                          position=position,
+                          size=size,
+                          wcs=wcsObject,
+                          copy=True,
+                          )
 
         return cutout.data
 
@@ -466,7 +471,7 @@ class ImageWindow(widget.MWidget):
             header = fitsHandle[0].header
 
         hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
-        image = self.zoomImage(image=self.image)
+        image = self.zoomImage(image=self.image, wcsObject=wcsObject)
         norm = self.stretchImage(image=image)
         colorMap = self.colorImage()
         axes = self.clearImage(hasDistortion=hasDistortion,

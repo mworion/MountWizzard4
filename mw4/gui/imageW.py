@@ -347,12 +347,12 @@ class ImageWindow(widget.MWidget):
         axe0.grid(True,
                   color=self.BLUE,
                   ls='solid',
-                  alpha=0.8,
+                  alpha=0.5,
                   )
         axe1.grid(True,
                   color=self.BLUE,
                   ls='solid',
-                  alpha=0.8,
+                  alpha=0.5,
                   )
         axe0.tick_params(colors=self.BLUE,
                          labelsize=12,
@@ -372,7 +372,7 @@ class ImageWindow(widget.MWidget):
                            )
         return axes
 
-    def setupNormal(self):
+    def setupNormal(self, image=None):
         """
 
         :return:
@@ -385,8 +385,29 @@ class ImageWindow(widget.MWidget):
         axes.grid(True,
                   color=self.BLUE,
                   ls='solid',
-                  alpha=0.8,
+                  alpha=0.5,
                   )
+        sizeY, sizeX = image.shape
+        midX = int(sizeX / 2)
+        midY = int(sizeY / 2)
+        number = 10
+        stepX = int(sizeX / number)
+        stepY = int(sizeY / number)
+
+        startX = -int(number / 2 * stepX)
+        valueX = list((x for x in range(startX, midX, stepX)))
+        textX = list((str(x) for x in valueX))
+        ticksX = list((x - startX for x in valueX))
+        axes.set_xticklabels(textX)
+        axes.set_xticks(ticksX)
+
+        startY = -int(number / 2 * stepY)
+        valueY = list((x for x in range(startY, midY, stepY)))
+        textY = list((str(x) for x in valueY))
+        ticksY = list((x - startY for x in valueY))
+        axes.set_yticklabels(textY)
+        axes.set_yticks(ticksY)
+
         axes.tick_params(axis='x',
                          which='major',
                          colors=self.BLUE,
@@ -409,20 +430,21 @@ class ImageWindow(widget.MWidget):
                         )
         return axes
 
-    def clearImage(self, hasDistortion=False, wcsObject=None):
+    def clearImage(self, hasDistortion=False, wcsObject=None, image=None):
         """
         clearImage clears the view port and setups all necessary topic to show the image.
         this includes the axis, label etc.
 
-        :param wcsObject:
         :param hasDistortion:
+        :param wcsObject:
+        :param image:
         :return: axes object
         """
 
         if hasDistortion and self.ui.checkUseWCS.isChecked():
             axes = self.setupDistorted(wcsObject=wcsObject)
         else:
-            axes = self.setupNormal()
+            axes = self.setupNormal(image=image)
         return axes
 
     def showFitsImage(self):
@@ -444,12 +466,12 @@ class ImageWindow(widget.MWidget):
             header = fitsHandle[0].header
 
         hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
-        axes = self.clearImage(hasDistortion=hasDistortion, wcsObject=wcsObject)
-
         image = self.zoomImage(image=self.image)
         norm = self.stretchImage(image=image)
         colorMap = self.colorImage()
-
+        axes = self.clearImage(hasDistortion=hasDistortion,
+                               wcsObject=wcsObject,
+                               image=image)
         axes.imshow(image,
                     norm=norm,
                     cmap=colorMap,

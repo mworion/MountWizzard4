@@ -240,8 +240,8 @@ class ImageWindow(widget.MWidget):
                   )
         rotation = header.get('ANGLE', 0)
         self.ui.object.setText(f'{name}')
-        self.ui.ra.setText(f'{ra:7.3f}')
-        self.ui.dec.setText(f'{dec:7.3f}')
+        self.ui.ra.setText(f'{ra:8.4f}')
+        self.ui.dec.setText(f'{dec:8.4f}')
         self.ui.rotation.setText(f'{rotation:5.2f}')
         self.ui.scale.setText(f'{scale:5.3f}')
         self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
@@ -414,5 +414,3 @@ class ImageWindow(widget.MWidget):
 
         axes.figure.canvas.draw()
         return True
-
-

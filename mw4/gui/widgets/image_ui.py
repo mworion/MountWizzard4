@@ -328,6 +328,12 @@ class Ui_ImageDialog(object):
         self.rotation.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.rotation.setReadOnly(True)
         self.rotation.setObjectName("rotation")
+        self.checkUseWCS = QtWidgets.QCheckBox(self.groupBox)
+        self.checkUseWCS.setGeometry(QtCore.QRect(180, 80, 156, 21))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.checkUseWCS.setFont(font)
+        self.checkUseWCS.setObjectName("checkUseWCS")
         self.groupBox_2 = QtWidgets.QGroupBox(ImageDialog)
         self.groupBox_2.setGeometry(QtCore.QRect(10, 75, 316, 41))
         self.groupBox_2.setObjectName("groupBox_2")
@@ -388,6 +394,7 @@ class Ui_ImageDialog(object):
         self.hasDistortion.setText(_translate("ImageDialog", "distortion"))
         self.label_33.setText(_translate("ImageDialog", "Rotation [°]"))
         self.rotation.setToolTip(_translate("ImageDialog", "<html><head/><body><p><span style=\" font-weight:400;\">Shows the solved RA of image in J2000 coordinates</span></p></body></html>"))
+        self.checkUseWCS.setText(_translate("ImageDialog", "use WCS coordinates"))
         self.groupBox_2.setTitle(_translate("ImageDialog", "Image setting"))
 
 

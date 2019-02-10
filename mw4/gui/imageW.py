@@ -42,13 +42,11 @@ class ImageWindow(widget.MWidget):
 
     __all__ = ['ImageWindow',
                ]
-    version = '0.1'
+    version = '0.2'
     logger = logging.getLogger(__name__)
 
     BACK = 'background-color: transparent;'
-    CYCLE_UPDATE_TASK = 1000
-    NUMBER_POINTS = 500
-    NUMBER_XTICKS = 8
+    BLUE = '#2090C0'
 
     def __init__(self, app):
         super().__init__()
@@ -70,6 +68,7 @@ class ImageWindow(widget.MWidget):
         self.ui.color.currentIndexChanged.connect(self.showFitsImage)
         self.ui.stretch.currentIndexChanged.connect(self.showFitsImage)
         self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
         self.app.plateSolve.signals.solveDone.connect(self.solveDone)
 
@@ -257,12 +256,14 @@ class ImageWindow(widget.MWidget):
         self.changeStyleDynamic(self.ui.hasCelestial, 'running', status)
 
         hasDistortion = wcsObject.has_distortion
+        self.ui.checkUseWCS.setEnabled(hasDistortion)
         status = ('true' if hasDistortion else 'false')
         self.changeStyleDynamic(self.ui.hasDistortion, 'running', status)
 
         for key, value in header.items():
             pass
             # print(key, value)
+        # print(wcsObject)
 
         return hasDistortion, wcsObject
 
@@ -281,7 +282,7 @@ class ImageWindow(widget.MWidget):
         factor = np.exp2(zoomIndex)
         position = (int(sizeX / 2), int(sizeY / 2))
         size = (int(sizeX / factor), int(sizeY / factor))
-        cutout = Cutout2D(image, position=position, size=size)
+        cutout = Cutout2D(image, position=position, size=size, copy=True)
 
         return cutout.data
 
@@ -327,6 +328,87 @@ class ImageWindow(widget.MWidget):
         colorMap = colorMaps[colorMapIndex]
         return colorMap
 
+    def setupDistorted(self, wcsObject=None):
+        """
+
+        :param wcsObject:
+        :return:
+        """
+
+        self.imageMat.figure.clf()
+        self.imageMat.figure.add_subplot(111,
+                                         projection=wcsObject,
+                                         )
+        axes = self.imageMat.figure.axes[0]
+        axe0 = axes.coords[0]
+        axe1 = axes.coords[1]
+        # axe0.set_major_formatter('dd:mm:ss.s')
+        # axe1.set_major_formatter('dd:mm')
+        axe0.grid(True,
+                  color=self.BLUE,
+                  ls='solid',
+                  alpha=0.8,
+                  )
+        axe1.grid(True,
+                  color=self.BLUE,
+                  ls='solid',
+                  alpha=0.8,
+                  )
+        axe0.tick_params(colors=self.BLUE,
+                         labelsize=12,
+                         )
+        axe1.tick_params(colors=self.BLUE,
+                         labelsize=12,
+                         )
+        axe0.set_axislabel('Coordinates',
+                           color=self.BLUE,
+                           fontsize=12,
+                           fontweight='bold',
+                           )
+        axe1.set_axislabel('Coordinates',
+                           color=self.BLUE,
+                           fontsize=12,
+                           fontweight='bold',
+                           )
+        return axes
+
+    def setupNormal(self):
+        """
+
+        :return:
+        """
+
+        self.imageMat.figure.clf()
+        self.imageMat.figure.add_subplot(111,
+                                         )
+        axes = self.imageMat.figure.axes[0]
+        axes.grid(True,
+                  color=self.BLUE,
+                  ls='solid',
+                  alpha=0.8,
+                  )
+        axes.tick_params(axis='x',
+                         which='major',
+                         colors=self.BLUE,
+                         labelsize=12,
+                         )
+        axes.tick_params(axis='y',
+                         which='major',
+                         colors=self.BLUE,
+                         labelsize=12,
+                         )
+        axes.set_xlabel(xlabel='Pixel',
+                        color=self.BLUE,
+                        fontsize=12,
+                        fontweight='bold',
+                        )
+        axes.set_ylabel(ylabel='Pixel',
+                        color=self.BLUE,
+                        fontsize=12,
+                        fontweight='bold',
+                        )
+        return axes
+
     def clearImage(self, hasDistortion=False, wcsObject=None):
         """
         clearImage clears the view port and setups all necessary topic to show the image.
@@ -337,48 +419,10 @@ class ImageWindow(widget.MWidget):
         :return: axes object
         """
 
-        colorBlue = '#2090C0'
-        self.imageMat.figure.clf()
-        if hasDistortion:
-            projection = wcsObject
-            xlabelText = 'Galactic Longitude'
-            ylabelText = 'Galactic Latitude'
+        if hasDistortion and self.ui.checkUseWCS.isChecked():
+            axes = self.setupDistorted(wcsObject=wcsObject)
         else:
-            projection = None
-            xlabelText = 'Pixel'
-            ylabelText = 'Pixel'
-
-        self.imageMat.figure.add_subplot(111,
-                                         projection=projection,
-                                         )
-        axes = self.imageMat.figure.axes[0]
-        axes.grid(True,
-                  color=colorBlue,
-                  ls='solid',
-                  alpha=0.5,
-                  )
-        axes.tick_params(axis='x',
-                         colors=colorBlue,
-                         labelsize=12,
-                         )
-        axes.tick_params(axis='y',
-                         colors=colorBlue,
-                         labelsize=12,
-                         labelleft=True,
-                         )
-        axes.set_xlabel(xlabel=xlabelText,
-                        color=colorBlue,
-                        )
-        axes.set_ylabel(ylabel=ylabelText,
-                        color=colorBlue,
-                        )
-        if hasDistortion:
-            lon = axes.coords[0]
-            lat = axes.coords[1]
-            lon.set_major_formatter('dd:mm:ss.s')
-            lat.set_major_formatter('dd:mm')
-            axes.plot()
-
+            axes = self.setupNormal()
         return axes
 
     def showFitsImage(self):

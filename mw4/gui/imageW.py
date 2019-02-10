@@ -24,7 +24,7 @@ import os
 import PyQt5
 from astropy.io import fits
 from astropy import wcs
-from astropy.visualization import MinMaxInterval
+from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization import SqrtStretch
 from astropy.visualization import ImageNormalize
 # local import
@@ -66,6 +66,8 @@ class ImageWindow(widget.MWidget):
 
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.stretch.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
         self.app.plateSolve.signals.solveDone.connect(self.solveDone)
 
@@ -127,7 +129,7 @@ class ImageWindow(widget.MWidget):
         startY = 130
         self.ui.image.setGeometry(space,
                                   startY - space,
-                                  self.width() - 100 - 2 * space,
+                                  self.width() - 2 * space,
                                   self.height() - startY)
 
     def closeEvent(self, closeEvent):
@@ -291,13 +293,38 @@ class ImageWindow(widget.MWidget):
         return image
 
     def stretchImage(self, image=None):
+        """
+        stretchImage take the actual image and calculated norm based on the min, max
+        derived from interval
+
+        :param image: image
+        :return: norm for plot
+        """
+
+        stretchIndex = self.ui.stretch.currentIndex()
+
+        if stretchIndex == 0:
+            interval = AsymmetricPercentileInterval(98, 99.998)
+        elif stretchIndex == 1:
+            interval = AsymmetricPercentileInterval(25, 99.95)
+        elif stretchIndex == 2:
+            interval = AsymmetricPercentileInterval(12, 99.9)
+        else:
+            interval = AsymmetricPercentileInterval(1, 99.8)
+
+        vmin, vmax = interval.get_limits(image)
+
         norm = ImageNormalize(image,
-                              interval=MinMaxInterval(),
-                              stretch=SqrtStretch())
+                              vmin=vmin,
+                              vmax=vmax,
+                              stretch=SqrtStretch(),
+                              )
         return norm
 
     def colorImage(self):
         """
+        colorImage take the index from gui and generates the colormap for image show
+        command from matplotlib
 
         :return: color map
         """
@@ -309,6 +336,8 @@ class ImageWindow(widget.MWidget):
 
     def clearImage(self, hasDistortion=False, wcsObject=None):
         """
+        clearImage clears the view port and setups all necessary topic to show the image.
+        this includes the axis, label etc.
 
         :param wcsObject:
         :param hasDistortion:
@@ -319,8 +348,13 @@ class ImageWindow(widget.MWidget):
         self.imageMat.figure.clf()
         if hasDistortion:
             projection = wcsObject
+            xlabelText = 'Galactic Longitude'
+            ylabelText = 'Galactic Latitude'
         else:
             projection = None
+            xlabelText = 'Pixel'
+            ylabelText = 'Pixel'
+
         self.imageMat.figure.add_subplot(111,
                                          projection=projection,
                                          )
@@ -339,10 +373,10 @@ class ImageWindow(widget.MWidget):
                          labelsize=12,
                          labelleft=True,
                          )
-        axes.set_xlabel('Galactic Longitude',
+        axes.set_xlabel(xlabel=xlabelText,
                         color=colorBlue,
                         )
-        axes.set_ylabel('Galactic Latitude',
+        axes.set_ylabel(ylabel=ylabelText,
                         color=colorBlue,
                         )
         if hasDistortion:
@@ -355,6 +389,8 @@ class ImageWindow(widget.MWidget):
 
     def showFitsImage(self):
         """
+        showFitsImage shows the fits image. therefore it calculates color map, stretch,
+        zoom and other topics.
 
         :return: success
         """
@@ -383,6 +419,6 @@ class ImageWindow(widget.MWidget):
                     )
 
         axes.figure.canvas.draw()
-        return
+        return True
 
 

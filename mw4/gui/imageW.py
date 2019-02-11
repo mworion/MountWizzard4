@@ -260,6 +260,8 @@ class ImageWindow(widget.MWidget):
         status = ('true' if hasDistortion else 'false')
         self.changeStyleDynamic(self.ui.hasDistortion, 'running', status)
 
+        wcsObject.cel_offset = True
+
         for key, value in header.items():
             pass
             # print(key, value)
@@ -352,7 +354,10 @@ class ImageWindow(widget.MWidget):
         axes = self.imageMat.figure.axes[0]
         axe0 = axes.coords[0]
         axe1 = axes.coords[1]
-        # axe0.set_major_formatter('dd:mm:ss.s')
+        axes.coords.frame.set_color(self.BLUE)
+        axe0.set_ticks(number=10)
+        axe1.set_ticks(number=10)
+        # axe0.set_major_formatter('dd:mm')
         # axe1.set_major_formatter('dd:mm')
         axe0.grid(True,
                   color=self.BLUE,
@@ -397,6 +402,10 @@ class ImageWindow(widget.MWidget):
                   ls='solid',
                   alpha=0.5,
                   )
+        axes.spines['bottom'].set_color(self.BLUE)
+        axes.spines['top'].set_color(self.BLUE)
+        axes.spines['left'].set_color(self.BLUE)
+        axes.spines['right'].set_color(self.BLUE)
         sizeY, sizeX = image.shape
         midX = int(sizeX / 2)
         midY = int(sizeY / 2)

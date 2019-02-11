@@ -401,20 +401,16 @@ class ImageWindow(widget.MWidget):
         midX = int(sizeX / 2)
         midY = int(sizeY / 2)
         number = 10
-        stepX = int(sizeX / number)
-        stepY = int(sizeY / number)
 
-        startX = -int(number / 2 * stepX)
-        valueX = list((x for x in range(startX, midX, stepX)))
-        textX = list((str(x) for x in valueX))
-        ticksX = list((x - startX for x in valueX))
+        valueX, _ = np.linspace(-midX, midX, num=number, retstep=True)
+        textX = list((str(int(x)) for x in valueX))
+        ticksX = list((x + midX for x in valueX))
         axes.set_xticklabels(textX)
         axes.set_xticks(ticksX)
 
-        startY = -int(number / 2 * stepY)
-        valueY = list((x for x in range(startY, midY, stepY)))
-        textY = list((str(x) for x in valueY))
-        ticksY = list((x - startY for x in valueY))
+        valueY, _ = np.linspace(-midY, midY, num=number, retstep=True)
+        textY = list((str(int(x)) for x in valueY))
+        ticksY = list((x + midY for x in valueY))
         axes.set_yticklabels(textY)
         axes.set_yticks(ticksY)
 

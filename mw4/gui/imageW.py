@@ -226,7 +226,7 @@ class ImageWindow(widget.MWidget):
         """
 
         name = header.get('OBJECT', '').upper()
-        ra = header.get('RA', 0) * 24 / 360
+        ra = header.get('RA', 0)
         dec = header.get('DEC', 0)
         scale = header.get('SCALE', 0)
         ccdTemp = header.get('CCD-TEMP', 0)
@@ -239,9 +239,9 @@ class ImageWindow(widget.MWidget):
                   )
         rotation = header.get('ANGLE', 0)
         self.ui.object.setText(f'{name}')
-        self.ui.ra.setText(f'{ra:8.4f}')
-        self.ui.dec.setText(f'{dec:8.4f}')
-        self.ui.rotation.setText(f'{rotation:5.2f}')
+        self.ui.ra.setText(f'{ra:8.5f}')
+        self.ui.dec.setText(f'{dec:8.5f}')
+        self.ui.rotation.setText(f'{rotation:6.3f}')
         self.ui.scale.setText(f'{scale:5.3f}')
         self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
         self.ui.expTime.setText(f'{expTime:5.1f}')
@@ -476,9 +476,14 @@ class ImageWindow(widget.MWidget):
         if not os.path.isfile(self.imageFileName):
             return False
 
-        with fits.open(self.imageFileName) as fitsHandle:
+        with fits.open(self.imageFileName, mode='update') as fitsHandle:
             self.image = fitsHandle[0].data
             header = fitsHandle[0].header
+            # correct faulty headers
+            if header.get('CTYPE1').endswith('DEF'):
+                header['CTYPE1'] = header['CTYPE1'].replace('DEF', 'TAN')
+            if header.get('CTYPE2').endswith('DEF'):
+                header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
 
         hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
         image = self.zoomImage(image=self.image, wcsObject=wcsObject)

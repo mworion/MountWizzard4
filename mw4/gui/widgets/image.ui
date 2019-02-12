@@ -681,7 +681,7 @@
      </font>
     </property>
     <property name="text">
-     <string>RA [hrs]</string>
+     <string>RA [deg]</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_35">

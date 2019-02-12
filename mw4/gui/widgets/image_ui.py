@@ -381,7 +381,7 @@ class Ui_ImageDialog(object):
         self.dec.setToolTip(_translate("ImageDialog", "<html><head/><body><p><span style=\" font-weight:400;\">Shows the solved RA of image in J2000 coordinates</span></p></body></html>"))
         self.filter.setToolTip(_translate("ImageDialog", "<html><head/><body><p><span style=\" font-weight:400;\">Shows the solved RA of image in J2000 coordinates</span></p></body></html>"))
         self.binX.setToolTip(_translate("ImageDialog", "<html><head/><body><p><span style=\" font-weight:400;\">Shows the solved RA of image in J2000 coordinates</span></p></body></html>"))
-        self.label_29.setText(_translate("ImageDialog", "RA [hrs]"))
+        self.label_29.setText(_translate("ImageDialog", "RA [deg]"))
         self.label_35.setText(_translate("ImageDialog", "Bin X"))
         self.label_37.setText(_translate("ImageDialog", "SQM [mpas]"))
         self.label_30.setText(_translate("ImageDialog", "DEC [deg]"))

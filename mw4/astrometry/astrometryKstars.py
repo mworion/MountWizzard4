@@ -202,6 +202,8 @@ class AstrometryKstars(object):
 
     def checkAvailability(self):
         """
+        checkAvailability searches for the existence of the core runtime modules from
+        astrometry.net namely image2xy and solve-field
 
         :return: True if local solve and components is available
         """
@@ -257,6 +259,55 @@ class AstrometryKstars(object):
         options += f' --ra {ra} --dec {dec} --radius 1'
         return options
 
+    def _calcPositionAngle(self, CD11, CD12, CD21, CD22):
+        """
+
+        :return:
+        """
+
+        if (abs(CD21) > abs(CD22)) and (CD21 >= 0):
+            North = "Right"
+            positionAngle = 270 + np.degrees(np.arctan(CD22 / CD21))
+        elif (abs(CD21) > abs(CD22)) and (CD21 < 0):
+            North = "Left"
+            positionAngle = 90 + np.degrees(np.arctan(CD22 / CD21))
+        elif (abs(CD21) < abs(CD22)) and (CD22 >= 0):
+            North = "Up"
+            positionAngle = 0 + np.degrees(np.arctan(CD21 / CD22))
+        elif (abs(CD21) < abs(CD22)) and (CD22 < 0):
+            North = "Down"
+            positionAngle = 180 + np.degrees(np.arctan(CD21 / CD22))
+        if positionAngle > 180:
+            positionAngle = - positionAngle + 180
+
+        if (abs(CD11) > abs(CD12)) and (CD11 > 0):
+            East = "Right"
+        if (abs(CD11) > abs(CD12)) and (CD11 < 0):
+            East = "Left"
+        if (abs(CD11) < abs(CD12)) and (CD12 > 0):
+            East = "Up"
+        if (abs(CD11) < abs(CD12)) and (CD12 < 0):
+            East = "Down"
+
+        if North == "Up" and East == "Left":
+            imageFlipped = False
+        if North == "Up" and East == "Right":
+            imageFlipped = True
+        if North == "Down" and East == "Left":
+            imageFlipped = True
+        if North == "Down" and East == "Right":
+            imageFlipped = False
+        if North == "Right" and East == "Up":
+            imageFlipped = False
+        if North == "Right" and East == "Down":
+            imageFlipped = True
+        if North == "Left" and East == "Up":
+            imageFlipped = True
+        if North == "Left" and East == "Down":
+            imageFlipped = False
+        print('North:', North, ' East:', East, ' Flipped:', imageFlipped)
+        return positionAngle
+
     def _addWCSDataToFits(self, fitsPath=''):
         """
         _addWCSDataToFits reads the fits file containing the wcs data output from solve-field
@@ -278,6 +329,19 @@ class AstrometryKstars(object):
             with fits.open(wcsFile) as wcsHandle:
                 wcsHeader = wcsHandle[0].header
                 fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
+
+                # now update ra, dec, scale, angle
+                wcsObject = WCS(wcsHeader).celestial
+                fitsHeader['RA'] = wcsHeader.get('CRVAL1')
+                fitsHeader['DEC'] = wcsHeader.get('CRVAL2')
+                scale = astropy.wcs.utils.proj_plane_pixel_scales(wcsObject)[0] * 3600
+                fitsHeader['SCALE'] = scale
+                CD11 = wcsHeader.get('CD2_1', 0)
+                CD12 = wcsHeader.get('CD2_2', 0)
+                CD21 = wcsHeader.get('CD2_1', 0)
+                CD22 = wcsHeader.get('CD2_2', 0)
+                angle = self._calcPositionAngle(CD11, CD12, CD21, CD22)
+                fitsHeader['ANGLE'] = angle
         return True
 
     @staticmethod
@@ -291,13 +355,10 @@ class AstrometryKstars(object):
 
         with fits.open(fitsPath) as fitsHandle:
             fitsHeader = fitsHandle[0].header
-            wcsObject = WCS(fitsHeader).celestial
-            ra = fitsHeader.get('CRVAL1')
-            dec = fitsHeader.get('CRVAL2')
-            scale = astropy.wcs.utils.proj_plane_pixel_scales(wcsObject)[0] * 3600
-            CD1_1 = fitsHeader.get('CD1_1', 0)
-            angle = np.degrees(np.arccos(CD1_1))
-        ra = ra * 24 / 360
+            ra = fitsHeader.get('RA')
+            dec = fitsHeader.get('DEC')
+            scale = fitsHeader.get('SCALE')
+            angle = fitsHeader.get('ANGLE')
         return ra, dec, angle, scale
 
     def solve(self, fitsPath=''):
@@ -445,7 +506,6 @@ class AstrometryKstars(object):
             return False
 
         if not self.mutexSolve.tryLock():
-            print('overrun')
             self.logger.info('overrun in solve')
             self.signals.solveDone.emit()
             return False

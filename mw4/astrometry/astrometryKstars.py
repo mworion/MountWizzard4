@@ -306,6 +306,7 @@ class AstrometryKstars(object):
         angleRad = np.arctan2(CD12, CD11)
         angle = np.degrees(angleRad)
         scale = CD11 / np.cos(angleRad) * 3600
+
         return angle, scale
 
     def _getSolutionFromWCS(self, wcsHeader=None):

@@ -290,7 +290,8 @@ class AstrometryKstars(object):
             wcsHeader = wcsHandle[0].header
         return wcsHeader
 
-    def _calcAngleScaleFromWCS(self, wcsHeader=None):
+    @staticmethod
+    def _calcAngleScaleFromWCS(wcsHeader=None):
         """
 
         :return:
@@ -298,22 +299,10 @@ class AstrometryKstars(object):
 
         CD11 = wcsHeader.get('CD2_1', 0)
         CD12 = wcsHeader.get('CD2_2', 0)
-        CD21 = wcsHeader.get('CD2_1', 0)
-        CD22 = wcsHeader.get('CD2_2', 0)
 
-        angle = np.degrees(np.arctan(CD12 / CD11))
-        if CD11 > 0 and CD12 > 0:
-            # quadrant 1
-            pass
-        elif CD11 > 0 and CD12 <= 0:
-            # quadrant 4
-            pass
-        elif CD11 < 0 and CD12 > 0:
-            # quadrant 2
-            angle += 180
-        elif CD11 < 0 and CD12 <= 0:
-            # quadrant 3
-            angle -= 180
+        angleRad = np.arctan2(CD12, CD11)
+        angle = np.degrees(angleRad)
+        scale = CD11 / np.cos(angleRad)
         return angle, scale
 
     @staticmethod

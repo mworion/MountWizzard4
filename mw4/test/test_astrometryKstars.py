@@ -228,15 +228,29 @@ def test_checkAvailability_4():
     assert not suc
 
 
-def test_angle_concept():
+def test_angle_scale_concept():
     for angle1 in range(-180, 180, 1):
+        scale = 2
         phi = np.radians(angle1)
-        CD11 = np.cos(phi)
-        CD12 = np.sin(phi)
-        CD21 = -np.sin(phi)
-        CD22 = np.cos(phi)
+        CD11 = scale * np.cos(phi)
+        CD12 = scale * np.sin(phi)
+        CD21 = scale * -np.sin(phi)
+        CD22 = scale * np.cos(phi)
 
-        angle = np.degrees(np.arctan(CD12 / CD11))
+        '''
+        if abs(CD12) < abs(CD11):
+            # using tangent
+            angleRad = np.arctan(CD12 / CD11)
+        else:
+            # using cotangent
+            angleRad = np.arccotan(CD11 / CD12)
+        '''
+        if abs(CD11) < 0.001:
+            CD11 = 0
+        angleRad = np.arctan2(CD12, CD11)
+        angle = np.degrees(angleRad)
+
+        '''
         if CD11 > 0 and CD12 > 0:
             # quadrant 1
             pass
@@ -249,10 +263,12 @@ def test_angle_concept():
         elif CD11 < 0 and CD12 <= 0:
             # quadrant 3
             angle -= 180
+        '''
 
         angle = np.round(angle, 0)
         angle1 = np.round(angle1, 0)
         assert angle == angle1
+        print(CD11, CD12)
 
 
 

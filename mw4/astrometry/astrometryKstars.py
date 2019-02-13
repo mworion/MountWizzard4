@@ -302,11 +302,10 @@ class AstrometryKstars(object):
 
         angleRad = np.arctan2(CD12, CD11)
         angle = np.degrees(angleRad)
-        scale = CD11 / np.cos(angleRad)
+        scale = CD11 / np.cos(angleRad) * 3600
         return angle, scale
 
-    @staticmethod
-    def _getSolutionFromWCS(wcsHeader=None):
+    def _getSolutionFromWCS(self, wcsHeader=None):
         """
         _getSolutionFromWCS reads the fits header containing the wcs data and returns the
         basic data needed
@@ -321,10 +320,9 @@ class AstrometryKstars(object):
 
         return ra, dec, angle, scale
 
-    @staticmethod
-    def _addWCSDataToFits(fitsPath='', wcsHeader=None):
+    def _updateFitsWithWCSData(self, fitsPath='', wcsHeader=None):
         """
-        _addWCSDataToFits reads the fits file containing the wcs data output from
+        _updateFitsWithWCSData reads the fits file containing the wcs data output from
         solve-field and embeds it to the given fits file with image. it removes all
         entries starting with some keywords given in selection. we starting with
         HISTORY
@@ -336,8 +334,7 @@ class AstrometryKstars(object):
 
         if not fitsPath or wcsHeader is None:
             return False
-
-        remove = ['HISTORY']
+        remove = ['COMMENT', 'HISTORY']
 
         with fits.open(fitsPath, mode='update') as fitsHandle:
             fitsHeader = fitsHandle[0].header
@@ -358,7 +355,7 @@ class AstrometryKstars(object):
 
         return True
 
-    def solve(self, fitsPath='', updateFits=False):
+    def solve(self, fitsPath='', updateFits=True):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -468,8 +465,9 @@ class AstrometryKstars(object):
 
         wcsHeader = self._loadWCSData()
 
+        print(updateFits)
         if updateFits:
-            self._addWCSDataToFits(fitsPath=fitsPath, wcsHeader=wcsHeader)
+            self._updateFitsWithWCSData(fitsPath=fitsPath, wcsHeader=wcsHeader)
 
         ra, dec, angle, scale = self._getSolutionFromWCS(wcsHeader=wcsHeader)
         return ra, dec, angle, scale
@@ -512,7 +510,7 @@ class AstrometryKstars(object):
             self.signals.solveDone.emit()
             return False
 
-        worker = tpool.Worker(self.solve, fitsPath=fitsPath, updateFits=updateFits)
+        worker = tpool.Worker(self.solve, fitsPath=fitsPath)
         worker.signals.result.connect(self.solveResult)
         worker.signals.finished.connect(self.clearSolve)
         self.threadPool.start(worker)

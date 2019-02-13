@@ -355,7 +355,7 @@ class AstrometryKstars(object):
 
         return True
 
-    def solve(self, fitsPath='', updateFits=True):
+    def solve(self, fitsPath='', updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -510,7 +510,10 @@ class AstrometryKstars(object):
             self.signals.solveDone.emit()
             return False
 
-        worker = tpool.Worker(self.solve, fitsPath=fitsPath)
+        worker = tpool.Worker(self.solve,
+                              fitsPath=fitsPath,
+                              updateFits=updateFits,
+                              )
         worker.signals.result.connect(self.solveResult)
         worker.signals.finished.connect(self.clearSolve)
         self.threadPool.start(worker)

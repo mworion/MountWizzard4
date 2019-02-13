@@ -206,6 +206,7 @@ class ImageWindow(widget.MWidget):
 
     def solveImage(self):
         self.app.plateSolve.solveFits(fitsPath=self.imageFileName,
+                                      updateFits=True,
                                       )
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')
         self.ui.expose.setEnabled(False)

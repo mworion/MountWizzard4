@@ -268,7 +268,6 @@ def test_angle_scale_concept():
         angle = np.round(angle, 0)
         angle1 = np.round(angle1, 0)
         assert angle == angle1
-        print(CD11, CD12)
 
 
 

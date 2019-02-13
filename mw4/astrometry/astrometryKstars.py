@@ -229,8 +229,8 @@ class AstrometryKstars(object):
             - 'OBJCTRA' : ra position of the object in HMS format
             - 'OBJCTDEC' : dec position of the object in DMS format
 
-        if OBJCTRA / OBJCTDEC is not readable or not present, we remove the parameters
-        to get a blind solve
+        if OBJCTRA / OBJCTDEC is not readable or not present, we try to use other keywords
+        to calculate, finally we remove the parameters to get a blind solve
 
         :param fitsPath: fits file with image data
         :param optionalScale: optional scaling used, when not scale parameter is in header
@@ -242,12 +242,24 @@ class AstrometryKstars(object):
 
         with fits.open(fitsPath) as fitsHandle:
             fitsHeader = fitsHandle[0].header
-            scale = fitsHeader.get('scale', '0')
-            ra = fitsHeader.get('OBJCTRA', '')
-            dec = fitsHeader.get('OBJCTDEC', '')
+            scale = fitsHeader.get('SCALE', '')
+            if not scale:
+                scale = fitsHeader.get('PIXSCALE', '')
+            if not scale:
+                focallen = fitsHeader.get('FOCALLEN', 0)
+                xpixsz = fitsHeader.get('XPIXSZ', 0)
+                if focallen != 0:
+                    scale = xpixsz * 206.6 / focallen
+                if scale == 0:
+                    scale = optionalScale
 
-        if scale == 0:
-            scale = optionalScale
+            ra = fitsHeader.get('RA', '')
+            if not ra:
+                ra = fitsHeader.get('OBJCTRA', '')
+            dec = fitsHeader.get('DEC', '')
+            if not dec:
+                dec = fitsHeader.get('OBJCTDEC', '')
+
         ra = self.convertToHMS(ra)
         dec = self.convertToDMS(dec)
         scaleLow = float(scale) * 0.9
@@ -264,6 +276,19 @@ class AstrometryKstars(object):
 
         :return:
         """
+
+        # now update ra, dec, scale, angle
+        wcsObject = WCS(wcsHeader).celestial
+        fitsHeader['RA'] = wcsHeader.get('CRVAL1')
+        fitsHeader['DEC'] = wcsHeader.get('CRVAL2')
+        scale = astropy.wcs.utils.proj_plane_pixel_scales(wcsObject)[0] * 3600
+        fitsHeader['SCALE'] = scale
+        CD11 = wcsHeader.get('CD2_1', 0)
+        CD12 = wcsHeader.get('CD2_2', 0)
+        CD21 = wcsHeader.get('CD2_1', 0)
+        CD22 = wcsHeader.get('CD2_2', 0)
+        angle = self._calcPositionAngle(CD11, CD12, CD21, CD22)
+        fitsHeader['ANGLE'] = angle
 
         if (abs(CD21) > abs(CD22)) and (CD21 >= 0):
             North = "Right"
@@ -308,60 +333,70 @@ class AstrometryKstars(object):
         print('North:', North, ' East:', East, ' Flipped:', imageFlipped)
         return positionAngle
 
-    def _addWCSDataToFits(self, fitsPath=''):
+    def _loadWCSData(self):
+        """
+
+        :return: wcsHeader
+        """
+
+        wcsFile = self.tempDir + '/temp.wcs'
+        with fits.open(wcsFile) as wcsHandle:
+            wcsHeader = wcsHandle[0].header
+        return wcsHeader
+
+    @staticmethod
+    def _addWCSDataToFits(fitsPath='', wcsHeader=None):
         """
         _addWCSDataToFits reads the fits file containing the wcs data output from solve-field
         and embeds it to the given fits file with image. it removes all entries starting with
         some keywords given in selection. we starting with COMMENT and HISTORY
 
         :param fitsPath: path to the fits file, where the wcs header should be embedded
+        :param wcsHeader:
         :return: success
         """
 
-        if not fitsPath:
+        if not fitsPath or wcsHeader is None:
             return False
 
-        remove = ['COMMENT', 'HISTORY']
+        remove = ['HISTORY']
 
-        wcsFile = self.tempDir + '/temp.wcs'
         with fits.open(fitsPath, mode='update') as fitsHandle:
             fitsHeader = fitsHandle[0].header
-            with fits.open(wcsFile) as wcsHandle:
-                wcsHeader = wcsHandle[0].header
-                fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
+            fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-                # now update ra, dec, scale, angle
-                wcsObject = WCS(wcsHeader).celestial
-                fitsHeader['RA'] = wcsHeader.get('CRVAL1')
-                fitsHeader['DEC'] = wcsHeader.get('CRVAL2')
-                scale = astropy.wcs.utils.proj_plane_pixel_scales(wcsObject)[0] * 3600
-                fitsHeader['SCALE'] = scale
-                CD11 = wcsHeader.get('CD2_1', 0)
-                CD12 = wcsHeader.get('CD2_2', 0)
-                CD21 = wcsHeader.get('CD2_1', 0)
-                CD22 = wcsHeader.get('CD2_2', 0)
-                angle = self._calcPositionAngle(CD11, CD12, CD21, CD22)
-                fitsHeader['ANGLE'] = angle
+            # now updating the old fits header data
+            ra, dec, angle, scale = self._getSolutionFromWCS(wcsHeader=wcsHeader)
+            fitsHeader['RA'] = ra
+            fitsHeader['DEC'] = dec
+            fitsHeader['ANGLE'] = angle
+            fitsHeader['SCALE'] = scale
+            if fitsHeader.get('OBJCTRA', ''):
+                fitsHeader['OBJCTRA'] = ra
+            if fitsHeader.get('OBJCTDEC', ''):
+                fitsHeader['OBJCTDEC'] = dec
+            if fitsHeader.get('PIXSCALE', ''):
+                fitsHeader['PIXSCALE'] = scale
+
         return True
 
     @staticmethod
-    def _getSolutionFromFits(fitsPath=''):
+    def _getSolutionFromWCS(wcsHeader=None):
         """
-        _getSolutionFromWCS reads the fits file containing the wcs data and returns the
+        _getSolutionFromWCS reads the fits header containing the wcs data and returns the
         basic data needed
 
+        :param wcsHeader:
         :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
         """
 
-        with fits.open(fitsPath) as fitsHandle:
-            fitsHeader = fitsHandle[0].header
-            ra = fitsHeader.get('RA')
-            dec = fitsHeader.get('DEC')
-            scale = fitsHeader.get('SCALE')
-            angle = fitsHeader.get('ANGLE')
+        ra = wcsHeader.get('CRVAL1')
+        dec = wcsHeader.get('CRVAL2')
+        angle, scale = self._calcAngleScaleFromWCS(wcsHeader=wcsHeader)
+
         return ra, dec, angle, scale
 
-    def solve(self, fitsPath=''):
+    def solve(self, fitsPath='', updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -396,7 +431,8 @@ class AstrometryKstars(object):
 
 
         :param fitsPath:  full path to fits file
-        :return: suc, coords, wcsHeader
+        :param updateFits:  if true update Fits image file with wcsHeader data
+        :return: ra, dec, angle, scale
         """
 
         xyPath = self.tempDir + '/temp.xy'
@@ -468,9 +504,12 @@ class AstrometryKstars(object):
             self.logger.error('Image [{0}] could not be solved'.format(fitsPath))
             return 0, 0, 0, 0
 
-        self._addWCSDataToFits(fitsPath=fitsPath)
+        wcsHeader = self._loadWCSData()
 
-        ra, dec, angle, scale = self._getSolutionFromFits(fitsPath=fitsPath)
+        if updateFits:
+            self._addWCSDataToFits(fitsPath=fitsPath, wcsHeader=wcsHeader)
+
+        ra, dec, angle, scale = self._getSolutionFromWCS(wcsHeader=wcsHeader)
         return ra, dec, angle, scale
 
     def clearSolve(self):
@@ -491,7 +530,7 @@ class AstrometryKstars(object):
     def solveResult(self, obj):
         self.signals.solveResult.emit(obj)
 
-    def solveFits(self, fitsPath=''):
+    def solveFits(self, fitsPath='', updateFits=False):
         """
 
         :param fitsPath:
@@ -510,7 +549,7 @@ class AstrometryKstars(object):
             self.signals.solveDone.emit()
             return False
 
-        worker = tpool.Worker(self.solve, fitsPath=fitsPath)
+        worker = tpool.Worker(self.solve, fitsPath=fitsPath, updateFits=updateFits)
         worker.signals.result.connect(self.solveResult)
         worker.signals.finished.connect(self.clearSolve)
         self.threadPool.start(worker)

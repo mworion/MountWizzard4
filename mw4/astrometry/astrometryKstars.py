@@ -301,15 +301,19 @@ class AstrometryKstars(object):
         CD21 = wcsHeader.get('CD2_1', 0)
         CD22 = wcsHeader.get('CD2_2', 0)
 
-        if (abs(CD21) > abs(CD22)) and (CD21 >= 0):
-            angle = 270 + np.degrees(np.arctan(CD22 / CD21))
-        elif (abs(CD21) > abs(CD22)) and (CD21 < 0):
-            angle = 90 + np.degrees(np.arctan(CD22 / CD21))
-        elif (abs(CD21) < abs(CD22)) and (CD22 >= 0):
-            angle = 0 + np.degrees(np.arctan(CD21 / CD22))
-        elif (abs(CD21) < abs(CD22)) and (CD22 < 0):
-            angle = 180 + np.degrees(np.arctan(CD21 / CD22))
-
+        angle = np.degrees(np.arctan(CD12 / CD11))
+        if CD11 > 0 and CD12 > 0:
+            # quadrant 1
+            pass
+        elif CD11 > 0 and CD12 <= 0:
+            # quadrant 4
+            pass
+        elif CD11 < 0 and CD12 > 0:
+            # quadrant 2
+            angle += 180
+        elif CD11 < 0 and CD12 <= 0:
+            # quadrant 3
+            angle -= 180
         return angle, scale
 
     @staticmethod
@@ -503,7 +507,8 @@ class AstrometryKstars(object):
         """
 
         :param fitsPath:
-        :return:
+        :param updateFits:
+        :return: success
         """
 
         if not os.path.isfile(fitsPath):

@@ -22,6 +22,7 @@ from unittest import mock
 import pytest
 import os
 import platform
+import numpy as np
 
 # external packages
 # local import
@@ -225,6 +226,33 @@ def test_checkAvailability_4():
     app.indexPath = ''
     suc = app.checkAvailability()
     assert not suc
+
+
+def test_angle_concept():
+    for angle1 in range(-180, 180, 1):
+        phi = np.radians(angle1)
+        CD11 = np.cos(phi)
+        CD12 = np.sin(phi)
+        CD21 = -np.sin(phi)
+        CD22 = np.cos(phi)
+
+        angle = np.degrees(np.arctan(CD12 / CD11))
+        if CD11 > 0 and CD12 > 0:
+            # quadrant 1
+            pass
+        elif CD11 > 0 and CD12 <= 0:
+            # quadrant 4
+            pass
+        elif CD11 < 0 and CD12 > 0:
+            # quadrant 2
+            angle += 180
+        elif CD11 < 0 and CD12 <= 0:
+            # quadrant 3
+            angle -= 180
+
+        angle = np.round(angle, 0)
+        angle1 = np.round(angle1, 0)
+        assert angle == angle1
 
 
 

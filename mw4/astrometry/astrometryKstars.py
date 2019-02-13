@@ -92,6 +92,14 @@ class AstrometryKstars(object):
             outFile.write('cpulimit 300\nadd_path {0}\nautoindex\n'.format(self.indexPath))
 
     def stringToDegree(self, value):
+        """
+        stringToDegree takes any form of HMS / DMS string format and tries to convert it
+        to a decimal number.
+
+        :param value:
+        :return: value as decimal in degrees or None if not succeeded
+        """
+
         if not isinstance(value, str):
             return None
         if not len(value):
@@ -323,9 +331,10 @@ class AstrometryKstars(object):
     @staticmethod
     def _addWCSDataToFits(fitsPath='', wcsHeader=None):
         """
-        _addWCSDataToFits reads the fits file containing the wcs data output from solve-field
-        and embeds it to the given fits file with image. it removes all entries starting with
-        some keywords given in selection. we starting with COMMENT and HISTORY
+        _addWCSDataToFits reads the fits file containing the wcs data output from
+        solve-field and embeds it to the given fits file with image. it removes all
+        entries starting with some keywords given in selection. we starting with
+        HISTORY
 
         :param fitsPath: path to the fits file, where the wcs header should be embedded
         :param wcsHeader:

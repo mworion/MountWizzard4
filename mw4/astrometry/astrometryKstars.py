@@ -469,7 +469,6 @@ class AstrometryKstars(object):
 
         wcsHeader = self._loadWCSData()
 
-        print(updateFits)
         if updateFits:
             self._updateFitsWithWCSData(fitsPath=fitsPath, wcsHeader=wcsHeader)
 

@@ -944,7 +944,7 @@
      <rect>
       <x>180</x>
       <y>80</y>
-      <width>156</width>
+      <width>96</width>
       <height>21</height>
      </rect>
     </property>
@@ -954,7 +954,25 @@
      </font>
     </property>
     <property name="text">
-     <string>use WCS coordinates</string>
+     <string>WCS coords</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkUpdateFits">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>80</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Update FITS File</string>
     </property>
    </widget>
   </widget>

@@ -71,6 +71,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
         self.app.plateSolve.signals.solveDone.connect(self.solveDone)
+        self.app.plateSolve.signals.solveResult.connect(self.solveResult)
 
         self.initConfig()
 
@@ -205,13 +206,15 @@ class ImageWindow(widget.MWidget):
         return True
 
     def solveImage(self):
+        updateFits = self.ui.checkUpdateFits.isChecked()
         self.app.plateSolve.solveFits(fitsPath=self.imageFileName,
-                                      updateFits=True,
+                                      updateFits=updateFits,
                                       )
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')
         self.ui.expose.setEnabled(False)
         self.ui.exposeN.setEnabled(False)
         self.ui.load.setEnabled(False)
+        self.app.message.emit('Solving: [{0}]'.format(self.imageFileName), 0)
 
     def solveDone(self):
         self.changeStyleDynamic(self.ui.solve, 'running', 'false')
@@ -219,6 +222,10 @@ class ImageWindow(widget.MWidget):
         self.ui.exposeN.setEnabled(True)
         self.ui.load.setEnabled(True)
         self.showFitsImage()
+
+    def solveResult(self, res):
+        fText = 'Image solved: Ra: {0} Dec: {1} Angle: {2} Scale: {3}'
+        self.app.message.emit(fText.format(res[0], res[1], res[2], res[3]), 0)
 
     def writeHeaderToGui(self, header=None):
         """

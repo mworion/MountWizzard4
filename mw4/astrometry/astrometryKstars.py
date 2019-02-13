@@ -297,8 +297,8 @@ class AstrometryKstars(object):
         :return:
         """
 
-        CD11 = wcsHeader.get('CD2_1', 0)
-        CD12 = wcsHeader.get('CD2_2', 0)
+        CD11 = wcsHeader.get('CD1_1', 0)
+        CD12 = wcsHeader.get('CD1_2', 0)
 
         angleRad = np.arctan2(CD12, CD11)
         angle = np.degrees(angleRad)

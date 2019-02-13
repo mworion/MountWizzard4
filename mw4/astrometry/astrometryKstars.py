@@ -293,8 +293,11 @@ class AstrometryKstars(object):
     @staticmethod
     def _calcAngleScaleFromWCS(wcsHeader=None):
         """
+        _calcAngleScaleFromWCS as the name says. important is to use the numpy arctan2
+        function, because it handles the zero points and extend the calculation back
+        to the full range from -pi to pi
 
-        :return:
+        :return: angle in degrees and scale in arc second per pixel (app)
         """
 
         CD11 = wcsHeader.get('CD1_1', 0)

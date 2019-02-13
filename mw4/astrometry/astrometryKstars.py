@@ -271,68 +271,6 @@ class AstrometryKstars(object):
         options += f' --ra {ra} --dec {dec} --radius 1'
         return options
 
-    def _calcPositionAngle(self, CD11, CD12, CD21, CD22):
-        """
-
-        :return:
-        """
-
-        # now update ra, dec, scale, angle
-        wcsObject = WCS(wcsHeader).celestial
-        fitsHeader['RA'] = wcsHeader.get('CRVAL1')
-        fitsHeader['DEC'] = wcsHeader.get('CRVAL2')
-        scale = astropy.wcs.utils.proj_plane_pixel_scales(wcsObject)[0] * 3600
-        fitsHeader['SCALE'] = scale
-        CD11 = wcsHeader.get('CD2_1', 0)
-        CD12 = wcsHeader.get('CD2_2', 0)
-        CD21 = wcsHeader.get('CD2_1', 0)
-        CD22 = wcsHeader.get('CD2_2', 0)
-        angle = self._calcPositionAngle(CD11, CD12, CD21, CD22)
-        fitsHeader['ANGLE'] = angle
-
-        if (abs(CD21) > abs(CD22)) and (CD21 >= 0):
-            North = "Right"
-            positionAngle = 270 + np.degrees(np.arctan(CD22 / CD21))
-        elif (abs(CD21) > abs(CD22)) and (CD21 < 0):
-            North = "Left"
-            positionAngle = 90 + np.degrees(np.arctan(CD22 / CD21))
-        elif (abs(CD21) < abs(CD22)) and (CD22 >= 0):
-            North = "Up"
-            positionAngle = 0 + np.degrees(np.arctan(CD21 / CD22))
-        elif (abs(CD21) < abs(CD22)) and (CD22 < 0):
-            North = "Down"
-            positionAngle = 180 + np.degrees(np.arctan(CD21 / CD22))
-        if positionAngle > 180:
-            positionAngle = - positionAngle + 180
-
-        if (abs(CD11) > abs(CD12)) and (CD11 > 0):
-            East = "Right"
-        if (abs(CD11) > abs(CD12)) and (CD11 < 0):
-            East = "Left"
-        if (abs(CD11) < abs(CD12)) and (CD12 > 0):
-            East = "Up"
-        if (abs(CD11) < abs(CD12)) and (CD12 < 0):
-            East = "Down"
-
-        if North == "Up" and East == "Left":
-            imageFlipped = False
-        if North == "Up" and East == "Right":
-            imageFlipped = True
-        if North == "Down" and East == "Left":
-            imageFlipped = True
-        if North == "Down" and East == "Right":
-            imageFlipped = False
-        if North == "Right" and East == "Up":
-            imageFlipped = False
-        if North == "Right" and East == "Down":
-            imageFlipped = True
-        if North == "Left" and East == "Up":
-            imageFlipped = True
-        if North == "Left" and East == "Down":
-            imageFlipped = False
-        print('North:', North, ' East:', East, ' Flipped:', imageFlipped)
-        return positionAngle
-
     def _loadWCSData(self):
         """
 
@@ -343,6 +281,44 @@ class AstrometryKstars(object):
         with fits.open(wcsFile) as wcsHandle:
             wcsHeader = wcsHandle[0].header
         return wcsHeader
+
+    def _calcAngleScaleFromWCS(self, wcsHeader=None):
+        """
+
+        :return:
+        """
+
+        CD11 = wcsHeader.get('CD2_1', 0)
+        CD12 = wcsHeader.get('CD2_2', 0)
+        CD21 = wcsHeader.get('CD2_1', 0)
+        CD22 = wcsHeader.get('CD2_2', 0)
+
+        if (abs(CD21) > abs(CD22)) and (CD21 >= 0):
+            angle = 270 + np.degrees(np.arctan(CD22 / CD21))
+        elif (abs(CD21) > abs(CD22)) and (CD21 < 0):
+            angle = 90 + np.degrees(np.arctan(CD22 / CD21))
+        elif (abs(CD21) < abs(CD22)) and (CD22 >= 0):
+            angle = 0 + np.degrees(np.arctan(CD21 / CD22))
+        elif (abs(CD21) < abs(CD22)) and (CD22 < 0):
+            angle = 180 + np.degrees(np.arctan(CD21 / CD22))
+
+        return angle, scale
+
+    @staticmethod
+    def _getSolutionFromWCS(wcsHeader=None):
+        """
+        _getSolutionFromWCS reads the fits header containing the wcs data and returns the
+        basic data needed
+
+        :param wcsHeader:
+        :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
+        """
+
+        ra = wcsHeader.get('CRVAL1')
+        dec = wcsHeader.get('CRVAL2')
+        angle, scale = self._calcAngleScaleFromWCS(wcsHeader=wcsHeader)
+
+        return ra, dec, angle, scale
 
     @staticmethod
     def _addWCSDataToFits(fitsPath='', wcsHeader=None):
@@ -379,22 +355,6 @@ class AstrometryKstars(object):
                 fitsHeader['PIXSCALE'] = scale
 
         return True
-
-    @staticmethod
-    def _getSolutionFromWCS(wcsHeader=None):
-        """
-        _getSolutionFromWCS reads the fits header containing the wcs data and returns the
-        basic data needed
-
-        :param wcsHeader:
-        :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
-        """
-
-        ra = wcsHeader.get('CRVAL1')
-        dec = wcsHeader.get('CRVAL2')
-        angle, scale = self._calcAngleScaleFromWCS(wcsHeader=wcsHeader)
-
-        return ra, dec, angle, scale
 
     def solve(self, fitsPath='', updateFits=False):
         """

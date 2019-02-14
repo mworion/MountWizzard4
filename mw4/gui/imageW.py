@@ -208,7 +208,7 @@ class ImageWindow(widget.MWidget):
     def solveImage(self):
         updateFits = self.ui.checkUpdateFits.isChecked()
         self.app.plateSolve.solveFits(fitsPath=self.imageFileName,
-                                      timeout=3,
+                                      timeout=0.5,
                                       updateFits=updateFits,
                                       )
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')
@@ -225,8 +225,11 @@ class ImageWindow(widget.MWidget):
         self.showFitsImage()
 
     def solveResult(self, res):
-        fText = 'Image solved: Ra: {0} Dec: {1} Angle: {2} Scale: {3}'
-        self.app.message.emit(fText.format(res[0], res[1], res[2], res[3]), 0)
+        if all(x == 0 for x in res):
+            self.app.message.emit('Solving error', 2)
+        else:
+            fText = 'Image solved: Ra: {0} Dec: {1} Angle: {2} Scale: {3}'
+            self.app.message.emit(fText.format(res[0], res[1], res[2], res[3]), 0)
 
     def writeHeaderToGui(self, header=None):
         """

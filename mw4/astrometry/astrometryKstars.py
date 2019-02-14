@@ -23,6 +23,7 @@ import subprocess
 import os
 import glob
 import platform
+import time
 # external packages
 import PyQt5.QtWidgets
 from skyfield.api import Angle
@@ -412,12 +413,14 @@ class AstrometryKstars(object):
                     xyPath,
                     fitsPath]
 
+        timeStart = time.time()
         result = subprocess.run(args=runnable,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
                                 )
-
-        self.logger.debug('image2xy return code: '
+        delta = time.time() - timeStart
+        print('image2xy', delta)
+        self.logger.debug(f'image2xy took {delta}s return code: '
                           + str(result.returncode)
                           + ' stderr: '
                           + result.stderr.decode()
@@ -449,12 +452,21 @@ class AstrometryKstars(object):
         for option in solveOptions.split():
             runnable.append(option)
 
-        result = subprocess.run(args=runnable,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
-                                )
+        timeStart = time.time()
+        try:
+            result = subprocess.run(args=runnable,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                    timeout=timeout,
+                                    )
+        except subprocess.TimeoutExpired:
+            self.logger.debug('solve-field timeout')
+            return 0, 0, 0, 0
 
-        self.logger.debug('solve-field return code: '
+        delta = time.time() - timeStart
+        print('solve-field', delta)
+
+        self.logger.debug(f'solve-field took {delta}s return code: '
                           + str(result.returncode)
                           + ' stderr: '
                           + result.stderr.decode()

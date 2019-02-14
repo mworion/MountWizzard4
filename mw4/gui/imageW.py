@@ -208,7 +208,7 @@ class ImageWindow(widget.MWidget):
     def solveImage(self):
         updateFits = self.ui.checkUpdateFits.isChecked()
         self.app.plateSolve.solveFits(fitsPath=self.imageFileName,
-                                      timeout=0.5,
+                                      timeout=10,
                                       updateFits=updateFits,
                                       )
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')
@@ -263,17 +263,20 @@ class ImageWindow(widget.MWidget):
         self.ui.binY.setText(f'{binY:1.0f}')
         self.ui.sqm.setText(f'{sqm:5.2f}')
 
-        wcsObject = wcs.WCS(header)
-        hasCelestial = wcsObject.has_celestial
+        if 'CTYPE1' in header:
+            wcsObject = wcs.WCS(header)
+            hasCelestial = wcsObject.has_celestial
+            hasDistortion = wcsObject.has_distortion
+        else:
+            wcsObject = None
+            hasCelestial = False
+            hasDistortion = False
+
         status = ('true' if hasCelestial else 'false')
         self.changeStyleDynamic(self.ui.hasCelestial, 'running', status)
-
-        hasDistortion = wcsObject.has_distortion
         self.ui.checkUseWCS.setEnabled(hasDistortion)
         status = ('true' if hasDistortion else 'false')
         self.changeStyleDynamic(self.ui.hasDistortion, 'running', status)
-
-        wcsObject.cel_offset = True
 
         for key, value in header.items():
             pass
@@ -493,9 +496,9 @@ class ImageWindow(widget.MWidget):
             self.image = fitsHandle[0].data
             header = fitsHandle[0].header
             # correct faulty headers
-            if header.get('CTYPE1').endswith('DEF'):
+            if header.get('CTYPE1', '').endswith('DEF'):
                 header['CTYPE1'] = header['CTYPE1'].replace('DEF', 'TAN')
-            if header.get('CTYPE2').endswith('DEF'):
+            if header.get('CTYPE2', '').endswith('DEF'):
                 header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
 
         hasDistortion, wcsObject = self.writeHeaderToGui(header=header)

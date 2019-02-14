@@ -359,7 +359,7 @@ class AstrometryKstars(object):
 
         return True
 
-    def solve(self, fitsPath='', updateFits=False):
+    def solve(self, fitsPath='', timeout=60, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -394,6 +394,7 @@ class AstrometryKstars(object):
 
 
         :param fitsPath:  full path to fits file
+        :param timeout:
         :param updateFits:  if true update Fits image file with wcsHeader data
         :return: ra, dec, angle, scale
         """
@@ -440,7 +441,7 @@ class AstrometryKstars(object):
                     '--sort-column', 'FLUX',
                     '--scale-units', 'app',
                     '--crpix-center',
-                    '--cpulimit', '60',
+                    '--cpulimit', str(timeout),
                     '--config',
                     configPath,
                     xyPath,
@@ -493,10 +494,11 @@ class AstrometryKstars(object):
     def solveResult(self, obj):
         self.signals.solveResult.emit(obj)
 
-    def solveFits(self, fitsPath='', updateFits=False):
+    def solveFits(self, fitsPath='', timeout=60, updateFits=False):
         """
 
         :param fitsPath:
+        :param timeout:
         :param updateFits:
         :return: success
         """
@@ -515,6 +517,7 @@ class AstrometryKstars(object):
 
         worker = tpool.Worker(self.solve,
                               fitsPath=fitsPath,
+                              timeout=timeout,
                               updateFits=updateFits,
                               )
         worker.signals.result.connect(self.solveResult)

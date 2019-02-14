@@ -208,6 +208,7 @@ class ImageWindow(widget.MWidget):
     def solveImage(self):
         updateFits = self.ui.checkUpdateFits.isChecked()
         self.app.plateSolve.solveFits(fitsPath=self.imageFileName,
+                                      timeout=3,
                                       updateFits=updateFits,
                                       )
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')

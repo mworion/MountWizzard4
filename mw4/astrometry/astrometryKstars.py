@@ -54,6 +54,9 @@ class AstrometryKstars(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
 
+    Keyword definitions could be found under
+        https://fits.gsfc.nasa.gov/fits_dictionary.html
+
         >>> astrometry = AstrometryKstars(tempDir=tempDir,
         >>>                               threadPool=threadpool
         >>>                         )
@@ -132,7 +135,7 @@ class AstrometryKstars(object):
         else:
             return None
 
-    def convertToHMS(self, value):
+    def convertToHMS(self, ra):
         """
         takes the given RA value, which should be in HMS format (but different types) and
         convert it to solve-field readable string in HH:MM:SS
@@ -157,23 +160,23 @@ class AstrometryKstars(object):
         reference frame is given by the RADECSYS keyword, and the coordinate
         epoch is given by the EQUINOX keyword. Example: '13:29:24.00'
 
-        :param value:
+        :param ra: right ascension in degrees
         :return: converted value as string
         """
 
-        if not isinstance(value, float):
-            value = self.stringToDegree(value)
-            if value is None:
+        if not isinstance(ra, float):
+            ra = self.stringToDegree(ra)
+            if ra is None:
                 return None
-            angle = Angle(hours=value, preference='hours')
+            angle = Angle(hours=ra, preference='hours')
         else:
-            angle = Angle(degrees=value, preference='hours')
+            angle = Angle(degrees=ra, preference='hours')
 
         t = Angle.signed_hms(angle)
         value = '{0:02.0f}:{1:02.0f}:{2:02.0f}'.format(t[1], t[2], t[3])
         return value
 
-    def convertToDMS(self, value):
+    def convertToDMS(self, dec):
         """
         takes the given DEC value, which should be in DMS format (but different types) and
         convert it to solve-field readable string in sDD:MM:SS
@@ -192,17 +195,17 @@ class AstrometryKstars(object):
         keyword, and the coordinate epoch is given by the EQUINOX keyword.
         Example: -47.25944 or '-47:15:34.00'.
 
-        :param value:
+        :param dec: declination
         :return: converted value as string
         """
 
-        if not isinstance(value, float):
-            value = self.stringToDegree(value)
+        if not isinstance(dec, float):
+            dec = self.stringToDegree(dec)
 
-        if value is None:
+        if dec is None:
             return None
 
-        angle = Angle(degrees=value, preference='degrees')
+        angle = Angle(degrees=dec, preference='degrees')
 
         t = Angle.signed_dms(angle)
         sign = '+' if angle.degrees > 0 else '-'
@@ -229,9 +232,9 @@ class AstrometryKstars(object):
         self.logger.info('solve-field, image2xy and index files available')
         return True
 
-    def _readCheckFitsData(self, fitsPath='', optionalScale=0):
+    def readFitsData(self, fitsHDU='', optionalScale=1):
         """
-        _readCheckFitsData reads the fits file with the image and tries to get some key
+        readFitsData reads the fits file with the image and tries to get some key
         fields out of the header for preparing the solver. necessary data are
 
             - 'SCALE': pixel scale in arcsec per pixel
@@ -241,38 +244,34 @@ class AstrometryKstars(object):
         if OBJCTRA / OBJCTDEC is not readable or not present, we try to use other keywords
         to calculate, finally we remove the parameters to get a blind solve
 
-        :param fitsPath: fits file with image data
+        :param fitsHDU: fits file with image data
         :param optionalScale: optional scaling used, when not scale parameter is in header
         :return: options as string
         """
 
-        if not fitsPath:
-            return ''
+        fitsHeader = fitsHDU[0].header
+        scale = fitsHeader.get('SCALE', 0)
+        if not scale:
+            scale = fitsHeader.get('PIXSCALE', 0)
+        if not scale:
+            focallen = fitsHeader.get('FOCALLEN', 0)
+            xpixsz = fitsHeader.get('XPIXSZ', 0)
+            if focallen != 0:
+                scale = xpixsz * 206.6 / focallen
+            if scale == 0:
+                scale = optionalScale
 
-        with fits.open(fitsPath) as fitsHandle:
-            fitsHeader = fitsHandle[0].header
-            scale = fitsHeader.get('SCALE', '')
-            if not scale:
-                scale = fitsHeader.get('PIXSCALE', '')
-            if not scale:
-                focallen = fitsHeader.get('FOCALLEN', 0)
-                xpixsz = fitsHeader.get('XPIXSZ', 0)
-                if focallen != 0:
-                    scale = xpixsz * 206.6 / focallen
-                if scale == 0:
-                    scale = optionalScale
-
+        ra = fitsHeader.get('OBJCTRA', '')
+        if not ra:
             ra = fitsHeader.get('RA', '')
-            if not ra:
-                ra = fitsHeader.get('OBJCTRA', '')
+        dec = fitsHeader.get('OBJCTDEC', '')
+        if not dec:
             dec = fitsHeader.get('DEC', '')
-            if not dec:
-                dec = fitsHeader.get('OBJCTDEC', '')
 
         ra = self.convertToHMS(ra)
         dec = self.convertToDMS(dec)
-        scaleLow = float(scale) * 0.9
-        scaleHigh = float(scale) * 1.1
+        scaleLow = scale * 0.9
+        scaleHigh = scale * 1.1
 
         if not ra or not dec:
             return ''
@@ -280,21 +279,21 @@ class AstrometryKstars(object):
         options += f' --ra {ra} --dec {dec} --radius 1'
         return options
 
-    def _loadWCSData(self):
+    def loadWCSData(self, wcsPath=''):
         """
 
+        :param wcsPath: fits file with wcs data
         :return: wcsHeader
         """
 
-        wcsFile = self.tempDir + '/temp.wcs'
-        with fits.open(wcsFile) as wcsHandle:
+        with fits.open(wcsPath) as wcsHandle:
             wcsHeader = wcsHandle[0].header
         return wcsHeader
 
     @staticmethod
-    def _calcAngleScaleFromWCS(wcsHeader=None):
+    def calcAngleScaleFromWCS(wcsHeader=None):
         """
-        _calcAngleScaleFromWCS as the name says. important is to use the numpy arctan2
+        calcAngleScaleFromWCS as the name says. important is to use the numpy arctan2
         function, because it handles the zero points and extend the calculation back
         to the full range from -pi to pi
 
@@ -310,9 +309,9 @@ class AstrometryKstars(object):
 
         return angle, scale
 
-    def _getSolutionFromWCS(self, wcsHeader=None):
+    def getSolutionFromWCS(self, wcsHeader=None):
         """
-        _getSolutionFromWCS reads the fits header containing the wcs data and returns the
+        getSolutionFromWCS reads the fits header containing the wcs data and returns the
         basic data needed
 
         :param wcsHeader:
@@ -321,13 +320,13 @@ class AstrometryKstars(object):
 
         ra = wcsHeader.get('CRVAL1')
         dec = wcsHeader.get('CRVAL2')
-        angle, scale = self._calcAngleScaleFromWCS(wcsHeader=wcsHeader)
+        angle, scale = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
         return ra, dec, angle, scale
 
-    def _updateFitsWithWCSData(self, fitsPath='', wcsHeader=None):
+    def updateFitsWithWCSData(self, fitsPath='', wcsHeader=None):
         """
-        _updateFitsWithWCSData reads the fits file containing the wcs data output from
+        updateFitsWithWCSData reads the fits file containing the wcs data output from
         solve-field and embeds it to the given fits file with image. it removes all
         entries starting with some keywords given in selection. we starting with
         HISTORY
@@ -346,7 +345,7 @@ class AstrometryKstars(object):
             fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
             # now updating the old fits header data
-            ra, dec, angle, scale = self._getSolutionFromWCS(wcsHeader=wcsHeader)
+            ra, dec, angle, scale = self.getSolutionFromWCS(wcsHeader=wcsHeader)
             fitsHeader['RA'] = ra
             fitsHeader['DEC'] = dec
             fitsHeader['ANGLE'] = angle
@@ -405,7 +404,8 @@ class AstrometryKstars(object):
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
 
-        solveOptions = self._readCheckFitsData(fitsPath=fitsPath)
+        with fits.open(fitsPath) as fitsHDU:
+            solveOptions = self.readFitsData(fitsHDU=fitsHDU)
 
         runnable = [self.binPathImage2xy,
                     '-O',
@@ -480,12 +480,12 @@ class AstrometryKstars(object):
             self.logger.error('Image [{0}] could not be solved'.format(fitsPath))
             return 0, 0, 0, 0
 
-        wcsHeader = self._loadWCSData()
+        wcsHeader = self.loadWCSData(wcsPath=wcsP)
 
         if updateFits:
-            self._updateFitsWithWCSData(fitsPath=fitsPath, wcsHeader=wcsHeader)
+            self.updateFitsWithWCSData(fitsPath=fitsPath, wcsHeader=wcsHeader)
 
-        ra, dec, angle, scale = self._getSolutionFromWCS(wcsHeader=wcsHeader)
+        ra, dec, angle, scale = self.getSolutionFromWCS(wcsHeader=wcsHeader)
         return ra, dec, angle, scale
 
     def clearSolve(self):

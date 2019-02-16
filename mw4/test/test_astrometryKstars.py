@@ -23,6 +23,7 @@ import pytest
 import os
 import platform
 import numpy as np
+from astropy.io import fits
 
 # external packages
 # local import
@@ -32,6 +33,8 @@ app, spy, mwGlob, test = setupQt()
 
 tempDir = mwGlob['tempDir']
 threadPool = ''
+app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
+                                        threadPool=threadPool)
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -82,128 +85,100 @@ def test_init_3():
         assert os.path.isfile(tempDir + '/astrometry.cfg')
 
 
+app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
+                                        threadPool=threadPool)
+
+
 def test_convertToHMS_1():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = 180.0
     ret = app.convertToHMS(value)
     assert ret == '12:00:00'
 
 
 def test_convertToHMS_2():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = -180.0
     ret = app.convertToHMS(value)
     assert ret == '12:00:00'
 
 
 def test_convertToHMS_3():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '12 00 34'
     ret = app.convertToHMS(value)
     assert ret == '12:00:34'
 
 
 def test_convertToHMS_4():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '12 00 34 34'
     ret = app.convertToHMS(value)
     assert ret is None
 
 
 def test_convertToHMS_5():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '12:00:34'
     ret = app.convertToHMS(value)
     assert ret == '12:00:34'
 
 
 def test_convertToHMS_6():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '12:00:34.356'
     ret = app.convertToHMS(value)
     assert ret == '12:00:34'
 
 
 def test_convertToDMS_1():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = 90.0
     ret = app.convertToDMS(value)
     assert ret == '+90:00:00'
 
 
 def test_convertToDMS_2():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = -90.0
     ret = app.convertToDMS(value)
     assert ret == '-90:00:00'
 
 
 def test_convertToDMS_3():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '45 45 45'
     ret = app.convertToDMS(value)
     assert ret == '+45:45:45'
 
 
 def test_convertToDMS_4():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '45 45 45 50'
     ret = app.convertToDMS(value)
     assert ret is None
 
 
 def test_convertToDMS_5():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '45:45:45'
     ret = app.convertToDMS(value)
     assert ret == '+45:45:45'
 
 
 def test_convertToDMS_6():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '45 45 45.345'
     ret = app.convertToDMS(value)
     assert ret == '+45:45:45'
 
 
 def test_convertToDMS_7():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '++45 45 45'
     ret = app.convertToDMS(value)
     assert ret is None
 
 
 def test_convertToDMS_8():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     value = '-45 45 45.345'
     ret = app.convertToDMS(value)
     assert ret == '-45:45:45'
 
 
 def test_checkAvailability_1():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     suc = app.checkAvailability()
     assert suc
 
 
 def test_checkAvailability_2():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     app.indexPath = ''
     app.binPathImage2xy = ''
     app.binPathSolveField = ''
@@ -212,8 +187,6 @@ def test_checkAvailability_2():
 
 
 def test_checkAvailability_3():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     app.indexPath = ''
     app.binPathImage2xy = ''
     suc = app.checkAvailability()
@@ -221,8 +194,6 @@ def test_checkAvailability_3():
 
 
 def test_checkAvailability_4():
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
     app.indexPath = ''
     suc = app.checkAvailability()
     assert not suc
@@ -270,4 +241,12 @@ def test_angle_scale_concept():
         assert angle == angle1
 
 
-
+def test_readFitsData():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    #header.set('RA', 100)
+    #header.set('DEC', 100)
+    #header.set('SCALE', 1.3)
+    value = app.readFitsData(fitsHDU=hdu)
+    assert value == ''

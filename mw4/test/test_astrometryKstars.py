@@ -304,12 +304,12 @@ def test_getSolutionFromWCS_1():
     header = hdu[0].header
     header.set('CRVAL1', 180.0)
     header.set('CRVAL2', 60.0)
-    ra, dec, angle, scale, mirrored = app.getSolutionFromWCS(wcsHeader=header)
+    ra, dec, angle, scale, flipped = app.getSolutionFromWCS(wcsHeader=header)
     assert ra == 180
     assert dec == 60
     assert angle == 0
     assert scale == 0
-    assert not mirrored
+    assert not flipped
 
 
 def test_updateFitsWithWCSData_1():

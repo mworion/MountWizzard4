@@ -244,6 +244,8 @@ class ImageWindow(widget.MWidget):
         scale = header.get('SCALE', 0)
         ccdTemp = header.get('CCD-TEMP', 0)
         expTime = header.get('EXPOSURE', 0)
+        if not expTime:
+            expTime = header.get('EXPTIME', 0)
         filterCCD = header.get('FILTER', 0)
         binX = header.get('XBINNING', 0)
         binY = header.get('YBINNING', 0)
@@ -251,6 +253,8 @@ class ImageWindow(widget.MWidget):
                   header.get('SKY-QLTY', 0),
                   )
         rotation = header.get('ANGLE', 0)
+        flipped = header.get('FLIPPED', 0)
+
         self.ui.object.setText(f'{name}')
         self.ui.ra.setText(f'{ra:8.5f}')
         self.ui.dec.setText(f'{dec:8.5f}')

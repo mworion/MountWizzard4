@@ -304,13 +304,13 @@ class AstrometryKstars(object):
         CD21 = wcsHeader.get('CD2_1', 0)
         CD22 = wcsHeader.get('CD2_2', 0)
 
-        mirrored = (CD11 * CD22 - CD12 * CD21) < 0
+        flipped = (CD11 * CD22 - CD12 * CD21) < 0
 
         angleRad = np.arctan2(CD12, CD11)
         angle = np.degrees(angleRad)
         scale = CD11 / np.cos(angleRad) * 3600
 
-        return angle, scale, mirrored
+        return angle, scale, flipped
 
     def getSolutionFromWCS(self, wcsHeader=None):
         """
@@ -323,9 +323,9 @@ class AstrometryKstars(object):
 
         ra = wcsHeader.get('CRVAL1')
         dec = wcsHeader.get('CRVAL2')
-        angle, scale, mirrored = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
+        angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        return ra, dec, angle, scale, mirrored
+        return ra, dec, angle, scale, flipped
 
     def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None):
         """
@@ -343,7 +343,7 @@ class AstrometryKstars(object):
 
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-        ra, dec, angle, scale, mirrored = self.getSolutionFromWCS(wcsHeader=wcsHeader)
+        ra, dec, angle, scale, flipped = self.getSolutionFromWCS(wcsHeader=wcsHeader)
 
         fitsHeader['RA'] = ra
         fitsHeader['OBJCTRA'] = self.convertToHMS(ra)
@@ -352,7 +352,7 @@ class AstrometryKstars(object):
         fitsHeader['SCALE'] = scale
         fitsHeader['PIXSCALE'] = scale
         fitsHeader['ANGLE'] = angle
-        fitsHeader['FLIPPED'] = mirrored
+        fitsHeader['FLIPPED'] = flipped
 
         return True
 
@@ -485,9 +485,9 @@ class AstrometryKstars(object):
                 fitsHeader = fitsHDU[0].header
                 self.updateFitsWithWCSData(fitsHeader=fitsHeader, wcsHeader=wcsHeader)
 
-        ra, dec, angle, scale = self.getSolutionFromWCS(wcsHeader=wcsHeader)
+        ra, dec, angle, scale, flipped = self.getSolutionFromWCS(wcsHeader=wcsHeader)
 
-        return ra, dec, angle, scale
+        return ra, dec, angle, scale, flipped
 
     def clearSolve(self):
         """

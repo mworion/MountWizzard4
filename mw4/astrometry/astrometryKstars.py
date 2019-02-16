@@ -273,7 +273,7 @@ class AstrometryKstars(object):
         return options
 
     @staticmethod
-    def loadWCSData(wcsHDU=''):
+    def getWCSHeader(wcsHDU=''):
         """
 
         :param wcsHDU: fits file with wcs data
@@ -455,17 +455,17 @@ class AstrometryKstars(object):
         except subprocess.TimeoutExpired:
             self.logger.debug('solve-field timeout')
             return 0, 0, 0, 0
-
-        delta = time.time() - timeStart
+        else:
+            delta = time.time() - timeStart
+            self.logger.debug(f'solve-field took {delta}s return code: '
+                              + str(result.returncode)
+                              + ' stderr: '
+                              + result.stderr.decode()
+                              + ' stdout: '
+                              + result.stdout.decode().replace('\n', ' ')
+                              )
         print('solve-field', delta)
 
-        self.logger.debug(f'solve-field took {delta}s return code: '
-                          + str(result.returncode)
-                          + ' stderr: '
-                          + result.stderr.decode()
-                          + ' stdout: '
-                          + result.stdout.decode().replace('\n', ' ')
-                          )
         if result.returncode:
             return 0, 0, 0, 0
 
@@ -474,7 +474,7 @@ class AstrometryKstars(object):
             return 0, 0, 0, 0
 
         with fits.open(wcsPath) as wcsHDU:
-            wcsHeader = self.loadWCSData(wcsHDU=wcsHDU)
+            wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
 
         if updateFits:
             self.updateFitsWithWCSData(fitsPath=fitsPath, wcsHeader=wcsHeader)

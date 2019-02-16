@@ -232,7 +232,7 @@ class AstrometryKstars(object):
         self.logger.info('solve-field, image2xy and index files available')
         return True
 
-    def readFitsData(self, fitsHDU='', optionalScale=1):
+    def readFitsData(self, fitsHDU='', searchRatio=1.1):
         """
         readFitsData reads the fits file with the image and tries to get some key
         fields out of the header for preparing the solver. necessary data are
@@ -241,37 +241,22 @@ class AstrometryKstars(object):
             - 'OBJCTRA' : ra position of the object in HMS format
             - 'OBJCTDEC' : dec position of the object in DMS format
 
-        if OBJCTRA / OBJCTDEC is not readable or not present, we try to use other keywords
-        to calculate, finally we remove the parameters to get a blind solve
+        we are taking OBJCTxy, because the precision is higher than in RA/DEC
 
         :param fitsHDU: fits file with image data
-        :param optionalScale: optional scaling used, when not scale parameter is in header
+        :param searchRatio: how the radius is extended
         :return: options as string
         """
 
         fitsHeader = fitsHDU[0].header
         scale = fitsHeader.get('SCALE', 0)
-        if not scale:
-            scale = fitsHeader.get('PIXSCALE', 0)
-        if not scale:
-            focallen = fitsHeader.get('FOCALLEN', 0)
-            xpixsz = fitsHeader.get('XPIXSZ', 0)
-            if focallen != 0:
-                scale = xpixsz * 206.6 / focallen
-            if scale == 0:
-                scale = optionalScale
-
         ra = fitsHeader.get('OBJCTRA', '')
-        if not ra:
-            ra = fitsHeader.get('RA', '')
         dec = fitsHeader.get('OBJCTDEC', '')
-        if not dec:
-            dec = fitsHeader.get('DEC', '')
 
         ra = self.convertToHMS(ra)
         dec = self.convertToDMS(dec)
-        scaleLow = scale * 0.9
-        scaleHigh = scale * 1.1
+        scaleLow = scale / searchRatio
+        scaleHigh = scale * searchRatio
 
         if not ra or not dec:
             return ''

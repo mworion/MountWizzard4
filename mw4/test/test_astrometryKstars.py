@@ -274,43 +274,44 @@ def test_calcAngleScaleFromWCS_1():
         assert np.round(angle, 3) == np.round(angleX, 3)
 
 
-def test_angle_scale_concept():
-    for angle1 in range(-180, 180, 1):
-        scale = 2
-        phi = np.radians(angle1)
-        CD11 = scale * np.cos(phi)
-        CD12 = scale * np.sin(phi)
-        CD21 = scale * -np.sin(phi)
-        CD22 = scale * np.cos(phi)
+def test_calcAngleScaleFromWCS_2():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    angle, scale = app.calcAngleScaleFromWCS(wcsHeader=header)
+    assert angle == 0
+    assert scale == 0
 
-        '''
-        if abs(CD12) < abs(CD11):
-            # using tangent
-            angleRad = np.arctan(CD12 / CD11)
-        else:
-            # using cotangent
-            angleRad = np.arccotan(CD11 / CD12)
-        '''
-        if abs(CD11) < 0.001:
-            CD11 = 0
-        angleRad = np.arctan2(CD12, CD11)
-        angle = np.degrees(angleRad)
 
-        '''
-        if CD11 > 0 and CD12 > 0:
-            # quadrant 1
-            pass
-        elif CD11 > 0 and CD12 <= 0:
-            # quadrant 4
-            pass
-        elif CD11 < 0 and CD12 > 0:
-            # quadrant 2
-            angle += 180
-        elif CD11 < 0 and CD12 <= 0:
-            # quadrant 3
-            angle -= 180
-        '''
+def test_getSolutionFromWCS_1():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('CRVAL1', 180.0)
+    header.set('CRVAL2', 60.0)
+    ra, dec, angle, scale = app.getSolutionFromWCS(wcsHeader=header)
+    assert ra == 180
+    assert dec == 60
+    assert angle == 0
+    assert scale == 0
 
-        angle = np.round(angle, 0)
-        angle1 = np.round(angle1, 0)
-        assert angle == angle1
+
+def test_updateFitsWithWCSData_1():
+    hdu1 = fits.HDUList()
+    hdu1.append(fits.PrimaryHDU())
+    header1 = hdu1[0].header
+    header1.set('OBJCTRA', 180.0)
+    header1.set('OBJCTDEC', 60.0)
+
+    hdu2 = fits.HDUList()
+    hdu2.append(fits.PrimaryHDU())
+    header2 = hdu2[0].header
+    header2.set('CRVAL1', 180.0)
+    header2.set('CRVAL2', 60.0)
+    suc = app.updateFitsWithWCSData(fitsHeader=header1, wcsHeader=header2)
+    assert suc
+    assert header1['RA'] == header2['CRVAL1']
+    assert header1['DEC'] == header2['CRVAL2']
+    assert header1['ANGLE'] == 0
+    assert header1['SCALE'] == 0
+

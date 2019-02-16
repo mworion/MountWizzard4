@@ -317,38 +317,31 @@ class AstrometryKstars(object):
 
         return ra, dec, angle, scale
 
-    def updateFitsWithWCSData(self, fitsPath='', wcsHeader=None):
+    def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None):
         """
         updateFitsWithWCSData reads the fits file containing the wcs data output from
         solve-field and embeds it to the given fits file with image. it removes all
         entries starting with some keywords given in selection. we starting with
         HISTORY
 
-        :param fitsPath: path to the fits file, where the wcs header should be embedded
-        :param wcsHeader:
+        :param fitsHeader: fits header from image file, where wcs should be embedded
+        :param wcsHeader: fits header with wcs info to be embedded
         :return: success
         """
 
-        if not fitsPath or wcsHeader is None:
-            return False
         remove = ['COMMENT', 'HISTORY']
 
-        with fits.open(fitsPath, mode='update') as fitsHandle:
-            fitsHeader = fitsHandle[0].header
-            fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
+        fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-            # now updating the old fits header data
-            ra, dec, angle, scale = self.getSolutionFromWCS(wcsHeader=wcsHeader)
-            fitsHeader['RA'] = ra
-            fitsHeader['DEC'] = dec
-            fitsHeader['ANGLE'] = angle
-            fitsHeader['SCALE'] = scale
-            if fitsHeader.get('OBJCTRA', ''):
-                fitsHeader['OBJCTRA'] = self.convertToHMS(ra)
-            if fitsHeader.get('OBJCTDEC', ''):
-                fitsHeader['OBJCTDEC'] = self.convertToDMS(dec)
-            if fitsHeader.get('PIXSCALE', ''):
-                fitsHeader['PIXSCALE'] = scale
+        ra, dec, angle, scale = self.getSolutionFromWCS(wcsHeader=wcsHeader)
+
+        fitsHeader['RA'] = ra
+        fitsHeader['OBJCTRA'] = self.convertToHMS(ra)
+        fitsHeader['DEC'] = dec
+        fitsHeader['OBJCTDEC'] = self.convertToDMS(dec)
+        fitsHeader['SCALE'] = scale
+        fitsHeader['PIXSCALE'] = scale
+        fitsHeader['ANGLE'] = angle
 
         return True
 
@@ -477,7 +470,9 @@ class AstrometryKstars(object):
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
 
         if updateFits:
-            self.updateFitsWithWCSData(fitsPath=fitsPath, wcsHeader=wcsHeader)
+            with fits.open(fitsPath, mode='update') as fitsHDU:
+                fitsHeader = fitsHDU[0].header
+                self.updateFitsWithWCSData(fitsHeader=fitsHeader, wcsHeader=wcsHeader)
 
         ra, dec, angle, scale = self.getSolutionFromWCS(wcsHeader=wcsHeader)
 

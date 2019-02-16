@@ -843,7 +843,7 @@
      <rect>
       <x>5</x>
       <y>80</y>
-      <width>81</width>
+      <width>66</width>
       <height>21</height>
      </rect>
     </property>
@@ -856,15 +856,15 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels an imaging or plate solving action or stops continous exposures&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
-     <string>WCS celest.</string>
+     <string>WCS</string>
     </property>
    </widget>
    <widget class="QPushButton" name="hasDistortion">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>75</x>
       <y>80</y>
-      <width>81</width>
+      <width>66</width>
       <height>21</height>
      </rect>
     </property>
@@ -942,7 +942,7 @@
    <widget class="QCheckBox" name="checkUseWCS">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>225</x>
       <y>80</y>
       <width>96</width>
       <height>21</height>
@@ -960,9 +960,9 @@
    <widget class="QCheckBox" name="checkUpdateFits">
     <property name="geometry">
      <rect>
-      <x>285</x>
+      <x>330</x>
       <y>80</y>
-      <width>141</width>
+      <width>96</width>
       <height>21</height>
      </rect>
     </property>
@@ -972,7 +972,28 @@
      </font>
     </property>
     <property name="text">
-     <string>Update FITS File</string>
+     <string>Update FITS</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="isFlipped">
+    <property name="geometry">
+     <rect>
+      <x>145</x>
+      <y>80</y>
+      <width>66</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels an imaging or plate solving action or stops continous exposures&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>flipped</string>
     </property>
    </widget>
   </widget>

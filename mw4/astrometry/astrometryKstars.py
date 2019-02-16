@@ -304,7 +304,7 @@ class AstrometryKstars(object):
         CD21 = wcsHeader.get('CD2_1', 0)
         CD22 = wcsHeader.get('CD2_2', 0)
 
-        mirrored = (CD11 * CD22 - CD12 * CD21) > 0
+        mirrored = (CD11 * CD22 - CD12 * CD21) < 0
 
         angleRad = np.arctan2(CD12, CD11)
         angle = np.degrees(angleRad)

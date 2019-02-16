@@ -344,9 +344,9 @@ class AstrometryKstars(object):
             fitsHeader['ANGLE'] = angle
             fitsHeader['SCALE'] = scale
             if fitsHeader.get('OBJCTRA', ''):
-                fitsHeader['OBJCTRA'] = ra
+                fitsHeader['OBJCTRA'] = self.convertToHMS(ra)
             if fitsHeader.get('OBJCTDEC', ''):
-                fitsHeader['OBJCTDEC'] = dec
+                fitsHeader['OBJCTDEC'] = self.convertToDMS(dec)
             if fitsHeader.get('PIXSCALE', ''):
                 fitsHeader['PIXSCALE'] = scale
 

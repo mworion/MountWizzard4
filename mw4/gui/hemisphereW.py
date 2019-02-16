@@ -882,8 +882,8 @@ class HemisphereWindow(widget.MWidget):
         name = hip.name[index]
         ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
 
-        textFormat = 'Do you want to slew the mount to:\n\n{0}'
-        question = textFormat.format(name)
+        textFormat = 'Align: {0}\nDo you want to slew the mount to:\n\n{1}'
+        question = textFormat.format(alignType, name)
         msg = PyQt5.QtWidgets.QMessageBox
         reply = msg.question(self,
                              f'Hemisphere {alignType} align',

@@ -241,12 +241,53 @@ def test_angle_scale_concept():
         assert angle == angle1
 
 
-def test_readFitsData():
+def test_readFitsData_1():
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
-    #header.set('RA', 100)
-    #header.set('DEC', 100)
-    #header.set('SCALE', 1.3)
+    header.set('OBJCTRA', '12 30 00.00')
+    header.set('OBJCTDEC', '-60 30 00.00')
+    header.set('SCALE', 1.3)
+    value = app.readFitsData(fitsHDU=hdu)
+    assert value[0] == '--scale-low 1.1818181818181817'
+    assert value[1] == '--scale-high 1.4300000000000002'
+    assert value[2] == '--ra 12:30:00'
+    assert value[3] == '--dec -60:30:00'
+    assert value[4] == '--radius 1'
+
+
+def test_readFitsData_2():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('OBJCTRA', 180.0)
+    header.set('OBJCTDEC', 60.0)
+    header.set('SCALE', 1.0)
+    value = app.readFitsData(fitsHDU=hdu)
+    assert value[0] == '--scale-low 0.9090909090909091'
+    assert value[1] == '--scale-high 1.1'
+    assert value[2] == '--ra 12:00:00'
+    assert value[3] == '--dec +60:00:00'
+    assert value[4] == '--radius 1'
+
+
+def test_readFitsData_3():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('OBJCTRA', 180.0)
+    header.set('OBJCTDEC', 60.0)
+    header.set('SCALE', 1.0)
+    value = app.readFitsData(fitsHDU=hdu, searchRatio=2)
+    assert value[0] == '--scale-low 0.5'
+    assert value[1] == '--scale-high 2.0'
+    assert value[2] == '--ra 12:00:00'
+    assert value[3] == '--dec +60:00:00'
+    assert value[4] == '--radius 1'
+
+
+def test_readFitsData_4():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
     value = app.readFitsData(fitsHDU=hdu)
     assert value == ''

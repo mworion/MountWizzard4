@@ -249,30 +249,38 @@ class AstrometryKstars(object):
         """
 
         fitsHeader = fitsHDU[0].header
-        scale = fitsHeader.get('SCALE', 0)
+
+        scale = fitsHeader.get('SCALE', '')
         ra = fitsHeader.get('OBJCTRA', '')
         dec = fitsHeader.get('OBJCTDEC', '')
 
+        if not ra or not dec or not scale:
+            return ''
+
+        scale = float(scale)
         ra = self.convertToHMS(ra)
         dec = self.convertToDMS(dec)
+
         scaleLow = scale / searchRatio
         scaleHigh = scale * searchRatio
 
-        if not ra or not dec:
-            return ''
-        options = f' --scale-low {scaleLow} --scale-high {scaleHigh}'
-        options += f' --ra {ra} --dec {dec} --radius 1'
+        options = [f'--scale-low {scaleLow}',
+                   f'--scale-high {scaleHigh}',
+                   f'--ra {ra}',
+                   f'--dec {dec}',
+                   '--radius 1']
+
         return options
 
-    def loadWCSData(self, wcsPath=''):
+    @staticmethod
+    def loadWCSData(wcsHDU=''):
         """
 
-        :param wcsPath: fits file with wcs data
+        :param wcsHDU: fits file with wcs data
         :return: wcsHeader
         """
 
-        with fits.open(wcsPath) as wcsHandle:
-            wcsHeader = wcsHandle[0].header
+        wcsHeader = wcsHDU[0].header
         return wcsHeader
 
     @staticmethod
@@ -389,9 +397,6 @@ class AstrometryKstars(object):
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
 
-        with fits.open(fitsPath) as fitsHDU:
-            solveOptions = self.readFitsData(fitsHDU=fitsHDU)
-
         runnable = [self.binPathImage2xy,
                     '-O',
                     '-o',
@@ -434,8 +439,11 @@ class AstrometryKstars(object):
                     configPath,
                     xyPath,
                     ]
-        for option in solveOptions.split():
-            runnable.append(option)
+
+        with fits.open(fitsPath) as fitsHDU:
+            solveOptions = self.readFitsData(fitsHDU=fitsHDU)
+
+        runnable += solveOptions
 
         timeStart = time.time()
         try:
@@ -465,12 +473,14 @@ class AstrometryKstars(object):
             self.logger.error('Image [{0}] could not be solved'.format(fitsPath))
             return 0, 0, 0, 0
 
-        wcsHeader = self.loadWCSData(wcsPath=wcsP)
+        with fits.open(wcsPath) as wcsHDU:
+            wcsHeader = self.loadWCSData(wcsHDU=wcsHDU)
 
         if updateFits:
             self.updateFitsWithWCSData(fitsPath=fitsPath, wcsHeader=wcsHeader)
 
         ra, dec, angle, scale = self.getSolutionFromWCS(wcsHeader=wcsHeader)
+
         return ra, dec, angle, scale
 
     def clearSolve(self):

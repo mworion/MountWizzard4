@@ -69,7 +69,7 @@ class AstrometryKstars(object):
     version = '0.4'
     logger = logging.getLogger(__name__)
 
-    def __init__(self, tempDir, threadPool):
+    def __init__(self, tempDir, threadPool=None):
         self.tempDir = tempDir
         self.threadPool = threadPool
         self.mutexSolve = PyQt5.QtCore.QMutex()
@@ -264,11 +264,17 @@ class AstrometryKstars(object):
         scaleLow = scale / searchRatio
         scaleHigh = scale * searchRatio
 
-        options = [f'--scale-low {scaleLow}',
-                   f'--scale-high {scaleHigh}',
-                   f'--ra {ra}',
-                   f'--dec {dec}',
-                   '--radius 1']
+        options = ['--scale-low',
+                   f'{scaleLow}',
+                   '--scale-high',
+                   f'{scaleHigh}',
+                   '--ra',
+                   f'{ra}',
+                   '--dec',
+                   f'{dec}',
+                   '--radius',
+                   '1',
+                   ]
 
         return options
 
@@ -380,7 +386,7 @@ class AstrometryKstars(object):
 
 
         :param fitsPath:  full path to fits file
-        :param timeout:
+        :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
         :return: ra, dec, angle, scale
         """
@@ -531,13 +537,13 @@ class AstrometryKstars(object):
 if __name__ == '__main__':
     test = PyQt5.QtWidgets.QApplication([])
 
-    threadPol = PyQt5.QtCore.QThreadPool()
+    threadPool = PyQt5.QtCore.QThreadPool()
     fitsPath = './mw4/test/config/m51.fit'
-    tempDir = './mw4/test/temp/'
+    tempDir = './mw4/test/temp'
 
     astro = AstrometryKstars(tempDir=tempDir,
-                             threadPool=threadPol)
+                             threadPool=threadPool)
 
-    suc = astro.solveFits(fitsPath=fitsPath)
+    suc = astro.solve(fitsPath=fitsPath)
     print(suc)
-    QTest.qWait(5000)
+    # QTest.qWait(5000)

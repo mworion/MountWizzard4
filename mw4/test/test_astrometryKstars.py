@@ -207,11 +207,16 @@ def test_readFitsData_1():
     header.set('OBJCTDEC', '-60 30 00.00')
     header.set('SCALE', 1.3)
     value = app.readFitsData(fitsHDU=hdu)
-    assert value[0] == '--scale-low 1.1818181818181817'
-    assert value[1] == '--scale-high 1.4300000000000002'
-    assert value[2] == '--ra 12:30:00'
-    assert value[3] == '--dec -60:30:00'
-    assert value[4] == '--radius 1'
+    assert value[0] == '--scale-low'
+    assert value[1] == '1.1818181818181817'
+    assert value[2] == '--scale-high'
+    assert value[3] == '1.4300000000000002'
+    assert value[4] == '--ra'
+    assert value[5] == '12:30:00'
+    assert value[6] == '--dec'
+    assert value[7] == '-60:30:00'
+    assert value[8] == '--radius'
+    assert value[9] == '1'
 
 
 def test_readFitsData_2():
@@ -222,11 +227,16 @@ def test_readFitsData_2():
     header.set('OBJCTDEC', 60.0)
     header.set('SCALE', 1.0)
     value = app.readFitsData(fitsHDU=hdu)
-    assert value[0] == '--scale-low 0.9090909090909091'
-    assert value[1] == '--scale-high 1.1'
-    assert value[2] == '--ra 12:00:00'
-    assert value[3] == '--dec +60:00:00'
-    assert value[4] == '--radius 1'
+    assert value[0] == '--scale-low'
+    assert value[1] == '0.9090909090909091'
+    assert value[2] == '--scale-high'
+    assert value[3] == '1.1'
+    assert value[4] == '--ra'
+    assert value[5] == '12:00:00'
+    assert value[6] == '--dec'
+    assert value[7] == '+60:00:00'
+    assert value[8] == '--radius'
+    assert value[9] == '1'
 
 
 def test_readFitsData_3():
@@ -237,11 +247,16 @@ def test_readFitsData_3():
     header.set('OBJCTDEC', 60.0)
     header.set('SCALE', 1.0)
     value = app.readFitsData(fitsHDU=hdu, searchRatio=2)
-    assert value[0] == '--scale-low 0.5'
-    assert value[1] == '--scale-high 2.0'
-    assert value[2] == '--ra 12:00:00'
-    assert value[3] == '--dec +60:00:00'
-    assert value[4] == '--radius 1'
+    assert value[0] == '--scale-low'
+    assert value[1] == '0.5'
+    assert value[2] == '--scale-high'
+    assert value[3] == '2.0'
+    assert value[4] == '--ra'
+    assert value[5] == '12:00:00'
+    assert value[6] == '--dec'
+    assert value[7] == '+60:00:00'
+    assert value[8] == '--radius'
+    assert value[9] == '1'
 
 
 def test_readFitsData_4():
@@ -315,3 +330,10 @@ def test_updateFitsWithWCSData_1():
     assert header1['ANGLE'] == 0
     assert header1['SCALE'] == 0
 
+
+def test_mirror_concept():
+    fitsPath = '/Users/mw/Desktop/ekos3.fits'
+    tempDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4/test/temp'
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
+    ra, dec, angle, scale = app.solve(fitsPath=fitsPath)
+    print(ra, dec, angle, scale)

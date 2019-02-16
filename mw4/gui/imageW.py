@@ -276,11 +276,9 @@ class ImageWindow(widget.MWidget):
             hasCelestial = False
             hasDistortion = False
 
-        status = ('true' if hasCelestial else 'false')
-        self.changeStyleDynamic(self.ui.hasCelestial, 'running', status)
+        self.changeStyleDynamic(self.ui.hasCelestial, 'running', hasCelestial)
         self.ui.checkUseWCS.setEnabled(hasDistortion)
-        status = ('true' if hasDistortion else 'false')
-        self.changeStyleDynamic(self.ui.hasDistortion, 'running', status)
+        self.changeStyleDynamic(self.ui.hasDistortion, 'running', hasDistortion)
         self.changeStyleDynamic(self.ui.isFlipped, 'running', flipped)
 
         for key, value in header.items():

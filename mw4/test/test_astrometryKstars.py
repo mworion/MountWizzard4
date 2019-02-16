@@ -284,7 +284,7 @@ def test_calcAngleScaleFromWCS_1():
         CD12 = scaleX * np.sin(phi)
         header.set('CD1_1', CD11)
         header.set('CD1_2', CD12)
-        angle, scale = app.calcAngleScaleFromWCS(wcsHeader=header)
+        angle, scale, flip = app.calcAngleScaleFromWCS(wcsHeader=header)
         assert np.round(scale, 0) == scaleX * 3600
         assert np.round(angle, 3) == np.round(angleX, 3)
 
@@ -293,7 +293,7 @@ def test_calcAngleScaleFromWCS_2():
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
-    angle, scale = app.calcAngleScaleFromWCS(wcsHeader=header)
+    angle, scale, flip = app.calcAngleScaleFromWCS(wcsHeader=header)
     assert angle == 0
     assert scale == 0
 
@@ -304,11 +304,12 @@ def test_getSolutionFromWCS_1():
     header = hdu[0].header
     header.set('CRVAL1', 180.0)
     header.set('CRVAL2', 60.0)
-    ra, dec, angle, scale = app.getSolutionFromWCS(wcsHeader=header)
+    ra, dec, angle, scale, mirrored = app.getSolutionFromWCS(wcsHeader=header)
     assert ra == 180
     assert dec == 60
     assert angle == 0
     assert scale == 0
+    assert not mirrored
 
 
 def test_updateFitsWithWCSData_1():
@@ -330,10 +331,3 @@ def test_updateFitsWithWCSData_1():
     assert header1['ANGLE'] == 0
     assert header1['SCALE'] == 0
 
-
-def test_mirror_concept():
-    fitsPath = '/Users/mw/Desktop/ekos3.fits'
-    tempDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4/test/temp'
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir)
-    ra, dec, angle, scale = app.solve(fitsPath=fitsPath)
-    print(ra, dec, angle, scale)

@@ -301,12 +301,16 @@ class AstrometryKstars(object):
 
         CD11 = wcsHeader.get('CD1_1', 0)
         CD12 = wcsHeader.get('CD1_2', 0)
+        CD21 = wcsHeader.get('CD2_1', 0)
+        CD22 = wcsHeader.get('CD2_2', 0)
+
+        mirrored = (CD11 * CD22 - CD12 * CD21) > 0
 
         angleRad = np.arctan2(CD12, CD11)
         angle = np.degrees(angleRad)
         scale = CD11 / np.cos(angleRad) * 3600
 
-        return angle, scale
+        return angle, scale, mirrored
 
     def getSolutionFromWCS(self, wcsHeader=None):
         """
@@ -319,9 +323,9 @@ class AstrometryKstars(object):
 
         ra = wcsHeader.get('CRVAL1')
         dec = wcsHeader.get('CRVAL2')
-        angle, scale = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
+        angle, scale, mirrored = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        return ra, dec, angle, scale
+        return ra, dec, angle, scale, mirrored
 
     def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None):
         """
@@ -339,7 +343,7 @@ class AstrometryKstars(object):
 
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-        ra, dec, angle, scale = self.getSolutionFromWCS(wcsHeader=wcsHeader)
+        ra, dec, angle, scale, mirrored = self.getSolutionFromWCS(wcsHeader=wcsHeader)
 
         fitsHeader['RA'] = ra
         fitsHeader['OBJCTRA'] = self.convertToHMS(ra)
@@ -348,6 +352,7 @@ class AstrometryKstars(object):
         fitsHeader['SCALE'] = scale
         fitsHeader['PIXSCALE'] = scale
         fitsHeader['ANGLE'] = angle
+        fitsHeader['FLIPPED'] = mirrored
 
         return True
 

@@ -94,7 +94,7 @@ class AstrometryKstars(object):
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
-            outFile.write('cpulimit 300\nadd_path {0}\nautoindex\n'.format(self.indexPath))
+            outFile.write(f'cpulimit 300\nadd_path {indexPath}\nautoindex\n')
 
     def stringToDegree(self, value):
         """
@@ -123,7 +123,7 @@ class AstrometryKstars(object):
         try:
             value = [float(x) for x in value]
         except Exception as e:
-            self.logger.debug('error: {0}, value: {1}'.format(e, value))
+            self.logger.debug(f'error: {e}, value: {value}')
             return None
         sign = 1 if value[0] > 0 else -1
         value[0] = abs(value[0])
@@ -174,7 +174,7 @@ class AstrometryKstars(object):
             angle = Angle(degrees=ra, preference='hours')
 
         t = Angle.signed_hms(angle)
-        value = '{0:02.0f}:{1:02.0f}:{2:02.0f}'.format(t[1], t[2], t[3])
+        value = f'{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
         return value
 
     def convertToDMS(self, dec):
@@ -210,7 +210,7 @@ class AstrometryKstars(object):
 
         t = Angle.signed_dms(angle)
         sign = '+' if angle.degrees > 0 else '-'
-        value = '{0}{1:02.0f}:{2:02.0f}:{3:02.0f}'.format(sign, t[1], t[2], t[3])
+        value = f'{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
         return value
 
     def checkAvailability(self):
@@ -376,18 +376,23 @@ class AstrometryKstars(object):
                     fitsPath]
 
         timeStart = time.time()
-        result = subprocess.run(args=runnable,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
-                                )
-        delta = time.time() - timeStart
-        self.logger.debug(f'image2xy took {delta}s return code: '
-                          + str(result.returncode)
-                          + ' stderr: '
-                          + result.stderr.decode()
-                          + ' stdout: '
-                          + result.stdout.decode().replace('\n', ' ')
-                          )
+        try:
+            result = subprocess.run(args=runnable,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                    )
+        except Exception as e:
+            self.logger.error(f'error: {e} happened')
+            return False
+        else:
+            delta = time.time() - timeStart
+            self.logger.debug(f'image2xy took {delta}s return code: '
+                              + str(result.returncode)
+                              + ' stderr: '
+                              + result.stderr.decode()
+                              + ' stdout: '
+                              + result.stdout.decode().replace('\n', ' ')
+                              )
 
         return result.returncode == 0
 
@@ -430,7 +435,10 @@ class AstrometryKstars(object):
                                     )
         except subprocess.TimeoutExpired:
             self.logger.debug('solve-field timeout')
-            return 0, 0, 0, 0, False
+            return False
+        except Exception as e:
+            self.logger.error(f'error: {e} happened')
+            return False
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'solve-field took {delta}s return code: '
@@ -478,7 +486,7 @@ class AstrometryKstars(object):
                                fitsPath=fitsPath,
                                )
         if not suc:
-            self.logger.error('image2xy error in [{0}]'.format(fitsPath))
+            self.logger.error(f'image2xy error in [{fisPath}]')
             return False, []
 
         suc = self.runSolveField(binPath=self.binPathSolveField,
@@ -488,11 +496,11 @@ class AstrometryKstars(object):
                                  timeout=timeout,
                                  )
         if not suc:
-            self.logger.error('solve-field error in [{0}]'.format(fitsPath))
+            self.logger.error(f'solve-field error in [{fitsPath}]')
             return False, []
 
         if not (os.path.isfile(solvedPath) and os.path.isfile(wcsPath)):
-            self.logger.error('solve files for [{0}] missing'.format(fitsPath))
+            self.logger.error(f'solve files for [{fitsPath}] missing')
             return False, []
 
         with fits.open(wcsPath) as wcsHDU:
@@ -562,7 +570,7 @@ class AstrometryKstars(object):
             return False
 
         if not self.mutexSolve.tryLock():
-            self.logger.info('overrun in solve')
+            self.logger.info('overrun in solve threading')
             self.signals.solveDone.emit()
             return False
 

@@ -331,3 +331,6 @@ def test_updateFitsWithWCSData_1():
     assert header1['ANGLE'] == 0
     assert header1['SCALE'] == 0
 
+def test_runImage2xy():
+
+

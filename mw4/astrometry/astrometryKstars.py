@@ -391,7 +391,7 @@ class AstrometryKstars(object):
 
         return result.returncode == 0
 
-    def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=60):
+    def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=10):
         """
         runSolveField solves finally the xy star list and writes the WCS data in a fits
         file format
@@ -443,7 +443,7 @@ class AstrometryKstars(object):
 
         return result.returncode == 0
 
-    def solve(self, fitsPath='', timeout=60, updateFits=False):
+    def solve(self, fitsPath='', timeout=10, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -541,7 +541,7 @@ class AstrometryKstars(object):
         self.mutexSolve.unlock()
         self.signals.solveDone.emit()
 
-    def solveThreading(self, fitsPath='', timeout=60, updateFits=False):
+    def solveThreading(self, fitsPath='', timeout=10, updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a threadpool
         environment of Qt. Otherwise the HMI would be stuck all the time during solving.

@@ -94,7 +94,7 @@ class AstrometryKstars(object):
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
-            outFile.write(f'cpulimit 300\nadd_path {indexPath}\nautoindex\n')
+            outFile.write(f'cpulimit 300\nadd_path {self.indexPath}\nautoindex\n')
 
     def stringToDegree(self, value):
         """

@@ -39,7 +39,7 @@ class Mount(object):
         ms = self.app.mount.signals
         ms.pointDone.connect(self.updatePointGUI)
         ms.settDone.connect(self.updateSetStatGUI)
-        ms.settDone.connect(self.updateTrackingGui())
+        ms.settDone.connect(self.updateTrackingGui)
 
         self.ui.park.clicked.connect(self.changePark)
         self.ui.tracking.clicked.connect(self.changeTracking)

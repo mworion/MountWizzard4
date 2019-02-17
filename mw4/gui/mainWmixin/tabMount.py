@@ -77,6 +77,7 @@ class Mount(object):
         :return: success for test
         """
         self.updatePointGUI()
+        self.updateTrackingGui()
         return True
 
     def updatePointGUI(self):

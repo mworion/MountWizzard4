@@ -36,6 +36,7 @@ class AlignMount(object):
     def __init__(self):
         ms = self.app.mount.signals
         ms.alignDone.connect(self.updateAlignGUI)
+        ms.alignDone.connect(self.updateTurnKnobsGUI)
 
         self.ui.genAlignBuild.clicked.connect(self.genAlignBuild)
         self.ui.genAlignBuildFile.clicked.connect(self.genAlignBuildFile)
@@ -86,6 +87,7 @@ class AlignMount(object):
         """
 
         self.updateAlignGUI()
+        self.updateTurnKnobsGUI()
         return True
 
     def updateAlignGUI(self):
@@ -147,6 +149,18 @@ class AlignMount(object):
         else:
             text = '-'
         self.ui.altitudeError.setText(text)
+
+        return True
+
+    def updateTurnKnobsGUI(self):
+        """
+        updateTurnKnobsGUI shows the data which is received through the getain command.
+        this is mainly polar and ortho errors as well as basic model data.
+
+        :return:    True if ok for testing
+        """
+
+        model = self.app.mount.model
 
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:

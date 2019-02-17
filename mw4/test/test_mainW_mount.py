@@ -211,11 +211,32 @@ def test_updateSetting_statusRefraction():
     assert 'OFF' == app.mainW.ui.statusRefraction.text()
 
 
+def test_updateSetting_statusGPSSynced_1():
+    value = True
+    app.mount.sett.gpsSynced = value
+    app.mainW.updateSetStatGUI()
+    assert app.mainW.ui.statusGPSSynced.text() == 'YES'
+
+
+def test_updateSetting_statusGPSSynced_2():
+    value = None
+    app.mount.sett.gpsSynced = value
+    app.mainW.updateSetStatGUI()
+    assert app.mainW.ui.statusGPSSynced.text() == 'NO'
+
+
+def test_updateSetting_statusGPSSynced_3():
+    value = False
+    app.mount.sett.gpsSynced = value
+    app.mainW.updateSetStatGUI()
+    assert app.mainW.ui.statusGPSSynced.text() == 'NO'
+
+
 def test_tracking_speed1():
     with mock.patch.object(app.mount.sett,
                            'checkRateLunar',
                            return_value=True):
-        suc = app.mainW.updateSettingGUI()
+        suc = app.mainW.updateTrackingGui()
         assert suc
 
 
@@ -223,7 +244,7 @@ def test_tracking_speed2():
     with mock.patch.object(app.mount.sett,
                            'checkRateSidereal',
                            return_value=True):
-        suc = app.mainW.updateSettingGUI()
+        suc = app.mainW.updateTrackingGui()
         assert suc
 
 
@@ -231,7 +252,7 @@ def test_tracking_speed3():
     with mock.patch.object(app.mount.sett,
                            'checkRateSolar',
                            return_value=True):
-        suc = app.mainW.updateSettingGUI()
+        suc = app.mainW.updateTrackingGui()
         assert suc
 
 

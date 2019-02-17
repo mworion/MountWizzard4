@@ -224,12 +224,19 @@ class ImageWindow(widget.MWidget):
         self.ui.load.setEnabled(True)
         self.showFitsImage()
 
-    def solveResult(self, res):
-        if all(x == 0 for x in res):
+    def solveResult(self, result):
+        """
+
+        :param result: result (named tuple)
+        :return: nothing
+        """
+
+        if not result[0]:
             self.app.message.emit('Solving error', 2)
-        else:
-            fText = 'Image solved: Ra: {0} Dec: {1} Angle: {2} Scale: {3}'
-            self.app.message.emit(fText.format(res[0], res[1], res[2], res[3]), 0)
+            return
+        r = result[1]
+        text = f'Ra: {r.ra} Dec: {r.dec} Angle: {r.angle} Scale: {r.scale}'
+        self.app.message.emit('Solved: ' + text, 0)
 
     def writeHeaderToGui(self, header=None):
         """

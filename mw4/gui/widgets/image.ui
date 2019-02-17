@@ -154,16 +154,6 @@
          </item>
         </layout>
        </item>
-       <item row="1" column="1" colspan="3">
-        <widget class="QLineEdit" name="imageFileName">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="load">
          <property name="minimumSize">
@@ -190,7 +180,7 @@
            <number>4</number>
           </property>
           <property name="topMargin">
-           <number>4</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
            <number>4</number>
@@ -318,6 +308,16 @@
          </item>
         </layout>
        </item>
+       <item row="1" column="1" colspan="3">
+        <widget class="QLineEdit" name="imageFileName">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
@@ -386,7 +386,7 @@
          <number>4</number>
         </property>
         <property name="topMargin">
-         <number>2</number>
+         <number>6</number>
         </property>
         <property name="rightMargin">
          <number>4</number>

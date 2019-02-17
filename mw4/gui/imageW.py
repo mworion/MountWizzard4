@@ -129,6 +129,7 @@ class ImageWindow(widget.MWidget):
         """
 
         super().resizeEvent(QResizeEvent)
+        return
         space = 5
         startY = 130
         self.ui.image.setGeometry(space,

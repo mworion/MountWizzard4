@@ -39,6 +39,7 @@ class Mount(object):
         ms = self.app.mount.signals
         ms.pointDone.connect(self.updatePointGUI)
         ms.settDone.connect(self.updateSetStatGUI)
+        ms.settDone.connect(self.updateTrackingGui())
 
         self.ui.park.clicked.connect(self.changePark)
         self.ui.tracking.clicked.connect(self.changeTracking)
@@ -183,7 +184,19 @@ class Mount(object):
         else:
             self.ui.statusGPSSynced.setText('-')
 
-        # check tracking speed
+        return True
+
+    def updateTrackingGui(self):
+        """
+        updateTrackingGui update the gui upon events triggered be the reception of new
+        settings from the mount. the mount data is polled, so we use this signal as well
+        for the update process.
+
+        :return:    True if ok for testing
+        """
+
+        sett = self.app.mount.sett
+
         if sett.checkRateLunar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
@@ -196,6 +209,7 @@ class Mount(object):
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
+
         return True
 
     def changeTracking(self):

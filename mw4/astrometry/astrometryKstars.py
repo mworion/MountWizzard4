@@ -24,6 +24,7 @@ import os
 import glob
 import platform
 import time
+from collections import namedtuple
 # external packages
 import PyQt5.QtWidgets
 from skyfield.api import Angle
@@ -325,7 +326,9 @@ class AstrometryKstars(object):
         dec = wcsHeader.get('CRVAL2')
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        return ra, dec, angle, scale, flipped
+        result = namedtuple('result', 'ra dec angle scale flipped')
+
+        return result(ra, dec, angle, scale, flipped)
 
     def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None):
         """
@@ -356,6 +359,90 @@ class AstrometryKstars(object):
 
         return True
 
+    def runImage2xy(self, binPath='', xyPath='', fitsPath=''):
+        """
+        runImage2xy extracts a list of stars out of the
+
+        :param binPath:   full path to image2xy executable
+        :param xyPath:  full path to star file
+        :param fitsPath:  full path to fits file
+        :return: success
+        """
+
+        runnable = [binPath,
+                    '-O',
+                    '-o',
+                    xyPath,
+                    fitsPath]
+
+        timeStart = time.time()
+        result = subprocess.run(args=runnable,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                )
+        delta = time.time() - timeStart
+        self.logger.debug(f'image2xy took {delta}s return code: '
+                          + str(result.returncode)
+                          + ' stderr: '
+                          + result.stderr.decode()
+                          + ' stdout: '
+                          + result.stdout.decode().replace('\n', ' ')
+                          )
+
+        return result.returncode == 0
+
+    def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=60):
+        """
+        runSolveField solves finally the xy star list and writes the WCS data in a fits
+        file format
+
+        :param binPath:   full path to image2xy executable
+        :param configPath: full path to astrometry.cfg file
+        :param xyPath:  full path to star file
+        :param options: additional solver options e.g. ra and dec hint
+        :param timeout:
+        :return: success
+        """
+
+        runnable = [binPath,
+                    '--overwrite',
+                    '--no-plots',
+                    '--no-remove-lines',
+                    '--no-verify-uniformize',
+                    '--uniformize', '0',
+                    '--sort-column', 'FLUX',
+                    '--scale-units', 'app',
+                    '--crpix-center',
+                    '--cpulimit', str(timeout),
+                    '--config',
+                    configPath,
+                    xyPath,
+                    ]
+
+        runnable += options
+
+        timeStart = time.time()
+        try:
+            result = subprocess.run(args=runnable,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                    timeout=timeout,
+                                    )
+        except subprocess.TimeoutExpired:
+            self.logger.debug('solve-field timeout')
+            return 0, 0, 0, 0, False
+        else:
+            delta = time.time() - timeStart
+            self.logger.debug(f'solve-field took {delta}s return code: '
+                              + str(result.returncode)
+                              + ' stderr: '
+                              + result.stderr.decode()
+                              + ' stdout: '
+                              + result.stdout.decode().replace('\n', ' ')
+                              )
+
+        return result.returncode == 0
+
     def solve(self, fitsPath='', timeout=60, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
@@ -372,28 +459,10 @@ class AstrometryKstars(object):
         astrometry implementation from cloudmakers.eu (another nice package for MAC Astro
         software)
 
-        We are using the following command line tools with options:
-
-        image2xy:
-            -O (overwriting file)
-            -o <output filename>
-            <fits file>
-
-        solve-field:
-            --overwrite
-            --no-plots
-            --no-remove-lines
-            --no-verify-uniformize
-            --sort-column FLUX  (sort for FLUX column)
-            --uniformize 0  (disabling it)
-            --config <config> (config file name, usually astrometry.cfg)
-            xy (the output file from image2xy)
-
-
         :param fitsPath:  full path to fits file
         :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
-        :return: ra, dec, angle, scale
+        :return: ra, dec, angle, scale, flipped
         """
 
         xyPath = self.tempDir + '/temp.xy'
@@ -401,81 +470,30 @@ class AstrometryKstars(object):
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
 
-        runnable = [self.binPathImage2xy,
-                    '-O',
-                    '-o',
-                    xyPath,
-                    fitsPath]
-
-        timeStart = time.time()
-        result = subprocess.run(args=runnable,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
-                                )
-        delta = time.time() - timeStart
-        print('image2xy', delta)
-        self.logger.debug(f'image2xy took {delta}s return code: '
-                          + str(result.returncode)
-                          + ' stderr: '
-                          + result.stderr.decode()
-                          + ' stdout: '
-                          + result.stdout.decode().replace('\n', ' ')
-                          )
-
-        if result.returncode:
-            return 0, 0, 0, 0
-
-        runnable = [self.binPathSolveField,
-                    '--overwrite',
-                    '--no-plots',
-                    '--no-remove-lines',
-                    '--no-verify-uniformize',
-                    '--overwrite',
-                    '--no-plots',
-                    '--no-remove-lines',
-                    '--no-verify-uniformize',
-                    '--uniformize', '0',
-                    '--sort-column', 'FLUX',
-                    '--scale-units', 'app',
-                    '--crpix-center',
-                    '--cpulimit', str(timeout),
-                    '--config',
-                    configPath,
-                    xyPath,
-                    ]
-
         with fits.open(fitsPath) as fitsHDU:
             solveOptions = self.readFitsData(fitsHDU=fitsHDU)
 
-        runnable += solveOptions
+        suc = self.runImage2xy(binPath=self.binPathImage2xy,
+                               xyPath=xyPath,
+                               fitsPath=fitsPath,
+                               )
+        if not suc:
+            self.logger.error('image2xy error in [{0}]'.format(fitsPath))
+            return False, []
 
-        timeStart = time.time()
-        try:
-            result = subprocess.run(args=runnable,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    timeout=timeout,
-                                    )
-        except subprocess.TimeoutExpired:
-            self.logger.debug('solve-field timeout')
-            return 0, 0, 0, 0
-        else:
-            delta = time.time() - timeStart
-            self.logger.debug(f'solve-field took {delta}s return code: '
-                              + str(result.returncode)
-                              + ' stderr: '
-                              + result.stderr.decode()
-                              + ' stdout: '
-                              + result.stdout.decode().replace('\n', ' ')
-                              )
-        print('solve-field', delta)
-
-        if result.returncode:
-            return 0, 0, 0, 0
+        suc = self.runSolveField(binPath=self.binPathSolveField,
+                                 configPath=configPath,
+                                 xyPath=xyPath,
+                                 options=solveOptions,
+                                 timeout=timeout,
+                                 )
+        if not suc:
+            self.logger.error('solve-field error in [{0}]'.format(fitsPath))
+            return False, []
 
         if not (os.path.isfile(solvedPath) and os.path.isfile(wcsPath)):
-            self.logger.error('Image [{0}] could not be solved'.format(fitsPath))
-            return 0, 0, 0, 0
+            self.logger.error('solve files for [{0}] missing'.format(fitsPath))
+            return False, []
 
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
@@ -483,13 +501,35 @@ class AstrometryKstars(object):
         if updateFits:
             with fits.open(fitsPath, mode='update') as fitsHDU:
                 fitsHeader = fitsHDU[0].header
-                self.updateFitsWithWCSData(fitsHeader=fitsHeader, wcsHeader=wcsHeader)
+                self.updateFitsWithWCSData(fitsHeader=fitsHeader,
+                                           wcsHeader=wcsHeader,
+                                           )
 
-        ra, dec, angle, scale, flipped = self.getSolutionFromWCS(wcsHeader=wcsHeader)
+        result = self.getSolutionFromWCS(wcsHeader=wcsHeader)
 
-        return ra, dec, angle, scale, flipped
+        return True, result
 
-    def clearSolve(self):
+    def solveDone(self):
+        """
+        as i am using a standard worker configuration i link the signals in chain to the
+        detailed world of solving. so namespace for signals change. i don't know if that
+        could be done better, but right now so it is.
+
+        :return:
+        """
+        self.signals.solveDone.emit()
+
+    def solveResult(self, obj):
+        """
+        as i am using a standard worker configuration i link the signals in chain to the
+        detailed world of solving. so namespace for signals change. i don't know if that
+        could be done better, but right now so it is.
+
+        :return:
+        """
+        self.signals.solveResult.emit(obj)
+
+    def solveClear(self):
         """
         the cyclic or long lasting tasks for solving the image should not run
         twice for the same data at the same time. so there is a mutex to prevent this
@@ -501,18 +541,16 @@ class AstrometryKstars(object):
         self.mutexSolve.unlock()
         self.signals.solveDone.emit()
 
-    def solveDone(self):
-        self.signals.solveDone.emit()
-
-    def solveResult(self, obj):
-        self.signals.solveResult.emit(obj)
-
-    def solveFits(self, fitsPath='', timeout=60, updateFits=False):
+    def solveThreading(self, fitsPath='', timeout=60, updateFits=False):
         """
+        solveThreading is the wrapper for doing the solve process in a threadpool
+        environment of Qt. Otherwise the HMI would be stuck all the time during solving.
+        it is done with an securing mutex to avoid starting solving twice. to solveClear
+        is the partner of solve Threading
 
-        :param fitsPath:
-        :param timeout:
-        :param updateFits:
+        :param fitsPath: full path to the fits image file to be solved
+        :param timeout: as said
+        :param updateFits: flag, if the results should be written to the original file
         :return: success
         """
 
@@ -534,7 +572,7 @@ class AstrometryKstars(object):
                               updateFits=updateFits,
                               )
         worker.signals.result.connect(self.solveResult)
-        worker.signals.finished.connect(self.clearSolve)
+        worker.signals.finished.connect(self.solveClear)
         self.threadPool.start(worker)
         return True
 
@@ -543,12 +581,14 @@ if __name__ == '__main__':
     test = PyQt5.QtWidgets.QApplication([])
 
     threadPool = PyQt5.QtCore.QThreadPool()
-    fitsPath = './mw4/test/config/m51.fit'
+    fitsPath = './NGC7380.fits'
     tempDir = './mw4/test/temp'
 
     astro = AstrometryKstars(tempDir=tempDir,
                              threadPool=threadPool)
 
-    suc = astro.solve(fitsPath=fitsPath)
-    print(suc)
+    suc, result = astro.solve(fitsPath=fitsPath)
+    if suc:
+        print(result.ra, result.dec)
+        print(result[0], result[1])
     # QTest.qWait(5000)

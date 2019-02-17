@@ -207,10 +207,10 @@ class ImageWindow(widget.MWidget):
 
     def solveImage(self):
         updateFits = self.ui.checkUpdateFits.isChecked()
-        self.app.plateSolve.solveFits(fitsPath=self.imageFileName,
-                                      timeout=10,
-                                      updateFits=updateFits,
-                                      )
+        self.app.plateSolve.solveThreading(fitsPath=self.imageFileName,
+                                           timeout=10,
+                                           updateFits=updateFits,
+                                           )
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')
         self.ui.expose.setEnabled(False)
         self.ui.exposeN.setEnabled(False)

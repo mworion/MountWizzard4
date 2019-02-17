@@ -1,25 +1,25 @@
-import mw4_glob
-from astropy.io import fits as fits
+import glob
+import os
+from astropy.io import fits
 from shutil import copyfile
 
-imagePath = '/Users/mw/Desktop/ngc7380/'
-destPath = imagePath + 'sort/'
+imagePath = '/Users/mw/2018_11_25_TLAPOx379/'
+destPath = '/Users/mw/2018_11_25_TLAPOx379/sort/'
 
-for filename in mw4_glob.iglob(imagePath + '**/*.fits', recursive=True):
-    fd = fits.open(name=filename)
+
+for filename in glob.glob(imagePath + '**/*.fits', recursive=True):
+    with fits.open(name=filename) as fd:
+        newFilename = destPath + '{0}{1}_{2}_BIN_{3:01d}_{4}'\
+            .format('M15_',
+                    fd[0].header['FRAME'],
+                    fd[0].header['FILTER'],
+                    int(fd[0].header['XBINNING']),
+                    fd[0].header['DATE-OBS'],
+                    )
+        newFilename = newFilename.replace(':', '_')
+        newFilename = newFilename.replace('.', '_')
+        newFilename = newFilename.replace('-', '_')
+        newFilename += '.fits'
     print(filename)
-    newFilename = destPath + '{0}_{1}_{2}_{3:04d}_BIN_{4:01d}_{5}'\
-        .format(fd[0].header['OBJECT'],
-                fd[0].header['FRAME'],
-                fd[0].header['FILTER'],
-                int(fd[0].header['EXPTIME']),
-                int(fd[0].header['XBINNING']),
-                fd[0].header['DATE-OBS'],
-                )
-    newFilename = newFilename.replace(':', '_')
-    newFilename = newFilename.replace('.', '_')
-    newFilename = newFilename.replace('-', '_')
-    newFilename += '.fits'
     print(newFilename)
-    fd.close()
     copyfile(filename, newFilename)

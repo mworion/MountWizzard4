@@ -63,8 +63,6 @@ def test_closeEvent(qtbot):
 
 
 def test_showWindow_1(qtbot):
-    app.imageW.showStatus = False
-    app.mainW.ui.checkMeasurement.setChecked(True)
     with mock.patch.object(app.imageW,
                            'show',
                            return_value=None):
@@ -72,13 +70,3 @@ def test_showWindow_1(qtbot):
         assert suc
         assert app.imageW.showStatus
 
-
-def test_showWindow_2(qtbot):
-    app.imageW.showStatus = False
-    app.mainW.ui.checkMeasurement.setChecked(False)
-    with mock.patch.object(app.imageW,
-                           'show',
-                           return_value=None):
-        suc = app.imageW.showWindow()
-        assert not suc
-        assert not app.imageW.showStatus

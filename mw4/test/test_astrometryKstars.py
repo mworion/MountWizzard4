@@ -331,6 +331,36 @@ def test_updateFitsWithWCSData_1():
     assert header1['ANGLE'] == 0
     assert header1['SCALE'] == 0
 
-def test_runImage2xy():
 
+def test_runImage2xy():
+    suc = app.runImage2xy()
+    assert not suc
+
+
+def test_runSolveField():
+    suc = app.runSolveField()
+    assert not suc
+
+
+def test_solve():
+    suc, res = app.solve()
+    assert not suc
+
+
+def test_solveDone():
+    app.solveDone()
+
+
+def test_solveResult():
+    app.solveResult('')
+
+
+def test_solveClear():
+    app.mutexSolve.lock()
+    app.solveClear()
+
+
+def test_solveThreading():
+    suc = app.solveThreading()
+    assert not suc
 

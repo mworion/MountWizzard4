@@ -478,6 +478,9 @@ class AstrometryKstars(object):
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
 
+        if not os.path.isfile(fitsPath):
+            return False, []
+
         with fits.open(fitsPath) as fitsHDU:
             solveOptions = self.readFitsData(fitsHDU=fitsHDU)
 

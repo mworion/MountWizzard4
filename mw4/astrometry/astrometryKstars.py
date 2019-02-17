@@ -65,9 +65,12 @@ class AstrometryKstars(object):
     """
 
     __all__ = ['AstrometryKstars',
+               'solve',
+               'solveThreading',
+               'checkAvailability',
                ]
 
-    version = '0.4'
+    version = '0.5'
     logger = logging.getLogger(__name__)
 
     def __init__(self, tempDir, threadPool=None):

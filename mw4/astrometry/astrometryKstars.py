@@ -492,7 +492,7 @@ class AstrometryKstars(object):
                                fitsPath=fitsPath,
                                )
         if not suc:
-            self.logger.error(f'image2xy error in [{fisPath}]')
+            self.logger.error(f'image2xy error in [{fitsPath}]')
             return False, []
 
         suc = self.runSolveField(binPath=self.binPathSolveField,

@@ -62,6 +62,24 @@ def test_closeEvent(qtbot):
     app.imageW.closeEvent(None)
 
 
+def test_toggleWindow1(qtbot):
+    app.imageW.showStatus = True
+    with mock.patch.object(app.imageW,
+                           'close',
+                           return_value=None):
+        app.imageW.toggleWindow()
+        assert not app.imageW.showStatus
+
+
+def test_toggleWindow2(qtbot):
+    app.imageW.showStatus = False
+    with mock.patch.object(app.imageW,
+                           'showWindow',
+                           return_value=None):
+        app.imageW.toggleWindow()
+        assert app.imageW.showStatus
+
+
 def test_showWindow_1(qtbot):
     with mock.patch.object(app.imageW,
                            'show',
@@ -70,3 +88,6 @@ def test_showWindow_1(qtbot):
         assert suc
         assert app.imageW.showStatus
 
+
+def test_setupDropDownGui():
+    app.imageW.setupDropDownGui()

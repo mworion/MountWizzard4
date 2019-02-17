@@ -89,14 +89,16 @@ class ImageWindow(widget.MWidget):
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
-        if config.get('showStatus'):
+        if config.get('showStatus', False):
             self.showWindow()
+
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.zoom.setCurrentIndex(config.get('zoom', 0))
         self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
         self.imageFileName = config.get('imageFileName', '')
         full, short, ext = self.extractNames([self.imageFileName])
         self.ui.imageFileName.setText(short)
+
         self.showFitsImage()
         return True
 
@@ -179,6 +181,7 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.addItem('Mid')
         self.ui.stretch.addItem('High')
         self.ui.stretch.addItem('Super')
+        self.ui.stretch.addItem('SuperX')
 
         return True
 
@@ -202,7 +205,7 @@ class ImageWindow(widget.MWidget):
         self.ui.imageFileName.setText(name)
         self.imageFileName = loadFilePath
         self.showFitsImage()
-        self.app.message.emit('Image [{0}] selected'.format(name), 0)
+        self.app.message.emit(f'Image [{name}] selected', 0)
         return True
 
     def solveImage(self):
@@ -215,7 +218,7 @@ class ImageWindow(widget.MWidget):
         self.ui.expose.setEnabled(False)
         self.ui.exposeN.setEnabled(False)
         self.ui.load.setEnabled(False)
-        self.app.message.emit('Solving: [{0}]'.format(self.imageFileName), 0)
+        self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
 
     def solveDone(self):
         self.changeStyleDynamic(self.ui.solve, 'running', 'false')
@@ -288,11 +291,6 @@ class ImageWindow(widget.MWidget):
         self.changeStyleDynamic(self.ui.hasDistortion, 'running', hasDistortion)
         self.changeStyleDynamic(self.ui.isFlipped, 'running', flipped)
 
-        for key, value in header.items():
-            pass
-            # print(key, value)
-        # print(wcsObject)
-
         return hasDistortion, wcsObject
 
     def zoomImage(self, image=None, wcsObject=None):
@@ -327,23 +325,21 @@ class ImageWindow(widget.MWidget):
     def stretchImage(self, image=None):
         """
         stretchImage take the actual image and calculated norm based on the min, max
-        derived from interval
+        derived from interval which is calculated with AsymmetricPercentileInterval.
 
         :param image: image
         :return: norm for plot
         """
 
+        stretchValues = [(98, 99.999),
+                         (50, 99.99),
+                         (20, 99.98),
+                         (10, 99.9),
+                         (1, 99.8),
+                         ]
         stretchIndex = self.ui.stretch.currentIndex()
 
-        if stretchIndex == 0:
-            interval = AsymmetricPercentileInterval(98, 99.998)
-        elif stretchIndex == 1:
-            interval = AsymmetricPercentileInterval(25, 99.95)
-        elif stretchIndex == 2:
-            interval = AsymmetricPercentileInterval(12, 99.9)
-        else:
-            interval = AsymmetricPercentileInterval(1, 99.8)
-
+        interval = AsymmetricPercentileInterval(*stretchValues[stretchIndex])
         vmin, vmax = interval.get_limits(image)
 
         norm = ImageNormalize(image,
@@ -351,6 +347,7 @@ class ImageWindow(widget.MWidget):
                               vmax=vmax,
                               stretch=SqrtStretch(),
                               )
+
         return norm
 
     def colorImage(self):
@@ -363,14 +360,19 @@ class ImageWindow(widget.MWidget):
 
         colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
         colorMapIndex = self.ui.color.currentIndex()
+
         colorMap = colorMaps[colorMapIndex]
+
         return colorMap
 
     def setupDistorted(self, wcsObject=None):
         """
+        setupDistorted tries to setup all necessary context for displaying the image with
+        wcs distorted coordinates.
+        still plenty of work to be done, because very often the labels are not shown
 
         :param wcsObject:
-        :return:
+        :return: axes object to plot onto
         """
 
         self.imageMat.figure.clf()
@@ -381,10 +383,9 @@ class ImageWindow(widget.MWidget):
         axe0 = axes.coords[0]
         axe1 = axes.coords[1]
         axes.coords.frame.set_color(self.BLUE)
+
         axe0.set_ticks(number=10)
         axe1.set_ticks(number=10)
-        # axe0.set_major_formatter('dd:mm')
-        # axe1.set_major_formatter('dd:mm')
         axe0.grid(True,
                   color=self.BLUE,
                   ls='solid',
@@ -395,12 +396,14 @@ class ImageWindow(widget.MWidget):
                   ls='solid',
                   alpha=0.5,
                   )
+
         axe0.tick_params(colors=self.BLUE,
                          labelsize=12,
                          )
         axe1.tick_params(colors=self.BLUE,
                          labelsize=12,
                          )
+
         axe0.set_axislabel('Coordinates',
                            color=self.BLUE,
                            fontsize=12,
@@ -415,8 +418,11 @@ class ImageWindow(widget.MWidget):
 
     def setupNormal(self, image=None):
         """
+        setupNormal build the image widget to show it with pixels as axes. the center of
+        the image will have coordinates 0,0.
 
-        :return:
+        :param image:
+        :return: axes object to plot onto
         """
 
         self.imageMat.figure.clf()
@@ -432,6 +438,7 @@ class ImageWindow(widget.MWidget):
         axes.spines['top'].set_color(self.BLUE)
         axes.spines['left'].set_color(self.BLUE)
         axes.spines['right'].set_color(self.BLUE)
+
         sizeY, sizeX = image.shape
         midX = int(sizeX / 2)
         midY = int(sizeY / 2)
@@ -459,6 +466,7 @@ class ImageWindow(widget.MWidget):
                          colors=self.BLUE,
                          labelsize=12,
                          )
+
         axes.set_xlabel(xlabel='Pixel',
                         color=self.BLUE,
                         fontsize=12,
@@ -515,6 +523,7 @@ class ImageWindow(widget.MWidget):
         image = self.zoomImage(image=self.image, wcsObject=wcsObject)
         norm = self.stretchImage(image=image)
         colorMap = self.colorImage()
+
         axes = self.clearImage(hasDistortion=hasDistortion,
                                wcsObject=wcsObject,
                                image=image)

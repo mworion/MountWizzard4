@@ -98,14 +98,6 @@ class HemisphereWindow(widget.MWidget):
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.hemisphereMat, True)
-        # for the fast moving parts
-        #self.hemisphereMatM = self.embedMatplot(self.ui.hemisphereM)
-        #self.hemisphereMatM.parentWidget().setStyleSheet(self.BACK)
-        #self.clearRect(self.hemisphereMatM, False)
-        # for the stars in background
-        #self.hemisphereMatS = self.embedMatplot(self.ui.hemisphereS)
-        #self.hemisphereMatS.parentWidget().setStyleSheet(self.BACK)
-        #self.clearRect(self.hemisphereMatS, False)
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
@@ -194,14 +186,6 @@ class HemisphereWindow(widget.MWidget):
                                        startY - space,
                                        self.width() - 2 * space,
                                        self.height() - startY)
-        self.ui.hemisphereS.setGeometry(space,
-                                        startY - space,
-                                        self.width() - 2 * space,
-                                        self.height() - startY)
-        self.ui.hemisphereM.setGeometry(space,
-                                        startY - space,
-                                        self.width() - 2 * space,
-                                        self.height() - startY)
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)

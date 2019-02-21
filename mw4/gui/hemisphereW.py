@@ -168,25 +168,6 @@ class HemisphereWindow(widget.MWidget):
         config['checkShowCelestial'] = self.ui.checkShowCelestial.isChecked()
         config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
 
-    def resizeEvent(self, QResizeEvent):
-        """
-        resizeEvent changes the internal widget according to the resize of the window
-        the formulae of the calculation is:
-            spaces left right top button : 5 pixel
-            widget start in height at y = 130
-
-        :param QResizeEvent:
-        :return: nothing
-        """
-
-        super().resizeEvent(QResizeEvent)
-        space = 5
-        startY = 130
-        self.ui.hemisphere.setGeometry(space,
-                                       startY - space,
-                                       self.width() - 2 * space,
-                                       self.height() - startY)
-
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
         self.changeStyleDynamic(self.app.mainW.ui.openHemisphereW, 'running', 'false')

@@ -24,6 +24,7 @@ import bisect
 import PyQt5
 import numpy as np
 import matplotlib.path as mpath
+from matplotlib.artist import Artist
 import matplotlib.patches as mpatches
 # local import
 from mw4.gui import widget
@@ -77,6 +78,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.mutexDraw = PyQt5.QtCore.QMutex()
 
         # attributes to be stored in class
         self.pointerAltAz = None
@@ -148,7 +150,6 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowMeridian.setChecked(config.get('checkShowMeridian', False))
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
-        # self.clearHemisphere()
         self.app.data.clearBuildP()
         if config.get('showStatus'):
             self.showWindow()
@@ -193,7 +194,8 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        self.updateAlignStar()
+        if self.ui.checkShowAlignStar.isChecked():
+            self.updateAlignStar()
         return True
 
     @staticmethod
@@ -240,8 +242,11 @@ class HemisphereWindow(widget.MWidget):
         :return: success for test
         """
 
+        if not self.mutexDraw.tryLock():
+            return False
         axes = self.hemisphereMat.figure.axes[0]
         axes.figure.canvas.draw()
+        self.mutexDraw.unlock()
         return True
 
     def updateCelestialPath(self):
@@ -258,6 +263,7 @@ class HemisphereWindow(widget.MWidget):
         if self.celestialPath is None:
             return False
         self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
+        self.drawCanvas()
         return True
 
     def updateMeridian(self):
@@ -281,6 +287,7 @@ class HemisphereWindow(widget.MWidget):
         self.meridianSlew.set_xy((180 - slew, 0))
         self.meridianTrack.set_width(2 * track)
         self.meridianSlew.set_width(2 * slew)
+        self.drawCanvas()
         return True
 
     def updateHorizonLimits(self):
@@ -302,6 +309,7 @@ class HemisphereWindow(widget.MWidget):
         self.horizonLimitHigh.set_height(90 - high)
         self.horizonLimitLow.set_xy((0, 0))
         self.horizonLimitLow.set_height(low)
+        self.drawCanvas()
         return True
 
     def updatePointerAltAz(self):
@@ -324,6 +332,7 @@ class HemisphereWindow(widget.MWidget):
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
         self.pointerAltAz.set_visible(True)
+        self.drawCanvas()
         return True
 
     def updateDome(self):
@@ -346,6 +355,7 @@ class HemisphereWindow(widget.MWidget):
 
         self.pointerDome.set_xy((az - 15, 0))
         self.pointerDome.set_visible(True)
+        self.drawCanvas()
         return True
 
     def updateAlignStar(self):

@@ -246,6 +246,7 @@ class HemisphereWindow(widget.MWidget):
             return False
         axes = self.hemisphereMat.figure.axes[0]
         axes.figure.canvas.draw()
+        axes.figure.canvas.flush_events()
         self.mutexDraw.unlock()
         return True
 

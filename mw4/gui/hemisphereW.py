@@ -99,13 +99,13 @@ class HemisphereWindow(widget.MWidget):
         self.hemisphereMat.parentWidget().setStyleSheet(self.BACK)
         self.clearRect(self.hemisphereMat, True)
         # for the fast moving parts
-        self.hemisphereMatM = self.embedMatplot(self.ui.hemisphereM)
-        self.hemisphereMatM.parentWidget().setStyleSheet(self.BACK)
-        self.clearRect(self.hemisphereMatM, False)
+        #self.hemisphereMatM = self.embedMatplot(self.ui.hemisphereM)
+        #self.hemisphereMatM.parentWidget().setStyleSheet(self.BACK)
+        #self.clearRect(self.hemisphereMatM, False)
         # for the stars in background
-        self.hemisphereMatS = self.embedMatplot(self.ui.hemisphereS)
-        self.hemisphereMatS.parentWidget().setStyleSheet(self.BACK)
-        self.clearRect(self.hemisphereMatS, False)
+        #self.hemisphereMatS = self.embedMatplot(self.ui.hemisphereS)
+        #self.hemisphereMatS.parentWidget().setStyleSheet(self.BACK)
+        #self.clearRect(self.hemisphereMatS, False)
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
@@ -156,7 +156,8 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowMeridian.setChecked(config.get('checkShowMeridian', False))
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
-        self.clearHemisphere()
+        # self.clearHemisphere()
+        self.app.data.clearBuildP()
         if config.get('showStatus'):
             self.showWindow()
         return True
@@ -278,29 +279,6 @@ class HemisphereWindow(widget.MWidget):
         axes.figure.canvas.draw()
         return True
 
-    def drawCanvasMoving(self):
-        """
-        drawCanvasMoving retrieves the moving content axes from widget and redraws the
-        canvas
-
-        :return: success for test
-        """
-
-        axesM = self.hemisphereMatM.figure.axes[0]
-        axesM.figure.canvas.draw()
-        return True
-
-    def drawCanvasStar(self):
-        """
-        drawCanvasStar retrieves the moving content axes from widget and redraws the canvas
-
-        :return: success for test
-        """
-
-        axesS = self.hemisphereMatS.figure.axes[0]
-        axesS.figure.canvas.draw()
-        return True
-
     def updateCelestialPath(self):
         """
         updateCelestialPath is called whenever an update of settings from mount are given.
@@ -384,7 +362,7 @@ class HemisphereWindow(widget.MWidget):
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
         self.pointerAltAz.set_visible(True)
-        self.drawCanvasMoving()
+        self.drawCanvas()
         return True
 
     def updateDome(self):
@@ -407,7 +385,7 @@ class HemisphereWindow(widget.MWidget):
 
         self.pointerDome.set_xy((az - 15, 0))
         self.pointerDome.set_visible(True)
-        self.drawCanvasMoving()
+        self.drawCanvas()
         return True
 
     def updateAlignStar(self):
@@ -431,7 +409,8 @@ class HemisphereWindow(widget.MWidget):
         for i, starAnnotation in enumerate(self.starsAlignAnnotate):
             starAnnotation.set_anncoords('data')
             starAnnotation.set_position((hip.az[i], hip.alt[i]))
-        self.drawCanvasStar()
+        # self.drawCanvasStar()
+        self.drawCanvas()
         return True
 
     @staticmethod
@@ -517,21 +496,7 @@ class HemisphereWindow(widget.MWidget):
     def setOperationMode(self):
         """
         setOperationMode changes the operation mode of the hemisphere window(s) depending
-        on the choice, colors and styles will be changed. this also is valid for the stacking
-        order of the widgets
-
-        normal mode:    hemisphereM is on top,
-                        hemisphere is next,
-                        hemisphereS is bottom
-        edit mode:      hemisphere is on top,
-                        hemisphereM is next,
-                        hemisphereS is bottom
-        horizon mode:   hemisphere is on top,
-                        hemisphereM is next,
-                        hemisphereS is bottom
-        star mode:      hemisphereS is on top,
-                        hemisphereM is next,
-                        hemisphere is bottom
+        on the choice, colors and styles will be changed.
 
         :return: success
         """
@@ -556,22 +521,7 @@ class HemisphereWindow(widget.MWidget):
             # self.starsAlignAnnotate.set_color(self.MODE[mode]['horMarker'])
             self.starsAlign.set_color(self.MODE[mode]['starColor'])
 
-        # stacking of widgets in the right order for managing the mouse events right
-        if mode is 'star':
-            self.ui.hemisphere.raise_()
-            self.ui.hemisphereM.raise_()
-            self.ui.hemisphereS.raise_()
-        elif mode is 'normal':
-            self.ui.hemisphereS.raise_()
-            self.ui.hemisphere.raise_()
-            self.ui.hemisphereM.raise_()
-        else:
-            self.ui.hemisphereS.raise_()
-            self.ui.hemisphereM.raise_()
-            self.ui.hemisphere.raise_()
-
         self.drawCanvas()
-        self.drawCanvasStar()
         return True
 
     @staticmethod
@@ -800,7 +750,7 @@ class HemisphereWindow(widget.MWidget):
     def editBuildPoints(self, data=None, event=None, axes=None):
         """
         editBuildPoints does dispatching the different mouse clicks for adding or deleting
-        modeldata points and call the function accordingly.
+        model data points and call the function accordingly.
 
         :param data: points in tuples (alt, az)
         :param event: mouse event
@@ -1140,6 +1090,24 @@ class HemisphereWindow(widget.MWidget):
                                        )
             self.starsAlignAnnotate.append(annotation)
 
+    def onMouseDispatcher(self, event):
+        """
+        onMouseDispatcher dispatches the button events depending on the actual operation
+        mode.
+
+        :param event: button event for parsing
+        :return:
+        """
+
+        if self.ui.checkEditNone.isChecked():
+            self.onMouseNormal(event)
+        elif self.ui.checkEditBuildPoints.isChecked():
+            self.onMouseEdit(event)
+        elif self.ui.checkEditHorizonMask.isChecked():
+            self.onMouseEdit(event)
+        elif self.ui.checkPolarAlignment.isChecked():
+            self.onMouseStar(event)
+
     def drawHemisphere(self):
         """
         drawHemisphere is the basic renderer for all items and widgets in the hemisphere
@@ -1156,31 +1124,19 @@ class HemisphereWindow(widget.MWidget):
 
         # shortening the references
         axes = self.hemisphereMat.figure.axes[0]
-        axesM = self.hemisphereMatM.figure.axes[0]
-        axesS = self.hemisphereMatS.figure.axes[0]
 
         # clearing axes before drawing, only static visible, dynamic only when content
         # is available. visibility is handled with their update method
         self.clearAxes(axes, visible=True)
-        self.clearAxes(axesM, visible=False)
-        self.clearAxes(axesS, visible=False)
 
         # calling renderer
         self.drawHemisphereStatic(axes=axes)
-        self.drawHemisphereMoving(axes=axesM)
-        self.drawHemisphereStars(axes=axesS)
 
         self.setOperationMode()
 
         # drawing the canvas
         axes.figure.canvas.draw()
-        axesM.figure.canvas.draw()
-        axesS.figure.canvas.draw()
 
         # finally setting the mouse handler
         self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
-                                                     self.onMouseEdit)
-        self.hemisphereMatM.figure.canvas.mpl_connect('button_press_event',
-                                                      self.onMouseNormal)
-        self.hemisphereMatS.figure.canvas.mpl_connect('button_press_event',
-                                                      self.onMouseStar)
+                                                     self.onMouseDispatcher)

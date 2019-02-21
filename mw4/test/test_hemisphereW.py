@@ -110,18 +110,6 @@ def test_drawCanvas(qtbot):
     assert suc
 
 
-def test_drawCanvasMoving(qtbot):
-    app.hemisphereW.drawHemisphere()
-    suc = app.hemisphereW.drawCanvasMoving()
-    assert suc
-
-
-def test_drawCanvasStar(qtbot):
-    app.hemisphereW.drawHemisphere()
-    suc = app.hemisphereW.drawCanvasStar()
-    assert suc
-
-
 def test_updateCelestialPath_1(qtbot):
     app.hemisphereW.drawHemisphere()
     app.hemisphereW.showStatus = True

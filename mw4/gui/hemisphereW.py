@@ -277,7 +277,6 @@ class HemisphereWindow(widget.MWidget):
         if self.celestialPath is None:
             return False
         self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
-        self.drawCanvas()
         return True
 
     def updateMeridian(self):
@@ -301,7 +300,6 @@ class HemisphereWindow(widget.MWidget):
         self.meridianSlew.set_xy((180 - slew, 0))
         self.meridianTrack.set_width(2 * track)
         self.meridianSlew.set_width(2 * slew)
-        self.drawCanvas()
         return True
 
     def updateHorizonLimits(self):
@@ -323,7 +321,6 @@ class HemisphereWindow(widget.MWidget):
         self.horizonLimitHigh.set_height(90 - high)
         self.horizonLimitLow.set_xy((0, 0))
         self.horizonLimitLow.set_height(low)
-        self.drawCanvas()
         return True
 
     def updatePointerAltAz(self):
@@ -346,7 +343,6 @@ class HemisphereWindow(widget.MWidget):
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
         self.pointerAltAz.set_visible(True)
-        self.drawCanvas()
         return True
 
     def updateDome(self):
@@ -369,7 +365,6 @@ class HemisphereWindow(widget.MWidget):
 
         self.pointerDome.set_xy((az - 15, 0))
         self.pointerDome.set_visible(True)
-        self.drawCanvas()
         return True
 
     def updateAlignStar(self):
@@ -393,8 +388,6 @@ class HemisphereWindow(widget.MWidget):
         for i, starAnnotation in enumerate(self.starsAlignAnnotate):
             starAnnotation.set_anncoords('data')
             starAnnotation.set_position((hip.az[i], hip.alt[i]))
-        # self.drawCanvasStar()
-        self.drawCanvas()
         return True
 
     @staticmethod
@@ -1115,6 +1108,8 @@ class HemisphereWindow(widget.MWidget):
 
         # calling renderer
         self.drawHemisphereStatic(axes=axes)
+        self.drawHemisphereMoving(axes=axes)
+        self.drawHemisphereStars(axes=axes)
 
         self.setOperationMode()
 

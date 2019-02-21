@@ -35,3 +35,4 @@ nice to have:
 - gui show indi device FL / pixels data in screen and choose which to use
 - gui hemisphere partitioning for progress bars (sizable ?)
 - check if daylight timezone fits to the computer or set it up !
+- max error for modeling solving

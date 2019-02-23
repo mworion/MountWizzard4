@@ -98,21 +98,21 @@ def test_relayPassword():
 
 
 def test_enableRelay_1(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(False)
-
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.enableRelay()
-        assert suc
-        assert ['Relay disabled', 0] == blocker.args
-
-
-def test_enableRelay_2(qtbot):
     app.mainW.ui.checkEnableRelay.setChecked(True)
 
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.enableRelay()
         assert suc
         assert ['Relay enabled', 0] == blocker.args
+
+
+def test_enableRelay_2(qtbot):
+    app.mainW.ui.checkEnableRelay.setChecked(False)
+
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.enableRelay()
+        assert suc
+        assert ['Relay disabled', 0] == blocker.args
 
 
 def test_doRelayAction_1(qtbot):

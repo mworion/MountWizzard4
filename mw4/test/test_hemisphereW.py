@@ -58,10 +58,6 @@ def test_initConfig_3():
     assert suc
 
 
-def test_resizeEvent(qtbot):
-    app.hemisphereW.resizeEvent(None)
-
-
 def test_closeEvent(qtbot):
     app.hemisphereW.closeEvent(None)
 

@@ -50,7 +50,7 @@ class SettRelay(object):
         for relayText in self.relayTexts:
             relayText.editingFinished.connect(self.updateRelayButtonText)
         for button in self.relayButtons:
-            button.clicked.connect(self.relayAction)
+            button.clicked.connect(self.relayButtonPressed)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -128,6 +128,10 @@ class SettRelay(object):
         return True
 
     def updateRelayButtonText(self):
+        """
+
+        :return:
+        """
         for button, textField in zip(self.relayButtons, self.relayTexts):
             button.setText(textField.text())
 
@@ -155,9 +159,25 @@ class SettRelay(object):
         self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
         return True
 
-    def relayAction(self):
+    def doRelayAction(self, relayIndex=0):
         """
-        relayAction reads the button and toggles the relay on the box.
+
+        :param relayIndex: relayIndex according to pressed button
+        :return: success
+        """
+
+        action = self.relayDropDownIndex[relayIndex].currentIndex()
+        if action == 0:
+            suc = self.app.relay.switch(relayIndex)
+        elif action == 1:
+            suc = self.app.relay.pulse(relayIndex)
+        else:
+            suc = False
+        return suc
+
+    def relayButtonPressed(self):
+        """
+        relayButtonPressed reads the button and starts the relay action on the box.
 
         :return: success for test
         """
@@ -169,18 +189,10 @@ class SettRelay(object):
         for i, button in enumerate(self.relayButtons):
             if button != self.sender():
                 continue
-
-            action = self.relayDropDownIndex[i].currentIndex()
-            if action == 0:
-                suc = self.app.relay.switch(i)
-            elif action == 1:
-                suc = self.app.relay.pulse(i)
-            else:
-                suc = False
+            self.doRelayAction(i)
         if not suc:
             self.app.message.emit('Relay action cannot be performed', 2)
             return False
-        self.app.relay.cyclePolling()
         return True
 
     def relayHost(self):

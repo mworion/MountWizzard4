@@ -33,6 +33,10 @@ from mw4.test.test_setupQt import setupQt
 app, spy, mwGlob, test = setupQt()
 
 
+def test_storeConfig_1():
+    app.mainW.storeConfig()
+
+
 def test_setupRelayGui(qtbot):
     assert 8 == len(app.mainW.relayDropDownIndex)
     assert 8 == len(app.mainW.relayTexts)
@@ -56,7 +60,7 @@ def test_enableRelay2(qtbot):
 def test_toggleRelay1(qtbot):
     app.mainW.ui.checkEnableRelay.setChecked(False)
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.relayAction()
+        suc = app.mainW.relayButtonPressed()
         assert not suc
     assert ['Relay box off', 2] == blocker.args
 
@@ -67,9 +71,9 @@ def test_toggleRelay2(qtbot):
                            'switch',
                            return_value=False):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.relayAction()
+            suc = app.mainW.relayButtonPressed()
             assert not suc
-        assert ['Relay cannot be switched', 2] == blocker.args
+        assert ['Relay action cannot be performed', 2] == blocker.args
 
 
 def test_relayHost():
@@ -91,3 +95,63 @@ def test_relayPassword():
     app.mainW.relayPassword()
 
     assert app.relay.password == 'test'
+
+
+def test_enableRelay_1(qtbot):
+    app.mainW.ui.checkEnableRelay.setChecked(False)
+
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.enableRelay()
+        assert suc
+        assert ['Relay disabled', 0] == blocker.args
+
+
+def test_enableRelay_2(qtbot):
+    app.mainW.ui.checkEnableRelay.setChecked(True)
+
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.enableRelay()
+        assert suc
+        assert ['Relay enabled', 0] == blocker.args
+
+
+def test_doRelayAction_1(qtbot):
+    app.mainW.relayDropDownIndex[7].setCurrentIndex(0)
+    with mock.patch.object(app.relay,
+                           'switch',
+                           return_value=False):
+        suc = app.mainW.doRelayAction(7)
+        assert not suc
+
+
+def test_doRelayAction_2(qtbot):
+    app.mainW.relayDropDownIndex[7].setCurrentIndex(0)
+    with mock.patch.object(app.relay,
+                           'switch',
+                           return_value=True):
+        suc = app.mainW.doRelayAction(7)
+        assert suc
+
+
+def test_doRelayAction_3(qtbot):
+    app.mainW.relayDropDownIndex[7].setCurrentIndex(2)
+    suc = app.mainW.doRelayAction(7)
+    assert not suc
+
+
+def test_doRelayAction_4(qtbot):
+    app.mainW.relayDropDownIndex[7].setCurrentIndex(1)
+    with mock.patch.object(app.relay,
+                           'pulse',
+                           return_value=False):
+        suc = app.mainW.doRelayAction(7)
+        assert not suc
+
+
+def test_doRelayAction_5(qtbot):
+    app.mainW.relayDropDownIndex[7].setCurrentIndex(1)
+    with mock.patch.object(app.relay,
+                           'pulse',
+                           return_value=True):
+        suc = app.mainW.doRelayAction(7)
+        assert suc

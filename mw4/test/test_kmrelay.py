@@ -43,7 +43,7 @@ def test_connect1(qtbot):
     relay.password = 'astro'
     value = relay.getRelay('/status.xml')
 
-    assert len(value)
+    assert value.reason == 'OK'
 
 
 def test_connect2(qtbot):
@@ -53,7 +53,7 @@ def test_connect2(qtbot):
     relay.password = ''
     value = relay.getRelay('/status.xml')
 
-    assert value.startswith('401 Unauthorized:')
+    assert value.status_code == 401
 
 
 def test_connect3(qtbot):
@@ -63,7 +63,7 @@ def test_connect3(qtbot):
     relay.password = 'astro'
     value = relay.getRelay('/status.xml')
 
-    assert value.startswith('401 Unauthorized:')
+    assert value.status_code == 401
 
 
 def test_connect4(qtbot):
@@ -121,9 +121,16 @@ def test_status1(qtbot):
                      <relay8>0</relay8>
                      </response>"""
 
+    class Test:
+        pass
+    ret = Test()
+    ret.text = returnValue
+    ret.reason = 'OK'
+    ret.status_code = 200
+
     with mock.patch.object(relay,
                            'getRelay',
-                           return_value=returnValue):
+                           return_value=ret):
 
         for i in range(0, 9):
             relay.set(i, 0)
@@ -149,9 +156,16 @@ def test_status2(qtbot):
                      <relay8>1</relay8>
                      </response>"""
 
+    class Test:
+        pass
+    ret = Test()
+    ret.text = returnValue
+    ret.reason = 'OK'
+    ret.status_code = 200
+
     with mock.patch.object(relay,
                            'getRelay',
-                           return_value=returnValue):
+                           return_value=ret):
 
         for i in range(0, 9):
             relay.set(i, 1)
@@ -177,9 +191,16 @@ def test_status3(qtbot):
                      <relay8>1</relay8>
                      </response>"""
 
+    class Test:
+        pass
+    ret = Test()
+    ret.text = returnValue
+    ret.reason = 'OK'
+    ret.status_code = 200
+
     with mock.patch.object(relay,
                            'getRelay',
-                           return_value=returnValue):
+                           return_value=ret):
 
         for i in range(0, 9):
             relay.switch(i)
@@ -205,9 +226,16 @@ def test_status4(qtbot):
                      <relay8>0</relay8>
                      </response>"""
 
+    class Test:
+        pass
+    ret = Test()
+    ret.text = returnValue
+    ret.reason = 'OK'
+    ret.status_code = 200
+
     with mock.patch.object(relay,
                            'getRelay',
-                           return_value=returnValue):
+                           return_value=ret):
 
         for i in range(0, 9):
             relay.pulse(i)

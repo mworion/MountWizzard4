@@ -48,21 +48,17 @@ class KMRelay(PyQt5.QtCore.QObject):
                'set',
                ]
 
-    version = '0.1'
+    version = '0.5'
     logger = logging.getLogger(__name__)
 
     # polling cycle for relay box
     CYCLE_POLLING = 1000
-
     # default port for KMTronic Relay
     DEFAULT_PORT = 80
-
     # timeout for requests
     TIMEOUT = 0.5
-
     # width for pulse
     PULSEWIDTH = 0.5
-
     # signal if correct status received and decoded
     statusReady = PyQt5.QtCore.pyqtSignal()
 
@@ -74,6 +70,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         super().__init__()
 
         self.host = host
+        self.mutexPoll = PyQt5.QtCore.QMutex()
         self.user = user
         self.password = password
         self.status = [0] * 8
@@ -138,11 +135,15 @@ class KMRelay(PyQt5.QtCore.QObject):
 
     def _debugOutput(self, result=None):
         """
-        _debugOutput writes a nicely formed output for diagnosis in releay environment
+        _debugOutput writes a nicely formed output for diagnosis in relay environment
 
         :param result: value from requests get commend
         :return: True fir test purpose
         """
+
+        if result is None:
+            self.logger.debug('No valid result')
+            return False
 
         text = result.text.replace('\r\n', ', ')
         reason = result.reason
@@ -165,17 +166,22 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         if self._host is None:
             return None
+
+        if not self.mutexPoll.tryLock():
+            return False
+
         auth = requests.auth.HTTPBasicAuth(self._user,
                                            self._password)
         url = 'http://' + self._host[0] + ':' + str(self._host[1]) + url
+        result = None
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
         except requests.exceptions.Timeout:
-            return None
+            pass
         except Exception as e:
             self.logger.error(f'Error in request: {e}')
-            return None
         self._debugOutput(result=result)
+        self.mutexPoll.unlock()
         return result
 
     def cyclePolling(self):
@@ -183,14 +189,15 @@ class KMRelay(PyQt5.QtCore.QObject):
         cyclePolling reads the status of the relay status of each single relay.
         with success the statusReady single is sent.
 
-        :return: nothing
+        :return: success
         """
+
         value = self.getRelay('/status.xml')
 
         if value.reason != 'OK':
             self.logger.error(f'Relay:{relayNumber}')
             return False
-        elif value.status_code == '401':
+        elif value.status_code == 401:
             self.logger.error(f'Relay:{relayNumber} unauthorized')
             return False
 
@@ -201,6 +208,8 @@ class KMRelay(PyQt5.QtCore.QObject):
                 continue
             value = [int(s) for s in value]
             self.status[value[0] - 1] = value[1]
+
+        self.logger.info(f'Relay: {self.status}')
         self.statusReady.emit()
         return True
 
@@ -209,40 +218,48 @@ class KMRelay(PyQt5.QtCore.QObject):
         pulse switches a relay on for one second and off back.
 
         :param relayNumber: number of relay to be pulsed, counting from 0 onwards
-        :return: nothing
+        :return: success
         """
 
         value1 = self.getRelay('/FF0{0:1d}01'.format(relayNumber + 1))
         time.sleep(self.PULSEWIDTH)
         value2 = self.getRelay('/FF0{0:1d}00'.format(relayNumber + 1))
 
-        if value1.reason != 'OK' or value2.reason != 'OK':
+        if value1 is None or value2 is None:
             self.logger.error(f'Relay:{relayNumber}')
             return False
-        elif value1.status_code == '401':
+        elif value1.reason != 'OK' or value2.reason != 'OK':
+            self.logger.error(f'Relay:{relayNumber}')
+            return False
+        elif value1.status_code == 401:
             self.logger.error(f'Relay:{relayNumber} unauthorized')
             return False
-        else:
-            return True
+
+        self.logger.info(f'Pulse relay:{relayNumber}')
+        return True
 
     def switch(self, relayNumber):
         """
         switch toggles the relay stat (on, off)
 
         :param relayNumber: number of relay to be pulsed, counting from 0 onwards
-        :return: nothing
+        :return: success
         """
 
         value = self.getRelay('/relays.cgi?relay={0:1d}'.format(relayNumber + 1))
 
-        if value.reason != 'OK':
+        if value is None:
             self.logger.error(f'Relay:{relayNumber}')
             return False
-        elif value.status_code == '401':
+        elif value.reason != 'OK':
+            self.logger.error(f'Relay:{relayNumber}')
+            return False
+        elif value.status_code == 401:
             self.logger.error(f'Relay:{relayNumber} unauthorized')
             return False
-        else:
-            return True
+
+        self.logger.info(f'Switch relay:{relayNumber}')
+        return True
 
     def set(self, relayNumber, value):
         """
@@ -250,7 +267,7 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         :param relayNumber: number of relay to be pulsed, counting from 0 onwards
         :param value: relay state.
-        :return: nothing
+        :return: success
         """
 
         if value:
@@ -259,11 +276,15 @@ class KMRelay(PyQt5.QtCore.QObject):
             outputFormat = '/FF0{0:1d}00'
         value = self.getRelay(outputFormat.format(relayNumber + 1))
 
-        if value.reason != 'OK':
+        if value is None:
             self.logger.error(f'Relay:{relayNumber}')
             return False
-        elif value.status_code == '401':
+        elif value.reason != 'OK':
+            self.logger.error(f'Relay:{relayNumber}')
+            return False
+        elif value.status_code == 401:
             self.logger.error(f'Relay:{relayNumber} unauthorized')
             return False
-        else:
-            return True
+
+        self.logger.info(f'Set relay:{relayNumber}')
+        return True

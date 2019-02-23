@@ -50,7 +50,7 @@ class SettRelay(object):
         for relayText in self.relayTexts:
             relayText.editingFinished.connect(self.updateRelayButtonText)
         for button in self.relayButtons:
-            button.clicked.connect(self.toggleRelay)
+            button.clicked.connect(self.relayAction)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -155,9 +155,9 @@ class SettRelay(object):
         self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
         return True
 
-    def toggleRelay(self):
+    def relayAction(self):
         """
-        toggleRelay reads the button and toggles the relay on the box.
+        relayAction reads the button and toggles the relay on the box.
 
         :return: success for test
         """
@@ -169,9 +169,16 @@ class SettRelay(object):
         for i, button in enumerate(self.relayButtons):
             if button != self.sender():
                 continue
-            suc = self.app.relay.switch(i)
+
+            action = self.relayDropDownIndex[i].currentIndex()
+            if action == 0:
+                suc = self.app.relay.switch(i)
+            elif action == 1:
+                suc = self.app.relay.pulse(i)
+            else:
+                suc = False
         if not suc:
-            self.app.message.emit('Relay cannot be switched', 2)
+            self.app.message.emit('Relay action cannot be performed', 2)
             return False
         self.app.relay.cyclePolling()
         return True

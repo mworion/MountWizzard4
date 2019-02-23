@@ -56,7 +56,7 @@ def test_enableRelay2(qtbot):
 def test_toggleRelay1(qtbot):
     app.mainW.ui.checkEnableRelay.setChecked(False)
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.toggleRelay()
+        suc = app.mainW.relayAction()
         assert not suc
     assert ['Relay box off', 2] == blocker.args
 
@@ -67,7 +67,7 @@ def test_toggleRelay2(qtbot):
                            'switch',
                            return_value=False):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.toggleRelay()
+            suc = app.mainW.relayAction()
             assert not suc
         assert ['Relay cannot be switched', 2] == blocker.args
 

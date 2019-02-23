@@ -24,16 +24,12 @@ import PyQt5.QtWidgets
 # local import
 from mw4.relay import kmRelay
 from mw4.test.test_setupQt import setupQt
+
 app, spy, mwGlob, test = setupQt()
 
 
 host_ip = '192.168.2.14'
-
-#
-#
-# testing relay connections
-#
-#
+host = (host_ip, 80)
 
 
 def test_connect1(qtbot):
@@ -95,20 +91,32 @@ def test_connect6(qtbot):
     assert value is None
 
 
-#
-#
-# testing relay values integration
-#
-#
+def test_host_1():
+    app.relay.host = 0.0
+    assert app.relay.host is None
 
 
-host = (host_ip, 80)
+def test_host_2():
+    app.relay.host = host
+    assert app.relay.host == host
+
+
+def test_user():
+    app.relay.user = 'astro'
+    assert app.relay.user == 'astro'
+
+
+def test_password():
+    app.relay.password = 'astro'
+    assert app.relay.password == 'astro'
+
+
+def test_timers():
+    app.relay.startTimers()
+    app.relay.stopTimers()
 
 
 def test_status1(qtbot):
-    relay = kmRelay.KMRelay(host)
-    relay.user = 'astro'
-    relay.password = 'astro'
     returnValue = """<response>
                      <relay0>0</relay0>
                      <relay1>0</relay1>
@@ -128,22 +136,19 @@ def test_status1(qtbot):
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(relay,
+    with mock.patch.object(app.relay,
                            'getRelay',
                            return_value=ret):
 
         for i in range(0, 9):
-            relay.set(i, 0)
+            app.relay.set(i, 0)
 
-        with qtbot.waitSignal(relay.statusReady):
-            relay.cyclePolling()
-        assert [0, 0, 0, 0, 0, 0, 0, 0] == relay.status
+        with qtbot.waitSignal(app.relay.statusReady):
+            app.relay.cyclePolling()
+        assert [0, 0, 0, 0, 0, 0, 0, 0] == app.relay.status
 
 
 def test_status2(qtbot):
-    relay = kmRelay.KMRelay(host)
-    relay.user = 'astro'
-    relay.password = 'astro'
     returnValue = """<response>
                      <relay0>1</relay0>
                      <relay1>1</relay1>
@@ -163,22 +168,19 @@ def test_status2(qtbot):
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(relay,
+    with mock.patch.object(app.relay,
                            'getRelay',
                            return_value=ret):
 
         for i in range(0, 9):
-            relay.set(i, 1)
+            app.relay.set(i, 1)
 
-        with qtbot.waitSignal(relay.statusReady):
-            relay.cyclePolling()
-        assert [1, 1, 1, 1, 1, 1, 1, 1] == relay.status
+        with qtbot.waitSignal(app.relay.statusReady):
+            app.relay.cyclePolling()
+        assert [1, 1, 1, 1, 1, 1, 1, 1] == app.relay.status
 
 
 def test_status3(qtbot):
-    relay = kmRelay.KMRelay(host)
-    relay.user = 'astro'
-    relay.password = 'astro'
     returnValue = """<response>
                      <relay0>1</relay0>
                      <relay1>1</relay1>
@@ -198,22 +200,19 @@ def test_status3(qtbot):
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(relay,
+    with mock.patch.object(app.relay,
                            'getRelay',
                            return_value=ret):
 
         for i in range(0, 9):
-            relay.switch(i)
+            app.relay.switch(i)
 
-        with qtbot.waitSignal(relay.statusReady):
-            relay.cyclePolling()
-        assert [1, 1, 1, 1, 1, 1, 1, 1] == relay.status
+        with qtbot.waitSignal(app.relay.statusReady):
+            app.relay.cyclePolling()
+        assert [1, 1, 1, 1, 1, 1, 1, 1] == app.relay.status
 
 
 def test_status4(qtbot):
-    relay = kmRelay.KMRelay(host)
-    relay.user = 'astro'
-    relay.password = 'astro'
     returnValue = """<response>
                      <relay0>0</relay0>
                      <relay1>0</relay1>
@@ -233,13 +232,148 @@ def test_status4(qtbot):
     ret.reason = 'OK'
     ret.status_code = 200
 
-    with mock.patch.object(relay,
+    with mock.patch.object(app.relay,
                            'getRelay',
                            return_value=ret):
 
         for i in range(0, 9):
-            relay.pulse(i)
+            app.relay.pulse(i)
 
-        with qtbot.waitSignal(relay.statusReady):
-            relay.cyclePolling()
-    assert [0, 0, 0, 0, 0, 0, 0, 0] == relay.status
+        with qtbot.waitSignal(app.relay.statusReady):
+            app.relay.cyclePolling()
+        assert [0, 0, 0, 0, 0, 0, 0, 0] == app.relay.status
+
+
+def test_getRelay_1(qtbot):
+    app.relay.mutexPoll.lock()
+    suc = app.relay.getRelay()
+    app.relay.mutexPoll.unlock()
+    assert not suc
+
+
+def test_cyclePolling_1():
+    class Test:
+        pass
+    ret = Test()
+    ret.reason = 'False'
+    ret.status_code = 200
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.cyclePolling()
+        assert not suc
+
+
+def test_pulse_1(qtbot):
+    ret = None
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.pulse(7)
+        assert not suc
+
+
+def test_pulse_2(qtbot):
+    class Test:
+        pass
+    ret = Test()
+    ret.reason = 'False'
+    ret.status_code = 200
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.pulse(7)
+        assert not suc
+
+
+def test_pulse_3(qtbot):
+    class Test:
+        pass
+    ret = Test()
+    ret.reason = 'OK'
+    ret.status_code = 200
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.pulse(7)
+        assert suc
+
+
+def test_switch_1(qtbot):
+    ret = None
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.switch(7)
+        assert not suc
+
+
+def test_switch_2(qtbot):
+    class Test:
+        pass
+    ret = Test()
+    ret.reason = 'False'
+    ret.status_code = 200
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.switch(7)
+        assert not suc
+
+
+def test_switch_3(qtbot):
+    class Test:
+        pass
+    ret = Test()
+    ret.reason = 'OK'
+    ret.status_code = 200
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.switch(7)
+        assert suc
+
+
+def test_set_1(qtbot):
+    ret = None
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.set(7, True)
+        assert not suc
+
+
+def test_set_2(qtbot):
+    class Test:
+        pass
+    ret = Test()
+    ret.reason = 'False'
+    ret.status_code = 200
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.set(7, True)
+        assert not suc
+
+
+def test_set_3(qtbot):
+    class Test:
+        pass
+    ret = Test()
+    ret.reason = 'OK'
+    ret.status_code = 200
+
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.relay.set(7, False)
+        assert suc

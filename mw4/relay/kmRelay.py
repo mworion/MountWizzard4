@@ -155,7 +155,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.logger.debug(f'Result: {url}, {reason}, {status}, {code}, {elapsed}, {text}')
         return True
 
-    def getRelay(self, url):
+    def getRelay(self, url='/status.xml'):
         """
         getRelay sets and reads data from the given host ip using the given
         user and password
@@ -197,9 +197,6 @@ class KMRelay(PyQt5.QtCore.QObject):
         if value.reason != 'OK':
             self.logger.error('Polling error')
             return False
-        elif value.status_code == 401:
-            self.logger.error('Polling error: unauthorized')
-            return False
 
         lines = value.text.splitlines()
         for line in lines:
@@ -231,9 +228,6 @@ class KMRelay(PyQt5.QtCore.QObject):
         elif value1.reason != 'OK' or value2.reason != 'OK':
             self.logger.error(f'Relay:{relayNumber}')
             return False
-        elif value1.status_code == 401:
-            self.logger.error(f'Relay:{relayNumber} unauthorized')
-            return False
 
         self.logger.info(f'Pulse relay:{relayNumber}')
         return True
@@ -253,9 +247,6 @@ class KMRelay(PyQt5.QtCore.QObject):
             return False
         elif value.reason != 'OK':
             self.logger.error(f'Relay:{relayNumber}')
-            return False
-        elif value.status_code == 401:
-            self.logger.error(f'Relay:{relayNumber} unauthorized')
             return False
 
         self.logger.info(f'Switch relay:{relayNumber}')
@@ -281,9 +272,6 @@ class KMRelay(PyQt5.QtCore.QObject):
             return False
         elif value.reason != 'OK':
             self.logger.error(f'Relay:{relayNumber}')
-            return False
-        elif value.status_code == 401:
-            self.logger.error(f'Relay:{relayNumber} unauthorized')
             return False
 
         self.logger.info(f'Set relay:{relayNumber}')

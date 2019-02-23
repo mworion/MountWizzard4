@@ -11667,7 +11667,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QCheckBox" name="telescopeMessage">
+      <widget class="QCheckBox" name="domeMessage">
        <property name="geometry">
         <rect>
          <x>400</x>
@@ -11778,7 +11778,7 @@ manually</string>
         <string>Host IP</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="acessoryName2">
+      <widget class="QLineEdit" name="accessoryName2">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -11823,7 +11823,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="indiHostAccessories">
+      <widget class="QLineEdit" name="indiHostAccessory">
        <property name="geometry">
         <rect>
          <x>460</x>
@@ -11972,7 +11972,7 @@ manually</string>
         <string>Devices</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="reconnectDome_2">
+      <widget class="QPushButton" name="reconnectAccessory">
        <property name="geometry">
         <rect>
          <x>685</x>

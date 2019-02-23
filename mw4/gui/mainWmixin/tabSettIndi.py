@@ -60,20 +60,30 @@ class SettIndi(object):
         self.ui.localWeatherName.setText(environ.localWeatherName)
         environ.sqmName = config.get('sqmName', '')
         self.ui.sqmName.setText(environ.sqmName)
+        environ.sqmName = config.get('sqmName', '')
+        self.ui.sqmName.setText(environ.sqmName)
+
+        self.ui.environmentMessage.setChecked(config.get('environmentMessage', False))
 
         host = config.get('indiHostImaging', '')
         # xxx.client.host = host
         self.ui.indiHostImaging.setText(host)
         self.ui.ccdName.setText(config.get('ccdName', ''))
+        self.ui.imagingMessage.setChecked(config.get('imagingMessage', False))
 
         host = config.get('indiHostDome', '')
-        # xxx.client.host = host
         self.ui.indiHostDome.setText(host)
+        # xxx.client.host = host
         self.ui.domeName.setText(config.get('domeName', ''))
         self.ui.telescopeName.setText(config.get('telescopeName', ''))
-        self.ui.environmentMessage.setChecked(config.get('environmentMessage', False))
-        self.ui.imagingMessage.setChecked(config.get('imagingMessage', False))
-        self.ui.telescopeMessage.setChecked(config.get('telescopeMessage', False))
+        self.ui.domeMessage.setChecked(config.get('domeMessage', False))
+
+        host = config.get('indiHostAccessory', '')
+        self.ui.indiHostAccessory.setText(host)
+        # xxx.client.host = host
+        self.ui.accessoryName1.setText(config.get('accessoryName1', ''))
+        self.ui.accessoryName2.setText(config.get('accessoryName2', ''))
+        self.ui.accessoryMessage.setChecked(config.get('accessoryMessage', False))
 
         return True
 
@@ -83,14 +93,21 @@ class SettIndi(object):
         config['localWeatherName'] = self.ui.localWeatherName.text()
         config['globalWeatherName'] = self.ui.globalWeatherName.text()
         config['sqmName'] = self.ui.sqmName.text()
+        config['environmentMessage'] = self.ui.environmentMessage.isChecked()
+
         config['indiHostImaging'] = self.ui.indiHostImaging.text()
         config['ccdName'] = self.ui.ccdName.text()
+        config['imagingMessage'] = self.ui.imagingMessage.isChecked()
+
         config['indiHostDome'] = self.ui.indiHostDome.text()
         config['domeName'] = self.ui.domeName.text()
         config['telescopeName'] = self.ui.telescopeName.text()
-        config['environmentMessage'] = self.ui.environmentMessage.isChecked()
-        config['imagingMessage'] = self.ui.imagingMessage.isChecked()
-        config['telescopeMessage'] = self.ui.telescopeMessage.isChecked()
+        config['domeMessage'] = self.ui.domeMessage.isChecked()
+
+        config['indiHostAccessory'] = self.ui.indiHostAccessory.text()
+        config['accessoryName1'] = self.ui.accessoryName1.text()
+        config['accessoryName2'] = self.ui.accessoryName2.text()
+        config['accessoryMessage'] = self.ui.accessoryMessage.isChecked()
 
         return True
 

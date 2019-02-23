@@ -1,8 +1,8 @@
 problems occurred list:
 
 - mountcontrol overflow pointing
-- mountcontrol: tests for all commands available
 - tests for polar plot in mainW missing
+- wcs axes in GUI not showing always labels
 
 
 necessary feature list:
@@ -13,7 +13,6 @@ necessary feature list:
 - hemisphere: show best altitude when polar align is on
 - link dome to hemisphere
 - astrometry online
-- astrometry threads
 - astrometry configs
 - image widget
 - indi CCD camera
@@ -29,10 +28,8 @@ nice to have:
 
 - auto reconnect all indi servers
 - wcs projection in image to flat
-- wcs axes in GUI
 - imaging windows astropy stretching
 - indi setting parameters of devices
 - gui show indi device FL / pixels data in screen and choose which to use
-- gui hemisphere partitioning for progress bars (sizable ?)
 - check if daylight timezone fits to the computer or set it up !
 - max error for modeling solving

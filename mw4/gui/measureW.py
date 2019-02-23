@@ -158,10 +158,12 @@ class MeasureWindow(widget.MWidget):
         clearPlot deletes the content of the axes and renews the basic setting for grid,
         color, spines etc.
 
-        :param numbAxes: number of axes to be defined and cleared. actual 1 or 2.
+        :param numbAxes: number of axes to be defined and cleared. actual 1 to 3.
         :return: success
         """
 
+        if numbAxes is None:
+            return False
         if numbAxes < 1:
             return False
         if numbAxes > 3:
@@ -200,9 +202,9 @@ class MeasureWindow(widget.MWidget):
 
         return True
 
-    def drawRaDecStability(self, data=None, cycle=None):
+    def drawRaDec(self, data=None, cycle=None):
         """
-        drawRaDecStability show the specific graph for plotting the ra dec deviations. this
+        drawRaDec show the specific graph for plotting the ra dec deviations. this
         is done with two color and axes to distinguish the values for ra and dec.
         ideally the values are around zero, but the scales of ra and dec axis have to be
         different.
@@ -345,6 +347,7 @@ class MeasureWindow(widget.MWidget):
 
     def drawSQR(self, data=None, cycle=None):
         """
+        drawSQR show the measured sqr values over time
 
         :param data: data location
         :param cycle: cycle time for measurement
@@ -396,6 +399,9 @@ class MeasureWindow(widget.MWidget):
 
     def drawMeasure(self):
         """
+        drawMeasure does the basic preparation for making the plot. it checks for borders
+        and does finally the content dispatcher. currently there is no chance to implement
+        a basic pattern as the graphs differ heavily.
 
         :return: success
         """
@@ -408,8 +414,6 @@ class MeasureWindow(widget.MWidget):
         tIndex = self.ui.timeSet.currentIndex()
 
         if len(data['time']) == 0:
-            for axe in self.measureMat.figure.axes:
-                axe.set_visible(False)
             return False
 
         if not self.mutexDraw.tryLock():
@@ -429,7 +433,7 @@ class MeasureWindow(widget.MWidget):
         time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
 
         if mIndex == 0:
-            self.drawRaDecStability(data=data, cycle=cycle)
+            self.drawRaDec(data=data, cycle=cycle)
         elif mIndex == 1:
             self.drawEnvironment(data=data, cycle=cycle)
         elif mIndex == 2:

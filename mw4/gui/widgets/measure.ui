@@ -48,257 +48,157 @@
   <property name="windowTitle">
    <string>Measurements</string>
   </property>
-  <widget class="QWidget" name="measure" native="true">
-   <property name="enabled">
-    <bool>true</bool>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
+   <property name="spacing">
+    <number>4</number>
    </property>
-   <property name="geometry">
-    <rect>
-     <x>5</x>
-     <y>64</y>
-     <width>790</width>
-     <height>531</height>
-    </rect>
+   <property name="leftMargin">
+    <number>4</number>
    </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
+   <property name="topMargin">
+    <number>4</number>
    </property>
-   <property name="minimumSize">
-    <size>
-     <width>790</width>
-     <height>270</height>
-    </size>
+   <property name="rightMargin">
+    <number>4</number>
    </property>
-   <property name="maximumSize">
-    <size>
-     <width>1580</width>
-     <height>1070</height>
-    </size>
+   <property name="bottomMargin">
+    <number>4</number>
    </property>
-   <property name="sizeIncrement">
-    <size>
-     <width>10</width>
-     <height>10</height>
-    </size>
-   </property>
-   <property name="baseSize">
-    <size>
-     <width>10</width>
-     <height>10</height>
-    </size>
-   </property>
-   <property name="autoFillBackground">
-    <bool>true</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="tp0">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>30</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>3 Min</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="tp1">
-   <property name="geometry">
-    <rect>
-     <x>465</x>
-     <y>30</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>10 Min</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="tp2">
-   <property name="geometry">
-    <rect>
-     <x>520</x>
-     <y>30</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>30 Min</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="tp3">
-   <property name="geometry">
-    <rect>
-     <x>575</x>
-     <y>30</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>1 Hr</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="tp4">
-   <property name="geometry">
-    <rect>
-     <x>630</x>
-     <y>30</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>3 Hrs</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="tp5">
-   <property name="geometry">
-    <rect>
-     <x>685</x>
-     <y>30</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>10 Hrs</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="ms0">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>116</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>RaDec Stability</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="ms1">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>30</y>
-     <width>116</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Environment</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_110">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>5</y>
-     <width>156</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Time Window</string>
-   </property>
-  </widget>
-  <widget class="Line" name="line_32">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>25</y>
-     <width>381</width>
-     <height>1</height>
-    </rect>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_111">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>5</y>
-     <width>156</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Measurement Sets</string>
-   </property>
-  </widget>
-  <widget class="Line" name="line_33">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>25</y>
-     <width>356</width>
-     <height>1</height>
-    </rect>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="ms2">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>30</y>
-     <width>116</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Sky Quality</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="tp6">
-   <property name="geometry">
-    <rect>
-     <x>740</x>
-     <y>30</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>10 Hrs</string>
-   </property>
-  </widget>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1">
+     <item>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string>Measurement Set</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <property name="leftMargin">
+         <number>4</number>
+        </property>
+        <property name="topMargin">
+         <number>6</number>
+        </property>
+        <property name="rightMargin">
+         <number>4</number>
+        </property>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QComboBox" name="measureSet">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>Time Window</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <property name="leftMargin">
+         <number>4</number>
+        </property>
+        <property name="topMargin">
+         <number>6</number>
+        </property>
+        <property name="rightMargin">
+         <number>4</number>
+        </property>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QComboBox" name="timeSet">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="measerSet" native="true"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="midLineWidth">
+      <number>1</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="measure" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>790</width>
+       <height>270</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1580</width>
+       <height>1070</height>
+      </size>
+     </property>
+     <property name="sizeIncrement">
+      <size>
+       <width>10</width>
+       <height>10</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>10</width>
+       <height>10</height>
+      </size>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

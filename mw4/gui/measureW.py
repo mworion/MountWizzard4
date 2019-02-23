@@ -53,30 +53,6 @@ class MeasureWindow(widget.MWidget):
         self.initUI()
 
         self.mutexDraw = PyQt5.QtCore.QMutex()
-        self.diagram = {
-            'ui': [self.ui.tp0,
-                   self.ui.tp1,
-                   self.ui.tp2,
-                   self.ui.tp3,
-                   self.ui.tp4,
-                   self.ui.tp5,
-                   self.ui.tp6,
-                   ],
-            'cycle': [1,
-                      2,
-                      4,
-                      8,
-                      16,
-                      32,
-                      64,
-                      ],
-        }
-        self.measureSet = {
-            'ui': [self.ui.ms0,
-                   self.ui.ms1,
-                   self.ui.ms2,
-                   ]
-        }
         self.measureIndex = 0
         self.timeIndex = 0
 
@@ -87,26 +63,16 @@ class MeasureWindow(widget.MWidget):
         # adding two axes (getting 3 in total)
         self.measureMat.figure.axes[0].twinx()
         self.measureMat.figure.axes[0].twinx()
-
-        self.ui.tp0.clicked.connect(lambda: self.setTimeWindow(0))
-        self.ui.tp1.clicked.connect(lambda: self.setTimeWindow(1))
-        self.ui.tp2.clicked.connect(lambda: self.setTimeWindow(2))
-        self.ui.tp3.clicked.connect(lambda: self.setTimeWindow(3))
-        self.ui.tp4.clicked.connect(lambda: self.setTimeWindow(4))
-        self.ui.tp5.clicked.connect(lambda: self.setTimeWindow(5))
-        self.ui.tp6.clicked.connect(lambda: self.setTimeWindow(6))
-
-        self.ui.ms0.clicked.connect(lambda: self.setMeasureSet(0))
-        self.ui.ms1.clicked.connect(lambda: self.setMeasureSet(1))
-        self.ui.ms2.clicked.connect(lambda: self.setMeasureSet(2))
+        self.ui.timeSet.currentIndexChanged.connect(self.drawMeasure)
+        self.ui.measureSet.currentIndexChanged.connect(self.drawMeasure)
 
         mainW = self.app.mainW.ui
-        self.clickable(mainW.RA).connect(lambda: self.openShowMeasureSet(0))
-        self.clickable(mainW.DEC).connect(lambda: self.openShowMeasureSet(0))
-        self.clickable(mainW.localTemp).connect(lambda: self.openShowMeasureSet(1))
-        self.clickable(mainW.localPress).connect(lambda: self.openShowMeasureSet(1))
-        self.clickable(mainW.localDewPoint).connect(lambda: self.openShowMeasureSet(1))
-        self.clickable(mainW.SQR).connect(lambda: self.openShowMeasureSet(2))
+        self.clickable(mainW.RA).connect(self.showWindow)
+        self.clickable(mainW.DEC).connect(self.showWindow)
+        self.clickable(mainW.localTemp).connect(self.showWindow)
+        self.clickable(mainW.localPress).connect(self.showWindow)
+        self.clickable(mainW.localDewPoint).connect(self.showWindow)
+        self.clickable(mainW.SQR).connect(self.showWindow)
 
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
@@ -127,11 +93,10 @@ class MeasureWindow(widget.MWidget):
         self.move(x, y)
         height = config.get('height', 600)
         width = config.get('width', 800)
-
-        # todo: initialize the old setup
-
         self.resize(width, height)
         self.setupButtons()
+        self.ui.measureSet.setCurrentIndex(config.get('measureSet', 0))
+        self.ui.timeSet.setCurrentIndex(config.get('timeSet', 0))
         if config.get('showStatus'):
             self.showWindow()
         return True
@@ -144,30 +109,11 @@ class MeasureWindow(widget.MWidget):
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
         config['width'] = self.width()
+        config['measureSet'] = self.ui.measureSet.currentIndex()
+        config['timeSet'] = self.ui.timeSet.currentIndex()
         config['showStatus'] = self.showStatus
 
-        # todo: save actual status
-
         return True
-
-    def resizeEvent(self, QResizeEvent):
-        """
-        resizeEvent changes the internal widget according to the resize of the window
-        the formulae of the calculation is:
-            spaces left right top button : 5 pixel
-            widget start in height at y = 130
-
-        :param QResizeEvent:
-        :return: nothing
-        """
-
-        super().resizeEvent(QResizeEvent)
-        space = 5
-        startY = 95
-        self.ui.measure.setGeometry(space,
-                                    startY - space,
-                                    self.width() - 2 * space,
-                                    self.height() - startY)
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
@@ -188,83 +134,25 @@ class MeasureWindow(widget.MWidget):
         :return: success for test purpose
         """
 
-        for i, ui in enumerate(self.diagram['ui']):
-            value = self.diagram['cycle'][i] * self.NUMBER_POINTS
-            if value < 3000:
-                text = '{0:2d} min'.format(int(value / 60))
-            else:
-                text = '{0:2d} hrs'.format(int(value / 3600))
-            ui.setText(text)
+        mSet = self.ui.measureSet
+        mSet.clear()
+        mSet.setView(PyQt5.QtWidgets.QListView())
+        mSet.addItem('RaDec Stability')
+        mSet.addItem('Environment')
+        mSet.addItem('Sky Quality')
 
-        for i, button in enumerate(self.diagram['ui']):
-            if i == 0:
-                self.changeStyleDynamic(button, 'running', 'true')
-            else:
-                self.changeStyleDynamic(button, 'running', 'false')
-
-        for i, button in enumerate(self.measureSet['ui']):
-            if i == 0:
-                self.changeStyleDynamic(button, 'running', 'true')
-            else:
-                self.changeStyleDynamic(button, 'running', 'false')
+        tSet = self.ui.timeSet
+        tSet.clear()
+        tSet.setView(PyQt5.QtWidgets.QListView())
+        tSet.addItem('  8 min')
+        tSet.addItem(' 16 min')
+        tSet.addItem(' 32 min')
+        tSet.addItem('  1 hour')
+        tSet.addItem('  2 hours')
+        tSet.addItem('  4 hours')
+        tSet.addItem('  8 hours')
 
         return True
-
-    def setTimeWindow(self, index):
-        """
-
-        :param index: index of time window set
-        :return: success
-        """
-
-        if index < 0:
-            return False
-        if index > len(self.diagram['ui']):
-            return False
-
-        self.timeIndex = index
-        for i, button in enumerate(self.diagram['ui']):
-            if i == index:
-                self.changeStyleDynamic(button, 'running', 'true')
-            else:
-                self.changeStyleDynamic(button, 'running', 'false')
-        self.drawMeasure()
-        return True
-
-    def setMeasureSet(self, index):
-        """
-
-        :param index: index of time window set
-        :return: success
-        """
-
-        if index < 0:
-            return False
-        if index > len(self.measureSet['ui']):
-            return False
-
-        self.measureIndex = index
-        for i, button in enumerate(self.measureSet['ui']):
-            if i == index:
-                self.changeStyleDynamic(button, 'running', 'true')
-            else:
-                self.changeStyleDynamic(button, 'running', 'false')
-        self.drawMeasure()
-        return True
-
-    def openShowMeasureSet(self, index):
-        """
-
-        :param index: index of time window set
-        :return: success
-        """
-
-        suc = self.setMeasureSet(index)
-        if suc:
-            self.showWindow()
-            return True
-        else:
-            return False
 
     def clearPlot(self, numbAxes=None):
 
@@ -307,7 +195,14 @@ class MeasureWindow(widget.MWidget):
             axe.spines['right'].set_color(color)
         return True
 
-    def drawRaDecStability(self):
+    def drawRaDecStability(self, data=None, cycle=None):
+        """
+
+        :param data:
+        :param cycle:
+        :return:
+        """
+
         if not self.clearPlot(numbAxes=2):
             return False
 
@@ -322,8 +217,6 @@ class MeasureWindow(widget.MWidget):
         ylabelLeft = 'delta RA [arcsec]'
         ylabelRight = 'delta DEC [arcsec]'
 
-        data = self.app.measure.data
-        cycle = self.diagram['cycle'][self.timeIndex]
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
         yLeft = data['raJNow'][start:-1:cycle]
@@ -371,7 +264,13 @@ class MeasureWindow(widget.MWidget):
 
         return True
 
-    def drawMeasureEnvironment(self):
+    def drawMeasureEnvironment(self, data=None, cycle=None):
+        """
+
+        :param data:
+        :param cycle:
+        :return:
+        """
 
         if not self.clearPlot(numbAxes=2):
             return False
@@ -389,8 +288,6 @@ class MeasureWindow(widget.MWidget):
         ylabelLeft2 = 'Dew Temperature [°C]'
         ylabelRight = 'Pressure [hPas]'
 
-        data = self.app.measure.data
-        cycle = self.diagram['cycle'][self.timeIndex]
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
         yLeft = data['temp'][start:-1:cycle]
@@ -443,7 +340,14 @@ class MeasureWindow(widget.MWidget):
             text.set_color('#2090C0')
         return True
 
-    def drawSQR(self):
+    def drawSQR(self, data=None, cycle=None):
+        """
+
+        :param data:
+        :param cycle:
+        :return:
+        """
+
         if not self.clearPlot(numbAxes=1):
             return False
 
@@ -455,8 +359,6 @@ class MeasureWindow(widget.MWidget):
         title = 'Sky Quality'
         ylabelLeft = 'Sky Quality [mpas]'
 
-        data = self.app.measure.data
-        cycle = self.diagram['cycle'][self.timeIndex]
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
         yLeft = data['sqr'][start:-1:cycle]
@@ -502,6 +404,8 @@ class MeasureWindow(widget.MWidget):
             return False
 
         data = self.app.measure.data
+        mIndex = self.ui.measureSet.currentIndex()
+        tIndex = self.ui.timeSet.currentIndex()
 
         if len(data['time']) == 0:
             for axe in self.measureMat.figure.axes:
@@ -511,7 +415,7 @@ class MeasureWindow(widget.MWidget):
         if not self.mutexDraw.tryLock():
             return False
 
-        cycle = self.diagram['cycle'][self.timeIndex]
+        cycle = 2 ^ tIndex
         self.timerTask.stop()
         self.timerTask.start(cycle * 1000)
 
@@ -524,12 +428,12 @@ class MeasureWindow(widget.MWidget):
         time_ticks = time_ticks + time_end
         time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
 
-        if self.measureIndex == 0:
-            self.drawRaDecStability()
-        elif self.measureIndex == 1:
-            self.drawMeasureEnvironment()
-        elif self.measureIndex == 2:
-            self.drawSQR()
+        if mIndex == 0:
+            self.drawRaDecStability(data=data, cycle=cycle)
+        elif mIndex == 1:
+            self.drawMeasureEnvironment(data=data, cycle=cycle)
+        elif mIndex == 2:
+            self.drawSQR(data=data, cycle=cycle)
         else:
             pass
 

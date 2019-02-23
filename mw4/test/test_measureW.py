@@ -54,10 +54,6 @@ def test_initConfig_3():
     assert suc
 
 
-def test_resizeEvent(qtbot):
-    app.measureW.resizeEvent(None)
-
-
 def test_closeEvent(qtbot):
     app.measureW.closeEvent(None)
 

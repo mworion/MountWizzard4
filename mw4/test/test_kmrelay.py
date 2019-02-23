@@ -29,7 +29,7 @@ from mw4.test.test_setupQt import setupQt
 app, spy, mwGlob, test = setupQt()
 
 
-host_ip = '192.168.2.14'
+host_ip = '192.168.2.250'
 host = (host_ip, 80)
 
 
@@ -51,11 +51,6 @@ def test_user():
 def test_password():
     app.relay.password = 'astro'
     assert app.relay.password == 'astro'
-
-
-def test_timers():
-    app.relay.startTimers()
-    app.relay.stopTimers()
 
 
 def test_status1(qtbot):

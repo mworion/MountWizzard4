@@ -89,10 +89,10 @@ class KMRelay(PyQt5.QtCore.QObject):
     def checkFormat(self, value):
         # checking format
         if not value:
-            self.logger.error('wrong host value: {0}'.format(value))
+            self.logger.error(f'Wrong host value: {value}')
             return None
         if not isinstance(value, (tuple, str)):
-            self.logger.error('wrong host value: {0}'.format(value))
+            self.logger.error(f'Wrong host value: {value}')
             return None
         # now we got the right format
         if isinstance(value, str):
@@ -136,6 +136,24 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
         self.timer.stop()
 
+    def _debugOutput(self, result=None):
+        """
+        _debugOutput writes a nicely formed output for diagnosis in releay environment
+
+        :param result: value from requests get commend
+        :return: True fir test purpose
+        """
+
+        text = result.text.replace('\r\n', ', ')
+        reason = result.reason
+        status = result.status_code
+        url = result.url
+        code = result.apparent_encoding
+        elapsed = result.elapsed
+
+        self.logger.debug(f'Result: {url}, {reason}, {status}, {code}, {elapsed}, {text}')
+        return True
+
     def getRelay(self, url):
         """
         getRelay sets and reads data from the given host ip using the given
@@ -155,9 +173,10 @@ class KMRelay(PyQt5.QtCore.QObject):
         except requests.exceptions.Timeout:
             return None
         except Exception as e:
-            self.logger.error('Error in request: {0}'.format(e))
+            self.logger.error(f'Error in request: {e}')
             return None
-        return result.text
+        self._debugOutput(result=result)
+        return result
 
     def cyclePolling(self):
         """
@@ -166,10 +185,16 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         :return: nothing
         """
-        result = self.getRelay('/status.xml')
-        if result is None:
-            return
-        lines = result.splitlines()
+        value = self.getRelay('/status.xml')
+
+        if value.reason != 'OK':
+            self.logger.error(f'Relay:{relayNumber}')
+            return False
+        elif value.status_code == '401':
+            self.logger.error(f'Relay:{relayNumber} unauthorized')
+            return False
+
+        lines = value.text.splitlines()
         for line in lines:
             value = re.findall(r'\d', line)
             if not value:
@@ -190,15 +215,15 @@ class KMRelay(PyQt5.QtCore.QObject):
         value1 = self.getRelay('/FF0{0:1d}01'.format(relayNumber + 1))
         time.sleep(self.PULSEWIDTH)
         value2 = self.getRelay('/FF0{0:1d}00'.format(relayNumber + 1))
-        if value1 is None or value2 is None:
-            self.logger.error('Relay:{0}'.format(relayNumber))
+
+        if value1.reason != 'OK' or value2.reason != 'OK':
+            self.logger.error(f'Relay:{relayNumber}')
+            return False
+        elif value1.status_code == '401':
+            self.logger.error(f'Relay:{relayNumber} unauthorized')
             return False
         else:
-            if value1.startswith('401 Unauthorized:'):
-                self.logger.error('Relay:{0} unauthorized'.format(relayNumber))
-                return False
-            else:
-                return True
+            return True
 
     def switch(self, relayNumber):
         """
@@ -209,15 +234,15 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
 
         value = self.getRelay('/relays.cgi?relay={0:1d}'.format(relayNumber + 1))
-        if value is None:
-            self.logger.error('Relay:{0}'.format(relayNumber))
+
+        if value.reason != 'OK':
+            self.logger.error(f'Relay:{relayNumber}')
+            return False
+        elif value.status_code == '401':
+            self.logger.error(f'Relay:{relayNumber} unauthorized')
             return False
         else:
-            if value.startswith('401 Unauthorized:'):
-                self.logger.error('Relay:{0} unauthorized'.format(relayNumber))
-                return False
-            else:
-                return True
+            return True
 
     def set(self, relayNumber, value):
         """
@@ -233,12 +258,12 @@ class KMRelay(PyQt5.QtCore.QObject):
         else:
             outputFormat = '/FF0{0:1d}00'
         value = self.getRelay(outputFormat.format(relayNumber + 1))
-        if value is None:
-            self.logger.error('Relay:{0}'.format(relayNumber))
+
+        if value.reason != 'OK':
+            self.logger.error(f'Relay:{relayNumber}')
+            return False
+        elif value.status_code == '401':
+            self.logger.error(f'Relay:{relayNumber} unauthorized')
             return False
         else:
-            if value.startswith('401 Unauthorized:'):
-                self.logger.error('Relay:{0} unauthorized'.format(relayNumber))
-                return False
-            else:
-                return True
+            return True

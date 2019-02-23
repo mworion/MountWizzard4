@@ -444,3 +444,21 @@ class MainWindow(MWidget,
             self.app.data.deleteBelowHorizon()
         self.app.redrawHemisphere.emit()
         return True
+
+    def autoSortPoints(self):
+        """
+        autoSortPoints sort the given build point first to east and west and than based
+        on the decision high altitude to low altitude or east to west in each hemisphere
+
+        :return: success if sorted
+        """
+
+        eastwest = self.ui.checkSortEW.isChecked()
+        highlow = self.ui.checkSortHL.isChecked()
+
+        if not eastwest and not highlow:
+            return False
+
+        self.app.data.sort(eastwest=eastwest, highlow=highlow)
+        self.app.redrawHemisphere.emit()
+        return True

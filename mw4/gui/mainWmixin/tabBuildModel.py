@@ -108,6 +108,7 @@ class BuildModel(object):
         if not suc:
             return False
         self.autoDeletePoints()
+        self.autoSortPoints()
         return True
 
     def genBuildMax(self):
@@ -124,6 +125,7 @@ class BuildModel(object):
             self.app.message.emit('Build points [max] cannot be generated', 2)
             return False
         self.autoDeletePoints()
+        self.autoSortPoints()
         return True
 
     def genBuildMed(self):
@@ -140,6 +142,7 @@ class BuildModel(object):
             self.app.message.emit('Build points [med] cannot be generated', 2)
             return False
         self.autoDeletePoints()
+        self.autoSortPoints()
         return True
 
     def genBuildNorm(self):
@@ -156,6 +159,7 @@ class BuildModel(object):
             self.app.message.emit('Build points [norm] cannot be generated', 2)
             return False
         self.autoDeletePoints()
+        self.autoSortPoints()
         return True
 
     def genBuildMin(self):
@@ -172,6 +176,7 @@ class BuildModel(object):
             self.app.message.emit('Build points [min] cannot be generated', 2)
             return False
         self.autoDeletePoints()
+        self.autoSortPoints()
         return True
 
     def genBuildDSO(self):

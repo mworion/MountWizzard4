@@ -76,6 +76,8 @@ class DataPoint(object):
                'loadBuildP',
                'saveBuildP',
                'clearPoints'
+               'deleteBelowHorizon',
+               'sort',
                'loadHorizonP',
                'saveHorizonP',
                'clearHorizonP',
@@ -317,6 +319,33 @@ class DataPoint(object):
 
     def deleteBelowHorizon(self):
         self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
+
+    def sort(self, eastwest=False, highlow=False):
+        """
+
+        :param eastwest: flag if to be sorted east - west
+        :param highlow:  flag if sorted high low altitude
+        :return: true for test purpose
+        """
+
+        if eastwest and highlow:
+            return False
+        if not eastwest and not highlow:
+            return False
+
+        east = [x for x in self._buildP if x[1] <= 180]
+        west = [x for x in self._buildP if x[1] > 180]
+
+        if eastwest:
+            east = sorted(east, key=lambda x: -x[1])
+            west = sorted(west, key=lambda x: -x[1])
+
+        if highlow:
+            east = sorted(east, key=lambda x: -x[0])
+            west = sorted(west, key=lambda x: -x[0])
+
+        self._buildP = east + west
+        return True
 
     def loadBuildP(self, fileName=None):
         """

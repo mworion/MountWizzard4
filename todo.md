@@ -21,14 +21,11 @@ necessary feature list:
 - mountcontrol: adding TLE commands and tests
 - optimizing model functions (all) implement
 - auto sort points
-- labels to button
 - tab order
 
 nice to have:
 
 - auto reconnect all indi servers
-- wcs projection in image to flat
-- imaging windows astropy stretching
 - indi setting parameters of devices
 - gui show indi device FL / pixels data in screen and choose which to use
 - check if daylight timezone fits to the computer or set it up !

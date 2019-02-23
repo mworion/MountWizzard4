@@ -10688,7 +10688,7 @@ manually</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -13661,17 +13661,17 @@ manually</string>
          <x>10</x>
          <y>250</y>
          <width>361</width>
-         <height>71</height>
+         <height>86</height>
         </rect>
        </property>
        <property name="title">
         <string>Auto sort points</string>
        </property>
-       <widget class="QRadioButton" name="checkSortPointsHL">
+       <widget class="QRadioButton" name="checkSortHL">
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>40</y>
+          <y>60</y>
           <width>111</width>
           <height>20</height>
          </rect>
@@ -13688,7 +13688,28 @@ manually</string>
          <string>High / Low</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="checkSortPointsEW">
+       <widget class="QRadioButton" name="checkSortEW">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>40</y>
+          <width>106</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sorts the modeling points EAST / WEST side of pier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>East / West</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="checkSortNothing">
         <property name="geometry">
          <rect>
           <x>15</x>
@@ -13706,7 +13727,7 @@ manually</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sorts the modeling points EAST / WEST side of pier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>East / West</string>
+         <string>Not Sorting</string>
         </property>
        </widget>
       </widget>

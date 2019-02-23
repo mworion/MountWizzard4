@@ -873,6 +873,56 @@ def test_deleteBelowHorizon4():
     assert len(data.buildP) == 0
 
 
+def test_sort_1():
+    values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    data._buildP = values
+    suc = data.sort()
+    assert not suc
+    assert data.buildP == values
+
+
+def test_sort_2():
+    values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    data._buildP = values
+    suc = data.sort(eastwest=True, highlow=True)
+    assert not suc
+    assert data.buildP == values
+
+
+def test_sort_3():
+    values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    data._buildP = values
+    suc = data.sort(eastwest=True, highlow=False)
+    assert suc
+    assert data.buildP == values
+
+
+def test_sort_4():
+    values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    data._buildP = values
+    suc = data.sort(eastwest=False, highlow=True)
+    assert suc
+    assert data.buildP == values
+
+
+def test_sort_5():
+    values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
+    result = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    data._buildP = values
+    suc = data.sort(eastwest=True, highlow=False)
+    assert suc
+    assert data.buildP == result
+
+
+def test_sort_6():
+    values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
+    result = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    data._buildP = values
+    suc = data.sort(eastwest=False, highlow=True)
+    assert suc
+    assert data.buildP == result
+
+
 def test_generateCelestialEquator():
     value = data.generateCelestialEquator()
     assert len(value) == 560

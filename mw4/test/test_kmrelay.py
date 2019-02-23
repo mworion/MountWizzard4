@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 from unittest import mock
+import time
 # external packages
 import PyQt5.QtWidgets
 # local import
@@ -30,65 +31,6 @@ app, spy, mwGlob, test = setupQt()
 
 host_ip = '192.168.2.14'
 host = (host_ip, 80)
-
-
-def test_connect1(qtbot):
-    host = (host_ip, 80)
-    relay = kmRelay.KMRelay(host)
-    relay.user = 'astro'
-    relay.password = 'astro'
-    value = relay.getRelay('/status.xml')
-
-    assert value.reason == 'OK'
-
-
-def test_connect2(qtbot):
-    host = (host_ip, 80)
-    relay = kmRelay.KMRelay(host)
-    relay.user = 'astro'
-    relay.password = ''
-    value = relay.getRelay('/status.xml')
-
-    assert value.status_code == 401
-
-
-def test_connect3(qtbot):
-    host = (host_ip, 80)
-    relay = kmRelay.KMRelay(host)
-    relay.user = ''
-    relay.password = 'astro'
-    value = relay.getRelay('/status.xml')
-
-    assert value.status_code == 401
-
-
-def test_connect4(qtbot):
-    host = (host_ip, 8)
-    relay = kmRelay.KMRelay(host)
-    relay.user = ''
-    relay.password = ''
-    value = relay.getRelay('/status.xml')
-
-    assert value is None
-
-
-def test_connect5(qtbot):
-    host = ('192.168.2.255', 80)
-    relay = kmRelay.KMRelay(host)
-    relay.user = ''
-    relay.password = ''
-    value = relay.getRelay('/status.xml')
-
-    assert value is None
-
-
-def test_connect6(qtbot):
-    relay = kmRelay.KMRelay(None)
-    relay.user = ''
-    relay.password = ''
-    value = relay.getRelay('/status.xml')
-
-    assert value is None
 
 
 def test_host_1():
@@ -235,13 +177,14 @@ def test_status4(qtbot):
     with mock.patch.object(app.relay,
                            'getRelay',
                            return_value=ret):
+        with mock.patch.object(time,
+                               'sleep'):
+            for i in range(0, 9):
+                app.relay.pulse(i)
 
-        for i in range(0, 9):
-            app.relay.pulse(i)
-
-        with qtbot.waitSignal(app.relay.statusReady):
-            app.relay.cyclePolling()
-        assert [0, 0, 0, 0, 0, 0, 0, 0] == app.relay.status
+            with qtbot.waitSignal(app.relay.statusReady):
+                app.relay.cyclePolling()
+            assert [0, 0, 0, 0, 0, 0, 0, 0] == app.relay.status
 
 
 def test_getRelay_1(qtbot):

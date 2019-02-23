@@ -83,6 +83,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # setting location to last know config
         self.mount.obsSite.location = topo
+        self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get all planets for calculation
         load = skyfield.api.Loader(pathToData,
@@ -133,7 +134,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # starting mount communication
         self.mount.startTimers()
         self.environment.startCommunication()
-        self.mount.signals.mountUp.connect(self.loadMountData)
         self.plateSolve.checkAvailability()
 
     def initConfig(self):

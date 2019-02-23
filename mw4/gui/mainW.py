@@ -101,6 +101,7 @@ class MainWindow(MWidget,
         ms.settDone.connect(self.setMountMAC)
         ms.mountUp.connect(self.updateMountConnStat)
         ms.mountClear.connect(self.clearMountGUI)
+        self.app.plateSolve.signals.status.connect(self.updateAstrometry)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
@@ -294,16 +295,6 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-
-        ui = self.ui.astrometryConnected
-        if self.app.plateSolve is None:
-            status = False
-        else:
-            status = self.app.plateSolve.checkAvailability()
-        if status:
-            self.changeStyleDynamic(ui, 'color', 'green')
-        else:
-            self.changeStyleDynamic(ui, 'color', 'red')
         return True
 
     def updateTask(self):
@@ -315,6 +306,18 @@ class MainWindow(MWidget,
         """
 
         self.updateRefractionParameters()
+        return True
+
+    def updateAstrometry(self, status):
+        """
+
+        :param status: status according traffic lights definition
+        :return: True for test purpose
+        """
+
+        color = self.TRAFFICLIGHTCOLORS[status]
+        ui = self.ui.astrometryConnected
+        self.changeStyleDynamic(ui, 'color', color)
         return True
 
     def updateStatusGUI(self):

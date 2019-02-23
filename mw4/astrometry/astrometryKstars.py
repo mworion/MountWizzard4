@@ -49,6 +49,7 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
 
     solveDone = PyQt5.QtCore.pyqtSignal()
     solveResult = PyQt5.QtCore.pyqtSignal(object)
+    status = PyQt5.QtCore.pyqtSignal(int)
 
 
 class AstrometryKstars(object):
@@ -224,17 +225,24 @@ class AstrometryKstars(object):
         :return: True if local solve and components is available
         """
 
+        suc = True
         if not os.path.isfile(self.binPathSolveField):
             self.logger.error(f'{self.binPathSolveField} not found')
-            return False
+            suc = False
         if not os.path.isfile(self.binPathImage2xy):
             self.logger.error(f'{self.binPathImage2xy} not found')
-            return False
+            suc = False
         if not glob.glob(self.indexPath + '/index-4*.fits'):
             self.logger.error('no index files found')
-            return False
-        self.logger.info('solve-field, image2xy and index files available')
-        return True
+            suc = False
+
+        if suc:
+            self.logger.info('solve-field, image2xy and index files available')
+            self.signals.status.emit(0)
+        else:
+            self.signals.status.emit(2)
+
+        return suc
 
     def readFitsData(self, fitsHDU='', searchRatio=1.1):
         """

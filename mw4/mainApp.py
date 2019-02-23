@@ -105,7 +105,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.plateSolve = astrometryKstars.AstrometryKstars(mwGlob['tempDir'],
                                                                 self.threadPool)
         else:
-            self.plateSolve = None
+            self.plateSolve = astrometryKstars.AstrometryKstars(mwGlob['tempDir'],
+                                                                self.threadPool)
         # get the window widgets up
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
@@ -133,6 +134,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.startTimers()
         self.environment.startCommunication()
         self.mount.signals.mountUp.connect(self.loadMountData)
+        self.plateSolve.checkAvailability()
 
     def initConfig(self):
         """

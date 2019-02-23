@@ -179,7 +179,7 @@ class MeasureWindow(widget.MWidget):
                                 )
         elif numbAxes == 3:
             fig.subplots_adjust(left=0.1,
-                                right=0.8,
+                                right=0.85,
                                 bottom=0.1,
                                 top=0.95,
                                 )
@@ -317,7 +317,7 @@ class MeasureWindow(widget.MWidget):
                         fontweight='bold',
                         fontsize=12)
         axe2.set_ylabel(ylabelRight2,
-                        labelpad=30,
+                        labelpad=20,
                         color=self.M_PINK,
                         fontweight='bold',
                         fontsize=12)

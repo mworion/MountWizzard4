@@ -192,8 +192,7 @@ class MeasureWindow(widget.MWidget):
                 axe.set_visible(False)
 
             axe.set_facecolor((0, 0, 0, 0))
-            axe.tick_params(axis='both',
-                            colors=self.M_BLUE,
+            axe.tick_params(colors=self.M_BLUE,
                             labelsize=12)
             axe.spines['bottom'].set_color(self.M_BLUE)
             axe.spines['top'].set_color(self.M_BLUE)
@@ -282,22 +281,23 @@ class MeasureWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.clearPlot(numbAxes=2):
+        if not self.clearPlot(numbAxes=3):
             return False
 
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
+        axe2 = self.measureMat.figure.axes[2]
 
         title = 'Environment'
-        ylabelLeft = 'Temperature [°C]'
-        ylabelLeft2 = 'Dew Temperature [°C]'
-        ylabelRight = 'Pressure [hPas]'
+        ylabelLeft = 'Pressure [hPas]'
+        ylabelRight1 = 'Dew Temperature [°C]'
+        ylabelRight2 = 'Temperature [°C]'
 
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
-        yLeft = data['temp'][start:-1:cycle]
-        yLeft2 = data['dewTemp'][start:-1:cycle]
-        yRight = data['press'][start:-1:cycle]
+        mLeft = data['press'][start:-1:cycle]
+        mRight1 = data['temp'][start:-1:cycle]
+        mRight2 = data['dewTemp'][start:-1:cycle]
 
         axe0.set_title(title,
                        color=self.M_BLUE,
@@ -307,37 +307,47 @@ class MeasureWindow(widget.MWidget):
                         color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
+
         axe0.set_ylabel(ylabelLeft,
-                        color=self.M_WHITE,
-                        fontweight='bold',
-                        fontsize=12)
-        axe1.set_ylabel(ylabelRight,
                         color=self.M_GREEN,
                         fontweight='bold',
                         fontsize=12)
+        axe1.set_ylabel(ylabelRight1,
+                        color=self.M_WHITE,
+                        fontweight='bold',
+                        fontsize=12)
+        axe2.set_ylabel(ylabelRight2,
+                        labelpad=30,
+                        color=self.M_PINK,
+                        fontweight='bold',
+                        fontsize=12)
+
         l0, = axe0.plot(time,
-                        yLeft,
+                        mLeft,
+                        marker='o',
+                        markersize=1,
+                        color=self.M_GREEN,
+                        )
+        l1, = axe1.plot(time,
+                        mRight1,
                         marker='o',
                         markersize=1,
                         color=self.M_WHITE,
                         )
-        l1, = axe0.plot(time,
-                        yLeft2,
+        l2, = axe2.plot(time,
+                        mRight2,
                         marker='o',
                         markersize=1,
                         color=self.M_PINK,
                         )
-        l2, = axe1.plot(time,
-                        yRight,
-                        marker='o',
-                        markersize=1,
-                        color=self.M_GREEN,
-                        )
-        axe0.set_ylim(-10, 25)
-        axe1.set_ylim(800, 1050)
+
+        axe0.set_ylim(800, 1050)
+        axe1.set_ylim(-10, 25)
+        axe2.set_ylim(-10, 25)
+
         axe0.grid(True, color=self.M_GREY, alpha=0.5)
         legend = axe0.legend([l0, l1, l2],
-                             [ylabelLeft, ylabelLeft2, ylabelRight],
+                             [ylabelLeft, ylabelRight1, ylabelRight2],
                              facecolor=self.M_BLACK,
                              edgecolor=self.M_BLUE,
                              )

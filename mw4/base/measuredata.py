@@ -37,7 +37,7 @@ class MeasureData(PyQt5.QtCore.QObject):
     __all__ = ['MeasureData',
                ]
 
-    version = '0.2'
+    version = '0.3'
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
@@ -88,7 +88,7 @@ class MeasureData(PyQt5.QtCore.QObject):
             return raJNow, decJNow
 
         length = len(dat['status'])
-        period = min(length, 5)
+        period = min(length, 10)
         hasMean = length > 0 and period > 0
 
         if not hasMean:
@@ -96,10 +96,11 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         periodData = dat['status'][-period:]
         hasValidData = all(x is not None for x in periodData)
-        if hasValidData:
-            meanIsZero = periodData.mean() == 0
 
-        trackingIsStable = hasValidData and meanIsZero
+        if hasValidData:
+            trackingIsStable = (periodData.mean() == 0)
+        else:
+            trackingIsStable = False
 
         if trackingIsStable:
             if self.raRef is None:

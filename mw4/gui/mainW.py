@@ -292,7 +292,18 @@ class MainWindow(MWidget,
 
         :return: success
         """
+
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+
+        ui = self.ui.astrometryConnected
+        if self.app.plateSolve is None:
+            status = False
+        else:
+            status = self.app.plateSolve.checkAvailability()
+        if status:
+            self.changeStyleDynamic(ui, 'color', 'green')
+        else:
+            self.changeStyleDynamic(ui, 'color', 'red')
         return True
 
     def updateTask(self):

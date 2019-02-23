@@ -146,7 +146,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -11692,6 +11692,329 @@ manually</string>
        </property>
        <property name="checked">
         <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_23">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>300</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Accesory1</string>
+       </property>
+      </widget>
+      <widget class="Line" name="line_60">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>290</y>
+         <width>361</width>
+         <height>1</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="accessoryMessage">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>360</y>
+         <width>231</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Show messages</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_mountIP_10">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>240</y>
+         <width>81</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Host IP</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="acessoryName2">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>330</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="indiHostAccessories">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>240</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string>127.0.0.1</string>
+       </property>
+       <property name="maxLength">
+        <number>50</number>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="Line" name="line_72">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>230</y>
+         <width>361</width>
+         <height>1</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_36">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>330</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Accessory2</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="accessoryName1">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>300</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_162">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>270</y>
+         <width>241</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Devices</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="reconnectDome_2">
+       <property name="geometry">
+        <rect>
+         <x>685</x>
+         <y>240</y>
+         <width>76</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the image window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Reconnect</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_265">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>210</y>
+         <width>211</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Acessories</string>
        </property>
       </widget>
      </widget>

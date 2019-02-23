@@ -290,8 +290,8 @@ class MeasureWindow(widget.MWidget):
 
         title = 'Environment'
         ylabelLeft = 'Pressure [hPas]'
-        ylabelRight1 = 'Dew Temperature [°C]'
-        ylabelRight2 = 'Temperature [°C]'
+        ylabelRight1 = 'Temperature [°C]'
+        ylabelRight2 = 'Dew Temperature [°C]'
 
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
@@ -317,7 +317,7 @@ class MeasureWindow(widget.MWidget):
                         fontweight='bold',
                         fontsize=12)
         axe2.set_ylabel(ylabelRight2,
-                        labelpad=20,
+                        labelpad=25,
                         color=self.M_PINK,
                         fontweight='bold',
                         fontsize=12)

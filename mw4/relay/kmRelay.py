@@ -195,10 +195,10 @@ class KMRelay(PyQt5.QtCore.QObject):
         value = self.getRelay('/status.xml')
 
         if value.reason != 'OK':
-            self.logger.error(f'Relay:{relayNumber}')
+            self.logger.error('Polling error')
             return False
         elif value.status_code == 401:
-            self.logger.error(f'Relay:{relayNumber} unauthorized')
+            self.logger.error('Polling error: unauthorized')
             return False
 
         lines = value.text.splitlines()

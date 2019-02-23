@@ -155,6 +155,11 @@ class MeasureWindow(widget.MWidget):
         return True
 
     def clearPlot(self, numbAxes=None):
+        """
+
+        :param numbAxes: number of axes to be defined and cleared. actual 1 or 2.
+        :return: success
+        """
 
         if numbAxes < 1:
             return False
@@ -193,14 +198,15 @@ class MeasureWindow(widget.MWidget):
             axe.spines['top'].set_color(color)
             axe.spines['left'].set_color(color)
             axe.spines['right'].set_color(color)
+
         return True
 
     def drawRaDecStability(self, data=None, cycle=None):
         """
 
-        :param data:
-        :param cycle:
-        :return:
+        :param data: data location
+        :param cycle: cycle time for measurement
+        :return: success
         """
 
         if not self.clearPlot(numbAxes=2):
@@ -267,9 +273,9 @@ class MeasureWindow(widget.MWidget):
     def drawMeasureEnvironment(self, data=None, cycle=None):
         """
 
-        :param data:
-        :param cycle:
-        :return:
+        :param data: data location
+        :param cycle: cycle time for measurement
+        :return: success
         """
 
         if not self.clearPlot(numbAxes=2):
@@ -343,9 +349,9 @@ class MeasureWindow(widget.MWidget):
     def drawSQR(self, data=None, cycle=None):
         """
 
-        :param data:
-        :param cycle:
-        :return:
+        :param data: data location
+        :param cycle: cycle time for measurement
+        :return: success
         """
 
         if not self.clearPlot(numbAxes=1):
@@ -397,7 +403,7 @@ class MeasureWindow(widget.MWidget):
     def drawMeasure(self):
         """
 
-        :return: nothing
+        :return: success
         """
 
         if not self.showStatus:
@@ -444,3 +450,4 @@ class MeasureWindow(widget.MWidget):
             axe.figure.canvas.draw()
 
         self.mutexDraw.unlock()
+        return True

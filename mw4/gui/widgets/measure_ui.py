@@ -79,7 +79,6 @@ class Ui_MeasureDialog(object):
         self.measure.setStyleSheet("")
         self.measure.setObjectName("measure")
         self.verticalLayout.addWidget(self.measure)
-        self.verticalLayout.setStretch(2, 1)
 
         self.retranslateUi(MeasureDialog)
         QtCore.QMetaObject.connectSlotsByName(MeasureDialog)

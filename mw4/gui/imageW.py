@@ -45,9 +45,6 @@ class ImageWindow(widget.MWidget):
     version = '0.2'
     logger = logging.getLogger(__name__)
 
-    BACK = 'background-color: transparent;'
-    BLUE = '#2090C0'
-
     def __init__(self, app):
         super().__init__()
         self.app = app

@@ -37,7 +37,7 @@ class MessageWindow(widget.MWidget):
 
     __all__ = ['MessageWindow',
                ]
-    version = '0.1'
+    version = '0.2'
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):
@@ -59,7 +59,6 @@ class MessageWindow(widget.MWidget):
                          PyQt5.QtGui.QFont.Normal,
                          ]
 
-        # link gui blocks
         self.app.message.connect(self.writeMessage)
         self.initConfig()
 

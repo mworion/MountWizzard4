@@ -36,10 +36,9 @@ class MeasureWindow(widget.MWidget):
 
     __all__ = ['MeasureWindow',
                ]
-    version = '0.1'
+    version = '0.2'
     logger = logging.getLogger(__name__)
 
-    BACK = 'background-color: transparent;'
     CYCLE_UPDATE_TASK = 1000
     NUMBER_POINTS = 500
     NUMBER_XTICKS = 8

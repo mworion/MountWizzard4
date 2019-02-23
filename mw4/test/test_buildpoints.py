@@ -891,23 +891,25 @@ def test_sort_2():
 
 def test_sort_3():
     values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
     data._buildP = values
     suc = data.sort(eastwest=True, highlow=False)
     assert suc
-    assert data.buildP == values
+    assert data.buildP == result
 
 
 def test_sort_4():
     values = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
     data._buildP = values
     suc = data.sort(eastwest=False, highlow=True)
     assert suc
-    assert data.buildP == values
+    assert data.buildP == result
 
 
 def test_sort_5():
     values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
-    result = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
     data._buildP = values
     suc = data.sort(eastwest=True, highlow=False)
     assert suc
@@ -916,7 +918,7 @@ def test_sort_5():
 
 def test_sort_6():
     values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
-    result = [(10, 10), (20, 20), (30, 90), (40, 190), (50, 290)]
+    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
     data._buildP = values
     suc = data.sort(eastwest=False, highlow=True)
     assert suc

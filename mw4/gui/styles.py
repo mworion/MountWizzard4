@@ -35,6 +35,15 @@ class MWStyles(object):
     COLOR_BACKGROUND = PyQt5.QtGui.QColor(32, 32, 32)
     COLOR_FRAME = PyQt5.QtGui.QColor(192, 192, 192)
 
+    TRAFFICLIGHTCOLORS = ['green', 'yellow', 'red', '']
+    BACK_BG = 'background-color: transparent;'
+    M_BLUE = '#2090C0'
+    M_BLACK = '#000000'
+    M_GREY = '#404040'
+    M_WHITE = '#A0A0A0'
+    M_GREEN = '#30B030'
+    M_PINK = '#B030B0'
+
     # define the basic style of the mountwizzard3 theme
     # rise the font size for retina displays
     MAC_STYLE = """

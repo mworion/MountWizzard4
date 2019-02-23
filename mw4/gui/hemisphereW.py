@@ -98,7 +98,7 @@ class HemisphereWindow(widget.MWidget):
         # doing the matplotlib embedding
         # for the alt az plane
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
-        self.hemisphereMat.parentWidget().setStyleSheet(self.BACK)
+        self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
         self.clearRect(self.hemisphereMat, True)
 
         # signals for gui

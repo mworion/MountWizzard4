@@ -59,7 +59,7 @@ class ImageWindow(widget.MWidget):
         self.setupDropDownGui()
 
         self.imageMat = self.embedMatplot(self.ui.image)
-        self.imageMat.parentWidget().setStyleSheet(self.BACK)
+        self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.showFitsImage)

@@ -48,7 +48,7 @@ class MessageWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
 
-        self.messColor = [self.COLOR_ASTRO,
+        self.messColor = [self.COLOR_BLUE,
                           self.COLOR_WHITE,
                           self.COLOR_YELLOW,
                           self.COLOR_RED,

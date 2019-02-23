@@ -57,7 +57,7 @@ class MeasureWindow(widget.MWidget):
 
         # doing the matplotlib embedding
         self.measureMat = self.embedMatplot(self.ui.measure)
-        self.measureMat.parentWidget().setStyleSheet(self.BACK)
+        self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
         self.clearRect(self.measureMat, True)
         # adding two axes (getting 3 in total)
         self.measureMat.figure.axes[0].twinx()
@@ -155,6 +155,8 @@ class MeasureWindow(widget.MWidget):
 
     def clearPlot(self, numbAxes=None):
         """
+        clearPlot deletes the content of the axes and renews the basic setting for grid,
+        color, spines etc.
 
         :param numbAxes: number of axes to be defined and cleared. actual 1 or 2.
         :return: success
@@ -164,8 +166,6 @@ class MeasureWindow(widget.MWidget):
             return False
         if numbAxes > 3:
             return False
-
-        color = '#2090C0'
 
         fig = self.measureMat.figure
 
@@ -188,20 +188,24 @@ class MeasureWindow(widget.MWidget):
                 axe.set_visible(True)
             else:
                 axe.set_visible(False)
+
             axe.set_facecolor((0, 0, 0, 0))
             axe.tick_params(axis='both',
-                            colors=color,
+                            colors=self.M_BLUE,
                             labelsize=12)
-            axe.set_facecolor((0, 0, 0, 0))
-            axe.spines['bottom'].set_color(color)
-            axe.spines['top'].set_color(color)
-            axe.spines['left'].set_color(color)
-            axe.spines['right'].set_color(color)
+            axe.spines['bottom'].set_color(self.M_BLUE)
+            axe.spines['top'].set_color(self.M_BLUE)
+            axe.spines['left'].set_color(self.M_BLUE)
+            axe.spines['right'].set_color(self.M_BLUE)
 
         return True
 
     def drawRaDecStability(self, data=None, cycle=None):
         """
+        drawRaDecStability show the specific graph for plotting the ra dec deviations. this
+        is done with two color and axes to distinguish the values for ra and dec.
+        ideally the values are around zero, but the scales of ra and dec axis have to be
+        different.
 
         :param data: data location
         :param cycle: cycle time for measurement
@@ -214,10 +218,6 @@ class MeasureWindow(widget.MWidget):
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
 
-        colorTitle = '#2090C0'
-        colorLeft = '#A0A0A0'
-        colorRight = '#30B030'
-        colorGrid = '#404040'
         title = 'RaDec Stability'
         ylabelLeft = 'delta RA [arcsec]'
         ylabelRight = 'delta DEC [arcsec]'
@@ -228,36 +228,36 @@ class MeasureWindow(widget.MWidget):
         yRight = data['decJNow'][start:-1:cycle]
 
         axe0.set_title(title,
-                       color=colorTitle,
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=16)
         axe0.set_xlabel('Time [HH:MM:SS - UTC]',
-                        color=colorTitle,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
         axe0.set_ylabel(ylabelLeft,
-                        color=colorLeft,
+                        color=self.M_WHITE,
                         fontweight='bold',
                         fontsize=12)
         axe1.set_ylabel(ylabelRight,
-                        color=colorRight,
+                        color=self.M_GREEN,
                         fontweight='bold',
                         fontsize=12)
         l0, = axe0.plot(time,
                         yLeft,
                         marker='o',
                         markersize=1,
-                        color=colorLeft,
+                        color=self.M_WHITE,
                         )
         l1, = axe1.plot(time,
                         yRight,
                         marker='o',
                         markersize=1,
-                        color=colorRight,
+                        color=self.M_GREEN,
                         )
         axe0.set_ylim(-0.4, 0.4)
         axe1.set_ylim(-4, 4)
-        axe0.grid(True, color=colorGrid, alpha=0.5)
+        axe0.grid(True, color=self.M_GREY, alpha=0.5)
         legend = axe0.legend([l0, l1],
                              [ylabelLeft, ylabelRight],
                              facecolor='#000000',
@@ -269,8 +269,11 @@ class MeasureWindow(widget.MWidget):
 
         return True
 
-    def drawMeasureEnvironment(self, data=None, cycle=None):
+    def drawEnvironment(self, data=None, cycle=None):
         """
+        drawEnvironment show the specific graph for plotting the temps, pressure
+        and humidity deviations. this is done with two color and axes to distinguish the
+        ranges.
 
         :param data: data location
         :param cycle: cycle time for measurement
@@ -283,11 +286,6 @@ class MeasureWindow(widget.MWidget):
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
 
-        colorLeft = '#A0A0A0'
-        colorRight = '#30B030'
-        colorLeft2 = '#B030B0'
-        colorTitle = '#2090C0'
-        colorGrid = '#404040'
         title = 'Environment'
         ylabelLeft = 'Temperature [°C]'
         ylabelLeft2 = 'Dew Temperature [°C]'
@@ -300,46 +298,46 @@ class MeasureWindow(widget.MWidget):
         yRight = data['press'][start:-1:cycle]
 
         axe0.set_title(title,
-                       color=colorTitle,
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=16)
         axe0.set_xlabel('Time [HH:MM:SS - UTC]',
-                        color=colorTitle,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
         axe0.set_ylabel(ylabelLeft,
-                        color=colorLeft,
+                        color=self.M_WHITE,
                         fontweight='bold',
                         fontsize=12)
         axe1.set_ylabel(ylabelRight,
-                        color=colorRight,
+                        color=self.M_GREEN,
                         fontweight='bold',
                         fontsize=12)
         l0, = axe0.plot(time,
                         yLeft,
                         marker='o',
                         markersize=1,
-                        color=colorLeft,
+                        color=self.M_WHITE,
                         )
         l1, = axe0.plot(time,
                         yLeft2,
                         marker='o',
                         markersize=1,
-                        color=colorLeft2,
+                        color=self.M_PINK,
                         )
         l2, = axe1.plot(time,
                         yRight,
                         marker='o',
                         markersize=1,
-                        color=colorRight,
+                        color=self.M_GREEN,
                         )
         axe0.set_ylim(-10, 25)
         axe1.set_ylim(800, 1050)
-        axe0.grid(True, color=colorGrid, alpha=0.5)
+        axe0.grid(True, color=self.M_GREY, alpha=0.5)
         legend = axe0.legend([l0, l1, l2],
                              [ylabelLeft, ylabelLeft2, ylabelRight],
-                             facecolor='#000000',
-                             edgecolor='#2090C0',
+                             facecolor=self.M_BLACK,
+                             edgecolor=self.M_BLUE,
                              )
         for text in legend.get_texts():
             text.set_color('#2090C0')
@@ -358,9 +356,6 @@ class MeasureWindow(widget.MWidget):
 
         axe0 = self.measureMat.figure.axes[0]
 
-        colorLeft = '#A0A0A0'
-        colorTitle = '#2090C0'
-        colorGrid = '#404040'
         title = 'Sky Quality'
         ylabelLeft = 'Sky Quality [mpas]'
 
@@ -369,15 +364,15 @@ class MeasureWindow(widget.MWidget):
         yLeft = data['sqr'][start:-1:cycle]
 
         axe0.set_title(title,
-                       color=colorTitle,
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=16)
         axe0.set_xlabel('Time [HH:MM:SS - UTC]',
-                        color=colorTitle,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
         axe0.set_ylabel(ylabelLeft,
-                        color=colorLeft,
+                        color=self.M_WHITE,
                         fontweight='bold',
                         fontsize=12)
 
@@ -385,11 +380,11 @@ class MeasureWindow(widget.MWidget):
                         yLeft,
                         marker='o',
                         markersize=1,
-                        color=colorLeft,
+                        color=self.M_WHITE,
                         )
 
         axe0.set_ylim(10, 21)
-        axe0.grid(True, color=colorGrid, alpha=0.5)
+        axe0.grid(True, color=self.M_GREY, alpha=0.5)
         legend = axe0.legend([l0],
                              [ylabelLeft],
                              facecolor='#000000',
@@ -420,7 +415,7 @@ class MeasureWindow(widget.MWidget):
         if not self.mutexDraw.tryLock():
             return False
 
-        cycle = 2 ^ tIndex
+        cycle = int(np.exp2(tIndex))
         self.timerTask.stop()
         self.timerTask.start(cycle * 1000)
 
@@ -436,7 +431,7 @@ class MeasureWindow(widget.MWidget):
         if mIndex == 0:
             self.drawRaDecStability(data=data, cycle=cycle)
         elif mIndex == 1:
-            self.drawMeasureEnvironment(data=data, cycle=cycle)
+            self.drawEnvironment(data=data, cycle=cycle)
         elif mIndex == 2:
             self.drawSQR(data=data, cycle=cycle)
         else:

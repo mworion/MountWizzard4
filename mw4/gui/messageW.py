@@ -59,6 +59,7 @@ class MessageWindow(widget.MWidget):
                          PyQt5.QtGui.QFont.Normal,
                          ]
 
+        self.ui.clear.clicked.connect(self.clearWindow)
         self.app.message.connect(self.writeMessage)
         self.initConfig()
 
@@ -87,25 +88,6 @@ class MessageWindow(widget.MWidget):
         config['height'] = self.height()
         config['showStatus'] = self.showStatus
 
-    def resizeEvent(self, QResizeEvent):
-        """
-        resizeEvent changes the internal widget according to the resize of the window
-        the formulae of the calculation is:
-            spaces left right top button : 5 pixel
-            widget start in height at y = 130
-
-        :param QResizeEvent:
-        :return: nothing
-        """
-
-        super().resizeEvent(QResizeEvent)
-        space = 5
-        startY = 10
-        self.ui.message.setGeometry(space,
-                                    startY - space,
-                                    self.width() - 2 * space,
-                                    self.height() - startY)
-
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
         self.changeStyleDynamic(self.app.mainW.ui.openMessageW, 'running', 'false')
@@ -121,6 +103,10 @@ class MessageWindow(widget.MWidget):
         self.showStatus = True
         self.show()
         self.changeStyleDynamic(self.app.mainW.ui.openMessageW, 'running', 'true')
+
+    def clearWindow(self):
+        self.ui.message.clear()
+        return True
 
     def writeMessage(self, message, mType=0):
         if mType < 0:

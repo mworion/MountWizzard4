@@ -105,10 +105,29 @@ class MessageWindow(widget.MWidget):
         self.changeStyleDynamic(self.app.mainW.ui.openMessageW, 'running', 'true')
 
     def clearWindow(self):
+        """
+        clearWindow resets the window and shows empty text.
+
+        :return: true for test purpose
+        """
+
         self.ui.message.clear()
         return True
 
     def writeMessage(self, message, mType=0):
+        """
+        writeMessage takes singles with message and writes them to the text browser window.
+        types:
+            0: normal text
+            1: highlighted text
+            2: warning text
+            3: error text
+
+        :param message: message text
+        :param mType: message type
+        :return: true for test purpose
+        """
+
         if mType < 0:
             return False
         if mType > len(self.messColor):

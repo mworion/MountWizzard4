@@ -7,6 +7,7 @@ problems occurred list:
 - tests loader missing
 - tests + docu message window
 - improved header handling image window + docu
+- mainApp new style of implementation
 
 
 necessary feature list:
@@ -32,3 +33,4 @@ nice to have:
 - gui show indi device FL / pixels data in screen and choose which to use
 - check if daylight timezone fits to the computer or set it up !
 - max error for modeling solving
+- move format string to new python format

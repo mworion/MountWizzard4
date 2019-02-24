@@ -60,7 +60,7 @@ def test_mountBoot1(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.mountBoot()
             assert suc
-        assert ['Mount booted', 0] == blocker.args
+        assert ['Mount booting', 0] == blocker.args
 
 
 def test_mountBoot2(qtbot):

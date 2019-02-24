@@ -241,7 +241,7 @@ class MainWindow(MWidget,
 
     def mountBoot(self):
         if self.app.mount.bootMount():
-            self.app.message.emit('Mount booted', 0)
+            self.app.message.emit('Mount booting', 0)
             return True
         else:
             self.app.message.emit('Mount cannot be booted', 2)

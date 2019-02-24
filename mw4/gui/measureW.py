@@ -225,8 +225,8 @@ class MeasureWindow(widget.MWidget):
 
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
-        yLeft = data['raJNow'][start:-1:cycle]
-        yRight = data['decJNow'][start:-1:cycle]
+        mLeft = data['raJNow'][start:-1:cycle]
+        mRight = data['decJNow'][start:-1:cycle]
 
         axe0.set_title(title,
                        color=self.M_BLUE,
@@ -244,23 +244,29 @@ class MeasureWindow(widget.MWidget):
                         color=self.M_GREEN,
                         fontweight='bold',
                         fontsize=12)
+
         l0, = axe0.plot(time,
-                        yLeft,
+                        mLeft,
                         marker='o',
                         markersize=1,
                         color=self.M_WHITE,
                         )
         l1, = axe1.plot(time,
-                        yRight,
+                        mRight,
                         marker='o',
                         markersize=1,
                         color=self.M_GREEN,
                         )
+
         axe0.set_ylim(-0.4, 0.4)
         axe1.set_ylim(-4, 4)
         axe0.grid(True, color=self.M_GREY, alpha=0.5)
+
+        legendLeft = f'{mLeft[-1]:4.2f}  {ylabelLeft}'
+        legendRight = f'{mRight[-1]:4.2f}  {ylabelRight}'
+
         legend = axe0.legend([l0, l1],
-                             [ylabelLeft, ylabelRight],
+                             [legendLeft, legendRight],
                              facecolor='#000000',
                              edgecolor='#2090C0',
                              fontsize='large',
@@ -344,10 +350,14 @@ class MeasureWindow(widget.MWidget):
         axe0.set_ylim(800, 1050)
         axe1.set_ylim(-10, 25)
         axe2.set_ylim(-10, 25)
-
         axe0.grid(True, color=self.M_GREY, alpha=0.5)
+
+        legendLeft = f'{mLeft[-1]:4.0f}  {ylabelLeft}'
+        legendRight1 = f'{mRight1[-1]:4.1f}  {ylabelRight1}'
+        legendRight2 = f'{mRight2[-1]:4.1f}  {ylabelRight2}'
+
         legend = axe0.legend([l0, l1, l2],
-                             [ylabelLeft, ylabelRight1, ylabelRight2],
+                             [legendLeft, legendRight1, legendRight2],
                              facecolor=self.M_BLACK,
                              edgecolor=self.M_BLUE,
                              )
@@ -374,7 +384,7 @@ class MeasureWindow(widget.MWidget):
 
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
-        yLeft = data['sqr'][start:-1:cycle]
+        mLeft = data['sqr'][start:-1:cycle]
 
         axe0.set_title(title,
                        color=self.M_BLUE,
@@ -390,7 +400,7 @@ class MeasureWindow(widget.MWidget):
                         fontsize=12)
 
         l0, = axe0.plot(time,
-                        yLeft,
+                        mLeft,
                         marker='o',
                         markersize=1,
                         color=self.M_WHITE,
@@ -398,8 +408,11 @@ class MeasureWindow(widget.MWidget):
 
         axe0.set_ylim(10, 21)
         axe0.grid(True, color=self.M_GREY, alpha=0.5)
+
+        legendLeft = f'{mLeft[-1]:5.2f}  {ylabelLeft}'
+
         legend = axe0.legend([l0],
-                             [ylabelLeft],
+                             [legendLeft],
                              facecolor='#000000',
                              edgecolor='#2090C0',
                              )

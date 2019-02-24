@@ -247,8 +247,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         byteOff = self._getByte(relayNumber=relayNumber, state=False)
         value1 = self.geturl(f'http://{self.relayIP}/FFE0{byteOn:2X}')
         time.sleep(self.PULSEWIDTH)
-        value2 = self.geturl(f'http://{self.relayIP}/FFE0{byteOff:2X}')
- 
+        value2 = self.geturl(f'http://{self.relayIP}/FFE0{byteOff:2X}') 
         '''
         value1 = self.getRelay('/FF0{0:1d}01'.format(relayNumber + 1))
         time.sleep(self.PULSEWIDTH)
@@ -292,6 +291,11 @@ class KMRelay(PyQt5.QtCore.QObject):
         :param value: relay state.
         :return: success
         """
+
+        '''
+        byteOn = self._getByte(relayNumber=relayNumber, state=value)
+        value = self.geturl(f'http://{self.relayIP}/FFE0{byteOn:2X}')
+        '''
 
         if value:
             outputFormat = '/FF0{0:1d}01'

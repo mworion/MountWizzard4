@@ -209,7 +209,6 @@ class KMRelay(PyQt5.QtCore.QObject):
             value = [int(s) for s in value]
             self.status[value[0] - 1] = value[1]
 
-        self.logger.info(f'Relay: {self.status}')
         self.statusReady.emit()
         return True
 

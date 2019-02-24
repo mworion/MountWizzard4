@@ -189,7 +189,7 @@ class SettRelay(object):
         for i, button in enumerate(self.relayButtons):
             if button != self.sender():
                 continue
-            self.doRelayAction(i)
+            suc = self.doRelayAction(i)
         if not suc:
             self.app.message.emit('Relay action cannot be performed', 2)
             return False

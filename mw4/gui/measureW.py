@@ -436,7 +436,7 @@ class MeasureWindow(widget.MWidget):
         mIndex = self.ui.measureSet.currentIndex()
         tIndex = self.ui.timeSet.currentIndex()
 
-        if len(data['time']) == 0:
+        if len(data['time']) <= 1:
             return False
 
         if not self.mutexDraw.tryLock():

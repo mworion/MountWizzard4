@@ -81,7 +81,7 @@
         <number>4</number>
        </property>
        <item row="0" column="2">
-        <widget class="QPushButton" name="stop">
+        <widget class="QPushButton" name="exposeN">
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -244,7 +244,7 @@
         </widget>
        </item>
        <item row="0" column="3">
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="stop">
          <property name="minimumSize">
           <size>
            <width>80</width>

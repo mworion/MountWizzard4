@@ -195,6 +195,7 @@ class ImageWindow(widget.MWidget):
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')
         self.ui.expose.setEnabled(False)
         self.ui.exposeN.setEnabled(False)
+        self.ui.stop.setEnabled(False)
         self.ui.load.setEnabled(False)
         self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
 
@@ -202,6 +203,7 @@ class ImageWindow(widget.MWidget):
         self.changeStyleDynamic(self.ui.solve, 'running', 'false')
         self.ui.expose.setEnabled(True)
         self.ui.exposeN.setEnabled(True)
+        self.ui.stop.setEnabled(True)
         self.ui.load.setEnabled(True)
         self.showFitsImage()
 
@@ -227,33 +229,46 @@ class ImageWindow(widget.MWidget):
         """
 
         name = header.get('OBJECT', '').upper()
+        self.ui.object.setText(f'{name}')
+
         ra = header.get('RA', 0)
         dec = header.get('DEC', 0)
+        if ra == 0 and dec == 0:
+            ra = header.get('OBJCTRA', 0)
+            dec = header.get('OBJCTDEC', 0)
+            self.ui.ra.setText(f'{ra}')
+            self.ui.dec.setText(f'{dec}')
+        else:
+            self.ui.ra.setText(f'{ra:8.5f}')
+            self.ui.dec.setText(f'{dec:8.5f}')
+
         scale = header.get('SCALE', 0)
+        rotation = header.get('ANGLE', 0)
+        self.ui.scale.setText(f'{scale:5.3f}')
+        self.ui.rotation.setText(f'{rotation:6.3f}')
+
         ccdTemp = header.get('CCD-TEMP', 0)
+        self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
+
         expTime1 = header.get('EXPOSURE', 0)
         expTime2 = header.get('EXPTIME', 0)
         expTime = max(expTime1, expTime2)
+        self.ui.expTime.setText(f'{expTime:5.1f}')
+
         filterCCD = header.get('FILTER', 0)
+        self.ui.filter.setText(f'{filterCCD}')
+
         binX = header.get('XBINNING', 0)
         binY = header.get('YBINNING', 0)
+        self.ui.binX.setText(f'{binX:1.0f}')
+        self.ui.binY.setText(f'{binY:1.0f}')
+
         sqm = max(header.get('SQM', 0),
                   header.get('SKY-QLTY', 0),
                   )
-        rotation = header.get('ANGLE', 0)
-        flipped = header.get('FLIPPED', False)
-
-        self.ui.object.setText(f'{name}')
-        self.ui.ra.setText(f'{ra:8.5f}')
-        self.ui.dec.setText(f'{dec:8.5f}')
-        self.ui.rotation.setText(f'{rotation:6.3f}')
-        self.ui.scale.setText(f'{scale:5.3f}')
-        self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
-        self.ui.expTime.setText(f'{expTime:5.1f}')
-        self.ui.filter.setText(f'{filterCCD}')
-        self.ui.binX.setText(f'{binX:1.0f}')
-        self.ui.binY.setText(f'{binY:1.0f}')
         self.ui.sqm.setText(f'{sqm:5.2f}')
+
+        flipped = header.get('FLIPPED', False)
 
         if 'CTYPE1' in header:
             wcsObject = wcs.WCS(header)
@@ -360,35 +375,35 @@ class ImageWindow(widget.MWidget):
         axes = self.imageMat.figure.axes[0]
         axe0 = axes.coords[0]
         axe1 = axes.coords[1]
-        axes.coords.frame.set_color(self.BLUE)
+        axes.coords.frame.set_color(self.M_BLUE)
 
         axe0.set_ticks(number=10)
         axe1.set_ticks(number=10)
         axe0.grid(True,
-                  color=self.BLUE,
+                  color=self.M_BLUE,
                   ls='solid',
                   alpha=0.5,
                   )
         axe1.grid(True,
-                  color=self.BLUE,
+                  color=self.M_BLUE,
                   ls='solid',
                   alpha=0.5,
                   )
 
-        axe0.tick_params(colors=self.BLUE,
+        axe0.tick_params(colors=self.M_BLUE,
                          labelsize=12,
                          )
-        axe1.tick_params(colors=self.BLUE,
+        axe1.tick_params(colors=self.M_BLUE,
                          labelsize=12,
                          )
 
         axe0.set_axislabel('Coordinates',
-                           color=self.BLUE,
+                           color=self.M_BLUE,
                            fontsize=12,
                            fontweight='bold',
                            )
         axe1.set_axislabel('Coordinates',
-                           color=self.BLUE,
+                           color=self.M_BLUE,
                            fontsize=12,
                            fontweight='bold',
                            )
@@ -408,14 +423,14 @@ class ImageWindow(widget.MWidget):
                                          )
         axes = self.imageMat.figure.axes[0]
         axes.grid(True,
-                  color=self.BLUE,
+                  color=self.M_BLUE,
                   ls='solid',
                   alpha=0.5,
                   )
-        axes.spines['bottom'].set_color(self.BLUE)
-        axes.spines['top'].set_color(self.BLUE)
-        axes.spines['left'].set_color(self.BLUE)
-        axes.spines['right'].set_color(self.BLUE)
+        axes.spines['bottom'].set_color(self.M_BLUE)
+        axes.spines['top'].set_color(self.M_BLUE)
+        axes.spines['left'].set_color(self.M_BLUE)
+        axes.spines['right'].set_color(self.M_BLUE)
 
         sizeY, sizeX = image.shape
         midX = int(sizeX / 2)
@@ -436,22 +451,22 @@ class ImageWindow(widget.MWidget):
 
         axes.tick_params(axis='x',
                          which='major',
-                         colors=self.BLUE,
+                         colors=self.M_BLUE,
                          labelsize=12,
                          )
         axes.tick_params(axis='y',
                          which='major',
-                         colors=self.BLUE,
+                         colors=self.M_BLUE,
                          labelsize=12,
                          )
 
         axes.set_xlabel(xlabel='Pixel',
-                        color=self.BLUE,
+                        color=self.M_BLUE,
                         fontsize=12,
                         fontweight='bold',
                         )
         axes.set_ylabel(ylabel='Pixel',
-                        color=self.BLUE,
+                        color=self.M_BLUE,
                         fontsize=12,
                         fontweight='bold',
                         )

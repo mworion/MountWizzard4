@@ -3,6 +3,10 @@ problems occurred list:
 - mountcontrol overflow pointing
 - tests for polar plot in mainW missing
 - wcs axes in GUI not showing always labels
+- tests imaging window missing
+- tests loader missing
+- tests + docu message window
+- improved header handling image window + docu
 
 
 necessary feature list:

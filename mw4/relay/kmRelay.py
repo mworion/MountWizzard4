@@ -213,6 +213,28 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.statusReady.emit()
         return True
 
+    def _getByte(self, relayNumber=0, state=False):
+        """
+        _getByte generates the right bit mask for setting or resetting the relay mask
+
+        :param number: relay number
+        :param state: state to archive
+        :return: bit mask for switching
+        """
+
+        byteStat = 0b00000000
+        for i, stat in enumerate(self.status):
+            if stat:
+                byteStat = byteStat | 1 << relayNumber
+        position = 1 << (relayNumber - 1)
+        byteOn = byteStat | position
+        byteOff = byteOn & ~position
+
+        if state:
+            return byteOn
+        else:
+            return byteOff
+
     def pulse(self, relayNumber):
         """
         pulse switches a relay on for one second and off back.
@@ -221,6 +243,14 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
+        '''
+        byteOn = self._getByte(relayNumber=relayNumber, state=True)
+        byteOff = self._getByte(relayNumber=relayNumber, state=False)
+        value1 = self.geturl(f'http://{self.relayIP}/FFE0{byteOn:2X}')
+        time.sleep(self.PULSEWIDTH)
+        value2 = self.geturl(f'http://{self.relayIP}/FFE0{byteOff:2X}')
+ 
+        '''
         value1 = self.getRelay('/FF0{0:1d}01'.format(relayNumber + 1))
         time.sleep(self.PULSEWIDTH)
         value2 = self.getRelay('/FF0{0:1d}00'.format(relayNumber + 1))

@@ -200,6 +200,15 @@ class HemisphereWindow(widget.MWidget):
 
     @staticmethod
     def clearAxes(axes, visible=False):
+        """
+        clearAxes cleans up the axes object in figure an setup a new plotting. it draws
+        grid, ticks etc.
+
+        :param axes: axes object of figure
+        :param visible: flag to set the grid visible or not
+        :return:
+        """
+
         axes.cla()
         axes.set_facecolor((0, 0, 0, 0))
         axes.set_xlim(0, 360)

@@ -147,8 +147,8 @@ class DataPoint(object):
         addBuildP extends the list of modeldata points. the new point could be added at the end
         of the list (default) or in any location in the list.
 
-        :param value:
-        :param position:
+        :param value: value to be inserted
+        :param position: position in list
         :return:
         """
 
@@ -503,6 +503,7 @@ class DataPoint(object):
                 # only values with above horizon = 0
 
                 if 5 <= alt <= 85 and 2 < az < 358:
+                    alt += np.random.uniform(-2, 2, 1)
                     self.addBuildP((alt, az))
         return True
 

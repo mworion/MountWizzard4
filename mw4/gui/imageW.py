@@ -211,18 +211,21 @@ class ImageWindow(widget.MWidget):
         """
 
         :param result: result (named tuple)
-        :return: nothing
+        :return: success
         """
 
         if not result[0]:
             self.app.message.emit('Solving error', 2)
-            return
+            return False
         r = result[1]
         text = f'Ra: {r.ra} Dec: {r.dec} Angle: {r.angle} Scale: {r.scale}'
         self.app.message.emit('Solved: ' + text, 0)
+        return True
 
     def writeHeaderToGui(self, header=None):
         """
+        writeHeaderToGui tries to read relevant values from FITS header and possible
+        replace values and write them to the imageW gui
 
         :param header: header of fits file
         :return: hasCelestial, hasDistortion

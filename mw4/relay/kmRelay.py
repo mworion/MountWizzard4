@@ -155,12 +155,13 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.logger.debug(f'Result: {url}, {reason}, {status}, {code}, {elapsed}, {text}')
         return True
 
-    def getRelay(self, url='/status.xml'):
+    def getRelay(self, url='/status.xml', debug=True):
         """
         getRelay sets and reads data from the given host ip using the given
         user and password
 
         :param url: web address of relay box
+        :param debug: write extended debug output
         :return: result: return values from web interface of box
         """
 
@@ -171,16 +172,21 @@ class KMRelay(PyQt5.QtCore.QObject):
             return False
 
         auth = requests.auth.HTTPBasicAuth(self._user,
-                                           self._password)
-        url = 'http://' + self._host[0] + ':' + str(self._host[1]) + url
+                                           self._password,
+                                           )
+        url = f'http://{self._host[0]}:{self._host[1]}{url}'
         result = None
+
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
         except requests.exceptions.Timeout:
             pass
         except Exception as e:
             self.logger.error(f'Error in request: {e}')
-        self._debugOutput(result=result)
+
+        if debug:
+            self._debugOutput(result=result)
+
         self.mutexPoll.unlock()
         return result
 
@@ -192,7 +198,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
-        value = self.getRelay('/status.xml')
+        value = self.getRelay('/status.xml', debug=False)
 
         if value is None:
             self.logger.error('Polling error')

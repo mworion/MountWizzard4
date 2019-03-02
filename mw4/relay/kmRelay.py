@@ -244,9 +244,9 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         byteOn = self._getByte(relayNumber=relayNumber, state=True)
         byteOff = self._getByte(relayNumber=relayNumber, state=False)
-        value1 = self.geturl(f'http://{self.relayIP}/FFE0{byteOn:2X}')
+        value1 = self.getRelay(f'/FFE0{byteOn:2X}')
         time.sleep(self.PULSEWIDTH)
-        value2 = self.geturl(f'http://{self.relayIP}/FFE0{byteOff:2X}')
+        value2 = self.getRelay(f'/FFE0{byteOff:2X}')
 
         if value1 is None or value2 is None:
             self.logger.error(f'Relay:{relayNumber}')
@@ -288,7 +288,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
 
         byteOn = self._getByte(relayNumber=relayNumber, state=value)
-        value = self.geturl(f'http://{self.relayIP}/FFE0{byteOn:2X}')
+        value = self.getRelay(f'/FFE0{byteOn:2X}')
 
         if value is None:
             self.logger.error(f'Relay:{relayNumber}')

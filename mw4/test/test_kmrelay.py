@@ -77,7 +77,7 @@ def test_status1(qtbot):
                            'getRelay',
                            return_value=ret):
 
-        for i in range(0, 9):
+        for i in range(1, 9):
             app.relay.set(i, 0)
 
         with qtbot.waitSignal(app.relay.statusReady):
@@ -109,7 +109,7 @@ def test_status2(qtbot):
                            'getRelay',
                            return_value=ret):
 
-        for i in range(0, 9):
+        for i in range(1, 9):
             app.relay.set(i, 1)
 
         with qtbot.waitSignal(app.relay.statusReady):
@@ -141,7 +141,7 @@ def test_status3(qtbot):
                            'getRelay',
                            return_value=ret):
 
-        for i in range(0, 9):
+        for i in range(1, 9):
             app.relay.switch(i)
 
         with qtbot.waitSignal(app.relay.statusReady):
@@ -174,7 +174,7 @@ def test_status4(qtbot):
                            return_value=ret):
         with mock.patch.object(time,
                                'sleep'):
-            for i in range(0, 9):
+            for i in range(1, 9):
                 app.relay.pulse(i)
 
             with qtbot.waitSignal(app.relay.statusReady):

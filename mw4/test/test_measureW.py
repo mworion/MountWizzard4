@@ -32,6 +32,25 @@ from mw4.test.test_setupQt import setupQt
 app, spy, mwGlob, test = setupQt()
 
 
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown():
+    value = np.datetime64('2014-12-12 20:20:20')
+    app.measure.data = {
+        'time': np.empty(shape=[0, 1], dtype='datetime64'),
+        'temp': np.full([2, 1], 1.0),
+        'humidity': np.full([2, 1], 1.0),
+        'press': np.full([2, 1], 1.0),
+        'dewTemp': np.full([2, 1], 1.0),
+        'sqr': np.full([2, 1], 1.0),
+        'raJNow': np.full([2, 1], 1.0),
+        'decJNow': np.full([2, 1], 1.0),
+        'status': np.full([2, 1], 1.0),
+    }
+    app.measure.data['time'] = np.append(app.measure.data['time'], value)
+    app.measure.data['time'] = np.append(app.measure.data['time'], value)
+    yield
+
+
 def test_storeConfig_1():
     app.measureW.storeConfig()
 
@@ -141,26 +160,6 @@ def test_drawMeasure_1():
 
 
 def test_drawMeasure_2():
-    app.measureW.showStatus = True
-    suc = app.measureW.drawMeasure()
-    assert not suc
-
-
-def test_drawMeasure_3():
-    value = np.datetime64('2014-12-12 20:20:20')
-    app.measure.data = {
-        'time': np.empty(shape=[0, 1], dtype='datetime64'),
-        'temp': np.zeros(shape=[2, 1]),
-        'humidity': np.zeros(shape=[2, 1]),
-        'press': np.zeros(shape=[2, 1]),
-        'dewTemp': np.zeros(shape=[2, 1]),
-        'sqr': np.zeros(shape=[2, 1]),
-        'raJNow': np.zeros(shape=[2, 1]),
-        'decJNow': np.zeros(shape=[2, 1]),
-        'status': np.zeros(shape=[2, 1]),
-    }
-    app.measure.data['time'] = np.append(app.measure.data['time'], value)
-    app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measureW.showStatus = True
     suc = app.measureW.drawMeasure()
     assert suc

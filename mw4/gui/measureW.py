@@ -121,9 +121,9 @@ class MeasureWindow(widget.MWidget):
         if not self.app.mainW.ui.checkMeasurement.isChecked():
             return False
         self.showStatus = True
-        self.drawMeasure()
+        suc = self.drawMeasure()
         self.show()
-        return True
+        return suc
 
     def setupButtons(self):
         """
@@ -262,8 +262,8 @@ class MeasureWindow(widget.MWidget):
         axe1.set_ylim(-4, 4)
         axe0.grid(True, color=self.M_GREY, alpha=0.5)
 
-        legendLeft = f'{mLeft[-1]:4.2f}  {ylabelLeft}'
-        legendRight = f'{mRight[-1]:4.2f}  {ylabelRight}'
+        legendLeft = f'{float(mLeft[-1]):4.2f}  {ylabelLeft}'
+        legendRight = f'{float(mRight[-1]):4.2f}  {ylabelRight}'
 
         legend = axe0.legend([l0, l1],
                              [legendLeft, legendRight],
@@ -352,9 +352,9 @@ class MeasureWindow(widget.MWidget):
         axe2.set_ylim(-10, 25)
         axe0.grid(True, color=self.M_GREY, alpha=0.5)
 
-        legendLeft = f'{mLeft[-1]:4.0f}  {ylabelLeft}'
-        legendRight1 = f'{mRight1[-1]:4.1f}  {ylabelRight1}'
-        legendRight2 = f'{mRight2[-1]:4.1f}  {ylabelRight2}'
+        legendLeft = f'{float(mLeft[-1]):4.0f}  {ylabelLeft}'
+        legendRight1 = f'{float(mRight1[-1]):4.1f}  {ylabelRight1}'
+        legendRight2 = f'{float(mRight2[-1]):4.1f}  {ylabelRight2}'
 
         legend = axe0.legend([l0, l1, l2],
                              [legendLeft, legendRight1, legendRight2],
@@ -409,7 +409,7 @@ class MeasureWindow(widget.MWidget):
         axe0.set_ylim(10, 21)
         axe0.grid(True, color=self.M_GREY, alpha=0.5)
 
-        legendLeft = f'{mLeft[-1]:5.2f}  {ylabelLeft}'
+        legendLeft = f'{float(mLeft[-1]):5.2f}  {ylabelLeft}'
 
         legend = axe0.legend([l0],
                              [legendLeft],
@@ -436,7 +436,7 @@ class MeasureWindow(widget.MWidget):
         mIndex = self.ui.measureSet.currentIndex()
         tIndex = self.ui.timeSet.currentIndex()
 
-        if len(data['time']) <= 1:
+        if len(data['time']) < 2:
             return False
 
         if not self.mutexDraw.tryLock():

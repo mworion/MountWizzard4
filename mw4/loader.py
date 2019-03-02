@@ -83,12 +83,19 @@ def except_hook(typeException, valueException, tbackException):
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
-def setDirectories(mwGlob=None):
+def setupWorkDirs(mwGlob=None):
+    """
+    setupWorkDirs defines the necessary work dirs and checks if they are writable
+
+    :param mwGlob: global setup items
+    :return: mwGlob
     """
 
-    :param mwGlob:
-    :return:
-    """
+    mwGlob['workDir'] = os.getcwd()
+    mwGlob['configDir'] = os.getcwd() + '/config'
+    mwGlob['dataDir'] = os.getcwd() + '/data'
+    mwGlob['imageDir'] = os.getcwd() + '/image'
+    mwGlob['tempDir'] = os.getcwd() + '/temp'
 
     for dirPath in ['workDir', 'configDir', 'imageDir', 'tempDir']:
         if not os.path.isdir(mwGlob[dirPath]):
@@ -96,9 +103,13 @@ def setDirectories(mwGlob=None):
         if not os.access(mwGlob[dirPath], os.W_OK):
             logging.error('no write access to {0}'.format(dirPath))
 
+    return mwGlob
+
 
 def checkFrozen(mwGlob=None):
     """
+    checkFrozen extracts data needed to distinguish between real python running setup and
+    bundled version of pyinstaller
 
     :param mwGlob:
     :return:
@@ -121,23 +132,9 @@ def checkFrozen(mwGlob=None):
         mwGlob['frozen'] = False
 
 
-def setupWorkDirs(mwGlob=None):
-    """
-
-    :param mwGlob:
-    :return: mwGlob
-    """
-
-    mwGlob['workDir'] = os.getcwd()
-    mwGlob['configDir'] = os.getcwd() + '/config'
-    mwGlob['dataDir'] = os.getcwd() + '/data'
-    mwGlob['imageDir'] = os.getcwd() + '/image'
-    mwGlob['tempDir'] = os.getcwd() + '/temp'
-    return mwGlob
-
-
 def setupLogging():
     """
+    setupLogging defines the logger and formats and disables unnecessary library logging
 
     :return: true for test purpose
     """
@@ -160,14 +157,15 @@ def setupLogging():
     logging.getLogger('indibase').setLevel(logging.WARNING)
     logging.getLogger('PyQt5').setLevel(logging.ERROR)
     logging.getLogger('requests').setLevel(logging.ERROR)
-    logging.getLogger('matplotlib').setLevel(logging.ERROR)
     # urllib3 is used by requests, so we have to add this as well
     logging.getLogger('urllib3').setLevel(logging.ERROR)
+    logging.getLogger('matplotlib').setLevel(logging.ERROR)
     return True
 
 
 def writeSystemInfo(mwGlob=None):
     """
+    writeSystemInfo print overview data to the log file at the beginning of the start
 
     :return: true for test purpose
     """
@@ -278,11 +276,6 @@ def main():
     splashW.showMessage('Setup logging')
     splashW.setValue(20)
     setupLogging()
-
-    # population the working directory with necessary subdir
-    splashW.showMessage('Checking work directories')
-    splashW.setValue(30)
-    setDirectories(mwGlob=mwGlob)
 
     # start logging with basic system data for information
     splashW.showMessage('Write system info to log')

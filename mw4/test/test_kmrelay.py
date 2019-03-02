@@ -77,7 +77,7 @@ def test_status1(qtbot):
                            'getRelay',
                            return_value=ret):
 
-        for i in range(1, 9):
+        for i in range(0, 8):
             app.relay.set(i, 0)
 
         with qtbot.waitSignal(app.relay.statusReady):
@@ -109,7 +109,7 @@ def test_status2(qtbot):
                            'getRelay',
                            return_value=ret):
 
-        for i in range(1, 9):
+        for i in range(0, 8):
             app.relay.set(i, 1)
 
         with qtbot.waitSignal(app.relay.statusReady):
@@ -141,7 +141,7 @@ def test_status3(qtbot):
                            'getRelay',
                            return_value=ret):
 
-        for i in range(1, 9):
+        for i in range(0, 8):
             app.relay.switch(i)
 
         with qtbot.waitSignal(app.relay.statusReady):
@@ -174,7 +174,7 @@ def test_status4(qtbot):
                            return_value=ret):
         with mock.patch.object(time,
                                'sleep'):
-            for i in range(1, 9):
+            for i in range(0, 8):
                 app.relay.pulse(i)
 
             with qtbot.waitSignal(app.relay.statusReady):
@@ -201,6 +201,24 @@ def test_cyclePolling_1():
                            return_value=ret):
         suc = app.relay.cyclePolling()
         assert not suc
+
+
+def test_getByte_1():
+    relay = 7
+    state = True
+    app.relay.status = [False] * 8
+
+    value = app.relay._getByte(relayNumber=relay, state=state)
+    assert value == 0x80
+
+
+def test_getByte_2():
+    relay = 7
+    state = False
+    app.relay.status = [True] * 8
+
+    value = app.relay._getByte(relayNumber=relay, state=state)
+    assert value == 0x7F
 
 
 def test_pulse_1(qtbot):

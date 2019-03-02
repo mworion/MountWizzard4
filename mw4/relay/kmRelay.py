@@ -221,11 +221,11 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: bit mask for switching
         """
 
-        byteStat = 0b00000000
-        for i, stat in enumerate(self.status):
-            if stat:
-                byteStat = byteStat | 1 << relayNumber
-        position = 1 << (relayNumber - 1)
+        byteStat = 0b0
+        for i, status in enumerate(self.status):
+            if status:
+                byteStat = byteStat | 1 << i
+        position = 1 << relayNumber
         byteOn = byteStat | position
         byteOff = byteOn & ~position
 
@@ -260,7 +260,7 @@ class KMRelay(PyQt5.QtCore.QObject):
 
     def switch(self, relayNumber):
         """
-        switch toggles the relay stat (on, off)
+        switch toggles the relay status (on, off)
 
         :param relayNumber: number of relay to be pulsed, counting from 0 onwards
         :return: success
@@ -280,7 +280,7 @@ class KMRelay(PyQt5.QtCore.QObject):
 
     def set(self, relayNumber, value):
         """
-        set toggles the relay stat to the desired value (on, off)
+        set toggles the relay status to the desired value (on, off)
 
         :param relayNumber: number of relay to be pulsed, counting from 0 onwards
         :param value: relay state.

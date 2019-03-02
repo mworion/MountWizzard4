@@ -37,6 +37,7 @@ from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
 from mw4.environ import environ
 from mw4.base import measuredata
+from mw4.remote import remote
 from mw4.astrometry import astrometryKstars
 
 
@@ -50,12 +51,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     __all__ = ['MountWizzard4',
                ]
-    version = '0.6.dev0'
+    version = '0.6.dev1'
     logger = logging.getLogger(__name__)
 
     # central message and logging dispatching
     message = PyQt5.QtCore.pyqtSignal(str, int)
     redrawHemisphere = PyQt5.QtCore.pyqtSignal()
+    remoteShutdown = PyQt5.QtCore.pyqtSignal()
+    remoteShutdownMount = PyQt5.QtCore.pyqtSignal()
+    remoteBootMount = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,
@@ -102,6 +106,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                              mwGlob=self.mwGlob,
                                              )
         self.measure = measuredata.MeasureData(self)
+        self.remote = remote.Remote(self)
         if platform.system() in ['Darwin', 'Linux']:
             self.plateSolve = astrometryKstars.AstrometryKstars(mwGlob['tempDir'],
                                                                 self.threadPool)
@@ -130,6 +135,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
         self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
         self.mainW.ui.openImageW.clicked.connect(self.imageW.toggleWindow)
+        self.remoteShutdown.connect(self.quitSave)
+        self.remoteShutdownMount.connect(self.mainW.mountShutdown)
+        self.remoteBootMount.connect(self.mainW.mountBoot)
 
         # starting mount communication
         self.mount.startTimers()

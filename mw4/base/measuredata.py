@@ -25,7 +25,7 @@ import numpy as np
 # local imports
 
 
-class MeasureData(PyQt5.QtCore.QObject):
+class MeasureData(object):
     """
     the class MeasureData inherits all information and handling of data management and
     storage
@@ -48,7 +48,7 @@ class MeasureData(PyQt5.QtCore.QObject):
     def __init__(self,
                  app,
                  ):
-        super().__init__()
+        # super().__init__()
         self.app = app
         self.mutexMeasure = PyQt5.QtCore.QMutex()
         self.raRef = None

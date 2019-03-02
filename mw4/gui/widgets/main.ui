@@ -11723,7 +11723,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>7</number>
+        <number>3</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -14354,57 +14354,6 @@ manually</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="le_remotePort">
-         <property name="geometry">
-          <rect>
-           <x>710</x>
-           <y>80</y>
-           <width>46</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="mouseTracking">
-          <bool>false</bool>
-         </property>
-         <property name="acceptDrops">
-          <bool>false</bool>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Port number for remote access.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
-         </property>
-         <property name="inputMask">
-          <string/>
-         </property>
-         <property name="text">
-          <string>3456</string>
-         </property>
-         <property name="maxLength">
-          <number>5</number>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-         <property name="cursorMoveStyle">
-          <enum>Qt::VisualMoveStyle</enum>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_193">
          <property name="geometry">
           <rect>
@@ -14446,7 +14395,7 @@ manually</string>
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QCheckBox" name="checkEnableRemoteAccess">
+        <widget class="QCheckBox" name="checkRemoteAccess">
          <property name="geometry">
           <rect>
            <x>400</x>
@@ -14510,24 +14459,6 @@ manually</string>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_mountIP_5">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>80</y>
-           <width>161</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Port Number</string>
          </property>
         </widget>
         <widget class="Line" name="line_93">
@@ -17954,7 +17885,7 @@ manually</string>
           </font>
          </property>
          <property name="text">
-          <string>MountWizzard4 (C) 2018 MWORION</string>
+          <string>MountWizzard4 (C) 2019 MWORION</string>
          </property>
         </widget>
         <widget class="QPushButton" name="btn_resetWindowSizes">
@@ -18453,8 +18384,7 @@ manually</string>
   <tabstop>relayButton7</tabstop>
   <tabstop>mountHost</tabstop>
   <tabstop>mountMAC</tabstop>
-  <tabstop>checkEnableRemoteAccess</tabstop>
-  <tabstop>le_remotePort</tabstop>
+  <tabstop>checkRemoteAccess</tabstop>
   <tabstop>posText0</tabstop>
   <tabstop>posAz0</tabstop>
   <tabstop>posAlt0</tabstop>

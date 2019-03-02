@@ -200,6 +200,15 @@ class HemisphereWindow(widget.MWidget):
 
     @staticmethod
     def clearAxes(axes, visible=False):
+        """
+        clearAxes cleans up the axes object in figure an setup a new plotting. it draws
+        grid, ticks etc.
+
+        :param axes: axes object of figure
+        :param visible: flag to set the grid visible or not
+        :return:
+        """
+
         axes.cla()
         axes.set_facecolor((0, 0, 0, 0))
         axes.set_xlim(0, 360)
@@ -255,11 +264,14 @@ class HemisphereWindow(widget.MWidget):
         updateCelestialPath is called whenever an update of settings from mount are given.
         it takes the actual values and corrects the point in window if window is in
         show status.
+        If the object is not created, the routing returns false.
 
         :return: success for testing
         """
 
         if not self.showStatus:
+            return False
+        if self.celestialPath is None:
             return False
         if self.celestialPath is None:
             return False
@@ -272,6 +284,7 @@ class HemisphereWindow(widget.MWidget):
         updateMeridian is called whenever an update of settings from mount are given. it
         takes the actual values and corrects the point in window if window is in
         show status.
+        If the object is not created, the routing returns false.
 
         :return: success
         """
@@ -281,6 +294,10 @@ class HemisphereWindow(widget.MWidget):
         slew = self.app.mount.sett.meridianLimitSlew
         track = self.app.mount.sett.meridianLimitTrack
         if slew is None or track is None:
+            return False
+        if self.meridianTrack is None:
+            return False
+        if self.meridianSlew is None:
             return False
         self.meridianTrack.set_visible(self.ui.checkShowMeridian.isChecked())
         self.meridianSlew.set_visible(self.ui.checkShowMeridian.isChecked())
@@ -296,6 +313,7 @@ class HemisphereWindow(widget.MWidget):
         updateMeridian is called whenever an update of settings from mount are given. it
         takes updateHorizonLimits actual values and corrects the point in window if window
         is in show status.
+        If the object is not created, the routing returns false.
 
         :return: success
         """
@@ -305,6 +323,10 @@ class HemisphereWindow(widget.MWidget):
         high = self.app.mount.sett.horizonLimitHigh
         low = self.app.mount.sett.horizonLimitLow
         if high is None or low is None:
+            return False
+        if self.horizonLimitLow is None:
+            return False
+        if self.horizonLimitHigh is None:
             return False
         self.horizonLimitHigh.set_xy((0, high))
         self.horizonLimitHigh.set_height(90 - high)
@@ -318,6 +340,7 @@ class HemisphereWindow(widget.MWidget):
         updatePointerAltAz is called whenever an update of coordinates from mount are
         given. it takes the actual values and corrects the point in window if window is in
         show status.
+        If the object is not created, the routing returns false.
 
         :return: success
         """
@@ -328,6 +351,8 @@ class HemisphereWindow(widget.MWidget):
         if obsSite.Alt is None:
             return False
         if obsSite.Az is None:
+            return False
+        if self.pointerAltAz is None:
             return False
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
@@ -341,6 +366,7 @@ class HemisphereWindow(widget.MWidget):
         updateDome is called whenever an update of coordinates from dome are given.
         it takes the actual values and corrects the point in window if window is in
         show status.
+        If the object is not created, the routing returns false.
 
         :return: success
         """
@@ -353,7 +379,8 @@ class HemisphereWindow(widget.MWidget):
         if obsSite.Az is None:
             return False
         az = obsSite.Az.degrees
-
+        if self.pointerDome is None:
+            return False
         self.pointerDome.set_xy((az - 15, 0))
         self.pointerDome.set_visible(True)
         self.drawCanvas()
@@ -364,6 +391,7 @@ class HemisphereWindow(widget.MWidget):
         updateAlignStar is called whenever an update of coordinates from mount are
         given. it takes the actual values and corrects the point in window if window is in
         show status.
+        If the object is not created, the routing returns false.
 
         :return: success
         """
@@ -373,6 +401,10 @@ class HemisphereWindow(widget.MWidget):
         if self.starsAlign is None:
             return False
         if not self.ui.checkShowAlignStar.isChecked():
+            return False
+        if self.starsAlign is None:
+            return False
+        if self.starsAlignAnnotate is None:
             return False
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()

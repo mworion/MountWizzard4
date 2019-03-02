@@ -1,25 +1,21 @@
 missing tests:
 - tests imaging window 
 - tests loader
-- tests + docu message window
 - tests for polar plot in mainW 
 
 problems occurred list:
 - mountcontrol overflow pointing
 - wcs axes in GUI not showing always labels
 - improved header handling image window + docu
-- mainApp new style of implementation
-
+- mainApp refactor to better understandable implementation
 
 necessary feature list:
 - add dome support from indi
 - add dso path calculation in modeldata
 - add dso path in mainW
 - hemisphere: show best altitude when polar align is on
-- link dome to hemisphere
 - astrometry online
 - astrometry configs
-- image widget
 - indi CCD camera
 - indi telescope / dome separate host
 - indi CCD camera separate host

@@ -248,6 +248,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
+        self.logger.info(f'Pulse relay:{relayNumber}')
         byteOn = self._getByte(relayNumber=relayNumber, state=True)
         byteOff = self._getByte(relayNumber=relayNumber, state=False)
         value1 = self.getRelay(f'/FFE0{byteOn:2X}')
@@ -261,7 +262,6 @@ class KMRelay(PyQt5.QtCore.QObject):
             self.logger.error(f'Relay:{relayNumber}')
             return False
 
-        self.logger.info(f'Pulse relay:{relayNumber}')
         return True
 
     def switch(self, relayNumber):
@@ -272,6 +272,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
+        self.logger.info(f'Switch relay:{relayNumber}')
         value = self.getRelay('/relays.cgi?relay={0:1d}'.format(relayNumber + 1))
 
         if value is None:
@@ -281,7 +282,6 @@ class KMRelay(PyQt5.QtCore.QObject):
             self.logger.error(f'Relay:{relayNumber}')
             return False
 
-        self.logger.info(f'Switch relay:{relayNumber}')
         return True
 
     def set(self, relayNumber, value):
@@ -293,6 +293,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
+        self.logger.info(f'Set relay:{relayNumber}')
         byteOn = self._getByte(relayNumber=relayNumber, state=value)
         value = self.getRelay(f'/FFE0{byteOn:2X}')
 
@@ -303,5 +304,4 @@ class KMRelay(PyQt5.QtCore.QObject):
             self.logger.error(f'Relay:{relayNumber}')
             return False
 
-        self.logger.info(f'Set relay:{relayNumber}')
         return True

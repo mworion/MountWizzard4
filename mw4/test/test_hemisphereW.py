@@ -164,6 +164,82 @@ def test_updateMeridian_4(qtbot):
     assert not suc
 
 
+def test_updateMeridian_5(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.sett.meridianLimitSlew = 3
+    app.mount.sett.meridianLimitTrack = 3
+    app.hemisphereW.meridianTrack = None
+    suc = app.hemisphereW.updateMeridian()
+    assert not suc
+
+
+def test_updateMeridian_6(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.sett.meridianLimitSlew = 3
+    app.mount.sett.meridianLimitTrack = 3
+    app.hemisphereW.meridianSlew = None
+    suc = app.hemisphereW.updateMeridian()
+    assert not suc
+
+
+def test_updateHorizonLimits_1(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.sett.horizonLimitHigh = 80
+    app.mount.sett.horizonLimitLow = 10
+    suc = app.hemisphereW.updateHorizonLimits()
+    assert suc
+
+
+def test_updateHorizonLimits_2(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = False
+    app.mount.sett.horizonLimitHigh = 80
+    app.mount.sett.horizonLimitLow = 10
+    suc = app.hemisphereW.updateHorizonLimits()
+    assert not suc
+
+
+def test_updateHorizonLimits_3(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.sett.horizonLimitHigh = None
+    app.mount.sett.horizonLimitLow = 10
+    suc = app.hemisphereW.updateHorizonLimits()
+    assert not suc
+
+
+def test_updateHorizonLimits_4(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.sett.horizonLimitHigh = 80
+    app.mount.sett.horizonLimitLow = None
+    suc = app.hemisphereW.updateHorizonLimits()
+    assert not suc
+
+
+def test_updateHorizonLimits_5(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.sett.horizonLimitHigh = 80
+    app.mount.sett.horizonLimitLow = 10
+    app.hemisphereW.horizonLimitLow = None
+    suc = app.hemisphereW.updateHorizonLimits()
+    assert not suc
+
+
+def test_updateHorizonLimits_6(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.sett.horizonLimitHigh = 80
+    app.mount.sett.horizonLimitLow = 10
+    app.hemisphereW.horizonLimitHigh = None
+    suc = app.hemisphereW.updateHorizonLimits()
+    assert not suc
+
+
 def test_updatePointerAltAz_1(qtbot):
     app.hemisphereW.drawHemisphere()
     app.hemisphereW.showStatus = True
@@ -196,6 +272,16 @@ def test_updatePointerAltAz_4(qtbot):
     assert not suc
 
 
+def test_updatePointerAltAz_5(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.obsSite.Alt = api.Angle(degrees=5)
+    app.mount.obsSite.Az = api.Angle(degrees=5)
+    app.hemisphereW.pointerAltAz = None
+    suc = app.hemisphereW.updatePointerAltAz()
+    assert not suc
+
+
 def test_updateDome_1(qtbot):
     app.hemisphereW.drawHemisphere()
     app.hemisphereW.showStatus = True
@@ -217,6 +303,57 @@ def test_updateDome_3(qtbot):
     app.hemisphereW.showStatus = True
     app.mount.obsSite.Az = None
     suc = app.hemisphereW.updateDome()
+    assert not suc
+
+
+def test_updateDome_4(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.mount.obsSite.Az = 90
+    app.hemisphereW.pointerDome = None
+    suc = app.hemisphereW.updateDome()
+    assert not suc
+
+
+def test_updateAlignStar_1(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
+    suc = app.hemisphereW.updateAlignStar()
+    assert suc
+
+
+def test_updateAlignStar_2(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = False
+    app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
+    suc = app.hemisphereW.updateAlignStar()
+    assert not suc
+
+
+def test_updateAlignStar_3(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
+    app.hemisphereW.starsAlign = None
+    suc = app.hemisphereW.updateAlignStar()
+    assert not suc
+
+
+def test_updateAlignStar_4(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
+    app.hemisphereW.starsAlignAnnotate = None
+    suc = app.hemisphereW.updateAlignStar()
+    assert not suc
+
+
+def test_updateAlignStar_5(qtbot):
+    app.hemisphereW.drawHemisphere()
+    app.hemisphereW.showStatus = True
+    app.hemisphereW.ui.checkShowAlignStar.setChecked(False)
+    suc = app.hemisphereW.updateAlignStar()
     assert not suc
 
 

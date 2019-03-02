@@ -273,8 +273,6 @@ class HemisphereWindow(widget.MWidget):
             return False
         if self.celestialPath is None:
             return False
-        if self.celestialPath is None:
-            return False
         self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
         self.drawCanvas()
         return True
@@ -398,14 +396,13 @@ class HemisphereWindow(widget.MWidget):
 
         if not self.showStatus:
             return False
-        if self.starsAlign is None:
-            return False
         if not self.ui.checkShowAlignStar.isChecked():
             return False
         if self.starsAlign is None:
             return False
         if self.starsAlignAnnotate is None:
             return False
+
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
         self.starsAlign.set_data(hip.az, hip.alt)

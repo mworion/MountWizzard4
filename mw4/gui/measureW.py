@@ -23,6 +23,7 @@ from datetime import datetime as dt
 # external packages
 import PyQt5
 import numpy as np
+from matplotlib import ticker
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import measure_ui
@@ -287,17 +288,17 @@ class MeasureWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.clearPlot(numbAxes=3):
+        if not self.clearPlot(numbAxes=2):
             return False
 
         axe0 = self.measureMat.figure.axes[0]
         axe1 = self.measureMat.figure.axes[1]
-        axe2 = self.measureMat.figure.axes[2]
 
         title = 'Environment'
         ylabelLeft = 'Pressure [hPas]'
-        ylabelRight1 = 'Temperature [°C]'
-        ylabelRight2 = 'Dew Temperature [°C]'
+        ylabelRight = 'Temperature / DewTemp [°C]'
+        label1 = 'Temperature [°C]'
+        label2 = 'Dew Temperature [°C]'
 
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
@@ -318,13 +319,8 @@ class MeasureWindow(widget.MWidget):
                         color=self.M_GREEN,
                         fontweight='bold',
                         fontsize=12)
-        axe1.set_ylabel(ylabelRight1,
+        axe1.set_ylabel(ylabelRight,
                         color=self.M_WHITE,
-                        fontweight='bold',
-                        fontsize=12)
-        axe2.set_ylabel(ylabelRight2,
-                        labelpad=25,
-                        color=self.M_PINK,
                         fontweight='bold',
                         fontsize=12)
 
@@ -340,21 +336,33 @@ class MeasureWindow(widget.MWidget):
                         markersize=1,
                         color=self.M_WHITE,
                         )
-        l2, = axe2.plot(time,
+        l2, = axe1.plot(time,
                         mRight2,
                         marker='o',
                         markersize=1,
                         color=self.M_PINK,
                         )
 
-        axe0.set_ylim(800, 1050)
-        axe1.set_ylim(-10, 25)
-        axe2.set_ylim(-10, 25)
-        axe0.grid(True, color=self.M_GREY, alpha=0.5)
+        # axe0.set_ylim(bottom=800)
+        #axe1.set_ylim(-10, 25)
+        #axe0.locator_params(axis='y', nbins=8)
+        #axe1.locator_params(axis='y', nbins=8)
+
+        #axe0.get_yaxis().set_ticks(number=8)
+        #axe1.get_yaxis().set_ticks(number=8)
+
+        axe0.get_yaxis().set_major_locator(ticker.MultipleLocator(100))
+        axe1.get_yaxis().set_major_locator(ticker.MultipleLocator(2.5))
+
+        axe0.margins(y=0.3)
+        axe1.margins(y=0.3)
+
+        axe0.grid(True, color=self.M_GREEN, linestyle='dotted', alpha=0.5)
+        axe1.grid(True, color=self.M_WHITE, linestyle='dotted', alpha=0.5)
 
         legendLeft = f'{float(mLeft[-1]):4.0f}  {ylabelLeft}'
-        legendRight1 = f'{float(mRight1[-1]):4.1f}  {ylabelRight1}'
-        legendRight2 = f'{float(mRight2[-1]):4.1f}  {ylabelRight2}'
+        legendRight1 = f'{float(mRight1[-1]):4.1f}  {label1}'
+        legendRight2 = f'{float(mRight2[-1]):4.1f}  {label2}'
 
         legend = axe0.legend([l0, l1, l2],
                              [legendLeft, legendRight1, legendRight2],

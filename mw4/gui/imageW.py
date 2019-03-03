@@ -380,7 +380,7 @@ class ImageWindow(widget.MWidget):
         axe1 = axes.coords[1]
         axes.coords.frame.set_color(self.M_BLUE)
 
-        axe0.set_ticks(number=10)
+        axe0.set_yticks(number=10)
         axe1.set_ticks(number=10)
         axe0.grid(True,
                   color=self.M_BLUE,

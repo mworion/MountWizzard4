@@ -37,7 +37,7 @@ def module_setup_teardown():
 
 
 def test_measureTask_1():
-    app.mainW.ui.checkMeasurement.setChecked(True)
+    app.mainW.ui.measureDevice.setCurrentIndex(1)
     app.environment.wDevice['local']['data'] = {}
     app.environment.wDevice['sqm']['data'] = {}
     app.measure._measureTask()
@@ -49,7 +49,7 @@ def test_measureTask_1():
 
 
 def test_measureTask_2():
-    app.mainW.ui.checkMeasurement.setChecked(True)
+    app.mainW.ui.measureDevice.setCurrentIndex(0)
     app.environment.wDevice['local']['data']['WEATHER_TEMPERATURE'] = 10
     app.environment.wDevice['local']['data']['WEATHER_BAROMETER'] = 1000
     app.environment.wDevice['local']['data']['WEATHER_DEWPOINT'] = 10
@@ -64,7 +64,7 @@ def test_measureTask_2():
 
 
 def test_measureTask_3():
-    app.mainW.ui.checkMeasurement.setChecked(False)
+    app.mainW.ui.measureDevice.setCurrentIndex(0)
     app.environment.wDevice['local']['data'] = {}
     app.environment.wDevice['sqm']['data'] = {}
     app.measure._measureTask()

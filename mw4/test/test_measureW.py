@@ -84,7 +84,7 @@ def test_closeEvent(qtbot):
 
 def test_showWindow_1(qtbot):
     app.measureW.showStatus = False
-    app.mainW.ui.checkMeasurement.setChecked(True)
+    app.mainW.ui.measureDevice.setCurrentIndex(1)
     with mock.patch.object(app.measureW,
                            'show',
                            return_value=None):
@@ -95,7 +95,7 @@ def test_showWindow_1(qtbot):
 
 def test_showWindow_2(qtbot):
     app.measureW.showStatus = False
-    app.mainW.ui.checkMeasurement.setChecked(False)
+    app.mainW.ui.measureDevice.setCurrentIndex(0)
     with mock.patch.object(app.measureW,
                            'show',
                            return_value=None):

@@ -37,15 +37,18 @@ def module_setup_teardown():
     value = np.datetime64('2014-12-12 20:20:20')
     app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),
-        'temp': np.full([2, 1], 1.0),
-        'humidity': np.full([2, 1], 1.0),
-        'press': np.full([2, 1], 1.0),
-        'dewTemp': np.full([2, 1], 1.0),
-        'sqr': np.full([2, 1], 1.0),
-        'raJNow': np.full([2, 1], 1.0),
-        'decJNow': np.full([2, 1], 1.0),
-        'status': np.full([2, 1], 1.0),
+        'temp': np.full([5, 1], 1.0),
+        'humidity': np.full([5, 1], 1.0),
+        'press': np.full([5, 1], 1.0),
+        'dewTemp': np.full([5, 1], 1.0),
+        'sqr': np.full([5, 1], 1.0),
+        'raJNow': np.full([5, 1], 1.0),
+        'decJNow': np.full([5, 1], 1.0),
+        'status': np.full([5, 1], 1.0),
     }
+    app.measure.data['time'] = np.append(app.measure.data['time'], value)
+    app.measure.data['time'] = np.append(app.measure.data['time'], value)
+    app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     yield

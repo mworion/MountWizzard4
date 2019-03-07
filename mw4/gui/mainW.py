@@ -33,6 +33,7 @@ from mw4.gui.mainWmixin.tabAlignMount import AlignMount
 from mw4.gui.mainWmixin.tabBuildModel import BuildModel
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
 from mw4.gui.mainWmixin.tabRelay import Relay
+from mw4.gui.mainWmixin.tabSettDevice import SettDevice
 from mw4.gui.mainWmixin.tabSettIndi import SettIndi
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
 from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
@@ -47,6 +48,7 @@ class MainWindow(MWidget,
                  BuildModel,
                  ManageModel,
                  Relay,
+                 SettDevice,
                  SettIndi,
                  SettHorizon,
                  SettParkPos,

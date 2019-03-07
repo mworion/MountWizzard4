@@ -11713,27 +11713,47 @@ manually</string>
            <x>5</x>
            <y>5</y>
            <width>761</width>
-           <height>386</height>
+           <height>376</height>
           </rect>
          </property>
-         <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,1">
+         <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+          <property name="topMargin">
+           <number>6</number>
+          </property>
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <item row="5" column="3">
+           <widget class="QComboBox" name="measureDevice">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
           <item row="4" column="0">
-           <widget class="QLabel" name="astrometryDevice">
+           <widget class="QLabel" name="ast">
             <property name="text">
              <string>Astrometry Device</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="2">
-           <widget class="Line" name="line_30">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
+          <item row="1" column="3">
+           <widget class="QLabel" name="po">
+            <property name="text">
+             <string>PowerBox Device</string>
             </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QComboBox" name="powerDevice">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -11763,15 +11783,15 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="2">
-           <widget class="QLabel" name="skyDevice">
+          <item row="14" column="0">
+           <widget class="QLabel" name="sky">
             <property name="text">
              <string>Sky Meter Device</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="2">
-           <widget class="QComboBox" name="comboBox_2">
+          <item row="15" column="0">
+           <widget class="QComboBox" name="skymeterDevice">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -11780,7 +11800,81 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="0">
+          <item row="16" column="0">
+           <widget class="Line" name="line_30">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="3">
+           <widget class="QLabel" name="label_49">
+            <property name="text">
+             <string>Remote Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QLabel" name="env">
+            <property name="text">
+             <string>Environment Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QComboBox" name="ccdDevice">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="0">
+           <widget class="QLabel" name="label_46">
+            <property name="text">
+             <string>Relay Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="dome">
+            <property name="text">
+             <string>Dome Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="Line" name="line_41">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0">
+           <widget class="QComboBox" name="environmentDevice">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="19" column="0">
            <spacer name="verticalSpacer_2">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -11788,63 +11882,25 @@ manually</string>
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>40</height>
+              <height>5</height>
              </size>
             </property>
            </spacer>
           </item>
-          <item row="2" column="0">
-           <widget class="QComboBox" name="comboBox">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
+          <item row="9" column="3">
+           <widget class="Line" name="line_50">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
-          <item row="5" column="2">
-           <widget class="QComboBox" name="comboBox_5">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="2">
-           <widget class="QLabel" name="powerDevice">
-            <property name="text">
-             <string>PowerBox Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="domeDevice">
-            <property name="text">
-             <string>Dome Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLabel" name="environmentDevice">
-            <property name="text">
-             <string>Environment Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="2">
-           <widget class="QComboBox" name="comboBox_6">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
+          <item row="13" column="0">
            <widget class="Line" name="line_32">
             <property name="frameShadow">
              <enum>QFrame::Plain</enum>
@@ -11857,7 +11913,87 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1" rowspan="9">
+          <item row="5" column="0">
+           <widget class="QComboBox" name="astrometryDevice">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="Line" name="line_47">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="3">
+           <widget class="QComboBox" name="remoteDevice">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="Line" name="line_37">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="ccd">
+            <property name="text">
+             <string>CCD Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QLabel" name="label_48">
+            <property name="text">
+             <string>Measure Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QComboBox" name="domeDevice">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="18" column="0">
+           <widget class="QComboBox" name="relayDevice">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" rowspan="18">
            <widget class="Line" name="line_19">
             <property name="frameShadow">
              <enum>QFrame::Plain</enum>
@@ -11869,59 +12005,6 @@ manually</string>
              <enum>Qt::Vertical</enum>
             </property>
            </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QComboBox" name="comboBox_3">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="ccdDevice">
-            <property name="text">
-             <string>CCD Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <spacer name="verticalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>5</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="8" column="0">
-           <widget class="QComboBox" name="comboBox_4">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <spacer name="verticalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>5</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>

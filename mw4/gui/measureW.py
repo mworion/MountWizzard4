@@ -59,10 +59,7 @@ class MeasureWindow(widget.MWidget):
         # doing the matplotlib embedding
         self.measureMat = self.embedMatplot(self.ui.measure)
         self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.clearRect(self.measureMat, True)
-        # adding two axes (getting 3 in total)
-        self.measureMat.figure.axes[0].twinx()
-        self.measureMat.figure.axes[0].twinx()
+
         self.ui.timeSet.currentIndexChanged.connect(self.drawMeasure)
         self.ui.measureSet.currentIndexChanged.connect(self.drawMeasure)
 
@@ -154,44 +151,30 @@ class MeasureWindow(widget.MWidget):
 
         return True
 
-    def clearPlot(self, numbAxes=None):
+    def clearPlot(self, numberPlots=None):
         """
         clearPlot deletes the content of the axes and renews the basic setting for grid,
         color, spines etc.
 
-        :param numbAxes: number of axes to be defined and cleared. actual 1 to 3.
+        :param numberPlots: number of subplots to be defined and cleared. actual 1 to 2.
         :return: success
         """
 
-        if numbAxes is None:
-            return False
-        if numbAxes < 1:
-            return False
-        if numbAxes > 3:
+        suc = self.clearRect(self.measureMat,
+                             numberPlots=numberPlots)
+        if not suc:
             return False
 
         fig = self.measureMat.figure
 
-        if 0 < numbAxes < 3:
-            fig.subplots_adjust(left=0.1,
-                                right=0.9,
-                                bottom=0.1,
-                                top=0.95,
-                                )
-        elif numbAxes == 3:
-            fig.subplots_adjust(left=0.1,
-                                right=0.85,
-                                bottom=0.1,
-                                top=0.95,
-                                )
+        fig.subplots_adjust(left=0.1,
+                            right=0.9,
+                            bottom=0.1,
+                            top=0.95,
+                            )
 
         for i, axe in enumerate(fig.axes):
             axe.cla()
-            if i < numbAxes:
-                axe.set_visible(True)
-            else:
-                axe.set_visible(False)
-
             axe.set_facecolor((0, 0, 0, 0))
             axe.tick_params(colors=self.M_BLUE,
                             labelsize=12)
@@ -214,7 +197,7 @@ class MeasureWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.clearPlot(numbAxes=2):
+        if not self.clearPlot(numberPlots=2):
             return False
 
         axe0 = self.measureMat.figure.axes[0]
@@ -233,10 +216,11 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=16)
-        axe0.set_xlabel('Time [HH:MM:SS - UTC]',
+        axe1.set_xlabel('Time [HH:MM:SS - UTC]',
                         color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
+
         axe0.set_ylabel(ylabelLeft,
                         color=self.M_WHITE,
                         fontweight='bold',
@@ -246,34 +230,35 @@ class MeasureWindow(widget.MWidget):
                         fontweight='bold',
                         fontsize=12)
 
-        l0, = axe0.plot(time,
-                        mLeft,
-                        marker='o',
-                        markersize=1,
-                        color=self.M_WHITE,
-                        )
-        l1, = axe1.plot(time,
-                        mRight,
-                        marker='o',
-                        markersize=1,
-                        color=self.M_GREEN,
-                        )
+        axe0.plot(time,
+                  mLeft,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_WHITE,
+                  )
+        axe1.plot(time,
+                  mRight,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_GREEN,
+                  )
 
+        axe0.grid(True, color=self.M_GREY, alpha=0.5)
+        axe1.grid(True, color=self.M_GREY, alpha=0.5)
+        axe0.set_xticklabels([])
         axe0.set_ylim(-0.4, 0.4)
         axe1.set_ylim(-4, 4)
-        axe0.grid(True, color=self.M_GREY, alpha=0.5)
 
-        legendLeft = f'{float(mLeft[-1]):4.2f}  {ylabelLeft}'
-        legendRight = f'{float(mRight[-1]):4.2f}  {ylabelRight}'
-
-        legend = axe0.legend([l0, l1],
-                             [legendLeft, legendRight],
-                             facecolor='#000000',
-                             edgecolor='#2090C0',
-                             fontsize='large',
-                             )
-        for text in legend.get_texts():
-            text.set_color('#2090C0')
+        axe0.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                              integer=True,
+                                                              min_n_ticks=4,
+                                                              prune='both',
+                                                              ))
+        axe1.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                              integer=True,
+                                                              min_n_ticks=4,
+                                                              prune='both',
+                                                              ))
 
         return True
 
@@ -288,7 +273,7 @@ class MeasureWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.clearPlot(numbAxes=2):
+        if not self.clearPlot(numberPlots=2):
             return False
 
         axe0 = self.measureMat.figure.axes[0]
@@ -297,8 +282,6 @@ class MeasureWindow(widget.MWidget):
         title = 'Environment'
         ylabelLeft = 'Pressure [hPas]'
         ylabelRight = 'Temperature / DewTemp [°C]'
-        label1 = 'Temperature [°C]'
-        label2 = 'Dew Temperature [°C]'
 
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
@@ -310,7 +293,7 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=16)
-        axe0.set_xlabel('Time [HH:MM:SS - UTC]',
+        axe1.set_xlabel('Time [HH:MM:SS - UTC]',
                         color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
@@ -324,53 +307,40 @@ class MeasureWindow(widget.MWidget):
                         fontweight='bold',
                         fontsize=12)
 
-        l0, = axe0.plot(time,
-                        mLeft,
-                        marker='o',
-                        markersize=1,
-                        color=self.M_GREEN,
-                        )
-        l1, = axe1.plot(time,
-                        mRight1,
-                        marker='o',
-                        markersize=1,
-                        color=self.M_WHITE,
-                        )
-        l2, = axe1.plot(time,
-                        mRight2,
-                        marker='o',
-                        markersize=1,
-                        color=self.M_PINK,
-                        )
+        axe0.plot(time,
+                  mLeft,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_GREEN,
+                  )
+        axe1.plot(time,
+                  mRight1,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_WHITE,
+                  )
+        axe1.plot(time,
+                  mRight2,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_PINK,
+                  )
 
-        # axe0.set_ylim(bottom=800)
-        #axe1.set_ylim(-10, 25)
-        #axe0.locator_params(axis='y', nbins=8)
-        #axe1.locator_params(axis='y', nbins=8)
+        axe0.grid(True, color=self.M_GREY, linestyle='dotted', alpha=0.5)
+        axe1.grid(True, color=self.M_GREY, linestyle='dotted', alpha=0.5)
+        axe0.set_xticklabels([])
 
-        #axe0.get_yaxis().set_ticks(number=8)
-        #axe1.get_yaxis().set_ticks(number=8)
+        axe0.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                              integer=True,
+                                                              min_n_ticks=4,
+                                                              prune='both',
+                                                              ))
+        axe1.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                              integer=True,
+                                                              min_n_ticks=4,
+                                                              prune='both',
+                                                              ))
 
-        axe0.get_yaxis().set_major_locator(ticker.MultipleLocator(100))
-        axe1.get_yaxis().set_major_locator(ticker.MultipleLocator(2.5))
-
-        axe0.margins(y=0.3)
-        axe1.margins(y=0.3)
-
-        axe0.grid(True, color=self.M_GREEN, linestyle='dotted', alpha=0.5)
-        axe1.grid(True, color=self.M_WHITE, linestyle='dotted', alpha=0.5)
-
-        legendLeft = f'{float(mLeft[-1]):4.0f}  {ylabelLeft}'
-        legendRight1 = f'{float(mRight1[-1]):4.1f}  {label1}'
-        legendRight2 = f'{float(mRight2[-1]):4.1f}  {label2}'
-
-        legend = axe0.legend([l0, l1, l2],
-                             [legendLeft, legendRight1, legendRight2],
-                             facecolor=self.M_BLACK,
-                             edgecolor=self.M_BLUE,
-                             )
-        for text in legend.get_texts():
-            text.set_color('#2090C0')
         return True
 
     def drawSQR(self, data=None, cycle=None):
@@ -382,7 +352,7 @@ class MeasureWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.clearPlot(numbAxes=1):
+        if not self.clearPlot(numberPlots=1):
             return False
 
         axe0 = self.measureMat.figure.axes[0]
@@ -407,25 +377,22 @@ class MeasureWindow(widget.MWidget):
                         fontweight='bold',
                         fontsize=12)
 
-        l0, = axe0.plot(time,
-                        mLeft,
-                        marker='o',
-                        markersize=1,
-                        color=self.M_WHITE,
-                        )
+        axe0.plot(time,
+                  mLeft,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_WHITE,
+                  )
 
         axe0.set_ylim(10, 21)
         axe0.grid(True, color=self.M_GREY, alpha=0.5)
 
-        legendLeft = f'{float(mLeft[-1]):5.2f}  {ylabelLeft}'
+        axe0.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                              integer=True,
+                                                              min_n_ticks=4,
+                                                              prune='both',
+                                                              ))
 
-        legend = axe0.legend([l0],
-                             [legendLeft],
-                             facecolor='#000000',
-                             edgecolor='#2090C0',
-                             )
-        for text in legend.get_texts():
-            text.set_color('#2090C0')
         return True
 
     def drawMeasure(self):
@@ -472,9 +439,11 @@ class MeasureWindow(widget.MWidget):
         else:
             pass
 
+        axe = self.measureMat.figure.axes[-1]
+        axe.set_xticks(time_ticks)
+        axe.set_xticklabels(time_labels)
+
         for axe in self.measureMat.figure.axes:
-            axe.set_xticks(time_ticks)
-            axe.set_xticklabels(time_labels)
             axe.set_xlim(time_ticks[0], time_ticks[-1])
             axe.figure.canvas.draw()
 

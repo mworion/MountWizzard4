@@ -179,40 +179,45 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return fig, axes
 
     @staticmethod
-    def clearRect(widget, visible):
+    def clearRect(widget, numberPlots=1):
         """
         clearRectVis clears and setups the canvas widget for drawing. it sets the labels,
         ticks and some other ui styles.
 
         :param      widget:    matplotlib canvas widget for drawing
-        :param      visible:   show axis grid
-        :return:    fig        figure in widget
-        :return:    axes       axes in figure
+        :param      numberPlots:   number of plots in one chart
+        :return:    success
         """
+
+        if numberPlots < 1:
+            return False
+        if numberPlots > 2:
+            return False
 
         fig = widget.figure
         fig.clf()
-        axes = fig.add_subplot(1,
-                               1,
-                               1,
-                               facecolor='none')
-        axes.grid(visible,
-                  color='#404040',
-                  )
+
+        if numberPlots == 1:
+            fig.add_subplot(1,
+                            1,
+                            1,
+                            facecolor='none')
+        elif numberPlots == 2:
+            fig.add_subplot(2,
+                            1,
+                            1,
+                            facecolor='none')
+            fig.add_subplot(2,
+                            1,
+                            2,
+                            facecolor='none')
+
         fig.subplots_adjust(left=0.075,
                             right=0.95,
                             bottom=0.1,
                             top=0.975,
                             )
-        axes.tick_params(axis='x',
-                         colors='#2090C0',
-                         labelsize=12,
-                         )
-        axes.tick_params(axis='y',
-                         colors='#2090C0',
-                         labelsize=12,
-                         )
-        return fig, axes
+        return True
 
     @staticmethod
     def embedMatplot(ui):

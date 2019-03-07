@@ -99,7 +99,7 @@ class HemisphereWindow(widget.MWidget):
         # for the alt az plane
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.clearRect(self.hemisphereMat, True)
+        self.clearRect(self.hemisphereMat, numberPlots=1)
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)

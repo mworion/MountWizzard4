@@ -1,7 +1,8 @@
 missing tests:
-- tests imaging window 
-- tests loader
-- tests for polar plot in mainW 
+- loader
+- for polar plot in mainW 
+- remote
+- deviceSetting
 
 problems occurred list:
 - mountcontrol overflow pointing
@@ -29,4 +30,3 @@ nice to have:
 - check if daylight timezone fits to the computer or set it up !
 - max error for modeling solving
 - move format string to new python format
-- having main screen in layout format as well

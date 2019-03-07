@@ -85,7 +85,6 @@ class SettRelay(object):
         self.setupRelayGui()
 
         # make the gui signals linked to slots
-        self.ui.checkEnableRelay.clicked.connect(self.enableRelay)
         self.ui.relayHost.editingFinished.connect(self.relayHost)
         self.ui.relayUser.editingFinished.connect(self.relayUser)
         self.ui.relayPassword.editingFinished.connect(self.relayPassword)
@@ -96,8 +95,6 @@ class SettRelay(object):
 
     def initConfig(self):
         config = self.app.config['mainW']
-        self.ui.checkEnableRelay.setChecked(config.get('checkEnableRelay', False))
-        self.enableRelay()
         self.ui.relayHost.setText(config.get('relayHost', ''))
         self.relayHost()
         self.ui.relayUser.setText(config.get('relayUser', ''))
@@ -113,7 +110,6 @@ class SettRelay(object):
 
     def storeConfig(self):
         config = self.app.config['mainW']
-        config['checkEnableRelay'] = self.ui.checkEnableRelay.isChecked()
         config['relayHost'] = self.ui.relayHost.text()
         config['relayUser'] = self.ui.relayUser.text()
         config['relayPassword'] = self.ui.relayPassword.text()
@@ -161,30 +157,6 @@ class SettRelay(object):
         """
         for button, textField in zip(self.relayButtons, self.relayButtonTexts):
             button.setText(textField.text())
-
-    def enableRelay(self):
-        """
-        enableRelay allows to run the relay box.
-
-        :return: success for test
-        """
-
-        # get index for relay tab
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-
-        if self.ui.checkEnableRelay.isChecked():
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-            self.app.message.emit('Relay enabled', 0)
-            self.app.relay.startTimers()
-        else:
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-            self.app.message.emit('Relay disabled', 0)
-            self.app.relay.stopTimers()
-        # update the style for showing the Relay tab
-        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
-        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
-        return True
 
     def doRelayAction(self, relayIndex=0):
         """

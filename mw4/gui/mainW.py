@@ -115,7 +115,6 @@ class MainWindow(MWidget,
         self.ui.saveConfig.clicked.connect(self.saveProfile)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
-        self.ui.checkRemoteAccess.stateChanged.connect(self.remoteAccess)
         self.app.remoteCommand.connect(self.remoteCommand)
 
         # initial call for writing the gui
@@ -151,8 +150,8 @@ class MainWindow(MWidget,
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
-        self.ui.checkRemoteAccess.setChecked(config.get('checkRemoteAccess', False))
-        self.remoteAccess()
+        self.enableRemote()
+        self.enableRelay()
 
         Mount.initConfig(self)
         SiteStatus.initConfig(self)
@@ -180,7 +179,6 @@ class MainWindow(MWidget,
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
-        config['checkRemoteAccess'] = self.ui.checkRemoteAccess.isChecked()
 
         Mount.storeConfig(self)
         SiteStatus.storeConfig(self)
@@ -443,20 +441,6 @@ class MainWindow(MWidget,
         if sett.typeConnection is not None:
             text = typeConnectionTexts[sett.typeConnection]
             self.ui.mountTypeConnection.setText(text)
-
-    def remoteAccess(self):
-        """
-        remoteAccess enables or disables the remote access
-
-        :return: true for test purpose
-        """
-
-        if self.ui.checkRemoteAccess.isChecked():
-            self.app.remote.startRemote()
-        else:
-            self.app.remote.stopRemote()
-
-        return True
 
     def remoteCommand(self, command):
 

@@ -44,14 +44,32 @@ class SettDevice(object):
                                 self.ui.measureDevice,
                                 self.ui.remoteDevice,
                                 ]
+        self.deviceDropDownKeys = ['ccdDevice',
+                                   'astrometryDevice',
+                                   'domeDevice',
+                                   'environmentDevice',
+                                   'skymeterDevice',
+                                   'powerDevice',
+                                   'relayDevice',
+                                   'measureDevice',
+                                   'remoteDevice',
+                                   ]
         self.setupDeviceGui()
+        self.ui.relayDevice.currentIndexChanged.connect(self.enableRelay)
+        self.ui.remoteDevice.currentIndexChanged.connect(self.enableRemote)
 
     def initConfig(self):
         config = self.app.config['mainW']
+        for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
+            dropDown.setCurrentIndex(config.get(key, 0))
+
         return True
 
     def storeConfig(self):
         config = self.app.config['mainW']
+        for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
+            config[key] = dropDown.currentIndex()
+
         return True
 
     def setupIcons(self):
@@ -82,4 +100,50 @@ class SettDevice(object):
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('No device selected - Off')
+
+        # adding special items
+        self.ui.measureDevice.addItem('Built-In Measurement - On')
+        self.ui.remoteDevice.addItem('Built-In Remote - On')
+        self.ui.relayDevice.addItem('Built-In Relay - On')
+
+        return True
+
+    def enableRelay(self):
+        """
+        enableRelay allows to run the relay box.
+
+        :return: success for test
+        """
+
+        # get index for relay tab
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+
+        if self.ui.relayDevice.currentIndex() == 1:
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            self.app.message.emit('Relay enabled', 2)
+            self.app.relay.startTimers()
+        else:
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.app.message.emit('Relay disabled', 2)
+            self.app.relay.stopTimers()
+        # update the style for showing the Relay tab
+        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
+        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
+        return True
+
+    def enableRemote(self):
+        """
+        remoteAccess enables or disables the remote access
+
+        :return: true for test purpose
+        """
+
+        if self.ui.remoteDevice.currentIndex() == 1:
+            self.app.remote.startRemote()
+            self.app.message.emit('Remote enabled', 2)
+        else:
+            self.app.remote.stopRemote()
+            self.app.message.emit('Remote disabled', 2)
+
         return True

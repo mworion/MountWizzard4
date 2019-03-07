@@ -11695,7 +11695,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>4</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -14466,71 +14466,6 @@ manually</string>
          </property>
          <property name="readOnly">
           <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_193">
-         <property name="geometry">
-          <rect>
-           <x>395</x>
-           <y>20</y>
-           <width>171</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Remote access</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line_49">
-         <property name="geometry">
-          <rect>
-           <x>395</x>
-           <y>40</y>
-           <width>361</width>
-           <height>1</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QCheckBox" name="checkRemoteAccess">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>50</y>
-           <width>201</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable / disable remote access for shutdown.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Enable Remote Access</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLabel" name="label_200">
@@ -17373,7 +17308,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>215</x>
-           <y>130</y>
+           <y>100</y>
            <width>151</width>
            <height>21</height>
           </rect>
@@ -17439,7 +17374,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>15</x>
-           <y>105</y>
+           <y>75</y>
            <width>161</width>
            <height>21</height>
           </rect>
@@ -17453,35 +17388,11 @@ manually</string>
           <string>Username</string>
          </property>
         </widget>
-        <widget class="QCheckBox" name="checkEnableRelay">
-         <property name="geometry">
-          <rect>
-           <x>15</x>
-           <y>50</y>
-           <width>201</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable / disable relay functions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Enable Relais Box</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_mountIP_2">
          <property name="geometry">
           <rect>
            <x>15</x>
-           <y>80</y>
+           <y>50</y>
            <width>71</width>
            <height>21</height>
           </rect>
@@ -17499,7 +17410,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>15</x>
-           <y>130</y>
+           <y>100</y>
            <width>161</width>
            <height>21</height>
           </rect>
@@ -17537,7 +17448,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>215</x>
-           <y>105</y>
+           <y>75</y>
            <width>151</width>
            <height>21</height>
           </rect>
@@ -17582,7 +17493,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>115</x>
-           <y>80</y>
+           <y>50</y>
            <width>251</width>
            <height>21</height>
           </rect>
@@ -18498,7 +18409,6 @@ manually</string>
   <tabstop>relayButton7</tabstop>
   <tabstop>mountHost</tabstop>
   <tabstop>mountMAC</tabstop>
-  <tabstop>checkRemoteAccess</tabstop>
   <tabstop>posText0</tabstop>
   <tabstop>posAz0</tabstop>
   <tabstop>posAlt0</tabstop>

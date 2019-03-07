@@ -124,6 +124,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: nothing
         """
         self.timer.start(self.CYCLE_POLLING)
+        print('start timer')
 
     def stopTimers(self):
         """

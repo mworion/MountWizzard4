@@ -34,6 +34,7 @@ app, spy, mwGlob, test = setupQt()
 
 
 def test_storeConfig_1():
+    app.mainW.ui.relayDevice.setCurrentIndex(0)
     app.mainW.storeConfig()
 
 

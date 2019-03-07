@@ -48,7 +48,7 @@
   <property name="windowTitle">
    <string>Measurements</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
    <property name="spacing">
     <number>4</number>
    </property>
@@ -169,13 +169,13 @@
      <property name="minimumSize">
       <size>
        <width>790</width>
-       <height>270</height>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>1580</width>
-       <height>1070</height>
+       <height>16777215</height>
       </size>
      </property>
      <property name="sizeIncrement">

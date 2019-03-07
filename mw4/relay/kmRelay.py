@@ -251,9 +251,9 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.logger.info(f'Pulse relay:{relayNumber}')
         byteOn = self._getByte(relayNumber=relayNumber, state=True)
         byteOff = self._getByte(relayNumber=relayNumber, state=False)
-        value1 = self.getRelay(f'/FFE0{byteOn:2X}')
+        value1 = self.getRelay(f'/FFE0{byteOn:02X}')
         time.sleep(self.PULSEWIDTH)
-        value2 = self.getRelay(f'/FFE0{byteOff:2X}')
+        value2 = self.getRelay(f'/FFE0{byteOff:02X}')
 
         if value1 is None or value2 is None:
             self.logger.error(f'Relay:{relayNumber}')

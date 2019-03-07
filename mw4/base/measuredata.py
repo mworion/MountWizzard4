@@ -152,7 +152,7 @@ class MeasureData(object):
         :return: success
         """
 
-        if not self.app.mainW.ui.checkMeasurement.isChecked():
+        if self.app.mainW.ui.measureDevice.currentIndex() == 0:
             return False
 
         if not self.mutexMeasure.tryLock():

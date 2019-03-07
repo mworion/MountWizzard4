@@ -64,7 +64,6 @@ class SettMisc(object):
 
         self.ui.expiresYes.setChecked(config.get('expiresYes', True))
         self.ui.expiresNo.setChecked(config.get('expiresNo', False))
-        self.ui.checkMeasurement.setChecked(config.get('checkMeasurement', False))
 
         self.setLoggingLevel()
         self.setLoggingLevelIB()
@@ -90,7 +89,6 @@ class SettMisc(object):
 
         config['expiresYes'] = self.ui.expiresYes.isChecked()
         config['expiresNo'] = self.ui.expiresNo.isChecked()
-        config['checkMeasurement'] = self.ui.checkMeasurement.isChecked()
         return True
 
     def setupIcons(self):

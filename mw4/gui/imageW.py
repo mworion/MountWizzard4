@@ -380,8 +380,6 @@ class ImageWindow(widget.MWidget):
         axe1 = axes.coords[1]
         axes.coords.frame.set_color(self.M_BLUE)
 
-        axe0.set_yticks(number=10)
-        axe1.set_ticks(number=10)
         axe0.grid(True,
                   color=self.M_BLUE,
                   ls='solid',
@@ -410,6 +408,13 @@ class ImageWindow(widget.MWidget):
                            fontsize=12,
                            fontweight='bold',
                            )
+        locator = ticker.MaxNLocator(nbins=8,
+                                     integer=True,
+                                     min_n_ticks=4,
+                                     prune='both',
+                                     )
+        axe0.set_ticks(number=20)
+        axe1.set_ticks(number=20)
         return axes
 
     def setupNormal(self, image=None):

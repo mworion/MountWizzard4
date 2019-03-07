@@ -11695,7 +11695,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>7</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -16684,7 +16684,7 @@ manually</string>
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="relayText0">
+        <widget class="QLineEdit" name="relayButtonText0">
          <property name="geometry">
           <rect>
            <x>455</x>
@@ -16720,7 +16720,7 @@ manually</string>
           <bool>false</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="relayText7">
+        <widget class="QLineEdit" name="relayButtonText7">
          <property name="geometry">
           <rect>
            <x>455</x>
@@ -16820,7 +16820,7 @@ manually</string>
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QLineEdit" name="relayText5">
+        <widget class="QLineEdit" name="relayButtonText5">
          <property name="geometry">
           <rect>
            <x>455</x>
@@ -16925,7 +16925,7 @@ manually</string>
           <string>8</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="relayText1">
+        <widget class="QLineEdit" name="relayButtonText1">
          <property name="geometry">
           <rect>
            <x>455</x>
@@ -16992,7 +16992,7 @@ manually</string>
           <string>6</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="relayText6">
+        <widget class="QLineEdit" name="relayButtonText6">
          <property name="geometry">
           <rect>
            <x>455</x>
@@ -17049,7 +17049,7 @@ manually</string>
           <string>5</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="relayText3">
+        <widget class="QLineEdit" name="relayButtonText3">
          <property name="geometry">
           <rect>
            <x>455</x>
@@ -17136,7 +17136,7 @@ manually</string>
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="relayText2">
+        <widget class="QLineEdit" name="relayButtonText2">
          <property name="geometry">
           <rect>
            <x>455</x>
@@ -17193,7 +17193,7 @@ manually</string>
           <string>Text</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="relayText4">
+        <widget class="QLineEdit" name="relayButtonText4">
          <property name="geometry">
           <rect>
            <x>455</x>

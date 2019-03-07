@@ -38,10 +38,10 @@ def test_storeConfig_1():
 
 
 def test_setupRelayGui(qtbot):
-    assert 8 == len(app.mainW.relayDropDownIndex)
-    assert 8 == len(app.mainW.relayTexts)
+    assert 8 == len(app.mainW.relayDropDowns)
+    assert 8 == len(app.mainW.relayButtonTexts)
     assert 8 == len(app.mainW.relayButtons)
-    for dropDown in app.mainW.relayDropDownIndex:
+    for dropDown in app.mainW.relayDropDowns:
         val = dropDown.count()
         assert 2 == val
 
@@ -116,7 +116,7 @@ def test_enableRelay_2(qtbot):
 
 
 def test_doRelayAction_1(qtbot):
-    app.mainW.relayDropDownIndex[7].setCurrentIndex(0)
+    app.mainW.relayDropDowns[7].setCurrentIndex(0)
     with mock.patch.object(app.relay,
                            'switch',
                            return_value=False):
@@ -125,7 +125,7 @@ def test_doRelayAction_1(qtbot):
 
 
 def test_doRelayAction_2(qtbot):
-    app.mainW.relayDropDownIndex[7].setCurrentIndex(0)
+    app.mainW.relayDropDowns[7].setCurrentIndex(0)
     with mock.patch.object(app.relay,
                            'switch',
                            return_value=True):
@@ -134,13 +134,13 @@ def test_doRelayAction_2(qtbot):
 
 
 def test_doRelayAction_3(qtbot):
-    app.mainW.relayDropDownIndex[7].setCurrentIndex(2)
+    app.mainW.relayDropDowns[7].setCurrentIndex(2)
     suc = app.mainW.doRelayAction(7)
     assert not suc
 
 
 def test_doRelayAction_4(qtbot):
-    app.mainW.relayDropDownIndex[7].setCurrentIndex(1)
+    app.mainW.relayDropDowns[7].setCurrentIndex(1)
     with mock.patch.object(app.relay,
                            'pulse',
                            return_value=False):
@@ -149,7 +149,7 @@ def test_doRelayAction_4(qtbot):
 
 
 def test_doRelayAction_5(qtbot):
-    app.mainW.relayDropDownIndex[7].setCurrentIndex(1)
+    app.mainW.relayDropDowns[7].setCurrentIndex(1)
     with mock.patch.object(app.relay,
                            'pulse',
                            return_value=True):

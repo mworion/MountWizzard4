@@ -50,4 +50,4 @@ def test_enableRelay1(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.enableRelay()
             assert suc
-        assert ['Relay enabled', 0] == blocker.args
+        assert ['Relay enabled', 2] == blocker.args

@@ -146,6 +146,14 @@ def test_calculateReference_6():
 
 def test_checkSize_1():
     app.measure.data['time'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['temp'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['humidity'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['press'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['dewTemp'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['sqr'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['raJNow'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['decJNow'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.MAXSIZE = 20
     suc = app.measure._checkSize()
     assert not suc
@@ -153,6 +161,15 @@ def test_checkSize_1():
 
 def test_checkSize_2():
     app.measure.data['time'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['time'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['temp'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['humidity'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['press'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['dewTemp'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['sqr'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['raJNow'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['decJNow'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
+    app.measure.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.MAXSIZE = 5
     suc = app.measure._checkSize()
     assert suc

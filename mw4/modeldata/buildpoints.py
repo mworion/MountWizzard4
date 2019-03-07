@@ -21,6 +21,7 @@
 import logging
 import os
 import json
+import random
 # external packages
 import numpy as np
 # local imports
@@ -503,7 +504,7 @@ class DataPoint(object):
                 # only values with above horizon = 0
 
                 if 5 <= alt <= 85 and 2 < az < 358:
-                    alt += np.random.uniform(-2, 2, 1)
+                    alt += random.uniform(-2, 2)
                     self.addBuildP((alt, az))
         return True
 

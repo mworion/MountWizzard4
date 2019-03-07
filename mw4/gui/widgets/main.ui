@@ -1195,7 +1195,7 @@
      <property name="tabBarAutoHide">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="Mount">
       <attribute name="title">
        <string> Mount</string>
       </attribute>
@@ -3126,7 +3126,7 @@
       <zorder>label_148</zorder>
       <zorder>statusGPSSynced</zorder>
      </widget>
-     <widget class="QWidget" name="tab_4">
+     <widget class="QWidget" name="SiteStatus">
       <attribute name="title">
        <string>Site Status</string>
       </attribute>
@@ -4432,7 +4432,7 @@ manually</string>
         <string>Date:</string>
        </property>
       </widget>
-      <widget class="QLabel" name="adgjasg">
+      <widget class="QLabel" name="Hardware">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -5877,7 +5877,7 @@ manually</string>
       <zorder>firmwareProductName_2</zorder>
       <zorder>firmwareProductName_5</zorder>
       <zorder>firmwareProductName_4</zorder>
-      <zorder>adgjasg</zorder>
+      <zorder>Hardware</zorder>
       <zorder>firmwareProductName_3</zorder>
       <zorder>line_21</zorder>
       <zorder>label_151</zorder>
@@ -5894,7 +5894,7 @@ manually</string>
       <zorder>groupBox</zorder>
       <zorder>groupBox_2</zorder>
      </widget>
-     <widget class="QWidget" name="tab_15">
+     <widget class="QWidget" name="AlignMount">
       <attribute name="title">
        <string>Align Mount</string>
       </attribute>
@@ -7305,7 +7305,7 @@ manually</string>
       <zorder>label_127</zorder>
       <zorder>label_128</zorder>
      </widget>
-     <widget class="QWidget" name="tab_6">
+     <widget class="QWidget" name="BuildModel">
       <attribute name="title">
        <string>Build Model</string>
       </attribute>
@@ -8741,7 +8741,7 @@ manually</string>
       <zorder>runBatchCombineModel</zorder>
       <zorder>genBuildNorm</zorder>
      </widget>
-     <widget class="QWidget" name="tab_8">
+     <widget class="QWidget" name="ManageModel">
       <attribute name="title">
        <string>Manage Model</string>
       </attribute>
@@ -9236,7 +9236,7 @@ manually</string>
       <zorder>checkShowErrorValues</zorder>
       <zorder>refreshName</zorder>
      </widget>
-     <widget class="QWidget" name="tab_5">
+     <widget class="QWidget" name="TLE">
       <attribute name="title">
        <string>TLE</string>
       </attribute>
@@ -11652,7 +11652,7 @@ manually</string>
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="Setting">
       <attribute name="title">
        <string>Sett. / Conf.</string>
       </attribute>
@@ -11695,7 +11695,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>7</number>
+        <number>0</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -11703,61 +11703,238 @@ manually</string>
        <property name="usesScrollButtons">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="tab_11">
+       <widget class="QWidget" name="Devices">
         <attribute name="title">
          <string>Devices</string>
         </attribute>
+        <widget class="QWidget" name="gridLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>5</y>
+           <width>761</width>
+           <height>386</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,1">
+          <item row="4" column="0">
+           <widget class="QLabel" name="astrometryDevice">
+            <property name="text">
+             <string>Astrometry Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="Line" name="line_30">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="Line" name="line_25">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="Line" name="line_22">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLabel" name="skyDevice">
+            <property name="text">
+             <string>Sky Meter Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QComboBox" name="comboBox_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="0">
+           <widget class="QComboBox" name="comboBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QComboBox" name="comboBox_5">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QLabel" name="powerDevice">
+            <property name="text">
+             <string>PowerBox Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="domeDevice">
+            <property name="text">
+             <string>Dome Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="environmentDevice">
+            <property name="text">
+             <string>Environment Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="2">
+           <widget class="QComboBox" name="comboBox_6">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="Line" name="line_32">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" rowspan="9">
+           <widget class="Line" name="line_19">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QComboBox" name="comboBox_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="ccdDevice">
+            <property name="text">
+             <string>CCD Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>5</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="8" column="0">
+           <widget class="QComboBox" name="comboBox_4">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>5</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
        </widget>
-       <widget class="QWidget" name="tab_12">
+       <widget class="QWidget" name="INDI">
         <attribute name="title">
          <string>INDI</string>
         </attribute>
-        <widget class="QLabel" name="label_143">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>80</y>
-           <width>241</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Devices</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line_50">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>100</y>
-           <width>361</width>
-           <height>1</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_13">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>110</y>
+           <y>75</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -11775,7 +11952,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>140</y>
+           <y>100</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -11793,7 +11970,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>170</y>
+           <y>125</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -11814,7 +11991,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>150</x>
-           <y>140</y>
+           <y>100</y>
            <width>221</width>
            <height>21</height>
           </rect>
@@ -11859,7 +12036,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>150</x>
-           <y>170</y>
+           <y>125</y>
            <width>221</width>
            <height>21</height>
           </rect>
@@ -11901,7 +12078,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>330</y>
+           <y>295</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -11912,7 +12089,7 @@ manually</string>
           </font>
          </property>
          <property name="text">
-          <string>CCD</string>
+          <string>CCD-Device</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="ccdName">
@@ -11922,7 +12099,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>150</x>
-           <y>330</y>
+           <y>295</y>
            <width>221</width>
            <height>21</height>
           </rect>
@@ -11964,7 +12141,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>110</y>
+           <y>75</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -11975,7 +12152,7 @@ manually</string>
           </font>
          </property>
          <property name="text">
-          <string>Dome</string>
+          <string>Dome-Device</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="domeName">
@@ -11985,7 +12162,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>540</x>
-           <y>110</y>
+           <y>75</y>
            <width>221</width>
            <height>21</height>
           </rect>
@@ -12030,7 +12207,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>150</x>
-           <y>110</y>
+           <y>75</y>
            <width>221</width>
            <height>21</height>
           </rect>
@@ -12265,27 +12442,6 @@ manually</string>
           <string>Reconnect</string>
          </property>
         </widget>
-        <widget class="Line" name="line_55">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>320</y>
-           <width>361</width>
-           <height>1</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_263">
          <property name="geometry">
           <rect>
@@ -12325,26 +12481,6 @@ manually</string>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_150">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>300</y>
-           <width>241</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Devices</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="indiHostImaging">
@@ -12410,47 +12546,6 @@ manually</string>
          </property>
          <property name="text">
           <string>Telescope / Dome server</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_161">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>80</y>
-           <width>241</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Devices</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line_56">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>100</y>
-           <width>361</width>
-           <height>1</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
         <widget class="QLabel" name="label_mountIP_7">
@@ -12569,7 +12664,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>540</x>
-           <y>140</y>
+           <y>100</y>
            <width>221</width>
            <height>21</height>
           </rect>
@@ -12611,7 +12706,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>140</y>
+           <y>100</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -12622,14 +12717,14 @@ manually</string>
           </font>
          </property>
          <property name="text">
-          <string>Telescope</string>
+          <string>Telescope-Device</string>
          </property>
         </widget>
         <widget class="QCheckBox" name="environmentMessage">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>200</y>
+           <y>150</y>
            <width>231</width>
            <height>21</height>
           </rect>
@@ -12656,7 +12751,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>360</y>
+           <y>320</y>
            <width>231</width>
            <height>21</height>
           </rect>
@@ -12683,7 +12778,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>170</y>
+           <y>125</y>
            <width>231</width>
            <height>21</height>
           </rect>
@@ -12710,7 +12805,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>300</y>
+           <y>265</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -12724,32 +12819,11 @@ manually</string>
           <string>Accesory1</string>
          </property>
         </widget>
-        <widget class="Line" name="line_60">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>290</y>
-           <width>361</width>
-           <height>1</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
         <widget class="QCheckBox" name="accessoryMessage">
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>360</y>
+           <y>325</y>
            <width>231</width>
            <height>21</height>
           </rect>
@@ -12797,7 +12871,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>540</x>
-           <y>330</y>
+           <y>295</y>
            <width>221</width>
            <height>21</height>
           </rect>
@@ -12905,7 +12979,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>330</y>
+           <y>295</y>
            <width>101</width>
            <height>21</height>
           </rect>
@@ -12926,7 +13000,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>540</x>
-           <y>300</y>
+           <y>265</y>
            <width>221</width>
            <height>21</height>
           </rect>
@@ -12962,26 +13036,6 @@ manually</string>
          </property>
          <property name="readOnly">
           <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_162">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>270</y>
-           <width>241</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Devices</string>
          </property>
         </widget>
         <widget class="QPushButton" name="reconnectAccessory">
@@ -13030,7 +13084,7 @@ manually</string>
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="tab_9">
+       <widget class="QWidget" name="Imaging">
         <attribute name="title">
          <string>Imaging</string>
         </attribute>
@@ -13489,7 +13543,7 @@ manually</string>
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="tab_7">
+       <widget class="QWidget" name="Astrometry">
         <attribute name="title">
          <string>Astrometry</string>
         </attribute>
@@ -14198,7 +14252,7 @@ manually</string>
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="tab_14">
+       <widget class="QWidget" name="MountRemote">
         <attribute name="title">
          <string>Mount IP / Remote</string>
         </attribute>
@@ -14527,7 +14581,7 @@ manually</string>
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="tab_22">
+       <widget class="QWidget" name="Horizon">
         <attribute name="title">
          <string>Horizon</string>
         </attribute>
@@ -14940,7 +14994,7 @@ manually</string>
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="tab_10">
+       <widget class="QWidget" name="ParkPos">
         <attribute name="title">
          <string>ParkPos</string>
         </attribute>
@@ -16578,7 +16632,7 @@ manually</string>
         <zorder>label_103</zorder>
         <zorder>label_262</zorder>
        </widget>
-       <widget class="QWidget" name="tab">
+       <widget class="QWidget" name="Relay_2">
         <attribute name="title">
          <string>Relay</string>
         </attribute>
@@ -17487,7 +17541,7 @@ manually</string>
          </property>
         </widget>
        </widget>
-       <widget class="QWidget" name="tab_13">
+       <widget class="QWidget" name="AudioMisc">
         <attribute name="title">
          <string>Audio / Misc</string>
         </attribute>

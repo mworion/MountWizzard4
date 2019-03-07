@@ -119,6 +119,11 @@ class Remote(PyQt5.QtCore.QObject):
         if self.clientConnection.bytesAvailable() == 0:
             return False
 
+        validCommands = ['shutdown',
+                         'shutdown mount',
+                         'boot mount',
+                         ]
+
         connection = self.clientConnection.peerAddress().toString()
         command = str(self.clientConnection.read(100), "ascii")
         command = command.replace('\n', '')
@@ -126,17 +131,9 @@ class Remote(PyQt5.QtCore.QObject):
 
         self.logger.info(f'Command {command} from {connection} received')
 
-        if command == 'shutdown':
-            self.app.message.emit('Shutdown MW remotely', 2)
-            self.app.remoteShutdown.emit()
-        elif command == 'shutdown mount':
-            self.app.message.emit('Shutdown mount remotely', 2)
-            self.app.remoteShutdownMount.emit()
-        elif command == 'boot mount':
-            self.app.message.emit('Boot mount remotely', 2)
-            self.app.remoteBootMount.emit()
+        if command in validCommands:
+            self.app.remoteCommand.emit(command)
         else:
-            print(f'Unknown command {command} from {connection} received')
             self.logger.error(f'Unknown command {command} from {connection} received')
 
         return True

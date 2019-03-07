@@ -113,6 +113,7 @@ class MainWindow(MWidget,
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.checkRemoteAccess.stateChanged.connect(self.remoteAccess)
+        self.app.remoteCommand.connect(self.remoteCommand)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
@@ -449,6 +450,18 @@ class MainWindow(MWidget,
             self.app.remote.stopRemote()
 
         return True
+
+    def remoteCommand(self, command):
+
+        if command == 'shutdown':
+            self.app.quitSave()
+            self.app.message.emit('Shutdown MW remotely', 2)
+        elif command == 'shutdown mount':
+            self.mountShutdown()
+            self.app.message.emit('Shutdown mount remotely', 2)
+        elif command == 'boot mount':
+            self.mountBoot()
+            self.app.message.emit('Boot mount remotely', 2)
 
     def autoDeletePoints(self):
         """

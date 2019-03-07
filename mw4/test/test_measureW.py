@@ -109,12 +109,12 @@ def test_setupButtons_1():
 
 
 def test_clearPlot_1():
-    suc = app.measureW.clearPlot(0)
+    suc = app.measureW.clearPlot(numberPlots=0)
     assert not suc
 
 
 def test_clearPlot_2():
-    suc = app.measureW.clearPlot(4)
+    suc = app.measureW.clearPlot(numberPlots=4)
     assert not suc
 
 
@@ -124,15 +124,20 @@ def test_clearPlot_3():
 
 
 def test_clearPlot_4():
-    suc = app.measureW.clearPlot(1)
+    suc = app.measureW.clearPlot(numberPlots=1)
     assert suc
-    assert len(app.measureW.measureMat.figure.axes) == 3
+    assert len(app.measureW.measureMat.figure.axes) == 1
 
 
 def test_clearPlot_5():
-    suc = app.measureW.clearPlot(3)
+    suc = app.measureW.clearPlot(numberPlots=2)
     assert suc
-    assert len(app.measureW.measureMat.figure.axes) == 3
+    assert len(app.measureW.measureMat.figure.axes) == 2
+
+
+def test_clearPlot_6():
+    suc = app.measureW.clearPlot(numberPlots=3)
+    assert not suc
 
 
 def test_drawRaDec_1():

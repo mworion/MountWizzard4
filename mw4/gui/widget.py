@@ -189,6 +189,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         :return:    success
         """
 
+        if numberPlots is None:
+            return False
         if numberPlots < 1:
             return False
         if numberPlots > 2:

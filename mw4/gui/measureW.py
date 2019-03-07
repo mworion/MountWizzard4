@@ -439,11 +439,9 @@ class MeasureWindow(widget.MWidget):
         else:
             pass
 
-        axe = self.measureMat.figure.axes[-1]
-        axe.set_xticks(time_ticks)
-        axe.set_xticklabels(time_labels)
-
         for axe in self.measureMat.figure.axes:
+            axe.set_xticks(time_ticks)
+            axe.set_xticklabels(time_labels)
             axe.set_xlim(time_ticks[0], time_ticks[-1])
             axe.figure.canvas.draw()
 

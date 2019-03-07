@@ -295,7 +295,7 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         self.logger.info(f'Set relay:{relayNumber}')
         byteOn = self._getByte(relayNumber=relayNumber, state=value)
-        value = self.getRelay(f'/FFE0{byteOn:2X}')
+        value = self.getRelay(f'/FFE0{byteOn:02X}')
 
         if value is None:
             self.logger.error(f'Relay:{relayNumber}')

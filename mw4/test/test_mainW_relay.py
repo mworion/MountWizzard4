@@ -43,7 +43,7 @@ def test_updateRelayGui(qtbot):
 
 
 def test_enableRelay1(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(True)
+    app.mainW.ui.relayDevice.setCurrentIndex(1)
     with mock.patch.object(app.relay,
                            'startTimers',
                            return_value=None):

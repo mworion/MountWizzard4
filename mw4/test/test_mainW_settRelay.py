@@ -86,24 +86,6 @@ def test_relayPassword():
     assert app.relay.password == 'test'
 
 
-def test_enableRelay_1(qtbot):
-    app.mainW.ui.relayDevice.setCurrentIndex(1)
-
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.enableRelay()
-        assert suc
-        assert ['Relay enabled', 2] == blocker.args
-
-
-def test_enableRelay_2(qtbot):
-    app.mainW.ui.relayDevice.setCurrentIndex(0)
-
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.enableRelay()
-        assert suc
-        assert ['Relay disabled', 2] == blocker.args
-
-
 def test_doRelayAction_1(qtbot):
     app.mainW.relayDropDowns[7].setCurrentIndex(0)
     with mock.patch.object(app.relay,

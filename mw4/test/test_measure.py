@@ -49,7 +49,7 @@ def test_measureTask_1():
 
 
 def test_measureTask_2():
-    app.mainW.ui.measureDevice.setCurrentIndex(0)
+    app.mainW.ui.measureDevice.setCurrentIndex(1)
     app.environment.wDevice['local']['data']['WEATHER_TEMPERATURE'] = 10
     app.environment.wDevice['local']['data']['WEATHER_BAROMETER'] = 1000
     app.environment.wDevice['local']['data']['WEATHER_DEWPOINT'] = 10

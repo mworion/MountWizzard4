@@ -408,11 +408,6 @@ class ImageWindow(widget.MWidget):
                            fontsize=12,
                            fontweight='bold',
                            )
-        locator = ticker.MaxNLocator(nbins=8,
-                                     integer=True,
-                                     min_n_ticks=4,
-                                     prune='both',
-                                     )
         axe0.set_ticks(number=20)
         axe1.set_ticks(number=20)
         return axes

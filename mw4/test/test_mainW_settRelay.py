@@ -46,16 +46,16 @@ def test_setupRelayGui(qtbot):
         assert 2 == val
 
 
-def test_toggleRelay1(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(False)
+def test_toggleRelay_1(qtbot):
+    app.mainW.ui.relayDevice.setCurrentIndex(0)
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.relayButtonPressed()
         assert not suc
-    assert ['Relay box off', 2] == blocker.args
+    assert ['Relay action cannot be performed', 2] == blocker.args
 
 
-def test_toggleRelay2(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(True)
+def test_toggleRelay_2(qtbot):
+    app.mainW.ui.relayDevice.setCurrentIndex(1)
     with mock.patch.object(app.relay,
                            'switch',
                            return_value=False):
@@ -87,21 +87,21 @@ def test_relayPassword():
 
 
 def test_enableRelay_1(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(True)
+    app.mainW.ui.relayDevice.setCurrentIndex(1)
 
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.enableRelay()
         assert suc
-        assert ['Relay enabled', 0] == blocker.args
+        assert ['Relay enabled', 2] == blocker.args
 
 
 def test_enableRelay_2(qtbot):
-    app.mainW.ui.checkEnableRelay.setChecked(False)
+    app.mainW.ui.relayDevice.setCurrentIndex(0)
 
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.enableRelay()
         assert suc
-        assert ['Relay disabled', 0] == blocker.args
+        assert ['Relay disabled', 2] == blocker.args
 
 
 def test_doRelayAction_1(qtbot):

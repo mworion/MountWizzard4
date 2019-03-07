@@ -181,9 +181,6 @@ class SettRelay(object):
         :return: success for test
         """
 
-        if not self.ui.checkEnableRelay.isChecked():
-            self.app.message.emit('Relay box off', 2)
-            return False
         suc = False
         for i, button in enumerate(self.relayButtons):
             if button != self.sender():

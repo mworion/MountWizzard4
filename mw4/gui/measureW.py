@@ -167,8 +167,8 @@ class MeasureWindow(widget.MWidget):
 
         fig = self.measureMat.figure
 
-        fig.subplots_adjust(left=0.1,
-                            right=0.9,
+        fig.subplots_adjust(left=0.11,
+                            right=0.95,
                             bottom=0.1,
                             top=0.95,
                             )
@@ -329,6 +329,8 @@ class MeasureWindow(widget.MWidget):
         axe0.grid(True, color=self.M_GREY, linestyle='dotted', alpha=0.5)
         axe1.grid(True, color=self.M_GREY, linestyle='dotted', alpha=0.5)
         axe0.set_xticklabels([])
+        axe0.margins(y=0.2)
+        axe1.margins(y=0.2)
 
         axe0.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
                                                               integer=True,
@@ -384,8 +386,8 @@ class MeasureWindow(widget.MWidget):
                   color=self.M_WHITE,
                   )
 
-        axe0.set_ylim(10, 21)
         axe0.grid(True, color=self.M_GREY, alpha=0.5)
+        axe0.margins(y=0.2)
 
         axe0.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
                                                               integer=True,
@@ -411,7 +413,7 @@ class MeasureWindow(widget.MWidget):
         mIndex = self.ui.measureSet.currentIndex()
         tIndex = self.ui.timeSet.currentIndex()
 
-        if len(data['time']) < 2:
+        if len(data['time']) < 4:
             return False
 
         if not self.mutexDraw.tryLock():

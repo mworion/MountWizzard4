@@ -37,7 +37,7 @@ class MeasureData(object):
     __all__ = ['MeasureData',
                ]
 
-    version = '0.3'
+    version = '0.4'
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
@@ -48,9 +48,9 @@ class MeasureData(object):
     def __init__(self,
                  app,
                  ):
-        # super().__init__()
         self.app = app
         self.mutexMeasure = PyQt5.QtCore.QMutex()
+        self.shorteningStart = True
         self.raRef = None
         self.decRef = None
         self.data = {
@@ -120,11 +120,18 @@ class MeasureData(object):
         _reduceSize keep tracking of memory usage of the measurement. if the measurement
         get s too much data, it split the history by half and only keeps the latest only
         for work.
+        if as well throws the first N measurements away, because they or not valid
 
         :return: True if splitting happens
         """
 
-        if len(self.data['time']) < self.MAXSIZE:
+        lenData = len(self.data['time'])
+        if self.shorteningStart and lenData > 2:
+            self.shorteningStart = False
+            for measure in self.data:
+                self.data[measure] = np.delete(self.data[measure], range(0, 2))
+
+        if lenData < self.MAXSIZE:
             return False
 
         for measure in self.data:

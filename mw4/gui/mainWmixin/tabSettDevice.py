@@ -63,6 +63,8 @@ class SettDevice(object):
         for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
             dropDown.setCurrentIndex(config.get(key, 0))
 
+        self.enableRelay()
+        self.enableRemote()
         return True
 
     def storeConfig(self):

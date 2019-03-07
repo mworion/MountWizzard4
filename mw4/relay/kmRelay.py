@@ -121,18 +121,30 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
         startTimers enables the cyclic timers for polling necessary relay data.
 
-        :return: nothing
+        :return: success
         """
+
+        if self._host is None:
+            return False
+        if not self._host[0]:
+            return False
+        if not self._host[1]:
+            return False
+
         self.timer.start(self.CYCLE_POLLING)
-        print('start timer')
+
+        return True
 
     def stopTimers(self):
         """
         stopTimers disables the cyclic timers for polling necessary relay data.
 
-        :return: nothing
+        :return: success
         """
+
         self.timer.stop()
+
+        return True
 
     def _debugOutput(self, result=None):
         """
@@ -154,6 +166,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         elapsed = result.elapsed
 
         self.logger.debug(f'Result: {url}, {reason}, {status}, {code}, {elapsed}, {text}')
+
         return True
 
     def getRelay(self, url='/status.xml', debug=True):

@@ -150,8 +150,6 @@ class MainWindow(MWidget,
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
-        self.enableRemote()
-        self.enableRelay()
 
         Mount.initConfig(self)
         SiteStatus.initConfig(self)

@@ -303,6 +303,7 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+        SettDevice.updateGUI(self)
         return True
 
     def updateTask(self):

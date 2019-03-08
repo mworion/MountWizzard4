@@ -52,7 +52,7 @@ class IndiClass(object):
                  ):
         super().__init__()
 
-        self.indiServerUp = False
+        self.connected = False
         self.client = qtIndiBase.Client(host=host)
         self.name = name
         self.data = {}
@@ -76,14 +76,13 @@ class IndiClass(object):
         self._name = value
 
     def serverConnected(self):
-        self.indiServerUp = True
         if self.name:
             suc = self.client.watchDevice(self.name)
             return suc
         return False
 
-    def serverDisconnected(self):
-        self.indiServerUp = False
+    @staticmethod
+    def serverDisconnected():
         return True
 
     def newDevice(self, deviceName):

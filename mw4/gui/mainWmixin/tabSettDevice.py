@@ -100,6 +100,21 @@ class SettDevice(object):
         """
         return True
 
+    def updateGUI(self):
+        """
+        updateGUI update gui elements on regular bases (actually 1 second) for items,
+        which are not events based.
+
+        :return: success
+        """
+
+        if self.app.environ.device is not None:
+            if self.app.environ.device.getSwitch('CONNECTION'):
+                print('connected')
+            else:
+                print('not connected')
+        return True
+
     def setupDeviceGui(self):
         """
         setupRelayGui handles the modeldata of list for relay handling.

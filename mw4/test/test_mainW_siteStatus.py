@@ -657,6 +657,7 @@ def test_updateRefractionParameters_7(qtbot):
                                return_value=True):
             suc = app.mainW.updateRefractionParameters()
             assert not suc
+    app.mainW.ui.checkRefracNone.setChecked(True)
 
 
 def test_updateSetting_refractionTemp():

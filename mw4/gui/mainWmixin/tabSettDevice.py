@@ -58,11 +58,10 @@ class SettDevice(object):
         self.ui.relayDevice.currentIndexChanged.connect(self.enableRelay)
         self.ui.remoteDevice.currentIndexChanged.connect(self.enableRemote)
 
-        es = self.app.environment.client.signals
-        es.serverConnected.connect(self.indiEnvironConnected)
-        es.serverDisconnected.connect(self.indiEnvironDisconnected)
-        es.newDevice.connect(self.newEnvironDevice)
-        es.removeDevice.connect(self.removeEnvironDevice)
+        self.app.mbox.client.signals.serverConnected.connect(self.indiEnvironConnected)
+        self.app.mbox.client.signals.serverDisconnected.connect(self.indiEnvironDisconnected)
+        self.app.mbox.client.signals.newDevice.connect(self.newEnvironDevice)
+        self.app.mbox.client.signals.removeDevice.connect(self.removeEnvironDevice)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -163,7 +162,7 @@ class SettDevice(object):
         self.app.message.emit('INDI server environment disconnected', 0)
 
     def newEnvironDevice(self, deviceName):
-        self.app.message.emit('INDI device [{0}] found'.format(deviceName), 0)
+        self.app.message.emit(f'INDI environment device [{deviceName}] found', 0)
 
     def removeEnvironDevice(self, deviceName):
-        self.app.message.emit('INDI device [{0}] removed'.format(deviceName), 0)
+        self.app.message.emit(f'INDI environment device [{deviceName}] removed', 0)

@@ -30,7 +30,14 @@ import PyQt5.QtCore
 # local import
 from mw4 import mainApp
 from mw4.test.test_setupQt import setupQt
-app, spy, mwGlob, test = setupQt()
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown():
+    global app, spy, mwGlob, test
+    app, spy, mwGlob, test = setupQt()
+    yield
+    app = None
 
 
 def test_updatePointGui_alt():

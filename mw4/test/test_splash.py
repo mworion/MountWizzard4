@@ -21,10 +21,18 @@
 # external packages
 import PyQt5.QtGui
 import PyQt5.QtWidgets
+import pytest
 # local import
 from mw4.gui import splash
 from mw4.test.test_setupQt import setupQt
-app, spy, mwGlob, test = setupQt()
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown():
+    global app, spy, mwGlob, test
+    app, spy, mwGlob, test = setupQt()
+    yield
+    app = None
 
 
 def test_splash_icon():

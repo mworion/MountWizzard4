@@ -32,8 +32,10 @@ from mw4.test.test_setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
+    app.measure.timerTask.stop()
     yield
     app = None
+    test = None
 
 
 def test_measureTask_1():

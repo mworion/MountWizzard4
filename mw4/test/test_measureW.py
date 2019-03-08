@@ -29,11 +29,22 @@ import numpy as np
 # local import
 from mw4 import mainApp
 from mw4.test.test_setupQt import setupQt
-app, spy, mwGlob, test = setupQt()
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown():
+    global app, spy, mwGlob, test
+    app, spy, mwGlob, test = setupQt()
+    app.mainW.timerTask.stop()
+    app.mainW.timerGui.stop()
+    app.measure.timerTask.stop()
+    yield
+    app = None
+    test = None
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def module_setup_teardown_data():
     value = np.datetime64('2014-12-12 20:20:20')
     app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),

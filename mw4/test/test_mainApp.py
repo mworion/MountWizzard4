@@ -30,6 +30,8 @@ from mw4 import mainApp
 from mw4.test.test_setupQt import setupQt
 
 app, spy, mwGlob, test = setupQt()
+app.mainW.timerTask.stop()
+app.mainW.timerGui.stop()
 
 
 @pytest.fixture(autouse=True, scope='function')

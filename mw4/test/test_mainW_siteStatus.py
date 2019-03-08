@@ -41,6 +41,7 @@ def module_setup_teardown():
     app.mainW.timerGui.stop()
     yield
     app = None
+    test = None
 
 
 def test_setMeridianLimitTrack1(qtbot):

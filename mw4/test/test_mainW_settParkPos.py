@@ -40,6 +40,7 @@ def module_setup_teardown():
     app.mainW.timerGui.stop()
     yield
     app = None
+    test = None
 
 
 def test_initConfig_1():

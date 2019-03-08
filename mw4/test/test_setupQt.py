@@ -38,4 +38,5 @@ def setupQt():
     spy = PyQt5.QtTest.QSignalSpy(app.message)
     app.mainW.timerGui.stop()
     app.mainW.timerTask.stop()
+    app.measure.timerTask.stop()
     return app, spy, mwGlob, test

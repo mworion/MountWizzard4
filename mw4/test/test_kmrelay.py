@@ -32,12 +32,11 @@ from mw4.test.test_setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test, host
     app, spy, mwGlob, test = setupQt()
-    app.mainW.timerTask.stop()
-    app.mainW.timerGui.stop()
     host_ip = '192.168.2.250'
     host = (host_ip, 80)
     yield
     app = None
+    test = None
 
 
 def test_host_1():

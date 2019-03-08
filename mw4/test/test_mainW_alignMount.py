@@ -38,6 +38,7 @@ def module_setup_teardown():
     app, spy, mwGlob, test = setupQt()
     yield
     app = None
+    test = None
 
 
 def test_loadAlignBuildFile_1(qtbot):

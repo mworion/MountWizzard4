@@ -27,7 +27,7 @@ setup(
         'mw4',
         'mw4.astrometry',
         'mw4.base',
-        'mw4.environ',
+        'mw4.environment',
         'mw4.gui',
         'mw4.gui.media',
         'mw4.gui.widgets',

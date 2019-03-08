@@ -80,6 +80,7 @@ def test_measureTask_3():
     assert app.measure.data['press'][0] == 1000
     assert app.measure.data['dewTemp'][0] == 10
     assert app.measure.data['sqr'][0] == 19
+    app.mainW.ui.measureDevice.setCurrentIndex(0)
 
 
 def test_calculateReference_1():

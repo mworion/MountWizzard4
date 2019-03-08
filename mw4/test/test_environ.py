@@ -23,7 +23,7 @@ import pytest
 # external packages
 import PyQt5.QtWidgets
 # local import
-from mw4.environ import environ
+from mw4.environment import environ
 import mw4.test.test_setupQt
 
 host_ip = 'astro-mount.fritz.box'

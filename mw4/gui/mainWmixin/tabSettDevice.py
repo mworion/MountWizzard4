@@ -63,6 +63,8 @@ class SettDevice(object):
         signals = self.app.environ.client.signals
         signals.serverConnected.connect(self.indiEnvironConnected)
         signals.serverDisconnected.connect(self.indiEnvironDisconnected)
+        signals.deviceConnected.connect(self.indiEnvironDeviceConnected)
+        signals.deviceDisconnected.connect(self.indiEnvironDeviceDisconnected)
         signals.newDevice.connect(self.newEnvironDevice)
         signals.removeDevice.connect(self.removeEnvironDevice)
 
@@ -98,21 +100,6 @@ class SettDevice(object):
 
         :return: success for test
         """
-        return True
-
-    def updateGUI(self):
-        """
-        updateGUI update gui elements on regular bases (actually 1 second) for items,
-        which are not events based.
-
-        :return: success
-        """
-
-        if self.app.environ.device is not None:
-            if self.app.environ.device.getSwitch('CONNECTION'):
-                print('connected')
-            else:
-                print('not connected')
         return True
 
     def setupDeviceGui(self):
@@ -187,6 +174,7 @@ class SettDevice(object):
         self.app.message.emit('INDI server environment connected', 0)
 
     def indiEnvironDisconnected(self):
+        self.ui.environDevice.setStyleSheet(self.BACK_NORM)
         self.app.message.emit('INDI server environment disconnected', 0)
 
     def newEnvironDevice(self, deviceName):
@@ -194,3 +182,9 @@ class SettDevice(object):
 
     def removeEnvironDevice(self, deviceName):
         self.app.message.emit(f'INDI environment device [{deviceName}] removed', 0)
+
+    def indiEnvironDeviceConnected(self):
+        self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
+
+    def indiEnvironDeviceDisconnected(self):
+        self.ui.environDevice.setStyleSheet(self.BACK_NORM)

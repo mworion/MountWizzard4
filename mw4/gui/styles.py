@@ -37,11 +37,15 @@ class MWStyles(object):
 
     TRAFFICLIGHTCOLORS = ['green', 'yellow', 'red', '']
     BACK_BG = 'background-color: transparent;'
+    BACK_RED = 'background-color: #B03030;'
+    BACK_GREEN = 'background-color: #208020;'
+    BACK_NORM = 'background-color: #202020;'
     M_BLUE = '#2090C0'
     M_BLACK = '#000000'
     M_GREY = '#404040'
     M_WHITE = '#A0A0A0'
-    M_GREEN = '#30B030'
+    M_GREEN = '#208020'
+    M_RED = '#B03030'
     M_PINK = '#B030B0'
 
     # define the basic style of the mountwizzard3 theme

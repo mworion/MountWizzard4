@@ -1,7 +1,7 @@
 missing tests:
 - loader
+- imageW
 - for polar plot in mainW 
-- remote
 - deviceSetting
 
 problems occurred list:

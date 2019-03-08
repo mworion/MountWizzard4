@@ -37,6 +37,7 @@ def setupQt():
     test = PyQt5.QtWidgets.QApplication(sys.argv)
     app = mainApp.MountWizzard4(mwGlob=mwGlob)
     spy = PyQt5.QtTest.QSignalSpy(app.message)
+    app.mount.stopTimers()
     app.mainW.timerGui.stop()
     app.mainW.timerTask.stop()
     app.measure.timerTask.stop()

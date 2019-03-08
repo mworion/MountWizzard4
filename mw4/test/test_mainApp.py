@@ -34,9 +34,6 @@ from mw4.test.test_setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
-    yield
-    app = None
-    test = None
 
 
 @pytest.fixture(autouse=True, scope='function')

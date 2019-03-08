@@ -22,7 +22,7 @@ import logging
 from datetime import datetime
 # external packages
 import numpy as np
-from indibase import indiBase
+from indibase import qtIndiBase
 # local imports
 
 
@@ -52,7 +52,7 @@ class MBox(object):
         super().__init__()
 
         self.indiServerUp = False
-        self.client = indiBase.Client(host=host)
+        self.client = qtIndiBase.Client(host=host)
         self.name = name
         self.data = {}
         self.device = None

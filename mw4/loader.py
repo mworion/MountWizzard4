@@ -143,7 +143,7 @@ def setupLogging():
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s.%(msecs)03d]'
                                '[%(levelname)7s]'
-                               '[%(filename)15s]'
+                               '[%(filename)20s]'
                                '[%(lineno)5s]'
                                '[%(funcName)20s]'
                                '[%(threadName)10s]'

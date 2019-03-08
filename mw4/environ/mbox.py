@@ -22,13 +22,13 @@ import logging
 from datetime import datetime
 # external packages
 import numpy as np
-from indibase import qtIndiBase
 # local imports
+from mw4.base import indiClass
 
 
-class MBox(object):
+class MBox(indiClass.IndiClass):
     """
-    the class Environ inherits all information and handling of environment devices
+    the class MBox inherits all information and handling of the environment device
 
         >>> fw = MBox(
         >>>                  host=host
@@ -49,107 +49,9 @@ class MBox(object):
                  host=None,
                  name='',
                  ):
-        super().__init__()
-
-        self.indiServerUp = False
-        self.client = qtIndiBase.Client(host=host)
-        self.name = name
-        self.data = {}
-        self.device = None
-
-        # link signals
-        self.client.signals.newDevice.connect(self.newDevice)
-        self.client.signals.removeDevice.connect(self.removeDevice)
-        self.client.signals.newProperty.connect(self.connectDevice)
-        self.client.signals.newNumber.connect(self.updateData)
-        self.client.signals.deviceConnected.connect(self._setUpdateRate)
-        self.client.signals.serverConnected.connect(self.serverConnected)
-        self.client.signals.serverDisconnected.connect(self.serverDisconnected)
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
-
-    def serverConnected(self):
-        self.indiServerUp = True
-
-    def serverDisconnected(self):
-        self.indiServerUp = False
-
-    def newDevice(self, deviceName):
-        """
-        newDevice is called whenever a new device entry is received in indi client. it
-        adds the device if the name fits to the given name in configuration.
-
-        :param deviceName:
-        :return: true for test purpose
-        """
-
-        if deviceName == self.name:
-            self.device = self.client.getDevice(deviceName)
-        return True
-
-    def removeDevice(self, deviceName):
-        """
-        removeDevice is called whenever a device is removed from indi client. it sets
-        the device entry to None
-
-        :param deviceName:
-        :return: true for test purpose
-        """
-
-        if deviceName == self.name:
-            self.device = None
-            self.data = {}
-        return True
-
-    def startCommunication(self):
-        """
-        startCommunication adds a device on the watch list of the server.
-
-        :return: success of reconnecting to server
-        """
-
-        suc = self.client.connectServer()
-        if not suc:
-            return False
-
-        suc = self.client.watchDevice(self.name)
-        return suc
-
-    def reconnectIndiServer(self):
-        """
-        as it says.
-
-        :return: success of reconnecting to server
-        """
-
-        if self.client.isServerConnected():
-            self.client.disconnectServer()
-        suc = self.startCommunication()
-        return suc
-
-    def connectDevice(self, deviceName, propertyName):
-        """
-        connectDevice is called when a new property is received and checks it against
-        property CONNECTION. if this is there, we could check the connection state of
-        a given device
-
-        :param deviceName:
-        :param propertyName:
-        :return: success if device could connect
-        """
-        if propertyName != 'CONNECTION':
-            return False
-
-        suc = False
-        if deviceName == self.name:
-            suc = self.client.connectDevice(deviceName=deviceName)
-        return suc
+        super().__init__(host=host,
+                         name=name
+                         )
 
     def _setUpdateRate(self, deviceName):
         """

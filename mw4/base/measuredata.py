@@ -165,11 +165,11 @@ class MeasureData(object):
         obs = self.app.mount.obsSite
 
         # gathering the environment data
-        envTemp = self.app.environment.wDevice['local']['data'].get('WEATHER_TEMPERATURE', 0)
-        envPress = self.app.environment.wDevice['local']['data'].get('WEATHER_BAROMETER', 0)
-        envDew = self.app.environment.wDevice['local']['data'].get('WEATHER_DEWPOINT', 0)
-        envHum = self.app.environment.wDevice['local']['data'].get('WEATHER_HUMIDITY', 0)
-        envSQR = self.app.environment.wDevice['sqm']['data'].get('SKY_BRIGHTNESS', 0)
+        envTemp = self.app.environ.data.get('WEATHER_TEMPERATURE', 0)
+        envPress = self.app.environ.data.get('WEATHER_BAROMETER', 0)
+        envDew = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
+        envHum = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
+        envSQR = self.app.environ.data.get('SKY_BRIGHTNESS', 0)
 
         raJNow, decJNow = self._calculateReference()
 

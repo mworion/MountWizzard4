@@ -58,10 +58,11 @@ class SettDevice(object):
         self.ui.relayDevice.currentIndexChanged.connect(self.enableRelay)
         self.ui.remoteDevice.currentIndexChanged.connect(self.enableRemote)
 
-        self.app.mbox.client.signals.serverConnected.connect(self.indiEnvironConnected)
-        self.app.mbox.client.signals.serverDisconnected.connect(self.indiEnvironDisconnected)
-        self.app.mbox.client.signals.newDevice.connect(self.newEnvironDevice)
-        self.app.mbox.client.signals.removeDevice.connect(self.removeEnvironDevice)
+        signals = self.app.environ.client.signals
+        signals.serverConnected.connect(self.indiEnvironConnected)
+        signals.serverDisconnected.connect(self.indiEnvironDisconnected)
+        signals.newDevice.connect(self.newEnvironDevice)
+        signals.removeDevice.connect(self.removeEnvironDevice)
 
     def initConfig(self):
         config = self.app.config['mainW']

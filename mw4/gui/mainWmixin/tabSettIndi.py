@@ -31,87 +31,59 @@ class SettIndi(object):
     """
 
     def __init__(self):
-        self.ui.indiHostEnvironment.editingFinished.connect(self.indiHostEnvironment)
-        self.ui.reconnectEnvironment.clicked.connect(self.app.environment.reconnectIndiServer)
+        self.ui.environHost.editingFinished.connect(self.environHost)
+        self.ui.environName.editingFinished.connect(self.environName)
 
-        self.ui.indiHostImaging.editingFinished.connect(self.indiHostImaging)
-        # self.ui.reconnectImaging.clicked.connect(self.app.xxx.reconnectIndiServer)
+        self.ui.imagingHost.editingFinished.connect(self.imagingHost)
+        self.ui.imagingName.editingFinished.connect(self.imagingName)
 
-        self.ui.indiHostDome.editingFinished.connect(self.indiHostDome)
-        # self.ui.reconnectDome.clicked.connect(self.app.xxx.reconnectIndiServer)
+        self.ui.domeHost.editingFinished.connect(self.domeHost)
+        self.ui.domeName.editingFinished.connect(self.domeName)
 
-        self.ui.localWeatherName.editingFinished.connect(self.localWeatherName)
-        self.ui.globalWeatherName.editingFinished.connect(self.globalWeatherName)
-        self.ui.sqmName.editingFinished.connect(self.sqmName)
-
-        self.app.environment.client.signals.newMessage.connect(self.indiMessage)
+        self.app.environ.client.signals.newMessage.connect(self.indiMessage)
 
     def initConfig(self):
         config = self.app.config['mainW']
-        environ = self.app.environment
-        mbox = self.app.mbox
 
-        host = config.get('indiHostEnvironment', '')
-        environ.client.host = host
-        mbox.client.host = host
-        self.ui.indiHostEnvironment.setText(host)
+        host = config.get('environHost', '')
+        self.app.environ.client.host = host
+        self.ui.environHost.setText(host)
 
-        environ.globalWeatherName = config.get('globalWeatherName', '')
-        self.ui.globalWeatherName.setText(environ.globalWeatherName)
-        environ.localWeatherName = config.get('localWeatherName', '')
-        self.ui.localWeatherName.setText(environ.localWeatherName)
-        environ.sqmName = config.get('sqmName', '')
-        self.ui.sqmName.setText(environ.sqmName)
-        environ.sqmName = config.get('sqmName', '')
-        self.ui.sqmName.setText(environ.sqmName)
+        name = config.get('environName', '')
+        self.app.environ.name = name
+        self.ui.environName.setText(name)
+        self.ui.environMessage.setChecked(config.get('environMessage', False))
 
-        mbox.name = config.get('localWeatherName', '')
+        host = config.get('imagingHost', '')
+        self.ui.imagingHost.setText(host)
 
-        self.ui.environmentMessage.setChecked(config.get('environmentMessage', False))
-
-        host = config.get('indiHostImaging', '')
-        # xxx.client.host = host
-        self.ui.indiHostImaging.setText(host)
-        self.ui.ccdName.setText(config.get('ccdName', ''))
+        name = config.get('imagingName', '')
+        self.ui.imagingName.setText(name)
         self.ui.imagingMessage.setChecked(config.get('imagingMessage', False))
 
-        host = config.get('indiHostDome', '')
-        self.ui.indiHostDome.setText(host)
-        # xxx.client.host = host
-        self.ui.domeName.setText(config.get('domeName', ''))
-        self.ui.telescopeName.setText(config.get('telescopeName', ''))
-        self.ui.domeMessage.setChecked(config.get('domeMessage', False))
+        host = config.get('domeHost', '')
+        self.ui.domeHost.setText(host)
 
-        host = config.get('indiHostAccessory', '')
-        self.ui.indiHostAccessory.setText(host)
-        # xxx.client.host = host
-        self.ui.accessoryName1.setText(config.get('accessoryName1', ''))
-        self.ui.accessoryName2.setText(config.get('accessoryName2', ''))
-        self.ui.accessoryMessage.setChecked(config.get('accessoryMessage', False))
+        name = config.get('domeName', '')
+        self.ui.domeName.setText(name)
+        self.ui.domeMessage.setChecked(config.get('domeMessage', False))
 
         return True
 
     def storeConfig(self):
         config = self.app.config['mainW']
-        config['indiHostEnvironment'] = self.ui.indiHostEnvironment.text()
-        config['localWeatherName'] = self.ui.localWeatherName.text()
-        config['globalWeatherName'] = self.ui.globalWeatherName.text()
-        config['sqmName'] = self.ui.sqmName.text()
-        config['environmentMessage'] = self.ui.environmentMessage.isChecked()
 
-        config['indiHostImaging'] = self.ui.indiHostImaging.text()
-        config['ccdName'] = self.ui.ccdName.text()
+        config['environHost'] = self.ui.environHost.text()
+        config['environName'] = self.ui.environName.text()
+        config['environMessage'] = self.ui.environMessage.isChecked()
+
+        config['imagingHost'] = self.ui.imagingHost.text()
+        config['imagingName'] = self.ui.imagingName.text()
         config['imagingMessage'] = self.ui.imagingMessage.isChecked()
 
-        config['indiHostDome'] = self.ui.indiHostDome.text()
+        config['domeHost'] = self.ui.domeHost.text()
         config['domeName'] = self.ui.domeName.text()
-        config['telescopeName'] = self.ui.telescopeName.text()
         config['domeMessage'] = self.ui.domeMessage.isChecked()
-
-        config['indiHostAccessory'] = self.ui.indiHostAccessory.text()
-        config['accessoryName1'] = self.ui.accessoryName1.text()
-        config['accessoryName2'] = self.ui.accessoryName2.text()
-        config['accessoryMessage'] = self.ui.accessoryMessage.isChecked()
 
         return True
 
@@ -132,31 +104,24 @@ class SettIndi(object):
         """
         return True
 
-    def indiHostEnvironment(self):
-        host = self.ui.indiHostEnvironment.text()
-        self.app.environment.client.host = host
+    def environHost(self):
+        host = self.ui.environHost.text()
+        self.app.environ.client.host = host
 
-    def localWeatherName(self):
-        environ = self.app.environment
-        environ.localWeatherName = self.ui.localWeatherName.text()
+    def environName(self):
+        self.app.environ.name = self.ui.environName.text()
 
-    def globalWeatherName(self):
-        environ = self.app.environment
-        environ.globalWeatherName = self.ui.globalWeatherName.text()
+    def imagingHost(self):
+        host = self.ui.imagingHost.text()
 
-    def sqmName(self):
-        environ = self.app.environment
-        environ.sqmName = self.ui.sqmName.text()
-
-    def indiHostImaging(self):
+    def imagingName(self):
         pass
-        # host = self.ui.indiHostImaging.text()
-        # self.app.xxx.client.host = host
 
-    def indiHostDome(self):
+    def domeHost(self):
+        host = self.ui.domeHost.text()
+
+    def domeName(self):
         pass
-        # host = self.ui.indiHostDome.text()
-        # self.app.xxx.client.host = host
 
     @staticmethod
     def _remove_prefix(text, prefix):
@@ -169,7 +134,7 @@ class SettIndi(object):
         :param text:
         :return:
         """
-        if self.ui.environmentMessage.isChecked():
+        if self.ui.environMessage.isChecked():
             if text.startswith('[WARNING]'):
                 text = self._remove_prefix(text, '[WARNING]')
                 self.app.message.emit(device + ' -> ' + text, 0)

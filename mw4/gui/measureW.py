@@ -66,9 +66,9 @@ class MeasureWindow(widget.MWidget):
         mainW = self.app.mainW.ui
         self.clickable(mainW.RA).connect(self.showWindow)
         self.clickable(mainW.DEC).connect(self.showWindow)
-        self.clickable(mainW.localTemp).connect(self.showWindow)
-        self.clickable(mainW.localPress).connect(self.showWindow)
-        self.clickable(mainW.localDewPoint).connect(self.showWindow)
+        self.clickable(mainW.environTemp).connect(self.showWindow)
+        self.clickable(mainW.environPress).connect(self.showWindow)
+        self.clickable(mainW.environDewPoint).connect(self.showWindow)
         self.clickable(mainW.SQR).connect(self.showWindow)
 
         self.timerGui = PyQt5.QtCore.QTimer()

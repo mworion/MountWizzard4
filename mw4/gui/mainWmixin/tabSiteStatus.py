@@ -34,15 +34,21 @@ class SiteStatus(object):
     """
 
     def __init__(self):
-        ms = self.app.mount.signals
-        ms.settDone.connect(self.updateSettingGUI)
-        ms.settDone.connect(self.updateLocGUI)
-        ms.fwDone.connect(self.updateFwGui)
+        # mount
+        signals = self.app.mount.signals
+        signals.settDone.connect(self.updateSettingGUI)
+        signals.settDone.connect(self.updateLocGUI)
+        signals.fwDone.connect(self.updateFwGui)
 
-        es = self.app.environment.client.signals
-        es.removeDevice.connect(self.removeEnvironDevice)
-        es.newNumber.connect(self.updateEnvironGUI)
+        # environment
+        signals = self.app.environ.client.signals
+        signals.removeDevice.connect(self.removeEnvironDevice)
+        signals.newNumber.connect(self.updateEnvironGUI)
 
+        # global weather
+        # sqm
+
+        # gui connections
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
         self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
         self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
@@ -516,10 +522,10 @@ class SiteStatus(object):
         :return: true for test purpose
         """
 
-        self.ui.localTemp.setText('-')
-        self.ui.localPress.setText('-')
-        self.ui.localDewPoint.setText('-')
-        self.ui.localHumidity.setText('-')
+        self.ui.environTemp.setText('-')
+        self.ui.environPress.setText('-')
+        self.ui.environDewPoint.setText('-')
+        self.ui.environHumidity.setText('-')
 
         return True
 
@@ -530,11 +536,11 @@ class SiteStatus(object):
         :return:    True if ok for testing
         """
 
-        value = self.app.mbox.data.get('WEATHER_TEMPERATURE', 0)
-        self.ui.localTemp.setText('{0:4.1f}'.format(value))
-        value = self.app.mbox.data.get('WEATHER_BAROMETER', 0)
-        self.ui.localPress.setText('{0:5.1f}'.format(value))
-        value = self.app.mbox.data.get('WEATHER_DEWPOINT', 0)
-        self.ui.localDewPoint.setText('{0:4.1f}'.format(value))
-        value = self.app.mbox.data.get('WEATHER_HUMIDITY', 0)
-        self.ui.localHumidity.setText('{0:3.0f}'.format(value))
+        value = self.app.environ.data.get('WEATHER_TEMPERATURE', 0)
+        self.ui.environTemp.setText('{0:4.1f}'.format(value))
+        value = self.app.environ.data.get('WEATHER_BAROMETER', 0)
+        self.ui.environPress.setText('{0:5.1f}'.format(value))
+        value = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
+        self.ui.environDewPoint.setText('{0:4.1f}'.format(value))
+        value = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
+        self.ui.environHumidity.setText('{0:3.0f}'.format(value))

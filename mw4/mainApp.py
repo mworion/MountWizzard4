@@ -26,6 +26,7 @@ import platform
 import PyQt5.QtCore
 import skyfield
 from mountcontrol import qtmount
+from indibase import qtIndiBase
 # local import
 from mw4.gui import mainW
 from mw4.gui import messageW
@@ -37,7 +38,6 @@ from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
 from mw4.environment import environ
 from mw4.base import measuredata
-from mw4.base import indiClass
 from mw4.remote import remote
 from mw4.astrometry import astrometryKstars
 
@@ -97,7 +97,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # loading other classes
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
-        self.environ = environ.Environment(host='localhost')
+        self.environ = environ.Environ(host='localhost')
         self.data = buildpoints.DataPoint(self,
                                           mwGlob=self.mwGlob,
                                           )
@@ -121,7 +121,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # write basic data to message window
         verMC = self.mount.version
-        verIB = indiClass.IndiClass.client.version
+        verIB = qtIndiBase.Client.version
         profile = self.config.get('profileName', '-')
         self.message.emit('MountWizzard4 started', 1)
         self.message.emit('build version: [{0}]'.format(self.version), 1)

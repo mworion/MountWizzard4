@@ -29,18 +29,24 @@ import skyfield.api
 from mw4 import mainApp
 from mw4.test.test_setupQt import setupQt
 
-app, spy, mwGlob, test = setupQt()
+
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown():
+    global app, spy, mwGlob, test
+    app, spy, mwGlob, test = setupQt()
+    yield
+    app = None
+    test = None
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def module_setup_teardown_func():
     global config
     config = mwGlob['configDir']
     testdir = os.listdir(config)
     for item in testdir:
         if item.endswith('.cfg'):
             os.remove(os.path.join(config, item))
-    yield
 
 
 def test_initConfig_1():

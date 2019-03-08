@@ -49,7 +49,6 @@ def module_setup_teardown():
                                  app=app,
                                  )
     yield
-    data = None
 
 
 def test_topoToAltAz1():

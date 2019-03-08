@@ -41,7 +41,6 @@ def module_setup_teardown():
     app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
                                             threadPool=threadPool)
     yield
-    app = None
 
 
 def test_init_1():

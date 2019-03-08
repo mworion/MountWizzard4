@@ -18,8 +18,9 @@
 #
 ###########################################################
 # standard libraries
-import PyQt5
+import sys
 # external packages
+import PyQt5
 # local import
 from mw4 import mainApp
 
@@ -33,7 +34,7 @@ def setupQt():
               'modeldata': 'test',
               }
 
-    test = PyQt5.QtWidgets.QApplication([])
+    test = PyQt5.QtWidgets.QApplication(sys.argv)
     app = mainApp.MountWizzard4(mwGlob=mwGlob)
     spy = PyQt5.QtTest.QSignalSpy(app.message)
     app.mainW.timerGui.stop()

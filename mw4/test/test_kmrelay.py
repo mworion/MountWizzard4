@@ -35,8 +35,6 @@ def module_setup_teardown():
     host_ip = '192.168.2.250'
     host = (host_ip, 80)
     yield
-    app = None
-    test = None
 
 
 def test_host_1():

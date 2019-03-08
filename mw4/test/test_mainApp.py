@@ -29,7 +29,6 @@ import skyfield.api
 from mw4 import mainApp
 from mw4.test.test_setupQt import setupQt
 
-global app, spy, mwGlob
 app, spy, mwGlob, test = setupQt()
 
 

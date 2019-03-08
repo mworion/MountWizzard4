@@ -33,13 +33,15 @@ app, spy, mwGlob, test = setupQt()
 
 tempDir = mwGlob['tempDir']
 threadPool = ''
-app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                        threadPool=threadPool)
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
+    global app
+    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
+                                            threadPool=threadPool)
     yield
+    app = None
 
 
 def test_init_1():
@@ -50,8 +52,7 @@ def test_init_1():
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
-        app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                                threadPool=threadPool)
+
         assert app.binPathSolveField == binSolve
         assert app.binPathImage2xy == binImage
         assert app.indexPath == index
@@ -363,4 +364,3 @@ def test_solveClear():
 def test_solveThreading():
     suc = app.solveThreading()
     assert not suc
-

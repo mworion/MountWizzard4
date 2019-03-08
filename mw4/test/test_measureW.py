@@ -51,7 +51,6 @@ def module_setup_teardown():
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
-    yield
 
 
 def test_storeConfig_1():

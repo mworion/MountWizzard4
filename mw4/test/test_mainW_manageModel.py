@@ -35,6 +35,8 @@ from mw4.test.test_setupQt import setupQt
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
     global app, spy, mwGlob, test
+    app.mainW.timerTask.stop()
+    app.mainW.timerGui.stop()
     app, spy, mwGlob, test = setupQt()
     yield
     app = None

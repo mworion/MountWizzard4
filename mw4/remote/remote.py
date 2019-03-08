@@ -38,7 +38,7 @@ class Remote(PyQt5.QtCore.QObject):
                'stopRemote',
                ]
 
-    version = '0.1'
+    version = '0.2'
     logger = logging.getLogger(__name__)
 
     def __init__(self,
@@ -60,8 +60,10 @@ class Remote(PyQt5.QtCore.QObject):
 
         if self.tcpServer is not None:
             return False
+
         self.tcpServer = PyQt5.QtNetwork.QTcpServer(self)
         hostAddress = PyQt5.QtNetwork.QHostAddress('127.0.0.1')
+
         if not self.tcpServer.listen(hostAddress, 3490):
             self.logger.warning('Port already in use')
             self.tcpServer = None
@@ -93,6 +95,9 @@ class Remote(PyQt5.QtCore.QObject):
 
         :return: success
         """
+
+        if self.tcpServer is None:
+            return False
 
         self.clientConnection = self.tcpServer.nextPendingConnection()
 

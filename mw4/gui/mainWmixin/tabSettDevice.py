@@ -58,6 +58,12 @@ class SettDevice(object):
         self.ui.relayDevice.currentIndexChanged.connect(self.enableRelay)
         self.ui.remoteDevice.currentIndexChanged.connect(self.enableRemote)
 
+        es = self.app.environment.client.signals
+        es.serverConnected.connect(self.indiEnvironConnected)
+        es.serverDisconnected.connect(self.indiEnvironDisconnected)
+        es.newDevice.connect(self.newEnvironDevice)
+        es.removeDevice.connect(self.removeEnvironDevice)
+
     def initConfig(self):
         config = self.app.config['mainW']
         for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
@@ -149,3 +155,15 @@ class SettDevice(object):
             self.app.message.emit('Remote disabled', 2)
 
         return True
+
+    def indiEnvironConnected(self):
+        self.app.message.emit('INDI server environment connected', 0)
+
+    def indiEnvironDisconnected(self):
+        self.app.message.emit('INDI server environment disconnected', 0)
+
+    def newEnvironDevice(self, deviceName):
+        self.app.message.emit('INDI device [{0}] found'.format(deviceName), 0)
+
+    def removeEnvironDevice(self, deviceName):
+        self.app.message.emit('INDI device [{0}] removed'.format(deviceName), 0)

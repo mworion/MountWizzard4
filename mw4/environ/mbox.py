@@ -146,6 +146,7 @@ class MBox(object):
         if propertyName != 'CONNECTION':
             return False
 
+        suc = False
         if deviceName == self.name:
             suc = self.client.connectDevice(deviceName=deviceName)
         return suc
@@ -166,6 +167,8 @@ class MBox(object):
             return False
 
         update = self.device.getNumber('WEATHER_UPDATE')
+
+        suc = False
         if update.get('PERIOD', 0) != self.UPDATE_RATE:
             update['PERIOD'] = self.UPDATE_RATE
             suc = self.client.sendNewNumber(deviceName=deviceName,

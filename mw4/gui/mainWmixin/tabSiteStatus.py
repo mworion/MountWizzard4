@@ -40,13 +40,8 @@ class SiteStatus(object):
         ms.fwDone.connect(self.updateFwGui)
 
         es = self.app.environment.client.signals
-        es.serverConnected.connect(self.indiEnvironConnected)
-        es.serverDisconnected.connect(self.indiEnvironDisconnected)
-        es.newDevice.connect(self.newEnvironDevice)
         es.removeDevice.connect(self.removeEnvironDevice)
         es.newNumber.connect(self.updateEnvironGUI)
-        es.deviceConnected.connect(self.deviceEnvironConnected)
-        es.deviceDisconnected.connect(self.deviceEnvironDisconnected)
 
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
         self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
@@ -512,45 +507,21 @@ class SiteStatus(object):
         else:
             return False
 
-    def newEnvironDevice(self, deviceName):
-        self.app.message.emit('INDI device [{0}] found'.format(deviceName), 0)
-
     def removeEnvironDevice(self, deviceName):
         """
         removeEnvironDevice clears the gui data and calls deviceEnvironment to update
         the status of the device itself.
 
         :param deviceName:
-        :return: nothing
+        :return: true for test purpose
         """
 
-        envDev = self.app.environment.wDevice
-        if deviceName == envDev['sqm']['name']:
-            self.ui.SQR.setText('-')
-        if deviceName == envDev['local']['name']:
-            self.ui.localTemp.setText('-')
-            self.ui.localPress.setText('-')
-            self.ui.localDewPoint.setText('-')
-            self.ui.localHumidity.setText('-')
-        if deviceName == envDev['global']['name']:
-            self.ui.globalTemp.setText('-')
-            self.ui.globalPress.setText('-')
-            self.ui.globalDewPoint.setText('-')
-            self.ui.globalHumidity.setText('-')
-            self.ui.cloudCover.setText('-')
-            self.ui.windSpeed.setText('-')
-            self.ui.rainVol.setText('-')
-            self.ui.snowVol.setText('-')
+        self.ui.localTemp.setText('-')
+        self.ui.localPress.setText('-')
+        self.ui.localDewPoint.setText('-')
+        self.ui.localHumidity.setText('-')
 
-        self.deviceEnvironDisconnected(deviceName)
-        self.app.message.emit('INDI device [{0}] removed'.format(deviceName), 0)
         return True
-
-    def indiEnvironConnected(self):
-        self.app.message.emit('INDI server environment connected', 0)
-
-    def indiEnvironDisconnected(self):
-        self.app.message.emit('INDI server environment disconnected', 0)
 
     def updateEnvironGUI(self, deviceName):
         """
@@ -559,119 +530,11 @@ class SiteStatus(object):
         :return:    True if ok for testing
         """
 
-        envDev = self.app.environment.wDevice
-
-        if deviceName == envDev['sqm']['name']:
-            value = envDev['sqm']['data']['SKY_BRIGHTNESS']
-            self.ui.SQR.setText('{0:5.2f}'.format(value))
-
-        if deviceName == envDev['local']['name']:
-            value = envDev['local']['data'].get('WEATHER_TEMPERATURE', 0)
-            self.ui.localTemp.setText('{0:4.1f}'.format(value))
-            value = envDev['local']['data'].get('WEATHER_BAROMETER', 0)
-            self.ui.localPress.setText('{0:5.1f}'.format(value))
-            value = envDev['local']['data'].get('WEATHER_DEWPOINT', 0)
-            self.ui.localDewPoint.setText('{0:4.1f}'.format(value))
-            value = envDev['local']['data'].get('WEATHER_HUMIDITY', 0)
-            self.ui.localHumidity.setText('{0:3.0f}'.format(value))
-
-        if deviceName == envDev['global']['name']:
-            value = envDev['global']['data'].get('WEATHER_TEMPERATURE', 0)
-            self.ui.globalTemp.setText('{0:4.1f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_PRESSURE', 0)
-            self.ui.globalPress.setText('{0:5.1f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_DEWPOINT', 0)
-            self.ui.globalDewPoint.setText('{0:4.1f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_HUMIDITY', 0)
-            self.ui.globalHumidity.setText('{0:4.1f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_CLOUD_COVER', 0)
-            self.ui.cloudCover.setText('{0:3.0f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_WIND_SPEED', 0)
-            self.ui.windSpeed.setText('{0:3.0f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_RAIN_HOUR', 0)
-            self.ui.rainVol.setText('{0:3.0f}'.format(value))
-            value = envDev['global']['data'].get('WEATHER_SNOW_HOUR', 0)
-            self.ui.snowVol.setText('{0:3.0f}'.format(value))
-
-    @staticmethod
-    def updateEnvironMainStat(uiList):
-        """
-        updateEnvironMainStat collects the dynamic properties of all environ widgets
-        if mor than one is green -> color from red to yellow. if all are green -> result
-        will be green
-
-        :param uiList:
-        :return: status according TRAFFIC LIGHTS
-        """
-
-        countR = 0
-        countSum = 0
-        for ui in uiList:
-            color = ui.property('color')
-            if color is None:
-                continue
-            if color == 'red':
-                countR += 1
-            countSum += 1
-        if countSum == 0:
-            status = 3
-        elif countR == 0:
-            status = 0
-        elif countR == countSum:
-            status = 2
-        else:
-            status = 1
-        return status
-
-    def _getStatusList(self):
-        """
-        _getStatusList defines device names list and corresponding ui widgets
-
-        :return: list devices name, list of widgets
-        """
-
-        names = [self.app.environment.wDevice['local']['name'],
-                 self.app.environment.wDevice['global']['name'],
-                 self.app.environment.wDevice['sqm']['name'],
-                 ]
-        uiList = [self.ui.localWeatherName,
-                  self.ui.globalWeatherName,
-                  self.ui.sqmName,
-                  ]
-        return names, uiList
-
-    def deviceEnvironConnected(self, deviceName):
-        """
-        deviceEnvironConnected is called whenever a device is connected and used for setting
-        the device status right
-
-        :param deviceName: name of device connected
-        :return:
-        """
-
-        names, uiList = self._getStatusList()
-        for name, ui in zip(names, uiList):
-            if deviceName != name:
-                continue
-            self.changeStyleDynamic(ui, 'color', 'green')
-        status = self.updateEnvironMainStat(uiList)
-        ui = self.ui.environmentConnected
-        self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
-
-    def deviceEnvironDisconnected(self, deviceName):
-        """
-        deviceEnvironDisconnected is called whenever a device is disconnected and used for
-        setting the device status right
-
-        :param deviceName: name of device disconnected
-        :return:
-        """
-
-        names, uiList = self._getStatusList()
-        for name, ui in zip(names, uiList):
-            if deviceName != name:
-                continue
-            self.changeStyleDynamic(ui, 'color', 'red')
-        status = self.updateEnvironMainStat(uiList)
-        ui = self.ui.environmentConnected
-        self.changeStyleDynamic(ui, 'color', self.TRAFFICLIGHTCOLORS[status])
+        value = self.app.mbox.data.get('WEATHER_TEMPERATURE', 0)
+        self.ui.localTemp.setText('{0:4.1f}'.format(value))
+        value = self.app.mbox.data.get('WEATHER_BAROMETER', 0)
+        self.ui.localPress.setText('{0:5.1f}'.format(value))
+        value = self.app.mbox.data.get('WEATHER_DEWPOINT', 0)
+        self.ui.localDewPoint.setText('{0:4.1f}'.format(value))
+        value = self.app.mbox.data.get('WEATHER_HUMIDITY', 0)
+        self.ui.localHumidity.setText('{0:3.0f}'.format(value))

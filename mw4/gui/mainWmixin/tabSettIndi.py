@@ -49,9 +49,11 @@ class SettIndi(object):
     def initConfig(self):
         config = self.app.config['mainW']
         environ = self.app.environment
+        mbox = self.app.mbox
 
         host = config.get('indiHostEnvironment', '')
         environ.client.host = host
+        mbox.client.host = host
         self.ui.indiHostEnvironment.setText(host)
 
         environ.globalWeatherName = config.get('globalWeatherName', '')
@@ -62,6 +64,8 @@ class SettIndi(object):
         self.ui.sqmName.setText(environ.sqmName)
         environ.sqmName = config.get('sqmName', '')
         self.ui.sqmName.setText(environ.sqmName)
+
+        mbox.name = config.get('localWeatherName', '')
 
         self.ui.environmentMessage.setChecked(config.get('environmentMessage', False))
 

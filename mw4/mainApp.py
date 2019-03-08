@@ -139,6 +139,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # starting mount communication
         self.mount.startTimers()
         self.environment.startCommunication()
+        self.mbox.startCommunication()
         self.plateSolve.checkAvailability()
 
     def initConfig(self):

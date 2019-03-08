@@ -37,7 +37,7 @@ class SettDevice(object):
         self.deviceDropDowns = [self.ui.ccdDevice,
                                 self.ui.astrometryDevice,
                                 self.ui.domeDevice,
-                                self.ui.environmentDevice,
+                                self.ui.environDevice,
                                 self.ui.skymeterDevice,
                                 self.ui.powerDevice,
                                 self.ui.relayDevice,
@@ -58,6 +58,8 @@ class SettDevice(object):
         self.ui.relayDevice.currentIndexChanged.connect(self.enableRelay)
         self.ui.remoteDevice.currentIndexChanged.connect(self.enableRemote)
 
+        self.ui.environDevice.currentIndexChanged.connect(self.environDispatch)
+
         signals = self.app.environ.client.signals
         signals.serverConnected.connect(self.indiEnvironConnected)
         signals.serverDisconnected.connect(self.indiEnvironDisconnected)
@@ -71,6 +73,7 @@ class SettDevice(object):
 
         self.enableRelay()
         self.enableRemote()
+        self.environDispatch()
         return True
 
     def storeConfig(self):
@@ -114,6 +117,8 @@ class SettDevice(object):
         self.ui.remoteDevice.addItem('Built-In Remote - On')
         self.ui.relayDevice.addItem('Built-In Relay - On')
 
+        self.ui.environDevice.addItem('Indi Driver - On')
+
         return True
 
     def enableRelay(self):
@@ -155,6 +160,13 @@ class SettDevice(object):
             self.app.message.emit('Remote disabled', 2)
 
         return True
+
+    def environDispatch(self):
+        index = self.ui.environDevice.currentIndex()
+        if index == 1:
+            self.app.environ.startCommunication()
+        else:
+            self.app.environ.stopCommunication()
 
     def indiEnvironConnected(self):
         self.app.message.emit('INDI server environment connected', 0)

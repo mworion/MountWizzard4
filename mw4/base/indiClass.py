@@ -77,9 +77,14 @@ class IndiClass(object):
 
     def serverConnected(self):
         self.indiServerUp = True
+        if self.name:
+            suc = self.client.watchDevice(self.name)
+            return suc
+        return False
 
     def serverDisconnected(self):
         self.indiServerUp = False
+        return True
 
     def newDevice(self, deviceName):
         """
@@ -115,11 +120,19 @@ class IndiClass(object):
         :return: success of reconnecting to server
         """
 
+        self.client.startTimers()
         suc = self.client.connectServer()
-        if not suc:
-            return False
+        return suc
 
-        suc = self.client.watchDevice(self.name)
+    def stopCommunication(self):
+        """
+        stopCommunication adds a device on the watch list of the server.
+
+        :return: success of reconnecting to server
+        """
+
+        self.client.stopTimers()
+        suc = self.client.disconnectServer()
         return suc
 
     def connectDevice(self, deviceName, propertyName):

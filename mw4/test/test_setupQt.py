@@ -40,4 +40,7 @@ def setupQt():
     app.mainW.timerGui.stop()
     app.mainW.timerTask.stop()
     app.measure.timerTask.stop()
+    app.measureW.timerGui.stop()
+    app.hemisphereW.timerGui.stop()
+    app.relay.timerTask.stop()
     return app, spy, mwGlob, test

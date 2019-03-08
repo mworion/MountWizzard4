@@ -75,9 +75,9 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.password = password
         self.status = [0] * 8
 
-        self.timer = PyQt5.QtCore.QTimer()
-        self.timer.setSingleShot(False)
-        self.timer.timeout.connect(self.cyclePolling)
+        self.timerTask = PyQt5.QtCore.QTimer()
+        self.timerTask.setSingleShot(False)
+        self.timerTask.timeout.connect(self.cyclePolling)
 
     @property
     def host(self):
@@ -131,7 +131,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         if not self._host[1]:
             return False
 
-        self.timer.start(self.CYCLE_POLLING)
+        self.timerTask.start(self.CYCLE_POLLING)
 
         return True
 
@@ -142,7 +142,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
-        self.timer.stop()
+        self.timerTask.stop()
 
         return True
 

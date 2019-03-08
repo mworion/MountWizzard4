@@ -71,10 +71,10 @@ class MeasureWindow(widget.MWidget):
         self.clickable(mainW.localDewPoint).connect(self.showWindow)
         self.clickable(mainW.SQR).connect(self.showWindow)
 
-        self.timerTask = PyQt5.QtCore.QTimer()
-        self.timerTask.setSingleShot(False)
-        self.timerTask.timeout.connect(self.drawMeasure)
-        self.timerTask.start(self.CYCLE_UPDATE_TASK)
+        self.timerGui = PyQt5.QtCore.QTimer()
+        self.timerGui.setSingleShot(False)
+        self.timerGui.timeout.connect(self.drawMeasure)
+        self.timerGui.start(self.CYCLE_UPDATE_TASK)
         self.initConfig()
 
     def initConfig(self):
@@ -420,8 +420,8 @@ class MeasureWindow(widget.MWidget):
             return False
 
         cycle = int(np.exp2(tIndex))
-        self.timerTask.stop()
-        self.timerTask.start(cycle * 1000)
+        self.timerGui.stop()
+        self.timerGui.start(cycle * 1000)
 
         grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
         ratio = cycle * grid

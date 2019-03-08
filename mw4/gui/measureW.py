@@ -243,8 +243,8 @@ class MeasureWindow(widget.MWidget):
                   color=self.M_GREEN,
                   )
 
-        axe0.grid(True, color=self.M_GREY, alpha=0.5)
-        axe1.grid(True, color=self.M_GREY, alpha=0.5)
+        axe0.grid(True, color=self.M_GREY, alpha=1)
+        axe1.grid(True, color=self.M_GREY, alpha=1)
         axe0.set_xticklabels([])
         axe0.set_ylim(-0.4, 0.4)
         axe1.set_ylim(-4, 4)
@@ -326,8 +326,8 @@ class MeasureWindow(widget.MWidget):
                   color=self.M_PINK,
                   )
 
-        axe0.grid(True, color=self.M_GREY, linestyle='dotted', alpha=0.5)
-        axe1.grid(True, color=self.M_GREY, linestyle='dotted', alpha=0.5)
+        axe0.grid(True, color=self.M_GREY, linestyle='dotted', alpha=1)
+        axe1.grid(True, color=self.M_GREY, linestyle='dotted', alpha=1)
         axe0.set_xticklabels([])
         axe0.margins(y=0.2)
         axe1.margins(y=0.2)
@@ -386,7 +386,7 @@ class MeasureWindow(widget.MWidget):
                   color=self.M_WHITE,
                   )
 
-        axe0.grid(True, color=self.M_GREY, alpha=0.5)
+        axe0.grid(True, color=self.M_GREY, alpha=1)
         axe0.margins(y=0.2)
 
         axe0.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,

@@ -70,12 +70,16 @@ class Environ(indiClass.IndiClass):
 
         update = self.device.getNumber('WEATHER_UPDATE')
 
-        suc = False
-        if update.get('PERIOD', 0) != self.UPDATE_RATE:
-            update['PERIOD'] = self.UPDATE_RATE
-            suc = self.client.sendNewNumber(deviceName=deviceName,
-                                            propertyName='WEATHER_UPDATE',
-                                            elements=update)
+        if 'PERIOD' not in update:
+            return False
+
+        if update.get('PERIOD', 0) == self.UPDATE_RATE:
+            return True
+
+        update['PERIOD'] = self.UPDATE_RATE
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='WEATHER_UPDATE',
+                                        elements=update)
         return suc
 
     @staticmethod
@@ -84,11 +88,8 @@ class Environ(indiClass.IndiClass):
         Compute the dew point in degrees Celsius
 
         :param t_air_c: current ambient temperature in degrees Celsius
-        :type t_air_c: float
         :param rel_humidity: relative humidity in %
-        :type rel_humidity: float
         :return: the dew point in degrees Celsius
-        :rtype: float
         """
 
         A = 17.27
@@ -105,6 +106,9 @@ class Environ(indiClass.IndiClass):
 
         in addition it does a first setup and config for the device. basically the update
         rates are set to 10 seconds if they are not on this level.
+
+        if no dew point is available in data, it will calculate this value from
+        temperature and humidity.
 
         :param deviceName:
         :param propertyName:
@@ -131,13 +135,11 @@ class Environ(indiClass.IndiClass):
 
         if 'WEATHER_DEWPOINT' in self.data:
             return True
-
-        # calculate is manually
-
         if 'WEATHER_TEMPERATURE' not in self.data:
             return False
         if 'WEATHER_HUMIDITY' not in self.data:
             return False
+
         temp = self.data['WEATHER_TEMPERATURE']
         humidity = self.data['WEATHER_HUMIDITY']
         dewPoint = self._getDewPoint(temp, humidity)

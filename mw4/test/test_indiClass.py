@@ -102,60 +102,48 @@ def test_removeDevice_2():
     assert app.device is None
 
 
-def test_startCommunication1():
-    app.localWeatherName = ''
-    app.globalWeatherName = ''
-    app.sqmName = ''
-
+def test_startCommunication_1():
     with mock.patch.object(app.client,
-                           'connectServer',
+                           'startTimers',
                            return_value=False):
-        suc = app.startCommunication()
-        assert not suc
-
-
-def test_startCommunication2():
-    app.sqmName = 'SQM'
-    with mock.patch.object(app.client,
-                           'connectServer',
-                           return_value=True):
-        suc = app.startCommunication()
-        assert not suc
-
-
-def test_startCommunication3():
-    name = 'MBox'
-    app.sqmName = name
-    app.wDevice['local']['name'] = 'Test'
-    with mock.patch.object(app.client,
-                           'watchDevice',
-                           return_value=True):
         with mock.patch.object(app.client,
                                'connectServer',
-                               return_value=True):
+                               return_value=False):
             suc = app.startCommunication()
             assert not suc
-            app.client.watchDevice.assert_called_with('MBox')
 
 
-def test_startCommunication4():
-    app.wDevice['local']['name'] = 'Test'
+def test_startCommunication_2():
     with mock.patch.object(app.client,
-                           'watchDevice',
+                           'startTimers',
                            return_value=False):
         with mock.patch.object(app.client,
                                'connectServer',
                                return_value=True):
             suc = app.startCommunication()
+            assert suc
+
+
+def test_stopCommunication_1():
+    with mock.patch.object(app.client,
+                           'stopTimers',
+                           return_value=False):
+        with mock.patch.object(app.client,
+                               'disconnectServer',
+                               return_value=False):
+            suc = app.stopCommunication()
             assert not suc
 
 
-def test_startCommunication5():
+def test_stopCommunication_2():
     with mock.patch.object(app.client,
-                           'watchDevice',
+                           'stopTimers',
                            return_value=False):
-        suc = app.startCommunication()
-        assert not suc
+        with mock.patch.object(app.client,
+                               'disconnectServer',
+                               return_value=True):
+            suc = app.stopCommunication()
+            assert suc
 
 
 def test_connectDevice1():
@@ -175,18 +163,18 @@ def test_connectDevice2():
 
 
 def test_connectDevice3():
-    app.sqmName = 'SQM'
+    app.name = 'test'
     with mock.patch.object(app.client,
                            'connectDevice',
                            return_value=True):
-        suc = app.connectDevice('SQM', 'CONNECTION')
+        suc = app.connectDevice('test', 'CONNECTION')
         assert suc
 
 
 def test_connectDevice4():
-    app.sqmName = 'SQM'
+    app.name = 'test'
     with mock.patch.object(app.client,
                            'connectDevice',
                            return_value=False):
-        suc = app.connectDevice('SQM', 'CONNECTION')
+        suc = app.connectDevice('test', 'CONNECTION')
         assert not suc

@@ -156,12 +156,12 @@ class MainWindow(MWidget,
         BuildModel.initConfig(self)
         ManageModel.initConfig(self)
         Relay.initConfig(self)
-        SettDevice.initConfig(self)
         SettIndi.initConfig(self)
         SettHorizon.initConfig(self)
         SettParkPos.initConfig(self)
         SettRelay.initConfig(self)
         SettMisc.initConfig(self)
+        SettDevice.initConfig(self)
 
         return True
 
@@ -184,12 +184,12 @@ class MainWindow(MWidget,
         BuildModel.storeConfig(self)
         ManageModel.storeConfig(self)
         Relay.storeConfig(self)
-        SettDevice.storeConfig(self)
         SettIndi.storeConfig(self)
         SettHorizon.storeConfig(self)
         SettParkPos.storeConfig(self)
         SettRelay.storeConfig(self)
         SettMisc.storeConfig(self)
+        SettDevice.storeConfig(self)
         return True
 
     def closeEvent(self, closeEvent):

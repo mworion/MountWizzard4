@@ -37,11 +37,9 @@ class SettIndi(object):
         config = self.app.config['mainW']
 
         host = config.get('environHost', '')
-        self.app.environ.client.host = host
         self.ui.environHost.setText(host)
 
         name = config.get('environName', '')
-        self.app.environ.name = name
         self.ui.environName.setText(name)
         self.ui.environMessage.setChecked(config.get('environMessage', False))
 

@@ -137,11 +137,13 @@ class SettDevice(object):
 
         if self.ui.relayDevice.currentIndex() == 1:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay enabled', 0)
             self.app.relay.startTimers()
             self.ui.relayDevice.setStyleSheet(self.BACK_GREEN)
         else:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay disabled', 0)
             self.app.relay.stopTimers()
             self.ui.relayDevice.setStyleSheet(self.BACK_NORM)

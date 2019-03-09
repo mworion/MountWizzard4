@@ -472,9 +472,13 @@ class MWStyles(object):
     QTabBar::tab:only-one {
         margin: 1;
     }
-    QTabBar::tab:!enabled {
+    QTabBar::tab:disabled {
         color: #404040;
         border-color: #202020;
+        width: 0;
+        height: 0;
+        padding: 0;
+        border: none;
     }
     /* scroll bar */
     QScrollBar:vertical

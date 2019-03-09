@@ -47,13 +47,3 @@ def test_updateRelayGui(qtbot):
     suc = app.mainW.updateRelayGui()
     assert suc
 
-
-def test_enableRelay1(qtbot):
-    app.mainW.ui.relayDevice.setCurrentIndex(1)
-    with mock.patch.object(app.relay,
-                           'startTimers',
-                           return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableRelay()
-            assert suc
-        assert ['Relay enabled', 2] == blocker.args

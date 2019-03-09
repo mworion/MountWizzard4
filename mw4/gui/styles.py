@@ -84,7 +84,7 @@ class MWStyles(object):
         font-family: Arial;
         font-style: normal;
         font-size: 8pt;
-    }     
+    }
     """
     BASIC_STYLE = """
     QToolTip {
@@ -192,6 +192,13 @@ class MWStyles(object):
         subcontrol-position: top left; /* position at the top center */
         color: #C0C0C0;
         background-color: #181818;
+    }
+    QGroupBox:disabled{
+        color: #404040;
+        background-color: #381818;
+    }
+    QGroupBox::title:disabled {
+        color: #404040;
     }
     QRadioButton {
         color: #C0C0C0;

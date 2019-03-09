@@ -1181,7 +1181,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -3459,9 +3459,9 @@
       <widget class="QPushButton" name="setRefractionManual">
        <property name="geometry">
         <rect>
-         <x>680</x>
+         <x>675</x>
          <y>340</y>
-         <width>96</width>
+         <width>101</width>
          <height>81</height>
         </rect>
        </property>
@@ -3693,12 +3693,12 @@ manually</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_3">
+      <widget class="QGroupBox" name="refractionGroup">
        <property name="geometry">
         <rect>
          <x>385</x>
          <y>335</y>
-         <width>266</width>
+         <width>286</width>
          <height>86</height>
         </rect>
        </property>
@@ -4200,7 +4200,7 @@ manually</string>
         <string>Mount settings</string>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_4">
+      <widget class="QGroupBox" name="mountGroup">
        <property name="geometry">
         <rect>
          <x>675</x>
@@ -4833,7 +4833,7 @@ manually</string>
         <string>°/s</string>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox_6">
+      <widget class="QGroupBox" name="environGroup">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -4846,7 +4846,7 @@ manually</string>
         </rect>
        </property>
        <property name="title">
-        <string>Local</string>
+        <string>Environment</string>
        </property>
        <widget class="QLineEdit" name="environTemp">
         <property name="enabled">
@@ -5161,7 +5161,7 @@ manually</string>
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="weatherGroup">
        <property name="geometry">
         <rect>
          <x>465</x>
@@ -5171,7 +5171,7 @@ manually</string>
         </rect>
        </property>
        <property name="title">
-        <string>Online</string>
+        <string>Weather</string>
        </property>
        <widget class="QLabel" name="label_67">
         <property name="geometry">
@@ -5760,7 +5760,7 @@ manually</string>
         </rect>
        </property>
        <property name="title">
-        <string>SQM - local</string>
+        <string>SkyMeter</string>
        </property>
        <widget class="QLineEdit" name="SQR">
         <property name="enabled">
@@ -5857,7 +5857,7 @@ manually</string>
       <zorder>label_106</zorder>
       <zorder>label_142</zorder>
       <zorder>line_53</zorder>
-      <zorder>groupBox_3</zorder>
+      <zorder>refractionGroup</zorder>
       <zorder>label_89</zorder>
       <zorder>label_20</zorder>
       <zorder>label_34</zorder>
@@ -5872,7 +5872,7 @@ manually</string>
       <zorder>label_88</zorder>
       <zorder>line_11</zorder>
       <zorder>label_77</zorder>
-      <zorder>groupBox_4</zorder>
+      <zorder>mountGroup</zorder>
       <zorder>line_10</zorder>
       <zorder>firmwareProductName_2</zorder>
       <zorder>firmwareProductName_5</zorder>
@@ -5889,9 +5889,9 @@ manually</string>
       <zorder>slewRate</zorder>
       <zorder>label_28</zorder>
       <zorder>label_133</zorder>
-      <zorder>groupBox_6</zorder>
+      <zorder>environGroup</zorder>
       <zorder>label_33</zorder>
-      <zorder>groupBox</zorder>
+      <zorder>weatherGroup</zorder>
       <zorder>groupBox_2</zorder>
      </widget>
      <widget class="QWidget" name="AlignMount">

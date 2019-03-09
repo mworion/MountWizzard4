@@ -192,19 +192,26 @@ class SettDevice(object):
     def environDispatch(self):
         """
         environDispatch selects the type of device for environment measures and start / stop
-        them
+        them.
+        in addition this function enables and disables other gui functions, which rely on
+        the presence of a running driver
 
         :return: true for test purpose
         """
 
+        self.ui.environGroup.setEnabled(False)
+        self.ui.refractionGroup.setEnabled(False)
+        self.ui.setRefractionManual.setEnabled(False)
         index = self.ui.environDevice.currentIndex()
         if index == 1:
             self.app.environ.client.host = self.ui.environHost.text()
             self.app.environ.name = self.ui.environName.text()
             self.app.environ.startCommunication()
+            # gui element to be used
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
         else:
             self.app.environ.stopCommunication()
+            # gui elements not anymore to be used
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
 
         return True
@@ -225,7 +232,13 @@ class SettDevice(object):
     def indiEnvironDeviceConnected(self):
         self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
         self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
+        self.ui.environGroup.setEnabled(True)
+        self.ui.refractionGroup.setEnabled(True)
+        self.ui.setRefractionManual.setEnabled(True)
 
     def indiEnvironDeviceDisconnected(self):
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
         self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
+        self.ui.environGroup.setEnabled(False)
+        self.ui.refractionGroup.setEnabled(False)
+        self.ui.setRefractionManual.setEnabled(False)

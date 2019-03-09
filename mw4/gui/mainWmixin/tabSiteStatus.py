@@ -42,7 +42,7 @@ class SiteStatus(object):
 
         # environment
         signals = self.app.environ.client.signals
-        signals.removeDevice.connect(self.removeEnvironDevice)
+        signals.deviceDisconnected.connect(self.disconnectEnvironDevice)
         signals.newNumber.connect(self.updateEnvironGUI)
 
         # global weather
@@ -513,10 +513,9 @@ class SiteStatus(object):
         else:
             return False
 
-    def removeEnvironDevice(self, deviceName):
+    def disconnectEnvironDevice(self, deviceName):
         """
-        removeEnvironDevice clears the gui data and calls deviceEnvironment to update
-        the status of the device itself.
+        disconnectEnvironDevice clears the gui data
 
         :param deviceName:
         :return: true for test purpose

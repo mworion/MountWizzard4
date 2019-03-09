@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'image.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_ImageDialog(object):
     def setupUi(self, ImageDialog):
@@ -14,6 +15,7 @@ class Ui_ImageDialog(object):
         ImageDialog.resize(800, 600)
         ImageDialog.setMinimumSize(QtCore.QSize(800, 600))
         ImageDialog.setMaximumSize(QtCore.QSize(1600, 1200))
+        ImageDialog.setSizeIncrement(QtCore.QSize(10, 10))
         font = QtGui.QFont()
         font.setFamily("Arial")
         ImageDialog.setFont(font)
@@ -251,6 +253,8 @@ class Ui_ImageDialog(object):
         self.label_4.setText(_translate("ImageDialog", "SQM [mpas]"))
 
 
+
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -259,4 +263,3 @@ if __name__ == "__main__":
     ui.setupUi(ImageDialog)
     ImageDialog.show()
     sys.exit(app.exec_())
-

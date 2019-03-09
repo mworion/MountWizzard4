@@ -22,6 +22,12 @@
     <height>1200</height>
    </size>
   </property>
+  <property name="sizeIncrement">
+   <size>
+    <width>10</width>
+    <height>10</height>
+   </size>
+  </property>
   <property name="font">
    <font>
     <family>Arial</family>

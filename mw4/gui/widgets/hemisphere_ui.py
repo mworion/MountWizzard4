@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'hemisphere.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_HemisphereDialog(object):
     def setupUi(self, HemisphereDialog):
@@ -215,7 +216,7 @@ class Ui_HemisphereDialog(object):
         sizePolicy.setHeightForWidth(self.hemisphere.sizePolicy().hasHeightForWidth())
         self.hemisphere.setSizePolicy(sizePolicy)
         self.hemisphere.setMinimumSize(QtCore.QSize(790, 270))
-        self.hemisphere.setMaximumSize(QtCore.QSize(1580, 1070))
+        self.hemisphere.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.hemisphere.setSizeIncrement(QtCore.QSize(10, 10))
         self.hemisphere.setBaseSize(QtCore.QSize(10, 10))
         self.hemisphere.setAutoFillBackground(True)
@@ -249,6 +250,8 @@ class Ui_HemisphereDialog(object):
         self.solved.setText(_translate("HemisphereDialog", "Solved"))
 
 
+
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -257,4 +260,3 @@ if __name__ == "__main__":
     ui.setupUi(HemisphereDialog)
     HemisphereDialog.show()
     sys.exit(app.exec_())
-

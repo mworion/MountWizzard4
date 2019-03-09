@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'measure.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MeasureDialog(object):
     def setupUi(self, MeasureDialog):
@@ -29,6 +30,7 @@ class Ui_MeasureDialog(object):
         self.verticalLayout.setSpacing(4)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setContentsMargins(6, 6, -1, 6)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.groupBox = QtWidgets.QGroupBox(MeasureDialog)
         self.groupBox.setObjectName("groupBox")
@@ -71,8 +73,8 @@ class Ui_MeasureDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.measure.sizePolicy().hasHeightForWidth())
         self.measure.setSizePolicy(sizePolicy)
-        self.measure.setMinimumSize(QtCore.QSize(790, 0))
-        self.measure.setMaximumSize(QtCore.QSize(1580, 16777215))
+        self.measure.setMinimumSize(QtCore.QSize(0, 0))
+        self.measure.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.measure.setSizeIncrement(QtCore.QSize(10, 10))
         self.measure.setBaseSize(QtCore.QSize(10, 10))
         self.measure.setAutoFillBackground(True)
@@ -91,6 +93,8 @@ class Ui_MeasureDialog(object):
         self.groupBox_2.setTitle(_translate("MeasureDialog", "Time Window"))
 
 
+
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -99,4 +103,3 @@ if __name__ == "__main__":
     ui.setupUi(MeasureDialog)
     MeasureDialog.show()
     sys.exit(app.exec_())
-

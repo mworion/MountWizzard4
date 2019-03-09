@@ -117,6 +117,7 @@ class MeasureWindow(widget.MWidget):
 
     def showWindow(self):
         if self.app.mainW.ui.measureDevice.currentIndex() == 0:
+            self.showStatus = False
             return False
         self.showStatus = True
         suc = self.drawMeasure()

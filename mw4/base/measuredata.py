@@ -35,6 +35,8 @@ class MeasureData(object):
     """
 
     __all__ = ['MeasureData',
+               'startMeasurement',
+               'stopMeasurement',
                ]
 
     version = '0.4'
@@ -68,7 +70,12 @@ class MeasureData(object):
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self._measureTask)
+
+    def startMeasurement(self):
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
+
+    def stopMeasurement(self):
+        self.timerTask.stop()
 
     def _calculateReference(self):
         """
@@ -151,9 +158,6 @@ class MeasureData(object):
 
         :return: success
         """
-
-        if self.app.mainW.ui.measureDevice.currentIndex() == 0:
-            return False
 
         if not self.mutexMeasure.tryLock():
             self.logger.info('overrun in measure')

@@ -37,8 +37,8 @@ class MWStyles(object):
 
     TRAFFICLIGHTCOLORS = ['green', 'yellow', 'red', '']
     BACK_BG = 'background-color: transparent;'
-    BACK_RED = 'background-color: #B03030;'
-    BACK_GREEN = 'background-color: #208020;'
+    BACK_RED = 'background-color: red;'
+    BACK_GREEN = 'background-color: green;'
     BACK_NORM = 'background-color: #202020;'
     M_BLUE = '#2090C0'
     M_BLACK = '#000000'

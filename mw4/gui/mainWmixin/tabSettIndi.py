@@ -31,15 +31,6 @@ class SettIndi(object):
     """
 
     def __init__(self):
-        self.ui.environHost.editingFinished.connect(self.environHost)
-        self.ui.environName.editingFinished.connect(self.environName)
-
-        self.ui.imagingHost.editingFinished.connect(self.imagingHost)
-        self.ui.imagingName.editingFinished.connect(self.imagingName)
-
-        self.ui.domeHost.editingFinished.connect(self.domeHost)
-        self.ui.domeName.editingFinished.connect(self.domeName)
-
         self.app.environ.client.signals.newMessage.connect(self.indiMessage)
 
     def initConfig(self):
@@ -103,25 +94,6 @@ class SettIndi(object):
         :return: success for test
         """
         return True
-
-    def environHost(self):
-        host = self.ui.environHost.text()
-        self.app.environ.client.host = host
-
-    def environName(self):
-        self.app.environ.name = self.ui.environName.text()
-
-    def imagingHost(self):
-        host = self.ui.imagingHost.text()
-
-    def imagingName(self):
-        pass
-
-    def domeHost(self):
-        host = self.ui.domeHost.text()
-
-    def domeName(self):
-        pass
 
     @staticmethod
     def _remove_prefix(text, prefix):

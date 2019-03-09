@@ -55,10 +55,10 @@ class SettDevice(object):
                                    'remoteDevice',
                                    ]
         self.setupDeviceGui()
-        self.ui.relayDevice.currentIndexChanged.connect(self.enableRelay)
-        self.ui.remoteDevice.currentIndexChanged.connect(self.enableRemote)
-
-        self.ui.environDevice.currentIndexChanged.connect(self.environDispatch)
+        self.ui.relayDevice.activated.connect(self.enableRelay)
+        self.ui.remoteDevice.activated.connect(self.enableRemote)
+        self.ui.measureDevice.activated.connect(self.enableMeasure)
+        self.ui.environDevice.activated.connect(self.environDispatch)
 
         signals = self.app.environ.client.signals
         signals.serverConnected.connect(self.indiEnvironConnected)
@@ -75,6 +75,7 @@ class SettDevice(object):
 
         self.enableRelay()
         self.enableRemote()
+        self.enableMeasure()
         self.environDispatch()
         return True
 
@@ -112,14 +113,14 @@ class SettDevice(object):
         for dropDown in self.deviceDropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
-            dropDown.addItem('No device selected - Off')
+            dropDown.addItem('No device selected')
 
         # adding special items
-        self.ui.measureDevice.addItem('Built-In Measurement - On')
-        self.ui.remoteDevice.addItem('Built-In Remote - On')
-        self.ui.relayDevice.addItem('Built-In Relay - On')
+        self.ui.measureDevice.addItem('Built-In Measurement')
+        self.ui.remoteDevice.addItem('Built-In Remote')
+        self.ui.relayDevice.addItem('Built-In Relay KMTronic')
 
-        self.ui.environDevice.addItem('Indi Driver - On')
+        self.ui.environDevice.addItem('Indi Driver')
 
         return True
 
@@ -136,12 +137,15 @@ class SettDevice(object):
 
         if self.ui.relayDevice.currentIndex() == 1:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-            self.app.message.emit('Relay enabled', 2)
+            self.app.message.emit('Relay enabled', 0)
             self.app.relay.startTimers()
+            self.ui.relayDevice.setStyleSheet(self.BACK_GREEN)
         else:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-            self.app.message.emit('Relay disabled', 2)
+            self.app.message.emit('Relay disabled', 0)
             self.app.relay.stopTimers()
+            self.ui.relayDevice.setStyleSheet(self.BACK_NORM)
+
         # update the style for showing the Relay tab
         self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
         self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
@@ -156,19 +160,43 @@ class SettDevice(object):
 
         if self.ui.remoteDevice.currentIndex() == 1:
             self.app.remote.startRemote()
-            self.app.message.emit('Remote enabled', 2)
+            self.app.message.emit('Remote enabled', 0)
+            self.ui.remoteDevice.setStyleSheet(self.BACK_GREEN)
         else:
             self.app.remote.stopRemote()
-            self.app.message.emit('Remote disabled', 2)
+            self.app.message.emit('Remote disabled', 0)
+            self.ui.remoteDevice.setStyleSheet(self.BACK_NORM)
+
+        return True
+
+    def enableMeasure(self):
+        """
+        enableMeasure enables or disables the remote access
+
+        :return: true for test purpose
+        """
+
+        if self.ui.measureDevice.currentIndex() == 1:
+            self.app.measure.startMeasurement()
+            self.app.message.emit('Measurement enabled', 0)
+            self.ui.measureDevice.setStyleSheet(self.BACK_GREEN)
+        else:
+            self.app.measure.stopMeasurement()
+            self.app.message.emit('Measurement disabled', 0)
+            self.ui.measureDevice.setStyleSheet(self.BACK_NORM)
 
         return True
 
     def environDispatch(self):
         index = self.ui.environDevice.currentIndex()
         if index == 1:
+            self.app.environ.client.host = self.ui.environHost.text()
+            self.app.environ.name = self.ui.environName.text()
             self.app.environ.startCommunication()
+            self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
         else:
             self.app.environ.stopCommunication()
+            self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
 
     def indiEnvironConnected(self):
         self.app.message.emit('INDI server environment connected', 0)
@@ -185,6 +213,8 @@ class SettDevice(object):
 
     def indiEnvironDeviceConnected(self):
         self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
+        self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
 
     def indiEnvironDeviceDisconnected(self):
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
+        self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')

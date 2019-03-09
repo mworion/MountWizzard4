@@ -39,26 +39,69 @@ def module_setup_teardown():
     yield
 
 
-def test_indiHost():
-    app.mainW.ui.indiHostEnvironment.setText('TEST')
-    app.mainW.indiHostEnvironment()
-    assert app.environment.client.host == ('TEST', 7624)
+def test_initConfig_1():
+    app.config['mainW'] = {}
+    suc = app.mainW.initConfig()
+    assert suc
 
 
-def test_localWeatherName():
-    app.mainW.ui.localWeatherName.setText('TEST')
-    app.mainW.localWeatherName()
-    assert 'TEST' == app.environment.wDevice['local']['name']
+def test_initConfig_2():
+    del app.config['mainW']
+    suc = app.mainW.initConfig()
+    assert suc
 
 
-def test_globalWeatherName():
-    app.mainW.ui.globalWeatherName.setText('TEST')
-    app.mainW.globalWeatherName()
-    assert 'TEST' == app.environment.wDevice['global']['name']
+def test_storeConfig_1():
+    suc = app.storeConfig()
+    assert suc
 
 
-def test_sqmWeatherName():
-    app.mainW.ui.sqmName.setText('TEST')
-    app.mainW.sqmName()
-    assert 'TEST' == app.environment.wDevice['sqm']['name']
+def test_removePrefix_1():
+    text = 'test is it'
+    pre = 'test'
+    val = app.mainW._removePrefix(text, pre)
+    assert val == 'is it'
 
+
+def test_removePrefix_2():
+    text = 'testis it'
+    pre = 'test'
+    val = app.mainW._removePrefix(text, pre)
+    assert val == 'is it'
+
+
+def test_removePrefix_3():
+    text = 'test   is it  '
+    pre = 'test'
+    val = app.mainW._removePrefix(text, pre)
+    assert val == 'is it'
+
+
+def test_indiMessage_1(qtbot):
+    app.mainW.ui.indiMessage.setChecked(False)
+    device = 'test'
+    text = '[WARNING]'
+
+    with qtbot.assertNotEmitted(app.message):
+        suc = app.mainW.indiMessage(device, text)
+        assert not suc
+
+
+def test_indiMessage_2(qtbot):
+    app.mainW.ui.indiMessage.setChecked(True)
+    device = 'test'
+    text = '[WARNING] this is a test'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.indiMessage(device, text)
+        assert suc
+    assert ['test -> this is a test', 0] == blocker.args
+
+
+def test_indiMessage_3(qtbot):
+    app.mainW.ui.indiMessage.setChecked(True)
+    device = 'test'
+    text = '[ERROR] this is a test'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.indiMessage(device, text)
+        assert suc
+    assert ['test -> this is a test', 2] == blocker.args

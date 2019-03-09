@@ -77,8 +77,10 @@ class SettIndi(object):
         return True
 
     @staticmethod
-    def _remove_prefix(text, prefix):
-        return text[text.startswith(prefix) and len(prefix):]
+    def _removePrefix(text, prefix):
+        value = text[text.startswith(prefix) and len(prefix):]
+        value = value.strip()
+        return value
 
     def indiMessage(self, device, text):
         """
@@ -87,14 +89,16 @@ class SettIndi(object):
 
         :param device: device name
         :param text: message received
-        :return:
+        :return: success
         """
         if self.ui.indiMessage.isChecked():
             if text.startswith('[WARNING]'):
-                text = self._remove_prefix(text, '[WARNING]')
+                text = self._removePrefix(text, '[WARNING]')
                 self.app.message.emit(device + ' -> ' + text, 0)
             elif text.startswith('[ERROR]'):
-                text = self._remove_prefix(text, '[ERROR]')
+                text = self._removePrefix(text, '[ERROR]')
                 self.app.message.emit(device + ' -> ' + text, 2)
             else:
                 self.app.message.emit(device + ' -> ' + text, 0)
+            return True
+        return False

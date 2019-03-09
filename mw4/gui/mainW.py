@@ -99,11 +99,10 @@ class MainWindow(MWidget,
         self.polarPlot = self.embedMatplot(self.ui.modelPolar)
 
         # connect signals for refreshing the gui
-        ms = self.app.mount.signals
-        ms.pointDone.connect(self.updateStatusGUI)
-        ms.settDone.connect(self.setMountMAC)
-        ms.mountUp.connect(self.updateMountConnStat)
-        ms.mountClear.connect(self.clearMountGUI)
+        self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
+        self.app.mount.signals.settDone.connect(self.setMountMAC)
+        self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
+        self.app.mount.signals.mountClear.connect(self.clearMountGUI)
         self.app.plateSolve.signals.status.connect(self.updateAstrometry)
 
         # connect gui signals
@@ -163,6 +162,7 @@ class MainWindow(MWidget,
         SettParkPos.initConfig(self)
         SettRelay.initConfig(self)
         SettMisc.initConfig(self)
+
         return True
 
     def storeConfig(self):

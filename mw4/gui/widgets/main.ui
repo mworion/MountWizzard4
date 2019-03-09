@@ -1181,7 +1181,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>8</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -11695,7 +11695,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -12076,14 +12076,29 @@ manually</string>
            <height>386</height>
           </rect>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1">
+         <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0">
           <property name="topMargin">
            <number>6</number>
           </property>
           <property name="spacing">
            <number>6</number>
           </property>
-          <item row="7" column="0">
+          <item row="9" column="0" colspan="2">
+           <widget class="QLabel" name="label_22">
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Dome</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
            <widget class="QLabel" name="label_mountIP_6">
             <property name="font">
              <font>
@@ -12137,7 +12152,7 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="12" column="0">
+          <item row="10" column="0">
            <widget class="QLabel" name="label_mountIP_7">
             <property name="font">
              <font>
@@ -12164,7 +12179,7 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="13" column="0">
+          <item row="11" column="0">
            <widget class="QLabel" name="label_21">
             <property name="font">
              <font>
@@ -12176,7 +12191,7 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
+          <item row="7" column="1">
            <widget class="QLineEdit" name="imagingName">
             <property name="enabled">
              <bool>true</bool>
@@ -12227,27 +12242,6 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="14" column="1">
-           <widget class="QCheckBox" name="domeMessage">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string>Show messages</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_13">
             <property name="font">
@@ -12260,28 +12254,7 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QCheckBox" name="environMessage">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string>Show messages</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="1">
+          <item row="10" column="1">
            <widget class="QLineEdit" name="domeHost">
             <property name="font">
              <font>
@@ -12320,7 +12293,7 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="10" column="0" colspan="2">
+          <item row="8" column="0" colspan="2">
            <widget class="Line" name="line_55">
             <property name="frameShadow">
              <enum>QFrame::Plain</enum>
@@ -12372,7 +12345,7 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="6" column="1">
            <widget class="QLineEdit" name="imagingHost">
             <property name="font">
              <font>
@@ -12411,32 +12384,7 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="0" rowspan="2" colspan="2">
-           <widget class="Line" name="line_49">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="label_19">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Device Name</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0" colspan="2">
+          <item row="5" column="0" colspan="2">
            <widget class="QLabel" name="label_17">
             <property name="font">
              <font>
@@ -12451,7 +12399,32 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="2">
+          <item row="3" column="0" rowspan="2" colspan="2">
+           <widget class="Line" name="line_49">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_19">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Device Name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
            <spacer name="horizontalSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -12464,28 +12437,7 @@ manually</string>
             </property>
            </spacer>
           </item>
-          <item row="9" column="1">
-           <widget class="QCheckBox" name="imagingMessage">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string>Show messages</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="1">
+          <item row="11" column="1">
            <widget class="QLineEdit" name="domeName">
             <property name="enabled">
              <bool>true</bool>
@@ -12524,18 +12476,37 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="11" column="0" colspan="2">
-           <widget class="QLabel" name="label_22">
+          <item row="12" column="0" colspan="2">
+           <widget class="Line" name="line_50">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="0" colspan="2">
+           <widget class="QCheckBox" name="indiMessage">
             <property name="font">
              <font>
-              <family>Arial</family>
               <pointsize>10</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
              </font>
             </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
             <property name="text">
-             <string>Dome</string>
+             <string>Show INDI messages in message window</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
             </property>
            </widget>
           </item>

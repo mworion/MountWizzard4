@@ -36,26 +36,13 @@ class SettIndi(object):
     def initConfig(self):
         config = self.app.config['mainW']
 
-        host = config.get('environHost', '')
-        self.ui.environHost.setText(host)
-
-        name = config.get('environName', '')
-        self.ui.environName.setText(name)
-        self.ui.environMessage.setChecked(config.get('environMessage', False))
-
-        host = config.get('imagingHost', '')
-        self.ui.imagingHost.setText(host)
-
-        name = config.get('imagingName', '')
-        self.ui.imagingName.setText(name)
-        self.ui.imagingMessage.setChecked(config.get('imagingMessage', False))
-
-        host = config.get('domeHost', '')
-        self.ui.domeHost.setText(host)
-
-        name = config.get('domeName', '')
-        self.ui.domeName.setText(name)
-        self.ui.domeMessage.setChecked(config.get('domeMessage', False))
+        self.ui.environHost.setText(config.get('environHost', ''))
+        self.ui.environName.setText(config.get('environName', ''))
+        self.ui.imagingHost.setText(config.get('imagingHost', ''))
+        self.ui.imagingName.setText(config.get('imagingName', ''))
+        self.ui.domeHost.setText(config.get('domeHost', ''))
+        self.ui.domeName.setText(config.get('domeName', ''))
+        self.ui.indiMessage.setChecked(config.get('indiMessage', False))
 
         return True
 
@@ -64,15 +51,11 @@ class SettIndi(object):
 
         config['environHost'] = self.ui.environHost.text()
         config['environName'] = self.ui.environName.text()
-        config['environMessage'] = self.ui.environMessage.isChecked()
-
         config['imagingHost'] = self.ui.imagingHost.text()
         config['imagingName'] = self.ui.imagingName.text()
-        config['imagingMessage'] = self.ui.imagingMessage.isChecked()
-
         config['domeHost'] = self.ui.domeHost.text()
         config['domeName'] = self.ui.domeName.text()
-        config['domeMessage'] = self.ui.domeMessage.isChecked()
+        config['indiMessage'] = self.ui.indiMessage.isChecked()
 
         return True
 
@@ -99,12 +82,14 @@ class SettIndi(object):
 
     def indiMessage(self, device, text):
         """
+        indiMessage take a message send by indi device and puts them in the user message
+        window as well.
 
-        :param device:
-        :param text:
+        :param device: device name
+        :param text: message received
         :return:
         """
-        if self.ui.environMessage.isChecked():
+        if self.ui.indiMessage.isChecked():
             if text.startswith('[WARNING]'):
                 text = self._remove_prefix(text, '[WARNING]')
                 self.app.message.emit(device + ' -> ' + text, 0)

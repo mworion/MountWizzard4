@@ -22,8 +22,9 @@ from unittest import mock
 import pytest
 # external packages
 import PyQt5.QtWidgets
+from indibase.indiBase import Device
 # local import
-from mw4.environment import environ
+from mw4.base import indiClass
 import mw4.test.test_setupQt
 
 host_ip = 'astro-mount.fritz.box'
@@ -32,64 +33,73 @@ host_ip = 'astro-mount.fritz.box'
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-    app = environ.Environment(host_ip)
+    app = indiClass.IndiClass(host_ip)
     yield
     app = None
 
 
-def test_localWeatherName():
-    name = 'MBox'
-    app.localWeatherName = name
-    assert name == app.localWeatherName
+def test_name():
+    app.name = 'test'
+    assert app.name == 'test'
 
 
-def test_globalWeatherName():
-    name = 'MBox'
-    app.globalWeatherName = name
-    assert name == app.globalWeatherName
+def test_serverConnected_1():
+    app.name = ''
+    suc = app.serverConnected()
+    assert not suc
 
 
-def test_sqmName():
-    name = 'MBox'
-    app.sqmName = name
-    assert name == app.sqmName
-
-
-def test_newDevice2():
+def test_serverConnected_2():
+    app.name = 'test'
     with mock.patch.object(app.client,
-                           'isServerConnected',
-                           return_value=True):
-        with mock.patch.object(app.client,
-                               'getDevice',
-                               return_value=1):
-            suc = app.newDevice('test')
-            assert suc
-            for wType in app.wDevice:
-                assert None is app.wDevice[wType]['device']
-
-
-def test_newDevice3():
-    app.wDevice['local']['name'] = 'Test'
-    with mock.patch.object(app.client,
-                           'isServerConnected',
-                           return_value=True):
-        with mock.patch.object(app.client,
-                               'getDevice',
-                               return_value=1):
-            suc = app.newDevice('Test')
-            assert suc
-            assert None is not app.wDevice['local']['device']
-
-
-def test_removeDevice2():
-    app.wDevice['local']['name'] = 'Test'
-    with mock.patch.object(app.client,
-                           'isServerConnected',
-                           return_value=True):
-        suc = app.removeDevice('Test')
+                           'watchDevice',
+                           return_value=True) as call:
+        suc = app.serverConnected()
         assert suc
-        assert None is app.wDevice['local']['device']
-        assert {} == app.wDevice['local']['data']
+        call.assert_called_with('test')
+
+
+def test_serverDisconnected():
+    suc = app.serverDisconnected()
+    assert suc
+
+
+def test_newDevice_1():
+    app.name = 'false'
+    with mock.patch.object(app.client,
+                           'getDevice',
+                           return_value=None):
+        suc = app.newDevice('test')
+        assert suc
+        assert None is app.device
+
+
+def test_newDevice_2():
+    app.name = 'test'
+    with mock.patch.object(app.client,
+                           'getDevice',
+                           return_value=Device()):
+        suc = app.newDevice('test')
+        assert suc
+        assert app.device is not None
+
+
+def test_removeDevice_1():
+    app.name = 'test'
+    app.device = Device()
+    app.data = {'test': 1}
+    suc = app.removeDevice('foo')
+    assert not suc
+
+
+def test_removeDevice_2():
+    app.name = 'test'
+    app.device = Device()
+    app.data = {'test': 1}
+    suc = app.removeDevice('test')
+    assert suc
+    assert app.data == {}
+    assert app.device is None
 
 
 def test_startCommunication1():

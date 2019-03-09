@@ -110,7 +110,9 @@ class IndiClass(object):
         if deviceName == self.name:
             self.device = None
             self.data = {}
-        return True
+            return True
+        else:
+            return False
 
     def startCommunication(self):
         """

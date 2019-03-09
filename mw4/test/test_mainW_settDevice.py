@@ -39,6 +39,23 @@ def module_setup_teardown():
     yield
 
 
+def test_initConfig_1():
+    app.config['mainW'] = {}
+    suc = app.mainW.initConfig()
+    assert suc
+
+
+def test_initConfig_2():
+    del app.config['mainW']
+    suc = app.mainW.initConfig()
+    assert suc
+
+
+def test_storeConfig_1():
+    suc = app.storeConfig()
+    assert suc
+
+
 def test_enableRelay_1(qtbot):
     app.mainW.ui.relayDevice.setCurrentIndex(0)
     with mock.patch.object(app.relay,
@@ -47,7 +64,7 @@ def test_enableRelay_1(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.enableRelay()
             assert suc
-        assert ['Relay disabled', 2] == blocker.args
+        assert ['Relay disabled', 0] == blocker.args
 
 
 def test_enableRelay_2(qtbot):
@@ -58,7 +75,7 @@ def test_enableRelay_2(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.enableRelay()
             assert suc
-        assert ['Relay enabled', 2] == blocker.args
+        assert ['Relay enabled', 0] == blocker.args
 
 
 def test_enableRemote_1(qtbot):
@@ -69,7 +86,7 @@ def test_enableRemote_1(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.enableRemote()
             assert suc
-        assert ['Remote disabled', 2] == blocker.args
+        assert ['Remote disabled', 0] == blocker.args
 
 
 def test_enableRemote_2(qtbot):
@@ -80,7 +97,7 @@ def test_enableRemote_2(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.enableRemote()
             assert suc
-        assert ['Remote enabled', 2] == blocker.args
+        assert ['Remote enabled', 0] == blocker.args
 
 
 

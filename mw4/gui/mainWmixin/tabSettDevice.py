@@ -105,7 +105,8 @@ class SettDevice(object):
 
     def setupDeviceGui(self):
         """
-        setupRelayGui handles the modeldata of list for relay handling.
+        setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.
+        therefore we add the necessary entries to populate the list.
 
         :return: success for test
         """
@@ -119,7 +120,6 @@ class SettDevice(object):
         self.ui.measureDevice.addItem('Built-In Measurement')
         self.ui.remoteDevice.addItem('Built-In Remote')
         self.ui.relayDevice.addItem('Built-In Relay KMTronic')
-
         self.ui.environDevice.addItem('Indi Driver')
 
         return True

@@ -171,7 +171,7 @@ class SettDevice(object):
 
     def enableMeasure(self):
         """
-        enableMeasure enables or disables the remote access
+        enableMeasure enables or disables the on board measurement process
 
         :return: true for test purpose
         """
@@ -188,6 +188,13 @@ class SettDevice(object):
         return True
 
     def environDispatch(self):
+        """
+        environDispatch selects the type of device for environment measures and start / stop
+        them
+
+        :return: true for test purpose
+        """
+
         index = self.ui.environDevice.currentIndex()
         if index == 1:
             self.app.environ.client.host = self.ui.environHost.text()
@@ -197,6 +204,8 @@ class SettDevice(object):
         else:
             self.app.environ.stopCommunication()
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
+
+        return True
 
     def indiEnvironConnected(self):
         self.app.message.emit('INDI server environment connected', 0)

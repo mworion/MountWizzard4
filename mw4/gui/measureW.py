@@ -67,7 +67,7 @@ class MeasureWindow(widget.MWidget):
         self.clickable(self.app.mainW.ui.environTemp).connect(self.showWindow)
         self.clickable(self.app.mainW.ui.environPress).connect(self.showWindow)
         self.clickable(self.app.mainW.ui.environDewPoint).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.SQR).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.skymeterSQR).connect(self.showWindow)
 
         self.app.update1s.connect(self.drawMeasure)
 

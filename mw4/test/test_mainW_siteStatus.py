@@ -67,34 +67,6 @@ def test_clearGUI():
     assert suc
 
 
-def test_updateEnvironGUI_2():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_TEMPERATURE'] = 10.5
-    app.mainW.updateEnvironGUI('test')
-    assert app.mainW.ui.environTemp.text() == '10.5'
-
-
-def test_updateEnvironGUI_3():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_BAROMETER'] = 10.5
-    app.mainW.updateEnvironGUI('test')
-    assert app.mainW.ui.environPress.text() == ' 10.5'
-
-
-def test_updateEnvironGUI_4():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_DEWPOINT'] = 10.5
-    app.mainW.updateEnvironGUI('test')
-    assert app.mainW.ui.environDewPoint.text() == '10.5'
-
-
-def test_updateEnvironGUI_5():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_HUMIDITY'] = 10
-    app.mainW.updateEnvironGUI('test')
-    assert app.mainW.ui.environHumidity.text() == ' 10'
-
-
 def test_updateFwGui_productName():
     value = 'Test1234'
     app.mount.fw.productName = value
@@ -728,3 +700,38 @@ def test_setElevation4(qtbot):
                                return_value=True):
             suc = app.mainW.setElevation()
             assert suc
+
+
+def test_updateEnvironGUI_1():
+    app.environ.name = 'test'
+    app.environ.data['WEATHER_TEMPERATURE'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.environTemp.text() == '10.5'
+
+
+def test_updateEnvironGUI_2():
+    app.environ.name = 'test'
+    app.environ.data['WEATHER_BAROMETER'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.environPress.text() == ' 10.5'
+
+
+def test_updateEnvironGUI_3():
+    app.environ.name = 'test'
+    app.environ.data['WEATHER_DEWPOINT'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.environDewPoint.text() == '10.5'
+
+
+def test_updateEnvironGUI_4():
+    app.environ.name = 'test'
+    app.environ.data['WEATHER_HUMIDITY'] = 10
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.environHumidity.text() == ' 10'
+
+
+def test_updateSkymeterGUI_1():
+    app.skymeter.name = 'test'
+    app.skymeter.data['SQM'] = 10.5
+    app.mainW.updateSkymeterGUI('test')
+    assert app.mainW.ui.skymeterSQR.text() == '10.5'

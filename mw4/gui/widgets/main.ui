@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -5771,7 +5771,7 @@ manually</string>
        <property name="title">
         <string>SkyMeter</string>
        </property>
-       <widget class="QLineEdit" name="SQR">
+       <widget class="QLineEdit" name="skymeterSQR">
         <property name="enabled">
          <bool>false</bool>
         </property>

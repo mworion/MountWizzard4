@@ -42,7 +42,12 @@ class SiteStatus(object):
         # environment functions
         signals = self.app.environ.client.signals
         signals.newNumber.connect(self.updateEnvironGUI)
-        signals.deviceDisconnected.connect(self.clearEnvironDevice)
+        signals.deviceDisconnected.connect(self.clearEnvironGUI)
+
+        # skymeter functions
+        signals = self.app.skymeter.client.signals
+        signals.newNumber.connect(self.updateSkymeterGUI)
+        signals.deviceDisconnected.connect(self.clearSkymeterGUI)
 
         # gui connections
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
@@ -509,9 +514,9 @@ class SiteStatus(object):
         else:
             return False
 
-    def clearEnvironDevice(self, deviceName):
+    def clearEnvironGUI(self, deviceName):
         """
-        clearEnvironDevice clears the gui data
+        clearEnvironGUI clears the gui data
 
         :param deviceName:
         :return: true for test purpose
@@ -539,3 +544,25 @@ class SiteStatus(object):
         self.ui.environDewPoint.setText('{0:4.1f}'.format(value))
         value = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
         self.ui.environHumidity.setText('{0:3.0f}'.format(value))
+
+    def clearSkymeterGUI(self, deviceName):
+        """
+        clearEnvironGUI clears the gui data
+
+        :param deviceName:
+        :return: true for test purpose
+        """
+
+        self.ui.skymeterSQR.setText('-')
+
+        return True
+
+    def updateSkymeterGUI(self, deviceName):
+        """
+        updateSkymeterGUI shows the data which is received through INDI client
+
+        :return:    True if ok for testing
+        """
+
+        value = self.app.skymeter.data.get('SQM', 0)
+        self.ui.skymeterSQR.setText('{0:4.1f}'.format(value))

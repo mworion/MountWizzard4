@@ -40,6 +40,33 @@ def module_setup_teardown():
 
 
 def test_initConfig_1():
+    app.config['mainW'] = {}
+    suc = app.mainW.initConfig()
+    assert suc
+
+
+def test_initConfig_2():
+    del app.config['mainW']
+    suc = app.mainW.initConfig()
+    assert suc
+
+
+def test_storeConfig_1():
+    suc = app.storeConfig()
+    assert suc
+
+
+def test_setupIcons():
+    suc = app.mainW.setupIcons()
+    assert suc
+
+
+def test_clearGUI():
+    suc = app.mainW.clearGUI()
+    assert suc
+
+
+def test_initConfig_1():
     config = app.config['mainW']
     for i in range(0, 8):
         config[f'posText{i:1d}'] = str(i)

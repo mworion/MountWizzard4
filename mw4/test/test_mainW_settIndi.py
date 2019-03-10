@@ -56,6 +56,16 @@ def test_storeConfig_1():
     assert suc
 
 
+def test_setupIcons():
+    suc = app.mainW.setupIcons()
+    assert suc
+
+
+def test_clearGUI():
+    suc = app.mainW.clearGUI()
+    assert suc
+
+
 def test_removePrefix_1():
     text = 'test is it'
     pre = 'test'

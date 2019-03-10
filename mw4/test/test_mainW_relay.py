@@ -39,6 +39,33 @@ def module_setup_teardown():
     yield
 
 
+def test_initConfig_1():
+    app.config['mainW'] = {}
+    suc = app.mainW.initConfig()
+    assert suc
+
+
+def test_initConfig_2():
+    del app.config['mainW']
+    suc = app.mainW.initConfig()
+    assert suc
+
+
+def test_storeConfig_1():
+    suc = app.storeConfig()
+    assert suc
+
+
+def test_setupIcons():
+    suc = app.mainW.setupIcons()
+    assert suc
+
+
+def test_clearGUI():
+    suc = app.mainW.clearGUI()
+    assert suc
+
+
 def test_updateRelayGui(qtbot):
     app.mainW.relayButton = list()
     app.mainW.relayDropDown = list()

@@ -37,21 +37,18 @@ def module_setup_teardown():
 
 def test_measureTask_1():
     app.mainW.ui.measureDevice.setCurrentIndex(1)
-    app.environment.wDevice['local']['data'] = {}
-    app.environment.wDevice['sqm']['data'] = {}
+    app.environ.data = {}
     suc = app.measure._measureTask()
     assert suc
     assert app.measure.data['temp'].shape[0]
     assert app.measure.data['humidity'].shape[0]
     assert app.measure.data['press'].shape[0]
     assert app.measure.data['dewTemp'].shape[0]
-    assert app.measure.data['sqr'].shape[0]
 
 
 def test_measureTask_2():
     app.mainW.ui.measureDevice.setCurrentIndex(0)
-    app.environment.wDevice['local']['data'] = {}
-    app.environment.wDevice['sqm']['data'] = {}
+    app.environ.data = {}
     app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),
         'temp': np.empty(shape=[0, 1]),
@@ -64,28 +61,25 @@ def test_measureTask_2():
         'status': np.empty(shape=[0, 1]),
     }
     suc = app.measure._measureTask()
-    assert not suc
-    assert app.measure.data['temp'].shape[0] == 0
-    assert app.measure.data['humidity'].shape[0] == 0
-    assert app.measure.data['press'].shape[0] == 0
-    assert app.measure.data['dewTemp'].shape[0] == 0
-    assert app.measure.data['sqr'].shape[0] == 0
+    assert suc
+    assert app.measure.data['temp'].shape[0] == 1
+    assert app.measure.data['humidity'].shape[0] == 1
+    assert app.measure.data['press'].shape[0] == 1
+    assert app.measure.data['dewTemp'].shape[0] == 1
 
 
 def test_measureTask_3():
     app.mainW.ui.measureDevice.setCurrentIndex(1)
-    app.environment.wDevice['local']['data']['WEATHER_TEMPERATURE'] = 10
-    app.environment.wDevice['local']['data']['WEATHER_BAROMETER'] = 1000
-    app.environment.wDevice['local']['data']['WEATHER_DEWPOINT'] = 10
-    app.environment.wDevice['local']['data']['WEATHER_HUMIDITY'] = 10
-    app.environment.wDevice['sqm']['data']['SKY_BRIGHTNESS'] = 19
+    app.environ.data['WEATHER_TEMPERATURE'] = 10
+    app.environ.data['WEATHER_BAROMETER'] = 1000
+    app.environ.data['WEATHER_DEWPOINT'] = 10
+    app.environ.data['WEATHER_HUMIDITY'] = 10
     suc = app.measure._measureTask()
     assert suc
-    assert app.measure.data['temp'][0] == 10
-    assert app.measure.data['humidity'][0] == 10
-    assert app.measure.data['press'][0] == 1000
-    assert app.measure.data['dewTemp'][0] == 10
-    assert app.measure.data['sqr'][0] == 19
+    assert app.measure.data['temp'][1] == 10
+    assert app.measure.data['humidity'][1] == 10
+    assert app.measure.data['press'][1] == 1000
+    assert app.measure.data['dewTemp'][1] == 10
     app.mainW.ui.measureDevice.setCurrentIndex(0)
 
 

@@ -70,8 +70,6 @@ class Skymeter(indiClass.IndiClass):
 
         update = self.device.getNumber('WEATHER_UPDATE')
 
-        print(update)
-
         if 'PERIOD' not in update:
             return False
 

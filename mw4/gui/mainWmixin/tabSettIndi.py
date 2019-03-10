@@ -36,12 +36,14 @@ class SettIndi(object):
                                     self.ui.domeDeviceName,
                                     self.ui.environDeviceName,
                                     self.ui.skymeterDeviceName,
+                                    self.ui.weatherDeviceName,
                                     self.ui.powerDeviceName,
                                     ]
         self.deviceNameDropDownKeys = ['imagingDeviceName',
                                        'domeDeviceName',
                                        'environmentDeviceName',
                                        'skymeterDeviceName',
+                                       'weatherDeviceName',
                                        'powerDeviceName',
                                        ]
 
@@ -63,6 +65,14 @@ class SettIndi(object):
         sig.deviceDisconnected.connect(self.showSkymeterDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewSkymeterDevice)
         sig.removeDevice.connect(self.showIndiRemoveSkymeterDevice)
+
+        sig = self.app.weather.client.signals
+        sig.serverConnected.connect(self.showIndiWeatherConnected)
+        sig.serverDisconnected.connect(self.showIndiWeatherDisconnected)
+        sig.deviceConnected.connect(self.showWeatherDeviceConnected)
+        sig.deviceDisconnected.connect(self.showWeatherDeviceDisconnected)
+        sig.newDevice.connect(self.showIndiNewWeatherDevice)
+        sig.removeDevice.connect(self.showIndiRemoveWeatherDevice)
 
         self.setupDeviceNameGui()
 
@@ -344,4 +354,71 @@ class SettIndi(object):
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
         self.ui.skymeterGroup.setEnabled(False)
+        return True
+
+
+
+    def showIndiWeatherConnected(self):
+        """
+        showIndiWeatherConnected writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit('INDI server weather connected', 0)
+        return True
+
+    def showIndiWeatherDisconnected(self):
+        """
+        showIndiWeatherDisconnected writes info to message window and recolors the status
+
+        :return: true for test purpose
+        """
+
+        self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
+        self.app.message.emit('INDI server weather disconnected', 0)
+        return True
+
+    def showIndiNewWeatherDevice(self, deviceName):
+        """
+        showIndiNewWeatherDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI weather device [{deviceName}] found', 0)
+        return True
+
+    def showIndiRemoveWeatherDevice(self, deviceName):
+        """
+        showIndiRemoveWeatherDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI weather device [{deviceName}] removed', 0)
+        return True
+
+    def showWeatherDeviceConnected(self):
+        """
+        showWeatherDeviceConnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.weatherDevice.setStyleSheet(self.BACK_GREEN)
+        self.ui.weatherGroup.setEnabled(True)
+        return True
+
+    def showWeatherDeviceDisconnected(self):
+        """
+        showWeatherDeviceDisconnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
+        self.ui.weatherGroup.setEnabled(False)
         return True

@@ -732,6 +732,6 @@ def test_updateEnvironGUI_4():
 
 def test_updateSkymeterGUI_1():
     app.skymeter.name = 'test'
-    app.skymeter.data['SQM'] = 10.5
+    app.skymeter.data['SKY_BRIGHTNESS'] = 10.5
     app.mainW.updateSkymeterGUI('test')
     assert app.mainW.ui.skymeterSQR.text() == '10.5'

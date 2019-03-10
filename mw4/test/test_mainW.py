@@ -108,19 +108,8 @@ def test_updateMountConnStat():
 
 
 def test_clearMountGUI():
-    suc = app.mainW.clearMountGUI()
+    suc = app.mainW.clearGUI()
     assert suc
-
-
-def test_updateGui():
-    suc = app.mainW.updateGUI()
-    assert suc
-
-
-def test_updateTask():
-    suc = app.mainW.updateTask()
-    assert suc
-
 
 def test_closeEvent():
 

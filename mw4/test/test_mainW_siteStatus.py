@@ -711,7 +711,7 @@ def test_updateEnvironGUI_1():
 
 def test_updateEnvironGUI_2():
     app.environ.name = 'test'
-    app.environ.data['WEATHER_BAROMETER'] = 10.5
+    app.environ.data['WEATHER_PRESSURE'] = 10.5
     app.mainW.updateEnvironGUI('test')
     assert app.mainW.ui.environPress.text() == ' 10.5'
 

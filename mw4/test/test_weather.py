@@ -153,6 +153,13 @@ def test_setUpdateRate_6():
         assert suc
 
 
+def test_getDewPoint():
+    temp = 20
+    hum = 50
+    value = app._getDewPoint(temp, hum)
+    assert value == 9.254294282076941
+
+
 def test_updateData_1():
     app.device = None
     app.name = 'test'

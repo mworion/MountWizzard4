@@ -84,6 +84,21 @@ class Weather(indiClass.IndiClass):
                                         elements=update)
         return suc
 
+    @staticmethod
+    def _getDewPoint(t_air_c, rel_humidity):
+        """
+        Compute the dew point in degrees Celsius
+
+        :param t_air_c: current ambient temperature in degrees Celsius
+        :param rel_humidity: relative humidity in %
+        :return: the dew point in degrees Celsius
+        """
+
+        A = 17.27
+        B = 237.7
+        alpha = ((A * t_air_c) / (B + t_air_c)) + np.log(rel_humidity / 100.0)
+        return (B * alpha) / (A - alpha)
+
     def updateData(self, deviceName, propertyName):
         """
         updateData is called whenever a new number is received in client. it runs
@@ -109,5 +124,22 @@ class Weather(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
+
+        if 'WEATHER_PRESSURE' not in self.data and 'WEATHER_BAROMETER' in self.data:
+            self.data['WEATHER_PRESSURE'] = self.data['WEATHER_BAROMETER']
+        if 'WEATHER_BAROMETER' not in self.data and 'WEATHER_PRESSURE' in self.data:
+            self.data['WEATHER_BAROMETER'] = self.data['WEATHER_PRESSURE']
+
+        if 'WEATHER_DEWPOINT' in self.data:
+            return True
+        if 'WEATHER_TEMPERATURE' not in self.data:
+            return False
+        if 'WEATHER_HUMIDITY' not in self.data:
+            return False
+
+        temp = self.data['WEATHER_TEMPERATURE']
+        humidity = self.data['WEATHER_HUMIDITY']
+        dewPoint = self._getDewPoint(temp, humidity)
+        self.data['WEATHER_DEWPOINT'] = dewPoint
 
         return True

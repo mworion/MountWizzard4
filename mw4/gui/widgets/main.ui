@@ -5230,7 +5230,7 @@ manually</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="rainVol">
+       <widget class="QLineEdit" name="weatherRainVol">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -5278,7 +5278,7 @@ manually</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="globalDewPoint">
+       <widget class="QLineEdit" name="weatherDewPoint">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -5326,7 +5326,7 @@ manually</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="windSpeed">
+       <widget class="QLineEdit" name="weatherWindSpeed">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -5374,7 +5374,7 @@ manually</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="cloudCover">
+       <widget class="QLineEdit" name="weatherCloudCover">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -5446,7 +5446,7 @@ manually</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="globalTemp">
+       <widget class="QLineEdit" name="weatherTemp">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -5542,7 +5542,7 @@ manually</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="globalPress">
+       <widget class="QLineEdit" name="weatherPress">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -5638,7 +5638,7 @@ manually</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="globalHumidity">
+       <widget class="QLineEdit" name="weatherHumidity">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -5710,7 +5710,7 @@ manually</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="snowVol">
+       <widget class="QLineEdit" name="weatherSnowVol">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -12801,7 +12801,7 @@ manually</string>
            <widget class="QComboBox" name="weatherDeviceName"/>
           </item>
           <item row="10" column="5">
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="QLineEdit" name="weatherHost">
             <property name="text">
              <string>localhost</string>
             </property>
@@ -12811,7 +12811,7 @@ manually</string>
            </widget>
           </item>
           <item row="10" column="6">
-           <widget class="QLineEdit" name="lineEdit_2">
+           <widget class="QLineEdit" name="weatherPort">
             <property name="maximumSize">
              <size>
               <width>50</width>

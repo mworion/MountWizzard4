@@ -133,6 +133,11 @@ class Environ(indiClass.IndiClass):
                 self.data[elTime] = np.roll(self.data[elTime], 1)
                 self.data[elTime][0] = datetime.now()
 
+        if 'WEATHER_PRESSURE' not in self.data and 'WEATHER_BAROMETER' in self.data:
+            self.data['WEATHER_PRESSURE'] = self.data['WEATHER_BAROMETER']
+        if 'WEATHER_BAROMETER' not in self.data and 'WEATHER_PRESSURE' in self.data:
+            self.data['WEATHER_BAROMETER'] = self.data['WEATHER_PRESSURE']
+
         if 'WEATHER_DEWPOINT' in self.data:
             return True
         if 'WEATHER_TEMPERATURE' not in self.data:

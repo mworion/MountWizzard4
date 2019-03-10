@@ -737,8 +737,64 @@ def test_updateSkymeterGUI_1():
     assert app.mainW.ui.skymeterSQR.text() == '10.5'
 
 
-def test_updateSkymeterGUI_1():
+def test_updateSkymeterGUI_2():
     app.skymeter.name = 'test'
     app.skymeter.data['SKY_TEMPERATURE'] = 10.5
     app.mainW.updateSkymeterGUI('test')
     assert app.mainW.ui.skymeterTemp.text() == '10.5'
+
+
+def test_updateWeatherGUI_1():
+    app.weather.name = 'test'
+    app.weather.data['WEATHER_TEMPERATURE'] = 10.5
+    app.mainW.updateWeatherGUI('test')
+    assert app.mainW.ui.weatherTemp.text() == '10.5'
+
+
+def test_updateWeatherGUI_2():
+    app.weather.name = 'test'
+    app.weather.data['WEATHER_PRESSURE'] = 10.5
+    app.mainW.updateWeatherGUI('test')
+    assert app.mainW.ui.weatherPress.text() == ' 10.5'
+
+
+def test_updateWeatherGUI_3():
+    app.weather.name = 'test'
+    app.weather.data['WEATHER_DEWPOINT'] = 10.5
+    app.mainW.updateWeatherGUI('test')
+    assert app.mainW.ui.weatherDewPoint.text() == '10.5'
+
+
+def test_updateWeatherGUI_4():
+    app.weather.name = 'test'
+    app.weather.data['WEATHER_HUMIDITY'] = 10
+    app.mainW.updateWeatherGUI('test')
+    assert app.mainW.ui.weatherHumidity.text() == ' 10'
+
+
+def test_updateWeatherGUI_5():
+    app.weather.name = 'test'
+    app.weather.data['WEATHER_CLOUD_COVER'] = 10
+    app.mainW.updateWeatherGUI('test')
+    assert app.mainW.ui.weatherCloudCover.text() == ' 10'
+
+
+def test_updateWeatherGUI_6():
+    app.weather.name = 'test'
+    app.weather.data['WEATHER_WIND_SPEED'] = 10
+    app.mainW.updateWeatherGUI('test')
+    assert app.mainW.ui.weatherWindSpeed.text() == ' 10'
+
+
+def test_updateWeatherGUI_7():
+    app.weather.name = 'test'
+    app.weather.data['WEATHER_RAIN_HOUR'] = 10
+    app.mainW.updateWeatherGUI('test')
+    assert app.mainW.ui.weatherRainVol.text() == ' 10'
+
+
+def test_updateWeatherGUI_8():
+    app.weather.name = 'test'
+    app.weather.data['WEATHER_SNOW_HOUR'] = 10
+    app.mainW.updateWeatherGUI('test')
+    assert app.mainW.ui.weatherSnowVol.text() == ' 10'

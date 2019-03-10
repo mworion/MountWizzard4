@@ -89,6 +89,8 @@ class SettIndi(object):
         self.ui.domePort.setText(config.get('domePort', '7624'))
         self.ui.skymeterHost.setText(config.get('skymeterHost', ''))
         self.ui.skymeterPort.setText(config.get('skymeterPort', '7624'))
+        self.ui.weatherHost.setText(config.get('weatherHost', ''))
+        self.ui.weatherPort.setText(config.get('weatherPort', '7624'))
         self.ui.powerHost.setText(config.get('powerHost', ''))
         self.ui.powerPort.setText(config.get('powerPort', '7624'))
 
@@ -108,6 +110,8 @@ class SettIndi(object):
         config['domePort'] = self.ui.domePort.text()
         config['skymeterHost'] = self.ui.skymeterHost.text()
         config['skymeterPort'] = self.ui.skymeterPort.text()
+        config['weatherHost'] = self.ui.weatherHost.text()
+        config['weatherPort'] = self.ui.weatherPort.text()
         config['powerHost'] = self.ui.powerHost.text()
         config['powerPort'] = self.ui.powerPort.text()
 
@@ -183,15 +187,27 @@ class SettIndi(object):
         self.ui.environDeviceName.addItem('AAG Cloud Watcher')
         self.ui.environDeviceName.addItem('Arduino MeteoStation')
         self.ui.environDeviceName.addItem('MBox')
-        self.ui.environDeviceName.addItem('Open Weather Map')
+        self.ui.environDeviceName.addItem('OpenWeatherMap')
         self.ui.environDeviceName.addItem('Vantage')
         self.ui.environDeviceName.addItem('Weather Meta')
         self.ui.environDeviceName.addItem('Weather Simulator')
         self.ui.environDeviceName.addItem('Weather Watcher')
+        self.ui.environDeviceName.addItem('WonderGround')
 
         self.ui.skymeterDeviceName.addItem('SQM')
 
         self.ui.powerDeviceName.addItem('Pegasus PPB')
+
+        self.ui.weatherDeviceName.addItem('AAG Cloud Watcher')
+        self.ui.weatherDeviceName.addItem('Arduino MeteoStation')
+        self.ui.weatherDeviceName.addItem('MBox')
+        self.ui.weatherDeviceName.addItem('OpenWeatherMap')
+        self.ui.weatherDeviceName.addItem('Vantage')
+        self.ui.weatherDeviceName.addItem('Weather Meta')
+        self.ui.weatherDeviceName.addItem('Weather Simulator')
+        self.ui.weatherDeviceName.addItem('Weather Watcher')
+        self.ui.weatherDeviceName.addItem('WonderGround')
+        return True
 
     @staticmethod
     def _removePrefix(text, prefix):

@@ -49,6 +49,11 @@ class SiteStatus(object):
         signals.newNumber.connect(self.updateSkymeterGUI)
         signals.deviceDisconnected.connect(self.clearSkymeterGUI)
 
+        # weather functions
+        signals = self.app.weather.client.signals
+        signals.newNumber.connect(self.updateWeatherGUI)
+        signals.deviceDisconnected.connect(self.clearWeatherGUI)
+
         # gui connections
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
         self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
@@ -538,7 +543,7 @@ class SiteStatus(object):
 
         value = self.app.environ.data.get('WEATHER_TEMPERATURE', 0)
         self.ui.environTemp.setText('{0:4.1f}'.format(value))
-        value = self.app.environ.data.get('WEATHER_BAROMETER', 0)
+        value = self.app.environ.data.get('WEATHER_PRESSURE', 0)
         self.ui.environPress.setText('{0:5.1f}'.format(value))
         value = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
         self.ui.environDewPoint.setText('{0:4.1f}'.format(value))
@@ -569,3 +574,47 @@ class SiteStatus(object):
         self.ui.skymeterSQR.setText('{0:4.1f}'.format(value))
         value = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
         self.ui.skymeterTemp.setText('{0:4.1f}'.format(value))
+
+    def clearWeatherGUI(self, deviceName):
+        """
+        clearEnvironGUI clears the gui data
+
+        :param deviceName:
+        :return: true for test purpose
+        """
+
+        self.ui.weatherTemp.setText('-')
+        self.ui.weatherPress.setText('-')
+        self.ui.weatherDewPoint.setText('-')
+        self.ui.weatherHumidity.setText('-')
+        self.ui.weatherCloudCover.setText('-')
+        self.ui.weatherWindSpeed.setText('-')
+        self.ui.weatherRainVol.setText('-')
+        self.ui.weatherSnowVol.setText('-')
+        return True
+
+    def updateWeatherGUI(self, deviceName):
+        """
+        updateSkymeterGUI shows the data which is received through INDI client
+
+        :return:    True if ok for testing
+        """
+
+        value = self.app.weather.data.get('WEATHER_TEMPERATURE', 0)
+        self.ui.weatherTemp.setText('{0:4.1f}'.format(value))
+        value = self.app.weather.data.get('WEATHER_PRESSURE', 0)
+        self.ui.weatherPress.setText('{0:5.1f}'.format(value))
+        value = self.app.weather.data.get('WEATHER_DEWPOINT', 0)
+        self.ui.weatherDewPoint.setText('{0:4.1f}'.format(value))
+        value = self.app.weather.data.get('WEATHER_HUMIDITY', 0)
+        self.ui.weatherHumidity.setText('{0:3.0f}'.format(value))
+        value = self.app.weather.data.get('WEATHER_CLOUD_COVER', 0)
+        self.ui.weatherCloudCover.setText('{0:3.0f}'.format(value))
+        value = self.app.weather.data.get('WEATHER_WIND_SPEED', 0)
+        self.ui.weatherWindSpeed.setText('{0:3.0f}'.format(value))
+        value = self.app.weather.data.get('WEATHER_RAIN_HOUR', 0)
+        self.ui.weatherRainVol.setText('{0:3.0f}'.format(value))
+        value = self.app.weather.data.get('WEATHER_SNOW_HOUR', 0)
+        self.ui.weatherSnowVol.setText('{0:3.0f}'.format(value))
+
+

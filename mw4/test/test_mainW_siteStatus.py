@@ -349,24 +349,6 @@ def test_setElevation4(qtbot):
             assert suc
 
 
-def test_newEnvironConnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        app.mainW.newEnvironDevice('test')
-    assert ['INDI device [test] found', 0] == blocker.args
-
-
-def test_indiEnvironConnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        app.mainW.indiEnvironConnected()
-    assert ['INDI server environment connected', 0] == blocker.args
-
-
-def test_indiEnvironDisconnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        app.mainW.indiEnvironDisconnected()
-    assert ['INDI server environment disconnected', 0] == blocker.args
-
-
 def test_updateEnvironGUI_1():
     app.environment.wDevice['sqm']['name'] = 'test'
     app.environment.wDevice['sqm']['data']['SKY_BRIGHTNESS'] = 10.5
@@ -582,7 +564,7 @@ def test_deviceEnvironDisconnected2():
 def test_removeEnvironDevice_1(qtbot):
     app.environment.wDevice['global']['name'] = 'test'
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.removeEnvironDevice('test')
+        suc = app.mainW.showRemoveEnvironDevice('test')
         assert suc
     assert ['INDI device [test] removed', 0] == blocker.args
 

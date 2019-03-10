@@ -110,4 +110,19 @@ def test_enableRemote_2(qtbot):
         assert ['Remote enabled', 0] == blocker.args
 
 
+def test_newEnvironConnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        app.mainW.showNewEnvironDevice('test')
+    assert ['INDI environment device [test] found', 0] == blocker.args
 
+
+def test_indiEnvironConnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        app.mainW.showEnvironConnected()
+    assert ['INDI server environment connected', 0] == blocker.args
+
+
+def test_indiEnvironDisconnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        app.mainW.showEnvironDisconnected()
+    assert ['INDI server environment disconnected', 0] == blocker.args

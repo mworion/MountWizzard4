@@ -199,13 +199,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         self.timerCounter += 0.5
         if (self.timerCounter + 0.5) % 1 == 0:
-            print('1s: ', self.timerCounter, (self.timerCounter + 0.5) % 1)
             self.update1s.emit()
         if (self.timerCounter + 1) % 3 == 0:
-            print('3s: ', self.timerCounter, (self.timerCounter + 1) % 3)
             self.update3s.emit()
         if (self.timerCounter + 2) % 10 == 0:
-            print('10s: ', self.timerCounter, (self.timerCounter + 2) % 10)
             self.update10s.emit()
         return True
 

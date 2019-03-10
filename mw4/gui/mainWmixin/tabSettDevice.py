@@ -59,7 +59,7 @@ class SettDevice(object):
         self.ui.remoteDevice.activated.connect(self.enableRemote)
         self.ui.measureDevice.activated.connect(self.enableMeasure)
         self.ui.environDevice.activated.connect(self.environDispatch)
-        self.ui.skymeterDevice.activated.connect(self.skymaterDispatch)
+        self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -70,6 +70,7 @@ class SettDevice(object):
         self.enableRemote()
         self.enableMeasure()
         self.environDispatch()
+        self.skymeterDispatch()
         return True
 
     def storeConfig(self):
@@ -114,6 +115,7 @@ class SettDevice(object):
         self.ui.remoteDevice.addItem('Built-In Remote')
         self.ui.relayDevice.addItem('Built-In Relay KMTronic')
         self.ui.environDevice.addItem('Indi Driver')
+        self.ui.skymeterDevice.addItem('Indi Driver')
 
         return True
 
@@ -197,8 +199,7 @@ class SettDevice(object):
         self.ui.setRefractionManual.setEnabled(False)
         index = self.ui.environDevice.currentIndex()
         if index == 1:
-            host = (self.ui.environHost.text(), int(self.ui.environPort.text()))
-            self.app.environ.client.host = host
+            self.app.environ.client.host = self.ui.environHost.text()
             self.app.environ.name = self.ui.environName.text()
             self.app.environ.startCommunication()
             # gui element to be used
@@ -221,9 +222,8 @@ class SettDevice(object):
         self.ui.skymeterGroup.setEnabled(False)
         index = self.ui.skymeterDevice.currentIndex()
         if index == 1:
-            host = (self.ui.skymeter.text(), int(self.ui.skymeter.text()))
-            self.app.skymeter.client.host = host
-            self.app.skymeter.name = self.ui.environName.text()
+            self.app.skymeter.client.host = self.ui.skymeterHost.text()
+            self.app.skymeter.name = self.ui.skymeterName.text()
             self.app.skymeter.startCommunication()
         else:
             self.app.skymeter.stopCommunication()

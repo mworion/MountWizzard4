@@ -153,3 +153,41 @@ def test_showEnvironDeviceConnected():
 def test_showEnvironDeviceDisconnected():
     suc = app.mainW.showEnvironDeviceDisconnected()
     assert suc
+
+
+def test_showIndiSkymeterConnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiSkymeterConnected()
+        assert suc
+    assert ['INDI server skymeter connected', 0] == blocker.args
+
+
+def test_showIndiSkymeterDisconnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiSkymeterDisconnected()
+        assert suc
+    assert ['INDI server skymeter disconnected', 0] == blocker.args
+
+
+def test_showIndiNewSkymeterDevice(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewSkymeterDevice('test')
+        assert suc
+    assert ['INDI skymeter device [test] found', 0] == blocker.args
+
+
+def test_showIndiRemoveSkymeterDevice(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiRemoveSkymeterDevice('test')
+        assert suc
+    assert ['INDI skymeter device [test] removed', 0] == blocker.args
+
+
+def test_showSkymeterDeviceConnected():
+    suc = app.mainW.showSkymeterDeviceConnected()
+    assert suc
+
+
+def test_showSkymeterDeviceDisconnected():
+    suc = app.mainW.showSkymeterDeviceDisconnected()
+    assert suc

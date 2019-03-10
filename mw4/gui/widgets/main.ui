@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>8</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -12093,7 +12093,14 @@ manually</string>
            <number>6</number>
           </property>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="skymeterHost"/>
+           <widget class="QLineEdit" name="skymeterHost">
+            <property name="text">
+             <string>localhost</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="8" column="0" colspan="3">
            <widget class="Line" name="line_55">
@@ -12152,6 +12159,9 @@ manually</string>
             </property>
             <property name="text">
              <string>7624</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -12280,10 +12290,17 @@ manually</string>
             <property name="text">
              <string>7624</string>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
            </widget>
           </item>
           <item row="2" column="5" colspan="2">
-           <widget class="QLineEdit" name="skymeterName"/>
+           <widget class="QLineEdit" name="skymeterName">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="1" column="6">
            <widget class="QLineEdit" name="skymeterPort">
@@ -12295,6 +12312,9 @@ manually</string>
             </property>
             <property name="text">
              <string>7624</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -12339,7 +12359,7 @@ manually</string>
              <enum>Qt::RightToLeft</enum>
             </property>
             <property name="text">
-             <string>127.0.0.1</string>
+             <string>localhost</string>
             </property>
             <property name="maxLength">
              <number>50</number>
@@ -12411,7 +12431,7 @@ manually</string>
              <enum>Qt::RightToLeft</enum>
             </property>
             <property name="text">
-             <string>127.0.0.1</string>
+             <string>localhost</string>
             </property>
             <property name="maxLength">
              <number>50</number>
@@ -12525,7 +12545,7 @@ manually</string>
              <enum>Qt::RightToLeft</enum>
             </property>
             <property name="text">
-             <string>127.0.0.1</string>
+             <string>localhost</string>
             </property>
             <property name="maxLength">
              <number>50</number>
@@ -12604,6 +12624,9 @@ manually</string>
             </property>
             <property name="text">
              <string>7624</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>

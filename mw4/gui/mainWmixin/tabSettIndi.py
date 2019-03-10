@@ -253,7 +253,6 @@ class SettIndi(object):
         """
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_GREEN)
-        self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
         self.ui.skymeterGroup.setEnabled(True)
         return True
 
@@ -266,6 +265,5 @@ class SettIndi(object):
         """
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
-        self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
         self.ui.skymeterGroup.setEnabled(False)
         return True

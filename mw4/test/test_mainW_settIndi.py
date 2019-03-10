@@ -115,3 +115,41 @@ def test_indiMessage_3(qtbot):
         suc = app.mainW.indiMessage(device, text)
         assert suc
     assert ['test -> this is a test', 2] == blocker.args
+
+
+def test_showIndiEnvironConnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiEnvironConnected()
+        assert suc
+    assert ['INDI server environment connected', 0] == blocker.args
+
+
+def test_showIndiEnvironDisconnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiEnvironDisconnected()
+        assert suc
+    assert ['INDI server environment disconnected', 0] == blocker.args
+
+
+def test_showIndiNewEnvironDevice(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewEnvironDevice('test')
+        assert suc
+    assert ['INDI environment device [test] found', 0] == blocker.args
+
+
+def test_showIndiRemoveEnvironDevice(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiRemoveEnvironDevice('test')
+        assert suc
+    assert ['INDI environment device [test] removed', 0] == blocker.args
+
+
+def test_showEnvironDeviceConnected():
+    suc = app.mainW.showEnvironDeviceConnected()
+    assert suc
+
+
+def test_showEnvironDeviceDisconnected():
+    suc = app.mainW.showEnvironDeviceDisconnected()
+    assert suc

@@ -60,13 +60,7 @@ class SettDevice(object):
         self.ui.measureDevice.activated.connect(self.enableMeasure)
         self.ui.environDevice.activated.connect(self.environDispatch)
 
-        sig = self.app.environ.client.signals
-        sig.serverConnected.connect(self.showIndiEnvironConnected)
-        sig.serverDisconnected.connect(self.showIndiEnvironDisconnected)
-        sig.deviceConnected.connect(self.showEnvironDeviceConnected)
-        sig.deviceDisconnected.connect(self.showEnvironDeviceDisconnected)
-        sig.newDevice.connect(self.showIndiNewEnvironDevice)
-        sig.removeDevice.connect(self.showIndiRemoveEnvironDevice)
+
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -214,75 +208,4 @@ class SettDevice(object):
             # gui elements not anymore to be used
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
 
-        return True
-
-    def showIndiEnvironConnected(self):
-        """
-        showIndiEnvironConnected writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit('INDI server environment connected', 0)
-        return True
-
-    def showIndiEnvironDisconnected(self):
-        """
-        showIndiEnvironDisconnected writes info to message window and recolors the status
-
-        :return: true for test purpose
-        """
-
-        self.ui.environDevice.setStyleSheet(self.BACK_NORM)
-        self.app.message.emit('INDI server environment disconnected', 0)
-        return True
-
-    def showIndiNewEnvironDevice(self, deviceName):
-        """
-        showIndiNewEnvironDevice writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit(f'INDI environment device [{deviceName}] found', 0)
-        return True
-
-    def showIndiRemoveEnvironDevice(self, deviceName):
-        """
-        showIndiRemoveEnvironDevice writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit(f'INDI environment device [{deviceName}] removed', 0)
-        return True
-
-    def showEnvironDeviceConnected(self):
-        """
-        showEnvironDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
-        self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
-        self.ui.environGroup.setEnabled(True)
-        self.ui.refractionGroup.setEnabled(True)
-        self.ui.setRefractionManual.setEnabled(True)
-        return True
-
-    def showEnvironDeviceDisconnected(self):
-        """
-        showEnvironDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.environDevice.setStyleSheet(self.BACK_NORM)
-        self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
-        self.ui.environGroup.setEnabled(False)
-        self.ui.refractionGroup.setEnabled(False)
-        self.ui.setRefractionManual.setEnabled(False)
         return True

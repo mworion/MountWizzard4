@@ -25,7 +25,7 @@ import datetime
 import PyQt5.QtWidgets
 import indibase
 # local import
-from mw4.environment import environ
+from mw4.environment import skymeter
 import mw4.test.test_setupQt
 
 host_ip = 'astro-mount.fritz.box'
@@ -34,7 +34,7 @@ host_ip = 'astro-mount.fritz.box'
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-    app = environ.Skymeter(host=host_ip)
+    app = skymeter.Skymeter(host=host_ip)
     yield
     app = None
 
@@ -205,7 +205,7 @@ def test_updateData_5():
                            'getNumber',
                            return_value=values):
         suc = app.updateData('test', 'WEATHER_PARAMETERS')
-        assert not suc
+        assert suc
 
 
 def test_updateData_6():
@@ -217,7 +217,7 @@ def test_updateData_6():
                            'getNumber',
                            return_value=values):
         suc = app.updateData('test', 'WEATHER_PARAMETERS')
-        assert not suc
+        assert suc
 
 
 def test_updateData_7():
@@ -231,26 +231,17 @@ def test_updateData_7():
                            return_value=values):
         suc = app.updateData('test', 'WEATHER_PARAMETERS')
         assert suc
-        assert app.data['WEATHER_DEWPOINT'] == 9.254294282076941
 
 
 def test_updateData_8():
     app.device = indibase.indiBase.Device()
     app.name = 'test'
     t = datetime.datetime.utcnow()
-    values = {'WEATHER_DEWPOINT': 5,
-              'WEATHER_TEMPERATURE': 10,
+    values = {'WEATHER_TEMPERATURE': 10,
               'WEATHER_HUMIDITY': 50,
               }
-    app.data = {'WEATHER_DEWPOINT': 5,
-                'WEATHER_TEMPERATURE': 10,
+    app.data = {'WEATHER_TEMPERATURE': 10,
                 'WEATHER_HUMIDITY': 50,
-                'WEATHER_TEMPERATURE_ARRAY': [10, 10],
-                'WEATHER_DEWPOINT_ARRAY': [10, 10],
-                'WEATHER_HUMIDITY_ARRAY': [10, 10],
-                'WEATHER_TEMPERATURE_TIME': [t, t],
-                'WEATHER_DEWPOINT_TIME': [t, t],
-                'WEATHER_HUMIDITY_TIME': [t, t],
                 }
     with mock.patch.object(app.device,
                            'getNumber',

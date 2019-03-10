@@ -57,12 +57,12 @@ def test_storeConfig_1():
 
 
 def test_setupIcons():
-    suc = app.setupIcons()
+    suc = app.mainW.setupIcons()
     assert suc
 
 
 def test_clearGUI():
-    suc = app.clearGUI()
+    suc = app.mainW.clearGUI()
     assert suc
 
 

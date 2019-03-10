@@ -45,11 +45,17 @@ class SettIndi(object):
         config = self.app.config['mainW']
 
         self.ui.environHost.setText(config.get('environHost', ''))
+        self.ui.environPort.setText(config.get('environPort', '7624'))
         self.ui.environName.setText(config.get('environName', ''))
         self.ui.imagingHost.setText(config.get('imagingHost', ''))
+        self.ui.imagingPort.setText(config.get('imagingPort', '7624'))
         self.ui.imagingName.setText(config.get('imagingName', ''))
         self.ui.domeHost.setText(config.get('domeHost', ''))
+        self.ui.domePort.setText(config.get('domePort', '7624'))
         self.ui.domeName.setText(config.get('domeName', ''))
+        self.ui.skymeterHost.setText(config.get('skymeterHost', ''))
+        self.ui.skymeterPort.setText(config.get('skymeterPort', '7624'))
+        self.ui.skymeterName.setText(config.get('skymeterName', ''))
         self.ui.indiMessage.setChecked(config.get('indiMessage', False))
 
         return True
@@ -58,11 +64,17 @@ class SettIndi(object):
         config = self.app.config['mainW']
 
         config['environHost'] = self.ui.environHost.text()
+        config['environPort'] = self.ui.environPort.text()
         config['environName'] = self.ui.environName.text()
         config['imagingHost'] = self.ui.imagingHost.text()
+        config['imagingPort'] = self.ui.imagingPort.text()
         config['imagingName'] = self.ui.imagingName.text()
         config['domeHost'] = self.ui.domeHost.text()
+        config['domePort'] = self.ui.domePort.text()
         config['domeName'] = self.ui.domeName.text()
+        config['skymeterHost'] = self.ui.skymeterHost.text()
+        config['skymeterPort'] = self.ui.skymeterPort.text()
+        config['skymeterName'] = self.ui.skymeterName.text()
         config['indiMessage'] = self.ui.indiMessage.isChecked()
 
         return True

@@ -2,11 +2,12 @@
 
 # Form implementation generated from reading ui file 'message.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MessageDialog(object):
     def setupUi(self, MessageDialog):
@@ -29,7 +30,7 @@ class Ui_MessageDialog(object):
         self.verticalLayout.setSpacing(4)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setContentsMargins(4, 4, 44, 4)
+        self.horizontalLayout.setContentsMargins(4, 4, 4, 4)
         self.horizontalLayout.setSpacing(4)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.clear = QtWidgets.QPushButton(MessageDialog)
@@ -92,6 +93,8 @@ class Ui_MessageDialog(object):
         self.message.setToolTip(_translate("MessageDialog", "Error Messages from Tool"))
 
 
+
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -100,4 +103,3 @@ if __name__ == "__main__":
     ui.setupUi(MessageDialog)
     MessageDialog.show()
     sys.exit(app.exec_())
-

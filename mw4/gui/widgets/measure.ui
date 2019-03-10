@@ -66,14 +66,20 @@
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1">
+     <property name="spacing">
+      <number>4</number>
+     </property>
      <property name="leftMargin">
-      <number>6</number>
+      <number>4</number>
      </property>
      <property name="topMargin">
-      <number>6</number>
+      <number>4</number>
+     </property>
+     <property name="rightMargin">
+      <number>4</number>
      </property>
      <property name="bottomMargin">
-      <number>6</number>
+      <number>4</number>
      </property>
      <item>
       <widget class="QGroupBox" name="groupBox">

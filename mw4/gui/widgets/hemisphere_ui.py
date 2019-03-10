@@ -30,7 +30,7 @@ class Ui_HemisphereDialog(object):
         self.verticalLayout.setSpacing(4)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setContentsMargins(-1, 4, -1, -1)
+        self.horizontalLayout.setContentsMargins(4, 4, 4, 4)
         self.horizontalLayout.setSpacing(4)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.clearBuildP = QtWidgets.QPushButton(HemisphereDialog)

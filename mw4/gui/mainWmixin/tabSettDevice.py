@@ -34,7 +34,7 @@ class SettDevice(object):
     """
 
     def __init__(self):
-        self.deviceDropDowns = [self.ui.ccdDevice,
+        self.deviceDropDowns = [self.ui.imagingDevice,
                                 self.ui.astrometryDevice,
                                 self.ui.domeDevice,
                                 self.ui.environDevice,
@@ -44,7 +44,7 @@ class SettDevice(object):
                                 self.ui.measureDevice,
                                 self.ui.remoteDevice,
                                 ]
-        self.deviceDropDownKeys = ['ccdDevice',
+        self.deviceDropDownKeys = ['imagingDevice',
                                    'astrometryDevice',
                                    'domeDevice',
                                    'environmentDevice',
@@ -113,7 +113,7 @@ class SettDevice(object):
         # adding special items
         self.ui.measureDevice.addItem('Built-In Measurement')
         self.ui.remoteDevice.addItem('Built-In Remote')
-        self.ui.relayDevice.addItem('Built-In Relay KMTronic')
+        self.ui.relayDevice.addItem('Built-In Relay')
         self.ui.environDevice.addItem('Indi Driver')
         self.ui.skymeterDevice.addItem('Indi Driver')
 
@@ -130,7 +130,7 @@ class SettDevice(object):
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 
-        if self.ui.relayDevice.currentIndex() == 1:
+        if self.ui.relayDevice.currentText() == 'Built-In Relay':
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay enabled', 0)
@@ -155,7 +155,7 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        if self.ui.remoteDevice.currentIndex() == 1:
+        if self.ui.remoteDevice.currentText() == 'Built-In Remote':
             self.app.remote.startRemote()
             self.app.message.emit('Remote enabled', 0)
             self.ui.remoteDevice.setStyleSheet(self.BACK_GREEN)
@@ -173,7 +173,7 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        if self.ui.measureDevice.currentIndex() == 1:
+        if self.ui.measureDevice.currentText() == 'Built-In Measurement':
             self.app.measure.startMeasurement()
             self.app.message.emit('Measurement enabled', 0)
             self.ui.measureDevice.setStyleSheet(self.BACK_GREEN)
@@ -200,7 +200,7 @@ class SettDevice(object):
         index = self.ui.environDevice.currentIndex()
         if index == 1:
             self.app.environ.client.host = self.ui.environHost.text()
-            self.app.environ.name = self.ui.environName.text()
+            self.app.environ.name = self.ui.environDeviceName.currentText()
             self.app.environ.startCommunication()
             # gui element to be used
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
@@ -223,7 +223,7 @@ class SettDevice(object):
         index = self.ui.skymeterDevice.currentIndex()
         if index == 1:
             self.app.skymeter.client.host = self.ui.skymeterHost.text()
-            self.app.skymeter.name = self.ui.skymeterName.text()
+            self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
             self.app.skymeter.startCommunication()
         else:
             self.app.skymeter.stopCommunication()

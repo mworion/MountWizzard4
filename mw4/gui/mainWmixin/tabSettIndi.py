@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 # external packages
+import PyQt5
 # local import
 
 
@@ -31,6 +32,19 @@ class SettIndi(object):
     """
 
     def __init__(self):
+        self.deviceNameDropDowns = [self.ui.imagingDeviceName,
+                                    self.ui.domeDeviceName,
+                                    self.ui.environDeviceName,
+                                    self.ui.skymeterDeviceName,
+                                    self.ui.powerDeviceName,
+                                    ]
+        self.deviceNameDropDownKeys = ['imagingDeviceName',
+                                       'domeDeviceName',
+                                       'environmentDeviceName',
+                                       'skymeterDeviceName',
+                                       'powerDeviceName',
+                                       ]
+
         self.app.environ.client.signals.newMessage.connect(self.indiMessage)
         self.app.skymeter.client.signals.newMessage.connect(self.indiMessage)
 
@@ -50,40 +64,43 @@ class SettIndi(object):
         sig.newDevice.connect(self.showIndiNewSkymeterDevice)
         sig.removeDevice.connect(self.showIndiRemoveSkymeterDevice)
 
+        self.setupDeviceNameGui()
+
     def initConfig(self):
         config = self.app.config['mainW']
+        for dropDown, key in zip(self.deviceNameDropDowns, self.deviceNameDropDownKeys):
+            dropDown.setCurrentIndex(config.get(key, 0))
 
         self.ui.environHost.setText(config.get('environHost', ''))
         self.ui.environPort.setText(config.get('environPort', '7624'))
-        self.ui.environName.setText(config.get('environName', ''))
         self.ui.imagingHost.setText(config.get('imagingHost', ''))
         self.ui.imagingPort.setText(config.get('imagingPort', '7624'))
-        self.ui.imagingName.setText(config.get('imagingName', ''))
         self.ui.domeHost.setText(config.get('domeHost', ''))
         self.ui.domePort.setText(config.get('domePort', '7624'))
-        self.ui.domeName.setText(config.get('domeName', ''))
         self.ui.skymeterHost.setText(config.get('skymeterHost', ''))
         self.ui.skymeterPort.setText(config.get('skymeterPort', '7624'))
-        self.ui.skymeterName.setText(config.get('skymeterName', ''))
+        self.ui.powerHost.setText(config.get('powerHost', ''))
+        self.ui.powerPort.setText(config.get('powerPort', '7624'))
+
         self.ui.indiMessage.setChecked(config.get('indiMessage', False))
 
         return True
 
     def storeConfig(self):
         config = self.app.config['mainW']
-
+        for dropDown, key in zip(self.deviceNameDropDowns, self.deviceNameDropDownKeys):
+            config[key] = dropDown.currentIndex()
         config['environHost'] = self.ui.environHost.text()
         config['environPort'] = self.ui.environPort.text()
-        config['environName'] = self.ui.environName.text()
         config['imagingHost'] = self.ui.imagingHost.text()
         config['imagingPort'] = self.ui.imagingPort.text()
-        config['imagingName'] = self.ui.imagingName.text()
         config['domeHost'] = self.ui.domeHost.text()
         config['domePort'] = self.ui.domePort.text()
-        config['domeName'] = self.ui.domeName.text()
         config['skymeterHost'] = self.ui.skymeterHost.text()
         config['skymeterPort'] = self.ui.skymeterPort.text()
-        config['skymeterName'] = self.ui.skymeterName.text()
+        config['powerHost'] = self.ui.powerHost.text()
+        config['powerPort'] = self.ui.powerPort.text()
+
         config['indiMessage'] = self.ui.indiMessage.isChecked()
 
         return True
@@ -104,6 +121,67 @@ class SettIndi(object):
         :return: success for test
         """
         return True
+
+    def setupDeviceNameGui(self):
+        """
+        setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.
+        therefore we add the necessary entries to populate the list.
+
+        :return: success for test
+        """
+
+        for dropDown in self.deviceNameDropDowns:
+            dropDown.clear()
+            dropDown.setView(PyQt5.QtWidgets.QListView())
+            dropDown.addItem('No device driver selected')
+        # adding special items
+        self.ui.imagingDeviceName.addItem('Altair')
+        self.ui.imagingDeviceName.addItem('Apogee CCD')
+        self.ui.imagingDeviceName.addItem('Atik CCD')
+        self.ui.imagingDeviceName.addItem('CCD Simulator')
+        self.ui.imagingDeviceName.addItem('Canon DSLR')
+        self.ui.imagingDeviceName.addItem('DMK CCD')
+        self.ui.imagingDeviceName.addItem('FLI CCD')
+        self.ui.imagingDeviceName.addItem('FireFly MV')
+        self.ui.imagingDeviceName.addItem('GPhoto CCD')
+        self.ui.imagingDeviceName.addItem('Guide Simulator')
+        self.ui.imagingDeviceName.addItem('MI CCD (ETH)')
+        self.ui.imagingDeviceName.addItem('MI CCD (USB)')
+        self.ui.imagingDeviceName.addItem('Meade Deep Sky Imager')
+        self.ui.imagingDeviceName.addItem('Nightscape 8300 CCD')
+        self.ui.imagingDeviceName.addItem('Nikon DSLR')
+        self.ui.imagingDeviceName.addItem('Pentax DSLR')
+        self.ui.imagingDeviceName.addItem('QHY CCD')
+        self.ui.imagingDeviceName.addItem('QSI CCD')
+        self.ui.imagingDeviceName.addItem('SBIG CCD')
+        self.ui.imagingDeviceName.addItem('SBIG ST-I')
+        self.ui.imagingDeviceName.addItem('SX CCD')
+        self.ui.imagingDeviceName.addItem('Sony DSLR')
+        self.ui.imagingDeviceName.addItem('Starfish CCD')
+        self.ui.imagingDeviceName.addItem('ToupCam')
+        self.ui.imagingDeviceName.addItem('V4L2 CCD')
+        self.ui.imagingDeviceName.addItem('ZWO CCD')
+
+        self.ui.domeDeviceName.addItem('Baader Dome')
+        self.ui.domeDeviceName.addItem('Dome Scripting Gateway')
+        self.ui.domeDeviceName.addItem('Dome Simulator')
+        self.ui.domeDeviceName.addItem('MaxDome II')
+        self.ui.domeDeviceName.addItem('NexDome')
+        self.ui.domeDeviceName.addItem('RollOff Simulator')
+        self.ui.domeDeviceName.addItem('ScopeDome Dome')
+
+        self.ui.environDeviceName.addItem('AAG Cloud Watcher')
+        self.ui.environDeviceName.addItem('Arduino MeteoStation')
+        self.ui.environDeviceName.addItem('MBox')
+        self.ui.environDeviceName.addItem('Open Weather Map')
+        self.ui.environDeviceName.addItem('Vantage')
+        self.ui.environDeviceName.addItem('Weather Meta')
+        self.ui.environDeviceName.addItem('Weather Simulator')
+        self.ui.environDeviceName.addItem('Weather Watcher')
+
+        self.ui.skymeterDeviceName.addItem('SQM')
+
+        self.ui.powerDeviceName.addItem('Pegasus PPB')
 
     @staticmethod
     def _removePrefix(text, prefix):

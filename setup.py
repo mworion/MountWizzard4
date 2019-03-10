@@ -43,7 +43,7 @@ setup(
         'matplotlib>=3.0.3',
         'requests>=2.21.0',
         'requests_toolbelt>=0.9.1',
-        'numpy>=1.16.2',
+        'numpy=1.16.2',
         'skyfield>=1.10',
         'mountcontrol>=0.8',
         'astropy>=3.1.2',

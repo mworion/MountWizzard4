@@ -23,6 +23,7 @@ import sys
 import shutil
 # external packages
 import astropy
+# import numpy
 # local import
 # remove TK
 sys.modules['FixTk'] = None
@@ -46,19 +47,19 @@ a = Analysis(['mw4/loader.py'],
              datas=[
                     (sitePack + '/skyfield/data', './skyfield/data'),
                     (astropy_path, 'astropy'),
-                 ],
+             ],
              hiddenimports=['shelve',
-                 ],
+                            'numpy.lib.recfunctions',
+                            ],
              hookspath=[],
              runtime_hooks=[],
              excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter',
                        'astropy',
-                 ],
+                       ],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
              )
-
 # remove thing to reduce size and number of files in package (have to be extracted)
 a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/sample_data')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/fonts')]
@@ -72,6 +73,7 @@ a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/convolution'
 a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/cosmology')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/samp')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/modeling')]
+# a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/table')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/vo')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/wcs/tests')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/visualization/tests')]
@@ -90,11 +92,11 @@ a.datas = [x for x in a.datas if not x[0].startswith('astropy/convolution')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/cosmology')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/samp')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/modeling')]
+# a.datas = [x for x in a.datas if not x[0].startswith('astropy/table')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/vo')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/wcs/tests')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/visualization/tests')]
 a.datas = [x for x in a.datas if not x[0].startswith('astropy/utils/tests')]
-
 
 pyz = PYZ(a.pure,
           a.zipped_data,

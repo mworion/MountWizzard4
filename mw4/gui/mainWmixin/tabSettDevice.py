@@ -59,8 +59,7 @@ class SettDevice(object):
         self.ui.remoteDevice.activated.connect(self.enableRemote)
         self.ui.measureDevice.activated.connect(self.enableMeasure)
         self.ui.environDevice.activated.connect(self.environDispatch)
-
-
+        self.ui.skymeterDevice.activated.connect(self.skymaterDispatch)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -198,7 +197,8 @@ class SettDevice(object):
         self.ui.setRefractionManual.setEnabled(False)
         index = self.ui.environDevice.currentIndex()
         if index == 1:
-            self.app.environ.client.host = self.ui.environHost.text()
+            host = (self.ui.environHost.text(), int(self.ui.environPort.text()))
+            self.app.environ.client.host = host
             self.app.environ.name = self.ui.environName.text()
             self.app.environ.startCommunication()
             # gui element to be used
@@ -207,5 +207,25 @@ class SettDevice(object):
             self.app.environ.stopCommunication()
             # gui elements not anymore to be used
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
+
+        return True
+
+    def skymeterDispatch(self):
+        """
+        skymeterDispatch selects the type of device for environment measures and start / stop
+        them.
+
+        :return: true for test purpose
+        """
+
+        self.ui.skymeterGroup.setEnabled(False)
+        index = self.ui.skymeterDevice.currentIndex()
+        if index == 1:
+            host = (self.ui.skymeter.text(), int(self.ui.skymeter.text()))
+            self.app.skymeter.client.host = host
+            self.app.skymeter.name = self.ui.environName.text()
+            self.app.skymeter.startCommunication()
+        else:
+            self.app.skymeter.stopCommunication()
 
         return True

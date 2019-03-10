@@ -32,6 +32,7 @@ class SettIndi(object):
 
     def __init__(self):
         self.app.environ.client.signals.newMessage.connect(self.indiMessage)
+        self.app.skymeter.client.signals.newMessage.connect(self.indiMessage)
 
         sig = self.app.environ.client.signals
         sig.serverConnected.connect(self.showIndiEnvironConnected)
@@ -40,6 +41,14 @@ class SettIndi(object):
         sig.deviceDisconnected.connect(self.showEnvironDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewEnvironDevice)
         sig.removeDevice.connect(self.showIndiRemoveEnvironDevice)
+
+        sig = self.app.skymeter.client.signals
+        sig.serverConnected.connect(self.showIndiSkymeterConnected)
+        sig.serverDisconnected.connect(self.showIndiSkymeterDisconnected)
+        sig.deviceConnected.connect(self.showSkymeterDeviceConnected)
+        sig.deviceDisconnected.connect(self.showSkymeterDeviceDisconnected)
+        sig.newDevice.connect(self.showIndiNewSkymeterDevice)
+        sig.removeDevice.connect(self.showIndiRemoveSkymeterDevice)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -192,4 +201,71 @@ class SettIndi(object):
         self.ui.environGroup.setEnabled(False)
         self.ui.refractionGroup.setEnabled(False)
         self.ui.setRefractionManual.setEnabled(False)
+        return True
+
+    def showIndiSkymeterConnected(self):
+        """
+        showIndiSkymeterConnected writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit('INDI server skymeter connected', 0)
+        return True
+
+    def showIndiSkymeterDisconnected(self):
+        """
+        showIndiSkymeterDisconnected writes info to message window and recolors the status
+
+        :return: true for test purpose
+        """
+
+        self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
+        self.app.message.emit('INDI server skymeter disconnected', 0)
+        return True
+
+    def showIndiNewSkymeterDevice(self, deviceName):
+        """
+        showIndiNewSkymeterDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI skymeter device [{deviceName}] found', 0)
+        return True
+
+    def showIndiRemoveSkymeterDevice(self, deviceName):
+        """
+        showIndiRemoveSkymeterDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI skymeter device [{deviceName}] removed', 0)
+        return True
+
+    def showSkymeterDeviceConnected(self):
+        """
+        showSkymeterDeviceConnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.skymeterDevice.setStyleSheet(self.BACK_GREEN)
+        self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
+        self.ui.skymeterGroup.setEnabled(True)
+        return True
+
+    def showSkymeterDeviceDisconnected(self):
+        """
+        showSkymeterDeviceDisconnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
+        self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
+        self.ui.skymeterGroup.setEnabled(False)
         return True

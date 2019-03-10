@@ -262,27 +262,27 @@ class MainWindow(MWidget,
             self.app.message.emit('Mount cannot be shutdown', 2)
             return False
 
-    def clearMountGUI(self):
+    def clearGUI(self):
         """
-        clearMountGUI rewrites the gui in case of a special event needed for clearing up
+        clearGUI rewrites the gui in case of a special event needed for clearing up
 
         :return: success for test
         """
 
         self.updateStatusGUI()
 
-        Mount.clearMountGUI(self)
-        SiteStatus.clearMountGUI(self)
-        AlignMount.clearMountGUI(self)
-        BuildModel.clearMountGUI(self)
-        ManageModel.clearMountGUI(self)
-        Relay.clearMountGUI(self)
-        SettDevice.clearMountGUI(self)
-        SettIndi.clearMountGUI(self)
-        SettHorizon.clearMountGUI(self)
-        SettParkPos.clearMountGUI(self)
-        SettRelay.clearMountGUI(self)
-        SettMisc.clearMountGUI(self)
+        Mount.clearGUI(self)
+        SiteStatus.clearGUI(self)
+        AlignMount.clearGUI(self)
+        BuildModel.clearGUI(self)
+        ManageModel.clearGUI(self)
+        Relay.clearGUI(self)
+        SettDevice.clearGUI(self)
+        SettIndi.clearGUI(self)
+        SettHorizon.clearGUI(self)
+        SettParkPos.clearGUI(self)
+        SettRelay.clearGUI(self)
+        SettMisc.clearGUI(self)
 
         return True
 

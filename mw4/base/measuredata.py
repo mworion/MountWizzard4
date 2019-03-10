@@ -173,7 +173,7 @@ class MeasureData(object):
         envPress = self.app.environ.data.get('WEATHER_BAROMETER', 0)
         envDew = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
         envHum = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
-        envSQR = self.app.environ.data.get('SKY_BRIGHTNESS', 0)
+        envSQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
 
         raJNow, decJNow = self._calculateReference()
 

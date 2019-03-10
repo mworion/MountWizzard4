@@ -106,6 +106,7 @@ class Skymeter(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
+            print(element, value)
             self.data[element] = value
 
         return True

@@ -564,5 +564,5 @@ class SiteStatus(object):
         :return:    True if ok for testing
         """
 
-        value = self.app.skymeter.data.get('SQM', 0)
+        value = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
         self.ui.skymeterSQR.setText('{0:4.1f}'.format(value))

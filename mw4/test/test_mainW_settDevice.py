@@ -56,6 +56,16 @@ def test_storeConfig_1():
     assert suc
 
 
+def test_setupIcons():
+    suc = app.setupIcons()
+    assert suc
+
+
+def test_clearGUI():
+    suc = app.clearGUI()
+    assert suc
+
+
 def test_enableRelay_1(qtbot):
     app.mainW.ui.relayDevice.setCurrentIndex(0)
     with mock.patch.object(app.relay,

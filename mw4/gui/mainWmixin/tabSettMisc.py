@@ -100,9 +100,9 @@ class SettMisc(object):
         """
         return True
 
-    def clearMountGUI(self):
+    def clearGUI(self):
         """
-        clearMountGUI rewrites the gui in case of a special event needed for clearing up
+        clearGUI rewrites the gui in case of a special event needed for clearing up
 
         :return: success for test
         """

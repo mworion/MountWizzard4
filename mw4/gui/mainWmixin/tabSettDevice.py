@@ -60,13 +60,13 @@ class SettDevice(object):
         self.ui.measureDevice.activated.connect(self.enableMeasure)
         self.ui.environDevice.activated.connect(self.environDispatch)
 
-        signals = self.app.environ.client.signals
-        signals.serverConnected.connect(self.indiEnvironConnected)
-        signals.serverDisconnected.connect(self.indiEnvironDisconnected)
-        signals.deviceConnected.connect(self.indiEnvironDeviceConnected)
-        signals.deviceDisconnected.connect(self.indiEnvironDeviceDisconnected)
-        signals.newDevice.connect(self.newEnvironDevice)
-        signals.removeDevice.connect(self.removeEnvironDevice)
+        sig = self.app.environ.client.signals
+        sig.serverConnected.connect(self.indiEnvironConnected)
+        sig.serverDisconnected.connect(self.indiEnvironDisconnected)
+        sig.deviceConnected.connect(self.indiEnvironDeviceConnected)
+        sig.deviceDisconnected.connect(self.indiEnvironDeviceDisconnected)
+        sig.newDevice.connect(self.newEnvironDevice)
+        sig.removeDevice.connect(self.removeEnvironDevice)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -95,9 +95,9 @@ class SettDevice(object):
         """
         return True
 
-    def clearMountGUI(self):
+    def clearGUI(self):
         """
-        clearMountGUI rewrites the gui in case of a special event needed for clearing up
+        clearGUI rewrites the gui in case of a special event needed for clearing up
 
         :return: success for test
         """

@@ -417,9 +417,6 @@ class MeasureWindow(widget.MWidget):
             return False
 
         cycle = int(np.exp2(tIndex))
-        self.timerGui.stop()
-        self.timerGui.start(cycle * 1000)
-
         grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
         ratio = cycle * grid
         time_end = data['time'][-1]

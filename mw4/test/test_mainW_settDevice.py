@@ -66,6 +66,11 @@ def test_clearGUI():
     assert suc
 
 
+def test_setupDeviceGui_1():
+    suc = app.mainW.setupDeviceGui()
+    assert suc
+
+
 def test_enableRelay_1(qtbot):
     app.mainW.ui.relayDevice.setCurrentIndex(0)
     with mock.patch.object(app.relay,
@@ -110,19 +115,63 @@ def test_enableRemote_2(qtbot):
         assert ['Remote enabled', 0] == blocker.args
 
 
-def test_newEnvironConnected(qtbot):
+def test_enableMeasure_1(qtbot):
+    app.mainW.ui.measureDevice.setCurrentIndex(1)
+    with mock.patch.object(app.measure,
+                           'startMeasurement',
+                           return_value=None):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.enableMeasure()
+            assert suc
+        assert ['Measurement enabled', 0] == blocker.args
+
+
+def test_enableMeasure_2(qtbot):
+    app.mainW.ui.measureDevice.setCurrentIndex(0)
+    with mock.patch.object(app.measure,
+                           'stopMeasurement',
+                           return_value=None):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.enableMeasure()
+            assert suc
+        assert ['Measurement disabled', 0] == blocker.args
+
+
+def test_environDispatch_1():
+    app.mainW.ui.environDevice.setCurrentIndex(0)
+    suc = app.mainW.environDispatch()
+    assert suc
+
+
+def test_environDispatch_2():
+    app.mainW.ui.environDevice.setCurrentIndex(1)
+    suc = app.mainW.environDispatch()
+    assert suc
+
+
+def test_showIndiNewEnvironConnected(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
-        app.mainW.showNewEnvironDevice('test')
+        app.mainW.showIndiNewEnvironDevice('test')
     assert ['INDI environment device [test] found', 0] == blocker.args
 
 
-def test_indiEnvironConnected(qtbot):
+def test_showIndiEnvironConnected(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
-        app.mainW.showEnvironConnected()
+        app.mainW.showIndiEnvironConnected()
     assert ['INDI server environment connected', 0] == blocker.args
 
 
-def test_indiEnvironDisconnected(qtbot):
+def test_showIndiEnvironDisconnected(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
-        app.mainW.showEnvironDisconnected()
+        app.mainW.showIndiEnvironDisconnected()
     assert ['INDI server environment disconnected', 0] == blocker.args
+
+
+def test_showEnvironDeviceConnected():
+    suc = app.mainW.showEnvironDeviceConnected()
+    assert suc
+
+
+def test_showEnvironDeviceDisconnected():
+    suc = app.mainW.showEnvironDeviceDisconnected()
+    assert suc

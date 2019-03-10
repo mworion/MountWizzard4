@@ -61,12 +61,12 @@ class SettDevice(object):
         self.ui.environDevice.activated.connect(self.environDispatch)
 
         sig = self.app.environ.client.signals
-        sig.serverConnected.connect(self.showEnvironConnected)
-        sig.serverDisconnected.connect(self.showEnvironDisconnected)
+        sig.serverConnected.connect(self.showIndiEnvironConnected)
+        sig.serverDisconnected.connect(self.showIndiEnvironDisconnected)
         sig.deviceConnected.connect(self.showEnvironDeviceConnected)
         sig.deviceDisconnected.connect(self.showEnvironDeviceDisconnected)
-        sig.newDevice.connect(self.showNewEnvironDevice)
-        sig.removeDevice.connect(self.showRemoveEnvironDevice)
+        sig.newDevice.connect(self.showIndiNewEnvironDevice)
+        sig.removeDevice.connect(self.showIndiRemoveEnvironDevice)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -216,29 +216,41 @@ class SettDevice(object):
 
         return True
 
-    def showEnvironConnected(self):
+    def showIndiEnvironConnected(self):
         self.app.message.emit('INDI server environment connected', 0)
 
-    def showEnvironDisconnected(self):
+    def showIndiEnvironDisconnected(self):
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
         self.app.message.emit('INDI server environment disconnected', 0)
 
-    def showNewEnvironDevice(self, deviceName):
+    def showIndiNewEnvironDevice(self, deviceName):
         self.app.message.emit(f'INDI environment device [{deviceName}] found', 0)
 
-    def showRemoveEnvironDevice(self, deviceName):
+    def showIndiRemoveEnvironDevice(self, deviceName):
         self.app.message.emit(f'INDI environment device [{deviceName}] removed', 0)
 
     def showEnvironDeviceConnected(self):
+        """
+
+        :return: true for test purpose
+        """
+
         self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
         self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
         self.ui.environGroup.setEnabled(True)
         self.ui.refractionGroup.setEnabled(True)
         self.ui.setRefractionManual.setEnabled(True)
+        return True
 
     def showEnvironDeviceDisconnected(self):
+        """
+
+        :return: true for test purpose
+        """
+
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
         self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
         self.ui.environGroup.setEnabled(False)
         self.ui.refractionGroup.setEnabled(False)
         self.ui.setRefractionManual.setEnabled(False)
+        return True

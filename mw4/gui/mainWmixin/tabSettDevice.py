@@ -217,20 +217,50 @@ class SettDevice(object):
         return True
 
     def showIndiEnvironConnected(self):
+        """
+        showIndiEnvironConnected writes info to message window
+
+        :return: true for test purpose
+        """
+
         self.app.message.emit('INDI server environment connected', 0)
+        return True
 
     def showIndiEnvironDisconnected(self):
+        """
+        showIndiEnvironDisconnected writes info to message window and recolors the status
+
+        :return: true for test purpose
+        """
+
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
         self.app.message.emit('INDI server environment disconnected', 0)
+        return True
 
     def showIndiNewEnvironDevice(self, deviceName):
+        """
+        showIndiNewEnvironDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
         self.app.message.emit(f'INDI environment device [{deviceName}] found', 0)
+        return True
 
     def showIndiRemoveEnvironDevice(self, deviceName):
+        """
+        showIndiRemoveEnvironDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
         self.app.message.emit(f'INDI environment device [{deviceName}] removed', 0)
+        return True
 
     def showEnvironDeviceConnected(self):
         """
+        showEnvironDeviceConnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
 
         :return: true for test purpose
         """
@@ -244,6 +274,8 @@ class SettDevice(object):
 
     def showEnvironDeviceDisconnected(self):
         """
+        showEnvironDeviceDisconnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
 
         :return: true for test purpose
         """

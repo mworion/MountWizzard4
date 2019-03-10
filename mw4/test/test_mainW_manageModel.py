@@ -59,8 +59,8 @@ def test_setupIcons():
     assert app.mainW.setupIcons()
 
 
-def test_clearMountGui():
-    assert app.mainW.clearMountGUI()
+def test_clearGui():
+    assert app.mainW.clearGUI()
 
 
 def test_setNameList():

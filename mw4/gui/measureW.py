@@ -40,7 +40,6 @@ class MeasureWindow(widget.MWidget):
     version = '0.2'
     logger = logging.getLogger(__name__)
 
-    CYCLE_UPDATE_TASK = 1000
     NUMBER_POINTS = 500
     NUMBER_XTICKS = 8
 
@@ -60,21 +59,18 @@ class MeasureWindow(widget.MWidget):
         self.measureMat = self.embedMatplot(self.ui.measure)
         self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
 
+        # signals for gui
         self.ui.timeSet.currentIndexChanged.connect(self.drawMeasure)
         self.ui.measureSet.currentIndexChanged.connect(self.drawMeasure)
+        self.clickable(self.app.mainW.ui.RA).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.DEC).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.environTemp).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.environPress).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.environDewPoint).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.SQR).connect(self.showWindow)
 
-        mainW = self.app.mainW.ui
-        self.clickable(mainW.RA).connect(self.showWindow)
-        self.clickable(mainW.DEC).connect(self.showWindow)
-        self.clickable(mainW.environTemp).connect(self.showWindow)
-        self.clickable(mainW.environPress).connect(self.showWindow)
-        self.clickable(mainW.environDewPoint).connect(self.showWindow)
-        self.clickable(mainW.SQR).connect(self.showWindow)
+        self.app.update1s.connect(self.drawMeasure)
 
-        self.timerGui = PyQt5.QtCore.QTimer()
-        self.timerGui.setSingleShot(False)
-        self.timerGui.timeout.connect(self.drawMeasure)
-        self.timerGui.start(self.CYCLE_UPDATE_TASK)
         self.initConfig()
 
     def initConfig(self):

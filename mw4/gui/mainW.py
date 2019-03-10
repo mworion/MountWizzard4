@@ -67,9 +67,6 @@ class MainWindow(MWidget,
     version = '0.6'
     logger = logging.getLogger(__name__)
 
-    CYCLE_GUI = 1000
-    CYCLE_UPDATE_TASK = 10000
-
     def __init__(self, app):
         self.app = app
         super().__init__()
@@ -102,8 +99,10 @@ class MainWindow(MWidget,
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.mount.signals.settDone.connect(self.setMountMAC)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
-        self.app.mount.signals.mountClear.connect(self.clearMountGUI)
+        self.app.mount.signals.mountClear.connect(self.clearGUI)
         self.app.plateSolve.signals.status.connect(self.updateAstrometry)
+        self.app.update1s.connect(self.updateTime)
+        self.app.update10s.connect(self.updateRefractionParameters)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
@@ -120,15 +119,6 @@ class MainWindow(MWidget,
         self.updateMountConnStat(False)
         self.initConfig()
         self.show()
-
-        self.timerGui = PyQt5.QtCore.QTimer()
-        self.timerGui.setSingleShot(False)
-        self.timerGui.timeout.connect(self.updateGUI)
-        self.timerGui.start(self.CYCLE_GUI)
-        self.timerTask = PyQt5.QtCore.QTimer()
-        self.timerTask.setSingleShot(False)
-        self.timerTask.timeout.connect(self.updateTask)
-        self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
     def initConfig(self):
         config = self.app.config
@@ -287,6 +277,13 @@ class MainWindow(MWidget,
         return True
 
     def updateMountConnStat(self, status):
+        """
+        updateMountConnStat show the connection status of the mount.
+
+        :param status:
+        :return: true for test purpose
+        """
+
         ui = self.ui.mountConnected
         if status:
             self.changeStyleDynamic(ui, 'color', 'green')
@@ -294,26 +291,14 @@ class MainWindow(MWidget,
             self.changeStyleDynamic(ui, 'color', 'red')
         return True
 
-    def updateGUI(self):
+    def updateTime(self):
         """
-        updateGUI update gui elements on regular bases (actually 1 second) for items,
-        which are not events based.
+        updateTime updates the time display in gui
 
         :return: success
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-        return True
-
-    def updateTask(self):
-        """
-        updateTask calls tasks for items, which are not event based, like updating
-        refraction parameters.
-
-        :return: success for test purpose
-        """
-
-        self.updateRefractionParameters()
         return True
 
     def updateAstrometry(self, status):

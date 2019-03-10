@@ -42,8 +42,6 @@ class HemisphereWindow(widget.MWidget):
     version = '0.8'
     logger = logging.getLogger(__name__)
 
-    CYCLE_GUI = 3000
-
     MODE = dict(
         normal=dict(horMarker='None',
                     horColor='#006000',
@@ -125,12 +123,7 @@ class HemisphereWindow(widget.MWidget):
             self.app.data.loadHorizonP(fileName=fileName)
         self.initConfig()
         self.configOperationMode()
-
-        # setting up the timers
-        self.timerGui = PyQt5.QtCore.QTimer()
-        self.timerGui.setSingleShot(False)
-        self.timerGui.timeout.connect(self.updateGUI)
-        self.timerGui.start(self.CYCLE_GUI)
+        self.app.update3s.connect(self.updateGUI)
 
     def initConfig(self):
         if 'hemisphereW' not in self.app.config:

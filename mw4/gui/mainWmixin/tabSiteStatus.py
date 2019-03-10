@@ -106,7 +106,7 @@ class SiteStatus(object):
         if self.ui.checkRefracNoTrack.isChecked():
             if self.app.mount.obsSite.status == 0:
                 return False
-        temp, press = self.app.environment.getFilteredRefracParams()
+        temp, press = self.app.environ.getFilteredRefracParams()
         if temp is None or press is None:
             return False
         suc = self.app.mount.obsSite.setRefractionParam(temperature=temp,

@@ -59,6 +59,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     message = PyQt5.QtCore.pyqtSignal(str, int)
     redrawHemisphere = PyQt5.QtCore.pyqtSignal()
     remoteCommand = PyQt5.QtCore.pyqtSignal(str)
+    update1s = PyQt5.QtCore.pyqtSignal()
+    update3s = PyQt5.QtCore.pyqtSignal()
+    update10s = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,
@@ -68,6 +71,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # getting global app data
         self.expireData = False
         self.mwGlob = mwGlob
+        self.timerCounter = 0
         self.threadPool = PyQt5.QtCore.QThreadPool()
         pathToData = self.mwGlob['dataDir']
 
@@ -139,6 +143,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.startTimers()
         self.plateSolve.checkAvailability()
 
+        self.timer1s = PyQt5.QtCore.QTimer()
+        self.timer1s.setSingleShot(False)
+        self.timer1s.timeout.connect(self.sendUpdate)
+        self.timer1s.start(500)
+
     def initConfig(self):
         """
 
@@ -180,6 +189,26 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.measureW.storeConfig()
         return True
 
+    def sendUpdate(self):
+        """
+        sendUpdate send regular signals in 1 and 10 seconds to enable regular tasks.
+        it tries to avoid sending the signals at the same time.
+
+        :return: true for test purpose
+        """
+
+        self.timerCounter += 0.5
+        if (self.timerCounter + 0.5) % 1:
+            print(self.timerCounter, (self.timerCounter + 0.5) % 1)
+            self.update1s.emit()
+        if (self.timerCounter + 1) % 3:
+            print(self.timerCounter, (self.timerCounter + 1) % 3)
+            self.update3s.emit()
+        if (self.timerCounter + 2) % 10:
+            print(self.timerCounter, (self.timerCounter + 2) % 10)
+            self.update10s.emit()
+        return True
+
     def quit(self):
         """
         quit without saving persistence data
@@ -187,7 +216,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:    True for test purpose
         """
 
+        self.timer1s.stop()
         self.mount.stopTimers()
+        self.measure.timerTask.stop()
+        self.relay.timerTask.stop()
         PyQt5.QtCore.QCoreApplication.quit()
         return True
 
@@ -198,7 +230,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:    True for test purpose
         """
 
+        self.timer1s.stop()
         self.mount.stopTimers()
+        self.measure.timerTask.stop()
+        self.relay.timerTask.stop()
         self.storeConfig()
         self.saveConfig()
         PyQt5.QtCore.QCoreApplication.quit()

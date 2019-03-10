@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -5759,7 +5759,7 @@ manually</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_2">
+      <widget class="QGroupBox" name="skymeterGroup">
        <property name="geometry">
         <rect>
          <x>465</x>
@@ -5901,7 +5901,7 @@ manually</string>
       <zorder>environGroup</zorder>
       <zorder>label_33</zorder>
       <zorder>weatherGroup</zorder>
-      <zorder>groupBox_2</zorder>
+      <zorder>skymeterGroup</zorder>
      </widget>
      <widget class="QWidget" name="AlignMount">
       <attribute name="title">

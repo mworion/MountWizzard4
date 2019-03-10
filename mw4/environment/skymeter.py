@@ -70,6 +70,8 @@ class Skymeter(indiClass.IndiClass):
 
         update = self.device.getNumber('WEATHER_UPDATE')
 
+        print(update)
+
         if 'PERIOD' not in update:
             return False
 
@@ -106,7 +108,6 @@ class Skymeter(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            print(element, value)
             self.data[element] = value
 
         return True

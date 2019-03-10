@@ -3469,7 +3469,7 @@
        <property name="geometry">
         <rect>
          <x>675</x>
-         <y>340</y>
+         <y>345</y>
          <width>101</width>
          <height>81</height>
         </rect>
@@ -3706,7 +3706,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>385</x>
-         <y>335</y>
+         <y>340</y>
          <width>286</width>
          <height>86</height>
         </rect>
@@ -5765,7 +5765,7 @@ manually</string>
          <x>465</x>
          <y>265</y>
          <width>101</width>
-         <height>41</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -5843,6 +5843,102 @@ manually</string>
          <bool>false</bool>
         </property>
        </widget>
+       <widget class="QLineEdit" name="skymeterTemp">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>shows the refraction correction status on / off</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="maxLength">
+         <number>8</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_102">
+        <property name="geometry">
+         <rect>
+          <x>65</x>
+          <y>40</y>
+          <width>21</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>°C</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_143">
+       <property name="geometry">
+        <rect>
+         <x>385</x>
+         <y>305</y>
+         <width>76</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>CompTemp</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
       </widget>
       <zorder>line_8</zorder>
       <zorder>siteElevation</zorder>
@@ -5902,6 +5998,7 @@ manually</string>
       <zorder>label_33</zorder>
       <zorder>weatherGroup</zorder>
       <zorder>skymeterGroup</zorder>
+      <zorder>label_143</zorder>
      </widget>
      <widget class="QWidget" name="AlignMount">
       <attribute name="title">

@@ -35,18 +35,14 @@ class SiteStatus(object):
 
     def __init__(self):
         # mount
-        signals = self.app.mount.signals
-        signals.settDone.connect(self.updateSettingGUI)
-        signals.settDone.connect(self.updateLocGUI)
-        signals.fwDone.connect(self.updateFwGui)
+        self.app.mount.signals.settDone.connect(self.updateSettingGUI)
+        self.app.mount.signals.settDone.connect(self.updateLocGUI)
+        self.app.mount.signals.fwDone.connect(self.updateFwGui)
 
-        # environment
+        # environment functions
         signals = self.app.environ.client.signals
-        signals.deviceDisconnected.connect(self.disconnectEnvironDevice)
         signals.newNumber.connect(self.updateEnvironGUI)
-
-        # global weather
-        # sqm
+        signals.deviceDisconnected.connect(self.clearEnvironDevice)
 
         # gui connections
         self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
@@ -513,9 +509,9 @@ class SiteStatus(object):
         else:
             return False
 
-    def disconnectEnvironDevice(self, deviceName):
+    def clearEnvironDevice(self, deviceName):
         """
-        disconnectEnvironDevice clears the gui data
+        clearEnvironDevice clears the gui data
 
         :param deviceName:
         :return: true for test purpose

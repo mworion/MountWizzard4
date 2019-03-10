@@ -39,6 +39,7 @@ class SettDevice(object):
                                 self.ui.domeDevice,
                                 self.ui.environDevice,
                                 self.ui.skymeterDevice,
+                                self.ui.weatherDevice,
                                 self.ui.powerDevice,
                                 self.ui.relayDevice,
                                 self.ui.measureDevice,
@@ -49,6 +50,7 @@ class SettDevice(object):
                                    'domeDevice',
                                    'environmentDevice',
                                    'skymeterDevice',
+                                   'weatherDevice',
                                    'powerDevice',
                                    'relayDevice',
                                    'measureDevice',
@@ -60,6 +62,7 @@ class SettDevice(object):
         self.ui.measureDevice.activated.connect(self.enableMeasure)
         self.ui.environDevice.activated.connect(self.environDispatch)
         self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
+        self.ui.weatherDevice.activated.connect(self.weatherDispatch)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -71,6 +74,7 @@ class SettDevice(object):
         self.enableMeasure()
         self.environDispatch()
         self.skymeterDispatch()
+        self.weatherDispatch()
         return True
 
     def storeConfig(self):
@@ -116,6 +120,7 @@ class SettDevice(object):
         self.ui.relayDevice.addItem('Built-In Relay')
         self.ui.environDevice.addItem('Indi Driver')
         self.ui.skymeterDevice.addItem('Indi Driver')
+        self.ui.weatherDevice.addItem('Indi Driver')
 
         return True
 
@@ -227,5 +232,24 @@ class SettDevice(object):
             self.app.skymeter.startCommunication()
         else:
             self.app.skymeter.stopCommunication()
+
+        return True
+
+    def weatherDispatch(self):
+        """
+        weatherDispatch selects the type of device for environment measures and start / stop
+        them.
+
+        :return: true for test purpose
+        """
+
+        self.ui.weatherGroup.setEnabled(False)
+        index = self.ui.weatherDevice.currentIndex()
+        if index == 1:
+            self.app.weather.client.host = self.ui.weatherHost.text()
+            self.app.weather.name = self.ui.weatherDeviceName.currentText()
+            self.app.weather.startCommunication()
+        else:
+            self.app.weather.stopCommunication()
 
         return True

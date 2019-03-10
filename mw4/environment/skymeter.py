@@ -32,7 +32,7 @@ class Skymeter(indiClass.IndiClass):
 
         >>> fw = Skymeter(
         >>>                  host=host
-        >>>                  name='MBox'
+        >>>                  name=''
         >>>                 )
     """
 

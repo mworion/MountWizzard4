@@ -159,3 +159,15 @@ def test_skymeterDispatch_2():
     app.mainW.ui.skymeterDevice.setCurrentIndex(1)
     suc = app.mainW.skymeterDispatch()
     assert suc
+
+
+def test_weatherDispatch_1():
+    app.mainW.ui.weatherDevice.setCurrentIndex(0)
+    suc = app.mainW.weatherDispatch()
+    assert suc
+
+
+def test_weatherDispatch_2():
+    app.mainW.ui.weatherDevice.setCurrentIndex(1)
+    suc = app.mainW.weatherDispatch()
+    assert suc

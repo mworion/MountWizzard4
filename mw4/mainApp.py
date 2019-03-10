@@ -38,6 +38,7 @@ from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
 from mw4.environment import environ
 from mw4.environment import skymeter
+from mw4.environment import weather
 from mw4.base import measuredata
 from mw4.remote import remote
 from mw4.astrometry import astrometryKstars
@@ -104,6 +105,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
         self.skymeter = skymeter.Skymeter(host='localhost')
+        self.weather = weather.Weather(host='localhost')
         self.data = buildpoints.DataPoint(self,
                                           mwGlob=self.mwGlob,
                                           )

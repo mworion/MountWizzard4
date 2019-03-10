@@ -26,17 +26,17 @@ import numpy as np
 from mw4.base import indiClass
 
 
-class Environ(indiClass.IndiClass):
+class Weather(indiClass.IndiClass):
     """
     the class Environ inherits all information and handling of the environment device
 
-        >>> fw = Environ(
+        >>> fw = Weather(
         >>>                  host=host
         >>>                  name=''
         >>>                 )
     """
 
-    __all__ = ['Environ',
+    __all__ = ['Weather',
                ]
 
     version = '0.1'
@@ -70,6 +70,8 @@ class Environ(indiClass.IndiClass):
 
         update = self.device.getNumber('WEATHER_UPDATE')
 
+        print(update)
+
         if 'PERIOD' not in update:
             return False
 
@@ -81,21 +83,6 @@ class Environ(indiClass.IndiClass):
                                         propertyName='WEATHER_UPDATE',
                                         elements=update)
         return suc
-
-    @staticmethod
-    def _getDewPoint(t_air_c, rel_humidity):
-        """
-        Compute the dew point in degrees Celsius
-
-        :param t_air_c: current ambient temperature in degrees Celsius
-        :param rel_humidity: relative humidity in %
-        :return: the dew point in degrees Celsius
-        """
-
-        A = 17.27
-        B = 237.7
-        alpha = ((A * t_air_c) / (B + t_air_c)) + np.log(rel_humidity / 100.0)
-        return (B * alpha) / (A - alpha)
 
     def updateData(self, deviceName, propertyName):
         """
@@ -122,44 +109,5 @@ class Environ(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
-            elArray = element + '_ARRAY'
-            elTime = element + '_TIME'
-            if elArray not in self.data:
-                self.data[elArray] = np.full(100, value)
-                self.data[elTime] = np.full(100, datetime.now())
-            else:
-                self.data[elArray] = np.roll(self.data[elArray], 1)
-                self.data[elArray][0] = value
-                self.data[elTime] = np.roll(self.data[elTime], 1)
-                self.data[elTime][0] = datetime.now()
-
-        if 'WEATHER_DEWPOINT' in self.data:
-            return True
-        if 'WEATHER_TEMPERATURE' not in self.data:
-            return False
-        if 'WEATHER_HUMIDITY' not in self.data:
-            return False
-
-        temp = self.data['WEATHER_TEMPERATURE']
-        humidity = self.data['WEATHER_HUMIDITY']
-        dewPoint = self._getDewPoint(temp, humidity)
-        self.data['WEATHER_DEWPOINT'] = dewPoint
 
         return True
-
-    def getFilteredRefracParams(self):
-        """
-        getFilteredRefracParams filters local temperature and pressure with and moving
-        average filter over 5 minutes and returns the filtered values.
-
-        :return:  temperature and pressure
-        """
-
-        isTemperature = 'WEATHER_TEMPERATURE_ARRAY' in self.data
-        isPressure = 'WEATHER_BAROMETER_ARRAY' in self.data
-        if isTemperature and isPressure:
-            temp = np.mean(self.data['WEATHER_TEMPERATURE_ARRAY'][:10])
-            press = np.mean(self.data['WEATHER_BAROMETER_ARRAY'][:10])
-            return temp, press
-        else:
-            return None, None

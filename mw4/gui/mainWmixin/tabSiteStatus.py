@@ -118,9 +118,9 @@ class SiteStatus(object):
 
     def updateSettingGUI(self):
         """
-        updateSetGUI update the gui upon events triggered be the reception of new settings
-        from the mount. the mount data is polled, so we use this signal as well for the
-        update process.
+        updateSettingGUI update the gui upon events triggered be the reception of new
+        settings from the mount. the mount data is polled, so we use this signal as well
+        for the update process.
 
         :return:    True if ok for testing
         """

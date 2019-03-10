@@ -67,6 +67,387 @@ def test_clearGUI():
     assert suc
 
 
+def test_updateEnvironGUI_2():
+    app.environ.name = 'test'
+    app.environ.data['WEATHER_TEMPERATURE'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.environTemp.text() == '10.5'
+
+
+def test_updateEnvironGUI_3():
+    app.environ.name = 'test'
+    app.environ.data['WEATHER_BAROMETER'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.environPress.text() == ' 10.5'
+
+
+def test_updateEnvironGUI_4():
+    app.environ.name = 'test'
+    app.environ.data['WEATHER_DEWPOINT'] = 10.5
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.environDewPoint.text() == '10.5'
+
+
+def test_updateEnvironGUI_5():
+    app.environ.name = 'test'
+    app.environ.data['WEATHER_HUMIDITY'] = 10
+    app.mainW.updateEnvironGUI('test')
+    assert app.mainW.ui.environHumidity.text() == ' 10'
+
+
+def test_updateFwGui_productName():
+    value = 'Test1234'
+    app.mount.fw.productName = value
+    app.mainW.updateFwGui()
+    assert value == app.mainW.ui.productName.text()
+    value = None
+    app.mount.fw.productName = value
+    app.mainW.updateFwGui()
+    assert '-' == app.mainW.ui.productName.text()
+
+
+def test_updateFwGui_hwVersion():
+    value = 'Test1234'
+    app.mount.fw.hwVersion = value
+    app.mainW.updateFwGui()
+    assert value == app.mainW.ui.hwVersion.text()
+    value = None
+    app.mount.fw.hwVersion = value
+    app.mainW.updateFwGui()
+    assert '-' == app.mainW.ui.hwVersion.text()
+
+
+def test_updateFwGui_numberString():
+    value = '2.15.18'
+    app.mount.fw.numberString = value
+    app.mainW.updateFwGui()
+    assert value == app.mainW.ui.numberString.text()
+    value = None
+    app.mount.fw.numberString = value
+    app.mainW.updateFwGui()
+    assert '-' == app.mainW.ui.numberString.text()
+
+
+def test_updateFwGui_fwdate():
+    value = 'Test1234'
+    app.mount.fw.fwdate = value
+    app.mainW.updateFwGui()
+    assert value == app.mainW.ui.fwdate.text()
+    value = None
+    app.mount.fw.fwdate = value
+    app.mainW.updateFwGui()
+    assert '-' == app.mainW.ui.fwdate.text()
+
+
+def test_updateFwGui_fwtime():
+    value = 'Test1234'
+    app.mount.fw.fwtime = value
+    app.mainW.updateFwGui()
+    assert value == app.mainW.ui.fwtime.text()
+    value = None
+    app.mount.fw.fwtime = value
+    app.mainW.updateFwGui()
+    assert '-' == app.mainW.ui.fwtime.text()
+
+
+def test_updateRefractionParameters_1(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environ,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_2(qtbot):
+    app.mount.mountUp = False
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environ,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_3(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(True)
+    app.mainW.ui.checkRefracNoTrack.setChecked(False)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environ,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_4(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '1'
+    with mock.patch.object(app.environ,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert suc
+
+
+def test_updateRefractionParameters_5(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environ,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=False):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_6(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environ,
+                           'getFilteredRefracParams',
+                           return_value=(None, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+
+
+def test_updateRefractionParameters_7(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '0'
+    with mock.patch.object(app.environ,
+                           'getFilteredRefracParams',
+                           return_value=(10, None)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=True):
+            suc = app.mainW.updateRefractionParameters()
+            assert not suc
+    app.mainW.ui.checkRefracNone.setChecked(True)
+
+
+def test_updateRefractionParameters_8(qtbot):
+    app.mount.mountUp = True
+    app.mainW.ui.checkRefracNone.setChecked(False)
+    app.mainW.ui.checkRefracNoTrack.setChecked(True)
+    app.mount.obsSite.status = '1'
+    with mock.patch.object(app.environ,
+                           'getFilteredRefracParams',
+                           return_value=(10, 10)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefractionParam',
+                               return_value=False):
+            with qtbot.waitSignal(app.message) as blocker:
+                suc = app.mainW.updateRefractionParameters()
+                assert not suc
+            assert ['Cannot perform refraction update', 2] == blocker.args
+    app.mainW.ui.checkRefracNone.setChecked(True)
+
+
+def test_updateSetting_slewRate():
+    value = '5'
+    app.mount.sett.slewRate = value
+    app.mainW.updateSettingGUI()
+    assert app.mainW.ui.slewRate.text() == ' 5'
+    value = None
+    app.mount.sett.slewRate = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.slewRate.text()
+
+
+def test_updateSetting_timeToFlip():
+    value = '5'
+    app.mount.sett.timeToFlip = value
+    app.mainW.updateSettingGUI()
+    assert app.mainW.ui.timeToFlip.text() == '  5'
+    value = None
+    app.mount.sett.timeToFlip = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.timeToFlip.text()
+
+
+def test_updateSetting_timeToMeridian():
+    value = '5'
+    app.mount.sett.timeToMeridian = value
+    app.mainW.updateSettingGUI()
+    assert app.mainW.ui.timeToMeridian.text() == '  5'
+    value = None
+    app.mount.sett.timeToMeridian = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.timeToMeridian.text()
+
+
+def test_updateSetting_refractionTemp():
+    value = '15'
+    app.mount.sett.refractionTemp = value
+    app.mainW.updateSettingGUI()
+    assert '+15.0' == app.mainW.ui.refractionTemp.text()
+    assert '+15.0' == app.mainW.ui.refractionTemp1.text()
+    value = None
+    app.mount.sett.refractionTemp = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.refractionTemp.text()
+    assert '-' == app.mainW.ui.refractionTemp1.text()
+
+
+def test_updateSetting_refractionPress():
+    value = '1050.0'
+    app.mount.sett.refractionPress = value
+    app.mainW.updateSettingGUI()
+    assert value == app.mainW.ui.refractionPress.text()
+    assert value == app.mainW.ui.refractionPress1.text()
+    value = None
+    app.mount.sett.refractionPress = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.refractionPress.text()
+    assert '-' == app.mainW.ui.refractionPress1.text()
+
+
+def test_updateSetting_meridianLimitTrack():
+    value = '15'
+    app.mount.sett.meridianLimitTrack = value
+    app.mainW.updateSettingGUI()
+    assert '15.0' == app.mainW.ui.meridianLimitTrack.text()
+    value = None
+    app.mount.sett.meridianLimitTrack = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.meridianLimitTrack.text()
+
+
+def test_updateSetting_meridianLimitSlew():
+    value = '15'
+    app.mount.sett.meridianLimitSlew = value
+    app.mainW.updateSettingGUI()
+    assert '15.0' == app.mainW.ui.meridianLimitSlew.text()
+    value = None
+    app.mount.sett.meridianLimitSlew = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.meridianLimitSlew.text()
+
+
+def test_updateSetting_horizonLimitLow():
+    value = '0'
+    app.mount.sett.horizonLimitLow = value
+    app.mainW.updateSettingGUI()
+    assert '0.0' == app.mainW.ui.horizonLimitLow.text()
+    value = None
+    app.mount.sett.horizonLimitLow = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.horizonLimitLow.text()
+
+
+def test_updateSetting_horizonLimitHigh():
+    value = '50'
+    app.mount.sett.horizonLimitHigh = value
+    app.mainW.updateSettingGUI()
+    assert '50.0' == app.mainW.ui.horizonLimitHigh.text()
+    value = None
+    app.mount.sett.horizonLimitHigh = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.horizonLimitHigh.text()
+
+
+def test_updateSetting_timeToMeridian():
+    app.mount.sett.timeToFlip = '100'
+    app.mount.sett.meridianLimitTrack = '15'
+
+    app.mainW.updateSettingGUI()
+    assert ' 40' == app.mainW.ui.timeToMeridian.text()
+    value = None
+    app.mount.sett.timeToFlip = value
+    app.mount.sett.meridianLimitTrack = value
+    app.mainW.updateSettingGUI()
+    assert '-' == app.mainW.ui.timeToMeridian.text()
+
+
+def test_updateSettingExt_location():
+    app.mount.obsSite.location = ['49:00:00', '11:00:00', '500']
+    app.mainW.updateLocGUI()
+    assert '11deg 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
+    assert '49deg 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
+    assert '500.0' == app.mainW.ui.siteElevation.text()
+    app.mount.obsSite.location = None
+    app.mainW.updateLocGUI()
+    assert '-' == app.mainW.ui.siteLongitude.text()
+    assert '-' == app.mainW.ui.siteLatitude.text()
+    assert '-' == app.mainW.ui.siteElevation.text()
+
+
+def test_updateFwGui_productName():
+    app.mount.fw.productName = 'test'
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.productName.text() == 'test'
+    app.mount.fw.productName = None
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.productName.text() == '-'
+
+
+def test_updateFwGui_numberString():
+    app.mount.fw.numberString = '1.2.34'
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.numberString.text() == '1.2.34'
+    app.mount.fw.numberString = None
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.numberString.text() == '-'
+
+
+def test_updateFwGui_fwdate():
+    app.mount.fw.fwdate = 'test'
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.fwdate.text() == 'test'
+    app.mount.fw.fwdate = None
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.fwdate.text() == '-'
+
+
+def test_updateFwGui_fwtime():
+    app.mount.fw.fwtime = 'test'
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.fwtime.text() == 'test'
+    app.mount.fw.fwtime = None
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.fwtime.text() == '-'
+
+
+def test_updateFwGui_hwVersion():
+    app.mount.fw.hwVersion = 'test'
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.hwVersion.text() == 'test'
+    app.mount.fw.hwVersion = None
+    app.mainW.updateFwGui()
+    assert app.mainW.ui.hwVersion.text() == '-'
+
+
 def test_setMeridianLimitTrack1(qtbot):
     app.mount.sett.meridianLimitTrack = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -347,290 +728,3 @@ def test_setElevation4(qtbot):
                                return_value=True):
             suc = app.mainW.setElevation()
             assert suc
-
-
-def test_updateEnvironGUI_2():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_TEMPERATURE'] = 10.5
-    app.mainW.updateEnvironGUI('test')
-    assert app.mainW.ui.environTemp.text() == '10.5'
-
-
-def test_updateEnvironGUI_3():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_BAROMETER'] = 10.5
-    app.mainW.updateEnvironGUI('test')
-    assert app.mainW.ui.environPress.text() == ' 10.5'
-
-
-def test_updateEnvironGUI_4():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_DEWPOINT'] = 10.5
-    app.mainW.updateEnvironGUI('test')
-    assert app.mainW.ui.environDewPoint.text() == '10.5'
-
-
-def test_updateEnvironGUI_5():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_HUMIDITY'] = 10
-    app.mainW.updateEnvironGUI('test')
-    assert app.mainW.ui.environHumidity.text() == ' 10'
-
-
-def test_updateFwGui_productName():
-    value = 'Test1234'
-    app.mount.fw.productName = value
-    app.mainW.updateFwGui()
-    assert value == app.mainW.ui.productName.text()
-    value = None
-    app.mount.fw.productName = value
-    app.mainW.updateFwGui()
-    assert '-' == app.mainW.ui.productName.text()
-
-
-def test_updateFwGui_hwVersion():
-    value = 'Test1234'
-    app.mount.fw.hwVersion = value
-    app.mainW.updateFwGui()
-    assert value == app.mainW.ui.hwVersion.text()
-    value = None
-    app.mount.fw.hwVersion = value
-    app.mainW.updateFwGui()
-    assert '-' == app.mainW.ui.hwVersion.text()
-
-
-def test_updateFwGui_numberString():
-    value = '2.15.18'
-    app.mount.fw.numberString = value
-    app.mainW.updateFwGui()
-    assert value == app.mainW.ui.numberString.text()
-    value = None
-    app.mount.fw.numberString = value
-    app.mainW.updateFwGui()
-    assert '-' == app.mainW.ui.numberString.text()
-
-
-def test_updateFwGui_fwdate():
-    value = 'Test1234'
-    app.mount.fw.fwdate = value
-    app.mainW.updateFwGui()
-    assert value == app.mainW.ui.fwdate.text()
-    value = None
-    app.mount.fw.fwdate = value
-    app.mainW.updateFwGui()
-    assert '-' == app.mainW.ui.fwdate.text()
-
-
-def test_updateFwGui_fwtime():
-    value = 'Test1234'
-    app.mount.fw.fwtime = value
-    app.mainW.updateFwGui()
-    assert value == app.mainW.ui.fwtime.text()
-    value = None
-    app.mount.fw.fwtime = value
-    app.mainW.updateFwGui()
-    assert '-' == app.mainW.ui.fwtime.text()
-
-
-def test_updateRefractionParameters_1(qtbot):
-    app.mount.mountUp = True
-    app.mainW.ui.checkRefracNone.setChecked(False)
-    app.mainW.ui.checkRefracNoTrack.setChecked(True)
-    app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
-                           return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
-                               'setRefractionParam',
-                               return_value=True):
-            suc = app.mainW.updateRefractionParameters()
-            assert not suc
-
-
-def test_updateRefractionParameters_2(qtbot):
-    app.mount.mountUp = False
-    app.mainW.ui.checkRefracNone.setChecked(False)
-    app.mainW.ui.checkRefracNoTrack.setChecked(True)
-    app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
-                           return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
-                               'setRefractionParam',
-                               return_value=True):
-            suc = app.mainW.updateRefractionParameters()
-            assert not suc
-
-
-def test_updateRefractionParameters_3(qtbot):
-    app.mount.mountUp = True
-    app.mainW.ui.checkRefracNone.setChecked(True)
-    app.mainW.ui.checkRefracNoTrack.setChecked(False)
-    app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
-                           return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
-                               'setRefractionParam',
-                               return_value=True):
-            suc = app.mainW.updateRefractionParameters()
-            assert not suc
-
-
-def test_updateRefractionParameters_4(qtbot):
-    app.mount.mountUp = True
-    app.mainW.ui.checkRefracNone.setChecked(False)
-    app.mainW.ui.checkRefracNoTrack.setChecked(True)
-    app.mount.obsSite.status = '1'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
-                           return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
-                               'setRefractionParam',
-                               return_value=True):
-            suc = app.mainW.updateRefractionParameters()
-            assert suc
-
-
-def test_updateRefractionParameters_5(qtbot):
-    app.mount.mountUp = True
-    app.mainW.ui.checkRefracNone.setChecked(False)
-    app.mainW.ui.checkRefracNoTrack.setChecked(True)
-    app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
-                           return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
-                               'setRefractionParam',
-                               return_value=False):
-            suc = app.mainW.updateRefractionParameters()
-            assert not suc
-
-
-def test_updateRefractionParameters_6(qtbot):
-    app.mount.mountUp = True
-    app.mainW.ui.checkRefracNone.setChecked(False)
-    app.mainW.ui.checkRefracNoTrack.setChecked(True)
-    app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
-                           return_value=(None, 10)):
-        with mock.patch.object(app.mount.obsSite,
-                               'setRefractionParam',
-                               return_value=True):
-            suc = app.mainW.updateRefractionParameters()
-            assert not suc
-
-
-def test_updateRefractionParameters_7(qtbot):
-    app.mount.mountUp = True
-    app.mainW.ui.checkRefracNone.setChecked(False)
-    app.mainW.ui.checkRefracNoTrack.setChecked(True)
-    app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
-                           return_value=(10, None)):
-        with mock.patch.object(app.mount.obsSite,
-                               'setRefractionParam',
-                               return_value=True):
-            suc = app.mainW.updateRefractionParameters()
-            assert not suc
-    app.mainW.ui.checkRefracNone.setChecked(True)
-
-
-def test_updateSetting_refractionTemp():
-    value = '15'
-    app.mount.sett.refractionTemp = value
-    app.mainW.updateSettingGUI()
-    assert '+15.0' == app.mainW.ui.refractionTemp.text()
-    assert '+15.0' == app.mainW.ui.refractionTemp1.text()
-    value = None
-    app.mount.sett.refractionTemp = value
-    app.mainW.updateSettingGUI()
-    assert '-' == app.mainW.ui.refractionTemp.text()
-    assert '-' == app.mainW.ui.refractionTemp1.text()
-
-
-def test_updateSetting_refractionPress():
-    value = '1050.0'
-    app.mount.sett.refractionPress = value
-    app.mainW.updateSettingGUI()
-    assert value == app.mainW.ui.refractionPress.text()
-    assert value == app.mainW.ui.refractionPress1.text()
-    value = None
-    app.mount.sett.refractionPress = value
-    app.mainW.updateSettingGUI()
-    assert '-' == app.mainW.ui.refractionPress.text()
-    assert '-' == app.mainW.ui.refractionPress1.text()
-
-
-def test_updateSetting_meridianLimitTrack():
-    value = '15'
-    app.mount.sett.meridianLimitTrack = value
-    app.mainW.updateSettingGUI()
-    assert '15.0' == app.mainW.ui.meridianLimitTrack.text()
-    value = None
-    app.mount.sett.meridianLimitTrack = value
-    app.mainW.updateSettingGUI()
-    assert '-' == app.mainW.ui.meridianLimitTrack.text()
-
-
-def test_updateSetting_meridianLimitSlew():
-    value = '15'
-    app.mount.sett.meridianLimitSlew = value
-    app.mainW.updateSettingGUI()
-    assert '15.0' == app.mainW.ui.meridianLimitSlew.text()
-    value = None
-    app.mount.sett.meridianLimitSlew = value
-    app.mainW.updateSettingGUI()
-    assert '-' == app.mainW.ui.meridianLimitSlew.text()
-
-
-def test_updateSetting_horizonLimitLow():
-    value = '0'
-    app.mount.sett.horizonLimitLow = value
-    app.mainW.updateSettingGUI()
-    assert '0.0' == app.mainW.ui.horizonLimitLow.text()
-    value = None
-    app.mount.sett.horizonLimitLow = value
-    app.mainW.updateSettingGUI()
-    assert '-' == app.mainW.ui.horizonLimitLow.text()
-
-
-def test_updateSetting_horizonLimitHigh():
-    value = '50'
-    app.mount.sett.horizonLimitHigh = value
-    app.mainW.updateSettingGUI()
-    assert '50.0' == app.mainW.ui.horizonLimitHigh.text()
-    value = None
-    app.mount.sett.horizonLimitHigh = value
-    app.mainW.updateSettingGUI()
-    assert '-' == app.mainW.ui.horizonLimitHigh.text()
-
-
-def test_updateSetting_timeToMeridian():
-    app.mount.sett.timeToFlip = '100'
-    app.mount.sett.meridianLimitTrack = '15'
-
-    app.mainW.updateSettingGUI()
-    assert ' 40' == app.mainW.ui.timeToMeridian.text()
-    value = None
-    app.mount.sett.timeToFlip = value
-    app.mount.sett.meridianLimitTrack = value
-    app.mainW.updateSettingGUI()
-    assert '-' == app.mainW.ui.timeToMeridian.text()
-
-
-def test_updateSettingExt_location():
-
-    app.mount.obsSite.location = ['49:00:00', '11:00:00', '500']
-    app.mainW.updateLocGUI()
-    assert '11deg 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
-    assert '49deg 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
-    assert '500.0' == app.mainW.ui.siteElevation.text()
-
-    app.mount.obsSite.location = None
-    app.mainW.updateLocGUI()
-    assert '-' == app.mainW.ui.siteLongitude.text()
-    assert '-' == app.mainW.ui.siteLatitude.text()
-    assert '-' == app.mainW.ui.siteElevation.text()

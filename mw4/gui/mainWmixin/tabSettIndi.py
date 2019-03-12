@@ -74,6 +74,14 @@ class SettIndi(object):
         sig.newDevice.connect(self.showIndiNewWeatherDevice)
         sig.removeDevice.connect(self.showIndiRemoveWeatherDevice)
 
+        sig = self.app.power.client.signals
+        sig.serverConnected.connect(self.showIndiPowerConnected)
+        sig.serverDisconnected.connect(self.showIndiPowerDisconnected)
+        sig.deviceConnected.connect(self.showPowerDeviceConnected)
+        sig.deviceDisconnected.connect(self.showPowerDeviceDisconnected)
+        sig.newDevice.connect(self.showIndiNewPowerDevice)
+        sig.removeDevice.connect(self.showIndiRemovePowerDevice)
+
         self.setupDeviceNameGui()
 
     def initConfig(self):
@@ -196,7 +204,7 @@ class SettIndi(object):
 
         self.ui.skymeterDeviceName.addItem('SQM')
 
-        self.ui.powerDeviceName.addItem('Pegasus PPB')
+        self.ui.powerDeviceName.addItem('Pegasus UPB')
 
         self.ui.weatherDeviceName.addItem('AAG Cloud Watcher')
         self.ui.weatherDeviceName.addItem('Arduino MeteoStation')
@@ -372,8 +380,6 @@ class SettIndi(object):
         self.ui.skymeterGroup.setEnabled(False)
         return True
 
-
-
     def showIndiWeatherConnected(self):
         """
         showIndiWeatherConnected writes info to message window
@@ -437,4 +443,69 @@ class SettIndi(object):
 
         self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
         self.ui.weatherGroup.setEnabled(False)
+        return True
+
+
+
+    def showIndiPowerConnected(self):
+        """
+        showIndiPowerConnected writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit('INDI server power connected', 0)
+        return True
+
+    def showIndiPowerDisconnected(self):
+        """
+        showIndiPowerDisconnected writes info to message window and recolors the status
+
+        :return: true for test purpose
+        """
+
+        self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
+        self.app.message.emit('INDI server power disconnected', 0)
+        return True
+
+    def showIndiNewPowerDevice(self, deviceName):
+        """
+        showIndiNewPowerDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI power device [{deviceName}] found', 0)
+        return True
+
+    def showIndiRemovePowerDevice(self, deviceName):
+        """
+        showIndiRemovePowerDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI power device [{deviceName}] removed', 0)
+        return True
+
+    def showPowerDeviceConnected(self):
+        """
+        showPowerDeviceConnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.powerDevice.setStyleSheet(self.BACK_GREEN)
+        return True
+
+    def showPowerDeviceDisconnected(self):
+        """
+        showPowerDeviceDisconnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
         return True

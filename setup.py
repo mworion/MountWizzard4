@@ -33,7 +33,7 @@ setup(
         'mw4.gui.widgets',
         'mw4.gui.mainWmixin',
         'mw4.modeldata',
-        'mw4.relay',
+        'mw4.powerswitch',
         'mw4.remote',
         'mw4.test',
     ],

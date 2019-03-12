@@ -26,11 +26,11 @@ import numpy as np
 from mw4.base import indiClass
 
 
-class Skymeter(indiClass.IndiClass):
+class PegasusUPB(indiClass.IndiClass):
     """
-    the class Skymeter inherits all information and handling of the Skymeter device
+    the class PegasusUPB inherits all information and handling of the PegasusUPB device
 
-        >>> fw = Skymeter(
+        >>> fw = PegasusUPB(
         >>>                  host=host
         >>>                  name=''
         >>>                 )
@@ -42,8 +42,8 @@ class Skymeter(indiClass.IndiClass):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
-    # update rate to 1 seconds for setting indi server
-    UPDATE_RATE = 1
+    # update rate to 1000 milli seconds for setting indi server
+    UPDATE_RATE = 1000
 
     def __init__(self,
                  host=None,
@@ -68,17 +68,17 @@ class Skymeter(indiClass.IndiClass):
         if self.device is None:
             return False
 
-        update = self.device.getNumber('WEATHER_UPDATE')
+        update = self.device.getNumber('POLLING_PERIOD')
 
         if 'PERIOD' not in update:
             return False
 
-        if update.get('PERIOD', 0) == self.UPDATE_RATE:
+        if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
             return True
 
-        update['PERIOD'] = self.UPDATE_RATE
+        update['PERIOD_MS'] = self.UPDATE_RATE
         suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='WEATHER_UPDATE',
+                                        propertyName='POLLING_PERIOD',
                                         elements=update)
         return suc
 
@@ -107,5 +107,6 @@ class Skymeter(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
+            print(element, value)
 
         return True

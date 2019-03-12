@@ -63,6 +63,7 @@ class SettDevice(object):
         self.ui.environDevice.activated.connect(self.environDispatch)
         self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
         self.ui.weatherDevice.activated.connect(self.weatherDispatch)
+        self.ui.powerDevice.activated.connect(self.powerDispatch)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -75,6 +76,7 @@ class SettDevice(object):
         self.environDispatch()
         self.skymeterDispatch()
         self.weatherDispatch()
+        self.powerDispatch()
         return True
 
     def storeConfig(self):
@@ -121,6 +123,7 @@ class SettDevice(object):
         self.ui.environDevice.addItem('Indi Driver')
         self.ui.skymeterDevice.addItem('Indi Driver')
         self.ui.weatherDevice.addItem('Indi Driver')
+        self.ui.powerDevice.addItem('Indi Driver')
 
         return True
 
@@ -251,5 +254,23 @@ class SettDevice(object):
             self.app.weather.startCommunication()
         else:
             self.app.weather.stopCommunication()
+
+        return True
+
+    def powerDispatch(self):
+        """
+        powerDispatch selects the type of device for environment measures and start / stop
+        them.
+
+        :return: true for test purpose
+        """
+
+        index = self.ui.powerDevice.currentIndex()
+        if index == 1:
+            self.app.power.client.host = self.ui.powerHost.text()
+            self.app.power.name = self.ui.powerDeviceName.currentText()
+            self.app.power.startCommunication()
+        else:
+            self.app.power.stopCommunication()
 
         return True

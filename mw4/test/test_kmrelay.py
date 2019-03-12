@@ -24,7 +24,7 @@ import pytest
 # external packages
 import PyQt5.QtWidgets
 # local import
-from mw4.relay import kmRelay
+from mw4.powerswitch import kmRelay
 from mw4.test.test_setupQt import setupQt
 
 

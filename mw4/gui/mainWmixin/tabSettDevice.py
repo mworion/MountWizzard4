@@ -265,12 +265,24 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        index = self.ui.powerDevice.currentIndex()
-        if index == 1:
+        # get index for relay tab
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+
+        if self.ui.powerDevice.currentText() == 'Indi Driver':
+            self.app.power.startCommunication()
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            self.app.message.emit('Power enabled', 0)
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
-            self.app.power.startCommunication()
         else:
             self.app.power.stopCommunication()
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            self.app.message.emit('Power disabled', 0)
 
+        # update the style for showing the Relay tab
+        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
+        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
         return True

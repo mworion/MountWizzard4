@@ -22,7 +22,7 @@
 # local import
 
 
-class Relay(object):
+class Power(object):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -31,7 +31,10 @@ class Relay(object):
     """
 
     def __init__(self):
-        self.app.relay.statusReady.connect(self.updateRelayGui)
+
+        signals = self.app.power.client.signals
+        signals.newNumber.connect(self.updatePowerGui)
+        signals.deviceDisconnected.connect(self.clearPowerGui)
 
     def initConfig(self):
         # config = self.app.config['mainW']
@@ -58,16 +61,16 @@ class Relay(object):
         """
         return True
 
-    def updateRelayGui(self):
+    def updatePowerGui(self):
         """
-        updateRelayGui changes the style of the button related to the state of the relay
+        updatePowerGui changes the style of the button related to the state of the Pegasus
 
         :return: success for test
         """
 
-        for status, button in zip(self.app.relay.status, self.relayButtons):
-            if status:
-                self.changeStyleDynamic(button, 'running', 'true')
-            else:
-                self.changeStyleDynamic(button, 'running', 'false')
+        value = self.app.power.data.get('WEATHER_TEMPERATURE', 0)
+        self.ui.powerTemp.setText('{0:4.1f}'.format(value))
+
         return True
+
+

@@ -33,6 +33,7 @@ from mw4.gui.mainWmixin.tabAlignMount import AlignMount
 from mw4.gui.mainWmixin.tabBuildModel import BuildModel
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
 from mw4.gui.mainWmixin.tabRelay import Relay
+from mw4.gui.mainWmixin.tabPower import Power
 from mw4.gui.mainWmixin.tabSettDevice import SettDevice
 from mw4.gui.mainWmixin.tabSettIndi import SettIndi
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
@@ -48,6 +49,7 @@ class MainWindow(MWidget,
                  BuildModel,
                  ManageModel,
                  Relay,
+                 Power,
                  SettDevice,
                  SettIndi,
                  SettHorizon,
@@ -85,6 +87,7 @@ class MainWindow(MWidget,
         BuildModel.__init__(self)
         ManageModel.__init__(self)
         Relay.__init__(self)
+        Power.__init__(self)
         SettIndi.__init__(self)
         SettDevice.__init__(self)
         SettHorizon.__init__(self)
@@ -146,6 +149,7 @@ class MainWindow(MWidget,
         BuildModel.initConfig(self)
         ManageModel.initConfig(self)
         Relay.initConfig(self)
+        Power.initConfig(self)
         SettIndi.initConfig(self)
         SettHorizon.initConfig(self)
         SettParkPos.initConfig(self)
@@ -174,6 +178,7 @@ class MainWindow(MWidget,
         BuildModel.storeConfig(self)
         ManageModel.storeConfig(self)
         Relay.storeConfig(self)
+        Power.storeConfig(self)
         SettIndi.storeConfig(self)
         SettHorizon.storeConfig(self)
         SettParkPos.storeConfig(self)
@@ -228,6 +233,7 @@ class MainWindow(MWidget,
         BuildModel.setupIcons(self)
         ManageModel.setupIcons(self)
         Relay.setupIcons(self)
+        Power.setupIcons(self)
         SettDevice.setupIcons(self)
         SettIndi.setupIcons(self)
         SettHorizon.setupIcons(self)
@@ -267,6 +273,7 @@ class MainWindow(MWidget,
         BuildModel.clearGUI(self)
         ManageModel.clearGUI(self)
         Relay.clearGUI(self)
+        Power.clearGUI(self)
         SettDevice.clearGUI(self)
         SettIndi.clearGUI(self)
         SettHorizon.clearGUI(self)

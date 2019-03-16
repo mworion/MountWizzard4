@@ -61,6 +61,9 @@ class Power(object):
         """
         return True
 
+    def clearPowerGui(self):
+        pass
+
     def updatePowerGui(self):
         """
         updatePowerGui changes the style of the button related to the state of the Pegasus
@@ -70,6 +73,42 @@ class Power(object):
 
         value = self.app.power.data.get('WEATHER_TEMPERATURE', 0)
         self.ui.powerTemp.setText('{0:4.1f}'.format(value))
+        value = self.app.power.data.get('WEATHER_HUMIDITY', 0)
+        self.ui.powerHumidity.setText('{0:3.0f}'.format(value))
+        value = self.app.power.data.get('WEATHER_DEWPOINT', 0)
+        self.ui.powerDewPoint.setText('{0:4.1f}'.format(value))
+
+        value = self.app.power.data.get('POWER_CURRENT_1', 0)
+        self.ui.powerCurrent1.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('POWER_CURRENT_2', 0)
+        self.ui.powerCurrent2.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('POWER_CURRENT_3', 0)
+        self.ui.powerCurrent3.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('POWER_CURRENT_4', 0)
+        self.ui.powerCurrent4.setText('{0:4.2f}'.format(value))
+
+        value = self.app.power.data.get('CONSUMPTION_AVG_AMPS', 0)
+        self.ui.consumptionAvgAmps.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('CONSUMPTION_AMP_HOURS', 0)
+        self.ui.consumptionAmpHours.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('CONSUMPTION_WATT_HOURS', 0)
+        self.ui.consumptionWattHours.setText('{0:4.2f}'.format(value))
+
+        value = self.app.power.data.get('SENSOR_VOLTAGE', 0)
+        self.ui.sensorVoltage.setText('{0:4.1f}'.format(value))
+        value = self.app.power.data.get('SENSOR_CURRENT', 0)
+        self.ui.sensorCurrent.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('SENSOR_POWER', 0)
+        self.ui.sensorPower.setText('{0:4.2f}'.format(value))
+
+        value = self.app.power.data.get('DEW_CURRENT_A', 0)
+        self.ui.dewCurrentA.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('DEW_CURRENT_B', 0)
+        self.ui.dewCurrentB.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('DEW_A', 0)
+        self.ui.dewA.setText('{0:4.0f}'.format(value))
+        value = self.app.power.data.get('DEW_B', 0)
+        self.ui.dewB.setText('{0:4.0f}'.format(value))
 
         return True
 

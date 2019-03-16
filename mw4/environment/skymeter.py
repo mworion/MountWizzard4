@@ -53,7 +53,7 @@ class Skymeter(indiClass.IndiClass):
                          name=name
                          )
 
-    def _setUpdateRate(self, deviceName):
+    def setUpdateConfig(self, deviceName):
         """
         _setUpdateRate corrects the update rate of weather devices to get an defined
         setting regardless, what is setup in server side.

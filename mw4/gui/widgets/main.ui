@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>9</number>
+      <number>8</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -11883,7 +11883,11 @@ manually</string>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="powerTemp"/>
+           <widget class="QLineEdit" name="powerTemp">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_272">
@@ -11893,7 +11897,11 @@ manually</string>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="powerHumidity"/>
+           <widget class="QLineEdit" name="powerHumidity">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_273">
@@ -11903,7 +11911,11 @@ manually</string>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="powerDewPoint"/>
+           <widget class="QLineEdit" name="powerDewPoint">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -11912,7 +11924,7 @@ manually</string>
           <item>
            <widget class="QCheckBox" name="checkBox_5">
             <property name="text">
-             <string>USB Ports powerd on</string>
+             <string>USB Ports powered on</string>
             </property>
            </widget>
           </item>
@@ -12018,42 +12030,58 @@ manually</string>
           <item row="0" column="0">
            <widget class="QLabel" name="label_195">
             <property name="text">
-             <string>Current Port 1 [mA]</string>
+             <string>Current Port 1 [A]</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="powerCurrent1"/>
+           <widget class="QLineEdit" name="powerCurrent1">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_259">
             <property name="text">
-             <string>Current Port 2 [mA]</string>
+             <string>Current Port 2 [A]</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="powerCurrent2"/>
+           <widget class="QLineEdit" name="powerCurrent2">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_263">
             <property name="text">
-             <string>Current Port 3 [mA]</string>
+             <string>Current Port 3 [A]</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="powerCurrent3"/>
+           <widget class="QLineEdit" name="powerCurrent3">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label_264">
             <property name="text">
-             <string>Current Port 4 [mA]</string>
+             <string>Current Port 4 [A]</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QLineEdit" name="powerCurrent4"/>
+           <widget class="QLineEdit" name="powerCurrent4">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -12120,7 +12148,11 @@ manually</string>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="sensorVoltage"/>
+           <widget class="QLineEdit" name="sensorVoltage">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_172">
@@ -12130,7 +12162,11 @@ manually</string>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="sensorCurrent"/>
+           <widget class="QLineEdit" name="sensorCurrent">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_173">
@@ -12140,7 +12176,11 @@ manually</string>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="sensorPower"/>
+           <widget class="QLineEdit" name="sensorPower">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_191">
@@ -12150,7 +12190,11 @@ manually</string>
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QLineEdit" name="consumptionAvgAmps"/>
+           <widget class="QLineEdit" name="consumptionAvgAmps">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="5" column="0">
            <widget class="QLabel" name="label_192">
@@ -12160,7 +12204,11 @@ manually</string>
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QLineEdit" name="consumptionAmpHours"/>
+           <widget class="QLineEdit" name="consumptionAmpHours">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="6" column="0">
            <widget class="QLabel" name="label_193">
@@ -12170,7 +12218,11 @@ manually</string>
            </widget>
           </item>
           <item row="6" column="1">
-           <widget class="QLineEdit" name="consumptionWattHours"/>
+           <widget class="QLineEdit" name="consumptionWattHours">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -12191,7 +12243,11 @@ manually</string>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="dewA"/>
+           <widget class="QLineEdit" name="dewA">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_267">
@@ -12201,27 +12257,39 @@ manually</string>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="dewB"/>
+           <widget class="QLineEdit" name="dewB">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_268">
             <property name="text">
-             <string>Current A [mA]</string>
+             <string>Current A [A]</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="dewCurrentA"/>
+           <widget class="QLineEdit" name="dewCurrentA">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label_269">
             <property name="text">
-             <string>Current B [mA]</string>
+             <string>Current B [A]</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QLineEdit" name="dewCurrentB"/>
+           <widget class="QLineEdit" name="dewCurrentB">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

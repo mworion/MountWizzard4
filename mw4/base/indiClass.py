@@ -63,7 +63,7 @@ class IndiClass(object):
         self.client.signals.removeDevice.connect(self.removeDevice)
         self.client.signals.newProperty.connect(self.connectDevice)
         self.client.signals.newNumber.connect(self.updateData)
-        self.client.signals.deviceConnected.connect(self._setUpdateRate)
+        self.client.signals.deviceConnected.connect(self.setUpdateConfig)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)
 
@@ -154,7 +154,7 @@ class IndiClass(object):
             suc = self.client.connectDevice(deviceName=deviceName)
         return suc
 
-    def _setUpdateRate(self, deviceName):
+    def setUpdateConfig(self, deviceName):
         """
         _setUpdateRate corrects the update rate of weather devices to get an defined
         setting regardless, what is setup in server side.

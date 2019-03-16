@@ -53,7 +53,7 @@ class PegasusUPB(indiClass.IndiClass):
                          name=name
                          )
 
-    def _setUpdateRate(self, deviceName):
+    def setUpdateConfig(self, deviceName):
         """
         _setUpdateRate corrects the update rate of weather devices to get an defined
         setting regardless, what is setup in server side.
@@ -68,18 +68,26 @@ class PegasusUPB(indiClass.IndiClass):
         if self.device is None:
             return False
 
-        update = self.device.getNumber('POLLING_PERIOD')
+        dew = self.device.getNumber('DEW_PWM')
+        self.client.sendNewNumber(deviceName=deviceName,
+                                  propertyName='DEW_PWM',
+                                  elements=dew,
+                                  )
+
+        update = self.device.getNumber('POLLING')
 
         if 'PERIOD' not in update:
             return False
 
-        if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
+        if update.get('PERIOD', 0) == self.UPDATE_RATE:
             return True
 
-        update['PERIOD_MS'] = self.UPDATE_RATE
+        update['PERIOD'] = self.UPDATE_RATE
         suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='POLLING_PERIOD',
-                                        elements=update)
+                                        propertyName='POLLING',
+                                        elements=update,
+                                        )
+
         return suc
 
     def updateData(self, deviceName, propertyName):
@@ -107,6 +115,6 @@ class PegasusUPB(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
-            print(element, value)
+            # print(propertyName, element, value)
 
         return True

@@ -195,6 +195,8 @@ class KMRelay(PyQt5.QtCore.QObject):
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
         except requests.exceptions.Timeout:
             pass
+        except requests.exceptions.ConnectionError:
+            result = 'NOK'
         except Exception as e:
             self.logger.error(f'Error in request: {e}')
 
@@ -216,6 +218,8 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         if value is None:
             self.logger.error('Polling error')
+            return False
+        if value == 'NOK':
             return False
         if value.reason != 'OK':
             self.logger.error('Polling error')

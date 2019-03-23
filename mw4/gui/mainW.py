@@ -105,6 +105,7 @@ class MainWindow(MWidget,
         self.app.mount.signals.mountClear.connect(self.clearGUI)
         self.app.plateSolve.signals.status.connect(self.updateAstrometry)
         self.app.update1s.connect(self.updateTime)
+        self.app.update1s.connect(self.updateWindowsStats)
         self.app.update10s.connect(self.updateRefractionParameters)
 
         # connect gui signals
@@ -296,6 +297,30 @@ class MainWindow(MWidget,
             self.changeStyleDynamic(ui, 'color', 'green')
         else:
             self.changeStyleDynamic(ui, 'color', 'red')
+
+        return True
+
+    def updateWindowsStats(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        if self.app.messageW.showStatus:
+            self.changeStyleDynamic(self.ui.openMessageW, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.openMessageW, 'running', False)
+
+        if self.app.hemisphereW.showStatus:
+            self.changeStyleDynamic(self.ui.openHemisphereW, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.openHemisphereW, 'running', False)
+
+        if self.app.imageW.showStatus:
+            self.changeStyleDynamic(self.ui.openImageW, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.openImageW, 'running', False)
+
         return True
 
     def updateTime(self):

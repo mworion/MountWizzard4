@@ -116,7 +116,6 @@ class ImageWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
-        self.changeStyleDynamic(self.app.mainW.ui.openImageW, 'running', 'false')
 
     def toggleWindow(self):
         self.showStatus = not self.showStatus
@@ -129,7 +128,6 @@ class ImageWindow(widget.MWidget):
         self.showStatus = True
         self.showFitsImage()
         self.show()
-        self.changeStyleDynamic(self.app.mainW.ui.openImageW, 'running', 'true')
         return True
 
     def setupDropDownGui(self):

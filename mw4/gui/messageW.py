@@ -90,7 +90,6 @@ class MessageWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         super().closeEvent(closeEvent)
-        self.changeStyleDynamic(self.app.mainW.ui.openMessageW, 'running', 'false')
 
     def toggleWindow(self):
         self.showStatus = not self.showStatus
@@ -102,7 +101,6 @@ class MessageWindow(widget.MWidget):
     def showWindow(self):
         self.showStatus = True
         self.show()
-        self.changeStyleDynamic(self.app.mainW.ui.openMessageW, 'running', 'true')
 
     def clearWindow(self):
         """

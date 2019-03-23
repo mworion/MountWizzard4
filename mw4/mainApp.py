@@ -76,6 +76,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mwGlob = mwGlob
         self.timerCounter = 0
         self.threadPool = PyQt5.QtCore.QThreadPool()
+
         pathToData = self.mwGlob['dataDir']
 
         # persistence management through dict
@@ -102,6 +103,20 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    )
         self.planets = load('de421.bsp')
 
+        # enabling message window first
+        self.messageW = messageW.MessageWindow(self)
+
+        # write basic data to message window
+        verMC = self.mount.version
+        verIB = qtIndiBase.Client.version
+        profile = self.config.get('profileName', '-')
+        self.message.emit('MountWizzard4 started', 1)
+        self.message.emit('build version: [{0}]'.format(self.version), 1)
+        self.message.emit('mountcontrol version: [{0}]'.format(verMC), 1)
+        self.message.emit('indibase version: [{0}]'.format(verIB), 1)
+        self.message.emit('Workdir is: [{0}]'.format(self.mwGlob['workDir']), 1)
+        self.message.emit('Profile [{0}] loaded'.format(profile), 0)
+
         # loading other classes
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
@@ -125,20 +140,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # get the window widgets up
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)
-        self.messageW = messageW.MessageWindow(self)
         self.measureW = measureW.MeasureWindow(self)
         self.imageW = imageW.ImageWindow(self)
-
-        # write basic data to message window
-        verMC = self.mount.version
-        verIB = qtIndiBase.Client.version
-        profile = self.config.get('profileName', '-')
-        self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('build version: [{0}]'.format(self.version), 1)
-        self.message.emit('mountcontrol version: [{0}]'.format(verMC), 1)
-        self.message.emit('indibase version: [{0}]'.format(verIB), 1)
-        self.message.emit('Workdir is: [{0}]'.format(self.mwGlob['workDir']), 1)
-        self.message.emit('Profile [{0}] loaded'.format(profile), 0)
 
         # link cross widget gui signals as all ui widgets have to be present
         self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)

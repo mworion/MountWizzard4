@@ -276,6 +276,7 @@ class SettDevice(object):
             self.app.message.emit('Power enabled', 0)
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
+            print('power enabled')
         else:
             self.app.power.stopCommunication()
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)

@@ -78,6 +78,7 @@ class IndiClass(object):
     def serverConnected(self):
         if self.name:
             suc = self.client.watchDevice(self.name)
+            self.logger.info(f'Indi server connected, starting watch: result:{suc}')
             return suc
         return False
 

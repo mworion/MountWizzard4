@@ -252,7 +252,7 @@ class MainWindow(MWidget,
             return False
 
     def mountShutdown(self):
-        if self.app.mount.obsSite.shutdown():
+        if self.app.mount.shutdown():
             self.app.message.emit('Shutting mount down', 0)
             return True
         else:

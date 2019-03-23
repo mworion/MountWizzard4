@@ -210,12 +210,12 @@ class SettDevice(object):
             self.app.environ.client.host = self.ui.environHost.text()
             self.app.environ.name = self.ui.environDeviceName.currentText()
             self.app.environ.startCommunication()
-            # gui element to be used
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
+            self.app.message.emit('Environment enabled', 0)
         else:
             self.app.environ.stopCommunication()
-            # gui elements not anymore to be used
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
+            self.app.message.emit('Environment disabled', 0)
 
         return True
 
@@ -233,8 +233,10 @@ class SettDevice(object):
             self.app.skymeter.client.host = self.ui.skymeterHost.text()
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
             self.app.skymeter.startCommunication()
+            self.app.message.emit('Skymeter enabled', 0)
         else:
             self.app.skymeter.stopCommunication()
+            self.app.message.emit('Skymeter disabled', 0)
 
         return True
 
@@ -252,8 +254,10 @@ class SettDevice(object):
             self.app.weather.client.host = self.ui.weatherHost.text()
             self.app.weather.name = self.ui.weatherDeviceName.currentText()
             self.app.weather.startCommunication()
+            self.app.message.emit('Weather enabled', 0)
         else:
             self.app.weather.stopCommunication()
+            self.app.message.emit('Weather disabled', 0)
 
         return True
 
@@ -276,7 +280,6 @@ class SettDevice(object):
             self.app.message.emit('Power enabled', 0)
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
-            print('power enabled')
         else:
             self.app.power.stopCommunication()
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)

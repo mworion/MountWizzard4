@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>9</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -11585,7 +11585,7 @@ manually</string>
          <number>4</number>
         </property>
         <property name="topMargin">
-         <number>4</number>
+         <number>15</number>
         </property>
         <property name="rightMargin">
          <number>4</number>
@@ -11596,7 +11596,7 @@ manually</string>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,0,0,0,0,0,1,0">
           <property name="spacing">
-           <number>4</number>
+           <number>6</number>
           </property>
           <item>
            <widget class="QLabel" name="label_96">
@@ -11833,7 +11833,7 @@ manually</string>
          <x>10</x>
          <y>5</y>
          <width>766</width>
-         <height>421</height>
+         <height>505</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
@@ -11841,7 +11841,7 @@ manually</string>
          <number>4</number>
         </property>
         <property name="topMargin">
-         <number>4</number>
+         <number>15</number>
         </property>
         <property name="rightMargin">
          <number>4</number>
@@ -11849,22 +11849,326 @@ manually</string>
         <property name="bottomMargin">
          <number>4</number>
         </property>
-        <property name="spacing">
-         <number>4</number>
+        <property name="horizontalSpacing">
+         <number>25</number>
         </property>
-        <item row="0" column="4">
+        <property name="verticalSpacing">
+         <number>8</number>
+        </property>
+        <item row="0" column="3">
          <widget class="QLabel" name="label_265">
           <property name="text">
            <string>Dew Heater</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
-         <widget class="QLabel" name="label_275">
-          <property name="text">
-           <string>Power On Boot</string>
+        <item row="5" column="3">
+         <widget class="Line" name="line_89">
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="midLineWidth">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
          </widget>
+        </item>
+        <item row="2" column="2">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <property name="spacing">
+           <number>4</number>
+          </property>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_280">
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_263">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Port 3</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QLineEdit" name="powerCurrent4">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="label_264">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Port 4</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3" rowspan="2">
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>40</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>I/O</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLineEdit" name="powerCurrent3">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="powerCurrent2">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_195">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Port 1</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="checkBox_4">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Power on boot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QCheckBox" name="checkBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Power on boot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_259">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Port 2</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QLabel" name="label_282">
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="powerCurrent1">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3" rowspan="2">
+           <widget class="QPushButton" name="pushButton_3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>40</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>I/O</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="2">
+           <widget class="QLabel" name="label_283">
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="label_281">
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="3">
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="9" column="3" rowspan="2">
+           <widget class="QPushButton" name="pushButton_4">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>40</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>I/O</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QCheckBox" name="checkBox_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Power on boot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3" rowspan="2">
+           <widget class="QPushButton" name="pushButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>40</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>I/O</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QCheckBox" name="checkBox_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Power on boot</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0" colspan="4">
+           <widget class="Line" name="line_30">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0" colspan="4">
+           <widget class="Line" name="line_25">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="4">
+           <widget class="Line" name="line_22">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="label_274">
@@ -11873,8 +12177,14 @@ manually</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="4">
+        <item row="6" column="3">
          <layout class="QFormLayout" name="formLayout_4">
+          <property name="horizontalSpacing">
+           <number>4</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>4</number>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label_271">
             <property name="text">
@@ -11921,6 +12231,9 @@ manually</string>
         </item>
         <item row="6" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>4</number>
+          </property>
           <item>
            <widget class="QCheckBox" name="checkBox_5">
             <property name="text">
@@ -11943,75 +12256,41 @@ manually</string>
           </item>
          </layout>
         </item>
-        <item row="1" column="0">
-         <widget class="Line" name="line_74">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
+        <item row="2" column="3">
+         <layout class="QGridLayout" name="gridLayout_5">
+          <property name="spacing">
+           <number>4</number>
           </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QCheckBox" name="checkBox_4">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>20</height>
-             </size>
-            </property>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_269">
             <property name="text">
-             <string>Port 1</string>
+             <string>Current</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QCheckBox" name="checkBox">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>20</height>
-             </size>
-            </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_266">
             <property name="text">
-             <string>Port 2</string>
+             <string>Dew Heater A</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QCheckBox" name="checkBox_2">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Port 3</string>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="dewB">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QCheckBox" name="checkBox_3">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Port 4</string>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="dewCurrentB">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="verticalSpacer_5">
+          <item row="5" column="0">
+           <spacer name="verticalSpacer_7">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -12023,69 +12302,78 @@ manually</string>
             </property>
            </spacer>
           </item>
-         </layout>
-        </item>
-        <item row="2" column="2">
-         <layout class="QFormLayout" name="formLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_195">
-            <property name="text">
-             <string>Current Port 1 [A]</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="powerCurrent1">
+           <widget class="QSpinBox" name="dewA">
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_259">
-            <property name="text">
-             <string>Current Port 2 [A]</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="powerCurrent2">
+           <widget class="QLineEdit" name="dewCurrentA">
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_263">
-            <property name="text">
-             <string>Current Port 3 [A]</string>
+          <item row="2" column="0" colspan="2">
+           <widget class="Line" name="line_19">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
             </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="powerCurrent3">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QLabel" name="label_264">
+           <widget class="QLabel" name="label_267">
             <property name="text">
-             <string>Current Port 4 [A]</string>
+             <string>Dew Heater B</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="powerCurrent4">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_268">
+            <property name="text">
+             <string>Current</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_276">
+            <property name="text">
+             <string>%</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLabel" name="label_277">
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="label_278">
+            <property name="text">
+             <string>%</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="label_279">
+            <property name="text">
+             <string>A</string>
             </property>
            </widget>
           </item>
          </layout>
         </item>
-        <item row="3" column="0" colspan="5">
+        <item row="3" column="0" colspan="4">
          <widget class="Line" name="line_77">
           <property name="frameShadow">
            <enum>QFrame::Plain</enum>
@@ -12118,181 +12406,6 @@ manually</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_163">
-          <property name="text">
-           <string>Power overall</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="4">
-         <widget class="Line" name="line_78">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <layout class="QFormLayout" name="formLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_165">
-            <property name="text">
-             <string>Voltage [V]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="sensorVoltage">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_172">
-            <property name="text">
-             <string>Current [A]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="sensorCurrent">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_173">
-            <property name="text">
-             <string>Power [W]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="sensorPower">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_191">
-            <property name="text">
-             <string>Average Current [A]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="consumptionAvgAmps">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_192">
-            <property name="text">
-             <string>AmpHours [Ah]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QLineEdit" name="consumptionAmpHours">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_193">
-            <property name="text">
-             <string>Watt Hours [Wh]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QLineEdit" name="consumptionWattHours">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="4" column="4">
-         <widget class="QLabel" name="label_270">
-          <property name="text">
-           <string>Weather</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="4">
-         <layout class="QFormLayout" name="formLayout_3">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_266">
-            <property name="text">
-             <string>PWM A [%]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="dewA">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_267">
-            <property name="text">
-             <string>PWM B [%]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="dewB">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_268">
-            <property name="text">
-             <string>Current A [A]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="dewCurrentA">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_269">
-            <property name="text">
-             <string>Current B [A]</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="dewCurrentB">
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
         <item row="5" column="0">
          <widget class="Line" name="line_87">
           <property name="frameShadow">
@@ -12306,8 +12419,8 @@ manually</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
-         <widget class="Line" name="line_88">
+        <item row="1" column="3">
+         <widget class="Line" name="line_78">
           <property name="frameShadow">
            <enum>QFrame::Plain</enum>
           </property>
@@ -12319,8 +12432,15 @@ manually</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="4">
-         <widget class="Line" name="line_89">
+        <item row="4" column="3">
+         <widget class="QLabel" name="label_270">
+          <property name="text">
+           <string>Weather</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="Line" name="line_74">
           <property name="frameShadow">
            <enum>QFrame::Plain</enum>
           </property>
@@ -12332,57 +12452,145 @@ manually</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1" rowspan="2">
-         <widget class="Line" name="line_86">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+        <item row="0" column="0" colspan="2">
+         <widget class="QLabel" name="label_163">
+          <property name="text">
+           <string>Power overall</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="3" rowspan="2">
-         <widget class="Line" name="line_81">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
+        <item row="2" column="0" colspan="2">
+         <layout class="QGridLayout" name="gridLayout_6">
+          <property name="spacing">
+           <number>4</number>
           </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3" rowspan="2">
-         <widget class="Line" name="line_82">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1" rowspan="2">
-         <widget class="Line" name="line_80">
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="midLineWidth">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_165">
+            <property name="text">
+             <string>Voltage</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="sensorCurrent">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="sensorPower">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="consumptionAvgAmps">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLineEdit" name="consumptionWattHours">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="consumptionAmpHours">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="sensorVoltage">
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_173">
+            <property name="text">
+             <string>V</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="label_172">
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="label_191">
+            <property name="text">
+             <string>W</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="label_192">
+            <property name="text">
+             <string>A</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLabel" name="label_193">
+            <property name="text">
+             <string>Ah</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QLabel" name="label_284">
+            <property name="text">
+             <string>Wh</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_285">
+            <property name="text">
+             <string>WattHours</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_286">
+            <property name="text">
+             <string>AmpHours</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_287">
+            <property name="text">
+             <string>Avg. Curr.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_288">
+            <property name="text">
+             <string>Power</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_289">
+            <property name="text">
+             <string>Current</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -12448,18 +12656,21 @@ manually</string>
            <x>10</x>
            <y>5</y>
            <width>751</width>
-           <height>391</height>
+           <height>401</height>
           </rect>
          </property>
-         <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
-          <property name="topMargin">
+         <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0">
+          <property name="leftMargin">
            <number>6</number>
+          </property>
+          <property name="topMargin">
+           <number>15</number>
           </property>
           <property name="spacing">
            <number>6</number>
           </property>
-          <item row="17" column="0" rowspan="2">
-           <widget class="QLabel" name="label_48">
+          <item row="7" column="0">
+           <widget class="QLabel" name="po">
             <property name="font">
              <font>
               <weight>75</weight>
@@ -12467,84 +12678,32 @@ manually</string>
              </font>
             </property>
             <property name="text">
-             <string>Measure Device</string>
+             <string>PowerBox Device</string>
             </property>
            </widget>
           </item>
-          <item row="15" column="0">
-           <widget class="QComboBox" name="skymeterDevice">
+          <item row="9" column="1">
+           <widget class="QComboBox" name="remoteDevice">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>200</width>
               <height>25</height>
              </size>
             </property>
            </widget>
           </item>
-          <item row="5" column="3">
-           <widget class="QComboBox" name="relayDevice">
+          <item row="4" column="1">
+           <widget class="QComboBox" name="domeDevice">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>200</width>
               <height>25</height>
              </size>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" rowspan="20">
-           <widget class="Line" name="line_19">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
             </property>
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="Line" name="line_22">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="Line" name="line_25">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="3">
-           <widget class="Line" name="line_47">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="ast">
+           <widget class="QLabel" name="env">
             <property name="font">
              <font>
               <weight>75</weight>
@@ -12552,34 +12711,54 @@ manually</string>
              </font>
             </property>
             <property name="text">
-             <string>Astrometry Device</string>
+             <string>Environment Device</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="3">
-           <widget class="QComboBox" name="remoteDevice">
+          <item row="3" column="1">
+           <widget class="QComboBox" name="environDevice">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>200</width>
               <height>25</height>
              </size>
             </property>
            </widget>
           </item>
-          <item row="3" column="3">
-           <widget class="Line" name="line_41">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          <item row="7" column="1">
+           <widget class="QComboBox" name="powerDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
             </property>
            </widget>
           </item>
-          <item row="4" column="3">
+          <item row="12" column="2">
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="6" column="1">
+           <widget class="QComboBox" name="measureDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
            <widget class="QLabel" name="label_46">
             <property name="font">
              <font>
@@ -12592,39 +12771,111 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="3">
-           <widget class="QComboBox" name="powerDevice">
+          <item row="10" column="1" rowspan="2">
+           <widget class="QComboBox" name="weatherDevice">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>200</width>
               <height>25</height>
              </size>
             </property>
            </widget>
           </item>
-          <item row="9" column="0">
-           <widget class="Line" name="line_37">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          <item row="5" column="1">
+           <widget class="QComboBox" name="skymeterDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
             </property>
            </widget>
           </item>
-          <item row="13" column="0">
-           <widget class="Line" name="line_32">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
+          <item row="2" column="0">
+           <widget class="QLabel" name="ast">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
             </property>
-            <property name="midLineWidth">
-             <number>1</number>
+            <property name="text">
+             <string>Astrometry Device</string>
             </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="dome">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Dome Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="label_49">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Remote Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_48">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Measure Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <spacer name="verticalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="astrometryDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="sky">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Sky Meter Device</string>
             </property>
            </widget>
           </item>
@@ -12641,171 +12892,27 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="19" column="0">
-           <widget class="QComboBox" name="measureDevice">
+          <item row="8" column="1">
+           <widget class="QComboBox" name="relayDevice">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>200</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="imagingDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
               <height>25</height>
              </size>
             </property>
            </widget>
           </item>
           <item row="10" column="0" rowspan="2">
-           <widget class="QLabel" name="dome">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Dome Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QLabel" name="po">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>PowerBox Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="0">
-           <widget class="Line" name="line_30">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="0">
-           <widget class="QLabel" name="sky">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Sky Meter Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="3">
-           <spacer name="verticalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>5</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="7" column="3">
-           <widget class="QLabel" name="label_49">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Remote Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="env">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Environment Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QComboBox" name="domeDevice">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QComboBox" name="imagingDevice">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QComboBox" name="astrometryDevice">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QComboBox" name="environDevice">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="0">
-           <spacer name="verticalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>5</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="12" column="3">
-           <widget class="QComboBox" name="weatherDevice">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="3" rowspan="2">
            <widget class="QLabel" name="label_162">
             <property name="font">
              <font>
@@ -12815,19 +12922,6 @@ manually</string>
             </property>
             <property name="text">
              <string>Weather Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="3">
-           <widget class="Line" name="line_72">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -12847,38 +12941,18 @@ manually</string>
            <height>391</height>
           </rect>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,1" columnstretch="0,0,0,0,0,0,0">
+         <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="0,0,0,0,0,0,0">
           <property name="topMargin">
-           <number>6</number>
+           <number>15</number>
           </property>
           <property name="spacing">
            <number>6</number>
           </property>
-          <item row="1" column="5">
-           <widget class="QLineEdit" name="skymeterHost">
-            <property name="text">
-             <string>localhost</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
+          <item row="11" column="5">
+           <widget class="QComboBox" name="weatherDeviceName"/>
           </item>
-          <item row="8" column="0" colspan="3">
-           <widget class="Line" name="line_55">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0" colspan="3">
-           <widget class="QLabel" name="label_22">
+          <item row="5" column="0" colspan="3">
+           <widget class="QLabel" name="label_17">
             <property name="font">
              <font>
               <family>Arial</family>
@@ -12888,107 +12962,28 @@ manually</string>
              </font>
             </property>
             <property name="text">
-             <string>Dome</string>
+             <string>Imaging</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="4" colspan="3">
-           <widget class="QLabel" name="label_23">
-            <property name="font">
-             <font>
-              <family>Arial</family>
-              <pointsize>10</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Skymeter</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="2">
-           <widget class="QLineEdit" name="domePort">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>7624</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_mountIP_6">
+          <item row="13" column="0" colspan="3">
+           <widget class="QCheckBox" name="indiMessage">
             <property name="font">
              <font>
               <pointsize>10</pointsize>
              </font>
             </property>
-            <property name="text">
-             <string>Host IP/Port</string>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
-           </widget>
-          </item>
-          <item row="10" column="0">
-           <widget class="QLabel" name="label_mountIP_7">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
             </property>
             <property name="text">
-             <string>Host IP/Port</string>
+             <string>Show INDI messages in message window</string>
             </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="3">
-           <widget class="QLabel" name="label_16">
-            <property name="font">
-             <font>
-              <family>Arial</family>
-              <pointsize>10</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Environment</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="0">
-           <widget class="QLabel" name="label_21">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Device Name</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_mountIP_3">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Host IP/Port</string>
+            <property name="checked">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -13014,76 +13009,10 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="6">
-           <widget class="QLineEdit" name="skymeterPort">
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
-            </property>
+          <item row="6" column="4">
+           <widget class="QLabel" name="label_66">
             <property name="text">
-             <string>7624</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Device Name</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="1">
-           <widget class="QLineEdit" name="domeHost">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Arial</family>
-              <pointsize>10</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="mouseTracking">
-             <bool>false</bool>
-            </property>
-            <property name="acceptDrops">
-             <bool>false</bool>
-            </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::RightToLeft</enum>
-            </property>
-            <property name="text">
-             <string>localhost</string>
-            </property>
-            <property name="maxLength">
-             <number>50</number>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="dragEnabled">
-             <bool>true</bool>
-            </property>
-            <property name="readOnly">
-             <bool>false</bool>
+             <string>Host IP/Port</string>
             </property>
            </widget>
           </item>
@@ -13094,23 +13023,18 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="label_36">
+          <item row="9" column="0" colspan="3">
+           <widget class="QLabel" name="label_22">
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
             <property name="text">
-             <string>Host IP/Port</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" rowspan="2" colspan="3">
-           <widget class="Line" name="line_49">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <string>Dome</string>
             </property>
            </widget>
           </item>
@@ -13159,24 +13083,110 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="13" column="0" colspan="3">
-           <widget class="QCheckBox" name="indiMessage">
+          <item row="7" column="1">
+           <widget class="QComboBox" name="imagingDeviceName"/>
+          </item>
+          <item row="8" column="0" colspan="3">
+           <widget class="Line" name="line_55">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QLineEdit" name="skymeterHost">
+            <property name="text">
+             <string>localhost</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3" rowspan="13">
+           <widget class="Line" name="line_57">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="label_36">
+            <property name="text">
+             <string>Host IP/Port</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="4">
+           <widget class="QLabel" name="label_161">
+            <property name="text">
+             <string>Device Name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0">
+           <widget class="QLabel" name="label_21">
             <property name="font">
              <font>
               <pointsize>10</pointsize>
              </font>
             </property>
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <property name="text">
+             <string>Device Name</string>
             </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
+           </widget>
+          </item>
+          <item row="10" column="5">
+           <widget class="QLineEdit" name="weatherHost">
+            <property name="text">
+             <string>localhost</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="6">
+           <widget class="QLineEdit" name="weatherPort">
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
             </property>
             <property name="text">
-             <string>Show INDI messages in message window</string>
+             <string>7624</string>
             </property>
-            <property name="checked">
-             <bool>false</bool>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="6">
+           <widget class="QLineEdit" name="powerPort">
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>7624</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -13225,8 +13235,8 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_19">
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_13">
             <property name="font">
              <font>
               <pointsize>10</pointsize>
@@ -13237,8 +13247,8 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="0" colspan="3">
-           <widget class="QLabel" name="label_17">
+          <item row="0" column="4" colspan="3">
+           <widget class="QLabel" name="label_23">
             <property name="font">
              <font>
               <family>Arial</family>
@@ -13248,7 +13258,20 @@ manually</string>
              </font>
             </property>
             <property name="text">
-             <string>Imaging</string>
+             <string>Skymeter</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="4">
+           <widget class="QLabel" name="label_135">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Weather</string>
             </property>
            </widget>
           </item>
@@ -13262,6 +13285,69 @@ manually</string>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="5">
+           <widget class="QComboBox" name="skymeterDeviceName"/>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLineEdit" name="skymeterPort">
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>7624</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="4">
+           <widget class="QLabel" name="label_53">
+            <property name="text">
+             <string>Device Name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_19">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Device Name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="4" colspan="3">
+           <widget class="QLabel" name="label_110">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Power / Dewheater</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_mountIP_6">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Host IP/Port</string>
             </property>
            </widget>
           </item>
@@ -13287,73 +13373,59 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="3" rowspan="13">
-           <widget class="Line" name="line_57">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
+          <item row="10" column="1">
+           <widget class="QLineEdit" name="domeHost">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
             </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QComboBox" name="environDeviceName"/>
-          </item>
-          <item row="7" column="1">
-           <widget class="QComboBox" name="imagingDeviceName"/>
-          </item>
-          <item row="11" column="1">
-           <widget class="QComboBox" name="domeDeviceName"/>
-          </item>
-          <item row="2" column="5">
-           <widget class="QComboBox" name="skymeterDeviceName"/>
-          </item>
-          <item row="7" column="5">
-           <widget class="QComboBox" name="powerDeviceName"/>
-          </item>
-          <item row="7" column="4">
-           <widget class="QLabel" name="label_53">
-            <property name="text">
-             <string>Device Name</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="4">
-           <widget class="QLabel" name="label_66">
-            <property name="text">
-             <string>Host IP/Port</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="4" colspan="3">
-           <widget class="QLabel" name="label_110">
             <property name="font">
              <font>
-              <weight>75</weight>
-              <bold>true</bold>
+              <family>Arial</family>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
              </font>
             </property>
-            <property name="text">
-             <string>Power / Dewheater</string>
+            <property name="mouseTracking">
+             <bool>false</bool>
             </property>
-           </widget>
-          </item>
-          <item row="6" column="5">
-           <widget class="QLineEdit" name="powerHost">
+            <property name="acceptDrops">
+             <bool>false</bool>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
             <property name="text">
              <string>localhost</string>
+            </property>
+            <property name="maxLength">
+             <number>50</number>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
-          <item row="6" column="6">
-           <widget class="QLineEdit" name="powerPort">
+          <item row="10" column="2">
+           <widget class="QLineEdit" name="domePort">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>50</width>
@@ -13368,8 +13440,8 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="4" colspan="3">
-           <widget class="Line" name="line_60">
+          <item row="3" column="0" rowspan="2" colspan="3">
+           <widget class="Line" name="line_49">
             <property name="frameShadow">
              <enum>QFrame::Plain</enum>
             </property>
@@ -13381,56 +13453,25 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="4">
-           <widget class="QLabel" name="label_135">
+          <item row="7" column="5">
+           <widget class="QComboBox" name="powerDeviceName"/>
+          </item>
+          <item row="10" column="0">
+           <widget class="QLabel" name="label_mountIP_7">
             <property name="font">
              <font>
-              <weight>75</weight>
-              <bold>true</bold>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="text">
-             <string>Weather</string>
+             <string>Host IP/Port</string>
             </property>
            </widget>
           </item>
-          <item row="10" column="4">
-           <widget class="QLabel" name="label_150">
-            <property name="text">
-             <string>Host IP/port</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="4">
-           <widget class="QLabel" name="label_161">
-            <property name="text">
-             <string>Device Name</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="5">
-           <widget class="QComboBox" name="weatherDeviceName"/>
-          </item>
-          <item row="10" column="5">
-           <widget class="QLineEdit" name="weatherHost">
+          <item row="6" column="5">
+           <widget class="QLineEdit" name="powerHost">
             <property name="text">
              <string>localhost</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="6">
-           <widget class="QLineEdit" name="weatherPort">
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>7624</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -13449,6 +13490,72 @@ manually</string>
              <enum>Qt::Horizontal</enum>
             </property>
            </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="environDeviceName"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_mountIP_3">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Host IP/Port</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="4">
+           <widget class="QLabel" name="label_150">
+            <property name="text">
+             <string>Host IP/port</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="3">
+           <widget class="QLabel" name="label_16">
+            <property name="font">
+             <font>
+              <family>Arial</family>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Environment</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="4" colspan="3">
+           <widget class="Line" name="line_60">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="1">
+           <widget class="QComboBox" name="domeDeviceName"/>
+          </item>
+          <item row="14" column="0">
+           <spacer name="verticalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -18688,15 +18795,6 @@ manually</string>
   <tabstop>relayButton5</tabstop>
   <tabstop>relayButton6</tabstop>
   <tabstop>relayButton7</tabstop>
-  <tabstop>imagingDevice</tabstop>
-  <tabstop>astrometryDevice</tabstop>
-  <tabstop>environDevice</tabstop>
-  <tabstop>domeDevice</tabstop>
-  <tabstop>skymeterDevice</tabstop>
-  <tabstop>measureDevice</tabstop>
-  <tabstop>powerDevice</tabstop>
-  <tabstop>relayDevice</tabstop>
-  <tabstop>remoteDevice</tabstop>
   <tabstop>cameraExposure</tabstop>
   <tabstop>cameraBin</tabstop>
   <tabstop>checkDoSubframe</tabstop>

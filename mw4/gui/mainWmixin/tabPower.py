@@ -106,9 +106,9 @@ class Power(object):
         value = self.app.power.data.get('DEW_CURRENT_B', 0)
         self.ui.dewCurrentB.setText('{0:4.2f}'.format(value))
         value = self.app.power.data.get('DEW_A', 0)
-        self.ui.dewA.setText('{0:4.0f}'.format(value))
+        self.ui.dewA.setValue(value)
         value = self.app.power.data.get('DEW_B', 0)
-        self.ui.dewB.setText('{0:4.0f}'.format(value))
+        self.ui.dewB.setValue(value)
 
         return True
 

@@ -117,13 +117,13 @@ class SettDevice(object):
             dropDown.addItem('No device selected')
 
         # adding special items
-        self.ui.measureDevice.addItem('Built-In Measurement')
-        self.ui.remoteDevice.addItem('Built-In Remote')
-        self.ui.relayDevice.addItem('Built-In Relay')
-        self.ui.environDevice.addItem('Indi Driver')
-        self.ui.skymeterDevice.addItem('Indi Driver')
-        self.ui.weatherDevice.addItem('Indi Driver')
-        self.ui.powerDevice.addItem('Indi Driver')
+        self.ui.measureDevice.addItem('Built-In')
+        self.ui.remoteDevice.addItem('Built-In')
+        self.ui.relayDevice.addItem('Built-In')
+        self.ui.environDevice.addItem('INDI')
+        self.ui.skymeterDevice.addItem('INDI')
+        self.ui.weatherDevice.addItem('INDI')
+        self.ui.powerDevice.addItem('INDI')
 
         return True
 
@@ -138,7 +138,7 @@ class SettDevice(object):
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 
-        if self.ui.relayDevice.currentText() == 'Built-In Relay':
+        if self.ui.relayDevice.currentText().startswith('Built-In'):
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay enabled', 0)
@@ -163,7 +163,7 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        if self.ui.remoteDevice.currentText() == 'Built-In Remote':
+        if self.ui.remoteDevice.currentText() == 'Built-In':
             self.app.remote.startRemote()
             self.app.message.emit('Remote enabled', 0)
             self.ui.remoteDevice.setStyleSheet(self.BACK_GREEN)
@@ -181,7 +181,7 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        if self.ui.measureDevice.currentText() == 'Built-In Measurement':
+        if self.ui.measureDevice.currentText().startswith('Built-In'):
             self.app.measure.startMeasurement()
             self.app.message.emit('Measurement enabled', 0)
             self.ui.measureDevice.setStyleSheet(self.BACK_GREEN)
@@ -205,8 +205,7 @@ class SettDevice(object):
         self.ui.environGroup.setEnabled(False)
         self.ui.refractionGroup.setEnabled(False)
         self.ui.setRefractionManual.setEnabled(False)
-        index = self.ui.environDevice.currentIndex()
-        if index == 1:
+        if self.ui.environDevice.currentText().startswith('INDI'):
             self.app.environ.client.host = self.ui.environHost.text()
             self.app.environ.name = self.ui.environDeviceName.currentText()
             self.app.environ.startCommunication()
@@ -228,8 +227,7 @@ class SettDevice(object):
         """
 
         self.ui.skymeterGroup.setEnabled(False)
-        index = self.ui.skymeterDevice.currentIndex()
-        if index == 1:
+        if self.ui.skymeterDevice.currentText().startswith('INDI'):
             self.app.skymeter.client.host = self.ui.skymeterHost.text()
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
             self.app.skymeter.startCommunication()
@@ -249,8 +247,7 @@ class SettDevice(object):
         """
 
         self.ui.weatherGroup.setEnabled(False)
-        index = self.ui.weatherDevice.currentIndex()
-        if index == 1:
+        if self.ui.weatherDevice.currentText().startswith('INDI'):
             self.app.weather.client.host = self.ui.weatherHost.text()
             self.app.weather.name = self.ui.weatherDeviceName.currentText()
             self.app.weather.startCommunication()
@@ -273,7 +270,7 @@ class SettDevice(object):
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 
-        if self.ui.powerDevice.currentText() == 'Indi Driver':
+        if self.ui.powerDevice.currentText().startswith('INDI'):
             self.app.power.startCommunication()
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())

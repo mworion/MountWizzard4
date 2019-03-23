@@ -65,7 +65,7 @@ def test_mountBoot1(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.mountBoot()
             assert suc
-        assert ['Mount booting', 0] == blocker.args
+        assert ['Sent boot command to mount', 0] == blocker.args
 
 
 def test_mountBoot2(qtbot):
@@ -110,6 +110,7 @@ def test_updateMountConnStat():
 def test_clearMountGUI():
     suc = app.mainW.clearGUI()
     assert suc
+
 
 def test_closeEvent():
 

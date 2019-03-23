@@ -183,7 +183,7 @@ class KMRelay(PyQt5.QtCore.QObject):
             return None
 
         if not self.mutexPoll.tryLock():
-            return False
+            return None
 
         auth = requests.auth.HTTPBasicAuth(self._user,
                                            self._password,
@@ -196,7 +196,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         except requests.exceptions.Timeout:
             pass
         except requests.exceptions.ConnectionError:
-            result = 'NotOK'
+            pass
         except Exception as e:
             self.logger.error(f'Error in request: {e}')
 
@@ -218,8 +218,6 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         if value is None:
             self.logger.error('Polling error')
-            return False
-        if value == 'NotOK':
             return False
         if value.reason != 'OK':
             self.logger.error('Polling error')

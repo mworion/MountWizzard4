@@ -41,7 +41,6 @@ class Power(object):
         signals.defSwitch.connect(self.setSwitch)
         signals.newText.connect(self.setText)
         signals.defText.connect(self.setText)
-        signals.newProperty.connect(self.newProperty)
 
         self.ui.dewA.valueChanged.connect(self.sendDewA)
         self.ui.dewB.valueChanged.connect(self.sendDewB)
@@ -53,6 +52,7 @@ class Power(object):
         self.ui.powerBootPort2.clicked.connect(self.sendPowerBootPort2)
         self.ui.powerBootPort3.clicked.connect(self.sendPowerBootPort3)
         self.ui.powerBootPort4.clicked.connect(self.sendPowerBootPort4)
+        self.ui.hubUSB.clicked.connect(self.sendHubUSB)
 
     def initConfig(self):
         # config = self.app.config['mainW']
@@ -184,6 +184,8 @@ class Power(object):
                 self.ui.powerBootPort3.setChecked(value)
             elif element == 'POWER_PORT_4':
                 self.ui.powerBootPort4.setChecked(value)
+            elif propertyName == 'USB_PORT_CONTROL' and element == 'ENABLED':
+                self.ui.hubUSB.setChecked(value)
             # print(deviceName, propertyName, element, value)
 
         return True
@@ -205,29 +207,15 @@ class Power(object):
             return False
 
         for element, value in device.getText(propertyName).items():
-            print(deviceName, propertyName, element, value)
-
-        return True
-
-    def newProperty(self, deviceName, propertyName):
-        """
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-
-        if device is None:
-            return False
-        if deviceName != name:
-            return False
-
-        print(deviceName, propertyName)
-#        for element, value in device.getText(propertyName).items():
-#            print(deviceName, propertyName, element, value)
+            if element == 'POWER_LABEL_1':
+                self.ui.powerLabel1.setText(value)
+            elif element == 'POWER_LABEL_2':
+                self.ui.powerLabel2.setText(value)
+            elif element == 'POWER_LABEL_3':
+                self.ui.powerLabel3.setText(value)
+            elif element == 'POWER_LABEL_4':
+                self.ui.powerLabel4.setText(value)
+            # print(deviceName, propertyName, element, value)
 
         return True
 
@@ -449,4 +437,25 @@ class Power(object):
         client.sendNewSwitch(deviceName=name,
                              propertyName='POWER_ON_BOOT',
                              elements=power,
+                             )
+
+    def sendHubUSB(self):
+        """
+
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        usb = device.getSwitch('USB_PORT_CONTROL')
+        usb['ENABLED'] = self.ui.hubUSB.isChecked()
+        usb['DISABLED'] = not self.ui.hubUSB.isChecked()
+        client.sendNewSwitch(deviceName=name,
+                             propertyName='USB_PORT_CONTROL',
+                             elements=usb,
                              )

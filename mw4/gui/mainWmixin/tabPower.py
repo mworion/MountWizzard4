@@ -42,8 +42,9 @@ class Power(object):
         signals.newText.connect(self.setText)
         signals.defText.connect(self.setText)
 
-        self.ui.dewA.valueChanged.connect(self.sendDewA)
-        self.ui.dewB.valueChanged.connect(self.sendDewB)
+        self.ui.dewA.editingFinished.connect(self.sendDewA)
+        self.ui.dewB.editingFinished.connect(self.sendDewB)
+
         self.ui.powerPort1.clicked.connect(self.sendPowerPort1)
         self.ui.powerPort2.clicked.connect(self.sendPowerPort2)
         self.ui.powerPort3.clicked.connect(self.sendPowerPort3)
@@ -53,6 +54,7 @@ class Power(object):
         self.ui.powerBootPort3.clicked.connect(self.sendPowerBootPort3)
         self.ui.powerBootPort4.clicked.connect(self.sendPowerBootPort4)
         self.ui.hubUSB.clicked.connect(self.sendHubUSB)
+        self.ui.autoDew.clicked.connect(self.sendAutoDew)
 
     def initConfig(self):
         # config = self.app.config['mainW']
@@ -186,6 +188,8 @@ class Power(object):
                 self.ui.powerBootPort4.setChecked(value)
             elif propertyName == 'USB_PORT_CONTROL' and element == 'ENABLED':
                 self.ui.hubUSB.setChecked(value)
+            elif propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':
+                self.ui.autoDew.setChecked(value)
             # print(deviceName, propertyName, element, value)
 
         return True
@@ -234,6 +238,7 @@ class Power(object):
 
         dew = device.getNumber('DEW_PWM')
         dew['DEW_A'] = self.ui.dewA.value()
+        print(dew['DEW_A'])
         client.sendNewNumber(deviceName=name,
                              propertyName='DEW_PWM',
                              elements=dew,
@@ -458,4 +463,25 @@ class Power(object):
         client.sendNewSwitch(deviceName=name,
                              propertyName='USB_PORT_CONTROL',
                              elements=usb,
+                             )
+
+    def sendAutoDew(self):
+        """
+
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        autoDew = device.getSwitch('AUTO_DEW')
+        autoDew['AUTO_DEW_ENABLED'] = self.ui.hubUSB.isChecked()
+        autoDew['AUTO_DEW_DISABLEDLED'] = not self.ui.hubUSB.isChecked()
+        client.sendNewSwitch(deviceName=name,
+                             propertyName='AUTO_DEW',
+                             elements=autoDew,
                              )

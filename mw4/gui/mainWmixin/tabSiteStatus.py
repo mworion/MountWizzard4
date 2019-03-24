@@ -612,5 +612,3 @@ class SiteStatus(object):
         self.ui.weatherRainVol.setText('{0:3.0f}'.format(value))
         value = self.app.weather.data.get('WEATHER_SNOW_HOUR', 0)
         self.ui.weatherSnowVol.setText('{0:3.0f}'.format(value))
-
-

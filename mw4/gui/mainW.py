@@ -24,6 +24,7 @@ import datetime
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+import wakeonlan
 # local import
 from mw4.gui.widget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
@@ -119,6 +120,8 @@ class MainWindow(MWidget,
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.app.remoteCommand.connect(self.remoteCommand)
 
+        self.ui.bootRackComp.clicked.connect(self.bootRackComp)
+
         # initial call for writing the gui
         self.updateMountConnStat(False)
         self.initConfig()
@@ -143,6 +146,7 @@ class MainWindow(MWidget,
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
+        self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
 
         Mount.initConfig(self)
         SiteStatus.initConfig(self)
@@ -172,6 +176,7 @@ class MainWindow(MWidget,
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
+        config['rackCompMAC'] = self.ui.rackCompMAC.text()
 
         Mount.storeConfig(self)
         SiteStatus.storeConfig(self)
@@ -257,6 +262,51 @@ class MainWindow(MWidget,
             return True
         else:
             self.app.message.emit('Mount cannot be shutdown', 2)
+            return False
+
+    def checkFormatMAC(self, value):
+        """
+        checkFormatMAC makes some checks to ensure that the format of the string is ok for
+        WOL package.
+
+        :param      value: string with mac address
+        :return:    checked string in upper cases
+        """
+
+        if not value:
+            self.logger.error('wrong MAC value: {0}'.format(value))
+            return None
+        if not isinstance(value, str):
+            self.logger.error('wrong MAC value: {0}'.format(value))
+            return None
+        value = value.upper()
+        value = value.replace('.', ':')
+        value = value.split(':')
+        if len(value) != 6:
+            self.logger.error('wrong MAC value: {0}'.format(value))
+            return None
+        for chunk in value:
+            if len(chunk) != 2:
+                self.logger.error('wrong MAC value: {0}'.format(value))
+                return None
+            for char in chunk:
+                if char not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                                'A', 'B', 'C', 'D', 'E', 'F']:
+                    self.logger.error('wrong MAC value: {0}'.format(value))
+                    return None
+        # now we build the right format
+        value = '{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}'.format(*value)
+        return value
+
+    def bootRackComp(self):
+        MAC = self.ui.rackCompMAC.text()
+        MAC = self.checkFormatMAC(MAC)
+        if MAC is not None:
+            wakeonlan.send_magic_packet(MAC)
+            self.app.message.emit('Sent boot command to rack computer', 0)
+            return True
+        else:
+            self.app.message.emit('Rack computer cannot be booted', 2)
             return False
 
     def clearGUI(self):

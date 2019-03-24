@@ -445,8 +445,6 @@ class SettIndi(object):
         self.ui.weatherGroup.setEnabled(False)
         return True
 
-
-
     def showIndiPowerConnected(self):
         """
         showIndiPowerConnected writes info to message window

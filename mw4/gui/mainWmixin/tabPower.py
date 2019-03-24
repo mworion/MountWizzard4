@@ -284,26 +284,6 @@ class Power(object):
                              elements=power,
                              )
 
-    def sendPowerPort1(self):
-        """
-
-        :return:
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        power = device.getSwitch('POWER_CONTROL')
-        power['POWER_CONTROL_1'] = self.ui.powerPort1.isChecked()
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='POWER_CONTROL',
-                             elements=power,
-                             )
-
     def sendPowerPort2(self):
         """
 

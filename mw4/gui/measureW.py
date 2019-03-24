@@ -251,11 +251,16 @@ class MeasureWindow(widget.MWidget):
                                                               min_n_ticks=4,
                                                               prune='both',
                                                               ))
+        axe0.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                       ))
+
         axe1.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
                                                               integer=True,
                                                               min_n_ticks=4,
                                                               prune='both',
                                                               ))
+        axe1.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                       ))
 
         return True
 
@@ -334,11 +339,16 @@ class MeasureWindow(widget.MWidget):
                                                               min_n_ticks=4,
                                                               prune='both',
                                                               ))
+        axe0.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                       ))
+
         axe1.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
                                                               integer=True,
                                                               min_n_ticks=4,
                                                               prune='both',
                                                               ))
+        axe1.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                       ))
 
         return True
 
@@ -391,6 +401,8 @@ class MeasureWindow(widget.MWidget):
                                                               min_n_ticks=4,
                                                               prune='both',
                                                               ))
+        axe0.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.2f',
+                                                                       ))
 
         return True
 

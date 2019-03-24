@@ -64,6 +64,7 @@ class SettDevice(object):
         self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
         self.ui.weatherDevice.activated.connect(self.weatherDispatch)
         self.ui.powerDevice.activated.connect(self.powerDispatch)
+        self.ui.astrometryDevice.activated.connect(self.astrometryDispatch)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -77,6 +78,7 @@ class SettDevice(object):
         self.skymeterDispatch()
         self.weatherDispatch()
         self.powerDispatch()
+        self.astrometryDispatch()
         return True
 
     def storeConfig(self):
@@ -124,6 +126,7 @@ class SettDevice(object):
         self.ui.skymeterDevice.addItem('INDI')
         self.ui.weatherDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
+        self.ui.astrometryDevice.addItem('Built-In')
 
         return True
 
@@ -286,4 +289,27 @@ class SettDevice(object):
         # update the style for showing the Relay tab
         self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
         self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
+        return True
+
+    def astrometryDispatch(self):
+        """
+        astrometryDispatch selects the type of device for environment measures and start / stop
+        them.
+
+        :return: true for test purpose
+        """
+
+        if self.ui.astrometryDevice.currentText().startswith('Built-In'):
+            if not self.app.astrometry.available:
+                self.app.message.emit('Built in astrometry not available', 2)
+                self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')
+                return False
+            self.ui.astrometryDevice.setStyleSheet(self.BACK_GREEN)
+            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'green')
+            self.app.message.emit('Astrometry enabled', 0)
+        else:
+            self.app.message.emit('Astrometry disabled', 0)
+            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'gray')
+            self.ui.astrometryDevice.setStyleSheet(self.BACK_NORM)
+
         return True

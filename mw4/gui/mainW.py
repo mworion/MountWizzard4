@@ -104,7 +104,6 @@ class MainWindow(MWidget,
         self.app.mount.signals.settDone.connect(self.setMountMAC)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.mount.signals.mountClear.connect(self.clearGUI)
-        self.app.plateSolve.signals.status.connect(self.updateAstrometry)
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update10s.connect(self.updateRefractionParameters)
@@ -381,18 +380,6 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-        return True
-
-    def updateAstrometry(self, status):
-        """
-
-        :param status: status according traffic lights definition
-        :return: True for test purpose
-        """
-
-        color = self.TRAFFICLIGHTCOLORS[status]
-        ui = self.ui.astrometryConnected
-        self.changeStyleDynamic(ui, 'color', color)
         return True
 
     def updateStatusGUI(self):

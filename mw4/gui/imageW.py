@@ -67,8 +67,8 @@ class ImageWindow(widget.MWidget):
         self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
         self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
-        self.app.plateSolve.signals.solveDone.connect(self.solveDone)
-        self.app.plateSolve.signals.solveResult.connect(self.solveResult)
+        self.app.astrometry.signals.solveDone.connect(self.solveDone)
+        self.app.astrometry.signals.solveResult.connect(self.solveResult)
 
         self.initConfig()
 

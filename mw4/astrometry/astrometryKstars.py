@@ -49,7 +49,6 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
 
     solveDone = PyQt5.QtCore.pyqtSignal()
     solveResult = PyQt5.QtCore.pyqtSignal(object)
-    status = PyQt5.QtCore.pyqtSignal(int)
 
 
 class AstrometryKstars(object):
@@ -79,6 +78,7 @@ class AstrometryKstars(object):
         self.threadPool = threadPool
         self.mutexSolve = PyQt5.QtCore.QMutex()
         self.signals = AstrometrySignals()
+        self.available = False
 
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME')
@@ -99,6 +99,7 @@ class AstrometryKstars(object):
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
             outFile.write(f'cpulimit 300\nadd_path {self.indexPath}\nautoindex\n')
+        self.checkAvailability()
 
     def stringToDegree(self, value):
         """
@@ -238,10 +239,8 @@ class AstrometryKstars(object):
 
         if suc:
             self.logger.info('solve-field, image2xy and index files available')
-            self.signals.status.emit(0)
-        else:
-            self.signals.status.emit(2)
 
+        self.available = suc
         return suc
 
     def readFitsData(self, fitsHDU='', searchRatio=1.1):

@@ -132,10 +132,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.measure = measuredata.MeasureData(self)
         self.remote = remote.Remote(self)
         if platform.system() in ['Darwin', 'Linux']:
-            self.plateSolve = astrometryKstars.AstrometryKstars(mwGlob['tempDir'],
+            self.astrometry = astrometryKstars.AstrometryKstars(mwGlob['tempDir'],
                                                                 self.threadPool)
         else:
-            self.plateSolve = astrometryKstars.AstrometryKstars(mwGlob['tempDir'],
+            self.astrometry = astrometryKstars.AstrometryKstars(mwGlob['tempDir'],
                                                                 self.threadPool)
         # get the window widgets up
         self.mainW = mainW.MainWindow(self)
@@ -150,7 +150,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # starting mount communication
         self.mount.startTimers()
-        self.plateSolve.checkAvailability()
+        self.astrometry.checkAvailability()
 
         self.timer1s = PyQt5.QtCore.QTimer()
         self.timer1s.setSingleShot(False)

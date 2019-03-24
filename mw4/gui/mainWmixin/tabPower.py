@@ -36,7 +36,12 @@ class Power(object):
         signals.newNumber.connect(self.updatePowerGui)
         signals.deviceDisconnected.connect(self.clearPowerGui)
         signals.newNumber.connect(self.setNumber)
+        signals.defNumber.connect(self.setNumber)
         signals.newSwitch.connect(self.setSwitch)
+        signals.defSwitch.connect(self.setSwitch)
+        signals.newText.connect(self.setText)
+        signals.defText.connect(self.setText)
+        signals.newProperty.connect(self.newProperty)
 
         self.ui.dewA.valueChanged.connect(self.sendDewA)
         self.ui.dewB.valueChanged.connect(self.sendDewB)
@@ -142,7 +147,7 @@ class Power(object):
                 self.ui.dewA.setValue(round(value, -1))
             elif element == 'DEW_B':
                 self.ui.dewB.setValue(round(value, -1))
-            print(deviceName, propertyName, element, value)
+            # print(deviceName, propertyName, element, value)
 
         return True
 
@@ -179,7 +184,50 @@ class Power(object):
                 self.ui.powerBootPort3.setChecked(value)
             elif element == 'POWER_PORT_4':
                 self.ui.powerBootPort4.setChecked(value)
+            # print(deviceName, propertyName, element, value)
+
+        return True
+
+    def setText(self, deviceName, propertyName):
+        """
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+
+        if device is None:
+            return False
+        if deviceName != name:
+            return False
+
+        for element, value in device.getText(propertyName).items():
             print(deviceName, propertyName, element, value)
+
+        return True
+
+    def newProperty(self, deviceName, propertyName):
+        """
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+
+        if device is None:
+            return False
+        if deviceName != name:
+            return False
+
+        print(deviceName, propertyName)
+#        for element, value in device.getText(propertyName).items():
+#            print(deviceName, propertyName, element, value)
 
         return True
 

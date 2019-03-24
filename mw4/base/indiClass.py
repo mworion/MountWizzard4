@@ -63,6 +63,7 @@ class IndiClass(object):
         self.client.signals.removeDevice.connect(self.removeDevice)
         self.client.signals.newProperty.connect(self.connectDevice)
         self.client.signals.newNumber.connect(self.updateData)
+        self.client.signals.defNumber.connect(self.updateData)
         self.client.signals.deviceConnected.connect(self.setUpdateConfig)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)

@@ -68,39 +68,6 @@ class PegasusUPB(indiClass.IndiClass):
         if self.device is None:
             return False
 
-        # calling some values, which weren't sent at the beginning
-
-        dew = self.device.getNumber('DEW_PWM')
-        self.client.sendNewNumber(deviceName=deviceName,
-                                  propertyName='DEW_PWM',
-                                  elements=dew,
-                                  )
-        powerControl = self.device.getSwitch('POWER_CONTROL')
-        self.client.sendNewSwitch(deviceName=deviceName,
-                                  propertyName='POWER_CONTROL',
-                                  elements=powerControl,
-                                  )
-        powerBoot = self.device.getSwitch('POWER_ON_BOOT')
-        self.client.sendNewSwitch(deviceName=deviceName,
-                                  propertyName='POWER_ON_BOOT',
-                                  elements=powerBoot,
-                                  )
-        sensor = self.device.getNumber('POWER_SENSORS')
-        self.client.sendNewNumber(deviceName=deviceName,
-                                  propertyName='POWER_SENSORS',
-                                  elements=sensor,
-                                  )
-        consumption = self.device.getNumber('POWER_CONSUMPTION')
-        self.client.sendNewNumber(deviceName=deviceName,
-                                  propertyName='POWER_CONSUMPTION',
-                                  elements=consumption,
-                                  )
-        weather = self.device.getNumber('WEATHER_PARAMETERS')
-        self.client.sendNewNumber(deviceName=deviceName,
-                                  propertyName='WEATHER_PARAMETERS',
-                                  elements=weather,
-                                  )
-
         # setting polling updates in driver
 
         update = self.device.getNumber('POLLING')

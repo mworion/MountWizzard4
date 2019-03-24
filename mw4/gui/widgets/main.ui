@@ -11933,6 +11933,9 @@ manually</string>
           </item>
           <item row="2" column="1">
            <widget class="QLineEdit" name="powerDewPoint">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -11940,6 +11943,9 @@ manually</string>
           </item>
           <item row="1" column="1">
            <widget class="QLineEdit" name="powerTemp">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -11947,6 +11953,9 @@ manually</string>
           </item>
           <item row="0" column="1">
            <widget class="QLineEdit" name="powerHumidity">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12002,6 +12011,9 @@ manually</string>
           </property>
           <item row="1" column="1">
            <widget class="QLineEdit" name="dewCurrentA">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12097,6 +12109,9 @@ manually</string>
           </item>
           <item row="4" column="1">
            <widget class="QLineEdit" name="dewCurrentB">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12118,6 +12133,9 @@ manually</string>
           </property>
           <item row="1" column="1">
            <widget class="QLineEdit" name="sensorCurrent">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12125,6 +12143,9 @@ manually</string>
           </item>
           <item row="3" column="1">
            <widget class="QLineEdit" name="consumptionAvgAmps">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12132,6 +12153,9 @@ manually</string>
           </item>
           <item row="5" column="1">
            <widget class="QLineEdit" name="consumptionWattHours">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12153,6 +12177,9 @@ manually</string>
           </item>
           <item row="4" column="1">
            <widget class="QLineEdit" name="consumptionAmpHours">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12188,6 +12215,9 @@ manually</string>
           </item>
           <item row="0" column="1">
            <widget class="QLineEdit" name="sensorVoltage">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12223,6 +12253,9 @@ manually</string>
           </item>
           <item row="2" column="1">
            <widget class="QLineEdit" name="sensorPower">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12311,6 +12344,9 @@ manually</string>
           </item>
           <item row="15" column="1">
            <widget class="QLineEdit" name="powerCurrent4">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12358,6 +12394,9 @@ manually</string>
           </item>
           <item row="11" column="1">
            <widget class="QLineEdit" name="powerCurrent3">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12379,6 +12418,9 @@ manually</string>
           </item>
           <item row="2" column="1">
            <widget class="QLineEdit" name="powerCurrent1">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -12412,6 +12454,9 @@ manually</string>
           </item>
           <item row="6" column="1">
            <widget class="QLineEdit" name="powerCurrent2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -18752,13 +18797,13 @@ manually</string>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>environHost</tabstop>
-  <tabstop>imagingHost</tabstop>
-  <tabstop>domeHost</tabstop>
-  <tabstop>indiMessage</tabstop>
-  <tabstop>checkJ2000</tabstop>
-  <tabstop>checkJNow</tabstop>
-  <tabstop>posButton0</tabstop>
+  <tabstop>hubUSB</tabstop>
+  <tabstop>powerCurrent1</tabstop>
+  <tabstop>powerCurrent2</tabstop>
+  <tabstop>powerCurrent3</tabstop>
+  <tabstop>powerCurrent4</tabstop>
+  <tabstop>dewA</tabstop>
+  <tabstop>dewB</tabstop>
   <tabstop>posButton1</tabstop>
   <tabstop>posButton2</tabstop>
   <tabstop>posButton3</tabstop>
@@ -18978,6 +19023,58 @@ manually</string>
   <tabstop>settingsTabWidget</tabstop>
   <tabstop>listSatelliteName</tabstop>
   <tabstop>mainTabWidget</tabstop>
+  <tabstop>relayButton0</tabstop>
+  <tabstop>environHost</tabstop>
+  <tabstop>checkJ2000</tabstop>
+  <tabstop>powerPort2</tabstop>
+  <tabstop>indiMessage</tabstop>
+  <tabstop>powerPort4</tabstop>
+  <tabstop>powerBootPort3</tabstop>
+  <tabstop>imagingHost</tabstop>
+  <tabstop>powerPort1</tabstop>
+  <tabstop>domeHost</tabstop>
+  <tabstop>powerBootPort1</tabstop>
+  <tabstop>powerBootPort2</tabstop>
+  <tabstop>powerPort3</tabstop>
+  <tabstop>powerBootPort4</tabstop>
+  <tabstop>dewCurrentA</tabstop>
+  <tabstop>posButton0</tabstop>
+  <tabstop>checkJNow</tabstop>
+  <tabstop>dewCurrentB</tabstop>
+  <tabstop>sensorCurrent</tabstop>
+  <tabstop>consumptionAvgAmps</tabstop>
+  <tabstop>consumptionWattHours</tabstop>
+  <tabstop>consumptionAmpHours</tabstop>
+  <tabstop>sensorVoltage</tabstop>
+  <tabstop>sensorPower</tabstop>
+  <tabstop>powerDewPoint</tabstop>
+  <tabstop>powerTemp</tabstop>
+  <tabstop>powerHumidity</tabstop>
+  <tabstop>environDevice</tabstop>
+  <tabstop>measureDevice</tabstop>
+  <tabstop>astrometryDevice</tabstop>
+  <tabstop>weatherDevice</tabstop>
+  <tabstop>domeDevice</tabstop>
+  <tabstop>remoteDevice</tabstop>
+  <tabstop>relayDevice</tabstop>
+  <tabstop>powerDevice</tabstop>
+  <tabstop>skymeterDevice</tabstop>
+  <tabstop>imagingDevice</tabstop>
+  <tabstop>weatherDeviceName</tabstop>
+  <tabstop>environPort</tabstop>
+  <tabstop>imagingDeviceName</tabstop>
+  <tabstop>skymeterHost</tabstop>
+  <tabstop>weatherHost</tabstop>
+  <tabstop>weatherPort</tabstop>
+  <tabstop>powerPort</tabstop>
+  <tabstop>skymeterDeviceName</tabstop>
+  <tabstop>skymeterPort</tabstop>
+  <tabstop>imagingPort</tabstop>
+  <tabstop>domePort</tabstop>
+  <tabstop>powerDeviceName</tabstop>
+  <tabstop>powerHost</tabstop>
+  <tabstop>environDeviceName</tabstop>
+  <tabstop>domeDeviceName</tabstop>
  </tabstops>
  <resources/>
  <connections/>

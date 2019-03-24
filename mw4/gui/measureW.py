@@ -347,7 +347,7 @@ class MeasureWindow(widget.MWidget):
                                                               min_n_ticks=4,
                                                               prune='both',
                                                               ))
-        axe1.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+        axe1.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.0f',
                                                                        ))
 
         return True

@@ -35,6 +35,11 @@ class Power(object):
         signals = self.app.power.client.signals
         signals.newNumber.connect(self.updatePowerGui)
         signals.deviceDisconnected.connect(self.clearPowerGui)
+        signals.newNumber.connect(self.setNumber)
+        signals.newSwitch.connect(self.setSwitch)
+
+        self.ui.dewA.valueChanged.connect(self.sendDewA)
+        self.ui.dewB.valueChanged.connect(self.sendDewB)
 
     def initConfig(self):
         # config = self.app.config['mainW']
@@ -105,11 +110,91 @@ class Power(object):
         self.ui.dewCurrentA.setText('{0:4.2f}'.format(value))
         value = self.app.power.data.get('DEW_CURRENT_B', 0)
         self.ui.dewCurrentB.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('DEW_A', 0)
-        self.ui.dewA.setValue(value)
-        value = self.app.power.data.get('DEW_B', 0)
-        self.ui.dewB.setValue(value)
 
         return True
 
+    def setNumber(self, deviceName, propertyName):
+        """
 
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+
+        if device is None:
+            return False
+        if deviceName != name:
+            return False
+
+        for element, value in device.getNumber(propertyName).items():
+            if element == 'DEW_A':
+                self.ui.dewA.setValue(round(value, -1))
+            elif element == 'DEW_B':
+                self.ui.dewB.setValue(round(value, -1))
+            print(deviceName, propertyName, element, value)
+
+        return True
+
+    def setSwitch(self, deviceName, propertyName):
+        """
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+
+        if device is None:
+            return False
+        if deviceName != name:
+            return False
+
+        for element, value in device.getSwitch(propertyName).items():
+            print(deviceName, propertyName, element, value)
+
+        return True
+
+    def sendDewA(self):
+        """
+
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        dew = device.getNumber('DEW_PWM')
+        dew['DEW_A'] = self.ui.dewA.value()
+        client.sendNewNumber(deviceName=name,
+                             propertyName='DEW_PWM',
+                             elements=dew,
+                             )
+
+    def sendDewB(self):
+        """
+
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        dew = device.getNumber('DEW_PWM')
+        dew['DEW_B'] = self.ui.dewB.value()
+        client.sendNewNumber(deviceName=name,
+                             propertyName='DEW_PWM',
+                             elements=dew,
+                             )

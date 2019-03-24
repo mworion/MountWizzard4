@@ -80,6 +80,11 @@ class PegasusUPB(indiClass.IndiClass):
                                   propertyName='POWER_CONTROL',
                                   elements=powerControl,
                                   )
+        powerBoot = self.device.getSwitch('POWER_ON_BOOT')
+        self.client.sendNewSwitch(deviceName=deviceName,
+                                  propertyName='POWER_ON_BOOT',
+                                  elements=powerBoot,
+                                  )
 
         # setting polling updates in driver
 

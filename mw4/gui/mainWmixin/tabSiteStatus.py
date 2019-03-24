@@ -203,10 +203,6 @@ class SiteStatus(object):
             self.ui.siteLongitude.setText(obs.location.longitude.dstr())
             self.ui.siteLatitude.setText(obs.location.latitude.dstr())
             self.ui.siteElevation.setText(str(obs.location.elevation.m))
-        else:
-            self.ui.siteLongitude.setText('-')
-            self.ui.siteLatitude.setText('-')
-            self.ui.siteElevation.setText('-')
 
         return True
 

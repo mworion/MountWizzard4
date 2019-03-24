@@ -40,6 +40,10 @@ class Power(object):
 
         self.ui.dewA.valueChanged.connect(self.sendDewA)
         self.ui.dewB.valueChanged.connect(self.sendDewB)
+        self.ui.powerPort1.clicked.connect(self.sendPowerPort1)
+        self.ui.powerPort2.clicked.connect(self.sendPowerPort2)
+        self.ui.powerPort3.clicked.connect(self.sendPowerPort3)
+        self.ui.powerPort4.clicked.connect(self.sendPowerPort4)
 
     def initConfig(self):
         # config = self.app.config['mainW']
@@ -134,7 +138,7 @@ class Power(object):
                 self.ui.dewA.setValue(round(value, -1))
             elif element == 'DEW_B':
                 self.ui.dewB.setValue(round(value, -1))
-            print(deviceName, propertyName, element, value)
+            # print(deviceName, propertyName, element, value)
 
         return True
 
@@ -155,6 +159,14 @@ class Power(object):
             return False
 
         for element, value in device.getSwitch(propertyName).items():
+            if element == 'POWER_CONTROL_1':
+                self.ui.powerPort1.setChecked(value)
+            elif element == 'POWER_CONTROL_2':
+                self.ui.powerPort2.setChecked(value)
+            elif element == 'POWER_CONTROL_3':
+                self.ui.powerPort3.setChecked(value)
+            elif element == 'POWER_CONTROL_4':
+                self.ui.powerPort4.setChecked(value)
             print(deviceName, propertyName, element, value)
 
         return True
@@ -197,4 +209,104 @@ class Power(object):
         client.sendNewNumber(deviceName=name,
                              propertyName='DEW_PWM',
                              elements=dew,
+                             )
+
+    def sendPowerPort1(self):
+        """
+
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        power = device.getSwitch('POWER_CONTROL')
+        power['POWER_CONTROL_1'] = self.ui.powerPort1.isChecked()
+        client.sendNewSwitch(deviceName=name,
+                             propertyName='POWER_CONTROL',
+                             elements=power,
+                             )
+
+    def sendPowerPort1(self):
+        """
+
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        power = device.getSwitch('POWER_CONTROL')
+        power['POWER_CONTROL_1'] = self.ui.powerPort1.isChecked()
+        client.sendNewSwitch(deviceName=name,
+                             propertyName='POWER_CONTROL',
+                             elements=power,
+                             )
+
+    def sendPowerPort2(self):
+        """
+
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        power = device.getSwitch('POWER_CONTROL')
+        power['POWER_CONTROL_2'] = self.ui.powerPort2.isChecked()
+        client.sendNewSwitch(deviceName=name,
+                             propertyName='POWER_CONTROL',
+                             elements=power,
+                             )
+
+    def sendPowerPort3(self):
+        """
+
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        power = device.getSwitch('POWER_CONTROL')
+        power['POWER_CONTROL_3'] = self.ui.powerPort3.isChecked()
+        client.sendNewSwitch(deviceName=name,
+                             propertyName='POWER_CONTROL',
+                             elements=power,
+                             )
+
+    def sendPowerPort4(self):
+        """
+
+        :return:
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        power = device.getSwitch('POWER_CONTROL')
+        power['POWER_CONTROL_4'] = self.ui.powerPort4.isChecked()
+        client.sendNewSwitch(deviceName=name,
+                             propertyName='POWER_CONTROL',
+                             elements=power,
                              )

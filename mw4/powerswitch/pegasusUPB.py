@@ -68,11 +68,20 @@ class PegasusUPB(indiClass.IndiClass):
         if self.device is None:
             return False
 
+        # calling some values, which weren't sent at the beginning
+
         dew = self.device.getNumber('DEW_PWM')
         self.client.sendNewNumber(deviceName=deviceName,
                                   propertyName='DEW_PWM',
                                   elements=dew,
                                   )
+        powerControl = self.device.getSwitch('POWER_CONTROL')
+        self.client.sendNewSwitch(deviceName=deviceName,
+                                  propertyName='POWER_CONTROL',
+                                  elements=powerControl,
+                                  )
+
+        # setting polling updates in driver
 
         update = self.device.getNumber('POLLING')
 

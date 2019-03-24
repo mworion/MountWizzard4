@@ -142,7 +142,7 @@ class Power(object):
                 self.ui.dewA.setValue(round(value, -1))
             elif element == 'DEW_B':
                 self.ui.dewB.setValue(round(value, -1))
-            # print(deviceName, propertyName, element, value)
+            print(deviceName, propertyName, element, value)
 
         return True
 

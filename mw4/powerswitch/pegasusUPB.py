@@ -85,6 +85,21 @@ class PegasusUPB(indiClass.IndiClass):
                                   propertyName='POWER_ON_BOOT',
                                   elements=powerBoot,
                                   )
+        sensor = self.device.getNumber('POWER_SENSORS')
+        self.client.sendNewNumber(deviceName=deviceName,
+                                  propertyName='POWER_SENSORS',
+                                  elements=sensor,
+                                  )
+        consumption = self.device.getNumber('POWER_CONSUMPTION')
+        self.client.sendNewNumber(deviceName=deviceName,
+                                  propertyName='POWER_CONSUMPTION',
+                                  elements=consumption,
+                                  )
+        weather = self.device.getNumber('WEATHER_PARAMETERS')
+        self.client.sendNewNumber(deviceName=deviceName,
+                                  propertyName='WEATHER_PARAMETERS',
+                                  elements=weather,
+                                  )
 
         # setting polling updates in driver
 

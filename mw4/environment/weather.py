@@ -121,12 +121,14 @@ class Weather(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            self.data[element] = value
 
-        if 'WEATHER_PRESSURE' not in self.data and 'WEATHER_BAROMETER' in self.data:
-            self.data['WEATHER_PRESSURE'] = self.data['WEATHER_BAROMETER']
-        if 'WEATHER_BAROMETER' not in self.data and 'WEATHER_PRESSURE' in self.data:
-            self.data['WEATHER_BAROMETER'] = self.data['WEATHER_PRESSURE']
+            # consolidate to WEATHER_PRESSURE
+            if element == 'WEATHER_BAROMETER':
+                key = 'WEATHER_PRESSURE'
+            else:
+                key = element
+
+            self.data[element] = value
 
         if 'WEATHER_DEWPOINT' in self.data:
             return True

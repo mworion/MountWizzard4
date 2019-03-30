@@ -121,9 +121,16 @@ class Environ(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            self.data[element] = value
-            elArray = element + '_ARRAY'
-            elTime = element + '_TIME'
+
+            # consolidate to WEATHER_PRESSURE
+            if element == 'WEATHER_BAROMETER':
+                key = 'WEATHER_PRESSURE'
+            else:
+                key = element
+
+            self.data[key] = value
+            elArray = key + '_ARRAY'
+            elTime = key + '_TIME'
             if elArray not in self.data:
                 self.data[elArray] = np.full(100, value)
                 self.data[elTime] = np.full(100, datetime.now())
@@ -132,11 +139,6 @@ class Environ(indiClass.IndiClass):
                 self.data[elArray][0] = value
                 self.data[elTime] = np.roll(self.data[elTime], 1)
                 self.data[elTime][0] = datetime.now()
-
-        if 'WEATHER_PRESSURE' not in self.data and 'WEATHER_BAROMETER' in self.data:
-            self.data['WEATHER_PRESSURE'] = self.data['WEATHER_BAROMETER']
-        if 'WEATHER_BAROMETER' not in self.data and 'WEATHER_PRESSURE' in self.data:
-            self.data['WEATHER_BAROMETER'] = self.data['WEATHER_PRESSURE']
 
         if 'WEATHER_DEWPOINT' in self.data:
             return True

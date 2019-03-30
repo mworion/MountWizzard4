@@ -92,14 +92,14 @@ def test_startCommunication_1():
 
 def test_setUpdateRate_1():
     app.name = 'test'
-    suc = app._setUpdateRate('false')
+    suc = app.setUpdateConfig('false')
     assert not suc
 
 
 def test_setUpdateRate_2():
     app.name = 'test'
     app.device = None
-    suc = app._setUpdateRate('test')
+    suc = app.setUpdateConfig('test')
     assert not suc
 
 
@@ -110,7 +110,7 @@ def test_setUpdateRate_3():
             return {}
     app.name = 'test'
     app.device = Test()
-    suc = app._setUpdateRate('test')
+    suc = app.setUpdateConfig('test')
     assert not suc
 
 
@@ -121,7 +121,7 @@ def test_setUpdateRate_4():
             return {'PERIOD': 1}
     app.name = 'test'
     app.device = Test()
-    suc = app._setUpdateRate('test')
+    suc = app.setUpdateConfig('test')
     assert suc
 
 
@@ -135,7 +135,7 @@ def test_setUpdateRate_5():
     with mock.patch.object(app.client,
                            'sendNewNumber',
                            return_value=False):
-        suc = app._setUpdateRate('test')
+        suc = app.setUpdateConfig('test')
         assert not suc
 
 
@@ -149,7 +149,7 @@ def test_setUpdateRate_6():
     with mock.patch.object(app.client,
                            'sendNewNumber',
                            return_value=True):
-        suc = app._setUpdateRate('test')
+        suc = app.setUpdateConfig('test')
         assert suc
 
 

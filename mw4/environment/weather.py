@@ -128,7 +128,7 @@ class Weather(indiClass.IndiClass):
             else:
                 key = element
 
-            self.data[element] = value
+            self.data[key] = value
 
         if 'WEATHER_DEWPOINT' in self.data:
             return True

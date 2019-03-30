@@ -1,14 +1,23 @@
 missing tests:
-- loader
-- imageW
+- loader 0%
+- imageW only 44%
 - for polar plot in mainW 
 - deviceSetting
+- mountcontrol new commands qt
+- indibase new commands qt
+- astrometry only 77%
+- tabPower 22%
+- mainW 84%
+- widget 67%
+- messageW 81%
+- kmRelay 75%
+- remote 52%
+- pegasus UPB 41%
 
 problems occurred list:
 - mountcontrol overflow pointing
-- wcs axes in GUI not showing always labels
-- improved header handling image window + docu
 - mainApp refactor to better understandable implementation
+- check extended attributes when zipping APP bundle in macOS
 
 necessary feature list:
 - add dome support from indi
@@ -24,7 +33,6 @@ necessary feature list:
 - optimizing model functions (all) implement
 
 nice to have:
-- auto reconnect all indi servers
 - indi setting parameters of devices
 - gui show indi device FL / pixels data in screen and choose which to use
 - check if daylight timezone fits to the computer or set it up !

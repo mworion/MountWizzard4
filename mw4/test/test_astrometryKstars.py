@@ -23,6 +23,7 @@ import pytest
 import os
 import platform
 import numpy as np
+import subprocess
 from astropy.io import fits
 
 # external packages
@@ -87,6 +88,36 @@ def test_init_3():
 
 app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
                                         threadPool=threadPool)
+
+
+def test_stringToDegree_1():
+    ret = app.stringToDegree(100)
+    assert ret is None
+
+
+def test_stringToDegree_2():
+    ret = app.stringToDegree('')
+    assert ret is None
+
+
+def test_stringToDegree_3():
+    ret = app.stringToDegree('++')
+    assert ret is None
+
+
+def test_stringToDegree_4():
+    ret = app.stringToDegree('--')
+    assert ret is None
+
+
+def test_stringToDegree_5():
+    ret = app.stringToDegree('55:66:ff')
+    assert ret is None
+
+
+def test_stringToDegree_6():
+    ret = app.stringToDegree('55:30')
+    assert ret == 55.5
 
 
 def test_convertToHMS_1():
@@ -332,13 +363,46 @@ def test_updateFitsWithWCSData_1():
     assert header1['SCALE'] == 0
 
 
-def test_runImage2xy():
+def test_runImage2xy_1():
     suc = app.runImage2xy()
     assert not suc
 
 
-def test_runSolveField():
+def test_runImage2xy_2():
+    class Test1:
+        def decode(self):
+            return 'decode'
+
+    class Test:
+        returncode = '1'
+        stderr = Test1()
+        stdout = Test1()
+    with mock.patch.object(subprocess,
+                           'run',
+                           return_value=Test()):
+        suc = app.runImage2xy()
+    assert not suc
+
+
+def test_runSolveField_1():
     suc = app.runSolveField()
+    assert not suc
+
+
+def test_runSolveField_2():
+    class Test1:
+        def decode(self):
+            return 'decode'
+
+    class Test:
+        returncode = '1'
+        stderr = Test1()
+        stdout = Test1()
+
+    with mock.patch.object(subprocess,
+                           'run',
+                           return_value=Test()):
+        suc = app.runSolveField()
     assert not suc
 
 

@@ -370,9 +370,9 @@ def test_updateSettingExt_location():
     assert '500.0' == app.mainW.ui.siteElevation.text()
     app.mount.obsSite.location = None
     app.mainW.updateLocGUI()
-    assert '-' == app.mainW.ui.siteLongitude.text()
-    assert '-' == app.mainW.ui.siteLatitude.text()
-    assert '-' == app.mainW.ui.siteElevation.text()
+    assert '11deg 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
+    assert '49deg 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
+    assert '500.0' == app.mainW.ui.siteElevation.text()
 
 
 def test_updateFwGui_productName():
@@ -702,6 +702,14 @@ def test_setElevation4(qtbot):
             assert suc
 
 
+def test_clearEnvironGUI_1():
+    app.mainW.clearEnvironGUI('test')
+    assert app.mainW.ui.environTemp.text() == '-'
+    assert app.mainW.ui.environPress.text() == '-'
+    assert app.mainW.ui.environDewPoint.text() == '-'
+    assert app.mainW.ui.environHumidity.text() == '-'
+
+
 def test_updateEnvironGUI_1():
     app.environ.name = 'test'
     app.environ.data['WEATHER_TEMPERATURE'] = 10.5
@@ -730,6 +738,12 @@ def test_updateEnvironGUI_4():
     assert app.mainW.ui.environHumidity.text() == ' 10'
 
 
+def test_clearSkymeterGUI_1():
+    app.mainW.clearSkymeterGUI('test')
+    assert app.mainW.ui.skymeterSQR.text() == '-'
+    assert app.mainW.ui.skymeterTemp.text() == '-'
+
+
 def test_updateSkymeterGUI_1():
     app.skymeter.name = 'test'
     app.skymeter.data['SKY_BRIGHTNESS'] = 10.5
@@ -742,6 +756,18 @@ def test_updateSkymeterGUI_2():
     app.skymeter.data['SKY_TEMPERATURE'] = 10.5
     app.mainW.updateSkymeterGUI('test')
     assert app.mainW.ui.skymeterTemp.text() == '10.5'
+
+
+def test_clearWeatherGUI_1():
+    app.mainW.clearWeatherGUI('test')
+    assert app.mainW.ui.weatherTemp.text() == '-'
+    assert app.mainW.ui.weatherPress.text() == '-'
+    assert app.mainW.ui.weatherDewPoint.text() == '-'
+    assert app.mainW.ui.weatherHumidity.text() == '-'
+    assert app.mainW.ui.weatherCloudCover.text() == '-'
+    assert app.mainW.ui.weatherWindSpeed.text() == '-'
+    assert app.mainW.ui.weatherRainVol.text() == '-'
+    assert app.mainW.ui.weatherSnowVol.text() == '-'
 
 
 def test_updateWeatherGUI_1():

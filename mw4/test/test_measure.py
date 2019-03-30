@@ -71,7 +71,7 @@ def test_measureTask_2():
 def test_measureTask_3():
     app.mainW.ui.measureDevice.setCurrentIndex(1)
     app.environ.data['WEATHER_TEMPERATURE'] = 10
-    app.environ.data['WEATHER_BAROMETER'] = 1000
+    app.environ.data['WEATHER_PRESSURE'] = 1000
     app.environ.data['WEATHER_DEWPOINT'] = 10
     app.environ.data['WEATHER_HUMIDITY'] = 10
     suc = app.measure._measureTask()

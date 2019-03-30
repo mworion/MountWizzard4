@@ -164,28 +164,24 @@ class Power(object):
         device = self.app.power.device
         name = self.app.power.name
 
+        controls = {'POWER_CONTROL_1': self.ui.powerPort1,
+                    'POWER_CONTROL_2': self.ui.powerPort2,
+                    'POWER_CONTROL_3': self.ui.powerPort3,
+                    'POWER_CONTROL_4': self.ui.powerPort4,
+                    'POWER_PORT_1': self.ui.powerBootPort1,
+                    'POWER_PORT_2': self.ui.powerBootPort2,
+                    'POWER_PORT_3': self.ui.powerBootPort3,
+                    'POWER_PORT_4': self.ui.powerBootPort4,
+                    }
+
         if device is None:
             return False
         if deviceName != name:
             return False
 
         for element, value in device.getSwitch(propertyName).items():
-            if element == 'POWER_CONTROL_1':
-                self.ui.powerPort1.setChecked(value)
-            elif element == 'POWER_CONTROL_2':
-                self.ui.powerPort2.setChecked(value)
-            elif element == 'POWER_CONTROL_3':
-                self.ui.powerPort3.setChecked(value)
-            elif element == 'POWER_CONTROL_4':
-                self.ui.powerPort4.setChecked(value)
-            elif element == 'POWER_PORT_1':
-                self.ui.powerBootPort1.setChecked(value)
-            elif element == 'POWER_PORT_2':
-                self.ui.powerBootPort2.setChecked(value)
-            elif element == 'POWER_PORT_3':
-                self.ui.powerBootPort3.setChecked(value)
-            elif element == 'POWER_PORT_4':
-                self.ui.powerBootPort4.setChecked(value)
+            if element in controls:
+                controls[element].setChecked(value)
             elif propertyName == 'USB_PORT_CONTROL' and element == 'ENABLED':
                 self.ui.hubUSB.setChecked(value)
             elif propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':

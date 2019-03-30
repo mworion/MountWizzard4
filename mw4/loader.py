@@ -97,7 +97,7 @@ def setupWorkDirs(mwGlob=None):
     mwGlob['imageDir'] = os.getcwd() + '/image'
     mwGlob['tempDir'] = os.getcwd() + '/temp'
 
-    for dirPath in ['workDir', 'configDir', 'imageDir', 'tempDir']:
+    for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir', 'tempDir']:
         if not os.path.isdir(mwGlob[dirPath]):
             os.makedirs(mwGlob[dirPath])
         if not os.access(mwGlob[dirPath], os.W_OK):

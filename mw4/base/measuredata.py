@@ -170,7 +170,7 @@ class MeasureData(object):
 
         # gathering the environment data
         envTemp = self.app.environ.data.get('WEATHER_TEMPERATURE', 0)
-        envPress = self.app.environ.data.get('WEATHER_BAROMETER', 0)
+        envPress = self.app.environ.data.get('WEATHER_PRESSURE', 0)
         envDew = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
         envHum = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
         envSQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)

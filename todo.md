@@ -6,7 +6,6 @@ missing tests:
 - mountcontrol new commands qt
 - indibase new commands qt
 - tabPower 22%
-- mainW 84%
 - widget 67%
 - messageW 81%
 - kmRelay 75%

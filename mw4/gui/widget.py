@@ -75,7 +75,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         :param      gui:        gui element, which will be expanded by an icon
         :param      icon:       icon to be added
-        :return:    nothing
+        :return:    true for test purpose
         """
 
         iconset = PyQt5.QtWidgets.qApp.style().standardIcon(icon)
@@ -84,6 +84,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         gui.style().unpolish(gui)
         gui.style().polish(gui)
         gui.setIconSize(PyQt5.QtCore.QSize(16, 16))
+        return True
 
     def getStyle(self):
         """
@@ -103,7 +104,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         a windows will be scalable later on. in addition the appropriate style sheet
         for mac and non mac will be selected and used.
 
-        :return:    nothing
+        :return:    true for test purpose
         """
 
         self.setWindowFlags(self.windowFlags())
@@ -111,6 +112,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         self.setStyleSheet(style)
         self.setMouseTracking(True)
         self.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
+
+        return True
 
     @staticmethod
     def changeStyleDynamic(ui, item, value):
@@ -121,12 +124,14 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         :param      ui:     ui element, where the stylesheet has to be changed
         :param      item:   stylesheet attribute which has to be changes
         :param      value:  new value of the attribute
-        :return:    nothing
+        :return:    true for test purpose
         """
 
         ui.style().unpolish(ui)
         ui.setProperty(item, value)
         ui.style().polish(ui)
+
+        return True
 
     @staticmethod
     def clearPolar(widget):

@@ -5,7 +5,6 @@ missing tests:
 - deviceSetting
 - mountcontrol new commands qt
 - indibase new commands qt
-- astrometry 85%
 - tabPower 22%
 - mainW 84%
 - widget 67%

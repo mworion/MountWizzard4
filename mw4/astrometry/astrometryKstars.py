@@ -596,20 +596,3 @@ class AstrometryKstars(object):
         worker.signals.finished.connect(self.solveClear)
         self.threadPool.start(worker)
         return True
-
-
-if __name__ == '__main__':
-    test = PyQt5.QtWidgets.QApplication([])
-
-    threadPool = PyQt5.QtCore.QThreadPool()
-    fitsPath = './NGC7380.fits'
-    tempDir = './mw4/test/temp'
-
-    astro = AstrometryKstars(tempDir=tempDir,
-                             threadPool=threadPool)
-
-    suc, result = astro.solve(fitsPath=fitsPath)
-    if suc:
-        print(result.ra, result.dec)
-        print(result[0], result[1])
-    # QTest.qWait(5000)

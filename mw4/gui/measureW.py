@@ -68,6 +68,12 @@ class MeasureWindow(widget.MWidget):
         self.clickable(self.app.mainW.ui.environPress).connect(self.showWindow)
         self.clickable(self.app.mainW.ui.environDewPoint).connect(self.showWindow)
         self.clickable(self.app.mainW.ui.skymeterSQR).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.powerCurrent1).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.powerCurrent2).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.powerCurrent3).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.powerCurrent4).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.sensorVoltage).connect(self.showWindow)
+        self.clickable(self.app.mainW.ui.sensorCurrent).connect(self.showWindow)
 
         self.app.update1s.connect(self.drawMeasure)
 
@@ -134,6 +140,7 @@ class MeasureWindow(widget.MWidget):
         mSet.addItem('RaDec Stability')
         mSet.addItem('Environment')
         mSet.addItem('Sky Quality')
+        mSet.addItem('Power Meter')
 
         tSet = self.ui.timeSet
         tSet.clear()
@@ -261,7 +268,6 @@ class MeasureWindow(widget.MWidget):
                                                               ))
         axe1.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
                                                                        ))
-
         return True
 
     def drawEnvironment(self, data=None, cycle=None):
@@ -349,7 +355,6 @@ class MeasureWindow(widget.MWidget):
                                                               ))
         axe1.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.0f',
                                                                        ))
-
         return True
 
     def drawSQR(self, data=None, cycle=None):
@@ -403,7 +408,114 @@ class MeasureWindow(widget.MWidget):
                                                               ))
         axe0.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.2f',
                                                                        ))
+        return True
 
+    def drawPower(self, data=None, cycle=None):
+        """
+        drawEnvironment show the specific graph for plotting the temps, pressure
+        and humidity deviations. this is done with two color and axes to distinguish the
+        ranges.
+
+        :param data: data location
+        :param cycle: cycle time for measurement
+        :return: success
+        """
+
+        if not self.clearPlot(numberPlots=2):
+            return False
+
+        axe0 = self.measureMat.figure.axes[0]
+        axe1 = self.measureMat.figure.axes[1]
+
+        title = 'Power Meter'
+        ylabelLeft = 'Power Voltage on Rack [V]'
+        ylabelRight = 'Power Current [A]'
+
+        start = -self.NUMBER_POINTS * cycle
+        time = data['time'][start:-1:cycle]
+        mLeft = data['pVolt'][start:-1:cycle]
+        mRight1 = data['pCurr'][start:-1:cycle]
+        mRight2 = data['pCurr1'][start:-1:cycle]
+        mRight3 = data['pCurr2'][start:-1:cycle]
+        mRight4 = data['pCurr3'][start:-1:cycle]
+        mRight5 = data['pCurr4'][start:-1:cycle]
+
+        axe0.set_title(title,
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=16)
+        axe1.set_xlabel('Time [HH:MM:SS - UTC]',
+                        color=self.M_BLUE,
+                        fontweight='bold',
+                        fontsize=12)
+
+        axe0.set_ylabel(ylabelLeft,
+                        color=self.M_GREEN,
+                        fontweight='bold',
+                        fontsize=12)
+        axe1.set_ylabel(ylabelRight,
+                        color=self.M_WHITE,
+                        fontweight='bold',
+                        fontsize=12)
+
+        axe0.plot(time,
+                  mLeft,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_GREEN,
+                  )
+        axe1.plot(time,
+                  mRight1,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_WHITE,
+                  )
+        axe1.plot(time,
+                  mRight2,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_PINK,
+                  )
+        axe1.plot(time,
+                  mRight3,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_BLUE,
+                  )
+        axe1.plot(time,
+                  mRight4,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_YELLOW,
+                  )
+        axe1.plot(time,
+                  mRight5,
+                  marker='o',
+                  markersize=1,
+                  color=self.M_RED,
+                  )
+
+        axe0.grid(True, color=self.M_GREY, linestyle='dotted', alpha=1)
+        axe1.grid(True, color=self.M_GREY, linestyle='dotted', alpha=1)
+        axe0.set_xticklabels([])
+        axe0.margins(y=0.2)
+        axe1.margins(y=0.2)
+
+        axe0.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                              integer=True,
+                                                              min_n_ticks=4,
+                                                              prune='both',
+                                                              ))
+        axe0.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                       ))
+
+        axe1.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                              integer=True,
+                                                              min_n_ticks=4,
+                                                              prune='both',
+                                                              ))
+        axe1.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                       ))
         return True
 
     def drawMeasure(self):
@@ -444,6 +556,8 @@ class MeasureWindow(widget.MWidget):
             self.drawEnvironment(data=data, cycle=cycle)
         elif mIndex == 2:
             self.drawSQR(data=data, cycle=cycle)
+        elif mIndex == 3:
+            self.drawPower(data=data, cycle=cycle)
         else:
             pass
 

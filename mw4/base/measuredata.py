@@ -65,6 +65,12 @@ class MeasureData(object):
             'raJNow': np.empty(shape=[0, 1]),
             'decJNow': np.empty(shape=[0, 1]),
             'status': np.empty(shape=[0, 1]),
+            'pCurr1': np.empty(shape=[0, 1]),
+            'pCurr2': np.empty(shape=[0, 1]),
+            'pCurr3': np.empty(shape=[0, 1]),
+            'pCurr4': np.empty(shape=[0, 1]),
+            'pVolt': np.empty(shape=[0, 1]),
+            'pCurr': np.empty(shape=[0, 1]),
         }
 
         self.timerTask = PyQt5.QtCore.QTimer()
@@ -173,9 +179,17 @@ class MeasureData(object):
         envPress = self.app.environ.data.get('WEATHER_PRESSURE', 0)
         envDew = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
         envHum = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
+        # gathering sqr values
         envSQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
-
+        # gathering mount data
         raJNow, decJNow = self._calculateReference()
+        # gathering data from power
+        pCurr1 = self.app.power.data.get('POWER_CURRENT_1', 0)
+        pCurr2 = self.app.power.data.get('POWER_CURRENT_2', 0)
+        pCurr3 = self.app.power.data.get('POWER_CURRENT_3', 0)
+        pCurr4 = self.app.power.data.get('POWER_CURRENT_4', 0)
+        pVolt = self.app.power.data.get('SENSOR_VOLTAGE', 0)
+        pCurr = self.app.power.data.get('SENSOR_CURRENT', 0)
 
         # writing data to dict
         timeStamp = obs.timeJD.utc_datetime().replace(tzinfo=None)
@@ -188,6 +202,12 @@ class MeasureData(object):
         dat['raJNow'] = np.append(dat['raJNow'], raJNow)
         dat['decJNow'] = np.append(dat['decJNow'], decJNow)
         dat['status'] = np.append(dat['status'], obs.status)
+        dat['pCurr1'] = np.append(dat['pCurr1'], pCurr1)
+        dat['pCurr2'] = np.append(dat['pCurr2'], pCurr2)
+        dat['pCurr3'] = np.append(dat['pCurr3'], pCurr3)
+        dat['pCurr4'] = np.append(dat['pCurr4'], pCurr4)
+        dat['pCurr'] = np.append(dat['pCurr'], pCurr)
+        dat['pVolt'] = np.append(dat['pVolt'], pVolt)
 
         self.mutexMeasure.unlock()
         return True

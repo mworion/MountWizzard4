@@ -456,7 +456,7 @@ class Power(object):
 
         autoDew = device.getSwitch('AUTO_DEW')
         autoDew['AUTO_DEW_ENABLED'] = self.ui.hubUSB.isChecked()
-        autoDew['AUTO_DEW_DISABLEDLED'] = not self.ui.hubUSB.isChecked()
+        autoDew['AUTO_DEW_DISABLED'] = not self.ui.hubUSB.isChecked()
         client.sendNewSwitch(deviceName=name,
                              propertyName='AUTO_DEW',
                              elements=autoDew,

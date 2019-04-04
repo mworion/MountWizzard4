@@ -45,6 +45,8 @@ class MyApp(PyQt5.QtWidgets.QApplication):
     C++ object is already deleted, but the python wrapper still exists. so far I know
     that's the only chance to log this issues.
 
+    in addition it writes mouse pressed and key pressed events in debug level to log
+    including event and object name to be analyse the input methods.
     """
 
     def notify(self, obj, event):

@@ -3,8 +3,8 @@ import os
 from astropy.io import fits
 from shutil import copyfile
 
-imagePath = '/Users/mw/ic405/'
-destPath = '/Users/mw/ic405/'
+imagePath = '/Users/mw/pictures/master20190331/'
+destPath = '/Users/mw/pictures/master20190331/'
 
 
 for filename in glob.glob(imagePath + '**/*.fits', recursive=True):

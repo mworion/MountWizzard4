@@ -21,10 +21,21 @@ from setuptools import setup
 from mw4.mainApp import MountWizzard4
 
 setup(
-    name='MountWizzard4',
+    name='mw4',
     version=MountWizzard4.version,
     packages=[
         'mw4',
+        'mw4.astrometry',
+        'mw4.base',
+        'mw4.environment',
+        'mw4.gui',
+        'mw4.gui.media',
+        'mw4.gui.widgets',
+        'mw4.gui.mainWmixin',
+        'mw4.modeldata',
+        'mw4.powerswitch',
+        'mw4.remote',
+        'mw4.test',
     ],
     python_requires='>=3.7.2',
     install_requires=[

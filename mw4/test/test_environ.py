@@ -90,20 +90,20 @@ def test_startCommunication_1():
         assert not suc
 
 
-def test_setUpdateRate_1():
+def test_setUpdateConfig_1():
     app.name = 'test'
     suc = app.setUpdateConfig('false')
     assert not suc
 
 
-def test_setUpdateRate_2():
+def test_setUpdateConfig_2():
     app.name = 'test'
     app.device = None
     suc = app.setUpdateConfig('test')
     assert not suc
 
 
-def test_setUpdateRate_3():
+def test_setUpdateConfig_3():
     class Test:
         @staticmethod
         def getNumber(test):
@@ -114,7 +114,7 @@ def test_setUpdateRate_3():
     assert not suc
 
 
-def test_setUpdateRate_4():
+def test_setUpdateConfig_4():
     class Test:
         @staticmethod
         def getNumber(test):
@@ -125,7 +125,7 @@ def test_setUpdateRate_4():
     assert suc
 
 
-def test_setUpdateRate_5():
+def test_setUpdateConfig_5():
     class Test:
         @staticmethod
         def getNumber(test):
@@ -139,7 +139,7 @@ def test_setUpdateRate_5():
         assert not suc
 
 
-def test_setUpdateRate_6():
+def test_setUpdateConfig_6():
     class Test:
         @staticmethod
         def getNumber(test):

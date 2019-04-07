@@ -35,12 +35,12 @@ class Power(object):
         signals = self.app.power.client.signals
         signals.newNumber.connect(self.updatePowerGui)
         signals.deviceDisconnected.connect(self.clearPowerGui)
-        signals.newNumber.connect(self.setNumber)
-        signals.defNumber.connect(self.setNumber)
-        signals.newSwitch.connect(self.setSwitch)
-        signals.defSwitch.connect(self.setSwitch)
-        signals.newText.connect(self.setText)
-        signals.defText.connect(self.setText)
+        signals.newNumber.connect(self.setPowerNumber)
+        signals.defNumber.connect(self.setPowerNumber)
+        signals.newSwitch.connect(self.setPowerSwitch)
+        signals.defSwitch.connect(self.setPowerSwitch)
+        signals.newText.connect(self.setPowerText)
+        signals.defText.connect(self.setPowerText)
 
         self.ui.dewA.editingFinished.connect(self.sendDewA)
         self.ui.dewB.editingFinished.connect(self.sendDewB)
@@ -150,7 +150,7 @@ class Power(object):
 
         return True
 
-    def setNumber(self, deviceName, propertyName):
+    def setPowerNumber(self, deviceName, propertyName):
         """
 
         :param deviceName:
@@ -175,7 +175,7 @@ class Power(object):
 
         return True
 
-    def setSwitch(self, deviceName, propertyName):
+    def setPowerSwitch(self, deviceName, propertyName):
         """
 
         :param deviceName:
@@ -212,7 +212,7 @@ class Power(object):
 
         return True
 
-    def setText(self, deviceName, propertyName):
+    def setPowerText(self, deviceName, propertyName):
         """
 
         :param deviceName:

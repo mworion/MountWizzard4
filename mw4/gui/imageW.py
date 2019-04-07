@@ -94,7 +94,7 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
         self.imageFileName = config.get('imageFileName', '')
         full, short, ext = self.extractNames([self.imageFileName])
-        self.ui.imageFileName.setText(short)
+        self.ui.imageFileName.setPowerText(short)
 
         self.showFitsImage()
         return True
@@ -178,7 +178,7 @@ class ImageWindow(widget.MWidget):
                                                 )
         if not name:
             return False
-        self.ui.imageFileName.setText(name)
+        self.ui.imageFileName.setPowerText(name)
         self.imageFileName = loadFilePath
         self.showFitsImage()
         self.app.message.emit(f'Image [{name}] selected', 0)
@@ -230,44 +230,44 @@ class ImageWindow(widget.MWidget):
         """
 
         name = header.get('OBJECT', '').upper()
-        self.ui.object.setText(f'{name}')
+        self.ui.object.setPowerText(f'{name}')
 
         ra = header.get('RA', 0)
         dec = header.get('DEC', 0)
         if ra == 0 and dec == 0:
             ra = header.get('OBJCTRA', 0)
             dec = header.get('OBJCTDEC', 0)
-            self.ui.ra.setText(f'{ra}')
-            self.ui.dec.setText(f'{dec}')
+            self.ui.ra.setPowerText(f'{ra}')
+            self.ui.dec.setPowerText(f'{dec}')
         else:
-            self.ui.ra.setText(f'{ra:8.5f}')
-            self.ui.dec.setText(f'{dec:8.5f}')
+            self.ui.ra.setPowerText(f'{ra:8.5f}')
+            self.ui.dec.setPowerText(f'{dec:8.5f}')
 
         scale = header.get('SCALE', 0)
         rotation = header.get('ANGLE', 0)
-        self.ui.scale.setText(f'{scale:5.3f}')
-        self.ui.rotation.setText(f'{rotation:6.3f}')
+        self.ui.scale.setPowerText(f'{scale:5.3f}')
+        self.ui.rotation.setPowerText(f'{rotation:6.3f}')
 
         ccdTemp = header.get('CCD-TEMP', 0)
-        self.ui.ccdTemp.setText(f'{ccdTemp:4.1f}')
+        self.ui.ccdTemp.setPowerText(f'{ccdTemp:4.1f}')
 
         expTime1 = header.get('EXPOSURE', 0)
         expTime2 = header.get('EXPTIME', 0)
         expTime = max(expTime1, expTime2)
-        self.ui.expTime.setText(f'{expTime:5.1f}')
+        self.ui.expTime.setPowerText(f'{expTime:5.1f}')
 
         filterCCD = header.get('FILTER', 0)
-        self.ui.filter.setText(f'{filterCCD}')
+        self.ui.filter.setPowerText(f'{filterCCD}')
 
         binX = header.get('XBINNING', 0)
         binY = header.get('YBINNING', 0)
-        self.ui.binX.setText(f'{binX:1.0f}')
-        self.ui.binY.setText(f'{binY:1.0f}')
+        self.ui.binX.setPowerText(f'{binX:1.0f}')
+        self.ui.binY.setPowerText(f'{binY:1.0f}')
 
         sqm = max(header.get('SQM', 0),
                   header.get('SKY-QLTY', 0),
                   )
-        self.ui.sqm.setText(f'{sqm:5.2f}')
+        self.ui.sqm.setPowerText(f'{sqm:5.2f}')
 
         flipped = header.get('FLIPPED', False)
 

@@ -112,7 +112,7 @@ def test_showWindow_2(qtbot):
 def test_setupButtons_1():
     suc = app.measureW.setupButtons()
     assert suc
-    assert app.measureW.ui.measureSet.count() == 3
+    assert app.measureW.ui.measureSet.count() == 4
     assert app.measureW.ui.timeSet.count() == 7
 
 

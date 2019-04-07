@@ -165,6 +165,8 @@ class Power(object):
             return False
         if deviceName != name:
             return False
+        if not getattr(device, 'getNumber', False):
+            return False
 
         for element, value in device.getNumber(propertyName).items():
             if element == 'DEW_A':
@@ -200,6 +202,8 @@ class Power(object):
             return False
         if deviceName != name:
             return False
+        if not getattr(device, 'getSwitch', False):
+            return False
 
         for element, value in device.getSwitch(propertyName).items():
             if element in controls:
@@ -227,6 +231,8 @@ class Power(object):
             return False
         if deviceName != name:
             return False
+        if not getattr(device, 'getText', False):
+            return False
 
         for element, value in device.getText(propertyName).items():
             if element == 'POWER_LABEL_1':
@@ -244,7 +250,7 @@ class Power(object):
     def sendDewA(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -261,11 +267,12 @@ class Power(object):
                              propertyName='DEW_PWM',
                              elements=dew,
                              )
+        return True
 
     def sendDewB(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -281,11 +288,12 @@ class Power(object):
                              propertyName='DEW_PWM',
                              elements=dew,
                              )
+        return True
 
     def sendPowerPort1(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -301,11 +309,12 @@ class Power(object):
                              propertyName='POWER_CONTROL',
                              elements=power,
                              )
+        return True
 
     def sendPowerPort2(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -321,11 +330,12 @@ class Power(object):
                              propertyName='POWER_CONTROL',
                              elements=power,
                              )
+        return True
 
     def sendPowerPort3(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -341,11 +351,12 @@ class Power(object):
                              propertyName='POWER_CONTROL',
                              elements=power,
                              )
+        return True
 
     def sendPowerPort4(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -361,11 +372,12 @@ class Power(object):
                              propertyName='POWER_CONTROL',
                              elements=power,
                              )
+        return True
 
     def sendPowerBootPort1(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -381,11 +393,12 @@ class Power(object):
                              propertyName='POWER_ON_BOOT',
                              elements=power,
                              )
+        return True
 
     def sendPowerBootPort2(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -401,11 +414,12 @@ class Power(object):
                              propertyName='POWER_ON_BOOT',
                              elements=power,
                              )
+        return True
 
     def sendPowerBootPort3(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -421,11 +435,12 @@ class Power(object):
                              propertyName='POWER_ON_BOOT',
                              elements=power,
                              )
+        return True
 
     def sendPowerBootPort4(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -441,11 +456,12 @@ class Power(object):
                              propertyName='POWER_ON_BOOT',
                              elements=power,
                              )
+        return True
 
     def sendHubUSB(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -462,11 +478,12 @@ class Power(object):
                              propertyName='USB_PORT_CONTROL',
                              elements=usb,
                              )
+        return True
 
     def sendAutoDew(self):
         """
 
-        :return:
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -477,9 +494,10 @@ class Power(object):
             return False
 
         autoDew = device.getSwitch('AUTO_DEW')
-        autoDew['AUTO_DEW_ENABLED'] = self.ui.hubUSB.isChecked()
-        autoDew['AUTO_DEW_DISABLED'] = not self.ui.hubUSB.isChecked()
+        autoDew['AUTO_DEW_ENABLED'] = self.ui.autoDew.isChecked()
+        autoDew['AUTO_DEW_DISABLED'] = not self.ui.autoDew.isChecked()
         client.sendNewSwitch(deviceName=name,
                              propertyName='AUTO_DEW',
                              elements=autoDew,
                              )
+        return True

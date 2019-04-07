@@ -82,7 +82,29 @@ class Power(object):
         return True
 
     def clearPowerGui(self):
-        pass
+        """
+        clearPowerGui changes the state of the Pegasus values to '-'
+
+        :return: success for test
+        """
+
+        self.ui.powerTemp.setText('-')
+        self.ui.powerHumidity.setText('-')
+        self.ui.powerDewPoint.setText('-')
+        self.ui.powerCurrent1.setText('-')
+        self.ui.powerCurrent2.setText('-')
+        self.ui.powerCurrent3.setText('-')
+        self.ui.powerCurrent4.setText('-')
+        self.ui.consumptionAvgAmps.setText('-')
+        self.ui.consumptionAmpHours.setText('-')
+        self.ui.consumptionWattHours.setText('-')
+        self.ui.sensorVoltage.setText('-')
+        self.ui.sensorCurrent.setText('-')
+        self.ui.sensorPower.setText('-')
+        self.ui.dewCurrentA.setText('-')
+        self.ui.dewCurrentB.setText('-')
+
+        return True
 
     def updatePowerGui(self):
         """

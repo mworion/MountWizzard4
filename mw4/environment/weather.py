@@ -83,19 +83,25 @@ class Weather(indiClass.IndiClass):
         return suc
 
     @staticmethod
-    def _getDewPoint(t_air_c, rel_humidity):
+    def _getDewPoint(tempAir, relativeHumidity):
         """
         Compute the dew point in degrees Celsius
 
-        :param t_air_c: current ambient temperature in degrees Celsius
-        :param rel_humidity: relative humidity in %
+        :param tempAir: current ambient temperature in degrees Celsius
+        :param relativeHumidity: relative humidity in %
         :return: the dew point in degrees Celsius
         """
 
+        if tempAir < -40 or tempAir > 80:
+            return 0
+        if relativeHumidity < 0 or relativeHumidity > 100:
+            return 0
+
         A = 17.27
         B = 237.7
-        alpha = ((A * t_air_c) / (B + t_air_c)) + np.log(rel_humidity / 100.0)
-        return (B * alpha) / (A - alpha)
+        alpha = ((A * tempAir) / (B + tempAir)) + np.log(relativeHumidity / 100.0)
+        dewPoint = (B * alpha) / (A - alpha)
+        return dewPoint
 
     def updateData(self, deviceName, propertyName):
         """

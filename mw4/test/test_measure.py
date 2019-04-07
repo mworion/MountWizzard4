@@ -59,6 +59,12 @@ def test_measureTask_2():
         'raJNow': np.empty(shape=[0, 1]),
         'decJNow': np.empty(shape=[0, 1]),
         'status': np.empty(shape=[0, 1]),
+        'pCurr1': np.empty(shape=[0, 1]),
+        'pCurr2': np.empty(shape=[0, 1]),
+        'pCurr3': np.empty(shape=[0, 1]),
+        'pCurr4': np.empty(shape=[0, 1]),
+        'pVolt': np.empty(shape=[0, 1]),
+        'pCurr': np.empty(shape=[0, 1]),
     }
     suc = app.measure._measureTask()
     assert suc

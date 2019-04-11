@@ -184,7 +184,7 @@ def test_genBuildDSO_1(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.genBuildDSO()
         assert not suc
-    assert ['Build points [DSO Path] is not implemented yet', 2] == blocker.args
+    assert ['DSO Path cannot be generated', 2] == blocker.args
 
 
 def test_loadBuildFile_1(qtbot):

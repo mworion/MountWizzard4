@@ -929,18 +929,22 @@ def test_generateCelestialEquator():
 
 
 def test_generateDSOPath_1():
-    suc = data.generateDSOPath(ra=0,
-                               dec=0,
+    ra = skyfield.api.Angle(hours=0)
+    dec = skyfield.api.Angle(degrees=0)
+    suc = data.generateDSOPath(ra=ra,
+                               dec=dec,
                                numberPoints=1,
                                duration=1,
                                timeShift=0,
                                )
-    assert suc
+    assert not suc
 
 
 def test_generateDSOPath_2():
-    suc = data.generateDSOPath(ra=0,
-                               dec=0,
+    ra = skyfield.api.Angle(hours=0)
+    dec = skyfield.api.Angle(degrees=0)
+    suc = data.generateDSOPath(ra=ra,
+                               dec=dec,
                                numberPoints=1,
                                duration=0,
                                timeShift=0,
@@ -949,8 +953,10 @@ def test_generateDSOPath_2():
 
 
 def test_generateDSOPath_3():
-    suc = data.generateDSOPath(ra=0,
-                               dec=0,
+    ra = skyfield.api.Angle(hours=0)
+    dec = skyfield.api.Angle(degrees=0)
+    suc = data.generateDSOPath(ra=ra,
+                               dec=dec,
                                numberPoints=0,
                                duration=1,
                                timeShift=0,

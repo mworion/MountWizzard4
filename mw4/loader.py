@@ -176,19 +176,19 @@ def writeSystemInfo(mwGlob=None):
     :return: true for test purpose
     """
 
-    logging.info('------------------------------------------------------------------------')
-    logging.info('')
-    logging.info('MountWizzard {0} started !'.format(mwGlob['modeldata']))
-    logging.info('')
-    logging.info('------------------------------------------------------------------------')
-    logging.info('Platform         : {0}'.format(platform.system()))
-    logging.info('Release          : {0}'.format(platform.release()))
-    logging.info('Machine          : {0}'.format(platform.machine()))
-    logging.info('CPU              : {0}'.format(platform.processor()))
-    logging.info('Python           : {0}'.format(platform.python_version()))
-    logging.info('PyQt5            : {0}'.format(PyQt5.QtCore.PYQT_VERSION_STR))
-    logging.info('Qt               : {0}'.format(PyQt5.QtCore.QT_VERSION_STR))
-    logging.info('Node             : {0}'.format(platform.node()))
+    logging.info('## ------------------------------------------------------------------------')
+    logging.info('##')
+    logging.info('## MountWizzard {0} started !'.format(mwGlob['modeldata']))
+    logging.info('##')
+    logging.info('## ------------------------------------------------------------------------')
+    logging.info('## Platform         : {0}'.format(platform.system()))
+    logging.info('## Release          : {0}'.format(platform.release()))
+    logging.info('## Machine          : {0}'.format(platform.machine()))
+    logging.info('## CPU              : {0}'.format(platform.processor()))
+    logging.info('## Python           : {0}'.format(platform.python_version()))
+    logging.info('## PyQt5            : {0}'.format(PyQt5.QtCore.PYQT_VERSION_STR))
+    logging.info('## Qt               : {0}'.format(PyQt5.QtCore.QT_VERSION_STR))
+    logging.info('## Node             : {0}'.format(platform.node()))
 
     # in some environments I don't get a fully qualified host name
     try:
@@ -201,17 +201,17 @@ def writeSystemInfo(mwGlob=None):
         hostsList = hostSummary[2]
         host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
         for hostname in host:
-            logging.info('IP addr.         : {0}'.format(hostname))
-        logging.info('Hosts            : {0}'.format(hostSummary))
+            logging.info('## IP addr.         : {0}'.format(hostname))
+        logging.info('## Hosts            : {0}'.format(hostSummary))
 
-    logging.info('Environment is   : {0}'.format('frozen' if mwGlob['frozen'] else 'live'))
-    logging.info('Actual workdir   : {0}'.format(mwGlob['workDir']))
-    logging.info('Bundle dir       : {0}'.format(mwGlob['bundleDir']))
-    logging.info('sys.argv[0]      : {0}'.format(sys.argv[0]))
-    logging.info('os.path.basename : {0}'.format(os.path.basename(sys.argv[0])))
-    logging.info('sys.executable   : {0}'.format(sys.executable))
+    logging.info('## Environment is   : {0}'.format('frozen' if mwGlob['frozen'] else 'live'))
+    logging.info('## Actual workdir   : {0}'.format(mwGlob['workDir']))
+    logging.info('## Bundle dir       : {0}'.format(mwGlob['bundleDir']))
+    logging.info('## sys.argv[0]      : {0}'.format(sys.argv[0]))
+    logging.info('## os.path.basename : {0}'.format(os.path.basename(sys.argv[0])))
+    logging.info('## sys.executable   : {0}'.format(sys.executable))
 
-    logging.info('------------------------------------------------------------------------')
+    logging.info('## ------------------------------------------------------------------------')
     logging.info('')
     return True
 

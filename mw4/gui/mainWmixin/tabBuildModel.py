@@ -53,6 +53,15 @@ class BuildModel(object):
 
     def initConfig(self):
         config = self.app.config['mainW']
+
+        self.ui.numberGridPointsCol.valueChanged.disconnect(self.genBuildGrid)
+        self.ui.numberGridPointsRow.valueChanged.disconnect(self.genBuildGrid)
+        self.ui.altitudeMin.valueChanged.disconnect(self.genBuildGrid)
+        self.ui.altitudeMax.valueChanged.disconnect(self.genBuildGrid)
+        self.ui.numberDSOPoints.valueChanged.disconnect(self.genBuildDSO)
+        self.ui.durationDSO.valueChanged.disconnect(self.genBuildDSO)
+        self.ui.timeShiftDSO.valueChanged.disconnect(self.genBuildDSO)
+
         self.ui.buildPFileName.setText(config.get('buildPFileName', ''))
         self.ui.numberGridPointsRow.setValue(config.get('numberGridPointsRow', 5))
         self.ui.numberGridPointsCol.setValue(config.get('numberGridPointsCol', 6))
@@ -61,6 +70,14 @@ class BuildModel(object):
         self.ui.numberDSOPoints.setValue(config.get('numberDSOPoints', 20))
         self.ui.durationDSO.setValue(config.get('durationDSO', 5))
         self.ui.timeShiftDSO.setValue(config.get('timeShiftDSO', 0))
+
+        self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
+        self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
+        self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
+        self.ui.altitudeMax.valueChanged.connect(self.genBuildGrid)
+        self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
+        self.ui.durationDSO.valueChanged.connect(self.genBuildDSO)
+        self.ui.timeShiftDSO.valueChanged.connect(self.genBuildDSO)
         return True
 
     def storeConfig(self):

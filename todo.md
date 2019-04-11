@@ -16,8 +16,6 @@ problems occurred list:
 
 necessary feature list:
 - add dome support from indi
-- add dso path calculation in modeldata
-- add dso path in mainW
 - hemisphere: show best altitude when polar align is on
 - astrometry online
 - astrometry configs

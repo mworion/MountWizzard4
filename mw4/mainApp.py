@@ -222,11 +222,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:    True for test purpose
         """
 
-        self.message.emit('MountWizzard4 manual stopped with quit', 1)
         self.timer1s.stop()
         self.mount.stopTimers()
         self.measure.timerTask.stop()
         self.relay.timerTask.stop()
+        self.message.emit('MountWizzard4 manual stopped with quit', 1)
         PyQt5.QtCore.QCoreApplication.quit()
         return True
 
@@ -237,13 +237,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:    True for test purpose
         """
 
-        self.message.emit('MountWizzard4 manual stopped with quit/save', 1)
         self.timer1s.stop()
         self.mount.stopTimers()
         self.measure.timerTask.stop()
         self.relay.timerTask.stop()
         self.storeConfig()
         self.saveConfig()
+        self.message.emit('MountWizzard4 manual stopped with quit/save', 1)
         PyQt5.QtCore.QCoreApplication.quit()
         return True
 

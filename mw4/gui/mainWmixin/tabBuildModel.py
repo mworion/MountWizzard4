@@ -44,6 +44,9 @@ class BuildModel(object):
         self.ui.genBuildMin.clicked.connect(self.genBuildMin)
         self.ui.genBuildFile.clicked.connect(self.genBuildFile)
         self.ui.genBuildDSO.clicked.connect(self.genBuildDSO)
+        self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
+        self.ui.durationDSO.valueChanged.connect(self.genBuildDSO)
+        self.ui.timeShiftDSO.valueChanged.connect(self.genBuildDSO)
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
@@ -55,6 +58,9 @@ class BuildModel(object):
         self.ui.numberGridPointsCol.setValue(config.get('numberGridPointsCol', 6))
         self.ui.altitudeMin.setValue(config.get('altitudeMin', 30))
         self.ui.altitudeMax.setValue(config.get('altitudeMax', 75))
+        self.ui.numberDSOPoints.setValue(config.get('numberDSOPoints', 20))
+        self.ui.durationDSO.setValue(config.get('durationDSO', 5))
+        self.ui.timeShiftDSO.setValue(config.get('timeShiftDSO', 0))
         return True
 
     def storeConfig(self):
@@ -64,6 +70,9 @@ class BuildModel(object):
         config['numberGridPointsCol'] = self.ui.numberGridPointsCol.value()
         config['altitudeMin'] = self.ui.altitudeMin.value()
         config['altitudeMax'] = self.ui.altitudeMax.value()
+        config['numberDSOPoints'] = self.ui.numberDSOPoints.value()
+        config['durationDSO'] = self.ui.durationDSO.value()
+        config['timeShiftDSO'] = self.ui.timeShiftDSO.value()
         return True
 
     def setupIcons(self):

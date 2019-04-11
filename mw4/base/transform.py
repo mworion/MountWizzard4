@@ -14,6 +14,7 @@
 # standard libraries
 from threading import Lock
 # external packages
+import numpy as np
 # noinspection PyProtectedMember
 from astropy import _erfa as ERFA
 import skyfield.api
@@ -45,5 +46,38 @@ def J2000ToJNow(ra, dec, timeJD):
 
         raConv = ERFA.anp(raConv - eo)
         ra = skyfield.api.Angle(radians=raConv, preference='hours')
+        dec = skyfield.api.Angle(radians=decConv, preference='degrees')
+        return ra, dec
+
+
+def J2000ToAltAz(ra, dec, timeJD, location):
+    with _lock:
+        ra = ra.radians
+        dec = dec.radians
+        lat = location.latitude.radians
+        lon = location.longitude.radians
+        elevation = location.elevation.m
+
+        aob, zob, hob, dob, rob, eo = ERFA.atco13(ra,
+                                                  dec,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  timeJD.ut1,
+                                                  0.0,
+                                                  0,
+                                                  lon,
+                                                  lat,
+                                                  elevation,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0,
+                                                  0.0)
+        decConv = np.pi / 2 - zob
+
+        ra = skyfield.api.Angle(radians=aob, preference='degrees')
         dec = skyfield.api.Angle(radians=decConv, preference='degrees')
         return ra, dec

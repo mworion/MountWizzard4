@@ -24,7 +24,9 @@ import json
 import random
 # external packages
 import numpy as np
+import skyfield.api
 # local imports
+from mw4.base import transform
 
 __all__ = ['HaDecToAltAz',
            ]
@@ -36,10 +38,10 @@ def HaDecToAltAz(ha, dec, lat):
     """
     HaDecToAltAz is derived from http://www.stargazing.net/kepler/altaz.html
 
-    :param ha:
-    :param dec:
-    :param lat:
-    :return:
+    :param ha: hour angle in [h]
+    :param dec: declination in [deg]
+    :param lat: latitude of observer
+    :return: altitude and azimuth
     """
 
     ha = (ha * 360 / 24 + 360.0) % 360.0
@@ -633,3 +635,40 @@ class DataPoint(object):
                 if alt > 0:
                     celestialEquator.append((az, alt))
         return celestialEquator
+
+    def generateDSOPath(self, ra=0, dec=0, timeJD=0, location=None,
+                        numberPoints=0, duration=0, timeShift=0):
+        """
+        generateDSOPath calculates a list of model points along the desired path beginning
+        at ra, dec coordinates, which is in time duration hours long and consists of
+        numberPoints model points. TimeShift moves the pearl of points to an earlier or
+        later point in time.
+
+        :param ra:
+        :param dec:
+        :param timeJD:
+        :param location:
+        :param numberPoints:
+        :param duration:
+        :param timeShift:
+        :return: True for test purpose
+        """
+
+        if numberPoints < 1:
+            return False
+        if duration == 0:
+            return False
+        if location is None:
+            return False
+
+        numberPoints = int(numberPoints)
+
+        self.clearBuildP()
+        for i in range(0, numberPoints):
+            startPoint = ra.hours - i * duration / numberPoints - timeShift
+            raCalc = skyfield.api.Angle(hours=startPoint)
+            az, alt = transform.J2000ToAltAz(raCalc, dec, timeJD, location)
+            if alt.degrees > 0:
+                self.addBuildP((alt.degrees, az.degrees % 360))
+
+        return True

@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>9</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -7732,10 +7732,10 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="numberHoursDSO">
+      <widget class="QDoubleSpinBox" name="durationDSO">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>185</x>
          <y>395</y>
          <width>51</width>
          <height>26</height>
@@ -7773,9 +7773,9 @@ manually</string>
       <widget class="QLabel" name="label_181">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>130</x>
          <y>395</y>
-         <width>41</width>
+         <width>56</width>
          <height>26</height>
         </rect>
        </property>
@@ -7785,13 +7785,13 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Hours</string>
+        <string>Duration</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_188">
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>15</x>
          <y>395</y>
          <width>41</width>
          <height>26</height>
@@ -7806,10 +7806,10 @@ manually</string>
         <string>Points</string>
        </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="numberPointsDSO">
+      <widget class="QDoubleSpinBox" name="numberDSOPoints">
        <property name="geometry">
         <rect>
-         <x>170</x>
+         <x>55</x>
          <y>395</y>
          <width>51</width>
          <height>26</height>
@@ -7847,7 +7847,7 @@ manually</string>
       <widget class="QLabel" name="label_189">
        <property name="geometry">
         <rect>
-         <x>240</x>
+         <x>265</x>
          <y>395</y>
          <width>61</width>
          <height>26</height>
@@ -7862,10 +7862,10 @@ manually</string>
         <string>TimeShift</string>
        </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="numberHoursPreview">
+      <widget class="QDoubleSpinBox" name="timeShiftDSO">
        <property name="geometry">
         <rect>
-         <x>300</x>
+         <x>325</x>
          <y>395</y>
          <width>41</width>
          <height>26</height>
@@ -8127,10 +8127,10 @@ manually</string>
       <widget class="QLabel" name="label_204">
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>370</x>
          <y>395</y>
          <width>16</width>
-         <height>21</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="font">
@@ -8788,6 +8788,24 @@ manually</string>
         <string>Norm</string>
        </property>
       </widget>
+      <widget class="QLabel" name="label_303">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>395</y>
+         <width>16</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>h</string>
+       </property>
+      </widget>
       <zorder>line_42</zorder>
       <zorder>line_28</zorder>
       <zorder>line_34</zorder>
@@ -8804,12 +8822,12 @@ manually</string>
       <zorder>cancelFullModel</zorder>
       <zorder>genBuildDSO</zorder>
       <zorder>line_40</zorder>
-      <zorder>numberHoursDSO</zorder>
+      <zorder>durationDSO</zorder>
       <zorder>label_181</zorder>
       <zorder>label_188</zorder>
-      <zorder>numberPointsDSO</zorder>
+      <zorder>numberDSOPoints</zorder>
       <zorder>label_189</zorder>
-      <zorder>numberHoursPreview</zorder>
+      <zorder>timeShiftDSO</zorder>
       <zorder>label_180</zorder>
       <zorder>altitudeMax</zorder>
       <zorder>altitudeMin</zorder>
@@ -8846,6 +8864,7 @@ manually</string>
       <zorder>label_60</zorder>
       <zorder>runBatchCombineModel</zorder>
       <zorder>genBuildNorm</zorder>
+      <zorder>label_303</zorder>
      </widget>
      <widget class="QWidget" name="ManageModel">
       <attribute name="title">
@@ -19095,9 +19114,9 @@ manually</string>
   <tabstop>genBuildNorm</tabstop>
   <tabstop>genBuildMin</tabstop>
   <tabstop>genBuildDSO</tabstop>
-  <tabstop>numberHoursDSO</tabstop>
-  <tabstop>numberPointsDSO</tabstop>
-  <tabstop>numberHoursPreview</tabstop>
+  <tabstop>durationDSO</tabstop>
+  <tabstop>numberDSOPoints</tabstop>
+  <tabstop>timeShiftDSO</tabstop>
   <tabstop>runFullModel</tabstop>
   <tabstop>cancelFullModel</tabstop>
   <tabstop>runBatchModel</tabstop>

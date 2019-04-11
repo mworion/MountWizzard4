@@ -926,3 +926,33 @@ def test_sort_6():
 def test_generateCelestialEquator():
     value = data.generateCelestialEquator()
     assert len(value) == 560
+
+
+def test_generateDSOPath_1():
+    suc = data.generateDSOPath(ra=0,
+                               dec=0,
+                               numberPoints=1,
+                               duration=1,
+                               timeShift=0,
+                               )
+    assert suc
+
+
+def test_generateDSOPath_2():
+    suc = data.generateDSOPath(ra=0,
+                               dec=0,
+                               numberPoints=1,
+                               duration=0,
+                               timeShift=0,
+                               )
+    assert not suc
+
+
+def test_generateDSOPath_3():
+    suc = data.generateDSOPath(ra=0,
+                               dec=0,
+                               numberPoints=0,
+                               duration=1,
+                               timeShift=0,
+                               )
+    assert not suc

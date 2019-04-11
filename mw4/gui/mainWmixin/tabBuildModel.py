@@ -180,8 +180,39 @@ class BuildModel(object):
         return True
 
     def genBuildDSO(self):
-        self.app.message.emit('Build points [DSO Path] is not implemented yet', 2)
-        return False
+        """
+        genBuildDSO generates points along the actual tracking path
+
+        :return: success
+        """
+
+        ra = self.app.mount.obsSite.raJNow
+        dec = self.app.mount.obsSite.decJNow
+        timeJD = self.app.mount.obsSite.timeJD
+        location = self.app.mount.obsSite.location
+
+        if ra is None or dec is None or location is None:
+            self.app.message.emit('DSO Path cannot be generated', 2)
+            return False
+
+        numberPoints = self.ui.numberDSOPoints.value()
+        duration = self.ui.durationDSO.value()
+        timeShift = self.ui.timeShiftDSO.value()
+
+        suc = self.app.data.generateDSOPath(ra=ra,
+                                            dec=dec,
+                                            timeJD=timeJD,
+                                            location=location,
+                                            numberPoints=numberPoints,
+                                            duration=duration,
+                                            timeShift=timeShift,
+                                            )
+        if not suc:
+            self.app.message.emit('DSO Path cannot be generated', 2)
+            return False
+        self.autoDeletePoints()
+        self.autoSortPoints()
+        return True
 
     def loadBuildFile(self):
         """

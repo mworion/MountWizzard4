@@ -5,12 +5,9 @@ missing tests:
 - deviceSetting
 - mountcontrol new commands qt
 - indibase new commands qt
-- tabPower 22%
 - widget 67%
-- messageW 81%
 - kmRelay 75%
 - remote 52%
-- pegasus UPB 41%
 
 problems occurred list:
 - mountcontrol overflow pointing

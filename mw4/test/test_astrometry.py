@@ -28,7 +28,7 @@ from astropy.io import fits
 
 # external packages
 # local import
-from mw4.astrometry import astrometryKstars
+from mw4.astrometry import astrometry
 from mw4.test.test_setupQt import setupQt
 app, spy, mwGlob, test = setupQt()
 
@@ -39,8 +39,8 @@ threadPool = ''
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-    app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                            threadPool=threadPool)
+    app = astrometry.Astrometry(tempDir=tempDir,
+                                threadPool=threadPool)
     yield
 
 
@@ -66,8 +66,8 @@ def test_init_2():
     with mock.patch.object(platform,
                            'system',
                            return_value='Linux'):
-        app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                                threadPool=threadPool)
+        app = astrometry.Astrometry(tempDir=tempDir,
+                                    threadPool=threadPool)
         assert app.binPathSolveField == binSolve
         assert app.binPathImage2xy == binImage
         assert app.indexPath == index
@@ -78,16 +78,16 @@ def test_init_3():
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
-        app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                                threadPool=threadPool)
+        app = astrometry.Astrometry(tempDir=tempDir,
+                                    threadPool=threadPool)
         assert app.binPathSolveField == ''
         assert app.binPathImage2xy == ''
         assert app.indexPath == ''
         assert os.path.isfile(tempDir + '/astrometry.cfg')
 
 
-app = astrometryKstars.AstrometryKstars(tempDir=tempDir,
-                                        threadPool=threadPool)
+app = astrometry.Astrometry(tempDir=tempDir,
+                            threadPool=threadPool)
 
 
 def test_stringToDegree_1():

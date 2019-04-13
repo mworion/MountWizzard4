@@ -42,7 +42,7 @@ from mw4.environment import weather
 from mw4.powerswitch import pegasusUPB
 from mw4.base import measuredata
 from mw4.remote import remote
-from mw4.astrometry import astrometryKstars
+from mw4.astrometry import astrometry
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -123,16 +123,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.skymeter = skymeter.Skymeter(host='localhost')
         self.weather = weather.Weather(host='localhost')
         self.power = pegasusUPB.PegasusUPB(host='localhost')
-        self.data = buildpoints.DataPoint(self,
-                                          mwGlob=self.mwGlob,
-                                          )
-        self.hipparcos = hipparcos.Hipparcos(self,
-                                             mwGlob=self.mwGlob,
-                                             )
+        self.data = buildpoints.DataPoint(self, mwGlob=self.mwGlob)
+        self.hipparcos = hipparcos.Hipparcos(self, mwGlob=self.mwGlob)
         self.measure = measuredata.MeasureData(self)
         self.remote = remote.Remote(self)
-        self.astrometry = astrometryKstars.AstrometryKstars(mwGlob['tempDir'],
-                                                            self.threadPool)
+        self.astrometry = astrometry.Astrometry(mwGlob['tempDir'], self.threadPool)
         # get the window widgets up
         self.mainW = mainW.MainWindow(self)
         self.hemisphereW = hemisphereW.HemisphereWindow(self)

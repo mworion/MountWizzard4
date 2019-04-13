@@ -51,20 +51,20 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
     solveResult = PyQt5.QtCore.pyqtSignal(object)
 
 
-class AstrometryKstars(object):
+class Astrometry(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
 
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
-        >>> astrometry = AstrometryKstars(tempDir=tempDir,
+        >>> astrometry = Astrometry(tempDir=tempDir,
         >>>                               threadPool=threadpool
         >>>                         )
 
     """
 
-    __all__ = ['AstrometryKstars',
+    __all__ = ['Astrometry',
                'solve',
                'solveThreading',
                'checkAvailability',

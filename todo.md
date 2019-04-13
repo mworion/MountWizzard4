@@ -22,7 +22,6 @@ necessary feature list:
 - indi CCD camera separate host
 - mountcontrol: adding TLE commands and tests
 - optimizing model functions (all) implement
-- audio signals implementation like we had in mw3
 
 nice to have:
 - indi setting parameters of devices

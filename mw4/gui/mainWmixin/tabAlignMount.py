@@ -48,6 +48,13 @@ class AlignMount(object):
         self.ui.loadAlignBuildPoints.clicked.connect(self.loadAlignBuildFile)
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         self.ui.alignBuildPFileName.setText(config.get('alignBuildPFileName', ''))
         self.ui.altBase.setValue(config.get('altBase', 30))
@@ -56,6 +63,13 @@ class AlignMount(object):
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         config['alignBuildPFileName'] = self.ui.alignBuildPFileName.text()
         config['altBase'] = self.ui.altBase.value()

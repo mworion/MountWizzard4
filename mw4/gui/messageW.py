@@ -64,6 +64,14 @@ class MessageWindow(widget.MWidget):
         self.initConfig()
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
+
         if 'messageW' not in self.app.config:
             return
         config = self.app.config['messageW']
@@ -80,6 +88,13 @@ class MessageWindow(widget.MWidget):
             self.showWindow()
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         if 'messageW' not in self.app.config:
             self.app.config['messageW'] = {}
         config = self.app.config['messageW']

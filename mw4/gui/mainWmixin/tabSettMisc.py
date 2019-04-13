@@ -54,6 +54,13 @@ class SettMisc(object):
         self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
@@ -86,6 +93,13 @@ class SettMisc(object):
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()

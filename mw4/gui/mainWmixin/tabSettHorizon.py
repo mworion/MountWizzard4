@@ -41,6 +41,13 @@ class SettHorizon(object):
         self.ui.checkAutoDeletePoints.clicked.connect(self.autoDeletePoints)
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
@@ -53,6 +60,13 @@ class SettHorizon(object):
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         config['horizonFileName'] = self.ui.horizonFileName.text()
         config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()

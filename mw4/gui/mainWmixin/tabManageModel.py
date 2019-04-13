@@ -53,6 +53,13 @@ class ManageModel(object):
         self.ui.cancelTargetRMS.clicked.connect(self.cancelTargetRMS)
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
         self.ui.targetRMS.setValue(config.get('targetRMS', 99))
@@ -60,6 +67,13 @@ class ManageModel(object):
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
         config['targetRMS'] = self.ui.targetRMS.value()

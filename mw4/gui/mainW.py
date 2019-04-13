@@ -127,6 +127,14 @@ class MainWindow(MWidget,
         self.show()
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
+
         config = self.app.config
         self.ui.profile.setText(config.get('profileName'))
         if 'mainW' not in config:
@@ -164,6 +172,14 @@ class MainWindow(MWidget,
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
+
         config = self.app.config
         config['profileName'] = self.ui.profile.text()
         if 'mainW' not in config:
@@ -190,6 +206,7 @@ class MainWindow(MWidget,
         SettRelay.storeConfig(self)
         SettMisc.storeConfig(self)
         SettDevice.storeConfig(self)
+
         return True
 
     def closeEvent(self, closeEvent):

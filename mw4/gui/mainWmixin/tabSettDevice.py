@@ -67,6 +67,13 @@ class SettDevice(object):
         self.ui.astrometryDevice.activated.connect(self.astrometryDispatch)
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
             dropDown.setCurrentIndex(config.get(key, 0))
@@ -82,6 +89,13 @@ class SettDevice(object):
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
             config[key] = dropDown.currentIndex()

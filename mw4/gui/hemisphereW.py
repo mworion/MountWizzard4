@@ -126,6 +126,14 @@ class HemisphereWindow(widget.MWidget):
         self.app.update3s.connect(self.updateGUI)
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
+
         if 'hemisphereW' not in self.app.config:
             return False
         config = self.app.config['hemisphereW']
@@ -149,6 +157,13 @@ class HemisphereWindow(widget.MWidget):
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         if 'hemisphereW' not in self.app.config:
             self.app.config['hemisphereW'] = {}
         config = self.app.config['hemisphereW']

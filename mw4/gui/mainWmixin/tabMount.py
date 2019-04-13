@@ -49,12 +49,26 @@ class Mount(object):
         self.ui.stop.clicked.connect(self.stop)
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()

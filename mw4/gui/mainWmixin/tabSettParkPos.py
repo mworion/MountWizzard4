@@ -45,6 +45,13 @@ class SettParkPos(object):
             button.clicked.connect(self.slewToParkPos)
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
@@ -59,6 +66,13 @@ class SettParkPos(object):
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)

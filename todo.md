@@ -1,8 +1,6 @@
 missing tests:
 - loader 0%
 - imageW only 44%
-- for polar plot in mainW 
-- deviceSetting
 - mountcontrol new commands qt
 - indibase new commands qt
 - widget 67%
@@ -24,6 +22,7 @@ necessary feature list:
 - indi CCD camera separate host
 - mountcontrol: adding TLE commands and tests
 - optimizing model functions (all) implement
+- audio signals implementation like we had in mw3
 
 nice to have:
 - indi setting parameters of devices

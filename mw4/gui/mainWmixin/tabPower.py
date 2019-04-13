@@ -42,8 +42,8 @@ class Power(object):
         signals.newText.connect(self.setPowerText)
         signals.defText.connect(self.setPowerText)
 
-        self.ui.dewA.editingFinished.connect(self.sendDewA)
-        self.ui.dewB.editingFinished.connect(self.sendDewB)
+        self.ui.dewA.valueChanged.connect(self.sendDewA)
+        self.ui.dewB.valueChanged.connect(self.sendDewB)
 
         self.ui.powerPort1.clicked.connect(self.sendPowerPort1)
         self.ui.powerPort2.clicked.connect(self.sendPowerPort2)
@@ -170,9 +170,13 @@ class Power(object):
 
         for element, value in device.getNumber(propertyName).items():
             if element == 'DEW_A':
+                self.ui.dewA.valueChanged.disconnect(self.sendDewA)
                 self.ui.dewA.setValue(round(value, -1))
+                self.ui.dewA.valueChanged.connect(self.sendDewA)
             elif element == 'DEW_B':
+                self.ui.dewB.valueChanged.disconnect(self.sendDewB)
                 self.ui.dewB.setValue(round(value, -1))
+                self.ui.dewB.valueChanged.connect(self.sendDewB)
             # print(deviceName, propertyName, element, value)
 
         return True
@@ -262,7 +266,6 @@ class Power(object):
 
         dew = device.getNumber('DEW_PWM')
         dew['DEW_A'] = self.ui.dewA.value()
-        print(dew['DEW_A'])
         client.sendNewNumber(deviceName=name,
                              propertyName='DEW_PWM',
                              elements=dew,

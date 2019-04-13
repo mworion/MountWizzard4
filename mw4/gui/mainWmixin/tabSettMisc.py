@@ -20,18 +20,23 @@
 # standard libraries
 import logging
 # external packages
+import PyQt5.QtMultimedia
 # local import
 
 
 class SettMisc(object):
     """
-    the main window class handles the main menu as well as the show and no show part of
-    any other window. all necessary processing for functions of that gui will be linked
-    to this class. therefore window classes will have a threadpool for managing async
-    processing if needed.
+    the SettMisc window class handles the settings misc menu. all necessary processing
+    for functions of that gui will be linked to this class.
     """
 
     def __init__(self):
+
+        self.audioSignalsSet = dict()
+        self.guiAudioList = dict()
+
+        self.setupAudioSignals()
+
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
@@ -44,6 +49,9 @@ class SettMisc(object):
         self.ui.loglevelInfoMC.clicked.connect(self.setLoggingLevelMC)
         self.ui.loglevelWarningMC.clicked.connect(self.setLoggingLevelMC)
         self.ui.loglevelErrorMC.clicked.connect(self.setLoggingLevelMC)
+
+        self.app.mount.signals.alert.connect(self.playAudioMountAlert)
+        self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)
 
     def initConfig(self):
         config = self.app.config['mainW']
@@ -62,12 +70,19 @@ class SettMisc(object):
         self.ui.loglevelWarningMC.setChecked(config.get('loglevelWarningMC', False))
         self.ui.loglevelErrorMC.setChecked(config.get('loglevelErrorMC', False))
 
-        self.ui.expiresYes.setChecked(config.get('expiresYes', True))
-        self.ui.expiresNo.setChecked(config.get('expiresNo', False))
-
         self.setLoggingLevel()
         self.setLoggingLevelIB()
         self.setLoggingLevelMC()
+
+        self.ui.expiresYes.setChecked(config.get('expiresYes', True))
+        self.ui.expiresNo.setChecked(config.get('expiresNo', False))
+
+        self.setupAudioGui()
+        self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
+        self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
+        self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
+        self.ui.soundModelingFinished.setCurrentIndex(config.get('soundModelingFinished', 0))
+
         return True
 
     def storeConfig(self):
@@ -89,6 +104,12 @@ class SettMisc(object):
 
         config['expiresYes'] = self.ui.expiresYes.isChecked()
         config['expiresNo'] = self.ui.expiresNo.isChecked()
+
+        config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
+        config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
+        config['soundMountAlert'] = self.ui.soundMountAlert.currentIndex()
+        config['soundModelingFinished'] = self.ui.soundModelingFinished.currentIndex()
+
         return True
 
     def setupIcons(self):
@@ -155,3 +176,68 @@ class SettMisc(object):
             logging.getLogger('mountcontrol').setLevel(logging.WARNING)
         elif self.ui.loglevelErrorMC.isChecked():
             logging.getLogger('mountcontrol').setLevel(logging.ERROR)
+
+    def setupAudioGui(self):
+        """
+        setupAudioGui populates the audio selection gui
+
+        :return: True for test purpose
+        """
+
+        self.guiAudioList['MountSlew'] = self.ui.soundMountSlewFinished
+        self.guiAudioList['DomeSlew'] = self.ui.soundDomeSlewFinished
+        self.guiAudioList['MountAlert'] = self.ui.soundMountAlert
+        self.guiAudioList['ModelingFinished'] = self.ui.soundModelingFinished
+
+        for itemKey, itemValue in self.guiAudioList.items():
+            self.guiAudioList[itemKey].addItem('None')
+            self.guiAudioList[itemKey].addItem('Beep')
+            self.guiAudioList[itemKey].addItem('Horn')
+            self.guiAudioList[itemKey].addItem('Beep1')
+            self.guiAudioList[itemKey].addItem('Alarm')
+            self.guiAudioList[itemKey].addItem('Alert')
+        return True
+
+    def setupAudioSignals(self):
+        """
+        setupAudioSignals pre loads all know audio signals for events handling
+
+        :return: True for test purpose
+        """
+
+        self.audioSignalsSet['Beep'] = PyQt5.QtMultimedia.QSound(':/beep.wav')
+        self.audioSignalsSet['Alert'] = PyQt5.QtMultimedia.QSound(':/alert.wav')
+        self.audioSignalsSet['Horn'] = PyQt5.QtMultimedia.QSound(':/horn.wav')
+        self.audioSignalsSet['Beep1'] = PyQt5.QtMultimedia.QSound(':/beep1.wav')
+        self.audioSignalsSet['Alarm'] = PyQt5.QtMultimedia.QSound(':/alarm.wav')
+        return True
+
+    def playAudioMountSlewFinished(self):
+        """
+        playAudioMountSlewFinished plays a defined sound if this events happens
+
+        :return: success of playing sound
+        """
+
+        listEntry = self.guiAudioList.get('MountSlew', None)
+        if listEntry is None:
+            return False
+        sound = listEntry.currentText()
+        if sound in self.audioSignalsSet:
+            self.audioSignalsSet[sound].play()
+        return True
+
+    def playAudioMountAlert(self):
+        """
+        playAudioMountSlewFinished plays a defined sound if this events happens
+
+        :return: success of playing sound
+        """
+
+        listEntry = self.guiAudioList.get('MountAlert', None)
+        if listEntry is None:
+            return False
+        sound = listEntry.currentText()
+        if sound in self.audioSignalsSet:
+            self.audioSignalsSet[sound].play()
+        return True

@@ -105,10 +105,11 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowCelestial.clicked.connect(self.updateCelestialPath)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
-        self.app.mount.signals.pointDone.connect(self.updateDome)
         self.app.mount.signals.settDone.connect(self.updateMeridian)
         self.app.mount.signals.settDone.connect(self.updateHorizonLimits)
         self.app.mount.signals.settDone.connect(self.updateCelestialPath)
+        self.app.dome.signals.azimuth.connect(self.updateDome)
+        self.app.dome.client.signals.deviceDisconnected.connect(self.updateDome)
         self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
         self.app.mainW.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkEditNone.clicked.connect(self.setOperationMode)
@@ -377,16 +378,14 @@ class HemisphereWindow(widget.MWidget):
 
         if not self.showStatus:
             return False
-
-        # using mount for test
-        obsSite = self.app.mount.obsSite
-        if obsSite.Az is None:
-            return False
-        az = obsSite.Az.degrees
         if self.pointerDome is None:
             return False
+
+        az = self.app.dome.data.get('DOME_ABSOLUTE_POSITION', -1)
+        visible = (az != -1)
+
         self.pointerDome.set_xy((az - 15, 0))
-        self.pointerDome.set_visible(True)
+        self.pointerDome.set_visible(visible)
         self.drawCanvas()
         return True
 

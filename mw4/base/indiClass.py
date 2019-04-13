@@ -52,7 +52,6 @@ class IndiClass(object):
                  ):
         super().__init__()
 
-        self.connected = False
         self.client = qtIndiBase.Client(host=host)
         self.name = name
         self.data = {}

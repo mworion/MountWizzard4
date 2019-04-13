@@ -1047,6 +1047,8 @@ class HemisphereWindow(widget.MWidget):
                                        visible=False,
                                        )
         # adding pointer of dome if dome is present
+        az = self.app.dome.data.get('DOME_ABSOLUTE_POSITION', -1)
+        visible = (az != -1)
         self.pointerDome = mpatches.Rectangle((165, 0),
                                               30,
                                               90,
@@ -1054,7 +1056,7 @@ class HemisphereWindow(widget.MWidget):
                                               color='#40404080',
                                               lw=3,
                                               fill=True,
-                                              visible=False)
+                                              visible=visible)
         axes.add_patch(self.pointerDome)
 
     def drawHemisphereStars(self, axes=None):

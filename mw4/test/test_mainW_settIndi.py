@@ -131,11 +131,20 @@ def test_showIndiEnvironDisconnected(qtbot):
     assert ['INDI server environment disconnected', 0] == blocker.args
 
 
-def test_showIndiNewEnvironDevice(qtbot):
+def test_showIndiNewEnvironDevice_1(qtbot):
+    app.environ.name = 'test'
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.showIndiNewEnvironDevice('test')
         assert suc
     assert ['INDI environment device [test] found', 0] == blocker.args
+
+
+def test_showIndiNewEnvironDevice_2(qtbot):
+    app.environ.name = 'snoop'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewEnvironDevice('test')
+        assert suc
+    assert ['INDI environment device snoops -> [test]', 0] == blocker.args
 
 
 def test_showIndiRemoveEnvironDevice(qtbot):
@@ -169,11 +178,20 @@ def test_showIndiSkymeterDisconnected(qtbot):
     assert ['INDI server skymeter disconnected', 0] == blocker.args
 
 
-def test_showIndiNewSkymeterDevice(qtbot):
+def test_showIndiNewSkymeterDevice_1(qtbot):
+    app.skymeter.name = 'test'
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.showIndiNewSkymeterDevice('test')
         assert suc
     assert ['INDI skymeter device [test] found', 0] == blocker.args
+
+
+def test_showIndiNewSkymeterDevice_2(qtbot):
+    app.skymeter.name = 'snoop'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewSkymeterDevice('test')
+        assert suc
+    assert ['INDI skymeter device snoops -> [test]', 0] == blocker.args
 
 
 def test_showIndiRemoveSkymeterDevice(qtbot):
@@ -207,11 +225,20 @@ def test_showIndiWeatherDisconnected(qtbot):
     assert ['INDI server weather disconnected', 0] == blocker.args
 
 
-def test_showIndiNewWeatherDevice(qtbot):
+def test_showIndiNewWeatherDevice_1(qtbot):
+    app.weather.name = 'test'
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.showIndiNewWeatherDevice('test')
         assert suc
     assert ['INDI weather device [test] found', 0] == blocker.args
+
+
+def test_showIndiNewWeatherDevice_2(qtbot):
+    app.weather.name = 'snoop'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewWeatherDevice('test')
+        assert suc
+    assert ['INDI weather device snoops -> [test]', 0] == blocker.args
 
 
 def test_showIndiRemoveWeatherDevice(qtbot):

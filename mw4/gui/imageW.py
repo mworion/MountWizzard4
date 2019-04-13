@@ -201,7 +201,7 @@ class ImageWindow(widget.MWidget):
 
     def solveImage(self):
         updateFits = self.ui.checkUpdateFits.isChecked()
-        self.app.plateSolve.solveThreading(fitsPath=self.imageFileName,
+        self.app.astrometry.solveThreading(fitsPath=self.imageFileName,
                                            timeout=10,
                                            updateFits=updateFits,
                                            )

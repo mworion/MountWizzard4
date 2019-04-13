@@ -36,6 +36,7 @@ from mw4.gui import imageW
 from mw4.powerswitch import kmRelay
 from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
+from mw4.dome import dome
 from mw4.environment import environ
 from mw4.environment import skymeter
 from mw4.environment import weather
@@ -120,6 +121,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # loading other classes
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
+        self.dome = dome.Dome(host='localhost')
         self.skymeter = skymeter.Skymeter(host='localhost')
         self.weather = weather.Weather(host='localhost')
         self.power = pegasusUPB.PegasusUPB(host='localhost')

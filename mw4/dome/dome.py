@@ -26,20 +26,20 @@ import numpy as np
 from mw4.base import indiClass
 
 
-class PegasusUPB(indiClass.IndiClass):
+class Dome(indiClass.IndiClass):
     """
     the class PegasusUPB inherits all information and handling of the PegasusUPB device
 
-        >>> fw = PegasusUPB(
-        >>>                  host=host
-        >>>                  name=''
-        >>>                 )
+        >>> fw = Dome(
+        >>>           host=host
+        >>>           name=''
+        >>>          )
     """
 
-    __all__ = ['PegasusUPB',
+    __all__ = ['Dome',
                ]
 
-    version = '0.2'
+    version = '0.1'
     logger = logging.getLogger(__name__)
 
     # update rate to 1000 milli seconds for setting indi server

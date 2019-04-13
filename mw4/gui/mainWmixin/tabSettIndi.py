@@ -50,6 +50,14 @@ class SettIndi(object):
         self.app.environ.client.signals.newMessage.connect(self.indiMessage)
         self.app.skymeter.client.signals.newMessage.connect(self.indiMessage)
 
+        sig = self.app.dome.client.signals
+        sig.serverConnected.connect(self.showIndiDomeConnected)
+        sig.serverDisconnected.connect(self.showIndiDomeDisconnected)
+        sig.deviceConnected.connect(self.showDomeDeviceConnected)
+        sig.deviceDisconnected.connect(self.showDomeDeviceDisconnected)
+        sig.newDevice.connect(self.showIndiNewDomeDevice)
+        sig.removeDevice.connect(self.showIndiRemoveDomeDevice)
+
         sig = self.app.environ.client.signals
         sig.serverConnected.connect(self.showIndiEnvironConnected)
         sig.serverDisconnected.connect(self.showIndiEnvironDisconnected)
@@ -258,6 +266,75 @@ class SettIndi(object):
             return True
         return False
 
+    def showIndiDomeConnected(self):
+        """
+        showIndiDomeConnected writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit('INDI server dome connected', 0)
+        return True
+
+    def showIndiDomeDisconnected(self):
+        """
+        showIndiDomeDisconnected writes info to message window and recolors the status
+
+        :return: true for test purpose
+        """
+
+        self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
+        self.app.message.emit('INDI server dome disconnected', 0)
+        return True
+
+    def showIndiNewDomeDevice(self, deviceName):
+        """
+        showIndiNewDomeDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        if deviceName == self.app.dome.name:
+            self.app.message.emit(f'INDI dome device [{deviceName}] found', 0)
+        else:
+            self.app.message.emit(f'INDI dome device snoops -> [{deviceName}]', 0)
+
+        return True
+
+    def showIndiRemoveDomeDevice(self, deviceName):
+        """
+        showIndiRemoveDomeDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI dome device [{deviceName}] removed', 0)
+        return True
+
+    def showDomeDeviceConnected(self):
+        """
+        showDomeDeviceConnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.domeDevice.setStyleSheet(self.BACK_GREEN)
+        self.changeStyleDynamic(self.ui.domeConnected, 'color', 'green')
+        return True
+
+    def showDomeDeviceDisconnected(self):
+        """
+        showDomeDeviceDisconnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
+        self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
+        return True
+
     def showIndiEnvironConnected(self):
         """
         showIndiEnvironConnected writes info to message window
@@ -286,7 +363,11 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        self.app.message.emit(f'INDI environment device [{deviceName}] found', 0)
+        if deviceName == self.app.environ.name:
+            self.app.message.emit(f'INDI environment device [{deviceName}] found', 0)
+        else:
+            self.app.message.emit(f'INDI environment device snoops -> [{deviceName}]', 0)
+
         return True
 
     def showIndiRemoveEnvironDevice(self, deviceName):
@@ -357,7 +438,10 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        self.app.message.emit(f'INDI skymeter device [{deviceName}] found', 0)
+        if deviceName == self.app.skymeter.name:
+            self.app.message.emit(f'INDI skymeter device [{deviceName}] found', 0)
+        else:
+            self.app.message.emit(f'INDI skymeter device snoops -> [{deviceName}]', 0)
         return True
 
     def showIndiRemoveSkymeterDevice(self, deviceName):
@@ -422,7 +506,10 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        self.app.message.emit(f'INDI weather device [{deviceName}] found', 0)
+        if deviceName == self.app.weather.name:
+            self.app.message.emit(f'INDI weather device [{deviceName}] found', 0)
+        else:
+            self.app.message.emit(f'INDI weather device snoops -> [{deviceName}]', 0)
         return True
 
     def showIndiRemoveWeatherDevice(self, deviceName):
@@ -487,7 +574,10 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        self.app.message.emit(f'INDI power device [{deviceName}] found', 0)
+        if deviceName == self.app.power.name:
+            self.app.message.emit(f'INDI power device [{deviceName}] found', 0)
+        else:
+            self.app.message.emit(f'INDI power device snoops -> [{deviceName}]', 0)
         return True
 
     def showIndiRemovePowerDevice(self, deviceName):

@@ -60,6 +60,7 @@ class SettDevice(object):
         self.ui.relayDevice.activated.connect(self.enableRelay)
         self.ui.remoteDevice.activated.connect(self.enableRemote)
         self.ui.measureDevice.activated.connect(self.enableMeasure)
+        self.ui.domeDevice.activated.connect(self.domeDispatch)
         self.ui.environDevice.activated.connect(self.environDispatch)
         self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
         self.ui.weatherDevice.activated.connect(self.weatherDispatch)
@@ -81,6 +82,7 @@ class SettDevice(object):
         self.enableRelay()
         self.enableRemote()
         self.enableMeasure()
+        self.domeDispatch()
         self.environDispatch()
         self.skymeterDispatch()
         self.weatherDispatch()
@@ -137,6 +139,7 @@ class SettDevice(object):
         self.ui.remoteDevice.addItem('Built-In')
         self.ui.relayDevice.addItem('Built-In')
         self.ui.environDevice.addItem('INDI')
+        self.ui.domeDevice.addItem('INDI')
         self.ui.skymeterDevice.addItem('INDI')
         self.ui.weatherDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
@@ -206,6 +209,29 @@ class SettDevice(object):
             self.app.measure.stopMeasurement()
             self.app.message.emit('Measurement disabled', 0)
             self.ui.measureDevice.setStyleSheet(self.BACK_NORM)
+
+        return True
+
+    def domeDispatch(self):
+        """
+        domeDispatch selects the type of device for dome measures and start / stop
+        them.
+        in addition this function enables and disables other gui functions, which rely on
+        the presence of a running driver
+
+        :return: true for test purpose
+        """
+
+        if self.ui.domeDevice.currentText().startswith('INDI'):
+            self.app.dome.client.host = self.ui.domeHost.text()
+            self.app.dome.name = self.ui.domeDeviceName.currentText()
+            self.app.dome.startCommunication()
+            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
+            self.app.message.emit('Dome enabled', 0)
+        else:
+            self.app.dome.stopCommunication()
+            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'gray')
+            self.app.message.emit('Dome disabled', 0)
 
         return True
 

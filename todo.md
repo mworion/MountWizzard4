@@ -11,6 +11,7 @@ problems occurred list:
 - mountcontrol overflow pointing
 - mainApp refactor to better understandable implementation
 - check extended attributes when zipping APP bundle in macOS
+- minimum horizon line not implemented
 
 necessary feature list:
 - add dome support from indi

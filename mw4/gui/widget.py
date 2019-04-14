@@ -198,7 +198,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             return False
         if numberPlots < 1:
             return False
-        if numberPlots > 2:
+        if numberPlots > 3:
             return False
 
         fig = widget.figure
@@ -217,6 +217,19 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             fig.add_subplot(2,
                             1,
                             2,
+                            facecolor='none')
+        elif numberPlots == 3:
+            fig.add_subplot(3,
+                            1,
+                            1,
+                            facecolor='none')
+            fig.add_subplot(3,
+                            1,
+                            2,
+                            facecolor='none')
+            fig.add_subplot(3,
+                            1,
+                            3,
                             facecolor='none')
 
         fig.subplots_adjust(left=0.075,

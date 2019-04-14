@@ -40,10 +40,10 @@ def test_measureTask_1():
     app.environ.data = {}
     suc = app.measure._measureTask()
     assert suc
-    assert app.measure.data['temp'].shape[0]
-    assert app.measure.data['humidity'].shape[0]
-    assert app.measure.data['press'].shape[0]
-    assert app.measure.data['dewTemp'].shape[0]
+    assert app.measure.data['envTemp'].shape[0]
+    assert app.measure.data['envHum'].shape[0]
+    assert app.measure.data['envPress'].shape[0]
+    assert app.measure.data['envDew'].shape[0]
 
 
 def test_measureTask_2():
@@ -51,27 +51,31 @@ def test_measureTask_2():
     app.environ.data = {}
     app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),
-        'temp': np.empty(shape=[0, 1]),
-        'humidity': np.empty(shape=[0, 1]),
-        'press': np.empty(shape=[0, 1]),
-        'dewTemp': np.empty(shape=[0, 1]),
-        'sqr': np.empty(shape=[0, 1]),
+        'envTemp': np.empty(shape=[0, 1]),
+        'envHum': np.empty(shape=[0, 1]),
+        'envPress': np.empty(shape=[0, 1]),
+        'envDew': np.empty(shape=[0, 1]),
+        'skyTemp': np.empty(shape=[0, 1]),
+        'skySQR': np.empty(shape=[0, 1]),
         'raJNow': np.empty(shape=[0, 1]),
         'decJNow': np.empty(shape=[0, 1]),
         'status': np.empty(shape=[0, 1]),
-        'pCurr1': np.empty(shape=[0, 1]),
-        'pCurr2': np.empty(shape=[0, 1]),
-        'pCurr3': np.empty(shape=[0, 1]),
-        'pCurr4': np.empty(shape=[0, 1]),
-        'pVolt': np.empty(shape=[0, 1]),
-        'pCurr': np.empty(shape=[0, 1]),
+        'powCurr1': np.empty(shape=[0, 1]),
+        'powCurr2': np.empty(shape=[0, 1]),
+        'powCurr3': np.empty(shape=[0, 1]),
+        'powCurr4': np.empty(shape=[0, 1]),
+        'powVolt': np.empty(shape=[0, 1]),
+        'powCurr': np.empty(shape=[0, 1]),
+        'powHum': np.empty(shape=[0, 1]),
+        'powTemp': np.empty(shape=[0, 1]),
+        'powDew': np.empty(shape=[0, 1]),
     }
     suc = app.measure._measureTask()
     assert suc
-    assert app.measure.data['temp'].shape[0] == 1
-    assert app.measure.data['humidity'].shape[0] == 1
-    assert app.measure.data['press'].shape[0] == 1
-    assert app.measure.data['dewTemp'].shape[0] == 1
+    assert app.measure.data['envTemp'].shape[0] == 1
+    assert app.measure.data['envHum'].shape[0] == 1
+    assert app.measure.data['envPress'].shape[0] == 1
+    assert app.measure.data['envDew'].shape[0] == 1
 
 
 def test_measureTask_3():
@@ -82,10 +86,10 @@ def test_measureTask_3():
     app.environ.data['WEATHER_HUMIDITY'] = 10
     suc = app.measure._measureTask()
     assert suc
-    assert app.measure.data['temp'][1] == 10
-    assert app.measure.data['humidity'][1] == 10
-    assert app.measure.data['press'][1] == 1000
-    assert app.measure.data['dewTemp'][1] == 10
+    assert app.measure.data['envTemp'][1] == 10
+    assert app.measure.data['envHum'][1] == 10
+    assert app.measure.data['envPress'][1] == 1000
+    assert app.measure.data['envDew'][1] == 10
     app.mainW.ui.measureDevice.setCurrentIndex(0)
 
 

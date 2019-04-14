@@ -57,20 +57,24 @@ class MeasureData(object):
         self.decRef = None
         self.data = {
             'time': np.empty(shape=[0, 1], dtype='datetime64'),
-            'temp': np.empty(shape=[0, 1]),
-            'humidity': np.empty(shape=[0, 1]),
-            'press': np.empty(shape=[0, 1]),
-            'dewTemp': np.empty(shape=[0, 1]),
-            'sqr': np.empty(shape=[0, 1]),
+            'envTemp': np.empty(shape=[0, 1]),
+            'envHum': np.empty(shape=[0, 1]),
+            'envPress': np.empty(shape=[0, 1]),
+            'envDew': np.empty(shape=[0, 1]),
+            'skyTemp': np.empty(shape=[0, 1]),
+            'skySQR': np.empty(shape=[0, 1]),
             'raJNow': np.empty(shape=[0, 1]),
             'decJNow': np.empty(shape=[0, 1]),
             'status': np.empty(shape=[0, 1]),
-            'pCurr1': np.empty(shape=[0, 1]),
-            'pCurr2': np.empty(shape=[0, 1]),
-            'pCurr3': np.empty(shape=[0, 1]),
-            'pCurr4': np.empty(shape=[0, 1]),
-            'pVolt': np.empty(shape=[0, 1]),
-            'pCurr': np.empty(shape=[0, 1]),
+            'powCurr1': np.empty(shape=[0, 1]),
+            'powCurr2': np.empty(shape=[0, 1]),
+            'powCurr3': np.empty(shape=[0, 1]),
+            'powCurr4': np.empty(shape=[0, 1]),
+            'powVolt': np.empty(shape=[0, 1]),
+            'powCurr': np.empty(shape=[0, 1]),
+            'powHum': np.empty(shape=[0, 1]),
+            'powPress': np.empty(shape=[0, 1]),
+            'powDew': np.empty(shape=[0, 1]),
         }
 
         self.timerTask = PyQt5.QtCore.QTimer()
@@ -180,34 +184,42 @@ class MeasureData(object):
         envDew = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
         envHum = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
         # gathering sqr values
-        envSQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
+        skySQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
+        skyTemp = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
         # gathering mount data
         raJNow, decJNow = self._calculateReference()
         # gathering data from power
-        pCurr1 = self.app.power.data.get('POWER_CURRENT_1', 0)
-        pCurr2 = self.app.power.data.get('POWER_CURRENT_2', 0)
-        pCurr3 = self.app.power.data.get('POWER_CURRENT_3', 0)
-        pCurr4 = self.app.power.data.get('POWER_CURRENT_4', 0)
-        pVolt = self.app.power.data.get('SENSOR_VOLTAGE', 0)
-        pCurr = self.app.power.data.get('SENSOR_CURRENT', 0)
+        powCurr1 = self.app.power.data.get('POWER_CURRENT_1', 0)
+        powCurr2 = self.app.power.data.get('POWER_CURRENT_2', 0)
+        powCurr3 = self.app.power.data.get('POWER_CURRENT_3', 0)
+        powCurr4 = self.app.power.data.get('POWER_CURRENT_4', 0)
+        powVolt = self.app.power.data.get('SENSOR_VOLTAGE', 0)
+        powCurr = self.app.power.data.get('SENSOR_CURRENT', 0)
+        powTemp = self.app.power.data.get('WEATHER_TEMPERATURE', 0)
+        powDew = self.app.power.data.get('WEATHER_DEWPOINT', 0)
+        powHum = self.app.power.data.get('WEATHER_HUMIDITY', 0)
 
         # writing data to dict
         timeStamp = obs.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
-        dat['temp'] = np.append(dat['temp'], envTemp)
-        dat['humidity'] = np.append(dat['humidity'], envHum)
-        dat['press'] = np.append(dat['press'], envPress)
-        dat['dewTemp'] = np.append(dat['dewTemp'], envDew)
-        dat['sqr'] = np.append(dat['sqr'], envSQR)
+        dat['envTemp'] = np.append(dat['envTemp'], envTemp)
+        dat['envHum'] = np.append(dat['envHum'], envHum)
+        dat['envPress'] = np.append(dat['envPress'], envPress)
+        dat['envDew'] = np.append(dat['envDew'], envDew)
+        dat['skySQR'] = np.append(dat['skySQR'], skySQR)
+        dat['skyTemp'] = np.append(dat['skyTemp'], skyTemp)
         dat['raJNow'] = np.append(dat['raJNow'], raJNow)
         dat['decJNow'] = np.append(dat['decJNow'], decJNow)
         dat['status'] = np.append(dat['status'], obs.status)
-        dat['pCurr1'] = np.append(dat['pCurr1'], pCurr1)
-        dat['pCurr2'] = np.append(dat['pCurr2'], pCurr2)
-        dat['pCurr3'] = np.append(dat['pCurr3'], pCurr3)
-        dat['pCurr4'] = np.append(dat['pCurr4'], pCurr4)
-        dat['pCurr'] = np.append(dat['pCurr'], pCurr)
-        dat['pVolt'] = np.append(dat['pVolt'], pVolt)
+        dat['powCurr1'] = np.append(dat['powCurr1'], powCurr1)
+        dat['powCurr2'] = np.append(dat['powCurr2'], powCurr2)
+        dat['powCurr3'] = np.append(dat['powCurr3'], powCurr3)
+        dat['powCurr4'] = np.append(dat['powCurr4'], powCurr4)
+        dat['powCurr'] = np.append(dat['powCurr'], powCurr)
+        dat['powVolt'] = np.append(dat['powVolt'], powVolt)
+        dat['powTemp'] = np.append(dat['powTemp'], powTemp)
+        dat['powDew'] = np.append(dat['powDew'], powDew)
+        dat['powHum'] = np.append(dat['powHum'], powHum)
 
         self.mutexMeasure.unlock()
         return True

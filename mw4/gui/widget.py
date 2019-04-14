@@ -294,7 +294,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         dlg = PyQt5.QtWidgets.QFileDialog()
         dlg.setOptions(PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog)
-        dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
         dlg.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
         dlg.setStyleSheet(self.getStyle())
         dlg.setViewMode(PyQt5.QtWidgets.QFileDialog.List)
@@ -373,6 +372,30 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(folder)
+
+        dlg.exec_()
+        filePath = dlg.selectedFiles()
+        full, short, ext = self.extractNames(filePath)
+        return full, short, ext
+
+    def openDir(self, window, title, folder):
+        """
+        openFile handles a single file select with filter in a non native format.
+
+        :param window:      parent window class
+        :param title:       title for the file dialog
+        :param folder:      starting folder for searching the file
+        :return:            name: full path for file else empty
+                            short: just file name without extension
+                            ext: extension of the file
+        """
+
+        dlg = self.prepareFileDialog(window, True)
+        dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptOpen)
+
+        dlg.setWindowTitle(title)
+        dlg.setDirectory(folder)
+        dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.DirectoryOnly)
 
         dlg.exec_()
         filePath = dlg.selectedFiles()

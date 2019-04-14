@@ -160,21 +160,21 @@ def test_getDewPoint():
     assert value == 9.254294282076941
 
 
-def test_updateData_1():
+def test_updateNumber_1():
     app.device = None
     app.name = 'test'
-    suc = app.updateData('false', 'WEATHER_HUMIDITY')
+    suc = app.updateNumber('false', 'WEATHER_HUMIDITY')
     assert not suc
 
 
-def test_updateData_2():
+def test_updateNumber_2():
     app.device = 1
     app.name = 'test'
-    suc = app.updateData('false', 'WEATHER_HUMIDITY')
+    suc = app.updateNumber('false', 'WEATHER_HUMIDITY')
     assert not suc
 
 
-def test_updateData_3():
+def test_updateNumber_3():
     app.device = indibase.indiBase.Device()
     app.name = 'test'
     values = {'WEATHER_DEWPOINT': 5,
@@ -184,14 +184,14 @@ def test_updateData_3():
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateData('test', 'WEATHER_PARAMETERS')
+        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
         assert app.data['WEATHER_DEWPOINT'] == 5
         assert app.data['WEATHER_TEMPERATURE'] == 10
         assert app.data['WEATHER_HUMIDITY'] == 50
 
 
-def test_updateData_4():
+def test_updateNumber_4():
     app.device = indibase.indiBase.Device()
     app.name = 'test'
     values = {'WEATHER_DEWPOINT': 5,
@@ -199,11 +199,11 @@ def test_updateData_4():
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateData('test', 'WEATHER_PARAMETERS')
+        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
 
 
-def test_updateData_5():
+def test_updateNumber_5():
     app.device = indibase.indiBase.Device()
     app.name = 'test'
     values = {'WEATHER_HUMIDITY': 50,
@@ -211,11 +211,11 @@ def test_updateData_5():
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateData('test', 'WEATHER_PARAMETERS')
+        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
         assert not suc
 
 
-def test_updateData_6():
+def test_updateNumber_6():
     app.device = indibase.indiBase.Device()
     app.name = 'test'
     values = {'WEATHER_TEMPERATURE': 10,
@@ -223,11 +223,11 @@ def test_updateData_6():
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateData('test', 'WEATHER_PARAMETERS')
+        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
         assert not suc
 
 
-def test_updateData_7():
+def test_updateNumber_7():
     app.device = indibase.indiBase.Device()
     app.name = 'test'
     values = {'WEATHER_TEMPERATURE': 20,
@@ -236,11 +236,11 @@ def test_updateData_7():
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateData('test', 'WEATHER_PARAMETERS')
+        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
 
 
-def test_updateData_8():
+def test_updateNumber_8():
     app.device = indibase.indiBase.Device()
     app.name = 'test'
     t = datetime.datetime.utcnow()
@@ -253,5 +253,5 @@ def test_updateData_8():
     with mock.patch.object(app.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateData('test', 'WEATHER_PARAMETERS')
+        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc

@@ -548,6 +548,7 @@ class MWStyles(object):
     }    
     /* progress bar */
     QProgressBar {
+        color: rgb(32, 144, 192);
         background-color: #101010;
         border-radius: 3px;
         border-width: 1px;

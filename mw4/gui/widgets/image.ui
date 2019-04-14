@@ -123,12 +123,12 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>25</height>
             </size>
            </property>
            <property name="text">
-            <string>WCS</string>
+            <string>has WCS</string>
            </property>
           </widget>
          </item>
@@ -139,12 +139,12 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>25</height>
             </size>
            </property>
            <property name="text">
-            <string>Distortion</string>
+            <string>has Distortion</string>
            </property>
           </widget>
          </item>
@@ -155,12 +155,12 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>25</height>
             </size>
            </property>
            <property name="text">
-            <string>Flipped</string>
+            <string>is Flipped</string>
            </property>
           </widget>
          </item>
@@ -301,7 +301,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Update Fits</string>
+            <string>Update Fits after Solve</string>
            </property>
           </widget>
          </item>
@@ -314,7 +314,7 @@
             </size>
            </property>
            <property name="text">
-            <string>WCS coords</string>
+            <string>Show WCS coords</string>
            </property>
           </widget>
          </item>

@@ -56,7 +56,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     __all__ = ['MountWizzard4',
                ]
-    version = '0.7.dev1'
+    version = '0.7.dev2'
     logger = logging.getLogger(__name__)
 
     # central message and logging dispatching

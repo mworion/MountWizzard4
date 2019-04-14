@@ -178,6 +178,9 @@ class MWStyles(object):
         background-color: rgb(32, 144, 192);
         image: url(:/checkmark.ico);
     }
+    QCheckBox:disabled {
+        color: rgb(32, 144, 192);
+    }
     /* Group Box */
     QGroupBox {
         background-color: #181818;

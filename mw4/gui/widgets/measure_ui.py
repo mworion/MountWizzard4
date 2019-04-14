@@ -19,7 +19,7 @@ class Ui_MeasureDialog(object):
         sizePolicy.setHeightForWidth(MeasureDialog.sizePolicy().hasHeightForWidth())
         MeasureDialog.setSizePolicy(sizePolicy)
         MeasureDialog.setMinimumSize(QtCore.QSize(800, 600))
-        MeasureDialog.setMaximumSize(QtCore.QSize(1600, 1200))
+        MeasureDialog.setMaximumSize(QtCore.QSize(16777215, 16777215))
         MeasureDialog.setSizeIncrement(QtCore.QSize(10, 10))
         MeasureDialog.setBaseSize(QtCore.QSize(10, 10))
         font = QtGui.QFont()
@@ -52,9 +52,17 @@ class Ui_MeasureDialog(object):
         self.measureSet3.setObjectName("measureSet3")
         self.horizontalLayout_2.addWidget(self.measureSet3)
         self.horizontalLayout.addWidget(self.measureGroup)
+        self.line_2 = QtWidgets.QFrame(MeasureDialog)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Plain)
+        self.line_2.setMidLineWidth(1)
+        self.line_2.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_2.setObjectName("line_2")
+        self.horizontalLayout.addWidget(self.line_2)
         self.timeGroup = QtWidgets.QGroupBox(MeasureDialog)
         self.timeGroup.setObjectName("timeGroup")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.timeGroup)
+        self.horizontalLayout_3.setContentsMargins(4, 6, 4, 4)
+        self.horizontalLayout_3.setSpacing(4)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.timeSet = QtWidgets.QComboBox(self.timeGroup)
         self.timeSet.setMinimumSize(QtCore.QSize(150, 25))
@@ -92,8 +100,8 @@ class Ui_MeasureDialog(object):
     def retranslateUi(self, MeasureDialog):
         _translate = QtCore.QCoreApplication.translate
         MeasureDialog.setWindowTitle(_translate("MeasureDialog", "Measurements"))
-        self.measureGroup.setTitle(_translate("MeasureDialog", "Measurement Sets"))
-        self.timeGroup.setTitle(_translate("MeasureDialog", "Time Window"))
+        self.measureGroup.setTitle(_translate("MeasureDialog", "Measurement sets to be displayed:"))
+        self.timeGroup.setTitle(_translate("MeasureDialog", "Measurement windows shows:"))
 
 
 

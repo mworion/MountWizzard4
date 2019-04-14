@@ -66,6 +66,7 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.currentIndexChanged.connect(self.showFitsImage)
         self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
         self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
+        self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
         self.app.astrometry.signals.solveDone.connect(self.solveDone)
         self.app.astrometry.signals.solveResult.connect(self.solveResult)
@@ -104,6 +105,9 @@ class ImageWindow(widget.MWidget):
         full, short, ext = self.extractNames([self.imageFileName])
         self.ui.imageFileName.setText(short)
 
+        self.ui.checkUsePixel.setChecked(config.get('checkUsePixel', True))
+        self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
+
         self.showFitsImage()
         return True
 
@@ -127,6 +131,9 @@ class ImageWindow(widget.MWidget):
         config['zoom'] = self.ui.zoom.currentIndex()
         config['stretch'] = self.ui.stretch.currentIndex()
         config['imageFileName'] = self.imageFileName
+        config['checkUsePixel'] = self.ui.checkUsePixel.isChecked()
+        config['checkUseWCS'] = self.ui.checkUseWCS.isChecked()
+
         return True
 
     def closeEvent(self, closeEvent):
@@ -285,6 +292,7 @@ class ImageWindow(widget.MWidget):
         self.ui.sqm.setText(f'{sqm:5.2f}')
 
         flipped = header.get('FLIPPED', False)
+        self.ui.checkIsFlipped.setChecked(flipped)
 
         if 'CTYPE1' in header:
             wcsObject = wcs.WCS(header)
@@ -295,10 +303,9 @@ class ImageWindow(widget.MWidget):
             hasCelestial = False
             hasDistortion = False
 
-        self.changeStyleDynamic(self.ui.hasCelestial, 'running', hasCelestial)
+        self.ui.checkHasDistortion.setChecked(hasDistortion)
+        self.ui.checkHasWCS.setChecked(hasCelestial)
         self.ui.checkUseWCS.setEnabled(hasDistortion)
-        self.changeStyleDynamic(self.ui.hasDistortion, 'running', hasDistortion)
-        self.changeStyleDynamic(self.ui.isFlipped, 'running', flipped)
 
         return hasDistortion, wcsObject
 

@@ -100,7 +100,7 @@ def test_clearRect_3():
     ui = app.mainW.ui.modelPolar
     widget = app.mainW.embedMatplot(ui)
 
-    suc = app.mainW.clearRect(widget, 3)
+    suc = app.mainW.clearRect(widget, 4)
     assert not suc
 
 

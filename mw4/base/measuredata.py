@@ -73,7 +73,7 @@ class MeasureData(object):
             'powVolt': np.empty(shape=[0, 1]),
             'powCurr': np.empty(shape=[0, 1]),
             'powHum': np.empty(shape=[0, 1]),
-            'powPress': np.empty(shape=[0, 1]),
+            'powTemp': np.empty(shape=[0, 1]),
             'powDew': np.empty(shape=[0, 1]),
         }
 

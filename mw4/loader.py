@@ -60,9 +60,7 @@ class MyApp(PyQt5.QtWidgets.QApplication):
             logging.error('----------------------------------------------------')
             returnValue = False
         finally:
-            if isinstance(event, PyQt5.QtGui.QKeyEvent):
-                logging.debug(f'Key: {obj.objectName()}, {obj.text()}, {chr(event.key())}')
-            elif isinstance(event, PyQt5.QtGui.QMouseEvent):
+            if isinstance(event, PyQt5.QtGui.QMouseEvent):
                 if event.button():
                     logging.debug(f'Mouse: {obj.objectName()}, {event.button()}')
         return returnValue

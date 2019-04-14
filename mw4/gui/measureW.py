@@ -241,11 +241,11 @@ class MeasureWindow(widget.MWidget):
                         fontsize=12)
 
         axe0.set_ylabel(ylabelLeft,
-                        color=self.M_WHITE,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
         axe1.set_ylabel(ylabelRight,
-                        color=self.M_GREEN,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
 
@@ -308,9 +308,9 @@ class MeasureWindow(widget.MWidget):
 
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
-        mLeft = data['press'][start:-1:cycle]
-        mRight1 = data['temp'][start:-1:cycle]
-        mRight2 = data['dewTemp'][start:-1:cycle]
+        mLeft = data['envPress'][start:-1:cycle]
+        mRight1 = data['envTemp'][start:-1:cycle]
+        mRight2 = data['envDew'][start:-1:cycle]
 
         axe0.set_title(title,
                        color=self.M_BLUE,
@@ -322,11 +322,11 @@ class MeasureWindow(widget.MWidget):
                         fontsize=12)
 
         axe0.set_ylabel(ylabelLeft,
-                        color=self.M_GREEN,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
         axe1.set_ylabel(ylabelRight,
-                        color=self.M_WHITE,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
 
@@ -336,18 +336,26 @@ class MeasureWindow(widget.MWidget):
                   markersize=1,
                   color=self.M_GREEN,
                   )
-        axe1.plot(time,
-                  mRight1,
-                  marker='o',
-                  markersize=1,
-                  color=self.M_WHITE,
-                  )
-        axe1.plot(time,
-                  mRight2,
-                  marker='o',
-                  markersize=1,
-                  color=self.M_PINK,
-                  )
+        r1, = axe1.plot(time,
+                        mRight1,
+                        marker='o',
+                        markersize=1,
+                        color=self.M_WHITE,
+                        )
+        r2, = axe1.plot(time,
+                        mRight2,
+                        marker='o',
+                        markersize=1,
+                        color=self.M_PINK,
+                        )
+
+        legend = axe1.legend([r1, r2],
+                             ['Env Temp', 'Env Dew Temp'],
+                             facecolor=self.M_BLACK,
+                             edgecolor=self.M_BLUE,
+                             )
+        for text in legend.get_texts():
+            text.set_color(self.M_BLUE)
 
         axe0.grid(True, color=self.M_GREY, linestyle='dotted', alpha=1)
         axe1.grid(True, color=self.M_GREY, linestyle='dotted', alpha=1)
@@ -391,7 +399,7 @@ class MeasureWindow(widget.MWidget):
 
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
-        mLeft = data['sqr'][start:-1:cycle]
+        mLeft = data['skySQR'][start:-1:cycle]
 
         axe0.set_title(title,
                        color=self.M_BLUE,
@@ -402,7 +410,7 @@ class MeasureWindow(widget.MWidget):
                         fontweight='bold',
                         fontsize=12)
         axe0.set_ylabel(ylabelLeft,
-                        color=self.M_WHITE,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
 
@@ -448,12 +456,12 @@ class MeasureWindow(widget.MWidget):
 
         start = -self.NUMBER_POINTS * cycle
         time = data['time'][start:-1:cycle]
-        mLeft = data['pVolt'][start:-1:cycle]
-        mRight1 = data['pCurr'][start:-1:cycle]
-        mRight2 = data['pCurr1'][start:-1:cycle]
-        mRight3 = data['pCurr2'][start:-1:cycle]
-        mRight4 = data['pCurr3'][start:-1:cycle]
-        mRight5 = data['pCurr4'][start:-1:cycle]
+        mLeft = data['powVolt'][start:-1:cycle]
+        mRight1 = data['powCurr'][start:-1:cycle]
+        mRight2 = data['powCurr1'][start:-1:cycle]
+        mRight3 = data['powCurr2'][start:-1:cycle]
+        mRight4 = data['powCurr3'][start:-1:cycle]
+        mRight5 = data['powCurr4'][start:-1:cycle]
 
         axe0.set_title(title,
                        color=self.M_BLUE,
@@ -465,11 +473,11 @@ class MeasureWindow(widget.MWidget):
                         fontsize=12)
 
         axe0.set_ylabel(ylabelLeft,
-                        color=self.M_GREEN,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
         axe1.set_ylabel(ylabelRight,
-                        color=self.M_WHITE,
+                        color=self.M_BLUE,
                         fontweight='bold',
                         fontsize=12)
 
@@ -479,36 +487,44 @@ class MeasureWindow(widget.MWidget):
                   markersize=1,
                   color=self.M_GREEN,
                   )
-        axe1.plot(time,
-                  mRight1,
-                  marker='o',
-                  markersize=1,
-                  color=self.M_WHITE,
-                  )
-        axe1.plot(time,
-                  mRight2,
-                  marker='o',
-                  markersize=1,
-                  color=self.M_PINK,
-                  )
-        axe1.plot(time,
-                  mRight3,
-                  marker='o',
-                  markersize=1,
-                  color=self.M_BLUE,
-                  )
-        axe1.plot(time,
-                  mRight4,
-                  marker='o',
-                  markersize=1,
-                  color=self.M_YELLOW,
-                  )
-        axe1.plot(time,
-                  mRight5,
-                  marker='o',
-                  markersize=1,
-                  color=self.M_RED,
-                  )
+        r1, = axe1.plot(time,
+                        mRight1,
+                        marker='o',
+                        markersize=1,
+                        color=self.M_WHITE,
+                        )
+        r2, = axe1.plot(time,
+                        mRight2,
+                        marker='o',
+                        markersize=1,
+                        color=self.M_PINK,
+                        )
+        r3, = axe1.plot(time,
+                        mRight3,
+                        marker='o',
+                        markersize=1,
+                        color=self.M_BLUE,
+                        )
+        r4, = axe1.plot(time,
+                        mRight4,
+                        marker='o',
+                        markersize=1,
+                        color=self.M_YELLOW,
+                        )
+        r5, = axe1.plot(time,
+                        mRight5,
+                        marker='o',
+                        markersize=1,
+                        color=self.M_RED,
+                        )
+
+        legend = axe1.legend([r1, r2, r3, r4, r5],
+                             ['Curr Sum', 'Curr P1', 'Curr P2', 'Curr P3', 'Curr P4'],
+                             facecolor=self.M_BLACK,
+                             edgecolor=self.M_BLUE,
+                             )
+        for text in legend.get_texts():
+            text.set_color(self.M_BLUE)
 
         axe0.grid(True, color=self.M_GREY, linestyle='dotted', alpha=1)
         axe1.grid(True, color=self.M_GREY, linestyle='dotted', alpha=1)

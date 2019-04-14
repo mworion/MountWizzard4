@@ -106,9 +106,9 @@ class Dome(indiClass.IndiClass):
 
         return suc
 
-    def updateData(self, deviceName, propertyName):
+    def updateNumber(self, deviceName, propertyName):
         """
-        updateData is called whenever a new number is received in client. it runs
+        updateNumber is called whenever a new number is received in client. it runs
         through the device list and writes the number data to the according locations.
         for global weather data as there is no dew point value available, it calculates
         it and stores it as value as well.
@@ -136,3 +136,20 @@ class Dome(indiClass.IndiClass):
                 self.signals.azimuth.emit()
             # print(element, value)
         return True
+
+    def updateSwitch(self, deviceName, propertyName):
+        """
+        updateSwitch is called whenever a new switch is received in client. it runs
+        through the device list and writes the number data to the according locations.
+        for global weather data as there is no dew point value available, it calculates
+        it and stores it as value as well.
+
+        in addition it does a first setup and config for the device. basically the update
+        rates are set to 10 seconds if they are not on this level.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+        for element, value in self.device.getSwitch(propertyName).items():
+            print(element, value)

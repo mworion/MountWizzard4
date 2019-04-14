@@ -103,9 +103,9 @@ class Weather(indiClass.IndiClass):
         dewPoint = (B * alpha) / (A - alpha)
         return dewPoint
 
-    def updateData(self, deviceName, propertyName):
+    def updateNumber(self, deviceName, propertyName):
         """
-        updateData is called whenever a new number is received in client. it runs
+        updateNumber is called whenever a new number is received in client. it runs
         through the device list and writes the number data to the according locations.
         for global weather data as there is no dew point value available, it calculates
         it and stores it as value as well.

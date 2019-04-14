@@ -72,6 +72,9 @@ class Dome(indiClass.IndiClass):
                          )
 
         self.signals = DomeSignals()
+        self.slewing = False
+        self.lastAzimuth = -1
+        self.lastSlewing = False
 
     def setUpdateConfig(self, deviceName):
         """
@@ -132,24 +135,24 @@ class Dome(indiClass.IndiClass):
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
 
-            if element == 'DOME_ABSOLUTE_POSITION':
-                self.signals.azimuth.emit()
-            # print(element, value)
+            if element != 'DOME_ABSOLUTE_POSITION':
+                continue
+
+            # starting condition: don't do anything
+            if self.lastAzimuth == -1:
+                self.lastAzimuth = value
+                continue
+
+            # send trigger for new data
+            self.signals.azimuth.emit()
+
+            # calculate the stop slewing condition
+            isSlewing = (value != self.lastAzimuth)
+            if self.lastSlewing and not isSlewing:
+                self.signals.slewFinished.emit()
+
+            # store for the next cycle
+            self.lastAzimuth = value
+            self.lastSlewing = isSlewing
+
         return True
-
-    def updateSwitch(self, deviceName, propertyName):
-        """
-        updateSwitch is called whenever a new switch is received in client. it runs
-        through the device list and writes the number data to the according locations.
-        for global weather data as there is no dew point value available, it calculates
-        it and stores it as value as well.
-
-        in addition it does a first setup and config for the device. basically the update
-        rates are set to 10 seconds if they are not on this level.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-        for element, value in self.device.getSwitch(propertyName).items():
-            print(element, value)

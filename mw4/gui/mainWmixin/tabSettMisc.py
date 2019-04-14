@@ -51,6 +51,7 @@ class SettMisc(object):
         self.ui.loglevelErrorMC.clicked.connect(self.setLoggingLevelMC)
 
         self.app.mount.signals.alert.connect(self.playAudioMountAlert)
+        self.app.dome.signals.slewFinished.connect(self.playAudioDomeSlewFinished)
         self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)
 
     def initConfig(self):
@@ -241,9 +242,24 @@ class SettMisc(object):
             self.audioSignalsSet[sound].play()
         return True
 
+    def playAudioDomeSlewFinished(self):
+        """
+        playAudioDomeSlewFinished plays a defined sound if this events happens
+
+        :return: success of playing sound
+        """
+
+        listEntry = self.guiAudioList.get('DomeSlew', None)
+        if listEntry is None:
+            return False
+        sound = listEntry.currentText()
+        if sound in self.audioSignalsSet:
+            self.audioSignalsSet[sound].play()
+        return True
+
     def playAudioMountAlert(self):
         """
-        playAudioMountSlewFinished plays a defined sound if this events happens
+        playAudioMountAlert plays a defined sound if this events happens
 
         :return: success of playing sound
         """

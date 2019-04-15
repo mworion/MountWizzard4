@@ -171,6 +171,9 @@ class Dome(indiClass.IndiClass):
         if self.device is None:
             return False
 
+        if self.name is None or not self.name:
+            return False
+
         position = self.device.getNumber('ABS_DOME_POSITION')
 
         if 'DOME_ABSOLUTE_POSITION' not in position:
@@ -178,7 +181,7 @@ class Dome(indiClass.IndiClass):
 
         position['DOME_ABSOLUTE_POSITION'] = azimuth
 
-        suc = self.client.sendNewNumber(deviceName=deviceName,
+        suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='ABS_DOME_POSITION',
                                         elements=position,
                                         )

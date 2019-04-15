@@ -88,24 +88,24 @@ def test_showModelPolar1():
 
 
 def test_showModelPolar2():
-    app = mainApp.MountWizzard4(mwGlob=mwGlob)
     app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
+    app.mount.model._starList = list()
     app.mainW.ui.checkShowErrorValues.setChecked(True)
     suc = app.mainW.showModelPolar()
     assert not suc
 
 
 def test_showModelPolar3():
-    app = mainApp.MountWizzard4(mwGlob=mwGlob)
+    app.mount.obsSite.location = []
+    app.mount.model._starList = list()
     app.mainW.ui.checkShowErrorValues.setChecked(True)
     suc = app.mainW.showModelPolar()
     assert not suc
 
 
 def test_showModelPolar4():
-    app = mainApp.MountWizzard4(mwGlob=mwGlob)
     app.mainW.ui.checkShowErrorValues.setChecked(True)
-    app.mount.model.starList = ()
+    app.mount.model._starList = list()
     suc = app.mainW.showModelPolar()
     assert not suc
 

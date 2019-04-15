@@ -140,6 +140,9 @@ class Tools(object):
             self.app.message.emit('No valid input directory given', 2)
             return False
         if not os.path.isdir(outputPath):
+            if not os.access(outputPath + '/..', os.W_OK):
+                self.app.message.emit('No write access to output directory', 2)
+                return False
             os.mkdir(outputPath, 0o777)
 
         self.renameRun(inputPath=inputPath, outputPath=outputPath)
@@ -159,7 +162,10 @@ class Tools(object):
                                        )
         if inputPath:
             self.ui.renameInput.setText(inputPath)
-            self.ui.renameOutput.setText(inputPath + '/output')
+            if os.access(inputPath + '/output', os.W_OK):
+                self.ui.renameOutput.setText(inputPath + '/output')
+            self.ui.renameProgress.setValue(0)
+            self.ui.renameText.clear()
         return True
 
     def chooseOutputDir(self):

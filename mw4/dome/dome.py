@@ -73,8 +73,8 @@ class Dome(indiClass.IndiClass):
 
         self.signals = DomeSignals()
         self.slewing = False
-        self.lastAzimuth = -1
-        self.lastSlewing = False
+        self.azimuth = -1
+        self.slewing = False
 
     def setUpdateConfig(self, deviceName):
         """
@@ -134,25 +134,56 @@ class Dome(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
+            print(propertyName, element, value)
 
             if element != 'DOME_ABSOLUTE_POSITION':
                 continue
 
             # starting condition: don't do anything
-            if self.lastAzimuth == -1:
-                self.lastAzimuth = value
+            if self.azimuth == -1:
+                self.azimuth = value
                 continue
 
             # send trigger for new data
             self.signals.azimuth.emit()
 
             # calculate the stop slewing condition
-            isSlewing = (value != self.lastAzimuth)
-            if self.lastSlewing and not isSlewing:
+            isSlewing = (value != self.azimuth)
+            if self.slewing and not isSlewing:
                 self.signals.slewFinished.emit()
 
             # store for the next cycle
-            self.lastAzimuth = value
-            self.lastSlewing = isSlewing
+            self.azimuth = value
+            self.slewing = isSlewing
 
         return True
+
+    def slewToAltAz(self, altitude=0, azimuth=0):
+        """
+        slewToAltAz sends a command to the dome to move to azimuth / altitude. if a dome
+        does not support this
+
+        :param altitude:
+        :param azimuth:
+        :return: success
+        """
+
+        if self.device is None:
+            return False
+
+        position = self.device.getNumber('ABS_DOME_POSITION')
+
+        if 'DOME_ABSOLUTE_POSITION' not in position:
+            return False
+
+        position['DOME_ABSOLUTE_POSITION'] = azimuth
+
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='ABS_DOME_POSITION',
+                                        elements=position,
+                                        )
+
+        if suc:
+            self.slewing = True
+
+        return suc

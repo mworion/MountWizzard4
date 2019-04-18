@@ -20,11 +20,13 @@
 # standard libraries
 import logging
 import datetime
+from pympler import muppy, summary
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 import wakeonlan
+
 # local import
 from mw4.gui.widget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
@@ -403,6 +405,10 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+        return
+        all_objects = muppy.get_objects()
+        sum1 = summary.summarize(all_objects)
+        summary.print_(sum1)
         return True
 
     def updateStatusGUI(self):

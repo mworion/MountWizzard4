@@ -78,6 +78,13 @@ class IndiClass(object):
         self._name = value
 
     def serverConnected(self):
+        """
+        serverConnected is called when the server signals the connection. if ao, we would
+        like to start watching the defined device. this will be triggered directly
+
+        :return: success
+        """
+
         if self.name:
             suc = self.client.watchDevice(self.name)
             self.logger.info(f'Indi server connected, starting watch: result:{suc}')

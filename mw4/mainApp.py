@@ -27,6 +27,9 @@ import PyQt5.QtCore
 import skyfield
 from mountcontrol import qtmount
 from indibase import qtIndiBase
+
+from pympler import muppy, summary, tracker, classtracker
+import types
 # local import
 from mw4.gui import mainW
 from mw4.gui import messageW
@@ -149,6 +152,30 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.setSingleShot(False)
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
+
+        self.update3s.connect(self.checkMemory)
+        self.tracker1 = tracker.SummaryTracker()
+        self.tracker2 = classtracker.ClassTracker()
+        self.tracker2.track_object(self.hemisphereW.hemisphereMat, resolution_level=2)
+
+    def checkMemory(self):
+        # all_objects = muppy.get_objects()
+        #objects = muppy.filter(all_objects, Type=types.MethodType)
+        #for t in objects:
+        #    print(t, muppy.get_size(t))
+        #objects_str = muppy.filter(all_objects, Type=str)
+        # objects_dict = muppy.filter(all_objects, Type=dict)
+        #objects_list = muppy.filter(all_objects, Type=list)
+        #print(muppy.get_size(all_objects),
+        #      muppy.get_size(objects_str),
+        #      muppy.get_size(objects_dict),
+        #      muppy.get_size(objects_list))
+        #sum1 = summary.summarize(objects_dict)
+        #summary.print_(sum1)
+        # self.tracker1.print_diff()
+        #self.tracker2.print_diff()
+        self.tracker2.create_snapshot()
+        self.tracker2.stats.print_stats()
 
     def initConfig(self):
         """

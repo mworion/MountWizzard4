@@ -20,7 +20,6 @@
 # standard libraries
 import logging
 import datetime
-from pympler import muppy, summary
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -129,7 +128,6 @@ class MainWindow(MWidget,
         # initial call for writing the gui
         self.updateMountConnStat(False)
         self.initConfig()
-        self.show()
 
     def initConfig(self):
         """
@@ -405,10 +403,6 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-        return
-        all_objects = muppy.get_objects()
-        sum1 = summary.summarize(all_objects)
-        summary.print_(sum1)
         return True
 
     def updateStatusGUI(self):

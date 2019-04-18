@@ -42,8 +42,8 @@ class Weather(indiClass.IndiClass):
     version = '0.1'
     logger = logging.getLogger(__name__)
 
-    # update rate to 1 seconds for setting indi server
-    UPDATE_RATE = 1
+    # update rate to 60 seconds for setting indi server
+    UPDATE_RATE = 60
 
     def __init__(self,
                  host=None,

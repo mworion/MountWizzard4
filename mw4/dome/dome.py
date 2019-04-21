@@ -46,7 +46,8 @@ class DomeSignals(PyQt5.QtCore.QObject):
 
 class Dome(indiClass.IndiClass):
     """
-    the class PegasusUPB inherits all information and handling of the PegasusUPB device
+    the class Dome inherits all information and handling of the Dome device. there will be
+    some parameters who will define the slewing position of the dome relating to the mount.
 
         >>> fw = Dome(
         >>>           host=host
@@ -74,6 +75,7 @@ class Dome(indiClass.IndiClass):
         self.signals = DomeSignals()
         self.slewing = False
         self.azimuth = -1
+        self.settlingTime = 0
         self.slewing = False
 
     def setUpdateConfig(self, deviceName):
@@ -150,6 +152,7 @@ class Dome(indiClass.IndiClass):
             # calculate the stop slewing condition
             isSlewing = (value != self.azimuth)
             if self.slewing and not isSlewing:
+                # todo: adding settlingTime wait until single slew finished will be emitted
                 self.signals.slewFinished.emit()
 
             # store for the next cycle
@@ -157,6 +160,51 @@ class Dome(indiClass.IndiClass):
             self.slewing = isSlewing
 
         return True
+
+    def calculateAz(self,
+                    azimuthMount=0,
+                    domeRadius=0, shutterWidth=0,
+                    offsetN=0, offsetE=0,
+                    offsetUp=0, offsetOTA=0,
+                    pierside='E'):
+        """
+
+        :param azimuthMount: azimuth of the telescope
+
+        :param domeRadius: radius at Equator - The radius of your dome at the equator.  This
+        should be measured from where your shutter opening is.  For example if your dome is
+        skinned on the outside you would measure from the outside diameter.  If it is
+        skinned on the inside you would measure the inside radius.
+
+        :param shutterWidth: width of the shutter
+
+        :param offsetN: North Offset - The offset from the center of intersection of the
+        Right Ascension and Declination axis to the center of the dome.  If the RA/Dec
+        intersection is north of the dome center this value is positive.  If the RA/Dec
+        intersection is south of this location the value should be negative.
+
+        :param offsetE: East Offset - The offset from the center of the intersection of the
+        Right Ascension and Declination axis to the center of the dome.  If the RA/Dec
+        intersection is east of the dome center this value is positive.  If the RA/Dec
+        intersection is west of this location the value should be negative.
+
+        :param offsetUp: Vertical Offset - The offset from the center of the intersection
+        of the Right Ascension and Declination axis to the center of the dome.If the RA/Dec
+        intersection is above the dome center this value is positive.  If the RA/Dec
+        intersection is below this location the value should be negative.
+
+        :param offsetOTA: The distance from the center of the Right Ascension axis to the
+        center of the telescope.  This value can vary depending on how your scopes are
+        setup on your mount.  It is best to use some trial and error here.  If the top of
+        your scope is being eclipsed by your dome increase this value.  If the bottom of
+        your scope is being eclipsed decrease this value.
+
+        :param pierside: side of the pier, where the OTA is intended to be after slewing.
+
+        :return: azimuthDome calculated for right position for dome
+        """
+
+        return azDome
 
     def slewToAltAz(self, altitude=0, azimuth=0):
         """

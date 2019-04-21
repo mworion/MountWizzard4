@@ -69,6 +69,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     update1s = PyQt5.QtCore.pyqtSignal()
     update3s = PyQt5.QtCore.pyqtSignal()
     update10s = PyQt5.QtCore.pyqtSignal()
+    update60s = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,
@@ -154,11 +155,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.start(500)
 
         self.update3s.connect(self.checkMemory)
-        self.tracker1 = tracker.SummaryTracker()
-        self.tracker2 = classtracker.ClassTracker()
-        self.tracker2.track_object(self.hemisphereW.hemisphereMat, resolution_level=2)
+        self.tracker = classtracker.ClassTracker()
+        self.tracker.track_object(self.hemisphereW, resolution_level=3)
 
     def checkMemory(self):
+        pass
         # all_objects = muppy.get_objects()
         #objects = muppy.filter(all_objects, Type=types.MethodType)
         #for t in objects:
@@ -174,8 +175,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         #summary.print_(sum1)
         # self.tracker1.print_diff()
         #self.tracker2.print_diff()
-        self.tracker2.create_snapshot()
-        self.tracker2.stats.print_stats()
+        self.tracker.create_snapshot()
+        self.tracker.stats.print_stats()
 
     def initConfig(self):
         """
@@ -236,6 +237,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.update3s.emit()
         if (self.timerCounter + 2) % 10 == 0:
             self.update10s.emit()
+        if (self.timerCounter + 2.5) % 60 == 0:
+            self.update60s.emit()
         return True
 
     def quit(self):

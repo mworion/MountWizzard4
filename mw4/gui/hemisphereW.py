@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import bisect
+import gc
 # external packages
 import PyQt5
 import numpy as np
@@ -92,14 +93,11 @@ class HemisphereWindow(widget.MWidget):
         self.horizonLimitHigh = None
         self.horizonLimitLow = None
         self.celestialPath = None
+        self.hemisphereMat = None
 
-        # doing the matplotlib embedding
-        # for the alt az plane
-        self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
-        self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.clearRect(self.hemisphereMat, numberPlots=1)
 
         # signals for gui
+        """
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.checkShowMeridian.clicked.connect(self.updateMeridian)
         self.ui.checkShowCelestial.clicked.connect(self.updateCelestialPath)
@@ -118,14 +116,14 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
+        """
 
         if 'mainW' in self.app.config:
             fileName = self.app.config['mainW'].get('horizonFileName')
             self.app.data.loadHorizonP(fileName=fileName)
         self.initConfig()
         self.configOperationMode()
-        self.app.update10s.connect(self.updateAlignStar)
-        self.app.update1s.connect(self.drawCanvas)
+        # self.app.update10s.connect(self.updateAlignStar)
 
     def initConfig(self):
         """
@@ -180,7 +178,27 @@ class HemisphereWindow(widget.MWidget):
         config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
 
     def closeEvent(self, closeEvent):
+        self.app.update1s.disconnect(self.drawCanvas)
+        if not self.mutexDraw.tryLock():
+            return
+        del self.hemisphereMat
+        del self.pointerAltAz
+        del self.pointerDome
+        del self.pointsBuild
+        del self.pointsBuildAnnotate
+        del self.starsAlign
+        del self.starsAlignAnnotate
+        del self.horizonFill
+        del self.horizonMarker
+        del self.meridianSlew
+        del self.meridianTrack
+        del self.horizonLimitHigh
+        del self.horizonLimitLow
+        del self.celestialPath
+
+        gc.collect()
         super().closeEvent(closeEvent)
+        self.mutexDraw.unlock()
 
     def toggleWindow(self):
         self.showStatus = not self.showStatus
@@ -190,9 +208,31 @@ class HemisphereWindow(widget.MWidget):
             self.close()
 
     def showWindow(self):
+        # attributes to be stored in class
+        self.pointerAltAz = None
+        self.pointerDome = None
+        self.pointsBuild = None
+        self.pointsBuildAnnotate = list()
+        self.starsAlign = None
+        self.starsAlignAnnotate = list()
+        self.horizonFill = None
+        self.horizonMarker = None
+        self.meridianSlew = None
+        self.meridianTrack = None
+        self.horizonLimitHigh = None
+        self.horizonLimitLow = None
+        self.celestialPath = None
+
+        # doing the matplotlib embedding
+        # for the alt az plane
+        self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
+        self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
+        self.clearRect(self.hemisphereMat, numberPlots=1)
+
         self.showStatus = True
         self.drawHemisphere()
         self.show()
+        self.app.update1s.connect(self.drawCanvas)
 
     def updateGUI(self):
         """
@@ -257,6 +297,8 @@ class HemisphereWindow(widget.MWidget):
         :return: success for test
         """
 
+        if not self.showStatus:
+            return False
         if not self.mutexDraw.tryLock():
             return False
         axes = self.hemisphereMat.figure.axes[0]

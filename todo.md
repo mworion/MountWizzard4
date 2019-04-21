@@ -19,10 +19,10 @@ necessary feature list:
 - astrometry online
 - astrometry configs
 - indi CCD camera
-- indi telescope / dome separate host
-- indi CCD camera separate host
 - mountcontrol: adding TLE commands and tests
 - optimizing model functions (all) implement
+- dome settings: Gui for populating the values from driver
+- image settings: Gui for populating the value from driver 
 
 nice to have:
 - indi setting parameters of devices

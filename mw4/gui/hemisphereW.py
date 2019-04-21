@@ -97,7 +97,6 @@ class HemisphereWindow(widget.MWidget):
 
 
         # signals for gui
-        """
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
         self.ui.checkShowMeridian.clicked.connect(self.updateMeridian)
         self.ui.checkShowCelestial.clicked.connect(self.updateCelestialPath)
@@ -116,14 +115,12 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
-        """
 
         if 'mainW' in self.app.config:
             fileName = self.app.config['mainW'].get('horizonFileName')
             self.app.data.loadHorizonP(fileName=fileName)
         self.initConfig()
         self.configOperationMode()
-        # self.app.update10s.connect(self.updateAlignStar)
 
     def initConfig(self):
         """
@@ -179,8 +176,13 @@ class HemisphereWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         self.app.update1s.disconnect(self.drawCanvas)
-        if not self.mutexDraw.tryLock():
-            return
+        self.app.update10s.disconnect(self.updateAlignStar)
+
+        #for i in reversed(range(len(self.ui.hemisphere.children()))):
+        #    self.ui.hemisphere.removeChild(self.ui.hemisphere.children()[i])
+        for child in self.ui.hemisphere.children():
+            child.deleteLater()
+
         del self.hemisphereMat
         del self.pointerAltAz
         del self.pointerDome
@@ -196,9 +198,8 @@ class HemisphereWindow(widget.MWidget):
         del self.horizonLimitLow
         del self.celestialPath
 
-        gc.collect()
         super().closeEvent(closeEvent)
-        self.mutexDraw.unlock()
+        # gc.collect()
 
     def toggleWindow(self):
         self.showStatus = not self.showStatus
@@ -233,6 +234,7 @@ class HemisphereWindow(widget.MWidget):
         self.drawHemisphere()
         self.show()
         self.app.update1s.connect(self.drawCanvas)
+        self.app.update10s.connect(self.updateAlignStar)
 
     def updateGUI(self):
         """

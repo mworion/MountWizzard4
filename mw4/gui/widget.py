@@ -261,8 +261,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                                            )
                                     )
         FigureCanvasQTAgg.updateGeometry(staticCanvas)
-        staticCanvas.setParent(ui)
         layout.addWidget(staticCanvas)
+        staticCanvas.setParent(ui)
         return staticCanvas
 
     @staticmethod

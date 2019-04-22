@@ -20,7 +20,6 @@
 # standard libraries
 import logging
 import bisect
-import gc
 # external packages
 import PyQt5
 import numpy as np
@@ -94,7 +93,6 @@ class HemisphereWindow(widget.MWidget):
         self.horizonLimitLow = None
         self.celestialPath = None
         self.hemisphereMat = None
-
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
@@ -175,14 +173,17 @@ class HemisphereWindow(widget.MWidget):
         config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
 
     def closeEvent(self, closeEvent):
+        """
+
+        :param closeEvent:
+        :return:
+        """
+
         self.app.update1s.disconnect(self.drawCanvas)
         self.app.update10s.disconnect(self.updateAlignStar)
 
-        #for i in reversed(range(len(self.ui.hemisphere.children()))):
-        #    self.ui.hemisphere.removeChild(self.ui.hemisphere.children()[i])
         for child in self.ui.hemisphere.children():
             child.deleteLater()
-
         del self.hemisphereMat
         del self.pointerAltAz
         del self.pointerDome
@@ -199,9 +200,13 @@ class HemisphereWindow(widget.MWidget):
         del self.celestialPath
 
         super().closeEvent(closeEvent)
-        # gc.collect()
 
     def toggleWindow(self):
+        """
+
+        :return:
+        """
+
         self.showStatus = not self.showStatus
         if self.showStatus:
             self.showWindow()
@@ -209,6 +214,10 @@ class HemisphereWindow(widget.MWidget):
             self.close()
 
     def showWindow(self):
+        """
+
+        :return:
+        """
         # attributes to be stored in class
         self.pointerAltAz = None
         self.pointerDome = None
@@ -225,7 +234,6 @@ class HemisphereWindow(widget.MWidget):
         self.celestialPath = None
 
         # doing the matplotlib embedding
-        # for the alt az plane
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
         self.clearRect(self.hemisphereMat, numberPlots=1)
@@ -235,6 +243,7 @@ class HemisphereWindow(widget.MWidget):
         self.show()
         self.app.update1s.connect(self.drawCanvas)
         self.app.update10s.connect(self.updateAlignStar)
+        return True
 
     def updateGUI(self):
         """

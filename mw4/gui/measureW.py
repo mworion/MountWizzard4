@@ -54,10 +54,7 @@ class MeasureWindow(widget.MWidget):
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.measureIndex = 0
         self.timeIndex = 0
-
-        # doing the matplotlib embedding
-        self.measureMat = self.embedMatplot(self.ui.measure)
-        self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
+        self.measureMat = None
 
         # signals for gui
         self.ui.timeSet.currentIndexChanged.connect(self.drawMeasure)
@@ -81,8 +78,6 @@ class MeasureWindow(widget.MWidget):
         self.clickable(self.app.mainW.ui.powerTemp).connect(self.showWindow)
         self.clickable(self.app.mainW.ui.powerHumidity).connect(self.showWindow)
         self.clickable(self.app.mainW.ui.powerDewPoint).connect(self.showWindow)
-
-        self.app.update1s.connect(self.drawMeasure)
 
         self.initConfig()
 
@@ -141,16 +136,37 @@ class MeasureWindow(widget.MWidget):
         return True
 
     def closeEvent(self, closeEvent):
+        """
+
+        :param closeEvent:
+        :return:
+        """
+
+        self.app.update1s.disconnect(self.drawMeasure)
+
+        for child in self.ui.measure.children():
+            child.deleteLater()
+        del self.measureMat
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
-        if self.app.mainW.ui.measureDevice.currentIndex() == 0:
-            self.showStatus = False
+        """
+
+        :return:
+        """
+        if self.showStatus:
             return False
+
+        # doing the matplotlib embedding
+        self.measureMat = self.embedMatplot(self.ui.measure)
+        self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
+
         self.showStatus = True
-        suc = self.drawMeasure()
+        self.drawMeasure()
         self.show()
-        return suc
+        self.app.update1s.connect(self.drawMeasure)
+        return True
 
     def setupButtons(self):
         """

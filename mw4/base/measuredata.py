@@ -75,6 +75,10 @@ class MeasureData(object):
             'powHum': np.empty(shape=[0, 1]),
             'powTemp': np.empty(shape=[0, 1]),
             'powDew': np.empty(shape=[0, 1]),
+
+            'hemisphereW': np.empty(shape=[0, 1]),
+            'measureW': np.empty(shape=[0, 1]),
+            'imageW': np.empty(shape=[0, 1]),
         }
 
         self.timerTask = PyQt5.QtCore.QTimer()
@@ -220,6 +224,12 @@ class MeasureData(object):
         dat['powTemp'] = np.append(dat['powTemp'], powTemp)
         dat['powDew'] = np.append(dat['powDew'], powDew)
         dat['powHum'] = np.append(dat['powHum'], powHum)
+
+        mem = self.app.memory
+
+        dat['hemisphereW'] = np.append(dat['hemisphereW'], mem)
+        dat['measureW'] = np.append(dat['measureW'], mem)
+        dat['imageW'] = np.append(dat['imageW'], mem)
 
         self.mutexMeasure.unlock()
         return True

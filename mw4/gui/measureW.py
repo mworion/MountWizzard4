@@ -143,11 +143,9 @@ class MeasureWindow(widget.MWidget):
         """
 
         self.app.update1s.disconnect(self.drawMeasure)
-
         for child in self.ui.measure.children():
             child.deleteLater()
         del self.measureMat
-
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -161,7 +159,6 @@ class MeasureWindow(widget.MWidget):
         # doing the matplotlib embedding
         self.measureMat = self.embedMatplot(self.ui.measure)
         self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
-
         self.showStatus = True
         self.drawMeasure()
         self.show()
@@ -193,6 +190,9 @@ class MeasureWindow(widget.MWidget):
             mSet.addItem('Sky Quality')
             mSet.addItem('Voltage')
             mSet.addItem('Current')
+            mSet.addItem('Memory Hemisphere')
+            mSet.addItem('Memory Image')
+            mSet.addItem('Memory Measure')
 
         tSet = self.ui.timeSet
         tSet.clear()
@@ -664,6 +664,135 @@ class MeasureWindow(widget.MWidget):
                                                                       ))
         return True
 
+    def plotMemoryHemisphereW(self, axe=None, title='', data=None, cycle=None):
+        """
+        drawRaDec show the specific graph for plotting the ra dec deviations. this
+        is done with two color and axes to distinguish the values for ra and dec.
+        ideally the values are around zero, but the scales of ra and dec axis have to be
+        different.
+
+        :param axe: axe for plotting
+        :param title: title text
+        :param data: data location
+        :param cycle: cycle time for measurement
+        :return: success
+        """
+        ylabel = 'Memory Hemisphere'
+        start = -self.NUMBER_POINTS * cycle
+        time = data['time'][start:-1:cycle]
+        m1 = data['hemisphereW'][start:-1:cycle]
+
+        axe.set_title(title,
+                      color=self.M_BLUE,
+                      fontweight='bold',
+                      fontsize=16)
+        axe.set_ylabel(ylabel,
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        r1, = axe.plot(time,
+                       m1,
+                       marker='o',
+                       markersize=1,
+                       color=self.M_WHITE,
+                       )
+        axe.grid(True, color=self.M_GREY, alpha=1)
+        axe.margins(y=0.2)
+        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                             integer=True,
+                                                             min_n_ticks=4,
+                                                             prune='both',
+                                                             ))
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                      ))
+        return True
+
+    def plotMemoryImageW(self, axe=None, title='', data=None, cycle=None):
+        """
+        drawRaDec show the specific graph for plotting the ra dec deviations. this
+        is done with two color and axes to distinguish the values for ra and dec.
+        ideally the values are around zero, but the scales of ra and dec axis have to be
+        different.
+
+        :param axe: axe for plotting
+        :param title: title text
+        :param data: data location
+        :param cycle: cycle time for measurement
+        :return: success
+        """
+        ylabel = 'Memory Image'
+        start = -self.NUMBER_POINTS * cycle
+        time = data['time'][start:-1:cycle]
+        m1 = data['imageW'][start:-1:cycle]
+
+        axe.set_title(title,
+                      color=self.M_BLUE,
+                      fontweight='bold',
+                      fontsize=16)
+        axe.set_ylabel(ylabel,
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        r1, = axe.plot(time,
+                       m1,
+                       marker='o',
+                       markersize=1,
+                       color=self.M_WHITE,
+                       )
+        axe.grid(True, color=self.M_GREY, alpha=1)
+        axe.margins(y=0.2)
+        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                             integer=True,
+                                                             min_n_ticks=4,
+                                                             prune='both',
+                                                             ))
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                      ))
+        return True
+
+    def plotMemoryMeasureW(self, axe=None, title='', data=None, cycle=None):
+        """
+        drawRaDec show the specific graph for plotting the ra dec deviations. this
+        is done with two color and axes to distinguish the values for ra and dec.
+        ideally the values are around zero, but the scales of ra and dec axis have to be
+        different.
+
+        :param axe: axe for plotting
+        :param title: title text
+        :param data: data location
+        :param cycle: cycle time for measurement
+        :return: success
+        """
+        ylabel = 'Memory Measure'
+        start = -self.NUMBER_POINTS * cycle
+        time = data['time'][start:-1:cycle]
+        m1 = data['measureW'][start:-1:cycle]
+
+        axe.set_title(title,
+                      color=self.M_BLUE,
+                      fontweight='bold',
+                      fontsize=16)
+        axe.set_ylabel(ylabel,
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        r1, = axe.plot(time,
+                       m1,
+                       marker='o',
+                       markersize=1,
+                       color=self.M_WHITE,
+                       )
+        axe.grid(True, color=self.M_GREY, alpha=1)
+        axe.margins(y=0.2)
+        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
+                                                             integer=True,
+                                                             min_n_ticks=4,
+                                                             prune='both',
+                                                             ))
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
+                                                                      ))
+        return True
+
     def drawPlots(self, axe=None, index=0, title='', data=None, cycle=0):
         """
 
@@ -683,6 +812,9 @@ class MeasureWindow(widget.MWidget):
                     self.plotSQR,
                     self.plotVoltage,
                     self.plotCurrent,
+                    self.plotMemoryHemisphereW,
+                    self.plotMemoryImageW,
+                    self.plotMemoryMeasureW,
                     ]
 
         if plotFunc[index] is None:

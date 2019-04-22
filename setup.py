@@ -36,7 +36,6 @@ setup(
         'mw4.modeldata',
         'mw4.powerswitch',
         'mw4.remote',
-        'mw4.test',
     ],
     python_requires='>=3.7.2',
     install_requires=[

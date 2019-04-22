@@ -28,7 +28,7 @@ import skyfield
 from mountcontrol import qtmount
 from indibase import qtIndiBase
 
-from pympler import muppy, summary, tracker, classtracker
+# from pympler import muppy, summary, tracker, classtracker, asizeof
 import types
 # local import
 from mw4.gui import mainW
@@ -80,6 +80,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.expireData = False
         self.mwGlob = mwGlob
         self.timerCounter = 0
+        self.memory=0
         self.threadPool = PyQt5.QtCore.QThreadPool()
 
         pathToData = self.mwGlob['dataDir']
@@ -154,29 +155,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
 
-        self.update3s.connect(self.checkMemory)
-        self.tracker = classtracker.ClassTracker()
-        self.tracker.track_object(self.hemisphereW, resolution_level=3)
+        self.update10s.connect(self.checkMemory)
+        # self.tracker = tracker.SummaryTracker()
+        # self.tracker.track_object(self.hemisphereW.ui.hemisphere, resolution_level=3)
 
     def checkMemory(self):
         pass
-        # all_objects = muppy.get_objects()
-        #objects = muppy.filter(all_objects, Type=types.MethodType)
-        #for t in objects:
-        #    print(t, muppy.get_size(t))
-        #objects_str = muppy.filter(all_objects, Type=str)
-        # objects_dict = muppy.filter(all_objects, Type=dict)
-        #objects_list = muppy.filter(all_objects, Type=list)
-        #print(muppy.get_size(all_objects),
-        #      muppy.get_size(objects_str),
-        #      muppy.get_size(objects_dict),
-        #      muppy.get_size(objects_list))
-        #sum1 = summary.summarize(objects_dict)
-        #summary.print_(sum1)
-        # self.tracker1.print_diff()
-        #self.tracker2.print_diff()
-        self.tracker.create_snapshot()
-        self.tracker.stats.print_stats()
+        # self.tracker.print_diff()
 
     def initConfig(self):
         """

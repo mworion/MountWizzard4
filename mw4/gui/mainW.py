@@ -83,6 +83,11 @@ class MainWindow(MWidget,
         self.initUI()
         self.setupIcons()
         self.setWindowTitle('MountWizzard4')
+        self.typeConnectionTexts = ['serial RS-232 port',
+                                    'GPS or GPS/RS-232 port',
+                                    'cabled LAN port',
+                                    'wireless LAN',
+                                    ]
 
         # local init of following
         Mount.__init__(self)
@@ -108,9 +113,6 @@ class MainWindow(MWidget,
         self.app.mount.signals.settDone.connect(self.setMountMAC)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.mount.signals.mountClear.connect(self.clearGUI)
-        self.app.update1s.connect(self.updateTime)
-        self.app.update1s.connect(self.updateWindowsStats)
-        self.app.update10s.connect(self.updateRefractionParameters)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
@@ -122,12 +124,16 @@ class MainWindow(MWidget,
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.app.remoteCommand.connect(self.remoteCommand)
-
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
 
         # initial call for writing the gui
         self.updateMountConnStat(False)
         self.initConfig()
+
+        # cyclic updates
+        self.app.update1s.connect(self.updateTime)
+        self.app.update1s.connect(self.updateWindowsStats)
+        self.app.update10s.connect(self.updateRefractionParameters)
 
     def initConfig(self):
         """
@@ -370,6 +376,7 @@ class MainWindow(MWidget,
         else:
             self.changeStyleDynamic(ui, 'color', 'red')
 
+        del ui
         return True
 
     def updateWindowsStats(self):
@@ -435,6 +442,7 @@ class MainWindow(MWidget,
         else:
             self.changeStyleDynamic(self.ui.stop, 'running', 'false')
 
+        del obs
         return True
 
     @staticmethod
@@ -495,6 +503,7 @@ class MainWindow(MWidget,
             self.app.message.emit('Actual profile saved', 0)
         else:
             self.app.message.emit('Actual profile cannot not be saved', 2)
+        return suc
 
     def mountHost(self):
         self.app.mount.host = self.ui.mountHost.text()
@@ -508,14 +517,12 @@ class MainWindow(MWidget,
             self.app.mount.MAC = sett.addressLanMAC
         if self.app.mount.MAC is not None:
             self.ui.mountMAC.setText(self.app.mount.MAC)
-        typeConnectionTexts = ['serial RS-232 port',
-                               'GPS or GPS/RS-232 port',
-                               'cabled LAN port',
-                               'wireless LAN',
-                               ]
+
         if sett.typeConnection is not None:
-            text = typeConnectionTexts[sett.typeConnection]
+            text = self.typeConnectionTexts[sett.typeConnection]
             self.ui.mountTypeConnection.setText(text)
+            del text
+        del sett
 
     def remoteCommand(self, command):
 
@@ -558,4 +565,7 @@ class MainWindow(MWidget,
 
         self.app.data.sort(eastwest=eastwest, highlow=highlow)
         self.app.redrawHemisphere.emit()
+
+        del eastwest
+        del highlow
         return True

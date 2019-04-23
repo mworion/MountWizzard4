@@ -36,7 +36,7 @@ from mw4.test_units.test_setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
-    yield
+    app.hemisphereW.showWindow()
 
 
 def test_initConfig_1():

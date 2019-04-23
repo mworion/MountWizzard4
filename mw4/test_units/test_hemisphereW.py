@@ -65,6 +65,7 @@ def test_initConfig_3():
 
 
 def test_closeEvent(qtbot):
+    app.hemisphereW.showWindow()
     app.hemisphereW.closeEvent(None)
 
 

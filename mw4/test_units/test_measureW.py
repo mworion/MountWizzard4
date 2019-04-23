@@ -95,6 +95,7 @@ def test_initConfig_3():
 
 
 def test_closeEvent(qtbot):
+    app.measureW.showWindow()
     app.measureW.closeEvent(None)
 
 
@@ -116,16 +117,16 @@ def test_showWindow_2(qtbot):
                            'show',
                            return_value=None):
         suc = app.measureW.showWindow()
-        assert not suc
-        assert not app.measureW.showStatus
+        assert suc
+        assert app.measureW.showStatus
 
 
 def test_setupButtons_1():
     suc = app.measureW.setupButtons()
     assert suc
-    assert app.measureW.ui.measureSet1.count() == 9
-    assert app.measureW.ui.measureSet2.count() == 9
-    assert app.measureW.ui.measureSet3.count() == 9
+    assert app.measureW.ui.measureSet1.count() == 12
+    assert app.measureW.ui.measureSet2.count() == 12
+    assert app.measureW.ui.measureSet3.count() == 12
     assert app.measureW.ui.timeSet.count() == 7
 
 

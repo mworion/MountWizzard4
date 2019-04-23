@@ -118,7 +118,7 @@ def test_setUpdateRate_4():
     class Test:
         @staticmethod
         def getNumber(test):
-            return {'PERIOD': 1}
+            return {'PERIOD': 60}
     app.name = 'test'
     app.device = Test()
     suc = app.setUpdateConfig('test')

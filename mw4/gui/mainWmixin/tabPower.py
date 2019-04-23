@@ -211,7 +211,7 @@ class Power(object):
 
         for element, value in device.getSwitch(propertyName).items():
             if element in self.controls:
-                controls[element].setChecked(value)
+                self.controls[element].setChecked(value)
             elif propertyName == 'USB_PORT_CONTROL' and element == 'ENABLED':
                 self.ui.hubUSB.setChecked(value)
             elif propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':

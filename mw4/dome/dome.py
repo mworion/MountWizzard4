@@ -203,8 +203,9 @@ class Dome(indiClass.IndiClass):
 
         :return: azimuthDome calculated for right position for dome
         """
+        azimuthDome = azimuthMount
 
-        return azDome
+        return azimuthDome
 
     def slewToAltAz(self, altitude=0, azimuth=0):
         """

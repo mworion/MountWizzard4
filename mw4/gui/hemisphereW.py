@@ -182,9 +182,10 @@ class HemisphereWindow(widget.MWidget):
         self.app.update1s.disconnect(self.drawCanvas)
         self.app.update10s.disconnect(self.updateAlignStar)
 
+        self.hemisphereMat.close()
+        self.hemisphereMat.deleteLater()
         for child in self.ui.hemisphere.children():
             child.deleteLater()
-        del self.hemisphereMat
         del self.pointerAltAz
         del self.pointerDome
         del self.pointsBuild

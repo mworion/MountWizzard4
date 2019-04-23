@@ -143,9 +143,10 @@ class MeasureWindow(widget.MWidget):
         """
 
         self.app.update1s.disconnect(self.drawMeasure)
+        self.measureMat.close()
+        self.measureMat.deleteLater()
         for child in self.ui.measure.children():
             child.deleteLater()
-        del self.measureMat
         super().closeEvent(closeEvent)
 
     def showWindow(self):

@@ -22,13 +22,14 @@ import logging
 import os
 import json
 import platform
+import types
 # external packages
 import PyQt5.QtCore
 import skyfield
 from mountcontrol import qtmount
 from indibase import qtIndiBase
 
-# from pympler import muppy, summary, tracker, classtracker, asizeof
+from pympler import tracker, classtracker, muppy, summary
 import types
 # local import
 from mw4.gui import mainW
@@ -80,7 +81,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.expireData = False
         self.mwGlob = mwGlob
         self.timerCounter = 0
-        self.memory=0
+        self.memory = 0
         self.threadPool = PyQt5.QtCore.QThreadPool()
 
         pathToData = self.mwGlob['dataDir']
@@ -155,13 +156,19 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
 
-        self.update10s.connect(self.checkMemory)
-        # self.tracker = tracker.SummaryTracker()
-        # self.tracker.track_object(self.hemisphereW.ui.hemisphere, resolution_level=3)
+        self.update3s.connect(self.checkMemory)
+
+        self.tracker = tracker.SummaryTracker()
+
+        # self.tracker = classtracker.ClassTracker()
+        # self.tracker.track_object(self, resolution_level=10)
 
     def checkMemory(self):
         pass
-        # self.tracker.print_diff()
+        self.tracker.print_diff()
+
+        # self.tracker.create_snapshot()
+        # self.tracker.stats.print_stats()
 
     def initConfig(self):
         """

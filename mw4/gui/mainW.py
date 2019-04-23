@@ -376,7 +376,6 @@ class MainWindow(MWidget,
         else:
             self.changeStyleDynamic(ui, 'color', 'red')
 
-        del ui
         return True
 
     def updateWindowsStats(self):
@@ -408,6 +407,7 @@ class MainWindow(MWidget,
 
         :return: success
         """
+        return
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         return True
@@ -442,7 +442,6 @@ class MainWindow(MWidget,
         else:
             self.changeStyleDynamic(self.ui.stop, 'running', 'false')
 
-        del obs
         return True
 
     @staticmethod
@@ -521,8 +520,6 @@ class MainWindow(MWidget,
         if sett.typeConnection is not None:
             text = self.typeConnectionTexts[sett.typeConnection]
             self.ui.mountTypeConnection.setText(text)
-            del text
-        del sett
 
     def remoteCommand(self, command):
 
@@ -566,6 +563,4 @@ class MainWindow(MWidget,
         self.app.data.sort(eastwest=eastwest, highlow=highlow)
         self.app.redrawHemisphere.emit()
 
-        del eastwest
-        del highlow
         return True

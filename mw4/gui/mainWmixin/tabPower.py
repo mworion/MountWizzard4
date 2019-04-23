@@ -32,6 +32,16 @@ class Power(object):
 
     def __init__(self):
 
+        self.controls = {'POWER_CONTROL_1': self.ui.powerPort1,
+                         'POWER_CONTROL_2': self.ui.powerPort2,
+                         'POWER_CONTROL_3': self.ui.powerPort3,
+                         'POWER_CONTROL_4': self.ui.powerPort4,
+                         'POWER_PORT_1': self.ui.powerBootPort1,
+                         'POWER_PORT_2': self.ui.powerBootPort2,
+                         'POWER_PORT_3': self.ui.powerBootPort3,
+                         'POWER_PORT_4': self.ui.powerBootPort4,
+                         }
+
         signals = self.app.power.client.signals
         signals.newNumber.connect(self.updatePowerGui)
         signals.deviceDisconnected.connect(self.clearPowerGui)
@@ -192,16 +202,6 @@ class Power(object):
         device = self.app.power.device
         name = self.app.power.name
 
-        controls = {'POWER_CONTROL_1': self.ui.powerPort1,
-                    'POWER_CONTROL_2': self.ui.powerPort2,
-                    'POWER_CONTROL_3': self.ui.powerPort3,
-                    'POWER_CONTROL_4': self.ui.powerPort4,
-                    'POWER_PORT_1': self.ui.powerBootPort1,
-                    'POWER_PORT_2': self.ui.powerBootPort2,
-                    'POWER_PORT_3': self.ui.powerBootPort3,
-                    'POWER_PORT_4': self.ui.powerBootPort4,
-                    }
-
         if device is None:
             return False
         if deviceName != name:
@@ -210,7 +210,7 @@ class Power(object):
             return False
 
         for element, value in device.getSwitch(propertyName).items():
-            if element in controls:
+            if element in self.controls:
                 controls[element].setChecked(value)
             elif propertyName == 'USB_PORT_CONTROL' and element == 'ENABLED':
                 self.ui.hubUSB.setChecked(value)

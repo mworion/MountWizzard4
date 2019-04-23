@@ -200,6 +200,7 @@ class SiteStatus(object):
         else:
             self.ui.horizonLimitHigh.setText('-')
 
+        del sett
         return True
 
     def updateLocGUI(self):
@@ -218,6 +219,7 @@ class SiteStatus(object):
             self.ui.siteLatitude.setText(obs.location.latitude.dstr())
             self.ui.siteElevation.setText(str(obs.location.elevation.m))
 
+        del obs
         return True
 
     def updateFwGui(self):
@@ -254,6 +256,7 @@ class SiteStatus(object):
         else:
             self.ui.hwVersion.setText('-')
 
+        del fw
         return True
 
     def setMeridianLimitTrack(self):
@@ -281,6 +284,9 @@ class SiteStatus(object):
                                20,
                                1,
                                )
+        del sett
+        del msg
+
         if ok:
             if obs.setMeridianLimitTrack(value):
                 self.app.message.emit('Meridian Limit Track: [{0}]'.format(value), 0)
@@ -316,6 +322,8 @@ class SiteStatus(object):
                                20,
                                1,
                                )
+        del sett
+        del msg
         if ok:
             if obs.setMeridianLimitSlew(value):
                 self.app.message.emit('Meridian Limit Slew: [{0}]'.format(value), 0)
@@ -351,6 +359,8 @@ class SiteStatus(object):
                                90,
                                1,
                                )
+        del sett
+        del msg
         if ok:
             if obs.setHorizonLimitHigh(value):
                 self.app.message.emit('Horizon Limit High: [{0}]'.format(value), 0)
@@ -387,6 +397,8 @@ class SiteStatus(object):
                                90,
                                1,
                                )
+        del sett
+        del msg
         if ok:
             if obs.setHorizonLimitLow(value):
                 self.app.message.emit('Horizon Limit Low: [{0}]'.format(value), 0)
@@ -422,6 +434,8 @@ class SiteStatus(object):
                                20,
                                1,
                                )
+        del sett
+        del msg
         if ok:
             if obs.setSlewRate(value):
                 self.app.message.emit('Slew Rate: [{0}]'.format(value), 0)
@@ -559,6 +573,7 @@ class SiteStatus(object):
         self.ui.environDewPoint.setText('{0:4.1f}'.format(value))
         value = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
         self.ui.environHumidity.setText('{0:3.0f}'.format(value))
+        del value
 
     def clearSkymeterGUI(self, deviceName):
         """
@@ -584,6 +599,7 @@ class SiteStatus(object):
         self.ui.skymeterSQR.setText('{0:4.1f}'.format(value))
         value = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
         self.ui.skymeterTemp.setText('{0:4.1f}'.format(value))
+        del value
 
     def clearWeatherGUI(self, deviceName):
         """
@@ -626,3 +642,4 @@ class SiteStatus(object):
         self.ui.weatherRainVol.setText('{0:3.0f}'.format(value))
         value = self.app.weather.data.get('WEATHER_SNOW_HOUR', 0)
         self.ui.weatherSnowVol.setText('{0:3.0f}'.format(value))
+        del value

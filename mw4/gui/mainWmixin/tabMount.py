@@ -150,6 +150,9 @@ class Mount(object):
         else:
             self.ui.timeSidereal.setText('-')
 
+        del obs
+        del ra
+        del dec
         return True
 
     def updateSetStatGUI(self):
@@ -199,6 +202,7 @@ class Mount(object):
         else:
             self.ui.statusGPSSynced.setText('-')
 
+        del sett
         return True
 
     def updateTrackingGui(self):
@@ -225,6 +229,7 @@ class Mount(object):
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
 
+        del sett
         return True
 
     def changeTracking(self):
@@ -241,6 +246,7 @@ class Mount(object):
                 self.app.message.emit('Cannot start tracking', 2)
             else:
                 self.app.message.emit('Started tracking', 0)
+        del obs
         return True
 
     def changePark(self):
@@ -257,6 +263,7 @@ class Mount(object):
                 self.app.message.emit('Cannot park mount', 2)
             else:
                 self.app.message.emit('Mount parked', 0)
+        del obs
         return True
 
     def setLunarTracking(self):

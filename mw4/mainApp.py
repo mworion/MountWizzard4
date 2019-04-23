@@ -155,14 +155,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
 
-        self.update3s.connect(self.checkMemory)
-        self.tracker = tracker.SummaryTracker()
+        # self.update3s.connect(self.checkMemory)
+        # self.tracker = tracker.SummaryTracker()
         # self.tracker = classtracker.ClassTracker()
         # self.tracker.track_object(self, resolution_level=10)
 
     def checkMemory(self):
         pass
-        self.tracker.print_diff()
+        # self.tracker.print_diff()
         # self.tracker.create_snapshot()
         # self.tracker.stats.print_stats()
 

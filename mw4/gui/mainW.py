@@ -407,7 +407,6 @@ class MainWindow(MWidget,
 
         :return: success
         """
-        return
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         return True

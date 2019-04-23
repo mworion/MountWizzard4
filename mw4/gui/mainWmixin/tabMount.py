@@ -135,24 +135,20 @@ class Mount(object):
         else:
             self.ui.DEC.setText('-')
 
-        """
         if obs.timeJD is not None:
             self.ui.timeJD.setText(obs.timeJD.utc_strftime('%H:%M:%S'))
         else:
             self.ui.timeJD.setText('-')
-        """
 
         if obs.pierside is not None:
             self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
         else:
             self.ui.pierside.setText('-')
 
-        """
         if obs.timeSidereal is not None:
             self.ui.timeSidereal.setText(obs.timeSidereal[:8])
         else:
             self.ui.timeSidereal.setText('-')
-        """
 
         return True
 

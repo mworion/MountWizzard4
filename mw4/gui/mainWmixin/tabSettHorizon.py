@@ -50,7 +50,6 @@ class SettHorizon(object):
         """
         config = self.app.config['mainW']
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
-        self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.checkUseHorizonMin.setChecked(config.get('checkUseHorizonMin', False))
         self.ui.checkAutoDeletePoints.setChecked(config.get('checkAutoDeletePoints', False))
         self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
@@ -69,7 +68,6 @@ class SettHorizon(object):
         """
         config = self.app.config['mainW']
         config['horizonFileName'] = self.ui.horizonFileName.text()
-        config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
         config['checkUseHorizonMin'] = self.ui.checkUseHorizonMin.isChecked()
         config['checkAutoDeletePoints'] = self.ui.checkAutoDeletePoints.isChecked()
         config['altitudeHorizonMin'] = self.ui.altitudeHorizonMin.value()

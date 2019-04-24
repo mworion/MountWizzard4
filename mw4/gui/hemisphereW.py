@@ -109,7 +109,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.client.signals.deviceDisconnected.connect(self.updateDome)
         self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
-        self.app.mainW.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
+        self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkEditNone.clicked.connect(self.setOperationMode)
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
@@ -150,6 +150,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowMeridian.setChecked(config.get('checkShowMeridian', False))
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
+        self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.app.data.clearBuildP()
 
         return True
@@ -174,6 +175,7 @@ class HemisphereWindow(widget.MWidget):
         config['checkShowMeridian'] = self.ui.checkShowMeridian.isChecked()
         config['checkShowCelestial'] = self.ui.checkShowCelestial.isChecked()
         config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
+        config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
 
     def closeEvent(self, closeEvent):
         """
@@ -852,7 +854,7 @@ class HemisphereWindow(widget.MWidget):
         :return:
         """
 
-        showHorizon = self.app.mainW.ui.checkUseHorizon.isChecked()
+        showHorizon = self.ui.checkUseHorizon.isChecked()
 
         if not (self.app.data.horizonP and showHorizon):
             return False

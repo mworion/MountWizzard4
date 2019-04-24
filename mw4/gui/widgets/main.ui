@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>9</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -12965,7 +12965,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>8</number>
+        <number>5</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -15733,30 +15733,6 @@ manually</string>
          </property>
          <property name="text">
           <string>Save as</string>
-         </property>
-        </widget>
-        <widget class="QCheckBox" name="checkUseHorizon">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>120</y>
-           <width>211</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use horizon mask file in hemisphere window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Use Horizon Mask</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLineEdit" name="horizonFileName">
@@ -19369,7 +19345,6 @@ manually</string>
   <tabstop>loadHorizonMask</tabstop>
   <tabstop>saveHorizonMask</tabstop>
   <tabstop>saveHorizonMaskAs</tabstop>
-  <tabstop>checkUseHorizon</tabstop>
   <tabstop>checkUseHorizonMin</tabstop>
   <tabstop>altitudeHorizonMin</tabstop>
   <tabstop>checkAutoDeletePoints</tabstop>

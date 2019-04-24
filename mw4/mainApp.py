@@ -81,7 +81,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.expireData = False
         self.mwGlob = mwGlob
         self.timerCounter = 0
-        self.memory = 0
+        self.mainW = None
+        self.messageW = None
+        self.hemisphereW = None
+        self.measureW = None
+        self.imageW = None
         self.threadPool = PyQt5.QtCore.QThreadPool()
 
         pathToData = self.mwGlob['dataDir']
@@ -109,19 +113,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    verbose=None,
                                    )
         self.planets = load('de421.bsp')
-
-        # write basic data to message window
-        verMC = self.mount.version
-        verIB = qtIndiBase.Client.version
-        profile = self.config.get('profileName', '-')
-        self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('build version: [{0}]'.format(self.version), 1)
-        self.message.emit('mountcontrol version: [{0}]'.format(verMC), 1)
-        self.message.emit('indibase version: [{0}]'.format(verIB), 1)
-        self.message.emit('Workdir is: [{0}]'.format(self.mwGlob['workDir']), 1)
-        self.message.emit('Profile [{0}] loaded'.format(profile), 0)
-
-        # loading other classes
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
         self.dome = dome.Dome(host='localhost')
@@ -133,17 +124,25 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.measure = measuredata.MeasureData(self)
         self.remote = remote.Remote(self)
         self.astrometry = astrometry.Astrometry(mwGlob['tempDir'], self.threadPool)
+
         # get the window widgets up
-        self.mainW = mainW.MainWindow(self)
-        self.messageW = None
-        self.hemisphereW = None
-        self.measureW = None
-        self.imageW = None
+        self.showWindows()
+        # write basic data to message window
+        verMC = self.mount.version
+        verIB = qtIndiBase.Client.version
+        profile = self.config.get('profileName', '-')
+        self.message.emit('MountWizzard4 started', 1)
+        self.message.emit('build version: [{0}]'.format(self.version), 1)
+        self.message.emit('mountcontrol version: [{0}]'.format(verMC), 1)
+        self.message.emit('indibase version: [{0}]'.format(verIB), 1)
+        self.message.emit('Workdir is: [{0}]'.format(self.mwGlob['workDir']), 1)
+        self.message.emit('Profile [{0}] loaded'.format(profile), 0)
 
         # link cross widget gui signals as all ui widgets have to be present
         self.mainW.ui.openMessageW.clicked.connect(self.toggleMessageWindow)
         self.mainW.ui.openHemisphereW.clicked.connect(self.toggleHemisphereWindow)
         self.mainW.ui.openImageW.clicked.connect(self.toggleImageWindow)
+        self.mainW.ui.openMeasureW.clicked.connect(self.toggleMeasureWindow)
 
         # starting mount communication
         self.mount.startTimers()
@@ -201,6 +200,18 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.imageW = None
             gc.collect()
 
+    def toggleMeasureWindow(self):
+        """
+
+        :return:
+        """
+        if not self.measureW:
+            self.measureW = measureW.MeasureWindow(self)
+        else:
+            self.measureW.close()
+            self.measureW = None
+            gc.collect()
+
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -222,6 +233,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         topo = skyfield.api.Topos(longitude_degrees=lon,
                                   latitude_degrees=lat,
                                   elevation_m=elev)
+
         return expireData, topo
 
     def storeConfig(self):
@@ -239,6 +251,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             config['topoLon'] = location.longitude.degrees
             config['topoElev'] = location.elevation.m
         self.mainW.storeConfig()
+
+        config['showMessageW'] = bool(self.messageW)
+        config['showHemisphereW'] = bool(self.hemisphereW)
+        config['showImageW'] = bool(self.imageW)
+        config['showMeasureW'] = bool(self.measureW)
         if self.messageW:
             self.messageW.close()
         if self.imageW:
@@ -248,6 +265,17 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if self.measureW:
             self.measureW.close()
         return True
+
+    def showWindows(self):
+        self.mainW = mainW.MainWindow(self)
+        if self.config.get('showMessageW', False):
+            self.toggleMessageWindow()
+        if self.config.get('showHemisphereW', False):
+            self.toggleHemisphereWindow()
+        if self.config.get('showImageW', False):
+            self.toggleImageWindow()
+        if self.config.get('showMeasureW', False):
+            self.toggleImageWindow()
 
     def sendUpdate(self):
         """

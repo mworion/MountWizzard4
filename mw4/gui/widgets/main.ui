@@ -251,7 +251,7 @@
         </widget>
        </item>
        <item row="4" column="3" rowspan="3">
-        <widget class="QPushButton" name="openAnalyseW">
+        <widget class="QPushButton" name="openMeasureW">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -282,7 +282,7 @@
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>Analyse</string>
+          <string>Measure</string>
          </property>
         </widget>
        </item>
@@ -19449,7 +19449,7 @@ manually</string>
   <tabstop>btn_startSlewingSatellite</tabstop>
   <tabstop>btn_clearSatellite</tabstop>
   <tabstop>cameraConnected</tabstop>
-  <tabstop>openAnalyseW</tabstop>
+  <tabstop>openMeasureW</tabstop>
   <tabstop>le_satellite2derrMotion</tabstop>
   <tabstop>astrometryConnected</tabstop>
   <tabstop>environConnected</tabstop>

@@ -198,16 +198,6 @@ class HemisphereWindow(widget.MWidget):
         self.app.update10s.connect(self.updateAlignStar)
         return True
 
-    def updateGUI(self):
-        """
-        updateGUI update gui elements on regular bases (actually 10 second) for items,
-        which are not events based.
-
-        :return: success
-        """
-
-        return True
-
     @staticmethod
     def clearAxes(axes, visible=False):
         """

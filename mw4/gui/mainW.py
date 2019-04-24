@@ -242,7 +242,7 @@ class MainWindow(MWidget,
         """
 
         self.wIcon(self.ui.openMessageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
-        self.wIcon(self.ui.openAnalyseW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
+        self.wIcon(self.ui.openMeasureW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
         self.wIcon(self.ui.openImageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
         self.wIcon(self.ui.openHemisphereW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
         self.wIcon(self.ui.openSatelliteW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
@@ -399,6 +399,10 @@ class MainWindow(MWidget,
         else:
             self.changeStyleDynamic(self.ui.openImageW, 'running', False)
 
+        if self.app.measureW:
+            self.changeStyleDynamic(self.ui.openMeasureW, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.openMeasureW, 'running', False)
         return True
 
     def updateTime(self):

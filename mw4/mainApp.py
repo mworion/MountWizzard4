@@ -275,7 +275,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if self.config.get('showImageW', False):
             self.toggleImageWindow()
         if self.config.get('showMeasureW', False):
-            self.toggleImageWindow()
+            self.toggleMeasureWindow()
 
     def sendUpdate(self):
         """

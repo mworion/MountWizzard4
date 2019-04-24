@@ -179,6 +179,8 @@ class MainWindow(MWidget,
         SettMisc.initConfig(self)
         SettDevice.initConfig(self)
 
+        fileName = self.app.config['mainW'].get('horizonFileName')
+        self.app.data.loadHorizonP(fileName=fileName)
         return True
 
     def storeConfig(self):

@@ -37,7 +37,7 @@ class MeasureWindow(widget.MWidget):
 
     __all__ = ['MeasureWindow',
                ]
-    version = '0.2'
+    version = '0.3'
     logger = logging.getLogger(__name__)
 
     NUMBER_POINTS = 500
@@ -58,12 +58,6 @@ class MeasureWindow(widget.MWidget):
         # doing the matplotlib embedding
         self.measureMat = self.embedMatplot(self.ui.measure)
         self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
-
-        # signals for gui
-        self.ui.timeSet.currentIndexChanged.connect(self.drawMeasure)
-        self.ui.measureSet1.currentIndexChanged.connect(self.drawMeasure)
-        self.ui.measureSet2.currentIndexChanged.connect(self.drawMeasure)
-        self.ui.measureSet3.currentIndexChanged.connect(self.drawMeasure)
 
         self.initConfig()
         self.showWindow()
@@ -127,8 +121,14 @@ class MeasureWindow(widget.MWidget):
         :return:
         """
 
-        self.app.update1s.disconnect(self.drawMeasure)
         self.storeConfig()
+        # signals for gui
+        self.ui.timeSet.currentIndexChanged.disconnect(self.drawMeasure)
+        self.ui.measureSet1.currentIndexChanged.disconnect(self.drawMeasure)
+        self.ui.measureSet2.currentIndexChanged.disconnect(self.drawMeasure)
+        self.ui.measureSet3.currentIndexChanged.disconnect(self.drawMeasure)
+        self.app.update1s.disconnect(self.drawMeasure)
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -138,6 +138,12 @@ class MeasureWindow(widget.MWidget):
         """
         self.drawMeasure()
         self.show()
+
+        # signals for gui
+        self.ui.timeSet.currentIndexChanged.connect(self.drawMeasure)
+        self.ui.measureSet1.currentIndexChanged.connect(self.drawMeasure)
+        self.ui.measureSet2.currentIndexChanged.connect(self.drawMeasure)
+        self.ui.measureSet3.currentIndexChanged.connect(self.drawMeasure)
         self.app.update1s.connect(self.drawMeasure)
         return True
 
@@ -677,16 +683,10 @@ class MeasureWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.showStatus:
-            return False
-
         data = self.app.measure.data
         cycle = int(np.exp2(self.ui.timeSet.currentIndex()))
 
         if len(data['time']) < 4:
-            return False
-
-        if not self.mutexDraw.tryLock():
             return False
 
         if not self.clearPlot(numberPlots=3):
@@ -722,5 +722,4 @@ class MeasureWindow(widget.MWidget):
                 axe.set_xticklabels([])
             axe.figure.canvas.draw()
 
-        self.mutexDraw.unlock()
         return True

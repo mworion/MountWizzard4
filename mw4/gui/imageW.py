@@ -61,16 +61,6 @@ class ImageWindow(widget.MWidget):
         self.imageMat = self.embedMatplot(self.ui.image)
         self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
 
-        self.ui.load.clicked.connect(self.selectImage)
-        self.ui.color.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.stretch.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
-        self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
-        self.ui.solve.clicked.connect(self.solveImage)
-        self.app.astrometry.signals.solveDone.connect(self.solveDone)
-        self.app.astrometry.signals.solveResult.connect(self.solveResult)
-
         self.initConfig()
         self.showWindow()
 
@@ -136,12 +126,33 @@ class ImageWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         self.storeConfig()
+        # gui signals
+        self.ui.load.clicked.disconnect(self.selectImage)
+        self.ui.color.currentIndexChanged.disconnect(self.showFitsImage)
+        self.ui.stretch.currentIndexChanged.disconnect(self.showFitsImage)
+        self.ui.zoom.currentIndexChanged.disconnect(self.showFitsImage)
+        self.ui.checkUseWCS.clicked.disconnect(self.showFitsImage)
+        self.ui.checkUsePixel.clicked.disconnect(self.showFitsImage)
+        self.ui.solve.clicked.disconnect(self.solveImage)
+        self.app.astrometry.signals.solveDone.disconnect(self.solveDone)
+        self.app.astrometry.signals.solveResult.disconnect(self.solveResult)
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
         self.showStatus = True
         self.showFitsImage()
         self.show()
+        # gui signals
+        self.ui.load.clicked.connect(self.selectImage)
+        self.ui.color.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.stretch.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
+        self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
+        self.ui.solve.clicked.connect(self.solveImage)
+        self.app.astrometry.signals.solveDone.connect(self.solveDone)
+        self.app.astrometry.signals.solveResult.connect(self.solveResult)
         return True
 
     def setupDropDownGui(self):

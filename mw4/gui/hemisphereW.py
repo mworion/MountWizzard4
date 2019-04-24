@@ -97,29 +97,6 @@ class HemisphereWindow(widget.MWidget):
         self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
         self.clearRect(self.hemisphereMat, numberPlots=1)
 
-        # signals for gui
-        self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
-        self.ui.checkShowMeridian.clicked.connect(self.updateMeridian)
-        self.ui.checkShowCelestial.clicked.connect(self.updateCelestialPath)
-        self.app.redrawHemisphere.connect(self.drawHemisphere)
-        self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
-        self.app.mount.signals.settDone.connect(self.updateMeridian)
-        self.app.mount.signals.settDone.connect(self.updateHorizonLimits)
-        self.app.mount.signals.settDone.connect(self.updateCelestialPath)
-        self.app.dome.signals.azimuth.connect(self.updateDome)
-        self.app.dome.client.signals.deviceDisconnected.connect(self.updateDome)
-        self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
-        self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
-        self.ui.checkEditNone.clicked.connect(self.setOperationMode)
-        self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
-        self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
-        self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
-        self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
-        self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
-
-        if 'mainW' in self.app.config:
-            fileName = self.app.config['mainW'].get('horizonFileName')
-            self.app.data.loadHorizonP(fileName=fileName)
         self.initConfig()
         self.configOperationMode()
         self.showWindow()
@@ -183,9 +160,30 @@ class HemisphereWindow(widget.MWidget):
         :param closeEvent:
         :return:
         """
+        self.storeConfig()
+
+        # signals for gui
+        self.ui.checkShowSlewPath.clicked.disconnect(self.drawHemisphere)
+        self.ui.checkShowMeridian.clicked.disconnect(self.updateMeridian)
+        self.ui.checkShowCelestial.clicked.disconnect(self.updateCelestialPath)
+        self.app.redrawHemisphere.disconnect(self.drawHemisphere)
+        self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
+        self.app.mount.signals.settDone.disconnect(self.updateMeridian)
+        self.app.mount.signals.settDone.disconnect(self.updateHorizonLimits)
+        self.app.mount.signals.settDone.disconnect(self.updateCelestialPath)
+        self.app.dome.signals.azimuth.disconnect(self.updateDome)
+        self.app.dome.client.signals.deviceDisconnected.disconnect(self.updateDome)
+        self.ui.clearBuildP.clicked.disconnect(self.clearHemisphere)
+        self.ui.checkUseHorizon.clicked.disconnect(self.drawHemisphere)
+        self.ui.checkEditNone.clicked.disconnect(self.setOperationMode)
+        self.ui.checkEditHorizonMask.clicked.disconnect(self.setOperationMode)
+        self.ui.checkEditBuildPoints.clicked.disconnect(self.setOperationMode)
+        self.ui.checkPolarAlignment.clicked.disconnect(self.setOperationMode)
+        self.ui.checkShowAlignStar.clicked.disconnect(self.drawHemisphere)
+        self.ui.checkShowAlignStar.clicked.disconnect(self.configOperationMode)
         self.app.update1s.disconnect(self.drawCanvas)
         self.app.update10s.disconnect(self.updateAlignStar)
-        self.storeConfig()
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -196,6 +194,26 @@ class HemisphereWindow(widget.MWidget):
 
         self.drawHemisphere()
         self.show()
+
+        # signals for gui
+        self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
+        self.ui.checkShowMeridian.clicked.connect(self.updateMeridian)
+        self.ui.checkShowCelestial.clicked.connect(self.updateCelestialPath)
+        self.app.redrawHemisphere.connect(self.drawHemisphere)
+        self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
+        self.app.mount.signals.settDone.connect(self.updateMeridian)
+        self.app.mount.signals.settDone.connect(self.updateHorizonLimits)
+        self.app.mount.signals.settDone.connect(self.updateCelestialPath)
+        self.app.dome.signals.azimuth.connect(self.updateDome)
+        self.app.dome.client.signals.deviceDisconnected.connect(self.updateDome)
+        self.ui.clearBuildP.clicked.connect(self.clearHemisphere)
+        self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
+        self.ui.checkEditNone.clicked.connect(self.setOperationMode)
+        self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
+        self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
+        self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
+        self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
+        self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
         self.app.update1s.connect(self.drawCanvas)
         self.app.update10s.connect(self.updateAlignStar)
         return True

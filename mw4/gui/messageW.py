@@ -58,8 +58,6 @@ class MessageWindow(widget.MWidget):
                          PyQt5.QtGui.QFont.Normal,
                          ]
 
-        self.ui.clear.clicked.connect(self.clearWindow)
-        self.app.message.connect(self.writeMessage)
         self.initConfig()
         self.showWindow()
 
@@ -102,10 +100,19 @@ class MessageWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         self.storeConfig()
+
+        # gui signals
+        self.ui.clear.clicked.disconnect(self.clearWindow)
+        self.app.message.disconnect(self.writeMessage)
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
         self.show()
+
+        # gui signals
+        self.ui.clear.clicked.connect(self.clearWindow)
+        self.app.message.connect(self.writeMessage)
 
     def clearWindow(self):
         """

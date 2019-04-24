@@ -72,7 +72,6 @@ class HemisphereWindow(widget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.showStatus = False
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
         self.initUI()
@@ -92,7 +91,11 @@ class HemisphereWindow(widget.MWidget):
         self.horizonLimitHigh = None
         self.horizonLimitLow = None
         self.celestialPath = None
-        self.hemisphereMat = None
+
+        # doing the matplotlib embedding
+        self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
+        self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
+        self.clearRect(self.hemisphereMat, numberPlots=1)
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
@@ -119,6 +122,7 @@ class HemisphereWindow(widget.MWidget):
             self.app.data.loadHorizonP(fileName=fileName)
         self.initConfig()
         self.configOperationMode()
+        self.showWindow()
 
     def initConfig(self):
         """
@@ -147,8 +151,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.app.data.clearBuildP()
-        if config.get('showStatus'):
-            self.showWindow()
+
         return True
 
     def storeConfig(self):
@@ -178,68 +181,17 @@ class HemisphereWindow(widget.MWidget):
         :param closeEvent:
         :return:
         """
-
         self.app.update1s.disconnect(self.drawCanvas)
         self.app.update10s.disconnect(self.updateAlignStar)
-
-        self.hemisphereMat.close()
-        self.hemisphereMat.deleteLater()
-        for child in self.ui.hemisphere.children():
-            child.deleteLater()
-        del self.pointerAltAz
-        del self.pointerDome
-        del self.pointsBuild
-        del self.pointsBuildAnnotate
-        del self.starsAlign
-        del self.starsAlignAnnotate
-        del self.horizonFill
-        del self.horizonMarker
-        del self.meridianSlew
-        del self.meridianTrack
-        del self.horizonLimitHigh
-        del self.horizonLimitLow
-        del self.celestialPath
-
+        self.storeConfig()
         super().closeEvent(closeEvent)
-
-    def toggleWindow(self):
-        """
-
-        :return:
-        """
-
-        self.showStatus = not self.showStatus
-        if self.showStatus:
-            self.showWindow()
-        else:
-            self.close()
 
     def showWindow(self):
         """
 
         :return:
         """
-        # attributes to be stored in class
-        self.pointerAltAz = None
-        self.pointerDome = None
-        self.pointsBuild = None
-        self.pointsBuildAnnotate = list()
-        self.starsAlign = None
-        self.starsAlignAnnotate = list()
-        self.horizonFill = None
-        self.horizonMarker = None
-        self.meridianSlew = None
-        self.meridianTrack = None
-        self.horizonLimitHigh = None
-        self.horizonLimitLow = None
-        self.celestialPath = None
 
-        # doing the matplotlib embedding
-        self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
-        self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.clearRect(self.hemisphereMat, numberPlots=1)
-
-        self.showStatus = True
         self.drawHemisphere()
         self.show()
         self.app.update1s.connect(self.drawCanvas)

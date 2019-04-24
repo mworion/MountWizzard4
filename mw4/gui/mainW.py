@@ -384,17 +384,17 @@ class MainWindow(MWidget,
         :return: True for test purpose
         """
 
-        if self.app.messageW.showStatus:
+        if self.app.messageW:
             self.changeStyleDynamic(self.ui.openMessageW, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.openMessageW, 'running', False)
 
-        if self.app.hemisphereW.showStatus:
+        if self.app.hemisphereW:
             self.changeStyleDynamic(self.ui.openHemisphereW, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.openHemisphereW, 'running', False)
 
-        if self.app.imageW.showStatus:
+        if self.app.imageW:
             self.changeStyleDynamic(self.ui.openImageW, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.openImageW, 'running', False)

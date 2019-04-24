@@ -72,6 +72,7 @@ class ImageWindow(widget.MWidget):
         self.app.astrometry.signals.solveResult.connect(self.solveResult)
 
         self.initConfig()
+        self.showWindow()
 
     def initConfig(self):
         """
@@ -95,8 +96,6 @@ class ImageWindow(widget.MWidget):
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
-        if config.get('showStatus', False):
-            self.showWindow()
 
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.zoom.setCurrentIndex(config.get('zoom', 0))
@@ -126,7 +125,6 @@ class ImageWindow(widget.MWidget):
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
         config['width'] = self.width()
-        config['showStatus'] = self.showStatus
         config['color'] = self.ui.color.currentIndex()
         config['zoom'] = self.ui.zoom.currentIndex()
         config['stretch'] = self.ui.stretch.currentIndex()
@@ -137,14 +135,8 @@ class ImageWindow(widget.MWidget):
         return True
 
     def closeEvent(self, closeEvent):
+        self.storeConfig()
         super().closeEvent(closeEvent)
-
-    def toggleWindow(self):
-        self.showStatus = not self.showStatus
-        if self.showStatus:
-            self.showWindow()
-        else:
-            self.close()
 
     def showWindow(self):
         self.showStatus = True

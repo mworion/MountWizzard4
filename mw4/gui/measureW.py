@@ -54,32 +54,19 @@ class MeasureWindow(widget.MWidget):
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.measureIndex = 0
         self.timeIndex = 0
-        self.measureMat = None
+
+        # doing the matplotlib embedding
+        self.measureMat = self.embedMatplot(self.ui.measure)
+        self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         # signals for gui
         self.ui.timeSet.currentIndexChanged.connect(self.drawMeasure)
         self.ui.measureSet1.currentIndexChanged.connect(self.drawMeasure)
         self.ui.measureSet2.currentIndexChanged.connect(self.drawMeasure)
         self.ui.measureSet3.currentIndexChanged.connect(self.drawMeasure)
-        self.clickable(self.app.mainW.ui.RA).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.DEC).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.environTemp).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.environPress).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.environDewPoint).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.environHumidity).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.skymeterSQR).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.skymeterTemp).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.powerCurrent1).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.powerCurrent2).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.powerCurrent3).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.powerCurrent4).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.sensorVoltage).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.sensorCurrent).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.powerTemp).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.powerHumidity).connect(self.showWindow)
-        self.clickable(self.app.mainW.ui.powerDewPoint).connect(self.showWindow)
 
         self.initConfig()
+        self.showWindow()
 
     def initConfig(self):
         """
@@ -108,8 +95,7 @@ class MeasureWindow(widget.MWidget):
         self.ui.measureSet2.setCurrentIndex(config.get('measureSet2', 0))
         self.ui.measureSet3.setCurrentIndex(config.get('measureSet3', 0))
         self.ui.timeSet.setCurrentIndex(config.get('timeSet', 0))
-        if config.get('showStatus'):
-            self.showWindow()
+
         return True
 
     def storeConfig(self):
@@ -131,7 +117,6 @@ class MeasureWindow(widget.MWidget):
         config['measureSet2'] = self.ui.measureSet2.currentIndex()
         config['measureSet3'] = self.ui.measureSet3.currentIndex()
         config['timeSet'] = self.ui.timeSet.currentIndex()
-        config['showStatus'] = self.showStatus
 
         return True
 
@@ -143,10 +128,7 @@ class MeasureWindow(widget.MWidget):
         """
 
         self.app.update1s.disconnect(self.drawMeasure)
-        self.measureMat.close()
-        self.measureMat.deleteLater()
-        for child in self.ui.measure.children():
-            child.deleteLater()
+        self.storeConfig()
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -154,13 +136,6 @@ class MeasureWindow(widget.MWidget):
 
         :return:
         """
-        if self.showStatus:
-            return False
-
-        # doing the matplotlib embedding
-        self.measureMat = self.embedMatplot(self.ui.measure)
-        self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.showStatus = True
         self.drawMeasure()
         self.show()
         self.app.update1s.connect(self.drawMeasure)

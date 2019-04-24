@@ -43,7 +43,6 @@ class MessageWindow(widget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.showStatus = False
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self)
         self.initUI()
@@ -62,6 +61,7 @@ class MessageWindow(widget.MWidget):
         self.ui.clear.clicked.connect(self.clearWindow)
         self.app.message.connect(self.writeMessage)
         self.initConfig()
+        self.showWindow()
 
     def initConfig(self):
         """
@@ -84,8 +84,6 @@ class MessageWindow(widget.MWidget):
         self.move(x, y)
         height = config.get('height', 600)
         self.resize(800, height)
-        if config.get('showStatus'):
-            self.showWindow()
 
     def storeConfig(self):
         """
@@ -101,20 +99,12 @@ class MessageWindow(widget.MWidget):
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
-        config['showStatus'] = self.showStatus
 
     def closeEvent(self, closeEvent):
+        self.storeConfig()
         super().closeEvent(closeEvent)
 
-    def toggleWindow(self):
-        self.showStatus = not self.showStatus
-        if self.showStatus:
-            self.showWindow()
-        else:
-            self.close()
-
     def showWindow(self):
-        self.showStatus = True
         self.show()
 
     def clearWindow(self):

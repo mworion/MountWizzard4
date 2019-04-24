@@ -22,13 +22,14 @@ import logging
 import os
 import json
 import platform
+import gc
 # external packages
 import PyQt5.QtCore
 import skyfield
 from mountcontrol import qtmount
 from indibase import qtIndiBase
 
-from pympler import tracker, classtracker, muppy, summary
+# from pympler import tracker, classtracker, muppy, summary
 import types
 # local import
 from mw4.gui import mainW
@@ -109,9 +110,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    )
         self.planets = load('de421.bsp')
 
-        # enabling message window first
-        self.messageW = messageW.MessageWindow(self)
-
         # write basic data to message window
         verMC = self.mount.version
         verIB = qtIndiBase.Client.version
@@ -137,14 +135,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.astrometry = astrometry.Astrometry(mwGlob['tempDir'], self.threadPool)
         # get the window widgets up
         self.mainW = mainW.MainWindow(self)
-        self.hemisphereW = hemisphereW.HemisphereWindow(self)
-        self.measureW = measureW.MeasureWindow(self)
-        self.imageW = imageW.ImageWindow(self)
+        self.messageW = None
+        self.hemisphereW = None
+        self.measureW = None
+        self.imageW = None
 
         # link cross widget gui signals as all ui widgets have to be present
-        self.mainW.ui.openMessageW.clicked.connect(self.messageW.toggleWindow)
-        self.mainW.ui.openHemisphereW.clicked.connect(self.hemisphereW.toggleWindow)
-        self.mainW.ui.openImageW.clicked.connect(self.imageW.toggleWindow)
+        self.mainW.ui.openMessageW.clicked.connect(self.toggleMessageWindow)
+        self.mainW.ui.openHemisphereW.clicked.connect(self.toggleHemisphereWindow)
+        self.mainW.ui.openImageW.clicked.connect(self.toggleImageWindow)
 
         # starting mount communication
         self.mount.startTimers()
@@ -165,6 +164,42 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # self.tracker.print_diff()
         # self.tracker.create_snapshot()
         # self.tracker.stats.print_stats()
+
+    def toggleHemisphereWindow(self):
+        """
+
+        :return:
+        """
+        if not self.hemisphereW:
+            self.hemisphereW = hemisphereW.HemisphereWindow(self)
+        else:
+            self.hemisphereW.close()
+            self.hemisphereW = None
+            gc.collect()
+
+    def toggleMessageWindow(self):
+        """
+
+        :return:
+        """
+        if not self.messageW:
+            self.messageW = messageW.MessageWindow(self)
+        else:
+            self.messageW.close()
+            self.messageW = None
+            gc.collect()
+
+    def toggleImageWindow(self):
+        """
+
+        :return:
+        """
+        if not self.imageW:
+            self.imageW = imageW.ImageWindow(self)
+        else:
+            self.imageW.close()
+            self.imageW = None
+            gc.collect()
 
     def initConfig(self):
         """
@@ -204,10 +239,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             config['topoLon'] = location.longitude.degrees
             config['topoElev'] = location.elevation.m
         self.mainW.storeConfig()
-        self.messageW.storeConfig()
-        self.imageW.storeConfig()
-        self.hemisphereW.storeConfig()
-        self.measureW.storeConfig()
+        if self.messageW:
+            self.messageW.close()
+        if self.imageW:
+            self.imageW.close()
+        if self.hemisphereW:
+            self.hemisphereW.close()
+        if self.measureW:
+            self.measureW.close()
         return True
 
     def sendUpdate(self):

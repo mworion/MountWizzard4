@@ -172,8 +172,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.hemisphereW = hemisphereW.HemisphereWindow(self)
         else:
             self.hemisphereW.close()
-            self.hemisphereW = None
-            gc.collect()
 
     def toggleMessageWindow(self):
         """
@@ -184,8 +182,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.messageW = messageW.MessageWindow(self)
         else:
             self.messageW.close()
-            self.messageW = None
-            gc.collect()
 
     def toggleImageWindow(self):
         """
@@ -196,8 +192,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.imageW = imageW.ImageWindow(self)
         else:
             self.imageW.close()
-            self.imageW = None
-            gc.collect()
 
     def toggleMeasureWindow(self):
         """
@@ -208,8 +202,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.measureW = measureW.MeasureWindow(self)
         else:
             self.measureW.close()
-            self.measureW = None
-            gc.collect()
 
     def initConfig(self):
         """
@@ -329,6 +321,12 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     @staticmethod
     def defaultConfig(config=None):
+        """
+
+        :param config:
+        :return:
+        """
+
         if config is None:
             config = dict()
         config['profileName'] = 'config'

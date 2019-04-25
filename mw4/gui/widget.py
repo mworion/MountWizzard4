@@ -62,11 +62,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         self.initUI()
         self.screenSizeX = PyQt5.QtWidgets.QDesktopWidget().screenGeometry().width()
         self.screenSizeY = PyQt5.QtWidgets.QDesktopWidget().screenGeometry().height()
-        self.showStatus = False
+        self.setAttribute(PyQt5.QtCore.Qt.WA_DeleteOnClose, True)
 
     def closeEvent(self, closeEvent):
-        self.showStatus = False
-        self.hide()
+        super().closeEvent(closeEvent)
 
     @staticmethod
     def wIcon(gui, icon):

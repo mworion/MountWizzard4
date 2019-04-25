@@ -147,7 +147,6 @@ class HemisphereWindow(widget.MWidget):
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
         config['width'] = self.width()
-        config['showStatus'] = self.showStatus
         config['checkShowSlewPath'] = self.ui.checkShowSlewPath.isChecked()
         config['checkShowMeridian'] = self.ui.checkShowMeridian.isChecked()
         config['checkShowCelestial'] = self.ui.checkShowCelestial.isChecked()
@@ -271,8 +270,6 @@ class HemisphereWindow(widget.MWidget):
         :return: success for test
         """
 
-        if not self.showStatus:
-            return False
         if not self.mutexDraw.tryLock():
             return False
         axes = self.hemisphereMat.figure.axes[0]
@@ -291,8 +288,6 @@ class HemisphereWindow(widget.MWidget):
         :return: success for testing
         """
 
-        if not self.showStatus:
-            return False
         if self.celestialPath is None:
             return False
         self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
@@ -308,8 +303,6 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.showStatus:
-            return False
         slew = self.app.mount.sett.meridianLimitSlew
         track = self.app.mount.sett.meridianLimitTrack
         if slew is None or track is None:
@@ -336,8 +329,6 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.showStatus:
-            return False
         high = self.app.mount.sett.horizonLimitHigh
         low = self.app.mount.sett.horizonLimitLow
         if high is None or low is None:
@@ -362,8 +353,6 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.showStatus:
-            return False
         obsSite = self.app.mount.obsSite
         if obsSite.Alt is None:
             return False
@@ -387,8 +376,6 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.showStatus:
-            return False
         if self.pointerDome is None:
             return False
 
@@ -409,8 +396,6 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        if not self.showStatus:
-            return False
         if not self.ui.checkShowAlignStar.isChecked():
             return False
         if self.starsAlign is None:

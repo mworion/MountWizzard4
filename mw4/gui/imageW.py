@@ -48,7 +48,6 @@ class ImageWindow(widget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.showStatus = False
         self.imageFileName = ''
         self.image = None
 
@@ -140,7 +139,6 @@ class ImageWindow(widget.MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self):
-        self.showStatus = True
         self.showFitsImage()
         self.show()
         # gui signals
@@ -522,9 +520,6 @@ class ImageWindow(widget.MWidget):
 
         :return: success
         """
-
-        if not self.showStatus:
-            return False
 
         if not os.path.isfile(self.imageFileName):
             return False

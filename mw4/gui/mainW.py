@@ -231,9 +231,8 @@ class MainWindow(MWidget,
 
         :return:    nothing
         """
-
-        self.showStatus = False
-        self.hide()
+        super().closeEvent(closeEvent)
+        self.close()
         self.app.quit()
 
     def setupIcons(self):
@@ -381,6 +380,8 @@ class MainWindow(MWidget,
             self.changeStyleDynamic(self.ui.openMeasureW, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.openMeasureW, 'running', False)
+
+        print(isinstance(self.app.imageW, PyQt5.QtWidgets.QWidget))
         return True
 
     def updateTime(self):

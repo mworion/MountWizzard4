@@ -78,6 +78,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # getting global app data
         self.expireData = False
+        self.mountUp = False
         self.mwGlob = mwGlob
         self.timerCounter = 0
         self.mainW = None
@@ -489,16 +490,17 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :param      status: connection status to mount computer
         :return:    status how it was called
         """
-        if status:
-            # self.mount.workaround()
+        if status and not self.mountUp:
             self.mount.getFW()
             self.mount.getLocation()
             self.mount.cycleSetting()
             self.mainW.refreshName()
             self.mainW.refreshModel()
+            self.mountUp = True
             return True
-        else:
+        elif not status:
             location = self.mount.obsSite.location
             self.mount.resetData()
             self.mount.obsSite.location = location
+            self.mountUp = False
             return False

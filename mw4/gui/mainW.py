@@ -348,8 +348,6 @@ class MainWindow(MWidget,
         :return: success for test
         """
 
-        self.updateStatusGUI()
-
         Mount.clearGUI(self)
         SiteStatus.clearGUI(self)
         AlignMount.clearGUI(self)
@@ -423,7 +421,7 @@ class MainWindow(MWidget,
         memoryUse = int(py.memory_info()[0] / 1024)
         self.ui.memory.setText(f'{memoryUse:5.0f}')
 
-    def updateStatusGUI(self):
+    def updateStatusGUI(self, obs):
         """
         updateStatusGUI update the gui upon events triggered be the reception of new data
         from the mount. the mount data is polled, so we use this signal as well for the
@@ -431,7 +429,6 @@ class MainWindow(MWidget,
 
         :return:    True if ok for testing
         """
-        obs = self.app.mount.obsSite
 
         if obs.statusText() is not None:
             self.ui.statusText.setText(obs.statusText())
@@ -521,8 +518,13 @@ class MainWindow(MWidget,
     def mountMAC(self):
         self.app.mount.MAC = self.ui.mountMAC.text()
 
-    def setMountMAC(self):
-        sett = self.app.mount.sett
+    def setMountMAC(self, sett):
+        """
+
+        :param sett:
+        :return:
+        """
+
         if sett.addressLanMAC is not None and sett.addressLanMAC:
             self.app.mount.MAC = sett.addressLanMAC
         if self.app.mount.MAC is not None:

@@ -36,7 +36,7 @@ class SiteStatus(object):
     def __init__(self):
         # mount
         self.app.mount.signals.settDone.connect(self.updateSettingGUI)
-        self.app.mount.signals.settDone.connect(self.updateLocGUI)
+        self.app.mount.signals.locationDone.connect(self.updateLocGUI)
         self.app.mount.signals.fwDone.connect(self.updateFwGui)
 
         # environment functions
@@ -108,10 +108,7 @@ class SiteStatus(object):
 
         :return: success for test
         """
-        self.updateSettingGUI()
-        self.updateSetStatGUI()
-        self.updateLocGUI()
-        self.updateFwGui()
+        pass
         return True
 
     def updateRefractionParameters(self):
@@ -140,7 +137,7 @@ class SiteStatus(object):
             return False
         return True
 
-    def updateSettingGUI(self):
+    def updateSettingGUI(self, sett):
         """
         updateSettingGUI update the gui upon events triggered be the reception of new
         settings from the mount. the mount data is polled, so we use this signal as well
@@ -148,8 +145,6 @@ class SiteStatus(object):
 
         :return:    True if ok for testing
         """
-
-        sett = self.app.mount.sett
 
         if sett.slewRate is not None:
             self.ui.slewRate.setText('{0:2.0f}'.format(sett.slewRate))
@@ -202,7 +197,7 @@ class SiteStatus(object):
 
         return True
 
-    def updateLocGUI(self):
+    def updateLocGUI(self, location):
         """
         updateLocGUI update the gui upon events triggered be the reception of new
         settings from the mount. the mount data is polled, so we use this signal as well
@@ -211,23 +206,19 @@ class SiteStatus(object):
         :return:    True if ok for testing
         """
 
-        obs = self.app.mount.obsSite
-
-        if obs.location is not None:
-            self.ui.siteLongitude.setText(obs.location.longitude.dstr())
-            self.ui.siteLatitude.setText(obs.location.latitude.dstr())
-            self.ui.siteElevation.setText(str(obs.location.elevation.m))
+        if location is not None:
+            self.ui.siteLongitude.setText(location.longitude.dstr())
+            self.ui.siteLatitude.setText(location.latitude.dstr())
+            self.ui.siteElevation.setText(str(location.elevation.m))
 
         return True
 
-    def updateFwGui(self):
+    def updateFwGui(self, fw):
         """
         updateFwGui write all firmware data to the gui.
 
         :return:    True if ok for testing
         """
-
-        fw = self.app.mount.fw
 
         if fw.productName is not None:
             self.ui.productName.setText(fw.productName)

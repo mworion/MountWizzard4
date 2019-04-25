@@ -114,7 +114,6 @@ class MainWindow(MWidget,
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.mount.signals.settDone.connect(self.setMountMAC)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
-        self.app.mount.signals.mountClear.connect(self.clearGUI)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
@@ -341,29 +340,6 @@ class MainWindow(MWidget,
             self.app.message.emit('Rack computer cannot be booted', 2)
             return False
 
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
-        """
-
-        Mount.clearGUI(self)
-        SiteStatus.clearGUI(self)
-        AlignMount.clearGUI(self)
-        BuildModel.clearGUI(self)
-        ManageModel.clearGUI(self)
-        Relay.clearGUI(self)
-        Power.clearGUI(self)
-        SettDevice.clearGUI(self)
-        SettIndi.clearGUI(self)
-        SettHorizon.clearGUI(self)
-        SettParkPos.clearGUI(self)
-        SettRelay.clearGUI(self)
-        SettMisc.clearGUI(self)
-
-        return True
-
     def updateMountConnStat(self, status):
         """
         updateMountConnStat show the connection status of the mount.
@@ -454,11 +430,23 @@ class MainWindow(MWidget,
 
     @staticmethod
     def checkExtension(filePath, ext):
+        """
+
+        :param filePath:
+        :param ext:
+        :return:
+        """
+
         if not filePath.endswith(ext):
             filePath += ext
         return filePath
 
     def loadProfile(self):
+        """
+
+        :return:
+        """
+
         folder = self.app.mwGlob['configDir']
         loadFilePath, name, ext = self.openFile(self,
                                                 'Open config file',
@@ -477,6 +465,11 @@ class MainWindow(MWidget,
         return True
 
     def saveProfileAs(self):
+        """
+
+        :return:
+        """
+
         folder = self.app.mwGlob['configDir']
         saveFilePath, name, ext = self.saveFile(self,
                                                 'Save config file',
@@ -535,6 +528,11 @@ class MainWindow(MWidget,
             self.ui.mountTypeConnection.setText(text)
 
     def remoteCommand(self, command):
+        """
+
+        :param command:
+        :return:
+        """
 
         if command == 'shutdown':
             self.app.quitSave()

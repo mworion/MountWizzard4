@@ -31,9 +31,6 @@ class SettHorizon(object):
     """
 
     def __init__(self):
-        ms = self.app.mount.signals
-        ms.alignDone.connect(self.updateAlignGUI)
-        ms.namesDone.connect(self.setNameList)
 
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
@@ -81,14 +78,6 @@ class SettHorizon(object):
         gui of the app.
 
         :return:    True if success for test
-        """
-        return True
-
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
         """
         return True
 

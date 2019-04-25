@@ -121,14 +121,6 @@ class BuildModel(object):
         self.wIcon(self.ui.genBuildDSO, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         return True
 
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
-        """
-        return True
-
     def genBuildGrid(self):
         """
         genBuildGrid generates a grid of point for model build based on gui data. the cols

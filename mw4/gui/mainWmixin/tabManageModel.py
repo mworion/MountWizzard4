@@ -95,16 +95,6 @@ class ManageModel(object):
         self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
         return True
 
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
-        """
-        pass
-
-        return True
-
     def setNameList(self, model):
         """
         setNameList populates the list of model names in the main window. before adding the
@@ -129,18 +119,13 @@ class ManageModel(object):
         :return:    True if ok for testing
         """
 
-        # shortcuts
-        location = self.app.mount.obsSite.location
-
         # check entry conditions for displaying a polar plot
         if model is None:
             hasNoStars = True
-            hasNoLocation = True
         else:
             hasNoStars = model.starList is None or not model.starList
-            hasNoLocation = location is None
 
-        if hasNoStars or hasNoLocation:
+        if hasNoStars:
             # clear the plot and return
             fig, axes = self.clearPolar(self.polarPlot)
             fig.subplots_adjust(left=0.1,
@@ -152,8 +137,8 @@ class ManageModel(object):
             return False
 
         # start with plotting
-        lat = location.latitude.degrees
         fig, axes = self.clearPolar(self.polarPlot)
+        lat = self.app.config.config.get('topoLat', 51.47)
 
         altitude = []
         azimuth = []

@@ -93,26 +93,14 @@ class AlignMount(object):
         self.ui.picALT.setPixmap(pixmap)
         return True
 
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
-        """
-
-        self.updateAlignGUI()
-        self.updateTurnKnobsGUI()
-        return True
-
-    def updateAlignGUI(self):
+    def updateAlignGUI(self, model):
         """
         updateAlignGUI shows the data which is received through the getain command. this is
         mainly polar and ortho errors as well as basic model data.
 
+        :param model:
         :return:    True if ok for testing
         """
-
-        model = self.app.mount.model
 
         if model.numberStars is not None:
             text = str(model.numberStars)
@@ -166,15 +154,14 @@ class AlignMount(object):
 
         return True
 
-    def updateTurnKnobsGUI(self):
+    def updateTurnKnobsGUI(self, model):
         """
         updateTurnKnobsGUI shows the data which is received through the getain command.
         this is mainly polar and ortho errors as well as basic model data.
 
+        :param model:
         :return:    True if ok for testing
         """
-
-        model = self.app.mount.model
 
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:

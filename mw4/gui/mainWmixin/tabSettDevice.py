@@ -113,14 +113,6 @@ class SettDevice(object):
         """
         return True
 
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
-        """
-        return True
-
     def setupDeviceGui(self):
         """
         setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.

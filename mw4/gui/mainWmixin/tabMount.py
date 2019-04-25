@@ -84,21 +84,13 @@ class Mount(object):
         self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
         return True
 
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
-        """
-        pass
-        return True
-
     def updatePointGUI(self, obs):
         """
         updatePointGUI update the gui upon events triggered be the reception of new data
         from the mount. the mount data is polled, so we use this signal as well for the
         update process.
 
+        :param obs:
         :return:    True if ok for testing
         """
 
@@ -156,6 +148,7 @@ class Mount(object):
         settings from the mount. the mount data is polled, so we use this signal as well
         for the update process.
 
+        :param sett:
         :return:    True if ok for testing
         """
 
@@ -203,6 +196,7 @@ class Mount(object):
         settings from the mount. the mount data is polled, so we use this signal as well
         for the update process.
 
+        :param sett:
         :return:    True if ok for testing
         """
 
@@ -222,6 +216,11 @@ class Mount(object):
         return True
 
     def changeTracking(self):
+        """
+
+        :return:
+        """
+
         obs = self.app.mount.obsSite
         if obs.status == 0:
             suc = obs.stopTracking()
@@ -239,6 +238,11 @@ class Mount(object):
         return True
 
     def changePark(self):
+        """
+
+        :return:
+        """
+
         obs = self.app.mount.obsSite
         if obs.status == 5:
             suc = obs.unpark()
@@ -256,6 +260,11 @@ class Mount(object):
         return True
 
     def setLunarTracking(self):
+        """
+
+        :return:
+        """
+
         obs = self.app.mount.obsSite
         suc = obs.setLunarTracking()
         if not suc:
@@ -266,6 +275,11 @@ class Mount(object):
             return True
 
     def setSiderealTracking(self):
+        """
+
+        :return:
+        """
+
         obs = self.app.mount.obsSite
         suc = obs.setSiderealTracking()
         if not suc:
@@ -276,6 +290,11 @@ class Mount(object):
             return True
 
     def setSolarTracking(self):
+        """
+
+        :return:
+        """
+
         obs = self.app.mount.obsSite
         suc = obs.setSolarTracking()
         if not suc:
@@ -286,6 +305,11 @@ class Mount(object):
             return True
 
     def stop(self):
+        """
+
+        :return:
+        """
+
         obs = self.app.mount.obsSite
         suc = obs.stop()
         if not suc:

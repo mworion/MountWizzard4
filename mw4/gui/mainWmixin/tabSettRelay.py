@@ -142,14 +142,6 @@ class SettRelay(object):
         """
         return True
 
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
-        """
-        return True
-
     def setupRelayGui(self):
         """
         setupRelayGui handles the modeldata of list for relay handling.

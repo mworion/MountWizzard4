@@ -136,14 +136,6 @@ class SettMisc(object):
         """
         return True
 
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
-        """
-        return True
-
     def setLoggingLevel(self):
         """
         Setting the log level according to the setting in the gui.

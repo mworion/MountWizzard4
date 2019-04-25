@@ -94,14 +94,6 @@ class SettParkPos(object):
         """
         return True
 
-    def clearGUI(self):
-        """
-        clearGUI rewrites the gui in case of a special event needed for clearing up
-
-        :return: success for test
-        """
-        return True
-
     def setupParkPosGui(self):
         """
         setupRelayGui handles the modeldata of list for relay handling. to keep many relay in

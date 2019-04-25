@@ -90,11 +90,10 @@ class Mount(object):
 
         :return: success for test
         """
-        self.updatePointGUI()
-        self.updateTrackingGui()
+        pass
         return True
 
-    def updatePointGUI(self):
+    def updatePointGUI(self, obs):
         """
         updatePointGUI update the gui upon events triggered be the reception of new data
         from the mount. the mount data is polled, so we use this signal as well for the
@@ -102,7 +101,6 @@ class Mount(object):
 
         :return:    True if ok for testing
         """
-        obs = self.app.mount.obsSite
 
         if obs.Alt is not None:
             self.ui.ALT.setText('{0:5.2f}'.format(obs.Alt.degrees))
@@ -152,7 +150,7 @@ class Mount(object):
 
         return True
 
-    def updateSetStatGUI(self):
+    def updateSetStatGUI(self, sett):
         """
         updateSetStatGUI update the gui upon events triggered be the reception of new
         settings from the mount. the mount data is polled, so we use this signal as well
@@ -160,8 +158,6 @@ class Mount(object):
 
         :return:    True if ok for testing
         """
-
-        sett = self.app.mount.sett
 
         if sett.UTCExpire is not None:
             ui = self.ui.UTCExpire
@@ -201,7 +197,7 @@ class Mount(object):
 
         return True
 
-    def updateTrackingGui(self):
+    def updateTrackingGui(self, sett):
         """
         updateTrackingGui update the gui upon events triggered be the reception of new
         settings from the mount. the mount data is polled, so we use this signal as well
@@ -209,8 +205,6 @@ class Mount(object):
 
         :return:    True if ok for testing
         """
-
-        sett = self.app.mount.sett
 
         if sett.checkRateLunar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')

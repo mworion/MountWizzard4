@@ -63,7 +63,7 @@ class ManageModel(object):
         config = self.app.config['mainW']
         self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
         self.ui.targetRMS.setValue(config.get('targetRMS', 99))
-        self.showModelPolar()
+        self.showModelPolar(None)
         return True
 
     def storeConfig(self):
@@ -101,11 +101,11 @@ class ManageModel(object):
 
         :return: success for test
         """
-        self.setNameList()
-        self.showModelPolar()
+        pass
+
         return True
 
-    def setNameList(self):
+    def setNameList(self, model):
         """
         setNameList populates the list of model names in the main window. before adding the
         data, the existent list will be deleted.
@@ -113,7 +113,6 @@ class ManageModel(object):
         :return:    True if ok for testing
         """
 
-        model = self.app.mount.model
         self.ui.nameList.clear()
         for name in model.nameList:
             self.ui.nameList.addItem(name)
@@ -121,7 +120,7 @@ class ManageModel(object):
         self.ui.nameList.update()
         return True
 
-    def showModelPolar(self):
+    def showModelPolar(self, model):
         """
         showModelPolar draws a polar plot of the align model stars and their errors in
         color. the basic setup of the plot is taking place in the central widget class.
@@ -131,12 +130,15 @@ class ManageModel(object):
         """
 
         # shortcuts
-        model = self.app.mount.model
         location = self.app.mount.obsSite.location
 
         # check entry conditions for displaying a polar plot
-        hasNoStars = model.starList is None or not model.starList
-        hasNoLocation = location is None
+        if model is None:
+            hasNoStars = True
+            hasNoLocation = True
+        else:
+            hasNoStars = model.starList is None or not model.starList
+            hasNoLocation = location is None
 
         if hasNoStars or hasNoLocation:
             # clear the plot and return

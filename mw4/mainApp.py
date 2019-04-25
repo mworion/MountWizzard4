@@ -21,7 +21,6 @@
 import logging
 import os
 import json
-import platform
 import gc
 # external packages
 import PyQt5.QtCore
@@ -30,7 +29,7 @@ from mountcontrol import qtmount
 from indibase import qtIndiBase
 
 # from pympler import tracker, classtracker, muppy, summary
-import types
+
 # local import
 from mw4.gui import mainW
 from mw4.gui import messageW

@@ -381,7 +381,6 @@ class MainWindow(MWidget,
         else:
             self.changeStyleDynamic(self.ui.openMeasureW, 'running', False)
 
-        print(isinstance(self.app.imageW, PyQt5.QtWidgets.QWidget))
         return True
 
     def updateTime(self):

@@ -170,8 +170,18 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
         if not self.hemisphereW:
             self.hemisphereW = hemisphereW.HemisphereWindow(self)
+            self.hemisphereW.destroyed.connect(self.deleteHemisphereW)
         else:
             self.hemisphereW.close()
+
+    def deleteHemisphereW(self):
+        """
+
+        :return:
+        """
+
+        self.hemisphereW = None
+        gc.collect()
 
     def toggleMessageWindow(self):
         """
@@ -180,8 +190,18 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
         if not self.messageW:
             self.messageW = messageW.MessageWindow(self)
+            self.messageW.destroyed.connect(self.deleteMessageW)
         else:
             self.messageW.close()
+
+    def deleteMessageW(self):
+        """
+
+        :return:
+        """
+
+        self.messageW = None
+        gc.collect()
 
     def toggleImageWindow(self):
         """
@@ -190,8 +210,18 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
         if not self.imageW:
             self.imageW = imageW.ImageWindow(self)
+            self.imageW.destroyed.connect(self.deleteImageW)
         else:
             self.imageW.close()
+
+    def deleteImageW(self):
+        """
+
+        :return:
+        """
+
+        self.imageW = None
+        gc.collect()
 
     def toggleMeasureWindow(self):
         """
@@ -200,8 +230,18 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
         if not self.measureW:
             self.measureW = measureW.MeasureWindow(self)
+            self.measureW.destroyed.connect(self.deleteMeasureW)
         else:
             self.measureW.close()
+
+    def deleteMeasureW(self):
+        """
+
+        :return:
+        """
+
+        self.measureW = None
+        gc.collect()
 
     def initConfig(self):
         """
@@ -258,6 +298,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         return True
 
     def showWindows(self):
+        """
+
+        :return: True for test purpose
+        """
+
         self.mainW = mainW.MainWindow(self)
         if self.config.get('showMessageW', False):
             self.toggleMessageWindow()
@@ -267,6 +312,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.toggleImageWindow()
         if self.config.get('showMeasureW', False):
             self.toggleMeasureWindow()
+
+        return True
 
     def sendUpdate(self):
         """

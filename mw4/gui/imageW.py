@@ -42,7 +42,7 @@ class ImageWindow(widget.MWidget):
 
     __all__ = ['ImageWindow',
                ]
-    version = '0.2'
+    version = '0.5'
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):
@@ -62,6 +62,9 @@ class ImageWindow(widget.MWidget):
 
         self.initConfig()
         self.showWindow()
+
+    def __del__(self):
+        print('deleted')
 
     def initConfig(self):
         """

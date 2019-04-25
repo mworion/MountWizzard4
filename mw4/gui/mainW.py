@@ -21,7 +21,6 @@
 import logging
 import datetime
 import os
-import psutil
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -391,11 +390,6 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-
-        pid = os.getpid()
-        py = psutil.Process(pid)
-        memoryUse = int(py.memory_info()[0] / 1024)
-        self.ui.memory.setText(f'{memoryUse:5.0f}')
 
     def updateStatusGUI(self, obs):
         """

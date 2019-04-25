@@ -138,7 +138,7 @@ class ManageModel(object):
 
         # start with plotting
         fig, axes = self.clearPolar(self.polarPlot)
-        lat = self.app.config.config.get('topoLat', 51.47)
+        lat = self.app.config.get('topoLat', 51.47)
 
         altitude = []
         azimuth = []

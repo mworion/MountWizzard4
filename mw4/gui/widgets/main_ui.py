@@ -460,10 +460,10 @@ class Ui_MainWindow(object):
         self.line_7.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_7.setObjectName("line_7")
         self.loadsave.addWidget(self.line_7, 3, 1, 1, 2)
-        self.label_39 = QtWidgets.QLabel(MainWindow)
-        self.label_39.setMaximumSize(QtCore.QSize(16777215, 10))
-        self.label_39.setObjectName("label_39")
-        self.loadsave.addWidget(self.label_39, 0, 1, 1, 2)
+        self.memory = QtWidgets.QLabel(MainWindow)
+        self.memory.setMaximumSize(QtCore.QSize(16777215, 10))
+        self.memory.setObjectName("memory")
+        self.loadsave.addWidget(self.memory, 0, 1, 1, 2)
         self.horizontalLayout.addLayout(self.loadsave)
         self.horizontalLayout.setStretch(2, 1)
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -7420,7 +7420,7 @@ class Ui_MainWindow(object):
         self.saveConfigQuit.setText(_translate("MainWindow", "Save/Quit"))
         self.mountOff.setToolTip(_translate("MainWindow", "<html><head/><body><p>Send shutdown command to the mount.</p></body></html>"))
         self.mountOff.setText(_translate("MainWindow", "Off"))
-        self.label_39.setText(_translate("MainWindow", "Main"))
+        self.memory.setText(_translate("MainWindow", "Main"))
         self.mainTabWidget.setToolTip(_translate("MainWindow", "<html><head/><body><p>Tabs for the main functions of model making</p></body></html>"))
         self.RA.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:400;\">Right Ascension in J2000</span></p></body></html>"))
         self.RA.setText(_translate("MainWindow", "RA"))
@@ -8250,13 +8250,3 @@ class Ui_MainWindow(object):
         self.mainTabWidget.setTabText(self.mainTabWidget.indexOf(self.Setting), _translate("MainWindow", "Sett. / Conf."))
 
 
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())

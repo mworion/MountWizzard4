@@ -133,7 +133,6 @@ class MainWindow(MWidget,
         # cyclic updates
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateWindowsStats)
-        self.app.update10s.connect(self.updateRefractionParameters)
 
     def initConfig(self):
         """

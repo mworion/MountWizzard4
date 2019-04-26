@@ -64,6 +64,7 @@ class SiteStatus(object):
         self.clickable(self.ui.siteLongitude).connect(self.setLongitude)
         self.clickable(self.ui.siteElevation).connect(self.setElevation)
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
+        self.app.update10s.connect(self.updateRefractionParameters)
 
     def initConfig(self):
         """

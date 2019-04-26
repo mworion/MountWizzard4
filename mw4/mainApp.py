@@ -288,13 +288,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         config['showImageW'] = bool(self.imageW)
         config['showMeasureW'] = bool(self.measureW)
         if self.messageW:
-            self.messageW.close()
+            self.messageW.storeConfig()
         if self.imageW:
-            self.imageW.close()
+            self.imageW.storeConfig()
         if self.hemisphereW:
-            self.hemisphereW.close()
+            self.hemisphereW.storeConfig()
         if self.measureW:
-            self.measureW.close()
+            self.measureW.storeConfig()
         return True
 
     def showWindows(self):

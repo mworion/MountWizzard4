@@ -497,7 +497,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mainW.refreshModel()
             self.mountUp = True
             return True
-        elif not status:
+        elif not status and self.mountUp:
             location = self.mount.obsSite.location
             self.mount.resetData()
             self.mount.obsSite.location = location

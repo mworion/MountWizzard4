@@ -448,8 +448,8 @@ class ImageWindow(widget.MWidget):
         """
 
         # plt.close(self.imageMat.figure)
-        if not self.imageMat.figure.gca():
-            self.imageMat.figure.add_subplot(111)
+        # if not self.imageMat.figure.gca():
+        self.imageMat.figure.add_subplot(111)
         axes = self.imageMat.figure.axes[0]
         axes.grid(True,
                   color=self.M_BLUE,

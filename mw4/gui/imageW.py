@@ -29,6 +29,7 @@ from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization import SqrtStretch
 from astropy.visualization import ImageNormalize
 import numpy as np
+import matplotlib.pyplot as plt
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
@@ -442,9 +443,8 @@ class ImageWindow(widget.MWidget):
         :return: axes object to plot onto
         """
 
-        self.imageMat.figure.clf()
-        self.imageMat.figure.add_subplot(111,
-                                         )
+        plt.close(self.imageMat.figure)
+        self.imageMat.figure.add_subplot(111)
         axes = self.imageMat.figure.axes[0]
         axes.grid(True,
                   color=self.M_BLUE,

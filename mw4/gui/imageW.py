@@ -29,7 +29,6 @@ from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization import SqrtStretch
 from astropy.visualization import ImageNormalize
 import numpy as np
-import matplotlib.pyplot as plt
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
@@ -394,6 +393,7 @@ class ImageWindow(widget.MWidget):
         """
 
         self.imageMat.figure.clf()
+        # if not self.imageMat.figure.gca():
         self.imageMat.figure.add_subplot(111,
                                          projection=wcsObject,
                                          )
@@ -439,12 +439,17 @@ class ImageWindow(widget.MWidget):
         setupNormal build the image widget to show it with pixels as axes. the center of
         the image will have coordinates 0,0.
 
+        closing the image is done with close due to the article:
+        https://stackoverflow.com/questions/8213522
+        /when-to-use-cla-clf-or-close-for-clearing-a-plot-in-matplotlib
+
         :param image:
         :return: axes object to plot onto
         """
 
-        plt.close(self.imageMat.figure)
-        self.imageMat.figure.add_subplot(111)
+        # plt.close(self.imageMat.figure)
+        if not self.imageMat.figure.gca():
+            self.imageMat.figure.add_subplot(111)
         axes = self.imageMat.figure.axes[0]
         axes.grid(True,
                   color=self.M_BLUE,

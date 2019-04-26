@@ -63,9 +63,6 @@ class ImageWindow(widget.MWidget):
         self.initConfig()
         self.showWindow()
 
-    def __del__(self):
-        print('deleted')
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui

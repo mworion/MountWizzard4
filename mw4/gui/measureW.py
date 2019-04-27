@@ -49,6 +49,7 @@ class MeasureWindow(widget.MWidget):
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.refreshCounter = 1
 
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.measureIndex = 0
@@ -122,11 +123,11 @@ class MeasureWindow(widget.MWidget):
 
         self.storeConfig()
         # signals for gui
-        self.ui.timeSet.currentIndexChanged.disconnect(self.drawMeasure)
+        self.ui.timeSet.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet1.currentIndexChanged.disconnect(self.drawMeasure)
         self.ui.measureSet2.currentIndexChanged.disconnect(self.drawMeasure)
         self.ui.measureSet3.currentIndexChanged.disconnect(self.drawMeasure)
-        self.app.update1s.disconnect(self.drawMeasure)
+        self.app.update1s.disconnect(self.setCycleRefresh)
 
         self.measureMat.figure = None
 
@@ -141,11 +142,11 @@ class MeasureWindow(widget.MWidget):
         self.show()
 
         # signals for gui
-        self.ui.timeSet.currentIndexChanged.connect(self.drawMeasure)
+        self.ui.timeSet.currentIndexChanged.connect(self.setCycleRefresh)
         self.ui.measureSet1.currentIndexChanged.connect(self.drawMeasure)
         self.ui.measureSet2.currentIndexChanged.connect(self.drawMeasure)
         self.ui.measureSet3.currentIndexChanged.connect(self.drawMeasure)
-        self.app.update1s.connect(self.drawMeasure)
+        self.app.update1s.connect(self.setCycleRefresh)
         return True
 
     def setupButtons(self):
@@ -189,6 +190,17 @@ class MeasureWindow(widget.MWidget):
         tSet.addItem('  8 hours')
 
         return True
+
+    def setCycleRefresh(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        cycle = int(np.exp2(self.ui.timeSet.currentIndex()))
+        if not self.refreshCounter % cycle:
+            self.drawMeasure(cycle)
+        self.refreshCounter += 1
 
     def setupAxes(self, figure=None):
         """
@@ -667,17 +679,17 @@ class MeasureWindow(widget.MWidget):
 
         return True
 
-    def drawMeasure(self):
+    def drawMeasure(self, cycle=1):
         """
         drawMeasure does the basic preparation for making the plot. it checks for borders
         and does finally the content dispatcher. currently there is no chance to implement
         a basic pattern as the graphs differ heavily.
 
+        :param cycle:
         :return: success
         """
 
         data = self.app.measure.data
-        cycle = int(np.exp2(self.ui.timeSet.currentIndex()))
 
         if len(data['time']) < 4:
             return False

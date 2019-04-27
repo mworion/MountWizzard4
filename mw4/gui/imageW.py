@@ -210,7 +210,7 @@ class ImageWindow(widget.MWidget):
             return False
         self.ui.imageFileName.setText(name)
         self.imageFileName = loadFilePath
-        self.showFitsImage()
+        self.signalShowImage.emit()
         self.app.message.emit(f'Image [{name}] selected', 0)
         return True
 
@@ -243,7 +243,7 @@ class ImageWindow(widget.MWidget):
         self.ui.exposeN.setEnabled(True)
         self.ui.stop.setEnabled(True)
         self.ui.load.setEnabled(True)
-        self.showFitsImage()
+        self.signalShowImage.emit()
 
     def solveResult(self, result):
         """

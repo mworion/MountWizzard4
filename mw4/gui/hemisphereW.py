@@ -95,7 +95,6 @@ class HemisphereWindow(widget.MWidget):
         # doing the matplotlib embedding
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.clearRect(self.hemisphereMat, numberPlots=1)
 
         self.initConfig()
         self.configOperationMode()
@@ -183,6 +182,8 @@ class HemisphereWindow(widget.MWidget):
         self.app.update1s.disconnect(self.drawCanvas)
         self.app.update10s.disconnect(self.updateAlignStar)
 
+        self.hemisphereMat.figure = None
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -190,9 +191,6 @@ class HemisphereWindow(widget.MWidget):
 
         :return:
         """
-
-        self.drawHemisphere()
-        self.show()
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
@@ -215,26 +213,31 @@ class HemisphereWindow(widget.MWidget):
         self.app.dome.client.signals.deviceDisconnected.connect(self.updateDome)
         self.app.update1s.connect(self.drawCanvas)
         self.app.update10s.connect(self.updateAlignStar)
+
+        # finally setting the mouse handler
+        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
+                                                     self.onMouseDispatcher)
+        # draw all things
+        self.drawHemisphere()
+        self.show()
+
         return True
 
-    @staticmethod
-    def clearAxes(axes, visible=False):
+    def setupAxes(self, figure=None):
         """
-        clearAxes cleans up the axes object in figure an setup a new plotting. it draws
+        setupAxes cleans up the axes object in figure an setup a new plotting. it draws
         grid, ticks etc.
 
-        :param axes: axes object of figure
-        :param visible: flag to set the grid visible or not
+        :param figure: axes object of figure
         :return:
         """
 
-        axes.cla()
+        figure.clf()
+        figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        axes = self.hemisphereMat.figure.add_subplot(1, 1, 1, facecolor=None)
         axes.set_facecolor((0, 0, 0, 0))
         axes.set_xlim(0, 360)
         axes.set_ylim(0, 90)
-        if not visible:
-            axes.set_axis_off()
-            return False
         axes.spines['bottom'].set_color('#2090C0')
         axes.spines['top'].set_color('#2090C0')
         axes.spines['left'].set_color('#2090C0')
@@ -261,7 +264,7 @@ class HemisphereWindow(widget.MWidget):
                         color='#2090C0',
                         fontweight='bold',
                         fontsize=12)
-        return True
+        return axes
 
     def drawCanvas(self):
         """
@@ -1123,11 +1126,11 @@ class HemisphereWindow(widget.MWidget):
         """
 
         # shortening the references
-        axes = self.hemisphereMat.figure.axes[0]
+        fig = self.hemisphereMat.figure
 
         # clearing axes before drawing, only static visible, dynamic only when content
         # is available. visibility is handled with their update method
-        self.clearAxes(axes, visible=True)
+        axes = self.setupAxes(figure=fig)
 
         # calling renderer
         self.drawHemisphereStatic(axes=axes)
@@ -1138,7 +1141,3 @@ class HemisphereWindow(widget.MWidget):
 
         # drawing the canvas
         axes.figure.canvas.draw()
-
-        # finally setting the mouse handler
-        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
-                                                     self.onMouseDispatcher)

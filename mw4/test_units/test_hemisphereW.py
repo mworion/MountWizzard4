@@ -96,14 +96,14 @@ def test_showWindow1(qtbot):
 def test_clearAxes1(qtbot):
     app.hemisphereW.drawHemisphere()
     axes = app.hemisphereW.hemisphereMat.figure.axes[0]
-    suc = app.hemisphereW.clearAxes(axes, True)
+    suc = app.hemisphereW.setupAxes(axes, True)
     assert suc
 
 
 def test_clearAxes2(qtbot):
     app.hemisphereW.drawHemisphere()
     axes = app.hemisphereW.hemisphereMat.figure.axes[0]
-    suc = app.hemisphereW.clearAxes(axes, False)
+    suc = app.hemisphereW.setupAxes(axes, False)
     assert not suc
 
 

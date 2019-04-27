@@ -208,8 +208,9 @@ class ImageWindow(widget.MWidget):
             return False
         self.ui.imageFileName.setText(name)
         self.imageFileName = loadFilePath
-        self.signalShowImage.emit()
         self.app.message.emit(f'Image [{name}] selected', 0)
+        self.ui.checkUsePixel.setChecked(True)
+        self.signalShowImage.emit()
         return True
 
     def solveImage(self):

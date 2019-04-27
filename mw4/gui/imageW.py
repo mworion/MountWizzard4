@@ -413,7 +413,7 @@ class ImageWindow(widget.MWidget):
         figure.clf()
         figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
 
-        axe = self.imageMat.figure.add_subplot(111, projection=wcsObject)
+        axe = figure.add_subplot(1, 1, 1, projection=wcsObject, facecolor=None)
         axe.coords.frame.set_color(self.M_BLUE)
 
         axe0 = axe.coords[0]
@@ -422,16 +422,8 @@ class ImageWindow(widget.MWidget):
         axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
         axe0.tick_params(colors=self.M_BLUE, labelsize=12)
         axe1.tick_params(colors=self.M_BLUE, labelsize=12)
-        axe0.set_axislabel('Coordinates',
-                           color=self.M_BLUE,
-                           fontsize=12,
-                           fontweight='bold',
-                           )
-        axe1.set_axislabel('Coordinates',
-                           color=self.M_BLUE,
-                           fontsize=12,
-                           fontweight='bold',
-                           )
+        axe0.set_axislabel('Coordinates', color=self.M_BLUE, fontsize=12, fontweight='bold')
+        axe1.set_axislabel('Coordinates', color=self.M_BLUE, fontsize=12, fontweight='bold')
         axe0.set_ticks(number=20)
         axe1.set_ticks(number=20)
         return axe
@@ -452,12 +444,11 @@ class ImageWindow(widget.MWidget):
 
         figure.clf()
         figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
-        axe = figure.add_subplot(111)
+
+        axe = figure.add_subplot(1, 1, 1, facecolor=None)
         axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
-        axe.spines['bottom'].set_color(self.M_BLUE)
-        axe.spines['top'].set_color(self.M_BLUE)
-        axe.spines['left'].set_color(self.M_BLUE)
-        axe.spines['right'].set_color(self.M_BLUE)
+        axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
+        axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)
 
         sizeY, sizeX = image.shape
         midX = int(sizeX / 2)
@@ -476,27 +467,8 @@ class ImageWindow(widget.MWidget):
         axe.set_yticklabels(textY)
         axe.set_yticks(ticksY)
 
-        axe.tick_params(axis='x',
-                        which='major',
-                        colors=self.M_BLUE,
-                        labelsize=12,
-                        )
-        axe.tick_params(axis='y',
-                        which='major',
-                        colors=self.M_BLUE,
-                        labelsize=12,
-                        )
-
-        axe.set_xlabel(xlabel='Pixel',
-                       color=self.M_BLUE,
-                       fontsize=12,
-                       fontweight='bold',
-                       )
-        axe.set_ylabel(ylabel='Pixel',
-                       color=self.M_BLUE,
-                       fontsize=12,
-                       fontweight='bold',
-                       )
+        axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
+        axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         return axe
 
     def setupImage(self, figure=None, hasDistortion=False, wcsObject=None, image=None):

@@ -162,11 +162,10 @@ class MeasureWindow(widget.MWidget):
         :return: success for test purpose
         """
 
-        for i, mSet in enumerate(self.mSetUI):
+        for mSet in self.mSetUI:
             mSet.clear()
             mSet.setView(PyQt5.QtWidgets.QListView())
-            if i:
-                mSet.addItem('None')
+            mSet.addItem('None')
             mSet.addItem('RA Stability')
             mSet.addItem('DEC Stability')
             mSet.addItem('Temperature')
@@ -705,6 +704,9 @@ class MeasureWindow(widget.MWidget):
                   ]
 
         numberPlots = 3 - mTitle.count('None')
+        if not numberPlots:
+            return False
+
         axes = self.setupAxes(figure=self.measureMat.figure, numberPlots=numberPlots)
 
         grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)

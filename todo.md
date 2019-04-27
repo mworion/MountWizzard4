@@ -14,9 +14,6 @@ problems occurred list:
 - minimum horizon line not implemented
 
 necessary feature list:
-- add dome support from indi
-- hemisphere: show best altitude when polar align is on
-- astrometry online
 - astrometry configs
 - indi CCD camera
 - mountcontrol: adding TLE commands and tests
@@ -25,6 +22,8 @@ necessary feature list:
 - image settings: Gui for populating the value from driver 
 
 nice to have:
+- astrometry online
+- hemisphere: show best altitude when polar align is on
 - indi setting parameters of devices
 - gui show indi device FL / pixels data in screen and choose which to use
 - check if daylight timezone fits to the computer or set it up !

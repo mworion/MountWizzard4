@@ -136,6 +136,8 @@ class ImageWindow(widget.MWidget):
         self.app.astrometry.signals.solveDone.disconnect(self.solveDone)
         self.app.astrometry.signals.solveResult.disconnect(self.solveResult)
 
+        self.imageMat.figure = None
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -208,6 +210,11 @@ class ImageWindow(widget.MWidget):
         return True
 
     def solveImage(self):
+        """
+
+        :return:
+        """
+
         updateFits = self.ui.checkUpdateFits.isChecked()
         self.app.astrometry.solveThreading(fitsPath=self.imageFileName,
                                            timeout=10,
@@ -221,6 +228,11 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
 
     def solveDone(self):
+        """
+
+        :return:
+        """
+
         self.changeStyleDynamic(self.ui.solve, 'running', 'false')
         self.ui.expose.setEnabled(True)
         self.ui.exposeN.setEnabled(True)
@@ -382,43 +394,29 @@ class ImageWindow(widget.MWidget):
 
         return colorMap
 
-    def setupDistorted(self, wcsObject=None):
+    def setupDistorted(self, figure=None, wcsObject=None):
         """
         setupDistorted tries to setup all necessary context for displaying the image with
         wcs distorted coordinates.
         still plenty of work to be done, because very often the labels are not shown
 
+        :param figure:
         :param wcsObject:
         :return: axes object to plot onto
         """
 
-        self.imageMat.figure.clf()
-        # if not self.imageMat.figure.gca():
-        self.imageMat.figure.add_subplot(111,
-                                         projection=wcsObject,
-                                         )
-        axes = self.imageMat.figure.axes[0]
-        axe0 = axes.coords[0]
-        axe1 = axes.coords[1]
+        figure.clf()
+        figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        axe = self.imageMat.figure.add_subplot(111, projection=wcsObject)
+        axe0 = axe.coords[0]
+        axe1 = axe.coords[1]
         axes.coords.frame.set_color(self.M_BLUE)
 
-        axe0.grid(True,
-                  color=self.M_BLUE,
-                  ls='solid',
-                  alpha=0.5,
-                  )
-        axe1.grid(True,
-                  color=self.M_BLUE,
-                  ls='solid',
-                  alpha=0.5,
-                  )
+        axe0.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+        axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
 
-        axe0.tick_params(colors=self.M_BLUE,
-                         labelsize=12,
-                         )
-        axe1.tick_params(colors=self.M_BLUE,
-                         labelsize=12,
-                         )
+        axe0.tick_params(colors=self.M_BLUE, labelsize=12)
+        axe1.tick_params(colors=self.M_BLUE, labelsize=12)
 
         axe0.set_axislabel('Coordinates',
                            color=self.M_BLUE,
@@ -432,9 +430,9 @@ class ImageWindow(widget.MWidget):
                            )
         axe0.set_ticks(number=20)
         axe1.set_ticks(number=20)
-        return axes
+        return axe
 
-    def setupNormal(self, image=None):
+    def setupNormal(self, figure=None, image=None):
         """
         setupNormal build the image widget to show it with pixels as axes. the center of
         the image will have coordinates 0,0.
@@ -443,23 +441,19 @@ class ImageWindow(widget.MWidget):
         https://stackoverflow.com/questions/8213522
         /when-to-use-cla-clf-or-close-for-clearing-a-plot-in-matplotlib
 
+        :param figure:
         :param image:
         :return: axes object to plot onto
         """
 
-        # plt.close(self.imageMat.figure)
-        # if not self.imageMat.figure.gca():
-        self.imageMat.figure.add_subplot(111)
-        axes = self.imageMat.figure.axes[0]
-        axes.grid(True,
-                  color=self.M_BLUE,
-                  ls='solid',
-                  alpha=0.5,
-                  )
-        axes.spines['bottom'].set_color(self.M_BLUE)
-        axes.spines['top'].set_color(self.M_BLUE)
-        axes.spines['left'].set_color(self.M_BLUE)
-        axes.spines['right'].set_color(self.M_BLUE)
+        figure.clf()
+        figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        axe = figure.add_subplot(111)
+        axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+        axe.spines['bottom'].set_color(self.M_BLUE)
+        axe.spines['top'].set_color(self.M_BLUE)
+        axe.spines['left'].set_color(self.M_BLUE)
+        axe.spines['right'].set_color(self.M_BLUE)
 
         sizeY, sizeX = image.shape
         midX = int(sizeX / 2)
@@ -469,43 +463,44 @@ class ImageWindow(widget.MWidget):
         valueX, _ = np.linspace(-midX, midX, num=number, retstep=True)
         textX = list((str(int(x)) for x in valueX))
         ticksX = list((x + midX for x in valueX))
-        axes.set_xticklabels(textX)
-        axes.set_xticks(ticksX)
+        axe.set_xticklabels(textX)
+        axe.set_xticks(ticksX)
 
         valueY, _ = np.linspace(-midY, midY, num=number, retstep=True)
         textY = list((str(int(x)) for x in valueY))
         ticksY = list((x + midY for x in valueY))
-        axes.set_yticklabels(textY)
-        axes.set_yticks(ticksY)
+        axe.set_yticklabels(textY)
+        axe.set_yticks(ticksY)
 
-        axes.tick_params(axis='x',
-                         which='major',
-                         colors=self.M_BLUE,
-                         labelsize=12,
-                         )
-        axes.tick_params(axis='y',
-                         which='major',
-                         colors=self.M_BLUE,
-                         labelsize=12,
-                         )
-
-        axes.set_xlabel(xlabel='Pixel',
-                        color=self.M_BLUE,
-                        fontsize=12,
-                        fontweight='bold',
+        axe.tick_params(axis='x',
+                        which='major',
+                        colors=self.M_BLUE,
+                        labelsize=12,
                         )
-        axes.set_ylabel(ylabel='Pixel',
-                        color=self.M_BLUE,
-                        fontsize=12,
-                        fontweight='bold',
+        axe.tick_params(axis='y',
+                        which='major',
+                        colors=self.M_BLUE,
+                        labelsize=12,
                         )
-        return axes
 
-    def clearImage(self, hasDistortion=False, wcsObject=None, image=None):
+        axe.set_xlabel(xlabel='Pixel',
+                       color=self.M_BLUE,
+                       fontsize=12,
+                       fontweight='bold',
+                       )
+        axe.set_ylabel(ylabel='Pixel',
+                       color=self.M_BLUE,
+                       fontsize=12,
+                       fontweight='bold',
+                       )
+        return axe
+
+    def setupImage(self, figure=None, hasDistortion=False, wcsObject=None, image=None):
         """
-        clearImage clears the view port and setups all necessary topic to show the image.
+        setupImage clears the view port and setups all necessary topic to show the image.
         this includes the axis, label etc.
 
+        :param figure:
         :param hasDistortion:
         :param wcsObject:
         :param image:
@@ -513,9 +508,9 @@ class ImageWindow(widget.MWidget):
         """
 
         if hasDistortion and self.ui.checkUseWCS.isChecked():
-            axes = self.setupDistorted(wcsObject=wcsObject)
+            axes = self.setupDistorted(figure=figure, wcsObject=wcsObject)
         else:
-            axes = self.setupNormal(image=image)
+            axes = self.setupNormal(figure=figure, image=image)
         return axes
 
     def showFitsImage(self):
@@ -543,14 +538,15 @@ class ImageWindow(widget.MWidget):
         norm = self.stretchImage(image=image)
         colorMap = self.colorImage()
 
-        axes = self.clearImage(hasDistortion=hasDistortion,
-                               wcsObject=wcsObject,
-                               image=image)
-        axes.imshow(image,
-                    norm=norm,
-                    cmap=colorMap,
-                    origin='lower',
-                    )
+        axe = self.setupImage(figure=self.imageMat.figure,
+                              hasDistortion=hasDistortion,
+                              wcsObject=wcsObject,
+                              image=image)
+        axe.imshow(image,
+                   norm=norm,
+                   cmap=colorMap,
+                   origin='lower',
+                   )
 
-        axes.figure.canvas.draw()
+        axe.figure.canvas.draw()
         return True

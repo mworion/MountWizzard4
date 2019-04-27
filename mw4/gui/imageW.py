@@ -480,14 +480,14 @@ class ImageWindow(widget.MWidget):
         :param hasDistortion:
         :param wcsObject:
         :param image:
-        :return: axes object
+        :return: axe object
         """
 
         if hasDistortion and self.ui.checkUseWCS.isChecked():
-            axes = self.setupDistorted(figure=figure, wcsObject=wcsObject)
+            axe = self.setupDistorted(figure=figure, wcsObject=wcsObject)
         else:
-            axes = self.setupNormal(figure=figure, image=image)
-        return axes
+            axe = self.setupNormal(figure=figure, image=image)
+        return axe
 
     def showFitsImage(self):
         """

@@ -51,6 +51,11 @@ class MeasureWindow(widget.MWidget):
         self.initUI()
         self.refreshCounter = 1
 
+        self.mSetUI = [self.ui.measureSet1,
+                       self.ui.measureSet2,
+                       self.ui.measureSet3,
+                       ]
+
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.measureIndex = 0
         self.timeIndex = 0
@@ -124,9 +129,9 @@ class MeasureWindow(widget.MWidget):
         self.storeConfig()
         # signals for gui
         self.ui.timeSet.currentIndexChanged.disconnect(self.setCycleRefresh)
-        self.ui.measureSet1.currentIndexChanged.disconnect(self.drawMeasure)
-        self.ui.measureSet2.currentIndexChanged.disconnect(self.drawMeasure)
-        self.ui.measureSet3.currentIndexChanged.disconnect(self.drawMeasure)
+        self.ui.measureSet1.currentIndexChanged.disconnect(self.setCycleRefresh)
+        self.ui.measureSet2.currentIndexChanged.disconnect(self.setCycleRefresh)
+        self.ui.measureSet3.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.app.update1s.disconnect(self.setCycleRefresh)
 
         self.measureMat.figure = None
@@ -143,9 +148,9 @@ class MeasureWindow(widget.MWidget):
 
         # signals for gui
         self.ui.timeSet.currentIndexChanged.connect(self.setCycleRefresh)
-        self.ui.measureSet1.currentIndexChanged.connect(self.drawMeasure)
-        self.ui.measureSet2.currentIndexChanged.connect(self.drawMeasure)
-        self.ui.measureSet3.currentIndexChanged.connect(self.drawMeasure)
+        self.ui.measureSet1.currentIndexChanged.connect(self.setCycleRefresh)
+        self.ui.measureSet2.currentIndexChanged.connect(self.setCycleRefresh)
+        self.ui.measureSet3.currentIndexChanged.connect(self.setCycleRefresh)
         self.app.update1s.connect(self.setCycleRefresh)
         return True
 
@@ -157,15 +162,11 @@ class MeasureWindow(widget.MWidget):
         :return: success for test purpose
         """
 
-        mSetUI = [self.ui.measureSet1,
-                  self.ui.measureSet2,
-                  self.ui.measureSet3,
-                  ]
-
-        for mSet in mSetUI:
+        for i, mSet in enumerate(self.mSetUI):
             mSet.clear()
             mSet.setView(PyQt5.QtWidgets.QListView())
-            mSet.addItem('None')
+            if i:
+                mSet.addItem('None')
             mSet.addItem('RA Stability')
             mSet.addItem('DEC Stability')
             mSet.addItem('Temperature')
@@ -202,20 +203,20 @@ class MeasureWindow(widget.MWidget):
             self.drawMeasure(cycle)
         self.refreshCounter += 1
 
-    def setupAxes(self, figure=None):
+    def setupAxes(self, figure=None, numberPlots=3):
         """
         setupAxes cleans up the axes object in figure an setup a new plotting. it draws
         grid, ticks etc.
 
+        :param numberPlots:
         :param figure: axes object of figure
         :return:
         """
 
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)
-        self.measureMat.figure.add_subplot(3, 1, 1, facecolor=None)
-        self.measureMat.figure.add_subplot(3, 1, 2, facecolor=None)
-        self.measureMat.figure.add_subplot(3, 1, 3, facecolor=None)
+        for i in range(numberPlots):
+            self.measureMat.figure.add_subplot(numberPlots, 1, i + 1, facecolor=None)
 
         for axe in figure.axes:
             axe.set_facecolor((0, 0, 0, 0))
@@ -703,9 +704,8 @@ class MeasureWindow(widget.MWidget):
                   self.ui.measureSet3.currentText(),
                   ]
 
-        numberFigures = mTitle.count(not None)
-        print(numberFigures)
-        axes = self.setupAxes(figure=self.measureMat.figure)
+        numberPlots = 3 - mTitle.count('None')
+        axes = self.setupAxes(figure=self.measureMat.figure, numberPlots=numberPlots)
 
         grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
         ratio = cycle * grid
@@ -722,7 +722,7 @@ class MeasureWindow(widget.MWidget):
         for i, axe in enumerate(axes):
             axe.set_xticks(time_ticks)
             axe.set_xlim(time_ticks[0], time_ticks[-1])
-            if i == 2:
+            if i == len(axes) - 1:
                 axe.set_xticklabels(time_labels)
             else:
                 axe.set_xticklabels([])

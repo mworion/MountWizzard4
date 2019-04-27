@@ -134,8 +134,8 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUseWCS.clicked.disconnect(self.showFitsImage)
         self.ui.checkUsePixel.clicked.disconnect(self.showFitsImage)
         self.ui.solve.clicked.disconnect(self.solveImage)
-        self.signalShowImage.diconnect(self.showFitsImage)
-        self.signalSolveImage.diconnect(self.solveImage)
+        self.signalShowImage.disconnect(self.showFitsImage)
+        self.signalSolveImage.disconnect(self.solveImage)
         self.app.astrometry.signals.solveDone.disconnect(self.solveDone)
         self.app.astrometry.signals.solveResult.disconnect(self.solveResult)
 

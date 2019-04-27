@@ -694,6 +694,17 @@ class MeasureWindow(widget.MWidget):
         if len(data['time']) < 4:
             return False
 
+        mIndex = [self.ui.measureSet1.currentIndex(),
+                  self.ui.measureSet2.currentIndex(),
+                  self.ui.measureSet3.currentIndex(),
+                  ]
+        mTitle = [self.ui.measureSet1.currentText(),
+                  self.ui.measureSet2.currentText(),
+                  self.ui.measureSet3.currentText(),
+                  ]
+
+        numberFigures = mTitle.count(not None)
+        print(numberFigures)
         axes = self.setupAxes(figure=self.measureMat.figure)
 
         grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
@@ -704,15 +715,6 @@ class MeasureWindow(widget.MWidget):
         time_ticks = time_ticks * ratio * 1000000
         time_ticks = time_ticks + time_end
         time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
-
-        mIndex = [self.ui.measureSet1.currentIndex(),
-                  self.ui.measureSet2.currentIndex(),
-                  self.ui.measureSet3.currentIndex(),
-                  ]
-        mTitle = [self.ui.measureSet1.currentText(),
-                  self.ui.measureSet2.currentText(),
-                  self.ui.measureSet3.currentText(),
-                  ]
 
         for axe, index, title in zip(axes, mIndex, mTitle):
             self.drawPlots(axe=axe, index=index, title=title, data=data, cycle=cycle)

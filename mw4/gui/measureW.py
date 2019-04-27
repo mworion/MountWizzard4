@@ -37,7 +37,7 @@ class MeasureWindow(widget.MWidget):
 
     __all__ = ['MeasureWindow',
                ]
-    version = '0.3'
+    version = '0.5'
     logger = logging.getLogger(__name__)
 
     NUMBER_POINTS = 500
@@ -128,6 +128,8 @@ class MeasureWindow(widget.MWidget):
         self.ui.measureSet3.currentIndexChanged.disconnect(self.drawMeasure)
         self.app.update1s.disconnect(self.drawMeasure)
 
+        self.measureMat.figure = None
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -188,30 +190,22 @@ class MeasureWindow(widget.MWidget):
 
         return True
 
-    def clearPlot(self, numberPlots=None):
+    def setupAxes(self, figure=None):
         """
-        clearPlot deletes the content of the axes and renews the basic setting for grid,
-        color, spines etc.
+        setupAxes cleans up the axes object in figure an setup a new plotting. it draws
+        grid, ticks etc.
 
-        :param numberPlots: number of subplots to be defined and cleared. actual 1 to 3.
-        :return: success
+        :param figure: axes object of figure
+        :return:
         """
 
-        suc = self.clearRect(self.measureMat,
-                             numberPlots=numberPlots)
-        if not suc:
-            return False
+        figure.clf()
+        figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)
+        self.measureMat.figure.add_subplot(3, 1, 1, facecolor=None)
+        self.measureMat.figure.add_subplot(3, 1, 2, facecolor=None)
+        self.measureMat.figure.add_subplot(3, 1, 3, facecolor=None)
 
-        fig = self.measureMat.figure
-
-        fig.subplots_adjust(left=0.1,
-                            right=0.95,
-                            bottom=0.05,
-                            top=0.95,
-                            )
-
-        for i, axe in enumerate(fig.axes):
-            axe.cla()
+        for axe in figure.axes:
             axe.set_facecolor((0, 0, 0, 0))
             axe.tick_params(colors=self.M_BLUE,
                             labelsize=12)
@@ -220,7 +214,7 @@ class MeasureWindow(widget.MWidget):
             axe.spines['left'].set_color(self.M_BLUE)
             axe.spines['right'].set_color(self.M_BLUE)
 
-        return True
+        return figure.axes
 
     def plotRa(self, axe=None, title='', data=None, cycle=None):
         """
@@ -688,8 +682,7 @@ class MeasureWindow(widget.MWidget):
         if len(data['time']) < 4:
             return False
 
-        if not self.clearPlot(numberPlots=3):
-            return False
+        axes = self.setupAxes(figure=self.measureMat.figure)
 
         grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
         ratio = cycle * grid
@@ -709,10 +702,10 @@ class MeasureWindow(widget.MWidget):
                   self.ui.measureSet3.currentText(),
                   ]
 
-        for axe, index, title in zip(self.measureMat.figure.axes, mIndex, mTitle):
+        for axe, index, title in zip(axes, mIndex, mTitle):
             self.drawPlots(axe=axe, index=index, title=title, data=data, cycle=cycle)
 
-        for i, axe in enumerate(self.measureMat.figure.axes):
+        for i, axe in enumerate(axes):
             axe.set_xticks(time_ticks)
             axe.set_xlim(time_ticks[0], time_ticks[-1])
             if i == 2:

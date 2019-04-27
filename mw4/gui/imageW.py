@@ -411,7 +411,7 @@ class ImageWindow(widget.MWidget):
         """
 
         figure.clf()
-        figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
 
         axe = figure.add_subplot(1, 1, 1, projection=wcsObject, facecolor=None)
         axe.coords.frame.set_color(self.M_BLUE)
@@ -443,7 +443,7 @@ class ImageWindow(widget.MWidget):
         """
 
         figure.clf()
-        figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
 
         axe = figure.add_subplot(1, 1, 1, facecolor=None)
         axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)

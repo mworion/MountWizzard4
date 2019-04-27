@@ -135,7 +135,7 @@ class Dome(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
 
             if element != 'DOME_ABSOLUTE_POSITION':
                 continue

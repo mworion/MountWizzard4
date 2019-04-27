@@ -96,8 +96,6 @@ class ImageWindow(widget.MWidget):
 
         self.ui.checkUsePixel.setChecked(config.get('checkUsePixel', True))
         self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
-
-        self.showFitsImage()
         return True
 
     def storeConfig(self):
@@ -411,7 +409,7 @@ class ImageWindow(widget.MWidget):
         """
 
         figure.clf()
-        figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
+        figure.subplots_adjust(left=0.1, right=0.9, bottom=0.1, top=0.9)
 
         axe = figure.add_subplot(1, 1, 1, projection=wcsObject, facecolor=None)
         axe.coords.frame.set_color(self.M_BLUE)
@@ -422,10 +420,22 @@ class ImageWindow(widget.MWidget):
         axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
         axe0.tick_params(colors=self.M_BLUE, labelsize=12)
         axe1.tick_params(colors=self.M_BLUE, labelsize=12)
-        axe0.set_axislabel('Coordinates', color=self.M_BLUE, fontsize=12, fontweight='bold')
-        axe1.set_axislabel('Coordinates', color=self.M_BLUE, fontsize=12, fontweight='bold')
-        axe0.set_ticks(number=20)
-        axe1.set_ticks(number=20)
+        axe0.set_axislabel('Right Ascension',
+                           color=self.M_BLUE,
+                           fontsize=12,
+                           fontweight='bold')
+        axe1.set_axislabel('Declination',
+                           color=self.M_BLUE,
+                           fontsize=12,
+                           fontweight='bold')
+        axe0.set_ticks(number=10)
+        axe1.set_ticks(number=10)
+        axe0.set_ticks_position('lr')
+        axe0.set_ticklabel_position('lr')
+        axe0.set_axislabel_position('lr')
+        axe1.set_ticks_position('tb')
+        axe1.set_ticklabel_position('tb')
+        axe1.set_axislabel_position('tb')
         return axe
 
     def setupNormal(self, figure=None, image=None):

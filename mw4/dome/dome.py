@@ -40,7 +40,7 @@ class DomeSignals(PyQt5.QtCore.QObject):
     __all__ = ['DomeSignals']
     version = '0.1'
 
-    azimuth = PyQt5.QtCore.pyqtSignal()
+    azimuth = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
 
 
@@ -94,7 +94,6 @@ class Dome(indiClass.IndiClass):
             return False
 
         # setting polling updates in driver
-
         update = self.device.getNumber('POLLING_PERIOD')
 
         if 'PERIOD_MS' not in update:
@@ -136,7 +135,7 @@ class Dome(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
-            # print(propertyName, element, value)
+            print(propertyName, element, value)
 
             if element != 'DOME_ABSOLUTE_POSITION':
                 continue
@@ -147,7 +146,7 @@ class Dome(indiClass.IndiClass):
                 continue
 
             # send trigger for new data
-            self.signals.azimuth.emit()
+            self.signals.azimuth.emit(self.azimuth)
 
             # calculate the stop slewing condition
             isSlewing = (value != self.azimuth)

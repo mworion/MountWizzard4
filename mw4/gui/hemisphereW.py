@@ -369,23 +369,23 @@ class HemisphereWindow(widget.MWidget):
         self.pointerAltAz.set_visible(True)
         return True
 
-    def updateDome(self):
+    def updateDome(self, azimuth):
         """
         updateDome is called whenever an update of coordinates from dome are given.
         it takes the actual values and corrects the point in window if window is in
         show status.
         If the object is not created, the routing returns false.
 
+        :param azimuth:
         :return: success
         """
 
         if self.pointerDome is None:
             return False
 
-        az = self.app.dome.data.get('DOME_ABSOLUTE_POSITION', -1)
-        visible = (az != -1)
+        visible = (azimuth != -1)
 
-        self.pointerDome.set_xy((az - 15, 0))
+        self.pointerDome.set_xy((azimuth - 15, 0))
         self.pointerDome.set_visible(visible)
         return True
 

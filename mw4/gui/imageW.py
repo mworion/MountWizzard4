@@ -44,12 +44,13 @@ class ImageWindow(widget.MWidget):
                ]
     version = '0.5'
     logger = logging.getLogger(__name__)
+    signalShowImage = PyQt5.QtCore.pyqtSignal()
+    signalSolveImage = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self, app):
         super().__init__()
         self.app = app
         self.imageFileName = ''
-        self.image = None
 
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
@@ -133,6 +134,8 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUseWCS.clicked.disconnect(self.showFitsImage)
         self.ui.checkUsePixel.clicked.disconnect(self.showFitsImage)
         self.ui.solve.clicked.disconnect(self.solveImage)
+        self.signalShowImage.diconnect(self.showFitsImage)
+        self.signalSolveImage.diconnect(self.solveImage)
         self.app.astrometry.signals.solveDone.disconnect(self.solveDone)
         self.app.astrometry.signals.solveResult.disconnect(self.solveResult)
 
@@ -151,6 +154,8 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
         self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
+        self.signalShowImage.connect(self.showFitsImage)
+        self.signalSolveImage.connect(self.solveImage)
         self.app.astrometry.signals.solveDone.connect(self.solveDone)
         self.app.astrometry.signals.solveResult.connect(self.solveResult)
         return True
@@ -525,7 +530,7 @@ class ImageWindow(widget.MWidget):
             return False
 
         with fits.open(self.imageFileName, mode='update') as fitsHandle:
-            self.image = fitsHandle[0].data
+            image = fitsHandle[0].data
             header = fitsHandle[0].header
             # correct faulty headers
             if header.get('CTYPE1', '').endswith('DEF'):
@@ -534,7 +539,7 @@ class ImageWindow(widget.MWidget):
                 header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
 
         hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
-        image = self.zoomImage(image=self.image, wcsObject=wcsObject)
+        image = self.zoomImage(image=image, wcsObject=wcsObject)
         norm = self.stretchImage(image=image)
         colorMap = self.colorImage()
 

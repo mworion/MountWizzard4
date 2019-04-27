@@ -183,62 +183,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return fig, axes
 
     @staticmethod
-    def clearRect(widget, numberPlots=1):
-        """
-        clearRectVis clears and setups the canvas widget for drawing. it sets the labels,
-        ticks and some other ui styles.
-
-        :param      widget:    matplotlib canvas widget for drawing
-        :param      numberPlots:   number of plots in one chart
-        :return:    success
-        """
-
-        if numberPlots is None:
-            return False
-        if numberPlots < 1:
-            return False
-        if numberPlots > 3:
-            return False
-
-        fig = widget.figure
-        fig.clf()
-
-        if numberPlots == 1:
-            fig.add_subplot(1,
-                            1,
-                            1,
-                            facecolor='none')
-        elif numberPlots == 2:
-            fig.add_subplot(2,
-                            1,
-                            1,
-                            facecolor='none')
-            fig.add_subplot(2,
-                            1,
-                            2,
-                            facecolor='none')
-        elif numberPlots == 3:
-            fig.add_subplot(3,
-                            1,
-                            1,
-                            facecolor='none')
-            fig.add_subplot(3,
-                            1,
-                            2,
-                            facecolor='none')
-            fig.add_subplot(3,
-                            1,
-                            3,
-                            facecolor='none')
-
-        fig.subplots_adjust(left=0.075,
-                            right=0.95,
-                            bottom=0.1,
-                            top=0.975,
-                            )
-        return True
-
-    @staticmethod
     def embedMatplot(ui):
         """
         IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5

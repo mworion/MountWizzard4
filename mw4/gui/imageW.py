@@ -412,17 +412,16 @@ class ImageWindow(widget.MWidget):
 
         figure.clf()
         figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+
         axe = self.imageMat.figure.add_subplot(111, projection=wcsObject)
+        axe.coords.frame.set_color(self.M_BLUE)
+
         axe0 = axe.coords[0]
         axe1 = axe.coords[1]
-        axes.coords.frame.set_color(self.M_BLUE)
-
         axe0.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
         axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
-
         axe0.tick_params(colors=self.M_BLUE, labelsize=12)
         axe1.tick_params(colors=self.M_BLUE, labelsize=12)
-
         axe0.set_axislabel('Coordinates',
                            color=self.M_BLUE,
                            fontsize=12,

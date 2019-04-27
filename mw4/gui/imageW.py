@@ -51,6 +51,7 @@ class ImageWindow(widget.MWidget):
         super().__init__()
         self.app = app
         self.imageFileName = ''
+        self.folder = ''
 
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
@@ -93,6 +94,7 @@ class ImageWindow(widget.MWidget):
         self.imageFileName = config.get('imageFileName', '')
         full, short, ext = self.extractNames([self.imageFileName])
         self.ui.imageFileName.setText(short)
+        self.folder = self.app.mwGlob['imageDir']
 
         self.ui.checkUsePixel.setChecked(config.get('checkUsePixel', True))
         self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
@@ -197,10 +199,9 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        folder = self.app.mwGlob['imageDir']
         loadFilePath, name, ext = self.openFile(self,
                                                 'Select image file',
-                                                folder,
+                                                self.folder,
                                                 'FITS files (*.fit*)',
                                                 enableDir=True,
                                                 )
@@ -210,6 +211,7 @@ class ImageWindow(widget.MWidget):
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image [{name}] selected', 0)
         self.ui.checkUsePixel.setChecked(True)
+        self.folder = os.path.dirname(loadFilePath)
         self.signalShowImage.emit()
         return True
 

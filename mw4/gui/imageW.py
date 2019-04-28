@@ -51,17 +51,17 @@ class ImageWindow(widget.MWidget):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.imageFileName = ''
-        self.folder = ''
-
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.imageFileName = ''
+        self.folder = ''
+
+        self.colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
 
         self.imageMat = self.embedMatplot(self.ui.image)
         self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
 
-        self.setupDropDownGui()
         self.initConfig()
         self.showWindow()
 
@@ -93,9 +93,11 @@ class ImageWindow(widget.MWidget):
         width = config.get('width', 800)
         self.resize(width, height)
 
+        self.setupDropDownGui()
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.zoom.setCurrentIndex(config.get('zoom', 0))
         self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
+
         self.imageFileName = config.get('imageFileName', '')
         full, short, ext = self.extractNames([self.imageFileName])
         self.ui.imageFileName.setText(short)
@@ -432,10 +434,8 @@ class ImageWindow(widget.MWidget):
         :return: color map
         """
 
-        colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
         colorMapIndex = self.ui.color.currentIndex()
-
-        colorMap = colorMaps[colorMapIndex]
+        colorMap = self.colorMaps[colorMapIndex]
 
         return colorMap
 

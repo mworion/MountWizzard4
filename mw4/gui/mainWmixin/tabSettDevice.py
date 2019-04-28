@@ -135,7 +135,7 @@ class SettDevice(object):
         self.ui.skymeterDevice.addItem('INDI')
         self.ui.weatherDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
-        self.ui.astrometryDevice.addItem('Built-In')
+        self.ui.astrometryDevice.addItem('KStars-EKOS')
 
         return True
 
@@ -331,7 +331,7 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        if self.ui.astrometryDevice.currentText().startswith('Built-In'):
+        if self.ui.astrometryDevice.currentText().startswith('KStars-EKOS'):
             if not self.app.astrometry.available:
                 self.app.message.emit('Built in astrometry not available', 2)
                 self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')

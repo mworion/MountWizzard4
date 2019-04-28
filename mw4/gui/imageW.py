@@ -447,10 +447,6 @@ class ImageWindow(widget.MWidget):
         setupNormal build the image widget to show it with pixels as axes. the center of
         the image will have coordinates 0,0.
 
-        closing the image is done with close due to the article:
-        https://stackoverflow.com/questions/8213522
-        /when-to-use-cla-clf-or-close-for-clearing-a-plot-in-matplotlib
-
         :param figure:
         :param image:
         :return: axes object to plot onto
@@ -485,24 +481,6 @@ class ImageWindow(widget.MWidget):
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         return axe
 
-    def setupImage(self, figure=None, hasDistortion=False, wcsObject=None, image=None):
-        """
-        setupImage clears the view port and setups all necessary topic to show the image.
-        this includes the axis, label etc.
-
-        :param figure:
-        :param hasDistortion:
-        :param wcsObject:
-        :param image:
-        :return: axe object
-        """
-
-        if hasDistortion and self.ui.checkUseWCS.isChecked():
-            axe = self.setupDistorted(figure=figure, wcsObject=wcsObject)
-        else:
-            axe = self.setupNormal(figure=figure, image=image)
-        return axe
-
     def showFitsImage(self):
         """
         showFitsImage shows the fits image. therefore it calculates color map, stretch,
@@ -528,10 +506,11 @@ class ImageWindow(widget.MWidget):
         norm = self.stretchImage(image=image)
         colorMap = self.colorImage()
 
-        axe = self.setupImage(figure=self.imageMat.figure,
-                              hasDistortion=hasDistortion,
-                              wcsObject=wcsObject,
-                              image=image)
+        if hasDistortion and self.ui.checkUseWCS.isChecked():
+            axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
+        else:
+            axe = self.setupNormal(figure=self.imageMat.figure, image=image)
+
         axe.imshow(image,
                    norm=norm,
                    cmap=colorMap,

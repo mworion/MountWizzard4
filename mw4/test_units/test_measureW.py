@@ -21,6 +21,7 @@
 import unittest.mock as mock
 import pytest
 import datetime
+import time
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtTest
@@ -35,17 +36,13 @@ from mw4.test_units.test_setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
-    print('module setup')
+    app.config['showMeasureW'] = True
+    app.toggleMeasureWindow()
     yield
-    print('module teardown')
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function_setup_teardown():
-    print('function setup')
-    app.config['showMeasureW'] = True
-    app.toggleMeasureWindow()
-
     value = np.datetime64('2014-12-12 20:20:20')
     app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),
@@ -75,23 +72,20 @@ def function_setup_teardown():
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     yield
-    print('function teardown')
-    app.measureW = None
-    app.config['showMeasureW'] = False
 
 
 def test_initConfig_1():
     with mock.patch.object(app.measureW,
                            'setupButtons'):
         suc = app.measureW.initConfig()
-        assert not suc
+        assert suc
 
 
 def test_initConfig_1a():
     with mock.patch.object(app.measureW,
                            'setupButtons'):
         suc = app.measureW.initConfig()
-        assert not suc
+        assert suc
 
 
 def test_initConfig_2():
@@ -101,7 +95,6 @@ def test_initConfig_2():
         assert suc
 
 
-"""
 def test_initConfig_3():
     app.config['measureW']['winPosX'] = 10000
     app.config['measureW']['winPosY'] = 10000
@@ -144,9 +137,12 @@ def test_setupAxes_4():
 
 def test_setupAxes_5():
     fig = app.measureW.measureMat.figure
+    #print('start')
     suc = app.measureW.setupAxes(figure=fig, numberPlots=2)
+    #print('func')
     assert suc
     assert len(app.measureW.measureMat.figure.axes) == 2
+    #print('ready')
 
 
 def test_setupAxes_6():
@@ -236,13 +232,11 @@ def test_plotCurrent_1():
 
 
 def test_drawMeasure_1():
-    app.measureW.showStatus = False
     suc = app.measureW.drawMeasure()
     assert not suc
 
 
 def test_drawMeasure_2():
-    app.measureW.showStatus = True
+    app.measureW.ui.measureSet1.setCurrentIndex(1)
     suc = app.measureW.drawMeasure()
     assert suc
-"""

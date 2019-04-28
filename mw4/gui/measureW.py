@@ -677,16 +677,12 @@ class MeasureWindow(widget.MWidget):
         if len(data['time']) < 4:
             return False
 
-        mIndex = [self.ui.measureSet1.currentIndex(),
-                  self.ui.measureSet2.currentIndex(),
-                  self.ui.measureSet3.currentIndex(),
-                  ]
-        mTitle = [self.ui.measureSet1.currentText(),
-                  self.ui.measureSet2.currentText(),
-                  self.ui.measureSet3.currentText(),
-                  ]
+        numberPlots = 0
+        for mSet in self.mSetUI:
+            if mSet.currentText() == 'None':
+                continue
+            numberPlots += 1
 
-        numberPlots = 3 - mTitle.count('None')
         axes = self.setupAxes(figure=self.measureMat.figure, numberPlots=numberPlots)
         if not numberPlots:
             self.measureMat.figure.canvas.draw()
@@ -701,10 +697,14 @@ class MeasureWindow(widget.MWidget):
         time_ticks = time_ticks + time_end
         time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
 
-        for axe, index, title in zip(axes, mIndex, mTitle):
+        for axe, mSet in zip(axes, self.mSetUI):
+            index = mSet.currentIndex()
             if self.plotFunc[index] is None:
                 continue
-            self.plotFunc[index](axe=axe, title=title, data=data, cycle=cycle)
+            self.plotFunc[index](axe=axe,
+                                 title=mSet.currentText(),
+                                 data=data,
+                                 cycle=cycle)
 
         for i, axe in enumerate(axes):
             axe.set_xticks(time_ticks)

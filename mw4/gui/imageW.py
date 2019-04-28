@@ -36,13 +36,14 @@ from mw4.gui.widgets import image_ui
 
 class ImageWindow(widget.MWidget):
     """
-    the image window class handles
+    the image window class handles fits image loading, stretching, zooming and handles
+    the gui interface for display. both wcs and pixel coordinates will be used.
 
     """
 
     __all__ = ['ImageWindow',
                ]
-    version = '0.5'
+    version = '0.9'
     logger = logging.getLogger(__name__)
     signalShowImage = PyQt5.QtCore.pyqtSignal()
     signalSolveImage = PyQt5.QtCore.pyqtSignal()
@@ -57,11 +58,10 @@ class ImageWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
 
-        self.setupDropDownGui()
-
         self.imageMat = self.embedMatplot(self.ui.image)
         self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
 
+        self.setupDropDownGui()
         self.initConfig()
         self.showWindow()
 
@@ -69,7 +69,12 @@ class ImageWindow(widget.MWidget):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
         elements. if some initialisations have to be proceeded with the loaded persistent
-        data, they will be launched as well in this method.
+        data, they will be launched as well in this method. if not entry is already in the
+        config dict, it will be created first.
+        default values will be set in case of missing parameters.
+        screen size will be set as well as the window position. if the window position is
+        out of the current screen size (because of copy configs or just because the screen
+        resolution was changed) the window will be repositioned so that it will be visible.
 
         :return: True for test purpose
         """
@@ -125,6 +130,10 @@ class ImageWindow(widget.MWidget):
 
     def closeEvent(self, closeEvent):
         """
+        closeEvent overlays the window close event of qt. first it stores all persistent
+        data for the windows and its functions, than removes al signal / slot connections
+        removes the matplotlib embedding and finally calls the parent calls for handling
+        the framework close event.
 
         :param closeEvent:
         :return:
@@ -150,12 +159,15 @@ class ImageWindow(widget.MWidget):
 
     def showWindow(self):
         """
+        showWindow prepares all data for showing the window, plots the image and show it.
+        afterwards all necessary signal / slot connections will be established.
 
         :return: true for test purpose
         """
 
         self.showFitsImage()
         self.show()
+
         # gui signals
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.color.currentIndexChanged.connect(self.showFitsImage)
@@ -223,7 +235,7 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit(f'Image [{name}] selected', 0)
         self.ui.checkUsePixel.setChecked(True)
         self.folder = os.path.dirname(loadFilePath)
-        self.signalShowImage.emit()
+        self.signalShowImage.emit(loadFilePath)
         return True
 
     def solveImage(self):
@@ -500,33 +512,40 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        if not os.path.isfile(self.imageFileName):
+        imagePath = self.imageFileName
+        if not imagePath:
+            return False
+        if not os.path.isfile(imagePath):
             return False
 
-        with fits.open(self.imageFileName, mode='update') as fitsHandle:
+        with fits.open(imagePath, mode='update') as fitsHandle:
             image = fitsHandle[0].data
             header = fitsHandle[0].header
-            # correct faulty headers
+
+            # correct faulty headers, because some imaging programs did not
+            # interpret the Keywords in the right manner (SGPro)
+
             if header.get('CTYPE1', '').endswith('DEF'):
                 header['CTYPE1'] = header['CTYPE1'].replace('DEF', 'TAN')
             if header.get('CTYPE2', '').endswith('DEF'):
                 header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
 
+        # check the data content and capabilities
         hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
+
+        # process the image for viewing
         image = self.zoomImage(image=image, wcsObject=wcsObject)
         norm = self.stretchImage(image=image)
         colorMap = self.colorImage()
 
+        # check which type of presentation we would like to have
         if hasDistortion and self.ui.checkUseWCS.isChecked():
             axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
         else:
             axe = self.setupNormal(figure=self.imageMat.figure, image=image)
 
-        axe.imshow(image,
-                   norm=norm,
-                   cmap=colorMap,
-                   origin='lower',
-                   )
-
+        # finally show it
+        axe.imshow(image, norm=norm, cmap=colorMap, origin='lower')
         axe.figure.canvas.draw()
+
         return True

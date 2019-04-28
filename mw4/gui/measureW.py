@@ -67,14 +67,14 @@ class MeasureWindow(widget.MWidget):
                          'Current': self.plotCurrent,
                          }
 
-        self.timeFunc = {'  8 min': 1,
-                         ' 16 min': 2,
-                         ' 32 min': 4,
-                         '  1 hour': 8,
-                         '  2 hours': 16,
-                         '  4 hours': 32,
-                         '  8 hours': 64,
-                         }
+        self.timeScale = {'  8 min': 1,
+                          ' 16 min': 2,
+                          ' 32 min': 4,
+                          '  1 hour': 8,
+                          '  2 hours': 16,
+                          '  4 hours': 32,
+                          '  8 hours': 64,
+                          }
 
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.measureIndex = 0
@@ -191,7 +191,7 @@ class MeasureWindow(widget.MWidget):
         tSet = self.ui.timeSet
         tSet.clear()
         tSet.setView(PyQt5.QtWidgets.QListView())
-        for text in self.timeFunc.keys():
+        for text in self.timeScale.keys():
             tSet.addItem(text)
 
         return True
@@ -202,7 +202,7 @@ class MeasureWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        cycle = self.timeFunc[self.ui.timeSet.currentText()]
+        cycle = self.timeScale[self.ui.timeSet.currentText()]
         if not self.refreshCounter % cycle:
             self.drawMeasure(cycle)
         self.refreshCounter += 1

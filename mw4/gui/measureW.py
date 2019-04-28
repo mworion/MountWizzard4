@@ -49,7 +49,10 @@ class MeasureWindow(widget.MWidget):
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.mutexDraw = PyQt5.QtCore.QMutex()
         self.refreshCounter = 1
+        self.measureIndex = 0
+        self.timeIndex = 0
 
         self.mSetUI = [self.ui.measureSet1,
                        self.ui.measureSet2,
@@ -75,10 +78,6 @@ class MeasureWindow(widget.MWidget):
                           '  4 hours': 32,
                           '  8 hours': 64,
                           }
-
-        self.mutexDraw = PyQt5.QtCore.QMutex()
-        self.measureIndex = 0
-        self.timeIndex = 0
 
         # doing the matplotlib embedding
         self.measureMat = self.embedMatplot(self.ui.measure)

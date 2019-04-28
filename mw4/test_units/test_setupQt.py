@@ -26,7 +26,6 @@ from mw4 import mainApp
 
 
 def setupQt():
-    # global app, spy, mwGlob, test
     mwGlob = {'workDir': '.',
               'configDir': './mw4/test_units/config',
               'dataDir': './mw4/test_units/config',

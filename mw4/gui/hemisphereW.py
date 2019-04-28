@@ -191,6 +191,8 @@ class HemisphereWindow(widget.MWidget):
 
         :return:
         """
+        self.drawHemisphere()
+        self.show()
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.connect(self.drawHemisphere)
@@ -217,10 +219,6 @@ class HemisphereWindow(widget.MWidget):
         # finally setting the mouse handler
         self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
                                                      self.onMouseDispatcher)
-        # draw all things
-        self.drawHemisphere()
-        # finally show window
-        self.show()
 
         return True
 

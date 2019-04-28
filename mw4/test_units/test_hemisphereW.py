@@ -45,6 +45,7 @@ def function():
     app.config['showHemisphereW'] = True
     app.toggleHemisphereWindow()
     yield
+    app.hemisphereW.close()
     app.hemisphereW = None
     app.config['showHemisphereW'] = False
 

@@ -35,12 +35,12 @@ from mw4.test_units.test_setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
+    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
 def function_setup_teardown():
     app.config['showMeasureW'] = True
-    app.config['measureW'] = {}
     app.toggleMeasureWindow()
 
     value = np.datetime64('2014-12-12 20:20:20')
@@ -72,12 +72,9 @@ def function_setup_teardown():
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     yield
+    app.measureW.close()
     app.measureW = None
     app.config['showMeasureW'] = False
-
-
-def test_storeConfig_1():
-    app.measureW.storeConfig()
 
 
 def test_initConfig_1():
@@ -97,6 +94,10 @@ def test_initConfig_3():
     app.config['measureW']['winPosY'] = 10000
     suc = app.measureW.initConfig()
     assert suc
+
+
+def test_storeConfig_1():
+    app.measureW.storeConfig()
 
 
 def test_setupButtons_1():

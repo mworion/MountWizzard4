@@ -96,7 +96,7 @@ class MeasureWindow(widget.MWidget):
         """
 
         if 'measureW' not in self.app.config:
-            return False
+            self.app.config['measureW'] = {}
         config = self.app.config['measureW']
         x = config.get('winPosX', 100)
         y = config.get('winPosY', 100)
@@ -124,8 +124,6 @@ class MeasureWindow(widget.MWidget):
 
         :return: True for test purpose
         """
-        if 'measureW' not in self.app.config:
-            self.app.config['measureW'] = {}
         config = self.app.config['measureW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
@@ -217,11 +215,11 @@ class MeasureWindow(widget.MWidget):
         """
 
         if figure is None:
-            return False
+            return None
         if numberPlots > 3:
-            return False
+            return None
         if numberPlots < 0:
-            return False
+            return None
 
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)
@@ -684,6 +682,9 @@ class MeasureWindow(widget.MWidget):
             numberPlots += 1
 
         axes = self.setupAxes(figure=self.measureMat.figure, numberPlots=numberPlots)
+
+        if axes is None:
+            return False
         if not numberPlots:
             self.measureMat.figure.canvas.draw()
             return False

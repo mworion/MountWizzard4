@@ -239,7 +239,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         :return:
         """
-
         self.measureW = None
         gc.collect()
 

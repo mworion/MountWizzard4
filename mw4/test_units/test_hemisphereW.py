@@ -45,7 +45,6 @@ def function():
     app.config['showHemisphereW'] = True
     app.toggleHemisphereWindow()
     yield
-    app.hemisphereW.close()
     app.hemisphereW = None
     app.config['showHemisphereW'] = False
 
@@ -55,19 +54,11 @@ def test_storeConfig_1():
 
 
 def test_initConfig_1():
-    app.config['hemisphereW'] = {}
     suc = app.hemisphereW.initConfig()
     assert suc
 
 
-def test_initConfig_2():
-    del app.config['hemisphereW']
-    suc = app.hemisphereW.initConfig()
-    assert not suc
-
-
 def test_initConfig_3():
-    app.config['hemisphereW'] = {}
     app.config['hemisphereW']['winPosX'] = 10000
     app.config['hemisphereW']['winPosY'] = 10000
     suc = app.hemisphereW.initConfig()

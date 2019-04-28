@@ -75,7 +75,7 @@ class ImageWindow(widget.MWidget):
         """
 
         if 'imageW' not in self.app.config:
-            return False
+            self.app.config['imageW'] = {}
         config = self.app.config['imageW']
         x = config.get('winPosX', 100)
         y = config.get('winPosY', 100)
@@ -95,9 +95,9 @@ class ImageWindow(widget.MWidget):
         full, short, ext = self.extractNames([self.imageFileName])
         self.ui.imageFileName.setText(short)
         self.folder = self.app.mwGlob.get('imageDir', '')
-
         self.ui.checkUsePixel.setChecked(config.get('checkUsePixel', True))
         self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
+
         return True
 
     def storeConfig(self):
@@ -108,8 +108,7 @@ class ImageWindow(widget.MWidget):
 
         :return: True for test purpose
         """
-        if 'imageW' not in self.app.config:
-            self.app.config['imageW'] = {}
+
         config = self.app.config['imageW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
@@ -125,6 +124,12 @@ class ImageWindow(widget.MWidget):
         return True
 
     def closeEvent(self, closeEvent):
+        """
+
+        :param closeEvent:
+        :return:
+        """
+
         self.storeConfig()
         # gui signals
         self.ui.load.clicked.disconnect(self.selectImage)
@@ -144,6 +149,11 @@ class ImageWindow(widget.MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self):
+        """
+
+        :return: true for test purpose
+        """
+
         self.showFitsImage()
         self.show()
         # gui signals
@@ -158,6 +168,7 @@ class ImageWindow(widget.MWidget):
         self.signalSolveImage.connect(self.solveImage)
         self.app.astrometry.signals.solveDone.connect(self.solveDone)
         self.app.astrometry.signals.solveResult.connect(self.solveResult)
+
         return True
 
     def setupDropDownGui(self):

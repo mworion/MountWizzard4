@@ -47,7 +47,7 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
     __all__ = ['AstrometrySignals']
     version = '0.1'
 
-    solveDone = PyQt5.QtCore.pyqtSignal()
+    solveDone = PyQt5.QtCore.pyqtSignal(object)
     solveResult = PyQt5.QtCore.pyqtSignal(object)
 
 
@@ -79,6 +79,7 @@ class Astrometry(object):
         self.mutexSolve = PyQt5.QtCore.QMutex()
         self.signals = AstrometrySignals()
         self.available = False
+        self.result = (False, [])
 
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME')
@@ -528,27 +529,8 @@ class Astrometry(object):
 
         result = self.getSolutionFromWCS(wcsHeader=wcsHeader)
 
+        self.result = (True, result)
         return True, result
-
-    def solveDone(self):
-        """
-        as i am using a standard worker configuration i link the signals in chain to the
-        detailed world of solving. so namespace for signals change. i don't know if that
-        could be done better, but right now so it is.
-
-        :return:
-        """
-        self.signals.solveDone.emit()
-
-    def solveResult(self, obj):
-        """
-        as i am using a standard worker configuration i link the signals in chain to the
-        detailed world of solving. so namespace for signals change. i don't know if that
-        could be done better, but right now so it is.
-
-        :return:
-        """
-        self.signals.solveResult.emit(obj)
 
     def solveClear(self):
         """
@@ -560,7 +542,7 @@ class Astrometry(object):
         """
 
         self.mutexSolve.unlock()
-        self.signals.solveDone.emit()
+        self.signals.solveDone.emit(self.result)
 
     def solveThreading(self, fitsPath='', timeout=10, updateFits=False):
         """
@@ -576,15 +558,15 @@ class Astrometry(object):
         """
 
         if not os.path.isfile(fitsPath):
-            self.signals.solveDone.emit()
+            self.signals.solveDone.emit(self.result)
             return False
         if not self.checkAvailability():
-            self.signals.solveDone.emit()
+            self.signals.solveDone.emit(self.result)
             return False
 
         if not self.mutexSolve.tryLock():
             self.logger.info('overrun in solve threading')
-            self.signals.solveDone.emit()
+            self.signals.solveDone.emit(self.result)
             return False
 
         worker = tpool.Worker(self.solve,
@@ -592,7 +574,6 @@ class Astrometry(object):
                               timeout=timeout,
                               updateFits=updateFits,
                               )
-        worker.signals.result.connect(self.solveResult)
         worker.signals.finished.connect(self.solveClear)
         self.threadPool.start(worker)
         return True

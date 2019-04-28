@@ -150,8 +150,6 @@ class ImageWindow(widget.MWidget):
         self.ui.solve.clicked.disconnect(self.solveImage)
         self.signalShowImage.disconnect(self.showFitsImage)
         self.signalSolveImage.disconnect(self.solveImage)
-        self.app.astrometry.signals.solveDone.disconnect(self.solveDone)
-        self.app.astrometry.signals.solveResult.disconnect(self.solveResult)
 
         self.imageMat.figure = None
 
@@ -178,8 +176,6 @@ class ImageWindow(widget.MWidget):
         self.ui.solve.clicked.connect(self.solveImage)
         self.signalShowImage.connect(self.showFitsImage)
         self.signalSolveImage.connect(self.solveImage)
-        self.app.astrometry.signals.solveDone.connect(self.solveDone)
-        self.app.astrometry.signals.solveResult.connect(self.solveResult)
 
         return True
 
@@ -217,7 +213,8 @@ class ImageWindow(widget.MWidget):
     def selectImage(self):
         """
         selectImage does a dialog to choose a FITS file for viewing. The file will not
-        be loaded, just the full filepath will be stored.
+        be loaded, just the full filepath will be stored. if succeeding, the signal for
+        displaying the image will be emitted.
 
         :return: success
         """
@@ -230,16 +227,27 @@ class ImageWindow(widget.MWidget):
                                                 )
         if not name:
             return False
+
         self.ui.imageFileName.setText(name)
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image [{name}] selected', 0)
         self.ui.checkUsePixel.setChecked(True)
         self.folder = os.path.dirname(loadFilePath)
         self.signalShowImage.emit()
+
         return True
 
     def solveImage(self):
         """
+        solveImage calls astrometry for solving th actual image in a threading manner.
+        as result the gui will be active while the solving process takes part a
+        background task. if the check update fits is selected the solution will be
+        stored in the image header as well.
+        solveImage will disable gui elements which might interfere when doing solve
+        in background and sets the signal / slot connection for receiving the signal
+        for finishing. this is linked to a second method solveDone, which is basically
+        the partner method for handling this async behaviour of the gui.
+        finally it emit a message about the start of solving
 
         :return:
         """
@@ -254,12 +262,22 @@ class ImageWindow(widget.MWidget):
         self.ui.exposeN.setEnabled(False)
         self.ui.stop.setEnabled(False)
         self.ui.load.setEnabled(False)
+
+        self.app.astrometry.signals.solveDone.connect(self.solveDone)
+
         self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
 
-    def solveDone(self):
-        """
+        return True
 
-        :return:
+    def solveDone(self, result):
+        """
+        solveDone is the partner method for solveImage. it enables the gui elements back
+        removes the signal / slot connection for receiving solving results, checks the
+        solving result itself and emits messages about the result. if solving succeeded,
+        solveDone will redraw the image in the image window.
+
+        :param result: result (named tuple)
+        :return: success
         """
 
         self.changeStyleDynamic(self.ui.solve, 'running', 'false')
@@ -267,21 +285,18 @@ class ImageWindow(widget.MWidget):
         self.ui.exposeN.setEnabled(True)
         self.ui.stop.setEnabled(True)
         self.ui.load.setEnabled(True)
-        self.signalShowImage.emit()
 
-    def solveResult(self, result):
-        """
-
-        :param result: result (named tuple)
-        :return: success
-        """
+        self.app.astrometry.signals.solveDone.disconnect(self.solveDone)
 
         if not result[0]:
             self.app.message.emit('Solving error', 2)
             return False
+
         r = result[1]
         text = f'Ra: {r.ra} Dec: {r.dec} Angle: {r.angle} Scale: {r.scale}'
         self.app.message.emit('Solved: ' + text, 0)
+        self.signalShowImage.emit()
+
         return True
 
     def writeHeaderToGui(self, header=None):

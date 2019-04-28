@@ -42,18 +42,6 @@ def test_resizeEvent(qtbot):
     app.messageW.resizeEvent(None)
 
 
-def test_closeEvent(qtbot):
-    app.messageW.closeEvent(None)
-
-
-def test_toggleWindow1(qtbot):
-    with mock.patch.object(app.messageW,
-                           'close',
-                           return_value=None):
-        app.messageW.toggleWindow()
-        assert not app.messageW.showStatus
-
-
 def test_writeMessage1(qtbot):
     app.messageW.ui.message.setText('')
     suc = app.messageW.writeMessage('test', 0)

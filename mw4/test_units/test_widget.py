@@ -80,30 +80,6 @@ def test_clearPolar_1():
     assert axes
 
 
-def test_clearRect_1():
-    ui = app.mainW.ui.modelPolar
-    widget = app.mainW.embedMatplot(ui)
-
-    suc = app.mainW.clearRect(widget, 1)
-    assert suc
-
-
-def test_clearRect_2():
-    ui = app.mainW.ui.modelPolar
-    widget = app.mainW.embedMatplot(ui)
-
-    suc = app.mainW.clearRect(widget, 0)
-    assert not suc
-
-
-def test_clearRect_3():
-    ui = app.mainW.ui.modelPolar
-    widget = app.mainW.embedMatplot(ui)
-
-    suc = app.mainW.clearRect(widget, 4)
-    assert not suc
-
-
 def test_embedMatplot():
     ui = app.mainW.ui.modelPolar
     ret = app.mainW.embedMatplot(ui)

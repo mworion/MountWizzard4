@@ -243,7 +243,7 @@ class Astrometry(object):
         self.available = suc
         return suc
 
-    def readFitsData(self, fitsHDU='', searchRatio=1.2):
+    def readFitsData(self, fitsHDU='', searchRatio=1.1):
         """
         readFitsData reads the fits file with the image and tries to get some key
         fields out of the header for preparing the solver. necessary data are

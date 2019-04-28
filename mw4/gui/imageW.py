@@ -307,6 +307,7 @@ class ImageWindow(widget.MWidget):
 
         sqm = max(header.get('SQM', 0),
                   header.get('SKY-QLTY', 0),
+                  header.get('MPSAS', 0),
                   )
         self.ui.sqm.setText(f'{sqm:5.2f}')
 

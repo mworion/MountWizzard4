@@ -217,6 +217,13 @@ class MeasureWindow(widget.MWidget):
         :return:
         """
 
+        if figure is None:
+            return False
+        if numberPlots > 3:
+            return False
+        if numberPlots < 0:
+            return False
+
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)
         for i in range(numberPlots):

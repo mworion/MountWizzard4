@@ -35,11 +35,14 @@ from mw4.test_units.test_setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
-    yield
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown_data():
+def function_setup_teardown():
+    app.config['showMeasureW'] = True
+    app.config['measureW'] = {}
+    app.toggleMeasureWindow()
+
     value = np.datetime64('2014-12-12 20:20:20')
     app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),
@@ -68,6 +71,9 @@ def module_setup_teardown_data():
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
+    yield
+    app.measureW = None
+    app.config['showMeasureW'] = False
 
 
 def test_storeConfig_1():
@@ -75,7 +81,6 @@ def test_storeConfig_1():
 
 
 def test_initConfig_1():
-    app.config['measureW'] = {}
     suc = app.measureW.initConfig()
     assert suc
 
@@ -94,33 +99,6 @@ def test_initConfig_3():
     assert suc
 
 
-def test_closeEvent(qtbot):
-    app.measureW.showWindow()
-    app.measureW.closeEvent(None)
-
-
-def test_showWindow_1(qtbot):
-    app.measureW.showStatus = False
-    app.mainW.ui.measureDevice.setCurrentIndex(1)
-    with mock.patch.object(app.measureW,
-                           'show',
-                           return_value=None):
-        suc = app.measureW.showWindow()
-        assert suc
-        assert app.measureW.showStatus
-
-
-def test_showWindow_2(qtbot):
-    app.measureW.showStatus = False
-    app.mainW.ui.measureDevice.setCurrentIndex(0)
-    with mock.patch.object(app.measureW,
-                           'show',
-                           return_value=None):
-        suc = app.measureW.showWindow()
-        assert suc
-        assert app.measureW.showStatus
-
-
 def test_setupButtons_1():
     suc = app.measureW.setupButtons()
     assert suc
@@ -130,35 +108,41 @@ def test_setupButtons_1():
     assert app.measureW.ui.timeSet.count() == 7
 
 
-def test_clearPlot_1():
-    suc = app.measureW.clearPlot(numberPlots=0)
+def test_setupAxes_1():
+    fig = app.measureW.measureMat.figure
+    suc = app.measureW.setupAxes(figure=fig, numberPlots=0)
     assert not suc
 
 
-def test_clearPlot_2():
-    suc = app.measureW.clearPlot(numberPlots=4)
+def test_setupAxes_2():
+    fig = app.measureW.measureMat.figure
+    suc = app.measureW.setupAxes(figure=fig, numberPlots=4)
     assert not suc
 
 
-def test_clearPlot_3():
-    suc = app.measureW.clearPlot()
+def test_setupAxes_3():
+    fig = app.measureW.measureMat.figure
+    suc = app.measureW.setupAxes()
     assert not suc
 
 
-def test_clearPlot_4():
-    suc = app.measureW.clearPlot(numberPlots=1)
+def test_setupAxes_4():
+    fig = app.measureW.measureMat.figure
+    suc = app.measureW.setupAxes(figure=fig, numberPlots=1)
     assert suc
     assert len(app.measureW.measureMat.figure.axes) == 1
 
 
-def test_clearPlot_5():
-    suc = app.measureW.clearPlot(numberPlots=2)
+def test_setupAxes_5():
+    fig = app.measureW.measureMat.figure
+    suc = app.measureW.setupAxes(figure=fig, numberPlots=2)
     assert suc
     assert len(app.measureW.measureMat.figure.axes) == 2
 
 
-def test_clearPlot_6():
-    suc = app.measureW.clearPlot(numberPlots=4)
+def test_setupAxes_6():
+    fig = app.measureW.measureMat.figure
+    suc = app.measureW.setupAxes(figure=fig, numberPlots=4)
     assert not suc
 
 

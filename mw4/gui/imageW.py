@@ -235,7 +235,7 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit(f'Image [{name}] selected', 0)
         self.ui.checkUsePixel.setChecked(True)
         self.folder = os.path.dirname(loadFilePath)
-        self.signalShowImage.emit(loadFilePath)
+        self.signalShowImage.emit()
         return True
 
     def solveImage(self):

@@ -56,6 +56,17 @@ class MeasureWindow(widget.MWidget):
                        self.ui.measureSet3,
                        ]
 
+        self.plotFunc = [None,
+                         self.plotRa,
+                         self.plotDec,
+                         self.plotTemperature,
+                         self.plotPressure,
+                         self.plotHumidity,
+                         self.plotSQR,
+                         self.plotVoltage,
+                         self.plotCurrent,
+                         ]
+
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.measureIndex = 0
         self.timeIndex = 0
@@ -651,34 +662,6 @@ class MeasureWindow(widget.MWidget):
                                                                       ))
         return True
 
-    def drawPlots(self, axe=None, index=0, title='', data=None, cycle=0):
-        """
-
-        :param axe:
-        :param index:
-        :param title:
-        :param data:
-        :param cycle:
-        :return: success
-        """
-        plotFunc = [None,
-                    self.plotRa,
-                    self.plotDec,
-                    self.plotTemperature,
-                    self.plotPressure,
-                    self.plotHumidity,
-                    self.plotSQR,
-                    self.plotVoltage,
-                    self.plotCurrent,
-                    ]
-
-        if plotFunc[index] is None:
-            return False
-
-        plotFunc[index](axe=axe, title=title, data=data, cycle=cycle)
-
-        return True
-
     def drawMeasure(self, cycle=1):
         """
         drawMeasure does the basic preparation for making the plot. it checks for borders
@@ -704,10 +687,10 @@ class MeasureWindow(widget.MWidget):
                   ]
 
         numberPlots = 3 - mTitle.count('None')
-        if not numberPlots:
-            return False
-
         axes = self.setupAxes(figure=self.measureMat.figure, numberPlots=numberPlots)
+        if not numberPlots:
+            self.measureMat.figure.canvas.draw()
+            return False
 
         grid = int(self.NUMBER_POINTS / self.NUMBER_XTICKS)
         ratio = cycle * grid
@@ -719,7 +702,9 @@ class MeasureWindow(widget.MWidget):
         time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
 
         for axe, index, title in zip(axes, mIndex, mTitle):
-            self.drawPlots(axe=axe, index=index, title=title, data=data, cycle=cycle)
+            if self.plotFunc[index] is None:
+                continue
+            self.plotFunc[index](axe=axe, title=title, data=data, cycle=cycle)
 
         for i, axe in enumerate(axes):
             axe.set_xticks(time_ticks)

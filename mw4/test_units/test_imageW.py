@@ -36,6 +36,15 @@ def module_setup_teardown():
     yield
 
 
+@pytest.fixture(autouse=True, scope='function')
+def function():
+    app.config['showImageWindow'] = True
+    app.toggleImageWindow()
+    yield
+    app.imageW = None
+    app.config['showImageWindow'] = False
+
+
 def test_storeConfig_1():
     app.imageW.storeConfig()
 
@@ -60,35 +69,12 @@ def test_initConfig_3():
     assert suc
 
 
-def test_closeEvent(qtbot):
-    app.imageW.closeEvent(None)
-
-
-def test_toggleWindow1(qtbot):
-    app.imageW.showStatus = True
-    with mock.patch.object(app.imageW,
-                           'close',
-                           return_value=None):
-        app.imageW.toggleWindow()
-        assert not app.imageW.showStatus
-
-
-def test_toggleWindow2(qtbot):
-    app.imageW.showStatus = False
-    with mock.patch.object(app.imageW,
-                           'showWindow',
-                           return_value=None):
-        app.imageW.toggleWindow()
-        assert app.imageW.showStatus
-
-
 def test_showWindow_1(qtbot):
     with mock.patch.object(app.imageW,
                            'show',
                            return_value=None):
         suc = app.imageW.showWindow()
         assert suc
-        assert app.imageW.showStatus
 
 
 def test_setupDropDownGui():

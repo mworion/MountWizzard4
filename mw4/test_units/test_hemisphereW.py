@@ -791,6 +791,7 @@ def test_editBuildPoints_2():
     assert suc
 """
 
+
 def test_editBuildPoints_3():
     app.data.buildP = [(0, 0), (10, 10), (0, 360)]
     axes = app.hemisphereW.hemisphereMat.figure.axes[0]

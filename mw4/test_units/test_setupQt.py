@@ -31,6 +31,7 @@ def setupQt():
               'configDir': './mw4/test_units/config',
               'dataDir': './mw4/test_units/config',
               'tempDir': './mw4/test_units/temp',
+              'imageDir': './mw4/test_units/image',
               'modeldata': 'test',
               }
 

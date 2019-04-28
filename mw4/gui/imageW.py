@@ -94,7 +94,7 @@ class ImageWindow(widget.MWidget):
         self.imageFileName = config.get('imageFileName', '')
         full, short, ext = self.extractNames([self.imageFileName])
         self.ui.imageFileName.setText(short)
-        self.folder = self.app.mwGlob['imageDir']
+        self.folder = self.app.mwGlob.get('imageDir', '')
 
         self.ui.checkUsePixel.setChecked(config.get('checkUsePixel', True))
         self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))

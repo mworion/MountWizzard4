@@ -56,16 +56,25 @@ class MeasureWindow(widget.MWidget):
                        self.ui.measureSet3,
                        ]
 
-        self.plotFunc = [None,
-                         self.plotRa,
-                         self.plotDec,
-                         self.plotTemperature,
-                         self.plotPressure,
-                         self.plotHumidity,
-                         self.plotSQR,
-                         self.plotVoltage,
-                         self.plotCurrent,
-                         ]
+        self.plotFunc = {'None': None,
+                         'RA Stability': self.plotRa,
+                         'DEC Stability': self.plotDec,
+                         'Temperature': self.plotTemperature,
+                         'Pressure': self.plotPressure,
+                         'Humidity': self.plotHumidity,
+                         'Sky Quality': self.plotSQR,
+                         'Voltage': self.plotVoltage,
+                         'Current': self.plotCurrent,
+                         }
+
+        self.timeFunc = {'  8 min': 1,
+                         ' 16 min': 2,
+                         ' 32 min': 4,
+                         '  1 hour': 8,
+                         '  2 hours': 16,
+                         '  4 hours': 32,
+                         '  8 hours': 64,
+                         }
 
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.measureIndex = 0
@@ -176,29 +185,14 @@ class MeasureWindow(widget.MWidget):
         for mSet in self.mSetUI:
             mSet.clear()
             mSet.setView(PyQt5.QtWidgets.QListView())
-            mSet.addItem('None')
-            mSet.addItem('RA Stability')
-            mSet.addItem('DEC Stability')
-            mSet.addItem('Temperature')
-            mSet.addItem('Pressure')
-            mSet.addItem('Humidity')
-            mSet.addItem('Sky Quality')
-            mSet.addItem('Voltage')
-            mSet.addItem('Current')
-            mSet.addItem('Memory Hemisphere')
-            mSet.addItem('Memory Image')
-            mSet.addItem('Memory Measure')
+            for text in self.plotFunc.keys():
+                mSet.addItem(text)
 
         tSet = self.ui.timeSet
         tSet.clear()
         tSet.setView(PyQt5.QtWidgets.QListView())
-        tSet.addItem('  8 min')
-        tSet.addItem(' 16 min')
-        tSet.addItem(' 32 min')
-        tSet.addItem('  1 hour')
-        tSet.addItem('  2 hours')
-        tSet.addItem('  4 hours')
-        tSet.addItem('  8 hours')
+        for text in self.timeFunc.keys():
+            tSet.addItem(text)
 
         return True
 
@@ -208,7 +202,7 @@ class MeasureWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        cycle = int(np.exp2(self.ui.timeSet.currentIndex()))
+        cycle = self.timeFunc[self.ui.timeSet.currentText()]
         if not self.refreshCounter % cycle:
             self.drawMeasure(cycle)
         self.refreshCounter += 1
@@ -698,13 +692,13 @@ class MeasureWindow(widget.MWidget):
         time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
 
         for axe, mSet in zip(axes, self.mSetUI):
-            index = mSet.currentIndex()
-            if self.plotFunc[index] is None:
+            key = mSet.currentText()
+            if self.plotFunc[key] is None:
                 continue
-            self.plotFunc[index](axe=axe,
-                                 title=mSet.currentText(),
-                                 data=data,
-                                 cycle=cycle)
+            self.plotFunc[key](axe=axe,
+                               title=mSet.currentText(),
+                               data=data,
+                               cycle=cycle)
 
         for i, axe in enumerate(axes):
             axe.set_xticks(time_ticks)

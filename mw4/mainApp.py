@@ -115,7 +115,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.planets = load('de421.bsp')
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
-        self.dome = dome.Dome(host='localhost')
+        self.dome = dome.Dome(self, host='localhost')
         self.skymeter = skymeter.Skymeter(host='localhost')
         self.weather = weather.Weather(host='localhost')
         self.power = pegasusUPB.PegasusUPB(host='localhost')

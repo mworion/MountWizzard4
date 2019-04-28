@@ -50,6 +50,7 @@ class Dome(indiClass.IndiClass):
     some parameters who will define the slewing position of the dome relating to the mount.
 
         >>> fw = Dome(
+        >>>           app=app
         >>>           host=host
         >>>           name=''
         >>>          )
@@ -65,6 +66,7 @@ class Dome(indiClass.IndiClass):
     UPDATE_RATE = 1000
 
     def __init__(self,
+                 app=None,
                  host=None,
                  name='',
                  ):
@@ -72,11 +74,13 @@ class Dome(indiClass.IndiClass):
                          name=name
                          )
 
+        self.app = app
         self.signals = DomeSignals()
         self.slewing = False
         self.azimuth = -1
         self.settlingTime = 0
         self.slewing = False
+        self.app.update3s.connect(self.updateStatus)
 
     def setUpdateConfig(self, deviceName):
         """
@@ -109,6 +113,18 @@ class Dome(indiClass.IndiClass):
                                         )
 
         return suc
+
+    def updateStatus(self):
+        """
+        updateStatus emits the actual azimuth status every 3 second in case of opening a
+        window and get the signals late connected as INDI does nt repeat any signal of it's
+        own
+
+        :return:
+        """
+        self.signals.azimuth.emit(self.azimuth)
+
+        return True
 
     def updateNumber(self, deviceName, propertyName):
         """

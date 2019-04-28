@@ -219,8 +219,6 @@ class HemisphereWindow(widget.MWidget):
                                                      self.onMouseDispatcher)
         # draw all things
         self.drawHemisphere()
-        # recalling new data when no signals worked for INDI data (no polling)
-        self.updateDome(self.app.dome.azimuth)
         # finally show window
         self.show()
 

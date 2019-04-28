@@ -249,45 +249,45 @@ def test_updateRefractionParameters_8(qtbot):
 def test_updateSetting_slewRate():
     value = '5'
     app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert app.mainW.ui.slewRate.text() == ' 5'
     value = None
     app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.slewRate.text()
 
 
 def test_updateSetting_timeToFlip():
     value = '5'
     app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert app.mainW.ui.timeToFlip.text() == '  5'
     value = None
     app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.timeToFlip.text()
 
 
 def test_updateSetting_timeToMeridian():
     value = '5'
     app.mount.sett.timeToMeridian = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert app.mainW.ui.timeToMeridian.text() == '  5'
     value = None
     app.mount.sett.timeToMeridian = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.timeToMeridian.text()
 
 
 def test_updateSetting_refractionTemp():
     value = '15'
     app.mount.sett.refractionTemp = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '+15.0' == app.mainW.ui.refractionTemp.text()
     assert '+15.0' == app.mainW.ui.refractionTemp1.text()
     value = None
     app.mount.sett.refractionTemp = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.refractionTemp.text()
     assert '-' == app.mainW.ui.refractionTemp1.text()
 
@@ -295,12 +295,12 @@ def test_updateSetting_refractionTemp():
 def test_updateSetting_refractionPress():
     value = '1050.0'
     app.mount.sett.refractionPress = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert value == app.mainW.ui.refractionPress.text()
     assert value == app.mainW.ui.refractionPress1.text()
     value = None
     app.mount.sett.refractionPress = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.refractionPress.text()
     assert '-' == app.mainW.ui.refractionPress1.text()
 
@@ -308,44 +308,44 @@ def test_updateSetting_refractionPress():
 def test_updateSetting_meridianLimitTrack():
     value = '15'
     app.mount.sett.meridianLimitTrack = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '15.0' == app.mainW.ui.meridianLimitTrack.text()
     value = None
     app.mount.sett.meridianLimitTrack = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.meridianLimitTrack.text()
 
 
 def test_updateSetting_meridianLimitSlew():
     value = '15'
     app.mount.sett.meridianLimitSlew = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '15.0' == app.mainW.ui.meridianLimitSlew.text()
     value = None
     app.mount.sett.meridianLimitSlew = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.meridianLimitSlew.text()
 
 
 def test_updateSetting_horizonLimitLow():
     value = '0'
     app.mount.sett.horizonLimitLow = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '0.0' == app.mainW.ui.horizonLimitLow.text()
     value = None
     app.mount.sett.horizonLimitLow = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.horizonLimitLow.text()
 
 
 def test_updateSetting_horizonLimitHigh():
     value = '50'
     app.mount.sett.horizonLimitHigh = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '50.0' == app.mainW.ui.horizonLimitHigh.text()
     value = None
     app.mount.sett.horizonLimitHigh = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.horizonLimitHigh.text()
 
 
@@ -353,23 +353,23 @@ def test_updateSetting_timeToMeridian():
     app.mount.sett.timeToFlip = '100'
     app.mount.sett.meridianLimitTrack = '15'
 
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert ' 40' == app.mainW.ui.timeToMeridian.text()
     value = None
     app.mount.sett.timeToFlip = value
     app.mount.sett.meridianLimitTrack = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.timeToMeridian.text()
 
 
 def test_updateSettingExt_location():
     app.mount.obsSite.location = ['49:00:00', '11:00:00', '500']
-    app.mainW.updateLocGUI()
+    app.mainW.updateLocGUI(app.mount.obsSite.location)
     assert '11deg 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
     assert '49deg 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
     assert '500.0' == app.mainW.ui.siteElevation.text()
     app.mount.obsSite.location = None
-    app.mainW.updateLocGUI()
+    app.mainW.updateLocGUI(app.mount.obsSite.location)
     assert '11deg 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
     assert '49deg 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
     assert '500.0' == app.mainW.ui.siteElevation.text()
@@ -377,46 +377,46 @@ def test_updateSettingExt_location():
 
 def test_updateFwGui_productName():
     app.mount.fw.productName = 'test'
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.productName.text() == 'test'
     app.mount.fw.productName = None
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.productName.text() == '-'
 
 
 def test_updateFwGui_numberString():
     app.mount.fw.numberString = '1.2.34'
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.numberString.text() == '1.2.34'
     app.mount.fw.numberString = None
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.numberString.text() == '-'
 
 
 def test_updateFwGui_fwdate():
     app.mount.fw.fwdate = 'test'
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.fwdate.text() == 'test'
     app.mount.fw.fwdate = None
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.fwdate.text() == '-'
 
 
 def test_updateFwGui_fwtime():
     app.mount.fw.fwtime = 'test'
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.fwtime.text() == 'test'
     app.mount.fw.fwtime = None
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.fwtime.text() == '-'
 
 
 def test_updateFwGui_hwVersion():
     app.mount.fw.hwVersion = 'test'
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.hwVersion.text() == 'test'
     app.mount.fw.hwVersion = None
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert app.mainW.ui.hwVersion.text() == '-'
 
 

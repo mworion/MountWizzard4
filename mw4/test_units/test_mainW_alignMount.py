@@ -36,7 +36,9 @@ from mw4.test_units.test_setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
-    app.hemisphereW.showWindow()
+    app.config['showHemisphereW'] = True
+    app.toggleHemisphereWindow()
+    yield
 
 
 def test_loadAlignBuildFile_1(qtbot):
@@ -206,12 +208,12 @@ def test_updateAlignGui_numberStars():
 
         value = '50'
         app.mount.model.numberStars = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '50' == app.mainW.ui.numberStars.text()
         assert '50' == app.mainW.ui.numberStars1.text()
         value = None
         app.mount.model.numberStars = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '-' == app.mainW.ui.numberStars.text()
         assert '-' == app.mainW.ui.numberStars1.text()
 
@@ -222,11 +224,11 @@ def test_updateAlignGui_altitudeError():
 
         value = '50'
         app.mount.model.altitudeError = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '50deg 00\' 00.0\"' == app.mainW.ui.altitudeError.text()
         value = None
         app.mount.model.altitudeError = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '-' == app.mainW.ui.altitudeError.text()
 
 
@@ -236,12 +238,12 @@ def test_updateAlignGui_errorRMS():
 
         value = '50'
         app.mount.model.errorRMS = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '50.0' == app.mainW.ui.errorRMS.text()
         assert '50.0' == app.mainW.ui.errorRMS1.text()
         value = None
         app.mount.model.errorRMS = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '-' == app.mainW.ui.errorRMS.text()
         assert '-' == app.mainW.ui.errorRMS1.text()
 
@@ -252,11 +254,11 @@ def test_updateAlignGui_azimuthError():
 
         value = '50'
         app.mount.model.azimuthError = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '50deg 00\' 00.0\"' == app.mainW.ui.azimuthError.text()
         value = None
         app.mount.model.azimuthError = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '-' == app.mainW.ui.azimuthError.text()
 
 
@@ -266,11 +268,11 @@ def test_updateAlignGui_terms():
 
         value = '50'
         app.mount.model.terms = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '50.0' == app.mainW.ui.terms.text()
         value = None
         app.mount.model.terms = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '-' == app.mainW.ui.terms.text()
 
 
@@ -280,11 +282,11 @@ def test_updateAlignGui_orthoError():
 
         value = '50'
         app.mount.model.orthoError = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '50deg 00\' 00.0\"' == app.mainW.ui.orthoError.text()
         value = None
         app.mount.model.orthoError = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '-' == app.mainW.ui.orthoError.text()
 
 
@@ -294,11 +296,11 @@ def test_updateAlignGui_positionAngle():
 
         value = '50'
         app.mount.model.positionAngle = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert ' 50.0' == app.mainW.ui.positionAngle.text()
         value = None
         app.mount.model.positionAngle = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '-' == app.mainW.ui.positionAngle.text()
 
 
@@ -308,53 +310,53 @@ def test_updateAlignGui_polarError():
 
         value = '50'
         app.mount.model.polarError = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '50deg 00\' 00.0\"' == app.mainW.ui.polarError.text()
         value = None
         app.mount.model.polarError = value
-        app.mainW.updateAlignGUI()
+        app.mainW.updateAlignGUI(app.mount.model)
         assert '-' == app.mainW.ui.polarError.text()
 
 
 def test_updateTurnKnobsGUI_altitudeTurns_1():
     value = 1.5
     app.mount.model.altitudeTurns = value
-    app.mainW.updateTurnKnobsGUI()
+    app.mainW.updateTurnKnobsGUI(app.mount.model)
     assert '1.5 revs down' == app.mainW.ui.altitudeTurns.text()
     value = None
     app.mount.model.altitudeTurns = value
-    app.mainW.updateTurnKnobsGUI()
+    app.mainW.updateTurnKnobsGUI(app.mount.model)
     assert '-' == app.mainW.ui.altitudeTurns.text()
 
 
 def test_updateTurnKnobsGUI_altitudeTurns_2():
     value = -1.5
     app.mount.model.altitudeTurns = value
-    app.mainW.updateTurnKnobsGUI()
+    app.mainW.updateTurnKnobsGUI(app.mount.model)
     assert '1.5 revs up' == app.mainW.ui.altitudeTurns.text()
     value = None
     app.mount.model.altitudeTurns = value
-    app.mainW.updateTurnKnobsGUI()
+    app.mainW.updateTurnKnobsGUI(app.mount.model)
     assert '-' == app.mainW.ui.altitudeTurns.text()
 
 
 def test_updateTurnKnobsGUI_azimuthTurns_1():
     value = 1.5
     app.mount.model.azimuthTurns = value
-    app.mainW.updateTurnKnobsGUI()
+    app.mainW.updateTurnKnobsGUI(app.mount.model)
     assert '1.5 revs left' == app.mainW.ui.azimuthTurns.text()
     value = None
     app.mount.model.azimuthTurns = value
-    app.mainW.updateTurnKnobsGUI()
+    app.mainW.updateTurnKnobsGUI(app.mount.model)
     assert '-' == app.mainW.ui.azimuthTurns.text()
 
 
 def test_updateTurnKnobsGUI_azimuthTurns_2():
     value = -1.5
     app.mount.model.azimuthTurns = value
-    app.mainW.updateTurnKnobsGUI()
+    app.mainW.updateTurnKnobsGUI(app.mount.model)
     assert '1.5 revs right' == app.mainW.ui.azimuthTurns.text()
     value = None
     app.mount.model.azimuthTurns = value
-    app.mainW.updateTurnKnobsGUI()
+    app.mainW.updateTurnKnobsGUI(app.mount.model)
     assert '-' == app.mainW.ui.azimuthTurns.text()

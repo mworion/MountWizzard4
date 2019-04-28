@@ -47,30 +47,11 @@ def test_closeEvent(qtbot):
 
 
 def test_toggleWindow1(qtbot):
-    app.messageW.showStatus = True
     with mock.patch.object(app.messageW,
                            'close',
                            return_value=None):
         app.messageW.toggleWindow()
         assert not app.messageW.showStatus
-
-
-def test_toggleWindow2(qtbot):
-    app.messageW.showStatus = False
-    with mock.patch.object(app.messageW,
-                           'showWindow',
-                           return_value=None):
-        app.messageW.toggleWindow()
-        assert app.messageW.showStatus
-
-
-def test_showWindow1(qtbot):
-    app.messageW.showStatus = False
-    with mock.patch.object(app.messageW,
-                           'show',
-                           return_value=None):
-        app.messageW.showWindow()
-        assert app.messageW.showStatus
 
 
 def test_writeMessage1(qtbot):

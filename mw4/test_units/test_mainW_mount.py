@@ -69,44 +69,44 @@ def test_clearGUI():
 def test_updatePointGui_alt():
     value = '45'
     app.mount.obsSite.Alt = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '45.00' == app.mainW.ui.ALT.text()
     value = None
     app.mount.obsSite.Alt = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.ALT.text()
 
 
 def test_updatePointGui_az():
     value = '45'
     app.mount.obsSite.Az = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '45.00' == app.mainW.ui.AZ.text()
     value = None
     app.mount.obsSite.Az = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.AZ.text()
 
 
 def test_updatePointGui_ra():
     value = '45'
     app.mount.obsSite.raJNow = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '45:00:00' == app.mainW.ui.RA.text()
     value = None
     app.mount.obsSite.raJNow = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.RA.text()
 
 
 def test_updatePointGui_dec():
     value = '45'
     app.mount.obsSite.decJNow = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '+45:00:00' == app.mainW.ui.DEC.text()
     value = None
     app.mount.obsSite.decJNow = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.DEC.text()
 
 
@@ -114,154 +114,154 @@ def test_updatePointGui_jd1():
     value = '2451544.5'
     app.mount.obsSite.utc_ut1 = '0'
     app.mount.obsSite.timeJD = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '00:00:00' == app.mainW.ui.timeJD.text()
 
 
 def test_updatePointGui_jd2():
     value = None
     app.mount.obsSite.timeJD = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '-' != app.mainW.ui.timeJD.text()
 
 
 def test_updatePointGui_pierside():
     value = 'W'
     app.mount.obsSite.pierside = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert 'WEST' == app.mainW.ui.pierside.text()
     value = None
     app.mount.obsSite.pierside = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.pierside.text()
 
 
 def test_updatePointGui_sidereal():
     value = '45:45:45'
     app.mount.obsSite.timeSidereal = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '45:45:45' == app.mainW.ui.timeSidereal.text()
     value = None
     app.mount.obsSite.timeSidereal = value
-    app.mainW.updatePointGUI()
+    app.mainW.updatePointGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.timeSidereal.text()
 
 
 def test_updateStatusGui_statusText():
     app.mount.obsSite.status = 6
-    app.mainW.updateStatusGUI()
+    app.mainW.updateStatusGUI(app.mount.obsSite)
     assert 'Slewing or going to stop' == app.mainW.ui.statusText.text()
     app.mount.obsSite.status = None
-    app.mainW.updateStatusGUI()
+    app.mainW.updateStatusGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.statusText.text()
 
 
 def test_updateSetting_slewRate():
     value = '15'
     app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '15' == app.mainW.ui.slewRate.text()
     value = None
     app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.slewRate.text()
 
 
 def test_updateSetting_timeToFlip():
     value = '15'
     app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert ' 15' == app.mainW.ui.timeToFlip.text()
     value = None
     app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI()
+    app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.timeToFlip.text()
 
 
 def test_updateSettingExt_UTCExpire():
     value = '2020-10-05'
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
 def test_updateSettingExt_UTCExpire1():
     value = '2016-10-05'
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
 def test_updateSettingExt_UTCExpire2():
     value = '2018-10-05'
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
     app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
 def test_updateSetting_statusUnattendedFlip():
     value = '1'
     app.mount.sett.statusUnattendedFlip = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert 'ON' == app.mainW.ui.statusUnattendedFlip.text()
     value = None
     app.mount.sett.statusUnattendedFlip = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert 'OFF' == app.mainW.ui.statusUnattendedFlip.text()
 
 
 def test_updateSetting_statusDualTracking():
     value = '1'
     app.mount.sett.statusDualTracking = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert 'ON' == app.mainW.ui.statusDualTracking.text()
     value = None
     app.mount.sett.statusDualTracking = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert 'OFF' == app.mainW.ui.statusDualTracking.text()
 
 
 def test_updateSetting_statusRefraction():
     value = '1'
     app.mount.sett.statusRefraction = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert 'ON' == app.mainW.ui.statusRefraction.text()
     value = None
     app.mount.sett.statusRefraction = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert 'OFF' == app.mainW.ui.statusRefraction.text()
 
 
 def test_updateSetting_statusGPSSynced_1():
     value = True
     app.mount.sett.gpsSynced = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert app.mainW.ui.statusGPSSynced.text() == 'YES'
 
 
 def test_updateSetting_statusGPSSynced_2():
     value = None
     app.mount.sett.gpsSynced = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert app.mainW.ui.statusGPSSynced.text() == 'NO'
 
 
 def test_updateSetting_statusGPSSynced_3():
     value = False
     app.mount.sett.gpsSynced = value
-    app.mainW.updateSetStatGUI()
+    app.mainW.updateSetStatGUI(app.mount.sett)
     assert app.mainW.ui.statusGPSSynced.text() == 'NO'
 
 
@@ -269,7 +269,7 @@ def test_tracking_speed1():
     with mock.patch.object(app.mount.sett,
                            'checkRateLunar',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui()
+        suc = app.mainW.updateTrackingGui(app.mount.sett)
         assert suc
 
 
@@ -277,7 +277,7 @@ def test_tracking_speed2():
     with mock.patch.object(app.mount.sett,
                            'checkRateSidereal',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui()
+        suc = app.mainW.updateTrackingGui(app.mount.sett)
         assert suc
 
 
@@ -285,7 +285,7 @@ def test_tracking_speed3():
     with mock.patch.object(app.mount.sett,
                            'checkRateSolar',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui()
+        suc = app.mainW.updateTrackingGui(app.mount.sett)
         assert suc
 
 

@@ -122,6 +122,8 @@ class ManageModel(object):
         # check entry conditions for displaying a polar plot
         if model is None:
             hasNoStars = True
+        elif not hasattr(model, 'starList'):
+            hasNoStars = True
         else:
             hasNoStars = model.starList is None or not model.starList
 

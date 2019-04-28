@@ -66,11 +66,11 @@ def test_clearGui():
 def test_setNameList():
     value = ['Test1', 'test2', 'test3', 'test4']
     app.mount.model.nameList = value
-    app.mainW.setNameList()
+    app.mainW.setNameList(app.mount.model)
     assert 4 == app.mainW.ui.nameList.count()
     value = None
     app.mount.model.nameList = value
-    app.mainW.setNameList()
+    app.mainW.setNameList(app.mount.model)
     assert 0 == app.mainW.ui.nameList.count()
 
 
@@ -83,7 +83,7 @@ def test_showModelPolar1():
                                  ],
                                 4)
     app.mainW.ui.checkShowErrorValues.setChecked(True)
-    suc = app.mainW.showModelPolar()
+    suc = app.mainW.showModelPolar(app.mount.model)
     assert suc
 
 
@@ -91,7 +91,7 @@ def test_showModelPolar2():
     app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     app.mount.model._starList = list()
     app.mainW.ui.checkShowErrorValues.setChecked(True)
-    suc = app.mainW.showModelPolar()
+    suc = app.mainW.showModelPolar(app.mount.model)
     assert not suc
 
 
@@ -99,14 +99,14 @@ def test_showModelPolar3():
     app.mount.obsSite.location = []
     app.mount.model._starList = list()
     app.mainW.ui.checkShowErrorValues.setChecked(True)
-    suc = app.mainW.showModelPolar()
+    suc = app.mainW.showModelPolar(app.mount.model)
     assert not suc
 
 
 def test_showModelPolar4():
     app.mainW.ui.checkShowErrorValues.setChecked(True)
     app.mount.model._starList = list()
-    suc = app.mainW.showModelPolar()
+    suc = app.mainW.showModelPolar(app.mount.model)
     assert not suc
 
 
@@ -315,8 +315,8 @@ def test_clearModel_1(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.No):
-            suc = app.mainW.clearModel()
-            assert not suc
+        suc = app.mainW.clearModel()
+        assert not suc
 
 
 def test_clearModel_2(qtbot):

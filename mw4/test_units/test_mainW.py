@@ -112,14 +112,6 @@ def test_clearMountGUI():
     assert suc
 
 
-def test_closeEvent():
-
-    app.mainW.showStatus = True
-    app.mainW.closeEvent(1)
-
-    assert not app.mainW.showStatus
-
-
 def test_saveProfile1(qtbot):
     with mock.patch.object(app,
                            'saveConfig',

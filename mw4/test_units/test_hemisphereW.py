@@ -40,6 +40,15 @@ def module_setup_teardown():
     yield
 
 
+@pytest.fixture(autouse=True, scope='function')
+def function():
+    app.config['showHemisphereW'] = True
+    app.toggleHemisphereWindow()
+    yield
+    app.hemisphereW = None
+    app.config['showHemisphereW'] = False
+
+
 def test_storeConfig_1():
     app.hemisphereW.storeConfig()
 
@@ -64,47 +73,17 @@ def test_initConfig_3():
     assert suc
 
 
-def test_closeEvent(qtbot):
-    app.hemisphereW.showWindow()
-    app.hemisphereW.closeEvent(None)
-
-
-def test_toggleWindow1(qtbot):
-    app.hemisphereW.showStatus = True
-    with mock.patch.object(app.hemisphereW,
-                           'close',
-                           return_value=None):
-        app.hemisphereW.toggleWindow()
-        assert not app.hemisphereW.showStatus
-
-
-def test_toggleWindow2(qtbot):
-    app.hemisphereW.showStatus = False
-    with mock.patch.object(app.hemisphereW,
-                           'showWindow',
-                           return_value=None):
-        app.hemisphereW.toggleWindow()
-        assert app.hemisphereW.showStatus
-
-
-def test_showWindow1(qtbot):
-    app.hemisphereW.showStatus = False
-    app.hemisphereW.showWindow()
-    assert app.hemisphereW.showStatus
-
-
-def test_clearAxes1(qtbot):
+def test_setupAxes1(qtbot):
     app.hemisphereW.drawHemisphere()
-    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
-    suc = app.hemisphereW.setupAxes(axes, True)
+    fig = app.hemisphereW.hemisphereMat.figure
+    suc = app.hemisphereW.setupAxes(fig)
     assert suc
 
 
-def test_clearAxes2(qtbot):
+def test_setupAxes2(qtbot):
     app.hemisphereW.drawHemisphere()
-    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
-    suc = app.hemisphereW.setupAxes(axes, False)
-    assert not suc
+    fig = app.hemisphereW.hemisphereMat.figure
+    app.hemisphereW.setupAxes(fig)
 
 
 def test_drawCanvas(qtbot):
@@ -115,21 +94,12 @@ def test_drawCanvas(qtbot):
 
 def test_updateCelestialPath_1(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     suc = app.hemisphereW.updateCelestialPath()
     assert suc
 
 
-def test_updateCelestialPath_2(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = False
-    suc = app.hemisphereW.updateCelestialPath()
-    assert not suc
-
-
 def test_updateCelestialPath_3(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.hemisphereW.celestialPath = None
     suc = app.hemisphereW.updateCelestialPath()
     assert not suc
@@ -137,25 +107,14 @@ def test_updateCelestialPath_3(qtbot):
 
 def test_updateMeridian_1(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.meridianLimitSlew = 3
     app.mount.sett.meridianLimitTrack = 3
     suc = app.hemisphereW.updateMeridian()
     assert suc
 
 
-def test_updateMeridian_2(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = False
-    app.mount.sett.meridianLimitSlew = 3
-    app.mount.sett.meridianLimitTrack = 3
-    suc = app.hemisphereW.updateMeridian()
-    assert not suc
-
-
 def test_updateMeridian_3(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.meridianLimitSlew = None
     app.mount.sett.meridianLimitTrack = 3
     suc = app.hemisphereW.updateMeridian()
@@ -164,7 +123,6 @@ def test_updateMeridian_3(qtbot):
 
 def test_updateMeridian_4(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.meridianLimitSlew = 3
     app.mount.sett.meridianLimitTrack = None
     suc = app.hemisphereW.updateMeridian()
@@ -173,7 +131,6 @@ def test_updateMeridian_4(qtbot):
 
 def test_updateMeridian_5(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.meridianLimitSlew = 3
     app.mount.sett.meridianLimitTrack = 3
     app.hemisphereW.meridianTrack = None
@@ -183,7 +140,6 @@ def test_updateMeridian_5(qtbot):
 
 def test_updateMeridian_6(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.meridianLimitSlew = 3
     app.mount.sett.meridianLimitTrack = 3
     app.hemisphereW.meridianSlew = None
@@ -193,25 +149,14 @@ def test_updateMeridian_6(qtbot):
 
 def test_updateHorizonLimits_1(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.horizonLimitHigh = 80
     app.mount.sett.horizonLimitLow = 10
     suc = app.hemisphereW.updateHorizonLimits()
     assert suc
 
 
-def test_updateHorizonLimits_2(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = False
-    app.mount.sett.horizonLimitHigh = 80
-    app.mount.sett.horizonLimitLow = 10
-    suc = app.hemisphereW.updateHorizonLimits()
-    assert not suc
-
-
 def test_updateHorizonLimits_3(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.horizonLimitHigh = None
     app.mount.sett.horizonLimitLow = 10
     suc = app.hemisphereW.updateHorizonLimits()
@@ -220,7 +165,6 @@ def test_updateHorizonLimits_3(qtbot):
 
 def test_updateHorizonLimits_4(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.horizonLimitHigh = 80
     app.mount.sett.horizonLimitLow = None
     suc = app.hemisphereW.updateHorizonLimits()
@@ -229,7 +173,6 @@ def test_updateHorizonLimits_4(qtbot):
 
 def test_updateHorizonLimits_5(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.horizonLimitHigh = 80
     app.mount.sett.horizonLimitLow = 10
     app.hemisphereW.horizonLimitLow = None
@@ -239,7 +182,6 @@ def test_updateHorizonLimits_5(qtbot):
 
 def test_updateHorizonLimits_6(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.sett.horizonLimitHigh = 80
     app.mount.sett.horizonLimitLow = 10
     app.hemisphereW.horizonLimitHigh = None
@@ -249,23 +191,14 @@ def test_updateHorizonLimits_6(qtbot):
 
 def test_updatePointerAltAz_1(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.obsSite.Alt = api.Angle(degrees=5)
     app.mount.obsSite.Az = api.Angle(degrees=5)
     suc = app.hemisphereW.updatePointerAltAz()
     assert suc
 
 
-def test_updatePointerAltAz_2(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = False
-    suc = app.hemisphereW.updatePointerAltAz()
-    assert not suc
-
-
 def test_updatePointerAltAz_3(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.obsSite.Az = None
     suc = app.hemisphereW.updatePointerAltAz()
     assert not suc
@@ -273,7 +206,6 @@ def test_updatePointerAltAz_3(qtbot):
 
 def test_updatePointerAltAz_4(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.obsSite.Alt = None
     suc = app.hemisphereW.updatePointerAltAz()
     assert not suc
@@ -281,7 +213,6 @@ def test_updatePointerAltAz_4(qtbot):
 
 def test_updatePointerAltAz_5(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.mount.obsSite.Alt = api.Angle(degrees=5)
     app.mount.obsSite.Az = api.Angle(degrees=5)
     app.hemisphereW.pointerAltAz = None
@@ -291,56 +222,35 @@ def test_updatePointerAltAz_5(qtbot):
 
 def test_updateDome_1(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.dome.data = {}
-    suc = app.hemisphereW.updateDome()
+    suc = app.hemisphereW.updateDome(45)
     assert suc
-
-
-def test_updateDome_2(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = False
-    app.dome.data['DOME_ABSOLUTE_POSITION'] = 10
-    suc = app.hemisphereW.updateDome()
-    assert not suc
 
 
 def test_updateDome_3(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.dome.data = {}
-    suc = app.hemisphereW.updateDome()
+    suc = app.hemisphereW.updateDome(45)
     assert suc
 
 
 def test_updateDome_4(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.dome.data['DOME_ABSOLUTE_POSITION'] = 90
     app.hemisphereW.pointerDome = None
-    suc = app.hemisphereW.updateDome()
+    suc = app.hemisphereW.updateDome(45)
     assert not suc
 
 
 def test_updateAlignStar_1(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
     suc = app.hemisphereW.updateAlignStar()
     assert suc
 
 
-def test_updateAlignStar_2(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = False
-    app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
-    suc = app.hemisphereW.updateAlignStar()
-    assert not suc
-
-
 def test_updateAlignStar_3(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
     app.hemisphereW.starsAlign = None
     suc = app.hemisphereW.updateAlignStar()
@@ -349,7 +259,6 @@ def test_updateAlignStar_3(qtbot):
 
 def test_updateAlignStar_4(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
     app.hemisphereW.starsAlignAnnotate = None
     suc = app.hemisphereW.updateAlignStar()
@@ -358,7 +267,6 @@ def test_updateAlignStar_4(qtbot):
 
 def test_updateAlignStar_5(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.hemisphereW.showStatus = True
     app.hemisphereW.ui.checkShowAlignStar.setChecked(False)
     suc = app.hemisphereW.updateAlignStar()
     assert not suc
@@ -838,6 +746,7 @@ def test_deleteBuildPointPoint_2():
 
 
 def test_editBuildPoints_1():
+    app.data.buildP = [(0, 0), (10, 10), (0, 360)]
     axes = app.hemisphereW.hemisphereMat.figure.axes[0]
     app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
     app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
@@ -858,11 +767,12 @@ def test_editBuildPoints_1():
     suc = app.hemisphereW.editBuildPoints(data=app.data, event=event, axes=axes)
     assert suc
 
-
+"""
 def test_editBuildPoints_2():
+    app.data.buildP = [(0, 0), (10, 10), (45, 180)]
     axes = app.hemisphereW.hemisphereMat.figure.axes[0]
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(180, 45)))
+    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(45, 180)))
     app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
 
     class Test:
@@ -879,9 +789,10 @@ def test_editBuildPoints_2():
     app.hemisphereW.pointsBuild = Test()
     suc = app.hemisphereW.editBuildPoints(data=app.data, event=event, axes=axes)
     assert suc
-
+"""
 
 def test_editBuildPoints_3():
+    app.data.buildP = [(0, 0), (10, 10), (0, 360)]
     axes = app.hemisphereW.hemisphereMat.figure.axes[0]
     app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
     app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))

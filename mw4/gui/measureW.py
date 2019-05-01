@@ -136,25 +136,6 @@ class MeasureWindow(widget.MWidget):
 
         return True
 
-    def closeEvent(self, closeEvent):
-        """
-
-        :param closeEvent:
-        :return:
-        """
-
-        self.storeConfig()
-        # signals for gui
-        self.ui.timeSet.currentIndexChanged.disconnect(self.setCycleRefresh)
-        self.ui.measureSet1.currentIndexChanged.disconnect(self.setCycleRefresh)
-        self.ui.measureSet2.currentIndexChanged.disconnect(self.setCycleRefresh)
-        self.ui.measureSet3.currentIndexChanged.disconnect(self.setCycleRefresh)
-        self.app.update1s.disconnect(self.setCycleRefresh)
-
-        self.measureMat.figure = None
-
-        super().closeEvent(closeEvent)
-
     def showWindow(self):
         """
 
@@ -165,11 +146,30 @@ class MeasureWindow(widget.MWidget):
 
         # signals for gui
         self.ui.timeSet.currentIndexChanged.connect(self.setCycleRefresh)
-        self.ui.measureSet1.currentIndexChanged.connect(self.setCycleRefresh)
-        self.ui.measureSet2.currentIndexChanged.connect(self.setCycleRefresh)
-        self.ui.measureSet3.currentIndexChanged.connect(self.setCycleRefresh)
-        self.app.update1s.connect(self.setCycleRefresh)
+        self.ui.measureSet1.currentIndexChanged.connect(self.cycleRefresh)
+        self.ui.measureSet2.currentIndexChanged.connect(self.cycleRefresh)
+        self.ui.measureSet3.currentIndexChanged.connect(self.cycleRefresh)
+        self.app.update1s.connect(self.cycleRefresh)
         return True
+
+    def closeEvent(self, closeEvent):
+        """
+
+        :param closeEvent:
+        :return:
+        """
+
+        self.storeConfig()
+        # signals for gui
+        self.ui.timeSet.currentIndexChanged.disconnect(self.setCycleRefresh)
+        self.ui.measureSet1.currentIndexChanged.disconnect(self.cycleRefresh)
+        self.ui.measureSet2.currentIndexChanged.disconnect(self.cycleRefresh)
+        self.ui.measureSet3.currentIndexChanged.disconnect(self.cycleRefresh)
+        self.app.update1s.disconnect(self.cycleRefresh)
+
+        self.measureMat.figure = None
+
+        super().closeEvent(closeEvent)
 
     def setupButtons(self):
         """
@@ -194,6 +194,15 @@ class MeasureWindow(widget.MWidget):
         return True
 
     def setCycleRefresh(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        self.refreshCounter += 0
+        self.cycleRefresh()
+
+    def cycleRefresh(self):
         """
 
         :return: True for test purpose

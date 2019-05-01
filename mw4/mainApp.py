@@ -26,7 +26,6 @@ import gc
 import PyQt5.QtCore
 import skyfield
 from mountcontrol import qtmount
-from indibase import qtIndiBase
 
 # from pympler import tracker, classtracker, muppy, summary
 
@@ -127,16 +126,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # get the window widgets up
         self.showWindows()
-        # write basic data to message window
-        verMC = self.mount.version
-        verIB = qtIndiBase.Client.version
-        profile = self.config.get('profileName', '-')
-        self.message.emit('MountWizzard4 started', 1)
-        self.message.emit('build version: [{0}]'.format(self.version), 1)
-        self.message.emit('mountcontrol version: [{0}]'.format(verMC), 1)
-        self.message.emit('indibase version: [{0}]'.format(verIB), 1)
-        self.message.emit('Workdir is: [{0}]'.format(self.mwGlob['workDir']), 1)
-        self.message.emit('Profile [{0}] loaded'.format(profile), 0)
 
         # link cross widget gui signals as all ui widgets have to be present
         self.mainW.ui.openMessageW.clicked.connect(self.toggleMessageWindow)

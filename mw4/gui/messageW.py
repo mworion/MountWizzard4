@@ -27,6 +27,7 @@ import PyQt5.uic
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import message_ui
+from indibase import qtIndiBase
 
 
 class MessageWindow(widget.MWidget):
@@ -109,6 +110,17 @@ class MessageWindow(widget.MWidget):
 
     def showWindow(self):
         self.show()
+
+        # write basic data to message window
+        verMC = self.app.mount.version
+        verIB = qtIndiBase.Client.version
+        profile = self.app.config.get('profileName', '-')
+        self.writeMessage('MountWizzard4 started', 1)
+        self.writeMessage('build version: [{0}]'.format(self.app.version), 1)
+        self.writeMessage('mountcontrol version: [{0}]'.format(verMC), 1)
+        self.writeMessage('indibase version: [{0}]'.format(verIB), 1)
+        self.writeMessage('Workdir is: [{0}]'.format(self.app.mwGlob['workDir']), 1)
+        self.writeMessage('Profile [{0}] loaded'.format(profile), 0)
 
         # gui signals
         self.ui.clear.clicked.connect(self.clearWindow)

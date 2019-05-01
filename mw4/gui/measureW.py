@@ -20,10 +20,12 @@
 # standard libraries
 import logging
 from datetime import datetime as dt
+import gc
 # external packages
 import PyQt5
 import numpy as np
 from matplotlib import ticker
+import matplotlib.pyplot as plt
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import measure_ui
@@ -230,6 +232,10 @@ class MeasureWindow(widget.MWidget):
         if numberPlots < 0:
             return None
 
+        for axe in figure.axes:
+            axe.cla()
+            del axe
+            gc.collect()
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)
         for i in range(numberPlots):

@@ -235,7 +235,8 @@ class MeasureWindow(widget.MWidget):
         for axe in figure.axes:
             axe.cla()
             del axe
-            gc.collect()
+            # gc.collect()
+
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)
         for i in range(numberPlots):
@@ -267,8 +268,6 @@ class MeasureWindow(widget.MWidget):
         """
         ylabel = 'delta RA [arcsec]'
         start = -self.NUMBER_POINTS * cycle
-        time = data['time'][start:-1:cycle]
-        m = data['raJNow'][start:-1:cycle]
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -277,8 +276,8 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        axe.plot(time,
-                 m,
+        axe.plot(data['time'][start:-1:cycle],
+                 data['raJNow'][start:-1:cycle],
                  marker='o',
                  markersize=1,
                  color=self.M_WHITE,
@@ -309,8 +308,6 @@ class MeasureWindow(widget.MWidget):
         """
         ylabel = 'delta DEC [arcsec]'
         start = -self.NUMBER_POINTS * cycle
-        time = data['time'][start:-1:cycle]
-        m = data['decJNow'][start:-1:cycle]
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -319,8 +316,8 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        axe.plot(time,
-                 m,
+        axe.plot(data['time'][start:-1:cycle],
+                 data['decJNow'][start:-1:cycle],
                  marker='o',
                  markersize=1,
                  color=self.M_WHITE,
@@ -351,12 +348,6 @@ class MeasureWindow(widget.MWidget):
         """
         ylabel = 'Temperature [°C]'
         start = -self.NUMBER_POINTS * cycle
-        time = data['time'][start:-1:cycle]
-        m1 = data['envTemp'][start:-1:cycle]
-        m2 = data['powTemp'][start:-1:cycle]
-        m3 = data['skyTemp'][start:-1:cycle]
-        m4 = data['envDew'][start:-1:cycle]
-        m5 = data['powDew'][start:-1:cycle]
 
         axe.set_title(title,
                       color=self.M_BLUE,
@@ -366,32 +357,32 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        r1, = axe.plot(time,
-                       m1,
+        r1, = axe.plot(data['time'][start:-1:cycle],
+                       data['envTemp'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_WHITE,
                        )
-        r2, = axe.plot(time,
-                       m2,
+        r2, = axe.plot(data['time'][start:-1:cycle],
+                       data['powTemp'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_PINK,
                        )
-        r3, = axe.plot(time,
-                       m3,
+        r3, = axe.plot(data['time'][start:-1:cycle],
+                       data['skyTemp'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_YELLOW,
                        )
-        r4, = axe.plot(time,
-                       m4,
+        r4, = axe.plot(data['time'][start:-1:cycle],
+                       data['envDew'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_GREEN,
                        )
-        r5, = axe.plot(time,
-                       m5,
+        r5, = axe.plot(data['time'][start:-1:cycle],
+                       data['powDew'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_RED,
@@ -429,8 +420,6 @@ class MeasureWindow(widget.MWidget):
         """
         ylabel = 'Pressure [hPas]'
         start = -self.NUMBER_POINTS * cycle
-        time = data['time'][start:-1:cycle]
-        m = data['envPress'][start:-1:cycle]
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -439,8 +428,8 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        axe.plot(time,
-                 m,
+        axe.plot(data['time'][start:-1:cycle],
+                 data['envPress'][start:-1:cycle],
                  marker='o',
                  markersize=1,
                  color=self.M_WHITE,
@@ -471,10 +460,6 @@ class MeasureWindow(widget.MWidget):
         """
         ylabel = 'Humidity [%]'
         start = -self.NUMBER_POINTS * cycle
-        time = data['time'][start:-1:cycle]
-        m1 = data['envHum'][start:-1:cycle]
-        m2 = data['powHum'][start:-1:cycle]
-
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -483,14 +468,14 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        r1, = axe.plot(time,
-                       m1,
+        r1, = axe.plot(data['time'][start:-1:cycle],
+                       data['envHum'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_WHITE,
                        )
-        r2, = axe.plot(time,
-                       m2,
+        r2, = axe.plot(data['time'][start:-1:cycle],
+                       data['powHum'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_PINK,
@@ -528,8 +513,6 @@ class MeasureWindow(widget.MWidget):
         """
         ylabel = 'Sky Quality [mpas]'
         start = -self.NUMBER_POINTS * cycle
-        time = data['time'][start:-1:cycle]
-        m = data['skySQR'][start:-1:cycle]
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -538,8 +521,8 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        axe.plot(time,
-                 m,
+        axe.plot(data['time'][start:-1:cycle],
+                 data['skySQR'][start:-1:cycle],
                  marker='o',
                  markersize=1,
                  color=self.M_WHITE,
@@ -570,8 +553,6 @@ class MeasureWindow(widget.MWidget):
         """
         ylabel = 'Power Voltage on Rack [V]'
         start = -self.NUMBER_POINTS * cycle
-        time = data['time'][start:-1:cycle]
-        m = data['powVolt'][start:-1:cycle]
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -580,8 +561,8 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        axe.plot(time,
-                 m,
+        axe.plot(data['time'][start:-1:cycle],
+                 data['powVolt'][start:-1:cycle],
                  marker='o',
                  markersize=1,
                  color=self.M_WHITE,
@@ -612,13 +593,6 @@ class MeasureWindow(widget.MWidget):
         """
         ylabel = 'Power Current [A]'
         start = -self.NUMBER_POINTS * cycle
-        time = data['time'][start:-1:cycle]
-        m1 = data['powCurr'][start:-1:cycle]
-        m2 = data['powCurr1'][start:-1:cycle]
-        m3 = data['powCurr2'][start:-1:cycle]
-        m4 = data['powCurr3'][start:-1:cycle]
-        m5 = data['powCurr4'][start:-1:cycle]
-
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -627,32 +601,32 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        r1, = axe.plot(time,
-                       m1,
+        r1, = axe.plot(data['time'][start:-1:cycle],
+                       data['powCurr'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_WHITE,
                        )
-        r2, = axe.plot(time,
-                       m2,
+        r2, = axe.plot(data['time'][start:-1:cycle],
+                       data['powCurr1'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_PINK,
                        )
-        r3, = axe.plot(time,
-                       m3,
+        r3, = axe.plot(data['time'][start:-1:cycle],
+                       data['powCurr2'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_YELLOW,
                        )
-        r4, = axe.plot(time,
-                       m4,
+        r4, = axe.plot(data['time'][start:-1:cycle],
+                       data['powCurr3'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_GREEN,
                        )
-        r5, = axe.plot(time,
-                       m5,
+        r5, = axe.plot(data['time'][start:-1:cycle],
+                       data['powCurr4'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_RED,

@@ -235,7 +235,7 @@ class MeasureWindow(widget.MWidget):
         for axe in figure.axes:
             axe.cla()
             del axe
-            # gc.collect()
+            gc.collect()
 
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.05, top=0.95)

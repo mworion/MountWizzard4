@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import bisect
+import gc
 # external packages
 import PyQt5
 import numpy as np
@@ -230,52 +231,61 @@ class HemisphereWindow(widget.MWidget):
         :return:
         """
 
+        if figure is None:
+            return None
+
+        for axe in figure.axes:
+            axe.cla()
+            del axe
+            gc.collect()
+
         figure.clf()
         figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
-        axes = self.hemisphereMat.figure.add_subplot(1, 1, 1, facecolor=None)
-        axes.set_facecolor((0, 0, 0, 0))
-        axes.set_xlim(0, 360)
-        axes.set_ylim(0, 90)
-        axes.spines['bottom'].set_color('#2090C0')
-        axes.spines['top'].set_color('#2090C0')
-        axes.spines['left'].set_color('#2090C0')
-        axes.spines['right'].set_color('#2090C0')
-        axes.grid(True, color='#404040')
-        axes.set_facecolor((0, 0, 0, 0))
-        axes.tick_params(axis='x',
-                         colors='#2090C0',
-                         labelsize=12)
-        axes.set_xlim(0, 360)
-        axes.set_xticks(np.arange(0, 361, 30))
-        axes.set_ylim(0, 90)
-        axes.tick_params(axis='y',
-                         colors='#2090C0',
-                         which='both',
-                         labelleft=True,
-                         labelright=True,
-                         labelsize=12)
-        axes.set_xlabel('Azimuth in degrees',
-                        color='#2090C0',
-                        fontweight='bold',
-                        fontsize=12)
-        axes.set_ylabel('Altitude in degrees',
-                        color='#2090C0',
-                        fontweight='bold',
-                        fontsize=12)
-        return axes
+        axe = self.hemisphereMat.figure.add_subplot(1, 1, 1, facecolor=None)
+
+        axe.set_facecolor((0, 0, 0, 0))
+        axe.set_xlim(0, 360)
+        axe.set_ylim(0, 90)
+        axe.spines['bottom'].set_color('#2090C0')
+        axe.spines['top'].set_color('#2090C0')
+        axe.spines['left'].set_color('#2090C0')
+        axe.spines['right'].set_color('#2090C0')
+        axe.grid(True, color='#404040')
+        axe.set_facecolor((0, 0, 0, 0))
+        axe.tick_params(axis='x',
+                        colors='#2090C0',
+                        labelsize=12)
+        axe.set_xlim(0, 360)
+        axe.set_xticks(np.arange(0, 361, 30))
+        axe.set_ylim(0, 90)
+        axe.tick_params(axis='y',
+                        colors='#2090C0',
+                        which='both',
+                        labelleft=True,
+                        labelright=True,
+                        labelsize=12)
+        axe.set_xlabel('Azimuth in degrees',
+                       color='#2090C0',
+                       fontweight='bold',
+                       fontsize=12)
+        axe.set_ylabel('Altitude in degrees',
+                       color='#2090C0',
+                       fontweight='bold',
+                       fontsize=12)
+        return axe
 
     def drawCanvas(self):
         """
-        drawCanvas retrieves the static content axes from widget and redraws the canvas
+        drawCanvas retrieves the static content axe from widget and redraws the canvas
 
         :return: success for test
         """
 
         if not self.mutexDraw.tryLock():
             return False
-        axes = self.hemisphereMat.figure.axes[0]
-        axes.figure.canvas.draw()
-        axes.figure.canvas.flush_events()
+        axe = self.hemisphereMat.figure.axes[0]
+        axe.figure.canvas.draw()
+        axe.figure.canvas.flush_events()
         self.mutexDraw.unlock()
         return True
 
@@ -1123,12 +1133,9 @@ class HemisphereWindow(widget.MWidget):
         :return: nothing
         """
 
-        # shortening the references
-        fig = self.hemisphereMat.figure
-
         # clearing axes before drawing, only static visible, dynamic only when content
         # is available. visibility is handled with their update method
-        axes = self.setupAxes(figure=fig)
+        axes = self.setupAxes(figure=self.hemisphereMat.figure)
 
         # calling renderer
         self.drawHemisphereStatic(axes=axes)

@@ -26,6 +26,7 @@ import numpy as np
 import matplotlib.path as mpath
 from matplotlib.artist import Artist
 import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import hemisphere_ui
@@ -180,7 +181,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.update1s.disconnect(self.drawCanvas)
         self.app.update10s.disconnect(self.updateAlignStar)
 
-        self.hemisphereMat.figure = None
+        plt.close(self.hemisphereMat.figure)
 
         super().closeEvent(closeEvent)
 

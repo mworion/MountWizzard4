@@ -169,7 +169,7 @@ class MeasureWindow(widget.MWidget):
         self.ui.measureSet3.currentIndexChanged.disconnect(self.cycleRefresh)
         self.app.update1s.disconnect(self.cycleRefresh)
 
-        self.measureMat.figure = None
+        plt.close(self.measureMat.figure)
 
         super().closeEvent(closeEvent)
 

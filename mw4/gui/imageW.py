@@ -28,6 +28,7 @@ from astropy.nddata import Cutout2D
 from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization import SqrtStretch
 from astropy.visualization import ImageNormalize
+import matplotlib.pyplot as plt
 import numpy as np
 # local import
 from mw4.gui import widget
@@ -153,7 +154,7 @@ class ImageWindow(widget.MWidget):
         self.signalShowImage.disconnect(self.showFitsImage)
         self.signalSolveImage.disconnect(self.solveImage)
 
-        self.imageMat.figure = None
+        plt.close(self.imageMat.figure)
 
         super().closeEvent(closeEvent)
 

@@ -267,7 +267,7 @@ class ImageWindow(widget.MWidget):
         self.ui.stop.setEnabled(False)
         self.ui.load.setEnabled(False)
 
-        self.app.astrometry.signals.solveDone.connect(self.solveDone)
+        self.app.astrometry.signals.done.connect(self.solveDone)
 
         self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
 
@@ -290,7 +290,7 @@ class ImageWindow(widget.MWidget):
         self.ui.stop.setEnabled(True)
         self.ui.load.setEnabled(True)
 
-        self.app.astrometry.signals.solveDone.disconnect(self.solveDone)
+        self.app.astrometry.signals.done.disconnect(self.solveDone)
 
         if not result[0]:
             self.app.message.emit('Solving error', 2)

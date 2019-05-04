@@ -47,9 +47,9 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
     __all__ = ['AstrometrySignals']
     version = '0.1'
 
-    solveDone = PyQt5.QtCore.pyqtSignal(object)
-    solveResult = PyQt5.QtCore.pyqtSignal(object)
-    solveMessage = PyQt5.QtCore.pyqtSignal(object)
+    done = PyQt5.QtCore.pyqtSignal(object)
+    result = PyQt5.QtCore.pyqtSignal(object)
+    message = PyQt5.QtCore.pyqtSignal(object)
 
 
 class Astrometry(object):
@@ -543,8 +543,8 @@ class Astrometry(object):
         """
 
         self.mutexSolve.unlock()
-        self.signals.solveDone.emit(self.result)
-        self.signals.solveMessage.emit('')
+        self.signals.done.emit(self.result)
+        self.signals.message.emit('')
 
     def solveThreading(self, fitsPath='', timeout=10, updateFits=False):
         """
@@ -560,18 +560,18 @@ class Astrometry(object):
         """
 
         if not os.path.isfile(fitsPath):
-            self.signals.solveDone.emit(self.result)
+            self.signals.done.emit(self.result)
             return False
         if not self.checkAvailability():
-            self.signals.solveDone.emit(self.result)
+            self.signals.done.emit(self.result)
             return False
 
         if not self.mutexSolve.tryLock():
             self.logger.info('overrun in solve threading')
-            self.signals.solveDone.emit(self.result)
+            self.signals.done.emit(self.result)
             return False
 
-        self.signals.solveMessage.emit('solving')
+        self.signals.message.emit('solving')
         worker = tpool.Worker(self.solve,
                               fitsPath=fitsPath,
                               timeout=timeout,

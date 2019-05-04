@@ -114,8 +114,8 @@ class MainWindow(MWidget,
         self.app.mount.signals.settDone.connect(self.setMountMAC)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
-        self.app.astrometry.signals.solveMessage.connect(self.updateAstrometryStatus)
-        self.app.dome.signals.domeMessage.connect(self.updateDomeStatus)
+        self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
+        self.app.dome.signals.message.connect(self.updateDomeStatus)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)

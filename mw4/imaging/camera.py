@@ -27,7 +27,7 @@ import numpy as np
 from mw4.base import indiClass
 
 
-class DomeSignals(PyQt5.QtCore.QObject):
+class CameraSignals(PyQt5.QtCore.QObject):
     """
     The DomeSignals class offers a list of signals to be used and instantiated by
     the Mount class to get signals for triggers for finished tasks to
@@ -40,8 +40,7 @@ class DomeSignals(PyQt5.QtCore.QObject):
     __all__ = ['DomeSignals']
     version = '0.1'
 
-    azimuth = PyQt5.QtCore.pyqtSignal(object)
-    slewFinished = PyQt5.QtCore.pyqtSignal()
+    finished = PyQt5.QtCore.pyqtSignal()
     message = PyQt5.QtCore.pyqtSignal(object)
 
 
@@ -168,11 +167,11 @@ class Dome(indiClass.IndiClass):
             # calculate the stop slewing condition
             isSlewing = (value != self.azimuth)
             if isSlewing:
-                self.signals.message.emit('slewing')
+                self.signals.domeMessage.emit('slewing')
             if self.slewing and not isSlewing:
                 # todo: adding settlingTime wait until single slew finished will be emitted
                 self.signals.slewFinished.emit()
-                self.signals.message.emit('')
+                self.signals.domeMessage.emit('')
 
             # store for the next cycle
             self.azimuth = value

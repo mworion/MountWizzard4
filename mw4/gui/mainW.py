@@ -115,6 +115,7 @@ class MainWindow(MWidget,
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.astrometry.signals.solveMessage.connect(self.updateAstrometryStatus)
+        self.app.dome.signals.domeMessage.connect(self.updateDomeStatus)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
@@ -399,6 +400,16 @@ class MainWindow(MWidget,
         """
 
         self.ui.astrometryText.setText(text)
+        return True
+
+    def updateDomeStatus(self, text):
+        """
+
+        :param text:
+        :return: true for test purpose
+        """
+
+        self.ui.domeText.setText(text)
         return True
 
     def updateStatusGUI(self, obs):

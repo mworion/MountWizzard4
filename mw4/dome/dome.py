@@ -42,6 +42,7 @@ class DomeSignals(PyQt5.QtCore.QObject):
 
     azimuth = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
+    domeMessage = PyQt5.QtCore.pyqtSignal(object)
 
 
 class Dome(indiClass.IndiClass):
@@ -166,9 +167,12 @@ class Dome(indiClass.IndiClass):
 
             # calculate the stop slewing condition
             isSlewing = (value != self.azimuth)
+            if isSlewing:
+                self.signals.domeMessage.emit('slewing')
             if self.slewing and not isSlewing:
                 # todo: adding settlingTime wait until single slew finished will be emitted
                 self.signals.slewFinished.emit()
+                self.signals.domeMessage.emit('')
 
             # store for the next cycle
             self.azimuth = value

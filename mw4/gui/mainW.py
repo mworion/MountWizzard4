@@ -113,6 +113,8 @@ class MainWindow(MWidget,
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.mount.signals.settDone.connect(self.setMountMAC)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
+        self.app.remoteCommand.connect(self.remoteCommand)
+        self.app.astrometry.signals.solveMessage.connect(self.updateAstrometryStatus)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
@@ -123,7 +125,6 @@ class MainWindow(MWidget,
         self.ui.saveConfig.clicked.connect(self.saveProfile)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
-        self.app.remoteCommand.connect(self.remoteCommand)
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
 
         # initial call for writing the gui
@@ -389,6 +390,16 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
+
+    def updateAstrometryStatus(self, text):
+        """
+
+        :param text:
+        :return: true for test purpose
+        """
+
+        self.ui.astrometryText.setText(text)
+        return True
 
     def updateStatusGUI(self, obs):
         """

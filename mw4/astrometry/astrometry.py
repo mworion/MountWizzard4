@@ -49,6 +49,7 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
 
     solveDone = PyQt5.QtCore.pyqtSignal(object)
     solveResult = PyQt5.QtCore.pyqtSignal(object)
+    solveMessage = PyQt5.QtCore.pyqtSignal(object)
 
 
 class Astrometry(object):
@@ -543,6 +544,7 @@ class Astrometry(object):
 
         self.mutexSolve.unlock()
         self.signals.solveDone.emit(self.result)
+        self.signals.solveMessage.emit('')
 
     def solveThreading(self, fitsPath='', timeout=10, updateFits=False):
         """
@@ -569,6 +571,7 @@ class Astrometry(object):
             self.signals.solveDone.emit(self.result)
             return False
 
+        self.signals.solveMessage.emit('solving')
         worker = tpool.Worker(self.solve,
                               fitsPath=fitsPath,
                               timeout=timeout,

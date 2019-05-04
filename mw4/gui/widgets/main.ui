@@ -466,7 +466,7 @@
         </widget>
        </item>
        <item row="2" column="3">
-        <widget class="QLineEdit" name="cameraText">
+        <widget class="QLineEdit" name="imagingText">
          <property name="enabled">
           <bool>false</bool>
          </property>

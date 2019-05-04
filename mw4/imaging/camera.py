@@ -77,9 +77,12 @@ class Camera(indiClass.IndiClass):
         self.app = app
         self.signals = CameraSignals()
 
+        self.exposure = 1
+        self.exposing = False
+
     def setUpdateConfig(self, deviceName):
         """
-        _setUpdateRate corrects the update rate of weather devices to get an defined
+        _setUpdateRate corrects the update rate of camera devices to get an defined
         setting regardless, what is setup in server side.
 
         :param deviceName:
@@ -92,20 +95,27 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
 
-        return True
+        # setting polling updates in driver
+        update = self.device.getNumber('POLLING_PERIOD')
+
+        if 'PERIOD_MS' not in update:
+            return False
+
+        if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
+            return True
+
+        update['PERIOD_MS'] = self.UPDATE_RATE
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='POLLING_PERIOD',
+                                        elements=update,
+                                        )
+
+        return suc
 
     def updateNumber(self, deviceName, propertyName):
         """
         updateNumber is called whenever a new number is received in client. it runs
         through the device list and writes the number data to the according locations.
-        for global weather data as there is no dew point value available, it calculates
-        it and stores it as value as well.
-
-        in addition it does a first setup and config for the device. basically the update
-        rates are set to 10 seconds if they are not on this level.
-
-        if no dew point is available in data, it will calculate this value from
-        temperature and humidity.
 
         :param deviceName:
         :param propertyName:
@@ -120,5 +130,15 @@ class Camera(indiClass.IndiClass):
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
             print(propertyName, element, value)
+
+            isExposing = (value != 0)
+            if self.exposing and isExposing:
+                self.signals.message.emit(f'{value:3.0f}')
+
+            if self.exposing and not isExposing:
+                self.signals.finished.emit()
+                self.signals.message.emit('')
+
+            self.exposing = isExposing
 
         return True

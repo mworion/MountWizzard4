@@ -56,6 +56,7 @@ class ImageWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.imageFileName = ''
+        self.imageData = None
         self.folder = ''
 
         self.colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
@@ -535,7 +536,7 @@ class ImageWindow(widget.MWidget):
             return False
 
         with fits.open(imagePath, mode='update') as fitsHandle:
-            image = fitsHandle[0].data
+            self.imageData = fitsHandle[0].data
             header = fitsHandle[0].header
 
             # correct faulty headers, because some imaging programs did not
@@ -550,18 +551,18 @@ class ImageWindow(widget.MWidget):
         hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
 
         # process the image for viewing
-        image = self.zoomImage(image=image, wcsObject=wcsObject)
-        norm = self.stretchImage(image=image)
+        self.imageData = self.zoomImage(image=self.imageData, wcsObject=wcsObject)
+        norm = self.stretchImage(image=self.imageData)
         colorMap = self.colorImage()
 
         # check which type of presentation we would like to have
         if hasDistortion and self.ui.checkUseWCS.isChecked():
             axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
         else:
-            axe = self.setupNormal(figure=self.imageMat.figure, image=image)
+            axe = self.setupNormal(figure=self.imageMat.figure, image=self.imageData)
 
         # finally show it
-        axe.imshow(image, norm=norm, cmap=colorMap, origin='lower')
+        axe.imshow(self.imageData, norm=norm, cmap=colorMap, origin='lower')
         axe.figure.canvas.draw()
 
         return True

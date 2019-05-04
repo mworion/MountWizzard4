@@ -482,13 +482,13 @@ class ImageWindow(widget.MWidget):
         axe1.set_axislabel_position('tb')
         return axe
 
-    def setupNormal(self, figure=None, image=None):
+    def setupNormal(self, figure=None, header={}):
         """
         setupNormal build the image widget to show it with pixels as axes. the center of
         the image will have coordinates 0,0.
 
         :param figure:
-        :param image:
+        :param header:
         :return: axes object to plot onto
         """
 
@@ -500,7 +500,8 @@ class ImageWindow(widget.MWidget):
         axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
         axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)
 
-        sizeY, sizeX = image.shape
+        sizeX = header.get('NAXIS1', 1)
+        sizeY = header.get('NAXIS2', 1)
         midX = int(sizeX / 2)
         midY = int(sizeY / 2)
         number = 10
@@ -559,7 +560,7 @@ class ImageWindow(widget.MWidget):
         if hasDistortion and self.ui.checkUseWCS.isChecked():
             axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
         else:
-            axe = self.setupNormal(figure=self.imageMat.figure, image=self.imageData)
+            axe = self.setupNormal(figure=self.imageMat.figure, header=header)
 
         # finally show it
         axe.imshow(self.imageData, norm=norm, cmap=colorMap, origin='lower')

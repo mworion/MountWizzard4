@@ -65,6 +65,8 @@ class IndiClass(object):
         self.client.signals.defNumber.connect(self.updateNumber)
         self.client.signals.newSwitch.connect(self.updateSwitch)
         self.client.signals.defSwitch.connect(self.updateSwitch)
+        self.client.signals.newText.connect(self.updateText)
+        self.client.signals.defText.connect(self.updateText)
         self.client.signals.deviceConnected.connect(self.setUpdateConfig)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)
@@ -193,6 +195,22 @@ class IndiClass(object):
     def updateSwitch(self, deviceName, propertyName):
         """
         updateSwitch is called whenever a new switch is received in client. it runs
+        through the device list and writes the number data to the according locations.
+        for global weather data as there is no dew point value available, it calculates
+        it and stores it as value as well.
+
+        in addition it does a first setup and config for the device. basically the update
+        rates are set to 10 seconds if they are not on this level.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+        pass
+
+    def updateText(self, deviceName, propertyName):
+        """
+        updateText is called whenever a new switch is received in client. it runs
         through the device list and writes the number data to the according locations.
         for global weather data as there is no dew point value available, it calculates
         it and stores it as value as well.

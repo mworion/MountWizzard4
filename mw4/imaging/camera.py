@@ -142,3 +142,25 @@ class Camera(indiClass.IndiClass):
             self.exposing = isExposing
 
         return True
+
+    def updateText(self, deviceName, propertyName):
+        """
+        updateNumber is called whenever a new number is received in client. it runs
+        through the device list and writes the number data to the according locations.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getText(propertyName).items():
+
+            print(propertyName, element, value)
+
+
+        return True

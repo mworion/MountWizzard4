@@ -110,9 +110,6 @@ class Environ(indiClass.IndiClass):
         for global weather data as there is no dew point value available, it calculates
         it and stores it as value as well.
 
-        in addition it does a first setup and config for the device. basically the update
-        rates are set to 10 seconds if they are not on this level.
-
         if no dew point is available in data, it will calculate this value from
         temperature and humidity.
 

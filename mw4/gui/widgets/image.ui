@@ -53,7 +53,7 @@
     <number>4</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,0,0,0,0,1,0">
      <property name="spacing">
       <number>4</number>
      </property>
@@ -99,32 +99,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="solve">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Solve</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QPushButton" name="exposeN">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Expose N</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <widget class="QPushButton" name="expose">
          <property name="minimumSize">
@@ -148,7 +122,46 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="3" colspan="2">
+       <item row="2" column="1" colspan="4">
+        <widget class="QCheckBox" name="checkUpdateFits">
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Update Fits after Solve</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="solve">
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Solve</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="exposeN">
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Expose N</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2" colspan="3">
         <widget class="QPushButton" name="stop">
          <property name="minimumSize">
           <size>
@@ -159,60 +172,6 @@
          <property name="text">
           <string>Stop Expose</string>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="5">
-        <widget class="QGroupBox" name="imagesettings">
-         <property name="title">
-          <string>Image settings</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <property name="spacing">
-           <number>4</number>
-          </property>
-          <property name="leftMargin">
-           <number>4</number>
-          </property>
-          <property name="topMargin">
-           <number>6</number>
-          </property>
-          <property name="rightMargin">
-           <number>4</number>
-          </property>
-          <property name="bottomMargin">
-           <number>4</number>
-          </property>
-          <item>
-           <widget class="QComboBox" name="zoom">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="color">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="stretch">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </widget>
        </item>
       </layout>
@@ -231,80 +190,115 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="coords" stretch="0,0">
-       <property name="spacing">
-        <number>4</number>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="title">
+        <string>Coords to be used</string>
        </property>
-       <property name="leftMargin">
-        <number>10</number>
+       <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>4</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="checkUsePixel">
+          <property name="text">
+           <string>WCS Pixel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="checkUseWCS">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>WCS Distortion</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_4">
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
        </property>
-       <property name="topMargin">
-        <number>4</number>
+       <property name="midLineWidth">
+        <number>1</number>
        </property>
-       <property name="rightMargin">
-        <number>4</number>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
-       <property name="bottomMargin">
-        <number>4</number>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="attributsgroup">
+       <property name="title">
+        <string>Image attributes</string>
        </property>
-       <item>
-        <widget class="QGroupBox" name="groupBox_3">
-         <property name="title">
-          <string>Coords to be used</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0">
-          <property name="spacing">
-           <number>4</number>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>4</number>
+        </property>
+        <property name="rightMargin">
+         <number>15</number>
+        </property>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="checkHasWCS">
+          <property name="enabled">
+           <bool>false</bool>
           </property>
-          <property name="leftMargin">
-           <number>10</number>
+          <property name="text">
+           <string>has WCS</string>
           </property>
-          <property name="topMargin">
-           <number>4</number>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkHasDistortion">
+          <property name="enabled">
+           <bool>false</bool>
           </property>
-          <property name="rightMargin">
-           <number>10</number>
+          <property name="text">
+           <string>has Distortion</string>
           </property>
-          <property name="bottomMargin">
-           <number>4</number>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkIsFlipped">
+          <property name="enabled">
+           <bool>false</bool>
           </property>
-          <item>
-           <widget class="QRadioButton" name="checkUsePixel">
-            <property name="text">
-             <string>WCS Pixel</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="checkUseWCS">
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>WCS Distortion</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="checkUpdateFits">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Update Fits after Solve</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+          <property name="text">
+           <string>is Flipped</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </item>
      <item>
       <widget class="Line" name="line_3">
@@ -320,77 +314,58 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="imageattributes" stretch="0">
-       <property name="spacing">
-        <number>4</number>
+      <widget class="QGroupBox" name="imagesettings">
+       <property name="title">
+        <string>Image settings</string>
        </property>
-       <property name="leftMargin">
-        <number>4</number>
-       </property>
-       <property name="topMargin">
-        <number>4</number>
-       </property>
-       <property name="rightMargin">
-        <number>4</number>
-       </property>
-       <property name="bottomMargin">
-        <number>4</number>
-       </property>
-       <item>
-        <widget class="QGroupBox" name="attributsgroup">
-         <property name="title">
-          <string>Image attributes</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_6">
-          <property name="spacing">
-           <number>4</number>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <property name="leftMargin">
+         <number>4</number>
+        </property>
+        <property name="topMargin">
+         <number>6</number>
+        </property>
+        <property name="rightMargin">
+         <number>4</number>
+        </property>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QComboBox" name="stretch">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
           </property>
-          <property name="leftMargin">
-           <number>10</number>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="color">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
           </property>
-          <property name="topMargin">
-           <number>4</number>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="zoom">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
           </property>
-          <property name="rightMargin">
-           <number>15</number>
-          </property>
-          <property name="bottomMargin">
-           <number>4</number>
-          </property>
-          <item>
-           <widget class="QCheckBox" name="checkHasWCS">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>has WCS</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="checkHasDistortion">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>has Distortion</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="checkIsFlipped">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>is Flipped</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer">

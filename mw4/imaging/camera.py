@@ -107,6 +107,7 @@ class Camera(indiClass.IndiClass):
         update['PERIOD_MS'] = self.UPDATE_RATE
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='POLLING_PERIOD',
+
                                         elements=update,
                                         )
 
@@ -131,15 +132,16 @@ class Camera(indiClass.IndiClass):
             self.data[element] = value
             print(propertyName, element, value)
 
-            isExposing = (value != 0)
-            if self.exposing and isExposing:
-                self.signals.message.emit(f'{value:3.0f}')
+            if propertyName == 'CCD_EXPOSURE':
+                isExposing = (value != 0)
+                if self.exposing and isExposing:
+                    self.signals.message.emit(f'{value:3.0f}')
 
-            if self.exposing and not isExposing:
-                self.signals.finished.emit()
-                self.signals.message.emit('')
+                if self.exposing and not isExposing:
+                    self.signals.finished.emit()
+                    self.signals.message.emit('')
 
-            self.exposing = isExposing
+                self.exposing = isExposing
 
         return True
 
@@ -159,8 +161,46 @@ class Camera(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getText(propertyName).items():
-
+            self.data[element] = value
             print(propertyName, element, value)
+        return True
 
+    def updateSwitch(self, deviceName, propertyName):
+        """
+        updateNumber is called whenever a new number is received in client. it runs
+        through the device list and writes the number data to the according locations.
 
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getSwitch(propertyName).items():
+            self.data[element] = value
+            print(propertyName, element, value)
+        return True
+
+    def updateLight(self, deviceName, propertyName):
+        """
+        updateNumber is called whenever a new number is received in client. it runs
+        through the device list and writes the number data to the according locations.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getLight(propertyName).items():
+            self.data[element] = value
+            print(propertyName, element, value)
         return True

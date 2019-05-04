@@ -101,7 +101,7 @@
       <number>4</number>
      </property>
      <item>
-      <layout class="QGridLayout" name="status" rowstretch="0,0,0,0,0,0,0" columnstretch="1,1,1,1,1">
+      <layout class="QGridLayout" name="status" rowstretch="0,0,0,0,0,0,0" columnstretch="1,0,0,0,0">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -144,60 +144,8 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0" colspan="5">
-        <widget class="QLabel" name="label_38">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>10</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Status</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QPushButton" name="mountConnected">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of mount&lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Yellow: Connecting&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Mount</string>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QLineEdit" name="domeText">
+       <item row="2" column="3">
+        <widget class="QLineEdit" name="camerText">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -250,8 +198,11 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="3" rowspan="3">
-        <widget class="QPushButton" name="openMeasureW">
+       <item row="3" column="0">
+        <widget class="QPushButton" name="mountConnected">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -276,54 +227,18 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the analyse window for checking measurements and modlelling data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of mount&lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Yellow: Connecting&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
-          <string>Measure</string>
+          <string>Mount</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="4" column="0" rowspan="3">
-        <widget class="QPushButton" name="openMessageW">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the message and log window. The window could be sized in height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>Message</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QLineEdit" name="statusText">
+       <item row="2" column="4">
+        <widget class="QLineEdit" name="astrometryText">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -348,6 +263,7 @@
          <property name="font">
           <font>
            <family>Arial</family>
+           <pointsize>8</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
@@ -365,7 +281,7 @@
           <string>Status feedback from mount </string>
          </property>
          <property name="text">
-          <string>-</string>
+          <string/>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -375,8 +291,44 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="4">
-        <widget class="QLineEdit" name="astrometryText">
+       <item row="3" column="3">
+        <widget class="QPushButton" name="imagingConnected">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of camera:&lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Yellow: Connecting&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;p&gt;Gray: No Configured&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Camera</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="domeText">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -465,8 +417,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="3">
-        <widget class="QLineEdit" name="imagingText">
+       <item row="3" column="1">
+        <widget class="QPushButton" name="environConnected">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -490,87 +442,32 @@
          </property>
          <property name="font">
           <font>
-           <family>Arial</family>
-           <pointsize>8</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="mouseTracking">
-          <bool>false</bool>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="acceptDrops">
-          <bool>false</bool>
-         </property>
-         <property name="toolTip">
-          <string>Status feedback from mount </string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="5">
-        <widget class="Line" name="line_3">
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="midLineWidth">
-          <number>1</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" rowspan="3">
-        <widget class="QPushButton" name="openHemisphereW">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
            <pointsize>10</pointsize>
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the hemisphere window, where you can see all model points, the horizon mask and the modeling progress&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of environment: &lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Gray: No Configured&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
-          <string>Hemis</string>
+          <string>Environ</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="5">
+        <widget class="QLabel" name="label_38">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Status</string>
          </property>
         </widget>
        </item>
        <item row="4" column="2" rowspan="3">
-        <widget class="QPushButton" name="openImageW">
+        <widget class="QPushButton" name="openHemisphereW">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -602,43 +499,7 @@
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>Image</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="3">
-        <widget class="QPushButton" name="imagingConnected">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of camera:&lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Yellow: Connecting&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;p&gt;Gray: No Configured&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Camera</string>
+          <string>Hemis</string>
          </property>
         </widget>
        </item>
@@ -678,11 +539,21 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QPushButton" name="environConnected">
-         <property name="enabled">
-          <bool>false</bool>
+       <item row="1" column="0" colspan="5">
+        <widget class="Line" name="line_3">
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
          </property>
+         <property name="midLineWidth">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="3" rowspan="3">
+        <widget class="QPushButton" name="openImageW">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -707,10 +578,139 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of environment: &lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Gray: No Configured&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the analyse window for checking measurements and modlelling data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
          </property>
          <property name="text">
-          <string>Environ</string>
+          <string>Image</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QLineEdit" name="statusText">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>Status feedback from mount </string>
+         </property>
+         <property name="text">
+          <string>-</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" rowspan="3">
+        <widget class="QPushButton" name="openMeasureW">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the hemisphere window, where you can see all model points, the horizon mask and the modeling progress&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Measure</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" rowspan="3">
+        <widget class="QPushButton" name="openMessageW">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the message and log window. The window could be sized in height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>Message</string>
          </property>
         </widget>
        </item>
@@ -782,6 +782,31 @@
          </property>
         </widget>
        </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Profile: </string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="Line" name="line_6">
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="midLineWidth">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0" rowspan="3" colspan="3">
         <widget class="QLineEdit" name="timeComputer">
          <property name="enabled">
@@ -842,31 +867,6 @@
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Profile: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="2">
-        <widget class="Line" name="line_6">
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="midLineWidth">
-          <number>1</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -12982,8 +12982,8 @@ manually</string>
           <rect>
            <x>10</x>
            <y>5</y>
-           <width>751</width>
-           <height>376</height>
+           <width>1328</width>
+           <height>419</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
@@ -12996,21 +12996,8 @@ manually</string>
           <property name="spacing">
            <number>6</number>
           </property>
-          <item row="11" column="0" colspan="2">
-           <widget class="Line" name="line_82">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0" rowspan="3">
-           <widget class="QLabel" name="ast">
+          <item row="12" column="0" rowspan="2">
+           <widget class="QLabel" name="sky">
             <property name="font">
              <font>
               <weight>50</weight>
@@ -13018,7 +13005,7 @@ manually</string>
              </font>
             </property>
             <property name="text">
-             <string>Astrometry Device</string>
+             <string>Sky Meter Device</string>
             </property>
            </widget>
           </item>
@@ -13035,8 +13022,47 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="7">
-           <widget class="QComboBox" name="powerDevice">
+          <item row="4" column="6" rowspan="3">
+           <widget class="QLabel" name="label_49">
+            <property name="font">
+             <font>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Remote Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="0" rowspan="2">
+           <widget class="QLabel" name="env">
+            <property name="font">
+             <font>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Environment Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0" colspan="2">
+           <widget class="Line" name="line_82">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1" rowspan="2">
+           <widget class="QComboBox" name="environDevice">
             <property name="minimumSize">
              <size>
               <width>200</width>
@@ -13045,8 +13071,8 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" rowspan="2">
-           <widget class="QLabel" name="ccd">
+          <item row="8" column="6">
+           <widget class="QLabel" name="label_46">
             <property name="font">
              <font>
               <weight>50</weight>
@@ -13054,7 +13080,46 @@ manually</string>
              </font>
             </property>
             <property name="text">
-             <string>Imaging Device</string>
+             <string>Relay Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="1">
+           <widget class="QComboBox" name="weatherDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4" rowspan="18">
+           <widget class="Line" name="line_86">
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
+            <property name="midLineWidth">
+             <number>2</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="6">
+           <widget class="QLabel" name="po">
+            <property name="font">
+             <font>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>PowerBox Device</string>
             </property>
            </widget>
           </item>
@@ -13071,8 +13136,8 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="12" column="0" rowspan="2">
-           <widget class="QLabel" name="sky">
+          <item row="7" column="0">
+           <widget class="QLabel" name="dome">
             <property name="font">
              <font>
               <weight>50</weight>
@@ -13080,20 +13145,33 @@ manually</string>
              </font>
             </property>
             <property name="text">
-             <string>Sky Meter Device</string>
+             <string>Dome Device</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="6" colspan="2">
-           <widget class="Line" name="line_81">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="label_263">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
             </property>
-            <property name="midLineWidth">
-             <number>1</number>
+            <property name="text">
+             <string>Core</string>
             </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+           </widget>
+          </item>
+          <item row="2" column="0" rowspan="2">
+           <widget class="QLabel" name="ccd">
+            <property name="font">
+             <font>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Imaging Device</string>
             </property>
            </widget>
           </item>
@@ -13113,177 +13191,6 @@ manually</string>
             </property>
            </spacer>
           </item>
-          <item row="7" column="1">
-           <widget class="QComboBox" name="domeDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="0" rowspan="2">
-           <widget class="QLabel" name="env">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Environment Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="7" rowspan="3">
-           <widget class="QComboBox" name="remoteDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="1" rowspan="2">
-           <widget class="QComboBox" name="skymeterDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1" rowspan="3">
-           <widget class="QComboBox" name="astrometryDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="1">
-           <widget class="QComboBox" name="weatherDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="1" rowspan="2">
-           <widget class="QComboBox" name="environDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="6">
-           <widget class="QLabel" name="po">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>PowerBox Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1" rowspan="2">
-           <widget class="QComboBox" name="imagingDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="dome">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Dome Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0" rowspan="2" colspan="2">
-           <widget class="QLabel" name="label_302">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Oberservation Conditions</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="label_263">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Core</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="7">
-           <widget class="QComboBox" name="relayDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="0">
-           <widget class="QLabel" name="label_162">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Weather Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="6">
-           <widget class="QLabel" name="label_46">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Relay Device</string>
-            </property>
-           </widget>
-          </item>
           <item row="17" column="0" colspan="2">
            <spacer name="verticalSpacer_2">
             <property name="orientation">
@@ -13297,16 +13204,13 @@ manually</string>
             </property>
            </spacer>
           </item>
-          <item row="4" column="6" rowspan="3">
-           <widget class="QLabel" name="label_49">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Remote Device</string>
+          <item row="2" column="1" rowspan="2">
+           <widget class="QComboBox" name="imagingDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -13320,6 +13224,19 @@ manually</string>
             </property>
             <property name="text">
              <string>Measure Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" rowspan="3">
+           <widget class="QLabel" name="ast">
+            <property name="font">
+             <font>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Astrometry Device</string>
             </property>
            </widget>
           </item>
@@ -13339,24 +13256,107 @@ manually</string>
             </property>
            </spacer>
           </item>
-          <item row="0" column="4" rowspan="18">
-           <widget class="Line" name="line_86">
+          <item row="4" column="1" rowspan="3">
+           <widget class="QComboBox" name="astrometryDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0" rowspan="2" colspan="2">
+           <widget class="QLabel" name="label_302">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Oberservation Conditions</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6" colspan="2">
+           <widget class="Line" name="line_81">
             <property name="frameShadow">
              <enum>QFrame::Plain</enum>
             </property>
-            <property name="lineWidth">
-             <number>2</number>
-            </property>
             <property name="midLineWidth">
-             <number>2</number>
+             <number>1</number>
             </property>
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="0">
+           <widget class="QLabel" name="label_162">
+            <property name="font">
+             <font>
+              <weight>50</weight>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Weather Device</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="1" rowspan="2">
+           <widget class="QComboBox" name="skymeterDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="7">
+           <widget class="QComboBox" name="powerDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
             </property>
            </widget>
           </item>
           <item row="2" column="7" rowspan="2">
            <widget class="QComboBox" name="measureDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="7" rowspan="3">
+           <widget class="QComboBox" name="remoteDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="7">
+           <widget class="QComboBox" name="relayDevice">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QComboBox" name="domeDevice">
             <property name="minimumSize">
              <size>
               <width>200</width>
@@ -19424,7 +19424,7 @@ manually</string>
   <tabstop>btn_startSlewingSatellite</tabstop>
   <tabstop>btn_clearSatellite</tabstop>
   <tabstop>imagingConnected</tabstop>
-  <tabstop>openMeasureW</tabstop>
+  <tabstop>openImageW</tabstop>
   <tabstop>le_satellite2derrMotion</tabstop>
   <tabstop>astrometryConnected</tabstop>
   <tabstop>environConnected</tabstop>
@@ -19435,8 +19435,8 @@ manually</string>
   <tabstop>le_satellitePerigee</tabstop>
   <tabstop>openSatelliteW</tabstop>
   <tabstop>le_satelliteAnomaly</tabstop>
+  <tabstop>openMeasureW</tabstop>
   <tabstop>openHemisphereW</tabstop>
-  <tabstop>openImageW</tabstop>
   <tabstop>le_satellite1derrMotion</tabstop>
   <tabstop>le_satelliteMotion</tabstop>
   <tabstop>btn_selectSatellite</tabstop>

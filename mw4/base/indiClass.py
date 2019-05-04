@@ -67,6 +67,8 @@ class IndiClass(object):
         self.client.signals.defSwitch.connect(self.updateSwitch)
         self.client.signals.newText.connect(self.updateText)
         self.client.signals.defText.connect(self.updateText)
+        self.client.signals.newLight.connect(self.updateLight)
+        self.client.signals.defLight.connect(self.updateLight)
         self.client.signals.deviceConnected.connect(self.setUpdateConfig)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)

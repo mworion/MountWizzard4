@@ -57,9 +57,9 @@ class SettDevice(object):
                                    'remoteDevice',
                                    ]
         self.setupDeviceGui()
-        self.ui.relayDevice.activated.connect(self.enableRelay)
-        self.ui.remoteDevice.activated.connect(self.enableRemote)
-        self.ui.measureDevice.activated.connect(self.enableMeasure)
+        self.ui.relayDevice.activated.connect(self.relayDispatch)
+        self.ui.remoteDevice.activated.connect(self.remoteDispatch)
+        self.ui.measureDevice.activated.connect(self.measureDispatch)
         self.ui.domeDevice.activated.connect(self.domeDispatch)
         self.ui.environDevice.activated.connect(self.environDispatch)
         self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
@@ -79,10 +79,11 @@ class SettDevice(object):
         for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
             dropDown.setCurrentIndex(config.get(key, 0))
 
-        self.enableRelay()
-        self.enableRemote()
-        self.enableMeasure()
+        self.relayDispatch()
+        self.remoteDispatch()
+        self.measureDispatch()
         self.domeDispatch()
+        self.imagingDispatch()
         self.environDispatch()
         self.skymeterDispatch()
         self.weatherDispatch()
@@ -132,6 +133,7 @@ class SettDevice(object):
         self.ui.relayDevice.addItem('Built-In')
         self.ui.environDevice.addItem('INDI')
         self.ui.domeDevice.addItem('INDI')
+        self.ui.imagingDevice.addItem('INDI')
         self.ui.skymeterDevice.addItem('INDI')
         self.ui.weatherDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
@@ -139,9 +141,9 @@ class SettDevice(object):
 
         return True
 
-    def enableRelay(self):
+    def relayDispatch(self):
         """
-        enableRelay allows to run the relay box.
+        relayDispatch allows to run the relay box.
 
         :return: success for test
         """
@@ -168,7 +170,7 @@ class SettDevice(object):
         self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
         return True
 
-    def enableRemote(self):
+    def remoteDispatch(self):
         """
         remoteAccess enables or disables the remote access
 
@@ -186,9 +188,9 @@ class SettDevice(object):
 
         return True
 
-    def enableMeasure(self):
+    def measureDispatch(self):
         """
-        enableMeasure enables or disables the on board measurement process
+        measureDispatch enables or disables the on board measurement process
 
         :return: true for test purpose
         """
@@ -224,6 +226,28 @@ class SettDevice(object):
             self.app.dome.stopCommunication()
             self.changeStyleDynamic(self.ui.domeConnected, 'color', 'gray')
             self.app.message.emit('Dome disabled', 0)
+
+        return True
+
+    def imagingDispatch(self):
+        """
+        imagingDispatch selects the type of device for imaging and start / stop them.
+        in addition this function enables and disables other gui functions, which rely on
+        the presence of a running driver
+
+        :return: true for test purpose
+        """
+
+        if self.ui.imagingDevice.currentText().startswith('INDI'):
+            self.app.imaging.client.host = self.ui.imagingHost.text()
+            self.app.imaging.name = self.ui.imagingDeviceName.currentText()
+            self.app.imaging.startCommunication()
+            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'red')
+            self.app.message.emit('Imaging enabled', 0)
+        else:
+            self.app.imaging.stopCommunication()
+            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'gray')
+            self.app.message.emit('Imaging disabled', 0)
 
         return True
 

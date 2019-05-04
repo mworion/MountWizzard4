@@ -77,7 +77,7 @@ def test_enableRelay_1(qtbot):
                            'stopTimers',
                            return_value=None):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableRelay()
+            suc = app.mainW.relayDispatch()
             assert suc
         assert ['Relay disabled', 0] == blocker.args
 
@@ -88,7 +88,7 @@ def test_enableRelay_2(qtbot):
                            'startTimers',
                            return_value=None):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableRelay()
+            suc = app.mainW.relayDispatch()
             assert suc
         assert ['Relay enabled', 0] == blocker.args
 
@@ -99,7 +99,7 @@ def test_enableRemote_1(qtbot):
                            'startRemote',
                            return_value=None):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableRemote()
+            suc = app.mainW.remoteDispatch()
             assert suc
         assert ['Remote disabled', 0] == blocker.args
 
@@ -110,7 +110,7 @@ def test_enableRemote_2(qtbot):
                            'stopRemote',
                            return_value=None):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableRemote()
+            suc = app.mainW.remoteDispatch()
             assert suc
         assert ['Remote enabled', 0] == blocker.args
 
@@ -121,7 +121,7 @@ def test_enableMeasure_1(qtbot):
                            'startMeasurement',
                            return_value=None):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableMeasure()
+            suc = app.mainW.measureDispatch()
             assert suc
         assert ['Measurement enabled', 0] == blocker.args
 
@@ -132,7 +132,7 @@ def test_enableMeasure_2(qtbot):
                            'stopMeasurement',
                            return_value=None):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.enableMeasure()
+            suc = app.mainW.measureDispatch()
             assert suc
         assert ['Measurement disabled', 0] == blocker.args
 

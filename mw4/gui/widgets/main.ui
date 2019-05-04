@@ -145,7 +145,7 @@
         </widget>
        </item>
        <item row="2" column="3">
-        <widget class="QLineEdit" name="camerText">
+        <widget class="QLineEdit" name="imagingText">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -12982,8 +12982,8 @@ manually</string>
           <rect>
            <x>10</x>
            <y>5</y>
-           <width>1328</width>
-           <height>419</height>
+           <width>756</width>
+           <height>381</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">

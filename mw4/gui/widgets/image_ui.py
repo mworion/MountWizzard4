@@ -40,6 +40,7 @@ class Ui_ImageDialog(object):
         self.expose.setObjectName("expose")
         self.exposesettings.addWidget(self.expose, 0, 0, 1, 1)
         self.imageFileName = QtWidgets.QLineEdit(ImageDialog)
+        self.imageFileName.setEnabled(False)
         self.imageFileName.setMinimumSize(QtCore.QSize(0, 25))
         self.imageFileName.setObjectName("imageFileName")
         self.exposesettings.addWidget(self.imageFileName, 1, 1, 1, 4)

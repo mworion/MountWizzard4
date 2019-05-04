@@ -411,14 +411,6 @@ def test_solve():
     assert not suc
 
 
-def test_solveDone():
-    app.solveDone()
-
-
-def test_solveResult():
-    app.solveResult('')
-
-
 def test_solveClear():
     app.mutexSolve.lock()
     app.solveClear()

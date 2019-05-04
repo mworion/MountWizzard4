@@ -182,11 +182,6 @@ class IndiClass(object):
         """
         updateNumber is called whenever a new number is received in client. it runs
         through the device list and writes the number data to the according locations.
-        for global weather data as there is no dew point value available, it calculates
-        it and stores it as value as well.
-
-        in addition it does a first setup and config for the device. basically the update
-        rates are set to 10 seconds if they are not on this level.
 
         :param deviceName:
         :param propertyName:
@@ -198,11 +193,6 @@ class IndiClass(object):
         """
         updateSwitch is called whenever a new switch is received in client. it runs
         through the device list and writes the number data to the according locations.
-        for global weather data as there is no dew point value available, it calculates
-        it and stores it as value as well.
-
-        in addition it does a first setup and config for the device. basically the update
-        rates are set to 10 seconds if they are not on this level.
 
         :param deviceName:
         :param propertyName:
@@ -214,11 +204,17 @@ class IndiClass(object):
         """
         updateText is called whenever a new switch is received in client. it runs
         through the device list and writes the number data to the according locations.
-        for global weather data as there is no dew point value available, it calculates
-        it and stores it as value as well.
 
-        in addition it does a first setup and config for the device. basically the update
-        rates are set to 10 seconds if they are not on this level.
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+        pass
+
+    def updateLight(self, deviceName, propertyName):
+        """
+        updateLight is called whenever a new switch is received in client. it runs
+        through the device list and writes the number data to the according locations.
 
         :param deviceName:
         :param propertyName:

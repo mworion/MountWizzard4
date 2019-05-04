@@ -77,9 +77,6 @@ class Camera(indiClass.IndiClass):
         self.app = app
         self.signals = CameraSignals()
 
-        self.exposure = 1
-        self.exposing = False
-
     def setUpdateConfig(self, deviceName):
         """
         _setUpdateRate corrects the update rate of camera devices to get an defined
@@ -130,18 +127,19 @@ class Camera(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
 
             if propertyName == 'CCD_EXPOSURE':
-                isExposing = (value != 0)
-                if self.exposing and isExposing:
-                    self.signals.message.emit(f'{value:3.0f}')
-
-                if self.exposing and not isExposing:
+                if self.device.CCD_EXPOSURE['state'] == 'Idle':
+                    pass
+                elif self.device.CCD_EXPOSURE['state'] == 'Busy':
+                    if value == 0:
+                        self.signals.message.emit('download')
+                    else:
+                        self.signals.message.emit(f'expose {value:2.0f} s')
+                elif self.device.CCD_EXPOSURE['state'] == 'Ok':
                     self.signals.finished.emit()
                     self.signals.message.emit('')
-
-                self.exposing = isExposing
 
         return True
 
@@ -162,7 +160,7 @@ class Camera(indiClass.IndiClass):
 
         for element, value in self.device.getText(propertyName).items():
             self.data[element] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
         return True
 
     def updateSwitch(self, deviceName, propertyName):
@@ -182,7 +180,7 @@ class Camera(indiClass.IndiClass):
 
         for element, value in self.device.getSwitch(propertyName).items():
             self.data[element] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
         return True
 
     def updateLight(self, deviceName, propertyName):
@@ -202,5 +200,5 @@ class Camera(indiClass.IndiClass):
 
         for element, value in self.device.getLight(propertyName).items():
             self.data[element] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
         return True

@@ -48,12 +48,6 @@ def test_initConfig_1():
     assert suc
 
 
-def test_initConfig_2():
-    del app.config['imageW']
-    suc = app.imageW.initConfig()
-    assert not suc
-
-
 def test_initConfig_3():
     app.config['imageW'] = {}
     app.config['imageW']['winPosX'] = 10000

@@ -60,6 +60,14 @@ class SettIndi(object):
         sig.newDevice.connect(self.showIndiNewDomeDevice)
         sig.removeDevice.connect(self.showIndiRemoveDomeDevice)
 
+        sig = self.app.imaging.client.signals
+        sig.serverConnected.connect(self.showIndiImagingConnected)
+        sig.serverDisconnected.connect(self.showIndiImagingDisconnected)
+        sig.deviceConnected.connect(self.showImagingDeviceConnected)
+        sig.deviceDisconnected.connect(self.showImagingDeviceDisconnected)
+        sig.newDevice.connect(self.showIndiNewImagingDevice)
+        sig.removeDevice.connect(self.showIndiRemoveImagingDevice)
+
         sig = self.app.environ.client.signals
         sig.serverConnected.connect(self.showIndiEnvironConnected)
         sig.serverDisconnected.connect(self.showIndiEnvironDisconnected)
@@ -335,6 +343,79 @@ class SettIndi(object):
         self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
         self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
         return True
+
+
+
+    def showIndiImagingConnected(self):
+        """
+        showIndiImagingConnected writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit('INDI server imaging connected', 0)
+        return True
+
+    def showIndiImagingDisconnected(self):
+        """
+        showIndiImagingDisconnected writes info to message window and recolors the status
+
+        :return: true for test purpose
+        """
+
+        self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
+        self.app.message.emit('INDI server imaging disconnected', 0)
+        return True
+
+    def showIndiNewImagingDevice(self, deviceName):
+        """
+        showIndiNewImagingDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        if deviceName == self.app.imaging.name:
+            self.app.message.emit(f'INDI imaging device [{deviceName}] found', 0)
+        else:
+            self.app.message.emit(f'INDI imaging device snoops -> [{deviceName}]', 0)
+
+        return True
+
+    def showIndiRemoveImagingDevice(self, deviceName):
+        """
+        showIndiRemoveImagingDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI imaging device [{deviceName}] removed', 0)
+        return True
+
+    def showImagingDeviceConnected(self):
+        """
+        showImagingDeviceConnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.imagingDevice.setStyleSheet(self.BACK_GREEN)
+        self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'green')
+        return True
+
+    def showImagingDeviceDisconnected(self):
+        """
+        showImagingDeviceDisconnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
+        self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'red')
+        return True
+
+
 
     def showIndiEnvironConnected(self):
         """

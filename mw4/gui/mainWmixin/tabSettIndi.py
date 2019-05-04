@@ -344,8 +344,6 @@ class SettIndi(object):
         self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
         return True
 
-
-
     def showIndiImagingConnected(self):
         """
         showIndiImagingConnected writes info to message window
@@ -414,8 +412,6 @@ class SettIndi(object):
         self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
         self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'red')
         return True
-
-
 
     def showIndiEnvironConnected(self):
         """

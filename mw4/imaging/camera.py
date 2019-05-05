@@ -179,7 +179,7 @@ class Camera(indiClass.IndiClass):
 
         for element, value in self.device.getSwitch(propertyName).items():
             self.data[element] = value
-            # print(propertyName, element, value)
+            print(propertyName, element, value)
         return True
 
     def updateLight(self, deviceName, propertyName):
@@ -381,4 +381,19 @@ class Camera(indiClass.IndiClass):
         return successOverall
 
     def abort(self):
-        pass
+        """
+        abort cancels the exposing
+
+        :return: success
+        """
+
+        indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
+        if 'ABORT' not in update:
+            return False
+        indiCmd['ABORT'] = True
+        suc = self.client.sendNewSwitch(deviceName=deviceName,
+                                        propertyName='CCD_ABORT_EXPOSURE',
+                                        elements=indiCmd,
+                                        )
+
+        return suc

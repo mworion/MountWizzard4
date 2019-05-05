@@ -104,7 +104,6 @@ class Camera(indiClass.IndiClass):
         update['PERIOD_MS'] = self.UPDATE_RATE
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='POLLING_PERIOD',
-
                                         elements=update,
                                         )
 
@@ -202,3 +201,184 @@ class Camera(indiClass.IndiClass):
             self.data[element] = value
             # print(propertyName, element, value)
         return True
+
+    def canSubFrame(self, subFrame=100):
+        """
+        canSubFrame checks if a camera supports sub framing and reports back
+
+        :param subFrame:
+        :return: success
+        """
+        if subFrame > 100:
+            return False
+        if subFrame == 100:
+            return True
+        if subFrame < 10:
+            return False
+        if 'OffX' not in self.data or 'SizeX' not in self.data:
+            return False
+
+        return True
+
+    def canBinning(self, binning=1):
+        """
+        canBinning checks if the camera supports that type of binning
+
+        :param binning:
+        :return: success
+        """
+        if binning == 1:
+            return True
+        if 'HOR_BIN' not in self.data:
+            return False
+
+        return True
+
+    def canFilterPos(self, filterPos=0):
+        """
+        canFilterPos checks if the camera support filter selection
+
+        :param filterPos:
+        :return:
+        """
+
+        if filterPos == 0:
+            return True
+        if '' not in self.data:
+            return False
+
+        return True
+
+    def calcSubFrame(self, subFrame=100):
+        """
+        calcSubFrame calculates the subFrame parameters depending on the percentage of
+        the reduction. the subFrame will be centered on the image area.
+
+        :param subFrame: percentage 0-100 of
+        :return:
+        """
+        if subFrame < 10 or subFrame > 100:
+            width = self.data['CCD_MAX_X']
+            height = self.data['CCD_MAX_Y']
+            posX = 0
+            posY = 0
+        else:
+            width = int(self.data['CCD_MAX_X'] * scaleSubframe)
+            height = int(self.data['CCD_MAX_Y'] * scaleSubframe)
+            posX = int(self.data['CCD_MAX_X'] - width / 2)
+            posY = int(self.data['CCD_MAX_Y'] - height / 2)
+
+        return posX, posY, width, height
+
+    def expose(self, expTime=3, binning=1, subFrame=100, filterPos=0):
+        """
+
+        :param expTime:
+        :param binning:
+        :param subFrame:
+        :param filterPos:
+        :return: success
+        """
+
+        if not self.canSubFrame(subFrame=subFrame):
+            return False
+        if not self.canBinning(binning=binning):
+            return False
+        if not self.canFilterPos(filterPos=filterPos):
+            return False
+
+        successOverall = False
+
+        # setting compression to on as default
+        indiCmd = self.device.getSwitch('CCD_COMPRESSION')
+        if 'CCD_COMPRESS' not in update:
+            return False
+        indiCmd['CCD_COMPRESS'] = True
+        suc = self.client.sendNewSwitch(deviceName=deviceName,
+                                        propertyName='CCD_COMPRESSION',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+
+        # setting frame type to light
+        indiCmd = self.device.getSwitch('CCD_FRAME_TYPE')
+        if 'FRAME_LIGHT' not in update:
+            return False
+        indiCmd['FRAME_LIGHT'] = True
+        suc = self.client.sendNewSwitch(deviceName=deviceName,
+                                        propertyName='CCD_FRAME_TYPE',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+
+        # setting binning value for x and y equally
+        indiCmd = self.device.getNumber('CCD_BINNING')
+        if 'HOR_BIN' not in update:
+            return False
+        indiCmd['HOR_BIN'] = binning
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='CCD_BINNING',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+        if 'VER_BIN' not in update:
+            return False
+        indiCmd['VER_BIN'] = binning
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='CCD_BINNING',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+
+        # setting subFrame
+        posX, posY, width, height = self.calcSubFrame(subFrame)
+
+        indiCmd = self.device.getNumber('CCD_FRAME')
+        if 'X' not in update:
+            return False
+        indiCmd['X'] = posX
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='CCD_FRAME',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+        if 'Y' not in update:
+            return False
+        indiCmd['Y'] = posY
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='CCD_FRAME',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+        if 'WIDTH' not in update:
+            return False
+        indiCmd['WIDTH'] = width
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='CCD_FRAME',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+        if 'HEIGHT' not in update:
+            return False
+        indiCmd['HEIGHT'] = height
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='CCD_FRAME',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+
+        # setting and starting exposure
+        indiCmd = self.device.getNumber('CCD_EXPOSURE')
+        if 'CCD_EXPOSURE_VALUE' not in update:
+            return False
+        indiCmd['CCD_EXPOSURE_VALUE'] = expTime
+        suc = self.client.sendNewNumber(deviceName=deviceName,
+                                        propertyName='CCD_EXPOSURE',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+
+        return successOverall
+
+    def abort(self):
+        pass

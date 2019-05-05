@@ -12965,7 +12965,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -14229,7 +14229,7 @@ manually</string>
           <double>800.000000000000000</double>
          </property>
         </widget>
-        <widget class="QDoubleSpinBox" name="scaleSubframe">
+        <widget class="QDoubleSpinBox" name="subFrame">
          <property name="geometry">
           <rect>
            <x>300</x>
@@ -14267,7 +14267,7 @@ manually</string>
           <double>100.000000000000000</double>
          </property>
         </widget>
-        <widget class="QDoubleSpinBox" name="cameraExposure">
+        <widget class="QDoubleSpinBox" name="expTime">
          <property name="geometry">
           <rect>
            <x>300</x>
@@ -14433,7 +14433,7 @@ manually</string>
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QDoubleSpinBox" name="cameraBin">
+        <widget class="QDoubleSpinBox" name="binning">
          <property name="geometry">
           <rect>
            <x>300</x>
@@ -19322,10 +19322,10 @@ manually</string>
   <tabstop>relayButton5</tabstop>
   <tabstop>relayButton6</tabstop>
   <tabstop>relayButton7</tabstop>
-  <tabstop>cameraExposure</tabstop>
-  <tabstop>cameraBin</tabstop>
+  <tabstop>expTime</tabstop>
+  <tabstop>binning</tabstop>
   <tabstop>checkDoSubframe</tabstop>
-  <tabstop>scaleSubframe</tabstop>
+  <tabstop>subFrame</tabstop>
   <tabstop>checkFastDownload</tabstop>
   <tabstop>isoSetting</tabstop>
   <tabstop>settlingTime</tabstop>

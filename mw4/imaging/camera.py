@@ -126,7 +126,7 @@ class Camera(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
-            # print(propertyName, element, value)
+            print(propertyName, element, value)
 
             if propertyName == 'CCD_EXPOSURE':
                 if self.device.CCD_EXPOSURE['state'] == 'Idle':
@@ -263,8 +263,8 @@ class Camera(indiClass.IndiClass):
             posX = 0
             posY = 0
         else:
-            width = int(self.data['CCD_MAX_X'] * scaleSubframe)
-            height = int(self.data['CCD_MAX_Y'] * scaleSubframe)
+            width = int(self.data['CCD_MAX_X'] * subFrame / 100)
+            height = int(self.data['CCD_MAX_Y'] * subFrame / 100)
             posX = int(self.data['CCD_MAX_X'] - width / 2)
             posY = int(self.data['CCD_MAX_Y'] - height / 2)
 
@@ -291,10 +291,10 @@ class Camera(indiClass.IndiClass):
 
         # setting compression to on as default
         indiCmd = self.device.getSwitch('CCD_COMPRESSION')
-        if 'CCD_COMPRESS' not in update:
+        if 'CCD_COMPRESS' not in indiCmd:
             return False
         indiCmd['CCD_COMPRESS'] = True
-        suc = self.client.sendNewSwitch(deviceName=deviceName,
+        suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='CCD_COMPRESSION',
                                         elements=indiCmd,
                                         )
@@ -302,10 +302,10 @@ class Camera(indiClass.IndiClass):
 
         # setting frame type to light
         indiCmd = self.device.getSwitch('CCD_FRAME_TYPE')
-        if 'FRAME_LIGHT' not in update:
+        if 'FRAME_LIGHT' not in indiCmd:
             return False
         indiCmd['FRAME_LIGHT'] = True
-        suc = self.client.sendNewSwitch(deviceName=deviceName,
+        suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='CCD_FRAME_TYPE',
                                         elements=indiCmd,
                                         )
@@ -313,18 +313,18 @@ class Camera(indiClass.IndiClass):
 
         # setting binning value for x and y equally
         indiCmd = self.device.getNumber('CCD_BINNING')
-        if 'HOR_BIN' not in update:
+        if 'HOR_BIN' not in indiCmd:
             return False
         indiCmd['HOR_BIN'] = binning
-        suc = self.client.sendNewNumber(deviceName=deviceName,
+        suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_BINNING',
                                         elements=indiCmd,
                                         )
         successOverall = successOverall and suc
-        if 'VER_BIN' not in update:
+        if 'VER_BIN' not in indiCmd:
             return False
         indiCmd['VER_BIN'] = binning
-        suc = self.client.sendNewNumber(deviceName=deviceName,
+        suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_BINNING',
                                         elements=indiCmd,
                                         )
@@ -334,34 +334,34 @@ class Camera(indiClass.IndiClass):
         posX, posY, width, height = self.calcSubFrame(subFrame)
 
         indiCmd = self.device.getNumber('CCD_FRAME')
-        if 'X' not in update:
+        if 'X' not in indiCmd:
             return False
         indiCmd['X'] = posX
-        suc = self.client.sendNewNumber(deviceName=deviceName,
+        suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_FRAME',
                                         elements=indiCmd,
                                         )
         successOverall = successOverall and suc
-        if 'Y' not in update:
+        if 'Y' not in indiCmd:
             return False
         indiCmd['Y'] = posY
-        suc = self.client.sendNewNumber(deviceName=deviceName,
+        suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_FRAME',
                                         elements=indiCmd,
                                         )
         successOverall = successOverall and suc
-        if 'WIDTH' not in update:
+        if 'WIDTH' not in indiCmd:
             return False
         indiCmd['WIDTH'] = width
-        suc = self.client.sendNewNumber(deviceName=deviceName,
+        suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_FRAME',
                                         elements=indiCmd,
                                         )
         successOverall = successOverall and suc
-        if 'HEIGHT' not in update:
+        if 'HEIGHT' not in indiCmd:
             return False
         indiCmd['HEIGHT'] = height
-        suc = self.client.sendNewNumber(deviceName=deviceName,
+        suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_FRAME',
                                         elements=indiCmd,
                                         )
@@ -369,10 +369,10 @@ class Camera(indiClass.IndiClass):
 
         # setting and starting exposure
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
-        if 'CCD_EXPOSURE_VALUE' not in update:
+        if 'CCD_EXPOSURE_VALUE' not in indiCmd:
             return False
         indiCmd['CCD_EXPOSURE_VALUE'] = expTime
-        suc = self.client.sendNewNumber(deviceName=deviceName,
+        suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_EXPOSURE',
                                         elements=indiCmd,
                                         )
@@ -388,10 +388,10 @@ class Camera(indiClass.IndiClass):
         """
 
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
-        if 'ABORT' not in update:
+        if 'ABORT' not in indiCmd:
             return False
         indiCmd['ABORT'] = True
-        suc = self.client.sendNewSwitch(deviceName=deviceName,
+        suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='CCD_ABORT_EXPOSURE',
                                         elements=indiCmd,
                                         )

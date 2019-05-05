@@ -132,6 +132,31 @@ class ImageWindow(widget.MWidget):
 
         return True
 
+    def showWindow(self):
+        """
+        showWindow prepares all data for showing the window, plots the image and show it.
+        afterwards all necessary signal / slot connections will be established.
+
+        :return: true for test purpose
+        """
+
+        self.showFitsImage()
+        self.show()
+
+        # gui signals
+        self.ui.load.clicked.connect(self.selectImage)
+        self.ui.color.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.stretch.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
+        self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
+        self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
+        self.ui.solve.clicked.connect(self.solveImage)
+        self.ui.expose.clicked.connect(self.exposeImage)
+        self.signalShowImage.connect(self.showFitsImage)
+        self.signalSolveImage.connect(self.solveImage)
+
+        return True
+
     def closeEvent(self, closeEvent):
         """
         closeEvent overlays the window close event of qt. first it stores all persistent
@@ -158,30 +183,6 @@ class ImageWindow(widget.MWidget):
         plt.close(self.imageMat.figure)
 
         super().closeEvent(closeEvent)
-
-    def showWindow(self):
-        """
-        showWindow prepares all data for showing the window, plots the image and show it.
-        afterwards all necessary signal / slot connections will be established.
-
-        :return: true for test purpose
-        """
-
-        self.showFitsImage()
-        self.show()
-
-        # gui signals
-        self.ui.load.clicked.connect(self.selectImage)
-        self.ui.color.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.stretch.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
-        self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
-        self.ui.solve.clicked.connect(self.solveImage)
-        self.signalShowImage.connect(self.showFitsImage)
-        self.signalSolveImage.connect(self.solveImage)
-
-        return True
 
     def setupDropDownGui(self):
         """
@@ -567,3 +568,14 @@ class ImageWindow(widget.MWidget):
         axe.figure.canvas.draw()
 
         return True
+
+    def exposeImage(self):
+
+        expTime = self.app.mainW.ui.expTime.value()
+        binning = self.app.mainW.ui.binning.value()
+        subFrame = self.app.mainW.ui.subFrame.value()
+
+        self.app.imaging.expose(expTime=expTime,
+                                binning=binning,
+                                subFrame=subFrame,
+                                filterPos=0)

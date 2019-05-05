@@ -83,7 +83,10 @@
        <property name="bottomMargin">
         <number>4</number>
        </property>
-       <property name="spacing">
+       <property name="horizontalSpacing">
+        <number>8</number>
+       </property>
+       <property name="verticalSpacing">
         <number>4</number>
        </property>
        <item row="1" column="0">
@@ -119,7 +122,7 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>240</width>
            <height>25</height>
           </size>
          </property>
@@ -380,7 +383,7 @@
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>40</width>
+         <width>1</width>
          <height>20</height>
         </size>
        </property>

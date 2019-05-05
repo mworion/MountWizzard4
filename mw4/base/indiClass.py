@@ -69,6 +69,8 @@ class IndiClass(object):
         self.client.signals.defText.connect(self.updateText)
         self.client.signals.newLight.connect(self.updateLight)
         self.client.signals.defLight.connect(self.updateLight)
+        self.client.signals.newBLOB.connect(self.updateBLOB)
+        self.client.signals.defBLOB.connect(self.updateBLOB)
         self.client.signals.deviceConnected.connect(self.setUpdateConfig)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)
@@ -202,7 +204,7 @@ class IndiClass(object):
 
     def updateText(self, deviceName, propertyName):
         """
-        updateText is called whenever a new switch is received in client. it runs
+        updateText is called whenever a new text is received in client. it runs
         through the device list and writes the number data to the according locations.
 
         :param deviceName:
@@ -213,7 +215,18 @@ class IndiClass(object):
 
     def updateLight(self, deviceName, propertyName):
         """
-        updateLight is called whenever a new switch is received in client. it runs
+        updateLight is called whenever a new light is received in client. it runs
+        through the device list and writes the number data to the according locations.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+        pass
+
+    def updateBLOB(self, deviceName, propertyName):
+        """
+        updateBLOB is called whenever a new BLOB is received in client. it runs
         through the device list and writes the number data to the according locations.
 
         :param deviceName:

@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import os
+import time
 # external packages
 import PyQt5
 from astropy.io import fits
@@ -99,10 +100,7 @@ class ImageWindow(widget.MWidget):
         self.ui.color.setCurrentIndex(config.get('color', 0))
         self.ui.zoom.setCurrentIndex(config.get('zoom', 0))
         self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
-
         self.imageFileName = config.get('imageFileName', '')
-        full, short, ext = self.extractNames([self.imageFileName])
-        self.ui.imageFileName.setText(short)
         self.folder = self.app.mwGlob.get('imageDir', '')
         self.ui.checkUsePixel.setChecked(config.get('checkUsePixel', True))
         self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
@@ -257,7 +255,6 @@ class ImageWindow(widget.MWidget):
         self.changeStyleDynamic(self.ui.solve, 'running', 'false')
         self.ui.expose.setEnabled(True)
         self.ui.exposeN.setEnabled(True)
-        self.ui.stop.setEnabled(True)
         self.ui.load.setEnabled(True)
 
         self.app.astrometry.signals.done.disconnect(self.solveDone)
@@ -296,7 +293,6 @@ class ImageWindow(widget.MWidget):
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')
         self.ui.expose.setEnabled(False)
         self.ui.exposeN.setEnabled(False)
-        self.ui.stop.setEnabled(False)
         self.ui.load.setEnabled(False)
 
         self.app.astrometry.signals.done.connect(self.solveDone)
@@ -538,6 +534,9 @@ class ImageWindow(widget.MWidget):
         if not os.path.isfile(imagePath):
             return False
 
+        full, short, ext = self.extractNames([self.imageFileName])
+        self.ui.imageFileName.setText(short)
+
         with fits.open(imagePath, mode='update') as fitsHandle:
             self.imageData = fitsHandle[0].data
             header = fitsHandle[0].header
@@ -585,7 +584,7 @@ class ImageWindow(widget.MWidget):
         self.app.imaging.signals.done.disconnect(self.exposeImageDone)
 
         self.app.message.emit('Image exposed', 0)
-        # self.signalShowImage.emit()
+        self.signalShowImage.emit()
 
     def exposeImage(self):
         """
@@ -597,7 +596,13 @@ class ImageWindow(widget.MWidget):
         binning = self.app.mainW.ui.binning.value()
         subFrame = self.app.mainW.ui.subFrame.value()
 
-        self.app.imaging.expose(expTime=expTime,
+        time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        fileName = time + '-exposure.fits'
+        imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
+        self.imageFileName = imagePath
+
+        self.app.imaging.expose(imagePath=imagePath,
+                                expTime=expTime,
                                 binning=binning,
                                 subFrame=subFrame,
                                 filterPos=0)

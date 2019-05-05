@@ -19,10 +19,12 @@
 ###########################################################
 # standard libraries
 import logging
+import zlib
 from datetime import datetime
 # external packages
 import PyQt5
 import numpy as np
+import astropy.io.fits as fits
 # local imports
 from mw4.base import indiClass
 
@@ -41,6 +43,7 @@ class CameraSignals(PyQt5.QtCore.QObject):
     version = '0.1'
 
     done = PyQt5.QtCore.pyqtSignal()
+    saved = PyQt5.QtCore.pyqtSignal()
     message = PyQt5.QtCore.pyqtSignal(object)
 
 
@@ -76,6 +79,7 @@ class Camera(indiClass.IndiClass):
 
         self.app = app
         self.signals = CameraSignals()
+        self.imagePath = ''
 
     def setUpdateConfig(self, deviceName):
         """
@@ -92,15 +96,16 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
 
+        # set BLOB mode also
+        self.client.setBlobMode(blobHandling='Also',
+                                deviceName=deviceName)
+
         # setting polling updates in driver
         update = self.device.getNumber('POLLING_PERIOD')
-
         if 'PERIOD_MS' not in update:
             return False
-
         if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
             return True
-
         update['PERIOD_MS'] = self.UPDATE_RATE
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='POLLING_PERIOD',
@@ -207,6 +212,51 @@ class Camera(indiClass.IndiClass):
             # print(propertyName, element, value)
         return True
 
+    def updateBLOB(self, deviceName, propertyName):
+        """
+        updateBLOB is called whenever a new BLOB is received in client. it runs
+        through the device list and writes the number data to the according locations.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        data = self.device.getBlob(propertyName)
+
+        if 'value' not in data:
+            return False
+        if data['name'] != 'CCD1':
+            return False
+        if not self.imagePath:
+            return False
+
+        if data['format'] == '.fits.fz':
+            HDU = fits.HDUList.fromstring(data['value'])
+            imageHDU = HDU[0]
+            fits.writeto(self.imagePath, imageHDU.data, imageHDU.header, overwrite=True)
+            self.logger.debug('Image BLOB is in FPacked format')
+        elif data['format'] == '.fits.z':
+            HDU = fits.HDUList.fromstring(zlib.decompress(data['value']))
+            imageHDU = HDU[0]
+            fits.writeto(self.imagePath, imageHDU.data, imageHDU.header, overwrite=True)
+            self.logger.debug('Image BLOB is compressed fits format')
+        elif data['format'] == '.fits':
+            HDU = fits.HDUList.fromstring(data['value'])
+            imageHDU = HDU[0]
+            fits.writeto(self.imagePath, imageHDU.data, imageHDU.header, overwrite=True)
+            self.logger.debug('Image BLOB is uncompressed fits format')
+        else:
+            self.logger.debug('Image BLOB is not supported')
+
+        self.signals.saved.emit()
+        return True
+
     def canSubFrame(self, subFrame=100):
         """
         canSubFrame checks if a camera supports sub framing and reports back
@@ -275,9 +325,10 @@ class Camera(indiClass.IndiClass):
 
         return posX, posY, width, height
 
-    def expose(self, expTime=3, binning=1, subFrame=100, filterPos=0):
+    def expose(self, imagePath='', expTime=3, binning=1, subFrame=100, filterPos=0):
         """
 
+        :param imagePath:
         :param expTime:
         :param binning:
         :param subFrame:
@@ -285,6 +336,8 @@ class Camera(indiClass.IndiClass):
         :return: success
         """
 
+        if not imagePath:
+            return False
         if not self.canSubFrame(subFrame=subFrame):
             return False
         if not self.canBinning(binning=binning):
@@ -293,6 +346,7 @@ class Camera(indiClass.IndiClass):
             return False
 
         successOverall = False
+        self.imagePath = imagePath
 
         # setting compression to on as default
         indiCmd = self.device.getSwitch('CCD_COMPRESSION')

@@ -20,7 +20,6 @@
 # standard libraries
 import logging
 import os
-import time
 # external packages
 import PyQt5
 from astropy.io import fits

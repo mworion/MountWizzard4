@@ -325,6 +325,39 @@ class Camera(indiClass.IndiClass):
 
         return posX, posY, width, height
 
+    def setupExpose(self):
+        """
+        setupExpose prepares the overall INDI setup data for imaging
+
+        :return: success
+        """
+
+        successOverall = False
+        # setting compression to on as default
+        indiCmd = self.device.getSwitch('CCD_COMPRESSION')
+        if 'CCD_COMPRESS' not in indiCmd:
+            return False
+        indiCmd['CCD_COMPRESS'] = True
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='CCD_COMPRESSION',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+
+        # setting frame type to light
+        indiCmd = self.device.getSwitch('CCD_FRAME_TYPE')
+        if 'FRAME_LIGHT' not in indiCmd:
+            return False
+        indiCmd['FRAME_LIGHT'] = True
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='CCD_FRAME_TYPE',
+                                        elements=indiCmd,
+                                        )
+        successOverall = successOverall and suc
+        return successOverall
+
+        # todo: filter and wcs disable
+
     def expose(self, imagePath='', expTime=3, binning=1, subFrame=100, filterPos=0):
         """
 
@@ -348,40 +381,12 @@ class Camera(indiClass.IndiClass):
         successOverall = False
         self.imagePath = imagePath
 
-        # setting compression to on as default
-        indiCmd = self.device.getSwitch('CCD_COMPRESSION')
-        if 'CCD_COMPRESS' not in indiCmd:
-            return False
-        indiCmd['CCD_COMPRESS'] = True
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='CCD_COMPRESSION',
-                                        elements=indiCmd,
-                                        )
-        successOverall = successOverall and suc
-
-        # setting frame type to light
-        indiCmd = self.device.getSwitch('CCD_FRAME_TYPE')
-        if 'FRAME_LIGHT' not in indiCmd:
-            return False
-        indiCmd['FRAME_LIGHT'] = True
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='CCD_FRAME_TYPE',
-                                        elements=indiCmd,
-                                        )
+        suc = self.setupExpose()
         successOverall = successOverall and suc
 
         # setting binning value for x and y equally
         indiCmd = self.device.getNumber('CCD_BINNING')
-        if 'HOR_BIN' not in indiCmd:
-            return False
         indiCmd['HOR_BIN'] = binning
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='CCD_BINNING',
-                                        elements=indiCmd,
-                                        )
-        successOverall = successOverall and suc
-        if 'VER_BIN' not in indiCmd:
-            return False
         indiCmd['VER_BIN'] = binning
         suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_BINNING',
@@ -393,32 +398,9 @@ class Camera(indiClass.IndiClass):
         posX, posY, width, height = self.calcSubFrame(subFrame)
 
         indiCmd = self.device.getNumber('CCD_FRAME')
-        if 'X' not in indiCmd:
-            return False
         indiCmd['X'] = posX
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='CCD_FRAME',
-                                        elements=indiCmd,
-                                        )
-        successOverall = successOverall and suc
-        if 'Y' not in indiCmd:
-            return False
         indiCmd['Y'] = posY
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='CCD_FRAME',
-                                        elements=indiCmd,
-                                        )
-        successOverall = successOverall and suc
-        if 'WIDTH' not in indiCmd:
-            return False
         indiCmd['WIDTH'] = width
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='CCD_FRAME',
-                                        elements=indiCmd,
-                                        )
-        successOverall = successOverall and suc
-        if 'HEIGHT' not in indiCmd:
-            return False
         indiCmd['HEIGHT'] = height
         suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_FRAME',
@@ -426,12 +408,10 @@ class Camera(indiClass.IndiClass):
                                         )
         successOverall = successOverall and suc
 
-        # todo: filter and wcs disable
+        # todo: filter
 
         # setting and starting exposure
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
-        if 'CCD_EXPOSURE_VALUE' not in indiCmd:
-            return False
         indiCmd['CCD_EXPOSURE_VALUE'] = expTime
         suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_EXPOSURE',

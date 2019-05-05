@@ -243,6 +243,36 @@ class ImageWindow(widget.MWidget):
 
         return True
 
+    def solveDone(self, result):
+        """
+        solveDone is the partner method for solveImage. it enables the gui elements back
+        removes the signal / slot connection for receiving solving results, checks the
+        solving result itself and emits messages about the result. if solving succeeded,
+        solveDone will redraw the image in the image window.
+
+        :param result: result (named tuple)
+        :return: success
+        """
+
+        self.changeStyleDynamic(self.ui.solve, 'running', 'false')
+        self.ui.expose.setEnabled(True)
+        self.ui.exposeN.setEnabled(True)
+        self.ui.stop.setEnabled(True)
+        self.ui.load.setEnabled(True)
+
+        self.app.astrometry.signals.done.disconnect(self.solveDone)
+
+        if not result[0]:
+            self.app.message.emit('Solving error', 2)
+            return False
+
+        r = result[1]
+        text = f'Ra: {r.ra} Dec: {r.dec} Angle: {r.angle} Scale: {r.scale}'
+        self.app.message.emit('Solved: ' + text, 0)
+        self.signalShowImage.emit()
+
+        return True
+
     def solveImage(self):
         """
         solveImage calls astrometry for solving th actual image in a threading manner.
@@ -272,36 +302,6 @@ class ImageWindow(widget.MWidget):
         self.app.astrometry.signals.done.connect(self.solveDone)
 
         self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
-
-        return True
-
-    def solveDone(self, result):
-        """
-        solveDone is the partner method for solveImage. it enables the gui elements back
-        removes the signal / slot connection for receiving solving results, checks the
-        solving result itself and emits messages about the result. if solving succeeded,
-        solveDone will redraw the image in the image window.
-
-        :param result: result (named tuple)
-        :return: success
-        """
-
-        self.changeStyleDynamic(self.ui.solve, 'running', 'false')
-        self.ui.expose.setEnabled(True)
-        self.ui.exposeN.setEnabled(True)
-        self.ui.stop.setEnabled(True)
-        self.ui.load.setEnabled(True)
-
-        self.app.astrometry.signals.done.disconnect(self.solveDone)
-
-        if not result[0]:
-            self.app.message.emit('Solving error', 2)
-            return False
-
-        r = result[1]
-        text = f'Ra: {r.ra} Dec: {r.dec} Angle: {r.angle} Scale: {r.scale}'
-        self.app.message.emit('Solved: ' + text, 0)
-        self.signalShowImage.emit()
 
         return True
 
@@ -570,7 +570,28 @@ class ImageWindow(widget.MWidget):
 
         return True
 
+    def exposeImageDone(self):
+        """
+
+        :return:
+        """
+
+        self.changeStyleDynamic(self.ui.expose, 'running', 'false')
+        self.ui.solve.setEnabled(True)
+        self.ui.exposeN.setEnabled(True)
+        self.ui.load.setEnabled(True)
+        self.ui.abort.setEnabled(False)
+
+        self.app.imaging.signals.done.disconnect(self.exposeImageDone)
+
+        self.app.message.emit('Image exposed', 0)
+        # self.signalShowImage.emit()
+
     def exposeImage(self):
+        """
+
+        :return:
+        """
 
         expTime = self.app.mainW.ui.expTime.value()
         binning = self.app.mainW.ui.binning.value()
@@ -581,6 +602,30 @@ class ImageWindow(widget.MWidget):
                                 subFrame=subFrame,
                                 filterPos=0)
 
+        self.changeStyleDynamic(self.ui.expose, 'running', 'true')
+        self.ui.exposeN.setEnabled(False)
+        self.ui.load.setEnabled(False)
+        self.ui.solve.setEnabled(False)
+        self.ui.abort.setEnabled(True)
+        self.app.imaging.signals.done.connect(self.exposeImageDone)
+
+        text = f'Exposing {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
+        self.app.message.emit(text, 0)
+
     def abortImage(self):
+        """
+
+        :return:
+        """
 
         self.app.imaging.abort()
+
+        self.changeStyleDynamic(self.ui.expose, 'running', 'false')
+        self.ui.solve.setEnabled(True)
+        self.ui.exposeN.setEnabled(True)
+        self.ui.load.setEnabled(True)
+        self.ui.abort.setEnabled(False)
+
+        self.app.imaging.signals.done.disconnect(self.exposeImageDone)
+
+        self.app.message.emit('Image exposing aborted', 2)

@@ -165,6 +165,9 @@ class MainWindow(MWidget,
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
+        self.ui.expTime.setValue(config.get('expTime', 1))
+        self.ui.binning.setValue(config.get('binning', 1))
+        self.ui.subFrame.setValue(config.get('subFrame', 100))
 
         Mount.initConfig(self)
         SiteStatus.initConfig(self)
@@ -206,6 +209,9 @@ class MainWindow(MWidget,
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
         config['rackCompMAC'] = self.ui.rackCompMAC.text()
+        config['expTime'] = self.ui.expTime.value()
+        config['binning'] = self.ui.binning.value()
+        config['subFrame'] = self.ui.subFrame.value()
 
         Mount.storeConfig(self)
         SiteStatus.storeConfig(self)

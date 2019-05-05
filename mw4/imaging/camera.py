@@ -40,7 +40,7 @@ class CameraSignals(PyQt5.QtCore.QObject):
     __all__ = ['CameraSignals']
     version = '0.1'
 
-    finished = PyQt5.QtCore.pyqtSignal()
+    done = PyQt5.QtCore.pyqtSignal()
     message = PyQt5.QtCore.pyqtSignal(object)
 
 
@@ -125,13 +125,13 @@ class Camera(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             # print(propertyName, element, value)
 
             if propertyName == 'CCD_EXPOSURE':
-                print(value, self.device.CCD_EXPOSURE['state'])
                 if self.device.CCD_EXPOSURE['state'] == 'Idle':
-                    self.signals.finished.emit()
+                    self.signals.done.emit()
                     self.signals.message.emit('')
                 elif self.device.CCD_EXPOSURE['state'] == 'Busy':
                     if value == 0:
@@ -139,7 +139,7 @@ class Camera(indiClass.IndiClass):
                     else:
                         self.signals.message.emit(f'expose {value:2.0f} s')
                 elif self.device.CCD_EXPOSURE['state'] == 'Ok':
-                    self.signals.finished.emit()
+                    self.signals.done.emit()
                     self.signals.message.emit('')
 
         return True
@@ -160,7 +160,8 @@ class Camera(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getText(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             # print(propertyName, element, value)
         return True
 
@@ -180,7 +181,8 @@ class Camera(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getSwitch(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             # print(propertyName, element, value)
         return True
 
@@ -200,7 +202,8 @@ class Camera(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getLight(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             # print(propertyName, element, value)
         return True
 
@@ -217,7 +220,7 @@ class Camera(indiClass.IndiClass):
             return True
         if subFrame < 10:
             return False
-        if 'OffX' not in self.data or 'SizeX' not in self.data:
+        if 'CCD_FRAME.X' not in self.data or 'CCD_FRAME.X' not in self.data:
             return False
 
         return True
@@ -231,7 +234,7 @@ class Camera(indiClass.IndiClass):
         """
         if binning == 1:
             return True
-        if 'HOR_BIN' not in self.data:
+        if 'CCD_BINNING.HOR_BIN' not in self.data:
             return False
 
         return True
@@ -260,15 +263,15 @@ class Camera(indiClass.IndiClass):
         :return:
         """
         if subFrame < 10 or subFrame > 100:
-            width = self.data['CCD_MAX_X']
-            height = self.data['CCD_MAX_Y']
+            width = self.data['CCD_INFO.CCD_MAX_X']
+            height = self.data['CCD_INFO.CCD_MAX_Y']
             posX = 0
             posY = 0
         else:
-            width = int(self.data['CCD_MAX_X'] * subFrame / 100)
-            height = int(self.data['CCD_MAX_Y'] * subFrame / 100)
-            posX = int(self.data['CCD_MAX_X'] - width / 2)
-            posY = int(self.data['CCD_MAX_Y'] - height / 2)
+            width = int(self.data['CCD_INFO.CCD_MAX_X'] * subFrame / 100)
+            height = int(self.data['CCD_INFO.CCD_MAX_Y'] * subFrame / 100)
+            posX = int((self.data['CCD_INFO.CCD_MAX_X'] - width) / 2)
+            posY = int((self.data['CCD_INFO.CCD_MAX_Y'] - height) / 2)
 
         return posX, posY, width, height
 
@@ -368,6 +371,8 @@ class Camera(indiClass.IndiClass):
                                         elements=indiCmd,
                                         )
         successOverall = successOverall and suc
+
+        # todo: filter and wcs disable
 
         # setting and starting exposure
         indiCmd = self.device.getNumber('CCD_EXPOSURE')

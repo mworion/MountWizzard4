@@ -152,6 +152,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
         self.ui.expose.clicked.connect(self.exposeImage)
+        self.ui.abort.clicked.connect(self.abortImage)
         self.signalShowImage.connect(self.showFitsImage)
         self.signalSolveImage.connect(self.solveImage)
 
@@ -579,3 +580,7 @@ class ImageWindow(widget.MWidget):
                                 binning=binning,
                                 subFrame=subFrame,
                                 filterPos=0)
+
+    def abortImage(self):
+
+        self.app.imaging.abort()

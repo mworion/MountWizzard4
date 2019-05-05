@@ -126,11 +126,13 @@ class Camera(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
 
             if propertyName == 'CCD_EXPOSURE':
+                print(value, self.device.CCD_EXPOSURE['state'])
                 if self.device.CCD_EXPOSURE['state'] == 'Idle':
-                    pass
+                    self.signals.finished.emit()
+                    self.signals.message.emit('')
                 elif self.device.CCD_EXPOSURE['state'] == 'Busy':
                     if value == 0:
                         self.signals.message.emit('download')
@@ -179,7 +181,7 @@ class Camera(indiClass.IndiClass):
 
         for element, value in self.device.getSwitch(propertyName).items():
             self.data[element] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
         return True
 
     def updateLight(self, deviceName, propertyName):

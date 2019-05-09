@@ -65,17 +65,19 @@ class ImageWindow(widget.MWidget):
                           'Spectral': 'nipy_spectral',
                           }
 
-        self.stretchValues = {'Low': (98, 99.999),
+        self.stretchValues = {'Low X': (99, 99.999),
+                              'Low': (90, 99.995),
                               'Mid': (50, 99.99),
                               'High': (20, 99.98),
                               'Super': (10, 99.9),
-                              'SuperX': (1, 99.8),
+                              'Super X': (1, 99.8),
                               }
 
         self.zoomLevel = {'Zoom 1x': 1,
                           'Zoom 2x': 2,
                           'Zoom 4x': 4,
                           'Zoom 8x': 8,
+                          'Zoom 16x': 16,
                           }
 
         self.imageMat = self.embedMatplot(self.ui.image)
@@ -498,8 +500,9 @@ class ImageWindow(widget.MWidget):
         axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
         axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)
 
-        sizeX = header.get('NAXIS1', 1)
-        sizeY = header.get('NAXIS2', 1)
+        factor = self.zoomLevel[self.ui.zoom.currentText()]
+        sizeX = header.get('NAXIS1', 1) / factor
+        sizeY = header.get('NAXIS2', 1) / factor
         midX = int(sizeX / 2)
         midY = int(sizeY / 2)
         number = 10

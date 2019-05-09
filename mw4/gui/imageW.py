@@ -182,7 +182,7 @@ class ImageWindow(widget.MWidget):
         the framework close event.
 
         :param closeEvent:
-        :return:
+        :return: True for test purpose
         """
 
         self.storeConfig()
@@ -199,8 +199,9 @@ class ImageWindow(widget.MWidget):
         self.signalSolveImage.disconnect(self.solveImage)
 
         plt.close(self.imageMat.figure)
-
         super().closeEvent(closeEvent)
+
+        return True
 
     def setupDropDownGui(self):
         """
@@ -276,6 +277,8 @@ class ImageWindow(widget.MWidget):
             return False
 
         r = result[1]
+        if not isinstance(r, tuple):
+            return False
         text = f'Ra: {r.ra} Dec: {r.dec} Angle: {r.angle} Scale: {r.scale}'
         self.app.message.emit('Solved: ' + text, 0)
         self.signalShowImage.emit()

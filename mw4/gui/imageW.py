@@ -59,7 +59,24 @@ class ImageWindow(widget.MWidget):
         self.imageData = None
         self.folder = ''
 
-        self.colorMaps = ['gray', 'plasma', 'rainbow', 'nipy_spectral']
+        self.colorMaps = {'Grey': 'gray',
+                          'Cool': 'plasma',
+                          'Rainbow': 'rainbow',
+                          'Spectral': 'nipy_spectral',
+                          }
+
+        self.stretchValues = {'Low': (98, 99.999),
+                              'Mid': (50, 99.99),
+                              'High': (20, 99.98),
+                              'Super': (10, 99.9),
+                              'SuperX': (1, 99.8),
+                              }
+
+        self.zoomLevel = {'Zoom 1x': 1,
+                          'Zoom 2x': 2,
+                          'Zoom 4x': 4,
+                          'Zoom 8x': 8,
+                          }
 
         self.imageMat = self.embedMatplot(self.ui.image)
         self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
@@ -167,6 +184,7 @@ class ImageWindow(widget.MWidget):
         """
 
         self.storeConfig()
+
         # gui signals
         self.ui.load.clicked.disconnect(self.selectImage)
         self.ui.color.currentIndexChanged.disconnect(self.showFitsImage)
@@ -191,25 +209,18 @@ class ImageWindow(widget.MWidget):
 
         self.ui.color.clear()
         self.ui.color.setView(PyQt5.QtWidgets.QListView())
-        self.ui.color.addItem('Grey')
-        self.ui.color.addItem('Cool')
-        self.ui.color.addItem('Rainbow')
-        self.ui.color.addItem('Spectral')
+        for text in self.colorMaps:
+            self.ui.color.addItem(text)
 
         self.ui.zoom.clear()
         self.ui.zoom.setView(PyQt5.QtWidgets.QListView())
-        self.ui.zoom.addItem('Zoom 1x')
-        self.ui.zoom.addItem('Zoom 2x')
-        self.ui.zoom.addItem('Zoom 4x')
-        self.ui.zoom.addItem('Zoom 8x')
+        for text in self.zoomLevel:
+            self.ui.zoom.addItem(text)
 
         self.ui.stretch.clear()
         self.ui.stretch.setView(PyQt5.QtWidgets.QListView())
-        self.ui.stretch.addItem('Low')
-        self.ui.stretch.addItem('Mid')
-        self.ui.stretch.addItem('High')
-        self.ui.stretch.addItem('Super')
-        self.ui.stretch.addItem('SuperX')
+        for text in self.stretchValues:
+            self.ui.stretch.addItem(text)
 
         return True
 
@@ -295,7 +306,6 @@ class ImageWindow(widget.MWidget):
         self.ui.load.setEnabled(False)
 
         self.app.astrometry.signals.done.connect(self.solveDone)
-
         self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
 
         return True
@@ -353,6 +363,7 @@ class ImageWindow(widget.MWidget):
         flipped = header.get('FLIPPED', False)
         self.ui.checkIsFlipped.setChecked(flipped)
 
+        # check if distortion is in header
         if 'CTYPE1' in header:
             wcsObject = wcs.WCS(header)
             hasCelestial = wcsObject.has_celestial
@@ -380,14 +391,11 @@ class ImageWindow(widget.MWidget):
         :return:
         """
 
-        zoomIndex = self.ui.zoom.currentIndex()
-        if zoomIndex == 0:
-            return image
-
         sizeY, sizeX = image.shape
-        factor = np.exp2(zoomIndex)
+        factor = self.zoomLevel[self.ui.zoom.currentText()]
         position = (int(sizeX / 2), int(sizeY / 2))
         size = (int(sizeY / factor), int(sizeX / factor))
+
         cutout = Cutout2D(image,
                           position=position,
                           size=size,
@@ -406,15 +414,8 @@ class ImageWindow(widget.MWidget):
         :return: norm for plot
         """
 
-        stretchValues = [(98, 99.999),
-                         (50, 99.99),
-                         (20, 99.98),
-                         (10, 99.9),
-                         (1, 99.8),
-                         ]
-        stretchIndex = self.ui.stretch.currentIndex()
-
-        interval = AsymmetricPercentileInterval(*stretchValues[stretchIndex])
+        values = self.stretchValues[self.ui.stretch.currentText()]
+        interval = AsymmetricPercentileInterval(*values)
         vmin, vmax = interval.get_limits(image)
 
         norm = ImageNormalize(image,
@@ -433,8 +434,7 @@ class ImageWindow(widget.MWidget):
         :return: color map
         """
 
-        colorMapIndex = self.ui.color.currentIndex()
-        colorMap = self.colorMaps[colorMapIndex]
+        colorMap = self.colorMaps[self.ui.color.currentText()]
 
         return colorMap
 
@@ -477,6 +477,7 @@ class ImageWindow(widget.MWidget):
         axe1.set_ticks_position('tb')
         axe1.set_ticklabel_position('tb')
         axe1.set_axislabel_position('tb')
+
         return axe
 
     def setupNormal(self, figure=None, header={}):
@@ -570,6 +571,9 @@ class ImageWindow(widget.MWidget):
 
     def exposeImageDone(self):
         """
+        exposeImageDone is the partner method to exposeImage. it resets the gui elements
+        to it's default state and disconnects the signal for the callback. finally when
+        all elements are done it emits the showImage signal.
 
         :return:
         """
@@ -587,8 +591,11 @@ class ImageWindow(widget.MWidget):
 
     def exposeImage(self):
         """
+        exposeImage disables all gui elements which could interfere when having a running
+        exposure. it connects the callback for downloaded image and presets all necessary
+        parameters for imaging
 
-        :return:
+        :return: True for test purpose
         """
 
         expTime = self.app.mainW.ui.expTime.value()
@@ -611,15 +618,19 @@ class ImageWindow(widget.MWidget):
         self.ui.load.setEnabled(False)
         self.ui.solve.setEnabled(False)
         self.ui.abort.setEnabled(True)
-        self.app.imaging.signals.done.connect(self.exposeImageDone)
 
+        self.app.imaging.signals.done.connect(self.exposeImageDone)
         text = f'Exposing {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
         self.app.message.emit(text, 0)
 
+        return True
+
     def abortImage(self):
         """
+        abortImage stops the exposure and resets the gui and the callback signals to default
+        values
 
-        :return:
+        :return: True for test purpose
         """
 
         self.app.imaging.abort()
@@ -631,5 +642,6 @@ class ImageWindow(widget.MWidget):
         self.ui.abort.setEnabled(False)
 
         self.app.imaging.signals.done.disconnect(self.exposeImageDone)
-
         self.app.message.emit('Image exposing aborted', 2)
+
+        return True

@@ -9,7 +9,6 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.6.7
 #
 # Michael Würtenberger
 # (c) 2018
@@ -396,6 +395,9 @@ class ImageWindow(widget.MWidget):
         :return:
         """
 
+        if image is None:
+            return None
+
         sizeY, sizeX = image.shape
         factor = self.zoomLevel[self.ui.zoom.currentText()]
         position = (int(sizeX / 2), int(sizeY / 2))
@@ -418,6 +420,9 @@ class ImageWindow(widget.MWidget):
         :param image: image
         :return: norm for plot
         """
+
+        if image is None:
+            return None
 
         values = self.stretchValues[self.ui.stretch.currentText()]
         interval = AsymmetricPercentileInterval(*values)

@@ -9,7 +9,6 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.6.7
 #
 # Michael Würtenberger
 # (c) 2018
@@ -38,7 +37,7 @@ setup(
         'mw4.powerswitch',
         'mw4.remote',
     ],
-    python_requires='>=3.7.3',
+    python_requires='>=3.7.2',
     install_requires=[
         'PyQt5==5.12',
         'matplotlib==3.0.3',

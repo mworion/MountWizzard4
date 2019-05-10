@@ -9,7 +9,6 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.6.7
 #
 # Michael Würtenberger
 # (c) 2018
@@ -143,7 +142,8 @@ class Dome(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             # print(propertyName, element, value)
 
             if element != 'DOME_ABSOLUTE_POSITION':
@@ -158,7 +158,7 @@ class Dome(indiClass.IndiClass):
             self.signals.azimuth.emit(self.azimuth)
 
             # calculate the stop slewing condition
-            isSlewing = (value != self.azimuth)
+            isSlewing = (self.device.ABS_DOME_POSITION['state'] == 'Busy')
             if isSlewing:
                 self.signals.message.emit('slewing')
             if self.slewing and not isSlewing:

@@ -1,6 +1,5 @@
 missing tests:
 - loader 0%
-- imageW only 44%
 - mountcontrol new commands qt
 - indibase new commands qt
 - widget 67%
@@ -15,11 +14,8 @@ problems occurred list:
 
 necessary feature list:
 - astrometry configs
-- indi CCD camera
 - mountcontrol: adding TLE commands and tests
 - optimizing model functions (all) implement
-- dome settings: Gui for populating the values from driver
-- image settings: Gui for populating the value from driver 
 
 nice to have:
 - astrometry online

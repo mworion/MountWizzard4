@@ -69,8 +69,7 @@ def test_closeEvent_1(qtbot):
     with mock.patch.object(MWidget,
                            'closeEvent',
                            return_value=None):
-        suc = app.imageW.closeEvent(None)
-        assert suc
+        app.imageW.closeEvent(None)
     app.imageW.showWindow()
 
 

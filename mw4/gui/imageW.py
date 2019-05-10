@@ -200,8 +200,6 @@ class ImageWindow(widget.MWidget):
         plt.close(self.imageMat.figure)
         super().closeEvent(closeEvent)
 
-        return True
-
     def setupDropDownGui(self):
         """
         setupDropDownGui handles the population of list for image handling.

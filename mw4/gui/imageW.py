@@ -699,6 +699,10 @@ class ImageWindow(widget.MWidget):
 
         self.app.imaging.abort()
         self.app.imaging.signals.saved.disconnect(self.showFitsImage)
+
+        # for disconnection we have to split which slots were connected to disable the
+        # right ones
+
         if self.ui.exposeN.isEnabled():
             self.app.imaging.signals.saved.disconnect(self.exposeRaw)
         if self.ui.expose.isEnabled():

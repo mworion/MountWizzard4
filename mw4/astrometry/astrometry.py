@@ -86,7 +86,7 @@ class Astrometry(object):
             home = os.environ.get('HOME')
             self.binPath = {
                 'KStars': '/Applications/kstars.app/Contents/MacOS/astrometry/bin',
-                'CloudMaker': '/Applications/Astrometry.app/Contents/MacOS',
+                'CloudMakers': '/Applications/Astrometry.app/Contents/MacOS',
             }
             self.indexPath = home + '/Library/Application Support/Astrometry'
         elif platform.system() == 'Linux':
@@ -502,7 +502,7 @@ class Astrometry(object):
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
         binPathImage2xy = self.binPath[app] + '/image2xy'
-        binPathSolveField = self.binPath[app] + '/solve_field'
+        binPathSolveField = self.binPath[app] + '/solve-field'
 
         with fits.open(fitsPath) as fitsHDU:
             solveOptions = self.readFitsData(fitsHDU=fitsHDU)

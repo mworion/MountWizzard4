@@ -356,9 +356,17 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        if self.ui.astrometryDevice.currentText().startswith('KStars-EKOS'):
-            if not self.app.astrometry.available:
-                self.app.message.emit('Built in astrometry not available', 2)
+        if self.ui.astrometryDevice.currentText().startswith('KStars'):
+            if self.ui.astrometryDevice.currentText() not in self.app.astrometry.binPath:
+                self.app.message.emit('Astrometry not available', 2)
+                self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')
+                return False
+            self.ui.astrometryDevice.setStyleSheet(self.BACK_GREEN)
+            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'green')
+            self.app.message.emit('Astrometry enabled', 0)
+        elif self.ui.astrometryDevice.currentText().startswith('CloudMakers'):
+            if self.ui.astrometryDevice.currentText() not in self.app.astrometry.binPath:
+                self.app.message.emit('Astrometry not available', 2)
                 self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')
                 return False
             self.ui.astrometryDevice.setStyleSheet(self.BACK_GREEN)

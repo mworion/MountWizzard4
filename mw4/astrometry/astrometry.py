@@ -491,11 +491,13 @@ class Astrometry(object):
         :return: ra, dec, angle, scale, flipped
         """
 
+        self.result = (False, [])
+
         if not os.path.isfile(fitsPath):
-            return False, []
+            return False
 
         if app not in self.binPath:
-            return False, []
+            return False
 
         xyPath = self.tempDir + '/temp.xy'
         configPath = self.tempDir + '/astrometry.cfg'
@@ -513,7 +515,7 @@ class Astrometry(object):
                                )
         if not suc:
             self.logger.error(f'image2xy error in [{fitsPath}]')
-            return False, []
+            return False
 
         suc = self.runSolveField(binPath=binPathSolveField,
                                  configPath=configPath,
@@ -523,11 +525,11 @@ class Astrometry(object):
                                  )
         if not suc:
             self.logger.error(f'solve-field error in [{fitsPath}]')
-            return False, []
+            return False
 
         if not (os.path.isfile(solvedPath) and os.path.isfile(wcsPath)):
             self.logger.error(f'solve files for [{fitsPath}] missing')
-            return False, []
+            return False
 
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
@@ -542,7 +544,7 @@ class Astrometry(object):
         result = self.getSolutionFromWCS(wcsHeader=wcsHeader)
 
         self.result = (True, result)
-        return True, result
+        return True
 
     def solveClear(self):
         """

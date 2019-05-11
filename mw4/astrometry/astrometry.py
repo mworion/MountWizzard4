@@ -517,6 +517,13 @@ class Astrometry(object):
             self.logger.error(f'image2xy error in [{fitsPath}]')
             return False
 
+        # split between ekos and cloudmakers as cloudmakers use an older version of
+        # solve-field, which need the option '--no-fits2fits', whereas the actual
+        # version used in KStars throws an error using this option.
+
+        if app == 'CloudMakers':
+            solveOptions.append('--no-fits2fits')
+
         suc = self.runSolveField(binPath=binPathSolveField,
                                  configPath=configPath,
                                  xyPath=xyPath,

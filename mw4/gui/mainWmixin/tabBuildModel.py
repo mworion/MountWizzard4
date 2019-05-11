@@ -18,10 +18,48 @@
 #
 ###########################################################
 # standard libraries
+import queue
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
+
+
+class QMultiWait(PyQt5.QtCore.QObject):
+    """
+    QMultiWaitable implements a signal collection class for waiting of entering multiple
+    signals before firing the "AND" relation of all signals.
+    derived from:
+
+    https://stackoverflow.com/questions/21108407/qt-how-to-wait-for-multiple-signals
+
+    in addition all received signals could be reset
+    """
+
+    ready = PyQt5.QtCore.pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+        self.waitable = set()
+        self.waitready = set()
+
+    def addWaitableSignal(self, signal):
+        if signal not in self.waitable:
+            self.waitable.add(signal)
+            signal.connect(self.checkSignal)
+
+    def checkSignal(self):
+        sender = self.sender()
+        self.waitready.add(sender)
+        if len(self.waitready) == len(self.waitable):
+            self.ready.emit()
+
+    def resetSignals(self):
+        self.waitready = set()
+
+    def clear(self):
+        for signal in self.waitable:
+            signal.disconnect(self.checkSignal)
 
 
 class BuildModel(object):
@@ -33,6 +71,10 @@ class BuildModel(object):
     """
 
     def __init__(self):
+
+        self.slewQueue = queue.Queue()
+        self.collector = QMultiWait()
+
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
@@ -50,6 +92,8 @@ class BuildModel(object):
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
+
+        self.ui.runFullModel.clicked.connect(self.modelStart)
 
     def initConfig(self):
         """
@@ -328,3 +372,35 @@ class BuildModel(object):
             return False
         self.autoDeletePoints()
         return True
+
+    def modelSolve(self):
+        self.app.imageW.solveImage()
+
+    def modelImage(self):
+        self.collector.resetSignals()
+        self.app.imageW.exposeRaw()
+
+    def modelSlew(self):
+        if self.slewQueue.empty():
+            return False
+
+        point = self.slewQueue.get()
+        self.app.dome.slewToAltAz(azimuth=point[1])
+        suc = self.app.mount.obsSite.slewAltAz(alt_degrees=point[0],
+                                               az_degrees=point[1],
+                                               )
+
+    def modelStart(self):
+        self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
+        self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
+        self.collector.ready.connect(self.modelImage)
+        self.app.imaging.signals.saved.connect(self.modelSolve)
+        self.app.imaging.signals.saved.connect(self.app.imageW.showFitsImage)
+        self.app.imaging.signals.integrated.connect(self.modelSlew)
+        points = [(50, 30), (55, 40), (50, 50)]
+
+        # put all points in queue
+        for point in points:
+            self.slewQueue.put(point)
+
+        self.modelSlew()

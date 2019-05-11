@@ -47,7 +47,7 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     __all__ = ['ImageWindowSignals']
     version = '0.1'
 
-    show = PyQt5.QtCore.pyqtSignal(object)
+    show = PyQt5.QtCore.pyqtSignal()
     solve = PyQt5.QtCore.pyqtSignal()
 
 
@@ -265,7 +265,7 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit(f'Image [{name}] selected', 0)
         self.ui.checkUsePixel.setChecked(True)
         self.folder = os.path.dirname(loadFilePath)
-        self.signalShowImage.emit()
+        self.signals.show.emit()
 
         return True
 
@@ -296,7 +296,7 @@ class ImageWindow(widget.MWidget):
             return False
         text = f'Ra: {r.ra} Dec: {r.dec} Angle: {r.angle} Scale: {r.scale}'
         self.app.message.emit('Solved: ' + text, 0)
-        self.signalShowImage.emit()
+        self.signals.show.emit()
 
         return True
 

@@ -71,6 +71,7 @@ class ImageWindow(widget.MWidget):
         self.initUI()
         self.signals = ImageWindowSignals()
         self.imageFileName = ''
+        self.imageFileNameOld = ''
         self.imageData = None
         self.folder = ''
 
@@ -557,11 +558,10 @@ class ImageWindow(widget.MWidget):
         """
 
         imagePath = self.imageFileName
+
         if not imagePath:
-            print('no image path')
             return False
         if not os.path.isfile(imagePath):
-            print('no image in path')
             return False
 
         full, short, ext = self.extractNames([self.imageFileName])
@@ -613,6 +613,8 @@ class ImageWindow(widget.MWidget):
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         fileName = time + '-exposure.fits'
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
+
+        self.imageFileNameOld = self.imageFileName
         self.imageFileName = imagePath
 
         self.app.imaging.expose(imagePath=imagePath,
@@ -707,6 +709,9 @@ class ImageWindow(widget.MWidget):
             self.app.imaging.signals.saved.disconnect(self.exposeRaw)
         if self.ui.expose.isEnabled():
             self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
+
+        # last image file was nor stored, so getting last valid it back
+        self.imageFileName = self.imageFileNameOld
 
         self.changeStyleDynamic(self.ui.expose, 'running', 'false')
         self.ui.solve.setEnabled(True)

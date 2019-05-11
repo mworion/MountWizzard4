@@ -137,7 +137,8 @@ class SettDevice(object):
         self.ui.skymeterDevice.addItem('INDI')
         self.ui.weatherDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
-        self.ui.astrometryDevice.addItem('KStars-EKOS')
+        for app in self.app.astrometry.binPath:
+            self.ui.astrometryDevice.addItem(app)
 
         return True
 

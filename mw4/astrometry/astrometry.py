@@ -79,29 +79,59 @@ class Astrometry(object):
         self.threadPool = threadPool
         self.mutexSolve = PyQt5.QtCore.QMutex()
         self.signals = AstrometrySignals()
-        self.available = False
+        self.available = {}
         self.result = (False, [])
 
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME')
-            binPath = '/Applications/kstars.app/Contents/MacOS/astrometry/bin'
-            self.binPathSolveField = binPath + '/solve-field'
-            self.binPathImage2xy = binPath + '/image2xy'
+            self.binPath = {
+                'KStars': '/Applications/kstars.app/Contents/MacOS/astrometry/bin',
+                'CloudMaker': '/Applications/Astrometry.app/Contents/MacOS',
+            }
             self.indexPath = home + '/Library/Application Support/Astrometry'
         elif platform.system() == 'Linux':
-            binPath = '/usr/bin'
-            self.binPathSolveField = binPath + '/solve-field'
-            self.binPathImage2xy = binPath + '/image2xy'
+            self.binPath = {
+                'astrometry.net': '/usr/bin',
+                       }
             self.indexPath = '/usr/share/astrometry'
         else:
-            self.binPathSolveField = ''
-            self.binPathImage2xy = ''
             self.indexPath = ''
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
             outFile.write(f'cpulimit 300\nadd_path {self.indexPath}\nautoindex\n')
         self.checkAvailability()
+
+    def checkAvailability(self):
+        """
+        checkAvailability searches for the existence of the core runtime modules from
+        astrometry.net namely image2xy and solve-field
+
+        :return: True if local solve and components is available
+        """
+
+        for app, path in self.binPath.items():
+            suc = True
+            binPathSolveField = path + '/solve-field'
+            binPathImage2xy = path + '/image2xy'
+
+            # checking binaries
+            if not os.path.isfile(binPathSolveField):
+                self.logger.error(f'{binPathSolveField} not found')
+                suc = False
+            if not os.path.isfile(binPathImage2xy):
+                self.logger.error(f'{binPathImage2xy} not found')
+                suc = False
+
+            # checking indexes
+            if not glob.glob(self.indexPath + '/index-4*.fits'):
+                self.logger.error('no index files found')
+                suc = False
+            if suc:
+                self.available[app] = path
+            self.logger.info(f'binary and index files available for {app}')
+
+        return True
 
     def stringToDegree(self, value):
         """
@@ -219,31 +249,6 @@ class Astrometry(object):
         sign = '+' if angle.degrees > 0 else '-'
         value = f'{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
         return value
-
-    def checkAvailability(self):
-        """
-        checkAvailability searches for the existence of the core runtime modules from
-        astrometry.net namely image2xy and solve-field
-
-        :return: True if local solve and components is available
-        """
-
-        suc = True
-        if not os.path.isfile(self.binPathSolveField):
-            self.logger.error(f'{self.binPathSolveField} not found')
-            suc = False
-        if not os.path.isfile(self.binPathImage2xy):
-            self.logger.error(f'{self.binPathImage2xy} not found')
-            suc = False
-        if not glob.glob(self.indexPath + '/index-4*.fits'):
-            self.logger.error('no index files found')
-            suc = False
-
-        if suc:
-            self.logger.info('solve-field, image2xy and index files available')
-
-        self.available = suc
-        return suc
 
     def readFitsData(self, fitsHDU='', searchRatio=1.1):
         """
@@ -463,7 +468,7 @@ class Astrometry(object):
 
         return result.returncode == 0
 
-    def solve(self, fitsPath='', timeout=10, updateFits=False):
+    def solve(self, app='', fitsPath='', timeout=10, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -479,24 +484,30 @@ class Astrometry(object):
         astrometry implementation from cloudmakers.eu (another nice package for MAC Astro
         software)
 
+        :param app: which astrometry implementation to choose
         :param fitsPath:  full path to fits file
         :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
         :return: ra, dec, angle, scale, flipped
         """
 
+        if not os.path.isfile(fitsPath):
+            return False, []
+
+        if app not in self.binPath:
+            return False, []
+
         xyPath = self.tempDir + '/temp.xy'
         configPath = self.tempDir + '/astrometry.cfg'
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
-
-        if not os.path.isfile(fitsPath):
-            return False, []
+        binPathImage2xy = self.binPath[app] + '/image2xy'
+        binPathSolveField = self.binPath[app] + '/solve_field'
 
         with fits.open(fitsPath) as fitsHDU:
             solveOptions = self.readFitsData(fitsHDU=fitsHDU)
 
-        suc = self.runImage2xy(binPath=self.binPathImage2xy,
+        suc = self.runImage2xy(binPath=binPathImage2xy,
                                xyPath=xyPath,
                                fitsPath=fitsPath,
                                )
@@ -504,7 +515,7 @@ class Astrometry(object):
             self.logger.error(f'image2xy error in [{fitsPath}]')
             return False, []
 
-        suc = self.runSolveField(binPath=self.binPathSolveField,
+        suc = self.runSolveField(binPath=binPathSolveField,
                                  configPath=configPath,
                                  xyPath=xyPath,
                                  options=solveOptions,
@@ -546,13 +557,14 @@ class Astrometry(object):
         self.signals.done.emit(self.result)
         self.signals.message.emit('')
 
-    def solveThreading(self, fitsPath='', timeout=10, updateFits=False):
+    def solveThreading(self, app='', fitsPath='', timeout=10, updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a threadpool
         environment of Qt. Otherwise the HMI would be stuck all the time during solving.
         it is done with an securing mutex to avoid starting solving twice. to solveClear
         is the partner of solve Threading
 
+        :param app: which astrometry implementation to choose
         :param fitsPath: full path to the fits image file to be solved
         :param timeout: as said
         :param updateFits: flag, if the results should be written to the original file
@@ -573,6 +585,7 @@ class Astrometry(object):
 
         self.signals.message.emit('solving')
         worker = tpool.Worker(self.solve,
+                              app=app,
                               fitsPath=fitsPath,
                               timeout=timeout,
                               updateFits=updateFits,

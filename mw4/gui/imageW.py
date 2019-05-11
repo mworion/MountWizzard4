@@ -20,7 +20,7 @@
 import logging
 import os
 # external packages
-import PyQt5
+import PyQt5.QtWidgets
 from astropy.io import fits
 from astropy import wcs
 from astropy.nddata import Cutout2D
@@ -34,6 +34,23 @@ from mw4.gui import widget
 from mw4.gui.widgets import image_ui
 
 
+class ImageWindowSignals(PyQt5.QtCore.QObject):
+    """
+    The CameraSignals class offers a list of signals to be used and instantiated by
+    the Mount class to get signals for triggers for finished tasks to
+    enable a gui to update their values transferred to the caller back.
+
+    This has to be done in a separate class as the signals have to be subclassed from
+    QObject and the Mount class itself is subclassed from object
+    """
+
+    __all__ = ['ImageWindowSignals']
+    version = '0.1'
+
+    show = PyQt5.QtCore.pyqtSignal(object)
+    solve = PyQt5.QtCore.pyqtSignal()
+
+
 class ImageWindow(widget.MWidget):
     """
     the image window class handles fits image loading, stretching, zooming and handles
@@ -45,8 +62,6 @@ class ImageWindow(widget.MWidget):
                ]
     version = '0.9'
     logger = logging.getLogger(__name__)
-    signalShowImage = PyQt5.QtCore.pyqtSignal()
-    signalSolveImage = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self, app):
         super().__init__()
@@ -54,6 +69,7 @@ class ImageWindow(widget.MWidget):
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.signals = ImageWindowSignals()
         self.imageFileName = ''
         self.imageData = None
         self.folder = ''
@@ -167,9 +183,10 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
         self.ui.expose.clicked.connect(self.exposeImage)
+        self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abort.clicked.connect(self.abortImage)
-        self.signalShowImage.connect(self.showFitsImage)
-        self.signalSolveImage.connect(self.solveImage)
+        self.signals.show.connect(self.showFitsImage)
+        self.signals.solve.connect(self.solveImage)
 
         return True
 
@@ -194,8 +211,8 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUseWCS.clicked.disconnect(self.showFitsImage)
         self.ui.checkUsePixel.clicked.disconnect(self.showFitsImage)
         self.ui.solve.clicked.disconnect(self.solveImage)
-        self.signalShowImage.disconnect(self.showFitsImage)
-        self.signalSolveImage.disconnect(self.solveImage)
+        self.signals.show.disconnect(self.showFitsImage)
+        self.signals.solve.disconnect(self.solveImage)
 
         plt.close(self.imageMat.figure)
         super().closeEvent(closeEvent)
@@ -541,8 +558,10 @@ class ImageWindow(widget.MWidget):
 
         imagePath = self.imageFileName
         if not imagePath:
+            print('no image path')
             return False
         if not os.path.isfile(imagePath):
+            print('no image in path')
             return False
 
         full, short, ext = self.extractNames([self.imageFileName])
@@ -580,31 +599,9 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def exposeImageDone(self):
+    def exposeRaw(self):
         """
-        exposeImageDone is the partner method to exposeImage. it resets the gui elements
-        to it's default state and disconnects the signal for the callback. finally when
-        all elements are done it emits the showImage signal.
-
-        :return:
-        """
-
-        self.changeStyleDynamic(self.ui.expose, 'running', 'false')
-        self.ui.solve.setEnabled(True)
-        self.ui.exposeN.setEnabled(True)
-        self.ui.load.setEnabled(True)
-        self.ui.abort.setEnabled(False)
-
-        self.app.imaging.signals.done.disconnect(self.exposeImageDone)
-
-        self.app.message.emit('Image exposed', 0)
-        self.signalShowImage.emit()
-
-    def exposeImage(self):
-        """
-        exposeImage disables all gui elements which could interfere when having a running
-        exposure. it connects the callback for downloaded image and presets all necessary
-        parameters for imaging
+        exposeRaw gathers all necessary parameters and starts exposing
 
         :return: True for test purpose
         """
@@ -624,15 +621,71 @@ class ImageWindow(widget.MWidget):
                                 subFrame=subFrame,
                                 filterPos=0)
 
+        text = f'Exposing {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
+        self.app.message.emit(text, 0)
+
+        return True
+
+    def exposeImageDone(self):
+        """
+        exposeImageDone is the partner method to exposeImage. it resets the gui elements
+        to it's default state and disconnects the signal for the callback. finally when
+        all elements are done it emits the showImage signal.
+
+        :return: True for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.expose, 'running', 'false')
+        self.ui.solve.setEnabled(True)
+        self.ui.exposeN.setEnabled(True)
+        self.ui.load.setEnabled(True)
+        self.ui.abort.setEnabled(False)
+
+        self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
+
+        self.app.message.emit('Image exposed', 0)
+
+        return True
+
+    def exposeImage(self):
+        """
+        exposeImage disables all gui elements which could interfere when having a running
+        exposure. it connects the callback for downloaded image and presets all necessary
+        parameters for imaging
+
+        :return: True for test purpose
+        """
+
         self.changeStyleDynamic(self.ui.expose, 'running', 'true')
         self.ui.exposeN.setEnabled(False)
         self.ui.load.setEnabled(False)
         self.ui.solve.setEnabled(False)
         self.ui.abort.setEnabled(True)
 
-        self.app.imaging.signals.done.connect(self.exposeImageDone)
-        text = f'Exposing {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
-        self.app.message.emit(text, 0)
+        self.app.imaging.signals.saved.connect(self.exposeImageDone)
+        self.app.imaging.signals.saved.connect(self.showFitsImage)
+        self.exposeRaw()
+
+        return True
+
+    def exposeImageN(self):
+        """
+        exposeImageN disables all gui elements which could interfere when having a running
+        exposure. it connects the callback for downloaded image and presets all necessary
+        parameters for imaging
+
+        :return: True for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
+        self.ui.expose.setEnabled(False)
+        self.ui.load.setEnabled(False)
+        self.ui.solve.setEnabled(False)
+        self.ui.abort.setEnabled(True)
+
+        self.app.imaging.signals.saved.connect(self.showFitsImage)
+        self.app.imaging.signals.saved.connect(self.exposeRaw)
+        self.exposeRaw()
 
         return True
 
@@ -645,14 +698,19 @@ class ImageWindow(widget.MWidget):
         """
 
         self.app.imaging.abort()
+        self.app.imaging.signals.saved.disconnect(self.showFitsImage)
+        if self.ui.exposeN.isEnabled():
+            self.app.imaging.signals.saved.disconnect(self.exposeRaw)
+        if self.ui.expose.isEnabled():
+            self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
 
         self.changeStyleDynamic(self.ui.expose, 'running', 'false')
         self.ui.solve.setEnabled(True)
+        self.ui.expose.setEnabled(True)
         self.ui.exposeN.setEnabled(True)
         self.ui.load.setEnabled(True)
         self.ui.abort.setEnabled(False)
 
-        self.app.imaging.signals.done.disconnect(self.exposeImageDone)
         self.app.message.emit('Image exposing aborted', 2)
 
         return True

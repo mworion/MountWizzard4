@@ -42,7 +42,7 @@ class CameraSignals(PyQt5.QtCore.QObject):
     __all__ = ['CameraSignals']
     version = '0.1'
 
-    done = PyQt5.QtCore.pyqtSignal()
+    integrated = PyQt5.QtCore.pyqtSignal()
     saved = PyQt5.QtCore.pyqtSignal()
     message = PyQt5.QtCore.pyqtSignal(object)
 
@@ -136,15 +136,14 @@ class Camera(indiClass.IndiClass):
 
             if propertyName == 'CCD_EXPOSURE':
                 if self.device.CCD_EXPOSURE['state'] == 'Idle':
-                    self.signals.done.emit()
                     self.signals.message.emit('')
                 elif self.device.CCD_EXPOSURE['state'] == 'Busy':
                     if value == 0:
+                        self.signals.integrated.emit()
                         self.signals.message.emit('download')
                     else:
                         self.signals.message.emit(f'expose {value:2.0f} s')
                 elif self.device.CCD_EXPOSURE['state'] == 'Ok':
-                    self.signals.done.emit()
                     self.signals.message.emit('')
 
         return True
@@ -238,19 +237,19 @@ class Camera(indiClass.IndiClass):
 
         if data['format'] == '.fits.fz':
             HDU = fits.HDUList.fromstring(data['value'])
-            imageHDU = HDU[0]
-            fits.writeto(self.imagePath, imageHDU.data, imageHDU.header, overwrite=True)
+            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
             self.logger.debug('Image BLOB is in FPacked format')
+
         elif data['format'] == '.fits.z':
             HDU = fits.HDUList.fromstring(zlib.decompress(data['value']))
-            imageHDU = HDU[0]
-            fits.writeto(self.imagePath, imageHDU.data, imageHDU.header, overwrite=True)
+            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
             self.logger.debug('Image BLOB is compressed fits format')
+
         elif data['format'] == '.fits':
             HDU = fits.HDUList.fromstring(data['value'])
-            imageHDU = HDU[0]
-            fits.writeto(self.imagePath, imageHDU.data, imageHDU.header, overwrite=True)
+            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
             self.logger.debug('Image BLOB is uncompressed fits format')
+
         else:
             self.logger.debug('Image BLOB is not supported')
 

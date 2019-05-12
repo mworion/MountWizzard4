@@ -85,9 +85,11 @@ class DataPoint(object):
                'saveHorizonP',
                'clearHorizonP',
                'generateCelestialEquator',
+               'generateDSOPath',
+               'genAlign',
                'hip',
                ]
-    version = '0.1'
+    version = '0.8'
     logger = logging.getLogger(__name__)
 
     # data for generating greater circles, dec and step only for east, west is reversed
@@ -672,3 +674,22 @@ class DataPoint(object):
                 self.addBuildP((alt.degrees, az.degrees % 360))
 
         return True
+
+    def sunFlower(self, numberPoints):
+        """
+        based on the evaluations and implementation of CR Drost from 17-05-24 found at:
+        https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere
+        the implementation of an equally distributed points cloud over on half of the
+        hemisphere.
+
+
+
+        :return:
+        """
+
+        indices = np.arange(0, numberPoints, dtype=float) + 0.5
+        phi = np.arccos(1 - 2 * indices / numberPoints)
+        theta = np.pi * (1 + 5 ** 0.5) * indices
+        # x, y, z = np.cos(theta) * np.sin(phi), np.sin(theta) * np.sin(phi), np.cos(phi)
+        altitude = np.degree(phi)
+        azimuth = np.degree(theta)

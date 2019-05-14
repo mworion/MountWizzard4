@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -7615,8 +7615,8 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>50</y>
-         <width>371</width>
+         <y>175</y>
+         <width>176</width>
          <height>31</height>
         </rect>
        </property>
@@ -7646,9 +7646,9 @@ manually</string>
       <widget class="QPushButton" name="cancelFullModel">
        <property name="geometry">
         <rect>
-         <x>405</x>
-         <y>90</y>
-         <width>371</width>
+         <x>600</x>
+         <y>175</y>
+         <width>176</width>
          <height>31</height>
         </rect>
        </property>
@@ -8146,7 +8146,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>40</y>
+         <y>165</y>
          <width>371</width>
          <height>1</height>
         </rect>
@@ -8162,7 +8162,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>20</y>
+         <y>145</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -8383,7 +8383,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>715</x>
-         <y>165</y>
+         <y>215</y>
          <width>61</width>
          <height>21</height>
         </rect>
@@ -8425,7 +8425,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>590</x>
-         <y>165</y>
+         <y>215</y>
          <width>116</width>
          <height>21</height>
         </rect>
@@ -8446,7 +8446,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>220</y>
+         <y>270</y>
          <width>371</width>
          <height>31</height>
         </rect>
@@ -8477,7 +8477,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>165</y>
+         <y>215</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -8492,42 +8492,6 @@ manually</string>
        </property>
        <property name="text">
         <string>Elapsed time:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_216">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>135</y>
-         <width>121</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Modeling progress</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_45">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>155</y>
-         <width>371</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
       <widget class="QPushButton" name="runBatchModel">
@@ -8589,7 +8553,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>495</x>
-         <y>165</y>
+         <y>215</y>
          <width>66</width>
          <height>21</height>
         </rect>
@@ -8631,7 +8595,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>590</x>
-         <y>190</y>
+         <y>240</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -8652,7 +8616,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>715</x>
-         <y>190</y>
+         <y>240</y>
          <width>61</width>
          <height>21</height>
         </rect>
@@ -8694,7 +8658,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>495</x>
-         <y>190</y>
+         <y>240</y>
          <width>66</width>
          <height>21</height>
         </rect>
@@ -8736,7 +8700,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>190</y>
+         <y>240</y>
          <width>76</width>
          <height>21</height>
         </rect>
@@ -8806,6 +8770,114 @@ manually</string>
         <string>h</string>
        </property>
       </widget>
+      <widget class="Line" name="line_87">
+       <property name="geometry">
+        <rect>
+         <x>405</x>
+         <y>40</y>
+         <width>371</width>
+         <height>1</height>
+        </rect>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="numberSpiralPoints">
+       <property name="geometry">
+        <rect>
+         <x>450</x>
+         <y>85</y>
+         <width>51</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points in the DSO track for the given time in hours&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="decimals">
+        <number>0</number>
+       </property>
+       <property name="minimum">
+        <double>20.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>350.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>5.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>20.000000000000000</double>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_308">
+       <property name="geometry">
+        <rect>
+         <x>405</x>
+         <y>20</y>
+         <width>361</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Generate model build points equally distributed</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_309">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>85</y>
+         <width>41</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Points</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="genBuildGoldenSpiral">
+       <property name="geometry">
+        <rect>
+         <x>405</x>
+         <y>45</y>
+         <width>371</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points along DSO track for a give time and other parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Generate Golden Spiral</string>
+       </property>
+      </widget>
       <zorder>line_42</zorder>
       <zorder>line_28</zorder>
       <zorder>line_34</zorder>
@@ -8852,8 +8924,6 @@ manually</string>
       <zorder>label_35</zorder>
       <zorder>bar_modelingStatusPercent</zorder>
       <zorder>label_29</zorder>
-      <zorder>label_216</zorder>
-      <zorder>line_45</zorder>
       <zorder>runBatchModel</zorder>
       <zorder>line_39</zorder>
       <zorder>label_205</zorder>
@@ -8865,6 +8935,11 @@ manually</string>
       <zorder>runBatchCombineModel</zorder>
       <zorder>genBuildNorm</zorder>
       <zorder>label_303</zorder>
+      <zorder>line_87</zorder>
+      <zorder>numberSpiralPoints</zorder>
+      <zorder>label_308</zorder>
+      <zorder>label_309</zorder>
+      <zorder>genBuildGoldenSpiral</zorder>
      </widget>
      <widget class="QWidget" name="ManageModel">
       <attribute name="title">

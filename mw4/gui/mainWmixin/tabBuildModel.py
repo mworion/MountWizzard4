@@ -92,6 +92,8 @@ class BuildModel(object):
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
+        self.ui.numberSpiralPoints.valueChanged.connect(self.genBuildGoldenSpiral)
+        self.ui.genBuildGoldenSpiral.clicked.connect(self.genBuildGoldenSpiral)
 
         self.ui.runFullModel.clicked.connect(self.modelStart)
 
@@ -283,6 +285,26 @@ class BuildModel(object):
                                             duration=duration,
                                             timeShift=timeShift,
                                             )
+
+        if not suc:
+            self.app.message.emit('DSO Path cannot be generated', 2)
+            return False
+        self.autoDeletePoints()
+        self.autoSortPoints()
+        return True
+
+    def genBuildGoldenSpiral(self):
+        """
+        genBuildGoldenSpiral generates points along the actual tracking path
+
+        :return: success
+        """
+
+        numberPoints = self.ui.numberSpiralPoints.value()
+
+        suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints,
+                                                 )
+
         if not suc:
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False

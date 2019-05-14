@@ -675,21 +675,30 @@ class DataPoint(object):
 
         return True
 
-    def sunFlower(self, numberPoints):
+    def generateGoldenSpiral(self, numberPoints):
         """
         based on the evaluations and implementation of CR Drost from 17-05-24 found at:
         https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere
         the implementation of an equally distributed points cloud over on half of the
         hemisphere.
 
-
-
-        :return:
+        :param numberPoints:
+        :return: true for test purpose
         """
+
+        self.clearBuildP()
 
         indices = np.arange(0, numberPoints, dtype=float) + 0.5
         phi = np.arccos(1 - 2 * indices / numberPoints)
         theta = np.pi * (1 + 5 ** 0.5) * indices
+
+        # do not transfer to xyz coordinates
         # x, y, z = np.cos(theta) * np.sin(phi), np.sin(theta) * np.sin(phi), np.cos(phi)
-        altitude = np.degree(phi)
-        azimuth = np.degree(theta)
+        altitude = 90 - np.degrees(phi)
+        azimuth = np.degrees(theta) % 360
+
+        for alt, az in zip(altitude, azimuth):
+            # only adding above horizon
+            if alt > 0:
+                self.addBuildP((alt, az))
+        return True

@@ -414,12 +414,31 @@ class HemisphereWindow(widget.MWidget):
         if self.starsAlignAnnotate is None:
             return False
 
+        axes = self.hemisphereMat.figure.axes[0]
         hip = self.app.hipparcos
         hip.calculateAlignStarPositionsAltAz()
         self.starsAlign.set_data(hip.az, hip.alt)
         for i, starAnnotation in enumerate(self.starsAlignAnnotate):
-            starAnnotation.set_anncoords('data')
-            starAnnotation.set_position((hip.az[i], hip.alt[i]))
+            starAnnotation.remove()
+        self.starsAlignAnnotate = list()
+
+        # due to the fact that all annotation are only shown if in axes when coordinate
+        # are in data, after some time, no annotation will be shown, because just moved.
+        # therefor we add each time the annotation again.
+
+        visible = self.ui.checkShowAlignStar.isChecked()
+        for alt, az, name in zip(hip.alt, hip.az, hip.name):
+            annotation = axes.annotate(name,
+                                       xy=(az, alt),
+                                       xytext=(2, 2),
+                                       textcoords='offset points',
+                                       xycoords='data',
+                                       color='#808080',
+                                       fontsize=12,
+                                       clip_on=True,
+                                       visible=visible,
+                                       )
+            self.starsAlignAnnotate.append(annotation)
         return True
 
     @staticmethod
@@ -1091,7 +1110,7 @@ class HemisphereWindow(widget.MWidget):
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
             annotation = axes.annotate(name,
                                        xy=(az, alt),
-                                       xytext=(0, 0),
+                                       xytext=(2, 2),
                                        textcoords='offset points',
                                        xycoords='data',
                                        color='#808080',

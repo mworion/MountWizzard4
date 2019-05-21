@@ -76,11 +76,23 @@ class Dome(indiClass.IndiClass):
 
         self.app = app
         self.signals = DomeSignals()
-        self.slewing = False
+        self._settlingTime = 3
+
         self.azimuth = -1
-        self.settlingTime = 0
         self.slewing = False
+
         self.app.update3s.connect(self.updateStatus)
+        self.settlingWait = PyQt5.QtCore.QTimer()
+        self.settlingWait.setSingleShot(True)
+        self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
+
+    @property
+    def settlingTime(self):
+        return self._settlingTime * 1000
+
+    @settlingTime.setter
+    def settlingTime(self, value):
+        self._settlingTime = value
 
     def setUpdateConfig(self, deviceName):
         """
@@ -120,9 +132,22 @@ class Dome(indiClass.IndiClass):
         window and get the signals late connected as INDI does nt repeat any signal of it's
         own
 
-        :return:
+        :return: true for test purpose
         """
+
         self.signals.azimuth.emit(self.azimuth)
+
+        return True
+
+    def waitSettlingAndEmit(self):
+        """
+        waitSettlingAndEmit emit the signal for slew finished
+
+        :return: true for test purpose
+        """
+
+        self.signals.message.emit('')
+        self.signals.slewFinished.emit()
 
         return True
 
@@ -162,9 +187,8 @@ class Dome(indiClass.IndiClass):
             if isSlewing:
                 self.signals.message.emit('slewing')
             if self.slewing and not isSlewing:
-                # todo: adding settlingTime wait until single slew finished will be emitted
-                self.signals.slewFinished.emit()
-                self.signals.message.emit('')
+                # start timer for settling time and emit signal afterwards
+                self.settlingWait.start(self.settlingTime)
 
             # store for the next cycle
             self.azimuth = value

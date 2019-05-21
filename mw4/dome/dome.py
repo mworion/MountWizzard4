@@ -76,7 +76,7 @@ class Dome(indiClass.IndiClass):
 
         self.app = app
         self.signals = DomeSignals()
-        self._settlingTime = 3
+        self._settlingTime = 0
 
         self.azimuth = -1
         self.slewing = False

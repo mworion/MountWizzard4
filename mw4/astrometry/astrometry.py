@@ -92,7 +92,8 @@ class Astrometry(object):
         elif platform.system() == 'Linux':
             self.binPath = {
                 'astrometry.net': '/usr/bin',
-                       }
+                'astrometry.net local': '/usr/local/astrometry/bin',
+            }
             self.indexPath = '/usr/share/astrometry'
         else:
             self.indexPath = ''

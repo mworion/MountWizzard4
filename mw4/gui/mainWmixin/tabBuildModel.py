@@ -395,12 +395,44 @@ class BuildModel(object):
         self.autoDeletePoints()
         return True
 
+    def exposeRaw(self, imagePath='', expTime=0, binning=0, subFrame=0):
+        """
+        exposeRaw gathers all necessary parameters and starts exposing
+
+        :param imagePath:
+        :param expTime:
+        :param binning:
+        :param subFrame:
+        :return: True for test purpose
+        """
+
+        self.app.imaging.expose(imagePath=imagePath,
+                                expTime=expTime,
+                                binning=binning,
+                                subFrame=subFrame,
+                                filterPos=0)
+
+        return True
+
     def modelSolve(self):
         self.app.imageW.solveImage()
 
     def modelImage(self):
+
+        expTime = self.app.mainW.ui.expTime.value()
+        binning = self.app.mainW.ui.binning.value()
+        subFrame = self.app.mainW.ui.subFrame.value()
+
+        time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        directory = f'{self.app.mwGlob["imageDir"]}/{time}'
+        imagePath = f'{directory}/image.fits'
+
         self.collector.resetSignals()
-        self.app.imageW.exposeRaw()
+        self.app.exposeRaw(imagePath=imagePath,
+                           expTime=expTime,
+                           binning=binning,
+                           subFrame=subFrame,
+                           )
 
     def modelSlew(self):
         if self.slewQueue.empty():

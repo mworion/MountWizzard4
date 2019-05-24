@@ -47,12 +47,10 @@ class SettHorizon(object):
         """
         config = self.app.config['mainW']
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
-        self.ui.checkUseHorizonMin.setChecked(config.get('checkUseHorizonMin', False))
         self.ui.checkAutoDeletePoints.setChecked(config.get('checkAutoDeletePoints', False))
         self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
-        self.ui.altitudeHorizonMin.setValue(config.get('altitudeHorizonMin', 0))
         return True
 
     def storeConfig(self):
@@ -65,9 +63,7 @@ class SettHorizon(object):
         """
         config = self.app.config['mainW']
         config['horizonFileName'] = self.ui.horizonFileName.text()
-        config['checkUseHorizonMin'] = self.ui.checkUseHorizonMin.isChecked()
         config['checkAutoDeletePoints'] = self.ui.checkAutoDeletePoints.isChecked()
-        config['altitudeHorizonMin'] = self.ui.altitudeHorizonMin.value()
         config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()

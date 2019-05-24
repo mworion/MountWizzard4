@@ -13300,7 +13300,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>4</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -15266,30 +15266,6 @@ manually</string>
           <enum>Qt::Vertical</enum>
          </property>
         </widget>
-        <widget class="QCheckBox" name="checkUseHorizonMin">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>150</y>
-           <width>211</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use minimum altitude for horizon mask in hemisphere window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="text">
-          <string>Overlay Minimum Horizon</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-        </widget>
         <widget class="QCheckBox" name="checkAutoDeletePoints">
          <property name="geometry">
           <rect>
@@ -15386,24 +15362,6 @@ manually</string>
            <string>Not Sorting</string>
           </property>
          </widget>
-        </widget>
-        <widget class="QLabel" name="label_201">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>175</y>
-           <width>146</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Set altitude minimum to</string>
-         </property>
         </widget>
         <widget class="QPushButton" name="saveHorizonMaskAs">
          <property name="enabled">
@@ -15564,68 +15522,6 @@ manually</string>
          </property>
          <property name="text">
           <string>Load</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_100">
-         <property name="geometry">
-          <rect>
-           <x>220</x>
-           <y>175</y>
-           <width>16</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>°</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="altitudeHorizonMin">
-         <property name="geometry">
-          <rect>
-           <x>175</x>
-           <y>175</y>
-           <width>46</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>90.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>1.000000000000000</double>
-         </property>
-         <property name="value">
-          <double>20.000000000000000</double>
          </property>
         </widget>
        </widget>
@@ -19032,8 +18928,6 @@ manually</string>
   <tabstop>loadHorizonMask</tabstop>
   <tabstop>saveHorizonMask</tabstop>
   <tabstop>saveHorizonMaskAs</tabstop>
-  <tabstop>checkUseHorizonMin</tabstop>
-  <tabstop>altitudeHorizonMin</tabstop>
   <tabstop>checkAutoDeletePoints</tabstop>
   <tabstop>le_satelliteName</tabstop>
   <tabstop>checkSortNothing</tabstop>

@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -7128,7 +7128,7 @@ manually</string>
       <widget class="QLabel" name="label_208">
        <property name="geometry">
         <rect>
-         <x>325</x>
+         <x>320</x>
          <y>190</y>
          <width>81</width>
          <height>21</height>
@@ -14396,7 +14396,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>355</x>
-           <y>220</y>
+           <y>255</y>
            <width>16</width>
            <height>26</height>
           </rect>
@@ -14414,7 +14414,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>355</x>
-           <y>120</y>
+           <y>155</y>
            <width>16</width>
            <height>26</height>
           </rect>
@@ -14432,7 +14432,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>185</y>
+           <y>220</y>
            <width>166</width>
            <height>26</height>
           </rect>
@@ -14450,7 +14450,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>220</y>
+           <y>255</y>
            <width>166</width>
            <height>26</height>
           </rect>
@@ -14506,7 +14506,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>300</x>
-           <y>185</y>
+           <y>220</y>
            <width>51</width>
            <height>26</height>
           </rect>
@@ -14544,7 +14544,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>300</x>
-           <y>120</y>
+           <y>155</y>
            <width>51</width>
            <height>26</height>
           </rect>
@@ -14620,7 +14620,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>300</x>
-           <y>220</y>
+           <y>255</y>
            <width>51</width>
            <height>26</height>
           </rect>
@@ -14658,7 +14658,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>20</x>
-           <y>155</y>
+           <y>190</y>
            <width>166</width>
            <height>20</height>
           </rect>
@@ -14682,7 +14682,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>260</y>
+           <y>310</y>
            <width>346</width>
            <height>21</height>
           </rect>
@@ -14808,7 +14808,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>120</y>
+           <y>155</y>
            <width>166</width>
            <height>26</height>
           </rect>
@@ -14822,372 +14822,12 @@ manually</string>
           <string>Subframe of image</string>
          </property>
         </widget>
-       </widget>
-       <widget class="QWidget" name="Astrometry">
-        <attribute name="title">
-         <string>Astrometry</string>
-        </attribute>
-        <widget class="QLineEdit" name="le_astrometryTimeout">
-         <property name="geometry">
-          <rect>
-           <x>325</x>
-           <y>75</y>
-           <width>46</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="mouseTracking">
-          <bool>false</bool>
-         </property>
-         <property name="acceptDrops">
-          <bool>false</bool>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Timeout for solving time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
-         </property>
-         <property name="text">
-          <string>60</string>
-         </property>
-         <property name="maxLength">
-          <number>25</number>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="le_AstrometryHost">
-         <property name="geometry">
-          <rect>
-           <x>90</x>
-           <y>50</y>
-           <width>211</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="mouseTracking">
-          <bool>false</bool>
-         </property>
-         <property name="acceptDrops">
-          <bool>false</bool>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of astrometry server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
-         </property>
-         <property name="text">
-          <string>127.0.0.1</string>
-         </property>
-         <property name="maxLength">
-          <number>50</number>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_mountIP_8">
-         <property name="geometry">
-          <rect>
-           <x>275</x>
-           <y>75</y>
-           <width>51</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Timeout</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="le_AstrometryAPIKey">
-         <property name="geometry">
-          <rect>
-           <x>90</x>
-           <y>75</y>
-           <width>161</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="mouseTracking">
-          <bool>false</bool>
-         </property>
-         <property name="acceptDrops">
-          <bool>false</bool>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;API key from astrometry server.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
-         </property>
-         <property name="text">
-          <string>abcdefghighdfegr</string>
-         </property>
-         <property name="maxLength">
-          <number>25</number>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_mountIP_4">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>50</y>
-           <width>51</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>IP / Port</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_mountIP_13">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>75</y>
-           <width>51</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>API Key</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="le_AstrometryPort">
-         <property name="geometry">
-          <rect>
-           <x>325</x>
-           <y>50</y>
-           <width>46</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="mouseTracking">
-          <bool>false</bool>
-         </property>
-         <property name="acceptDrops">
-          <bool>false</bool>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Port address of astrometry server&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
-         </property>
-         <property name="inputMask">
-          <string/>
-         </property>
-         <property name="text">
-          <string>80</string>
-         </property>
-         <property name="maxLength">
-          <number>5</number>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="dragEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_260">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>20</y>
-           <width>281</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Configuration of astrometry.net solver</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_mountIP_9">
-         <property name="geometry">
-          <rect>
-           <x>310</x>
-           <y>50</y>
-           <width>16</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>/</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line_79">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>40</y>
-           <width>361</width>
-           <height>1</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_168">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>85</y>
-           <width>161</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Focal length of telescope</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_218">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>20</y>
-           <width>151</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Solving configuration</string>
-         </property>
-        </widget>
-        <widget class="Line" name="line_75">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>195</y>
-           <width>361</width>
-           <height>1</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_166">
          <property name="geometry">
           <rect>
-           <x>400</x>
-           <y>50</y>
-           <width>161</width>
+           <x>10</x>
+           <y>120</y>
+           <width>166</width>
            <height>26</height>
           </rect>
          </property>
@@ -15197,175 +14837,14 @@ manually</string>
           </font>
          </property>
          <property name="text">
-          <string>Pixel size x/y for camera</string>
+          <string>CCD Pixel size (from driver)</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_219">
+        <widget class="QLabel" name="label_313">
          <property name="geometry">
           <rect>
-           <x>400</x>
-           <y>210</y>
-           <width>161</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Astrometry downsample</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_122">
-         <property name="geometry">
-          <rect>
-           <x>725</x>
-           <y>245</y>
-           <width>16</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>°</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_252">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>175</y>
-           <width>226</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>ASTROMETRY.NET configuration</string>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="astrometryDownsampling">
-         <property name="geometry">
-          <rect>
-           <x>670</x>
-           <y>210</y>
-           <width>56</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;downsample_factor: float, &gt;1. Downsample (bin) your image by this factor before performing source detection. This often helps with saturated images, noisy images, and large images. 2 and 4 are commonly-useful values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="minimum">
-          <double>2.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>6.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>1.000000000000000</double>
-         </property>
-         <property name="value">
-          <double>2.000000000000000</double>
-         </property>
-        </widget>
-        <widget class="QCheckBox" name="checkOverwriteFITS">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>125</y>
-           <width>231</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>Overwrite FITS data if present</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="pixelSize">
-         <property name="geometry">
-          <rect>
-           <x>670</x>
-           <y>50</y>
-           <width>56</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>Pixel size of camera</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <double>25.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>3.700000000000000</double>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_167">
-         <property name="geometry">
-          <rect>
-           <x>730</x>
-           <y>50</y>
+           <x>355</x>
+           <y>120</y>
            <width>21</width>
            <height>26</height>
           </rect>
@@ -15379,48 +14858,15 @@ manually</string>
           <string>um</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_169">
+        <widget class="QDoubleSpinBox" name="pixelSize">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="geometry">
           <rect>
-           <x>730</x>
-           <y>85</y>
-           <width>26</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>mm</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_221">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>245</y>
-           <width>156</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Astrometry radius</string>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="astrometryRadius">
-         <property name="geometry">
-          <rect>
-           <x>670</x>
-           <y>245</y>
-           <width>56</width>
+           <x>300</x>
+           <y>120</y>
+           <width>51</width>
            <height>26</height>
           </rect>
          </property>
@@ -15432,7 +14878,7 @@ manually</string>
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius: float, in degrees. Used with center_ra, center_dec to specify that you know roughly where your image is on the sky. Please set to 0 if you don't know.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -15441,94 +14887,16 @@ manually</string>
           <number>1</number>
          </property>
          <property name="minimum">
-          <double>0.000000000000000</double>
+          <double>1.000000000000000</double>
          </property>
          <property name="maximum">
-          <double>3.000000000000000</double>
+          <double>50.000000000000000</double>
          </property>
          <property name="singleStep">
           <double>0.100000000000000</double>
          </property>
          <property name="value">
-          <double>0.000000000000000</double>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="focalLength">
-         <property name="geometry">
-          <rect>
-           <x>670</x>
-           <y>85</y>
-           <width>56</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>resulting focal length - please think of reducers etc.</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="decimals">
-          <number>0</number>
-         </property>
-         <property name="maximum">
-          <double>5000.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>1.000000000000000</double>
-         </property>
-         <property name="value">
-          <double>582.000000000000000</double>
-         </property>
-        </widget>
-        <widget class="Line" name="line_36">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>40</y>
-           <width>361</width>
-           <height>1</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="Line" name="line_94">
-         <property name="geometry">
-          <rect>
-           <x>380</x>
-           <y>10</y>
-           <width>11</width>
-           <height>371</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="lineWidth">
-          <number>2</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <double>5.000000000000000</double>
          </property>
         </widget>
        </widget>
@@ -19658,15 +19026,6 @@ manually</string>
   <tabstop>isoSetting</tabstop>
   <tabstop>settlingTime</tabstop>
   <tabstop>checkKeepImages</tabstop>
-  <tabstop>le_AstrometryPort</tabstop>
-  <tabstop>le_AstrometryHost</tabstop>
-  <tabstop>le_AstrometryAPIKey</tabstop>
-  <tabstop>le_astrometryTimeout</tabstop>
-  <tabstop>pixelSize</tabstop>
-  <tabstop>focalLength</tabstop>
-  <tabstop>checkOverwriteFITS</tabstop>
-  <tabstop>astrometryDownsampling</tabstop>
-  <tabstop>astrometryRadius</tabstop>
   <tabstop>mountHost</tabstop>
   <tabstop>mountMAC</tabstop>
   <tabstop>mountTypeConnection</tabstop>

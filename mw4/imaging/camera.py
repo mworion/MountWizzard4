@@ -114,6 +114,43 @@ class Camera(indiClass.IndiClass):
 
         return suc
 
+    def setPixelSize(self, propertyName='', element='', value=0):
+        """
+
+        :param propertyName:
+        :param element:
+        :param value:
+        :return: True for test purpose
+        """
+
+        if propertyName == 'CCD_INFO':
+            if element == 'CCD_PIXEL_SIZE_X':
+                self.app.mainW.ui.pixelSize.setValue(np.round(value, 1))
+
+        return True
+
+    def setExposureState(self, propertyName='', value=0):
+        """
+
+        :param propertyName:
+        :param value:
+        :return: True for test purpose
+        """
+
+        if propertyName == 'CCD_EXPOSURE':
+            if self.device.CCD_EXPOSURE['state'] == 'Idle':
+                self.signals.message.emit('')
+            elif self.device.CCD_EXPOSURE['state'] == 'Busy':
+                if value == 0:
+                    self.signals.integrated.emit()
+                    self.signals.message.emit('download')
+                else:
+                    self.signals.message.emit(f'expose {value:2.0f} s')
+            elif self.device.CCD_EXPOSURE['state'] == 'Ok':
+                self.signals.message.emit('')
+
+        return True
+
     def updateNumber(self, deviceName, propertyName):
         """
         updateNumber is called whenever a new number is received in client. it runs
@@ -134,17 +171,8 @@ class Camera(indiClass.IndiClass):
             self.data[key] = value
             # print(propertyName, element, value)
 
-            if propertyName == 'CCD_EXPOSURE':
-                if self.device.CCD_EXPOSURE['state'] == 'Idle':
-                    self.signals.message.emit('')
-                elif self.device.CCD_EXPOSURE['state'] == 'Busy':
-                    if value == 0:
-                        self.signals.integrated.emit()
-                        self.signals.message.emit('download')
-                    else:
-                        self.signals.message.emit(f'expose {value:2.0f} s')
-                elif self.device.CCD_EXPOSURE['state'] == 'Ok':
-                    self.signals.message.emit('')
+            self.setPixelSize(propertyName=propertyName, element=element, value=value)
+            self.setExposureState(propertyName=propertyName, value=value)
 
         return True
 

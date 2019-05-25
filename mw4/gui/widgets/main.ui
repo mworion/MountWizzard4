@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -8500,7 +8500,7 @@ manually</string>
         <string>Elapsed time:</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="runBatchModel">
+      <widget class="QPushButton" name="batchModel">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -8660,7 +8660,7 @@ manually</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QPushButton" name="runBatchCombineModel">
+      <widget class="QPushButton" name="combineModel">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -9119,13 +9119,13 @@ manually</string>
       <zorder>label_35</zorder>
       <zorder>modelProgress</zorder>
       <zorder>label_29</zorder>
-      <zorder>runBatchModel</zorder>
+      <zorder>batchModel</zorder>
       <zorder>line_39</zorder>
       <zorder>label_205</zorder>
       <zorder>timeElapsed</zorder>
       <zorder>label_42</zorder>
       <zorder>timeFinished</zorder>
-      <zorder>runBatchCombineModel</zorder>
+      <zorder>combineModel</zorder>
       <zorder>genBuildNorm</zorder>
       <zorder>label_303</zorder>
       <zorder>line_87</zorder>
@@ -18894,8 +18894,8 @@ manually</string>
   <tabstop>timeShiftDSO</tabstop>
   <tabstop>runFullModel</tabstop>
   <tabstop>cancelFullModel</tabstop>
-  <tabstop>runBatchModel</tabstop>
-  <tabstop>runBatchCombineModel</tabstop>
+  <tabstop>batchModel</tabstop>
+  <tabstop>combineModel</tabstop>
   <tabstop>deleteWorstPoint</tabstop>
   <tabstop>clearModel</tabstop>
   <tabstop>refreshModel</tabstop>

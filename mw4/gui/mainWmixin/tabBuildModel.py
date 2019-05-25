@@ -504,58 +504,9 @@ class BuildModel(object):
 
         text = f'Slewing to Alt: {model.mPoint.altitude} Az: {model.mPoint.azimuth}'
         self.app.message.emit(text, 0)
+        self.ui.mPoints.setText(f'{model.mParam.number:02d}')
         self.ui.mSlewed.setText(f'{model.mParam.count + 1:02d}')
         self.imageQueue.put(model)
-
-        return True
-
-    def prepareGUI(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
-        self.ui.cancelFullModel.setEnabled(True)
-        self.ui.runInitialModel.setEnabled(False)
-        self.ui.plateSolveSync.setEnabled(False)
-        self.ui.runFlexure.setEnabled(False)
-        self.ui.runHysteresis.setEnabled(False)
-
-        return True
-
-    def defaultGUI(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        self.changeStyleDynamic(self.ui.runFullModel, 'running', False)
-        self.ui.cancelFullModel.setEnabled(False)
-        self.ui.runInitialModel.setEnabled(True)
-        self.ui.plateSolveSync.setEnabled(True)
-        self.ui.runFlexure.setEnabled(True)
-        self.ui.runHysteresis.setEnabled(True)
-
-        return True
-
-    def modelFinished(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        self.app.imaging.signals.saved.disconnect(self.modelSolve)
-        self.app.imaging.signals.integrated.disconnect(self.modelSlew)
-        self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
-        self.collector.clear()
-        self.collector.ready.disconnect(self.modelImage)
-
-        self.app.message.emit('Modeling finished', 1)
-        while not self.modelQueue.empty():
-            pass
-
-        self.defaultGUI()
 
         return True
 
@@ -571,6 +522,72 @@ class BuildModel(object):
         self.resultQueue.queue.clear()
         self.modelQueue.queue.clear()
 
+        return True
+
+    def prepareGUI(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
+        self.ui.cancelFullModel.setEnabled(True)
+        self.ui.combineModel.setEnabled(False)
+        self.ui.batchModel.setEnabled(False)
+        self.ui.runInitialModel.setEnabled(False)
+        self.ui.plateSolveSync.setEnabled(False)
+        self.ui.runFlexure.setEnabled(False)
+        self.ui.runHysteresis.setEnabled(False)
+
+        return True
+
+    def defaultGUI(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.runFullModel, 'running', False)
+        self.ui.cancelFullModel.setEnabled(False)
+        self.ui.combineModel.setEnabled(True)
+        self.ui.batchModel.setEnabled(True)
+        self.ui.runInitialModel.setEnabled(True)
+        self.ui.plateSolveSync.setEnabled(True)
+        self.ui.runFlexure.setEnabled(True)
+        self.ui.runHysteresis.setEnabled(True)
+
+        return True
+
+    def prepareSignals(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
+        self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
+        self.collector.ready.connect(self.modelImage)
+
+        self.app.imaging.signals.saved.connect(self.modelSolve)
+        self.app.imaging.signals.integrated.connect(self.modelSlew)
+        self.app.astrometry.signals.done.connect(self.modelSolveDone)
+
+        return True
+
+    def defaultSignals(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.app.imaging.signals.saved.disconnect(self.modelSolve)
+        self.app.imaging.signals.integrated.disconnect(self.modelSlew)
+        self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
+        self.collector.clear()
+        self.collector.ready.disconnect(self.modelImage)
+
+        return True
+
     def cancelFull(self):
         """
 
@@ -579,13 +596,23 @@ class BuildModel(object):
 
         self.app.message.emit('Modeling cancelled', 2)
         self.app.imaging.abort()
-        self.collector.clear()
-        self.collector.ready.disconnect(self.modelImage)
-        self.app.imaging.signals.saved.disconnect(self.modelSolve)
-        self.app.imaging.signals.integrated.disconnect(self.modelSlew)
-        self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
+        self.defaultSignals()
         self.clearQueues()
         self.defaultGUI()
+
+        return True
+
+    def modelFinished(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.defaultSignals()
+        self.defaultGUI()
+        self.app.message.emit('Modeling finished', 1)
+        while not self.modelQueue.empty():
+            pass
 
         return True
 
@@ -625,18 +652,9 @@ class BuildModel(object):
             return False
 
         self.prepareGUI()
-
-        # preparing signals chain for modeling
-        self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
-        self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
-        self.collector.ready.connect(self.modelImage)
-
-        self.app.imaging.signals.saved.connect(self.modelSolve)
-        self.app.imaging.signals.integrated.connect(self.modelSlew)
-        self.app.astrometry.signals.done.connect(self.modelSolveDone)
+        self.prepareSignals()
 
         # queuing modeling points
-        self.ui.mPoints.setText(f'{number:02d}')
         for count, point in enumerate(points):
             # define the path to the image file
             imagePath = f'{directory}/modelimage-{count:03d}.fits'

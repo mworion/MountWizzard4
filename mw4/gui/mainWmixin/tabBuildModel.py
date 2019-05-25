@@ -691,7 +691,7 @@ class BuildModel(object):
         self.defaultGUI()
         self.app.message.emit('Modeling finished', 1)
         while not self.modelQueue.empty():
-            a =self.modelQueue.get()
+            a = self.modelQueue.get()
             print(a)
 
         return True

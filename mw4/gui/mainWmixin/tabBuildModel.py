@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import queue
+import os
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.uic
@@ -424,6 +425,13 @@ class BuildModel(object):
 
         :return:
         """
+
+        if self.solveQueue.empty():
+            return False
+
+        mpoint = self.solveQueue.get()
+        self.ui.mSolved.setText(f'{mpoint.number:02d}')
+        print(mpoint)
         return
         self.app.imageW.solveImage()
 
@@ -443,6 +451,8 @@ class BuildModel(object):
                          binning=mpoint.param.binning,
                          subFrame=mpoint.param.subFrame,
                          )
+        self.ui.mImaged.setText(f'{mpoint.number:02d}')
+        self.solveQueue.put(mpoint)
 
     def modelSlew(self):
         """
@@ -458,8 +468,8 @@ class BuildModel(object):
         suc = self.app.mount.obsSite.slewAltAz(alt_degrees=mpoint.point.altitude,
                                                az_degrees=mpoint.point.azimuth,
                                                )
-        if suc:
-            self.imageQueue.put(mpoint)
+        self.ui.mSlewed.setText(f'{mpoint.number:02d}')
+        self.imageQueue.put(mpoint)
 
         return True
 
@@ -475,6 +485,9 @@ class BuildModel(object):
 
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         directory = f'{self.app.mwGlob["imageDir"]}/{time}'
+        os.mkdir(directory)
+        if not os.path.isdir(directory):
+            return False
 
         self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
@@ -486,9 +499,10 @@ class BuildModel(object):
                   Point(altitude=55, azimuth=40),
                   Point(altitude=50, azimuth=50)]
 
+        self.ui.mPoints.setText(f'{len(points):02d}')
         for number, point in enumerate(points):
             # define the path to the image file
-            imagePath = f'{directory}/image-{number}.fits'
+            imagePath = f'{directory}/modelimage-{number:03d}.fits'
 
             # image parameters
             param = IParam(expTime=expTime,
@@ -498,7 +512,8 @@ class BuildModel(object):
                            )
 
             # transfer to working in a queue with necessary data
-            self.slewQueue.put(MPoint(path=imagePath,
+            self.slewQueue.put(MPoint(number=number + 1,
+                                      path=imagePath,
                                       param=param,
                                       point=point))
 

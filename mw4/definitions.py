@@ -21,4 +21,4 @@ from collections import namedtuple
 
 Point = namedtuple('Point', 'altitude azimuth')
 IParam = namedtuple('IParam', 'expTime binning subFrame fast')
-MPoint = namedtuple('MPoint', 'path param point')
+MPoint = namedtuple('MPoint', 'number path param point')

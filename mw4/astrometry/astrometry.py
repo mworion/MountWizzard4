@@ -346,7 +346,6 @@ class Astrometry(object):
         dec = wcsHeader.get('CRVAL2')
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        # todo: calc error
         raMount = fitsHeader.get('RA')
         decMount = fitsHeader.get('DEC')
 

@@ -463,7 +463,7 @@ class BuildModel(object):
         finished = timedelta(seconds=timeEstimation) + datetime.now()
 
         text = f'Solved -> Ra: {r.raJ2000:4.1f}   Dec: {r.decJ2000:4.1f}'
-        text = text + f'   Angle: {r.angle:4.1f}   Scale: {r.scale:3.1f}'
+        text = text + f'   Angle: {r.angle:4.1f}   Error: {r.error:3.1f}'
         self.app.message.emit(text, 0)
         self.ui.timeToFinish.setText(time.strftime('%M:%S', time.gmtime(timeEstimation)))
         self.ui.timeElapsed.setText(time.strftime('%M:%S', time.gmtime(timeElapsed)))

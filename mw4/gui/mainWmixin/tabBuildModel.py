@@ -501,7 +501,7 @@ class BuildModel(object):
                                 fast=model.iParam.fast,
                                 )
 
-        text = f'Imaging: {os.path.basename(model.mParam.path)}'
+        text = f'Imaging -> {os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mImage.setText(f'{model.mParam.count + 1 :2d}')
         self.solveQueue.put(model)

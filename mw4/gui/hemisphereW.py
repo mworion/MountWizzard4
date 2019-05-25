@@ -398,6 +398,7 @@ class HemisphereWindow(widget.MWidget):
 
         self.pointerDome.set_xy((azimuth - 15, 0))
         self.pointerDome.set_visible(visible)
+
         return True
 
     def updateAlignStar(self):

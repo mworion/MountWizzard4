@@ -8386,6 +8386,9 @@ manually</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="timeToFinish">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>715</x>
@@ -8556,6 +8559,9 @@ manually</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="timeElapsed">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>715</x>
@@ -8619,6 +8625,9 @@ manually</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="timeFinished">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>520</x>
@@ -8906,6 +8915,9 @@ manually</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="mSolve">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>745</x>
@@ -8938,7 +8950,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string>00</string>
+        <string>0</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -8948,6 +8960,9 @@ manually</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="mImage">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>655</x>
@@ -8980,7 +8995,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string>00</string>
+        <string>0</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -8990,6 +9005,9 @@ manually</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="mSlew">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>555</x>
@@ -9022,7 +9040,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string>00</string>
+        <string>0</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9032,6 +9050,9 @@ manually</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="mPoints">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>450</x>
@@ -9064,7 +9085,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string>00</string>
+        <string>0</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

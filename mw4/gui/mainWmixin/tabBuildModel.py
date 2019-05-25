@@ -445,7 +445,6 @@ class BuildModel(object):
         timeElapsed = time.time() - self.startModeling
         if modelingDone:
             timeEstimation = 0
-            self.modelFinished()
         else:
             timeEstimation = (1 / modelPercent * timeElapsed) * (1 - modelPercent)
         finished = timedelta(seconds=timeEstimation) + datetime.now()
@@ -454,6 +453,9 @@ class BuildModel(object):
         self.ui.timeElapsed.setText(time.strftime('%M:%S', time.gmtime(timeElapsed)))
         self.ui.timeFinished.setText(finished.strftime('%H:%M:%S'))
         self.ui.modelProgress.setValue(modelPercent * 100)
+
+        if modelingDone:
+            self.modelFinished()
 
         return True
 
@@ -475,7 +477,7 @@ class BuildModel(object):
 
         text = f'Solving -> {os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
-        self.ui.mSolve.setText(f'{model.mParam.count + 1:02d}')
+        self.ui.mSolve.setText(f'{model.mParam.count + 1:2d}')
         self.resultQueue.put(model)
         return True
 
@@ -499,7 +501,7 @@ class BuildModel(object):
 
         text = f'Imaging: {os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
-        self.ui.mImage.setText(f'{model.mParam.count + 1 :02d}')
+        self.ui.mImage.setText(f'{model.mParam.count + 1 :2d}')
         self.solveQueue.put(model)
 
         return True
@@ -522,8 +524,8 @@ class BuildModel(object):
         text = f'Slewing -> Alt: {model.mPoint.altitude:2.0f}'
         text = text + f'   Az: {model.mPoint.azimuth:3.0f}'
         self.app.message.emit(text, 0)
-        self.ui.mPoints.setText(f'{model.mParam.number:02d}')
-        self.ui.mSlew.setText(f'{model.mParam.count + 1:02d}')
+        self.ui.mPoints.setText(f'{model.mParam.number:2d}')
+        self.ui.mSlew.setText(f'{model.mParam.count + 1:2d}')
         self.imageQueue.put(model)
 
         return True

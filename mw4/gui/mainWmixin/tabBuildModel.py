@@ -492,7 +492,7 @@ class BuildModel(object):
         self.app.astrometry.solveThreading(app=model.mParam.astrometry,
                                            fitsPath=model.mParam.path,
                                            timeout=10,
-                                           updateFits=False,
+                                           updateFits=True,
                                            )
         self.resultQueue.put(model)
 

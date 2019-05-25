@@ -427,8 +427,8 @@ class BuildModel(object):
 
         model = MPoint(mParam=model.mParam,
                        iParam=model.iParam,
-                       point=model.point,
-                       result=result,
+                       mPoint=model.mPoint,
+                       mData=None,
                        )
         self.modelQueue.put(model)
 
@@ -490,9 +490,9 @@ class BuildModel(object):
             return False
 
         model = self.slewQueue.get()
-        self.app.dome.slewToAltAz(azimuth=model.point.azimuth)
-        self.app.mount.obsSite.slewAltAz(alt_degrees=model.point.altitude,
-                                         az_degrees=model.point.azimuth,
+        self.app.dome.slewToAltAz(azimuth=model.mPoint.azimuth)
+        self.app.mount.obsSite.slewAltAz(alt_degrees=model.mPoint.altitude,
+                                         az_degrees=model.mPoint.azimuth,
                                          )
         self.ui.mSlewed.setText(f'{model.mParam.count + 1:02d}')
         self.imageQueue.put(model)
@@ -530,6 +530,7 @@ class BuildModel(object):
         self.imageQueue.queue.clear()
         self.solveQueue.queue.clear()
         self.resultQueue.queue.clear()
+        self.modelQueue.queue.clear()
 
         # collection all necessary information
         expTime = self.app.mainW.ui.expTime.value()
@@ -582,9 +583,9 @@ class BuildModel(object):
             # transfer to working in a queue with necessary data
             self.slewQueue.put(MPoint(iParam=iParam,
                                       mParam=mParam,
-                                      point=Point(altitude=point[0],
-                                                  azimuth=point[1]),
-                                      result=None,
+                                      mPoint=Point(altitude=point[0],
+                                                   azimuth=point[1]),
+                                      mData=None,
                                       )
                                )
         self.modelSlew()

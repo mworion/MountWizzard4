@@ -23,5 +23,6 @@ Point = namedtuple('Point', 'altitude azimuth')
 IParam = namedtuple('IParam', 'expTime binning subFrame fast')
 MParam = namedtuple('MParam', 'number count path astrometry')
 Result = namedtuple('Result', 'raJ2000 decJ2000 angle scale flipped')
+MData = namedtuple('MData', 'raMJNow decMJNow raSJNow decSJNow sidereal pierside')
 
-MPoint = namedtuple('MPoint', 'mParam iParam point result')
+MPoint = namedtuple('MPoint', 'mParam iParam mPoint mData')

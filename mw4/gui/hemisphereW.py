@@ -390,6 +390,9 @@ class HemisphereWindow(widget.MWidget):
 
         if self.pointerDome is None:
             return False
+        if not isinstance(azimuth, (int, float)):
+            self.pointerDome.set_visible(False)
+            return False
 
         visible = (azimuth != -1)
 

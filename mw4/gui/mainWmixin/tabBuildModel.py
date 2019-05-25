@@ -25,8 +25,10 @@ from datetime import datetime, timedelta
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.uic
+import skyfield.api
 # local import
-from mw4.definitions import Point, MPoint, IParam, MParam, Result
+from mw4.definitions import Point, MPoint, IParam, MParam, MData
+from mw4.base import transform
 
 
 class QMultiWait(PyQt5.QtCore.QObject):
@@ -429,10 +431,24 @@ class BuildModel(object):
         if not isinstance(r, tuple):
             return False
 
+        ra = skyfield.api.Angle(degrees=r.raJ2000)
+        dec = skyfield.api.Angle(degrees=r.decJ2000)
+
+        ra, dec = transform.J2000ToJNow(ra, dec, model.mData.julian)
+
+        mData = MData(raMJNow=model.mData.raMJNow,
+                      decMJNow=model.mData.decMJNow,
+                      raSJNow=ra,
+                      decSJNow=dec,
+                      sidereal=model.mData.sidereal,
+                      julian=model.mData.julian,
+                      pierside=model.mData.pierside,
+                      )
+
         model = MPoint(mParam=model.mParam,
                        iParam=model.iParam,
                        mPoint=model.mPoint,
-                       mData=None,
+                       mData=mData,
                        )
         self.modelQueue.put(model)
 
@@ -499,6 +515,20 @@ class BuildModel(object):
                                 subFrame=model.iParam.subFrame,
                                 fast=model.iParam.fast,
                                 )
+
+        model = MPoint(mParam=model.mParam,
+                       iParam=model.iParam,
+                       mPoint=model.mPoint,
+                       mData=MData(raMJNow=self.app.mount.obsSite.raJNow,
+                                   decMJNow=self.app.mount.obsSite.decJNow,
+                                   raSJNow=None,
+                                   decSJNow=None,
+                                   sidereal=self.app.mount.obsSite.timeSidereal,
+                                   julian=self.app.mount.obsSite.timeJD,
+                                   pierside=self.app.mount.obsSite.pierside,
+                                   ),
+                       )
+
         self.solveQueue.put(model)
 
         text = f'Imaging -> {os.path.basename(model.mParam.path)}'
@@ -657,7 +687,8 @@ class BuildModel(object):
         self.defaultGUI()
         self.app.message.emit('Modeling finished', 1)
         while not self.modelQueue.empty():
-            self.modelQueue.get()
+            a =self.modelQueue.get()
+            print(a)
 
         return True
 

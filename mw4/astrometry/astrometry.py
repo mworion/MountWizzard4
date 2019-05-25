@@ -332,11 +332,12 @@ class Astrometry(object):
 
         return angle, scale, flipped
 
-    def getSolutionFromWCS(self, wcsHeader=None):
+    def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None):
         """
         getSolutionFromWCS reads the fits header containing the wcs data and returns the
         basic data needed
 
+        :param fitsHeader:
         :param wcsHeader:
         :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
         """
@@ -345,7 +346,14 @@ class Astrometry(object):
         dec = wcsHeader.get('CRVAL2')
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        return Result(ra, dec, angle, scale, flipped)
+        # todo: calc error
+        raMount = fitsHeader.get('RA')
+        decMount = fitsHeader.get('DEC')
+
+        error = np.sqrt(np.square(ra - raMount) + np.square(dec - decMount))
+        error *= 3600
+
+        return Result(ra, dec, angle, scale, error, flipped)
 
     def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None):
         """
@@ -363,7 +371,8 @@ class Astrometry(object):
 
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-        ra, dec, angle, scale, flipped = self.getSolutionFromWCS(wcsHeader=wcsHeader)
+        ra, dec, angle, scale, error, flipped = self.getSolutionFromWCS(fitsHeader=fitsHeader,
+                                                                        wcsHeader=wcsHeader)
 
         fitsHeader['RA'] = ra
         fitsHeader['OBJCTRA'] = self.convertToHMS(ra)
@@ -541,14 +550,16 @@ class Astrometry(object):
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
 
-        if updateFits:
-            with fits.open(fitsPath, mode='update') as fitsHDU:
-                fitsHeader = fitsHDU[0].header
-                self.updateFitsWithWCSData(fitsHeader=fitsHeader,
-                                           wcsHeader=wcsHeader,
-                                           )
+        with fits.open(fitsPath, mode='update') as fitsHDU:
+            fitsHeader = fitsHDU[0].header
 
-        result = self.getSolutionFromWCS(wcsHeader=wcsHeader)
+        if updateFits:
+            self.updateFitsWithWCSData(fitsHeader=fitsHeader,
+                                       wcsHeader=wcsHeader,
+                                       )
+
+        result = self.getSolutionFromWCS(fitsHeader=fitsHeader,
+                                         wcsHeader=wcsHeader)
 
         self.result = (True, result)
         return True

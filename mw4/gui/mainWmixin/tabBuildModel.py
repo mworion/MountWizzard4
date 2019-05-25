@@ -571,7 +571,7 @@ class BuildModel(object):
         self.ui.cancelAlignModel.setEnabled(False)
         self.ui.combineModel.setEnabled(True)
         self.ui.batchModel.setEnabled(True)
-        self.ui.runInitialModel.setEnabled(True)
+        self.ui.runAlignModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(True)
         self.ui.runFlexure.setEnabled(True)
         self.ui.runHysteresis.setEnabled(True)

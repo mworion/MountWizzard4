@@ -21,4 +21,7 @@ from collections import namedtuple
 
 Point = namedtuple('Point', 'altitude azimuth')
 IParam = namedtuple('IParam', 'expTime binning subFrame fast')
-MPoint = namedtuple('MPoint', 'number path param point')
+MParam = namedtuple('MParam', 'number count path astrometry')
+Result = namedtuple('Result', 'raJ2000 decJ2000 angle scale flipped')
+
+MPoint = namedtuple('MPoint', 'mParam iParam point result')

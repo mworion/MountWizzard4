@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -6193,6 +6193,9 @@ manually</string>
        </property>
       </widget>
       <widget class="QPushButton" name="cancelInitialModel">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>320</x>
@@ -7644,6 +7647,9 @@ manually</string>
        </property>
       </widget>
       <widget class="QPushButton" name="cancelFullModel">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>600</x>
@@ -8902,7 +8908,7 @@ manually</string>
       <widget class="QLabel" name="label_310">
        <property name="geometry">
         <rect>
-         <x>500</x>
+         <x>505</x>
          <y>245</y>
          <width>51</width>
          <height>21</height>
@@ -8917,15 +8923,15 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Slewed:</string>
+        <string>Slew:</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_311">
        <property name="geometry">
         <rect>
-         <x>695</x>
+         <x>700</x>
          <y>245</y>
-         <width>51</width>
+         <width>46</width>
          <height>21</height>
         </rect>
        </property>
@@ -8938,13 +8944,13 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Solved:</string>
+        <string>Solve:</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_312">
        <property name="geometry">
         <rect>
-         <x>600</x>
+         <x>605</x>
          <y>245</y>
          <width>51</width>
          <height>21</height>
@@ -8959,7 +8965,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Imaged:</string>
+        <string>Image:</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="mSolved">
@@ -10929,7 +10935,7 @@ manually</string>
       </widget>
       <widget class="QPushButton" name="cancelAnalyse">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="geometry">
         <rect>
@@ -13300,7 +13306,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>

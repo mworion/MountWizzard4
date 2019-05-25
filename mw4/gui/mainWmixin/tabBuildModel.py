@@ -24,7 +24,7 @@ import os
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
-from mw4.definitions import Point, MPoint, IParam
+from mw4.definitions import Point, MPoint, IParam, MParam, Result
 
 
 class QMultiWait(PyQt5.QtCore.QObject):
@@ -77,6 +77,8 @@ class BuildModel(object):
         self.slewQueue = queue.Queue()
         self.imageQueue = queue.Queue()
         self.solveQueue = queue.Queue()
+        self.resultQueue = queue.Queue()
+        self.modelQueue = queue.Queue()
 
         self.collector = QMultiWait()
 
@@ -400,23 +402,38 @@ class BuildModel(object):
         self.autoDeletePoints()
         return True
 
-    def exposeImage(self, imagePath='', expTime=0, binning=0, subFrame=0, fast=True):
-        """
-        exposeImage gathers all necessary parameters and starts exposing
-
-        :param imagePath:
-        :param expTime:
-        :param binning:
-        :param subFrame:
-        :param fast:
-        :return: True for test purpose
+    def modelSolveDone(self, result):
         """
 
-        self.app.imaging.expose(imagePath=imagePath,
-                                expTime=expTime,
-                                binning=binning,
-                                subFrame=subFrame,
-                                )
+        :param result:
+        :return:
+        """
+
+        if self.resultQueue.empty():
+            return False
+
+        model = self.resultQueue.get()
+
+        if not result[0]:
+            self.app.message.emit('Solving error', 2)
+            return False
+
+        r = result[1]
+        if not isinstance(r, tuple):
+            return False
+
+        text = f'Ra: {r.raJ2000} Dec: {r.decJ2000} Angle: {r.angle} Scale: {r.scale}'
+        self.app.message.emit('Solved: ' + text, 0)
+
+        model = MPoint(mParam=model.mParam,
+                       iParam=model.iParam,
+                       point=model.point,
+                       result=result,
+                       )
+        self.modelQueue.put(model)
+
+        if model.mParam.number == model.mParam.count + 1:
+            self.modelFinished()
 
         return True
 
@@ -429,11 +446,16 @@ class BuildModel(object):
         if self.solveQueue.empty():
             return False
 
-        mpoint = self.solveQueue.get()
-        self.ui.mSolved.setText(f'{mpoint.number:02d}')
-        print(mpoint)
-        return
-        self.app.imageW.solveImage()
+        model = self.solveQueue.get()
+        self.app.astrometry.solveThreading(app=model.mParam.astrometry,
+                                           fitsPath=model.mParam.path,
+                                           timeout=10,
+                                           updateFits=False,
+                                           )
+
+        self.ui.mSolved.setText(f'{model.mParam.count + 1:02d}')
+        self.resultQueue.put(model)
+        return True
 
     def modelImage(self):
         """
@@ -444,15 +466,19 @@ class BuildModel(object):
         if self.imageQueue.empty():
             return False
 
-        mpoint = self.imageQueue.get()
+        model = self.imageQueue.get()
         self.collector.resetSignals()
-        self.exposeImage(imagePath=mpoint.path,
-                         expTime=mpoint.param.expTime,
-                         binning=mpoint.param.binning,
-                         subFrame=mpoint.param.subFrame,
-                         )
-        self.ui.mImaged.setText(f'{mpoint.number:02d}')
-        self.solveQueue.put(mpoint)
+        self.app.imaging.expose(imagePath=model.mParam.path,
+                                expTime=model.iParam.expTime,
+                                binning=model.iParam.binning,
+                                subFrame=model.iParam.subFrame,
+                                fast=model.iParam.fast,
+                                )
+
+        self.ui.mImaged.setText(f'{model.mParam.count + 1 :02d}')
+        self.solveQueue.put(model)
+
+        return True
 
     def modelSlew(self):
         """
@@ -463,13 +489,27 @@ class BuildModel(object):
         if self.slewQueue.empty():
             return False
 
-        mpoint = self.slewQueue.get()
-        self.app.dome.slewToAltAz(azimuth=mpoint.point.azimuth)
-        suc = self.app.mount.obsSite.slewAltAz(alt_degrees=mpoint.point.altitude,
-                                               az_degrees=mpoint.point.azimuth,
-                                               )
-        self.ui.mSlewed.setText(f'{mpoint.number:02d}')
-        self.imageQueue.put(mpoint)
+        model = self.slewQueue.get()
+        self.app.dome.slewToAltAz(azimuth=model.point.azimuth)
+        self.app.mount.obsSite.slewAltAz(alt_degrees=model.point.altitude,
+                                         az_degrees=model.point.azimuth,
+                                         )
+        self.ui.mSlewed.setText(f'{model.mParam.count + 1:02d}')
+        self.imageQueue.put(model)
+
+        return True
+
+    def modelFinished(self):
+        # starting changing Gui elements
+        self.changeStyleDynamic(self.ui.runFullModel, 'running', False)
+        self.ui.cancelFullModel.setEnabled(False)
+        self.ui.runInitialModel.setEnabled(True)
+        self.ui.plateSolveSync.setEnabled(True)
+        self.ui.runFlexure.setEnabled(True)
+        self.ui.runHysteresis.setEnabled(True)
+
+        while not self.modelQueue.empty():
+            print(self.modelQueue.get())
 
         return True
 
@@ -479,42 +519,72 @@ class BuildModel(object):
         :return: success
         """
 
+        # checking constraints for modeling
+        points = self.app.data.buildP
+        number = len(points)
+        if number < 3:
+            return False
+
+        # clearing queues
+        self.slewQueue.queue.clear()
+        self.imageQueue.queue.clear()
+        self.solveQueue.queue.clear()
+        self.resultQueue.queue.clear()
+
+        # collection all necessary information
         expTime = self.app.mainW.ui.expTime.value()
         binning = self.app.mainW.ui.binning.value()
         subFrame = self.app.mainW.ui.subFrame.value()
+        fast = self.app.mainW.ui.checkFastDownload.isChecked()
+        app = self.app.mainW.ui.astrometryDevice.currentText()
 
+        # collection locations for files
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         directory = f'{self.app.mwGlob["imageDir"]}/{time}'
         os.mkdir(directory)
         if not os.path.isdir(directory):
             return False
 
+        # starting changing Gui elements
+        self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
+        self.ui.cancelFullModel.setEnabled(True)
+        self.ui.runInitialModel.setEnabled(False)
+        self.ui.plateSolveSync.setEnabled(False)
+        self.ui.runFlexure.setEnabled(False)
+        self.ui.runHysteresis.setEnabled(False)
+
+        # preparing signals chain for modeling
         self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
         self.collector.ready.connect(self.modelImage)
         self.app.imaging.signals.saved.connect(self.modelSolve)
         self.app.imaging.signals.integrated.connect(self.modelSlew)
+        self.app.astrometry.signals.done.connect(self.modelSolveDone)
 
-        points = [Point(altitude=50, azimuth=30),
-                  Point(altitude=55, azimuth=40),
-                  Point(altitude=50, azimuth=50)]
-
-        self.ui.mPoints.setText(f'{len(points):02d}')
-        for number, point in enumerate(points):
+        # queuing modeling points
+        self.ui.mPoints.setText(f'{number:02d}')
+        for count, point in enumerate(points):
             # define the path to the image file
-            imagePath = f'{directory}/modelimage-{number:03d}.fits'
+            imagePath = f'{directory}/modelimage-{count:03d}.fits'
 
             # image parameters
-            param = IParam(expTime=expTime,
-                           binning=binning,
-                           subFrame=subFrame,
-                           fast=True,
-                           )
+            iParam = IParam(expTime=expTime,
+                            binning=binning,
+                            subFrame=subFrame,
+                            fast=fast,
+                            )
+            mParam = MParam(number=number,
+                            count=count,
+                            path=imagePath,
+                            astrometry=app,
+                            )
 
             # transfer to working in a queue with necessary data
-            self.slewQueue.put(MPoint(number=number + 1,
-                                      path=imagePath,
-                                      param=param,
-                                      point=point))
-
+            self.slewQueue.put(MPoint(iParam=iParam,
+                                      mParam=mParam,
+                                      point=Point(altitude=point[0],
+                                                  azimuth=point[1]),
+                                      result=None,
+                                      )
+                               )
         self.modelSlew()

@@ -357,8 +357,18 @@ class MainWindow(MWidget,
         ui = self.ui.mountConnected
         if status:
             self.changeStyleDynamic(ui, 'color', 'green')
+            self.ui.runFullModel.setEnabled(True)
+            self.ui.runInitialModel.setEnabled(True)
+            self.ui.plateSolveSync.setEnabled(True)
+            self.ui.runFlexure.setEnabled(True)
+            self.ui.runHysteresis.setEnabled(True)
         else:
             self.changeStyleDynamic(ui, 'color', 'red')
+            self.ui.runFullModel.setEnabled(False)
+            self.ui.runInitialModel.setEnabled(False)
+            self.ui.plateSolveSync.setEnabled(False)
+            self.ui.runFlexure.setEnabled(False)
+            self.ui.runHysteresis.setEnabled(False)
 
         return True
 

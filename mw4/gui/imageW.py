@@ -294,7 +294,7 @@ class ImageWindow(widget.MWidget):
         r = result[1]
         if not isinstance(r, tuple):
             return False
-        text = f'Ra: {r.ra} Dec: {r.dec} Angle: {r.angle} Scale: {r.scale}'
+        text = f'Ra: {r.raJ2000} Dec: {r.decJ2000} Angle: {r.angle} Scale: {r.scale}'
         self.app.message.emit('Solved: ' + text, 0)
         self.signals.show.emit()
 

@@ -35,6 +35,7 @@ from PyQt5.QtTest import QTest
 import numpy as np
 # local imports
 from mw4.base import tpool
+from mw4.definitions import Result
 
 
 class AstrometrySignals(PyQt5.QtCore.QObject):
@@ -344,9 +345,7 @@ class Astrometry(object):
         dec = wcsHeader.get('CRVAL2')
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        result = namedtuple('result', 'ra dec angle scale flipped')
-
-        return result(ra, dec, angle, scale, flipped)
+        return Result(ra, dec, angle, scale, flipped)
 
     def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None):
         """

@@ -601,7 +601,7 @@ class ImageWindow(widget.MWidget):
 
     def exposeRaw(self):
         """
-        exposeRaw gathers all necessary parameters and starts exposing
+        exposeImage gathers all necessary parameters and starts exposing
 
         :return: True for test purpose
         """

@@ -23,6 +23,7 @@ import queue
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
+from mw4.definitions import Point, MPoint, IParam
 
 
 class QMultiWait(PyQt5.QtCore.QObject):
@@ -73,6 +74,9 @@ class BuildModel(object):
     def __init__(self):
 
         self.slewQueue = queue.Queue()
+        self.imageQueue = queue.Queue()
+        self.solveQueue = queue.Queue()
+
         self.collector = QMultiWait()
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
@@ -95,7 +99,7 @@ class BuildModel(object):
         self.ui.numberSpiralPoints.valueChanged.connect(self.genBuildGoldenSpiral)
         self.ui.genBuildGoldenSpiral.clicked.connect(self.genBuildGoldenSpiral)
 
-        self.ui.runFullModel.clicked.connect(self.modelStart)
+        self.ui.runFullModel.clicked.connect(self.modelFull)
 
     def initConfig(self):
         """
@@ -395,14 +399,15 @@ class BuildModel(object):
         self.autoDeletePoints()
         return True
 
-    def exposeRaw(self, imagePath='', expTime=0, binning=0, subFrame=0):
+    def exposeImage(self, imagePath='', expTime=0, binning=0, subFrame=0, fast=True):
         """
-        exposeRaw gathers all necessary parameters and starts exposing
+        exposeImage gathers all necessary parameters and starts exposing
 
         :param imagePath:
         :param expTime:
         :param binning:
         :param subFrame:
+        :param fast:
         :return: True for test purpose
         """
 
@@ -410,14 +415,59 @@ class BuildModel(object):
                                 expTime=expTime,
                                 binning=binning,
                                 subFrame=subFrame,
-                                filterPos=0)
+                                )
 
         return True
 
     def modelSolve(self):
+        """
+
+        :return:
+        """
+        return
         self.app.imageW.solveImage()
 
     def modelImage(self):
+        """
+
+        :return:
+        """
+
+        if self.imageQueue.empty():
+            return False
+
+        mpoint = self.imageQueue.get()
+        self.collector.resetSignals()
+        self.exposeImage(imagePath=mpoint.path,
+                         expTime=mpoint.param.expTime,
+                         binning=mpoint.param.binning,
+                         subFrame=mpoint.param.subFrame,
+                         )
+
+    def modelSlew(self):
+        """
+
+        :return:
+        """
+
+        if self.slewQueue.empty():
+            return False
+
+        mpoint = self.slewQueue.get()
+        self.app.dome.slewToAltAz(azimuth=mpoint.point.azimuth)
+        suc = self.app.mount.obsSite.slewAltAz(alt_degrees=mpoint.point.altitude,
+                                               az_degrees=mpoint.point.azimuth,
+                                               )
+        if suc:
+            self.imageQueue.put(mpoint)
+
+        return True
+
+    def modelFull(self):
+        """
+
+        :return: success
+        """
 
         expTime = self.app.mainW.ui.expTime.value()
         binning = self.app.mainW.ui.binning.value()
@@ -425,36 +475,31 @@ class BuildModel(object):
 
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         directory = f'{self.app.mwGlob["imageDir"]}/{time}'
-        imagePath = f'{directory}/image.fits'
 
-        self.collector.resetSignals()
-        self.app.exposeRaw(imagePath=imagePath,
-                           expTime=expTime,
-                           binning=binning,
-                           subFrame=subFrame,
-                           )
-
-    def modelSlew(self):
-        if self.slewQueue.empty():
-            return False
-
-        point = self.slewQueue.get()
-        self.app.dome.slewToAltAz(azimuth=point[1])
-        suc = self.app.mount.obsSite.slewAltAz(alt_degrees=point[0],
-                                               az_degrees=point[1],
-                                               )
-
-    def modelStart(self):
         self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
         self.collector.ready.connect(self.modelImage)
         self.app.imaging.signals.saved.connect(self.modelSolve)
-        self.app.imaging.signals.saved.connect(self.app.imageW.showFitsImage)
         self.app.imaging.signals.integrated.connect(self.modelSlew)
-        points = [(50, 30), (55, 40), (50, 50)]
 
-        # put all points in queue
-        for point in points:
-            self.slewQueue.put(point)
+        points = [Point(altitude=50, azimuth=30),
+                  Point(altitude=55, azimuth=40),
+                  Point(altitude=50, azimuth=50)]
+
+        for number, point in enumerate(points):
+            # define the path to the image file
+            imagePath = f'{directory}/image-{number}.fits'
+
+            # image parameters
+            param = IParam(expTime=expTime,
+                           binning=binning,
+                           subFrame=subFrame,
+                           fast=True,
+                           )
+
+            # transfer to working in a queue with necessary data
+            self.slewQueue.put(MPoint(path=imagePath,
+                                      param=param,
+                                      point=point))
 
         self.modelSlew()

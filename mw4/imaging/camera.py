@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import zlib
+import os
 from datetime import datetime
 # external packages
 import PyQt5
@@ -262,6 +263,8 @@ class Camera(indiClass.IndiClass):
             return False
         if not self.imagePath:
             return False
+        if not os.path.isdir(os.path.dirname(self.imagePath)):
+            return False
 
         if data['format'] == '.fits.fz':
             HDU = fits.HDUList.fromstring(data['value'])
@@ -385,13 +388,15 @@ class Camera(indiClass.IndiClass):
 
         # todo: filter and wcs disable
 
-    def expose(self, imagePath='', expTime=3, binning=1, subFrame=100, filterPos=0):
+    def expose(self, imagePath='', expTime=3, binning=1,
+               subFrame=100, fast=True, filterPos=0):
         """
 
         :param imagePath:
         :param expTime:
         :param binning:
         :param subFrame:
+        :param fast:
         :param filterPos:
         :return: success
         """

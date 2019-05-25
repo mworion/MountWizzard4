@@ -618,6 +618,7 @@ class BuildModel(object):
 
     def defaultSignals(self):
         """
+        defaultSignals clears the signal queue and removes the connections
 
         :return: true for test purpose
         """
@@ -632,6 +633,7 @@ class BuildModel(object):
 
     def cancelFull(self):
         """
+        cancelFull aborts imaging and stops all modeling queues and actions
 
         :return: true for test purpose
         """
@@ -646,6 +648,8 @@ class BuildModel(object):
 
     def modelFinished(self):
         """
+        modelFinished is called when tha last point was solved. in addition the saving
+        of the model and the programming is done here
 
         :return: true for test purpose
         """
@@ -660,6 +664,9 @@ class BuildModel(object):
 
     def modelCore(self, points=None):
         """
+        modelCore is the main method for preparing a model run. in addition it checks
+        necessary components and prepares all the parameters.
+        the modeling queue will be filled with point and the queue is started.
 
         :param points:
         :return: true for test purpose
@@ -729,6 +736,8 @@ class BuildModel(object):
 
     def modelFull(self):
         """
+        modelFull sets the adequate gui elements, selects the model points and calls the
+        core modeling method
 
         :return: true for test purpose
         """
@@ -754,6 +763,8 @@ class BuildModel(object):
 
     def modelAlign(self):
         """
+        modelAlign sets the adequate gui elements, selects the model points and calls the
+        core modeling method
 
         :return: true for test purpose
         """

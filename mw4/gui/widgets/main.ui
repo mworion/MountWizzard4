@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -6108,7 +6108,7 @@ manually</string>
         <double>50.000000000000000</double>
        </property>
       </widget>
-      <widget class="QPushButton" name="runInitialModel">
+      <widget class="QPushButton" name="runAlignModel">
        <property name="geometry">
         <rect>
          <x>320</x>
@@ -6192,7 +6192,7 @@ manually</string>
         <double>50.000000000000000</double>
        </property>
       </widget>
-      <widget class="QPushButton" name="cancelInitialModel">
+      <widget class="QPushButton" name="cancelAlignModel">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -6211,7 +6211,7 @@ manually</string>
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Cancel Align Model Run</string>
+        <string>Cancel Align Model</string>
        </property>
       </widget>
       <widget class="QLabel" name="label">
@@ -7367,10 +7367,10 @@ manually</string>
       <zorder>label_171</zorder>
       <zorder>label_170</zorder>
       <zorder>azBase</zorder>
-      <zorder>runInitialModel</zorder>
+      <zorder>runAlignModel</zorder>
       <zorder>genAlignBuild</zorder>
       <zorder>altBase</zorder>
-      <zorder>cancelInitialModel</zorder>
+      <zorder>cancelAlignModel</zorder>
       <zorder>label</zorder>
       <zorder>azimuthError</zorder>
       <zorder>positionAngle</zorder>
@@ -7665,7 +7665,7 @@ manually</string>
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Cancel Model Build Run</string>
+        <string>Cancel Model Build</string>
        </property>
       </widget>
       <widget class="Line" name="line_28">
@@ -18892,8 +18892,8 @@ manually</string>
   <tabstop>altBase</tabstop>
   <tabstop>azBase</tabstop>
   <tabstop>numberBase</tabstop>
-  <tabstop>runInitialModel</tabstop>
-  <tabstop>cancelInitialModel</tabstop>
+  <tabstop>runAlignModel</tabstop>
+  <tabstop>cancelAlignModel</tabstop>
   <tabstop>plateSolveSync</tabstop>
   <tabstop>buildPFileName</tabstop>
   <tabstop>genBuildFile</tabstop>

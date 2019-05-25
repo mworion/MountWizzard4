@@ -109,6 +109,8 @@ class BuildModel(object):
 
         self.ui.runFullModel.clicked.connect(self.modelFull)
         self.ui.cancelFullModel.clicked.connect(self.cancelFull)
+        self.ui.runAlignModel.clicked.connect(self.modelAlign)
+        self.ui.cancelAlignModel.clicked.connect(self.cancelFull)
 
     def initConfig(self):
         """
@@ -550,15 +552,8 @@ class BuildModel(object):
         :return: true for test purpose
         """
 
-        self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
-        self.changeStyleDynamic(self.ui.cancelFullModel, 'cancel', True)
-        self.ui.cancelFullModel.setEnabled(True)
         self.ui.combineModel.setEnabled(False)
         self.ui.batchModel.setEnabled(False)
-        self.ui.runInitialModel.setEnabled(False)
-        self.ui.plateSolveSync.setEnabled(False)
-        self.ui.runFlexure.setEnabled(False)
-        self.ui.runHysteresis.setEnabled(False)
 
         return True
 
@@ -570,7 +565,10 @@ class BuildModel(object):
 
         self.changeStyleDynamic(self.ui.runFullModel, 'running', False)
         self.changeStyleDynamic(self.ui.cancelFullModel, 'cancel', False)
+        self.changeStyleDynamic(self.ui.runAlignModel, 'running', False)
+        self.changeStyleDynamic(self.ui.cancelAlignModel, 'cancel', False)
         self.ui.cancelFullModel.setEnabled(False)
+        self.ui.cancelAlignModel.setEnabled(False)
         self.ui.combineModel.setEnabled(True)
         self.ui.batchModel.setEnabled(True)
         self.ui.runInitialModel.setEnabled(True)
@@ -727,4 +725,39 @@ class BuildModel(object):
         if number < 3:
             return False
 
+        self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
+        self.changeStyleDynamic(self.ui.cancelFullModel, 'cancel', True)
+        self.ui.cancelFullModel.setEnabled(True)
+        self.ui.runAlignModel.setEnabled(False)
+        self.ui.plateSolveSync.setEnabled(False)
+        self.ui.runFlexure.setEnabled(False)
+        self.ui.runHysteresis.setEnabled(False)
+        self.ui.cancelFullModel.setEnabled(True)
+
         self.modelCore(points=points)
+
+        return True
+
+    def modelAlign(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        # checking constraints for modeling
+        points = self.app.data.buildP
+        number = len(points)
+        if number < 3:
+            return False
+
+        self.changeStyleDynamic(self.ui.runAlignModel, 'running', True)
+        self.changeStyleDynamic(self.ui.cancelAlignModel, 'cancel', True)
+        self.ui.cancelAlignModel.setEnabled(True)
+        self.ui.runFullModel.setEnabled(False)
+        self.ui.plateSolveSync.setEnabled(False)
+        self.ui.runFlexure.setEnabled(False)
+        self.ui.runHysteresis.setEnabled(False)
+
+        self.modelCore(points=points)
+
+        return True

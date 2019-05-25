@@ -168,6 +168,9 @@ class MainWindow(MWidget,
         self.ui.expTime.setValue(config.get('expTime', 1))
         self.ui.binning.setValue(config.get('binning', 1))
         self.ui.subFrame.setValue(config.get('subFrame', 100))
+        self.ui.checkFastDownload.setChecked(config.get('checkFastDownload', False))
+        self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 1))
+        self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 1))
 
         Mount.initConfig(self)
         SiteStatus.initConfig(self)
@@ -212,6 +215,9 @@ class MainWindow(MWidget,
         config['expTime'] = self.ui.expTime.value()
         config['binning'] = self.ui.binning.value()
         config['subFrame'] = self.ui.subFrame.value()
+        config['checkFastDownload'] = self.ui.checkFastDownload.isChecked()
+        config['settleTimeMount'] = self.ui.settleTimeMount.value()
+        config['settleTimeDome'] = self.ui.settleTimeDome.value()
 
         Mount.storeConfig(self)
         SiteStatus.storeConfig(self)

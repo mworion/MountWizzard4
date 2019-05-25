@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -14622,7 +14622,7 @@ manually</string>
           <double>1.000000000000000</double>
          </property>
         </widget>
-        <widget class="QDoubleSpinBox" name="settlingTime">
+        <widget class="QDoubleSpinBox" name="settleTimeMount">
          <property name="geometry">
           <rect>
            <x>300</x>
@@ -14688,7 +14688,7 @@ manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>310</y>
+           <y>330</y>
            <width>346</width>
            <height>21</height>
           </rect>
@@ -14903,6 +14903,80 @@ manually</string>
          </property>
          <property name="value">
           <double>5.000000000000000</double>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_100">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>290</y>
+           <width>166</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Dome Settle Time</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="settleTimeDome">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>290</y>
+           <width>51</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Sets the time to wait after mount stop before imaging</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="minimum">
+          <double>1.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>1.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_314">
+         <property name="geometry">
+          <rect>
+           <x>355</x>
+           <y>290</y>
+           <width>16</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>s</string>
          </property>
         </widget>
        </widget>
@@ -18926,7 +19000,7 @@ manually</string>
   <tabstop>subFrame</tabstop>
   <tabstop>checkFastDownload</tabstop>
   <tabstop>isoSetting</tabstop>
-  <tabstop>settlingTime</tabstop>
+  <tabstop>settleTimeMount</tabstop>
   <tabstop>checkKeepImages</tabstop>
   <tabstop>mountHost</tabstop>
   <tabstop>mountMAC</tabstop>

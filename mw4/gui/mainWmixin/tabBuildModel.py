@@ -538,6 +538,10 @@ class BuildModel(object):
         subFrame = self.app.mainW.ui.subFrame.value()
         fast = self.app.mainW.ui.checkFastDownload.isChecked()
         app = self.app.mainW.ui.astrometryDevice.currentText()
+        settleMount = self.app.mainW.ui.settleTimeMount.value()
+        settleDome = self.app.mainW.ui.settleTimeDome.value()
+        self.app.mount.settlingTime = settleMount
+        self.app.dome.settlingTime = settleDome
 
         # collection locations for files
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')

@@ -62,6 +62,8 @@ class QMultiWait(PyQt5.QtCore.QObject):
     def clear(self):
         for signal in self.waitable:
             signal.disconnect(self.checkSignal)
+        self.waitable = set()
+        self.waitready = set()
 
 
 class BuildModel(object):
@@ -103,6 +105,7 @@ class BuildModel(object):
         self.ui.genBuildGoldenSpiral.clicked.connect(self.genBuildGoldenSpiral)
 
         self.ui.runFullModel.clicked.connect(self.modelFull)
+        self.ui.cancelFullModel.clicked.connect(self.cancelFull)
 
     def initConfig(self):
         """
@@ -422,8 +425,8 @@ class BuildModel(object):
         if not isinstance(r, tuple):
             return False
 
-        text = f'Ra: {r.raJ2000} Dec: {r.decJ2000} Angle: {r.angle} Scale: {r.scale}'
-        self.app.message.emit('Solved: ' + text, 0)
+        text = f'Solved Ra: {r.raJ2000} Dec: {r.decJ2000} Angle: {r.angle} Scale: {r.scale}'
+        self.app.message.emit(text, 0)
 
         model = MPoint(mParam=model.mParam,
                        iParam=model.iParam,
@@ -453,6 +456,8 @@ class BuildModel(object):
                                            updateFits=False,
                                            )
 
+        text = f'Solving: {model.mParam.path}'
+        self.app.message.emit(text, 0)
         self.ui.mSolved.setText(f'{model.mParam.count + 1:02d}')
         self.resultQueue.put(model)
         return True
@@ -475,6 +480,8 @@ class BuildModel(object):
                                 fast=model.iParam.fast,
                                 )
 
+        text = f'Imaging: {model.mParam.path}'
+        self.app.message.emit(text, 0)
         self.ui.mImaged.setText(f'{model.mParam.count + 1 :02d}')
         self.solveQueue.put(model)
 
@@ -494,13 +501,35 @@ class BuildModel(object):
         self.app.mount.obsSite.slewAltAz(alt_degrees=model.mPoint.altitude,
                                          az_degrees=model.mPoint.azimuth,
                                          )
+
+        text = f'Slewing to Alt: {model.mPoint.altitude} Az: {model.mPoint.azimuth}'
+        self.app.message.emit(text, 0)
         self.ui.mSlewed.setText(f'{model.mParam.count + 1:02d}')
         self.imageQueue.put(model)
 
         return True
 
-    def modelFinished(self):
-        # starting changing Gui elements
+    def prepareGUI(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
+        self.ui.cancelFullModel.setEnabled(True)
+        self.ui.runInitialModel.setEnabled(False)
+        self.ui.plateSolveSync.setEnabled(False)
+        self.ui.runFlexure.setEnabled(False)
+        self.ui.runHysteresis.setEnabled(False)
+
+        return True
+
+    def defaultGUI(self):
+        """
+
+        :return: true for test purpose
+        """
+
         self.changeStyleDynamic(self.ui.runFullModel, 'running', False)
         self.ui.cancelFullModel.setEnabled(False)
         self.ui.runInitialModel.setEnabled(True)
@@ -508,15 +537,62 @@ class BuildModel(object):
         self.ui.runFlexure.setEnabled(True)
         self.ui.runHysteresis.setEnabled(True)
 
+        return True
+
+    def modelFinished(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.app.imaging.signals.saved.disconnect(self.modelSolve)
+        self.app.imaging.signals.integrated.disconnect(self.modelSlew)
+        self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
+        self.collector.clear()
+        self.collector.ready.disconnect(self.modelImage)
+
+        self.app.message.emit('Modeling finished', 1)
         while not self.modelQueue.empty():
-            print(self.modelQueue.get())
+            pass
+
+        self.defaultGUI()
+
+        return True
+
+    def clearQueues(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.slewQueue.queue.clear()
+        self.imageQueue.queue.clear()
+        self.solveQueue.queue.clear()
+        self.resultQueue.queue.clear()
+        self.modelQueue.queue.clear()
+
+    def cancelFull(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit('Modeling cancelled', 2)
+        self.app.imaging.abort()
+        self.collector.clear()
+        self.collector.ready.disconnect(self.modelImage)
+        self.app.imaging.signals.saved.disconnect(self.modelSolve)
+        self.app.imaging.signals.integrated.disconnect(self.modelSlew)
+        self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
+        self.clearQueues()
+        self.defaultGUI()
 
         return True
 
     def modelFull(self):
         """
 
-        :return: success
+        :return: true for test purpose
         """
 
         # checking constraints for modeling
@@ -525,12 +601,8 @@ class BuildModel(object):
         if number < 3:
             return False
 
-        # clearing queues
-        self.slewQueue.queue.clear()
-        self.imageQueue.queue.clear()
-        self.solveQueue.queue.clear()
-        self.resultQueue.queue.clear()
-        self.modelQueue.queue.clear()
+        self.clearQueues()
+        self.app.message.emit('Modeling started', 1)
 
         # collection all necessary information
         expTime = self.app.mainW.ui.expTime.value()
@@ -538,6 +610,8 @@ class BuildModel(object):
         subFrame = self.app.mainW.ui.subFrame.value()
         fast = self.app.mainW.ui.checkFastDownload.isChecked()
         app = self.app.mainW.ui.astrometryDevice.currentText()
+
+        # setting overall parameters
         settleMount = self.app.mainW.ui.settleTimeMount.value()
         settleDome = self.app.mainW.ui.settleTimeDome.value()
         self.app.mount.settlingTime = settleMount
@@ -550,18 +624,13 @@ class BuildModel(object):
         if not os.path.isdir(directory):
             return False
 
-        # starting changing Gui elements
-        self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
-        self.ui.cancelFullModel.setEnabled(True)
-        self.ui.runInitialModel.setEnabled(False)
-        self.ui.plateSolveSync.setEnabled(False)
-        self.ui.runFlexure.setEnabled(False)
-        self.ui.runHysteresis.setEnabled(False)
+        self.prepareGUI()
 
         # preparing signals chain for modeling
         self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
         self.collector.ready.connect(self.modelImage)
+
         self.app.imaging.signals.saved.connect(self.modelSolve)
         self.app.imaging.signals.integrated.connect(self.modelSlew)
         self.app.astrometry.signals.done.connect(self.modelSolveDone)
@@ -592,4 +661,7 @@ class BuildModel(object):
                                       mData=None,
                                       )
                                )
+        # kick off modeling
         self.modelSlew()
+
+        return True

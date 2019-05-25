@@ -90,6 +90,8 @@ class MainWindow(MWidget,
                                     'wireless LAN',
                                     ]
 
+        self.status = False
+
         # local init of following
         Mount.__init__(self)
         SiteStatus.__init__(self)
@@ -189,6 +191,7 @@ class MainWindow(MWidget,
 
         fileName = self.app.config['mainW'].get('horizonFileName')
         self.app.data.loadHorizonP(fileName=fileName)
+        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'red')
         return True
 
     def storeConfig(self):
@@ -357,10 +360,13 @@ class MainWindow(MWidget,
         updateMountConnStat show the connection status of the mount.
 
         :param status:
-        :return: true for test purpose
+        :return: status changed or new
         """
 
         ui = self.ui.mountConnected
+        if self.status == status:
+            return False
+
         if status:
             self.changeStyleDynamic(ui, 'color', 'green')
             self.ui.runFullModel.setEnabled(True)
@@ -376,6 +382,7 @@ class MainWindow(MWidget,
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
+        self.status = status
         return True
 
     def updateWindowsStats(self):

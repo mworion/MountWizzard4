@@ -551,6 +551,7 @@ class BuildModel(object):
         """
 
         self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
+        self.changeStyleDynamic(self.ui.cancelFullModel, 'cancel', True)
         self.ui.cancelFullModel.setEnabled(True)
         self.ui.combineModel.setEnabled(False)
         self.ui.batchModel.setEnabled(False)
@@ -568,6 +569,7 @@ class BuildModel(object):
         """
 
         self.changeStyleDynamic(self.ui.runFullModel, 'running', False)
+        self.changeStyleDynamic(self.ui.cancelFullModel, 'cancel', False)
         self.ui.cancelFullModel.setEnabled(False)
         self.ui.combineModel.setEnabled(True)
         self.ui.batchModel.setEnabled(True)
@@ -644,14 +646,15 @@ class BuildModel(object):
 
         return True
 
-    def modelFull(self):
+    def modelCore(self, points=None):
         """
 
+        :param points:
         :return: true for test purpose
         """
 
-        # checking constraints for modeling
-        points = self.app.data.buildP
+        if points is None:
+            return
         number = len(points)
         if number < 3:
             return False
@@ -711,3 +714,17 @@ class BuildModel(object):
         self.modelSlew()
 
         return True
+
+    def modelFull(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        # checking constraints for modeling
+        points = self.app.data.buildP
+        number = len(points)
+        if number < 3:
+            return False
+
+        self.modelCore(points=points)

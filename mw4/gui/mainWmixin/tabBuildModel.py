@@ -417,22 +417,17 @@ class BuildModel(object):
         :return:
         """
 
+        if not result[0]:
+            self.app.message.emit('Solving error', 2)
+            return False
         if self.resultQueue.empty():
             return False
 
         model = self.resultQueue.get()
-
-        if not result[0]:
-            self.app.message.emit('Solving error', 2)
-            return False
-
         r = result[1]
+
         if not isinstance(r, tuple):
             return False
-
-        text = f'Solved -> Ra: {r.raJ2000:4.1f}   Dec: {r.decJ2000:4.1f}'
-        text = text + f'   Angle: {r.angle:4.1f}   Scale: {r.scale:3.1f}'
-        self.app.message.emit(text, 0)
 
         model = MPoint(mParam=model.mParam,
                        iParam=model.iParam,
@@ -451,6 +446,9 @@ class BuildModel(object):
             timeEstimation = (1 / modelPercent * timeElapsed) * (1 - modelPercent)
         finished = timedelta(seconds=timeEstimation) + datetime.now()
 
+        text = f'Solved -> Ra: {r.raJ2000:4.1f}   Dec: {r.decJ2000:4.1f}'
+        text = text + f'   Angle: {r.angle:4.1f}   Scale: {r.scale:3.1f}'
+        self.app.message.emit(text, 0)
         self.ui.timeToFinish.setText(time.strftime('%M:%S', time.gmtime(timeEstimation)))
         self.ui.timeElapsed.setText(time.strftime('%M:%S', time.gmtime(timeElapsed)))
         self.ui.timeFinished.setText(finished.strftime('%H:%M:%S'))
@@ -476,11 +474,12 @@ class BuildModel(object):
                                            timeout=10,
                                            updateFits=False,
                                            )
+        self.resultQueue.put(model)
 
         text = f'Solving -> {os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mSolve.setText(f'{model.mParam.count + 1:2d}')
-        self.resultQueue.put(model)
+
         return True
 
     def modelImage(self):
@@ -500,11 +499,11 @@ class BuildModel(object):
                                 subFrame=model.iParam.subFrame,
                                 fast=model.iParam.fast,
                                 )
+        self.solveQueue.put(model)
 
         text = f'Imaging -> {os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mImage.setText(f'{model.mParam.count + 1 :2d}')
-        self.solveQueue.put(model)
 
         return True
 
@@ -522,13 +521,13 @@ class BuildModel(object):
         self.app.mount.obsSite.slewAltAz(alt_degrees=model.mPoint.altitude,
                                          az_degrees=model.mPoint.azimuth,
                                          )
+        self.imageQueue.put(model)
 
         text = f'Slewing -> Alt: {model.mPoint.altitude:2.0f}'
         text = text + f'   Az: {model.mPoint.azimuth:3.0f}'
         self.app.message.emit(text, 0)
         self.ui.mPoints.setText(f'{model.mParam.number:2d}')
         self.ui.mSlew.setText(f'{model.mParam.count + 1:2d}')
-        self.imageQueue.put(model)
 
         return True
 

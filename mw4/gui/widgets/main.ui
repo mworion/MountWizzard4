@@ -8458,13 +8458,13 @@ manually</string>
         </rect>
        </property>
        <property name="maximum">
-        <number>1000</number>
+        <number>100</number>
        </property>
        <property name="value">
         <number>0</number>
        </property>
        <property name="alignment">
-        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+        <set>Qt::AlignCenter</set>
        </property>
        <property name="textVisible">
         <bool>false</bool>
@@ -8905,7 +8905,7 @@ manually</string>
         <string>Image:</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="mSolved">
+      <widget class="QLineEdit" name="mSolve">
        <property name="geometry">
         <rect>
          <x>745</x>
@@ -8947,7 +8947,7 @@ manually</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="mImaged">
+      <widget class="QLineEdit" name="mImage">
        <property name="geometry">
         <rect>
          <x>655</x>
@@ -8989,7 +8989,7 @@ manually</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="mSlewed">
+      <widget class="QLineEdit" name="mSlew">
        <property name="geometry">
         <rect>
          <x>555</x>
@@ -9137,9 +9137,9 @@ manually</string>
       <zorder>label_310</zorder>
       <zorder>label_311</zorder>
       <zorder>label_312</zorder>
-      <zorder>mSolved</zorder>
-      <zorder>mImaged</zorder>
-      <zorder>mSlewed</zorder>
+      <zorder>mSolve</zorder>
+      <zorder>mImage</zorder>
+      <zorder>mSlew</zorder>
       <zorder>mPoints</zorder>
      </widget>
      <widget class="QWidget" name="ManageModel">

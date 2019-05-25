@@ -20,6 +20,8 @@
 # standard libraries
 import queue
 import os
+import time
+from datetime import datetime, timedelta
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.uic
@@ -81,8 +83,9 @@ class BuildModel(object):
         self.solveQueue = queue.Queue()
         self.resultQueue = queue.Queue()
         self.modelQueue = queue.Queue()
-
         self.collector = QMultiWait()
+
+        self.startModeling = None
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
@@ -425,7 +428,8 @@ class BuildModel(object):
         if not isinstance(r, tuple):
             return False
 
-        text = f'Solved Ra: {r.raJ2000} Dec: {r.decJ2000} Angle: {r.angle} Scale: {r.scale}'
+        text = f'Solved -> Ra: {r.raJ2000:4.1f}   Dec: {r.decJ2000:4.1f}'
+        text = text + f'   Angle: {r.angle:4.1f}   Scale: {r.scale:3.1f}'
         self.app.message.emit(text, 0)
 
         model = MPoint(mParam=model.mParam,
@@ -435,8 +439,21 @@ class BuildModel(object):
                        )
         self.modelQueue.put(model)
 
-        if model.mParam.number == model.mParam.count + 1:
+        # here we update the estimation for modeling
+        modelingDone = (model.mParam.number == model.mParam.count + 1)
+        modelPercent = (model.mParam.count + 1) / model.mParam.number
+        timeElapsed = time.time() - self.startModeling
+        if modelingDone:
+            timeEstimation = 0
             self.modelFinished()
+        else:
+            timeEstimation = (1 / modelPercent * timeElapsed) * (1 - modelPercent)
+        finished = timedelta(seconds=timeEstimation) + datetime.now()
+
+        self.ui.timeToFinish.setText(time.strftime('%M:%S', time.gmtime(timeEstimation)))
+        self.ui.timeElapsed.setText(time.strftime('%M:%S', time.gmtime(timeElapsed)))
+        self.ui.timeFinished.setText(finished.strftime('%H:%M:%S'))
+        self.ui.modelProgress.setValue(modelPercent * 100)
 
         return True
 
@@ -456,9 +473,9 @@ class BuildModel(object):
                                            updateFits=False,
                                            )
 
-        text = f'Solving: {model.mParam.path}'
+        text = f'Solving -> {os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
-        self.ui.mSolved.setText(f'{model.mParam.count + 1:02d}')
+        self.ui.mSolve.setText(f'{model.mParam.count + 1:02d}')
         self.resultQueue.put(model)
         return True
 
@@ -480,9 +497,9 @@ class BuildModel(object):
                                 fast=model.iParam.fast,
                                 )
 
-        text = f'Imaging: {model.mParam.path}'
+        text = f'Imaging: {os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
-        self.ui.mImaged.setText(f'{model.mParam.count + 1 :02d}')
+        self.ui.mImage.setText(f'{model.mParam.count + 1 :02d}')
         self.solveQueue.put(model)
 
         return True
@@ -502,10 +519,11 @@ class BuildModel(object):
                                          az_degrees=model.mPoint.azimuth,
                                          )
 
-        text = f'Slewing to Alt: {model.mPoint.altitude} Az: {model.mPoint.azimuth}'
+        text = f'Slewing -> Alt: {model.mPoint.altitude:2.0f}'
+        text = text + f'   Az: {model.mPoint.azimuth:3.0f}'
         self.app.message.emit(text, 0)
         self.ui.mPoints.setText(f'{model.mParam.number:02d}')
-        self.ui.mSlewed.setText(f'{model.mParam.count + 1:02d}')
+        self.ui.mSlew.setText(f'{model.mParam.count + 1:02d}')
         self.imageQueue.put(model)
 
         return True
@@ -555,6 +573,14 @@ class BuildModel(object):
         self.ui.plateSolveSync.setEnabled(True)
         self.ui.runFlexure.setEnabled(True)
         self.ui.runHysteresis.setEnabled(True)
+        self.ui.timeToFinish.setText('00:00')
+        self.ui.timeElapsed.setText('00:00')
+        self.ui.timeFinished.setText('00:00:00')
+        self.ui.mPoints.setText('0')
+        self.ui.mSlew.setText('0')
+        self.ui.mImage.setText('0')
+        self.ui.mSolve.setText('0')
+        self.ui.modelProgress.setValue(0)
 
         return True
 
@@ -612,7 +638,7 @@ class BuildModel(object):
         self.defaultGUI()
         self.app.message.emit('Modeling finished', 1)
         while not self.modelQueue.empty():
-            pass
+            self.modelQueue.get()
 
         return True
 
@@ -626,6 +652,13 @@ class BuildModel(object):
         points = self.app.data.buildP
         number = len(points)
         if number < 3:
+            return False
+
+        # collection locations for files
+        dirTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        directory = f'{self.app.mwGlob["imageDir"]}/{dirTime}'
+        os.mkdir(directory)
+        if not os.path.isdir(directory):
             return False
 
         self.clearQueues()
@@ -644,22 +677,15 @@ class BuildModel(object):
         self.app.mount.settlingTime = settleMount
         self.app.dome.settlingTime = settleDome
 
-        # collection locations for files
-        time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        directory = f'{self.app.mwGlob["imageDir"]}/{time}'
-        os.mkdir(directory)
-        if not os.path.isdir(directory):
-            return False
-
         self.prepareGUI()
         self.prepareSignals()
+        self.startModeling = time.time()
 
         # queuing modeling points
         for count, point in enumerate(points):
             # define the path to the image file
-            imagePath = f'{directory}/modelimage-{count:03d}.fits'
+            path = f'{directory}/image-{count:03d}.fits'
 
-            # image parameters
             iParam = IParam(expTime=expTime,
                             binning=binning,
                             subFrame=subFrame,
@@ -667,7 +693,7 @@ class BuildModel(object):
                             )
             mParam = MParam(number=number,
                             count=count,
-                            path=imagePath,
+                            path=path,
                             astrometry=app,
                             )
 

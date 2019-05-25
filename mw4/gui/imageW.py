@@ -48,6 +48,7 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     version = '0.1'
 
     show = PyQt5.QtCore.pyqtSignal()
+    showExt = PyQt5.QtCore.pyqtSignal(object)
     solve = PyQt5.QtCore.pyqtSignal()
 
 
@@ -187,6 +188,7 @@ class ImageWindow(widget.MWidget):
         self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abort.clicked.connect(self.abortImage)
         self.signals.show.connect(self.showFitsImage)
+        self.signals.showExt.connect(self.showFitsImageExt)
         self.signals.solve.connect(self.solveImage)
 
         return True
@@ -213,6 +215,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUsePixel.clicked.disconnect(self.showFitsImage)
         self.ui.solve.clicked.disconnect(self.solveImage)
         self.signals.show.disconnect(self.showFitsImage)
+        self.signals.showExt.disconnect(self.showFitsImageExt)
         self.signals.solve.disconnect(self.solveImage)
 
         plt.close(self.imageMat.figure)
@@ -596,6 +599,23 @@ class ImageWindow(widget.MWidget):
         # finally show it
         axe.imshow(self.imageData, norm=norm, cmap=colorMap, origin='lower')
         axe.figure.canvas.draw()
+
+        return True
+
+    def showFitsImageExt(self, imagePath=''):
+        """
+
+        :param imagePath:
+        :return: true for test purpose
+        """
+
+        if not imagePath:
+            return False
+
+        self.imageFileName = imagePath
+        full, short, ext = self.extractNames([imagePath])
+        self.ui.imageFileName.setText(short)
+        self.showFitsImage()
 
         return True
 

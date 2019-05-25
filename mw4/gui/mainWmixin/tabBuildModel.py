@@ -485,6 +485,10 @@ class BuildModel(object):
             return False
 
         model = self.solveQueue.get()
+
+        if self.app.imageW:
+            self.app.imageW.signals.showExt.emit(model.mParam.path)
+
         self.app.astrometry.solveThreading(app=model.mParam.astrometry,
                                            fitsPath=model.mParam.path,
                                            timeout=10,

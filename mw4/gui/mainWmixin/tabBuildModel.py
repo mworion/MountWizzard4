@@ -534,6 +534,7 @@ class BuildModel(object):
 
     def clearQueues(self):
         """
+        clearQueues ensures that all used queues will be emptied before starting
 
         :return: true for test purpose
         """
@@ -548,6 +549,8 @@ class BuildModel(object):
 
     def prepareGUI(self):
         """
+        prepareGUI sets GUI elements to state, whereas there will be no influence for
+        running actions
 
         :return: true for test purpose
         """
@@ -559,6 +562,8 @@ class BuildModel(object):
 
     def defaultGUI(self):
         """
+        defaultGUI will reset all gui elements to the idle or default state and new actions
+        could be started again
 
         :return: true for test purpose
         """
@@ -589,16 +594,24 @@ class BuildModel(object):
 
     def prepareSignals(self):
         """
+        prepareSignals establishes the signals chain. as we have multiple actions running
+        at the same time, the synchronisation by the right link of the signals.
+
+        first we link the two slew finished signals to modelImage. that means as soon as
+        both slew finished signals are received, the imaging will be started
+        when download of an image starts, we could slew to another point
+        when image is saved, we could start with solving
 
         :return: true for test purpose
         """
 
-        self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
+        if self.app.dome.device is not None:
+            self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
         self.collector.ready.connect(self.modelImage)
 
-        self.app.imaging.signals.saved.connect(self.modelSolve)
         self.app.imaging.signals.integrated.connect(self.modelSlew)
+        self.app.imaging.signals.saved.connect(self.modelSolve)
         self.app.astrometry.signals.done.connect(self.modelSolveDone)
 
         return True

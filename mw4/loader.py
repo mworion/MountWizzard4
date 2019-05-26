@@ -100,8 +100,9 @@ def setupWorkDirs(mwGlob=None):
     mwGlob['dataDir'] = os.getcwd() + '/data'
     mwGlob['imageDir'] = os.getcwd() + '/image'
     mwGlob['tempDir'] = os.getcwd() + '/temp'
+    mwGlob['modelDir'] = os.getcwd() + '/model'
 
-    for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir', 'tempDir']:
+    for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir', 'tempDir', 'modelDir']:
         if not os.path.isdir(mwGlob[dirPath]):
             os.makedirs(mwGlob[dirPath])
         if not os.access(mwGlob[dirPath], os.W_OK):
@@ -264,6 +265,7 @@ def main():
         'dataDir': '',
         'imageDir': '',
         'tempDir': '',
+        'modelDir': '',
     }
 
     # checking workdir and if the system is started from frozen app

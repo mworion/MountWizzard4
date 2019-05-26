@@ -799,10 +799,11 @@ class BuildModel(object):
             build.append(programmingPoint)
 
         # finally do it
+        self.app.message.emit('Programming model to mount', 0)
         suc = self.app.mount.model.programAlign(build)
-
         if suc:
             self.app.message.emit('Model programmed with success', 0)
+            self.refreshModel()
         else:
             self.app.message.emit('Model programming error', 2)
 

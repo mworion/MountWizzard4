@@ -924,7 +924,7 @@ class BuildModel(object):
         # checking constraints for modeling
         points = self.app.data.buildP
         number = len(points)
-        if number < 3:
+        if not 2 < number < 100:
             return False
 
         self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
@@ -951,7 +951,7 @@ class BuildModel(object):
         # checking constraints for modeling
         points = self.app.data.buildP
         number = len(points)
-        if number < 3:
+        if not 2 < number < 100:
             return False
 
         self.changeStyleDynamic(self.ui.runAlignModel, 'running', True)

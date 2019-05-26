@@ -927,7 +927,7 @@ class BuildModel(object):
             return False
 
         self.clearQueues()
-        self.app.message.emit('Modeling started', 1)
+        self.app.message.emit(f'Modeling m-{modelName} started', 1)
 
         # collection all necessary information
         expTime = self.app.mainW.ui.expTime.value()

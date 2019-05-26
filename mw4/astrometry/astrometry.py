@@ -523,7 +523,8 @@ class Astrometry(object):
         :return: ra, dec, angle, scale, flipped
         """
 
-        self.result = (False, [])
+        self.result = Solution(success=False,
+                               solve=[])
 
         if not os.path.isfile(fitsPath):
             return False

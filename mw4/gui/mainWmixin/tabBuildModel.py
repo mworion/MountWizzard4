@@ -26,6 +26,7 @@ from datetime import datetime, timedelta
 import PyQt5.QtWidgets
 import PyQt5.uic
 import skyfield.api
+from mountcontrol.model import APoint
 # local import
 from mw4.definitions import Point, MPoint, IParam, MParam, MData
 from mw4.base import transform
@@ -779,12 +780,37 @@ class BuildModel(object):
         :return: true for test purpose
         """
 
-        self.defaultSignals()
-        self.defaultGUI()
-        self.app.message.emit('Modeling finished', 1)
+        # build programming data
+        build = list()
         while not self.modelQueue.empty():
-            a = self.modelQueue.get()
-            print(a)
+            mPoint = self.modelQueue.get()
+
+            mCoord = skyfield.api.Star(ra=mPoint.mData.raMJNow,
+                                       dec=mPoint.mData.decMJNow)
+            sCoord = skyfield.api.Star(ra=mPoint.mData.raSJNow,
+                                       dec=mPoint.mData.decSJNow)
+            sidereal = mPoint.mData.sidereal
+            pierside = mPoint.mData.pierside
+            programmingPoint = APoint(mCoord=mCoord,
+                                      sCoord=sCoord,
+                                      sidereal=sidereal,
+                                      pierside=pierside,
+                                      )
+            build.append(programmingPoint)
+
+        # finally do it
+        suc = self.app.mount.model.programAlign(build)
+
+        if suc:
+            self.app.message.emit('Model programmed with success', 0)
+        else:
+            self.app.message.emit('Model programming error', 2)
+
+        self.defaultSignals()
+        self.clearQueues()
+        self.defaultGUI()
+
+        self.app.message.emit('Modeling finished', 1)
 
         return True
 

@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -7422,9 +7422,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>135</y>
+         <y>130</y>
          <width>366</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -7438,7 +7438,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>110</y>
+         <y>105</y>
          <width>276</width>
          <height>21</height>
         </rect>
@@ -7458,9 +7458,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>175</y>
+         <y>160</y>
          <width>101</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7476,9 +7476,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>175</y>
+         <y>160</y>
          <width>91</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7494,9 +7494,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>105</x>
-         <y>275</y>
+         <y>245</y>
          <width>86</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -7510,9 +7510,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>275</y>
+         <y>245</y>
          <width>86</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -7526,9 +7526,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>175</y>
+         <y>160</y>
          <width>51</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7580,9 +7580,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>290</x>
-         <y>175</y>
+         <y>160</y>
          <width>51</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7618,9 +7618,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>155</y>
+         <y>50</y>
          <width>176</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -7634,7 +7634,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>350</y>
+         <y>305</y>
          <width>366</width>
          <height>1</height>
         </rect>
@@ -7653,9 +7653,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>600</x>
-         <y>155</y>
+         <y>50</y>
          <width>176</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -7672,7 +7672,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>125</y>
          <width>366</width>
          <height>1</height>
         </rect>
@@ -7688,9 +7688,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>355</y>
+         <y>310</y>
          <width>366</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -7726,7 +7726,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>270</y>
+         <y>240</y>
          <width>366</width>
          <height>1</height>
         </rect>
@@ -7742,9 +7742,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>185</x>
-         <y>395</y>
+         <y>340</y>
          <width>51</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7780,9 +7780,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>130</x>
-         <y>395</y>
+         <y>340</y>
          <width>56</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7798,9 +7798,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>395</y>
+         <y>340</y>
          <width>41</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7816,9 +7816,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>55</x>
-         <y>395</y>
+         <y>340</y>
          <width>51</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7854,9 +7854,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>265</x>
-         <y>395</y>
+         <y>340</y>
          <width>61</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7872,9 +7872,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>325</x>
-         <y>395</y>
+         <y>340</y>
          <width>41</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7910,9 +7910,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>205</y>
+         <y>185</y>
          <width>101</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7928,9 +7928,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>290</x>
-         <y>205</y>
+         <y>185</y>
          <width>51</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -7966,9 +7966,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>205</y>
+         <y>185</y>
          <width>51</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -8004,9 +8004,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>205</y>
+         <y>185</y>
          <width>91</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -8022,7 +8022,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>340</x>
-         <y>175</y>
+         <y>160</y>
          <width>21</width>
          <height>20</height>
         </rect>
@@ -8046,7 +8046,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>340</x>
-         <y>210</y>
+         <y>185</y>
          <width>21</width>
          <height>20</height>
         </rect>
@@ -8070,7 +8070,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>160</x>
-         <y>175</y>
+         <y>160</y>
          <width>21</width>
          <height>20</height>
         </rect>
@@ -8094,7 +8094,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>160</x>
-         <y>210</y>
+         <y>185</y>
          <width>21</width>
          <height>20</height>
         </rect>
@@ -8118,9 +8118,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>295</x>
-         <y>275</y>
+         <y>245</y>
          <width>86</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -8134,9 +8134,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>370</x>
-         <y>395</y>
+         <y>340</y>
          <width>16</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -8152,7 +8152,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>145</y>
+         <y>40</y>
          <width>371</width>
          <height>1</height>
         </rect>
@@ -8168,7 +8168,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>125</y>
+         <y>20</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -8188,7 +8188,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>250</y>
+         <y>220</y>
          <width>361</width>
          <height>21</height>
         </rect>
@@ -8208,7 +8208,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>330</y>
+         <y>285</y>
          <width>361</width>
          <height>21</height>
         </rect>
@@ -8392,7 +8392,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>715</x>
-         <y>195</y>
+         <y>85</y>
          <width>61</width>
          <height>21</height>
         </rect>
@@ -8434,7 +8434,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>605</x>
-         <y>195</y>
+         <y>85</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -8455,9 +8455,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>275</y>
+         <y>165</y>
          <width>371</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="maximum">
@@ -8486,7 +8486,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>605</x>
-         <y>220</y>
+         <y>110</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -8510,9 +8510,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>355</y>
+         <y>365</y>
          <width>371</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -8526,7 +8526,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>345</y>
+         <y>355</y>
          <width>371</width>
          <height>1</height>
         </rect>
@@ -8542,7 +8542,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>325</y>
+         <y>335</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -8565,7 +8565,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>715</x>
-         <y>220</y>
+         <y>110</y>
          <width>61</width>
          <height>21</height>
         </rect>
@@ -8607,7 +8607,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>195</y>
+         <y>85</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -8631,7 +8631,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>520</x>
-         <y>195</y>
+         <y>85</y>
          <width>61</width>
          <height>21</height>
         </rect>
@@ -8676,9 +8676,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>395</y>
+         <y>400</y>
          <width>371</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -8692,9 +8692,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>200</x>
-         <y>275</y>
+         <y>245</y>
          <width>86</width>
-         <height>31</height>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -8708,9 +8708,9 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>240</x>
-         <y>395</y>
+         <y>340</y>
          <width>16</width>
-         <height>26</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -8725,8 +8725,8 @@ manually</string>
       <widget class="Line" name="line_87">
        <property name="geometry">
         <rect>
-         <x>405</x>
-         <y>40</y>
+         <x>10</x>
+         <y>395</y>
          <width>371</width>
          <height>1</height>
         </rect>
@@ -8741,8 +8741,8 @@ manually</string>
       <widget class="QDoubleSpinBox" name="numberSpiralPoints">
        <property name="geometry">
         <rect>
-         <x>450</x>
-         <y>85</y>
+         <x>325</x>
+         <y>400</y>
          <width>51</width>
          <height>26</height>
         </rect>
@@ -8779,8 +8779,8 @@ manually</string>
       <widget class="QLabel" name="label_308">
        <property name="geometry">
         <rect>
-         <x>405</x>
-         <y>20</y>
+         <x>10</x>
+         <y>375</y>
          <width>361</width>
          <height>21</height>
         </rect>
@@ -8799,8 +8799,8 @@ manually</string>
       <widget class="QLabel" name="label_309">
        <property name="geometry">
         <rect>
-         <x>410</x>
-         <y>85</y>
+         <x>285</x>
+         <y>400</y>
          <width>41</width>
          <height>26</height>
         </rect>
@@ -8817,10 +8817,10 @@ manually</string>
       <widget class="QPushButton" name="genBuildGoldenSpiral">
        <property name="geometry">
         <rect>
-         <x>405</x>
-         <y>45</y>
-         <width>371</width>
-         <height>31</height>
+         <x>10</x>
+         <y>400</y>
+         <width>231</width>
+         <height>26</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -8834,7 +8834,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>245</y>
+         <y>135</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -8855,7 +8855,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>505</x>
-         <y>245</y>
+         <y>135</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -8876,7 +8876,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>700</x>
-         <y>245</y>
+         <y>135</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -8897,7 +8897,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>605</x>
-         <y>245</y>
+         <y>135</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -8921,7 +8921,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>745</x>
-         <y>245</y>
+         <y>135</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -8966,7 +8966,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>655</x>
-         <y>245</y>
+         <y>135</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -9011,7 +9011,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>555</x>
-         <y>245</y>
+         <y>135</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -9056,7 +9056,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>450</x>
-         <y>245</y>
+         <y>135</y>
          <width>31</width>
          <height>21</height>
         </rect>

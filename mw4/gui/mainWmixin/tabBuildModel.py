@@ -531,7 +531,7 @@ class BuildModel(object):
             text = f'Solving error for image-{model.mParam.count:03d}'
             self.app.message.emit(text, 2)
         else:
-            text = f'Solved image-{model.mParam.count} ->   '
+            text = f'Solved image-{model.mParam.count:03d} ->   '
             text += f'Ra: {rData.raJ2000:5.2f}, Dec: {rData.decJ2000:5.2f}, '
             text += f'Error: {rData.error:5.2f}, Angle: {rData.angle:3.0f}, '
             text += f'Scale: {rData.scale:4.2f}'

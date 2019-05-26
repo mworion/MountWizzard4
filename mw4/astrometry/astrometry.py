@@ -367,8 +367,6 @@ class Astrometry(object):
         # would like to have the error in arcsec
         error *= 3600
 
-        print(raMount, ra, decMount, dec, error)
-
         solve = Solve(raJ2000=ra,
                       decJ2000=dec,
                       angle=angle,

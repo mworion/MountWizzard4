@@ -171,6 +171,7 @@ class MainWindow(MWidget,
         self.ui.binning.setValue(config.get('binning', 1))
         self.ui.subFrame.setValue(config.get('subFrame', 100))
         self.ui.checkFastDownload.setChecked(config.get('checkFastDownload', False))
+        self.ui.checkKeepImages.setChecked(config.get('checkKeepImages', False))
         self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 1))
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 1))
 
@@ -219,6 +220,7 @@ class MainWindow(MWidget,
         config['binning'] = self.ui.binning.value()
         config['subFrame'] = self.ui.subFrame.value()
         config['checkFastDownload'] = self.ui.checkFastDownload.isChecked()
+        config['checkKeepImages'] = self.ui.checkKeepImages.isChecked()
         config['settleTimeMount'] = self.ui.settleTimeMount.value()
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
 

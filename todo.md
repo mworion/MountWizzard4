@@ -16,6 +16,11 @@ necessary feature list:
 - astrometry configs
 - mountcontrol: adding TLE commands and tests
 - optimizing model functions (all) implement
+- change build data in modeldata to named tuples
+- abort astrometry if necessary 
+- GWOL status adding in mountcontrol and MW4 GUI
+- sorting spiral for efficient path
+
 
 nice to have:
 - astrometry online

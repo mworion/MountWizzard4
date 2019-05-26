@@ -21,6 +21,7 @@
 import queue
 import os
 import time
+import shutil
 from datetime import datetime, timedelta
 # external packages
 import PyQt5.QtWidgets
@@ -788,7 +789,10 @@ class BuildModel(object):
     def modelFinished(self):
         """
         modelFinished is called when tha last point was solved. in addition the saving
-        of the model and the programming is done here
+        of the model and the programming is done here.
+
+        is the flag delete images after modeling is set, the entire directory will be
+        deleted
 
         :return: true for test purpose
         """
@@ -811,6 +815,11 @@ class BuildModel(object):
                                       )
             build.append(programmingPoint)
 
+        # stopping other activities
+        self.defaultSignals()
+        self.clearQueues()
+        self.defaultGUI()
+
         # finally do it
         self.app.message.emit('Programming model to mount', 0)
         suc = self.app.mount.model.programAlign(build)
@@ -820,9 +829,10 @@ class BuildModel(object):
         else:
             self.app.message.emit('Model programming error', 2)
 
-        self.defaultSignals()
-        self.clearQueues()
-        self.defaultGUI()
+        if not self.ui.checkKeepImages.isChecked():
+            self.app.message.emit('Deleting model images', 0)
+            dirPath = os.path.dirname(mPoint.mParam.path)
+            shutil.rmtree(dirPath, ignore_errors=True)
 
         self.app.message.emit('Modeling finished', 1)
 

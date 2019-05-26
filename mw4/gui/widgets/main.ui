@@ -14661,7 +14661,7 @@ manually</string>
           <enum>Qt::LeftToRight</enum>
          </property>
          <property name="text">
-          <string>Delete model images after modeling</string>
+          <string>Keep model images after modeling</string>
          </property>
          <property name="checked">
           <bool>false</bool>

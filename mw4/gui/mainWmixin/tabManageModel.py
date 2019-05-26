@@ -51,6 +51,7 @@ class ManageModel(object):
         self.ui.deleteName.clicked.connect(self.deleteName)
         self.ui.runTargetRMS.clicked.connect(self.runTargetRMS)
         self.ui.cancelTargetRMS.clicked.connect(self.cancelTargetRMS)
+        self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
 
     def initConfig(self):
         """
@@ -353,6 +354,7 @@ class ManageModel(object):
         self.ui.cancelTargetRMS.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
         self.app.mount.getAlign()
+
         return True
 
     def clearRunTargetRMS(self):
@@ -406,6 +408,7 @@ class ManageModel(object):
         self.ui.refreshModel.setEnabled(False)
         self.changeStyleDynamic(self.ui.runTargetRMS, 'running', 'true')
         self.clearRunTargetRMS()
+
         return True
 
     def cancelTargetRMS(self):
@@ -442,5 +445,28 @@ class ManageModel(object):
             return False
         else:
             self.app.message.emit('Actual model cleared', 0)
+            self.refreshModel()
+            return True
+
+    def deleteWorstPoint(self):
+        """
+        deleteWorstPoint selects from the actual model stored in the mount the highest
+        value of error, get it's index and deletes the point. afterward it refreshes the
+        gui
+
+        :return:
+        """
+
+        model = self.app.mount.model
+        wIndex = model.starList.index(max(model.starList))
+        wStar = model.starList[wIndex]
+
+        suc = model.deletePoint(wStar.number)
+
+        if not suc:
+            self.app.message.emit('Worst point cannot be deleted', 2)
+            return False
+        else:
+            self.app.message.emit('Worst point deleted', 0)
             self.refreshModel()
             return True

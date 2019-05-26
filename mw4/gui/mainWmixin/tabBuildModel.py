@@ -488,11 +488,13 @@ class BuildModel(object):
         """
 
         solveOK = True
+
         if self.resultQueue.empty():
+            self.logger.debug('empty result queue')
             return False
         if not isinstance(result[1], tuple):
             solveOK = False
-            self.logger.debug(f'Solving result is malformed: {result}')
+            self.logger.info(f'Solving result is malformed: {result}')
         if not result[0]:
             solveOK = False
 
@@ -560,6 +562,7 @@ class BuildModel(object):
         """
 
         if self.solveQueue.empty():
+            self.logger.debug('empty solve queue')
             return False
 
         model = self.solveQueue.get()
@@ -601,6 +604,7 @@ class BuildModel(object):
         """
 
         if self.imageQueue.empty():
+            self.logger.debug('empty image queue')
             return False
 
         model = self.imageQueue.get()

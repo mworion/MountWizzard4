@@ -86,7 +86,6 @@ class BuildModel(object):
         self.resultQueue = queue.Queue()
         self.modelQueue = queue.Queue()
         self.collector = QMultiWait()
-
         self.startModeling = None
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
@@ -108,7 +107,6 @@ class BuildModel(object):
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
         self.ui.numberSpiralPoints.valueChanged.connect(self.genBuildGoldenSpiral)
         self.ui.genBuildGoldenSpiral.clicked.connect(self.genBuildGoldenSpiral)
-
         self.ui.runFullModel.clicked.connect(self.modelFull)
         self.ui.cancelFullModel.clicked.connect(self.cancelFull)
         self.ui.runAlignModel.clicked.connect(self.modelAlign)
@@ -141,6 +139,9 @@ class BuildModel(object):
         self.ui.durationDSO.setValue(config.get('durationDSO', 5))
         self.ui.timeShiftDSO.setValue(config.get('timeShiftDSO', 0))
 
+        # initialising the signal slot connections after the value are set, because
+        # otherwise we get a first value changed signal just when populating
+        # the initial data. this should not happen.
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
@@ -148,6 +149,7 @@ class BuildModel(object):
         self.ui.numberDSOPoints.valueChanged.connect(self.genBuildDSO)
         self.ui.durationDSO.valueChanged.connect(self.genBuildDSO)
         self.ui.timeShiftDSO.valueChanged.connect(self.genBuildDSO)
+
         return True
 
     def storeConfig(self):
@@ -167,6 +169,7 @@ class BuildModel(object):
         config['numberDSOPoints'] = self.ui.numberDSOPoints.value()
         config['durationDSO'] = self.ui.durationDSO.value()
         config['timeShiftDSO'] = self.ui.timeShiftDSO.value()
+
         return True
 
     def setupIcons(self):
@@ -174,14 +177,16 @@ class BuildModel(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test
+        :return:    True for test purpose
         """
+
         self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildMax, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildMed, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildNorm, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildMin, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildDSO, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+
         return True
 
     def genBuildGrid(self):
@@ -202,8 +207,10 @@ class BuildModel(object):
                                     numbCols=col)
         if not suc:
             return False
+
         self.autoDeletePoints()
         self.autoSortPoints()
+
         return True
 
     def genBuildMax(self):
@@ -219,8 +226,10 @@ class BuildModel(object):
         if not suc:
             self.app.message.emit('Build points [max] cannot be generated', 2)
             return False
+
         self.autoDeletePoints()
         self.autoSortPoints()
+
         return True
 
     def genBuildMed(self):
@@ -236,8 +245,10 @@ class BuildModel(object):
         if not suc:
             self.app.message.emit('Build points [med] cannot be generated', 2)
             return False
+
         self.autoDeletePoints()
         self.autoSortPoints()
+
         return True
 
     def genBuildNorm(self):
@@ -253,8 +264,10 @@ class BuildModel(object):
         if not suc:
             self.app.message.emit('Build points [norm] cannot be generated', 2)
             return False
+
         self.autoDeletePoints()
         self.autoSortPoints()
+
         return True
 
     def genBuildMin(self):
@@ -270,8 +283,10 @@ class BuildModel(object):
         if not suc:
             self.app.message.emit('Build points [min] cannot be generated', 2)
             return False
+
         self.autoDeletePoints()
         self.autoSortPoints()
+
         return True
 
     def genBuildDSO(self):
@@ -306,8 +321,10 @@ class BuildModel(object):
         if not suc:
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False
+
         self.autoDeletePoints()
         self.autoSortPoints()
+
         return True
 
     def genBuildGoldenSpiral(self):
@@ -325,8 +342,10 @@ class BuildModel(object):
         if not suc:
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False
+
         self.autoDeletePoints()
         self.autoSortPoints()
+
         return True
 
     def loadBuildFile(self):
@@ -344,12 +363,15 @@ class BuildModel(object):
                                                     )
         if not loadFilePath:
             return False
+
         suc = self.app.data.loadBuildP(fileName=fileName)
+
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.message.emit('Build file [{0}] loaded'.format(fileName), 0)
         else:
             self.app.message.emit('Build file [{0}] cannot no be loaded'.format(fileName), 2)
+
         return True
 
     def saveBuildFile(self):
@@ -363,11 +385,14 @@ class BuildModel(object):
         if not fileName:
             self.app.message.emit('Build points file name not given', 2)
             return False
+
         suc = self.app.data.saveBuildP(fileName=fileName)
+
         if suc:
             self.app.message.emit('Build file [{0}] saved'.format(fileName), 0)
         else:
             self.app.message.emit('Build file [{0}] cannot no be saved'.format(fileName), 2)
+
         return True
 
     def saveBuildFileAs(self):
@@ -385,12 +410,15 @@ class BuildModel(object):
                                                     )
         if not saveFilePath:
             return False
+
         suc = self.app.data.saveBuildP(fileName=fileName)
+
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.message.emit('Build file [{0}] saved'.format(fileName), 0)
         else:
             self.app.message.emit('Build file [{0}] cannot no be saved'.format(fileName), 2)
+
         return True
 
     def genBuildFile(self):
@@ -404,12 +432,16 @@ class BuildModel(object):
         if not fileName:
             self.app.message.emit('Build points file name not given', 2)
             return False
+
         suc = self.app.data.loadBuildP(fileName=fileName)
+
         if not suc:
             text = 'Build points file [{0}] could not be loaded'.format(fileName)
             self.app.message.emit(text, 2)
             return False
+
         self.autoDeletePoints()
+
         return True
 
     def updateProgress(self, number=0, count=0, modelingDone=False):
@@ -438,7 +470,7 @@ class BuildModel(object):
         self.ui.timeFinished.setText(finished.strftime('%H:%M:%S'))
         self.ui.modelProgress.setValue(modelPercent * 100)
 
-        return true
+        return True
 
     def modelSolveDone(self, result):
         """

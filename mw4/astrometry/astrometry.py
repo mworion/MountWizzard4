@@ -327,7 +327,8 @@ class Astrometry(object):
         function, because it handles the zero points and extend the calculation back
         to the full range from -pi to pi
 
-        :return: angle in degrees and scale in arc second per pixel (app)
+        :return: angle in degrees and scale in arc second per pixel (app) and status if
+                 image is flipped
         """
 
         CD11 = wcsHeader.get('CD1_1', 0)
@@ -362,6 +363,8 @@ class Astrometry(object):
         decMount = fitsHeader.get('DEC')
 
         error = np.sqrt(np.square(ra - raMount) + np.square(dec - decMount))
+
+        # would like to have the error in arcsec
         error *= 3600
 
         print(raMount, ra, decMount, dec, error)
@@ -385,7 +388,7 @@ class Astrometry(object):
         :param fitsHeader: fits header from image file, where wcs should be embedded
         :param wcsHeader: fits header with wcs info to be embedded
         :param solve: parameter calculation for image attributes
-        :return: success
+        :return: true for test purpose
         """
 
         remove = ['COMMENT', 'HISTORY']
@@ -438,7 +441,8 @@ class Astrometry(object):
                               + result.stdout.decode().replace('\n', ' ')
                               )
 
-        return result.returncode == 0
+        success = (result.returncode == 0)
+        return success
 
     def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=10):
         """
@@ -493,7 +497,8 @@ class Astrometry(object):
                               + result.stdout.decode().replace('\n', ' ')
                               )
 
-        return result.returncode == 0
+        success = (result.returncode == 0)
+        return success
 
     def solve(self, app='', fitsPath='', timeout=10, updateFits=False):
         """

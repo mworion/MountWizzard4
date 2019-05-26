@@ -573,17 +573,16 @@ class Astrometry(object):
 
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
+
         with fits.open(fitsPath, mode='update') as fitsHDU:
             fitsHeader = fitsHDU[0].header
-
-        solve = self.getSolutionFromWCS(fitsHeader=fitsHeader,
-                                        wcsHeader=wcsHeader)
-
-        if updateFits:
-            self.updateFitsWithWCSData(fitsHeader=fitsHeader,
-                                       wcsHeader=wcsHeader,
-                                       solve=solve,
-                                       )
+            solve = self.getSolutionFromWCS(fitsHeader=fitsHeader,
+                                            wcsHeader=wcsHeader)
+            if updateFits:
+                self.updateFitsWithWCSData(fitsHeader=fitsHeader,
+                                           wcsHeader=wcsHeader,
+                                           solve=solve,
+                                           )
 
         self.result = Solution(success=True,
                                solve=solve)

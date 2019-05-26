@@ -72,7 +72,7 @@ class Astrometry(object):
                'checkAvailability',
                ]
 
-    version = '0.5'
+    version = '0.60'
     logger = logging.getLogger(__name__)
 
     def __init__(self, tempDir, threadPool=None):
@@ -90,18 +90,21 @@ class Astrometry(object):
                 'CloudMakers': '/Applications/Astrometry.app/Contents/MacOS',
             }
             self.indexPath = home + '/Library/Application Support/Astrometry'
+
         elif platform.system() == 'Linux':
             self.binPath = {
                 'astrometry.net': '/usr/bin',
                 'astrometry.net local': '/usr/local/astrometry/bin',
             }
             self.indexPath = '/usr/share/astrometry'
+
         else:
             self.indexPath = ''
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
             outFile.write(f'cpulimit 300\nadd_path {self.indexPath}\nautoindex\n')
+
         self.checkAvailability()
 
     def checkAvailability(self):
@@ -152,13 +155,15 @@ class Astrometry(object):
             return None
         if value.count('-') > 1:
             return None
-        # managing different coding
+
+        # managing different coding styles
         value = value.replace('*', ' ')
         value = value.replace(':', ' ')
         value = value.replace('deg', ' ')
         value = value.replace('"', ' ')
         value = value.replace('\'', ' ')
         value = value.split()
+
         try:
             value = [float(x) for x in value]
         except Exception as e:
@@ -166,6 +171,7 @@ class Astrometry(object):
             return None
         sign = 1 if value[0] > 0 else -1
         value[0] = abs(value[0])
+
         if len(value) == 3:
             value = sign * (value[0] + value[1] / 60 + value[2] / 3600)
             return value
@@ -214,6 +220,7 @@ class Astrometry(object):
 
         t = Angle.signed_hms(angle)
         value = f'{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
+
         return value
 
     def convertToDMS(self, dec):
@@ -250,6 +257,7 @@ class Astrometry(object):
         t = Angle.signed_dms(angle)
         sign = '+' if angle.degrees > 0 else '-'
         value = f'{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
+
         return value
 
     def readFitsData(self, fitsHDU='', searchRatio=1.1):
@@ -269,6 +277,9 @@ class Astrometry(object):
         """
 
         fitsHeader = fitsHDU[0].header
+
+        # todo: there might be the necessity to read more alternative header info
+        # todo: the actual definition fit for EKOS
 
         scale = fitsHeader.get('SCALE', '')
         ra = fitsHeader.get('OBJCTRA', '')

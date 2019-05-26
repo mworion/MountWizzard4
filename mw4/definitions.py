@@ -31,7 +31,7 @@ Point = namedtuple('Point', 'altitude azimuth')
 IParam = namedtuple('IParam', 'expTime binning subFrame fast')
 
 # modeling parameters
-MParam = namedtuple('MParam', 'number count path astrometry')
+MParam = namedtuple('MParam', 'number count path name astrometry')
 
 # modeling generated data for programming the model
 MData = namedtuple('MData', 'raMJNow decMJNow raSJNow decSJNow sidereal julian pierside')

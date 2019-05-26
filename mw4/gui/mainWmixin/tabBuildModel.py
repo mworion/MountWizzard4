@@ -22,6 +22,7 @@ import queue
 import os
 import time
 import shutil
+import json
 from datetime import datetime, timedelta
 # external packages
 import PyQt5.QtWidgets
@@ -532,7 +533,7 @@ class BuildModel(object):
             text = f'Solving error for image-{mPoint.mParam.count:03d}'
             self.app.message.emit(text, 2)
         else:
-            text = f'Solved image-{mPoint.mParam.count:03d} ->   '
+            text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
             text += f'Ra: {rData.raJ2000:5.2f}, Dec: {rData.decJ2000:5.2f}, '
             text += f'Error: {rData.error:5.2f}, Angle: {rData.angle:3.0f}, '
             text += f'Scale: {rData.scale:4.2f}'
@@ -579,7 +580,7 @@ class BuildModel(object):
                                            )
         self.resultQueue.put(mPoint)
 
-        text = f'Solving image-{mPoint.mParam.count:03d} ->   '
+        text = f'Solving  image-{mPoint.mParam.count:03d} ->   '
         text += f'{os.path.basename(mPoint.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mSolve.setText(f'{mPoint.mParam.count + 1:2d}')
@@ -668,7 +669,7 @@ class BuildModel(object):
 
         self.imageQueue.put(mPoint)
 
-        text = f'Slewing image-{mPoint.mParam.count:03d} ->   '
+        text = f'Slewing  image-{mPoint.mParam.count:03d} ->   '
         text += f'altitude: {mPoint.point.altitude:3.0f}, '
         text += f'azimuth: {mPoint.point.azimuth:3.0f}'
         self.app.message.emit(text, 0)
@@ -812,6 +813,41 @@ class BuildModel(object):
             model[i] = mPoint
         return model
 
+    def saveModel(self, model=None):
+        """
+
+        :param model:
+        :return: success
+        """
+
+        modelPath = f'{self.app.mwGlob["modelDir"]}/m-{model[0].mParam.name}.model'
+
+        modelSave = list()
+        for mPoint in model:
+            mData = MData(raMJNow=mPoint.mData.raMJNow.hours,
+                          decMJNow=mPoint.mData.decMJNow.degrees,
+                          raSJNow=mPoint.mData.raSJNow.hours,
+                          decSJNow=mPoint.mData.decSJNow.degrees,
+                          sideral=mPoint.mData.sidereal,
+                          julian=mPoint.mData.julian,
+                          pierside=mPoint.mData.pierside,
+                          )
+
+            mPoint = MPoint(mParam=mPoint.mParam,
+                            iParam=mPoint.iParam,
+                            point=mPoint.point,
+                            mData=mData,
+                            rData=rData,
+                            )
+            modelSave.append(mPoint)
+
+        with open(modelPath, 'w') as outfile:
+            json.dump(modelSave,
+                      outfile,
+                      sort_keys=True,
+                      indent=4)
+        return suc
+
     def modelFinished(self):
         """
         modelFinished is called when tha last point was solved. in addition the saving
@@ -855,7 +891,7 @@ class BuildModel(object):
             self.app.message.emit('Model programmed with success', 0)
             self.refreshModel()
             model = self.retrofitModel(model=model)
-            print(model)
+            self.saveModel(model=model)
         else:
             self.app.message.emit('Model programming error', 2)
 
@@ -886,8 +922,8 @@ class BuildModel(object):
             return False
 
         # collection locations for files
-        dirTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        directory = f'{self.app.mwGlob["imageDir"]}/{dirTime}'
+        modelName = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        directory = f'{self.app.mwGlob["imageDir"]}/{modelName}'
         os.mkdir(directory)
         if not os.path.isdir(directory):
             return False
@@ -925,6 +961,7 @@ class BuildModel(object):
             mParam = MParam(number=number,
                             count=count,
                             path=path,
+                            name=modelName,
                             astrometry=app,
                             )
 

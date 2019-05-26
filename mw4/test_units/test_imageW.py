@@ -95,7 +95,7 @@ def test_selectImage_2(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.imageW.selectImage()
             assert suc
-            with qtbot.waitSignal(app.imageW.signalShowImage):
+            with qtbot.waitSignal(app.imageW.signals.show):
                 suc = app.imageW.selectImage()
                 assert suc
         assert ['Image [test] selected', 0] == blocker.args
@@ -103,25 +103,11 @@ def test_selectImage_2(qtbot):
 
 
 def test_solveDone_1(qtbot):
-    app.astrometry.signals.done.connect(app.imageW.solveDone)
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.imageW.solveDone(('', 1))
-        assert not suc
-    assert ['Solving error', 2] == blocker.args
-
-
-def test_solveDone_2(qtbot):
-    app.astrometry.signals.done.connect(app.imageW.solveDone)
-    with qtbot.assertNotEmitted(app.message):
-        with qtbot.assertNotEmitted(app.imageW.signalShowImage):
-            suc = app.imageW.solveDone(('test', 1))
-            assert not suc
+    pass
 
 
 def test_solveImage_1(qtbot):
-    suc = app.imageW.solveImage()
-    assert suc
-    app.astrometry.signals.done.disconnect(app.imageW.solveDone)
+    pass
 
 
 def test_writeHeaderToGui_1():

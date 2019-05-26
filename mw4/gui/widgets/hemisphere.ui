@@ -180,7 +180,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Meridian limits</string>
+           <string>Meridian limits </string>
           </property>
          </widget>
         </item>
@@ -192,7 +192,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Celestial paths</string>
+           <string>Celestial paths </string>
           </property>
          </widget>
         </item>
@@ -207,7 +207,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use horizon mask file in hemisphere window.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Horizon mask</string>
+           <string>Horizon mask </string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -222,7 +222,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Align stars</string>
+           <string>Align stars </string>
           </property>
          </widget>
         </item>
@@ -234,7 +234,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Slew path</string>
+           <string>Slew path </string>
           </property>
          </widget>
         </item>
@@ -310,7 +310,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Edit Horizon Mask</string>
+           <string>Edit Horizon Mask </string>
           </property>
          </widget>
         </item>
@@ -325,7 +325,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Polar/Ortho Align</string>
+           <string>Polar/Ortho Align </string>
           </property>
          </widget>
         </item>
@@ -368,6 +368,11 @@
         </property>
         <item row="0" column="0">
          <widget class="QRadioButton" name="radioButton">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>Alt/Az Plane</string>
           </property>
@@ -375,13 +380,23 @@
         </item>
         <item row="1" column="0">
          <widget class="QRadioButton" name="radioButton_2">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="text">
-           <string>Polar Diagram</string>
+           <string>Polar Diagram </string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QRadioButton" name="radioButton_3">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>Sphere</string>
           </property>

@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -14661,7 +14661,7 @@ manually</string>
           <enum>Qt::LeftToRight</enum>
          </property>
          <property name="text">
-          <string>Keep images from modeling</string>
+          <string>Delete model images after modeling</string>
          </property>
          <property name="checked">
           <bool>false</bool>

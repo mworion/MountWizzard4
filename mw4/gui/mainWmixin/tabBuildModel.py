@@ -487,9 +487,6 @@ class BuildModel(object):
         :return:
         """
 
-        if not result[0]:
-            self.app.message.emit('Solving error', 2)
-            return False
         if self.resultQueue.empty():
             return False
         if not isinstance(result[1], tuple):
@@ -521,9 +518,15 @@ class BuildModel(object):
         count = model.mParam.count
         modelingDone = (number == count + 1)
 
-        text = f'Solved -> Ra: {rData.raJ2000:4.1f}   Dec: {rData.decJ2000:4.1f}'
-        text = text + f'   Angle: {rData.angle:4.1f}   Error: {rData.error:3.1f}'
-        self.app.message.emit(text, 0)
+        if not result[0]:
+            text = f'Solving error for point {model.mParam.count + 1}'
+            self.app.message.emit(text, 2)
+        else:
+            text = f'Solved point {model.mParam.count + 1} ->'
+            text += f'   Ra: {rData.raJ2000:5.2f}   Dec: {rData.decJ2000:5.2f}'
+            text += f'   Error: {rData.error:5.2f}   Angle: {rData.angle:3.0f}'
+            text += f'   Scale: {rData.scale:4.2f}'
+            self.app.message.emit(text, 0)
 
         self.updateProgress(number=number, count=count, modelingDone=modelingDone)
 

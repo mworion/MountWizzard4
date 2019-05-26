@@ -354,7 +354,7 @@ class Astrometry(object):
 
         return Result(ra, dec, angle, scale, error, flipped)
 
-    def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None):
+    def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None, solution=None):
         """
         updateFitsWithWCSData reads the fits file containing the wcs data output from
         solve-field and embeds it to the given fits file with image. it removes all
@@ -363,6 +363,7 @@ class Astrometry(object):
 
         :param fitsHeader: fits header from image file, where wcs should be embedded
         :param wcsHeader: fits header with wcs info to be embedded
+        :param solution: parameter calculation for image attributes
         :return: success
         """
 
@@ -370,17 +371,14 @@ class Astrometry(object):
 
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-        ra, dec, angle, scale, error, flipped = self.getSolutionFromWCS(fitsHeader=fitsHeader,
-                                                                        wcsHeader=wcsHeader)
-
-        fitsHeader['RA'] = ra
-        fitsHeader['OBJCTRA'] = self.convertToHMS(ra)
-        fitsHeader['DEC'] = dec
-        fitsHeader['OBJCTDEC'] = self.convertToDMS(dec)
-        fitsHeader['SCALE'] = scale
-        fitsHeader['PIXSCALE'] = scale
-        fitsHeader['ANGLE'] = angle
-        fitsHeader['FLIPPED'] = flipped
+        fitsHeader['RA'] = solution.raJ2000
+        fitsHeader['OBJCTRA'] = self.convertToHMS(solution.raJ2000)
+        fitsHeader['DEC'] = solution.decJ2000
+        fitsHeader['OBJCTDEC'] = self.convertToDMS(solution.decJ2000)
+        fitsHeader['SCALE'] = solution.scale
+        fitsHeader['PIXSCALE'] = solution.scale
+        fitsHeader['ANGLE'] = solution.angle
+        fitsHeader['FLIPPED'] = solution.flipped
 
         return True
 
@@ -552,15 +550,16 @@ class Astrometry(object):
         with fits.open(fitsPath, mode='update') as fitsHDU:
             fitsHeader = fitsHDU[0].header
 
+        solution = self.getSolutionFromWCS(fitsHeader=fitsHeader,
+                                           wcsHeader=wcsHeader)
+
         if updateFits:
             self.updateFitsWithWCSData(fitsHeader=fitsHeader,
                                        wcsHeader=wcsHeader,
+                                       solution=solution,
                                        )
 
-        result = self.getSolutionFromWCS(fitsHeader=fitsHeader,
-                                         wcsHeader=wcsHeader)
-
-        self.result = (True, result)
+        self.result = (True, solution)
         return True
 
     def solveClear(self):

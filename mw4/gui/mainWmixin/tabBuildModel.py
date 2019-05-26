@@ -837,6 +837,7 @@ class BuildModel(object):
             shutil.rmtree(dirPath, ignore_errors=True)
 
         self.app.message.emit('Modeling finished', 1)
+        self.playAudioModelFinished()
 
         return True
 

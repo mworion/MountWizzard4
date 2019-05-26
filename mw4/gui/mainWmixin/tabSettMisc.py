@@ -263,3 +263,18 @@ class SettMisc(object):
         if sound in self.audioSignalsSet:
             self.audioSignalsSet[sound].play()
         return True
+
+    def playAudioModelFinished(self):
+        """
+        playAudioModelFinished plays a defined sound if this events happens
+
+        :return: success of playing sound
+        """
+
+        listEntry = self.guiAudioList.get('ModelingFinished', None)
+        if listEntry is None:
+            return False
+        sound = listEntry.currentText()
+        if sound in self.audioSignalsSet:
+            self.audioSignalsSet[sound].play()
+        return True

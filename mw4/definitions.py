@@ -36,8 +36,11 @@ MParam = namedtuple('MParam', 'number count path astrometry')
 # modeling generated data for programming the model
 MData = namedtuple('MData', 'raMJNow decMJNow raSJNow decSJNow sidereal julian pierside')
 
+# mount retrofit data
+RData = namedtuple('RData', 'errorRMS errorRA errorDEC')
+
 # overall structure containing all of the above
-MPoint = namedtuple('MPoint', 'mParam iParam mPoint mData')
+MPoint = namedtuple('MPoint', 'mParam iParam point mData rData')
 
 
 # second cluster is for the astrometry stuff and solving data

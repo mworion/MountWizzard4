@@ -499,7 +499,7 @@ class BuildModel(object):
         if not result.success:
             solveOK = False
 
-        model = self.resultQueue.get()
+        mPoint = self.resultQueue.get()
 
         # processing only the model point which are OK
         if solveOK:
@@ -508,30 +508,30 @@ class BuildModel(object):
             decJ2000 = skyfield.api.Angle(degrees=rData.decJ2000)
             raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, model.mData.julian)
 
-            mData = MData(raMJNow=model.mData.raMJNow,
-                          decMJNow=model.mData.decMJNow,
+            mData = MData(raMJNow=mPoint.mData.raMJNow,
+                          decMJNow=mPoint.mData.decMJNow,
                           raSJNow=raJNow,
                           decSJNow=decJNow,
-                          sidereal=model.mData.sidereal,
-                          julian=model.mData.julian,
-                          pierside=model.mData.pierside,
+                          sidereal=mPoint.mData.sidereal,
+                          julian=mPoint.mData.julian,
+                          pierside=mPoint.mData.pierside,
                           )
-            model = MPoint(mParam=model.mParam,
-                           iParam=model.iParam,
-                           mPoint=model.mPoint,
-                           mData=mData,
-                           )
-            self.modelQueue.put(model)
+            mPoint = MPoint(mParam=mPoint.mParam,
+                            iParam=mPoint.iParam,
+                            mPoint=mPoint.point,
+                            mData=mData,
+                            )
+            self.modelQueue.put(mPoint)
 
-        number = model.mParam.number
-        count = model.mParam.count
+        number = mPoint.mParam.number
+        count = mPoint.mParam.count
         modelingDone = (number == count + 1)
 
         if not solveOK:
-            text = f'Solving error for image-{model.mParam.count:03d}'
+            text = f'Solving error for image-{mPoint.mParam.count:03d}'
             self.app.message.emit(text, 2)
         else:
-            text = f'Solved image-{model.mParam.count:03d} ->   '
+            text = f'Solved image-{mPoint.mParam.count:03d} ->   '
             text += f'Ra: {rData.raJ2000:5.2f}, Dec: {rData.decJ2000:5.2f}, '
             text += f'Error: {rData.error:5.2f}, Angle: {rData.angle:3.0f}, '
             text += f'Scale: {rData.scale:4.2f}'
@@ -566,22 +566,22 @@ class BuildModel(object):
             self.logger.debug('empty solve queue')
             return False
 
-        model = self.solveQueue.get()
+        mPoint = self.solveQueue.get()
 
         if self.app.imageW:
-            self.app.imageW.signals.showExt.emit(model.mParam.path)
+            self.app.imageW.signals.showExt.emit(mPoint.mParam.path)
 
-        self.app.astrometry.solveThreading(app=model.mParam.astrometry,
-                                           fitsPath=model.mParam.path,
+        self.app.astrometry.solveThreading(app=mPoint.mParam.astrometry,
+                                           fitsPath=mPoint.mParam.path,
                                            timeout=10,
                                            updateFits=False,
                                            )
-        self.resultQueue.put(model)
+        self.resultQueue.put(mPoint)
 
-        text = f'Solving image-{model.mParam.count:03d} ->   '
-        text += f'{os.path.basename(model.mParam.path)}'
+        text = f'Solving image-{mPoint.mParam.count:03d} ->   '
+        text += f'{os.path.basename(mPoint.mParam.path)}'
         self.app.message.emit(text, 0)
-        self.ui.mSolve.setText(f'{model.mParam.count + 1:2d}')
+        self.ui.mSolve.setText(f'{mPoint.mParam.count + 1:2d}')
 
         return True
 
@@ -609,35 +609,36 @@ class BuildModel(object):
             self.logger.debug('empty image queue')
             return False
 
-        model = self.imageQueue.get()
+        mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
-        self.app.imaging.expose(imagePath=model.mParam.path,
-                                expTime=model.iParam.expTime,
-                                binning=model.iParam.binning,
-                                subFrame=model.iParam.subFrame,
-                                fast=model.iParam.fast,
+        self.app.imaging.expose(imagePath=mPoint.mParam.path,
+                                expTime=mPoint.iParam.expTime,
+                                binning=mPoint.iParam.binning,
+                                subFrame=mPoint.iParam.subFrame,
+                                fast=mPoint.iParam.fast,
                                 )
 
-        model = MPoint(mParam=model.mParam,
-                       iParam=model.iParam,
-                       mPoint=model.mPoint,
-                       mData=MData(raMJNow=self.app.mount.obsSite.raJNow,
-                                   decMJNow=self.app.mount.obsSite.decJNow,
-                                   raSJNow=None,
-                                   decSJNow=None,
-                                   sidereal=self.app.mount.obsSite.timeSidereal,
-                                   julian=self.app.mount.obsSite.timeJD,
-                                   pierside=self.app.mount.obsSite.pierside,
-                                   ),
-                       )
+        mPoint = MPoint(mParam=mPoint.mParam,
+                        iParam=mPoint.iParam,
+                        mPoint=mPoint.point,
+                        mData=MData(raMJNow=self.app.mount.obsSite.raJNow,
+                                    decMJNow=self.app.mount.obsSite.decJNow,
+                                    raSJNow=None,
+                                    decSJNow=None,
+                                    sidereal=self.app.mount.obsSite.timeSidereal,
+                                    julian=self.app.mount.obsSite.timeJD,
+                                    pierside=self.app.mount.obsSite.pierside,
+                                    ),
+                        rData=None,
+                        )
 
-        self.solveQueue.put(model)
+        self.solveQueue.put(mPoint)
 
-        text = f'Exposing image-{model.mParam.count:03d} ->   '
-        text += f'path: {os.path.basename(model.mParam.path)}'
+        text = f'Exposing image-{mPoint.mParam.count:03d} ->   '
+        text += f'path: {os.path.basename(mPoint.mParam.path)}'
         self.app.message.emit(text, 0)
-        self.ui.mImage.setText(f'{model.mParam.count + 1 :2d}')
+        self.ui.mImage.setText(f'{mPoint.mParam.count + 1 :2d}')
 
         return True
 
@@ -657,20 +658,21 @@ class BuildModel(object):
         if self.slewQueue.empty():
             return False
 
-        model = self.slewQueue.get()
+        mPoint = self.slewQueue.get()
 
-        self.app.dome.slewToAltAz(azimuth=model.mPoint.azimuth)
-        self.app.mount.obsSite.slewAltAz(alt_degrees=model.mPoint.altitude,
-                                         az_degrees=model.mPoint.azimuth,
+        self.app.dome.slewToAltAz(azimuth=mPoint.point.azimuth)
+        self.app.mount.obsSite.slewAltAz(alt_degrees=mPoint.point.altitude,
+                                         az_degrees=mPoint.point.azimuth,
                                          )
 
-        self.imageQueue.put(model)
+        self.imageQueue.put(mPoint)
 
-        text = f'Slewing image-{model.mParam.count:03d} ->   '
-        text += f'altitude: {model.mPoint.altitude:3.0f}, azimuth: {model.mPoint.azimuth:3.0f}'
+        text = f'Slewing image-{mPoint.mParam.count:03d} ->   '
+        text += f'altitude: {mPoint.point.altitude:3.0f}, '
+        text += f'azimuth: {mPoint.point.azimuth:3.0f}'
         self.app.message.emit(text, 0)
-        self.ui.mPoints.setText(f'{model.mParam.number:2d}')
-        self.ui.mSlew.setText(f'{model.mParam.count + 1:2d}')
+        self.ui.mPoints.setText(f'{mPoint.mParam.number:2d}')
+        self.ui.mSlew.setText(f'{mPoint.mParam.count + 1:2d}')
 
         return True
 
@@ -788,6 +790,22 @@ class BuildModel(object):
 
         return True
 
+    def retrofitModel(self, model=None):
+        """
+
+        :param model:
+        :return: updated model
+        """
+
+        for mPoint in model:
+            mPoint = MPoint(mParam=mPoint.mParam,
+                            iParam=mPoint.iParam,
+                            mPoint=mPoint.point,
+                            mData=mPoint.mData,
+                            rData=None,
+                            )
+        return model
+
     def modelFinished(self):
         """
         modelFinished is called when tha last point was solved. in addition the saving
@@ -799,8 +817,8 @@ class BuildModel(object):
         :return: true for test purpose
         """
 
-        # build programming data
         build = list()
+        model = list()
         while not self.modelQueue.empty():
             mPoint = self.modelQueue.get()
 
@@ -816,6 +834,7 @@ class BuildModel(object):
                                       pierside=pierside,
                                       )
             build.append(programmingPoint)
+            model.append(mPoint)
 
         # stopping other activities
         self.defaultSignals()
@@ -825,9 +844,12 @@ class BuildModel(object):
         # finally do it
         self.app.message.emit('Programming model to mount', 0)
         suc = self.app.mount.model.programAlign(build)
+
         if suc:
             self.app.message.emit('Model programmed with success', 0)
             self.refreshModel()
+            model = self.retrofitModel(model=model)
+            print(model)
         else:
             self.app.message.emit('Model programming error', 2)
 
@@ -903,9 +925,10 @@ class BuildModel(object):
             # transfer to working in a queue with necessary data
             self.slewQueue.put(MPoint(iParam=iParam,
                                       mParam=mParam,
-                                      mPoint=Point(altitude=point[0],
-                                                   azimuth=point[1]),
+                                      point=Point(altitude=point[0],
+                                                  azimuth=point[1]),
                                       mData=None,
+                                      rData=None,
                                       )
                                )
         # kick off modeling

@@ -487,38 +487,44 @@ class BuildModel(object):
         :return:
         """
 
+        solveOK = True
         if self.resultQueue.empty():
             return False
         if not isinstance(result[1], tuple):
+            solveOK = False
             self.logger.debug(f'Solving result is malformed: {result}')
-            return False
+        if not result[0]:
+            solveOK = False
 
         model = self.resultQueue.get()
-        rData = result[1]
-        raJ2000 = skyfield.api.Angle(degrees=rData.raJ2000)
-        decJ2000 = skyfield.api.Angle(degrees=rData.decJ2000)
-        raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, model.mData.julian)
 
-        mData = MData(raMJNow=model.mData.raMJNow,
-                      decMJNow=model.mData.decMJNow,
-                      raSJNow=raJNow,
-                      decSJNow=decJNow,
-                      sidereal=model.mData.sidereal,
-                      julian=model.mData.julian,
-                      pierside=model.mData.pierside,
-                      )
-        model = MPoint(mParam=model.mParam,
-                       iParam=model.iParam,
-                       mPoint=model.mPoint,
-                       mData=mData,
-                       )
-        self.modelQueue.put(model)
+        # processing only the model point which are OK
+        if solveOK:
+            rData = result[1]
+            raJ2000 = skyfield.api.Angle(degrees=rData.raJ2000)
+            decJ2000 = skyfield.api.Angle(degrees=rData.decJ2000)
+            raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, model.mData.julian)
+
+            mData = MData(raMJNow=model.mData.raMJNow,
+                          decMJNow=model.mData.decMJNow,
+                          raSJNow=raJNow,
+                          decSJNow=decJNow,
+                          sidereal=model.mData.sidereal,
+                          julian=model.mData.julian,
+                          pierside=model.mData.pierside,
+                          )
+            model = MPoint(mParam=model.mParam,
+                           iParam=model.iParam,
+                           mPoint=model.mPoint,
+                           mData=mData,
+                           )
+            self.modelQueue.put(model)
 
         number = model.mParam.number
         count = model.mParam.count
         modelingDone = (number == count + 1)
 
-        if not result[0]:
+        if not solveOK:
             text = f'Solving error for point {model.mParam.count + 1}'
             self.app.message.emit(text, 2)
         else:

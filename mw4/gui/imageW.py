@@ -290,11 +290,11 @@ class ImageWindow(widget.MWidget):
 
         self.app.astrometry.signals.done.disconnect(self.solveDone)
 
-        if not result[0]:
+        if not result.success:
             self.app.message.emit('Solving error', 2)
             return False
 
-        rData = result[1]
+        rData = result.solve
         if not isinstance(rData, tuple):
             return False
         text = f'Ra: {rData.raJ2000:5.2f}   Dec: {rData.decJ2000:5.2f}'

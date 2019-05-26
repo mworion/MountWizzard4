@@ -35,7 +35,7 @@ from PyQt5.QtTest import QTest
 import numpy as np
 # local imports
 from mw4.base import tpool
-from mw4.definitions import Result
+from mw4.definitions import Solution, Solve
 
 
 class AstrometrySignals(PyQt5.QtCore.QObject):
@@ -355,9 +355,16 @@ class Astrometry(object):
 
         print(raMount, ra, decMount, dec, error)
 
-        return Result(ra, dec, angle, scale, error, flipped)
+        solve = Solve(raJ2000=ra,
+                      decJ2000=dec,
+                      angle=angle,
+                      scale=scale,
+                      error=error,
+                      flipped=flipped)
 
-    def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None, solution=None):
+        return solve
+
+    def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None, solve=None):
         """
         updateFitsWithWCSData reads the fits file containing the wcs data output from
         solve-field and embeds it to the given fits file with image. it removes all
@@ -366,7 +373,7 @@ class Astrometry(object):
 
         :param fitsHeader: fits header from image file, where wcs should be embedded
         :param wcsHeader: fits header with wcs info to be embedded
-        :param solution: parameter calculation for image attributes
+        :param solve: parameter calculation for image attributes
         :return: success
         """
 
@@ -374,14 +381,14 @@ class Astrometry(object):
 
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-        fitsHeader['RA'] = solution.raJ2000
+        fitsHeader['RA'] = solve.raJ2000
         fitsHeader['OBJCTRA'] = self.convertToHMS(solution.raJ2000)
-        fitsHeader['DEC'] = solution.decJ2000
+        fitsHeader['DEC'] = solve.decJ2000
         fitsHeader['OBJCTDEC'] = self.convertToDMS(solution.decJ2000)
-        fitsHeader['SCALE'] = solution.scale
-        fitsHeader['PIXSCALE'] = solution.scale
-        fitsHeader['ANGLE'] = solution.angle
-        fitsHeader['FLIPPED'] = solution.flipped
+        fitsHeader['SCALE'] = solve.scale
+        fitsHeader['PIXSCALE'] = solve.scale
+        fitsHeader['ANGLE'] = solve.angle
+        fitsHeader['FLIPPED'] = solve.flipped
 
         return True
 
@@ -553,16 +560,17 @@ class Astrometry(object):
         with fits.open(fitsPath, mode='update') as fitsHDU:
             fitsHeader = fitsHDU[0].header
 
-        solution = self.getSolutionFromWCS(fitsHeader=fitsHeader,
-                                           wcsHeader=wcsHeader)
+        solve = self.getSolutionFromWCS(fitsHeader=fitsHeader,
+                                        wcsHeader=wcsHeader)
 
         if updateFits:
             self.updateFitsWithWCSData(fitsHeader=fitsHeader,
                                        wcsHeader=wcsHeader,
-                                       solution=solution,
+                                       solve=solve,
                                        )
 
-        self.result = (True, solution)
+        self.result = Solution(success=True,
+                               solve=solve)
         return True
 
     def solveClear(self):

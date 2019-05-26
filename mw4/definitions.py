@@ -22,7 +22,8 @@ from collections import namedtuple
 Point = namedtuple('Point', 'altitude azimuth')
 IParam = namedtuple('IParam', 'expTime binning subFrame fast')
 MParam = namedtuple('MParam', 'number count path astrometry')
-Result = namedtuple('Result', 'raJ2000 decJ2000 angle scale error flipped')
 MData = namedtuple('MData', 'raMJNow decMJNow raSJNow decSJNow sidereal julian pierside')
-
 MPoint = namedtuple('MPoint', 'mParam iParam mPoint mData')
+
+Solution = namedtuple('Solution', 'success solve')
+Solve = namedtuple('Solve', 'raJ2000 decJ2000 angle scale error flipped')

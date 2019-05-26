@@ -496,14 +496,14 @@ class BuildModel(object):
         if not isinstance(result[1], tuple):
             solveOK = False
             self.logger.info(f'Solving result is malformed: {result}')
-        if not result[0]:
+        if not result.success:
             solveOK = False
 
         model = self.resultQueue.get()
 
         # processing only the model point which are OK
         if solveOK:
-            rData = result[1]
+            rData = result.solve
             raJ2000 = skyfield.api.Angle(degrees=rData.raJ2000)
             decJ2000 = skyfield.api.Angle(degrees=rData.decJ2000)
             raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, model.mData.julian)
@@ -528,7 +528,7 @@ class BuildModel(object):
         modelingDone = (number == count + 1)
 
         if not solveOK:
-            text = f'Solving error for point {model.mParam.count + 1}'
+            text = f'Solving error for image-{model.mParam.count:03d}'
             self.app.message.emit(text, 2)
         else:
             text = f'Solved image-{model.mParam.count} ->   '
@@ -578,7 +578,7 @@ class BuildModel(object):
                                            )
         self.resultQueue.put(model)
 
-        text = f'Solving image-{model.mParam.count:2d} ->   '
+        text = f'Solving image-{model.mParam.count:03d} ->   '
         text += f'{os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mSolve.setText(f'{model.mParam.count + 1:2d}')
@@ -634,8 +634,8 @@ class BuildModel(object):
 
         self.solveQueue.put(model)
 
-        text = f'Imaging image-{model.mParam.count:2d} ->   '
-        text += f'{os.path.basename(model.mParam.path)}'
+        text = f'Imaging image-{model.mParam.count:03d} ->   '
+        text += f'path: {os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mImage.setText(f'{model.mParam.count + 1 :2d}')
 
@@ -667,9 +667,9 @@ class BuildModel(object):
         self.imageQueue.put(model)
 
         text = f'Slewing image-{model.mParam.count:2d} ->   '
-        text += f'Alt: {model.mPoint.altitude:3.0f} Az: {model.mPoint.azimuth:3.0f}'
+        text += f'altitude: {model.mPoint.altitude:3.0f} azimuth: {model.mPoint.azimuth:3.0f}'
         self.app.message.emit(text, 0)
-        self.ui.mPoints.setText(f'{model.mParam.number:2d}')
+        self.ui.mPoints.setText(f'{model.mParam.number:03d}')
         self.ui.mSlew.setText(f'{model.mParam.count + 1:2d}')
 
         return True

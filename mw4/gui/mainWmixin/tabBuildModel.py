@@ -412,10 +412,45 @@ class BuildModel(object):
         self.autoDeletePoints()
         return True
 
-    def modelSolveDone(self, result):
+    def updateProgress(self, number=0, count=0, modelingDone=False):
+        """
+        updateProgress calculated from the elapsed time and number of point with taking
+        actual processing time into account a estimation of duration and finishing time
+        of the modeling process and updates this in the gui
+
+        :param number: total number of model points
+        :param count: index of the actual processed point
+        :param modelingDone: state for the last point
+        :return: true for test purpose
         """
 
-        :param result:
+        modelPercent = (count + 1) / number
+        timeElapsed = time.time() - self.startModeling
+
+        if modelingDone:
+            timeEstimation = 0
+        else:
+            timeEstimation = (1 / modelPercent * timeElapsed) * (1 - modelPercent)
+        finished = timedelta(seconds=timeEstimation) + datetime.now()
+
+        self.ui.timeToFinish.setText(time.strftime('%M:%S', time.gmtime(timeEstimation)))
+        self.ui.timeElapsed.setText(time.strftime('%M:%S', time.gmtime(timeElapsed)))
+        self.ui.timeFinished.setText(finished.strftime('%H:%M:%S'))
+        self.ui.modelProgress.setValue(modelPercent * 100)
+
+        return true
+
+    def modelSolveDone(self, result):
+        """
+        modelSolveDone is called when a point is solved by astrometry. if called it takes
+        the model point out of the queue and adds the solving data for later model build.
+        as the solving takes place in J2000 epoch, but we need fpr die model build JNow
+        epoch, the transformation is done as well.
+
+        in addition as it is the last step before a model point could be used, the
+        it checks for the end of the modeling process.
+
+        :param result: true for test purpose
         :return:
         """
 
@@ -424,27 +459,24 @@ class BuildModel(object):
             return False
         if self.resultQueue.empty():
             return False
-
-        model = self.resultQueue.get()
-        r = result[1]
-
-        if not isinstance(r, tuple):
+        if not isinstance(result[1], tuple):
+            self.logger.debug(f'Solving result is malformed: {result}')
             return False
 
-        ra = skyfield.api.Angle(degrees=r.raJ2000)
-        dec = skyfield.api.Angle(degrees=r.decJ2000)
-
-        ra, dec = transform.J2000ToJNow(ra, dec, model.mData.julian)
+        model = self.resultQueue.get()
+        rData = result[1]
+        raJ2000 = skyfield.api.Angle(degrees=rData.raJ2000)
+        decJ2000 = skyfield.api.Angle(degrees=rData.decJ2000)
+        raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, model.mData.julian)
 
         mData = MData(raMJNow=model.mData.raMJNow,
                       decMJNow=model.mData.decMJNow,
-                      raSJNow=ra,
-                      decSJNow=dec,
+                      raSJNow=raJNow,
+                      decSJNow=decJNow,
                       sidereal=model.mData.sidereal,
                       julian=model.mData.julian,
                       pierside=model.mData.pierside,
                       )
-
         model = MPoint(mParam=model.mParam,
                        iParam=model.iParam,
                        mPoint=model.mPoint,
@@ -452,23 +484,15 @@ class BuildModel(object):
                        )
         self.modelQueue.put(model)
 
-        # here we update the estimation for modeling
-        modelingDone = (model.mParam.number == model.mParam.count + 1)
-        modelPercent = (model.mParam.count + 1) / model.mParam.number
-        timeElapsed = time.time() - self.startModeling
-        if modelingDone:
-            timeEstimation = 0
-        else:
-            timeEstimation = (1 / modelPercent * timeElapsed) * (1 - modelPercent)
-        finished = timedelta(seconds=timeEstimation) + datetime.now()
+        number = model.mParam.number
+        count = model.mParam.count
+        modelingDone = (number == count + 1)
 
-        text = f'Solved -> Ra: {r.raJ2000:4.1f}   Dec: {r.decJ2000:4.1f}'
-        text = text + f'   Angle: {r.angle:4.1f}   Error: {r.error:3.1f}'
+        text = f'Solved -> Ra: {rData.raJ2000:4.1f}   Dec: {rData.decJ2000:4.1f}'
+        text = text + f'   Angle: {rData.angle:4.1f}   Error: {rData.error:3.1f}'
         self.app.message.emit(text, 0)
-        self.ui.timeToFinish.setText(time.strftime('%M:%S', time.gmtime(timeEstimation)))
-        self.ui.timeElapsed.setText(time.strftime('%M:%S', time.gmtime(timeElapsed)))
-        self.ui.timeFinished.setText(finished.strftime('%H:%M:%S'))
-        self.ui.modelProgress.setValue(modelPercent * 100)
+
+        self.updateProgress(number=number, count=count, modelingDone=modelingDone)
 
         if modelingDone:
             self.modelFinished()
@@ -477,8 +501,20 @@ class BuildModel(object):
 
     def modelSolve(self):
         """
+        modelSolve is the method called from the signal image saved and starts the solving
+        process for this image. therefore it takes the model point from the queue and uses
+        the parameters stored. if the queue is empty (which should be to the case), it
+        just returns.
 
-        :return:
+        after starting the solving process in a threaded way (should run in parallel to gui)
+        it puts the model point to the next queue, the result queue.
+
+        in addition if the image window is present, it send a signal for displaying the
+        actual captured imaged.
+
+        it shows the actual processed point index in GUI
+
+        :return: true for test purpose
         """
 
         if self.solveQueue.empty():
@@ -504,8 +540,22 @@ class BuildModel(object):
 
     def modelImage(self):
         """
+        modelImage is the method called from the signal mount and dome slewed finish and
+        starts the imaging for the model point. therefore it takes the model point from
+        the queue and uses the parameters stored. if the queue is empty (which should be to
+        the case), it just returns.
 
-        :return:
+        as we are combining the reception of multiple signals for detecting that all slew
+        actions are finished, we have to reset the collector Class for preparing a new
+        cycle.
+
+        after the imaging with parameters started, the actual mount data (coordinates,
+        time, pierside) is added to the model point as this information is later needed for
+        solving and building the model itself.
+
+        it shows the actual processed point index in GUI
+
+        :return: true for test purpose
         """
 
         if self.imageQueue.empty():
@@ -513,6 +563,7 @@ class BuildModel(object):
 
         model = self.imageQueue.get()
         self.collector.resetSignals()
+
         self.app.imaging.expose(imagePath=model.mParam.path,
                                 expTime=model.iParam.expTime,
                                 binning=model.iParam.binning,
@@ -543,18 +594,27 @@ class BuildModel(object):
 
     def modelSlew(self):
         """
+        modelSlew is the method called from the model core method and is the beginning of
+        the modeling chain. it starts with taking a first model point from the initial
+        slew queue and starts slewing mount (and dome if present).if the queue is empty
+        (which should be to the case), it just returns.
 
-        :return:
+        it shows the actual processed point index in GUI
+
+        :return: true for test purpose
+
         """
 
         if self.slewQueue.empty():
             return False
 
         model = self.slewQueue.get()
+
         self.app.dome.slewToAltAz(azimuth=model.mPoint.azimuth)
         self.app.mount.obsSite.slewAltAz(alt_degrees=model.mPoint.altitude,
                                          az_degrees=model.mPoint.azimuth,
                                          )
+
         self.imageQueue.put(model)
 
         text = f'Slewing -> Alt: {model.mPoint.altitude:2.0f}'

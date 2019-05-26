@@ -29,7 +29,7 @@ import PyQt5.uic
 import skyfield.api
 from mountcontrol.model import APoint
 # local import
-from mw4.definitions import Point, MPoint, IParam, MParam, MData
+from mw4.definitions import Point, MPoint, IParam, MParam, MData, RData
 from mw4.base import transform
 
 
@@ -506,7 +506,7 @@ class BuildModel(object):
             rData = result.solve
             raJ2000 = skyfield.api.Angle(degrees=rData.raJ2000)
             decJ2000 = skyfield.api.Angle(degrees=rData.decJ2000)
-            raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, model.mData.julian)
+            raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, mPoint.mData.julian)
 
             mData = MData(raMJNow=mPoint.mData.raMJNow,
                           decMJNow=mPoint.mData.decMJNow,
@@ -518,8 +518,9 @@ class BuildModel(object):
                           )
             mPoint = MPoint(mParam=mPoint.mParam,
                             iParam=mPoint.iParam,
-                            mPoint=mPoint.point,
+                            point=mPoint.point,
                             mData=mData,
+                            rData=mPoint.rData,
                             )
             self.modelQueue.put(mPoint)
 
@@ -621,7 +622,7 @@ class BuildModel(object):
 
         mPoint = MPoint(mParam=mPoint.mParam,
                         iParam=mPoint.iParam,
-                        mPoint=mPoint.point,
+                        point=mPoint.point,
                         mData=MData(raMJNow=self.app.mount.obsSite.raJNow,
                                     decMJNow=self.app.mount.obsSite.decJNow,
                                     raSJNow=None,
@@ -797,13 +798,18 @@ class BuildModel(object):
         :return: updated model
         """
 
-        for mPoint in model:
+        for i, mPoint in enumerate(model):
+            rData = RData(errorRMS=self.app.mount.model.starList[i].errorRMS,
+                          errorRA=self.app.mount.model.starList[i].errorRA(),
+                          errorDEC=self.app.mount.model.starList[i].errorDEC(),
+                          )
             mPoint = MPoint(mParam=mPoint.mParam,
                             iParam=mPoint.iParam,
-                            mPoint=mPoint.point,
+                            point=mPoint.point,
                             mData=mPoint.mData,
-                            rData=None,
+                            rData=rData,
                             )
+            model[i] = mPoint
         return model
 
     def modelFinished(self):

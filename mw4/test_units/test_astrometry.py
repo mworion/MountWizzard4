@@ -25,6 +25,7 @@ import platform
 import numpy as np
 import subprocess
 from astropy.io import fits
+from mw4.definitions import Solve
 
 # external packages
 # local import
@@ -46,30 +47,26 @@ def module_setup_teardown():
 
 def test_init_1():
     home = os.environ.get('HOME')
-    binSolve = '/Applications/kstars.app/Contents/MacOS/astrometry/bin/solve-field'
-    binImage = '/Applications/kstars.app/Contents/MacOS/astrometry/bin/image2xy'
+    binSolve = '/Applications/kstars.app/Contents/MacOS/astrometry/bin'
     index = home + '/Library/Application Support/Astrometry'
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
 
-        assert app.binPathSolveField == binSolve
-        assert app.binPathImage2xy == binImage
+        assert app.binPath['KStars'] == binSolve
         assert app.indexPath == index
         assert os.path.isfile(tempDir + '/astrometry.cfg')
 
 
 def test_init_2():
-    binSolve = '/usr/bin/solve-field'
-    binImage = '/usr/bin/image2xy'
+    binSolve = '/usr/bin'
     index = '/usr/share/astrometry'
     with mock.patch.object(platform,
                            'system',
                            return_value='Linux'):
         app = astrometry.Astrometry(tempDir=tempDir,
                                     threadPool=threadPool)
-        assert app.binPathSolveField == binSolve
-        assert app.binPathImage2xy == binImage
+        assert app.binPath['astrometry.net'] == binSolve
         assert app.indexPath == index
         assert os.path.isfile(tempDir + '/astrometry.cfg')
 
@@ -80,8 +77,7 @@ def test_init_3():
                            return_value='Windows'):
         app = astrometry.Astrometry(tempDir=tempDir,
                                     threadPool=threadPool)
-        assert app.binPathSolveField == ''
-        assert app.binPathImage2xy == ''
+        assert app.binPath == {}
         assert app.indexPath == ''
         assert os.path.isfile(tempDir + '/astrometry.cfg')
 
@@ -205,29 +201,44 @@ def test_convertToDMS_8():
 
 
 def test_checkAvailability_1():
+    app.indexPath = ''
+    app.binPath = {}
     suc = app.checkAvailability()
     assert suc
+    assert app.available == {}
 
 
 def test_checkAvailability_2():
-    app.indexPath = ''
-    app.binPathImage2xy = ''
-    app.binPathSolveField = ''
-    suc = app.checkAvailability()
-    assert not suc
+    app.indexPath = '/usr/share/astrometry'
+    app.binPath = {'KStars': '/Applications/kstars.app/Contents/MacOS/astrometry/bin'}
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Linux'):
+        suc = app.checkAvailability()
+        assert suc
+        assert app.available == {}
 
 
 def test_checkAvailability_3():
-    app.indexPath = ''
-    app.binPathImage2xy = ''
-    suc = app.checkAvailability()
-    assert not suc
+    app.indexPath = '/usr/share/astrometry'
+    app.binPath = {'KStars': '/Applications/kstars.app/Contents/MacOS/astrometry/bin'}
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        suc = app.checkAvailability()
+        assert suc
+        assert app.available == {}
 
 
 def test_checkAvailability_4():
-    app.indexPath = ''
-    suc = app.checkAvailability()
-    assert not suc
+    app.indexPath = '/Users/mw/Library/Application Support/Astrometry'
+    app.binPath = {'KStars': '/Applications/kstars.app/Contents/MacOS/astrometry/bin'}
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        suc = app.checkAvailability()
+        assert suc
+        assert 'KStars' in app.available
 
 
 def test_readFitsData_1():
@@ -335,7 +346,10 @@ def test_getSolutionFromWCS_1():
     header = hdu[0].header
     header.set('CRVAL1', 180.0)
     header.set('CRVAL2', 60.0)
-    ra, dec, angle, scale, flipped = app.getSolutionFromWCS(wcsHeader=header)
+    header.set('RA', 180.0)
+    header.set('DEC', 60.0)
+    ra, dec, angle, scale, error, flipped = app.getSolutionFromWCS(fitsHeader=header,
+                                                                   wcsHeader=header)
     assert ra == 180
     assert dec == 60
     assert angle == 0
@@ -355,12 +369,18 @@ def test_updateFitsWithWCSData_1():
     header2 = hdu2[0].header
     header2.set('CRVAL1', 180.0)
     header2.set('CRVAL2', 60.0)
-    suc = app.updateFitsWithWCSData(fitsHeader=header1, wcsHeader=header2)
+
+    solve = Solve(180, 60, 0, 1, 0, True)
+
+    suc = app.updateFitsWithWCSData(fitsHeader=header1,
+                                    wcsHeader=header2,
+                                    solve=solve)
+
     assert suc
     assert header1['RA'] == header2['CRVAL1']
     assert header1['DEC'] == header2['CRVAL2']
     assert header1['ANGLE'] == 0
-    assert header1['SCALE'] == 0
+    assert header1['SCALE'] == 1
 
 
 def test_runImage2xy_1():
@@ -407,7 +427,7 @@ def test_runSolveField_2():
 
 
 def test_solve():
-    suc, res = app.solve()
+    suc = app.solve()
     assert not suc
 
 

@@ -99,6 +99,7 @@ class Astrometry(object):
             self.indexPath = '/usr/share/astrometry'
 
         else:
+            self.binPath = {}
             self.indexPath = ''
 
         cfgFile = self.tempDir + '/astrometry.cfg'
@@ -115,6 +116,7 @@ class Astrometry(object):
         :return: True if local solve and components is available
         """
 
+        self.available = {}
         for app, path in self.binPath.items():
             suc = True
             binPathSolveField = path + '/solve-field'
@@ -394,9 +396,9 @@ class Astrometry(object):
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
         fitsHeader['RA'] = solve.raJ2000
-        fitsHeader['OBJCTRA'] = self.convertToHMS(solution.raJ2000)
+        fitsHeader['OBJCTRA'] = self.convertToHMS(solve.raJ2000)
         fitsHeader['DEC'] = solve.decJ2000
-        fitsHeader['OBJCTDEC'] = self.convertToDMS(solution.decJ2000)
+        fitsHeader['OBJCTDEC'] = self.convertToDMS(solve.decJ2000)
         fitsHeader['SCALE'] = solve.scale
         fitsHeader['PIXSCALE'] = solve.scale
         fitsHeader['ANGLE'] = solve.angle

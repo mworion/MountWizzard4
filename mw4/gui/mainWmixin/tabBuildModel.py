@@ -634,7 +634,7 @@ class BuildModel(object):
 
         self.solveQueue.put(model)
 
-        text = f'Imaging image-{model.mParam.count:03d} ->   '
+        text = f'Exposing image-{model.mParam.count:03d} ->   '
         text += f'path: {os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mImage.setText(f'{model.mParam.count + 1 :2d}')
@@ -666,7 +666,7 @@ class BuildModel(object):
 
         self.imageQueue.put(model)
 
-        text = f'Slewing image-{model.mParam.count:2d} ->   '
+        text = f'Slewing image-{model.mParam.count:03d} ->   '
         text += f'altitude: {model.mPoint.altitude:3.0f} azimuth: {model.mPoint.azimuth:3.0f}'
         self.app.message.emit(text, 0)
         self.ui.mPoints.setText(f'{model.mParam.number:03d}')

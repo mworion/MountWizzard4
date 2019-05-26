@@ -527,7 +527,6 @@ class Astrometry(object):
 
         if not os.path.isfile(fitsPath):
             return False
-
         if app not in self.binPath:
             return False
 
@@ -565,14 +564,12 @@ class Astrometry(object):
         if not suc:
             self.logger.error(f'solve-field error in [{fitsPath}]')
             return False
-
         if not (os.path.isfile(solvedPath) and os.path.isfile(wcsPath)):
             self.logger.error(f'solve files for [{fitsPath}] missing')
             return False
 
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
-
         with fits.open(fitsPath, mode='update') as fitsHDU:
             fitsHeader = fitsHDU[0].header
 
@@ -622,7 +619,6 @@ class Astrometry(object):
         if not self.checkAvailability():
             self.signals.done.emit(self.result)
             return False
-
         if not self.mutexSolve.tryLock():
             self.logger.info('overrun in solve threading')
             self.signals.done.emit(self.result)
@@ -637,4 +633,5 @@ class Astrometry(object):
                               )
         worker.signals.finished.connect(self.solveClear)
         self.threadPool.start(worker)
+
         return True

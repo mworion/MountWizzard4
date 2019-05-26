@@ -669,7 +669,7 @@ class BuildModel(object):
         text = f'Slewing image-{model.mParam.count:03d} ->   '
         text += f'altitude: {model.mPoint.altitude:3.0f}, azimuth: {model.mPoint.azimuth:3.0f}'
         self.app.message.emit(text, 0)
-        self.ui.mPoints.setText(f'{model.mParam.number:03d}')
+        self.ui.mPoints.setText(f'{model.mParam.number:2d}')
         self.ui.mSlew.setText(f'{model.mParam.count + 1:2d}')
 
         return True

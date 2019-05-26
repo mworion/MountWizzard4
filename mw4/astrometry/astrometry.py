@@ -287,6 +287,8 @@ class Astrometry(object):
         ra = fitsHeader.get('OBJCTRA', '')
         dec = fitsHeader.get('OBJCTDEC', '')
 
+        self.logger.debug(f'RA: {ra}, DEC: {dec}, Scale: {scale}')
+
         if not ra or not dec or not scale:
             return ''
 

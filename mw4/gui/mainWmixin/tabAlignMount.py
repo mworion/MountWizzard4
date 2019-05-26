@@ -123,31 +123,31 @@ class AlignMount(object):
         self.ui.errorRMS1.setText(text)
 
         if model.positionAngle is not None:
-            text = '{0:5.1f}'.format(model.positionAngle.degrees)
+            text = f'{model.positionAngle.degrees:5.1f}'
         else:
             text = '-'
         self.ui.positionAngle.setText(text)
 
         if model.polarError is not None:
-            text = model.polarError.dstr(places=0)
+            text = f'{model.polarError.degrees * 60:5.2f}'
         else:
             text = '-'
         self.ui.polarError.setText(text)
 
         if model.orthoError is not None:
-            text = model.orthoError.dstr(places=0)
+            text = f'{model.orthoError.degrees * 60:5.2f}'
         else:
             text = '-'
         self.ui.orthoError.setText(text)
 
         if model.azimuthError is not None:
-            text = model.azimuthError.dstr(places=0)
+            text = f'{model.azimuthError.degrees:5.1f}'
         else:
             text = '-'
         self.ui.azimuthError.setText(text)
 
         if model.altitudeError is not None:
-            text = model.altitudeError.dstr(places=0)
+            text = f'{model.altitudeError.degrees:5.1f}'
         else:
             text = '-'
         self.ui.altitudeError.setText(text)

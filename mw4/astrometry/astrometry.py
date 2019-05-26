@@ -340,6 +340,7 @@ class Astrometry(object):
         :param fitsHeader:
         :param wcsHeader:
         :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
+                 error in arcsec and flag if image is flipped
         """
 
         ra = wcsHeader.get('CRVAL1')
@@ -351,6 +352,8 @@ class Astrometry(object):
 
         error = np.sqrt(np.square(ra - raMount) + np.square(dec - decMount))
         error *= 3600
+
+        print(raMount, ra, decMount, dec, error)
 
         return Result(ra, dec, angle, scale, error, flipped)
 

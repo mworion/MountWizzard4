@@ -531,7 +531,7 @@ class BuildModel(object):
             text = f'Solving error for point {model.mParam.count + 1}'
             self.app.message.emit(text, 2)
         else:
-            text = f'Solved point {model.mParam.count + 1} ->'
+            text = f'Solved image-{model.mParam.count} ->   '
             text += f'   Ra: {rData.raJ2000:5.2f}   Dec: {rData.decJ2000:5.2f}'
             text += f'   Error: {rData.error:5.2f}   Angle: {rData.angle:3.0f}'
             text += f'   Scale: {rData.scale:4.2f}'
@@ -578,7 +578,8 @@ class BuildModel(object):
                                            )
         self.resultQueue.put(model)
 
-        text = f'Solving -> {os.path.basename(model.mParam.path)}'
+        text = f'Solving image-{model.mParam.count:2d} ->   '
+        text += f'{os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mSolve.setText(f'{model.mParam.count + 1:2d}')
 
@@ -633,7 +634,8 @@ class BuildModel(object):
 
         self.solveQueue.put(model)
 
-        text = f'Imaging -> {os.path.basename(model.mParam.path)}'
+        text = f'Imaging image-{model.mParam.count:2d} ->   '
+        text += f'{os.path.basename(model.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mImage.setText(f'{model.mParam.count + 1 :2d}')
 
@@ -664,8 +666,8 @@ class BuildModel(object):
 
         self.imageQueue.put(model)
 
-        text = f'Slewing -> Alt: {model.mPoint.altitude:2.0f}'
-        text = text + f'   Az: {model.mPoint.azimuth:3.0f}'
+        text = f'Slewing image-{model.mParam.count:2d} ->   '
+        text += f'Alt: {model.mPoint.altitude:3.0f} Az: {model.mPoint.azimuth:3.0f}'
         self.app.message.emit(text, 0)
         self.ui.mPoints.setText(f'{model.mParam.number:2d}')
         self.ui.mSlew.setText(f'{model.mParam.count + 1:2d}')

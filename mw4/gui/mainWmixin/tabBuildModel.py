@@ -828,8 +828,8 @@ class BuildModel(object):
                           decMJNow=mPoint.mData.decMJNow.degrees,
                           raSJNow=mPoint.mData.raSJNow.hours,
                           decSJNow=mPoint.mData.decSJNow.degrees,
-                          sideral=mPoint.mData.sidereal,
-                          julian=mPoint.mData.julian,
+                          sidereal=mPoint.mData.sidereal,
+                          julian=mPoint.mData.julian.utc_strftime('%Y-%m-%d-%H-%M-%S'),
                           pierside=mPoint.mData.pierside,
                           )
 
@@ -837,7 +837,7 @@ class BuildModel(object):
                             iParam=mPoint.iParam,
                             point=mPoint.point,
                             mData=mData,
-                            rData=rData,
+                            rData=mPoint.rData,
                             )
             modelSave.append(mPoint)
 
@@ -846,7 +846,7 @@ class BuildModel(object):
                       outfile,
                       sort_keys=True,
                       indent=4)
-        return suc
+        return True
 
     def modelFinished(self):
         """
@@ -915,10 +915,8 @@ class BuildModel(object):
         :return: true for test purpose
         """
 
-        if points is None:
-            return
-        number = len(points)
-        if number < 3:
+        app = self.app.mainW.ui.astrometryDevice.currentText()
+        if app.startswith('No device'):
             return False
 
         # collection locations for files
@@ -936,7 +934,6 @@ class BuildModel(object):
         binning = self.app.mainW.ui.binning.value()
         subFrame = self.app.mainW.ui.subFrame.value()
         fast = self.app.mainW.ui.checkFastDownload.isChecked()
-        app = self.app.mainW.ui.astrometryDevice.currentText()
 
         # setting overall parameters
         settleMount = self.app.mainW.ui.settleTimeMount.value()
@@ -949,6 +946,7 @@ class BuildModel(object):
         self.startModeling = time.time()
 
         # queuing modeling points
+        number = len(points)
         for count, point in enumerate(points):
             # define the path to the image file
             path = f'{directory}/image-{count:03d}.fits'
@@ -1002,7 +1000,9 @@ class BuildModel(object):
         self.ui.runHysteresis.setEnabled(False)
         self.ui.cancelFullModel.setEnabled(True)
 
-        self.modelCore(points=points)
+        suc = self.modelCore(points=points)
+        if not suc:
+            self.defaultGUI()
 
         return True
 
@@ -1028,6 +1028,8 @@ class BuildModel(object):
         self.ui.runFlexure.setEnabled(False)
         self.ui.runHysteresis.setEnabled(False)
 
-        self.modelCore(points=points)
+        suc = self.modelCore(points=points)
+        if not suc:
+            self.defaultGUI()
 
         return True

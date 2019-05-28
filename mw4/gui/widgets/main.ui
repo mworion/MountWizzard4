@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>9</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -13186,6 +13186,77 @@ manually</string>
             </property>
            </widget>
           </item>
+          <item row="0" column="0" colspan="4">
+           <widget class="QLabel" name="label_304">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Batch renaming fits files</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QLabel" name="label_305">
+            <property name="minimumSize">
+             <size>
+              <width>120</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Directory</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" colspan="4">
+           <widget class="QTextBrowser" name="renameText"/>
+          </item>
+          <item row="8" column="2">
+           <widget class="QPushButton" name="renameStart">
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Start</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QComboBox" name="comboBox_3"/>
+          </item>
+          <item row="6" column="0">
+           <widget class="QComboBox" name="comboBox"/>
+          </item>
+          <item row="5" column="0" colspan="4">
+           <widget class="QLabel" name="label_60">
+            <property name="text">
+             <string>Choice of FITS header entries</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="4">
+           <widget class="QProgressBar" name="renameProgress">
+            <property name="value">
+             <number>0</number>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QComboBox" name="comboBox_4"/>
+          </item>
+          <item row="6" column="1">
+           <widget class="QComboBox" name="comboBox_2"/>
+          </item>
           <item row="2" column="3">
            <widget class="QPushButton" name="renameInputSelect">
             <property name="minimumSize">
@@ -13212,35 +13283,6 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="0" colspan="4">
-           <widget class="QLabel" name="label_304">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Batch renaming fits files</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="3">
-           <widget class="QPushButton" name="renameOutputSelect">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Select</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0" colspan="4">
-           <widget class="QTextBrowser" name="renameText"/>
-          </item>
           <item row="8" column="3">
            <widget class="QPushButton" name="renameCancel">
             <property name="minimumSize">
@@ -13254,67 +13296,8 @@ manually</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="0" colspan="4">
-           <widget class="QProgressBar" name="renameProgress">
-            <property name="value">
-             <number>0</number>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="2">
-           <widget class="QPushButton" name="renameStart">
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Start</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0" colspan="4">
-           <widget class="QLineEdit" name="renameOutput">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>400</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0" colspan="2">
-           <widget class="QLabel" name="label_306">
-            <property name="minimumSize">
-             <size>
-              <width>120</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Output Directory</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QLabel" name="label_305">
-            <property name="minimumSize">
-             <size>
-              <width>120</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Imput Directory</string>
-            </property>
-           </widget>
+          <item row="6" column="4">
+           <widget class="QComboBox" name="comboBox_5"/>
           </item>
          </layout>
         </item>

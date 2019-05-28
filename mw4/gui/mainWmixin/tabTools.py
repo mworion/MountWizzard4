@@ -38,20 +38,20 @@ class Tools(object):
     def __init__(self):
         self.ui.renameStart.clicked.connect(self.renameRunGUI)
         self.ui.renameInputSelect.clicked.connect(self.chooseInputDir)
-        self.ui.renameOutputSelect.clicked.connect(self.chooseOutputDir)
+        # self.ui.renameOutputSelect.clicked.connect(self.chooseOutputDir)
         # self.ui.renameCanel.clicked.connect(self.loadProfile)
 
     def initConfig(self):
         config = self.app.config['mainW']
         self.ui.renameInput.setText(config.get('renameInput', ''))
-        self.ui.renameOutput.setText(config.get('renameOutput', ''))
+        # self.ui.renameOutput.setText(config.get('renameOutput', ''))
         self.ui.renameProgress.setValue(0)
         return True
 
     def storeConfig(self):
         config = self.app.config['mainW']
         config['renameInput'] = self.ui.renameInput.text()
-        config['renameOutput'] = self.ui.renameOutput.text()
+        # config['renameOutput'] = self.ui.renameOutput.text()
         return True
 
     def setupIcons(self):

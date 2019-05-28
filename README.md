@@ -12,9 +12,9 @@ Needs 10micron firmware 2.16 or newer.
 - Generate model point based on various algorithms (grid, manual, greater celestial circles, track path)
 - Show, save, reload, optimize model (even when model was done manually)
 - Auto refraction update if weather station is available for pressure and temperature to mount
-- A lot of settings of mount visible and changeable (no need for virtual handcontroller)
+- A lot of settings of mount visible and changeable (no need for virtual hand controller)
 - Define up to 8 mount positions, which could be slew directly (e.g. flat panel, check ccd etc.)
-- Getting data from open weather (API key needed, windows) and Stickstation
+- Getting data from open weather (API key needed, windows) and stickstation
 - Supports Unihedron SQM Device
 - Supports Pegasus Ultra Power Box
 - Supports KMTronic IP Relay

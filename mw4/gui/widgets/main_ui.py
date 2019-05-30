@@ -3133,7 +3133,7 @@ class Ui_MainWindow(object):
         self.modelProgress.setMaximum(100)
         self.modelProgress.setProperty("value", 0)
         self.modelProgress.setAlignment(QtCore.Qt.AlignCenter)
-        self.modelProgress.setTextVisible(False)
+        self.modelProgress.setTextVisible(True)
         self.modelProgress.setOrientation(QtCore.Qt.Horizontal)
         self.modelProgress.setInvertedAppearance(False)
         self.modelProgress.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
@@ -7036,7 +7036,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setStretch(3, 1)
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(9)
+        self.mainTabWidget.setCurrentIndex(3)
         self.settingsTabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.hubUSB, self.powerCurrent1)

@@ -49,7 +49,7 @@ class Tools(object):
                                'Filter': ['FILTER'],
                                'Binning': ['XBINNING'],
                                'Datetime': ['DATE-OBS'],
-                               'CCD Temp': ['CCD_TEMP'],
+                               'CCD Temp': ['CCD-TEMP'],
                                'Exp Time': ['EXPTIME'],
                                 }
 
@@ -57,7 +57,8 @@ class Tools(object):
 
     def initConfig(self):
         config = self.app.config['mainW']
-        self.ui.renameDir.setText(config.get('renameDir', ''))
+        defaultDir = self.app.mwGlob['imageDir']
+        self.ui.renameDir.setText(config.get('renameDir', defaultDir))
         self.ui.checkIncludeSubdirs.setChecked(config.get('checkIncludeSubdirs', False))
         for name, ui in self.selectorsDropDowns.items():
             ui.setCurrentIndex(config.get(name, 0))
@@ -112,6 +113,30 @@ class Tools(object):
             number += 1
         return number
 
+    def convertHeaderEntry(self, entry='', keyword=''):
+        """
+
+        :param entry:
+        :param keyword:
+        :return:
+        """
+
+        if not keyword:
+            return ''
+        if not entry:
+            return ''
+
+        if keyword == 'DATE-OBS':
+            chunk = entry.replace(':', '-')
+            chunk = chunk.replace('T', '-')
+            chunk = chunk.replace('.', '-')
+        elif keyword == 'XBINNING':
+            chunk = f'Bin{entry}'
+        else:
+            chunk = ''
+
+        return chunk
+
     def processSelectors(self, header=None, index=''):
         """
 
@@ -122,7 +147,7 @@ class Tools(object):
 
         if header is None:
             return ''
-        if not selector:
+        if not index:
             return ''
 
         nameChunk = ''
@@ -130,49 +155,41 @@ class Tools(object):
         for keyword in keywords:
             if keyword not in header:
                 continue
-            nameChunk = header[keyword]
+            nameChunk = self.convertHeaderEntry(entry=header[keyword],
+                                                keyword=keyword)
             break
 
         return nameChunk
 
-    def renameRun(self, inputPath='', subdirs=False):
+    def renameFile(self, fileName=''):
         """
 
-        :param inputPath:
-        :param subdirs:
+        :param fileName:
         :return:
         """
 
-        numberFiles = self.getNumberFiles(inputPath)
-        self.app.message.emit(f'There will be {numberFiles:4d} images renamed', 0)
+        if not fileName:
+            return False
 
-        for i, filename in enumerate(glob.iglob(inputPath + '**/*.fit*',
-                                                recursive=subdirs)):
-            self.ui.renameProgress.setValue(int(100 * i / numberFiles))
-            PyQt5.QtWidgets.QApplication.processEvents()
-            with fits.open(name=filename) as fd:
-                if 'FRAME' not in fd[0].header:
-                    continue
-                if 'FILTER' not in fd[0].header:
-                    continue
-                if 'XBINNING' not in fd[0].header:
-                    continue
-                if 'DATE-OBS' not in fd[0].header:
-                    continue
+        with fits.open(name=fileName) as fd:
+            header = fd[0].header
 
-                newFilename = inputPath + '/{0}{1:}_{2}_BIN_{3:01d}_{4}' \
-                    .format('M15_',
-                            fd[0].header['FRAME'],
-                            fd[0].header['FILTER'],
-                            int(fd[0].header['XBINNING']),
-                            fd[0].header['DATE-OBS'],
-                            )
-                newFilename = newFilename.replace(':', '_')
-                newFilename = newFilename.replace('.', '_')
-                newFilename = newFilename.replace('-', '_')
-                newFilename = newFilename.replace('T', '_')
-                newFilename += '.fits'
-            os.rename(filename, newFilename)
+            if 'OBJECT' in header:
+                newFilename = header['OBJECT'].capitalize()
+            else:
+                newFilename = 'UNKNOWN'
+
+            for _, selector in self.selectorsDropDowns.items():
+                index = selector.currentText()
+                chunk = self.processSelectors(header=header,
+                                              index=index
+                                              )
+                if chunk:
+                    newFilename += f'-{chunk}'
+
+            newFilename += '.fits'
+            print(fileName, newFilename)
+            # os.rename(fileName, newFilename)
         return True
 
     def renameRunGUI(self):
@@ -181,14 +198,23 @@ class Tools(object):
         :return: True for test purpose
         """
 
-        inputPath = self.ui.renameInput.text()
+        inputPath = self.ui.renameDir.text()
         includeSubdirs = self.ui.checkIncludeSubdirs.isChecked()
 
         if not os.path.isdir(inputPath):
             self.app.message.emit('No valid input directory given', 2)
             return False
 
-        self.renameRun(inputPath=inputPath, subdirs=includeSubdirs)
+        numberFiles = self.getNumberFiles(inputPath)
+        self.app.message.emit(f'There will be {numberFiles:4d} images renamed', 0)
+
+        for i, fileName in enumerate(glob.iglob(inputPath + '**/*.fit*',
+                                                recursive=includeSubdirs)):
+            self.ui.renameProgress.setValue(int(100 * (i + 1) / numberFiles))
+            PyQt5.QtWidgets.QApplication.processEvents()
+
+            self.renameFile(fileName=fileName)
+
         return True
 
     def chooseDir(self):
@@ -198,13 +224,12 @@ class Tools(object):
 
         :return: True for test purpose
         """
-        folder = self.ui.renameInput.text()
+        folder = self.ui.renameDir.text()
         inputPath, _, _ = self.openDir(self,
                                        'Choose Input Dir',
                                        folder,
                                        )
         if inputPath:
-            self.ui.renameInput.setText(inputPath)
+            self.ui.renameDir.setText(inputPath)
             self.ui.renameProgress.setValue(0)
-            self.ui.renameText.clear()
         return True

@@ -109,7 +109,7 @@ class Tools(object):
         :return: number
         """
         number = 0
-        for filename in glob.iglob(path + '**/*.fit*', recursive=subdirs):
+        for filename in glob.iglob(path + '/**/*.fit*', recursive=subdirs):
             number += 1
         return number
 
@@ -213,14 +213,15 @@ class Tools(object):
             self.app.message.emit('No valid input directory given', 2)
             return False
 
-        numberFiles = self.getNumberFiles(inputPath)
+        numberFiles = self.getNumberFiles(inputPath,
+                                          subdirs=includeSubdirs)
+
         self.app.message.emit(f'There will be {numberFiles:4d} images renamed', 0)
 
-        for i, fileName in enumerate(glob.iglob(inputPath + '**/*.fit*',
+        for i, fileName in enumerate(glob.iglob(inputPath + '/**/*.fit*',
                                                 recursive=includeSubdirs)):
             self.ui.renameProgress.setValue(int(100 * (i + 1) / numberFiles))
             PyQt5.QtWidgets.QApplication.processEvents()
-
             self.renameFile(fileName=fileName)
 
         return True

@@ -194,8 +194,10 @@ class Tools(object):
                     newFilename += f'-{chunk}'
 
             newFilename += '.fits'
-            print(fileName, newFilename)
-            # os.rename(fileName, newFilename)
+
+            dirName = os.path.dirname(fileName)
+            newFilename = f'{dirName}/{newFilename}'
+            os.rename(fileName, newFilename)
         return True
 
     def renameRunGUI(self):

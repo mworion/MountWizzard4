@@ -23,7 +23,6 @@ import glob
 # external packages
 import PyQt5
 from astropy.io import fits
-from shutil import copyfile
 # local import
 
 
@@ -37,21 +36,42 @@ class Tools(object):
 
     def __init__(self):
         self.ui.renameStart.clicked.connect(self.renameRunGUI)
-        self.ui.renameInputSelect.clicked.connect(self.chooseInputDir)
-        # self.ui.renameOutputSelect.clicked.connect(self.chooseOutputDir)
-        # self.ui.renameCanel.clicked.connect(self.loadProfile)
+        self.ui.renameInputSelect.clicked.connect(self.chooseDir)
+
+        self.selectorsDropDowns = {'rename1': self.ui.rename1,
+                                   'rename2': self.ui.rename2,
+                                   'rename3': self.ui.rename3,
+                                   'rename4': self.ui.rename4,
+                                   'rename5': self.ui.rename5,
+                                   }
+        self.headerKeywords = {'None': [''],
+                               'Frame': ['FRAME'],
+                               'Filter': ['FILTER'],
+                               'Binning': ['XBINNING'],
+                               'Datetime': ['DATE-OBS'],
+                               'CCD Temp': ['CCD_TEMP'],
+                               'Exp Time': ['EXPTIME'],
+                                }
+
+        self.setupSelectorGui()
 
     def initConfig(self):
         config = self.app.config['mainW']
-        self.ui.renameInput.setText(config.get('renameInput', ''))
-        # self.ui.renameOutput.setText(config.get('renameOutput', ''))
+        self.ui.renameDir.setText(config.get('renameDir', ''))
+        self.ui.checkIncludeSubdirs.setChecked(config.get('checkIncludeSubdirs', False))
+        for name, ui in self.selectorsDropDowns.items():
+            ui.setCurrentIndex(config.get(name, 0))
+
         self.ui.renameProgress.setValue(0)
         return True
 
     def storeConfig(self):
         config = self.app.config['mainW']
-        config['renameInput'] = self.ui.renameInput.text()
-        # config['renameOutput'] = self.ui.renameOutput.text()
+        config['renameDir'] = self.ui.renameDir.text()
+        config['checkIncludeSubdirs'] = self.ui.checkIncludeSubdirs.isChecked()
+        for name, ui in self.selectorsDropDowns.items():
+            config[name] = ui.currentIndex()
+
         return True
 
     def setupIcons(self):
@@ -63,36 +83,72 @@ class Tools(object):
         """
 
         self.wIcon(self.ui.renameStart, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.renameCancel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
 
         return True
 
-    def getNumberFiles(self, path=''):
+    def setupSelectorGui(self):
+        """
+        setupSelectorGui handles the dropdown lists for all devices possible in
+        mountwizzard. therefore we add the necessary entries to populate the list.
+
+        :return: success for test
+        """
+
+        for name, selectorUI in self.selectorsDropDowns.items():
+            selectorUI.clear()
+            selectorUI.setView(PyQt5.QtWidgets.QListView())
+            for headerEntry in self.headerKeywords:
+                selectorUI.addItem(headerEntry)
+
+    def getNumberFiles(self, path='', subdirs=False):
         """
 
         :param path:
+        :param subdirs:
         :return: number
         """
         number = 0
-        for filename in glob.iglob(path + '**/*.fit*', recursive=True):
+        for filename in glob.iglob(path + '**/*.fit*', recursive=subdirs):
             number += 1
         return number
 
-    def renameRun(self, inputPath='', outputPath=''):
+    def processSelectors(self, header=None, index=''):
+        """
+
+        :param header:
+        :param index:
+        :return: nameChunk: part of the entry
+        """
+
+        if header is None:
+            return ''
+        if not selector:
+            return ''
+
+        nameChunk = ''
+        keywords = self.headerKeywords[index]
+        for keyword in keywords:
+            if keyword not in header:
+                continue
+            nameChunk = header[keyword]
+            break
+
+        return nameChunk
+
+    def renameRun(self, inputPath='', subdirs=False):
         """
 
         :param inputPath:
-        :param outputPath:
+        :param subdirs:
         :return:
         """
 
         numberFiles = self.getNumberFiles(inputPath)
         self.app.message.emit(f'There will be {numberFiles:4d} images renamed', 0)
 
-        count = 0
-        for filename in glob.iglob(inputPath + '**/*.fit*', recursive=True):
-            count += 1
-            self.ui.renameProgress.setValue(int(100 * count / numberFiles))
+        for i, filename in enumerate(glob.iglob(inputPath + '**/*.fit*',
+                                                recursive=subdirs)):
+            self.ui.renameProgress.setValue(int(100 * i / numberFiles))
             PyQt5.QtWidgets.QApplication.processEvents()
             with fits.open(name=filename) as fd:
                 if 'FRAME' not in fd[0].header:
@@ -104,7 +160,7 @@ class Tools(object):
                 if 'DATE-OBS' not in fd[0].header:
                     continue
 
-                newFilename = outputPath + '/{0}{1:}_{2}_BIN_{3:01d}_{4}' \
+                newFilename = inputPath + '/{0}{1:}_{2}_BIN_{3:01d}_{4}' \
                     .format('M15_',
                             fd[0].header['FRAME'],
                             fd[0].header['FILTER'],
@@ -116,8 +172,7 @@ class Tools(object):
                 newFilename = newFilename.replace('-', '_')
                 newFilename = newFilename.replace('T', '_')
                 newFilename += '.fits'
-                self.ui.renameText.insertPlainText(newFilename + '\n')
-            copyfile(filename, newFilename)
+            os.rename(filename, newFilename)
         return True
 
     def renameRunGUI(self):
@@ -127,22 +182,18 @@ class Tools(object):
         """
 
         inputPath = self.ui.renameInput.text()
-        outputPath = self.ui.renameOutput.text()
+        includeSubdirs = self.ui.checkIncludeSubdirs.isChecked()
+
         if not os.path.isdir(inputPath):
             self.app.message.emit('No valid input directory given', 2)
             return False
-        if not os.path.isdir(outputPath):
-            if not os.access(outputPath + '/..', os.W_OK):
-                self.app.message.emit('No write access to output directory', 2)
-                return False
-            os.mkdir(outputPath, 0o777)
 
-        self.renameRun(inputPath=inputPath, outputPath=outputPath)
+        self.renameRun(inputPath=inputPath, subdirs=includeSubdirs)
         return True
 
-    def chooseInputDir(self):
+    def chooseDir(self):
         """
-        chooseInputDir selects the input directory and sets the default value for the
+        chooseDir selects the input directory and sets the default value for the
         output directory as well
 
         :return: True for test purpose
@@ -154,23 +205,6 @@ class Tools(object):
                                        )
         if inputPath:
             self.ui.renameInput.setText(inputPath)
-            if os.access(inputPath + '/output', os.W_OK):
-                self.ui.renameOutput.setText(inputPath + '/output')
             self.ui.renameProgress.setValue(0)
             self.ui.renameText.clear()
-        return True
-
-    def chooseOutputDir(self):
-        """
-        chooseOutputDir selects the output directory ‚
-
-        :return: True for test purpose
-        """
-        folder = self.ui.renameInput.text()
-        outputPath, _, _ = self.openDir(self,
-                                        'Choose Output Dir',
-                                        folder,
-                                        )
-        if outputPath:
-            self.ui.renameOutput.setText(outputPath)
         return True

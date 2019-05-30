@@ -45,13 +45,13 @@ class Tools(object):
                                    'rename5': self.ui.rename5,
                                    }
         self.headerKeywords = {'None': [''],
-                               'Frame': ['FRAME'],
-                               'Filter': ['FILTER'],
-                               'Binning': ['XBINNING'],
-                               'Datetime': ['DATE-OBS'],
                                'CCD Temp': ['CCD-TEMP'],
+                               'Frame': ['FRAME'],
+                               'Binning': ['XBINNING'],
+                               'Filter': ['FILTER'],
+                               'Datetime': ['DATE-OBS'],
                                'Exp Time': ['EXPTIME'],
-                                }
+                               }
 
         self.setupSelectorGui()
 
@@ -132,6 +132,12 @@ class Tools(object):
             chunk = chunk.replace('.', '-')
         elif keyword == 'XBINNING':
             chunk = f'Bin{entry}'
+        elif keyword == 'CCD-TEMP':
+            chunk = f'Temp{entry:03.0f}'
+        elif keyword == 'FRAME':
+            chunk = f'{entry}'
+        elif keyword == 'FILTER':
+            chunk = f'{entry}'
         else:
             chunk = ''
 

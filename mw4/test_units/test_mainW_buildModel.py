@@ -28,9 +28,11 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 import PyQt5.QtTest
 import PyQt5.QtCore
+import skyfield.api
 # local import
 from mw4 import mainApp
 from mw4.test_units.test_setupQt import setupQt
+from mw4.definitions import Solution, Solve, MPoint, MData, MParam, IParam, Point, RData
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -41,7 +43,7 @@ def module_setup_teardown():
     app.toggleHemisphereWindow()
     yield
 
-
+"""
 def test_initConfig_1():
     app.config['mainW'] = {}
     suc = app.mainW.initConfig()
@@ -214,7 +216,6 @@ def test_genBuildGoldenSpiral_2(qtbot):
             suc = app.mainW.genBuildGoldenSpiral()
             assert not suc
         assert ['Golden spiral cannot be generated', 2] == blocker.args
-
 
 
 def test_loadBuildFile_1(qtbot):
@@ -391,3 +392,114 @@ def test_updateProgress_5():
     suc = app.mainW.updateProgress(number=3, count=0)
     assert suc
 
+
+def test_updateProgress_6():
+    app.mainW.startModeling = time.time()
+    suc = app.mainW.updateProgress(number=3, count=-1)
+    assert not suc
+
+
+def test_updateProgress_7():
+    app.mainW.startModeling = time.time()
+    suc = app.mainW.updateProgress(number=3, count=3, modelingDone=True)
+    assert not suc
+
+
+def test_addResultToModel_1():
+    class Julian:
+        ut1 = 2458635.168
+
+    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
+    result = Solution(success=True, solve=solve)
+    mPoint = MPoint(mParam=list(),
+                    iParam=list(),
+                    point=list(),
+                    mData=MData(raMJNow=0,
+                                decMJNow=0,
+                                raSJNow=0,
+                                decSJNow=0,
+                                sidereal=0,
+                                julian=Julian(),
+                                pierside='E'),
+                    rData=list())
+
+    mPoint = app.mainW.addResultToModel(mPoint=mPoint, result=result)
+    assert mPoint.mData.raSJNow.hours == 0.016163840047991124
+    assert mPoint.mData.decSJNow.degrees == 0.10534288528388286
+
+"""
+def test_modelSolveDone_1():
+    suc = app.mainW.modelSolveDone(result=tuple())
+    assert not suc
+
+
+def test_modelSolveDone_2():
+    app.mainW.resultQueue.put(MPoint)
+    suc = app.mainW.modelSolveDone(result=tuple())
+    assert not suc
+
+
+def test_modelSolveDone_3(qtbot):
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='',
+                                  name='',
+                                  astrometry=''),
+                    iParam=list(),
+                    point=list(),
+                    mData=list(),
+                    rData=list())
+
+    with mock.patch.object(app.mainW.resultQueue,
+                           'get',
+                           return_value=mPoint):
+        result = Solution(success=False, solve=tuple())
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.modelSolveDone(result=result)
+            assert suc
+        assert ['Solving error for image-003', 2] == blocker.args
+
+
+def test_modelSolveDone_5():
+    app.mainW.resultQueue.put(MPoint)
+    result = Solution(success=True, solve=None)
+    suc = app.mainW.modelSolveDone(result=result)
+    assert not suc
+
+
+def test_modelSolveDone_6():
+    class Julian:
+        ut1 = 2458635.168
+
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='',
+                                  name='',
+                                  astrometry=''),
+                    iParam=list(),
+                    point=list(),
+                    mData=MData(raMJNow=0,
+                                decMJNow=0,
+                                raSJNow=0,
+                                decSJNow=0,
+                                sidereal=0,
+                                julian=Julian(),
+                                pierside='E'),
+                    rData=RData(errorRA=1,
+                                errorDEC=2,
+                                errorRMS=3))
+
+    with mock.patch.object(app.mainW.resultQueue,
+                           'get',
+                           return_value=mPoint):
+        solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
+        result = Solution(success=True, solve=solve)
+        suc = app.mainW.modelSolveDone(result=result)
+        assert suc
+
+
+def test_modelSolveDone_7():
+    app.mainW.resultQueue.put(MPoint)
+    result = (True, 'test')
+    suc = app.mainW.modelSolveDone(result=result)
+    assert not suc

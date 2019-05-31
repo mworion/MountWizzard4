@@ -458,11 +458,9 @@ class BuildModel(object):
         :return: success
         """
 
-        if count > number:
+        if not 0 <= count < number:
             return False
         if not number:
-            return False
-        if count < 0:
             return False
 
         modelPercent = (count + 1) / number
@@ -480,6 +478,41 @@ class BuildModel(object):
         self.ui.modelProgress.setValue(modelPercent * 100)
 
         return True
+
+    @staticmethod
+    def addResultToModel(mPoint=None, result=None):
+        """
+        addResultToModel takes the result of the solving process and add the data to the
+        actual model point. as the coordinates for programming the model need to be in
+        JNow and the solving process gives J2000 coordinates, it does the transform as
+        well.
+
+        :param mPoint:
+        :param result:
+        :return: model
+        """
+
+        rData = result.solve
+        raJ2000 = skyfield.api.Angle(degrees=rData.raJ2000)
+        decJ2000 = skyfield.api.Angle(degrees=rData.decJ2000)
+        raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, mPoint.mData.julian)
+
+        mData = MData(raMJNow=mPoint.mData.raMJNow,
+                      decMJNow=mPoint.mData.decMJNow,
+                      raSJNow=raJNow,
+                      decSJNow=decJNow,
+                      sidereal=mPoint.mData.sidereal,
+                      julian=mPoint.mData.julian,
+                      pierside=mPoint.mData.pierside,
+                      )
+        mPoint = MPoint(mParam=mPoint.mParam,
+                        iParam=mPoint.iParam,
+                        point=mPoint.point,
+                        mData=mData,
+                        rData=mPoint.rData,
+                        )
+
+        return mPoint
 
     def modelSolveDone(self, result):
         """
@@ -500,50 +533,36 @@ class BuildModel(object):
         if self.resultQueue.empty():
             self.logger.debug('empty result queue')
             return False
-        if not isinstance(result[1], tuple):
-            solveOK = False
+        if not isinstance(result, tuple):
             self.logger.info(f'Solving result is malformed: {result}')
+            return False
+        if len(result) != 2:
+            self.logger.info(f'Solving result is malformed: {result}')
+            return False
+        if not isinstance(result[1], tuple):
+            self.logger.info(f'Solving result is malformed: {result}')
+            return False
         if not result.success:
             solveOK = False
 
         mPoint = self.resultQueue.get()
-
-        # processing only the model point which are OK
-        if solveOK:
-            rData = result.solve
-            raJ2000 = skyfield.api.Angle(degrees=rData.raJ2000)
-            decJ2000 = skyfield.api.Angle(degrees=rData.decJ2000)
-            raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, mPoint.mData.julian)
-
-            mData = MData(raMJNow=mPoint.mData.raMJNow,
-                          decMJNow=mPoint.mData.decMJNow,
-                          raSJNow=raJNow,
-                          decSJNow=decJNow,
-                          sidereal=mPoint.mData.sidereal,
-                          julian=mPoint.mData.julian,
-                          pierside=mPoint.mData.pierside,
-                          )
-            mPoint = MPoint(mParam=mPoint.mParam,
-                            iParam=mPoint.iParam,
-                            point=mPoint.point,
-                            mData=mData,
-                            rData=mPoint.rData,
-                            )
-            self.modelQueue.put(mPoint)
-
         number = mPoint.mParam.number
         count = mPoint.mParam.count
         modelingDone = (number == count + 1)
 
-        if not solveOK:
+        # processing only the model point which are OK
+        if solveOK:
+            mPoint = self.addResultToModel(mPoint=mPoint, result=result)
+            self.modelQueue.put(mPoint)
+
+            text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
+            text += f'Ra: {result.solve.raJ2000:5.2f}, Dec: {result.solve.decJ2000:5.2f}, '
+            text += f'Error: {result.solve.error:5.2f}, Angle: {result.solve.angle:3.0f}, '
+            text += f'Scale: {result.solve.scale:4.2f}'
+            self.app.message.emit(text, 0)
+        else:
             text = f'Solving error for image-{mPoint.mParam.count:03d}'
             self.app.message.emit(text, 2)
-        else:
-            text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
-            text += f'Ra: {rData.raJ2000:5.2f}, Dec: {rData.decJ2000:5.2f}, '
-            text += f'Error: {rData.error:5.2f}, Angle: {rData.angle:3.0f}, '
-            text += f'Scale: {rData.scale:4.2f}'
-            self.app.message.emit(text, 0)
 
         self.updateProgress(number=number, count=count, modelingDone=modelingDone)
 

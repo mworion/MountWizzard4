@@ -100,7 +100,13 @@ class Camera(indiClass.IndiClass):
         # set BLOB mode also
         self.client.setBlobMode(blobHandling='Also',
                                 deviceName=deviceName)
-
+        # setting a object name
+        objectName = self.device.getText('FITS_HEADER')
+        objectName['FITS_OBJECT'] = 'skyview'
+        self.client.sendNewText(deviceName=deviceName,
+                                propertyName='FITS_HEADER',
+                                elements=objectName,
+                                )
         # setting polling updates in driver
         update = self.device.getNumber('POLLING_PERIOD')
         if 'PERIOD_MS' not in update:

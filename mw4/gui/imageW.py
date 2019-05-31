@@ -187,6 +187,7 @@ class ImageWindow(widget.MWidget):
         self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
         self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
         self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
+        self.ui.checkShowCrosshair.clicked.connect(self.showFitsImage)
         self.ui.solve.clicked.connect(self.solveImage)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
@@ -217,6 +218,7 @@ class ImageWindow(widget.MWidget):
         self.ui.zoom.currentIndexChanged.disconnect(self.showFitsImage)
         self.ui.checkUseWCS.clicked.disconnect(self.showFitsImage)
         self.ui.checkUsePixel.clicked.disconnect(self.showFitsImage)
+        self.ui.checkShowCrosshair.clicked.disconnect(self.showFitsImage)
         self.ui.solve.clicked.disconnect(self.solveImage)
         self.signals.show.disconnect(self.showFitsImage)
         self.signals.showExt.disconnect(self.showFitsImageExt)
@@ -531,7 +533,7 @@ class ImageWindow(widget.MWidget):
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
 
         axe = figure.add_subplot(1, 1, 1, facecolor=None)
-        axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+
         axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
         axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)
 
@@ -553,6 +555,12 @@ class ImageWindow(widget.MWidget):
         ticksY = list((x + midY for x in valueY))
         axe.set_yticklabels(textY)
         axe.set_yticks(ticksY)
+
+        if self.ui.checkShowCrosshair.isChecked():
+            axe.axvline(midX, color=self.M_RED)
+            axe.axhline(midY, color=self.M_RED)
+        else:
+            axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
 
         axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
@@ -749,12 +757,3 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit('Image exposing aborted', 2)
 
         return True
-
-    def cross_hair(x, y, ax=None, **kwargs):
-        if ax is None:
-            ax = plt.gca()
-        horiz = ax.axhline(y, **kwargs)
-        vert = ax.axvline(x, **kwargs)
-        return horiz, vert
-
-    cross_hair(0.2, 0.3, color='red')

@@ -794,6 +794,11 @@ class BuildModel(object):
 
     def retrofitModel(self, model=None):
         """
+        retrofitModel reads the actual model points and results out of the mount computer
+        and adds the optimized (recalculated) error values to the point. that's necessary,
+        because when imaging and solving a point the error is related to this old model.
+        when programming a new model, all point will be recalculated be the mount
+        computer an get a new error value which is based on the new model.
 
         :param model:
         :return: updated model
@@ -815,6 +820,10 @@ class BuildModel(object):
 
     def saveModel(self, model=None):
         """
+        saveModel saves the model data for later use. with this data, the model could
+        be reprogrammed without doing some imaging, it could be added with other data to
+        extend the model to a broader base.
+        in addition it should be possible to make som analyses with this data.
 
         :param model:
         :return: success

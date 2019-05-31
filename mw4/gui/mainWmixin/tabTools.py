@@ -19,7 +19,7 @@
 ###########################################################
 # standard libraries
 import os
-import glob
+from pathlib import Path
 # external packages
 import PyQt5
 from astropy.io import fits
@@ -117,12 +117,12 @@ class Tools(object):
         return True
 
     @staticmethod
-    def getNumberFiles(pathDir='', includeSubdirs=False):
+    def getNumberFiles(pathDir='', search=''):
         """
         getNumberFiles counts the number of files to be valid for the renaming.
 
         :param pathDir: path to root directory to be scanned
-        :param includeSubdirs: flag
+        :param search: search string
         :return: number of files found
         """
 
@@ -130,10 +130,10 @@ class Tools(object):
             return 0
         if not os.path.isdir(pathDir):
             return 0
+        if not search:
+            return 0
 
-        number = 0
-        for _ in glob.iglob(pathDir + '/**/*.fit*', recursive=includeSubdirs):
-            number += 1
+        number = sum(1 for _ in Path(pathDir).glob(search))
         return number
 
     @staticmethod
@@ -248,17 +248,22 @@ class Tools(object):
             self.app.message.emit('No valid input directory given', 2)
             return False
 
-        numberFiles = self.getNumberFiles(pathDir,
-                                          includeSubdirs=includeSubdirs)
+        if includeSubdirs:
+            search = '**/*.fit*'
+        else:
+            search = '*.fit*'
+
+        numberFiles = self.getNumberFiles(pathDir, search=search)
         if not numberFiles:
             self.app.message.emit('No files to rename', 0)
             return False
 
-        for i, fileName in enumerate(glob.iglob(pathDir + '/**/*.fit*',
-                                                recursive=includeSubdirs)):
+        for i, fileName in enumerate(Path(pathDir).glob(search)):
             self.ui.renameProgress.setValue(int(100 * (i + 1) / numberFiles))
             PyQt5.QtWidgets.QApplication.processEvents()
-            self.renameFile(fileName=fileName)
+            suc = self.renameFile(fileName=fileName)
+            if not suc:
+                self.app.message.emit(f'{fileName} could not be renamed', 2)
 
         self.app.message.emit(f'{numberFiles:d} images were renamed', 0)
 

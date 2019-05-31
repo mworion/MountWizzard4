@@ -171,3 +171,27 @@ def test_weatherDispatch_2():
     app.mainW.ui.weatherDevice.setCurrentIndex(1)
     suc = app.mainW.weatherDispatch()
     assert suc
+
+
+def test_powerDispatch_1():
+    app.mainW.ui.powerDevice.setCurrentIndex(0)
+    suc = app.mainW.powerDispatch()
+    assert suc
+
+
+def test_powerDispatch_2():
+    app.mainW.ui.powerDevice.setCurrentIndex(1)
+    suc = app.mainW.powerDispatch()
+    assert suc
+
+
+def test_astrometryDispatch_1():
+    app.mainW.ui.astrometryDevice.setCurrentIndex(0)
+    suc = app.mainW.astrometryDispatch()
+    assert suc
+
+
+def test_astrometryDispatchh_2():
+    app.mainW.ui.astrometryDevice.setCurrentIndex(1)
+    suc = app.mainW.astrometryDispatch()
+    assert suc

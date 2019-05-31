@@ -46,7 +46,7 @@ class Tools(object):
                                    }
         self.fitsHeaderKeywords = {'None': [''],
                                    'CCD Temp': ['CCD-TEMP'],
-                                   'Frame': ['FRAME'],
+                                   'Frame': ['FRAME', 'IMAGETYP'],
                                    'Binning': ['XBINNING'],
                                    'Filter': ['FILTER'],
                                    'Datetime': ['DATE-OBS'],
@@ -111,8 +111,10 @@ class Tools(object):
         for name, selectorUI in self.selectorsDropDowns.items():
             selectorUI.clear()
             selectorUI.setView(PyQt5.QtWidgets.QListView())
-            for headerEntry in self.headerKeywords:
+            for headerEntry in self.fitsHeaderKeywords:
                 selectorUI.addItem(headerEntry)
+
+        return True
 
     @staticmethod
     def getNumberFiles(pathDir='', includeSubdirs=False):
@@ -123,6 +125,12 @@ class Tools(object):
         :param includeSubdirs: flag
         :return: number of files found
         """
+
+        if not pathDir:
+            return 0
+        if not os.path.isdir(pathDir):
+            return 0
+
         number = 0
         for _ in glob.iglob(pathDir + '/**/*.fit*', recursive=includeSubdirs):
             number += 1
@@ -147,7 +155,7 @@ class Tools(object):
         if fitsKey == 'DATE-OBS':
             chunk = entry.replace(':', '-')
             chunk = chunk.replace('T', '-')
-            chunk = chunk.replace('.', '-')
+            chunk = chunk.split('.')[0]
         elif fitsKey == 'XBINNING':
             chunk = f'Bin{entry}'
         elif fitsKey == 'CCD-TEMP':
@@ -205,9 +213,9 @@ class Tools(object):
 
             # object should bi in in any case. if not, it will be set
             if 'OBJECT' in fitsHeader:
-                newFilename = fitsHeader['OBJECT'].capitalize()
+                newFilename = fitsHeader['OBJECT'].lower()
             else:
-                newFilename = 'UNKNOWN'
+                newFilename = 'unknown'
 
             for _, selector in self.selectorsDropDowns.items():
                 selection = selector.currentText()
@@ -242,6 +250,9 @@ class Tools(object):
 
         numberFiles = self.getNumberFiles(pathDir,
                                           includeSubdirs=includeSubdirs)
+        if not numberFiles:
+            self.app.message.emit('No files to rename', 0)
+            return False
 
         for i, fileName in enumerate(glob.iglob(pathDir + '/**/*.fit*',
                                                 recursive=includeSubdirs)):

@@ -225,7 +225,7 @@ def test_updateAlignGui_altitudeError():
         value = '50'
         app.mount.model.altitudeError = value
         app.mainW.updateAlignGUI(app.mount.model)
-        assert '50deg 00\' 00.0\"' == app.mainW.ui.altitudeError.text()
+        assert ' 50.0' == app.mainW.ui.altitudeError.text()
         value = None
         app.mount.model.altitudeError = value
         app.mainW.updateAlignGUI(app.mount.model)
@@ -255,7 +255,7 @@ def test_updateAlignGui_azimuthError():
         value = '50'
         app.mount.model.azimuthError = value
         app.mainW.updateAlignGUI(app.mount.model)
-        assert '50deg 00\' 00.0\"' == app.mainW.ui.azimuthError.text()
+        assert ' 50.0' == app.mainW.ui.azimuthError.text()
         value = None
         app.mount.model.azimuthError = value
         app.mainW.updateAlignGUI(app.mount.model)
@@ -283,7 +283,7 @@ def test_updateAlignGui_orthoError():
         value = '50'
         app.mount.model.orthoError = value
         app.mainW.updateAlignGUI(app.mount.model)
-        assert '50deg 00\' 00.0\"' == app.mainW.ui.orthoError.text()
+        assert '3000.00' == app.mainW.ui.orthoError.text()
         value = None
         app.mount.model.orthoError = value
         app.mainW.updateAlignGUI(app.mount.model)
@@ -311,7 +311,7 @@ def test_updateAlignGui_polarError():
         value = '50'
         app.mount.model.polarError = value
         app.mainW.updateAlignGUI(app.mount.model)
-        assert '50deg 00\' 00.0\"' == app.mainW.ui.polarError.text()
+        assert '3000.00' == app.mainW.ui.polarError.text()
         value = None
         app.mount.model.polarError = value
         app.mainW.updateAlignGUI(app.mount.model)

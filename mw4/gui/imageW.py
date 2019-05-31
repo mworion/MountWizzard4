@@ -139,6 +139,8 @@ class ImageWindow(widget.MWidget):
         self.folder = self.app.mwGlob.get('imageDir', '')
         self.ui.checkUsePixel.setChecked(config.get('checkUsePixel', True))
         self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
+        self.ui.checkStackImages.setChecked(config.get('checkStackImages', False))
+        self.ui.checkShowCrosshair.setChecked(config.get('checkShowCrosshair', False))
 
         return True
 
@@ -162,6 +164,8 @@ class ImageWindow(widget.MWidget):
         config['imageFileName'] = self.imageFileName
         config['checkUsePixel'] = self.ui.checkUsePixel.isChecked()
         config['checkUseWCS'] = self.ui.checkUseWCS.isChecked()
+        config['checkStackImages'] = self.ui.checkStackImages.isChecked()
+        config['checkShowCrosshair'] = self.ui.checkShowCrosshair.isChecked()
 
         return True
 
@@ -745,3 +749,12 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit('Image exposing aborted', 2)
 
         return True
+
+    def cross_hair(x, y, ax=None, **kwargs):
+        if ax is None:
+            ax = plt.gca()
+        horiz = ax.axhline(y, **kwargs)
+        vert = ax.axvline(x, **kwargs)
+        return horiz, vert
+
+    cross_hair(0.2, 0.3, color='red')

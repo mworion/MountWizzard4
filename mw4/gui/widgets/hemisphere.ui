@@ -278,7 +278,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>Views</string>
+        <string>Views / Coords</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
         <property name="leftMargin">

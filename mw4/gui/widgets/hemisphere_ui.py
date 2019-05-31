@@ -215,7 +215,7 @@ class Ui_HemisphereDialog(object):
         self.checkEditBuildPoints.setText(_translate("HemisphereDialog", "Edit Build Points"))
         self.checkEditHorizonMask.setText(_translate("HemisphereDialog", "Edit Horizon Mask "))
         self.checkPolarAlignment.setText(_translate("HemisphereDialog", "Polar/Ortho Align "))
-        self.groupBox.setTitle(_translate("HemisphereDialog", "Views"))
+        self.groupBox.setTitle(_translate("HemisphereDialog", "Views / Coords"))
         self.radioButton.setText(_translate("HemisphereDialog", "Alt/Az Plane"))
         self.radioButton_2.setText(_translate("HemisphereDialog", "Polar Diagram "))
         self.radioButton_3.setText(_translate("HemisphereDialog", "Sphere"))

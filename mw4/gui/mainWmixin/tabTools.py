@@ -44,18 +44,25 @@ class Tools(object):
                                    'rename4': self.ui.rename4,
                                    'rename5': self.ui.rename5,
                                    }
-        self.headerKeywords = {'None': [''],
-                               'CCD Temp': ['CCD-TEMP'],
-                               'Frame': ['FRAME'],
-                               'Binning': ['XBINNING'],
-                               'Filter': ['FILTER'],
-                               'Datetime': ['DATE-OBS'],
-                               'Exp Time': ['EXPTIME'],
-                               }
+        self.fitsHeaderKeywords = {'None': [''],
+                                   'CCD Temp': ['CCD-TEMP'],
+                                   'Frame': ['FRAME'],
+                                   'Binning': ['XBINNING'],
+                                   'Filter': ['FILTER'],
+                                   'Datetime': ['DATE-OBS'],
+                                   'Exp Time': ['EXPTIME'],
+                                   }
 
         self.setupSelectorGui()
 
     def initConfig(self):
+        """
+        initConfig read the key out of the configuration dict and stores it to the gui
+        elements. if some initialisations have to be proceeded with the loaded persistent
+        data, they will be launched as well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         defaultDir = self.app.mwGlob['imageDir']
         self.ui.renameDir.setText(config.get('renameDir', defaultDir))
@@ -67,12 +74,18 @@ class Tools(object):
         return True
 
     def storeConfig(self):
+        """
+        storeConfig writes the keys to the configuration dict and stores. if some
+        saving has to be proceeded to persistent data, they will be launched as
+        well in this method.
+
+        :return: True for test purpose
+        """
         config = self.app.config['mainW']
         config['renameDir'] = self.ui.renameDir.text()
         config['checkIncludeSubdirs'] = self.ui.checkIncludeSubdirs.isChecked()
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
-
         return True
 
     def setupIcons(self):
@@ -101,94 +114,105 @@ class Tools(object):
             for headerEntry in self.headerKeywords:
                 selectorUI.addItem(headerEntry)
 
-    def getNumberFiles(self, path='', subdirs=False):
+    @staticmethod
+    def getNumberFiles(pathDir='', includeSubdirs=False):
         """
+        getNumberFiles counts the number of files to be valid for the renaming.
 
-        :param path:
-        :param subdirs:
-        :return: number
+        :param pathDir: path to root directory to be scanned
+        :param includeSubdirs: flag
+        :return: number of files found
         """
         number = 0
-        for filename in glob.iglob(path + '/**/*.fit*', recursive=subdirs):
+        for _ in glob.iglob(pathDir + '/**/*.fit*', recursive=includeSubdirs):
             number += 1
         return number
 
-    def convertHeaderEntry(self, entry='', keyword=''):
+    @staticmethod
+    def convertHeaderEntry(entry='', fitsKey=''):
         """
+        convertHeaderEntry takes the fitsHeader entry and reformat it to a reasonable
+        string.
 
         :param entry:
-        :param keyword:
+        :param fitsKey:
         :return:
         """
 
-        if not keyword:
+        if not fitsKey:
             return ''
         if not entry:
             return ''
 
-        if keyword == 'DATE-OBS':
+        if fitsKey == 'DATE-OBS':
             chunk = entry.replace(':', '-')
             chunk = chunk.replace('T', '-')
             chunk = chunk.replace('.', '-')
-        elif keyword == 'XBINNING':
+        elif fitsKey == 'XBINNING':
             chunk = f'Bin{entry}'
-        elif keyword == 'CCD-TEMP':
+        elif fitsKey == 'CCD-TEMP':
             chunk = f'Temp{entry:03.0f}'
-        elif keyword == 'FRAME':
+        elif fitsKey == 'FRAME':
             chunk = f'{entry}'
-        elif keyword == 'FILTER':
+        elif fitsKey == 'FILTER':
             chunk = f'{entry}'
         else:
             chunk = ''
 
         return chunk
 
-    def processSelectors(self, header=None, index=''):
+    def processSelectors(self, fitsHeader=None, selection=''):
         """
+        processSelectors takes the selection for a fileName chunk and runs through the
+        possible list of valid fits header keys. if there is more than one valid fitsKey,
+        it automatically selects only the first on for conversion.
 
-        :param header:
-        :param index:
+        :param fitsHeader:
+        :param selection: str entry from the drop down selector
         :return: nameChunk: part of the entry
         """
 
-        if header is None:
+        if fitsHeader is None:
             return ''
-        if not index:
+        if not selection:
             return ''
 
         nameChunk = ''
-        keywords = self.headerKeywords[index]
-        for keyword in keywords:
-            if keyword not in header:
+        fitsKeywords = self.fitsHeaderKeywords[selection]
+        for fitsKey in fitsKeywords:
+            if fitsKey not in fitsHeader:
                 continue
-            nameChunk = self.convertHeaderEntry(entry=header[keyword],
-                                                keyword=keyword)
+            nameChunk = self.convertHeaderEntry(entry=fitsHeader[fitsKey],
+                                                fitsKey=fitsKey)
             break
-
         return nameChunk
 
     def renameFile(self, fileName=''):
         """
+        renameFile opens the given FITS file and retrieves it's header. if valid it
+        runs through selectors of the drop down lists and checks all header keys to
+        get the new filename build. afterwards it renames the given file.
 
-        :param fileName:
-        :return:
+        :param fileName: fits file to be renamed
+        :return: success
         """
 
         if not fileName:
             return False
 
         with fits.open(name=fileName) as fd:
-            header = fd[0].header
+            fitsHeader = fd[0].header
 
-            if 'OBJECT' in header:
-                newFilename = header['OBJECT'].capitalize()
+            # object should bi in in any case. if not, it will be set
+            if 'OBJECT' in fitsHeader:
+                newFilename = fitsHeader['OBJECT'].capitalize()
             else:
                 newFilename = 'UNKNOWN'
 
             for _, selector in self.selectorsDropDowns.items():
-                index = selector.currentText()
-                chunk = self.processSelectors(header=header,
-                                              index=index
+                selection = selector.currentText()
+                chunk = self.processSelectors(fitsHeader=fitsHeader,
+                                              selection=selection
                                               )
                 if chunk:
                     newFilename += f'-{chunk}'
@@ -198,31 +222,34 @@ class Tools(object):
             dirName = os.path.dirname(fileName)
             newFilename = f'{dirName}/{newFilename}'
             os.rename(fileName, newFilename)
+
         return True
 
     def renameRunGUI(self):
         """
+        renameRunGUI retrieves a full list of files to be renamed and renames
+        them on by one.
 
         :return: True for test purpose
         """
 
-        inputPath = self.ui.renameDir.text()
+        pathDir = self.ui.renameDir.text()
         includeSubdirs = self.ui.checkIncludeSubdirs.isChecked()
 
-        if not os.path.isdir(inputPath):
+        if not os.path.isdir(pathDir):
             self.app.message.emit('No valid input directory given', 2)
             return False
 
-        numberFiles = self.getNumberFiles(inputPath,
-                                          subdirs=includeSubdirs)
+        numberFiles = self.getNumberFiles(pathDir,
+                                          includeSubdirs=includeSubdirs)
 
-        self.app.message.emit(f'There will be {numberFiles:4d} images renamed', 0)
-
-        for i, fileName in enumerate(glob.iglob(inputPath + '/**/*.fit*',
+        for i, fileName in enumerate(glob.iglob(pathDir + '/**/*.fit*',
                                                 recursive=includeSubdirs)):
             self.ui.renameProgress.setValue(int(100 * (i + 1) / numberFiles))
             PyQt5.QtWidgets.QApplication.processEvents()
             self.renameFile(fileName=fileName)
+
+        self.app.message.emit(f'{numberFiles:d} images were renamed', 0)
 
         return True
 
@@ -234,11 +261,11 @@ class Tools(object):
         :return: True for test purpose
         """
         folder = self.ui.renameDir.text()
-        inputPath, _, _ = self.openDir(self,
-                                       'Choose Input Dir',
-                                       folder,
-                                       )
-        if inputPath:
-            self.ui.renameDir.setText(inputPath)
+        pathDir, _, _ = self.openDir(self,
+                                     'Choose Input Dir',
+                                     folder,
+                                     )
+        if pathDir:
+            self.ui.renameDir.setText(pathDir)
             self.ui.renameProgress.setValue(0)
         return True

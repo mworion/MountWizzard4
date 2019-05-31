@@ -339,11 +339,10 @@ class BuildModel(object):
 
         numberPoints = self.ui.numberSpiralPoints.value()
 
-        suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints,
-                                                 )
+        suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
 
         if not suc:
-            self.app.message.emit('DSO Path cannot be generated', 2)
+            self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
 
         self.autoDeletePoints()
@@ -456,8 +455,15 @@ class BuildModel(object):
         :param number: total number of model points
         :param count: index of the actual processed point
         :param modelingDone: state for the last point
-        :return: true for test purpose
+        :return: success
         """
+
+        if count > number:
+            return False
+        if not number:
+            return False
+        if count < 0:
+            return False
 
         modelPercent = (count + 1) / number
         timeElapsed = time.time() - self.startModeling

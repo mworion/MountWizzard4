@@ -21,6 +21,7 @@
 import unittest.mock as mock
 import logging
 import pytest
+import time
 # external packages
 import PyQt5.QtGui
 import PyQt5.QtWidgets
@@ -189,6 +190,33 @@ def test_genBuildDSO_1(qtbot):
     assert ['DSO Path cannot be generated', 2] == blocker.args
 
 
+def test_genBuildDSO_2(qtbot):
+    with mock.patch.object(app.data,
+                           'generateDSOPath',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.genBuildDSO()
+            assert not suc
+        assert ['DSO Path cannot be generated', 2] == blocker.args
+
+
+def test_genBuildGoldenSpiral_1(qtbot):
+    with qtbot.assertNotEmitted(app.message):
+        suc = app.mainW.genBuildGoldenSpiral()
+        assert suc
+
+
+def test_genBuildGoldenSpiral_2(qtbot):
+    with mock.patch.object(app.data,
+                           'generateGoldenSpiral',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.genBuildGoldenSpiral()
+            assert not suc
+        assert ['Golden spiral cannot be generated', 2] == blocker.args
+
+
+
 def test_loadBuildFile_1(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
@@ -332,3 +360,34 @@ def test_genBuildFile_4(qtbot):
                            return_value=True):
         suc = app.mainW.genBuildFile()
         assert suc
+
+
+def test_updateProgress_1():
+    app.mainW.startModeling = time.time()
+    suc = app.mainW.updateProgress()
+    assert not suc
+
+
+def test_updateProgress_2():
+    app.mainW.startModeling = time.time()
+    suc = app.mainW.updateProgress(number=3, count=2)
+    assert suc
+
+
+def test_updateProgress_3():
+    app.mainW.startModeling = time.time()
+    suc = app.mainW.updateProgress(number=2, count=3)
+    assert not suc
+
+
+def test_updateProgress_4():
+    suc = app.mainW.updateProgress(number=0, count=2)
+    app.mainW.startModeling = time.time()
+    assert not suc
+
+
+def test_updateProgress_5():
+    app.mainW.startModeling = time.time()
+    suc = app.mainW.updateProgress(number=3, count=0)
+    assert suc
+

@@ -750,6 +750,7 @@ class ImageWindow(widget.MWidget):
         self.imageFileName = self.imageFileNameOld
 
         self.changeStyleDynamic(self.ui.expose, 'running', 'false')
+        self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
         self.ui.solve.setEnabled(True)
         self.ui.expose.setEnabled(True)
         self.ui.exposeN.setEnabled(True)

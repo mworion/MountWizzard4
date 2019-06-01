@@ -830,11 +830,15 @@ class BuildModel(object):
         """
 
         if model is None:
+            self.logger.debug('model is None')
             return list()
 
         starList = self.app.mount.model.starList
 
         if len(starList) != len(model):
+            text = f'length starList [{len(starList)}] and length '
+            text += f'model [{len(model)}] is different'
+            self.logger.debug(text)
             return list()
 
         for i, mPoint in enumerate(model):
@@ -866,9 +870,11 @@ class BuildModel(object):
         if model is None:
             return False
         if len(model) < 3:
+            self.logger.debug(f'only {len(mocdl)} points available')
             return False
 
-        modelPath = f'{self.app.mwGlob["modelDir"]}/m-{model[0].mParam.name}.model'
+        modelName = model[0].mParam.name
+        modelPath = f'{self.app.mwGlob["modelDir"]}/m-{modelName}.model'
 
         saveModel = list()
         for mPoint in model:
@@ -880,11 +886,11 @@ class BuildModel(object):
                       'binning': mPoint.iParam.binning,
                       'subFrame': mPoint.iParam.subFrame,
                       'fastReadout': mPoint.iParam.fastReadout,
-                      'altitude': mPoint.point.altitude.degrees,
-                      'azimuth': mPoint.point.azimuth.degrees,
-                      'raMJNow': mPoint.mData.raMJNow.degrees,
+                      'altitude': mPoint.point.altitude,
+                      'azimuth': mPoint.point.azimuth,
+                      'raMJNow': mPoint.mData.raMJNow.hours,
                       'decMJNow': mPoint.mData.decMJNow.degrees,
-                      'raSJNow': mPoint.mData.raSJNow.degrees,
+                      'raSJNow': mPoint.mData.raSJNow.hours,
                       'decSJNow': mPoint.mData.decSJNow.degrees,
                       'sidereal': mPoint.mData.sidereal,
                       'julian': mPoint.mData.julian.utc_iso(),
@@ -895,6 +901,7 @@ class BuildModel(object):
                       }
             saveModel.append(sPoint)
 
+        self.app.message.emit(f'writing model [{modelName}]', 0)
         with open(modelPath, 'w') as outfile:
             json.dump(saveModel,
                       outfile,

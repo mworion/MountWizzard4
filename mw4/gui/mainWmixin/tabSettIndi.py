@@ -101,11 +101,11 @@ class SettIndi(object):
         sig.removeDevice.connect(self.showIndiRemovePowerDevice)
 
         self.setupDeviceNameGui()
-        self.ui.domeDevice.currentIndexChanged.connect(self.domeDispatch)
+        self.ui.domeDeviceName.currentIndexChanged.connect(self.domeDispatch)
         self.ui.imagingDeviceName.currentIndexChanged.connect(self.imagingDispatch)
-        self.ui.skymeterDevice.currentIndexChanged.connect(self.skymeterDispatch)
-        self.ui.weatherDevice.currentIndexChanged.connect(self.weatherDispatch)
-        self.ui.powerDevice.currentIndexChanged.connect(self.powerDispatch)
+        self.ui.skymeterDeviceName.currentIndexChanged.connect(self.skymeterDispatch)
+        self.ui.weatherDeviceName.currentIndexChanged.connect(self.weatherDispatch)
+        self.ui.powerDeviceName.currentIndexChanged.connect(self.powerDispatch)
 
     def initConfig(self):
         """

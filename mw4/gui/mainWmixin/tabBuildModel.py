@@ -643,7 +643,7 @@ class BuildModel(object):
                                 expTime=mPoint.iParam.expTime,
                                 binning=mPoint.iParam.binning,
                                 subFrame=mPoint.iParam.subFrame,
-                                fast=mPoint.iParam.fastReadout,
+                                fastReadout=mPoint.iParam.fastReadout,
                                 )
 
         mPoint = MPoint(mParam=mPoint.mParam,

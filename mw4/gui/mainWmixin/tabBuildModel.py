@@ -535,13 +535,13 @@ class BuildModel(object):
             return False
         if not isinstance(result, tuple):
             self.logger.info(f'Solving result is malformed: {result}')
-            return False
+            solveOK = False
         if len(result) != 2:
             self.logger.info(f'Solving result is malformed: {result}')
-            return False
+            solveOK = False
         if not isinstance(result[1], tuple):
             self.logger.info(f'Solving result is malformed: {result}')
-            return False
+            solveOK = False
         if not result.success:
             solveOK = False
 

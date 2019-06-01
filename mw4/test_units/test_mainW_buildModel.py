@@ -44,7 +44,6 @@ def module_setup_teardown():
     yield
 
 
-"""
 def test_initConfig_1():
     app.config['mainW'] = {}
     suc = app.mainW.initConfig()
@@ -612,7 +611,6 @@ def test_cancelFull(qtbot):
         assert blocker.args == ['Modeling cancelled', 2]
 
 
-"""
 def test_retrofitModel_1():
     app.mount.model.starList = list()
     point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),

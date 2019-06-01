@@ -236,7 +236,6 @@ class AlignMount(object):
         if suc:
             self.ui.alignBuildPFileName.setText(fileName)
             self.app.message.emit('Align build file [{0}] loaded'.format(fileName), 0)
-            self.lastModelType = 'align-file'
         else:
             self.app.message.emit('Align build file [{0}] cannot no be loaded'
                                   .format(fileName), 2)
@@ -296,6 +295,8 @@ class AlignMount(object):
         if not fileName:
             self.app.message.emit('Align build points file name not given', 2)
             return False
+
+        self.lastModelType = 'align-file'
         suc = self.app.data.loadBuildP(fileName=fileName)
         if not suc:
             text = 'Align build points file [{0}] could not be loaded'.format(fileName)

@@ -379,7 +379,6 @@ class BuildModel(object):
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.message.emit('Build file [{0}] loaded'.format(fileName), 0)
-            self.lastModelType = 'file'
         else:
             self.app.message.emit('Build file [{0}] cannot no be loaded'.format(fileName), 2)
 
@@ -444,8 +443,8 @@ class BuildModel(object):
             self.app.message.emit('Build points file name not given', 2)
             return False
 
+        self.lastModelType = 'file'
         suc = self.app.data.loadBuildP(fileName=fileName)
-
         if not suc:
             text = 'Build points file [{0}] could not be loaded'.format(fileName)
             self.app.message.emit(text, 2)
@@ -1028,7 +1027,7 @@ class BuildModel(object):
             return False
 
         self.clearQueues()
-        self.app.message.emit(f'Modeling m-{modelName} started', 1)
+        self.app.message.emit(f'Modeling m-{self.lastModelType}-{modelName} started', 1)
 
         # collection all necessary information
         expTime = self.app.mainW.ui.expTime.value()

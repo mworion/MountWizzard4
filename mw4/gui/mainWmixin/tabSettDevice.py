@@ -217,6 +217,7 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
+        self.app.dome.stopCommunication()
         if self.ui.domeDevice.currentText().startswith('INDI'):
             self.app.dome.client.host = self.ui.domeHost.text()
             self.app.dome.name = self.ui.domeDeviceName.currentText()
@@ -224,7 +225,6 @@ class SettDevice(object):
             self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
             self.app.message.emit('Dome enabled', 0)
         else:
-            self.app.dome.stopCommunication()
             self.changeStyleDynamic(self.ui.domeConnected, 'color', 'gray')
             self.app.message.emit('Dome disabled', 0)
 
@@ -239,6 +239,7 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
+        self.app.imaging.stopCommunication()
         if self.ui.imagingDevice.currentText().startswith('INDI'):
             self.app.imaging.client.host = self.ui.imagingHost.text()
             self.app.imaging.name = self.ui.imagingDeviceName.currentText()
@@ -246,7 +247,6 @@ class SettDevice(object):
             self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'red')
             self.app.message.emit('Imaging enabled', 0)
         else:
-            self.app.imaging.stopCommunication()
             self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'gray')
             self.app.message.emit('Imaging disabled', 0)
 
@@ -265,6 +265,8 @@ class SettDevice(object):
         self.ui.environGroup.setEnabled(False)
         self.ui.refractionGroup.setEnabled(False)
         self.ui.setRefractionManual.setEnabled(False)
+
+        self.app.environ.stopCommunication()
         if self.ui.environDevice.currentText().startswith('INDI'):
             self.app.environ.client.host = self.ui.environHost.text()
             self.app.environ.name = self.ui.environDeviceName.currentText()
@@ -272,7 +274,6 @@ class SettDevice(object):
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
             self.app.message.emit('Environment enabled', 0)
         else:
-            self.app.environ.stopCommunication()
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
             self.app.message.emit('Environment disabled', 0)
 
@@ -287,13 +288,14 @@ class SettDevice(object):
         """
 
         self.ui.skymeterGroup.setEnabled(False)
+
+        self.app.skymeter.stopCommunication()
         if self.ui.skymeterDevice.currentText().startswith('INDI'):
             self.app.skymeter.client.host = self.ui.skymeterHost.text()
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
             self.app.skymeter.startCommunication()
             self.app.message.emit('Skymeter enabled', 0)
         else:
-            self.app.skymeter.stopCommunication()
             self.app.message.emit('Skymeter disabled', 0)
 
         return True
@@ -307,13 +309,14 @@ class SettDevice(object):
         """
 
         self.ui.weatherGroup.setEnabled(False)
+
+        self.app.weather.stopCommunication()
         if self.ui.weatherDevice.currentText().startswith('INDI'):
             self.app.weather.client.host = self.ui.weatherHost.text()
             self.app.weather.name = self.ui.weatherDeviceName.currentText()
             self.app.weather.startCommunication()
             self.app.message.emit('Weather enabled', 0)
         else:
-            self.app.weather.stopCommunication()
             self.app.message.emit('Weather disabled', 0)
 
         return True
@@ -330,6 +333,7 @@ class SettDevice(object):
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 
+        self.app.power.stopCommunication()
         if self.ui.powerDevice.currentText().startswith('INDI'):
             self.app.power.startCommunication()
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
@@ -338,7 +342,6 @@ class SettDevice(object):
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
         else:
-            self.app.power.stopCommunication()
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Power disabled', 0)

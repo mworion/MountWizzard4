@@ -104,7 +104,7 @@ class Astrometry(object):
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
-            outFile.write(f'cpulimit 10\nadd_path {self.indexPath}\nautoindex\n')
+            outFile.write(f'cpulimit 300\nadd_path {self.indexPath}\nautoindex\n')
 
         self.checkAvailability()
 
@@ -262,7 +262,7 @@ class Astrometry(object):
 
         return value
 
-    def readFitsData(self, fitsHDU='', searchRatio=1.1):
+    def readFitsData(self, fitsHDU='', searchRatio=1.2):
         """
         readFitsData reads the fits file with the image and tries to get some key
         fields out of the header for preparing the solver. necessary data are
@@ -308,7 +308,7 @@ class Astrometry(object):
                    '--dec',
                    f'{dec}',
                    '--radius',
-                   '1',
+                   '2',
                    ]
 
         return options
@@ -446,7 +446,7 @@ class Astrometry(object):
         success = (result.returncode == 0)
         return success
 
-    def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=10):
+    def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=30):
         """
         runSolveField solves finally the xy star list and writes the WCS data in a fits
         file format
@@ -502,7 +502,7 @@ class Astrometry(object):
         success = (result.returncode == 0)
         return success
 
-    def solve(self, app='', fitsPath='', timeout=10, updateFits=False):
+    def solve(self, app='', fitsPath='', timeout=30, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -601,7 +601,7 @@ class Astrometry(object):
         self.signals.done.emit(self.result)
         self.signals.message.emit('')
 
-    def solveThreading(self, app='', fitsPath='', timeout=10, updateFits=False):
+    def solveThreading(self, app='', fitsPath='', timeout=30, updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a threadpool
         environment of Qt. Otherwise the HMI would be stuck all the time during solving.

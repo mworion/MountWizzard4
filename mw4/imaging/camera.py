@@ -109,7 +109,7 @@ class Camera(indiClass.IndiClass):
                                 )
         # setting WCS Control off
         wcs = self.device.getSwitch('WCS_CONTROL')
-        wcs['WCS_DISABLE'] = True
+        wcs['WCS_ENABLE'] = True
         self.client.sendNewSwitch(deviceName=deviceName,
                                   propertyName='WCS_CONTROL',
                                   elements=wcs,

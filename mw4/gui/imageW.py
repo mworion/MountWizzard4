@@ -330,7 +330,7 @@ class ImageWindow(widget.MWidget):
         app = self.app.mainW.ui.astrometryDevice.currentText()
         self.app.astrometry.solveThreading(app=app,
                                            fitsPath=self.imageFileName,
-                                           timeout=10,
+                                           timeout=30,
                                            updateFits=updateFits,
                                            )
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')

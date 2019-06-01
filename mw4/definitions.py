@@ -28,7 +28,7 @@ from collections import namedtuple
 Point = namedtuple('Point', 'altitude azimuth')
 
 # imaging parameters
-IParam = namedtuple('IParam', 'expTime binning subFrame fast')
+IParam = namedtuple('IParam', 'expTime binning subFrame fastReadout')
 
 # modeling parameters
 MParam = namedtuple('MParam', 'number count path name astrometry')

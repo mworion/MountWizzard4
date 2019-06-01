@@ -643,6 +643,7 @@ class ImageWindow(widget.MWidget):
         expTime = self.app.mainW.ui.expTime.value()
         binning = self.app.mainW.ui.binning.value()
         subFrame = self.app.mainW.ui.subFrame.value()
+        fastReadout = self.app.mainW.ui.checkFastDownload.isChecked()
 
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         fileName = time + '-exposure.fits'
@@ -655,6 +656,7 @@ class ImageWindow(widget.MWidget):
                                 expTime=expTime,
                                 binning=binning,
                                 subFrame=subFrame,
+                                fastReadout=fastReadout,
                                 filterPos=0)
 
         text = f'Exposing {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'

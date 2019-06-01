@@ -107,6 +107,13 @@ class Camera(indiClass.IndiClass):
                                 propertyName='FITS_HEADER',
                                 elements=objectName,
                                 )
+        # setting WCS Control off
+        wcs = self.device.getSwitch('WCS_CONTROL')
+        wcs['WCS_DISABLE'] = True
+        self.client.sendNewSwitch(deviceName=deviceName,
+                                  propertyName='WCS_CONTROL',
+                                  elements=wcs,
+                                  )
         # setting polling updates in driver
         update = self.device.getNumber('POLLING_PERIOD')
         if 'PERIOD_MS' not in update:
@@ -395,14 +402,14 @@ class Camera(indiClass.IndiClass):
         # todo: filter and wcs disable
 
     def expose(self, imagePath='', expTime=3, binning=1,
-               subFrame=100, fast=True, filterPos=0):
+               subFrame=100, fastReadout=True, filterPos=0):
         """
 
         :param imagePath:
         :param expTime:
         :param binning:
         :param subFrame:
-        :param fast:
+        :param fastReadout:
         :param filterPos:
         :return: success
         """
@@ -445,6 +452,15 @@ class Camera(indiClass.IndiClass):
                                         elements=indiCmd,
                                         )
         successOverall = successOverall and suc
+
+        # setting fast mode:
+        quality = self.device.getSwitch('READOUT_QUALITY')
+        quality['QUALITY_LOW'] = fastReadout
+        quality['QUALITY_HIGH'] = not fastReadout
+        self.client.sendNewSwitch(deviceName=self.name,
+                                  propertyName='READOUT_QUALITY',
+                                  elements=quality,
+                                  )
 
         # todo: filter
 

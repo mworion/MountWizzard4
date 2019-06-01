@@ -541,7 +541,7 @@ def test_modelImage_2():
                     iParam=IParam(expTime=1,
                                   binning=1,
                                   subFrame=100,
-                                  fast=False),
+                                  fastReadout=False),
                     point=tuple(),
                     mData=tuple(),
                     rData=tuple())
@@ -724,7 +724,7 @@ def test_saveModel_3():
                     iParam=IParam(expTime=1,
                                   binning=1,
                                   subFrame=100,
-                                  fast=False),
+                                  fastReadout=False),
                     point=Point(azimuth=skyfield.api.Angle(degrees=0),
                                 altitude=skyfield.api.Angle(degrees=0)),
                     mData=MData(raMJNow=skyfield.api.Angle(degrees=0),

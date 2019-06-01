@@ -643,7 +643,7 @@ class BuildModel(object):
                                 expTime=mPoint.iParam.expTime,
                                 binning=mPoint.iParam.binning,
                                 subFrame=mPoint.iParam.subFrame,
-                                fast=mPoint.iParam.fast,
+                                fast=mPoint.iParam.fastReadout,
                                 )
 
         mPoint = MPoint(mParam=mPoint.mParam,
@@ -879,6 +879,7 @@ class BuildModel(object):
                       'expTime': mPoint.iParam.expTime,
                       'binning': mPoint.iParam.binning,
                       'subFrame': mPoint.iParam.subFrame,
+                      'fastReadout': mPoint.iParam.fastReadout,
                       'altitude': mPoint.point.altitude.degrees,
                       'azimuth': mPoint.point.azimuth.degrees,
                       'raMJNow': mPoint.mData.raMJNow.degrees,
@@ -1017,7 +1018,7 @@ class BuildModel(object):
         expTime = self.app.mainW.ui.expTime.value()
         binning = self.app.mainW.ui.binning.value()
         subFrame = self.app.mainW.ui.subFrame.value()
-        fast = self.app.mainW.ui.checkFastDownload.isChecked()
+        fastReadout = self.app.mainW.ui.checkFastDownload.isChecked()
 
         # setting overall parameters
         settleMount = self.app.mainW.ui.settleTimeMount.value()
@@ -1038,7 +1039,7 @@ class BuildModel(object):
             iParam = IParam(expTime=expTime,
                             binning=binning,
                             subFrame=subFrame,
-                            fast=fast,
+                            fastReadout=fastReadout,
                             )
             mParam = MParam(number=number,
                             count=count,

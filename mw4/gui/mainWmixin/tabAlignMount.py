@@ -204,6 +204,7 @@ class AlignMount(object):
         :return: success
         """
 
+        self.lastModelType = 'align-grid'
         altBase = self.ui.altBase.value()
         azBase = self.ui.azBase.value()
         numberBase = self.ui.numberBase.value()
@@ -235,6 +236,7 @@ class AlignMount(object):
         if suc:
             self.ui.alignBuildPFileName.setText(fileName)
             self.app.message.emit('Align build file [{0}] loaded'.format(fileName), 0)
+            self.lastModelType = 'align-file'
         else:
             self.app.message.emit('Align build file [{0}] cannot no be loaded'
                                   .format(fileName), 2)

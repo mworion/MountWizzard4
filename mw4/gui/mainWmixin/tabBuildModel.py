@@ -90,6 +90,7 @@ class BuildModel(object):
         self.modelQueue = queue.Queue()
         self.collector = QMultiWait()
         self.startModeling = None
+        self.lastModelType = ''
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
@@ -134,6 +135,7 @@ class BuildModel(object):
         self.ui.timeShiftDSO.valueChanged.disconnect(self.genBuildDSO)
 
         self.ui.buildPFileName.setText(config.get('buildPFileName', ''))
+        self.lastModelType = config.get('lastModelType', '')
         self.ui.numberGridPointsRow.setValue(config.get('numberGridPointsRow', 5))
         self.ui.numberGridPointsCol.setValue(config.get('numberGridPointsCol', 6))
         self.ui.altitudeMin.setValue(config.get('altitudeMin', 30))
@@ -165,6 +167,7 @@ class BuildModel(object):
         """
         config = self.app.config['mainW']
         config['buildPFileName'] = self.ui.buildPFileName.text()
+        config['lastModelType'] = self.lastModelType
         config['numberGridPointsRow'] = self.ui.numberGridPointsRow.value()
         config['numberGridPointsCol'] = self.ui.numberGridPointsCol.value()
         config['altitudeMin'] = self.ui.altitudeMin.value()
@@ -200,6 +203,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastModelType = 'grid'
         row = self.ui.numberGridPointsRow.value()
         col = self.ui.numberGridPointsCol.value()
         minAlt = self.ui.altitudeMin.value()
@@ -225,6 +229,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastModelType = 'circle-max'
         suc = self.app.data.genGreaterCircle(selection='max')
         if not suc:
             self.app.message.emit('Build points [max] cannot be generated', 2)
@@ -244,6 +249,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastModelType = 'circle-med'
         suc = self.app.data.genGreaterCircle(selection='med')
         if not suc:
             self.app.message.emit('Build points [med] cannot be generated', 2)
@@ -263,6 +269,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastModelType = 'circle-norm'
         suc = self.app.data.genGreaterCircle(selection='norm')
         if not suc:
             self.app.message.emit('Build points [norm] cannot be generated', 2)
@@ -282,6 +289,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastModelType = 'circle-min'
         suc = self.app.data.genGreaterCircle(selection='min')
         if not suc:
             self.app.message.emit('Build points [min] cannot be generated', 2)
@@ -299,6 +307,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastModelType = 'DSO'
         ra = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
         timeJD = self.app.mount.obsSite.timeJD
@@ -337,10 +346,10 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastModelType = 'spiral'
         numberPoints = self.ui.numberSpiralPoints.value()
 
         suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
-
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             return False
@@ -367,10 +376,10 @@ class BuildModel(object):
             return False
 
         suc = self.app.data.loadBuildP(fileName=fileName)
-
         if suc:
             self.ui.buildPFileName.setText(fileName)
             self.app.message.emit('Build file [{0}] loaded'.format(fileName), 0)
+            self.lastModelType = 'file'
         else:
             self.app.message.emit('Build file [{0}] cannot no be loaded'.format(fileName), 2)
 
@@ -870,11 +879,11 @@ class BuildModel(object):
         if model is None:
             return False
         if len(model) < 3:
-            self.logger.debug(f'only {len(mocdl)} points available')
+            self.logger.debug(f'only {len(model)} points available')
             return False
 
-        modelName = model[0].mParam.name
-        modelPath = f'{self.app.mwGlob["modelDir"]}/m-{modelName}.model'
+        modelName = f'm-{self.lastModelType}-{model[0].mParam.name}'
+        modelPath = f'{self.app.mwGlob["modelDir"]}/{modelName}.model'
 
         saveModel = list()
         for mPoint in model:

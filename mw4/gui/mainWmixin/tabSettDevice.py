@@ -137,7 +137,7 @@ class SettDevice(object):
         self.ui.skymeterDevice.addItem('INDI')
         self.ui.weatherDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
-        for app in self.app.astrometry.binPath:
+        for app in self.app.astrometry.available:
             self.ui.astrometryDevice.addItem(app)
 
         return True
@@ -359,15 +359,7 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        if self.ui.astrometryDevice.currentText().startswith('KStars'):
-            if self.ui.astrometryDevice.currentText() not in self.app.astrometry.binPath:
-                self.app.message.emit('Astrometry not available', 2)
-                self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')
-                return False
-            self.ui.astrometryDevice.setStyleSheet(self.BACK_GREEN)
-            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'green')
-            self.app.message.emit('Astrometry enabled', 0)
-        elif self.ui.astrometryDevice.currentText().startswith('CloudMakers'):
+        if self.ui.astrometryDevice.currentText() in self.app.astrometry.available:
             if self.ui.astrometryDevice.currentText() not in self.app.astrometry.binPath:
                 self.app.message.emit('Astrometry not available', 2)
                 self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')

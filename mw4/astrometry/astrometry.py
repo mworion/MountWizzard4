@@ -438,7 +438,7 @@ class Astrometry(object):
             self.logger.debug(f'image2xy took {delta}s return code: '
                               + str(result.returncode)
                               + ' stderr: '
-                              + result.stderr.decode()
+                              + result.stderr.decode().replace('\n', ' ')
                               + ' stdout: '
                               + result.stdout.decode().replace('\n', ' ')
                               )
@@ -494,7 +494,7 @@ class Astrometry(object):
             self.logger.debug(f'solve-field took {delta}s return code: '
                               + str(result.returncode)
                               + ' stderr: '
-                              + result.stderr.decode()
+                              + result.stderr.decode().replace('\n', ' ')
                               + ' stdout: '
                               + result.stdout.decode().replace('\n', ' ')
                               )

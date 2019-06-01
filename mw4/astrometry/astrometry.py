@@ -104,7 +104,7 @@ class Astrometry(object):
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
-            outFile.write(f'cpulimit 300\nadd_path {self.indexPath}\nautoindex\n')
+            outFile.write(f'cpulimit 10\nadd_path {self.indexPath}\nautoindex\n')
 
         self.checkAvailability()
 

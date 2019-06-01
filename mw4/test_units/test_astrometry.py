@@ -432,11 +432,21 @@ def test_solve_1():
 
 
 def test_solve_2():
-    suc = app.solve(app='CloudMakers',
-                    fitsPath=app.mwGlob['imageDir'] + '/m51.fit',
+    suc = app.solve(app='KStars',
+                    fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
                     timeout=5,
                     )
+    print(app.result)
     assert not suc
+
+
+def test_solve_3():
+    suc = app.solve(app='KStars',
+                    fitsPath=mwGlob['imageDir'] + '/m51.fits',
+                    timeout=5,
+                    )
+    print(app.result)
+    assert suc
 
 
 def test_solveClear():

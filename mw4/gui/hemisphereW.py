@@ -804,7 +804,7 @@ class HemisphereWindow(widget.MWidget):
             y = x = []
         self.pointsBuild.set_data(x, y)
         for i, _ in enumerate(data.buildP):
-            self.pointsBuildAnnotate[i].set_text('{0:2d}'.format(i + 1))
+            self.pointsBuildAnnotate[i].set_text('{0:2d}'.format(i))
         self.drawCanvas()
         return suc
 
@@ -938,7 +938,7 @@ class HemisphereWindow(widget.MWidget):
                                       )
         self.pointsBuildAnnotate = list()
         for i, AltAz in enumerate(zip(az, alt)):
-            annotation = axes.annotate('{0:2d}'.format(i + 1),
+            annotation = axes.annotate('{0:2d}'.format(i),
                                        xy=AltAz,
                                        xytext=(2, -10),
                                        textcoords='offset points',

@@ -779,8 +779,8 @@ class BuildModel(object):
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
         if self.app.dome.device is not None:
             self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
-        self.collector.ready.connect(self.modelImage)
 
+        self.collector.ready.connect(self.modelImage)
         self.app.imaging.signals.integrated.connect(self.modelSlew)
         self.app.imaging.signals.saved.connect(self.modelSolve)
         self.app.astrometry.signals.done.connect(self.modelSolveDone)
@@ -797,8 +797,8 @@ class BuildModel(object):
         self.app.imaging.signals.saved.disconnect(self.modelSolve)
         self.app.imaging.signals.integrated.disconnect(self.modelSlew)
         self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
-        self.collector.clear()
         self.collector.ready.disconnect(self.modelImage)
+        self.collector.clear()
 
         return True
 
@@ -809,11 +809,11 @@ class BuildModel(object):
         :return: true for test purpose
         """
 
-        self.app.message.emit('Modeling cancelled', 2)
         self.app.imaging.abort()
         self.defaultSignals()
         self.clearQueues()
         self.defaultGUI()
+        self.app.message.emit('Modeling cancelled', 2)
 
         return True
 
@@ -829,10 +829,18 @@ class BuildModel(object):
         :return: updated model
         """
 
+        if model is None:
+            return list()
+
+        starList = self.app.mount.model.starList
+
+        if len(starList) != len(model):
+            return list()
+
         for i, mPoint in enumerate(model):
-            rData = RData(errorRMS=self.app.mount.model.starList[i].errorRMS,
-                          errorRA=self.app.mount.model.starList[i].errorRA(),
-                          errorDEC=self.app.mount.model.starList[i].errorDEC(),
+            rData = RData(errorRMS=starList[i].errorRMS,
+                          errorRA=starList[i].errorRA(),
+                          errorDEC=starList[i].errorDEC(),
                           )
             mPoint = MPoint(mParam=mPoint.mParam,
                             iParam=mPoint.iParam,
@@ -841,6 +849,7 @@ class BuildModel(object):
                             rData=rData,
                             )
             model[i] = mPoint
+
         return model
 
     def saveModel(self, model=None):
@@ -854,33 +863,89 @@ class BuildModel(object):
         :return: success
         """
 
+        if model is None:
+            return False
+        if len(model) < 3:
+            return False
+
         modelPath = f'{self.app.mwGlob["modelDir"]}/m-{model[0].mParam.name}.model'
 
-        modelSave = list()
+        saveModel = list()
         for mPoint in model:
-            mData = MData(raMJNow=mPoint.mData.raMJNow.hours,
-                          decMJNow=mPoint.mData.decMJNow.degrees,
-                          raSJNow=mPoint.mData.raSJNow.hours,
-                          decSJNow=mPoint.mData.decSJNow.degrees,
-                          sidereal=mPoint.mData.sidereal,
-                          julian=mPoint.mData.julian.utc_strftime('%Y-%m-%d-%H-%M-%S'),
-                          pierside=mPoint.mData.pierside,
-                          )
-
-            mPoint = MPoint(mParam=mPoint.mParam,
-                            iParam=mPoint.iParam,
-                            point=mPoint.point,
-                            mData=mData,
-                            rData=mPoint.rData,
-                            )
-            modelSave.append(mPoint)
+            sPoint = {'name': mPoint.mParam.name,
+                      'path': mPoint.mParam.path,
+                      'number': mPoint.mParam.number,
+                      'count': mPoint.mParam.count,
+                      'expTime': mPoint.iParam.expTime,
+                      'binning': mPoint.iParam.binning,
+                      'subFrame': mPoint.iParam.subFrame,
+                      'altitude': mPoint.point.altitude.degrees,
+                      'azimuth': mPoint.point.azimuth.degrees,
+                      'raMJNow': mPoint.mData.raMJNow.degrees,
+                      'decMJNow': mPoint.mData.decMJNow.degrees,
+                      'raSJNow': mPoint.mData.raSJNow.degrees,
+                      'decSJNow': mPoint.mData.decSJNow.degrees,
+                      'sidereal': mPoint.mData.sidereal,
+                      'julian': mPoint.mData.julian.utc_iso(),
+                      'pierside': mPoint.mData.pierside,
+                      'errorRMS': mPoint.rData.errorRMS,
+                      'errorRa': mPoint.rData.errorRA,
+                      'errorDEC': mPoint.rData.errorDEC,
+                      }
+            saveModel.append(sPoint)
 
         with open(modelPath, 'w') as outfile:
-            json.dump(modelSave,
+            json.dump(saveModel,
                       outfile,
                       sort_keys=True,
                       indent=4)
         return True
+
+    def collectModelData(self):
+        """
+        collectModelData writes all model point from the queue to a data structure for
+        later use.
+
+        :return: model
+        """
+
+        model = list()
+        while not self.modelQueue.empty():
+            mPoint = self.modelQueue.get()
+            model.append(mPoint)
+
+        return model
+
+    @staticmethod
+    def generateBuildData(model=None):
+        """
+        generateBuildData takes the model data and generates from it a data structure
+        needed for programming the model into the mount computer.
+
+        :param model:
+        :return: build
+        """
+
+        build = list()
+
+        for mPoint in model:
+            # prepare data
+            mCoord = skyfield.api.Star(ra=mPoint.mData.raMJNow,
+                                       dec=mPoint.mData.decMJNow)
+            sCoord = skyfield.api.Star(ra=mPoint.mData.raSJNow,
+                                       dec=mPoint.mData.decSJNow)
+            sidereal = mPoint.mData.sidereal
+            pierside = mPoint.mData.pierside
+
+            # combine data into structure
+            programmingPoint = APoint(mCoord=mCoord,
+                                      sCoord=sCoord,
+                                      sidereal=sidereal,
+                                      pierside=pierside,
+                                      )
+            build.append(programmingPoint)
+
+        return build
 
     def modelFinished(self):
         """
@@ -893,24 +958,8 @@ class BuildModel(object):
         :return: true for test purpose
         """
 
-        build = list()
-        model = list()
-        while not self.modelQueue.empty():
-            mPoint = self.modelQueue.get()
-
-            mCoord = skyfield.api.Star(ra=mPoint.mData.raMJNow,
-                                       dec=mPoint.mData.decMJNow)
-            sCoord = skyfield.api.Star(ra=mPoint.mData.raSJNow,
-                                       dec=mPoint.mData.decSJNow)
-            sidereal = mPoint.mData.sidereal
-            pierside = mPoint.mData.pierside
-            programmingPoint = APoint(mCoord=mCoord,
-                                      sCoord=sCoord,
-                                      sidereal=sidereal,
-                                      pierside=pierside,
-                                      )
-            build.append(programmingPoint)
-            model.append(mPoint)
+        model = self.collectModelData()
+        build = self.generateBuildData(model=model)
 
         # stopping other activities
         self.defaultSignals()
@@ -929,6 +978,7 @@ class BuildModel(object):
         else:
             self.app.message.emit('Model programming error', 2)
 
+        # cleaning up the disk space
         if not self.ui.checkKeepImages.isChecked():
             self.app.message.emit('Deleting model images', 0)
             dirPath = os.path.dirname(mPoint.mParam.path)

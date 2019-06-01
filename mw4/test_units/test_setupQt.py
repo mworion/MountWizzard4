@@ -28,10 +28,10 @@ from mw4 import mainApp
 def setupQt():
     mwGlob = {'workDir': '.',
               'configDir': './mw4/test_units/config',
-              'dataDir': './mw4/test_units/config',
+              'dataDir': './mw4/test_units/data',
               'tempDir': './mw4/test_units/temp',
               'imageDir': './mw4/test_units/image',
-              'modeldata': 'test',
+              'modelDir': './mw4/test_units/model',
               }
 
     test = PyQt5.QtWidgets.QApplication(sys.argv)

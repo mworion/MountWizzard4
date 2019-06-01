@@ -29,6 +29,7 @@ import PyQt5.uic
 import PyQt5.QtTest
 import PyQt5.QtCore
 import skyfield.api
+from mountcontrol.model import AlignStar
 # local import
 from mw4 import mainApp
 from mw4.test_units.test_setupQt import setupQt
@@ -39,11 +40,11 @@ from mw4.definitions import Solution, Solve, MPoint, MData, MParam, IParam, Poin
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
-    app.config['showHemisphereW'] = True
     app.toggleHemisphereWindow()
     yield
 
 
+"""
 def test_initConfig_1():
     app.config['mainW'] = {}
     suc = app.mainW.initConfig()
@@ -411,9 +412,9 @@ def test_addResultToModel_1():
 
     solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
     result = Solution(success=True, solve=solve)
-    mPoint = MPoint(mParam=list(),
-                    iParam=list(),
-                    point=list(),
+    mPoint = MPoint(mParam=tuple(),
+                    iParam=tuple(),
+                    point=tuple(),
                     mData=MData(raMJNow=0,
                                 decMJNow=0,
                                 raSJNow=0,
@@ -421,7 +422,7 @@ def test_addResultToModel_1():
                                 sidereal=0,
                                 julian=Julian(),
                                 pierside='E'),
-                    rData=list())
+                    rData=tuple())
 
     mPoint = app.mainW.addResultToModel(mPoint=mPoint, result=result)
     assert mPoint.mData.raSJNow.hours == 0.016163840047991124
@@ -445,10 +446,10 @@ def test_modelSolveDone_3(qtbot):
                                   path='',
                                   name='',
                                   astrometry=''),
-                    iParam=list(),
-                    point=list(),
-                    mData=list(),
-                    rData=list())
+                    iParam=tuple(),
+                    point=tuple(),
+                    mData=tuple(),
+                    rData=tuple())
 
     with mock.patch.object(app.mainW.resultQueue,
                            'get',
@@ -476,8 +477,8 @@ def test_modelSolveDone_6():
                                   path='',
                                   name='',
                                   astrometry=''),
-                    iParam=list(),
-                    point=list(),
+                    iParam=tuple(),
+                    point=tuple(),
                     mData=MData(raMJNow=0,
                                 decMJNow=0,
                                 raSJNow=0,
@@ -504,9 +505,6 @@ def test_modelSolveDone_7():
     suc = app.mainW.modelSolveDone(result=result)
     assert not suc
 
-"""
-"""
-
 
 def test_modelSolve_1():
     suc = app.mainW.modelSolve()
@@ -519,10 +517,10 @@ def test_modelSolve_2():
                                   path='',
                                   name='',
                                   astrometry=''),
-                    iParam=list(),
-                    point=list(),
-                    mData=list(),
-                    rData=list())
+                    iParam=tuple(),
+                    point=tuple(),
+                    mData=tuple(),
+                    rData=tuple())
     app.mainW.solveQueue.put(mPoint)
     with mock.patch.object(app.astrometry,
                            'solveThreading'):
@@ -545,9 +543,9 @@ def test_modelImage_2():
                                   binning=1,
                                   subFrame=100,
                                   fast=False),
-                    point=list(),
-                    mData=list(),
-                    rData=list())
+                    point=tuple(),
+                    mData=tuple(),
+                    rData=tuple())
     app.mainW.imageQueue.put(mPoint)
     with mock.patch.object(app.imaging,
                            'expose'):
@@ -566,11 +564,11 @@ def test_modelSlew_2():
                                   path='',
                                   name='',
                                   astrometry=''),
-                    iParam=list(),
+                    iParam=tuple(),
                     point=Point(azimuth=0,
                                 altitude=0),
-                    mData=list(),
-                    rData=list())
+                    mData=tuple(),
+                    rData=tuple())
     app.mainW.slewQueue.put(mPoint)
     with mock.patch.object(app.imaging,
                            'expose'):
@@ -614,5 +612,137 @@ def test_cancelFull(qtbot):
         assert blocker.args == ['Modeling cancelled', 2]
 
 
+"""
 def test_retrofitModel_1():
-    pass
+    app.mount.model.starList = list()
+    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+                      number=1,
+                      errorRMS=10,
+                      errorAngle=skyfield.api.Angle(degrees=0))
+    stars = list()
+    stars.append(point)
+    stars.append(point)
+    stars.append(point)
+
+    mPoint = MPoint
+    model = list()
+    model.append(mPoint)
+    model.append(mPoint)
+    model.append(mPoint)
+
+    val = app.mainW.retrofitModel()
+    assert val == list()
+
+
+def test_retrofitModel_2():
+    app.mount.model.starList = list()
+    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+                      number=1,
+                      errorRMS=10,
+                      errorAngle=skyfield.api.Angle(degrees=0))
+    app.mount.model.addStar(point)
+    app.mount.model.addStar(point)
+    app.mount.model.addStar(point)
+
+    mPoint = MPoint
+    model = list()
+    model.append(mPoint)
+    model.append(mPoint)
+    model.append(mPoint)
+
+    val = app.mainW.retrofitModel(model=model)
+    assert len(val) == 3
+
+
+def test_retrofitModel_3():
+    app.mount.model.starList = list()
+    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+                      number=1,
+                      errorRMS=10,
+                      errorAngle=skyfield.api.Angle(degrees=0))
+    app.mount.model.addStar(point)
+    app.mount.model.addStar(point)
+
+    mPoint = MPoint
+    model = list()
+    model.append(mPoint)
+    model.append(mPoint)
+    model.append(mPoint)
+
+    val = app.mainW.retrofitModel(model=model)
+    assert val == list()
+
+
+def test_retrofitModel_4():
+    app.mount.model.starList = list()
+    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+                      number=1,
+                      errorRMS=10,
+                      errorAngle=skyfield.api.Angle(degrees=0))
+    app.mount.model.addStar(point)
+    app.mount.model.addStar(point)
+    app.mount.model.addStar(point)
+
+    mPoint = MPoint
+    model = list()
+    model.append(mPoint)
+    model.append(mPoint)
+
+    val = app.mainW.retrofitModel(model=model)
+    assert val == list()
+
+
+def test_saveModel_1():
+    suc = app.mainW.saveModel()
+    assert not suc
+
+
+def test_saveModel_2():
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='testPath',
+                                  name='test',
+                                  astrometry='astrometry'),
+                    iParam=tuple(),
+                    point=Point(azimuth=0,
+                                altitude=0),
+                    mData=tuple(),
+                    rData=tuple())
+    model = list()
+    model.append(mPoint)
+    model.append(mPoint)
+
+    suc = app.mainW.saveModel(model=model)
+    assert not suc
+
+
+def test_saveModel_3():
+
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='testPath',
+                                  name='test',
+                                  astrometry='astrometry'),
+                    iParam=IParam(expTime=1,
+                                  binning=1,
+                                  subFrame=100,
+                                  fast=False),
+                    point=Point(azimuth=skyfield.api.Angle(degrees=0),
+                                altitude=skyfield.api.Angle(degrees=0)),
+                    mData=MData(raMJNow=skyfield.api.Angle(degrees=0),
+                                decMJNow=skyfield.api.Angle(degrees=0),
+                                raSJNow=skyfield.api.Angle(degrees=0),
+                                decSJNow=skyfield.api.Angle(degrees=0),
+                                sidereal=0,
+                                julian=app.mount.obsSite.timeJD,
+                                pierside='E'),
+                    rData=RData(errorRA=1,
+                                errorDEC=2,
+                                errorRMS=3))
+    model = list()
+    model.append(mPoint)
+    model.append(mPoint)
+    model.append(mPoint)
+
+    suc = app.mainW.saveModel(model=model)
+    assert suc

@@ -43,7 +43,7 @@ def module_setup_teardown():
     app.toggleHemisphereWindow()
     yield
 
-"""
+
 def test_initConfig_1():
     app.config['mainW'] = {}
     suc = app.mainW.initConfig()
@@ -505,6 +505,9 @@ def test_modelSolveDone_7():
     assert not suc
 
 """
+"""
+
+
 def test_modelSolve_1():
     suc = app.mainW.modelSolve()
     assert not suc

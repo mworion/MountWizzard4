@@ -481,6 +481,7 @@ class Astrometry(object):
             result = subprocess.run(args=runnable,
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE,
+                                    timeout=timeout,
                                     )
         except subprocess.TimeoutExpired:
             self.logger.debug('solve-field timeout')

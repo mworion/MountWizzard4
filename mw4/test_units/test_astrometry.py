@@ -426,8 +426,16 @@ def test_runSolveField_2():
     assert not suc
 
 
-def test_solve():
+def test_solve_1():
     suc = app.solve()
+    assert not suc
+
+
+def test_solve_2():
+    suc = app.solve(app='CloudMakers',
+                    fitsPath=app.mwGlob['imageDir'] + '/m51.fit',
+                    timeout=5,
+                    )
     assert not suc
 
 

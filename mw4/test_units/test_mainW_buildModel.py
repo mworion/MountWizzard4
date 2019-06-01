@@ -40,7 +40,6 @@ from mw4.definitions import Solution, Solve, MPoint, MData, MParam, IParam, Poin
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
-    app.toggleHemisphereWindow()
     yield
 
 
@@ -725,11 +724,11 @@ def test_saveModel_3():
                                   binning=1,
                                   subFrame=100,
                                   fastReadout=False),
-                    point=Point(azimuth=skyfield.api.Angle(degrees=0),
-                                altitude=skyfield.api.Angle(degrees=0)),
-                    mData=MData(raMJNow=skyfield.api.Angle(degrees=0),
+                    point=Point(azimuth=0,
+                                altitude=0),
+                    mData=MData(raMJNow=skyfield.api.Angle(hours=0),
                                 decMJNow=skyfield.api.Angle(degrees=0),
-                                raSJNow=skyfield.api.Angle(degrees=0),
+                                raSJNow=skyfield.api.Angle(hours=0),
                                 decSJNow=skyfield.api.Angle(degrees=0),
                                 sidereal=0,
                                 julian=app.mount.obsSite.timeJD,

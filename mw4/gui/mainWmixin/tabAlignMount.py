@@ -57,9 +57,22 @@ class AlignMount(object):
         """
         config = self.app.config['mainW']
         self.ui.alignBuildPFileName.setText(config.get('alignBuildPFileName', ''))
+
+        self.ui.altBase.valueChanged.disconnect(self.genAlignBuild)
+        self.ui.azBase.valueChanged.disconnect(self.genAlignBuild)
+        self.ui.numberBase.valueChanged.disconnect(self.genAlignBuild)
+
         self.ui.altBase.setValue(config.get('altBase', 30))
         self.ui.azBase.setValue(config.get('azBase', 45))
         self.ui.numberBase.setValue(config.get('numberBase', 3))
+
+        # initialising the signal slot connections after the value are set, because
+        # otherwise we get a first value changed signal just when populating
+        # the initial data. this should not happen.
+        self.ui.altBase.valueChanged.connect(self.genAlignBuild)
+        self.ui.azBase.valueChanged.connect(self.genAlignBuild)
+        self.ui.numberBase.valueChanged.connect(self.genAlignBuild)
+
         return True
 
     def storeConfig(self):

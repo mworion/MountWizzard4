@@ -129,7 +129,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
-        self.app.data.clearBuildP()
+        # self.app.data.clearBuildP()
 
         return True
 

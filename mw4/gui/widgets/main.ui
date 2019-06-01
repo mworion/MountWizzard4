@@ -8771,25 +8771,6 @@ manually</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QPushButton" name="combineModel">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>400</y>
-         <width>371</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Combining two models e.g. full model and DSO path or Initial model and something else and program it to mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Combine two models and program</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="genBuildNorm">
        <property name="geometry">
         <rect>
@@ -9248,7 +9229,6 @@ manually</string>
       <zorder>timeElapsed</zorder>
       <zorder>label_42</zorder>
       <zorder>timeFinished</zorder>
-      <zorder>combineModel</zorder>
       <zorder>genBuildNorm</zorder>
       <zorder>label_303</zorder>
       <zorder>line_87</zorder>
@@ -19082,7 +19062,6 @@ manually</string>
   <tabstop>runFullModel</tabstop>
   <tabstop>cancelFullModel</tabstop>
   <tabstop>batchModel</tabstop>
-  <tabstop>combineModel</tabstop>
   <tabstop>deleteWorstPoint</tabstop>
   <tabstop>clearModel</tabstop>
   <tabstop>refreshModel</tabstop>

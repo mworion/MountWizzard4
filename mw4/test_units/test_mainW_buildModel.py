@@ -427,7 +427,7 @@ def test_addResultToModel_1():
     assert mPoint.mData.raSJNow.hours == 0.016163840047991124
     assert mPoint.mData.decSJNow.degrees == 0.10534288528388286
 
-"""
+
 def test_modelSolveDone_1():
     suc = app.mainW.modelSolveDone(result=tuple())
     assert not suc
@@ -503,3 +503,113 @@ def test_modelSolveDone_7():
     result = (True, 'test')
     suc = app.mainW.modelSolveDone(result=result)
     assert not suc
+
+"""
+def test_modelSolve_1():
+    suc = app.mainW.modelSolve()
+    assert not suc
+
+
+def test_modelSolve_2():
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='',
+                                  name='',
+                                  astrometry=''),
+                    iParam=list(),
+                    point=list(),
+                    mData=list(),
+                    rData=list())
+    app.mainW.solveQueue.put(mPoint)
+    with mock.patch.object(app.astrometry,
+                           'solveThreading'):
+        suc = app.mainW.modelSolve()
+        assert suc
+
+
+def test_modelImage_1():
+    suc = app.mainW.modelImage()
+    assert not suc
+
+
+def test_modelImage_2():
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='',
+                                  name='',
+                                  astrometry=''),
+                    iParam=IParam(expTime=1,
+                                  binning=1,
+                                  subFrame=100,
+                                  fast=False),
+                    point=list(),
+                    mData=list(),
+                    rData=list())
+    app.mainW.imageQueue.put(mPoint)
+    with mock.patch.object(app.imaging,
+                           'expose'):
+        suc = app.mainW.modelImage()
+        assert suc
+
+
+def test_modelSlew_1():
+    suc = app.mainW.modelSlew()
+    assert not suc
+
+
+def test_modelSlew_2():
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='',
+                                  name='',
+                                  astrometry=''),
+                    iParam=list(),
+                    point=Point(azimuth=0,
+                                altitude=0),
+                    mData=list(),
+                    rData=list())
+    app.mainW.slewQueue.put(mPoint)
+    with mock.patch.object(app.imaging,
+                           'expose'):
+        suc = app.mainW.modelSlew()
+        assert suc
+
+
+def test_clearQueues():
+    suc = app.mainW.clearQueues()
+    assert suc
+
+
+def test_prepareGUI():
+    suc = app.mainW.prepareGUI()
+    assert suc
+
+
+def test_defaultGUI():
+    suc = app.mainW.defaultGUI()
+    assert suc
+
+
+def test_prepareSignals():
+    suc = app.mainW.prepareSignals()
+    assert suc
+
+
+def test_defaultSignals():
+    suc = app.mainW.defaultSignals()
+    assert suc
+
+
+def test_cancelFull(qtbot):
+    suc = app.mainW.prepareSignals()
+    assert suc
+    with mock.patch.object(app.imaging,
+                           'abort'):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.cancelFull()
+            assert suc
+        assert blocker.args == ['Modeling cancelled', 2]
+
+
+def test_retrofitModel_1():
+    pass

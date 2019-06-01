@@ -107,7 +107,6 @@ class SettIndi(object):
         self.ui.weatherDevice.currentIndexChanged.connect(self.weatherDispatch)
         self.ui.powerDevice.currentIndexChanged.connect(self.powerDispatch)
 
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui

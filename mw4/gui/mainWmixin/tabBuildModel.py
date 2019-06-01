@@ -997,7 +997,7 @@ class BuildModel(object):
         # cleaning up the disk space
         if not self.ui.checkKeepImages.isChecked():
             self.app.message.emit('Deleting model images', 0)
-            dirPath = os.path.dirname(mPoint.mParam.path)
+            dirPath = os.path.dirname(model[0].mParam.path)
             shutil.rmtree(dirPath, ignore_errors=True)
 
         self.app.message.emit('Modeling finished', 1)

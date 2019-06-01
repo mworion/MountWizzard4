@@ -104,7 +104,7 @@ class Astrometry(object):
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
-            outFile.write(f'cpulimit 300\nadd_path {self.indexPath}\nautoindex\n')
+            outFile.write(f'cpulimit 30\nadd_path {self.indexPath}\nautoindex\n')
 
         self.checkAvailability()
 
@@ -368,7 +368,7 @@ class Astrometry(object):
 
         error = np.sqrt(np.square(ra - raMount) + np.square(dec - decMount))
 
-        # would like to have the error in arcsec
+        # would like to have the error RMS in arcsec
         error *= 3600
 
         solve = Solve(raJ2000=ra,
@@ -540,9 +540,6 @@ class Astrometry(object):
         binPathImage2xy = self.binPath[app] + '/image2xy'
         binPathSolveField = self.binPath[app] + '/solve-field'
 
-        with fits.open(fitsPath) as fitsHDU:
-            solveOptions = self.readFitsData(fitsHDU=fitsHDU)
-
         suc = self.runImage2xy(binPath=binPathImage2xy,
                                xyPath=xyPath,
                                fitsPath=fitsPath,
@@ -551,10 +548,12 @@ class Astrometry(object):
             self.logger.error(f'image2xy error in [{fitsPath}]')
             return False
 
+        with fits.open(fitsPath) as fitsHDU:
+            solveOptions = self.readFitsData(fitsHDU=fitsHDU)
+
         # split between ekos and cloudmakers as cloudmakers use an older version of
         # solve-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
-
         if app == 'CloudMakers':
             solveOptions.append('--no-fits2fits')
 

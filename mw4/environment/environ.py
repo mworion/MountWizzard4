@@ -166,10 +166,10 @@ class Environ(indiClass.IndiClass):
         """
 
         isTemperature = 'WEATHER_TEMPERATURE_ARRAY' in self.data
-        isPressure = 'WEATHER_BAROMETER_ARRAY' in self.data
+        isPressure = 'WEATHER_PRESSURE_ARRAY' in self.data
         if isTemperature and isPressure:
             temp = np.mean(self.data['WEATHER_TEMPERATURE_ARRAY'][:10])
-            press = np.mean(self.data['WEATHER_BAROMETER_ARRAY'][:10])
+            press = np.mean(self.data['WEATHER_PRESSURE_ARRAY'][:10])
             return temp, press
         else:
             return None, None

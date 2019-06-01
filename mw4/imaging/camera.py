@@ -109,11 +109,18 @@ class Camera(indiClass.IndiClass):
                                 )
         # setting WCS Control off
         wcs = self.device.getSwitch('WCS_CONTROL')
-        wcs['WCS_ENABLE'] = True
+        wcs['WCS_DISABLE'] = True
         self.client.sendNewSwitch(deviceName=deviceName,
                                   propertyName='WCS_CONTROL',
                                   elements=wcs,
                                   )
+        # setting active device for telescope
+        telescope = self.device.getText('ACTIVE_DEVICES')
+        telescope['ACTIVE_TELESCOPE'] = 'LX200 10micron'
+        self.client.sendNewText(deviceName=deviceName,
+                                propertyName='ACTIVE_DEVICES',
+                                elements=telescope,
+                                )
         # setting polling updates in driver
         update = self.device.getNumber('POLLING_PERIOD')
         if 'PERIOD_MS' not in update:

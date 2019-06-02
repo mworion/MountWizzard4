@@ -433,8 +433,20 @@ def test_modelSolveDone_1():
 
 
 def test_modelSolveDone_2():
-    app.mainW.resultQueue.put(MPoint)
-    suc = app.mainW.modelSolveDone(result=tuple())
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='',
+                                  name='',
+                                  astrometry='',
+                                  timeout=10,
+                                  radius=1,
+                                  ),
+                    iParam=tuple(),
+                    point=tuple(),
+                    mData=tuple(),
+                    rData=tuple())
+    app.mainW.resultQueue.put(mPoint)
+    suc = app.mainW.modelSolveDone(result=Solve)
     assert not suc
 
 
@@ -443,24 +455,39 @@ def test_modelSolveDone_3(qtbot):
                                   count=3,
                                   path='',
                                   name='',
-                                  astrometry=''),
+                                  astrometry='',
+                                  timeout=10,
+                                  radius=1,
+                                  ),
                     iParam=tuple(),
                     point=tuple(),
                     mData=tuple(),
                     rData=tuple())
 
-    with mock.patch.object(app.mainW.resultQueue,
-                           'get',
-                           return_value=mPoint):
-        result = Solution(success=False, solve=tuple())
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.modelSolveDone(result=result)
-            assert suc
-        assert ['Solving error for image-003', 2] == blocker.args
+    app.mainW.resultQueue.put(mPoint)
+    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
+    result = Solution(success=False, solve=solve)
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.modelSolveDone(result=result)
+        assert suc
+    assert ['Solving error for image-003', 2] == blocker.args
 
 
 def test_modelSolveDone_5():
-    app.mainW.resultQueue.put(MPoint)
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='',
+                                  name='',
+                                  astrometry='',
+                                  timeout=10,
+                                  radius=1,
+                                  ),
+                    iParam=tuple(),
+                    point=tuple(),
+                    mData=tuple(),
+                    rData=tuple())
+
+    app.mainW.resultQueue.put(mPoint)
     result = Solution(success=True, solve=None)
     suc = app.mainW.modelSolveDone(result=result)
     assert not suc
@@ -474,6 +501,8 @@ def test_modelSolveDone_6():
                                   count=3,
                                   path='',
                                   name='',
+                                  timeout=10,
+                                  radius=1,
                                   astrometry=''),
                     iParam=tuple(),
                     point=tuple(),
@@ -488,17 +517,29 @@ def test_modelSolveDone_6():
                                 errorDEC=2,
                                 errorRMS=3))
 
-    with mock.patch.object(app.mainW.resultQueue,
-                           'get',
-                           return_value=mPoint):
-        solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
-        result = Solution(success=True, solve=solve)
-        suc = app.mainW.modelSolveDone(result=result)
-        assert suc
+    app.mainW.resultQueue.put(mPoint)
+    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
+    result = Solution(success=True, solve=solve)
+    suc = app.mainW.modelSolveDone(result=result)
+    assert suc
 
 
 def test_modelSolveDone_7():
-    app.mainW.resultQueue.put(MPoint)
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='',
+                                  name='',
+                                  astrometry='',
+                                  timeout=10,
+                                  radius=1,
+                                  ),
+                    iParam=tuple(),
+                    point=tuple(),
+                    mData=tuple(),
+                    rData=tuple())
+
+    app.mainW.resultQueue.put(mPoint)
+
     result = (True, 'test')
     suc = app.mainW.modelSolveDone(result=result)
     assert not suc
@@ -514,6 +555,8 @@ def test_modelSolve_2():
                                   count=3,
                                   path='',
                                   name='',
+                                  timeout=10,
+                                  radius=1,
                                   astrometry=''),
                     iParam=tuple(),
                     point=tuple(),
@@ -536,6 +579,8 @@ def test_modelImage_2():
                                   count=3,
                                   path='',
                                   name='',
+                                  timeout=10,
+                                  radius=1,
                                   astrometry=''),
                     iParam=IParam(expTime=1,
                                   binning=1,
@@ -561,6 +606,8 @@ def test_modelSlew_2():
                                   count=3,
                                   path='',
                                   name='',
+                                  timeout=10,
+                                  radius=1,
                                   astrometry=''),
                     iParam=tuple(),
                     point=Point(azimuth=0,
@@ -699,6 +746,8 @@ def test_saveModel_2():
                                   count=3,
                                   path='testPath',
                                   name='test',
+                                  timeout=10,
+                                  radius=1,
                                   astrometry='astrometry'),
                     iParam=tuple(),
                     point=Point(azimuth=0,
@@ -719,6 +768,8 @@ def test_saveModel_3():
                                   count=3,
                                   path='testPath',
                                   name='test',
+                                  timeout=10,
+                                  radius=1,
                                   astrometry='astrometry'),
                     iParam=IParam(expTime=1,
                                   binning=1,

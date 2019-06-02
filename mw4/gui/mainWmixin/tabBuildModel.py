@@ -30,7 +30,7 @@ import PyQt5.uic
 import skyfield.api
 from mountcontrol.model import APoint
 # local import
-from mw4.definitions import Point, MPoint, IParam, MParam, MData, RData
+from mw4.definitions import Point, MPoint, IParam, MParam, MData, RData, Solve, Solution
 from mw4.base import transform
 
 
@@ -535,33 +535,29 @@ class BuildModel(object):
         it checks for the end of the modeling process.
 
         :param result: true for test purpose
-        :return:
+        :return: success
         """
 
-        solveOK = True
-
         if self.resultQueue.empty():
-            self.logger.debug('empty result queue')
+            self.logger.error('empty result queue')
             return False
-        if not isinstance(result, tuple):
-            self.logger.info(f'Solving result is malformed: {result}')
-            solveOK = False
-        if len(result) != 2:
-            self.logger.info(f'Solving result is malformed: {result}')
-            solveOK = False
-        if not isinstance(result[1], tuple):
-            self.logger.info(f'Solving result is malformed: {result}')
-            solveOK = False
-        if not result.success:
-            solveOK = False
 
         mPoint = self.resultQueue.get()
         number = mPoint.mParam.number
         count = mPoint.mParam.count
         modelingDone = (number == count + 1)
 
+        if not isinstance(result, Solution):
+            self.logger.info(f'Solving result is malformed: {result}')
+            self.logger.error('empty result queue')
+            return False
+        if not isinstance(result.solve, Solve):
+            self.logger.info(f'Solving result is malformed: {result}')
+            self.logger.error('empty result queue')
+            return False
+
         # processing only the model point which are OK
-        if solveOK:
+        if result.success:
             mPoint = self.addResultToModel(mPoint=mPoint, result=result)
             self.modelQueue.put(mPoint)
 
@@ -600,7 +596,7 @@ class BuildModel(object):
         """
 
         if self.solveQueue.empty():
-            self.logger.debug('empty solve queue')
+            self.logger.error('empty solve queue')
             return False
 
         mPoint = self.solveQueue.get()
@@ -610,7 +606,8 @@ class BuildModel(object):
 
         self.app.astrometry.solveThreading(app=mPoint.mParam.astrometry,
                                            fitsPath=mPoint.mParam.path,
-                                           timeout=30,
+                                           radius=mPoint.mParam.radius,
+                                           timeout=mPoint.mParam.timeout,
                                            updateFits=False,
                                            )
         self.resultQueue.put(mPoint)
@@ -643,7 +640,7 @@ class BuildModel(object):
         """
 
         if self.imageQueue.empty():
-            self.logger.debug('empty image queue')
+            self.logger.error('empty image queue')
             return False
 
         mPoint = self.imageQueue.get()
@@ -736,7 +733,6 @@ class BuildModel(object):
         :return: true for test purpose
         """
 
-        self.ui.combineModel.setEnabled(False)
         self.ui.batchModel.setEnabled(False)
 
         return True
@@ -757,7 +753,6 @@ class BuildModel(object):
         self.ui.cancelFullModel.setEnabled(False)
         self.ui.runAlignModel.setEnabled(True)
         self.ui.cancelAlignModel.setEnabled(False)
-        self.ui.combineModel.setEnabled(True)
         self.ui.batchModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(True)
         self.ui.runFlexure.setEnabled(True)
@@ -1035,6 +1030,8 @@ class BuildModel(object):
         binning = self.app.mainW.ui.binning.value()
         subFrame = self.app.mainW.ui.subFrame.value()
         fastReadout = self.app.mainW.ui.checkFastDownload.isChecked()
+        solveTimeout = self.ui.solveTimeout.value()
+        searchRadius = self.ui.searchRadius.value()
 
         # setting overall parameters
         settleMount = self.app.mainW.ui.settleTimeMount.value()
@@ -1062,6 +1059,8 @@ class BuildModel(object):
                             path=path,
                             name=self.modelName,
                             astrometry=app,
+                            timeout=solveTimeout,
+                            radius=searchRadius,
                             )
 
             # transfer to working in a queue with necessary data

@@ -262,7 +262,7 @@ class Astrometry(object):
 
         return value
 
-    def readFitsData(self, fitsHDU='', searchRatio=1.2):
+    def readFitsData(self, fitsHDU='', searchRatio=1.1, radius=2):
         """
         readFitsData reads the fits file with the image and tries to get some key
         fields out of the header for preparing the solver. necessary data are
@@ -274,7 +274,8 @@ class Astrometry(object):
         we are taking OBJCTxy, because the precision is higher than in RA/DEC
 
         :param fitsHDU: fits file with image data
-        :param searchRatio: how the radius is extended
+        :param searchRatio: how the scale is extended
+        :param radius: how the radius is extended
         :return: options as string
         """
 
@@ -308,7 +309,7 @@ class Astrometry(object):
                    '--dec',
                    f'{dec}',
                    '--radius',
-                   '2',
+                   f'{radius}',
                    ]
 
         return options
@@ -502,7 +503,7 @@ class Astrometry(object):
         success = (result.returncode == 0)
         return success
 
-    def solve(self, app='', fitsPath='', timeout=30, updateFits=False):
+    def solve(self, app='', fitsPath='', radius=2, timeout=30, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -520,6 +521,7 @@ class Astrometry(object):
 
         :param app: which astrometry implementation to choose
         :param fitsPath:  full path to fits file
+        :param radius:  search radius around target coordinates
         :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
         :return: ra, dec, angle, scale, flipped
@@ -549,7 +551,8 @@ class Astrometry(object):
             return False
 
         with fits.open(fitsPath) as fitsHDU:
-            solveOptions = self.readFitsData(fitsHDU=fitsHDU)
+            solveOptions = self.readFitsData(fitsHDU=fitsHDU,
+                                             radius=radius)
 
         # split between ekos and cloudmakers as cloudmakers use an older version of
         # solve-field, which need the option '--no-fits2fits', whereas the actual
@@ -600,7 +603,7 @@ class Astrometry(object):
         self.signals.done.emit(self.result)
         self.signals.message.emit('')
 
-    def solveThreading(self, app='', fitsPath='', timeout=30, updateFits=False):
+    def solveThreading(self, app='', fitsPath='', radius=2, timeout=30, updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a threadpool
         environment of Qt. Otherwise the HMI would be stuck all the time during solving.
@@ -609,6 +612,7 @@ class Astrometry(object):
 
         :param app: which astrometry implementation to choose
         :param fitsPath: full path to the fits image file to be solved
+        :param radius:  search radius around target coordinates
         :param timeout: as said
         :param updateFits: flag, if the results should be written to the original file
         :return: success
@@ -629,6 +633,7 @@ class Astrometry(object):
         worker = tpool.Worker(self.solve,
                               app=app,
                               fitsPath=fitsPath,
+                              radius=radius,
                               timeout=timeout,
                               updateFits=updateFits,
                               )

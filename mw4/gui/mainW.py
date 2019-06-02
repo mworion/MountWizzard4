@@ -31,7 +31,7 @@ import wakeonlan
 from mw4.gui.widget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
-from mw4.gui.mainWmixin.tabSiteStatus import SiteStatus
+from mw4.gui.mainWmixin.tabEnviron import Environ
 from mw4.gui.mainWmixin.tabAlignMount import AlignMount
 from mw4.gui.mainWmixin.tabBuildModel import BuildModel
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
@@ -48,7 +48,7 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 
 class MainWindow(MWidget,
                  Mount,
-                 SiteStatus,
+                 Environ,
                  AlignMount,
                  BuildModel,
                  ManageModel,
@@ -94,7 +94,7 @@ class MainWindow(MWidget,
 
         # local init of following
         Mount.__init__(self)
-        SiteStatus.__init__(self)
+        Environ.__init__(self)
         AlignMount.__init__(self)
         BuildModel.__init__(self)
         ManageModel.__init__(self)
@@ -176,7 +176,7 @@ class MainWindow(MWidget,
         self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 1))
 
         Mount.initConfig(self)
-        SiteStatus.initConfig(self)
+        Environ.initConfig(self)
         AlignMount.initConfig(self)
         BuildModel.initConfig(self)
         ManageModel.initConfig(self)
@@ -225,7 +225,7 @@ class MainWindow(MWidget,
         config['settleTimeDome'] = self.ui.settleTimeDome.value()
 
         Mount.storeConfig(self)
-        SiteStatus.storeConfig(self)
+        Environ.storeConfig(self)
         AlignMount.storeConfig(self)
         BuildModel.storeConfig(self)
         ManageModel.storeConfig(self)
@@ -281,7 +281,7 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
 
         Mount.setupIcons(self)
-        SiteStatus.setupIcons(self)
+        Environ.setupIcons(self)
         AlignMount.setupIcons(self)
         BuildModel.setupIcons(self)
         ManageModel.setupIcons(self)

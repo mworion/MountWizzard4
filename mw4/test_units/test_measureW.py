@@ -59,7 +59,6 @@ def function_setup_teardown():
         'powCurr2': np.full([5, 1], 1.0),
         'powCurr3': np.full([5, 1], 1.0),
         'powCurr4': np.full([5, 1], 1.0),
-        'powCurr4': np.full([5, 1], 1.0),
         'powVolt': np.full([5, 1], 1.0),
         'powCurr': np.full([5, 1], 1.0),
         'powHum': np.full([5, 1], 1.0),

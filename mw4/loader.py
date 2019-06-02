@@ -158,7 +158,7 @@ def setupLogging():
                         )
 
     # setting different log level for imported packages to avoid unnecessary data
-    logging.getLogger('mountcontrol').setLevel(logging.WARNING)
+    logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
     logging.getLogger('indibase').setLevel(logging.WARNING)
     logging.getLogger('PyQt5').setLevel(logging.ERROR)
     logging.getLogger('requests').setLevel(logging.ERROR)
@@ -270,7 +270,8 @@ def main():
 
     # checking workdir and if the system is started from frozen app
     checkFrozen(mwGlob)
-    app = MyApp(sys.argv)
+    # app = MyApp(sys.argv)
+    app = PyQt5.QtWidgets.QApplication(sys.argv)
     splashW = splash.SplashScreen(application=app)
 
     # and start with a first splash screen

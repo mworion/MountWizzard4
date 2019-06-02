@@ -423,7 +423,7 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-        print(self.app.threadPool.activeThreadCount())
+        # print(self.app.threadPool.activeThreadCount())
 
     def updateAstrometryStatus(self, text):
         """

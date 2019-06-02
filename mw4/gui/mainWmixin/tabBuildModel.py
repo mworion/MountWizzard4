@@ -998,8 +998,7 @@ class BuildModel(object):
         # cleaning up the disk space
         if not self.ui.checkKeepImages.isChecked():
             self.app.message.emit('Deleting model images', 0)
-            if len(model) > 0:
-                shutil.rmtree(self.modelDir, ignore_errors=True)
+            shutil.rmtree(self.modelDir, ignore_errors=True)
 
         self.app.message.emit('Modeling finished', 1)
         self.playAudioModelFinished()

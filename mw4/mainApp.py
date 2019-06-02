@@ -95,7 +95,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # initialize commands to mount
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
-                                   # threadPool=self.threadPool,
+                                   threadPool=self.threadPool,
                                    pathToData=pathToData,
                                    expire=expireData,
                                    verbose=None,
@@ -208,7 +208,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         if not self.measureW:
-            self.measureW = measureW.MeasureWindow(self)
+            self.measureW = measureW.MeasureWindow(self,
+                                                   threadPool=self.threadPool)
             self.measureW.destroyed.connect(self.deleteMeasureW)
         else:
             self.measureW.close()

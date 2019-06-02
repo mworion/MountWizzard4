@@ -27,6 +27,7 @@ import numpy as np
 from matplotlib import ticker
 import matplotlib.pyplot as plt
 # local import
+from mw4.base import tpool
 from mw4.gui import widget
 from mw4.gui.widgets import measure_ui
 
@@ -45,13 +46,15 @@ class MeasureWindow(widget.MWidget):
     NUMBER_POINTS = 500
     NUMBER_XTICKS = 8
 
-    def __init__(self, app):
+    def __init__(self, app, threadPool):
         super().__init__()
         self.app = app
+        self.threadPool = threadPool
+
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
         self.initUI()
-        self.mutexDraw = PyQt5.QtCore.QMutex()
+
         self.refreshCounter = 1
         self.measureIndex = 0
         self.timeIndex = 0
@@ -214,7 +217,9 @@ class MeasureWindow(widget.MWidget):
 
         cycle = self.timeScale[self.ui.timeSet.currentText()]
         if not self.refreshCounter % cycle:
-            self.drawMeasure(cycle)
+            worker = tpool.Worker(self.drawMeasure,
+                                  cycle)
+            self.threadPool.start(worker)
         self.refreshCounter += 1
 
         return True
@@ -691,6 +696,14 @@ class MeasureWindow(widget.MWidget):
         time_ticks = time_ticks + time_end
         time_labels = [x.astype(dt).strftime('%H:%M:%S') for x in time_ticks]
 
+        for i, axe in enumerate(axes):
+            axe.set_xticks(time_ticks)
+            axe.set_xlim(time_ticks[0], time_ticks[-1])
+            if i == len(axes) - 1:
+                axe.set_xticklabels(time_labels)
+            else:
+                axe.set_xticklabels([])
+
         for axe, mSet in zip(axes, self.mSetUI):
             key = mSet.currentText()
             if self.plotFunc[key] is None:
@@ -699,14 +712,6 @@ class MeasureWindow(widget.MWidget):
                                title=mSet.currentText(),
                                data=data,
                                cycle=cycle)
-
-        for i, axe in enumerate(axes):
-            axe.set_xticks(time_ticks)
-            axe.set_xlim(time_ticks[0], time_ticks[-1])
-            if i == len(axes) - 1:
-                axe.set_xticklabels(time_labels)
-            else:
-                axe.set_xticklabels([])
             axe.figure.canvas.draw()
 
         return True

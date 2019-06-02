@@ -89,12 +89,12 @@ def test_getNumberFiles_4():
 
 def test_getNumberFiles_5():
     number = app.mainW.getNumberFiles(pathDir=app.mwGlob['imageDir'], search='**/*.fit*')
-    assert number == 2
+    assert number == 3
 
 
 def test_getNumberFiles_6():
     number = app.mainW.getNumberFiles(pathDir=app.mwGlob['imageDir'], search='*.fit*')
-    assert number == 2
+    assert number == 3
 
 
 def test_convertHeaderEntry_1():
@@ -199,4 +199,4 @@ def test_renameRunGUI_3(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.renameRunGUI()
             assert suc
-        assert ['2 images were renamed', 0] == blocker.args
+        assert ['3 images were renamed', 0] == blocker.args

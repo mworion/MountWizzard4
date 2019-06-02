@@ -636,6 +636,7 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        self.ui.powerGroup.setEnabled(True)
         self.app.message.emit('INDI server power connected', 0)
         return True
 

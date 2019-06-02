@@ -329,6 +329,7 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
+        self.ui.powerGroup.setEnabled(False)
         # get index for relay tab
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)

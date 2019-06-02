@@ -309,7 +309,7 @@ class Astrometry(object):
                    '--dec',
                    f'{dec}',
                    '--radius',
-                   f'{radius}',
+                   f'{radius:1.1f}',
                    ]
 
         return options

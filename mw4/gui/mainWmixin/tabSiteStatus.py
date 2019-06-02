@@ -208,9 +208,9 @@ class SiteStatus(object):
         """
 
         if location is not None:
-            lon = location.longitude.dstr().replace('deg', ' ')
+            lon = location.longitude.dstr().replace('deg', '')
             self.ui.siteLongitude.setText(lon)
-            lat = location.latitude.dstr().replace('deg', ' ')
+            lat = location.latitude.dstr().replace('deg', '')
             self.ui.siteLatitude.setText(lat)
             self.ui.siteElevation.setText(str(location.elevation.m))
 

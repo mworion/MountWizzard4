@@ -365,13 +365,13 @@ def test_updateSetting_timeToMeridian():
 def test_updateSettingExt_location():
     app.mount.obsSite.location = ['49:00:00', '11:00:00', '500']
     app.mainW.updateLocGUI(app.mount.obsSite.location)
-    assert '11deg 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
-    assert '49deg 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
+    assert '11 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
+    assert '49 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
     assert '500.0' == app.mainW.ui.siteElevation.text()
     app.mount.obsSite.location = None
     app.mainW.updateLocGUI(app.mount.obsSite.location)
-    assert '11deg 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
-    assert '49deg 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
+    assert '11 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
+    assert '49 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
     assert '500.0' == app.mainW.ui.siteElevation.text()
 
 

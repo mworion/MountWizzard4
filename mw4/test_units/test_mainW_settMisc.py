@@ -148,53 +148,53 @@ def test_setLoggingLevelMC4(qtbot):
 def test_updateFwGui_productName():
     value = 'Test1234'
     app.mount.fw.productName = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert value == app.mainW.ui.productName.text()
     value = None
     app.mount.fw.productName = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert '-' == app.mainW.ui.productName.text()
 
 
 def test_updateFwGui_hwVersion():
     value = 'Test1234'
     app.mount.fw.hwVersion = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert value == app.mainW.ui.hwVersion.text()
     value = None
     app.mount.fw.hwVersion = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert '-' == app.mainW.ui.hwVersion.text()
 
 
 def test_updateFwGui_numberString():
     value = '2.15.18'
     app.mount.fw.numberString = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert value == app.mainW.ui.numberString.text()
     value = None
     app.mount.fw.numberString = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert '-' == app.mainW.ui.numberString.text()
 
 
 def test_updateFwGui_fwdate():
     value = 'Test1234'
     app.mount.fw.fwdate = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert value == app.mainW.ui.fwdate.text()
     value = None
     app.mount.fw.fwdate = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert '-' == app.mainW.ui.fwdate.text()
 
 
 def test_updateFwGui_fwtime():
     value = 'Test1234'
     app.mount.fw.fwtime = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert value == app.mainW.ui.fwtime.text()
     value = None
     app.mount.fw.fwtime = value
-    app.mainW.updateFwGui()
+    app.mainW.updateFwGui(app.mount.fw)
     assert '-' == app.mainW.ui.fwtime.text()

@@ -201,8 +201,10 @@ class MeasureWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        self.refreshCounter += 0
+        self.refreshCounter = 0
         self.cycleRefresh()
+
+        return True
 
     def cycleRefresh(self):
         """
@@ -214,6 +216,8 @@ class MeasureWindow(widget.MWidget):
         if not self.refreshCounter % cycle:
             self.drawMeasure(cycle)
         self.refreshCounter += 1
+
+        return True
 
     def setupAxes(self, figure=None, numberPlots=3):
         """

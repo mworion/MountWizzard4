@@ -268,7 +268,7 @@ def test_updateNumber_8():
 
 def test_getFilteredData_1():
     app.data = {'WEATHER_TEMPERATURE_ARRAY': [10, 10],
-                'WEATHER_BAROMETER_ARRAY': [10, 10],
+                'WEATHER_PRESSURE_ARRAY': [10, 10],
                 'WEATHER_HUMIDITY_ARRAY': [10, 10],
                 }
     val1, val2 = app.getFilteredRefracParams()

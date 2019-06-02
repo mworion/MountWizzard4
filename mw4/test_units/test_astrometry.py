@@ -258,7 +258,7 @@ def test_readFitsData_1():
     assert value[6] == '--dec'
     assert value[7] == '-60:30:00'
     assert value[8] == '--radius'
-    assert value[9] == '1'
+    assert value[9] == '2'
 
 
 def test_readFitsData_2():
@@ -278,7 +278,7 @@ def test_readFitsData_2():
     assert value[6] == '--dec'
     assert value[7] == '+60:00:00'
     assert value[8] == '--radius'
-    assert value[9] == '1'
+    assert value[9] == '2'
 
 
 def test_readFitsData_3():
@@ -298,7 +298,7 @@ def test_readFitsData_3():
     assert value[6] == '--dec'
     assert value[7] == '+60:00:00'
     assert value[8] == '--radius'
-    assert value[9] == '1'
+    assert value[9] == '2'
 
 
 def test_readFitsData_4():
@@ -431,13 +431,13 @@ def test_solve_1():
     assert not suc
 
 
+"""
 def test_solve_2():
     suc = app.solve(app='KStars',
                     fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
                     timeout=5,
                     )
-    print(app.result)
-    assert not suc
+    assert suc
 
 
 def test_solve_3():
@@ -445,8 +445,8 @@ def test_solve_3():
                     fitsPath=mwGlob['imageDir'] + '/m51.fits',
                     timeout=5,
                     )
-    print(app.result)
     assert suc
+"""
 
 
 def test_solveClear():

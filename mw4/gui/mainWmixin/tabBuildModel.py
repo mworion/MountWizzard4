@@ -999,8 +999,7 @@ class BuildModel(object):
         if not self.ui.checkKeepImages.isChecked():
             self.app.message.emit('Deleting model images', 0)
             if len(model) > 0:
-                dirPath = os.path.dirname(model[0].mParam.path)
-                shutil.rmtree(dirPath, ignore_errors=True)
+                shutil.rmtree(self.modelDir, ignore_errors=True)
 
         self.app.message.emit('Modeling finished', 1)
         self.playAudioModelFinished()

@@ -327,8 +327,8 @@ class ImageWindow(widget.MWidget):
         """
 
         updateFits = self.ui.checkUpdateFits.isChecked()
-        solveTimeout = self.ui.solveTimeout.value()
-        searchRadius = self.ui.searchRadius.value()
+        solveTimeout = self.app.mainW.ui.solveTimeout.value()
+        searchRadius = self.app.mainW.ui.searchRadius.value()
         app = self.app.mainW.ui.astrometryDevice.currentText()
         self.app.astrometry.solveThreading(app=app,
                                            fitsPath=self.imageFileName,

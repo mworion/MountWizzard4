@@ -61,7 +61,7 @@ class Astrometry(object):
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
         >>> astrometry = Astrometry(tempDir=tempDir,
-        >>>                               threadPool=threadpool
+        >>>                         threadPool=threadpool
         >>>                         )
 
     """
@@ -75,7 +75,7 @@ class Astrometry(object):
     version = '0.60'
     logger = logging.getLogger(__name__)
 
-    def __init__(self, tempDir, threadPool=None):
+    def __init__(self, tempDir='', threadPool=None):
         self.tempDir = tempDir
         self.threadPool = threadPool
         self.mutexSolve = PyQt5.QtCore.QMutex()

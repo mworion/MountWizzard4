@@ -26,9 +26,6 @@ import gc
 import PyQt5.QtCore
 import skyfield
 from mountcontrol import qtmount
-
-# from pympler import tracker, classtracker, muppy, summary
-
 # local import
 from mw4.gui import mainW
 from mw4.gui import messageW
@@ -98,6 +95,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # initialize commands to mount
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
+                                   # threadPool=self.threadPool,
                                    pathToData=pathToData,
                                    expire=expireData,
                                    verbose=None,
@@ -124,7 +122,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.hipparcos = hipparcos.Hipparcos(self, mwGlob=self.mwGlob)
         self.measure = measuredata.MeasureData(self)
         self.remote = remote.Remote(self)
-        self.astrometry = astrometry.Astrometry(mwGlob['tempDir'], self.threadPool)
+        self.astrometry = astrometry.Astrometry(tempDir=mwGlob['tempDir'],
+                                                threadPool=self.threadPool)
 
         # get the window widgets up
         self.showWindows()
@@ -142,19 +141,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.setSingleShot(False)
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
-
-        self.update3s.connect(self.checkMemory)
-        gc.set_debug(gc.DEBUG_UNCOLLECTABLE)
-        # self.tracker = tracker.SummaryTracker()
-        # self.tracker = classtracker.ClassTracker()
-        # self.tracker.track_object(self, resolution_level=10)
-
-    def checkMemory(self):
-        pass
-        # print(gc.get_stats(), gc.get_threshold())
-        # self.tracker.print_diff()
-        # self.tracker.create_snapshot()
-        # self.tracker.stats.print_stats()
 
     def toggleHemisphereWindow(self):
         """

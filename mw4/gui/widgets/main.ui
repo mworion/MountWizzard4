@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -1706,7 +1706,7 @@
        <property name="geometry">
         <rect>
          <x>505</x>
-         <y>155</y>
+         <y>160</y>
          <width>136</width>
          <height>31</height>
         </rect>
@@ -1748,7 +1748,7 @@
        <property name="geometry">
         <rect>
          <x>505</x>
-         <y>25</y>
+         <y>20</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -1768,7 +1768,7 @@
        <property name="geometry">
         <rect>
          <x>505</x>
-         <y>45</y>
+         <y>40</y>
          <width>271</width>
          <height>1</height>
         </rect>
@@ -1809,7 +1809,7 @@
        <property name="geometry">
         <rect>
          <x>645</x>
-         <y>155</y>
+         <y>160</y>
          <width>131</width>
          <height>31</height>
         </rect>
@@ -2006,7 +2006,7 @@
          <x>485</x>
          <y>20</y>
          <width>10</width>
-         <height>176</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -2612,7 +2612,7 @@
         <rect>
          <x>190</x>
          <y>225</y>
-         <width>66</width>
+         <width>41</width>
          <height>21</height>
         </rect>
        </property>
@@ -2622,7 +2622,7 @@
         </font>
        </property>
        <property name="text">
-        <string>HH:MM:SS</string>
+        <string>HMS</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_222">
@@ -2630,7 +2630,7 @@
         <rect>
          <x>190</x>
          <y>285</y>
-         <width>66</width>
+         <width>36</width>
          <height>21</height>
         </rect>
        </property>
@@ -2640,7 +2640,7 @@
         </font>
        </property>
        <property name="text">
-        <string>YY-MM-DD</string>
+        <string>YMD</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="statusRefraction">
@@ -2777,7 +2777,7 @@
         <rect>
          <x>190</x>
          <y>255</y>
-         <width>66</width>
+         <width>36</width>
          <height>21</height>
         </rect>
        </property>
@@ -2787,7 +2787,7 @@
         </font>
        </property>
        <property name="text">
-        <string>HH:MM:SS</string>
+        <string>HMS</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_148">
@@ -2907,7 +2907,7 @@
       <widget class="QLabel" name="label_28">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>545</x>
          <y>285</y>
          <width>121</width>
          <height>21</height>
@@ -2925,7 +2925,7 @@
       <widget class="QLabel" name="label_20">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>545</x>
          <y>225</y>
          <width>121</width>
          <height>21</height>
@@ -2943,7 +2943,7 @@
       <widget class="QLabel" name="label_4">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>545</x>
          <y>255</y>
          <width>121</width>
          <height>21</height>
@@ -3315,7 +3315,7 @@
       <widget class="QLabel" name="label_6">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>545</x>
          <y>345</y>
          <width>101</width>
          <height>21</height>
@@ -3333,7 +3333,7 @@
       <widget class="QLabel" name="label_5">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>545</x>
          <y>375</y>
          <width>101</width>
          <height>21</height>
@@ -3351,7 +3351,7 @@
       <widget class="QLabel" name="label_12">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>545</x>
          <y>405</y>
          <width>101</width>
          <height>21</height>
@@ -3372,9 +3372,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>620</x>
+         <x>645</x>
          <y>375</y>
-         <width>121</width>
+         <width>96</width>
          <height>21</height>
         </rect>
        </property>
@@ -3423,9 +3423,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>620</x>
+         <x>645</x>
          <y>345</y>
-         <width>121</width>
+         <width>96</width>
          <height>21</height>
         </rect>
        </property>
@@ -3537,9 +3537,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>620</x>
+         <x>645</x>
          <y>405</y>
-         <width>121</width>
+         <width>96</width>
          <height>21</height>
         </rect>
        </property>

@@ -107,11 +107,6 @@ def test_updateMountConnStat():
     assert 'red' == app.mainW.ui.mountConnected.property('color')
 
 
-def test_clearMountGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_saveProfile1(qtbot):
     with mock.patch.object(app,
                            'saveConfig',

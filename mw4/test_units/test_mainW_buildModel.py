@@ -65,11 +65,6 @@ def test_setupIcons():
     assert suc
 
 
-def test_clearGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_genBuildGrid_1():
     app.mainW.ui.numberGridPointsRow.setValue(10)
     app.mainW.ui.numberGridPointsCol.setValue(10)

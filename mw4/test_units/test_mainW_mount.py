@@ -61,11 +61,6 @@ def test_setupIcons():
     assert suc
 
 
-def test_clearGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_updatePointGui_alt():
     value = '45'
     app.mount.obsSite.Alt = value

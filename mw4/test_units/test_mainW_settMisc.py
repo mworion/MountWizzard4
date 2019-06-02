@@ -61,11 +61,6 @@ def test_setupIcons():
     assert suc
 
 
-def test_clearGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_setLoggingLevel1(qtbot):
     app.mainW.ui.loglevelDebug.setChecked(True)
     app.mainW.setLoggingLevel()

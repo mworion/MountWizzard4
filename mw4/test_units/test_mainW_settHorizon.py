@@ -63,11 +63,6 @@ def test_setupIcons():
     assert suc
 
 
-def test_clearGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_loadHorizonMaskFile_1(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',

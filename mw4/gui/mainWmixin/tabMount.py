@@ -190,6 +190,84 @@ class Mount(object):
 
         return True
 
+    def updateSettingGUI(self, sett):
+        """
+        updateSettingGUI update the gui upon events triggered be the reception of new
+        settings from the mount. the mount data is polled, so we use this signal as well
+        for the update process.
+
+        :return:    True if ok for testing
+        """
+
+        if sett.slewRate is not None:
+            self.ui.slewRate.setText('{0:2.0f}'.format(sett.slewRate))
+        else:
+            self.ui.slewRate.setText('-')
+
+        if sett.timeToFlip is not None:
+            self.ui.timeToFlip.setText('{0:3.0f}'.format(sett.timeToFlip))
+        else:
+            self.ui.timeToFlip.setText('-')
+
+        if sett.timeToMeridian() is not None:
+            self.ui.timeToMeridian.setText('{0:3.0f}'.format(sett.timeToMeridian()))
+        else:
+            self.ui.timeToMeridian.setText('-')
+
+        if sett.refractionTemp is not None:
+            self.ui.refractionTemp.setText('{0:+4.1f}'.format(sett.refractionTemp))
+            self.ui.refractionTemp1.setText('{0:+4.1f}'.format(sett.refractionTemp))
+        else:
+            self.ui.refractionTemp.setText('-')
+            self.ui.refractionTemp1.setText('-')
+
+        if sett.refractionPress is not None:
+            self.ui.refractionPress.setText('{0:6.1f}'.format(sett.refractionPress))
+            self.ui.refractionPress1.setText('{0:6.1f}'.format(sett.refractionPress))
+        else:
+            self.ui.refractionPress.setText('-')
+            self.ui.refractionPress1.setText('-')
+
+        if sett.meridianLimitTrack is not None:
+            self.ui.meridianLimitTrack.setText(str(sett.meridianLimitTrack))
+        else:
+            self.ui.meridianLimitTrack.setText('-')
+
+        if sett.meridianLimitSlew is not None:
+            self.ui.meridianLimitSlew.setText(str(sett.meridianLimitSlew))
+        else:
+            self.ui.meridianLimitSlew.setText('-')
+
+        if sett.horizonLimitLow is not None:
+            self.ui.horizonLimitLow.setText(str(sett.horizonLimitLow))
+        else:
+            self.ui.horizonLimitLow.setText('-')
+
+        if sett.horizonLimitHigh is not None:
+            self.ui.horizonLimitHigh.setText(str(sett.horizonLimitHigh))
+        else:
+            self.ui.horizonLimitHigh.setText('-')
+
+        return True
+
+    def updateLocGUI(self, location):
+        """
+        updateLocGUI update the gui upon events triggered be the reception of new
+        settings from the mount. the mount data is polled, so we use this signal as well
+        for the update process.
+
+        :return:    True if ok for testing
+        """
+
+        if location is not None:
+            lon = location.longitude.dstr().replace('deg', '')
+            self.ui.siteLongitude.setText(lon)
+            lat = location.latitude.dstr().replace('deg', '')
+            self.ui.siteLatitude.setText(lat)
+            self.ui.siteElevation.setText(str(location.elevation.m))
+
+        return True
+
     def updateTrackingGui(self, sett):
         """
         updateTrackingGui update the gui upon events triggered be the reception of new
@@ -318,3 +396,282 @@ class Mount(object):
         else:
             self.app.message.emit('Mount stopped', 0)
             return True
+
+
+    def setMeridianLimitTrack(self):
+        """
+        setMeridianLimitTrack implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        msg = PyQt5.QtWidgets.QMessageBox
+        obs = self.app.mount.obsSite
+        actValue = sett.meridianLimitTrack
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Meridian Limit Track',
+                               'Value (-20-20):',
+                               actValue,
+                               -20,
+                               20,
+                               1,
+                               )
+
+        if ok:
+            if obs.setMeridianLimitTrack(value):
+                self.app.message.emit('Meridian Limit Track: [{0}]'.format(value), 0)
+                return True
+            else:
+                self.app.message.emit('Meridian Limit Track cannot be set', 2)
+                return False
+        else:
+            return False
+
+    def setMeridianLimitSlew(self):
+        """
+        setMeridianLimitSlew implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = sett.meridianLimitSlew
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Meridian Limit Slew',
+                               'Value (-20-20):',
+                               actValue,
+                               -20,
+                               20,
+                               1,
+                               )
+
+        if ok:
+            if obs.setMeridianLimitSlew(value):
+                self.app.message.emit('Meridian Limit Slew: [{0}]'.format(value), 0)
+                return True
+            else:
+                self.app.message.emit('Meridian Limit Slew cannot be set', 2)
+                return False
+        else:
+            return False
+
+    def setHorizonLimitHigh(self):
+        """
+        setHorizonLimitHigh implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = sett.horizonLimitHigh
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Horizon Limit High',
+                               'Value (0-90):',
+                               actValue,
+                               0,
+                               90,
+                               1,
+                               )
+
+        if ok:
+            if obs.setHorizonLimitHigh(value):
+                self.app.message.emit('Horizon Limit High: [{0}]'.format(value), 0)
+                return True
+            else:
+                self.app.message.emit('Horizon Limit High cannot be set', 2)
+                return False
+        else:
+            return False
+
+    def setHorizonLimitLow(self):
+        """
+        setHorizonLimitLow implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = sett.horizonLimitLow
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Horizon Limit Low',
+                               'Value (0-90):',
+                               actValue,
+                               0,
+                               90,
+                               1,
+                               )
+
+        if ok:
+            if obs.setHorizonLimitLow(value):
+                self.app.message.emit('Horizon Limit Low: [{0}]'.format(value), 0)
+                return True
+            else:
+                self.app.message.emit('Horizon Limit Low cannot be set', 2)
+                return False
+        else:
+            return False
+
+    def setSlewRate(self):
+        """
+        setSlewRate implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+        sett = self.app.mount.sett
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = sett.slewRate
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set Slew Rate',
+                               'Value (1-20):',
+                               actValue,
+                               1,
+                               20,
+                               1,
+                               )
+
+        if ok:
+            if obs.setSlewRate(value):
+                self.app.message.emit('Slew Rate: [{0}]'.format(value), 0)
+                return True
+            else:
+                self.app.message.emit('Slew Rate cannot be set', 2)
+                return False
+        else:
+            return False
+
+    def setLongitude(self):
+        """
+        setSiteLongitude implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        if obs.location is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getText(self,
+                                'Set Site Longitude',
+                                'Value: (East positive)',
+                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                obs.location.longitude.dstr(),
+                                )
+        if ok:
+            if obs.setLongitude(value):
+                self.app.message.emit('Longitude: [{0}]'.format(value), 0)
+                self.app.mount.getLocation()
+                return True
+            else:
+                self.app.message.emit('Longitude cannot be set', 2)
+                return False
+        else:
+            return False
+
+    def setLatitude(self):
+        """
+        setSiteLatitude implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        if obs.location is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getText(self,
+                                'Set Site Latitude',
+                                'Value:',
+                                PyQt5.QtWidgets.QLineEdit.Normal,
+                                obs.location.latitude.dstr(),
+                                )
+        if ok:
+            if obs.setLatitude(value):
+                self.app.message.emit('Latitude: [{0}]'.format(value), 0)
+                self.app.mount.getLocation()
+                return True
+            else:
+                self.app.message.emit('Latitude cannot be set', 2)
+                return False
+        else:
+            return False
+
+    def setElevation(self):
+        """
+        setSiteElevation implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        if obs.location is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getDouble(self,
+                                  'Set Site Elevation',
+                                  'Value: (meters)',
+                                  obs.location.elevation.m,
+                                  0,
+                                  8000,
+                                  1,
+                                  )
+        if ok:
+            if obs.setElevation(value):
+                self.app.message.emit('Elevation: [{0}]'.format(value), 0)
+                self.app.mount.getLocation()
+                return True
+            else:
+                self.app.message.emit('Elevation cannot be set', 2)
+        else:
+            return False

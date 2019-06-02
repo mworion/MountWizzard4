@@ -59,10 +59,6 @@ def test_setupIcons():
     assert app.mainW.setupIcons()
 
 
-def test_clearGui():
-    assert app.mainW.clearGUI()
-
-
 def test_setNameList():
     value = ['Test1', 'test2', 'test3', 'test4']
     app.mount.model.nameList = value

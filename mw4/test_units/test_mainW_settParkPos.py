@@ -61,11 +61,6 @@ def test_setupIcons():
     assert suc
 
 
-def test_clearGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_initConfig_1():
     config = app.config['mainW']
     for i in range(0, 8):

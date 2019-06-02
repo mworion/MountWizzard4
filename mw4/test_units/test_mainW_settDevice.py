@@ -61,11 +61,6 @@ def test_setupIcons():
     assert suc
 
 
-def test_clearGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_setupDeviceGui_1():
     suc = app.mainW.setupDeviceGui()
     assert suc

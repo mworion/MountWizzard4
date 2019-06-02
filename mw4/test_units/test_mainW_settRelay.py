@@ -61,11 +61,6 @@ def test_setupIcons():
     assert suc
 
 
-def test_clearGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_setupRelayGui(qtbot):
     assert 8 == len(app.mainW.relayDropDowns)
     assert 8 == len(app.mainW.relayButtonTexts)

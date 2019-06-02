@@ -62,11 +62,6 @@ def test_setupIcons():
     assert suc
 
 
-def test_clearGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_updateFwGui_productName():
     value = 'Test1234'
     app.mount.fw.productName = value

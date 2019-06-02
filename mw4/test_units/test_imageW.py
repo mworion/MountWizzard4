@@ -110,22 +110,24 @@ def test_solveImage_1(qtbot):
     pass
 
 
-def test_writeHeaderToGui_1():
+def test_writeHeaderToGUI_1():
     header = fits.PrimaryHDU().header
-    suc = app.imageW.writeHeaderToGui(header=header)
+    suc = app.imageW.writeHeaderToGUI(header=header)
     assert suc == (False, None)
 
 
-def test_writeHeaderToGui_2():
+def test_writeHeaderToGUI_2():
     header = fits.PrimaryHDU().header
+    header['naxis'] = 2
     header['CTYPE1'] = None
-    suc = app.imageW.writeHeaderToGui(header=header)
+    suc = app.imageW.writeHeaderToGUI(header=header)
     assert not suc[0]
 
 
 def test_zoomImage_1():
     image = None
     header = fits.PrimaryHDU().header
+    header['naxis'] = 2
     wcsObject = wcs.WCS(header)
     suc = app.imageW.zoomImage(image=image, wcsObject=wcsObject)
     assert suc is None
@@ -134,6 +136,7 @@ def test_zoomImage_1():
 def test_zoomImage_2():
     image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
+    header['naxis'] = 2
     wcsObject = wcs.WCS(header)
     app.imageW.ui.zoom.setCurrentIndex(0)
     suc = app.imageW.zoomImage(image=image, wcsObject=wcsObject)
@@ -143,6 +146,7 @@ def test_zoomImage_2():
 def test_zoomImage_3():
     image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
+    header['naxis'] = 2
     wcsObject = wcs.WCS(header)
     app.imageW.ui.zoom.setCurrentIndex(1)
     suc = app.imageW.zoomImage(image=image, wcsObject=wcsObject)

@@ -346,9 +346,9 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def writeHeaderToGui(self, header=None):
+    def writeHeaderToGUI(self, header=None):
         """
-        writeHeaderToGui tries to read relevant values from FITS header and possible
+        writeHeaderToGUI tries to read relevant values from FITS header and possible
         replace values and write them to the imageW gui
 
         :param header: header of fits file
@@ -401,7 +401,7 @@ class ImageWindow(widget.MWidget):
 
         # check if distortion is in header
         if 'CTYPE1' in header:
-            wcsObject = wcs.WCS(header)
+            wcsObject = wcs.WCS(header, relax=True)
             hasCelestial = wcsObject.has_celestial
             hasDistortion = wcsObject.has_distortion
         else:
@@ -600,7 +600,7 @@ class ImageWindow(widget.MWidget):
                 header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
 
         # check the data content and capabilities
-        hasDistortion, wcsObject = self.writeHeaderToGui(header=header)
+        hasDistortion, wcsObject = self.writeHeaderToGUI(header=header)
 
         # process the image for viewing
         self.imageData = self.zoomImage(image=self.imageData, wcsObject=wcsObject)

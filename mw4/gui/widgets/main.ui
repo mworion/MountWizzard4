@@ -1190,7 +1190,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -12708,7 +12708,7 @@ manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>7</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -14422,7 +14422,7 @@ manually</string>
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QDoubleSpinBox" name="serachRadius">
+        <widget class="QDoubleSpinBox" name="searchRadius">
          <property name="geometry">
           <rect>
            <x>705</x>

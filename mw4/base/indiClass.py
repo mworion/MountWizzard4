@@ -21,6 +21,7 @@
 import logging
 from datetime import datetime
 # external packages
+import PyQt5
 import numpy as np
 from indibase import qtIndiBase
 # local imports
@@ -33,18 +34,19 @@ class IndiClass(object):
 
         >>> fw = IndiClass(
         >>>                  host=host
-        >>>                  name='MBox'
+        >>>                  name=''
         >>>                 )
     """
 
-    __all__ = ['MBox',
+    __all__ = [
                ]
 
-    version = '0.1'
+    version = '0.8'
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 1
+    RETRY_DELAY = 3000
 
     def __init__(self,
                  host=None,
@@ -56,6 +58,10 @@ class IndiClass(object):
         self.name = name
         self.data = {}
         self.device = None
+
+        self.timerRetry = PyQt5.QtCore.QTimer()
+        self.timerRetry.setSingleShot(True)
+        self.timerRetry.timeout.connect(self.startRetry)
 
         # link signals
         self.client.signals.newDevice.connect(self.newDevice)
@@ -93,7 +99,7 @@ class IndiClass(object):
 
         if self.name:
             suc = self.client.watchDevice(self.name)
-            self.logger.info(f'Indi server connected, starting watch: result:{suc}')
+            self.logger.info(f'Indi server {self.name} connected, watch: result:{suc}')
             return suc
         return False
 
@@ -130,6 +136,19 @@ class IndiClass(object):
         else:
             return False
 
+    def startRetry(self):
+        """
+        startRetry tries to connect the server a second time, if that
+        is not the case actually.
+
+        :return: True for test purpose
+        """
+        if not self.client.connected:
+            suc = self.client.connectServer()
+            self.logger.info(f'Indi server {self.name} connection retry: result:{suc}')
+
+        return True
+
     def startCommunication(self):
         """
         startCommunication adds a device on the watch list of the server.
@@ -138,6 +157,10 @@ class IndiClass(object):
         """
 
         self.client.startTimers()
+
+        # adding a single retry if first connect does not happen after 1 second
+        self.timerRetry.start(self.RETRY_DELAY)
+
         suc = self.client.connectServer()
         return suc
 

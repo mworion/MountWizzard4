@@ -38,8 +38,7 @@ class IndiClass(object):
         >>>                 )
     """
 
-    __all__ = [
-               ]
+    __all__ = ['IndiClass']
 
     version = '0.8'
     logger = logging.getLogger(__name__)

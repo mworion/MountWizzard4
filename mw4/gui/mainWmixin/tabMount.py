@@ -397,7 +397,6 @@ class Mount(object):
             self.app.message.emit('Mount stopped', 0)
             return True
 
-
     def setMeridianLimitTrack(self):
         """
         setMeridianLimitTrack implements a modal dialog for entering the value

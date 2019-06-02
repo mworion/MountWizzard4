@@ -90,6 +90,8 @@ class BuildModel(object):
         self.modelQueue = queue.Queue()
         self.collector = QMultiWait()
         self.startModeling = None
+        self.modelName = ''
+        self.modelDir = ''
         self.lastModelType = ''
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
@@ -881,9 +883,6 @@ class BuildModel(object):
             self.logger.debug(f'only {len(model)} points available')
             return False
 
-        modelName = f'm-{self.lastModelType}-{model[0].mParam.name}'
-        modelPath = f'{self.app.mwGlob["modelDir"]}/{modelName}.model'
-
         saveModel = list()
         for mPoint in model:
             sPoint = {'name': mPoint.mParam.name,
@@ -909,7 +908,9 @@ class BuildModel(object):
                       }
             saveModel.append(sPoint)
 
-        self.app.message.emit(f'writing model [{modelName}]', 0)
+        self.app.message.emit(f'writing model [{self.modelName}]', 0)
+
+        modelPath = f'{self.modelDir}.model'
         with open(modelPath, 'w') as outfile:
             json.dump(saveModel,
                       outfile,
@@ -1021,14 +1022,15 @@ class BuildModel(object):
             return False
 
         # collection locations for files
-        modelName = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        directory = f'{self.app.mwGlob["imageDir"]}/{modelName}'
-        os.mkdir(directory)
-        if not os.path.isdir(directory):
+        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        self.modelName = f'm-{self.lastModelType}-{nameTime}'
+        self.modelDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
+        os.mkdir(self.modelDir)
+        if not os.path.isdir(self.modelDir):
             return False
 
         self.clearQueues()
-        self.app.message.emit(f'Modeling m-{self.lastModelType}-{modelName} started', 1)
+        self.app.message.emit(f'Modeling {self.modelName} started', 1)
 
         # collection all necessary information
         expTime = self.app.mainW.ui.expTime.value()
@@ -1050,7 +1052,7 @@ class BuildModel(object):
         number = len(points)
         for count, point in enumerate(points):
             # define the path to the image file
-            path = f'{directory}/image-{count:03d}.fits'
+            path = f'{self.modelDir}/image-{count:03d}.fits'
 
             iParam = IParam(expTime=expTime,
                             binning=binning,
@@ -1060,7 +1062,7 @@ class BuildModel(object):
             mParam = MParam(number=number,
                             count=count,
                             path=path,
-                            name=modelName,
+                            name=self.modelName,
                             astrometry=app,
                             )
 

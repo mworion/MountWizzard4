@@ -4482,7 +4482,7 @@ manually</string>
         <rect>
          <x>10</x>
          <y>365</y>
-         <width>346</width>
+         <width>341</width>
          <height>1</height>
         </rect>
        </property>
@@ -7559,7 +7559,7 @@ manually</string>
       <widget class="QLabel" name="label_179">
        <property name="geometry">
         <rect>
-         <x>190</x>
+         <x>215</x>
          <y>160</y>
          <width>101</width>
          <height>21</height>
@@ -7681,7 +7681,7 @@ manually</string>
       <widget class="QDoubleSpinBox" name="numberGridPointsCol">
        <property name="geometry">
         <rect>
-         <x>290</x>
+         <x>315</x>
          <y>160</y>
          <width>51</width>
          <height>21</height>
@@ -8011,7 +8011,7 @@ manually</string>
       <widget class="QLabel" name="label_180">
        <property name="geometry">
         <rect>
-         <x>190</x>
+         <x>215</x>
          <y>185</y>
          <width>101</width>
          <height>21</height>
@@ -8029,7 +8029,7 @@ manually</string>
       <widget class="QDoubleSpinBox" name="altitudeMax">
        <property name="geometry">
         <rect>
-         <x>290</x>
+         <x>315</x>
          <y>185</y>
          <width>51</width>
          <height>21</height>
@@ -8123,9 +8123,9 @@ manually</string>
       <widget class="QLabel" name="label_137">
        <property name="geometry">
         <rect>
-         <x>340</x>
+         <x>365</x>
          <y>160</y>
-         <width>21</width>
+         <width>16</width>
          <height>20</height>
         </rect>
        </property>
@@ -8147,9 +8147,9 @@ manually</string>
       <widget class="QLabel" name="label_144">
        <property name="geometry">
         <rect>
-         <x>340</x>
+         <x>365</x>
          <y>185</y>
-         <width>21</width>
+         <width>16</width>
          <height>20</height>
         </rect>
        </property>
@@ -8219,7 +8219,7 @@ manually</string>
       <widget class="QPushButton" name="genBuildMin">
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>290</x>
          <y>245</y>
          <width>86</width>
          <height>26</height>
@@ -8776,7 +8776,7 @@ manually</string>
         <rect>
          <x>200</x>
          <y>245</y>
-         <width>86</width>
+         <width>81</width>
          <height>26</height>
         </rect>
        </property>
@@ -8810,7 +8810,7 @@ manually</string>
         <rect>
          <x>10</x>
          <y>395</y>
-         <width>371</width>
+         <width>366</width>
          <height>1</height>
         </rect>
        </property>

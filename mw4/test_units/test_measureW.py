@@ -136,18 +136,15 @@ def test_setupAxes_4():
 
 def test_setupAxes_5():
     fig = app.measureW.measureMat.figure
-    #print('start')
-    suc = app.measureW.setupAxes(figure=fig, numberPlots=2)
-    #print('func')
-    assert suc
-    assert len(app.measureW.measureMat.figure.axes) == 2
-    #print('ready')
+    suc = app.measureW.setupAxes(figure=fig, numberPlots=4)
+    assert not suc
 
 
 def test_setupAxes_6():
     fig = app.measureW.measureMat.figure
-    suc = app.measureW.setupAxes(figure=fig, numberPlots=4)
-    assert not suc
+    suc = app.measureW.setupAxes(figure=fig, numberPlots=2)
+    assert suc
+    assert len(app.measureW.measureMat.figure.axes) == 2
 
 
 def test_plotRa_1():

@@ -129,40 +129,6 @@ class SiteStatus(object):
             return False
         return True
 
-    def updateFwGui(self, fw):
-        """
-        updateFwGui write all firmware data to the gui.
-
-        :return:    True if ok for testing
-        """
-
-        if fw.productName is not None:
-            self.ui.productName.setText(fw.productName)
-        else:
-            self.ui.productName.setText('-')
-
-        if fw.numberString is not None:
-            self.ui.numberString.setText(fw.numberString)
-        else:
-            self.ui.numberString.setText('-')
-
-        if fw.fwdate is not None:
-            self.ui.fwdate.setText(fw.fwdate)
-        else:
-            self.ui.fwdate.setText('-')
-
-        if fw.fwtime is not None:
-            self.ui.fwtime.setText(fw.fwtime)
-        else:
-            self.ui.fwtime.setText('-')
-
-        if fw.hwVersion is not None:
-            self.ui.hwVersion.setText(fw.hwVersion)
-        else:
-            self.ui.hwVersion.setText('-')
-
-        return True
-
     def clearEnvironGUI(self, deviceName):
         """
         clearEnvironGUI clears the gui data

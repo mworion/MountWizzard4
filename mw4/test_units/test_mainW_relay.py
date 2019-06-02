@@ -61,11 +61,6 @@ def test_setupIcons():
     assert suc
 
 
-def test_clearGUI():
-    suc = app.mainW.clearGUI()
-    assert suc
-
-
 def test_updateRelayGui(qtbot):
     app.mainW.relayButton = list()
     app.mainW.relayDropDown = list()

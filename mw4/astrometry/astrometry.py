@@ -262,57 +262,27 @@ class Astrometry(object):
 
         return value
 
-    def readFitsData(self, fitsHDU='', searchRatio=1.1, radius=2):
+    def readFitsData(self, fitsPath):
         """
         readFitsData reads the fits file with the image and tries to get some key
-        fields out of the header for preparing the solver. necessary data are
+        fields out of the header for preparing the solver.
 
-            - 'SCALE': pixel scale in arcsec per pixel
-            - 'OBJCTRA' : ra position of the object in HMS format
-            - 'OBJCTDEC' : dec position of the object in DMS format
-
-        we are taking OBJCTxy, because the precision is higher than in RA/DEC
-
-        :param fitsHDU: fits file with image data
-        :param searchRatio: how the scale is extended
-        :param radius: how the radius is extended
-        :return: options as string
+        :param fitsPath: fits file with image data
+        :return: raHint, decHint, scaleHint
         """
 
-        fitsHeader = fitsHDU[0].header
+        with fits.open(fitsPath) as fitsHDU:
+            fitsHeader = fitsHDU[0].header
 
-        # todo: there might be the necessity to read more alternative header info
-        # todo: the actual definition fit for EKOS
+            # todo: there might be the necessity to read more alternative header info
+            # todo: the actual definition fit for EKOS
+            scaleHint = float(fitsHeader.get('SCALE', 0))
+            raHint = float(fitsHeader.get('RA', 0))
+            decHint = float(fitsHeader.get('DEC', 0))
 
-        scale = fitsHeader.get('SCALE', '')
-        ra = fitsHeader.get('OBJCTRA', '')
-        dec = fitsHeader.get('OBJCTDEC', '')
+        self.logger.debug(f'RA: {raHint}, DEC: {decHint}, Scale: {scaleHint}')
 
-        self.logger.debug(f'RA: {ra}, DEC: {dec}, Scale: {scale}')
-
-        if not ra or not dec or not scale:
-            return ''
-
-        scale = float(scale)
-        ra = self.convertToHMS(ra)
-        dec = self.convertToDMS(dec)
-
-        scaleLow = scale / searchRatio
-        scaleHigh = scale * searchRatio
-
-        options = ['--scale-low',
-                   f'{scaleLow}',
-                   '--scale-high',
-                   f'{scaleHigh}',
-                   '--ra',
-                   f'{ra}',
-                   '--dec',
-                   f'{dec}',
-                   '--radius',
-                   f'{radius:1.1f}',
-                   ]
-
-        return options
+        return raHint, decHint, scaleHint
 
     @staticmethod
     def getWCSHeader(wcsHDU=''):
@@ -349,13 +319,17 @@ class Astrometry(object):
 
         return angle, scale, flipped
 
-    def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None):
+    def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFITS=False):
         """
         getSolutionFromWCS reads the fits header containing the wcs data and returns the
-        basic data needed
+        basic data needed.
+        in addition it embeds it to the given fits file with image. it removes all
+        entries starting with some keywords given in selection. we starting with
+        HISTORY
 
         :param fitsHeader:
         :param wcsHeader:
+        :param updateFITS:
         :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
                  error in arcsec and flag if image is flipped
         """
@@ -379,20 +353,8 @@ class Astrometry(object):
                       error=error,
                       flipped=flipped)
 
-        return solve
-
-    def updateFitsWithWCSData(self, fitsHeader=None, wcsHeader=None, solve=None):
-        """
-        updateFitsWithWCSData reads the fits file containing the wcs data output from
-        solve-field and embeds it to the given fits file with image. it removes all
-        entries starting with some keywords given in selection. we starting with
-        HISTORY
-
-        :param fitsHeader: fits header from image file, where wcs should be embedded
-        :param wcsHeader: fits header with wcs info to be embedded
-        :param solve: parameter calculation for image attributes
-        :return: true for test purpose
-        """
+        if not updateFITS:
+            return solve
 
         remove = ['COMMENT', 'HISTORY']
 
@@ -407,7 +369,7 @@ class Astrometry(object):
         fitsHeader['ANGLE'] = solve.angle
         fitsHeader['FLIPPED'] = solve.flipped
 
-        return True
+        return solve
 
     def runImage2xy(self, binPath='', xyPath='', fitsPath=''):
         """
@@ -503,7 +465,8 @@ class Astrometry(object):
         success = (result.returncode == 0)
         return success
 
-    def solve(self, app='', fitsPath='', radius=2, timeout=30, updateFits=False):
+    def solve(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
+              radius=2, timeout=30, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -521,6 +484,9 @@ class Astrometry(object):
 
         :param app: which astrometry implementation to choose
         :param fitsPath:  full path to fits file
+        :param raHint:  ra dest to look for solve in J2000
+        :param decHint:  dec dest to look for solve in J2000
+        :param scaleHint:  scale to look for solve in J2000
         :param radius:  search radius around target coordinates
         :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
@@ -550,20 +516,42 @@ class Astrometry(object):
             self.logger.error(f'image2xy error in [{fitsPath}]')
             return False
 
-        with fits.open(fitsPath) as fitsHDU:
-            solveOptions = self.readFitsData(fitsHDU=fitsHDU,
-                                             radius=radius)
+        raFITS, decFITS, scaleFITS = self.readFitsData(fitsPath=fitsPath)
+
+        if raFITS is not None:
+            raHint = raFITS
+        if decFITS is not None:
+            decHint = decFITS
+        if raFITS is not None:
+            scaleHint = scaleFITS
+
+        searchRatio = 1.1
+        ra = self.convertToHMS(raHint)
+        dec = self.convertToDMS(decHint)
+        scaleLow = scaleHint / searchRatio
+        scaleHigh = scaleHint * searchRatio
+        options = ['--scale-low',
+                   f'{scaleLow}',
+                   '--scale-high',
+                   f'{scaleHigh}',
+                   '--ra',
+                   f'{ra}',
+                   '--dec',
+                   f'{dec}',
+                   '--radius',
+                   f'{radius:1.1f}',
+                   ]
 
         # split between ekos and cloudmakers as cloudmakers use an older version of
         # solve-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
         if app == 'CloudMakers':
-            solveOptions.append('--no-fits2fits')
+            options.append('--no-fits2fits')
 
         suc = self.runSolveField(binPath=binPathSolveField,
                                  configPath=configPath,
                                  xyPath=xyPath,
-                                 options=solveOptions,
+                                 options=options,
                                  timeout=timeout,
                                  )
         if not suc:
@@ -579,12 +567,8 @@ class Astrometry(object):
         with fits.open(fitsPath, mode='update') as fitsHDU:
             fitsHeader = fitsHDU[0].header
             solve = self.getSolutionFromWCS(fitsHeader=fitsHeader,
-                                            wcsHeader=wcsHeader)
-            if updateFits:
-                self.updateFitsWithWCSData(fitsHeader=fitsHeader,
-                                           wcsHeader=wcsHeader,
-                                           solve=solve,
-                                           )
+                                            wcsHeader=wcsHeader,
+                                            updateFITS=updateFits)
 
         self.result = Solution(success=True,
                                solve=solve)
@@ -603,7 +587,8 @@ class Astrometry(object):
         self.signals.done.emit(self.result)
         self.signals.message.emit('')
 
-    def solveThreading(self, app='', fitsPath='', radius=2, timeout=30, updateFits=False):
+    def solveThreading(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
+                       radius=2, timeout=30, updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a threadpool
         environment of Qt. Otherwise the HMI would be stuck all the time during solving.
@@ -612,6 +597,9 @@ class Astrometry(object):
 
         :param app: which astrometry implementation to choose
         :param fitsPath: full path to the fits image file to be solved
+        :param raHint:  ra dest to look for solve in J2000
+        :param decHint:  dec dest to look for solve in J2000
+        :param scaleHint:  scale to look for solve in J2000
         :param radius:  search radius around target coordinates
         :param timeout: as said
         :param updateFits: flag, if the results should be written to the original file
@@ -633,6 +621,9 @@ class Astrometry(object):
         worker = tpool.Worker(self.solve,
                               app=app,
                               fitsPath=fitsPath,
+                              raHint=raHint,
+                              decHint=decHint,
+                              scaleHint=scaleHint,
                               radius=radius,
                               timeout=timeout,
                               updateFits=updateFits,

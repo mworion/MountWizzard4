@@ -588,7 +588,7 @@ class BuildModel(object):
         it puts the model point to the next queue, the result queue.
 
         in addition if the image window is present, it send a signal for displaying the
-        actual captured imaged.
+        actual captured image.
 
         it shows the actual processed point index in GUI
 

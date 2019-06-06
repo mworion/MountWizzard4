@@ -27,6 +27,7 @@ import time
 from collections import namedtuple
 # external packages
 import PyQt5.QtWidgets
+from mw4.base import transform
 from skyfield.api import Angle
 from astropy.io import fits
 from astropy.wcs import WCS
@@ -140,128 +141,6 @@ class Astrometry(object):
 
         return True
 
-    def stringToDegree(self, value):
-        """
-        stringToDegree takes any form of HMS / DMS string format and tries to convert it
-        to a decimal number.
-
-        :param value:
-        :return: value as decimal in degrees or None if not succeeded
-        """
-
-        if not isinstance(value, str):
-            return None
-        if not len(value):
-            return None
-        if value.count('+') > 1:
-            return None
-        if value.count('-') > 1:
-            return None
-
-        # managing different coding styles
-        value = value.replace('*', ' ')
-        value = value.replace(':', ' ')
-        value = value.replace('deg', ' ')
-        value = value.replace('"', ' ')
-        value = value.replace('\'', ' ')
-        value = value.split()
-
-        try:
-            value = [float(x) for x in value]
-        except Exception as e:
-            self.logger.debug(f'error: {e}, value: {value}')
-            return None
-        sign = 1 if value[0] > 0 else -1
-        value[0] = abs(value[0])
-
-        if len(value) == 3:
-            value = sign * (value[0] + value[1] / 60 + value[2] / 3600)
-            return value
-        elif len(value) == 2:
-            value = sign * (value[0] + value[1] / 60)
-            return value
-        else:
-            return None
-
-    def convertToHMS(self, ra):
-        """
-        takes the given RA value, which should be in HMS format (but different types) and
-        convert it to solve-field readable string in HH:MM:SS
-
-        KEYWORD:   RA
-        REFERENCE: NOAO
-        HDU:       any
-        DATATYPE:  real or string
-        UNIT:      deg
-        COMMENT:   R.A. of the observation
-        DEFINITION: The value field gives the Right Ascension of the
-        observation.  It may be expressed either as a floating point number in
-        units of decimal degrees, or as a character string in 'HH:MM:SS.sss'
-        format where the decimal point and number of fractional digits are
-        optional. The coordinate reference frame is given by the RADECSYS
-        keyword, and the coordinate epoch is given by the EQUINOX keyword.
-        Example: 180.6904 or '12:02:45.7'.
-
-        The value field shall contain a character string giving the
-        Right Ascension of the observation in 'hh:mm:ss.sss' format.  The decimal
-        point and fractional seconds are optional. The coordinate
-        reference frame is given by the RADECSYS keyword, and the coordinate
-        epoch is given by the EQUINOX keyword. Example: '13:29:24.00'
-
-        :param ra: right ascension in degrees
-        :return: converted value as string
-        """
-
-        if not isinstance(ra, float):
-            ra = self.stringToDegree(ra)
-            if ra is None:
-                return None
-            angle = Angle(hours=ra, preference='hours')
-        else:
-            angle = Angle(degrees=ra, preference='hours')
-
-        t = Angle.signed_hms(angle)
-        value = f'{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
-
-        return value
-
-    def convertToDMS(self, dec):
-        """
-        takes the given DEC value, which should be in DMS format (but different types) and
-        convert it to solve-field readable string in sDD:MM:SS
-
-        KEYWORD:   DEC
-        REFERENCE: NOAO
-        HDU:       any
-        DATATYPE:  real or string
-        UNIT:      deg
-        COMMENT:   declination of the observed object
-        DEFINITION: The value field gives the declination of the
-        observation.  It may be expressed either as a floating point number in
-        units of decimal degrees, or as a character string in 'dd:mm:ss.sss'
-        format where the decimal point and number of fractional digits are
-        optional. The coordinate reference frame is given by the RADECSYS
-        keyword, and the coordinate epoch is given by the EQUINOX keyword.
-        Example: -47.25944 or '-47:15:34.00'.
-
-        :param dec: declination
-        :return: converted value as string
-        """
-
-        if not isinstance(dec, float):
-            dec = self.stringToDegree(dec)
-
-        if dec is None:
-            return None
-
-        angle = Angle(degrees=dec, preference='degrees')
-
-        t = Angle.signed_dms(angle)
-        sign = '+' if angle.degrees > 0 else '-'
-        value = f'{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
-
-        return value
-
     def readFitsData(self, fitsPath):
         """
         readFitsData reads the fits file with the image and tries to get some key
@@ -361,9 +240,9 @@ class Astrometry(object):
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
         fitsHeader['RA'] = solve.raJ2000
-        fitsHeader['OBJCTRA'] = self.convertToHMS(solve.raJ2000)
+        fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
         fitsHeader['DEC'] = solve.decJ2000
-        fitsHeader['OBJCTDEC'] = self.convertToDMS(solve.decJ2000)
+        fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
         fitsHeader['SCALE'] = solve.scale
         fitsHeader['PIXSCALE'] = solve.scale
         fitsHeader['ANGLE'] = solve.angle
@@ -526,8 +405,8 @@ class Astrometry(object):
             scaleHint = scaleFITS
 
         searchRatio = 1.1
-        ra = self.convertToHMS(raHint)
-        dec = self.convertToDMS(decHint)
+        ra = transform.convertToHMS(raHint)
+        dec = transform.convertToDMS(decHint)
         scaleLow = scaleHint / searchRatio
         scaleHigh = scaleHint * searchRatio
         options = ['--scale-low',

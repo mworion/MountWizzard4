@@ -303,9 +303,9 @@ class ImageWindow(widget.MWidget):
         rData = result.solve
         if not isinstance(rData, tuple):
             return False
-        text = f'Ra: {rData.raJ2000:5.2f}   Dec: {rData.decJ2000:5.2f}'
+        text = f'Ra: {rData.raJ2000:5.6f}   Dec: {rData.decJ2000:5.6f}'
         text += f'   Error: {rData.error:5.2f}   Angle: {rData.angle:3.0f}'
-        text += f'   Scale: {rData.scale:4.2f}'
+        text += f'   Scale: {rData.scale:4.6f}'
         self.app.message.emit('Solved: ' + text, 0)
         self.signals.show.emit()
 
@@ -360,6 +360,9 @@ class ImageWindow(widget.MWidget):
 
         ra = header.get('RA', 0)
         dec = header.get('DEC', 0)
+        ra = 0
+        dec = 0
+        # todo: wrong
         if ra == 0 and dec == 0:
             ra = header.get('OBJCTRA', 0)
             dec = header.get('OBJCTDEC', 0)
@@ -694,8 +697,11 @@ class ImageWindow(widget.MWidget):
         exposure. it connects the callback for downloaded image and presets all necessary
         parameters for imaging
 
-        :return: True for test purpose
+        :return: success
         """
+
+        if not self.app.imaging.data:
+            return False
 
         self.changeStyleDynamic(self.ui.expose, 'running', 'true')
         self.ui.exposeN.setEnabled(False)
@@ -715,8 +721,11 @@ class ImageWindow(widget.MWidget):
         exposure. it connects the callback for downloaded image and presets all necessary
         parameters for imaging
 
-        :return: True for test purpose
+        :return: success
         """
+
+        if not self.app.imaging.data:
+            return False
 
         self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
         self.ui.expose.setEnabled(False)

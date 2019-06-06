@@ -32,6 +32,7 @@ import numpy as np
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
+from mw4.base import transform
 
 
 class ImageWindowSignals(PyQt5.QtCore.QObject):
@@ -358,19 +359,12 @@ class ImageWindow(widget.MWidget):
         name = header.get('OBJECT', '').upper()
         self.ui.object.setText(f'{name}')
 
-        ra = header.get('RA', 0)
-        dec = header.get('DEC', 0)
-        ra = 0
-        dec = 0
-        # todo: wrong
-        if ra == 0 and dec == 0:
-            ra = header.get('OBJCTRA', 0)
-            dec = header.get('OBJCTDEC', 0)
-            self.ui.ra.setText(f'{ra}')
-            self.ui.dec.setText(f'{dec}')
-        else:
-            self.ui.ra.setText(f'{ra:8.5f}')
-            self.ui.dec.setText(f'{dec:8.5f}')
+        ra = header.get('OBJCTRA', 0)
+        ra = transform.convertToAngle(ra, isHours=True)
+        dec = header.get('OBJCTDEC', 0)
+        dec = transform.convertToAngle(dec, isHours=False)
+        self.ui.ra.setText(f'{transform.convertToHMS(ra)}')
+        self.ui.dec.setText(f'{transform.convertToDMS(dec)}')
 
         scale = header.get('SCALE', 0)
         rotation = header.get('ANGLE', 0)

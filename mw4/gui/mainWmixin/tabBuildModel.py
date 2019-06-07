@@ -91,7 +91,7 @@ class BuildModel(object):
         self.collector = QMultiWait()
         self.startModeling = None
         self.modelName = ''
-        self.modelDir = ''
+        self.imageDir = ''
         self.lastModelType = ''
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
@@ -906,7 +906,7 @@ class BuildModel(object):
 
         self.app.message.emit(f'writing model [{self.modelName}]', 0)
 
-        modelPath = f'{self.modelName}.model'
+        modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
         with open(modelPath, 'w') as outfile:
             json.dump(saveModel,
                       outfile,
@@ -994,7 +994,7 @@ class BuildModel(object):
         # cleaning up the disk space
         if not self.ui.checkKeepImages.isChecked():
             self.app.message.emit('Deleting model images', 0)
-            shutil.rmtree(self.modelDir, ignore_errors=True)
+            shutil.rmtree(self.imageDir, ignore_errors=True)
 
         self.app.message.emit('Modeling finished', 1)
         self.playAudioModelFinished()
@@ -1018,9 +1018,9 @@ class BuildModel(object):
         # collection locations for files
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         self.modelName = f'm-{self.lastModelType}-{nameTime}'
-        self.modelDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
-        os.mkdir(self.modelDir)
-        if not os.path.isdir(self.modelDir):
+        self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
+        os.mkdir(self.imageDir)
+        if not os.path.isdir(self.imageDir):
             return False
 
         self.clearQueues()
@@ -1048,7 +1048,7 @@ class BuildModel(object):
         number = len(points)
         for count, point in enumerate(points):
             # define the path to the image file
-            path = f'{self.modelDir}/image-{count:03d}.fits'
+            path = f'{self.imageDir}/image-{count:03d}.fits'
 
             iParam = IParam(expTime=expTime,
                             binning=binning,

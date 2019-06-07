@@ -156,8 +156,8 @@ class Astrometry(object):
             # todo: there might be the necessity to read more alternative header info
             # todo: the actual definition fit for EKOS
             scaleHint = float(fitsHeader.get('SCALE', 0))
-            raHint = float(fitsHeader.get('RA', 0))
-            decHint = float(fitsHeader.get('DEC', 0))
+            raHint = transform.convertToAngle(fitsHeader.get('RA', 0), isHours=True)
+            decHint = transform.convertToAngle(fitsHeader.get('DEC', 0), isHours=False)
 
         self.logger.debug(f'RA: {raHint}, DEC: {decHint}, Scale: {scaleHint}')
 
@@ -221,12 +221,14 @@ class Astrometry(object):
         decMount = fitsHeader.get('DEC')
 
         error = np.sqrt(np.square(ra - raMount) + np.square(dec - decMount))
-
         # would like to have the error RMS in arcsec
         error *= 3600
 
-        solve = Solve(raJ2000=ra,
-                      decJ2000=dec,
+        raJ2000 = Angle(hours=ra)
+        decJ2000 = Angle(degrees=dec)
+
+        solve = Solve(raJ2000=raJ2000,
+                      decJ2000=decJ2000,
                       angle=angle,
                       scale=scale,
                       error=error,
@@ -239,14 +241,14 @@ class Astrometry(object):
 
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-        fitsHeader['RA'] = solve.raJ2000
-        fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
-        fitsHeader['DEC'] = solve.decJ2000
-        fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
-        fitsHeader['SCALE'] = solve.scale
-        fitsHeader['PIXSCALE'] = solve.scale
-        fitsHeader['ANGLE'] = solve.angle
-        fitsHeader['FLIPPED'] = solve.flipped
+        fitsHeader['RA'] = ra
+        fitsHeader['OBJCTRA'] = transform.convertToHMS(raJ2000)
+        fitsHeader['DEC'] = dec
+        fitsHeader['OBJCTDEC'] = transform.convertToDMS(decJ2000)
+        fitsHeader['SCALE'] = scale
+        fitsHeader['PIXSCALE'] = scale
+        fitsHeader['ANGLE'] = angle
+        fitsHeader['FLIPPED'] = flipped
 
         return solve
 

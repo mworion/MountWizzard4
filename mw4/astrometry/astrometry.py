@@ -198,7 +198,32 @@ class Astrometry(object):
 
         return angle, scale, flipped
 
-    def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFITS=False):
+    @staticmethod
+    def updateHeader(wcsHeader=None, fitsHeader=None, solve=None):
+        """
+
+        :param wcsHeader:
+        :param fitsHeader:
+        :param solve:
+        :return: fitsHeader
+        """
+
+        remove = ['COMMENT', 'HISTORY']
+
+        fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
+
+        fitsHeader['RA'] = transform.convertToHMS(solve.raJ2000)
+        fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
+        fitsHeader['DEC'] = transform.convertToDMS(solve.decJ2000)
+        fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
+        fitsHeader['SCALE'] = solve.scale
+        fitsHeader['PIXSCALE'] = solve.scale
+        fitsHeader['ANGLE'] = solve.angle
+        fitsHeader['FLIPPED'] = solve.flipped
+
+        return fitsHeader
+
+    def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None):
         """
         getSolutionFromWCS reads the fits header containing the wcs data and returns the
         basic data needed.
@@ -208,7 +233,6 @@ class Astrometry(object):
 
         :param fitsHeader:
         :param wcsHeader:
-        :param updateFITS:
         :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
                  error in arcsec and flag if image is flipped
         """
@@ -233,22 +257,6 @@ class Astrometry(object):
                       scale=scale,
                       error=error,
                       flipped=flipped)
-
-        if not updateFITS:
-            return solve
-
-        remove = ['COMMENT', 'HISTORY']
-
-        fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
-
-        fitsHeader['RA'] = ra
-        fitsHeader['OBJCTRA'] = transform.convertToHMS(raJ2000)
-        fitsHeader['DEC'] = dec
-        fitsHeader['OBJCTDEC'] = transform.convertToDMS(decJ2000)
-        fitsHeader['SCALE'] = scale
-        fitsHeader['PIXSCALE'] = scale
-        fitsHeader['ANGLE'] = angle
-        fitsHeader['FLIPPED'] = flipped
 
         return solve
 
@@ -444,12 +452,17 @@ class Astrometry(object):
 
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
-
         with fits.open(fitsPath, mode='update') as fitsHDU:
             fitsHeader = fitsHDU[0].header
-            solve = self.getSolutionFromWCS(fitsHeader=fitsHeader,
-                                            wcsHeader=wcsHeader,
-                                            updateFITS=updateFits)
+
+        solve = self.getSolutionFromWCS(wcsHeader=wcsHeader,
+                                        fitsHeader=fitsHeader)
+
+        if updateFits:
+            with fits.open(fitsPath, mode='update') as fitsHDU:
+                fitsHDU[0].header = self.updateHeader(fitsHeader=fitsHeader,
+                                                      wcsHeader=wcsHeader,
+                                                      solve=solve)
 
         self.result = Solution(success=True,
                                solve=solve)

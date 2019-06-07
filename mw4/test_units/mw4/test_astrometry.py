@@ -26,6 +26,7 @@ import numpy as np
 import subprocess
 from astropy.io import fits
 from mw4.definitions import Solve
+from skyfield.api import Angle
 
 # external packages
 # local import
@@ -128,73 +129,6 @@ def test_checkAvailability_4():
         assert 'KStars' in app.available
 
 
-def test_readFitsData_1():
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    header = hdu[0].header
-    header.set('OBJCTRA', '12 30 00.00')
-    header.set('OBJCTDEC', '-60 30 00.00')
-    header.set('SCALE', 1.3)
-    value = app.readFitsData(fitsHDU=hdu)
-    assert value[0] == '--scale-low'
-    assert value[1] == '1.1818181818181817'
-    assert value[2] == '--scale-high'
-    assert value[3] == '1.4300000000000002'
-    assert value[4] == '--ra'
-    assert value[5] == '12:30:00'
-    assert value[6] == '--dec'
-    assert value[7] == '-60:30:00'
-    assert value[8] == '--radius'
-    assert value[9] == '2'
-
-
-def test_readFitsData_2():
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    header = hdu[0].header
-    header.set('OBJCTRA', 180.0)
-    header.set('OBJCTDEC', 60.0)
-    header.set('SCALE', 1.0)
-    value = app.readFitsData(fitsHDU=hdu)
-    assert value[0] == '--scale-low'
-    assert value[1] == '0.9090909090909091'
-    assert value[2] == '--scale-high'
-    assert value[3] == '1.1'
-    assert value[4] == '--ra'
-    assert value[5] == '12:00:00'
-    assert value[6] == '--dec'
-    assert value[7] == '+60:00:00'
-    assert value[8] == '--radius'
-    assert value[9] == '2'
-
-
-def test_readFitsData_3():
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    header = hdu[0].header
-    header.set('OBJCTRA', 180.0)
-    header.set('OBJCTDEC', 60.0)
-    header.set('SCALE', 1.0)
-    value = app.readFitsData(fitsHDU=hdu, searchRatio=2)
-    assert value[0] == '--scale-low'
-    assert value[1] == '0.5'
-    assert value[2] == '--scale-high'
-    assert value[3] == '2.0'
-    assert value[4] == '--ra'
-    assert value[5] == '12:00:00'
-    assert value[6] == '--dec'
-    assert value[7] == '+60:00:00'
-    assert value[8] == '--radius'
-    assert value[9] == '2'
-
-
-def test_readFitsData_4():
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    value = app.readFitsData(fitsHDU=hdu)
-    assert value == ''
-
-
 def test_getWCSHeader():
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
@@ -237,37 +171,14 @@ def test_getSolutionFromWCS_1():
     header.set('DEC', 60.0)
     ra, dec, angle, scale, error, flipped = app.getSolutionFromWCS(fitsHeader=header,
                                                                    wcsHeader=header)
-    assert ra == 180
-    assert dec == 60
+    assert ra.hours == 12
+    assert dec.degrees == 60
     assert angle == 0
     assert scale == 0
     assert not flipped
 
-
-def test_updateFitsWithWCSData_1():
-    hdu1 = fits.HDUList()
-    hdu1.append(fits.PrimaryHDU())
-    header1 = hdu1[0].header
-    header1.set('OBJCTRA', 180.0)
-    header1.set('OBJCTDEC', 60.0)
-
-    hdu2 = fits.HDUList()
-    hdu2.append(fits.PrimaryHDU())
-    header2 = hdu2[0].header
-    header2.set('CRVAL1', 180.0)
-    header2.set('CRVAL2', 60.0)
-
-    solve = Solve(180, 60, 0, 1, 0, True)
-
-    suc = app.updateFitsWithWCSData(fitsHeader=header1,
-                                    wcsHeader=header2,
-                                    solve=solve)
-
-    assert suc
-    assert header1['RA'] == header2['CRVAL1']
-    assert header1['DEC'] == header2['CRVAL2']
-    assert header1['ANGLE'] == 0
-    assert header1['SCALE'] == 1
+    assert header['RA'] == header['CRVAL1']
+    assert header['DEC'] == header['CRVAL2']
 
 
 def test_runImage2xy_1():

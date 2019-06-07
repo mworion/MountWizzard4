@@ -906,7 +906,7 @@ class BuildModel(object):
 
         self.app.message.emit(f'writing model [{self.modelName}]', 0)
 
-        modelPath = f'{self.modelDir}.model'
+        modelPath = f'{self.modelName}.model'
         with open(modelPath, 'w') as outfile:
             json.dump(saveModel,
                       outfile,

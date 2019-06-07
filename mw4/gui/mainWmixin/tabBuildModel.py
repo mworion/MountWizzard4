@@ -503,9 +503,9 @@ class BuildModel(object):
         """
 
         rData = result.solve
-        raJ2000 = skyfield.api.Angle(degrees=rData.raJ2000)
-        decJ2000 = skyfield.api.Angle(degrees=rData.decJ2000)
-        raJNow, decJNow = transform.J2000ToJNow(raJ2000, decJ2000, mPoint.mData.julian)
+        raJNow, decJNow = transform.J2000ToJNow(rData.raJ2000,
+                                                rData.decJ2000,
+                                                mPoint.mData.julian)
 
         mData = MData(raMJNow=mPoint.mData.raMJNow,
                       decMJNow=mPoint.mData.decMJNow,
@@ -562,9 +562,10 @@ class BuildModel(object):
             self.modelQueue.put(mPoint)
 
             text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
-            text += f'Ra: {result.solve.raJ2000:5.2f}, Dec: {result.solve.decJ2000:5.2f}, '
+            text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)}, '
+            text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)}, '
             text += f'Error: {result.solve.error:5.2f}, Angle: {result.solve.angle:3.0f}, '
-            text += f'Scale: {result.solve.scale:4.2f}'
+            text += f'Scale: {result.solve.scale:4.6f}'
             self.app.message.emit(text, 0)
         else:
             text = f'Solving error for image-{mPoint.mParam.count:03d}'

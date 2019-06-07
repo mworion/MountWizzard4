@@ -224,7 +224,7 @@ class Astrometry(object):
         # would like to have the error RMS in arcsec
         error *= 3600
 
-        raJ2000 = Angle(hours=ra)
+        raJ2000 = Angle(hours=ra*24/360)
         decJ2000 = Angle(degrees=dec)
 
         solve = Solve(raJ2000=raJ2000,

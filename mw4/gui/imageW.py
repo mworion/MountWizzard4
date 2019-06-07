@@ -304,9 +304,9 @@ class ImageWindow(widget.MWidget):
         rData = result.solve
         if not isinstance(rData, tuple):
             return False
-        text = f'Ra: {transform.convertToHMS(rData.raJ2000)}   '
-        text += f'Dec: {transform.convertToDMS(rData.decJ2000)}   '
-        text += f'Error: {rData.error:5.2f}   Angle: {rData.angle:3.0f}   '
+        text = f'Ra: {transform.convertToHMS(rData.raJ2000)}, '
+        text += f'Dec: {transform.convertToDMS(rData.decJ2000)}, '
+        text += f'Error: {rData.error:5.2f}, Angle: {rData.angle:3.0f}, '
         text += f'Scale: {rData.scale:4.6f}'
         self.app.message.emit('Solved: ' + text, 0)
         self.signals.show.emit()

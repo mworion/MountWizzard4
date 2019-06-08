@@ -14,5 +14,5 @@ flake8==3.7.7
 pyinstaller==3.4
 twine==1.13.0
 pyinstaller==3.4
-indibase==0.80
-mountcontrol==0.93
+indibase==0.100
+mountcontrol==0.100

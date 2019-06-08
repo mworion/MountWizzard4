@@ -25,6 +25,7 @@ import glob
 import platform
 import time
 from collections import namedtuple
+from threading import Timer
 # external packages
 import PyQt5.QtWidgets
 from mw4.base import transform
@@ -269,24 +270,26 @@ class Astrometry(object):
 
         timeStart = time.time()
         try:
-            result = subprocess.run(args=runnable,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    )
+            process = subprocess.Popen(args=runnable,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE,
+                                       )
+            stdout, stderr = process.communicate()
+            returnCode = process.returncode
         except Exception as e:
             self.logger.error(f'error: {e} happened')
             return False
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'image2xy took {delta}s return code: '
-                              + str(result.returncode)
+                              + str(returnCode)
                               + ' stderr: '
-                              + result.stderr.decode().replace('\n', ' ')
+                              + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
-                              + result.stdout.decode().replace('\n', ' ')
+                              + stdout.decode().replace('\n', ' ')
                               )
 
-        success = (result.returncode == 0)
+        success = (returnCode == 0)
         return success
 
     def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=30):
@@ -321,11 +324,18 @@ class Astrometry(object):
 
         timeStart = time.time()
         try:
-            result = subprocess.run(args=runnable,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    timeout=timeout,
-                                    )
+            process = subprocess.Popen(args=runnable,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE,
+                                       )
+            timer = Timer(timeout, process.kill)
+            try:
+                timer.start()
+                stdout, stderr = process.communicate()
+            finally:
+                timer.cancel()
+            returnCode = process.returncode
+
         except subprocess.TimeoutExpired:
             self.logger.debug('solve-field timeout')
             return False
@@ -335,14 +345,14 @@ class Astrometry(object):
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'solve-field took {delta}s return code: '
-                              + str(result.returncode)
+                              + str(returnCode)
                               + ' stderr: '
-                              + result.stderr.decode().replace('\n', ' ')
+                              + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
-                              + result.stdout.decode().replace('\n', ' ')
+                              + stdout.decode().replace('\n', ' ')
                               )
 
-        success = (result.returncode == 0)
+        success = (returnCode == 0)
         return success
 
     def solve(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,

@@ -244,5 +244,5 @@ def test_drawMeasure_1():
 
 def test_drawMeasure_2():
     app.measureW.ui.measureSet1.setCurrentIndex(1)
-    suc = app.measureW.drawMeasure()
+    suc = app.measureW.drawMeasure(1)
     assert suc

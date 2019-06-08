@@ -142,9 +142,10 @@ class IndiClass(object):
 
         :return: True for test purpose
         """
-        if not self.client.connected:
-            suc = self.client.connectServer()
-            self.logger.info(f'Indi server {self.name} connection retry: result:{suc}')
+        if not self.data:
+            self.stopCommunication()
+            self.startCommunication()
+            self.logger.info(f'Indi server {self.name} connection retry')
 
         return True
 

@@ -209,23 +209,39 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return staticCanvas
 
     @staticmethod
-    def extractNames(name):
+    def extractNames(names):
         """
         extractName splits a given path to basename and extension
-        :param      name:   full path of file
+        if the input is a multiple list, there will be as return values a multiple list
+        as well, otherwise single values
+
+        :param      names:   full path of file (s)
         :return:    short:  basename without extension
                     ext:    extension
+                    name:   name
         """
 
-        if not name:
+        if not names:
             return '', '', ''
-        name = name[0]
-        if len(name) > 0:
-            short, ext = os.path.splitext(name)
-            short = os.path.basename(short)
+
+        shortList = list()
+        extList = list()
+        nameList = list()
+        for name in names:
+            if name:
+                short, ext = os.path.splitext(name)
+                short = os.path.basename(short)
+            else:
+                short = ''
+                ext = ''
+            shortList.append(short)
+            nameList.append(name)
+            extList.append(ext)
+
+        if len(names) == 1:
+            return name, short, ext
         else:
-            short = ext = ''
-        return name, short, ext
+            return nameList, shortList, extList
 
     def prepareFileDialog(self, window, enableDir):
         """
@@ -269,7 +285,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setGeometry(px + 0.5 * (pw - width), py + 0.5 * (ph - height), 400, 400)
         return dlg
 
-    def openFile(self, window, title, folder, filterSet, enableDir=False):
+    def openFile(self, window, title, folder, filterSet, enableDir=False, multiple=False):
         """
         openFile handles a single file select with filter in a non native format.
 
@@ -278,6 +294,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         :param folder:      starting folder for searching the file
         :param filterSet:   file extension filter
         :param enableDir:   allows dir selection in file box
+        :param multiple :   allows multiple selection in file box
         :return:            name: full path for file else empty
                             short: just file name without extension
                             ext: extension of the file
@@ -289,7 +306,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(folder)
-        dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
+        if multiple:
+            dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFiles)
+        else:
+            dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
 
         dlg.exec_()
         filePath = dlg.selectedFiles()

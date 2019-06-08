@@ -117,6 +117,7 @@ class BuildModel(object):
         self.ui.cancelFullModel.clicked.connect(self.cancelFull)
         self.ui.runAlignModel.clicked.connect(self.modelAlign)
         self.ui.cancelAlignModel.clicked.connect(self.cancelFull)
+        self.ui.batchModel.clicked.connect(self.loadProgramModel)
 
     def initConfig(self):
         """
@@ -1132,5 +1133,26 @@ class BuildModel(object):
         suc = self.modelCore(points=points)
         if not suc:
             self.defaultGUI()
+
+        return True
+
+    def loadProgramModel(self):
+        """
+
+        :return:
+        """
+
+        folder = self.app.mwGlob['modelDir']
+        loadFilePath, fileName, ext = self.openFile(self,
+                                                    'Open model file',
+                                                    folder,
+                                                    'Model files (*.model)',
+                                                    multiple=True,
+                                                    )
+        if not loadFilePath:
+            return False
+
+        if len(loadFilePath) > 0:
+            print(loadFilePath)
 
         return True

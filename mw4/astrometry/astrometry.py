@@ -279,6 +279,7 @@ class Astrometry(object):
             self.logger.error(f'error: {e} happened')
             return False
         else:
+            self.process = None
             delta = time.time() - timeStart
             self.logger.debug(f'image2xy took {delta}s return code: '
                               + str(self.process.returncode)
@@ -335,6 +336,7 @@ class Astrometry(object):
             self.logger.error(f'error: {e} happened')
             return False
         else:
+            self.process = None
             delta = time.time() - timeStart
             self.logger.debug(f'solve-field took {delta}s return code: '
                               + str(self.process.returncode)
@@ -354,7 +356,8 @@ class Astrometry(object):
         :return: success
         """
 
-        self.process.kill()
+        if self.process:
+            self.process.kill()
 
         return True
 

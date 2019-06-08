@@ -181,6 +181,8 @@ def convertToAngle(value, isHours=None):
         value = stringToDegree(value)
         if value is None:
             return None
+    else:
+        value *= 24 / 360
 
     if isHours:
         angle = Angle(hours=value)

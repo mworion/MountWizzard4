@@ -70,15 +70,6 @@ a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/fonts')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('PyQt5/Qt/translations')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('QtQuick')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('QtQml')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/analytic_functions')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/config.tests')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/constants.tests')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/convolution')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/cosmology')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/samp')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/modeling')]
-# a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/table')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('astropy/vo')]
 
 # same to datas
 a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/sample_data')]
@@ -86,16 +77,6 @@ a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/fonts')]
 a.datas = [x for x in a.datas if not x[0].startswith('PyQt5/Qt/translations')]
 a.datas = [x for x in a.datas if not x[0].startswith('QtQuick')]
 a.datas = [x for x in a.datas if not x[0].startswith('QtQml')]
-a.datas = [x for x in a.datas if not x[0].startswith('astropy/analytic_functions')]
-a.datas = [x for x in a.datas if not x[0].startswith('astropy/config.tests')]
-a.datas = [x for x in a.datas if not x[0].startswith('astropy/constants.tests')]
-a.datas = [x for x in a.datas if not x[0].startswith('astropy/convolution')]
-a.datas = [x for x in a.datas if not x[0].startswith('astropy/cosmology')]
-a.datas = [x for x in a.datas if not x[0].startswith('astropy/samp')]
-a.datas = [x for x in a.datas if not x[0].startswith('astropy/modeling')]
-# a.datas = [x for x in a.datas if not x[0].startswith('astropy/table')]
-a.datas = [x for x in a.datas if not x[0].startswith('astropy/vo')]
-
 
 pyz = PYZ(a.pure,
           a.zipped_data,

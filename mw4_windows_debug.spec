@@ -52,6 +52,7 @@ a = Analysis([packageDir + '/loader.py'],
                  # (sitePack + '/indibase', './indibase'),
              ],
              hiddenimports=[
+                 'numpy.lib.recfunctions',
                  'shelve',
                  ],
              hookspath=[],

@@ -8,8 +8,6 @@ missing tests:
 
 problems occurred list:
 - mountcontrol overflow pointing
-- mainApp refactor to better understandable implementation
-- check extended attributes when zipping APP bundle in macOS
 - minimum horizon line not implemented
 
 necessary feature list:
@@ -20,13 +18,30 @@ necessary feature list:
 - abort astrometry if necessary 
 - GWOL status adding in mountcontrol and MW4 GUI
 - sorting spiral for efficient path
+- INDI: CCD needs telescope to be connected to get coordinates
+- INDI: set filter from image window
+- INDI: set filter from imaging setup
+- performance measure window
+- load models and program them
+- tooltips
 
 
 nice to have:
+- tox as framework -> see youtube 
 - astrometry online
 - hemisphere: show best altitude when polar align is on
 - indi setting parameters of devices
 - gui show indi device FL / pixels data in screen and choose which to use
 - check if daylight timezone fits to the computer or set it up !
 - max error for modeling solving
+- INDI FlipFlat Device open 
+
+
+architecture:
+- replace mixin with subclassing ?
 - move format string to new python format
+- images in memory instead of FITS files ?
+- mainApp refactor to better understandable implementation
+- check extended attributes when zipping APP bundle in macOS
+- skyfield with new format
+- skyfield with adding + - for angles

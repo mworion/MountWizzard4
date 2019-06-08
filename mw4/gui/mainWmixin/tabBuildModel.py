@@ -817,6 +817,7 @@ class BuildModel(object):
         """
 
         self.app.imaging.abort()
+        self.app.astrometry.abort()
         self.defaultSignals()
         self.clearQueues()
         self.defaultGUI()

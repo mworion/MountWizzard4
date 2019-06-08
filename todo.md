@@ -15,7 +15,6 @@ necessary feature list:
 - mountcontrol: adding TLE commands and tests
 - optimizing model functions (all) implement
 - change build data in modeldata to named tuples
-- abort astrometry if necessary 
 - GWOL status adding in mountcontrol and MW4 GUI
 - sorting spiral for efficient path
 - INDI: CCD needs telescope to be connected to get coordinates

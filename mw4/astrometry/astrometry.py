@@ -248,7 +248,7 @@ class Astrometry(object):
 
         return solve, fitsHeader
 
-    def runImage2xy(self, binPath='', xyPath='', fitsPath=''):
+    def runImage2xy(self, binPath='', xyPath='', fitsPath='', timeout=30):
         """
         runImage2xy extracts a list of stars out of the fits image. there is a timeout of
         3 seconds set to get the process finished
@@ -256,6 +256,7 @@ class Astrometry(object):
         :param binPath:   full path to image2xy executable
         :param xyPath:  full path to star file
         :param fitsPath:  full path to fits file
+        :param timeout:
         :return: success
         """
 
@@ -271,7 +272,7 @@ class Astrometry(object):
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE,
                                             )
-            stdout, stderr = self.process.communicate(timeout=3)
+            stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
             self.logger.debug(e)
             return False
@@ -410,6 +411,7 @@ class Astrometry(object):
         suc = self.runImage2xy(binPath=binPathImage2xy,
                                xyPath=xyPath,
                                fitsPath=fitsPath,
+                               timeout=timeout,
                                )
         if not suc:
             self.logger.error(f'image2xy error in [{fitsPath}]')

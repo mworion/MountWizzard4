@@ -129,7 +129,7 @@
         </widget>
        </item>
        <item row="0" column="5">
-        <widget class="QPushButton" name="abort">
+        <widget class="QPushButton" name="abortImage">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -157,19 +157,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1" colspan="5">
-        <widget class="QLineEdit" name="imageFileName">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>200</width>
-           <height>25</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0" colspan="4">
         <widget class="QCheckBox" name="checkUpdateFits">
          <property name="minimumSize">
@@ -190,6 +177,35 @@
          </property>
          <property name="text">
           <string>Stack Images</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" colspan="4">
+        <widget class="QLineEdit" name="imageFileName">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>25</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="5">
+        <widget class="QPushButton" name="abortSolve">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Abort</string>
          </property>
         </widget>
        </item>

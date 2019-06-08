@@ -5391,7 +5391,7 @@ class Ui_MainWindow(object):
         self.solveTimeout.setFont(font)
         self.solveTimeout.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.solveTimeout.setDecimals(0)
-        self.solveTimeout.setMinimum(10.0)
+        self.solveTimeout.setMinimum(2.0)
         self.solveTimeout.setMaximum(300.0)
         self.solveTimeout.setSingleStep(5.0)
         self.solveTimeout.setProperty("value", 30.0)
@@ -6925,7 +6925,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setStretch(3, 1)
 
         self.retranslateUi(MainWindow)
-        self.mainTabWidget.setCurrentIndex(3)
+        self.mainTabWidget.setCurrentIndex(10)
         self.settingsTabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.hubUSB, self.powerCurrent1)

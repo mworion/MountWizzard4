@@ -25,7 +25,6 @@ import glob
 import platform
 import time
 from collections import namedtuple
-from threading import Timer
 # external packages
 import PyQt5.QtWidgets
 from mw4.base import transform
@@ -82,6 +81,7 @@ class Astrometry(object):
         self.threadPool = threadPool
         self.mutexSolve = PyQt5.QtCore.QMutex()
         self.signals = AstrometrySignals()
+        self.process = None
         self.available = {}
         self.result = (False, [])
 
@@ -103,10 +103,6 @@ class Astrometry(object):
         else:
             self.binPath = {}
             self.indexPath = ''
-
-        cfgFile = self.tempDir + '/astrometry.cfg'
-        with open(cfgFile, 'w+') as outFile:
-            outFile.write(f'cpulimit 30\nadd_path {self.indexPath}\nautoindex\n')
 
         self.checkAvailability()
 
@@ -254,7 +250,8 @@ class Astrometry(object):
 
     def runImage2xy(self, binPath='', xyPath='', fitsPath=''):
         """
-        runImage2xy extracts a list of stars out of the
+        runImage2xy extracts a list of stars out of the fits image. there is a timeout of
+        3 seconds set to get the process finished
 
         :param binPath:   full path to image2xy executable
         :param xyPath:  full path to star file
@@ -270,26 +267,28 @@ class Astrometry(object):
 
         timeStart = time.time()
         try:
-            process = subprocess.Popen(args=runnable,
-                                       stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE,
-                                       )
-            stdout, stderr = process.communicate()
-            returnCode = process.returncode
+            self.process = subprocess.Popen(args=runnable,
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE,
+                                            )
+            stdout, stderr = self.process.communicate(timeout=3)
+        except subprocess.TimeoutExpired as e:
+            self.logger.debug(e)
+            return False
         except Exception as e:
             self.logger.error(f'error: {e} happened')
             return False
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'image2xy took {delta}s return code: '
-                              + str(returnCode)
+                              + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
                               + stdout.decode().replace('\n', ' ')
                               )
 
-        success = (returnCode == 0)
+        success = (self.process.returncode == 0)
         return success
 
     def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=30):
@@ -324,20 +323,13 @@ class Astrometry(object):
 
         timeStart = time.time()
         try:
-            process = subprocess.Popen(args=runnable,
-                                       stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE,
-                                       )
-            timer = Timer(timeout, process.kill)
-            try:
-                timer.start()
-                stdout, stderr = process.communicate()
-            finally:
-                timer.cancel()
-            returnCode = process.returncode
-
-        except subprocess.TimeoutExpired:
-            self.logger.debug('solve-field timeout')
+            self.process = subprocess.Popen(args=runnable,
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE
+                                            )
+            stdout, stderr = self.process.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired as e:
+            self.logger.debug(e)
             return False
         except Exception as e:
             self.logger.error(f'error: {e} happened')
@@ -345,15 +337,26 @@ class Astrometry(object):
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'solve-field took {delta}s return code: '
-                              + str(returnCode)
+                              + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
                               + stdout.decode().replace('\n', ' ')
                               )
 
-        success = (returnCode == 0)
+        success = (self.process.returncode == 0)
+
         return success
+
+    def abort(self):
+        """
+
+        :return: success
+        """
+
+        self.process.kill()
+
+        return True
 
     def solve(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
               radius=2, timeout=30, updateFits=False):
@@ -397,6 +400,10 @@ class Astrometry(object):
         wcsPath = self.tempDir + '/temp.wcs'
         binPathImage2xy = self.binPath[app] + '/image2xy'
         binPathSolveField = self.binPath[app] + '/solve-field'
+
+        cfgFile = self.tempDir + '/astrometry.cfg'
+        with open(cfgFile, 'w+') as outFile:
+            outFile.write(f'cpulimit 60\nadd_path {self.indexPath}\nautoindex\n')
 
         suc = self.runImage2xy(binPath=binPathImage2xy,
                                xyPath=xyPath,

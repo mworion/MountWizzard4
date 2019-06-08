@@ -192,7 +192,8 @@ class ImageWindow(widget.MWidget):
         self.ui.solve.clicked.connect(self.solveImage)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
-        self.ui.abort.clicked.connect(self.abortImage)
+        self.ui.abortImage.clicked.connect(self.abortImage)
+        self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.signals.show.connect(self.showFitsImage)
         self.signals.showExt.connect(self.showFitsImageExt)
         self.signals.solve.connect(self.solveImage)
@@ -221,6 +222,10 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUsePixel.clicked.disconnect(self.showFitsImage)
         self.ui.checkShowCrosshair.clicked.disconnect(self.showFitsImage)
         self.ui.solve.clicked.disconnect(self.solveImage)
+        self.ui.expose.clicked.disconnect(self.exposeImage)
+        self.ui.exposeN.clicked.disconnect(self.exposeImageN)
+        self.ui.abortImage.clicked.disconnect(self.abortImage)
+        self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.show.disconnect(self.showFitsImage)
         self.signals.showExt.disconnect(self.showFitsImageExt)
         self.signals.solve.disconnect(self.solveImage)
@@ -292,6 +297,7 @@ class ImageWindow(widget.MWidget):
 
         self.changeStyleDynamic(self.ui.solve, 'running', 'false')
         self.ui.expose.setEnabled(True)
+        self.ui.abortSolve.setEnabled(False)
         self.ui.exposeN.setEnabled(True)
         self.ui.load.setEnabled(True)
 
@@ -339,6 +345,7 @@ class ImageWindow(widget.MWidget):
                                            updateFits=updateFits,
                                            )
         self.changeStyleDynamic(self.ui.solve, 'running', 'true')
+        self.ui.abortSolve.setEnabled(True)
         self.ui.expose.setEnabled(False)
         self.ui.exposeN.setEnabled(False)
         self.ui.load.setEnabled(False)
@@ -765,5 +772,17 @@ class ImageWindow(widget.MWidget):
         self.ui.abort.setEnabled(False)
 
         self.app.message.emit('Image exposing aborted', 2)
+
+        return True
+
+    def abortSolve(self):
+        """
+        abortSolve stops the exposure and resets the gui and the callback signals to default
+        values
+
+        :return: True for test purpose
+        """
+
+        suc = self.app.astrometry.abort()
 
         return True

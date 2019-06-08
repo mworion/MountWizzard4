@@ -863,22 +863,15 @@ class BuildModel(object):
 
         return model
 
-    def saveModel(self, model=None):
+    @staticmethod
+    def generateSaveModel(model=None):
         """
-        saveModel saves the model data for later use. with this data, the model could
-        be reprogrammed without doing some imaging, it could be added with other data to
-        extend the model to a broader base.
-        in addition it should be possible to make som analyses with this data.
+        generateSaveModel builds from the model file a format which could be serialized
+        in json. this format will be used for storing model on file
 
         :param model:
-        :return: success
+        :return: save model format
         """
-
-        if model is None:
-            return False
-        if len(model) < 3:
-            self.logger.debug(f'only {len(model)} points available')
-            return False
 
         saveModel = list()
         for mPoint in model:
@@ -904,6 +897,26 @@ class BuildModel(object):
                       'errorDEC': mPoint.rData.errorDEC,
                       }
             saveModel.append(sPoint)
+        return saveModel
+
+    def saveModel(self, model=None):
+        """
+        saveModel saves the model data for later use. with this data, the model could
+        be reprogrammed without doing some imaging, it could be added with other data to
+        extend the model to a broader base.
+        in addition it should be possible to make som analyses with this data.
+
+        :param model:
+        :return: success
+        """
+
+        if model is None:
+            return False
+        if len(model) < 3:
+            self.logger.debug(f'only {len(model)} points available')
+            return False
+
+        saveModel = self.generateSaveModel(model)
 
         self.app.message.emit(f'writing model [{self.modelName}]', 0)
 
@@ -929,6 +942,37 @@ class BuildModel(object):
             model.append(mPoint)
 
         return model
+
+    @staticmethod
+    def generateBuildDataFromJSON(loadModel=None):
+        """
+        generateBuildData takes the model data and generates from it a data structure
+        needed for programming the model into the mount computer.
+
+        :param loadModel:
+        :return: build
+        """
+
+        build = list()
+
+        for mPoint in loadModel:
+            # prepare data
+            mCoord = skyfield.api.Star(ra_hours=mPoint['raMJNow'],
+                                       dec_degrees=mPoint['decMJNow'])
+            sCoord = skyfield.api.Star(ra_hours=mPoint['raSJNow'],
+                                       dec_degrees=mPoint['decSJNow'])
+            sidereal = mPoint['sidereal']
+            pierside = mPoint['pierside']
+
+            # combine data into structure
+            programmingPoint = APoint(mCoord=mCoord,
+                                      sCoord=sCoord,
+                                      sidereal=sidereal,
+                                      pierside=pierside,
+                                      )
+            build.append(programmingPoint)
+
+        return build
 
     @staticmethod
     def generateBuildData(model=None):
@@ -1138,8 +1182,10 @@ class BuildModel(object):
 
     def loadProgramModel(self):
         """
+        loadProgramModel selects one or more models from the files system, combines them
+        if more than one was selected and programs them into the mount computer.
 
-        :return:
+        :return: success
         """
 
         folder = self.app.mwGlob['modelDir']
@@ -1152,7 +1198,31 @@ class BuildModel(object):
         if not loadFilePath:
             return False
 
-        if len(loadFilePath) > 0:
-            print(loadFilePath)
+        if isinstance(loadFilePath, str):
+            loadFilePath = [loadFilePath]
 
-        return True
+        self.app.message.emit('Programing stored models', 1)
+        modelJSON = list()
+        for file in loadFilePath:
+            self.app.message.emit(f'Using model [{file}]', 0)
+            with open(file, 'r') as infile:
+                model = json.load(infile)
+                modelJSON += model
+
+        if len(modelJSON) > 99:
+            self.app.message.emit('Combined models have more than 99 points', 2)
+            return False
+
+        build = self.generateBuildDataFromJSON(modelJSON)
+
+        # finally do it
+        self.app.message.emit('Programming model to mount', 0)
+        suc = self.app.mount.model.programAlign(build)
+
+        if suc:
+            self.app.message.emit('Model programmed with success', 0)
+            self.refreshModel()
+        else:
+            self.app.message.emit('Model programming error', 2)
+
+        return suc

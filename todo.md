@@ -6,13 +6,10 @@ missing tests:
 - kmRelay 75%
 - remote 52%
 
-problems occurred list:
-- mountcontrol overflow pointing
-- minimum horizon line not implemented
+problems occurred:
 
-necessary feature list:
+necessary feature:
 - mountcontrol: adding TLE commands and tests
-- sorting spiral for efficient path
 - performance measure window
 - tooltips
 
@@ -29,6 +26,7 @@ nice to have:
 - adding stacking of images 
 - INDI: set filter from image window
 - INDI: set filter from imaging setup
+- sorting spiral for efficient path
 
 
 architecture:
@@ -40,6 +38,7 @@ architecture:
 - skyfield with new format
 - skyfield with adding + - for angles
 - change build data in modeldata to named tuples
+- mountcontrol overflow pointing
 
 
 remarks for users:

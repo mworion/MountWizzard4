@@ -685,7 +685,7 @@ class ImageWindow(widget.MWidget):
         self.ui.solve.setEnabled(True)
         self.ui.exposeN.setEnabled(True)
         self.ui.load.setEnabled(True)
-        self.ui.abort.setEnabled(False)
+        self.ui.abortImage.setEnabled(False)
 
         self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
 
@@ -709,7 +709,7 @@ class ImageWindow(widget.MWidget):
         self.ui.exposeN.setEnabled(False)
         self.ui.load.setEnabled(False)
         self.ui.solve.setEnabled(False)
-        self.ui.abort.setEnabled(True)
+        self.ui.abortImage.setEnabled(True)
 
         self.app.imaging.signals.saved.connect(self.exposeImageDone)
         self.app.imaging.signals.saved.connect(self.showFitsImage)
@@ -733,7 +733,7 @@ class ImageWindow(widget.MWidget):
         self.ui.expose.setEnabled(False)
         self.ui.load.setEnabled(False)
         self.ui.solve.setEnabled(False)
-        self.ui.abort.setEnabled(True)
+        self.ui.abortImage.setEnabled(True)
 
         self.app.imaging.signals.saved.connect(self.showFitsImage)
         self.app.imaging.signals.saved.connect(self.exposeRaw)

@@ -155,6 +155,7 @@ class Astrometry(object):
 
             # todo: there might be the necessity to read more alternative header info
             # todo: the actual definition fit for EKOS
+
             scaleHint = float(fitsHeader.get('SCALE', 0))
             raHint = transform.convertToAngle(fitsHeader.get('RA', 0), isHours=True)
             decHint = transform.convertToAngle(fitsHeader.get('DEC', 0), isHours=False)
@@ -212,9 +213,9 @@ class Astrometry(object):
 
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-        fitsHeader['RA'] = transform.convertToHMS(solve.raJ2000)
+        fitsHeader['RA'] = solve.raJ2000.hours * 360 / 24
         fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
-        fitsHeader['DEC'] = transform.convertToDMS(solve.decJ2000)
+        fitsHeader['DEC'] = solve.decJ2000.degrees
         fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
         fitsHeader['SCALE'] = solve.scale
         fitsHeader['PIXSCALE'] = solve.scale
@@ -237,19 +238,18 @@ class Astrometry(object):
                  error in arcsec and flag if image is flipped
         """
 
-        ra = wcsHeader.get('CRVAL1')
-        dec = wcsHeader.get('CRVAL2')
+        raJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
+        decJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        raMount = fitsHeader.get('RA')
-        decMount = fitsHeader.get('DEC')
+        raMount = transform.convertToAngle(fitsHeader.get('RA'), isHours=True)
+        decMount = transform.convertToAngle(fitsHeader.get('DEC'), isHours=False)
 
-        error = np.sqrt(np.square(ra - raMount) + np.square(dec - decMount))
+        deltaRA = raJ2000.hours - raMount.hours
+        deltaDEC = decJ2000.degrees - decMount.degrees
+        error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
         # would like to have the error RMS in arcsec
         error *= 3600
-
-        raJ2000 = Angle(hours=ra * 24 / 360)
-        decJ2000 = Angle(degrees=dec)
 
         solve = Solve(raJ2000=raJ2000,
                       decJ2000=decJ2000,

@@ -95,8 +95,8 @@ class Astrometry(object):
 
         elif platform.system() == 'Linux':
             self.binPath = {
-                'astrometry.net': '/usr/bin',
-                'astrometry.net local': '/usr/local/astrometry/bin',
+                'astrometry-glob': '/usr/bin',
+                'astrometry-local': '/usr/local/astrometry/bin',
             }
             self.indexPath = '/usr/share/astrometry'
 
@@ -134,7 +134,7 @@ class Astrometry(object):
                 suc = False
             if suc:
                 self.available[app] = path
-            self.logger.info(f'binary and index files available for {app}')
+                self.logger.info(f'binary and index files available for {app}')
 
         return True
 

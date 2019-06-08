@@ -57,6 +57,7 @@ class SettDevice(object):
                                    'remoteDevice',
                                    ]
         self.setupDeviceGui()
+        self.ui.imagingDevice.activated.connect(self.imagingDispatch)
         self.ui.relayDevice.activated.connect(self.relayDispatch)
         self.ui.remoteDevice.activated.connect(self.remoteDispatch)
         self.ui.measureDevice.activated.connect(self.measureDispatch)

@@ -169,8 +169,8 @@ def test_getSolutionFromWCS_1():
     header.set('CRVAL2', 60.0)
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
-    ra, dec, angle, scale, error, flipped = app.getSolutionFromWCS(fitsHeader=header,
-                                                                   wcsHeader=header)
+    (ra, dec, angle, scale, error, flipped), header = app.getSolutionFromWCS(fitsHeader=header,
+                                                                             wcsHeader=header)
     assert ra.hours == 12
     assert dec.degrees == 60
     assert angle == 0

@@ -188,6 +188,11 @@ class Mount(object):
         else:
             self.ui.statusGPSSynced.setText('-')
 
+        if sett.wakeOnLan is not None:
+            self.ui.statusWOL.setText(sett.wakeOnLan)
+        else:
+            self.ui.statusWOL.setText('-')
+
         return True
 
     def updateSettingGUI(self, sett):

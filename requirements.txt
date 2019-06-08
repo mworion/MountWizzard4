@@ -15,4 +15,4 @@ pyinstaller==3.4
 twine==1.13.0
 pyinstaller==3.4
 indibase==0.80
-mountcontrol==0.92
+mountcontrol==0.93

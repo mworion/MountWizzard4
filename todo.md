@@ -11,15 +11,8 @@ problems occurred list:
 - minimum horizon line not implemented
 
 necessary feature list:
-- astrometry configs
 - mountcontrol: adding TLE commands and tests
-- optimizing model functions (all) implement
-- change build data in modeldata to named tuples
-- GWOL status adding in mountcontrol and MW4 GUI
 - sorting spiral for efficient path
-- INDI: CCD needs telescope to be connected to get coordinates
-- INDI: set filter from image window
-- INDI: set filter from imaging setup
 - performance measure window
 - tooltips
 
@@ -34,6 +27,8 @@ nice to have:
 - INDI FlipFlat Device open 
 - mark modeled points (really necessary ?)
 - adding stacking of images 
+- INDI: set filter from image window
+- INDI: set filter from imaging setup
 
 
 architecture:
@@ -44,3 +39,8 @@ architecture:
 - check extended attributes when zipping APP bundle in macOS
 - skyfield with new format
 - skyfield with adding + - for angles
+- change build data in modeldata to named tuples
+
+
+remarks for users:
+- INDI: CCD needs telescope to be connected to get coordinates

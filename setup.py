@@ -45,7 +45,7 @@ setup(
         'requests_toolbelt==0.9.1',
         'numpy==1.16.2',
         'skyfield==1.10',
-        'mountcontrol>=0.92',
+        'mountcontrol>=0.93',
         'astropy==3.1.2',
         'wakeonlan==1.1.6',
         'indibase>=0.80',

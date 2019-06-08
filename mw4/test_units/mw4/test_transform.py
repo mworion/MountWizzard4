@@ -83,26 +83,21 @@ def test_stringToDegree_6():
 
 def test_convertToAngle_1():
     value = transform.convertToAngle(180)
-    assert value == Angle(degrees=180)
-
-
-def test_convertToAngle_1():
-    value = transform.convertToAngle(180)
     assert value.degrees == 180
 
 
 def test_convertToAngle_2():
-    value = transform.convertToAngle(18, isHours=True)
-    assert value.hours == 18
+    value = transform.convertToAngle(180)
+    assert value.degrees == 180
 
 
 def test_convertToAngle_3():
     value = transform.convertToAngle(180, isHours=True)
-    assert value.hours == 180
+    assert value.hours == 12
 
 
 def test_convertToAngle_4():
-    value = transform.convertToAngle('12:00:00.0')
+    value = transform.convertToAngle('12:00:00.0', isHours=True)
     assert value.hours == 12
 
 

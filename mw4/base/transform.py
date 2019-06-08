@@ -167,22 +167,23 @@ def stringToDegree(value):
 def convertToAngle(value, isHours=None):
     """
     convertToAngle ties to take any value and converts is to the right form in skyfield
-    angles.
+    angles. if the value is a string, we convert it to float value. in case of isHours,
+    we should have already a string, which represents hours inside. if the value is float
+    and we expect to have hours, the float value is normally given in degrees, so we have
+    to calculate the numbers in hours.
 
     :param value:
     :param isHours:
     :return: angle as skyfield angle
     """
 
-    if isHours is None:
-        isHours = checkIsHours(value)
-
     if isinstance(value, str):
         value = stringToDegree(value)
         if value is None:
             return None
     else:
-        value *= 24 / 360
+        if isHours:
+            value *= 24 / 360
 
     if isHours:
         angle = Angle(hours=value)

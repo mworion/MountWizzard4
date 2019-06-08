@@ -213,7 +213,7 @@ class Astrometry(object):
 
         fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
 
-        fitsHeader['RA'] = solve.raJ2000.degrees
+        fitsHeader['RA'] = solve.raJ2000._degrees
         fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
         fitsHeader['DEC'] = solve.decJ2000.degrees
         fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
@@ -407,6 +407,7 @@ class Astrometry(object):
 
         raFITS, decFITS, scaleFITS = self.readFitsData(fitsPath=fitsPath)
 
+        # if parameters are passed, they have priority
         if raHint is None:
             raHint = raFITS
         if decHint is None:

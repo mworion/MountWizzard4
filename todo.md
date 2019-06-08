@@ -22,7 +22,6 @@ necessary feature list:
 - INDI: set filter from image window
 - INDI: set filter from imaging setup
 - performance measure window
-- load models and program them
 - tooltips
 
 

@@ -224,7 +224,7 @@ class Astrometry(object):
 
         return fitsHeader
 
-    def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None):
+    def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFits=False):
         """
         getSolutionFromWCS reads the fits header containing the wcs data and returns the
         basic data needed.
@@ -234,6 +234,7 @@ class Astrometry(object):
 
         :param fitsHeader:
         :param wcsHeader:
+        :param updateFits:
         :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
                  error in arcsec and flag if image is flipped
         """
@@ -258,7 +259,22 @@ class Astrometry(object):
                       error=error,
                       flipped=flipped)
 
-        return solve
+        if not updateFits:
+            return solve, fitsHeader
+
+        remove = ['COMMENT', 'HISTORY']
+        fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
+
+        fitsHeader['RA'] = solve.raJ2000._degrees
+        fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
+        fitsHeader['DEC'] = solve.decJ2000.degrees
+        fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
+        fitsHeader['SCALE'] = solve.scale
+        fitsHeader['PIXSCALE'] = solve.scale
+        fitsHeader['ANGLE'] = solve.angle
+        fitsHeader['FLIPPED'] = solve.flipped
+
+        return solve, fitsHeader
 
     def runImage2xy(self, binPath='', xyPath='', fitsPath=''):
         """
@@ -453,17 +469,12 @@ class Astrometry(object):
 
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
+
         with fits.open(fitsPath, mode='update') as fitsHDU:
-            fitsHeader = fitsHDU[0].header
-
-        solve = self.getSolutionFromWCS(wcsHeader=wcsHeader,
-                                        fitsHeader=fitsHeader)
-
-        if updateFits:
-            with fits.open(fitsPath, mode='update') as fitsHDU:
-                fitsHDU[0].header = self.updateHeader(fitsHeader=fitsHeader,
-                                                      wcsHeader=wcsHeader,
-                                                      solve=solve)
+            solve, header = self.getSolutionFromWCS(wcsHeader=wcsHeader,
+                                                    fitsHeader=fitsHDU[0].header,
+                                                    updateFits=updateFits)
+            fitsHDU[0].header = header
 
         self.result = Solution(success=True,
                                solve=solve)

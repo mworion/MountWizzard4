@@ -199,31 +199,6 @@ class Astrometry(object):
 
         return angle, scale, flipped
 
-    @staticmethod
-    def updateHeader(wcsHeader=None, fitsHeader=None, solve=None):
-        """
-
-        :param wcsHeader:
-        :param fitsHeader:
-        :param solve:
-        :return: fitsHeader
-        """
-
-        remove = ['COMMENT', 'HISTORY']
-
-        fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
-
-        fitsHeader['RA'] = solve.raJ2000._degrees
-        fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
-        fitsHeader['DEC'] = solve.decJ2000.degrees
-        fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
-        fitsHeader['SCALE'] = solve.scale
-        fitsHeader['PIXSCALE'] = solve.scale
-        fitsHeader['ANGLE'] = solve.angle
-        fitsHeader['FLIPPED'] = solve.flipped
-
-        return fitsHeader
-
     def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFits=False):
         """
         getSolutionFromWCS reads the fits header containing the wcs data and returns the

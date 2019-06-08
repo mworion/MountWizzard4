@@ -396,15 +396,17 @@ def test_addResultToModel_1():
     class Julian:
         ut1 = 2458635.168
 
-    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
+    solve = Solve(raJ2000=skyfield.api.Angle(degrees=0),
+                  decJ2000=skyfield.api.Angle(degrees=0),
+                  angle=0, scale=1, error=1, flipped=False)
     result = Solution(success=True, solve=solve)
     mPoint = MPoint(mParam=tuple(),
                     iParam=tuple(),
                     point=tuple(),
-                    mData=MData(raMJNow=0,
-                                decMJNow=0,
-                                raSJNow=0,
-                                decSJNow=0,
+                    mData=MData(raMJNow=skyfield.api.Angle(degrees=0),
+                                decMJNow=skyfield.api.Angle(degrees=0),
+                                raSJNow=skyfield.api.Angle(degrees=0),
+                                decSJNow=skyfield.api.Angle(degrees=0),
                                 sidereal=0,
                                 julian=Julian(),
                                 pierside='E'),
@@ -494,10 +496,10 @@ def test_modelSolveDone_6():
                                   astrometry=''),
                     iParam=tuple(),
                     point=tuple(),
-                    mData=MData(raMJNow=0,
-                                decMJNow=0,
-                                raSJNow=0,
-                                decSJNow=0,
+                    mData=MData(raMJNow=skyfield.api.Angle(hours=0),
+                                decMJNow=skyfield.api.Angle(degrees=0),
+                                raSJNow=skyfield.api.Angle(degrees=0),
+                                decSJNow=skyfield.api.Angle(degrees=0),
                                 sidereal=0,
                                 julian=Julian(),
                                 pierside='E'),
@@ -506,7 +508,9 @@ def test_modelSolveDone_6():
                                 errorRMS=3))
 
     app.mainW.resultQueue.put(mPoint)
-    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
+    solve = Solve(raJ2000=skyfield.api.Angle(hours=0),
+                  decJ2000=skyfield.api.Angle(degrees=0),
+                  angle=0, scale=1, error=1, flipped=False)
     result = Solution(success=True, solve=solve)
     suc = app.mainW.modelSolveDone(result=result)
     assert suc

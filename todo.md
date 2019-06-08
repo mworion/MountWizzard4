@@ -31,10 +31,11 @@ nice to have:
 - astrometry online
 - hemisphere: show best altitude when polar align is on
 - indi setting parameters of devices
-- gui show indi device FL / pixels data in screen and choose which to use
 - check if daylight timezone fits to the computer or set it up !
 - max error for modeling solving
 - INDI FlipFlat Device open 
+- mark modeled points (really necessary ?)
+- adding stacking of images 
 
 
 architecture:

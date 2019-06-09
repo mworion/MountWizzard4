@@ -24,6 +24,13 @@ import time
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+
+# This import registers the 3D projection, but is otherwise unused.
+from mpl_toolkits.mplot3d import Axes3D
+
+import matplotlib.pyplot as plt
+import numpy as np
+
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import satellite_ui
@@ -98,4 +105,33 @@ class SatelliteWindow(widget.MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self):
+        self.drawSatellite()
         self.show()
+
+    def drawSatellite(self):
+
+        figure = self.satelliteMat.figure
+        figure.clf()
+        figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
+
+        ax = figure.add_subplot(111, facecolor=None, projection='3d')
+
+        # Create the mesh in polar coordinates and compute corresponding Z.
+        r = np.linspace(0, 1.25, 50)
+        p = np.linspace(0, 2 * np.pi, 50)
+        R, P = np.meshgrid(r, p)
+        Z = ((R ** 2 - 1) ** 2)
+
+        # Express the mesh in the cartesian system.
+        X, Y = R * np.cos(P), R * np.sin(P)
+
+        # Plot the surface.
+        ax.plot_surface(X, Y, Z, cmap=plt.cm.YlGnBu_r)
+
+        # Tweak the limits and add latex math labels.
+        ax.set_zlim(0, 1)
+        ax.set_xlabel(r'$\phi_\mathrm{real}$')
+        ax.set_ylabel(r'$\phi_\mathrm{im}$')
+        ax.set_zlabel(r'$V(\phi)$')
+
+        ax.figure.canvas.draw()

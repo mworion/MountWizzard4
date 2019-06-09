@@ -57,7 +57,7 @@ class Mount(object):
         self.clickable(self.ui.siteElevation).connect(self.setElevation)
 
         self.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
-        self.clickable(self.ui.statusDualTracking).connect(self.setDualAxisTrackinga)
+        self.clickable(self.ui.statusDualTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
 
     def initConfig(self):

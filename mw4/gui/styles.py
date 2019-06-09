@@ -120,45 +120,33 @@ class MWStyles(object):
         text-align: right;
         border-width: 1px;
         border-color: #404040;
-        border-style: outset;
-        border-radius: 2px;
-    }
-    QLineEdit {
-        border-width: 1px;
-        border-color: red;
         border-style: flat;
         border-radius: 2px;
     }
-    QLineEdit[check='false'] {
-        background-color: #101010;
-        color: rgb(255, 0, 0);
-    }
-    QLineEdit[check='true'] {
-        background-color: #101010;
-        color: rgb(32, 144, 192);
-    }
     QLineEdit[color='green'] {
-        border-width: 1px;
+        border-width: 2px;
         border-style: outset;
         border-color: green;
     }
     QLineEdit[color='yellow'] {
-        border-width: 1px;
+        border-width: 2px;
         border-style: outset;
         border-color: yellow;
     }
     QLineEdit[color='red'] {
-        border-width: 1px;
+        border-width: 2px;
         border-style: outset;
         border-color: red;
     }
-    QLineEdit:read-only {
-        background-color: #202020;
-        border-width: 2px;
-        border-color: #000000;
-        border-style: flat;
-        border-radius: 2px;
-    }
+    QLineEdit:read-only{
+        background-color: #000000;
+    }    
+    QLineEdit[input='true']{
+        border-width: 1px;
+        border-color: rgb(16, 72, 96);
+        border-style: outset;
+    }    
+
     /* Checkboxes */
     QCheckBox {
         color: #C0C0C0;

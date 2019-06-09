@@ -2390,6 +2390,9 @@
        <property name="readOnly">
         <bool>true</bool>
        </property>
+       <property name="input" stdset="0">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="label_55">
        <property name="geometry">
@@ -2454,6 +2457,9 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="input" stdset="0">
         <bool>true</bool>
        </property>
       </widget>
@@ -2690,6 +2696,9 @@
        <property name="readOnly">
         <bool>true</bool>
        </property>
+       <property name="input" stdset="0">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="label_86">
        <property name="geometry">
@@ -2840,12 +2849,15 @@
        <property name="readOnly">
         <bool>true</bool>
        </property>
+       <property name="input" stdset="0">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="label_28">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>400</y>
+         <y>405</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -2899,7 +2911,7 @@
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>400</y>
+         <y>405</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -2958,6 +2970,9 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="input" stdset="0">
         <bool>true</bool>
        </property>
       </widget>
@@ -3083,6 +3098,9 @@
        <property name="clearButtonEnabled">
         <bool>false</bool>
        </property>
+       <property name="input" stdset="0">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLineEdit" name="horizonLimitHigh">
        <property name="enabled">
@@ -3132,6 +3150,9 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="input" stdset="0">
         <bool>true</bool>
        </property>
       </widget>
@@ -3208,7 +3229,7 @@
        <property name="geometry">
         <rect>
          <x>130</x>
-         <y>400</y>
+         <y>405</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -3353,6 +3374,9 @@
        <property name="cursorMoveStyle">
         <enum>Qt::VisualMoveStyle</enum>
        </property>
+       <property name="input" stdset="0">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLineEdit" name="siteLatitude">
        <property name="enabled">
@@ -3393,6 +3417,9 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="input" stdset="0">
         <bool>true</bool>
        </property>
       </widget>
@@ -3507,6 +3534,9 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="input" stdset="0">
         <bool>true</bool>
        </property>
       </widget>

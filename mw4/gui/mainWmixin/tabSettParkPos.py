@@ -111,25 +111,49 @@ class SettParkPos(object):
         return True
 
     def updateParkPosButtonText(self):
+        """
+        updateParkPosButtonText updates the text in the gui button
+
+        :return: true for test purpose
+        """
+
         for button, textField in zip(self.posButtons, self.posTexts):
             button.setText(textField.text())
 
+        return True
+
     def slewToParkPos(self):
+        """
+        slewToParkPos takes the configured data from menu and slews the mount to the
+        targeted alt az coordinates.
+
+        :return: success
+        """
+
         for button, posText, alt, az in zip(self.posButtons,
                                             self.posTexts,
                                             self.posAlt,
                                             self.posAz,
                                             ):
-            if button == self.sender():
+
+            if button != self.sender():
+                continue
+
+            try:
                 altValue = float(alt.text())
                 azValue = float(az.text())
                 posTextValue = posText.text()
+            except Exception as e:
+                self.logger.error('no usable values in data')
+                self.app.message.emit('Missing correct entries in settings', 2)
+            else:
                 suc = self.app.mount.obsSite.slewAltAz(alt_degrees=altValue,
                                                        az_degrees=azValue,
                                                        slewType='normal')
                 if suc:
-                    self.app.message.emit('Slew to [{0}]'.format(posTextValue), 0)
+                    self.app.message.emit(f'Slew to [{posTextValue}]', 0)
                 else:
-                    self.app.message.emit('Cannot slew to [{0}]'.format(posTextValue), 2)
+                    self.app.message.emit(f'Cannot slew to [{posTextValue}]', 2)
                 return suc
+
         return False

@@ -10,7 +10,6 @@ problems occurred:
 
 necessary feature:
 - mountcontrol: adding TLE commands and tests
-- performance measure window
 - tooltips
 
 

@@ -139,9 +139,10 @@ class MWStyles(object):
         border-color: red;
     }
     QLineEdit:read-only{
-        background-color: #000000;
+        background-color: #202020;
     }    
     QLineEdit[input='true']{
+        background-color: #000000;
         border-width: 1px;
         border-color: rgb(16, 72, 96);
         border-style: outset;

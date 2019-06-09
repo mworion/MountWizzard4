@@ -32,6 +32,7 @@ from mw4.gui import messageW
 from mw4.gui import hemisphereW
 from mw4.gui import measureW
 from mw4.gui import imageW
+from mw4.gui import satelliteW
 from mw4.powerswitch import kmRelay
 from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
@@ -83,6 +84,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.hemisphereW = None
         self.measureW = None
         self.imageW = None
+        self.satelliteW = None
         self.threadPool = PyQt5.QtCore.QThreadPool()
 
         pathToData = self.mwGlob['dataDir']
@@ -133,6 +135,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.ui.openHemisphereW.clicked.connect(self.toggleHemisphereWindow)
         self.mainW.ui.openImageW.clicked.connect(self.toggleImageWindow)
         self.mainW.ui.openMeasureW.clicked.connect(self.toggleMeasureWindow)
+        self.mainW.ui.openSatelliteW.clicked.connect(self.toggleSatelliteWindow)
 
         # starting mount communication
         self.mount.startTimers()
@@ -219,6 +222,25 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         self.measureW = None
+        gc.collect()
+
+    def toggleSatelliteWindow(self):
+        """
+
+        :return:
+        """
+        if not self.satelliteW:
+            self.satelliteW = satelliteW.SatelliteWindow(self)
+            self.satelliteW.destroyed.connect(self.deleteSatelliteW)
+        else:
+            self.satelliteW.close()
+
+    def deleteSatelliteW(self):
+        """
+
+        :return:
+        """
+        self.satelliteW = None
         gc.collect()
 
     def initConfig(self):

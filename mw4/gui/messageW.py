@@ -72,7 +72,7 @@ class MessageWindow(widget.MWidget):
         """
 
         if 'messageW' not in self.app.config:
-            return
+            self.app.config['messageW'] = {}
         config = self.app.config['messageW']
         x = config.get('winPosX', 100)
         y = config.get('winPosY', 100)

@@ -417,6 +417,11 @@ class MainWindow(MWidget,
         else:
             self.changeStyleDynamic(self.ui.openMeasureW, 'running', False)
 
+        if self.app.satelliteW:
+            self.changeStyleDynamic(self.ui.openSatelliteW, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.openSatelliteW, 'running', False)
+
         return True
 
     def updateTime(self):

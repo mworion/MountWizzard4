@@ -208,8 +208,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         if not self.measureW:
-            self.measureW = measureW.MeasureWindow(self,
-                                                   threadPool=self.threadPool)
+            self.measureW = measureW.MeasureWindow(self)
             self.measureW.destroyed.connect(self.deleteMeasureW)
         else:
             self.measureW.close()

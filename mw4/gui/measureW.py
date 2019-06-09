@@ -43,13 +43,12 @@ class MeasureWindow(widget.MWidget):
     version = '0.5'
     logger = logging.getLogger(__name__)
 
-    NUMBER_POINTS = 500
-    NUMBER_XTICKS = 8
+    NUMBER_POINTS = 250
+    NUMBER_XTICKS = 5
 
-    def __init__(self, app, threadPool):
+    def __init__(self, app):
         super().__init__()
         self.app = app
-        self.threadPool = threadPool
 
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self)
@@ -217,9 +216,7 @@ class MeasureWindow(widget.MWidget):
 
         cycle = self.timeScale[self.ui.timeSet.currentText()]
         if not self.refreshCounter % cycle:
-            worker = tpool.Worker(self.drawMeasure,
-                                  cycle)
-            self.threadPool.start(worker)
+            self.drawMeasure(cycle=cycle)
         self.refreshCounter += 1
 
         return True

@@ -251,13 +251,10 @@ class HemisphereWindow(widget.MWidget):
         axe.spines['left'].set_color('#2090C0')
         axe.spines['right'].set_color('#2090C0')
         axe.grid(True, color='#404040')
-        axe.set_facecolor((0, 0, 0, 0))
         axe.tick_params(axis='x',
                         colors='#2090C0',
                         labelsize=12)
-        axe.set_xlim(0, 360)
         axe.set_xticks(np.arange(0, 361, 30))
-        axe.set_ylim(0, 90)
         axe.tick_params(axis='y',
                         colors='#2090C0',
                         which='both',

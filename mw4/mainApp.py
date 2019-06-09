@@ -287,6 +287,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         config['showHemisphereW'] = bool(self.hemisphereW)
         config['showImageW'] = bool(self.imageW)
         config['showMeasureW'] = bool(self.measureW)
+        config['showSatelliteW'] = bool(self.satelliteW)
         if self.messageW:
             self.messageW.storeConfig()
         if self.imageW:
@@ -295,6 +296,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.hemisphereW.storeConfig()
         if self.measureW:
             self.measureW.storeConfig()
+        if self.satelliteW:
+            self.satelliteW.storeConfig()
         return True
 
     def showWindows(self):
@@ -312,6 +315,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.toggleImageWindow()
         if self.config.get('showMeasureW', False):
             self.toggleMeasureWindow()
+        if self.config.get('showSatelliteW', False):
+            self.toggleSatelliteWindow()
 
         return True
 

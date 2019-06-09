@@ -74,13 +74,14 @@ class MeasureWindow(widget.MWidget):
                          'Current': self.plotCurrent,
                          }
 
-        self.timeScale = {' 1s Tick': 1,
-                          ' 2s Ticks': 2,
-                          ' 4s Ticks': 4,
-                          ' 8s Ticks': 8,
-                          '16s Ticks': 16,
-                          '32s Ticks': 32,
-                          '64s Ticks': 64,
+        self.timeScale = {'  1s Tick   -  4 min': 1,
+                          '  2s Ticks  -  8 min': 2,
+                          '  4s Ticks  - 16 min': 4,
+                          '  8s Ticks  - 32 min': 8,
+                          ' 16s Ticks  -  1 hour': 16,
+                          ' 32s Ticks  -  2 hours': 32,
+                          ' 64s Ticks  -  4 hours': 64,
+                          '128s Ticks  -  9 hours': 128,
                           }
 
         # doing the matplotlib embedding

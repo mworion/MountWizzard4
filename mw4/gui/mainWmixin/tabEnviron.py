@@ -55,14 +55,6 @@ class Environ(object):
         signals.deviceDisconnected.connect(self.clearWeatherGUI)
 
         # gui connections
-        self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
-        self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
-        self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
-        self.clickable(self.ui.horizonLimitLow).connect(self.setHorizonLimitLow)
-        self.clickable(self.ui.slewRate).connect(self.setSlewRate)
-        self.clickable(self.ui.siteLatitude).connect(self.setLatitude)
-        self.clickable(self.ui.siteLongitude).connect(self.setLongitude)
-        self.clickable(self.ui.siteElevation).connect(self.setElevation)
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.app.update10s.connect(self.updateRefractionParameters)
 

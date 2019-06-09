@@ -2709,69 +2709,6 @@
         <string>Refraction correction</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="switchUnattendedFlip">
-       <property name="geometry">
-        <rect>
-         <x>460</x>
-         <y>345</y>
-         <width>26</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Sets unattended flip on / off</string>
-       </property>
-       <property name="text">
-        <string>I/O</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="switchDualTracking">
-       <property name="geometry">
-        <rect>
-         <x>460</x>
-         <y>375</y>
-         <width>26</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Sets unattended flip on / off</string>
-       </property>
-       <property name="text">
-        <string>I/O</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="switchRefraction">
-       <property name="geometry">
-        <rect>
-         <x>460</x>
-         <y>405</y>
-         <width>26</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Sets unattended flip on / off</string>
-       </property>
-       <property name="text">
-        <string>I/O</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_139">
        <property name="geometry">
         <rect>
@@ -2814,9 +2751,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>685</x>
+         <x>690</x>
          <y>315</y>
-         <width>56</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -3597,9 +3534,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>685</x>
+         <x>690</x>
          <y>285</y>
-         <width>56</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -3692,9 +3629,6 @@
       <zorder>label_222</zorder>
       <zorder>statusRefraction</zorder>
       <zorder>label_86</zorder>
-      <zorder>switchUnattendedFlip</zorder>
-      <zorder>switchDualTracking</zorder>
-      <zorder>switchRefraction</zorder>
       <zorder>label_139</zorder>
       <zorder>label_148</zorder>
       <zorder>statusGPSSynced</zorder>
@@ -18858,9 +18792,6 @@ manually</string>
   <tabstop>setSiderealTracking</tabstop>
   <tabstop>park</tabstop>
   <tabstop>stop</tabstop>
-  <tabstop>switchUnattendedFlip</tabstop>
-  <tabstop>switchDualTracking</tabstop>
-  <tabstop>switchRefraction</tabstop>
   <tabstop>checkRefracNone</tabstop>
   <tabstop>checkRefracCont</tabstop>
   <tabstop>checkRefracNoTrack</tabstop>

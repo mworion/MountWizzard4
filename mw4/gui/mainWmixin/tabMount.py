@@ -47,6 +47,18 @@ class Mount(object):
         self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
         self.ui.setSolarTracking.clicked.connect(self.setSolarTracking)
         self.ui.stop.clicked.connect(self.stop)
+        self.clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
+        self.clickable(self.ui.meridianLimitSlew).connect(self.setMeridianLimitSlew)
+        self.clickable(self.ui.horizonLimitHigh).connect(self.setHorizonLimitHigh)
+        self.clickable(self.ui.horizonLimitLow).connect(self.setHorizonLimitLow)
+        self.clickable(self.ui.slewRate).connect(self.setSlewRate)
+        self.clickable(self.ui.siteLatitude).connect(self.setLatitude)
+        self.clickable(self.ui.siteLongitude).connect(self.setLongitude)
+        self.clickable(self.ui.siteElevation).connect(self.setElevation)
+
+        self.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
+        self.clickable(self.ui.statusDualTracking).connect(self.setDualAxisTrackinga)
+        self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
 
     def initConfig(self):
         """
@@ -428,14 +440,14 @@ class Mount(object):
                                1,
                                )
 
-        if ok:
-            if obs.setMeridianLimitTrack(value):
-                self.app.message.emit('Meridian Limit Track: [{0}]'.format(value), 0)
-                return True
-            else:
-                self.app.message.emit('Meridian Limit Track cannot be set', 2)
-                return False
+        if not ok:
+            return False
+
+        if obs.setMeridianLimitTrack(value):
+            self.app.message.emit(f'Meridian Limit Track: [{value}]', 0)
+            return True
         else:
+            self.app.message.emit('Meridian Limit Track cannot be set', 2)
             return False
 
     def setMeridianLimitSlew(self):
@@ -464,14 +476,14 @@ class Mount(object):
                                1,
                                )
 
-        if ok:
-            if obs.setMeridianLimitSlew(value):
-                self.app.message.emit('Meridian Limit Slew: [{0}]'.format(value), 0)
-                return True
-            else:
-                self.app.message.emit('Meridian Limit Slew cannot be set', 2)
-                return False
+        if not ok:
+            return False
+
+        if obs.setMeridianLimitSlew(value):
+            self.app.message.emit(f'Meridian Limit Slew: [{value}]', 0)
+            return True
         else:
+            self.app.message.emit('Meridian Limit Slew cannot be set', 2)
             return False
 
     def setHorizonLimitHigh(self):
@@ -500,14 +512,14 @@ class Mount(object):
                                1,
                                )
 
-        if ok:
-            if obs.setHorizonLimitHigh(value):
-                self.app.message.emit('Horizon Limit High: [{0}]'.format(value), 0)
-                return True
-            else:
-                self.app.message.emit('Horizon Limit High cannot be set', 2)
-                return False
+        if not ok:
+            return False
+
+        if obs.setHorizonLimitHigh(value):
+            self.app.message.emit(f'Horizon Limit High: [{value}]', 0)
+            return True
         else:
+            self.app.message.emit('Horizon Limit High cannot be set', 2)
             return False
 
     def setHorizonLimitLow(self):
@@ -537,14 +549,14 @@ class Mount(object):
                                1,
                                )
 
-        if ok:
-            if obs.setHorizonLimitLow(value):
-                self.app.message.emit('Horizon Limit Low: [{0}]'.format(value), 0)
-                return True
-            else:
-                self.app.message.emit('Horizon Limit Low cannot be set', 2)
-                return False
+        if not ok:
+            return False
+
+        if obs.setHorizonLimitLow(value):
+            self.app.message.emit(f'Horizon Limit Low: [{value}]', 0)
+            return True
         else:
+            self.app.message.emit('Horizon Limit Low cannot be set', 2)
             return False
 
     def setSlewRate(self):
@@ -573,14 +585,14 @@ class Mount(object):
                                1,
                                )
 
-        if ok:
-            if obs.setSlewRate(value):
-                self.app.message.emit('Slew Rate: [{0}]'.format(value), 0)
-                return True
-            else:
-                self.app.message.emit('Slew Rate cannot be set', 2)
-                return False
+        if not ok:
+            return False
+
+        if obs.setSlewRate(value):
+            self.app.message.emit(f'Slew Rate: [{value}]', 0)
+            return True
         else:
+            self.app.message.emit('Slew Rate cannot be set', 2)
             return False
 
     def setLongitude(self):
@@ -604,15 +616,15 @@ class Mount(object):
                                 PyQt5.QtWidgets.QLineEdit.Normal,
                                 obs.location.longitude.dstr(),
                                 )
-        if ok:
-            if obs.setLongitude(value):
-                self.app.message.emit('Longitude: [{0}]'.format(value), 0)
-                self.app.mount.getLocation()
-                return True
-            else:
-                self.app.message.emit('Longitude cannot be set', 2)
-                return False
+        if not ok:
+            return False
+
+        if obs.setLongitude(value):
+            self.app.message.emit(f'Longitude: [{value}]', 0)
+            self.app.mount.getLocation()
+            return True
         else:
+            self.app.message.emit('Longitude cannot be set', 2)
             return False
 
     def setLatitude(self):
@@ -636,15 +648,15 @@ class Mount(object):
                                 PyQt5.QtWidgets.QLineEdit.Normal,
                                 obs.location.latitude.dstr(),
                                 )
-        if ok:
-            if obs.setLatitude(value):
-                self.app.message.emit('Latitude: [{0}]'.format(value), 0)
-                self.app.mount.getLocation()
-                return True
-            else:
-                self.app.message.emit('Latitude cannot be set', 2)
-                return False
+        if not ok:
+            return False
+
+        if obs.setLatitude(value):
+            self.app.message.emit(f'Latitude: [{value}]', 0)
+            self.app.mount.getLocation()
+            return True
         else:
+            self.app.message.emit('Latitude cannot be set', 2)
             return False
 
     def setElevation(self):
@@ -670,12 +682,108 @@ class Mount(object):
                                   8000,
                                   1,
                                   )
-        if ok:
-            if obs.setElevation(value):
-                self.app.message.emit('Elevation: [{0}]'.format(value), 0)
-                self.app.mount.getLocation()
-                return True
-            else:
-                self.app.message.emit('Elevation cannot be set', 2)
-        else:
+        if not ok:
             return False
+
+        if obs.setElevation(value):
+            self.app.message.emit(f'Elevation: [{value}]', 0)
+            self.app.mount.getLocation()
+            return True
+        else:
+            self.app.message.emit('Elevation cannot be set', 2)
+
+    def setUnattendedFlip(self):
+        """
+        setUnattendedFlip implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        if sett.statusUnattendedFlip is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getItem(self,
+                                'Set Unattended Flip',
+                                'Value: On / Off',
+                                ['ON', 'OFF'],
+                                0,
+                                False,
+                                )
+        if not ok:
+            return False
+
+        suc = obs.setUnattendedFlip(value == 'ON')
+        if suc:
+            self.app.message.emit(f'Unattended flip set to [{value}]', 0)
+        else:
+            self.app.message.emit('Unattended flip cannot be set', 2)
+
+    def setDualAxisTracking(self):
+        """
+        setDualAxisTracking implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        if sett.statusDualTracking is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getItem(self,
+                                'Set Dual Axis Tracking',
+                                'Value: On / Off',
+                                ['ON', 'OFF'],
+                                0,
+                                False,
+                                )
+        if not ok:
+            return False
+
+        suc = obs.setDualAxisTracking(value == 'ON')
+        if suc:
+            self.app.message.emit(f'Dual axis tracking set to [{value}]', 0)
+        else:
+            self.app.message.emit('Dual axis tracking cannot be set', 2)
+
+    def setRefraction(self):
+        """
+        setRefractionCorrection implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        sett = self.app.mount.sett
+        obs = self.app.mount.obsSite
+        msg = PyQt5.QtWidgets.QMessageBox
+        if sett.statusRefraction is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when Mount not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getItem(self,
+                                'Set Refraction Correction',
+                                'Value: On / Off',
+                                ['ON', 'OFF'],
+                                0,
+                                False,
+                                )
+        if not ok:
+            return False
+
+        suc = obs.setRefraction(value == 'ON')
+        if suc:
+            self.app.message.emit(f'Refraction correction set to [{value}]', 0)
+        else:
+            self.app.message.emit('Refraction correction cannot be set', 2)

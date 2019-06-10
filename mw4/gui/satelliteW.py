@@ -162,9 +162,39 @@ class SatelliteWindow(widget.MWidget):
         ax.zaxis._axinfo["grid"]['color'] = self.M_GREY
         # ax.set_aspect('equal')
 
+        re = 6378.
+
+        """
+        img = plt.imread('world.png')
+
+        # works:
+        # https://stackoverflow.com/questions/53074908/map-an-image-onto-a-sphere-and-plot-3d-trajectories
+        # but performance problems
+        
+        # define a grid matching the map size, subsample along with pixels
+        theta = np.linspace(0, np.pi, img.shape[0])
+        phi = np.linspace(0, 2 * np.pi, img.shape[1])
+
+        count = 90  # keep 180 points along theta and phi
+        theta_inds = np.linspace(0, img.shape[0] - 1, count).round().astype(int)
+        phi_inds = np.linspace(0, img.shape[1] - 1, count).round().astype(int)
+        theta = theta[theta_inds]
+        phi = phi[phi_inds]
+        img = img[np.ix_(theta_inds, phi_inds)]
+
+        theta, phi = np.meshgrid(theta, phi)
+        R = re - 1000
+
+        # sphere
+        x = R * np.sin(theta) * np.cos(phi)
+        y = R * np.sin(theta) * np.sin(phi)
+        z = R * np.cos(theta)
+        ax.plot_surface(x.T, y.T, z.T, facecolors=img, cstride=1, rstride=1)
+
+        """
+
         halfpi, pi, twopi = [f * np.pi for f in (0.5, 1, 2)]
         degs, rads = 180 / pi, pi / 180
-        re = 6378.
 
         theta = np.linspace(0, twopi, 201)
         cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
@@ -197,7 +227,7 @@ class SatelliteWindow(widget.MWidget):
                 color=self.M_RED,
                 )
 
-        self.set_axes_equal(ax)
+        # self.set_axes_equal(ax)
 
         ax.figure.canvas.draw()
 
@@ -236,8 +266,10 @@ class SatelliteWindow(widget.MWidget):
                        fontsize=12)
         axe.plot(11, 49, marker='o', color=self.M_RED)
 
+        # loading the world image from nasa as PNG as matplotlib only loads png.
         world = plt.imread('world.png')
-        axe.imshow(world, extent=[-180, 180, -90, 90])
+        # we have to extend this, to get it full in the frame !
+        axe.imshow(world, extent=[-180, 180, -90, 90], alpha=0.3)
         axe.figure.canvas.draw()
 
     def drawHorizon(self):

@@ -3293,6 +3293,9 @@ When clicking the button, you could change the value.</string>
        <property name="readOnly">
         <bool>true</bool>
        </property>
+       <property name="input" stdset="0">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="label_6">
        <property name="geometry">

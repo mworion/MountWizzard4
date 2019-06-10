@@ -1201,6 +1201,7 @@ class Ui_MainWindow(object):
         self.slewRate.setCursorPosition(1)
         self.slewRate.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.slewRate.setReadOnly(True)
+        self.slewRate.setProperty("input", True)
         self.slewRate.setObjectName("slewRate")
         self.label_6 = QtWidgets.QLabel(self.Mount)
         self.label_6.setGeometry(QtCore.QRect(545, 345, 101, 21))

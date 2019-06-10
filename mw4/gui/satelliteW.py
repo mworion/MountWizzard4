@@ -112,7 +112,45 @@ class SatelliteWindow(widget.MWidget):
         self.drawSatellite()
         self.show()
 
+    @staticmethod
+    def makeCubeLimits(axis, centers=None, hw=None):
+        """
+
+        :param axis:
+        :param centers:
+        :param hw:
+        :return:
+        """
+
+        limits = axis.get_xlim(), axis.get_ylim(), axis.get_zlim()
+        if centers is None:
+            centers = [0.5 * sum(pair) for pair in limits]
+
+        if hw is None:
+            widths = [pair[1] - pair[0] for pair in limits]
+            hw = 0.5 * max(widths)
+            axis.set_xlim(centers[0] - hw, centers[0] + hw)
+            axis.set_ylim(centers[1] - hw, centers[1] + hw)
+            axis.set_zlim(centers[2] - hw, centers[2] + hw)
+
+        else:
+            try:
+                hwx, hwy, hwz = hw
+                axis.set_xlim(centers[0] - hwx, centers[0] + hwx)
+                axis.set_ylim(centers[1] - hwy, centers[1] + hwy)
+                axis.set_zlim(centers[2] - hwz, centers[2] + hwz)
+
+            except Exception as e:
+                ax.set_xlim(centers[0] - hw, centers[0] + hw)
+                ax.set_ylim(centers[1] - hw, centers[1] + hw)
+                ax.set_zlim(centers[2] - hw, centers[2] + hw)
+
+        return centers, hw
+
     def drawSphere(self):
+
+        # see:
+        # https://space.stackexchange.com/questions/25958/how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
 
         figure = self.satSphereMat.figure
         figure.clf()
@@ -120,37 +158,45 @@ class SatelliteWindow(widget.MWidget):
 
         ax = figure.add_subplot(111, projection='3d')
         ax.set_facecolor((0, 0, 0, 0))
-        ax.grid(True, color='#404040')
         ax.tick_params(colors='#2090C0',
                         labelsize=12)
+        ax.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        ax.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        ax.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        ax.xaxis._axinfo["grid"]['color'] = self.M_GREY
+        ax.yaxis._axinfo["grid"]['color'] = self.M_GREY
+        ax.zaxis._axinfo["grid"]['color'] = self.M_GREY
+        # ax.set_aspect('equal')
 
-        # Create the mesh in polar coordinates and compute corresponding Z.
-        r = np.linspace(0, 1.25, 50)
-        p = np.linspace(0, 2 * np.pi, 50)
-        R, P = np.meshgrid(r, p)
-        Z = ((R ** 2 - 1) ** 2)
+        halfpi, pi, twopi = [f * np.pi for f in (0.5, 1, 2)]
+        degs, rads = 180 / pi, pi / 180
+        re = 6378.
 
-        # Express the mesh in the cartesian system.
-        X, Y = R * np.cos(P), R * np.sin(P)
+        theta = np.linspace(0, twopi, 201)
+        cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
+        lon0 = re * np.vstack((cth, zth, sth))
+        lons = []
+        for phi in rads * np.arange(0, 180, 15):
+            cph, sph = [f(phi) for f in [np.cos, np.sin]]
+            lon = np.vstack((lon0[0] * cph - lon0[1] * sph,
+                             lon0[1] * cph + lon0[0] * sph,
+                             lon0[2]))
+            lons.append(lon)
 
-        # Plot the surface.
-        ax.plot_surface(X, Y, Z, cmap=plt.cm.YlGnBu_r,
-                        color='#2090C0')
+        lat0 = re * np.vstack((cth, sth, zth))
+        lats = []
+        for phi in rads * np.arange(-75, 90, 15):
+            cph, sph = [f(phi) for f in [np.cos, np.sin]]
+            lat = re * np.vstack((cth * cph, sth * cph, zth + sph))
+            lats.append(lat)
 
-        # Tweak the limits and add latex math labels.
-        ax.set_zlim(0, 1)
-        ax.set_xlabel(r'$\phi_\mathrm{real}$',
-                      color='#2090C0',
-                      fontweight='bold',
-                      fontsize=12)
-        ax.set_ylabel(r'$\phi_\mathrm{im}$',
-                      color='#2090C0',
-                      fontweight='bold',
-                      fontsize=12)
-        ax.set_zlabel(r'$V(\phi)$',
-                      color='#2090C0',
-                      fontweight='bold',
-                      fontsize=12)
+        for x, y, z in lons:
+            ax.plot(x, y, z, '-k', color=self.M_BLUE)
+        for x, y, z in lats:
+            ax.plot(x, y, z, '-k', color=self.M_BLUE)
+
+        centers, hw = self.makeCubeLimits(ax)
+
         ax.figure.canvas.draw()
 
     def drawEarth(self):

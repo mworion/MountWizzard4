@@ -493,7 +493,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the image window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Opens and closes the hemishpere window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -529,7 +529,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the analyse window for checking measurements and modlelling data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Opens and closes the satellite window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -578,7 +578,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the analyse window for checking measurements and modlelling data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Opens and closes the image window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -668,7 +668,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the hemisphere window, where you can see all model points, the horizon mask and the modeling progress&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Opens and closes the measure window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -704,7 +704,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open the message and log window. The window could be sized in height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Opens and closes the message window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -769,7 +769,7 @@
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Actual used profile&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Shows the actual selected profile name.</string>
          </property>
          <property name="text">
           <string>-</string>
@@ -848,7 +848,7 @@
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:400;&quot;&gt;Altitude&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Shows the actual time of the computer</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
@@ -916,7 +916,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the actual settings under a new profile name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Saves the actual profile under a selectable new name on the disk without closing the appliation.</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -952,7 +952,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the mount is connected via ethernet and is in the same subnet, from firmware 2.15.8 on the mount could be started by sending a WOL packet to the moutn computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
          </property>
          <property name="text">
           <string>ON</string>
@@ -985,7 +985,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load an existing configuration profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Loads a profile from disk</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -1021,7 +1021,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the configuration under the current profile&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Saves the actual profile to disk under the same name without closing the application.</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -1057,7 +1057,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>Quits the tool and saves the settings data in config.cfg</string>
+          <string>Saves the actual profile and closes the application</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -1093,7 +1093,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send shutdown command to the mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Shuts the mount down.</string>
          </property>
          <property name="text">
           <string>Off</string>
@@ -1238,7 +1238,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:400;&quot;&gt;Right Ascension in J2000&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Display of right ascention in HH:MM:SS</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -1286,7 +1286,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:400;&quot;&gt;Azimuth&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Display of azimuth</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -1334,7 +1334,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:400;&quot;&gt;Declination in J2000&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Display of declination in DD:MM:SS</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -1382,7 +1382,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:400;&quot;&gt;Altitude&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Display of altitude</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -1506,7 +1506,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Pier side</string>
+        <string>Shows the pierside reported from the mout. Eeast or West. Definitions are given in the manual of the mount computer.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -1566,9 +1566,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>405</x>
          <y>255</y>
-         <width>46</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -1590,7 +1590,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Time until tracking ends because of flip / horizon limit</string>
+        <string>Shows the time until tracking ends because of flip / horizon limit</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -1696,7 +1696,7 @@
         </font>
        </property>
        <property name="toolTip">
-        <string>Start tracking the mount</string>
+        <string>Switching tracking on and off. Blue button show tracking is on.</string>
        </property>
        <property name="text">
         <string>Tracking</string>
@@ -1717,7 +1717,7 @@
         </font>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Park mount in default position&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Switches the parkings state on and on. Blue button means mount parked. It is the position, which is in the mount computer defined as park position. If the mount is not parked, it slews to the park position. If parked, the button press just unparks and starts tracking.</string>
        </property>
        <property name="text">
         <string>Mount Park</string>
@@ -1937,9 +1937,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>405</x>
          <y>225</y>
-         <width>46</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -1961,7 +1961,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Time until tracking ends because of flip / horizon limit</string>
+        <string>Shows the time until meridian is reached</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2075,7 +2075,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the refraction parameters to the mount when camera is connected and IDLE.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Sets the epoch for showing the pointing coordinates to JNow</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
@@ -2108,7 +2108,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the refraction parameters to the mount when camera is connected and IDLE.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Sets the epoch for showing the pointing coordinates to J2000</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
@@ -2151,7 +2151,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Expiration date of UTC data&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Shows the expiration date of UTC timetable in the moutn computer. If it's happening within 1 month, the frame turns to yellow. If expired, the frame will turn to red. </string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2216,6 +2216,9 @@
        <property name="acceptDrops">
         <bool>false</bool>
        </property>
+       <property name="toolTip">
+        <string>Shows the local sidereal time from the mount computer</string>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
@@ -2275,6 +2278,9 @@
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Shows the julian date of the mount computer</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2349,9 +2355,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>405</x>
          <y>345</y>
-         <width>46</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -2373,7 +2379,8 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Status of unattended Flip</string>
+        <string>Status of unattended Flip.
+When clicking the button, you could change the value.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2418,9 +2425,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>405</x>
          <y>375</y>
-         <width>46</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -2442,7 +2449,8 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Status of dual tracking</string>
+        <string>Status of dual tracking.
+When clicking the button, you could change the value.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2529,7 +2537,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>shows the refraction temperature used in mount</string>
+        <string>Shows the refraction temperature used in mount</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2577,7 +2585,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>shows the refraction pressure used in mount</string>
+        <string>Shows the refraction pressure used in mount</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2655,9 +2663,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>130</x>
          <y>405</y>
-         <width>46</width>
+         <width>56</width>
          <height>21</height>
         </rect>
        </property>
@@ -2679,7 +2687,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Status of dual tracking</string>
+        <string>Shows the status if the mount takes refraction parameters into account. When clicking the button, you could change the value.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2703,7 +2711,7 @@
       <widget class="QLabel" name="label_86">
        <property name="geometry">
         <rect>
-         <x>285</x>
+         <x>10</x>
          <y>405</y>
          <width>126</width>
          <height>21</height>
@@ -2784,7 +2792,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Status of dual tracking</string>
+        <string>Shows if the mount is synced to an attache GPS receiver.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2808,9 +2816,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>405</x>
          <y>315</y>
-         <width>46</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -2830,6 +2838,11 @@
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Shows the amount of degrees when the mount will flip after the meridian is passed when slewing. Positive values show after meridian, negative values before meridian.
+When clicking the button, you could change the value.
+Please refer to the mount manual for details</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -2856,7 +2869,7 @@
       <widget class="QLabel" name="label_28">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>285</x>
          <y>405</y>
          <width>121</width>
          <height>21</height>
@@ -2910,7 +2923,7 @@
       <widget class="QLabel" name="label_133">
        <property name="geometry">
         <rect>
-         <x>190</x>
+         <x>460</x>
          <y>405</y>
          <width>16</width>
          <height>21</height>
@@ -2931,9 +2944,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>405</x>
          <y>285</y>
-         <width>46</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -2953,6 +2966,11 @@
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Shows the amount of degrees when the mount will flip after the meridian is passed when tracking. Positive values show after meridian, negative values before meridian.
+When clicking the button, you could change the value.
+Please refer to the mount manual for details</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -3072,7 +3090,8 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Actual horizon limit for slewing lower bound</string>
+        <string>Actual horizon limit for slewing for low limit (lower boundary).
+When clicking the button, you could change the value.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -3132,7 +3151,8 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Actual horizon limit for slewing higher bound</string>
+        <string>Actual horizon limit for slewing for high values (upper boundary).
+When clicking the button, you could change the value.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -3228,9 +3248,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>405</x>
          <y>405</y>
-         <width>56</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -3250,6 +3270,10 @@
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Shows the actual set slew rate for the mount.
+When clicking the button, you could change the value.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -3354,7 +3378,8 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string/>
+        <string>Shows the logitude of the site.
+When clicking the button, you could change the value.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -3406,6 +3431,10 @@
        </property>
        <property name="acceptDrops">
         <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Shows the latitude of the site.
+When clicking the button, you could change the value.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -3524,6 +3553,10 @@
        <property name="acceptDrops">
         <bool>false</bool>
        </property>
+       <property name="toolTip">
+        <string>Shows the elevation of the site.
+When clicking the button, you could change the value.</string>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
@@ -3588,7 +3621,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>Status of dual tracking</string>
+        <string>Shows the status of Wake on Lan status. It could be none (not available), on or off.</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>

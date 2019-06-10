@@ -24,16 +24,14 @@ import time
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
-
 # This import registers the 3D projection, but is otherwise unused.
 from mpl_toolkits.mplot3d import Axes3D
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import satellite_ui
+from mw4.base import transform
 
 
 class SatelliteWindow(widget.MWidget):
@@ -84,7 +82,8 @@ class SatelliteWindow(widget.MWidget):
             y = 0
         self.move(x, y)
         height = config.get('height', 600)
-        self.resize(800, height)
+        width = config.get('width', 800)
+        self.resize(width, height)
 
     def storeConfig(self):
         """
@@ -100,6 +99,7 @@ class SatelliteWindow(widget.MWidget):
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
+        config['width'] = self.width()
 
     def closeEvent(self, closeEvent):
         self.storeConfig()
@@ -113,39 +113,33 @@ class SatelliteWindow(widget.MWidget):
         self.show()
 
     @staticmethod
-    def makeCubeLimits(axis, centers=None, hw=None):
-        """
+    def set_axes_equal(ax):
+        '''Make axes of 3D plot have equal scale so that spheres appear as spheres,
+        cubes as cubes, etc..  This is one possible solution to Matplotlib's
+        ax.set_aspect('equal') and ax.axis('equal') not working for 3D.
 
-        :param axis:
-        :param centers:
-        :param hw:
-        :return:
-        """
+        Input
+          ax: a matplotlib axis, e.g., as output from plt.gca().
+        '''
 
-        limits = axis.get_xlim(), axis.get_ylim(), axis.get_zlim()
-        if centers is None:
-            centers = [0.5 * sum(pair) for pair in limits]
+        x_limits = ax.get_xlim3d()
+        y_limits = ax.get_ylim3d()
+        z_limits = ax.get_zlim3d()
 
-        if hw is None:
-            widths = [pair[1] - pair[0] for pair in limits]
-            hw = 0.5 * max(widths)
-            axis.set_xlim(centers[0] - hw, centers[0] + hw)
-            axis.set_ylim(centers[1] - hw, centers[1] + hw)
-            axis.set_zlim(centers[2] - hw, centers[2] + hw)
+        x_range = abs(x_limits[1] - x_limits[0])
+        x_middle = np.mean(x_limits)
+        y_range = abs(y_limits[1] - y_limits[0])
+        y_middle = np.mean(y_limits)
+        z_range = abs(z_limits[1] - z_limits[0])
+        z_middle = np.mean(z_limits)
 
-        else:
-            try:
-                hwx, hwy, hwz = hw
-                axis.set_xlim(centers[0] - hwx, centers[0] + hwx)
-                axis.set_ylim(centers[1] - hwy, centers[1] + hwy)
-                axis.set_zlim(centers[2] - hwz, centers[2] + hwz)
+        # The plot bounding box is a sphere in the sense of the infinity
+        # norm, hence I call half the max range the plot radius.
+        plot_radius = 0.5 * max([x_range, y_range, z_range])
 
-            except Exception as e:
-                ax.set_xlim(centers[0] - hw, centers[0] + hw)
-                ax.set_ylim(centers[1] - hw, centers[1] + hw)
-                ax.set_zlim(centers[2] - hw, centers[2] + hw)
-
-        return centers, hw
+        ax.set_xlim3d([x_middle - plot_radius, x_middle + plot_radius])
+        ax.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
+        ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
 
     def drawSphere(self):
 
@@ -191,11 +185,19 @@ class SatelliteWindow(widget.MWidget):
             lats.append(lat)
 
         for x, y, z in lons:
-            ax.plot(x, y, z, '-k', color=self.M_BLUE)
+            ax.plot(x, y, z, '-k', lw=1, color=self.M_BLUE)
         for x, y, z in lats:
-            ax.plot(x, y, z, '-k', color=self.M_BLUE)
+            ax.plot(x, y, z, '-k', lw=1, color=self.M_BLUE)
 
-        centers, hw = self.makeCubeLimits(ax)
+        x, y, z = transform.sphericalToCartesian(np.radians(49),
+                                                 np.radians(11)
+                                                 , re)
+        ax.plot([x], [y], [z],
+                marker='o',
+                color=self.M_RED,
+                )
+
+        self.set_axes_equal(ax)
 
         ax.figure.canvas.draw()
 
@@ -232,6 +234,10 @@ class SatelliteWindow(widget.MWidget):
                        color='#2090C0',
                        fontweight='bold',
                        fontsize=12)
+        axe.plot(11, 49, marker='o', color=self.M_RED)
+
+        world = plt.imread('world.png')
+        axe.imshow(world, extent=[-180, 180, -90, 90])
         axe.figure.canvas.draw()
 
     def drawHorizon(self):

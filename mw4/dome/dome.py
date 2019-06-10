@@ -274,31 +274,3 @@ class Dome(indiClass.IndiClass):
             self.slewing = True
 
         return suc
-
-    @staticmethod
-    def sphericalToCartesian(altitude=0, azimuth=0, radius=0):
-        rcos_theta = radius * np.cos(altitude)
-        x = rcos_theta * np.cos(azimuth)
-        y = rcos_theta * np.sin(azimuth)
-        z = radius * np.sin(altitude)
-        return x, y, z
-
-    @staticmethod
-    def cartesianToSpherical(x=0, y=0, z=0):
-        hxy = np.hypot(x, y)
-        radius = np.hypot(hxy, z)
-        altitude = np.arctan2(z, hxy)
-        azimuth = np.arctan2(y, x)
-        return altitude, azimuth, radius
-
-    @staticmethod
-    def polarToCartesian(theta=0, radius=0):
-        x = radius * np.cos(theta)
-        y = radius * np.sin(theta)
-        return x, y
-
-    @staticmethod
-    def cartesianToPolar(x=0, y=0):
-        radius = np.hypot(x, y)
-        theta = np.arctan2(y, x)
-        return theta, radius

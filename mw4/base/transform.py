@@ -222,3 +222,31 @@ def convertToHMS(ra):
     value = f'{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
 
     return value
+
+
+def sphericalToCartesian(altitude=0, azimuth=0, radius=0):
+    rcos_theta = radius * np.cos(altitude)
+    x = rcos_theta * np.cos(azimuth)
+    y = rcos_theta * np.sin(azimuth)
+    z = radius * np.sin(altitude)
+    return x, y, z
+
+
+def cartesianToSpherical(x=0, y=0, z=0):
+    hxy = np.hypot(x, y)
+    radius = np.hypot(hxy, z)
+    altitude = np.arctan2(z, hxy)
+    azimuth = np.arctan2(y, x)
+    return altitude, azimuth, radius
+
+
+def polarToCartesian(theta=0, radius=0):
+    x = radius * np.cos(theta)
+    y = radius * np.sin(theta)
+    return x, y
+
+
+def cartesianToPolar(x=0, y=0):
+    radius = np.hypot(x, y)
+    theta = np.arctan2(y, x)
+    return theta, radius

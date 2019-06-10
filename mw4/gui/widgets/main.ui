@@ -1482,9 +1482,9 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>135</x>
          <y>315</y>
-         <width>56</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -2513,9 +2513,9 @@ When clicking the button, you could change the value.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>135</x>
          <y>345</y>
-         <width>56</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -2561,9 +2561,9 @@ When clicking the button, you could change the value.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>135</x>
          <y>375</y>
-         <width>56</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>
@@ -2663,9 +2663,9 @@ When clicking the button, you could change the value.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>135</x>
          <y>405</y>
-         <width>56</width>
+         <width>51</width>
          <height>21</height>
         </rect>
        </property>

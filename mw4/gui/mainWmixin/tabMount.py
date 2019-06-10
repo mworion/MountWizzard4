@@ -428,7 +428,7 @@ class Mount(object):
         if actValue is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
@@ -464,7 +464,7 @@ class Mount(object):
         if actValue is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
@@ -500,7 +500,7 @@ class Mount(object):
         if actValue is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
@@ -536,7 +536,7 @@ class Mount(object):
         if actValue is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
 
         dlg = PyQt5.QtWidgets.QInputDialog()
@@ -572,7 +572,7 @@ class Mount(object):
         if actValue is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
 
         dlg = PyQt5.QtWidgets.QInputDialog()
@@ -607,7 +607,7 @@ class Mount(object):
         if obs.location is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
@@ -639,7 +639,7 @@ class Mount(object):
         if obs.location is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
@@ -671,7 +671,7 @@ class Mount(object):
         if obs.location is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getDouble(self,
@@ -705,7 +705,7 @@ class Mount(object):
         if sett.statusUnattendedFlip is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
@@ -737,7 +737,7 @@ class Mount(object):
         if sett.statusDualTracking is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
@@ -769,7 +769,7 @@ class Mount(object):
         if sett.statusRefraction is None:
             msg.critical(self,
                          'Error Message',
-                         'Value cannot be set when Mount not connected !')
+                         'Value cannot be set when mount not connected !')
             return False
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,

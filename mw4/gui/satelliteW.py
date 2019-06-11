@@ -28,6 +28,8 @@ import PyQt5.uic
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
+from skyfield.api import EarthSatellite
+# from skyfield.api import Time
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import satellite_ui
@@ -58,6 +60,9 @@ class SatelliteWindow(widget.MWidget):
         self.satHorizonMat.parentWidget().setStyleSheet(self.BACK_BG)
         self.satEarthMat = self.embedMatplot(self.ui.satEarth)
         self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
+
+        self.L1 = '1 43205U 18017A   18038.05572532 +.00020608 -51169-6 +11058-3 0  9993'
+        self.L2 = '2 43205 029.0165 287.1006 3403068 180.4827 179.1544 08.75117793000017'
 
         self.initConfig()
         self.showWindow()
@@ -113,18 +118,19 @@ class SatelliteWindow(widget.MWidget):
         self.show()
 
     @staticmethod
-    def set_axes_equal(ax):
-        '''Make axes of 3D plot have equal scale so that spheres appear as spheres,
+    def set_axes_equal(axe):
+        """
+        Make axes of 3D plot have equal scale so that spheres appear as spheres,
         cubes as cubes, etc..  This is one possible solution to Matplotlib's
-        ax.set_aspect('equal') and ax.axis('equal') not working for 3D.
+        axe.set_aspect('equal') and axe.axis('equal') not working for 3D.
 
         Input
-          ax: a matplotlib axis, e.g., as output from plt.gca().
-        '''
+          axe: a matplotlib axis, e.g., as output from plt.gca().
+        """
 
-        x_limits = ax.get_xlim3d()
-        y_limits = ax.get_ylim3d()
-        z_limits = ax.get_zlim3d()
+        x_limits = axe.get_xlim3d()
+        y_limits = axe.get_ylim3d()
+        z_limits = axe.get_zlim3d()
 
         x_range = abs(x_limits[1] - x_limits[0])
         x_middle = np.mean(x_limits)
@@ -137,11 +143,15 @@ class SatelliteWindow(widget.MWidget):
         # norm, hence I call half the max range the plot radius.
         plot_radius = 0.5 * max([x_range, y_range, z_range])
 
-        ax.set_xlim3d([x_middle - plot_radius, x_middle + plot_radius])
-        ax.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
-        ax.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
+        axe.set_xlim3d([x_middle - plot_radius, x_middle + plot_radius])
+        axe.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
+        axe.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
 
     def drawSphere(self):
+
+        # draw sphere and put face color als image overlay
+        # https://stackoverflow.com/questions/53074908/map-an-image-onto-a-sphere-and-plot-3d-trajectories
+        # but performance problems
 
         # see:
         # https://space.stackexchange.com/questions/25958/how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
@@ -150,86 +160,71 @@ class SatelliteWindow(widget.MWidget):
         figure.clf()
         figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
 
-        ax = figure.add_subplot(111, projection='3d')
-        ax.set_facecolor((0, 0, 0, 0))
-        ax.tick_params(colors='#2090C0',
+        axe = figure.add_subplot(111, projection='3d')
+        axe.set_facecolor((0, 0, 0, 0))
+        axe.tick_params(colors=self.M_GREY,
                         labelsize=12)
-        ax.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        ax.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        ax.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        ax.xaxis._axinfo["grid"]['color'] = self.M_GREY
-        ax.yaxis._axinfo["grid"]['color'] = self.M_GREY
-        ax.zaxis._axinfo["grid"]['color'] = self.M_GREY
-        # ax.set_aspect('equal')
+        axe.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        axe.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        axe.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+
+        axe.xaxis._axinfo["grid"]['color'] = self.M_GREY
+        axe.yaxis._axinfo["grid"]['color'] = self.M_GREY
+        axe.zaxis._axinfo["grid"]['color'] = self.M_GREY
+        # axe.set_aspect('equal')
 
         re = 6378.
 
-        """
-        img = plt.imread('world.png')
-
-        # works:
-        # https://stackoverflow.com/questions/53074908/map-an-image-onto-a-sphere-and-plot-3d-trajectories
-        # but performance problems
-        
-        # define a grid matching the map size, subsample along with pixels
-        theta = np.linspace(0, np.pi, img.shape[0])
-        phi = np.linspace(0, 2 * np.pi, img.shape[1])
-
-        count = 90  # keep 180 points along theta and phi
-        theta_inds = np.linspace(0, img.shape[0] - 1, count).round().astype(int)
-        phi_inds = np.linspace(0, img.shape[1] - 1, count).round().astype(int)
-        theta = theta[theta_inds]
-        phi = phi[phi_inds]
-        img = img[np.ix_(theta_inds, phi_inds)]
-
-        theta, phi = np.meshgrid(theta, phi)
-        R = re - 1000
-
-        # sphere
-        x = R * np.sin(theta) * np.cos(phi)
-        y = R * np.sin(theta) * np.sin(phi)
-        z = R * np.cos(theta)
-        ax.plot_surface(x.T, y.T, z.T, facecolors=img, cstride=1, rstride=1)
-
-        """
-
-        halfpi, pi, twopi = [f * np.pi for f in (0.5, 1, 2)]
-        degs, rads = 180 / pi, pi / 180
-
-        theta = np.linspace(0, twopi, 201)
+        # drawing sphere
+        theta = np.linspace(0, 2 * np.pi, 201)
         cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
         lon0 = re * np.vstack((cth, zth, sth))
-        lons = []
-        for phi in rads * np.arange(0, 180, 15):
+        longitudes = []
+        for phi in np.radians(np.arange(0, 180, 15)):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
             lon = np.vstack((lon0[0] * cph - lon0[1] * sph,
                              lon0[1] * cph + lon0[0] * sph,
                              lon0[2]))
-            lons.append(lon)
+            longitudes.append(lon)
 
-        lat0 = re * np.vstack((cth, sth, zth))
         lats = []
-        for phi in rads * np.arange(-75, 90, 15):
+        for phi in np.radians(np.arange(-75, 90, 15)):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
             lat = re * np.vstack((cth * cph, sth * cph, zth + sph))
             lats.append(lat)
 
-        for x, y, z in lons:
-            ax.plot(x, y, z, '-k', lw=1, color=self.M_BLUE)
+        for x, y, z in longitudes:
+            axe.plot(x, y, z, '-k', lw=1, color=self.M_BLUE)
         for x, y, z in lats:
-            ax.plot(x, y, z, '-k', lw=1, color=self.M_BLUE)
+            axe.plot(x, y, z, '-k', lw=1, color=self.M_BLUE)
 
-        x, y, z = transform.sphericalToCartesian(np.radians(49),
-                                                 np.radians(11)
+        # drawing location on earth
+        lat = self.app.mount.obsSite.location.latitude.degrees
+        lon = self.app.mount.obsSite.location.longitude.degrees
+        x, y, z = transform.sphericalToCartesian(np.radians(lat),
+                                                 np.radians(lon)
                                                  , re)
-        ax.plot([x], [y], [z],
-                marker='o',
-                color=self.M_RED,
-                )
+        axe.plot([x],
+                 [y],
+                 [z],
+                 marker='o',
+                 color=self.M_RED,
+                 )
 
-        # self.set_axes_equal(ax)
+        # drawing satellite orbit
+        satellite = EarthSatellite(self.L1, self.L2)
+        hours = np.arange(0, 10, 0.01)
+        timescale = self.app.mount.obsSite.ts
+        timeNow = timescale.now().tt_calendar()[0:3]
+        time = timescale.utc(*timeNow, hours)
+        x, y, z = satellite.at(time).position.km
+        axe.plot(x,
+                 y,
+                 z,
+                 color=self.M_GREEN)
 
-        ax.figure.canvas.draw()
+        self.set_axes_equal(axe)
+        axe.figure.canvas.draw()
 
     def drawEarth(self):
 
@@ -264,12 +259,32 @@ class SatelliteWindow(widget.MWidget):
                        color='#2090C0',
                        fontweight='bold',
                        fontsize=12)
-        axe.plot(11, 49, marker='o', color=self.M_RED)
+
+        lat = self.app.mount.obsSite.location.latitude.degrees
+        lon = self.app.mount.obsSite.location.longitude.degrees
+        axe.plot(lon, lat, marker='o', color=self.M_RED)
 
         # loading the world image from nasa as PNG as matplotlib only loads png.
         world = plt.imread('world.png')
         # we have to extend this, to get it full in the frame !
         axe.imshow(world, extent=[-180, 180, -90, 90], alpha=0.3)
+
+        # drawing satellite orbit
+        satellite = EarthSatellite(self.L1, self.L2)
+        hours = np.arange(0, 10, 0.01)
+        timescale = self.app.mount.obsSite.ts
+        timeNow = timescale.now().tt_calendar()[0:3]
+        time = timescale.utc(*timeNow, hours)
+        subpoint = satellite.at(time).subpoint()
+        lat = subpoint.latitude.degrees
+        lon = subpoint.longitude.degrees
+
+        axe.plot(lon,
+                 lat,
+                 marker='.',
+                 linestyle='none',
+                 color=self.M_GREEN)
+
         axe.figure.canvas.draw()
 
     def drawHorizon(self):
@@ -305,6 +320,25 @@ class SatelliteWindow(widget.MWidget):
                        color='#2090C0',
                        fontweight='bold',
                        fontsize=12)
+
+        satellite = EarthSatellite(self.L1, self.L2)
+        hours = np.arange(0, 10, 0.01)
+        timescale = self.app.mount.obsSite.ts
+        timeNow = timescale.now().tt_calendar()[0:3]
+        time = timescale.utc(*timeNow, hours)
+
+        difference = satellite - self.app.mount.obsSite.location
+        alt, az, _ = difference.at(time).altaz()
+        alt = alt.degrees
+        az = az.degrees
+
+        axe.plot(az,
+                 alt,
+                 marker='.',
+                 linestyle='none',
+                 color=self.M_GREEN)
+
+
         axe.figure.canvas.draw()
 
     def drawSatellite(self):

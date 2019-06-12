@@ -158,12 +158,13 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat.figure
         figure.clf()
-        figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        figure.subplots_adjust(left=0, right=1, bottom=0, top=1)
 
         axe = figure.add_subplot(111, projection='3d')
         axe.set_facecolor((0, 0, 0, 0))
         axe.tick_params(colors=self.M_GREY,
                         labelsize=12)
+        axe.set_axis_off()
         axe.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         axe.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         axe.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
@@ -180,7 +181,8 @@ class SatelliteWindow(widget.MWidget):
         cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
         lon0 = re * np.vstack((cth, zth, sth))
         longitudes = []
-        for phi in np.radians(np.arange(0, 180, 15)):
+        lonBase = np.arange(-180, 180, 15)
+        for phi in np.radians(lonBase):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
             lon = np.vstack((lon0[0] * cph - lon0[1] * sph,
                              lon0[1] * cph + lon0[0] * sph,
@@ -188,15 +190,26 @@ class SatelliteWindow(widget.MWidget):
             longitudes.append(lon)
 
         lats = []
-        for phi in np.radians(np.arange(-75, 90, 15)):
+        latBase = np.arange(-75, 90, 15)
+        for phi in np.radians(latBase):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
             lat = re * np.vstack((cth * cph, sth * cph, zth + sph))
             lats.append(lat)
 
-        for x, y, z in longitudes:
-            axe.plot(x, y, z, '-k', lw=1, color=self.M_BLUE)
-        for x, y, z in lats:
-            axe.plot(x, y, z, '-k', lw=1, color=self.M_BLUE)
+        for i, longitude in enumerate(longitudes):
+            x, y, z = longitude
+            axe.plot(x, y, z, '-k', lw=1,
+                     color='#104860')
+            axe.text(x[0], y[0], z[0], f'{lonBase[i]:3d}',
+                     color=self.M_WHITE,
+                     fontsize=8)
+        for i, lat in enumerate(lats):
+            x, y, z = lat
+            axe.plot(x, y, z, '-k', lw=1,
+                     color='#104860')
+            axe.text(x[0], y[0], z[0], f'{latBase[i]:3d}',
+                     color=self.M_WHITE,
+                     fontsize=8)
 
         # drawing location on earth
         lat = self.app.mount.obsSite.location.latitude.degrees
@@ -211,6 +224,29 @@ class SatelliteWindow(widget.MWidget):
                  color=self.M_RED,
                  )
 
+        axe.plot([0, 0],
+                 [0, 0],
+                 [- re * 1.1, re* 1.1],
+                 lw=3,
+                 color='#104860')
+
+        axe.text(0, 0, re * 1.2, 'N', color=self.M_BLUE)
+        axe.text(0, 0, - re * 1.2 - 200, 'S', color=self.M_BLUE)
+
+
+        """
+        # draw plane
+        radius = re - 300
+        N = 50
+        stride = 1
+        u = np.linspace(0, 2 * np.pi, N)
+        v = np.linspace(0, np.pi, N)
+        x = radius * np.outer(np.cos(u), np.sin(v))
+        y = radius * np.outer(np.sin(u), np.sin(v))
+        z = radius * np.outer(np.ones(np.size(u)), np.cos(v))
+        axe.plot_surface(x, y, z, linewidth=0.2, cstride=stride, rstride=stride,
+                         color='red')
+        """
         # drawing satellite orbit
         satellite = EarthSatellite(self.L1, self.L2)
         hours = np.arange(0, 10, 0.01)
@@ -337,7 +373,6 @@ class SatelliteWindow(widget.MWidget):
                  marker='.',
                  linestyle='none',
                  color=self.M_GREEN)
-
 
         axe.figure.canvas.draw()
 

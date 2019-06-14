@@ -35,6 +35,7 @@ from mw4.gui.mainWmixin.tabEnviron import Environ
 from mw4.gui.mainWmixin.tabAlignMount import AlignMount
 from mw4.gui.mainWmixin.tabBuildModel import BuildModel
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
+from mw4.gui.mainWmixin.tabSatellite import Satellite
 from mw4.gui.mainWmixin.tabRelay import Relay
 from mw4.gui.mainWmixin.tabPower import Power
 from mw4.gui.mainWmixin.tabTools import Tools
@@ -52,6 +53,7 @@ class MainWindow(MWidget,
                  AlignMount,
                  BuildModel,
                  ManageModel,
+                 Satellite,
                  Relay,
                  Power,
                  Tools,
@@ -98,6 +100,7 @@ class MainWindow(MWidget,
         AlignMount.__init__(self)
         BuildModel.__init__(self)
         ManageModel.__init__(self)
+        Satellite.__init__(self)
         Relay.__init__(self)
         Power.__init__(self)
         Tools.__init__(self)
@@ -182,6 +185,7 @@ class MainWindow(MWidget,
         AlignMount.initConfig(self)
         BuildModel.initConfig(self)
         ManageModel.initConfig(self)
+        Satellite.initConfig(self)
         Relay.initConfig(self)
         Power.initConfig(self)
         Tools.initConfig(self)
@@ -233,6 +237,7 @@ class MainWindow(MWidget,
         AlignMount.storeConfig(self)
         BuildModel.storeConfig(self)
         ManageModel.storeConfig(self)
+        Satellite.storeConfig(self)
         Relay.storeConfig(self)
         Power.storeConfig(self)
         Tools.storeConfig(self)
@@ -289,6 +294,7 @@ class MainWindow(MWidget,
         AlignMount.setupIcons(self)
         BuildModel.setupIcons(self)
         ManageModel.setupIcons(self)
+        Satellite.setupIcons(self)
         Relay.setupIcons(self)
         Power.setupIcons(self)
         Tools.setupIcons(self)

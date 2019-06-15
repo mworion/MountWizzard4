@@ -54,7 +54,6 @@ class Satellite(object):
         }
 
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
-        # self.ui.loadSatelliteSource.clicked.connect()
         self.ui.listSatelliteNames.itemPressed.connect(self.extractSatelliteData)
         self.app.update1s.connect(self.updateSatelliteData)
 

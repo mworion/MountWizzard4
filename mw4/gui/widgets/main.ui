@@ -9412,7 +9412,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Data reference age:</string>
+        <string>Age of data:</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="satelliteDataAge">
@@ -9423,7 +9423,7 @@ manually</string>
         <rect>
          <x>555</x>
          <y>110</y>
-         <width>221</width>
+         <width>186</width>
          <height>21</height>
         </rect>
        </property>
@@ -9455,6 +9455,24 @@ manually</string>
        </property>
        <property name="readOnly">
         <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_233">
+       <property name="geometry">
+        <rect>
+         <x>745</x>
+         <y>110</y>
+         <width>31</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>days</string>
        </property>
       </widget>
      </widget>

@@ -136,11 +136,21 @@ class SatelliteWindow(widget.MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self):
+        self.receiveSatelliteAndShow(None)
         self.show()
 
     def receiveSatelliteAndShow(self, satellite):
+        """
+        receiveSatelliteAndShow receives a signal with the content of the selected satellite.
+        it locally sets it an draws the the complete view
+
+        :param satellite:
+        :return: true for test purpose
+        """
+
         self.satellite = satellite
         self.drawSatellite()
+        return True
 
     @staticmethod
     def set_axes_equal(axe):
@@ -173,6 +183,12 @@ class SatelliteWindow(widget.MWidget):
         axe.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
 
     def updatePositions(self):
+        """
+        updatePositions is triggered once a second and update the satellite position in each
+        view.
+
+        :return: success
+        """
 
         if self.satellite is None:
             return False
@@ -183,7 +199,9 @@ class SatelliteWindow(widget.MWidget):
         if self.plotSatPosSphere is None:
             return False
 
+        # time
         now = self.app.mount.obsSite.ts.now()
+
         # sphere
         x, y, z = self.satellite.at(now).position.km
         self.plotSatPosSphere.set_data_3d((x, y, z))
@@ -192,8 +210,6 @@ class SatelliteWindow(widget.MWidget):
         subpoint = self.satellite.at(now).subpoint()
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
-
-        # print(lat, lon)
         self.plotSatPosEarth.set_data((lon, lat))
 
         # horizon
@@ -203,6 +219,7 @@ class SatelliteWindow(widget.MWidget):
         az = az.degrees
         self.plotSatPosHorizon.set_data((az, alt))
 
+        # update the plot and redraw
         self.satSphereMat.figure.canvas.draw()
         self.satEarthMat.figure.canvas.draw()
         self.satHorizonMat.figure.canvas.draw()
@@ -296,6 +313,10 @@ class SatelliteWindow(widget.MWidget):
         axe.text(0, 0, re * 1.2, 'N', color=self.M_BLUE)
         axe.text(0, 0, - re * 1.2 - 200, 'S', color=self.M_BLUE)
 
+        if satellite is None:
+            axe.figure.canvas.draw()
+            return False
+
         # time
         now = timescale.now()
         forecast = np.arange(0, self.FORECAST_TIME, 0.01) / 24
@@ -319,8 +340,17 @@ class SatelliteWindow(widget.MWidget):
 
         self.set_axes_equal(axe)
         axe.figure.canvas.draw()
+        return True
 
     def drawEarth(self, satellite=None, timescale=None):
+        """
+        drawEarth show a full earth view with the path of the subpoint of the satellite
+        drawn on it.
+
+        :param satellite:
+        :param timescale:
+        :return: success
+        """
 
         figure = self.satEarthMat.figure
         figure.clf()
@@ -354,6 +384,13 @@ class SatelliteWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
 
+        # loading the world image from nasa as PNG as matplotlib only loads png.
+        world = plt.imread('world.png')
+
+        # we have to extend this, to get it full in the frame !
+        axe.imshow(world, extent=[-180, 180, -90, 90], alpha=0.3)
+
+        # mark the site location in the map
         lat = self.app.mount.obsSite.location.latitude.degrees
         lon = self.app.mount.obsSite.location.longitude.degrees
         axe.plot(lon,
@@ -362,17 +399,16 @@ class SatelliteWindow(widget.MWidget):
                  markersize=10,
                  color=self.M_YELLOW)
 
-        # loading the world image from nasa as PNG as matplotlib only loads png.
-        world = plt.imread('world.png')
-        # we have to extend this, to get it full in the frame !
-        axe.imshow(world, extent=[-180, 180, -90, 90], alpha=0.3)
+        if satellite is None:
+            axe.figure.canvas.draw()
+            return False
 
         # time
         now = timescale.now()
         forecast = np.arange(0, self.FORECAST_TIME, 0.01) / 24
         timeVector = timescale.tt_jd(now.tt + forecast)
 
-        # drawing satellite orbit
+        # drawing satellite subpoint path
         subpoint = satellite.at(timeVector).subpoint()
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
@@ -384,14 +420,15 @@ class SatelliteWindow(widget.MWidget):
                  linestyle='none',
                  color=self.M_GREEN)
 
+        # show the actual position
         self.plotSatPosEarth, = axe.plot(lon[0],
                                          lat[0],
                                          marker='o',
                                          markersize=10,
                                          linestyle='none',
                                          color=self.M_PINK)
-
         axe.figure.canvas.draw()
+        return True
 
     def _staticHorizon(self, axes=None):
         """
@@ -406,7 +443,7 @@ class SatelliteWindow(widget.MWidget):
         alt, az = zip(*self.app.data.horizonP)
 
         axes.fill(az, alt, color='#002000', zorder=-20)
-        axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
+        axes.plot(az, alt, color='#006000', zorder=-20, lw=2)
 
         return True
 
@@ -417,7 +454,7 @@ class SatelliteWindow(widget.MWidget):
 
         :param satellite: selected satellite
         :param timescale:
-        :return:
+        :return: success
         """
 
         figure = self.satHorizonMat.figure
@@ -455,6 +492,10 @@ class SatelliteWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
 
+        if satellite is None:
+            axe.figure.canvas.draw()
+            return False
+
         # time
         now = timescale.now()
         forecast = np.arange(0, self.FORECAST_TIME, 0.001) / 24
@@ -483,17 +524,15 @@ class SatelliteWindow(widget.MWidget):
                                            color=self.M_PINK)
 
         axe.figure.canvas.draw()
+        return True
 
     def drawSatellite(self):
         """
         drawSatellite draws 3 different views of the actual satellite situation: a sphere
         a horizon view and an earth view.
 
-        :return: success
+        :return: True for test purpose
         """
-
-        if self.satellite is None:
-            return False
 
         timescale = self.app.mount.obsSite.ts
 

@@ -149,7 +149,14 @@ class SatelliteWindow(widget.MWidget):
         :return: true for test purpose
         """
 
+        if satellite is None:
+            self.drawSatellite()
+            return False
         self.satellite = satellite
+        if satellite.model.no < 0.02:
+            self.FORECAST_TIME = 24
+        else:
+            self.FORECAST_TIME = 3
         self.drawSatellite()
         return True
 
@@ -339,7 +346,7 @@ class SatelliteWindow(widget.MWidget):
 
         # time
         now = timescale.now()
-        forecast = np.arange(0, self.FORECAST_TIME, 0.01) / 24
+        forecast = np.arange(0, self.FORECAST_TIME, 0.01 * self.FORECAST_TIME / 3) / 24
         timeVector = timescale.tt_jd(now.tt + forecast)
 
         # drawing satellite
@@ -426,7 +433,7 @@ class SatelliteWindow(widget.MWidget):
 
         # time
         now = timescale.now()
-        forecast = np.arange(0, self.FORECAST_TIME, 0.005) / 24
+        forecast = np.arange(0, self.FORECAST_TIME, 0.005 * self.FORECAST_TIME / 3) / 24
         timeVector = timescale.tt_jd(now.tt + forecast)
 
         # drawing satellite subpoint path
@@ -543,7 +550,7 @@ class SatelliteWindow(widget.MWidget):
 
         # time
         now = timescale.now()
-        forecast = np.arange(0, self.FORECAST_TIME, 0.001) / 24
+        forecast = np.arange(0, self.FORECAST_TIME, 0.001 * self.FORECAST_TIME / 3) / 24
         timeVector = timescale.tt_jd(now.tt + forecast)
 
         # orbital calculations

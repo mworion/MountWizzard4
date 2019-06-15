@@ -55,7 +55,7 @@ class Satellite(object):
 
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
         self.ui.listSatelliteNames.itemPressed.connect(self.extractSatelliteData)
-        self.app.update1s.connect(self.updateSatelliteData)
+        self.app.update3s.connect(self.updateSatelliteData)
 
     def initConfig(self):
         """

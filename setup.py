@@ -37,7 +37,7 @@ setup(
         'mw4.powerswitch',
         'mw4.remote',
     ],
-    python_requires='>=3.7.3',
+    python_requires='>=3.7.2',
     install_requires=[
         'PyQt5==5.12.2',
         'matplotlib==3.1',

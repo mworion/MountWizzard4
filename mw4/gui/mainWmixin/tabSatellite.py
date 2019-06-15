@@ -133,10 +133,13 @@ class Satellite(object):
     def loadSatelliteSource(self):
         """
 
-        :return: true for test purpose
+        :return: success
         """
 
         key = self.ui.satelliteSource.currentText()
+        if key not in self.satelliteSourceDropDown:
+            return False
+
         source = self.satelliteSourceDropDown[key]
         reload = self.ui.checkReload.isChecked()
         self.satellites = self.app.loader.tle(source, reload=reload)

@@ -137,7 +137,7 @@ class SatelliteWindow(widget.MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self):
-        self.receiveSatelliteAndShow(None)
+        self.receiveSatelliteAndShow(self.app.mainW.satellite)
         self.show()
 
     def receiveSatelliteAndShow(self, satellite):

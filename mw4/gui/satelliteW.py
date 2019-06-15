@@ -86,7 +86,7 @@ class SatelliteWindow(widget.MWidget):
         self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.signals.show.connect(self.receiveSatelliteAndShow)
-        self.app.update1s.connect(self.updatePositions)
+        self.app.update3s.connect(self.updatePositions)
 
         self.initConfig()
         self.showWindow()
@@ -195,7 +195,7 @@ class SatelliteWindow(widget.MWidget):
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
 
-        print(lat, lon)
+        # print(lat, lon)
         self.plotSatPosEarth.set_data((lon, lat))
 
         # horizon
@@ -390,13 +390,8 @@ class SatelliteWindow(widget.MWidget):
                  linestyle='none',
                  color=self.M_GREEN)
 
-        now = self.app.mount.obsSite.ts.now()
-        subpoint = satellite.at(now).subpoint()
-        lat = subpoint.latitude.degrees
-        lon = subpoint.longitude.degrees
-
-        self.plotSatPosEarth,  = axe.plot(lon,
-                                          lat,
+        self.plotSatPosEarth,  = axe.plot(lon[0],
+                                          lat[0],
                                           marker='o',
                                           markersize=10,
                                           linestyle='none',
@@ -450,12 +445,8 @@ class SatelliteWindow(widget.MWidget):
                  linestyle='none',
                  color=self.M_GREEN)
 
-        now = self.app.mount.obsSite.ts.now()
-        alt, az, _ = difference.at(now).altaz()
-        alt = alt.degrees
-        az = az.degrees
-        self.plotSatPosHorizon,  = axe.plot(az,
-                                            alt,
+        self.plotSatPosHorizon,  = axe.plot(az[0],
+                                            alt[0],
                                             marker='X',
                                             markersize=10,
                                             linestyle='none',

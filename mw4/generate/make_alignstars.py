@@ -16,10 +16,10 @@ HEADER = '''
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.6.7
+# Python  v3.7.3
 #
 # Michael Würtenberger
-# (c) 2018
+# (c) 2019
 #
 # Licence APL2.0
 #

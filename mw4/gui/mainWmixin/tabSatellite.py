@@ -9,10 +9,10 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.6.7
+# Python  v3.7.3
 #
 # Michael Würtenberger
-# (c) 2018
+# (c) 2019
 #
 # Licence APL2.0
 #
@@ -132,6 +132,10 @@ class Satellite(object):
         return True
 
     def loadSatelliteSource(self):
+        """
+
+        :return: true for test purpose
+        """
 
         key = self.ui.satelliteSource.currentText()
         source = self.satelliteSourceDropDown[key]
@@ -143,6 +147,10 @@ class Satellite(object):
         return True
 
     def extractSatelliteData(self):
+        """
+
+        :return: success
+        """
 
         key = self.ui.listSatelliteNames.currentItem().text()
         self.satellite = self.satellites[key]
@@ -155,8 +163,11 @@ class Satellite(object):
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f'{days:2.4f}')
 
-        if self.app.satelliteW:
-            self.app.satelliteW.signals.show.emit(self.satellite)
+        if not self.app.satelliteW:
+            return False
+
+        self.app.satelliteW.signals.show.emit(self.satellite)
+        return True
 
     def updateSatelliteData(self):
         """

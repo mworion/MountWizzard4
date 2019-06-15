@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import logging
-import time
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -29,7 +28,6 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
 from skyfield.api import EarthSatellite
-# from skyfield.api import Time
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import satellite_ui
@@ -211,7 +209,7 @@ class SatelliteWindow(widget.MWidget):
 
         return True
 
-    def drawSphere(self, satellite=None, time=None):
+    def drawSphere(self, satellite=None, timescale=None):
 
         # draw sphere and put face color als image overlay
         # https://stackoverflow.com/questions/53074908/map-an-image-onto-a-sphere-and-plot-3d-trajectories
@@ -298,22 +296,13 @@ class SatelliteWindow(widget.MWidget):
         axe.text(0, 0, re * 1.2, 'N', color=self.M_BLUE)
         axe.text(0, 0, - re * 1.2 - 200, 'S', color=self.M_BLUE)
 
+        # time
+        now = timescale.now()
+        forecast = np.arange(0, self.FORECAST_TIME, 0.01) / 24
+        timeVector = timescale.tt_jd(now.tt + forecast)
 
-        """
-        # draw plane
-        radius = re - 300
-        N = 50
-        stride = 1
-        u = np.linspace(0, 2 * np.pi, N)
-        v = np.linspace(0, np.pi, N)
-        x = radius * np.outer(np.cos(u), np.sin(v))
-        y = radius * np.outer(np.sin(u), np.sin(v))
-        z = radius * np.outer(np.ones(np.size(u)), np.cos(v))
-        axe.plot_surface(x, y, z, linewidth=0.2, cstride=stride, rstride=stride,
-                         color='red')
-        """
         # drawing satellite orbit
-        x, y, z = satellite.at(time).position.km
+        x, y, z = satellite.at(timeVector).position.km
         axe.plot(x,
                  y,
                  z,
@@ -321,17 +310,17 @@ class SatelliteWindow(widget.MWidget):
 
         now = self.app.mount.obsSite.ts.now()
         x, y, z = satellite.at(now).position.km
-        self.plotSatPosSphere,  = axe.plot([x],
-                                           [y],
-                                           [z],
-                                           marker='o',
-                                           markersize=10,
-                                           color=self.M_PINK)
+        self.plotSatPosSphere, = axe.plot([x],
+                                          [y],
+                                          [z],
+                                          marker='o',
+                                          markersize=10,
+                                          color=self.M_PINK)
 
         self.set_axes_equal(axe)
         axe.figure.canvas.draw()
 
-    def drawEarth(self, satellite=None, time=None):
+    def drawEarth(self, satellite=None, timescale=None):
 
         figure = self.satEarthMat.figure
         figure.clf()
@@ -378,8 +367,13 @@ class SatelliteWindow(widget.MWidget):
         # we have to extend this, to get it full in the frame !
         axe.imshow(world, extent=[-180, 180, -90, 90], alpha=0.3)
 
+        # time
+        now = timescale.now()
+        forecast = np.arange(0, self.FORECAST_TIME, 0.01) / 24
+        timeVector = timescale.tt_jd(now.tt + forecast)
+
         # drawing satellite orbit
-        subpoint = satellite.at(time).subpoint()
+        subpoint = satellite.at(timeVector).subpoint()
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
 
@@ -390,21 +384,49 @@ class SatelliteWindow(widget.MWidget):
                  linestyle='none',
                  color=self.M_GREEN)
 
-        self.plotSatPosEarth,  = axe.plot(lon[0],
-                                          lat[0],
-                                          marker='o',
-                                          markersize=10,
-                                          linestyle='none',
-                                          color=self.M_PINK)
+        self.plotSatPosEarth, = axe.plot(lon[0],
+                                         lat[0],
+                                         marker='o',
+                                         markersize=10,
+                                         linestyle='none',
+                                         color=self.M_PINK)
 
         axe.figure.canvas.draw()
 
-    def drawHorizon(self, satellite=None, time=None):
+    def _staticHorizon(self, axes=None):
+        """
+
+        :param axes: matplotlib axes object
+        :return:
+        """
+
+        if not self.app.data.horizonP:
+            return False
+
+        alt, az = zip(*self.app.data.horizonP)
+
+        axes.fill(az, alt, color='#002000', zorder=-20)
+        axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
+
+        return True
+
+    def drawHorizonView(self, satellite=None, timescale=None):
+        """
+        drawHorizonView shows the horizon and enable the users to explore a satellite
+        passing by
+
+        :param satellite: selected satellite
+        :param timescale:
+        :return:
+        """
 
         figure = self.satHorizonMat.figure
         figure.clf()
         figure.subplots_adjust(left=0.15, right=0.9, bottom=0.15, top=0.95)
         axe = self.satHorizonMat.figure.add_subplot(1, 1, 1, facecolor=None)
+
+        # add horizon limit if selected
+        self._staticHorizon(axes=axe)
 
         axe.set_facecolor((0, 0, 0, 0))
         axe.set_xlim(0, 360)
@@ -433,11 +455,18 @@ class SatelliteWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
 
+        # time
+        now = timescale.now()
+        forecast = np.arange(0, self.FORECAST_TIME, 0.001) / 24
+        timeVector = timescale.tt_jd(now.tt + forecast)
+
+        # orbital calculations
         difference = satellite - self.app.mount.obsSite.location
-        alt, az, _ = difference.at(time).altaz()
+        alt, az, _ = difference.at(timeVector).altaz()
         alt = alt.degrees
         az = az.degrees
 
+        # draw path
         axe.plot(az,
                  alt,
                  marker='.',
@@ -445,33 +474,37 @@ class SatelliteWindow(widget.MWidget):
                  linestyle='none',
                  color=self.M_GREEN)
 
-        self.plotSatPosHorizon,  = axe.plot(az[0],
-                                            alt[0],
-                                            marker='X',
-                                            markersize=10,
-                                            linestyle='none',
-                                            color=self.M_PINK)
+        # draw actual position
+        self.plotSatPosHorizon, = axe.plot(az[0],
+                                           alt[0],
+                                           marker='X',
+                                           markersize=10,
+                                           linestyle='none',
+                                           color=self.M_PINK)
 
         axe.figure.canvas.draw()
 
     def drawSatellite(self):
+        """
+        drawSatellite draws 3 different views of the actual satellite situation: a sphere
+        a horizon view and an earth view.
+
+        :return: success
+        """
 
         if self.satellite is None:
             return False
 
         timescale = self.app.mount.obsSite.ts
-        now = timescale.now()
-        forecast = np.arange(0, self.FORECAST_TIME, 0.003) / 24
-        time = timescale.tt_jd(now.tt + forecast)
 
         self.drawSphere(satellite=self.satellite,
-                        time=time,
+                        timescale=timescale,
                         )
         self.drawEarth(satellite=self.satellite,
-                       time=time,
+                       timescale=timescale,
                        )
-        self.drawHorizon(satellite=self.satellite,
-                         time=time,
-                         )
+        self.drawHorizonView(satellite=self.satellite,
+                             timescale=timescale,
+                             )
 
         return True

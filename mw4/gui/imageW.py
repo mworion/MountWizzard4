@@ -780,9 +780,9 @@ class ImageWindow(widget.MWidget):
         abortSolve stops the exposure and resets the gui and the callback signals to default
         values
 
-        :return: True for test purpose
+        :return: success
         """
 
         suc = self.app.astrometry.abort()
 
-        return True
+        return suc

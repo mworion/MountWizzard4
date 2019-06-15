@@ -100,7 +100,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    threadPool=self.threadPool,
                                    pathToData=pathToData,
                                    expire=expireData,
-                                   verbose=None,
+                                   verbose=False,
                                    )
 
         # setting location to last know config
@@ -108,11 +108,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get all planets for calculation
-        load = skyfield.api.Loader(pathToData,
-                                   expire=expireData,
-                                   verbose=None,
-                                   )
-        self.planets = load('de421.bsp')
+        self.loader = skyfield.api.Loader(pathToData,
+                                          expire=expireData,
+                                          verbose=False,
+                                          )
+        self.planets = self.loader('de421.bsp')
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
         self.dome = dome.Dome(self, host='localhost')

@@ -8957,28 +8957,12 @@ manually</string>
       <attribute name="title">
        <string>Satellite</string>
       </attribute>
-      <widget class="QPushButton" name="btn_selectSatellite">
-       <property name="geometry">
-        <rect>
-         <x>305</x>
-         <y>105</y>
-         <width>51</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the actual selected alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Select</string>
-       </property>
-      </widget>
       <widget class="Line" name="line_20">
        <property name="geometry">
         <rect>
          <x>20</x>
          <y>100</y>
-         <width>336</width>
+         <width>356</width>
          <height>1</height>
         </rect>
        </property>
@@ -9009,13 +8993,13 @@ manually</string>
         <string>List of available satellites</string>
        </property>
       </widget>
-      <widget class="QListWidget" name="listSatelliteName">
+      <widget class="QListWidget" name="listSatelliteNames">
        <property name="geometry">
         <rect>
          <x>20</x>
          <y>105</y>
-         <width>276</width>
-         <height>321</height>
+         <width>301</width>
+         <height>301</height>
         </rect>
        </property>
       </widget>
@@ -9024,7 +9008,7 @@ manually</string>
         <rect>
          <x>20</x>
          <y>40</y>
-         <width>336</width>
+         <width>356</width>
          <height>1</height>
         </rect>
        </property>
@@ -9060,50 +9044,11 @@ manually</string>
         <string>Satellite data file</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_satelliteDataFileName">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
+      <widget class="QPushButton" name="loadSatelliteSource">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>45</y>
-         <width>276</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_loadSatelliteData">
-       <property name="geometry">
-        <rect>
-         <x>305</x>
-         <y>45</y>
+         <x>325</x>
+         <y>105</y>
          <width>51</width>
          <height>26</height>
         </rect>
@@ -9170,7 +9115,7 @@ manually</string>
         <rect>
          <x>405</x>
          <y>40</y>
-         <width>336</width>
+         <width>371</width>
          <height>1</height>
         </rect>
        </property>
@@ -9186,13 +9131,13 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_satelliteName">
+      <widget class="QLineEdit" name="satelliteName">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>555</x>
          <y>50</y>
          <width>221</width>
          <height>21</height>
@@ -9246,213 +9191,33 @@ manually</string>
         <string>Name of satellite</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_226">
-       <property name="geometry">
-        <rect>
-         <x>410</x>
-         <y>80</y>
-         <width>101</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Satellite Number</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_227">
-       <property name="geometry">
-        <rect>
-         <x>640</x>
-         <y>80</y>
-         <width>76</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Launch year</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_satelliteNumber">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>520</x>
-         <y>80</y>
-         <width>106</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_229">
-       <property name="geometry">
-        <rect>
-         <x>640</x>
-         <y>105</y>
-         <width>76</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Epoch year</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_230">
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>105</y>
-         <width>106</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Epoch day</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_satelliteLaunchYear">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>715</x>
          <y>80</y>
-         <width>26</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_satelliteEpochDay">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>520</x>
-         <y>105</y>
          <width>106</width>
          <height>21</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <family>Courier</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
         </font>
        </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
        <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
+        <string>Epoch</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_satelliteEpochYear">
+      <widget class="QLineEdit" name="satelliteEpoch">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>715</x>
-         <y>105</y>
-         <width>26</width>
+         <x>555</x>
+         <y>80</y>
+         <width>221</width>
          <height>21</height>
         </rect>
        </property>
@@ -9603,20 +9368,93 @@ manually</string>
         <string>Status</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="btn_clearSatellite">
+      <widget class="QComboBox" name="satelliteSource">
        <property name="geometry">
         <rect>
-         <x>305</x>
-         <y>135</y>
-         <width>51</width>
+         <x>20</x>
+         <y>45</y>
+         <width>356</width>
          <height>26</height>
         </rect>
        </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the actual selected alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkReload">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>410</y>
+         <width>191</width>
+         <height>17</height>
+        </rect>
        </property>
        <property name="text">
-        <string>Clear</string>
+        <string>Reload source automatically</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_231">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>110</y>
+         <width>146</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Data reference age:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="satelliteDataAge">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>555</x>
+         <y>110</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
        </property>
       </widget>
      </widget>
@@ -18402,7 +18240,7 @@ manually</string>
   <tabstop>saveHorizonMask</tabstop>
   <tabstop>saveHorizonMaskAs</tabstop>
   <tabstop>checkAutoDeletePoints</tabstop>
-  <tabstop>le_satelliteName</tabstop>
+  <tabstop>satelliteName</tabstop>
   <tabstop>checkSortNothing</tabstop>
   <tabstop>checkSortEW</tabstop>
   <tabstop>checkSortHL</tabstop>
@@ -18459,7 +18297,7 @@ manually</string>
   <tabstop>loglevelWarning</tabstop>
   <tabstop>loglevelError</tabstop>
   <tabstop>loglevelDebugIB</tabstop>
-  <tabstop>btn_loadSatelliteData</tabstop>
+  <tabstop>loadSatelliteSource</tabstop>
   <tabstop>loglevelInfoIB</tabstop>
   <tabstop>loglevelWarningIB</tabstop>
   <tabstop>loglevelErrorIB</tabstop>
@@ -18476,26 +18314,20 @@ manually</string>
   <tabstop>mountOn</tabstop>
   <tabstop>mountOff</tabstop>
   <tabstop>btn_startSlewingSatellite</tabstop>
-  <tabstop>btn_clearSatellite</tabstop>
   <tabstop>imagingConnected</tabstop>
   <tabstop>openImageW</tabstop>
   <tabstop>astrometryConnected</tabstop>
   <tabstop>environConnected</tabstop>
   <tabstop>domeConnected</tabstop>
-  <tabstop>le_satelliteEpochYear</tabstop>
   <tabstop>openSatelliteW</tabstop>
   <tabstop>openMeasureW</tabstop>
   <tabstop>openHemisphereW</tabstop>
-  <tabstop>btn_selectSatellite</tabstop>
-  <tabstop>le_satelliteDataFileName</tabstop>
   <tabstop>le_satelliteStatus</tabstop>
   <tabstop>openMessageW</tabstop>
   <tabstop>mountConnected</tabstop>
-  <tabstop>le_satelliteLaunchYear</tabstop>
-  <tabstop>le_satelliteNumber</tabstop>
-  <tabstop>le_satelliteEpochDay</tabstop>
+  <tabstop>satelliteEpoch</tabstop>
   <tabstop>settingsTabWidget</tabstop>
-  <tabstop>listSatelliteName</tabstop>
+  <tabstop>listSatelliteNames</tabstop>
   <tabstop>mainTabWidget</tabstop>
   <tabstop>relayButton0</tabstop>
   <tabstop>environHost</tabstop>

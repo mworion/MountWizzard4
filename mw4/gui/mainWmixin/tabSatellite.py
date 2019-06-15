@@ -35,7 +35,24 @@ class Satellite(object):
     """
 
     def __init__(self):
-        pass
+        self. satellites = list()
+        self.satellite = None
+
+        self.satelliteSourceDropDown = {
+            'Space Stations': 'http://www.celestrak.com/NORAD/elements/stations.txt',
+            '100 brightest': 'http://www.celestrak.com/NORAD/elements/visual.txt',
+            'NOAA': 'http://www.celestrak.com/NORAD/elements/noaa.txt',
+            'GEOS': 'http://www.celestrak.com/NORAD/elements/goes.txt',
+            'Weather': 'http://www.celestrak.com/NORAD/elements/weather.txt',
+            'Amateur Radio': 'http://www.celestrak.com/NORAD/elements/amateur.txt',
+            'Last 30 days launch': 'http://www.celestrak.com/NORAD/elements/tle-new.txt',
+        }
+
+        self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
+        # self.ui.loadSatelliteSource.clicked.connect()
+        self.ui.listSatelliteNames.itemPressed.connect(self.updateSatelliteData)
+
+        self.setupSatelliteSourceGui()
 
     def initConfig(self):
         """
@@ -46,6 +63,7 @@ class Satellite(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
+        self.ui.checkReload.setChecked(config.get('checkReloadSatellites', False))
         return True
 
     def storeConfig(self):
@@ -57,6 +75,7 @@ class Satellite(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
+        config['checkReloadSatellites'] = self.ui.checkReload.isChecked()
         return True
 
     def setupIcons(self):
@@ -68,3 +87,62 @@ class Satellite(object):
         """
 
         return True
+
+    def setupSatelliteSourceGui(self):
+        """
+        setupSatelliteGui handles the dropdown list for the satellite data online
+        sources. therefore we add the necessary entries to populate the list.
+
+        :return: success for test
+        """
+
+        self.ui.satelliteSource.clear()
+        self.ui.satelliteSource.setView(PyQt5.QtWidgets.QListView())
+        for name, _ in self.satelliteSourceDropDown.items():
+            self.ui.satelliteSource.addItem(name)
+
+        return True
+
+    def setupSatelliteGui(self):
+        """
+        setupSatelliteSourceGui handles the dropdown list for the satellite data online
+        sources. therefore we add the necessary entries to populate the list.
+
+        :return: success for test
+        """
+
+        self.ui.listSatelliteNames.clear()
+        for name, _ in self.satellites.items():
+            if not isinstance(name, str):
+                continue
+            self.ui.listSatelliteNames.addItem(name)
+        self.ui.listSatelliteNames.sortItems()
+        self.ui.listSatelliteNames.update()
+
+        return True
+
+    def loadSatelliteSource(self):
+
+        key = self.ui.satelliteSource.currentText()
+        source = self.satelliteSourceDropDown[key]
+        reload = self.ui.checkReload.isChecked()
+        self.satellites = self.app.loader.tle(source, reload=reload)
+
+        self.setupSatelliteGui()
+
+        return True
+
+    def updateSatelliteData(self):
+
+        key = self.ui.listSatelliteNames.currentItem().text()
+        self.satellite = self.satellites[key]
+
+        self.ui.satelliteName.setText(self.satellite.name)
+        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M:%S')
+        self.ui.satelliteEpoch.setText(epochText)
+
+        now = self.app.mount.obsSite.ts.now()
+        days = now - self.satellite.epoch
+        self.ui.satelliteDataAge.setText(str(days))
+
+

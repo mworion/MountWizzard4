@@ -36,6 +36,22 @@ from mw4.gui.widgets import satellite_ui
 from mw4.base import transform
 
 
+class SatelliteWindowSignals(PyQt5.QtCore.QObject):
+    """
+    The CameraSignals class offers a list of signals to be used and instantiated by
+    the Mount class to get signals for triggers for finished tasks to
+    enable a gui to update their values transferred to the caller back.
+
+    This has to be done in a separate class as the signals have to be subclassed from
+    QObject and the Mount class itself is subclassed from object
+    """
+
+    __all__ = ['SatelliteWindowSignals']
+    version = '0.1'
+
+    show = PyQt5.QtCore.pyqtSignal(object)
+
+
 class SatelliteWindow(widget.MWidget):
     """
     the satellite window class handles
@@ -47,12 +63,20 @@ class SatelliteWindow(widget.MWidget):
     version = '0.2'
     logger = logging.getLogger(__name__)
 
+    # length of forecast time
+    FORECAST_TIME = 3
+
     def __init__(self, app):
         super().__init__()
         self.app = app
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)
         self.initUI()
+        self.signals = SatelliteWindowSignals()
+        self.satellite = None
+        self.plotSatPosSphere = None
+        self.plotSatPosHorizon = None
+        self.plotSatPosEarth = None
 
         self.satSphereMat = self.embedMatplot(self.ui.satSphere)
         self.satSphereMat.parentWidget().setStyleSheet(self.BACK_BG)
@@ -61,8 +85,8 @@ class SatelliteWindow(widget.MWidget):
         self.satEarthMat = self.embedMatplot(self.ui.satEarth)
         self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
 
-        self.L1 = '1 43205U 18017A   18038.05572532 +.00020608 -51169-6 +11058-3 0  9993'
-        self.L2 = '2 43205 029.0165 287.1006 3403068 180.4827 179.1544 08.75117793000017'
+        self.signals.show.connect(self.receiveSatelliteAndShow)
+        self.app.update1s.connect(self.updatePositions)
 
         self.initConfig()
         self.showWindow()
@@ -114,8 +138,11 @@ class SatelliteWindow(widget.MWidget):
         super().closeEvent(closeEvent)
 
     def showWindow(self):
-        self.drawSatellite()
         self.show()
+
+    def receiveSatelliteAndShow(self, satellite):
+        self.satellite = satellite
+        self.drawSatellite()
 
     @staticmethod
     def set_axes_equal(axe):
@@ -147,7 +174,44 @@ class SatelliteWindow(widget.MWidget):
         axe.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
         axe.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
 
-    def drawSphere(self):
+    def updatePositions(self):
+
+        if self.satellite is None:
+            return False
+        if self.plotSatPosEarth is None:
+            return False
+        if self.plotSatPosHorizon is None:
+            return False
+        if self.plotSatPosSphere is None:
+            return False
+
+        now = self.app.mount.obsSite.ts.now()
+        # sphere
+        x, y, z = self.satellite.at(now).position.km
+        self.plotSatPosSphere.set_data_3d((x, y, z))
+
+        # earth
+        subpoint = self.satellite.at(now).subpoint()
+        lat = subpoint.latitude.degrees
+        lon = subpoint.longitude.degrees
+
+        print(lat, lon)
+        self.plotSatPosEarth.set_data((lon, lat))
+
+        # horizon
+        difference = self.satellite - self.app.mount.obsSite.location
+        alt, az, _ = difference.at(now).altaz()
+        alt = alt.degrees
+        az = az.degrees
+        self.plotSatPosHorizon.set_data((az, alt))
+
+        self.satSphereMat.figure.canvas.draw()
+        self.satEarthMat.figure.canvas.draw()
+        self.satHorizonMat.figure.canvas.draw()
+
+        return True
+
+    def drawSphere(self, satellite=None, time=None):
 
         # draw sphere and put face color als image overlay
         # https://stackoverflow.com/questions/53074908/map-an-image-onto-a-sphere-and-plot-3d-trajectories
@@ -158,7 +222,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat.figure
         figure.clf()
-        figure.subplots_adjust(left=0, right=1, bottom=0, top=1)
+        figure.subplots_adjust(left=-0.2, right=1.2, bottom=-0.20, top=1.2)
 
         axe = figure.add_subplot(111, projection='3d')
         axe.set_facecolor((0, 0, 0, 0))
@@ -214,19 +278,20 @@ class SatelliteWindow(widget.MWidget):
         # drawing location on earth
         lat = self.app.mount.obsSite.location.latitude.degrees
         lon = self.app.mount.obsSite.location.longitude.degrees
-        x, y, z = transform.sphericalToCartesian(np.radians(lat),
-                                                 np.radians(lon)
-                                                 , re)
+        x, y, z = transform.sphericalToCartesian(altitude=np.radians(lat),
+                                                 azimuth=np.radians(lon),
+                                                 radius=re)
         axe.plot([x],
                  [y],
                  [z],
-                 marker='o',
-                 color=self.M_RED,
+                 marker='X',
+                 markersize=10,
+                 color=self.M_YELLOW,
                  )
 
         axe.plot([0, 0],
                  [0, 0],
-                 [- re * 1.1, re* 1.1],
+                 [- re * 1.1, re * 1.1],
                  lw=3,
                  color='#104860')
 
@@ -248,21 +313,25 @@ class SatelliteWindow(widget.MWidget):
                          color='red')
         """
         # drawing satellite orbit
-        satellite = EarthSatellite(self.L1, self.L2)
-        hours = np.arange(0, 10, 0.01)
-        timescale = self.app.mount.obsSite.ts
-        timeNow = timescale.now().tt_calendar()[0:3]
-        time = timescale.utc(*timeNow, hours)
         x, y, z = satellite.at(time).position.km
         axe.plot(x,
                  y,
                  z,
                  color=self.M_GREEN)
 
+        now = self.app.mount.obsSite.ts.now()
+        x, y, z = satellite.at(now).position.km
+        self.plotSatPosSphere,  = axe.plot([x],
+                                           [y],
+                                           [z],
+                                           marker='o',
+                                           markersize=10,
+                                           color=self.M_PINK)
+
         self.set_axes_equal(axe)
         axe.figure.canvas.draw()
 
-    def drawEarth(self):
+    def drawEarth(self, satellite=None, time=None):
 
         figure = self.satEarthMat.figure
         figure.clf()
@@ -298,7 +367,11 @@ class SatelliteWindow(widget.MWidget):
 
         lat = self.app.mount.obsSite.location.latitude.degrees
         lon = self.app.mount.obsSite.location.longitude.degrees
-        axe.plot(lon, lat, marker='o', color=self.M_RED)
+        axe.plot(lon,
+                 lat,
+                 marker='X',
+                 markersize=10,
+                 color=self.M_YELLOW)
 
         # loading the world image from nasa as PNG as matplotlib only loads png.
         world = plt.imread('world.png')
@@ -306,11 +379,6 @@ class SatelliteWindow(widget.MWidget):
         axe.imshow(world, extent=[-180, 180, -90, 90], alpha=0.3)
 
         # drawing satellite orbit
-        satellite = EarthSatellite(self.L1, self.L2)
-        hours = np.arange(0, 10, 0.01)
-        timescale = self.app.mount.obsSite.ts
-        timeNow = timescale.now().tt_calendar()[0:3]
-        time = timescale.utc(*timeNow, hours)
         subpoint = satellite.at(time).subpoint()
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
@@ -318,12 +386,25 @@ class SatelliteWindow(widget.MWidget):
         axe.plot(lon,
                  lat,
                  marker='.',
+                 markersize=2,
                  linestyle='none',
                  color=self.M_GREEN)
 
+        now = self.app.mount.obsSite.ts.now()
+        subpoint = satellite.at(now).subpoint()
+        lat = subpoint.latitude.degrees
+        lon = subpoint.longitude.degrees
+
+        self.plotSatPosEarth,  = axe.plot(lon,
+                                          lat,
+                                          marker='o',
+                                          markersize=10,
+                                          linestyle='none',
+                                          color=self.M_PINK)
+
         axe.figure.canvas.draw()
 
-    def drawHorizon(self):
+    def drawHorizon(self, satellite=None, time=None):
 
         figure = self.satHorizonMat.figure
         figure.clf()
@@ -357,12 +438,6 @@ class SatelliteWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
 
-        satellite = EarthSatellite(self.L1, self.L2)
-        hours = np.arange(0, 10, 0.01)
-        timescale = self.app.mount.obsSite.ts
-        timeNow = timescale.now().tt_calendar()[0:3]
-        time = timescale.utc(*timeNow, hours)
-
         difference = satellite - self.app.mount.obsSite.location
         alt, az, _ = difference.at(time).altaz()
         alt = alt.degrees
@@ -371,12 +446,41 @@ class SatelliteWindow(widget.MWidget):
         axe.plot(az,
                  alt,
                  marker='.',
+                 markersize=2,
                  linestyle='none',
                  color=self.M_GREEN)
+
+        now = self.app.mount.obsSite.ts.now()
+        alt, az, _ = difference.at(now).altaz()
+        alt = alt.degrees
+        az = az.degrees
+        self.plotSatPosHorizon,  = axe.plot(az,
+                                            alt,
+                                            marker='X',
+                                            markersize=10,
+                                            linestyle='none',
+                                            color=self.M_PINK)
 
         axe.figure.canvas.draw()
 
     def drawSatellite(self):
-        self.drawSphere()
-        self.drawEarth()
-        self.drawHorizon()
+
+        if self.satellite is None:
+            return False
+
+        timescale = self.app.mount.obsSite.ts
+        now = timescale.now()
+        forecast = np.arange(0, self.FORECAST_TIME, 0.003) / 24
+        time = timescale.tt_jd(now.tt + forecast)
+
+        self.drawSphere(satellite=self.satellite,
+                        time=time,
+                        )
+        self.drawEarth(satellite=self.satellite,
+                       time=time,
+                       )
+        self.drawHorizon(satellite=self.satellite,
+                         time=time,
+                         )
+
+        return True

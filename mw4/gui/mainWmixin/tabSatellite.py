@@ -145,4 +145,5 @@ class Satellite(object):
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(str(days))
 
-
+        if self.app.satelliteW:
+            self.app.satelliteW.signals.show.emit(self.satellite)

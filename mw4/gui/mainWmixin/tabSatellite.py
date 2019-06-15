@@ -148,29 +148,6 @@ class Satellite(object):
 
         return True
 
-    def extractSatelliteData(self):
-        """
-
-        :return: success
-        """
-
-        key = self.ui.listSatelliteNames.currentItem().text()
-        self.satellite = self.satellites[key]
-
-        self.ui.satelliteName.setText(self.satellite.name)
-        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M:%S')
-        self.ui.satelliteEpoch.setText(epochText)
-
-        now = self.app.mount.obsSite.ts.now()
-        days = now - self.satellite.epoch
-        self.ui.satelliteDataAge.setText(f'{days:2.4f}')
-
-        if not self.app.satelliteW:
-            return False
-
-        self.app.satelliteW.signals.show.emit(self.satellite)
-        return True
-
     def updateSatelliteData(self):
         """
 
@@ -201,4 +178,29 @@ class Satellite(object):
             return False
 
         self.app.satelliteW.signals.update.emit(observe, subpoint, altaz)
+        return True
+
+    def extractSatelliteData(self):
+        """
+
+        :return: success
+        """
+
+        key = self.ui.listSatelliteNames.currentItem().text()
+        self.satellite = self.satellites[key]
+
+        self.ui.satelliteName.setText(self.satellite.name)
+        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M:%S')
+        self.ui.satelliteEpoch.setText(epochText)
+
+        now = self.app.mount.obsSite.ts.now()
+        days = now - self.satellite.epoch
+        self.ui.satelliteDataAge.setText(f'{days:2.4f}')
+
+        self.updateSatelliteData()
+
+        if not self.app.satelliteW:
+            return False
+
+        self.app.satelliteW.signals.show.emit(self.satellite)
         return True

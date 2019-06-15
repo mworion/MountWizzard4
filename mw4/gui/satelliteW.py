@@ -245,7 +245,7 @@ class SatelliteWindow(widget.MWidget):
         cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
         lon0 = re * np.vstack((cth, zth, sth))
         longitudes = []
-        lonBase = np.arange(-180, 180, 15)
+        lonBase = np.arange(-90, 270, 15)
         for phi in np.radians(lonBase):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
             lon = np.vstack((lon0[0] * cph - lon0[1] * sph,
@@ -264,7 +264,7 @@ class SatelliteWindow(widget.MWidget):
             x, y, z = longitude
             axe.plot(x, y, z, '-k', lw=1,
                      color='#104860')
-            axe.text(x[0], y[0], z[0], f'{lonBase[i]:3d}',
+            axe.text(x[0], y[0], z[0], f'{lonBase[i]-90:3d}',
                      color=self.M_WHITE,
                      fontsize=8)
         for i, lat in enumerate(lats):
@@ -277,7 +277,7 @@ class SatelliteWindow(widget.MWidget):
 
         # drawing location on earth
         lat = self.app.mount.obsSite.location.latitude.degrees
-        lon = self.app.mount.obsSite.location.longitude.degrees
+        lon = self.app.mount.obsSite.location.longitude.degrees + 90
         x, y, z = transform.sphericalToCartesian(altitude=np.radians(lat),
                                                  azimuth=np.radians(lon),
                                                  radius=re)

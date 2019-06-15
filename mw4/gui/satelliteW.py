@@ -49,6 +49,7 @@ class SatelliteWindowSignals(PyQt5.QtCore.QObject):
     version = '0.1'
 
     show = PyQt5.QtCore.pyqtSignal(object)
+    update = PyQt5.QtCore.pyqtSignal(object, object, object)
 
 
 class SatelliteWindow(widget.MWidget):
@@ -87,7 +88,7 @@ class SatelliteWindow(widget.MWidget):
         self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.signals.show.connect(self.receiveSatelliteAndShow)
-        self.app.update3s.connect(self.updatePositions)
+        self.signals.update.connect(self.updatePositions)
 
         self.initConfig()
         self.showWindow()
@@ -161,7 +162,7 @@ class SatelliteWindow(widget.MWidget):
         self.drawSatellite()
         return True
 
-    def updatePositions(self):
+    def updatePositions(self, observe, subpoint, altaz):
         """
         updatePositions is triggered once a second and update the satellite position in each
         view.
@@ -178,23 +179,17 @@ class SatelliteWindow(widget.MWidget):
         if self.plotSatPosSphere is None:
             return False
 
-        # time
-        now = self.app.mount.obsSite.ts.now()
-        observe = self.satellite.at(now)
-
         # sphere
         x, y, z = observe.position.km
         self.plotSatPosSphere.set_data_3d((x, y, z))
 
         # earth
-        subpoint = observe.subpoint()
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
         self.plotSatPosEarth.set_data((lon, lat))
 
         # horizon
-        difference = self.satellite - self.app.mount.obsSite.location
-        alt, az, _ = difference.at(now).altaz()
+        alt, az, _ = altaz
         alt = alt.degrees
         az = az.degrees
         self.plotSatPosHorizon.set_data((az, alt))

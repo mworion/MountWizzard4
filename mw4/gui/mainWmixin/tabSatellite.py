@@ -181,16 +181,24 @@ class Satellite(object):
             return False
 
         now = self.app.mount.obsSite.ts.now()
-        subpoint = self.satellite.at(now).subpoint()
+        observe = self.satellite.at(now)
+
+        subpoint = observe.subpoint()
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
         self.ui.satLatitude.setText(f'{lat:3.2f}')
         self.ui.satLongitude.setText(f'{lon:3.2f}')
+
         difference = self.satellite - self.app.mount.obsSite.location
-        alt, az, _ = difference.at(now).altaz()
+        altaz = difference.at(now).altaz()
+        alt, az, _ = altaz
         alt = alt.degrees
         az = az.degrees
         self.ui.satAltitude.setText(f'{alt:3.2f}')
         self.ui.satAzimuth.setText(f'{az:3.2f}')
 
+        if not self.app.satelliteW:
+            return False
+
+        self.app.satelliteW.signals.update.emit(observe, subpoint, altaz)
         return True

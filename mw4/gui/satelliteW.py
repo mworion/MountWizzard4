@@ -153,6 +153,50 @@ class SatelliteWindow(widget.MWidget):
         self.drawSatellite()
         return True
 
+    def updatePositions(self):
+        """
+        updatePositions is triggered once a second and update the satellite position in each
+        view.
+
+        :return: success
+        """
+
+        if self.satellite is None:
+            return False
+        if self.plotSatPosEarth is None:
+            return False
+        if self.plotSatPosHorizon is None:
+            return False
+        if self.plotSatPosSphere is None:
+            return False
+
+        # time
+        now = self.app.mount.obsSite.ts.now()
+
+        # sphere
+        x, y, z = self.satellite.at(now).position.km
+        self.plotSatPosSphere.set_data_3d((x, y, z))
+
+        # earth
+        subpoint = self.satellite.at(now).subpoint()
+        lat = subpoint.latitude.degrees
+        lon = subpoint.longitude.degrees
+        self.plotSatPosEarth.set_data((lon, lat))
+
+        # horizon
+        difference = self.satellite - self.app.mount.obsSite.location
+        alt, az, _ = difference.at(now).altaz()
+        alt = alt.degrees
+        az = az.degrees
+        self.plotSatPosHorizon.set_data((az, alt))
+
+        # update the plot and redraw
+        self.satSphereMat.figure.canvas.draw()
+        self.satEarthMat.figure.canvas.draw()
+        self.satHorizonMat.figure.canvas.draw()
+
+        return True
+
     @staticmethod
     def set_axes_equal(axe):
         """
@@ -217,63 +261,6 @@ class SatelliteWindow(widget.MWidget):
 
         return centers, hw
 
-    def updatePositions(self):
-        """
-        updatePositions is triggered once a second and update the satellite position in each
-        view.
-
-        :return: success
-        """
-
-        if self.satellite is None:
-            return False
-        if self.plotSatPosEarth is None:
-            return False
-        if self.plotSatPosHorizon is None:
-            return False
-        if self.plotSatPosSphere is None:
-            return False
-
-        # time
-        now = self.app.mount.obsSite.ts.now()
-
-        # sphere
-        subpoint = self.satellite.at(now).subpoint()
-        lat = subpoint.latitude.radians
-        lon = subpoint.longitude.radians
-        x, y, z = transform.sphericalToCartesian(azimuth=lon,
-                                                 altitude=lat,
-                                                 radius=self.EARTH_RADIUS)
-        self.plotSatPosSphere.set_data_3d((x, y, z))
-
-        alt, az, radius = transform.cartesianToSpherical(x, y, z)
-        az = np.degrees(az)
-        alt = np.degrees(alt)
-        self.app.mainW.ui.satRa.setText(f'{alt:3.2f}')
-        self.app.mainW.ui.satDec.setText(f'{az:3.2f}')
-
-        # earth
-        subpoint = self.satellite.at(now).subpoint()
-        lat = subpoint.latitude.degrees
-        lon = subpoint.longitude.degrees
-        self.plotSatPosEarth.set_data((lon, lat))
-
-        # horizon
-        difference = self.satellite - self.app.mount.obsSite.location
-        alt, az, _ = difference.at(now).altaz()
-        alt = alt.degrees
-        az = az.degrees
-        self.app.mainW.ui.satAltitude.setText(f'{alt:3.2f}')
-        self.app.mainW.ui.satAzimuth.setText(f'{az:3.2f}')
-        self.plotSatPosHorizon.set_data((az, alt))
-
-        # update the plot and redraw
-        self.satSphereMat.figure.canvas.draw()
-        self.satEarthMat.figure.canvas.draw()
-        self.satHorizonMat.figure.canvas.draw()
-
-        return True
-
     def drawSphere(self, satellite=None, timescale=None):
         """
 
@@ -325,54 +312,26 @@ class SatelliteWindow(widget.MWidget):
         # plotting sphere and labels
         for i, longitude in enumerate(longitudes):
             x, y, z = longitude
-            if i == 180 / 15:
-                color = self.M_BLUE
-            else:
-                color = self.M_GREY
             axe.plot(x, y, z, '-k', lw=1,
-                     color=color)
-            axe.text(x[0], y[0], z[0], f'{lonBase[i]:3d}',
-                     color=self.M_WHITE,
-                     fontsize=10)
+                     color=self.M_GREY)
         for i, lat in enumerate(lats):
             x, y, z = lat
-            if i == 75 / 15:
-                color = self.M_BLUE
-            else:
-                color = self.M_GREY
             axe.plot(x, y, z, '-k', lw=1,
-                     color=color)
-            axe.text(x[0], y[0], z[0], f'{latBase[i]:3d}',
-                     color=self.M_WHITE,
-                     fontsize=10)
-
-        # drawing location on earth
-        lat = self.app.mount.obsSite.location.latitude.degrees
-        lon = self.app.mount.obsSite.location.longitude.degrees
-        x, y, z = transform.sphericalToCartesian(altitude=np.radians(lat),
-                                                 azimuth=np.radians(lon),
-                                                 radius=self.EARTH_RADIUS)
-        axe.plot([x],
-                 [y],
-                 [z],
-                 marker='X',
-                 markersize=10,
-                 color=self.M_YELLOW,
-                 )
+                     color=self.M_GREY)
 
         axe.plot([0, 0],
                  [0, 0],
                  [- self.EARTH_RADIUS * 1.1, self.EARTH_RADIUS * 1.1],
                  lw=3,
-                 color=self.M_WHITE)
+                 color=self.M_BLUE)
 
         axe.text(0, 0, self.EARTH_RADIUS * 1.2, 'N',
                  fontsize=14,
-                 color=self.M_WHITE)
+                 color=self.M_BLUE)
 
         axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S',
                  fontsize=14,
-                 color=self.M_WHITE)
+                 color=self.M_BLUE)
 
         if satellite is None:
             axe.figure.canvas.draw()
@@ -383,16 +342,8 @@ class SatelliteWindow(widget.MWidget):
         forecast = np.arange(0, self.FORECAST_TIME, 0.01) / 24
         timeVector = timescale.tt_jd(now.tt + forecast)
 
-        # drawing satellite subpoint path
-        # we have to draw it from sub point as we would like to show it on real earth, which
-        # is turning over time
-        subpoint = satellite.at(timeVector).subpoint()
-        lat = subpoint.latitude.radians
-        lon = subpoint.longitude.radians
-        x, y, z = transform.sphericalToCartesian(azimuth=lon,
-                                                 altitude=lat,
-                                                 radius=self.EARTH_RADIUS)
-
+        # drawing satellite
+        x, y, z = self.satellite.at(timeVector).position.km
         axe.plot(x,
                  y,
                  z,
@@ -404,7 +355,7 @@ class SatelliteWindow(widget.MWidget):
                                           marker='o',
                                           markersize=10,
                                           color=self.M_PINK)
-        # self.makeCubeLimits(axe)
+        self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
 
@@ -568,23 +519,23 @@ class SatelliteWindow(widget.MWidget):
 
         axe.text(0, 1, 'N',
                  fontsize=14,
-                 color=self.M_WHITE)
+                 color=self.M_BLUE)
 
         axe.text(90, 1, 'E',
                  fontsize=14,
-                 color=self.M_WHITE)
+                 color=self.M_BLUE)
 
         axe.text(180, 1, 'S',
                  fontsize=14,
-                 color=self.M_WHITE)
+                 color=self.M_BLUE)
 
         axe.text(270, 1, 'W',
                  fontsize=14,
-                 color=self.M_WHITE)
+                 color=self.M_BLUE)
 
         axe.text(350, 1, 'N',
                  fontsize=14,
-                 color=self.M_WHITE)
+                 color=self.M_BLUE)
 
         if satellite is None:
             axe.figure.canvas.draw()

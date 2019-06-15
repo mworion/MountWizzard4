@@ -55,9 +55,8 @@ class Satellite(object):
 
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
         # self.ui.loadSatelliteSource.clicked.connect()
-        self.ui.listSatelliteNames.itemPressed.connect(self.updateSatelliteData)
-
-        self.setupSatelliteSourceGui()
+        self.ui.listSatelliteNames.itemPressed.connect(self.extractSatelliteData)
+        self.app.update1s.connect(self.updateSatelliteData)
 
     def initConfig(self):
         """
@@ -67,6 +66,9 @@ class Satellite(object):
 
         :return: True for test purpose
         """
+
+        self.setupSatelliteSourceGui()
+
         config = self.app.config['mainW']
         self.ui.checkReload.setChecked(config.get('checkReloadSatellites', False))
         self.ui.satelliteSource.setCurrentIndex(config.get('satelliteSource', 0))
@@ -140,7 +142,7 @@ class Satellite(object):
 
         return True
 
-    def updateSatelliteData(self):
+    def extractSatelliteData(self):
 
         key = self.ui.listSatelliteNames.currentItem().text()
         self.satellite = self.satellites[key]
@@ -155,3 +157,27 @@ class Satellite(object):
 
         if self.app.satelliteW:
             self.app.satelliteW.signals.show.emit(self.satellite)
+
+    def updateSatelliteData(self):
+        """
+
+        :return: success
+        """
+
+        if self.satellite is None:
+            return False
+
+        now = self.app.mount.obsSite.ts.now()
+        subpoint = self.satellite.at(now).subpoint()
+        lat = subpoint.latitude.radians
+        lon = subpoint.longitude.radians
+        self.ui.satLatitude.setText(f'{lat:3.2f}')
+        self.ui.satLongitude.setText(f'{lon:3.2f}')
+        difference = self.satellite - self.app.mount.obsSite.location
+        alt, az, _ = difference.at(now).altaz()
+        alt = alt.degrees
+        az = az.degrees
+        self.ui.satAltitude.setText(f'{alt:3.2f}')
+        self.ui.satAzimuth.setText(f'{az:3.2f}')
+
+        return True

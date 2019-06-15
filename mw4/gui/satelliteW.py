@@ -84,7 +84,7 @@ class SatelliteWindow(widget.MWidget):
         self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.signals.show.connect(self.receiveSatelliteAndShow)
-        self.app.update3s.connect(self.updatePositions)
+        self.app.update1s.connect(self.updatePositions)
 
         self.initConfig()
         self.showWindow()
@@ -132,7 +132,6 @@ class SatelliteWindow(widget.MWidget):
         self.storeConfig()
 
         # gui signals
-
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -182,6 +181,40 @@ class SatelliteWindow(widget.MWidget):
         axe.set_ylim3d([y_middle - plot_radius, y_middle + plot_radius])
         axe.set_zlim3d([z_middle - plot_radius, z_middle + plot_radius])
 
+    @staticmethod
+    def makeCubeLimits(axe, centers=None, hw=None):
+        """
+
+        :param axe:
+        :param centers:
+        :param hw:
+        :return:
+        """
+
+        limits = axe.get_xlim(), axe.get_ylim(), axe.get_zlim()
+        if centers is None:
+            centers = [0.5 * sum(pair) for pair in limits]
+
+        if hw is None:
+            widths = [pair[1] - pair[0] for pair in limits]
+            hw = 0.5 * max(widths)
+            axe.set_xlim(centers[0] - hw, centers[0] + hw)
+            axe.set_ylim(centers[1] - hw, centers[1] + hw)
+            axe.set_zlim(centers[2] - hw, centers[2] + hw)
+
+        else:
+            try:
+                hwx, hwy, hwz = hw
+                axe.set_xlim(centers[0] - hwx, centers[0] + hwx)
+                axe.set_ylim(centers[1] - hwy, centers[1] + hwy)
+                axe.set_zlim(centers[2] - hwz, centers[2] + hwz)
+            except Exception:
+                axe.set_xlim(centers[0] - hw, centers[0] + hw)
+                axe.set_ylim(centers[1] - hw, centers[1] + hw)
+                axe.set_zlim(centers[2] - hw, centers[2] + hw)
+
+        return centers, hw
+
     def updatePositions(self):
         """
         updatePositions is triggered once a second and update the satellite position in each
@@ -212,11 +245,17 @@ class SatelliteWindow(widget.MWidget):
         lon = subpoint.longitude.degrees
         self.plotSatPosEarth.set_data((lon, lat))
 
+        ra, dec, _ = self.satellite.at(now).radec()
+        self.app.mainW.ui.satRa.setText(transform.convertToHMS(ra))
+        self.app.mainW.ui.satDec.setText(transform.convertToDMS(dec))
+
         # horizon
         difference = self.satellite - self.app.mount.obsSite.location
         alt, az, _ = difference.at(now).altaz()
         alt = alt.degrees
         az = az.degrees
+        self.app.mainW.ui.satAltitude.setText(str(alt))
+        self.app.mainW.ui.satAzimuth.setText(str(az))
         self.plotSatPosHorizon.set_data((az, alt))
 
         # update the plot and redraw
@@ -227,6 +266,12 @@ class SatelliteWindow(widget.MWidget):
         return True
 
     def drawSphere(self, satellite=None, timescale=None):
+        """
+
+        :param satellite:
+        :param timescale:
+        :return: success
+        """
 
         # draw sphere and put face color als image overlay
         # https://stackoverflow.com/questions/53074908/map-an-image-onto-a-sphere-and-plot-3d-trajectories
@@ -237,8 +282,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat.figure
         figure.clf()
-        figure.subplots_adjust(left=-0.2, right=1.2, bottom=-0.20, top=1.2)
-
+        figure.subplots_adjust(left=-0.25, right=1.25, bottom=-0.25, top=1.25)
         axe = figure.add_subplot(111, projection='3d')
         axe.set_facecolor((0, 0, 0, 0))
         axe.tick_params(colors=self.M_GREY,
@@ -248,19 +292,15 @@ class SatelliteWindow(widget.MWidget):
         axe.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         axe.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
 
-        axe.xaxis._axinfo["grid"]['color'] = self.M_GREY
-        axe.yaxis._axinfo["grid"]['color'] = self.M_GREY
-        axe.zaxis._axinfo["grid"]['color'] = self.M_GREY
-        # axe.set_aspect('equal')
+        # earth radius
+        earthRadius = 6378.0
 
-        re = 6378.
-
-        # drawing sphere
+        # calculating sphere
         theta = np.linspace(0, 2 * np.pi, 201)
         cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
-        lon0 = re * np.vstack((cth, zth, sth))
+        lon0 = earthRadius * np.vstack((cth, zth, sth))
         longitudes = []
-        lonBase = np.arange(-90, 270, 15)
+        lonBase = np.arange(-180, 180, 15)
         for phi in np.radians(lonBase):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
             lon = np.vstack((lon0[0] * cph - lon0[1] * sph,
@@ -272,30 +312,39 @@ class SatelliteWindow(widget.MWidget):
         latBase = np.arange(-75, 90, 15)
         for phi in np.radians(latBase):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
-            lat = re * np.vstack((cth * cph, sth * cph, zth + sph))
+            lat = earthRadius * np.vstack((cth * cph, sth * cph, zth + sph))
             lats.append(lat)
 
+        # plotting sphere and labels
         for i, longitude in enumerate(longitudes):
             x, y, z = longitude
+            if i == 180 / 15:
+                color = self.M_BLUE
+            else:
+                color = self.M_GREY
             axe.plot(x, y, z, '-k', lw=1,
-                     color='#104860')
-            axe.text(x[0], y[0], z[0], f'{lonBase[i]-90:3d}',
+                     color=color)
+            axe.text(x[0], y[0], z[0], f'{lonBase[i]:3d}',
                      color=self.M_WHITE,
-                     fontsize=8)
+                     fontsize=10)
         for i, lat in enumerate(lats):
             x, y, z = lat
+            if i == 75 / 15:
+                color = self.M_BLUE
+            else:
+                color = self.M_GREY
             axe.plot(x, y, z, '-k', lw=1,
-                     color='#104860')
+                     color=color)
             axe.text(x[0], y[0], z[0], f'{latBase[i]:3d}',
                      color=self.M_WHITE,
-                     fontsize=8)
+                     fontsize=10)
 
         # drawing location on earth
         lat = self.app.mount.obsSite.location.latitude.degrees
-        lon = self.app.mount.obsSite.location.longitude.degrees + 90
+        lon = self.app.mount.obsSite.location.longitude.degrees
         x, y, z = transform.sphericalToCartesian(altitude=np.radians(lat),
                                                  azimuth=np.radians(lon),
-                                                 radius=re)
+                                                 radius=earthRadius)
         axe.plot([x],
                  [y],
                  [z],
@@ -306,12 +355,17 @@ class SatelliteWindow(widget.MWidget):
 
         axe.plot([0, 0],
                  [0, 0],
-                 [- re * 1.1, re * 1.1],
+                 [- earthRadius * 1.1, earthRadius * 1.1],
                  lw=3,
-                 color='#104860')
+                 color=self.M_WHITE)
 
-        axe.text(0, 0, re * 1.2, 'N', color=self.M_BLUE)
-        axe.text(0, 0, - re * 1.2 - 200, 'S', color=self.M_BLUE)
+        axe.text(0, 0, earthRadius * 1.2, 'N',
+                 fontsize=14,
+                 color=self.M_WHITE)
+
+        axe.text(0, 0, - earthRadius * 1.2 - 200, 'S',
+                 fontsize=14,
+                 color=self.M_WHITE)
 
         if satellite is None:
             axe.figure.canvas.draw()
@@ -338,7 +392,7 @@ class SatelliteWindow(widget.MWidget):
                                           markersize=10,
                                           color=self.M_PINK)
 
-        self.set_axes_equal(axe)
+        self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
 
@@ -354,33 +408,37 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satEarthMat.figure
         figure.clf()
-        figure.subplots_adjust(left=0.15, right=0.9, bottom=0.15, top=0.95)
+        figure.subplots_adjust(left=0.15, right=0.9, bottom=0.15, top=0.90)
         axe = self.satEarthMat.figure.add_subplot(1, 1, 1, facecolor=None)
 
         axe.set_facecolor((0, 0, 0, 0))
         axe.set_xlim(-180, 180)
         axe.set_ylim(-90, 90)
-        axe.spines['bottom'].set_color('#2090C0')
-        axe.spines['top'].set_color('#2090C0')
-        axe.spines['left'].set_color('#2090C0')
-        axe.spines['right'].set_color('#2090C0')
-        axe.grid(True, color='#404040')
+        axe.spines['bottom'].set_color(self.M_BLUE)
+        axe.spines['top'].set_color(self.M_BLUE)
+        axe.spines['left'].set_color(self.M_BLUE)
+        axe.spines['right'].set_color(self.M_BLUE)
+        axe.grid(True, color=self.M_GREY)
         axe.tick_params(axis='x',
-                        colors='#2090C0',
+                        colors=self.M_BLUE,
                         labelsize=12)
         axe.set_xticks(np.arange(-180, 181, 45))
         axe.tick_params(axis='y',
-                        colors='#2090C0',
+                        colors=self.M_BLUE,
                         which='both',
                         labelleft=True,
                         labelright=True,
                         labelsize=12)
+        axe.set_title('Earth view of sub points satellite',
+                      color=self.M_WHITE,
+                      fontweight='bold',
+                      fontsize=12)
         axe.set_xlabel('Longitude in degrees',
-                       color='#2090C0',
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
         axe.set_ylabel('Latitude in degrees',
-                       color='#2090C0',
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
 
@@ -405,7 +463,7 @@ class SatelliteWindow(widget.MWidget):
 
         # time
         now = timescale.now()
-        forecast = np.arange(0, self.FORECAST_TIME, 0.01) / 24
+        forecast = np.arange(0, self.FORECAST_TIME, 0.005) / 24
         timeVector = timescale.tt_jd(now.tt + forecast)
 
         # drawing satellite subpoint path
@@ -442,8 +500,8 @@ class SatelliteWindow(widget.MWidget):
 
         alt, az = zip(*self.app.data.horizonP)
 
-        axes.fill(az, alt, color='#002000', zorder=-20)
-        axes.plot(az, alt, color='#006000', zorder=-20, lw=2)
+        axes.fill(az, alt, color=self.M_GREY_LIGHT, zorder=-20)
+        axes.plot(az, alt, color=self.M_GREY, zorder=-20, lw=2)
 
         return True
 
@@ -459,7 +517,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satHorizonMat.figure
         figure.clf()
-        figure.subplots_adjust(left=0.15, right=0.9, bottom=0.15, top=0.95)
+        figure.subplots_adjust(left=0.15, right=0.9, bottom=0.15, top=0.9)
         axe = self.satHorizonMat.figure.add_subplot(1, 1, 1, facecolor=None)
 
         # add horizon limit if selected
@@ -468,29 +526,53 @@ class SatelliteWindow(widget.MWidget):
         axe.set_facecolor((0, 0, 0, 0))
         axe.set_xlim(0, 360)
         axe.set_ylim(0, 90)
-        axe.spines['bottom'].set_color('#2090C0')
-        axe.spines['top'].set_color('#2090C0')
-        axe.spines['left'].set_color('#2090C0')
-        axe.spines['right'].set_color('#2090C0')
-        axe.grid(True, color='#404040')
+        axe.spines['bottom'].set_color(self.M_BLUE)
+        axe.spines['top'].set_color(self.M_BLUE)
+        axe.spines['left'].set_color(self.M_BLUE)
+        axe.spines['right'].set_color(self.M_BLUE)
+        axe.grid(True, color=self.M_GREY)
         axe.tick_params(axis='x',
-                        colors='#2090C0',
+                        colors=self.M_BLUE,
                         labelsize=12)
         axe.set_xticks(np.arange(0, 361, 45))
         axe.tick_params(axis='y',
-                        colors='#2090C0',
+                        colors=self.M_BLUE,
                         which='both',
                         labelleft=True,
                         labelright=True,
                         labelsize=12)
+        axe.set_title('Horizon view of observer',
+                      color=self.M_WHITE,
+                      fontweight='bold',
+                      fontsize=12)
         axe.set_xlabel('Azimuth in degrees',
-                       color='#2090C0',
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
         axe.set_ylabel('Altitude in degrees',
-                       color='#2090C0',
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
+
+        axe.text(0, 1, 'N',
+                 fontsize=14,
+                 color=self.M_WHITE)
+
+        axe.text(90, 1, 'E',
+                 fontsize=14,
+                 color=self.M_WHITE)
+
+        axe.text(180, 1, 'S',
+                 fontsize=14,
+                 color=self.M_WHITE)
+
+        axe.text(270, 1, 'W',
+                 fontsize=14,
+                 color=self.M_WHITE)
+
+        axe.text(350, 1, 'N',
+                 fontsize=14,
+                 color=self.M_WHITE)
 
         if satellite is None:
             axe.figure.canvas.draw()

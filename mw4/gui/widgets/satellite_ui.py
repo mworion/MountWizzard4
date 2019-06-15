@@ -29,26 +29,6 @@ class Ui_SatelliteDialog(object):
         self.verticalLayout.setContentsMargins(4, 4, 4, 4)
         self.verticalLayout.setSpacing(4)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setContentsMargins(4, 4, 4, 4)
-        self.horizontalLayout.setSpacing(4)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.clear = QtWidgets.QPushButton(SatelliteDialog)
-        self.clear.setMinimumSize(QtCore.QSize(80, 25))
-        self.clear.setMaximumSize(QtCore.QSize(100, 25))
-        self.clear.setObjectName("clear")
-        self.horizontalLayout.addWidget(self.clear)
-        self.widget = QtWidgets.QWidget(SatelliteDialog)
-        self.widget.setObjectName("widget")
-        self.horizontalLayout.addWidget(self.widget)
-        self.verticalLayout.addLayout(self.horizontalLayout)
-        self.line = QtWidgets.QFrame(SatelliteDialog)
-        self.line.setFrameShadow(QtWidgets.QFrame.Plain)
-        self.line.setLineWidth(2)
-        self.line.setMidLineWidth(1)
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setObjectName("line")
-        self.verticalLayout.addWidget(self.line)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setSpacing(0)
@@ -80,7 +60,7 @@ class Ui_SatelliteDialog(object):
         self.verticalLayout_3.addWidget(self.satHorizon)
         self.horizontalLayout_3.addLayout(self.verticalLayout_3)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
-        self.verticalLayout.setStretch(2, 1)
+        self.verticalLayout.setStretch(0, 1)
 
         self.retranslateUi(SatelliteDialog)
         QtCore.QMetaObject.connectSlotsByName(SatelliteDialog)
@@ -88,7 +68,6 @@ class Ui_SatelliteDialog(object):
     def retranslateUi(self, SatelliteDialog):
         _translate = QtCore.QCoreApplication.translate
         SatelliteDialog.setWindowTitle(_translate("SatelliteDialog", "Satellite"))
-        self.clear.setText(_translate("SatelliteDialog", "Clear window"))
 
 
 

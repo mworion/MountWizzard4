@@ -44,7 +44,12 @@ class Satellite(object):
             'NOAA': 'http://www.celestrak.com/NORAD/elements/noaa.txt',
             'GEOS': 'http://www.celestrak.com/NORAD/elements/goes.txt',
             'Weather': 'http://www.celestrak.com/NORAD/elements/weather.txt',
+            'Earth Resources': 'http://celestrak.com/NORAD/elements/resource.txt',
+            'TDRSS TRacking and Data Relay': 'http://celestrak.com/NORAD/elements/tdrss.txt',
+            'ARGOS': 'http://celestrak.com/NORAD/elements/argos.txt',
             'Amateur Radio': 'http://www.celestrak.com/NORAD/elements/amateur.txt',
+            'Space & Earth Science': 'http://celestrak.com/NORAD/elements/science.txt',
+            'Engineering': 'http://celestrak.com/NORAD/elements/engineering.txt',
             'Last 30 days launch': 'http://www.celestrak.com/NORAD/elements/tle-new.txt',
         }
 
@@ -64,6 +69,8 @@ class Satellite(object):
         """
         config = self.app.config['mainW']
         self.ui.checkReload.setChecked(config.get('checkReloadSatellites', False))
+        self.ui.satelliteSource.setCurrentIndex(config.get('satelliteSource', 0))
+
         return True
 
     def storeConfig(self):
@@ -76,6 +83,7 @@ class Satellite(object):
         """
         config = self.app.config['mainW']
         config['checkReloadSatellites'] = self.ui.checkReload.isChecked()
+        config['satelliteSource'] = self.ui.satelliteSource.currentIndex()
         return True
 
     def setupIcons(self):

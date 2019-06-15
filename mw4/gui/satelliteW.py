@@ -270,24 +270,29 @@ class SatelliteWindow(widget.MWidget):
 
     def drawSphere(self, satellite=None, timescale=None):
         """
+        draw sphere and put face color als image overlay:
+
+        https://stackoverflow.com/questions/53074908/
+        map-an-image-onto-a-sphere-and-plot-3d-trajectories
+
+        but performance problems
+
+        see also:
+
+        https://space.stackexchange.com/questions/25958/
+        how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
 
         :param satellite:
         :param timescale:
         :return: success
         """
 
-        # draw sphere and put face color als image overlay
-        # https://stackoverflow.com/questions/53074908/map-an-image-onto-a-sphere-and-plot-3d-trajectories
-        # but performance problems
-
-        # see:
-        # https://space.stackexchange.com/questions/25958/how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
-
         figure = self.satSphereMat.figure
         figure.clf()
         figure.subplots_adjust(left=-0.25, right=1.25, bottom=-0.25, top=1.25)
-        # figure.subplots_adjust(left=0, right=1, bottom=0, top=1)
         axe = figure.add_subplot(111, projection='3d')
+
+        # switching all visual grids and planes off
         axe.set_facecolor((0, 0, 0, 0))
         axe.tick_params(colors=self.M_GREY,
                         labelsize=12)
@@ -308,7 +313,6 @@ class SatelliteWindow(widget.MWidget):
                              lon0[1] * cph + lon0[0] * sph,
                              lon0[2]))
             longitudes.append(lon)
-
         lats = []
         latBase = np.arange(-75, 90, 15)
         for phi in np.radians(latBase):
@@ -331,15 +335,14 @@ class SatelliteWindow(widget.MWidget):
                  [- self.EARTH_RADIUS * 1.1, self.EARTH_RADIUS * 1.1],
                  lw=3,
                  color=self.M_BLUE)
-
         axe.text(0, 0, self.EARTH_RADIUS * 1.2, 'N',
                  fontsize=14,
                  color=self.M_BLUE)
-
         axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S',
                  fontsize=14,
                  color=self.M_BLUE)
 
+        # empty chart if no satellite is chosen
         if satellite is None:
             axe.figure.canvas.draw()
             return False
@@ -427,6 +430,7 @@ class SatelliteWindow(widget.MWidget):
                  markersize=10,
                  color=self.M_YELLOW)
 
+        # empty chart if no satellite is chosen
         if satellite is None:
             axe.figure.canvas.draw()
             return False
@@ -544,6 +548,7 @@ class SatelliteWindow(widget.MWidget):
                  fontsize=14,
                  color=self.M_BLUE)
 
+        # empty chart if no satellite is chosen
         if satellite is None:
             axe.figure.canvas.draw()
             return False

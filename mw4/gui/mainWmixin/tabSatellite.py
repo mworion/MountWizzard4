@@ -182,8 +182,8 @@ class Satellite(object):
 
         now = self.app.mount.obsSite.ts.now()
         subpoint = self.satellite.at(now).subpoint()
-        lat = subpoint.latitude.radians
-        lon = subpoint.longitude.radians
+        lat = subpoint.latitude.degrees
+        lon = subpoint.longitude.degrees
         self.ui.satLatitude.setText(f'{lat:3.2f}')
         self.ui.satLongitude.setText(f'{lon:3.2f}')
         difference = self.satellite - self.app.mount.obsSite.location

@@ -151,7 +151,7 @@ class Satellite(object):
 
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
-        self.ui.satelliteDataAge.setText(str(days))
+        self.ui.satelliteDataAge.setText(f'{days:2.4f}')
 
         if self.app.satelliteW:
             self.app.satelliteW.signals.show.emit(self.satellite)

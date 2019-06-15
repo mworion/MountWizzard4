@@ -63,6 +63,8 @@ class SatelliteWindow(widget.MWidget):
 
     # length of forecast time
     FORECAST_TIME = 3
+    # earth radius
+    EARTH_RADIUS = 6378.0
 
     def __init__(self, app):
         super().__init__()
@@ -236,8 +238,19 @@ class SatelliteWindow(widget.MWidget):
         now = self.app.mount.obsSite.ts.now()
 
         # sphere
-        x, y, z = self.satellite.at(now).position.km
+        subpoint = self.satellite.at(now).subpoint()
+        lat = subpoint.latitude.radians
+        lon = subpoint.longitude.radians
+        x, y, z = transform.sphericalToCartesian(azimuth=lon,
+                                                 altitude=lat,
+                                                 radius=self.EARTH_RADIUS)
         self.plotSatPosSphere.set_data_3d((x, y, z))
+
+        alt, az, radius = transform.cartesianToSpherical(x, y, z)
+        az = np.degrees(az)
+        alt = np.degrees(alt)
+        self.app.mainW.ui.satRa.setText(f'{alt:3.2f}')
+        self.app.mainW.ui.satDec.setText(f'{az:3.2f}')
 
         # earth
         subpoint = self.satellite.at(now).subpoint()
@@ -245,17 +258,13 @@ class SatelliteWindow(widget.MWidget):
         lon = subpoint.longitude.degrees
         self.plotSatPosEarth.set_data((lon, lat))
 
-        ra, dec, _ = self.satellite.at(now).radec()
-        self.app.mainW.ui.satRa.setText(transform.convertToHMS(ra))
-        self.app.mainW.ui.satDec.setText(transform.convertToDMS(dec))
-
         # horizon
         difference = self.satellite - self.app.mount.obsSite.location
         alt, az, _ = difference.at(now).altaz()
         alt = alt.degrees
         az = az.degrees
-        self.app.mainW.ui.satAltitude.setText(str(alt))
-        self.app.mainW.ui.satAzimuth.setText(str(az))
+        self.app.mainW.ui.satAltitude.setText(f'{alt:3.2f}')
+        self.app.mainW.ui.satAzimuth.setText(f'{az:3.2f}')
         self.plotSatPosHorizon.set_data((az, alt))
 
         # update the plot and redraw
@@ -283,6 +292,7 @@ class SatelliteWindow(widget.MWidget):
         figure = self.satSphereMat.figure
         figure.clf()
         figure.subplots_adjust(left=-0.25, right=1.25, bottom=-0.25, top=1.25)
+        # figure.subplots_adjust(left=0, right=1, bottom=0, top=1)
         axe = figure.add_subplot(111, projection='3d')
         axe.set_facecolor((0, 0, 0, 0))
         axe.tick_params(colors=self.M_GREY,
@@ -292,13 +302,10 @@ class SatelliteWindow(widget.MWidget):
         axe.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
         axe.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
 
-        # earth radius
-        earthRadius = 6378.0
-
         # calculating sphere
         theta = np.linspace(0, 2 * np.pi, 201)
         cth, sth, zth = [f(theta) for f in [np.cos, np.sin, np.zeros_like]]
-        lon0 = earthRadius * np.vstack((cth, zth, sth))
+        lon0 = self.EARTH_RADIUS * np.vstack((cth, zth, sth))
         longitudes = []
         lonBase = np.arange(-180, 180, 15)
         for phi in np.radians(lonBase):
@@ -312,7 +319,7 @@ class SatelliteWindow(widget.MWidget):
         latBase = np.arange(-75, 90, 15)
         for phi in np.radians(latBase):
             cph, sph = [f(phi) for f in [np.cos, np.sin]]
-            lat = earthRadius * np.vstack((cth * cph, sth * cph, zth + sph))
+            lat = self.EARTH_RADIUS * np.vstack((cth * cph, sth * cph, zth + sph))
             lats.append(lat)
 
         # plotting sphere and labels
@@ -344,7 +351,7 @@ class SatelliteWindow(widget.MWidget):
         lon = self.app.mount.obsSite.location.longitude.degrees
         x, y, z = transform.sphericalToCartesian(altitude=np.radians(lat),
                                                  azimuth=np.radians(lon),
-                                                 radius=earthRadius)
+                                                 radius=self.EARTH_RADIUS)
         axe.plot([x],
                  [y],
                  [z],
@@ -355,15 +362,15 @@ class SatelliteWindow(widget.MWidget):
 
         axe.plot([0, 0],
                  [0, 0],
-                 [- earthRadius * 1.1, earthRadius * 1.1],
+                 [- self.EARTH_RADIUS * 1.1, self.EARTH_RADIUS * 1.1],
                  lw=3,
                  color=self.M_WHITE)
 
-        axe.text(0, 0, earthRadius * 1.2, 'N',
+        axe.text(0, 0, self.EARTH_RADIUS * 1.2, 'N',
                  fontsize=14,
                  color=self.M_WHITE)
 
-        axe.text(0, 0, - earthRadius * 1.2 - 200, 'S',
+        axe.text(0, 0, - self.EARTH_RADIUS * 1.2 - 200, 'S',
                  fontsize=14,
                  color=self.M_WHITE)
 
@@ -376,23 +383,28 @@ class SatelliteWindow(widget.MWidget):
         forecast = np.arange(0, self.FORECAST_TIME, 0.01) / 24
         timeVector = timescale.tt_jd(now.tt + forecast)
 
-        # drawing satellite orbit
-        x, y, z = satellite.at(timeVector).position.km
+        # drawing satellite subpoint path
+        # we have to draw it from sub point as we would like to show it on real earth, which
+        # is turning over time
+        subpoint = satellite.at(timeVector).subpoint()
+        lat = subpoint.latitude.radians
+        lon = subpoint.longitude.radians
+        x, y, z = transform.sphericalToCartesian(azimuth=lon,
+                                                 altitude=lat,
+                                                 radius=self.EARTH_RADIUS)
+
         axe.plot(x,
                  y,
                  z,
                  color=self.M_GREEN)
 
-        now = self.app.mount.obsSite.ts.now()
-        x, y, z = satellite.at(now).position.km
-        self.plotSatPosSphere, = axe.plot([x],
-                                          [y],
-                                          [z],
+        self.plotSatPosSphere, = axe.plot([x[0]],
+                                          [y[0]],
+                                          [z[0]],
                                           marker='o',
                                           markersize=10,
                                           color=self.M_PINK)
-
-        self.makeCubeLimits(axe)
+        # self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
         return True
 

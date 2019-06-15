@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import logging
+from io import BytesIO
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -415,8 +416,12 @@ class SatelliteWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
 
+        stream = PyQt5.QtCore.QFile(':/world.png')
+        stream.open(PyQt5.QtCore.QFile.ReadOnly)
+        image = stream.readAll()
+        stream.close()
         # loading the world image from nasa as PNG as matplotlib only loads png.
-        world = plt.imread('world.png')
+        world = plt.imread(BytesIO(image))
 
         # we have to extend this, to get it full in the frame !
         axe.imshow(world, extent=[-180, 180, -90, 90], alpha=0.3)

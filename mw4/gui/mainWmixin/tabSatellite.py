@@ -37,6 +37,7 @@ class Satellite(object):
     def __init__(self):
         self. satellites = list()
         self.satellite = None
+        self.satelliteTLE = {}
 
         self.satelliteSourceDropDown = {
             'Space Stations': 'http://www.celestrak.com/NORAD/elements/stations.txt',
@@ -55,6 +56,8 @@ class Satellite(object):
 
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
         self.ui.listSatelliteNames.itemPressed.connect(self.extractSatelliteData)
+        self.ui.programSatelliteDataMount.clicked.connect(self.programTLEToMount)
+
         self.app.update3s.connect(self.updateSatelliteData)
 
     def initConfig(self):
@@ -130,6 +133,42 @@ class Satellite(object):
 
         return True
 
+    def loadTLEData(self, source=''):
+        """
+        loadTLEData load the two line elements from the source file and stores is separately
+        in a dictionary, because we need that data later for transfer it to the mount
+        computer. unfortunately the loader from skyfield does not store the original TLE
+        data, but only parses it and throws the original away.
+
+        :param source:
+        :return: success
+        """
+
+        if not source:
+            return False
+
+        fileName = os.path.basename(source)
+        dirPath = self.app.mwGlob['dataDir']
+        filePath = f'{dirPath}/{fileName}'
+
+        if not os.path.isfile(filePath):
+            return False
+
+        self.satelliteTLE = {}
+        with open(filePath, mode='r') as tleFile:
+            while True:
+                l0 = tleFile.readline()
+                l1 = tleFile.readline()
+                l2 = tleFile.readline()
+
+                if not l0:
+                    break
+                self.satelliteTLE[l0.strip()] = {'line0': l0.strip('\n'),
+                                                 'line1': l1.strip('\n'),
+                                                 'line2': l2.strip('\n'),
+                                                 }
+        return True
+
     def loadSatelliteSource(self):
         """
         loadSatelliteSource selects from a drop down list of possible satellite data sources
@@ -148,6 +187,10 @@ class Satellite(object):
         source = self.satelliteSourceDropDown[key]
         reload = self.ui.checkReload.isChecked()
         self.satellites = self.app.loader.tle(source, reload=reload)
+
+        suc = self.loadTLEData(source)
+        if not suc:
+            return False
 
         self.setupSatelliteGui()
 
@@ -209,8 +252,8 @@ class Satellite(object):
 
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
-
         self.ui.satelliteDataAge.setText(f'{days:2.2f}')
+
         if days > 10:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
         elif 3 < days < 10:
@@ -226,4 +269,55 @@ class Satellite(object):
             return False
 
         self.app.satelliteW.signals.show.emit(self.satellite)
+        return True
+
+    def programTLEToMount(self):
+        """
+
+        :return: success
+        """
+
+        obsSite = self.app.mount.obsSite
+        data = self.satelliteTLE[self.satellite.name]
+
+        suc = obsSite.setTLE(line0=data['line0'],
+                             line1=data['line1'],
+                             line2=data['line2'])
+        if not suc:
+            self.app.message.emit('Error program TLE', 2)
+            return False
+
+        suc, response = obsSite.calcTLE(julianDate=obsSite.timeJD.tt,
+                                        duration=720,
+                                        )
+        if not suc:
+            self.app.message.emit('Error calculate TLE', 2)
+            return False
+
+        alt, az = response[0].split(',')
+        ra, dec = response[1].split(',')
+        start, end, flip = response[2].split(',')
+        startUTC = obsSite.ts.tt_jd(float(start)).utc_strftime('%Y-%m-%d  %H:%M:%S')
+        endUTC = obsSite.ts.tt_jd(float(end)).utc_strftime('%Y-%m-%d  %H:%M:%S')
+
+        self.ui.satAltitudeMount.setText(alt)
+        self.ui.satAzimuthMount.setText(az)
+        self.ui.satRaMount.setText(ra)
+        self.ui.satDecMount.setText(dec)
+        self.ui.satTransitStartUTC.setText(startUTC)
+        self.ui.satTransitEndUTC.setText(endUTC)
+        self.ui.satNameMount.setText(self.satellite.name)
+
+        if flip == 'F':
+            self.ui.satNeedFlip.setText('YES')
+        else:
+            self.ui.satNeedFlip.setText('NO')
+
+        suc, message = obsSite.getTLEStat()
+        if not suc:
+            self.app.message.emit('Error status TLE', 2)
+            return False
+
+        self.ui.satelliteStatus.setText(message)
+
         return True

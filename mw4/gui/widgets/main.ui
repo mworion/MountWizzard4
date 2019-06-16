@@ -734,7 +734,7 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <item row="5" column="1">
+       <item row="6" column="1">
         <widget class="QLineEdit" name="profile">
          <property name="enabled">
           <bool>false</bool>
@@ -782,19 +782,7 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Profile: </string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="2">
+       <item row="5" column="0" colspan="2">
         <widget class="Line" name="line_6">
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
@@ -804,6 +792,18 @@
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Profile: </string>
          </property>
         </widget>
        </item>
@@ -867,6 +867,19 @@
          </property>
          <property name="large" stdset="0">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QLineEdit" name="timeUTC">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>time UTC</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -9231,7 +9244,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>350</y>
+         <y>165</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -9244,15 +9257,15 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Functions</string>
+        <string>Mount functions</string>
        </property>
       </widget>
       <widget class="Line" name="line_70">
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>370</y>
-         <width>336</width>
+         <y>185</y>
+         <width>366</width>
          <height>1</height>
         </rect>
        </property>
@@ -9268,13 +9281,13 @@ manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QPushButton" name="btn_startSlewingSatellite">
+      <widget class="QPushButton" name="startSatelliteTracking">
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>375</y>
+         <y>400</y>
          <width>96</width>
-         <height>46</height>
+         <height>21</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -9284,19 +9297,19 @@ manually</string>
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Start slewing</string>
+        <string>Start track</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="le_satelliteStatus">
+      <widget class="QLineEdit" name="satelliteStatus">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="geometry">
         <rect>
          <x>515</x>
-         <y>395</y>
-         <width>231</width>
-         <height>26</height>
+         <y>400</y>
+         <width>261</width>
+         <height>21</height>
         </rect>
        </property>
        <property name="font">
@@ -9324,24 +9337,6 @@ manually</string>
        </property>
        <property name="readOnly">
         <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_240">
-       <property name="geometry">
-        <rect>
-         <x>515</x>
-         <y>375</y>
-         <width>106</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Status</string>
        </property>
       </widget>
       <widget class="QComboBox" name="satelliteSource">
@@ -9484,7 +9479,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Elevation</string>
+        <string>Altitude</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_236">
@@ -9845,6 +9840,637 @@ manually</string>
        </property>
        <property name="readOnly">
         <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="programSatelliteDataMount">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>195</y>
+         <width>96</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Prog Data</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="satAltitudeMount">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>255</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_229">
+       <property name="geometry">
+        <rect>
+         <x>570</x>
+         <y>230</y>
+         <width>16</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>°</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_238">
+       <property name="geometry">
+        <rect>
+         <x>765</x>
+         <y>230</y>
+         <width>16</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>°</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_239">
+       <property name="geometry">
+        <rect>
+         <x>605</x>
+         <y>230</y>
+         <width>56</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>RA</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_240">
+       <property name="geometry">
+        <rect>
+         <x>605</x>
+         <y>255</y>
+         <width>56</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>DEC</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_241">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>255</y>
+         <width>56</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Altitude</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="satAzimuthMount">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>230</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_252">
+       <property name="geometry">
+        <rect>
+         <x>765</x>
+         <y>255</y>
+         <width>16</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>°</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="satDecMount">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>665</x>
+         <y>255</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_253">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>230</y>
+         <width>56</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Azimuth</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_254">
+       <property name="geometry">
+        <rect>
+         <x>570</x>
+         <y>255</y>
+         <width>16</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>°</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="satRaMount">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>665</x>
+         <y>230</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_260">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>285</y>
+         <width>76</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Transit starts</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_270">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>310</y>
+         <width>76</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Transit ends</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_271">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>335</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Need meridian flip</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="satNeedFlip">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>525</x>
+         <y>335</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="satTransitStartUTC">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>525</x>
+         <y>285</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="satTransitEndUTC">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>525</x>
+         <y>310</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_272">
+       <property name="geometry">
+        <rect>
+         <x>680</x>
+         <y>285</y>
+         <width>31</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>UTC</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_273">
+       <property name="geometry">
+        <rect>
+         <x>680</x>
+         <y>310</y>
+         <width>31</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>UTC</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="satNameMount">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>640</x>
+         <y>195</y>
+         <width>136</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_293">
+       <property name="geometry">
+        <rect>
+         <x>595</x>
+         <y>195</y>
+         <width>41</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Name</string>
        </property>
       </widget>
      </widget>
@@ -18702,7 +19328,7 @@ manually</string>
   <tabstop>saveConfigAs</tabstop>
   <tabstop>mountOn</tabstop>
   <tabstop>mountOff</tabstop>
-  <tabstop>btn_startSlewingSatellite</tabstop>
+  <tabstop>startSatelliteTracking</tabstop>
   <tabstop>imagingConnected</tabstop>
   <tabstop>openImageW</tabstop>
   <tabstop>astrometryConnected</tabstop>
@@ -18711,7 +19337,7 @@ manually</string>
   <tabstop>openSatelliteW</tabstop>
   <tabstop>openMeasureW</tabstop>
   <tabstop>openHemisphereW</tabstop>
-  <tabstop>le_satelliteStatus</tabstop>
+  <tabstop>satelliteStatus</tabstop>
   <tabstop>openMessageW</tabstop>
   <tabstop>mountConnected</tabstop>
   <tabstop>satelliteEpoch</tabstop>

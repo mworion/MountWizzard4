@@ -138,7 +138,9 @@ class Mount(object):
             self.ui.DEC.setText('-')
 
         if obs.timeJD is not None:
-            self.ui.timeJD.setText(obs.timeJD.utc_strftime('%H:%M:%S'))
+            text = obs.timeJD.utc_strftime('%H:%M:%S')
+            self.ui.timeJD.setText(text)
+            self.ui.timeUTC.setText(text)
         else:
             self.ui.timeJD.setText('-')
 

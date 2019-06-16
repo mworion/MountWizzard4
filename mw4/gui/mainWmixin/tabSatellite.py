@@ -56,9 +56,12 @@ class Satellite(object):
 
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
         self.ui.listSatelliteNames.itemPressed.connect(self.extractSatelliteData)
-        self.ui.programSatelliteDataMount.clicked.connect(self.programTLEToMount)
+        self.ui.programSatelliteData.clicked.connect(self.programTLEToMount)
+        self.ui.clearSatelliteData.clicked.connect(self.clearTLEToMount)
+        self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
 
         self.app.update3s.connect(self.updateSatelliteData)
+        self.app.update3s.connect(self.showTLEStatus)
 
     def initConfig(self):
         """
@@ -277,9 +280,12 @@ class Satellite(object):
         :return: success
         """
 
+        if self.satellite is None:
+            return False
         if self.ui.satNameMount.text() == '-':
             return False
 
+        obsSite = self.app.mount.obsSite
         suc, response = obsSite.calcTLE(julianDate=obsSite.timeJD.tt,
                                         duration=720,
                                         )
@@ -289,17 +295,22 @@ class Satellite(object):
 
         alt, az = response[0].split(',')
         ra, dec = response[1].split(',')
-        start, end, flip = response[2].split(',')
-        startUTC = obsSite.ts.tt_jd(float(start)).utc_strftime('%Y-%m-%d  %H:%M:%S')
-        endUTC = obsSite.ts.tt_jd(float(end)).utc_strftime('%Y-%m-%d  %H:%M:%S')
+        viewingTime = response[2].split(',')
+        if len(viewingTime) == 3:
+            start, end, flip = viewingTime
+            startUTC = obsSite.ts.tt_jd(float(start)).utc_strftime('%Y-%m-%d  %H:%M:%S')
+            endUTC = obsSite.ts.tt_jd(float(end)).utc_strftime('%Y-%m-%d  %H:%M:%S')
+        else:
+            startUTC = 'not transit'
+            endUTC = 'not transit'
+            flip = viewingTime
 
-        self.ui.satAltitudeMount.setText(alt)
-        self.ui.satAzimuthMount.setText(az)
-        self.ui.satRaMount.setText(ra)
-        self.ui.satDecMount.setText(dec)
+        self.ui.satAltitudeMount.setText(f'{float(alt):3.2f}')
+        self.ui.satAzimuthMount.setText(f'{float(az):3.2f}')
+        self.ui.satRaMount.setText(f'{float(ra):3.2f}')
+        self.ui.satDecMount.setText(f'{float(dec):3.2f}')
         self.ui.satTransitStartUTC.setText(startUTC)
         self.ui.satTransitEndUTC.setText(endUTC)
-        self.ui.satNameMount.setText(self.satellite.name)
 
         if flip == 'F':
             self.ui.satNeedFlip.setText('YES')
@@ -331,6 +342,8 @@ class Satellite(object):
             self.app.message.emit('Error program TLE', 2)
             return False
 
+        self.ui.satNameMount.setText(self.satellite.name)
+
         self.showTLEStatus()
         return True
 
@@ -341,8 +354,10 @@ class Satellite(object):
         """
 
         self.ui.satAltitudeMount.setText('-')
+        self.ui.satAzimuthMount.setText('-')
         self.ui.satRaMount.setText('-')
         self.ui.satDecMount.setText('-')
+        self.ui.satNeedFlip.setText('-')
         self.ui.satTransitStartUTC.setText('-')
         self.ui.satTransitEndUTC.setText('-')
         self.ui.satNameMount.setText('-')
@@ -356,7 +371,7 @@ class Satellite(object):
         :return: success
         """
 
-        suc = self.app.mount.obsSite.slewTLE()
+        suc, message = self.app.mount.obsSite.slewTLE()
         if not suc:
             self.app.message.emit(message, 2)
             return False

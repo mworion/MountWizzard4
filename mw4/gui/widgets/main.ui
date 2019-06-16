@@ -9084,7 +9084,7 @@ manually</string>
         <rect>
          <x>405</x>
          <y>20</y>
-         <width>156</width>
+         <width>276</width>
          <height>21</height>
         </rect>
        </property>
@@ -9096,7 +9096,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Two line elements data</string>
+        <string>Two line elements data simulation</string>
        </property>
       </widget>
       <widget class="Line" name="line_69">
@@ -9245,7 +9245,7 @@ manually</string>
         <rect>
          <x>410</x>
          <y>165</y>
-         <width>121</width>
+         <width>301</width>
          <height>21</height>
         </rect>
        </property>
@@ -9257,7 +9257,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Mount functions</string>
+        <string>Satellite data from mount computer functions</string>
        </property>
       </widget>
       <widget class="Line" name="line_70">
@@ -9842,7 +9842,7 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QPushButton" name="programSatelliteDataMount">
+      <widget class="QPushButton" name="programSatelliteData">
        <property name="geometry">
         <rect>
          <x>410</x>
@@ -9954,9 +9954,9 @@ manually</string>
       <widget class="QLabel" name="label_239">
        <property name="geometry">
         <rect>
-         <x>605</x>
+         <x>620</x>
          <y>230</y>
-         <width>56</width>
+         <width>46</width>
          <height>21</height>
         </rect>
        </property>
@@ -9972,9 +9972,9 @@ manually</string>
       <widget class="QLabel" name="label_240">
        <property name="geometry">
         <rect>
-         <x>605</x>
+         <x>620</x>
          <y>255</y>
-         <width>56</width>
+         <width>46</width>
          <height>21</height>
         </rect>
        </property>

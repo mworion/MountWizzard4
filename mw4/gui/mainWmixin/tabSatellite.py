@@ -99,7 +99,7 @@ class Satellite(object):
 
     def setupSatelliteSourceGui(self):
         """
-        setupSatelliteGui handles the dropdown list for the satellite data online
+        setupSatelliteSourceGui handles the dropdown list for the satellite data online
         sources. therefore we add the necessary entries to populate the list.
 
         :return: success for test
@@ -114,8 +114,8 @@ class Satellite(object):
 
     def setupSatelliteGui(self):
         """
-        setupSatelliteSourceGui handles the dropdown list for the satellite data online
-        sources. therefore we add the necessary entries to populate the list.
+        setupSatelliteGui clears the list view of satellite names deriving from the selected
+        source file on disk. after that it populated the list with actual data.
 
         :return: success for test
         """
@@ -132,6 +132,11 @@ class Satellite(object):
 
     def loadSatelliteSource(self):
         """
+        loadSatelliteSource selects from a drop down list of possible satellite data sources
+        on the web and once selected downloads the data. depending of the setting of reload
+        is true setting, it takes an already loaded file from local disk.
+        after loading or opening the source file, it updates the satellite list in the list
+        view widget for the selection of satellites.
 
         :return: success
         """
@@ -150,6 +155,10 @@ class Satellite(object):
 
     def updateSatelliteData(self):
         """
+        updateSatelliteData calculates the actual satellite orbits, subpoint etc. and
+        updates the data in the gui. in addition when satellite window is open it signals
+        this update data as well for matplotlib drawings in satellite window.
+        this method is called cyclic every 3 seconds for updates
 
         :return: success
         """
@@ -182,6 +191,10 @@ class Satellite(object):
 
     def extractSatelliteData(self):
         """
+        extractSatelliteData is called when a satellite is selected via mouse click in the
+        list menu. it collects the data and writes basic stuff to the gui.
+        for speeding up, is calls updateSatelliteData immediately to get the actual data
+        pushed to the gui and not waiting for the cyclic task.
 
         :return: success
         """

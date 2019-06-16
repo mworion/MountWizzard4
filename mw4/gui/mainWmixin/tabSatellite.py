@@ -195,6 +195,7 @@ class Satellite(object):
         list menu. it collects the data and writes basic stuff to the gui.
         for speeding up, is calls updateSatelliteData immediately to get the actual data
         pushed to the gui and not waiting for the cyclic task.
+        depending on the age of the satellite data is colors the frame
 
         :return: success
         """
@@ -208,7 +209,16 @@ class Satellite(object):
 
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
-        self.ui.satelliteDataAge.setText(f'{days:2.4f}')
+
+        self.ui.satelliteDataAge.setText(f'{days:2.2f}')
+        if days > 10:
+            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
+        elif 3 < days < 10:
+            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'yellow')
+        else:
+            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
+
+        self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
 
         self.updateSatelliteData()
 

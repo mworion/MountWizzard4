@@ -271,20 +271,13 @@ class Satellite(object):
         self.app.satelliteW.signals.show.emit(self.satellite)
         return True
 
-    def programTLEToMount(self):
+    def showTLEStatus(self):
         """
 
         :return: success
         """
 
-        obsSite = self.app.mount.obsSite
-        data = self.satelliteTLE[self.satellite.name]
-
-        suc = obsSite.setTLE(line0=data['line0'],
-                             line1=data['line1'],
-                             line2=data['line2'])
-        if not suc:
-            self.app.message.emit('Error program TLE', 2)
+        if self.ui.satNameMount.text() == '-':
             return False
 
         suc, response = obsSite.calcTLE(julianDate=obsSite.timeJD.tt,
@@ -316,6 +309,56 @@ class Satellite(object):
         suc, message = obsSite.getTLEStat()
         if not suc:
             self.app.message.emit('Error status TLE', 2)
+            return False
+
+        self.ui.satelliteStatus.setText(message)
+
+        return True
+
+    def programTLEToMount(self):
+        """
+
+        :return: success
+        """
+
+        obsSite = self.app.mount.obsSite
+        data = self.satelliteTLE[self.satellite.name]
+
+        suc = obsSite.setTLE(line0=data['line0'],
+                             line1=data['line1'],
+                             line2=data['line2'])
+        if not suc:
+            self.app.message.emit('Error program TLE', 2)
+            return False
+
+        self.showTLEStatus()
+        return True
+
+    def clearTLEToMount(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        self.ui.satAltitudeMount.setText('-')
+        self.ui.satRaMount.setText('-')
+        self.ui.satDecMount.setText('-')
+        self.ui.satTransitStartUTC.setText('-')
+        self.ui.satTransitEndUTC.setText('-')
+        self.ui.satNameMount.setText('-')
+        self.ui.satelliteStatus.setText('-')
+
+        return True
+
+    def startTrack(self):
+        """
+
+        :return: success
+        """
+
+        suc = self.app.mount.obsSite.slewTLE()
+        if not suc:
+            self.app.message.emit(message, 2)
             return False
 
         self.ui.satelliteStatus.setText(message)

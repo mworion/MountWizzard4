@@ -9153,7 +9153,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9231,7 +9231,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9333,7 +9333,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="readOnly">
         <bool>false</bool>
@@ -9419,7 +9419,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9551,7 +9551,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9593,7 +9593,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9635,7 +9635,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9677,7 +9677,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9833,7 +9833,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9847,7 +9847,7 @@ manually</string>
         <rect>
          <x>410</x>
          <y>195</y>
-         <width>96</width>
+         <width>81</width>
          <height>21</height>
         </rect>
        </property>
@@ -9894,7 +9894,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10038,7 +10038,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10104,7 +10104,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10188,7 +10188,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10284,7 +10284,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10326,7 +10326,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10368,7 +10368,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10446,7 +10446,7 @@ manually</string>
         <enum>Qt::RightToLeft</enum>
        </property>
        <property name="text">
-        <string/>
+        <string>-</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10471,6 +10471,25 @@ manually</string>
        </property>
        <property name="text">
         <string>Name</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="clearSatelliteData">
+       <property name="geometry">
+        <rect>
+         <x>500</x>
+         <y>195</y>
+         <width>81</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Clear</string>
        </property>
       </widget>
      </widget>

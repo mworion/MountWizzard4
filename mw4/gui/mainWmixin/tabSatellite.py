@@ -352,6 +352,10 @@ class Satellite(object):
         :return: success
         """
 
+        if not self.app.mount.mountUp:
+            self.app.message.emit('Mount is not online', 2)
+            return False
+
         satellite = self.app.mount.satellite
         self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
         data = self.satelliteTLE[self.satellite.name]
@@ -391,6 +395,10 @@ class Satellite(object):
 
         :return: success
         """
+
+        if not self.app.mount.mountUp:
+            self.app.message.emit('Mount is not online', 2)
+            return False
 
         suc, message = self.app.mount.satellite.slewTLE()
         if not suc:

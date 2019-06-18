@@ -60,8 +60,10 @@ class Satellite(object):
         self.ui.clearSatelliteData.clicked.connect(self.clearTLEToMount)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
 
+        self.app.mount.signals.calcTLEdone.connect(self.showTLEStatus)
+
         self.app.update3s.connect(self.updateSatelliteData)
-        self.app.update3s.connect(self.showTLEStatus)
+        self.app.update3s.connect(self.calcTLEParams)
 
     def initConfig(self):
         """
@@ -274,7 +276,53 @@ class Satellite(object):
         self.app.satelliteW.signals.show.emit(self.satellite)
         return True
 
-    def showTLEStatus(self):
+    def showTLEStatus(self, tleParams):
+        """
+
+        :return:
+        """
+
+        if tleParams.altitude is not None:
+            self.ui.satAltitudeMount.setText(f'{tleParams.altitude.degrees:3.2f}')
+        else:
+            self.ui.satAltitudeMount.setText('-')
+
+        if tleParams.azimuth is not None:
+            self.ui.satAzimuthMount.setText(f'{tleParams.azimuth.degrees:3.2f}')
+        else:
+            self.ui.satAzimuthMount.setText('-')
+
+        if tleParams.ra is not None:
+            self.ui.satRaMount.setText(f'{tleParams.ra.hours:3.2f}')
+        else:
+            self.ui.satRaMount.setText('-')
+
+        if tleParams.dec is not None:
+            self.ui.satDecMount.setText(f'{tleParams.dec.degrees:3.2f}')
+        else:
+            self.ui.satDecMount.setText('-')
+
+        if tleParams.jdStart is not None:
+            time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
+            self.ui.satTransitStartUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+        else:
+            self.ui.satTransitStartUTC.setText('No transit')
+
+        if tleParams.jdEnd is not None:
+            time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
+            self.ui.satTransitEndUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+        else:
+            self.ui.satTransitEndUTC.setText('No transit')
+
+        if tleParams.flip:
+            self.ui.satNeedFlip.setText('YES')
+        else:
+            self.ui.satNeedFlip.setText('NO')
+
+        if tleParams.message is not None:
+            self.ui.satelliteStatus.setText(tleParams.message)
+
+    def calcTLEParams(self):
         """
 
         :return: success
@@ -285,45 +333,7 @@ class Satellite(object):
         if self.ui.satNameMount.text() == '-':
             return False
 
-        obsSite = self.app.mount.obsSite
-        suc, response = obsSite.calcTLE(julianDate=obsSite.timeJD.tt,
-                                        duration=720,
-                                        )
-        if not suc:
-            self.app.message.emit('Error calculate TLE', 2)
-            return False
-
-        alt, az = response[0].split(',')
-        ra, dec = response[1].split(',')
-        viewingTime = response[2].split(',')
-        if len(viewingTime) == 3:
-            start, end, flip = viewingTime
-            startUTC = obsSite.ts.tt_jd(float(start)).utc_strftime('%Y-%m-%d  %H:%M:%S')
-            endUTC = obsSite.ts.tt_jd(float(end)).utc_strftime('%Y-%m-%d  %H:%M:%S')
-        else:
-            startUTC = 'not transit'
-            endUTC = 'not transit'
-            flip = viewingTime
-
-        self.ui.satAltitudeMount.setText(f'{float(alt):3.2f}')
-        self.ui.satAzimuthMount.setText(f'{float(az):3.2f}')
-        self.ui.satRaMount.setText(f'{float(ra):3.2f}')
-        self.ui.satDecMount.setText(f'{float(dec):3.2f}')
-        self.ui.satTransitStartUTC.setText(startUTC)
-        self.ui.satTransitEndUTC.setText(endUTC)
-
-        if flip == 'F':
-            self.ui.satNeedFlip.setText('YES')
-        else:
-            self.ui.satNeedFlip.setText('NO')
-
-        suc, message = obsSite.getTLEStat()
-        if not suc:
-            self.app.message.emit('Error status TLE', 2)
-            return False
-
-        self.ui.satelliteStatus.setText(message)
-
+        self.app.mount.calcTLE()
         return True
 
     def programTLEToMount(self):
@@ -332,19 +342,19 @@ class Satellite(object):
         :return: success
         """
 
-        obsSite = self.app.mount.obsSite
+        satellite = self.app.mount.satellite
         data = self.satelliteTLE[self.satellite.name]
 
-        suc = obsSite.setTLE(line0=data['line0'],
-                             line1=data['line1'],
-                             line2=data['line2'])
+        suc = satellite.setTLE(line0=data['line0'],
+                               line1=data['line1'],
+                               line2=data['line2'])
         if not suc:
             self.app.message.emit('Error program TLE', 2)
             return False
 
         self.ui.satNameMount.setText(self.satellite.name)
 
-        self.showTLEStatus()
+        self.calcTLEParams()
         return True
 
     def clearTLEToMount(self):
@@ -371,7 +381,7 @@ class Satellite(object):
         :return: success
         """
 
-        suc, message = self.app.mount.obsSite.slewTLE()
+        suc, message = self.app.mount.satellite.slewTLE()
         if not suc:
             self.app.message.emit(message, 2)
             return False

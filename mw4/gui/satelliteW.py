@@ -33,6 +33,7 @@ from skyfield.api import EarthSatellite
 from mw4.gui import widget
 from mw4.gui.widgets import satellite_ui
 from mw4.base import transform
+from mw4.base.tpool import Worker
 
 
 class SatelliteWindowSignals(PyQt5.QtCore.QObject):
@@ -68,9 +69,11 @@ class SatelliteWindow(widget.MWidget):
     # earth radius
     EARTH_RADIUS = 6378.0
 
-    def __init__(self, app):
+    def __init__(self, app, threadPool):
         super().__init__()
         self.app = app
+        self.threadPool = threadPool
+
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)
         self.initUI()
@@ -235,7 +238,7 @@ class SatelliteWindow(widget.MWidget):
 
         return centers, hw
 
-    def drawSphere(self, satellite=None, timescale=None):
+    def drawSphere(self, observe=None):
         """
         draw sphere and put face color als image overlay:
 
@@ -249,8 +252,7 @@ class SatelliteWindow(widget.MWidget):
         https://space.stackexchange.com/questions/25958/
         how-can-i-plot-a-satellites-orbit-in-3d-from-a-tle-using-python-and-skyfield
 
-        :param satellite:
-        :param timescale:
+        :param observe:
         :return: success
         """
 
@@ -310,17 +312,12 @@ class SatelliteWindow(widget.MWidget):
                  color=self.M_BLUE)
 
         # empty chart if no satellite is chosen
-        if satellite is None:
+        if observe is None:
             axe.figure.canvas.draw()
             return False
 
-        # time
-        now = timescale.now()
-        forecast = np.arange(0, self.FORECAST_TIME, 0.01 * self.FORECAST_TIME / 3) / 24
-        timeVector = timescale.tt_jd(now.tt + forecast)
-
         # drawing satellite
-        x, y, z = self.satellite.at(timeVector).position.km
+        x, y, z = observe.position.km
         axe.plot(x,
                  y,
                  z,
@@ -336,13 +333,12 @@ class SatelliteWindow(widget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def drawEarth(self, satellite=None, timescale=None):
+    def drawEarth(self, subpoint=None):
         """
         drawEarth show a full earth view with the path of the subpoint of the satellite
         drawn on it.
 
-        :param satellite:
-        :param timescale:
+        :param subpoint:
         :return: success
         """
 
@@ -382,6 +378,7 @@ class SatelliteWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
 
+        """
         stream = PyQt5.QtCore.QFile(':/world.png')
         stream.open(PyQt5.QtCore.QFile.ReadOnly)
         image = stream.readAll()
@@ -391,6 +388,7 @@ class SatelliteWindow(widget.MWidget):
 
         # we have to extend this, to get it full in the frame !
         axe.imshow(world, extent=[-180, 180, -90, 90], alpha=0.3)
+        """
 
         # mark the site location in the map
         lat = self.app.mount.obsSite.location.latitude.degrees
@@ -402,17 +400,11 @@ class SatelliteWindow(widget.MWidget):
                  color=self.M_YELLOW)
 
         # empty chart if no satellite is chosen
-        if satellite is None:
+        if subpoint is None:
             axe.figure.canvas.draw()
             return False
 
-        # time
-        now = timescale.now()
-        forecast = np.arange(0, self.FORECAST_TIME, 0.005 * self.FORECAST_TIME / 3) / 24
-        timeVector = timescale.tt_jd(now.tt + forecast)
-
         # drawing satellite subpoint path
-        subpoint = satellite.at(timeVector).subpoint()
         lat = subpoint.latitude.degrees
         lon = subpoint.longitude.degrees
 
@@ -433,7 +425,7 @@ class SatelliteWindow(widget.MWidget):
         axe.figure.canvas.draw()
         return True
 
-    def _staticHorizon(self, axes=None):
+    def staticHorizon(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -450,13 +442,12 @@ class SatelliteWindow(widget.MWidget):
 
         return True
 
-    def drawHorizonView(self, satellite=None, timescale=None):
+    def drawHorizonView(self, difference=None):
         """
         drawHorizonView shows the horizon and enable the users to explore a satellite
         passing by
 
-        :param satellite: selected satellite
-        :param timescale:
+        :param difference:
         :return: success
         """
 
@@ -466,7 +457,7 @@ class SatelliteWindow(widget.MWidget):
         axe = self.satHorizonMat.figure.add_subplot(1, 1, 1, facecolor=None)
 
         # add horizon limit if selected
-        self._staticHorizon(axes=axe)
+        self.staticHorizon(axes=axe)
 
         axe.set_facecolor((0, 0, 0, 0))
         axe.set_xlim(0, 360)
@@ -520,18 +511,12 @@ class SatelliteWindow(widget.MWidget):
                  color=self.M_BLUE)
 
         # empty chart if no satellite is chosen
-        if satellite is None:
+        if difference is None:
             axe.figure.canvas.draw()
             return False
 
-        # time
-        now = timescale.now()
-        forecast = np.arange(0, self.FORECAST_TIME, 0.001 * self.FORECAST_TIME / 3) / 24
-        timeVector = timescale.tt_jd(now.tt + forecast)
-
         # orbital calculations
-        difference = satellite - self.app.mount.obsSite.location
-        alt, az, _ = difference.at(timeVector).altaz()
+        alt, az, _ = difference.altaz()
         alt = alt.degrees
         az = az.degrees
 
@@ -563,15 +548,18 @@ class SatelliteWindow(widget.MWidget):
         """
 
         timescale = self.app.mount.obsSite.ts
+        forecast = np.arange(0, self.FORECAST_TIME, 0.005 * self.FORECAST_TIME / 3) / 24
+        now = timescale.now()
+        timeVector = timescale.tt_jd(now.tt + forecast)
+        if self.satellite is not None:
+            observe = self.satellite.at(timeVector)
+            subpoint = observe.subpoint()
+            difference = (self.satellite - self.app.mount.obsSite.location).at(timeVector)
+        else:
+            observe = subpoint = difference = None
 
-        self.drawSphere(satellite=self.satellite,
-                        timescale=timescale,
-                        )
-        self.drawEarth(satellite=self.satellite,
-                       timescale=timescale,
-                       )
-        self.drawHorizonView(satellite=self.satellite,
-                             timescale=timescale,
-                             )
-
+        self.drawSphere(observe=observe)
+        self.drawEarth(subpoint=subpoint)
+        self.drawHorizonView(difference=difference)
         return True
+

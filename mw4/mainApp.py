@@ -232,7 +232,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         if not self.satelliteW:
-            self.satelliteW = satelliteW.SatelliteWindow(self)
+            self.satelliteW = satelliteW.SatelliteWindow(self,
+                                                         threadPool=self.threadPool)
             self.satelliteW.destroyed.connect(self.deleteSatelliteW)
         else:
             self.satelliteW.close()

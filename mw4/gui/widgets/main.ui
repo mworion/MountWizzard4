@@ -9300,45 +9300,6 @@ manually</string>
         <string>Start track</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="satelliteStatus">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>515</x>
-         <y>400</y>
-         <width>261</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>-</string>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
       <widget class="QComboBox" name="satelliteSource">
        <property name="geometry">
         <rect>
@@ -19356,7 +19317,6 @@ manually</string>
   <tabstop>openSatelliteW</tabstop>
   <tabstop>openMeasureW</tabstop>
   <tabstop>openHemisphereW</tabstop>
-  <tabstop>satelliteStatus</tabstop>
   <tabstop>openMessageW</tabstop>
   <tabstop>mountConnected</tabstop>
   <tabstop>satelliteEpoch</tabstop>

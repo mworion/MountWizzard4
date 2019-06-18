@@ -329,7 +329,7 @@ class Satellite(object):
             self.ui.satNeedFlip.setText('NO')
 
         if tleParams.message is not None:
-            self.ui.satelliteStatus.setText(tleParams.message)
+            self.app.message.emit(message, 0)
 
     def calcTLEParams(self):
         """
@@ -342,6 +342,7 @@ class Satellite(object):
         if self.ui.satNameMount.text() == '-':
             return False
 
+        # starting thread for calculation of parameters
         self.app.mount.calcTLE()
         return True
 
@@ -352,6 +353,7 @@ class Satellite(object):
         """
 
         satellite = self.app.mount.satellite
+        self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
         data = self.satelliteTLE[self.satellite.name]
 
         suc = satellite.setTLE(line0=data['line0'],
@@ -363,6 +365,7 @@ class Satellite(object):
 
         self.ui.satNameMount.setText(self.satellite.name)
 
+        # to enforce immediate calculation, we call it directly
         self.calcTLEParams()
         return True
 
@@ -380,7 +383,6 @@ class Satellite(object):
         self.ui.satTransitStartUTC.setText('-')
         self.ui.satTransitEndUTC.setText('-')
         self.ui.satNameMount.setText('-')
-        self.ui.satelliteStatus.setText('-')
 
         return True
 
@@ -395,6 +397,5 @@ class Satellite(object):
             self.app.message.emit(message, 2)
             return False
 
-        self.ui.satelliteStatus.setText(message)
-
+        self.app.message.emit(message, 0)
         return True

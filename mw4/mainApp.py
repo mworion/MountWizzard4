@@ -128,6 +128,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                                 threadPool=self.threadPool)
 
         # get the window widgets up
+        self.mainW = mainW.MainWindow(self,
+                                      threadPool=self.threadPool)
         self.showWindows()
 
         # link cross widget gui signals as all ui widgets have to be present
@@ -306,7 +308,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return: True for test purpose
         """
 
-        self.mainW = mainW.MainWindow(self)
         if self.config.get('showMessageW', False):
             self.toggleMessageWindow()
         if self.config.get('showHemisphereW', False):

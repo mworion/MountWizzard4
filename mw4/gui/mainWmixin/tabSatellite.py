@@ -216,6 +216,7 @@ class Satellite(object):
 
         now = self.app.mount.obsSite.ts.now()
         observe = self.satellite.at(now)
+        sett = self.app.mount.sett
 
         subpoint = observe.subpoint()
         lat = subpoint.latitude.degrees
@@ -224,7 +225,15 @@ class Satellite(object):
         self.ui.satLongitude.setText(f'{lon:3.2f}')
 
         difference = self.satellite - self.app.mount.obsSite.location
-        altaz = difference.at(now).altaz()
+        hasPressure = (sett.refractionPress is not None)
+        hasTemperature = (sett.refractionTemp is not None)
+
+        if hasPressure and hasTemperature:
+            altaz = difference.at(now).altaz(temperature_C=sett.refractionPress,
+                                             pressure_mbar=sett.refractionTemp)
+        else:
+            altaz = difference.at(now).altaz()
+
         alt, az, _ = altaz
         alt = alt.degrees
         az = az.degrees

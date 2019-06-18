@@ -37,7 +37,9 @@ class Mount(object):
 
     def __init__(self):
         ms = self.app.mount.signals
+        ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
+        ms.settDone.connect(self.updateSettingGUI)
         ms.settDone.connect(self.updateSetStatGUI)
         ms.settDone.connect(self.updateTrackingGui)
 

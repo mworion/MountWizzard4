@@ -50,6 +50,8 @@ class SettMisc(object):
         self.ui.loglevelWarningMC.clicked.connect(self.setLoggingLevelMC)
         self.ui.loglevelErrorMC.clicked.connect(self.setLoggingLevelMC)
 
+        self.app.mount.signals.fwDone.connect(self.updateFwGui)
+
         self.app.mount.signals.alert.connect(self.playAudioMountAlert)
         self.app.dome.signals.slewFinished.connect(self.playAudioDomeSlewFinished)
         self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)

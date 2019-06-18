@@ -34,11 +34,6 @@ class Environ(object):
     """
 
     def __init__(self):
-        # mount
-        self.app.mount.signals.settDone.connect(self.updateSettingGUI)
-        self.app.mount.signals.locationDone.connect(self.updateLocGUI)
-        self.app.mount.signals.fwDone.connect(self.updateFwGui)
-
         # environment functions
         signals = self.app.environ.client.signals
         signals.newNumber.connect(self.updateEnvironGUI)

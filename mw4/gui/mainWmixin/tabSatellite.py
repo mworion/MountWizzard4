@@ -59,6 +59,7 @@ class Satellite(object):
         self.ui.programSatelliteData.clicked.connect(self.programTLEToMount)
         self.ui.clearSatelliteData.clicked.connect(self.clearTLEToMount)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
+        self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
 
         self.app.mount.signals.calcTLEdone.connect(self.showTLEStatus)
 
@@ -132,7 +133,8 @@ class Satellite(object):
         for name, _ in self.satellites.items():
             if not isinstance(name, str):
                 continue
-            self.ui.listSatelliteNames.addItem(name)
+            entryName = f'{self.satellites[name].model.satnum:5d} - {name}'
+            self.ui.listSatelliteNames.addItem(entryName)
         self.ui.listSatelliteNames.sortItems()
         self.ui.listSatelliteNames.update()
 
@@ -186,6 +188,7 @@ class Satellite(object):
         """
 
         key = self.ui.satelliteSource.currentText()
+
         if key not in self.satelliteSourceDropDown:
             return False
 
@@ -267,7 +270,7 @@ class Satellite(object):
         :return: success
         """
 
-        key = self.ui.listSatelliteNames.currentItem().text()
+        key = self.ui.listSatelliteNames.currentItem().text()[8:]
         self.satellite = self.satellites[key]
 
         self.ui.satelliteName.setText(self.satellite.name)
@@ -297,6 +300,8 @@ class Satellite(object):
 
     def showTLEStatus(self, tleParams):
         """
+        showTLEStatus update the gui to the current status of the TLE parameters in the
+        mount computer
 
         :return: success
         """
@@ -352,6 +357,7 @@ class Satellite(object):
 
     def calcTLEParams(self):
         """
+        calcTLEParams is called cyclic to update the orbit parameters in the mount computer
 
         :return: success
         """
@@ -372,6 +378,9 @@ class Satellite(object):
 
     def programTLEToMount(self):
         """
+        programTLEToMount get the satellite data and programs this TLE data into the mount.
+        after programming the parameters it forces the mount to calculate the satellite
+        orbits immediately
 
         :return: success
         """
@@ -399,6 +408,8 @@ class Satellite(object):
 
     def clearTLEToMount(self):
         """
+        clearTLEToMount resets the sat name to be followed, clears the TLE parameters in the
+        mount and disables accordingly the buttons
 
         :return: True for test purpose
         """
@@ -420,6 +431,9 @@ class Satellite(object):
 
     def startTrack(self):
         """
+        startTrack un parks the mount if the mount has this state, because tracking could not
+        start with mount parked. if unparked, slewing is initiated.
+
 
         :return: success
         """
@@ -428,6 +442,14 @@ class Satellite(object):
             self.app.message.emit('Mount is not online', 2)
             return False
 
+        # if mount is currently parked, we unpark it
+        if self.app.mount.obsSite.status == 5:
+            suc = self.app.mount.obsSite.unpark()
+            if not suc:
+                self.app.message.emit('Cannot unpark mount', 2)
+            else:
+                self.app.message.emit('Mount unparked', 0)
+
         suc, message = self.app.mount.satellite.slewTLE()
         if not suc:
             self.app.message.emit(message, 2)
@@ -435,3 +457,21 @@ class Satellite(object):
 
         self.app.message.emit(message, 0)
         return True
+
+    def stopTrack(self):
+        """
+        stopTrack just sends the command stop tracking. this is also valid for satellite
+        tracking
+
+        :return: success
+        """
+
+        if not self.app.mount.mountUp:
+            self.app.message.emit('Mount is not online', 2)
+            return False
+
+        suc = self.app.mount.obsSite.stopTracking()
+        if not suc:
+            self.app.message.emit('Cannot stop tracking', 2)
+        else:
+            self.app.message.emit('Stopped tracking', 0)

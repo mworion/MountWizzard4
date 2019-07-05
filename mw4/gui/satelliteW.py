@@ -378,7 +378,6 @@ class SatelliteWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
 
-        """
         stream = PyQt5.QtCore.QFile(':/world.png')
         stream.open(PyQt5.QtCore.QFile.ReadOnly)
         image = stream.readAll()
@@ -388,7 +387,6 @@ class SatelliteWindow(widget.MWidget):
 
         # we have to extend this, to get it full in the frame !
         axe.imshow(world, extent=[-180, 180, -90, 90], alpha=0.3)
-        """
 
         # mark the site location in the map
         lat = self.app.mount.obsSite.location.latitude.degrees

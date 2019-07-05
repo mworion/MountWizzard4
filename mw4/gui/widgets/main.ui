@@ -9096,7 +9096,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Two line elements data simulation</string>
+        <string>TLA Data calculation</string>
        </property>
       </widget>
       <widget class="Line" name="line_69">
@@ -9257,7 +9257,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Satellite data from mount computer functions</string>
+        <string>TLE Data from mount computer</string>
        </property>
       </widget>
       <widget class="Line" name="line_70">
@@ -9806,9 +9806,9 @@ manually</string>
       <widget class="QPushButton" name="programSatelliteData">
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>640</x>
          <y>195</y>
-         <width>81</width>
+         <width>66</width>
          <height>21</height>
         </rect>
        </property>
@@ -9829,7 +9829,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>470</x>
-         <y>255</y>
+         <y>245</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -9868,7 +9868,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>570</x>
-         <y>230</y>
+         <y>220</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -9892,7 +9892,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>765</x>
-         <y>230</y>
+         <y>220</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -9916,7 +9916,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>620</x>
-         <y>230</y>
+         <y>220</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -9934,7 +9934,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>620</x>
-         <y>255</y>
+         <y>245</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -9952,7 +9952,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>255</y>
+         <y>245</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -9973,7 +9973,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>470</x>
-         <y>230</y>
+         <y>220</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -10012,7 +10012,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>765</x>
-         <y>255</y>
+         <y>245</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -10039,7 +10039,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>665</x>
-         <y>255</y>
+         <y>245</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -10078,7 +10078,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>230</y>
+         <y>220</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -10096,7 +10096,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>570</x>
-         <y>255</y>
+         <y>245</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -10123,7 +10123,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>665</x>
-         <y>230</y>
+         <y>220</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -10162,7 +10162,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>285</y>
+         <y>325</y>
          <width>76</width>
          <height>21</height>
         </rect>
@@ -10180,7 +10180,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>310</y>
+         <y>350</y>
          <width>76</width>
          <height>21</height>
         </rect>
@@ -10198,7 +10198,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>335</y>
+         <y>375</y>
          <width>111</width>
          <height>21</height>
         </rect>
@@ -10219,7 +10219,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>525</x>
-         <y>335</y>
+         <y>375</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -10261,7 +10261,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>525</x>
-         <y>285</y>
+         <y>325</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -10303,7 +10303,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>525</x>
-         <y>310</y>
+         <y>350</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -10342,7 +10342,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>680</x>
-         <y>285</y>
+         <y>325</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -10360,7 +10360,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>680</x>
-         <y>310</y>
+         <y>350</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -10380,9 +10380,9 @@ manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>640</x>
+         <x>470</x>
          <y>195</y>
-         <width>136</width>
+         <width>161</width>
          <height>21</height>
         </rect>
        </property>
@@ -10419,7 +10419,7 @@ manually</string>
       <widget class="QLabel" name="label_293">
        <property name="geometry">
         <rect>
-         <x>595</x>
+         <x>410</x>
          <y>195</y>
          <width>41</width>
          <height>21</height>
@@ -10437,9 +10437,9 @@ manually</string>
       <widget class="QPushButton" name="clearSatelliteData">
        <property name="geometry">
         <rect>
-         <x>500</x>
+         <x>710</x>
          <y>195</y>
-         <width>81</width>
+         <width>66</width>
          <height>21</height>
         </rect>
        </property>

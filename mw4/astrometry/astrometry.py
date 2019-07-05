@@ -87,10 +87,19 @@ class Astrometry(object):
 
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME')
+
             self.binPath = {
-                'KStars': '/Applications/kstars.app/Contents/MacOS/astrometry/bin',
                 'CloudMakers': '/Applications/Astrometry.app/Contents/MacOS',
             }
+            # getting all versions of KStars, of the are multiple versions in app folder
+            appList = glob.glob('/Applications/kstars*.app')
+            appNameList = [os.path.basename(x) for x in appList]
+            appTitleList = [os.path.splitext(x)[0] for x in appNameList]
+            trailer = '/Contents/MacOS/astrometry/bin'
+            appBinPathList = [x + trailer for x in appList]
+            for title, appPath in zip(appTitleList, appBinPathList):
+                self.binPath[title] = appPath
+
             self.indexPath = home + '/Library/Application Support/Astrometry'
 
         elif platform.system() == 'Linux':

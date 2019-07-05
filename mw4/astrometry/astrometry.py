@@ -22,6 +22,8 @@ import logging
 import subprocess
 import os
 import glob
+import re
+import fnmatch
 import platform
 import time
 from collections import namedtuple
@@ -92,14 +94,15 @@ class Astrometry(object):
                 'CloudMakers': '/Applications/Astrometry.app/Contents/MacOS',
             }
             # getting all versions of KStars, of the are multiple versions in app folder
-            appList = glob.glob('/Applications/kstars*.app')
-            appNameList = [os.path.basename(x) for x in appList]
-            appTitleList = [os.path.splitext(x)[0] for x in appNameList]
+            pattern = re.compile(fnmatch.translate('kstars*.app'), re.IGNORECASE)
+            header = '/Applications'
             trailer = '/Contents/MacOS/astrometry/bin'
-            appBinPathList = [x + trailer for x in appList]
-            for title, appPath in zip(appTitleList, appBinPathList):
+            for name in sorted(os.listdir('/Applications')):
+                if not pattern.match(name):
+                    continue
+                title = name.strip('.app')
+                appPath = f'{header}/{name}{trailer}'
                 self.binPath[title] = appPath
-
             self.indexPath = home + '/Library/Application Support/Astrometry'
 
         elif platform.system() == 'Linux':

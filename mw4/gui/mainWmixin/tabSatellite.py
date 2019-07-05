@@ -212,6 +212,9 @@ class Satellite(object):
         """
 
         if self.satellite is None:
+            self.ui.programSatelliteData.setEnabled(False)
+            self.ui.clearSatelliteData.setEnabled(False)
+            self.ui.startSatelliteTracking.setEnabled(False)
             return False
 
         now = self.app.mount.obsSite.ts.now()
@@ -243,6 +246,9 @@ class Satellite(object):
 
         self.ui.satAltitude.setText(f'{alt:3.2f}')
         self.ui.satAzimuth.setText(f'{az:3.2f}')
+
+        self.ui.programSatelliteData.setEnabled(True)
+        self.ui.clearSatelliteData.setEnabled(True)
 
         if not self.app.satelliteW:
             return False
@@ -292,12 +298,19 @@ class Satellite(object):
     def showTLEStatus(self, tleParams):
         """
 
-        :return:
+        :return: success
         """
 
+        if self.ui.satNameMount.text() == '-':
+            return False
+
         if tleParams.altitude is not None:
+            self.ui.stopSatelliteTracking.setEnabled(True)
+            self.ui.startSatelliteTracking.setEnabled(True)
             self.ui.satAltitudeMount.setText(f'{tleParams.altitude.degrees:3.2f}')
         else:
+            self.ui.stopSatelliteTracking.setEnabled(False)
+            self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.satAltitudeMount.setText('-')
 
         if tleParams.azimuth is not None:
@@ -319,13 +332,13 @@ class Satellite(object):
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
             self.ui.satTransitStartUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
         else:
-            self.ui.satTransitStartUTC.setText('No transit')
+            self.ui.satTransitStartUTC.setText('-')
 
         if tleParams.jdEnd is not None:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
             self.ui.satTransitEndUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
         else:
-            self.ui.satTransitEndUTC.setText('No transit')
+            self.ui.satTransitEndUTC.setText('-')
 
         if tleParams.flip:
             self.ui.satNeedFlip.setText('YES')
@@ -335,6 +348,8 @@ class Satellite(object):
         if tleParams.message is not None:
             self.app.message.emit(message, 0)
 
+        return True
+
     def calcTLEParams(self):
         """
 
@@ -342,12 +357,17 @@ class Satellite(object):
         """
 
         if self.satellite is None:
+            self.ui.startSatelliteTracking.setEnabled(False)
+            self.ui.stopSatelliteTracking.setEnabled(False)
             return False
         if self.ui.satNameMount.text() == '-':
+            self.ui.stopSatelliteTracking.setEnabled(False)
+            self.ui.startSatelliteTracking.setEnabled(False)
             return False
 
         # starting thread for calculation of parameters
         self.app.mount.calcTLE()
+
         return True
 
     def programTLEToMount(self):
@@ -383,6 +403,9 @@ class Satellite(object):
         :return: True for test purpose
         """
 
+        self.ui.satNameMount.setText('-')
+        self.ui.startSatelliteTracking.setEnabled(False)
+        self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.satAltitudeMount.setText('-')
         self.ui.satAzimuthMount.setText('-')
         self.ui.satRaMount.setText('-')
@@ -390,7 +413,8 @@ class Satellite(object):
         self.ui.satNeedFlip.setText('-')
         self.ui.satTransitStartUTC.setText('-')
         self.ui.satTransitEndUTC.setText('-')
-        self.ui.satNameMount.setText('-')
+        self.app.mount.satellite.clearTleParams()
+        self.showTLEStatus(self.app.mount.satellite.tleParams)
 
         return True
 

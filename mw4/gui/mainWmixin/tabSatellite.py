@@ -219,12 +219,15 @@ class Satellite(object):
         sett = self.app.mount.sett
 
         subpoint = observe.subpoint()
-        lat = subpoint.latitude.degrees
-        lon = subpoint.longitude.degrees
-        self.ui.satLatitude.setText(f'{lat:3.2f}')
-        self.ui.satLongitude.setText(f'{lon:3.2f}')
-
         difference = self.satellite - self.app.mount.obsSite.location
+
+        ra, dec, _ = difference.at(now).radec()
+        ra = ra.hours
+        dec = dec.degrees
+
+        self.ui.satRa.setText(f'{ra:3.2f}')
+        self.ui.satDec.setText(f'{dec:3.2f}')
+
         hasPressure = (sett.refractionPress is not None)
         hasTemperature = (sett.refractionTemp is not None)
 
@@ -237,6 +240,7 @@ class Satellite(object):
         alt, az, _ = altaz
         alt = alt.degrees
         az = az.degrees
+
         self.ui.satAltitude.setText(f'{alt:3.2f}')
         self.ui.satAzimuth.setText(f'{az:3.2f}')
 

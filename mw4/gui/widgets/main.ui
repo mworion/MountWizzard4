@@ -9244,7 +9244,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>165</y>
+         <y>190</y>
          <width>301</width>
          <height>21</height>
         </rect>
@@ -9264,7 +9264,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>185</y>
+         <y>210</y>
          <width>366</width>
          <height>1</height>
         </rect>
@@ -9458,7 +9458,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Latitude</string>
+        <string>RA</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_237">
@@ -9476,7 +9476,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>Longitude</string>
+        <string>DEC</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="satAzimuth">
@@ -9563,13 +9563,13 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="satLatitude">
+      <widget class="QLineEdit" name="satRa">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>665</x>
+         <x>640</x>
          <y>100</y>
          <width>101</width>
          <height>21</height>
@@ -9605,13 +9605,13 @@ manually</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="QLineEdit" name="satLongitude">
+      <widget class="QLineEdit" name="satDec">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>665</x>
+         <x>640</x>
          <y>125</y>
          <width>101</width>
          <height>21</height>
@@ -9698,9 +9698,9 @@ manually</string>
       <widget class="QLabel" name="label_221">
        <property name="geometry">
         <rect>
-         <x>765</x>
+         <x>740</x>
          <y>100</y>
-         <width>16</width>
+         <width>36</width>
          <height>21</height>
         </rect>
        </property>
@@ -9710,7 +9710,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>°</string>
+        <string>hours</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -9722,7 +9722,7 @@ manually</string>
       <widget class="QLabel" name="label_226">
        <property name="geometry">
         <rect>
-         <x>765</x>
+         <x>740</x>
          <y>125</y>
          <width>16</width>
          <height>21</height>
@@ -9806,9 +9806,9 @@ manually</string>
       <widget class="QPushButton" name="programSatelliteData">
        <property name="geometry">
         <rect>
-         <x>640</x>
-         <y>195</y>
-         <width>66</width>
+         <x>410</x>
+         <y>160</y>
+         <width>181</width>
          <height>21</height>
         </rect>
        </property>
@@ -9829,7 +9829,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>470</x>
-         <y>245</y>
+         <y>270</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -9868,7 +9868,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>570</x>
-         <y>220</y>
+         <y>245</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -9891,9 +9891,9 @@ manually</string>
       <widget class="QLabel" name="label_238">
        <property name="geometry">
         <rect>
-         <x>765</x>
-         <y>220</y>
-         <width>16</width>
+         <x>740</x>
+         <y>245</y>
+         <width>41</width>
          <height>21</height>
         </rect>
        </property>
@@ -9903,7 +9903,7 @@ manually</string>
         </font>
        </property>
        <property name="text">
-        <string>°</string>
+        <string>hours</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -9915,8 +9915,8 @@ manually</string>
       <widget class="QLabel" name="label_239">
        <property name="geometry">
         <rect>
-         <x>620</x>
-         <y>220</y>
+         <x>605</x>
+         <y>245</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -9933,8 +9933,8 @@ manually</string>
       <widget class="QLabel" name="label_240">
        <property name="geometry">
         <rect>
-         <x>620</x>
-         <y>245</y>
+         <x>605</x>
+         <y>270</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -9952,7 +9952,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>245</y>
+         <y>270</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -9973,7 +9973,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>470</x>
-         <y>220</y>
+         <y>245</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -10011,8 +10011,8 @@ manually</string>
       <widget class="QLabel" name="label_252">
        <property name="geometry">
         <rect>
-         <x>765</x>
-         <y>245</y>
+         <x>740</x>
+         <y>270</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -10038,8 +10038,8 @@ manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>665</x>
-         <y>245</y>
+         <x>640</x>
+         <y>270</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -10078,7 +10078,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>220</y>
+         <y>245</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -10096,7 +10096,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>570</x>
-         <y>245</y>
+         <y>270</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -10122,8 +10122,8 @@ manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>665</x>
-         <y>220</y>
+         <x>640</x>
+         <y>245</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -10381,7 +10381,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>470</x>
-         <y>195</y>
+         <y>220</y>
          <width>161</width>
          <height>21</height>
         </rect>
@@ -10420,7 +10420,7 @@ manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>195</y>
+         <y>220</y>
          <width>41</width>
          <height>21</height>
         </rect>
@@ -10437,9 +10437,9 @@ manually</string>
       <widget class="QPushButton" name="clearSatelliteData">
        <property name="geometry">
         <rect>
-         <x>710</x>
-         <y>195</y>
-         <width>66</width>
+         <x>595</x>
+         <y>160</y>
+         <width>181</width>
          <height>21</height>
         </rect>
        </property>

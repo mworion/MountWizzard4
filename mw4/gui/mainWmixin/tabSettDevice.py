@@ -331,7 +331,7 @@ class SettDevice(object):
         """
 
         self.ui.powerGroup.setEnabled(False)
-        # get index for relay tab
+        # get index for power tab
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 

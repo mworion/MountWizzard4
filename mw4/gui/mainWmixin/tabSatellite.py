@@ -228,6 +228,15 @@ class Satellite(object):
             self.ui.startSatelliteTracking.setEnabled(False)
             return False
 
+        # check if calculation is necessary to optimize cpu time
+        # get index for satellite tab
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Satellite')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        satTabVisible = self.ui.mainTabWidget.currentIndex() == tabIndex
+
+        if not self.app.satelliteW and not satTabVisible:
+            return False
+
         now = self.app.mount.obsSite.ts.now()
         observe = self.satellite.at(now)
         sett = self.app.mount.sett
@@ -264,7 +273,7 @@ class Satellite(object):
         self.ui.satAzimuth.setText(f'{az:3.2f}')
 
         if not self.app.satelliteW:
-            return False
+            return
 
         self.app.satelliteW.signals.update.emit(observe, subpoint, altaz)
         return True

@@ -58,6 +58,7 @@ class Satellite(object):
         self.ui.listSatelliteNames.itemPressed.connect(self.extractSatelliteData)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
+        self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
 
         self.app.mount.signals.calcTLEdone.connect(self.enableTrack)
         self.app.mount.signals.getTLEdone.connect(self.prepare)
@@ -74,14 +75,11 @@ class Satellite(object):
         """
 
         self.setupSatelliteSourceGui()
+        self.loadSatelliteSource()
 
         config = self.app.config['mainW']
         self.ui.satExpiresYes.setChecked(config.get('satExpiresYes', False))
         self.ui.satExpiresNo.setChecked(config.get('satExpiresNo', True))
-        self.ui.satelliteSource.setCurrentIndex(config.get('satelliteSource', 0))
-        self.loadSatelliteSource()
-
-        self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
 
         return True
 
@@ -96,7 +94,6 @@ class Satellite(object):
         config = self.app.config['mainW']
         config['satExpiresYes'] = self.ui.satExpiresYes.isChecked()
         config['satExpiresNo'] = self.ui.satExpiresNo.isChecked()
-        config['satelliteSource'] = self.ui.satelliteSource.currentIndex()
         return True
 
     def setupIcons(self):
@@ -337,6 +334,15 @@ class Satellite(object):
         if satName not in self.satellites:
             return False
 
+        for index in range(self.ui.listSatelliteNames.model().rowCount()):
+            if not self.ui.listSatelliteNames.item(index).text()[8:] == satName:
+                continue
+            item = self.ui.listSatelliteNames.item(index)
+            item.setSelected(True)
+            break
+
+        self.ui.listSatelliteNames.scrollToItem(item,
+                                                PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)
         self.satellite = self.satellites[satName]
 
         self.ui.satelliteName.setText(self.satellite.name)

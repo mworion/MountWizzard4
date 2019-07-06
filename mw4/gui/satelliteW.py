@@ -560,4 +560,3 @@ class SatelliteWindow(widget.MWidget):
         self.drawEarth(subpoint=subpoint)
         self.drawHorizonView(difference=difference)
         return True
-

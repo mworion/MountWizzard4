@@ -341,8 +341,8 @@ class Satellite(object):
             item.setSelected(True)
             break
 
-        self.ui.listSatelliteNames.scrollToItem(item,
-                                                PyQt5.QtWidgets.QAbstractItemView.PositionAtTop)
+        position = PyQt5.QtWidgets.QAbstractItemView.PositionAtTop
+        self.ui.listSatelliteNames.scrollToItem(item, position)
         self.satellite = self.satellites[satName]
 
         self.ui.satelliteName.setText(self.satellite.name)
@@ -402,7 +402,7 @@ class Satellite(object):
             self.ui.satNeedFlip.setText('NO')
 
         if tleParams.message is not None:
-            self.app.message.emit(message, 0)
+            self.app.message.emit(tleParams.message, 0)
 
         if tleParams.altitude is not None:
             self.ui.stopSatelliteTracking.setEnabled(True)

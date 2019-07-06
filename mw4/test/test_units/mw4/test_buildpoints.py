@@ -27,7 +27,8 @@ import unittest.mock as mock
 import skyfield.api
 # local import
 from mw4.modeldata import buildpoints
-from test.test_units import setupQt
+from mw4.test.test_units.mw4.setupQt import setupQt
+
 
 app, spy, mwGlob, test = setupQt()
 

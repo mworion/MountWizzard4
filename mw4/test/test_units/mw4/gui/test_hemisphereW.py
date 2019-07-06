@@ -28,7 +28,7 @@ import skyfield.api as api
 import matplotlib.path
 import mountcontrol
 # local import
-from test.test_units import setupQt
+from mw4.test.test_units.mw4.setupQt import setupQt
 
 
 @pytest.fixture(autouse=True, scope='module')

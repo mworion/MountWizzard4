@@ -25,7 +25,7 @@ from astropy.io import fits
 from astropy import wcs
 import numpy as np
 # local import
-from test.test_units import setupQt
+from mw4.test.test_units.mw4.setupQt import setupQt
 from mw4.gui.widget import MWidget
 
 

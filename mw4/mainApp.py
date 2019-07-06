@@ -502,6 +502,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.cycleSetting()
             self.mainW.refreshName()
             self.mainW.refreshModel()
+            self.mount.getTLE()
             self.mountUp = True
             return True
         elif not status and self.mountUp:

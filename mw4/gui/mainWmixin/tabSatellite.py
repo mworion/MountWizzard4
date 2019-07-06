@@ -40,6 +40,7 @@ class Satellite(object):
         self.satelliteTLE = {}
 
         self.satelliteSourceDropDown = {
+            'Active': 'http://www.celestrak.com/NORAD/elements/active.txt',
             'Space Stations': 'http://www.celestrak.com/NORAD/elements/stations.txt',
             '100 brightest': 'http://www.celestrak.com/NORAD/elements/visual.txt',
             'NOAA': 'http://www.celestrak.com/NORAD/elements/noaa.txt',
@@ -54,17 +55,14 @@ class Satellite(object):
             'Last 30 days launch': 'http://www.celestrak.com/NORAD/elements/tle-new.txt',
         }
 
-        self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
         self.ui.listSatelliteNames.itemPressed.connect(self.extractSatelliteData)
-        self.ui.programSatelliteData.clicked.connect(self.programTLEToMount)
-        self.ui.clearSatelliteData.clicked.connect(self.clearTLEToMount)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
 
-        self.app.mount.signals.calcTLEdone.connect(self.showTLEStatus)
+        self.app.mount.signals.calcTLEdone.connect(self.enableTrack)
+        self.app.mount.signals.getTLEdone.connect(self.prepare)
 
         self.app.update3s.connect(self.updateSatelliteData)
-        self.app.update3s.connect(self.calcTLEParams)
 
     def initConfig(self):
         """
@@ -78,8 +76,12 @@ class Satellite(object):
         self.setupSatelliteSourceGui()
 
         config = self.app.config['mainW']
-        self.ui.checkReload.setChecked(config.get('checkReloadSatellites', False))
+        self.ui.satExpiresYes.setChecked(config.get('satExpiresYes', False))
+        self.ui.satExpiresNo.setChecked(config.get('satExpiresNo', True))
         self.ui.satelliteSource.setCurrentIndex(config.get('satelliteSource', 0))
+        self.loadSatelliteSource()
+
+        self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
 
         return True
 
@@ -92,7 +94,8 @@ class Satellite(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['checkReloadSatellites'] = self.ui.checkReload.isChecked()
+        config['satExpiresYes'] = self.ui.satExpiresYes.isChecked()
+        config['satExpiresNo'] = self.ui.satExpiresNo.isChecked()
         config['satelliteSource'] = self.ui.satelliteSource.currentIndex()
         return True
 
@@ -119,6 +122,16 @@ class Satellite(object):
         for name, _ in self.satelliteSourceDropDown.items():
             self.ui.satelliteSource.addItem(name)
 
+        return True
+
+    def prepare(self, tleParams):
+        """
+
+        :param tleParams:
+        :return: True for test purpose
+        """
+
+        self.extractSatelliteData(None, satName=tleParams.name)
         return True
 
     def setupSatelliteGui(self):
@@ -193,7 +206,7 @@ class Satellite(object):
             return False
 
         source = self.satelliteSourceDropDown[key]
-        reload = self.ui.checkReload.isChecked()
+        reload = self.ui.satExpiresYes.isChecked()
         self.satellites = self.app.loader.tle(source, reload=reload)
 
         suc = self.loadTLEData(source)
@@ -215,8 +228,6 @@ class Satellite(object):
         """
 
         if self.satellite is None:
-            self.ui.programSatelliteData.setEnabled(False)
-            self.ui.clearSatelliteData.setEnabled(False)
             self.ui.startSatelliteTracking.setEnabled(False)
             return False
 
@@ -234,6 +245,11 @@ class Satellite(object):
         self.ui.satRa.setText(f'{ra:3.2f}')
         self.ui.satDec.setText(f'{dec:3.2f}')
 
+        lat = subpoint.latitude.degrees
+        lon = subpoint.longitude.degrees
+        self.ui.satLatitude.setText(f'{lat:3.2f}')
+        self.ui.satLongitude.setText(f'{lon:3.2f}')
+
         hasPressure = (sett.refractionPress is not None)
         hasTemperature = (sett.refractionTemp is not None)
 
@@ -250,130 +266,10 @@ class Satellite(object):
         self.ui.satAltitude.setText(f'{alt:3.2f}')
         self.ui.satAzimuth.setText(f'{az:3.2f}')
 
-        self.ui.programSatelliteData.setEnabled(True)
-        self.ui.clearSatelliteData.setEnabled(True)
-
         if not self.app.satelliteW:
             return False
 
         self.app.satelliteW.signals.update.emit(observe, subpoint, altaz)
-        return True
-
-    def extractSatelliteData(self):
-        """
-        extractSatelliteData is called when a satellite is selected via mouse click in the
-        list menu. it collects the data and writes basic stuff to the gui.
-        for speeding up, is calls updateSatelliteData immediately to get the actual data
-        pushed to the gui and not waiting for the cyclic task.
-        depending on the age of the satellite data is colors the frame
-
-        :return: success
-        """
-
-        key = self.ui.listSatelliteNames.currentItem().text()[8:]
-        self.satellite = self.satellites[key]
-
-        self.ui.satelliteName.setText(self.satellite.name)
-        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M:%S')
-        self.ui.satelliteEpoch.setText(epochText)
-
-        now = self.app.mount.obsSite.ts.now()
-        days = now - self.satellite.epoch
-        self.ui.satelliteDataAge.setText(f'{days:2.2f}')
-
-        if days > 10:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
-        elif 3 < days < 10:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'yellow')
-        else:
-            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
-
-        self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
-
-        self.updateSatelliteData()
-
-        if not self.app.satelliteW:
-            return False
-
-        self.app.satelliteW.signals.show.emit(self.satellite)
-        return True
-
-    def showTLEStatus(self, tleParams):
-        """
-        showTLEStatus update the gui to the current status of the TLE parameters in the
-        mount computer
-
-        :return: success
-        """
-
-        if self.ui.satNameMount.text() == '-':
-            return False
-
-        if tleParams.altitude is not None:
-            self.ui.stopSatelliteTracking.setEnabled(True)
-            self.ui.startSatelliteTracking.setEnabled(True)
-            self.ui.satAltitudeMount.setText(f'{tleParams.altitude.degrees:3.2f}')
-        else:
-            self.ui.stopSatelliteTracking.setEnabled(False)
-            self.ui.startSatelliteTracking.setEnabled(False)
-            self.ui.satAltitudeMount.setText('-')
-
-        if tleParams.azimuth is not None:
-            self.ui.satAzimuthMount.setText(f'{tleParams.azimuth.degrees:3.2f}')
-        else:
-            self.ui.satAzimuthMount.setText('-')
-
-        if tleParams.ra is not None:
-            self.ui.satRaMount.setText(f'{tleParams.ra.hours:3.2f}')
-        else:
-            self.ui.satRaMount.setText('-')
-
-        if tleParams.dec is not None:
-            self.ui.satDecMount.setText(f'{tleParams.dec.degrees:3.2f}')
-        else:
-            self.ui.satDecMount.setText('-')
-
-        if tleParams.jdStart is not None:
-            time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
-            self.ui.satTransitStartUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
-        else:
-            self.ui.satTransitStartUTC.setText('-')
-
-        if tleParams.jdEnd is not None:
-            time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
-            self.ui.satTransitEndUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
-        else:
-            self.ui.satTransitEndUTC.setText('-')
-
-        if tleParams.flip:
-            self.ui.satNeedFlip.setText('YES')
-        else:
-            self.ui.satNeedFlip.setText('NO')
-
-        if tleParams.message is not None:
-            self.app.message.emit(message, 0)
-
-        return True
-
-    def calcTLEParams(self):
-        """
-        calcTLEParams is called cyclic to update the orbit parameters in the mount computer
-
-        :return: success
-        """
-
-        if self.satellite is None:
-            self.ui.startSatelliteTracking.setEnabled(False)
-            self.ui.stopSatelliteTracking.setEnabled(False)
-            return False
-        if self.ui.satNameMount.text() == '-':
-            self.ui.stopSatelliteTracking.setEnabled(False)
-            self.ui.startSatelliteTracking.setEnabled(False)
-            return False
-
-        # starting thread for calculation of parameters
-        self.app.mount.calcTLE()
-
         return True
 
     def programTLEToMount(self):
@@ -400,34 +296,114 @@ class Satellite(object):
             self.app.message.emit('Error program TLE', 2)
             return False
 
-        self.ui.satNameMount.setText(self.satellite.name)
-
-        # to enforce immediate calculation, we call it directly
-        self.calcTLEParams()
         return True
 
-    def clearTLEToMount(self):
+    def calcTLEParams(self):
         """
-        clearTLEToMount resets the sat name to be followed, clears the TLE parameters in the
-        mount and disables accordingly the buttons
+        calcTLEParams is called cyclic to update the orbit parameters in the mount computer
 
-        :return: True for test purpose
+        :return: success
         """
 
-        self.ui.satNameMount.setText('-')
-        self.ui.startSatelliteTracking.setEnabled(False)
+        if self.satellite is None:
+            self.ui.startSatelliteTracking.setEnabled(False)
+            self.ui.stopSatelliteTracking.setEnabled(False)
+            return False
+
+        # starting thread for calculation of parameters
+        self.app.mount.calcTLE()
+
+        return True
+
+    def extractSatelliteData(self, widget, satName=''):
+        """
+        extractSatelliteData is called when a satellite is selected via mouse click in the
+        list menu. it collects the data and writes basic stuff to the gui.
+        for speeding up, is calls updateSatelliteData immediately to get the actual data
+        pushed to the gui and not waiting for the cyclic task.
+        depending on the age of the satellite data is colors the frame
+
+        :param widget:
+        :param satName:
+        :return: success
+        """
+
+        if not isinstance(satName, str):
+            return False
+
+        if not satName:
+            satName = self.ui.listSatelliteNames.currentItem().text()[8:]
+
+        if satName not in self.satellites:
+            return False
+
+        self.satellite = self.satellites[satName]
+
+        self.ui.satelliteName.setText(self.satellite.name)
+        epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M:%S')
+        self.ui.satelliteEpoch.setText(epochText)
+
+        now = self.app.mount.obsSite.ts.now()
+        days = now - self.satellite.epoch
+        self.ui.satelliteDataAge.setText(f'{days:2.2f}')
+
+        if days > 10:
+            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'red')
+        elif 3 < days < 10:
+            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', 'yellow')
+        else:
+            self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
+
+        self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
+
         self.ui.stopSatelliteTracking.setEnabled(False)
-        self.ui.satAltitudeMount.setText('-')
-        self.ui.satAzimuthMount.setText('-')
-        self.ui.satRaMount.setText('-')
-        self.ui.satDecMount.setText('-')
-        self.ui.satNeedFlip.setText('-')
+        self.ui.startSatelliteTracking.setEnabled(False)
         self.ui.satTransitStartUTC.setText('-')
         self.ui.satTransitEndUTC.setText('-')
-        self.app.mount.satellite.clearTleParams()
-        self.showTLEStatus(self.app.mount.satellite.tleParams)
+        self.ui.satNeedFlip.setText('-')
 
+        self.updateSatelliteData()
+        self.programTLEToMount()
+        self.calcTLEParams()
+
+        if not self.app.satelliteW:
+            return False
+
+        self.app.satelliteW.signals.show.emit(self.satellite)
         return True
+
+    def enableTrack(self, tleParams):
+        """
+
+        :return:
+        """
+
+        if tleParams.jdStart is not None:
+            time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
+            self.ui.satTransitStartUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+        else:
+            self.ui.satTransitStartUTC.setText('No transit')
+
+        if tleParams.jdEnd is not None:
+            time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdEnd)
+            self.ui.satTransitEndUTC.setText(time.utc_strftime('%Y-%m-%d  %H:%M:%S'))
+        else:
+            self.ui.satTransitEndUTC.setText('No transit')
+
+        if tleParams.flip:
+            self.ui.satNeedFlip.setText('YES')
+        else:
+            self.ui.satNeedFlip.setText('NO')
+
+        if tleParams.message is not None:
+            self.app.message.emit(message, 0)
+
+        if tleParams.altitude is not None:
+            self.ui.stopSatelliteTracking.setEnabled(True)
+            self.ui.startSatelliteTracking.setEnabled(True)
+        else:
+            self.ui.stopSatelliteTracking.setEnabled(False)
+            self.ui.startSatelliteTracking.setEnabled(False)
 
     def startTrack(self):
         """

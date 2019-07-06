@@ -350,7 +350,7 @@ class Satellite(object):
             item.setSelected(True)
             break
 
-        position = PyQt5.QtWidgets.QAbstractItemView.PositionAtTop
+        position = PyQt5.QtWidgets.QAbstractItemView.EnsureVisible
         self.ui.listSatelliteNames.scrollToItem(item, position)
         self.satellite = self.satellites[satName]
 

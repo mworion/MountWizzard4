@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import logging
-from io import BytesIO
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -30,8 +29,6 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib.pyplot as plt
 import numpy as np
 from skyfield.api import EarthSatellite
-
-import shapefile
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import satellite_ui
@@ -64,10 +61,10 @@ class SatelliteWindow(widget.MWidget):
 
     __all__ = ['SatelliteWindow',
                ]
-    version = '0.2'
+    version = '0.9'
     logger = logging.getLogger(__name__)
 
-    # length of forecast time
+    # length of forecast time in hours
     FORECAST_TIME = 3
     # earth radius
     EARTH_RADIUS = 6378.0
@@ -86,9 +83,6 @@ class SatelliteWindow(widget.MWidget):
         self.plotSatPosSphere2 = None
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
-
-        shapeFile = '/Users/mw/Downloads/ne_110m_land/ne_110m_land.shp'
-        self.shape = shapefile.Reader(shapeFile)
 
         self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1)
         self.satSphereMat1.parentWidget().setStyleSheet(self.BACK_BG)

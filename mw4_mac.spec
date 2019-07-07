@@ -42,7 +42,7 @@ astropy_path, = astropy.__path__
 block_cipher = None
 pythonPath = '/Users/mw/PycharmProjects/Envs/mw4/lib/Python3.7'
 sitePack = pythonPath + '/site-packages'
-distDir = '/Users/mw/PycharmProjects/MountWizzard4/dist'
+distDir = './dist'
 packageDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4'
 importDir = '/Users/mw/PycharmProjects/MountWizzard4'
 
@@ -112,7 +112,7 @@ BUILD_NO = MountWizzard4.version
 buildFile = distDir + '/MountWizzard4.app'
 buildFileNumber = distDir + '/mountwizzard4-' + BUILD_NO + '.app'
 
-print(BUILD_NO)
+print('Build No:', BUILD_NO)
 
 if os.path.isfile(buildFile):
     os.remove(buildFile)
@@ -131,6 +131,10 @@ app = BUNDLE(exe,
 
 if os.path.isdir(buildFileNumber):
     shutil.rmtree(buildFileNumber)
-    print('removed existing app bundle with version number')
+    print(f'removed existing app bundle with version number {buildFileNumber}')
 
+print(f'rename {buildFile} to {buildFileNumber}')
 os.rename(buildFile, buildFileNumber)
+
+print(f'creating DMG from {buildFileNumber}')
+os.system(f'hdiutil create ./dist/MountWizzard4.dmg -srcfolder {buildFileNumber} -ov')

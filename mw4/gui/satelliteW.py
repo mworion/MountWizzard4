@@ -19,6 +19,8 @@
 ###########################################################
 # standard libraries
 import logging
+import pickle
+from io import BytesIO
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -95,6 +97,13 @@ class SatelliteWindow(widget.MWidget):
 
         self.signals.show.connect(self.receiveSatelliteAndShow)
         self.signals.update.connect(self.updatePositions)
+
+        stream = PyQt5.QtCore.QFile(':/worldmap.dat')
+        stream.open(PyQt5.QtCore.QFile.ReadOnly)
+        pickleData = stream.readAll()
+        stream.close()
+        # loading the world image from nasa as PNG as matplotlib only loads png.
+        self.world = pickle.load(BytesIO(pickleData))
 
         self.initConfig()
         self.showWindow()
@@ -417,11 +426,10 @@ class SatelliteWindow(widget.MWidget):
                  color=self.M_BLUE)
 
         # plot world
-        for record in self.shape.shapeRecords():
-            x = [i[0] for i in record.shape.points[:]]
-            y = [i[1] for i in record.shape.points[:]]
-            x, y, z = transform.sphericalToCartesian(azimuth=np.radians(x),
-                                                     altitude=np.radians(y),
+        for key in self.world.keys():
+            shape = self.world[key]
+            x, y, z = transform.sphericalToCartesian(azimuth=shape['xRad'],
+                                                     altitude=shape['yRad'],
                                                      radius=self.EARTH_RADIUS)
             verts = [list(zip(x, y, z))]
             collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.5)
@@ -507,10 +515,9 @@ class SatelliteWindow(widget.MWidget):
                        fontsize=12)
 
         # plot world
-        for record in self.shape.shapeRecords():
-            x = [i[0] for i in record.shape.points[:]]
-            y = [i[1] for i in record.shape.points[:]]
-            axe.plot(x, y, color=self.M_GREY)
+        for key in self.world.keys():
+            shape = self.world[key]
+            axe.plot(shape['xDeg'], shape['yDeg'], color=self.M_GREY)
 
         # mark the site location in the map
         lat = self.app.mount.obsSite.location.latitude.degrees

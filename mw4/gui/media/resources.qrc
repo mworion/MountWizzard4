@@ -11,6 +11,6 @@
     <file>alarm.wav</file>
     <file>beep1.wav</file>
     <file>horn.wav</file>
-    <file>world.png</file>
+    <file>worldmap.dat</file>
 </qresource>
 </RCC>

@@ -432,8 +432,20 @@ class SatelliteWindow(widget.MWidget):
                                                      altitude=shape['yRad'],
                                                      radius=self.EARTH_RADIUS)
             verts = [list(zip(x, y, z))]
-            collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.5)
+            collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.7)
             axe.add_collection3d(collect)
+
+        # drawing home position location on earth
+        lat = self.app.mount.obsSite.location.latitude.radians
+        lon = self.app.mount.obsSite.location.longitude.radians
+        x, y, z = transform.sphericalToCartesian(altitude=lat,
+                                                 azimuth=lon,
+                                                 radius=self.EARTH_RADIUS + 50)
+        axe.plot([x], [y], [z],
+                 marker='.',
+                 markersize=10,
+                 color=self.M_YELLOW,
+                 )
 
         # empty chart if no satellite is chosen
         if observe is None:
@@ -454,18 +466,6 @@ class SatelliteWindow(widget.MWidget):
                                            marker='o',
                                            markersize=10,
                                            color=self.M_PINK)
-
-        # drawing home position location on earth
-        lat = self.app.mount.obsSite.location.latitude.radians
-        lon = self.app.mount.obsSite.location.longitude.radians
-        x, y, z = transform.sphericalToCartesian(altitude=lat,
-                                                 azimuth=lon,
-                                                 radius=self.EARTH_RADIUS)
-        axe.plot([x], [y], [z],
-                 marker='.',
-                 markersize=10,
-                 color=self.M_YELLOW,
-                 )
 
         # finalizing
         self.makeCubeLimits(axe)
@@ -517,7 +517,7 @@ class SatelliteWindow(widget.MWidget):
         # plot world
         for key in self.world.keys():
             shape = self.world[key]
-            axe.plot(shape['xDeg'], shape['yDeg'], color=self.M_GREY)
+            axe.plot(shape['xDeg'], shape['yDeg'], color=self.M_GREY, lw=1)
 
         # mark the site location in the map
         lat = self.app.mount.obsSite.location.latitude.degrees

@@ -283,7 +283,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat1.figure
         figure.clf()
-        figure.subplots_adjust(left=-0.15, right=1.1, bottom=-0.3, top=1.3)
+        figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.3)
         axe = figure.add_subplot(111, projection='3d')
 
         # switching all visual grids and planes off
@@ -434,7 +434,7 @@ class SatelliteWindow(widget.MWidget):
                                                      altitude=shape['yRad'],
                                                      radius=self.EARTH_RADIUS)
             verts = [list(zip(x, y, z))]
-            collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.7)
+            collect = Poly3DCollection(verts, facecolors=self.M_BLUE, alpha=0.5)
             axe.add_collection3d(collect)
 
         # drawing home position location on earth
@@ -442,10 +442,10 @@ class SatelliteWindow(widget.MWidget):
         lon = self.app.mount.obsSite.location.longitude.radians
         x, y, z = transform.sphericalToCartesian(altitude=lat,
                                                  azimuth=lon,
-                                                 radius=self.EARTH_RADIUS + 50)
+                                                 radius=self.EARTH_RADIUS)
         axe.plot([x], [y], [z],
                  marker='.',
-                 markersize=10,
+                 markersize=12,
                  color=self.M_YELLOW,
                  )
 
@@ -486,7 +486,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satEarthMat.figure
         figure.clf()
-        figure.subplots_adjust(left=0.15, right=0.9, bottom=0.15, top=0.95)
+        figure.subplots_adjust(left=0.2, right=0.85, bottom=0.2, top=0.9)
         axe = self.satEarthMat.figure.add_subplot(1, 1, 1, facecolor=None)
 
         axe.set_facecolor((0, 0, 0, 0))
@@ -584,7 +584,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satHorizonMat.figure
         figure.clf()
-        figure.subplots_adjust(left=0.15, right=0.9, bottom=0.15, top=0.95)
+        figure.subplots_adjust(left=0.2, right=0.85, bottom=0.2, top=0.9)
         axe = self.satHorizonMat.figure.add_subplot(1, 1, 1, facecolor=None)
 
         # add horizon limit if selected

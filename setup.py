@@ -40,7 +40,7 @@ setup(
     python_requires='>=3.7.2',
     install_requires=[
         'PyQt5==5.12.2',
-        'matplotlib==3.1',
+        'matplotlib==3.1.1',
         'requests==2.22.0',
         'requests_toolbelt==0.9.1',
         'numpy==1.16.4',

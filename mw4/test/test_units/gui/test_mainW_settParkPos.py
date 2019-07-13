@@ -21,7 +21,7 @@
 import pytest
 # external packages
 # local import
-from mw4.test.test_units.mw4.setupQt import setupQt
+from mw4.test.test_units.setupQt import setupQt
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -53,11 +53,31 @@ def test_setupIcons():
     assert suc
 
 
-def test_updateRelayGui(qtbot):
-    app.mainW.relayButton = list()
-    app.mainW.relayDropDown = list()
-    app.mainW.relayText = list()
-    app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
-    suc = app.mainW.updateRelayGui()
-    assert suc
+def test_initConfig_1():
+    config = app.config['mainW']
+    for i in range(0, 8):
+        config[f'posText{i:1d}'] = str(i)
+        config[f'posAlt{i:1d}'] = str(i)
+        config[f'posAz{i:1d}'] = str(i)
+    app.mainW.initConfig()
+    assert app.mainW.ui.posText0.text() == '0'
+    assert app.mainW.ui.posAlt0.text() == '0'
+    assert app.mainW.ui.posAz0.text() == '0'
+    assert app.mainW.ui.posText4.text() == '4'
+    assert app.mainW.ui.posAlt4.text() == '4'
+    assert app.mainW.ui.posAz4.text() == '4'
+    assert app.mainW.ui.posText7.text() == '7'
+    assert app.mainW.ui.posAlt7.text() == '7'
+    assert app.mainW.ui.posAz7.text() == '7'
+
+
+def test_storeConfig_1():
+    app.mainW.storeConfig()
+
+
+def test_setupParkPosGui(qtbot):
+    assert 8 == len(app.mainW.posButtons)
+    assert 8 == len(app.mainW.posTexts)
+    assert 8 == len(app.mainW.posAlt)
+    assert 8 == len(app.mainW.posAz)
 

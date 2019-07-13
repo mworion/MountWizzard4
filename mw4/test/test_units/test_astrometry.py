@@ -29,7 +29,7 @@ from astropy.io import fits
 # external packages
 # local import
 from mw4.astrometry import astrometry
-from mw4.test.test_units.mw4.setupQt import setupQt
+from mw4.test.test_units.setupQt import setupQt
 
 
 app, spy, mwGlob, test = setupQt()

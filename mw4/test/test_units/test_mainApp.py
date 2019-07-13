@@ -26,7 +26,7 @@ import unittest.mock as mock
 import PyQt5.QtCore
 import skyfield.api
 # local import
-from mw4.test.test_units.mw4.setupQt import setupQt
+from mw4.test.test_units.setupQt import setupQt
 
 
 

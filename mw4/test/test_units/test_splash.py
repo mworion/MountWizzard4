@@ -18,40 +18,32 @@
 #
 ###########################################################
 # standard libraries
-import pytest
 # external packages
+import PyQt5.QtGui
+import PyQt5.QtWidgets
+import pytest
 # local import
-from mw4.test.test_units.mw4.setupQt import setupQt
+from mw4.gui import splash
+from mw4.test.test_units.setupQt import setupQt
 
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
+    yield
 
 
-def test_startRemote_1():
-    class Test:
-        @staticmethod
-        def nextPendingConnection():
-            return 0
-    app.remote.tcpServer = Test()
-    suc = app.remote.startRemote()
-    assert not suc
+def test_splash_icon():
+    value = PyQt5.QtGui.QPixmap(':/mw4.ico')
+
+    assert not PyQt5.QtGui.QPixmap.isNull(value)
 
 
-def test_addConnection_1():
-    app.remote.tcpServer = None
-    suc = app.remote.addConnection()
-    assert not suc
-
-
-def test_addConnection_2():
-    class Test:
-        @staticmethod
-        def nextPendingConnection():
-            return 0
-    app.remote.tcpServer = Test()
-    suc = app.remote.addConnection()
-    assert not suc
-
+def test_splash_upcoming():
+    splashW = splash.SplashScreen(test)
+    splashW.showMessage('test')
+    splashW.setValue(10)
+    splashW.setValue(50)
+    splashW.setValue(90)
+    splashW.setValue(100)

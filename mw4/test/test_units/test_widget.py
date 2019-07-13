@@ -26,7 +26,7 @@ import PyQt5.QtWidgets
 import PyQt5.QtTest
 import PyQt5.QtCore
 # local import
-from mw4.test.test_units.mw4.setupQt import setupQt
+from mw4.test.test_units.setupQt import setupQt
 
 
 @pytest.fixture(autouse=True, scope='module')

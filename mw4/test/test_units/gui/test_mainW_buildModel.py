@@ -25,7 +25,7 @@ import time
 import skyfield.api
 from mountcontrol.model import AlignStar
 # local import
-from mw4.test.test_units.mw4.setupQt import setupQt
+from mw4.test.test_units.setupQt import setupQt
 from mw4.definitions import Solution, Solve, MPoint, MData, MParam, IParam, Point, RData
 
 

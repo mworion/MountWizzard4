@@ -18,13 +18,10 @@
 #
 ###########################################################
 # standard libraries
-# external packages
-import PyQt5.QtGui
-import PyQt5.QtWidgets
 import pytest
+# external packages
 # local import
-from mw4.gui import splash
-from mw4.test.test_units.mw4.setupQt import setupQt
+from mw4.test.test_units.setupQt import setupQt
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -34,16 +31,33 @@ def module_setup_teardown():
     yield
 
 
-def test_splash_icon():
-    value = PyQt5.QtGui.QPixmap(':/mw4.ico')
+def test_initConfig_1():
+    app.config['mainW'] = {}
+    suc = app.mainW.initConfig()
+    assert suc
 
-    assert not PyQt5.QtGui.QPixmap.isNull(value)
+
+def test_initConfig_2():
+    del app.config['mainW']
+    suc = app.mainW.initConfig()
+    assert suc
 
 
-def test_splash_upcoming():
-    splashW = splash.SplashScreen(test)
-    splashW.showMessage('test')
-    splashW.setValue(10)
-    splashW.setValue(50)
-    splashW.setValue(90)
-    splashW.setValue(100)
+def test_storeConfig_1():
+    suc = app.storeConfig()
+    assert suc
+
+
+def test_setupIcons():
+    suc = app.mainW.setupIcons()
+    assert suc
+
+
+def test_updateRelayGui(qtbot):
+    app.mainW.relayButton = list()
+    app.mainW.relayDropDown = list()
+    app.mainW.relayText = list()
+    app.relay.status = [0, 1, 0, 1, 0, 1, 0, 1]
+    suc = app.mainW.updateRelayGui()
+    assert suc
+

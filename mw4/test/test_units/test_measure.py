@@ -22,7 +22,7 @@ import pytest
 import numpy as np
 # external packages
 # local import
-from mw4.test.test_units.mw4.setupQt import setupQt
+from mw4.test.test_units.setupQt import setupQt
 
 
 

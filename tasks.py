@@ -19,33 +19,42 @@
 from invoke import task
 
 
-@task()
-def clean():
+@task
+def clean(c):
     print('clean')
-    pass
 
 
-@task()
+@task
 def resource(c):
     print('building resources')
-    pass
+    resourceDir = 'mw4/gui/media/'
+    c.run(f'pyrcc5 -o {resourceDir}resources.py {resourceDir}resources.qrc')
 
 
-@task():
+@task
+def widgets(c):
+    print('building widgets')
+    widgetDir = 'mw4/gui/widgets/'
+    widgets = ['hemisphere', 'image', 'main', 'measure', 'message', 'satellite']
+    for widget in widgets:
+        name = widgetDir + widget
+        c.run(f'python -m PyQt5.uic.pyuic -x {name}.ui -o {name}_ui.py')
+
+
+@task(pre=[resource, widgets])
 def test(c):
     print('testing')
-    pass
+    c.run('flake8')
+    c.run('pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
 
 
-@task(pre=[clean, resource, test]):
+@task(pre=[test])
 def build(c):
     print('building dist')
     print('building mac')
-    pass
 
 
 @task(pre=[build])
 def deploy(c):
     print('deploy dist')
     print('deploy mac')
-    pass

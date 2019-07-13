@@ -22,6 +22,8 @@ from invoke import task
 @task
 def clean(c):
     print('clean')
+    c.run('rm -rf .pytest_cache')
+    c.run('find ./mw4 | grep -E "(__pycache__)" | xargs rm -rf')
 
 
 @task
@@ -41,7 +43,7 @@ def widgets(c):
         c.run(f'python -m PyQt5.uic.pyuic -x {name}.ui -o {name}_ui.py')
 
 
-@task(pre=[resource, widgets])
+@task(pre=[clean, resource, widgets])
 def test(c):
     print('testing')
     c.run('flake8')
@@ -84,3 +86,12 @@ def clean_build(c):
 def deploy(c):
     print('deploy dist')
     print('deploy mac')
+
+
+@task
+def deploy_mount(c):
+    print('deploy mount')
+    c.run('scp mountcontrol/dist/mountcontrol-*.tar.gz '
+          'mw@astrocomp.fritz.box:/home/mw/mountwizzard4')
+    c.run('scp indibase/dist/indibase-*.tar.gz '
+          'mw@astrocomp.fritz.box:/home/mw/mountwizzard4')

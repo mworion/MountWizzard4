@@ -179,7 +179,7 @@ def test_astrometryDispatch_1():
     assert suc
 
 
-def test_astrometryDispatchh_2():
+def test_astrometryDispatch_2():
     app.mainW.ui.astrometryDevice.setCurrentIndex(1)
     suc = app.mainW.astrometryDispatch()
     assert suc

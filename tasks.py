@@ -16,16 +16,36 @@
 # Licence APL2.0
 #
 ###########################################################
-[flake8]
-exclude =
-    ./mw4/test/test_units/*.py,
-    ./mw4/test/test_integration/*.py,
-    ./mw4/test/test_gists/*.py,
-    ./mw4/gui/widgets/*.*,
-    ./mw4/gui/media/*.py,
-    ./mw4/gui/styles.py,
-    ./mw4/generate/*.py,
-    ./venv
-ignore = F401 ./mw4/gui/splash.py, E402 ./mw4/loader.py, W503 ./mw4/astrometryKstars.py
-max-complexity = 10
-max-line-length = 100
+from invoke import task
+
+
+@task()
+def clean():
+    print('clean')
+    pass
+
+
+@task()
+def resource(c):
+    print('building resources')
+    pass
+
+
+@task():
+def test(c):
+    print('testing')
+    pass
+
+
+@task(pre=[clean, resource, test]):
+def build(c):
+    print('building dist')
+    print('building mac')
+    pass
+
+
+@task(pre=[build])
+def deploy(c):
+    print('deploy dist')
+    print('deploy mac')
+    pass

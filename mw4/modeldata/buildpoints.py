@@ -31,7 +31,7 @@ from mw4.base import transform
 __all__ = ['HaDecToAltAz',
            ]
 
-version = '0.1'
+version = '0.100.0'
 
 
 def HaDecToAltAz(ha, dec, lat):
@@ -89,7 +89,7 @@ class DataPoint(object):
                'genAlign',
                'hip',
                ]
-    version = '0.8'
+    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # data for generating greater circles, dec and step only for east, west is reversed

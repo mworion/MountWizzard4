@@ -43,7 +43,7 @@ class Hipparcos(object):
                'calculateAlignStarsPositionsAltAz',
                'getAlignStarRaDecFromIndex',
                ]
-    version = '0.2'
+    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     def __init__(self,

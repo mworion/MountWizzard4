@@ -35,7 +35,7 @@ class WorkerSignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['WorkerSignals']
-    version = '0.1'
+    version = '1.0.0'
 
     finished = PyQt5.QtCore.pyqtSignal()
     error = PyQt5.QtCore.pyqtSignal(object)
@@ -50,7 +50,7 @@ class Worker(PyQt5.QtCore.QRunnable):
 
     __all__ = ['Worker',
                'run']
-    version = '0.1'
+    version = '1.0.0'
     logger = logging.getLogger(__name__)
 
     def __init__(self, fn, *args, **kwargs):

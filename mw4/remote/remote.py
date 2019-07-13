@@ -38,7 +38,7 @@ class Remote(PyQt5.QtCore.QObject):
                'stopRemote',
                ]
 
-    version = '0.2'
+    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     def __init__(self,

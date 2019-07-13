@@ -39,7 +39,7 @@ class Weather(indiClass.IndiClass):
     __all__ = ['Weather',
                ]
 
-    version = '0.1'
+    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 60 seconds for setting indi server

@@ -30,7 +30,7 @@ __all__ = [
     'convertToDMS',
     'convertToHMS',
 ]
-version = '0.1'
+version = '0.100.0'
 logger = logging.getLogger()
 
 _lock = Lock()

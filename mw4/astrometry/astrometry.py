@@ -49,7 +49,7 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['AstrometrySignals']
-    version = '0.1'
+    version = '1.0.0'
 
     done = PyQt5.QtCore.pyqtSignal(object)
     result = PyQt5.QtCore.pyqtSignal(object)
@@ -75,7 +75,7 @@ class Astrometry(object):
                'checkAvailability',
                ]
 
-    version = '0.60'
+    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     def __init__(self, tempDir='', threadPool=None):

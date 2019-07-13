@@ -40,7 +40,7 @@ class IndiClass(object):
 
     __all__ = ['IndiClass']
 
-    version = '0.8'
+    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server

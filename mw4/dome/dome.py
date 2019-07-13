@@ -37,7 +37,7 @@ class DomeSignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['DomeSignals']
-    version = '0.1'
+    version = '1.0.0'
 
     azimuth = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
@@ -59,7 +59,7 @@ class Dome(indiClass.IndiClass):
     __all__ = ['Dome',
                ]
 
-    version = '0.1'
+    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 1000 milli seconds for setting indi server

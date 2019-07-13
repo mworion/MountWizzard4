@@ -110,7 +110,6 @@ from mw4.mainApp import MountWizzard4
 BUILD_NO = MountWizzard4.version
 
 buildFile = distDir + '/MountWizzard4.app'
-buildFileNumber = distDir + '/mountwizzard4-' + BUILD_NO + '.app'
 
 print('Build No:', BUILD_NO)
 
@@ -124,17 +123,3 @@ app = BUNDLE(exe,
              icon='./mw4/gui/media/mw4.icns',
              bundle_identifier=None)
 
-#
-# we have to prepare the build as there is an error when overwriting it
-# if file present, we have to delete it
-#
-
-if os.path.isdir(buildFileNumber):
-    shutil.rmtree(buildFileNumber)
-    print(f'removed existing app bundle with version number {buildFileNumber}')
-
-print(f'rename {buildFile} to {buildFileNumber}')
-os.rename(buildFile, buildFileNumber)
-
-print(f'creating DMG from {buildFileNumber}')
-os.system(f'hdiutil create ./dist/MountWizzard4.dmg -srcfolder {buildFileNumber} -ov')

@@ -86,7 +86,7 @@ class MainWindow(MWidget,
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
-        self.setWindowTitle('MountWizzard4')
+        self.setWindowTitle(f'MountWizzard4 - v{self.app.version}')
         self.typeConnectionTexts = ['serial RS-232 port',
                                     'GPS or GPS/RS-232 port',
                                     'cabled LAN port',

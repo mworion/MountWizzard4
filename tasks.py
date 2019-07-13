@@ -48,10 +48,36 @@ def test(c):
     c.run('pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
 
 
-@task(pre=[test])
+@task
 def build(c):
     print('building dist')
+    c.run('python setup.py sdist')
+    print('')
     print('building mac')
+    print('update mountcontrol')
+    c.run('pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
+    print('update indibase')
+    c.run('pip install ../indibase/dist/indibase-*.tar.gz')
+    print('pyinstaller')
+    c.run('pyinstaller -y mw4_mac.spec')
+    print('building dmg')
+    c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
+
+
+@task(pre=[test])
+def clean_build(c):
+    print('building dist')
+    c.run('python setup.py sdist')
+    print('')
+    print('building mac')
+    print('update mountcontrol')
+    c.run('pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
+    print('update indibase')
+    c.run('pip install ../indibase/dist/indibase-*.tar.gz')
+    print('pyinstaller')
+    c.run('pyinstaller -y mw4_mac.spec')
+    print('building dmg')
+    c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
 
 
 @task(pre=[build])

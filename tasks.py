@@ -18,6 +18,10 @@
 ###########################################################
 from invoke import task
 
+global clientUbuntu, userUbuntu
+clientUbuntu = 'astro-ubuntu.fritz.box'
+userUbuntu = 'mw@' + clientUbuntu
+
 
 @task
 def clean(c):
@@ -48,6 +52,13 @@ def test(c):
     print('testing')
     c.run('flake8')
     c.run('pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
+
+
+@task()
+def build_dist(c):
+    print('building dist')
+    c.run('rm -f dist/*.tar.gz')
+    c.run('python setup.py sdist')
 
 
 @task
@@ -82,16 +93,16 @@ def clean_build(c):
     c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
 
 
-@task(pre=[build])
-def deploy(c):
-    print('deploy dist')
-    print('deploy mac')
+@task()
+def prepare_linux(c):
+    print('preparing linux')
+    c.run(f'ssh -t {userUbuntu} "bash -s" < setup_linux.sh')
 
 
-@task
-def deploy_mount(c):
-    print('deploy mount')
-    c.run('scp mountcontrol/dist/mountcontrol-*.tar.gz '
-          'mw@astrocomp.fritz.box:/home/mw/mountwizzard4')
-    c.run('scp indibase/dist/indibase-*.tar.gz '
-          'mw@astrocomp.fritz.box:/home/mw/mountwizzard4')
+@task(pre=[prepare_linux])
+def deploy_ubuntu(c):
+    print('deploy ubuntu')
+    c.run(f'scp ../mountcontrol/dist/mountcontrol-*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
+    c.run(f'scp ../indibase/dist/indibase-*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
+    c.run(f'scp dist/mw4-*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
+    c.run(f'ssh {userUbuntu} "bash -s" < mount_install.sh')

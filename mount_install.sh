@@ -4,4 +4,4 @@ cd mountwizzard4
 pip install mountcontrol-*.tar.gz
 pip install indibase-*.tar.gz
 pip install mw4-*.tar.gz
-chmod 666 mw_start.sh
+chmod 777 mw_start.sh

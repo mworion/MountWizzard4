@@ -61,11 +61,8 @@ def build_dist(c):
     c.run('python setup.py sdist')
 
 
-@task
-def build(c):
-    print('building dist')
-    c.run('python setup.py sdist')
-    print('')
+@task(pre=[build_dist])
+def build_mac_app(c):
     print('building mac')
     print('update mountcontrol')
     c.run('pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
@@ -78,10 +75,7 @@ def build(c):
 
 
 @task(pre=[test])
-def clean_build(c):
-    print('building dist')
-    c.run('python setup.py sdist')
-    print('')
+def clean_build_mac_app(c):
     print('building mac')
     print('update mountcontrol')
     c.run('pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
@@ -99,10 +93,11 @@ def prepare_linux(c):
     c.run(f'ssh -t {userUbuntu} "bash -s" < setup_linux.sh')
 
 
-@task(pre=[prepare_linux])
+@task(pre=[prepare_linux, build_dist])
 def deploy_ubuntu(c):
     print('deploy ubuntu')
     c.run(f'scp ../mountcontrol/dist/mountcontrol-*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
     c.run(f'scp ../indibase/dist/indibase-*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
     c.run(f'scp dist/mw4-*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
+    c.run(f'scp mw_start.sh {userUbuntu}:/home/mw/mountwizzard4')
     c.run(f'ssh {userUbuntu} "bash -s" < mount_install.sh')

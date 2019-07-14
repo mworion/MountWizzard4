@@ -26,12 +26,12 @@ from mw4 import mainApp
 
 
 def setupQt():
-    # global app, spy, mwGlob, test
+    # global app, spy, mwGlob, test_mountwizzard
     mwGlob = {'workDir': '.',
               'configDir': './mw4/test_integration/config',
               'dataDir': './mw4/test_integration/config',
               'tempDir': './mw4/test_integration/temp',
-              'modeldata': 'test',
+              'modeldata': 'test_mountwizzard',
               }
 
     test = PyQt5.QtWidgets.QApplication(sys.argv)

@@ -43,7 +43,7 @@ class SettHorizon(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
@@ -59,7 +59,7 @@ class SettHorizon(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         config['horizonFileName'] = self.ui.horizonFileName.text()
@@ -73,7 +73,7 @@ class SettHorizon(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test
+        :return:    True if success for test_mountwizzard
         """
         return True
 

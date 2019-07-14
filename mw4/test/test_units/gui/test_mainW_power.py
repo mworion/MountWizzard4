@@ -66,14 +66,14 @@ def test_updatePowerGui():
 def test_setPowerNumber_1():
     app.power.device = None
     app.power.name = ''
-    suc = app.mainW.setPowerNumber('test', '')
+    suc = app.mainW.setPowerNumber('test_mountwizzard', '')
     assert not suc
 
 
 def test_setPowerNumber_2():
     app.power.device = 1
     app.power.name = ''
-    suc = app.mainW.setPowerNumber('test', '')
+    suc = app.mainW.setPowerNumber('test_mountwizzard', '')
     assert not suc
 
 
@@ -82,9 +82,9 @@ def test_setPowerNumber_3():
         def getNumber(self, name):
             return {}
     app.power.device = Test()
-    app.power.name = 'test'
+    app.power.name = 'test_mountwizzard'
 
-    suc = app.mainW.setPowerNumber('test', '')
+    suc = app.mainW.setPowerNumber('test_mountwizzard', '')
     assert suc
 
 
@@ -95,9 +95,9 @@ def test_setPowerNumber_4():
                     'DEW_B': 123.5,
                     }
     app.power.device = Test()
-    app.power.name = 'test'
+    app.power.name = 'test_mountwizzard'
 
-    suc = app.mainW.setPowerNumber('test', '')
+    suc = app.mainW.setPowerNumber('test_mountwizzard', '')
     assert suc
     assert app.mainW.ui.dewA.value() == 100
     assert app.mainW.ui.dewB.value() == 100
@@ -110,9 +110,9 @@ def test_setPowerNumber_5():
                     'DEW_B': 41.5,
                     }
     app.power.device = Test()
-    app.power.name = 'test'
+    app.power.name = 'test_mountwizzard'
 
-    suc = app.mainW.setPowerNumber('test', '')
+    suc = app.mainW.setPowerNumber('test_mountwizzard', '')
     assert suc
     assert app.mainW.ui.dewA.value() == 60
     assert app.mainW.ui.dewB.value() == 40
@@ -121,14 +121,14 @@ def test_setPowerNumber_5():
 def test_setPowerSwitch_1():
     app.power.device = None
     app.power.name = ''
-    suc = app.mainW.setPowerSwitch('test', '')
+    suc = app.mainW.setPowerSwitch('test_mountwizzard', '')
     assert not suc
 
 
 def test_setPowerSwitch_2():
     app.power.device = 1
     app.power.name = ''
-    suc = app.mainW.setPowerSwitch('test', '')
+    suc = app.mainW.setPowerSwitch('test_mountwizzard', '')
     assert not suc
 
 
@@ -137,9 +137,9 @@ def test_setPowerSwitch_3():
         def getSwitch(self, name):
             return {}
     app.power.device = Test()
-    app.power.name = 'test'
+    app.power.name = 'test_mountwizzard'
 
-    suc = app.mainW.setPowerSwitch('test', '')
+    suc = app.mainW.setPowerSwitch('test_mountwizzard', '')
     assert suc
 
 
@@ -150,11 +150,11 @@ def test_setPowerSwitch_4():
                     'AUTO_DEW_ENABLED': True,
                     }
     app.power.device = Test()
-    app.power.name = 'test'
+    app.power.name = 'test_mountwizzard'
     app.mainW.ui.hubUSB.setChecked(False)
     app.mainW.ui.autoDew.setChecked(False)
 
-    suc = app.mainW.setPowerSwitch('test', 'USB_PORT_CONTROL')
+    suc = app.mainW.setPowerSwitch('test_mountwizzard', 'USB_PORT_CONTROL')
     assert suc
     assert app.mainW.ui.hubUSB.isChecked()
     assert not app.mainW.ui.autoDew.isChecked()
@@ -167,11 +167,11 @@ def test_setPowerSwitch_5():
                     'AUTO_DEW_ENABLED': True,
                     }
     app.power.device = Test()
-    app.power.name = 'test'
+    app.power.name = 'test_mountwizzard'
     app.mainW.ui.hubUSB.setChecked(False)
     app.mainW.ui.autoDew.setChecked(False)
 
-    suc = app.mainW.setPowerSwitch('test', 'AUTO_DEW')
+    suc = app.mainW.setPowerSwitch('test_mountwizzard', 'AUTO_DEW')
     assert suc
     assert not app.mainW.ui.hubUSB.isChecked()
     assert app.mainW.ui.autoDew.isChecked()
@@ -180,14 +180,14 @@ def test_setPowerSwitch_5():
 def test_setPowerText_1():
     app.power.device = None
     app.power.name = ''
-    suc = app.mainW.setPowerSwitch('test', '')
+    suc = app.mainW.setPowerSwitch('test_mountwizzard', '')
     assert not suc
 
 
 def test_setPowerText_2():
     app.power.device = 1
     app.power.name = ''
-    suc = app.mainW.setPowerText('test', '')
+    suc = app.mainW.setPowerText('test_mountwizzard', '')
     assert not suc
 
 
@@ -196,9 +196,9 @@ def test_setPowerText_3():
         def getText(self, name):
             return {}
     app.power.device = Test()
-    app.power.name = 'test'
+    app.power.name = 'test_mountwizzard'
 
-    suc = app.mainW.setPowerText('test', '')
+    suc = app.mainW.setPowerText('test_mountwizzard', '')
     assert suc
 
 
@@ -211,13 +211,13 @@ def test_setPowerText_4():
                     'POWER_LABEL_4': 'test4',
                     }
     app.power.device = Test()
-    app.power.name = 'test'
+    app.power.name = 'test_mountwizzard'
     app.mainW.ui.powerLabel1.setText('')
     app.mainW.ui.powerLabel2.setText('')
     app.mainW.ui.powerLabel3.setText('')
     app.mainW.ui.powerLabel4.setText('')
 
-    suc = app.mainW.setPowerText('test', '')
+    suc = app.mainW.setPowerText('test_mountwizzard', '')
     assert suc
     assert app.mainW.ui.powerLabel1.text() == 'test1'
     assert app.mainW.ui.powerLabel2.text() == 'test2'

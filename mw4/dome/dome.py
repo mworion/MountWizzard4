@@ -132,7 +132,7 @@ class Dome(indiClass.IndiClass):
         window and get the signals late connected as INDI does nt repeat any signal of it's
         own
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.signals.azimuth.emit(self.azimuth)
@@ -143,7 +143,7 @@ class Dome(indiClass.IndiClass):
         """
         waitSettlingAndEmit emit the signal for slew finished
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.signals.message.emit('')

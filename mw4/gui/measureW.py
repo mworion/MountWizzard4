@@ -97,7 +97,7 @@ class MeasureWindow(widget.MWidget):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         if 'measureW' not in self.app.config:
@@ -127,7 +127,7 @@ class MeasureWindow(widget.MWidget):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['measureW']
         config['winPosX'] = self.pos().x()
@@ -181,7 +181,7 @@ class MeasureWindow(widget.MWidget):
         setupButtons prepares the dynamic content od the buttons in measurement window. it
         write the bottom texts and number as well as the coloring for the actual setting
 
-        :return: success for test purpose
+        :return: success for test_mountwizzard purpose
         """
 
         for mSet in self.mSetUI:
@@ -201,7 +201,7 @@ class MeasureWindow(widget.MWidget):
     def setCycleRefresh(self):
         """
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         self.refreshCounter = 0
@@ -212,7 +212,7 @@ class MeasureWindow(widget.MWidget):
     def cycleRefresh(self):
         """
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         cycle = self.timeScale[self.ui.timeSet.currentText()]

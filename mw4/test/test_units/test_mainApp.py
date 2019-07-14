@@ -167,7 +167,7 @@ def test_loadConfig_3():
     # load existing basic config with defect file
     app.config = {}
     with open(config + '/config.cfg', 'w') as outfile:
-        outfile.writelines('dummy test')
+        outfile.writelines('dummy test_mountwizzard')
     suc = app.loadConfig()
     assert not suc
     assert app.config['version'] == '4.0'
@@ -253,7 +253,7 @@ def test_loadConfig_7():
     basic = {
         'profileName': 'ext_file',
         'version': '4.0',
-        'reference': 'test',
+        'reference': 'test_mountwizzard',
     }
     with open(config + '/config.cfg', 'w') as outfile:
         json.dump(basic,
@@ -282,7 +282,7 @@ def test_loadConfig_8():
                   sort_keys=True,
                   indent=4)
     with open(config + '/ext_file.cfg', 'w') as outfile:
-        outfile.write('test')
+        outfile.write('test_mountwizzard')
     suc = app.loadConfig()
     assert not suc
     assert '4.0' == app.config['version']
@@ -294,7 +294,7 @@ def test_loadConfig_9():
     # basic config with wrong profileName
     app.config = {}
     basic = {
-        'profileName': 'test',
+        'profileName': 'test_mountwizzard',
         'version': '4.0',
     }
     with open(config + '/config.cfg', 'w') as outfile:

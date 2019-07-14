@@ -71,7 +71,7 @@ class Satellite(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         self.setupSatelliteSourceGui()
@@ -89,7 +89,7 @@ class Satellite(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         config['satExpiresYes'] = self.ui.satExpiresYes.isChecked()
@@ -101,7 +101,7 @@ class Satellite(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test
+        :return:    True if success for test_mountwizzard
         """
 
         return True
@@ -111,7 +111,7 @@ class Satellite(object):
         setupSatelliteSourceGui handles the dropdown list for the satellite data online
         sources. therefore we add the necessary entries to populate the list.
 
-        :return: success for test
+        :return: success for test_mountwizzard
         """
 
         self.ui.satelliteSource.clear()
@@ -125,7 +125,7 @@ class Satellite(object):
         """
 
         :param tleParams:
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         self.extractSatelliteData(None, satName=tleParams.name)
@@ -136,7 +136,7 @@ class Satellite(object):
         setupSatelliteGui clears the list view of satellite names deriving from the selected
         source file on disk. after that it populated the list with actual data.
 
-        :return: success for test
+        :return: success for test_mountwizzard
         """
 
         self.ui.listSatelliteNames.clear()

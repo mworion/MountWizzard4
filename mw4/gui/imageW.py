@@ -115,7 +115,7 @@ class ImageWindow(widget.MWidget):
         out of the current screen size (because of copy configs or just because the screen
         resolution was changed) the window will be repositioned so that it will be visible.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         if 'imageW' not in self.app.config:
@@ -151,7 +151,7 @@ class ImageWindow(widget.MWidget):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         config = self.app.config['imageW']
@@ -175,7 +175,7 @@ class ImageWindow(widget.MWidget):
         showWindow prepares all data for showing the window, plots the image and show it.
         afterwards all necessary signal / slot connections will be established.
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.showFitsImage()
@@ -208,7 +208,7 @@ class ImageWindow(widget.MWidget):
         the framework close event.
 
         :param closeEvent:
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         self.storeConfig()
@@ -237,7 +237,7 @@ class ImageWindow(widget.MWidget):
         """
         setupDropDownGui handles the population of list for image handling.
 
-        :return: success for test
+        :return: success for test_mountwizzard
         """
 
         self.ui.color.clear()
@@ -628,7 +628,7 @@ class ImageWindow(widget.MWidget):
         """
 
         :param imagePath:
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if not imagePath:
@@ -645,7 +645,7 @@ class ImageWindow(widget.MWidget):
         """
         exposeImage gathers all necessary parameters and starts exposing
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         expTime = self.app.mainW.ui.expTime.value()
@@ -678,7 +678,7 @@ class ImageWindow(widget.MWidget):
         to it's default state and disconnects the signal for the callback. finally when
         all elements are done it emits the showImage signal.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         self.changeStyleDynamic(self.ui.expose, 'running', 'false')
@@ -746,7 +746,7 @@ class ImageWindow(widget.MWidget):
         abortImage stops the exposure and resets the gui and the callback signals to default
         values
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         self.app.imaging.abort()

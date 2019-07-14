@@ -146,7 +146,7 @@ def test_plotRa_1():
     app.measureW.setupAxes(figure=fig, numberPlots=1)
     axe = app.measureW.measureMat.figure.axes[0]
     suc = app.measureW.plotRa(axe=axe,
-                              title='test',
+                              title='test_mountwizzard',
                               data=app.measure.data,
                               cycle=1,
                               )
@@ -158,7 +158,7 @@ def test_plotDec_1():
     app.measureW.setupAxes(figure=fig, numberPlots=1)
     axe = app.measureW.measureMat.figure.axes[0]
     suc = app.measureW.plotDec(axe=axe,
-                               title='test',
+                               title='test_mountwizzard',
                                data=app.measure.data,
                                cycle=1,
                                )
@@ -170,7 +170,7 @@ def test_plotTemperature_1():
     app.measureW.setupAxes(figure=fig, numberPlots=1)
     axe = app.measureW.measureMat.figure.axes[0]
     suc = app.measureW.plotTemperature(axe=axe,
-                                       title='test',
+                                       title='test_mountwizzard',
                                        data=app.measure.data,
                                        cycle=1,
                                        )
@@ -182,7 +182,7 @@ def test_plotPressure_1():
     app.measureW.setupAxes(figure=fig, numberPlots=1)
     axe = app.measureW.measureMat.figure.axes[0]
     suc = app.measureW.plotPressure(axe=axe,
-                                    title='test',
+                                    title='test_mountwizzard',
                                     data=app.measure.data,
                                     cycle=1,
                                     )
@@ -194,7 +194,7 @@ def test_plotHumidity_1():
     app.measureW.setupAxes(figure=fig, numberPlots=1)
     axe = app.measureW.measureMat.figure.axes[0]
     suc = app.measureW.plotHumidity(axe=axe,
-                                    title='test',
+                                    title='test_mountwizzard',
                                     data=app.measure.data,
                                     cycle=1,
                                     )
@@ -206,7 +206,7 @@ def test_plotSQR_1():
     app.measureW.setupAxes(figure=fig, numberPlots=1)
     axe = app.measureW.measureMat.figure.axes[0]
     suc = app.measureW.plotSQR(axe=axe,
-                               title='test',
+                               title='test_mountwizzard',
                                data=app.measure.data,
                                cycle=1,
                                )
@@ -218,7 +218,7 @@ def test_plotVoltage_1():
     app.measureW.setupAxes(figure=fig, numberPlots=1)
     axe = app.measureW.measureMat.figure.axes[0]
     suc = app.measureW.plotVoltage(axe=axe,
-                                   title='test',
+                                   title='test_mountwizzard',
                                    data=app.measure.data,
                                    cycle=1,
                                    )
@@ -230,7 +230,7 @@ def test_plotCurrent_1():
     app.measureW.setupAxes(figure=fig, numberPlots=1)
     axe = app.measureW.measureMat.figure.axes[0]
     suc = app.measureW.plotCurrent(axe=axe,
-                                   title='test',
+                                   title='test_mountwizzard',
                                    data=app.measure.data,
                                    cycle=1,
                                    )

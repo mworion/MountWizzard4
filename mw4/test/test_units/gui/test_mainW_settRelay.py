@@ -83,24 +83,24 @@ def test_toggleRelay_2(qtbot):
 
 
 def test_relayHost():
-    app.mainW.ui.relayHost.setText('test')
+    app.mainW.ui.relayHost.setText('test_mountwizzard')
     app.mainW.relayHost()
 
-    assert app.relay.host == ('test', 80)
+    assert app.relay.host == ('test_mountwizzard', 80)
 
 
 def test_relayUser():
-    app.mainW.ui.relayUser.setText('test')
+    app.mainW.ui.relayUser.setText('test_mountwizzard')
     app.mainW.relayUser()
 
-    assert app.relay.user == 'test'
+    assert app.relay.user == 'test_mountwizzard'
 
 
 def test_relayPassword():
-    app.mainW.ui.relayPassword.setText('test')
+    app.mainW.ui.relayPassword.setText('test_mountwizzard')
     app.mainW.relayPassword()
 
-    assert app.relay.password == 'test'
+    assert app.relay.password == 'test_mountwizzard'
 
 
 def test_doRelayAction_1(qtbot):

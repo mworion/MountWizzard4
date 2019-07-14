@@ -61,7 +61,7 @@ class Tools(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         defaultDir = self.app.mwGlob['imageDir']
@@ -79,7 +79,7 @@ class Tools(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         config['renameDir'] = self.ui.renameDir.text()
@@ -93,7 +93,7 @@ class Tools(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test
+        :return:    True if success for test_mountwizzard
         """
 
         self.wIcon(self.ui.renameStart, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
@@ -105,7 +105,7 @@ class Tools(object):
         setupSelectorGui handles the dropdown lists for all devices possible in
         mountwizzard. therefore we add the necessary entries to populate the list.
 
-        :return: success for test
+        :return: success for test_mountwizzard
         """
 
         for name, selectorUI in self.selectorsDropDowns.items():
@@ -238,7 +238,7 @@ class Tools(object):
         renameRunGUI retrieves a full list of files to be renamed and renames
         them on by one.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         pathDir = self.ui.renameDir.text()
@@ -274,7 +274,7 @@ class Tools(object):
         chooseDir selects the input directory and sets the default value for the
         output directory as well
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         folder = self.ui.renameDir.text()
         pathDir, _, _ = self.openDir(self,

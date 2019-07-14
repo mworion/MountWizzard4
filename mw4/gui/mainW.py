@@ -149,7 +149,7 @@ class MainWindow(MWidget,
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         config = self.app.config
@@ -208,7 +208,7 @@ class MainWindow(MWidget,
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         config = self.app.config
@@ -268,7 +268,7 @@ class MainWindow(MWidget,
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test
+        :return:    True if success for test_mountwizzard
         """
 
         self.wIcon(self.ui.openMessageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
@@ -401,7 +401,7 @@ class MainWindow(MWidget,
     def updateWindowsStats(self):
         """
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         if self.app.messageW:
@@ -445,7 +445,7 @@ class MainWindow(MWidget,
         """
 
         :param text:
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.astrometryText.setText(text)
@@ -455,7 +455,7 @@ class MainWindow(MWidget,
         """
 
         :param text:
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.domeText.setText(text)
@@ -465,7 +465,7 @@ class MainWindow(MWidget,
         """
 
         :param text:
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.imagingText.setText(text)
@@ -623,7 +623,7 @@ class MainWindow(MWidget,
         autoDeletePoints removes all generated or visible build points below the horizon line
         and redraws the hemisphere window.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         if self.ui.checkAutoDeletePoints.isChecked():

@@ -112,7 +112,7 @@ class IndiClass(object):
         adds the device if the name fits to the given name in configuration.
 
         :param deviceName:
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if deviceName == self.name:
@@ -125,7 +125,7 @@ class IndiClass(object):
         the device entry to None
 
         :param deviceName:
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if deviceName == self.name:
@@ -140,7 +140,7 @@ class IndiClass(object):
         startRetry tries to connect the server a second time, if that
         is not the case actually.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         if not self.data:
             self.stopCommunication()

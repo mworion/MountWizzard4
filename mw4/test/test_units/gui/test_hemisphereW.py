@@ -759,10 +759,10 @@ def test_editBuildPoints_2():
     app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
 
     class Test:
-        def set_data(self, test, test1):
+        def set_data(self, test_mountwizzard, test1):
             pass
 
-        def set_xy(self, test):
+        def set_xy(self, test_mountwizzard):
             pass
 
     event = Test()
@@ -960,7 +960,7 @@ def test_onMouseStar_4():
     event.ydata = 45
     app.hipparcos.az = [180]
     app.hipparcos.alt = [45]
-    app.hipparcos.name = ['test']
+    app.hipparcos.name = ['test_mountwizzard']
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.No):
@@ -979,7 +979,7 @@ def test_onMouseStar_5():
     event.ydata = 45
     app.hipparcos.az = [180]
     app.hipparcos.alt = [45]
-    app.hipparcos.name = ['test']
+    app.hipparcos.name = ['test_mountwizzard']
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
@@ -1001,7 +1001,7 @@ def test_onMouseStar_6():
     event.ydata = 45
     app.hipparcos.az = [180]
     app.hipparcos.alt = [45]
-    app.hipparcos.name = ['test']
+    app.hipparcos.name = ['test_mountwizzard']
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
@@ -1042,7 +1042,7 @@ def test_onMouseStar_8():
     event.ydata = 45
     app.hipparcos.az = [180]
     app.hipparcos.alt = [45]
-    app.hipparcos.name = ['test']
+    app.hipparcos.name = ['test_mountwizzard']
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
@@ -1067,7 +1067,7 @@ def test_onMouseStar_9():
     event.ydata = 45
     app.hipparcos.az = [180]
     app.hipparcos.alt = [45]
-    app.hipparcos.name = ['test']
+    app.hipparcos.name = ['test_mountwizzard']
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):

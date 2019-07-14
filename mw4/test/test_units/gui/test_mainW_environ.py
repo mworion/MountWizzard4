@@ -179,7 +179,7 @@ def test_updateRefractionParameters_8(qtbot):
 
 
 def test_clearEnvironGUI_1():
-    app.mainW.clearEnvironGUI('test')
+    app.mainW.clearEnvironGUI('test_mountwizzard')
     assert app.mainW.ui.environTemp.text() == '-'
     assert app.mainW.ui.environPress.text() == '-'
     assert app.mainW.ui.environDewPoint.text() == '-'
@@ -187,55 +187,55 @@ def test_clearEnvironGUI_1():
 
 
 def test_updateEnvironGUI_1():
-    app.environ.name = 'test'
+    app.environ.name = 'test_mountwizzard'
     app.environ.data['WEATHER_TEMPERATURE'] = 10.5
-    app.mainW.updateEnvironGUI('test')
+    app.mainW.updateEnvironGUI('test_mountwizzard')
     assert app.mainW.ui.environTemp.text() == '10.5'
 
 
 def test_updateEnvironGUI_2():
-    app.environ.name = 'test'
+    app.environ.name = 'test_mountwizzard'
     app.environ.data['WEATHER_PRESSURE'] = 10.5
-    app.mainW.updateEnvironGUI('test')
+    app.mainW.updateEnvironGUI('test_mountwizzard')
     assert app.mainW.ui.environPress.text() == ' 10.5'
 
 
 def test_updateEnvironGUI_3():
-    app.environ.name = 'test'
+    app.environ.name = 'test_mountwizzard'
     app.environ.data['WEATHER_DEWPOINT'] = 10.5
-    app.mainW.updateEnvironGUI('test')
+    app.mainW.updateEnvironGUI('test_mountwizzard')
     assert app.mainW.ui.environDewPoint.text() == '10.5'
 
 
 def test_updateEnvironGUI_4():
-    app.environ.name = 'test'
+    app.environ.name = 'test_mountwizzard'
     app.environ.data['WEATHER_HUMIDITY'] = 10
-    app.mainW.updateEnvironGUI('test')
+    app.mainW.updateEnvironGUI('test_mountwizzard')
     assert app.mainW.ui.environHumidity.text() == ' 10'
 
 
 def test_clearSkymeterGUI_1():
-    app.mainW.clearSkymeterGUI('test')
+    app.mainW.clearSkymeterGUI('test_mountwizzard')
     assert app.mainW.ui.skymeterSQR.text() == '-'
     assert app.mainW.ui.skymeterTemp.text() == '-'
 
 
 def test_updateSkymeterGUI_1():
-    app.skymeter.name = 'test'
+    app.skymeter.name = 'test_mountwizzard'
     app.skymeter.data['SKY_BRIGHTNESS'] = 10.5
-    app.mainW.updateSkymeterGUI('test')
+    app.mainW.updateSkymeterGUI('test_mountwizzard')
     assert app.mainW.ui.skymeterSQR.text() == '10.5'
 
 
 def test_updateSkymeterGUI_2():
-    app.skymeter.name = 'test'
+    app.skymeter.name = 'test_mountwizzard'
     app.skymeter.data['SKY_TEMPERATURE'] = 10.5
-    app.mainW.updateSkymeterGUI('test')
+    app.mainW.updateSkymeterGUI('test_mountwizzard')
     assert app.mainW.ui.skymeterTemp.text() == '10.5'
 
 
 def test_clearWeatherGUI_1():
-    app.mainW.clearWeatherGUI('test')
+    app.mainW.clearWeatherGUI('test_mountwizzard')
     assert app.mainW.ui.weatherTemp.text() == '-'
     assert app.mainW.ui.weatherPress.text() == '-'
     assert app.mainW.ui.weatherDewPoint.text() == '-'
@@ -247,56 +247,56 @@ def test_clearWeatherGUI_1():
 
 
 def test_updateWeatherGUI_1():
-    app.weather.name = 'test'
+    app.weather.name = 'test_mountwizzard'
     app.weather.data['WEATHER_TEMPERATURE'] = 10.5
-    app.mainW.updateWeatherGUI('test')
+    app.mainW.updateWeatherGUI('test_mountwizzard')
     assert app.mainW.ui.weatherTemp.text() == '10.5'
 
 
 def test_updateWeatherGUI_2():
-    app.weather.name = 'test'
+    app.weather.name = 'test_mountwizzard'
     app.weather.data['WEATHER_PRESSURE'] = 10.5
-    app.mainW.updateWeatherGUI('test')
+    app.mainW.updateWeatherGUI('test_mountwizzard')
     assert app.mainW.ui.weatherPress.text() == ' 10.5'
 
 
 def test_updateWeatherGUI_3():
-    app.weather.name = 'test'
+    app.weather.name = 'test_mountwizzard'
     app.weather.data['WEATHER_DEWPOINT'] = 10.5
-    app.mainW.updateWeatherGUI('test')
+    app.mainW.updateWeatherGUI('test_mountwizzard')
     assert app.mainW.ui.weatherDewPoint.text() == '10.5'
 
 
 def test_updateWeatherGUI_4():
-    app.weather.name = 'test'
+    app.weather.name = 'test_mountwizzard'
     app.weather.data['WEATHER_HUMIDITY'] = 10
-    app.mainW.updateWeatherGUI('test')
+    app.mainW.updateWeatherGUI('test_mountwizzard')
     assert app.mainW.ui.weatherHumidity.text() == ' 10'
 
 
 def test_updateWeatherGUI_5():
-    app.weather.name = 'test'
+    app.weather.name = 'test_mountwizzard'
     app.weather.data['WEATHER_CLOUD_COVER'] = 10
-    app.mainW.updateWeatherGUI('test')
+    app.mainW.updateWeatherGUI('test_mountwizzard')
     assert app.mainW.ui.weatherCloudCover.text() == ' 10'
 
 
 def test_updateWeatherGUI_6():
-    app.weather.name = 'test'
+    app.weather.name = 'test_mountwizzard'
     app.weather.data['WEATHER_WIND_SPEED'] = 10
-    app.mainW.updateWeatherGUI('test')
+    app.mainW.updateWeatherGUI('test_mountwizzard')
     assert app.mainW.ui.weatherWindSpeed.text() == ' 10'
 
 
 def test_updateWeatherGUI_7():
-    app.weather.name = 'test'
+    app.weather.name = 'test_mountwizzard'
     app.weather.data['WEATHER_RAIN_HOUR'] = 10
-    app.mainW.updateWeatherGUI('test')
+    app.mainW.updateWeatherGUI('test_mountwizzard')
     assert app.mainW.ui.weatherRainVol.text() == ' 10'
 
 
 def test_updateWeatherGUI_8():
-    app.weather.name = 'test'
+    app.weather.name = 'test_mountwizzard'
     app.weather.data['WEATHER_SNOW_HOUR'] = 10
-    app.mainW.updateWeatherGUI('test')
+    app.mainW.updateWeatherGUI('test_mountwizzard')
     assert app.mainW.ui.weatherSnowVol.text() == ' 10'

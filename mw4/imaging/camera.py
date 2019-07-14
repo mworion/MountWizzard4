@@ -141,7 +141,7 @@ class Camera(indiClass.IndiClass):
         :param propertyName:
         :param element:
         :param value:
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         if propertyName == 'CCD_INFO':
@@ -155,7 +155,7 @@ class Camera(indiClass.IndiClass):
 
         :param propertyName:
         :param value:
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         if propertyName == 'CCD_EXPOSURE':

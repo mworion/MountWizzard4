@@ -113,7 +113,7 @@ class SettIndi(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         for dropDown, key in zip(self.deviceNameDropDowns, self.deviceNameDropDownKeys):
@@ -142,7 +142,7 @@ class SettIndi(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         for dropDown, key in zip(self.deviceNameDropDowns, self.deviceNameDropDownKeys):
@@ -169,7 +169,7 @@ class SettIndi(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test
+        :return:    True if success for test_mountwizzard
         """
         return True
 
@@ -178,7 +178,7 @@ class SettIndi(object):
         setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.
         therefore we add the necessary entries to populate the list.
 
-        :return: success for test
+        :return: success for test_mountwizzard
         """
 
         for dropDown in self.deviceNameDropDowns:
@@ -284,7 +284,7 @@ class SettIndi(object):
         """
         showIndiDomeConnected writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit('INDI server dome connected', 0)
@@ -294,7 +294,7 @@ class SettIndi(object):
         """
         showIndiDomeDisconnected writes info to message window and recolors the status
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
@@ -305,7 +305,7 @@ class SettIndi(object):
         """
         showIndiNewDomeDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if deviceName == self.app.dome.name:
@@ -319,7 +319,7 @@ class SettIndi(object):
         """
         showIndiRemoveDomeDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit(f'INDI dome device [{deviceName}] removed', 0)
@@ -330,7 +330,7 @@ class SettIndi(object):
         showDomeDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.domeDevice.setStyleSheet(self.BACK_GREEN)
@@ -342,7 +342,7 @@ class SettIndi(object):
         showDomeDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
@@ -353,7 +353,7 @@ class SettIndi(object):
         """
         showIndiImagingConnected writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit('INDI server imaging connected', 0)
@@ -363,7 +363,7 @@ class SettIndi(object):
         """
         showIndiImagingDisconnected writes info to message window and recolors the status
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
@@ -374,7 +374,7 @@ class SettIndi(object):
         """
         showIndiNewImagingDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if deviceName == self.app.imaging.name:
@@ -388,7 +388,7 @@ class SettIndi(object):
         """
         showIndiRemoveImagingDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit(f'INDI imaging device [{deviceName}] removed', 0)
@@ -399,7 +399,7 @@ class SettIndi(object):
         showImagingDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.imagingDevice.setStyleSheet(self.BACK_GREEN)
@@ -411,7 +411,7 @@ class SettIndi(object):
         showImagingDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
@@ -422,7 +422,7 @@ class SettIndi(object):
         """
         showIndiEnvironConnected writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit('INDI server environment connected', 0)
@@ -432,7 +432,7 @@ class SettIndi(object):
         """
         showIndiEnvironDisconnected writes info to message window and recolors the status
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
@@ -443,7 +443,7 @@ class SettIndi(object):
         """
         showIndiNewEnvironDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if deviceName == self.app.environ.name:
@@ -457,7 +457,7 @@ class SettIndi(object):
         """
         showIndiRemoveEnvironDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit(f'INDI environment device [{deviceName}] removed', 0)
@@ -468,7 +468,7 @@ class SettIndi(object):
         showEnvironDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
@@ -483,7 +483,7 @@ class SettIndi(object):
         showEnvironDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
@@ -497,7 +497,7 @@ class SettIndi(object):
         """
         showIndiSkymeterConnected writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit('INDI server skymeter connected', 0)
@@ -507,7 +507,7 @@ class SettIndi(object):
         """
         showIndiSkymeterDisconnected writes info to message window and recolors the status
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
@@ -518,7 +518,7 @@ class SettIndi(object):
         """
         showIndiNewSkymeterDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if deviceName == self.app.skymeter.name:
@@ -531,7 +531,7 @@ class SettIndi(object):
         """
         showIndiRemoveSkymeterDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit(f'INDI skymeter device [{deviceName}] removed', 0)
@@ -542,7 +542,7 @@ class SettIndi(object):
         showSkymeterDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_GREEN)
@@ -554,7 +554,7 @@ class SettIndi(object):
         showSkymeterDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
@@ -565,7 +565,7 @@ class SettIndi(object):
         """
         showIndiWeatherConnected writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit('INDI server weather connected', 0)
@@ -575,7 +575,7 @@ class SettIndi(object):
         """
         showIndiWeatherDisconnected writes info to message window and recolors the status
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
@@ -586,7 +586,7 @@ class SettIndi(object):
         """
         showIndiNewWeatherDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if deviceName == self.app.weather.name:
@@ -599,7 +599,7 @@ class SettIndi(object):
         """
         showIndiRemoveWeatherDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit(f'INDI weather device [{deviceName}] removed', 0)
@@ -610,7 +610,7 @@ class SettIndi(object):
         showWeatherDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.weatherDevice.setStyleSheet(self.BACK_GREEN)
@@ -622,7 +622,7 @@ class SettIndi(object):
         showWeatherDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
@@ -633,7 +633,7 @@ class SettIndi(object):
         """
         showIndiPowerConnected writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.powerGroup.setEnabled(True)
@@ -644,7 +644,7 @@ class SettIndi(object):
         """
         showIndiPowerDisconnected writes info to message window and recolors the status
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
@@ -655,7 +655,7 @@ class SettIndi(object):
         """
         showIndiNewPowerDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if deviceName == self.app.power.name:
@@ -668,7 +668,7 @@ class SettIndi(object):
         """
         showIndiRemovePowerDevice writes info to message window
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.message.emit(f'INDI power device [{deviceName}] removed', 0)
@@ -679,7 +679,7 @@ class SettIndi(object):
         showPowerDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.powerDevice.setStyleSheet(self.BACK_GREEN)
@@ -690,7 +690,7 @@ class SettIndi(object):
         showPowerDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.powerDevice.setStyleSheet(self.BACK_NORM)

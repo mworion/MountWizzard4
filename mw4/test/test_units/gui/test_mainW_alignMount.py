@@ -37,14 +37,14 @@ def module_setup_teardown():
 def test_loadAlignBuildFile_1(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'loadBuildP',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.loadAlignBuildFile()
                 assert suc
-            assert ['Align build file [test] loaded', 0] == blocker.args
+            assert ['Align build file [test_mountwizzard] loaded', 0] == blocker.args
 
 
 def test_loadAlignBuildFile_2(qtbot):
@@ -58,28 +58,28 @@ def test_loadAlignBuildFile_2(qtbot):
 def test_loadAlignBuildFile_3(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'loadBuildP',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.loadAlignBuildFile()
                 assert suc
-            assert ['Align build file [test] cannot no be loaded', 2] == blocker.args
+            assert ['Align build file [test_mountwizzard] cannot no be loaded', 2] == blocker.args
 
 
 def test_saveAlignBuildFile_1(qtbot):
-    app.mainW.ui.alignBuildPFileName.setText('test')
+    app.mainW.ui.alignBuildPFileName.setText('test_mountwizzard')
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'saveBuildP',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveAlignBuildFile()
                 assert suc
-            assert ['Align build file [test] saved', 0] == blocker.args
+            assert ['Align build file [test_mountwizzard] saved', 0] == blocker.args
 
 
 def test_saveAlignBuildFile_2(qtbot):
@@ -91,30 +91,30 @@ def test_saveAlignBuildFile_2(qtbot):
 
 
 def test_saveAlignBuildFile_3(qtbot):
-    app.mainW.ui.alignBuildPFileName.setText('test')
+    app.mainW.ui.alignBuildPFileName.setText('test_mountwizzard')
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'saveBuildP',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveAlignBuildFile()
                 assert suc
-            assert ['Align build file [test] cannot no be saved', 2] == blocker.args
+            assert ['Align build file [test_mountwizzard] cannot no be saved', 2] == blocker.args
 
 
 def test_saveAlignBuildFileAs_1(qtbot):
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'saveBuildP',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveAlignBuildFileAs()
                 assert suc
-            assert ['Align build file [test] saved', 0] == blocker.args
+            assert ['Align build file [test_mountwizzard] saved', 0] == blocker.args
 
 
 def test_saveAlignBuildFileAs_2(qtbot):
@@ -128,14 +128,14 @@ def test_saveAlignBuildFileAs_2(qtbot):
 def test_saveAlignBuildFileAs_3(qtbot):
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'saveBuildP',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveAlignBuildFileAs()
                 assert suc
-            assert ['Align build file [test] cannot no be saved', 2] == blocker.args
+            assert ['Align build file [test_mountwizzard] cannot no be saved', 2] == blocker.args
 
 
 def test_genAlignBuildFile_1(qtbot):
@@ -148,7 +148,7 @@ def test_genAlignBuildFile_1(qtbot):
 
 
 def test_genAlignBuildFile_2(qtbot):
-    app.mainW.ui.alignBuildPFileName.setText('test')
+    app.mainW.ui.alignBuildPFileName.setText('test_mountwizzard')
     app.mainW.ui.checkAutoDeletePoints.setChecked(True)
     with mock.patch.object(app.data,
                            'loadBuildP',
@@ -156,11 +156,11 @@ def test_genAlignBuildFile_2(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.genAlignBuildFile()
             assert not suc
-        assert ['Align build points file [test] could not be loaded', 2] == blocker.args
+        assert ['Align build points file [test_mountwizzard] could not be loaded', 2] == blocker.args
 
 
 def test_genAlignBuildFile_3(qtbot):
-    app.mainW.ui.alignBuildPFileName.setText('test')
+    app.mainW.ui.alignBuildPFileName.setText('test_mountwizzard')
     app.mainW.ui.checkAutoDeletePoints.setChecked(True)
     with mock.patch.object(app.data,
                            'loadBuildP',
@@ -170,7 +170,7 @@ def test_genAlignBuildFile_3(qtbot):
 
 
 def test_genAlignBuildFile_4(qtbot):
-    app.mainW.ui.alignBuildPFileName.setText('test')
+    app.mainW.ui.alignBuildPFileName.setText('test_mountwizzard')
     app.mainW.ui.checkAutoDeletePoints.setChecked(False)
     with mock.patch.object(app.data,
                            'loadBuildP',

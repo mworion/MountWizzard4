@@ -99,7 +99,7 @@ class SettRelay(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         self.ui.relayHost.setText(config.get('relayHost', ''))
@@ -121,7 +121,7 @@ class SettRelay(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         config['relayHost'] = self.ui.relayHost.text()
@@ -138,7 +138,7 @@ class SettRelay(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test
+        :return:    True if success for test_mountwizzard
         """
         return True
 
@@ -146,7 +146,7 @@ class SettRelay(object):
         """
         setupRelayGui handles the modeldata of list for relay handling.
 
-        :return: success for test
+        :return: success for test_mountwizzard
         """
 
         for dropDown in self.relayDropDowns:
@@ -184,7 +184,7 @@ class SettRelay(object):
         """
         relayButtonPressed reads the button and starts the relay action on the box.
 
-        :return: success for test
+        :return: success for test_mountwizzard
         """
 
         suc = False

@@ -125,7 +125,7 @@ class BuildModel(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
 
@@ -166,7 +166,7 @@ class BuildModel(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         config = self.app.config['mainW']
         config['buildPFileName'] = self.ui.buildPFileName.text()
@@ -186,7 +186,7 @@ class BuildModel(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True for test purpose
+        :return:    True for test_mountwizzard purpose
         """
 
         self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
@@ -535,7 +535,7 @@ class BuildModel(object):
         in addition as it is the last step before a model point could be used, the
         it checks for the end of the modeling process.
 
-        :param result: true for test purpose
+        :param result: true for test_mountwizzard purpose
         :return: success
         """
 
@@ -594,7 +594,7 @@ class BuildModel(object):
 
         it shows the actual processed point index in GUI
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if self.solveQueue.empty():
@@ -638,7 +638,7 @@ class BuildModel(object):
 
         it shows the actual processed point index in GUI
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if self.imageQueue.empty():
@@ -687,7 +687,7 @@ class BuildModel(object):
 
         it shows the actual processed point index in GUI
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
 
         """
 
@@ -716,7 +716,7 @@ class BuildModel(object):
         """
         clearQueues ensures that all used queues will be emptied before starting
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.slewQueue.queue.clear()
@@ -732,7 +732,7 @@ class BuildModel(object):
         prepareGUI sets GUI elements to state, whereas there will be no influence for
         running actions
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.batchModel.setEnabled(False)
@@ -744,7 +744,7 @@ class BuildModel(object):
         defaultGUI will reset all gui elements to the idle or default state and new actions
         could be started again
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.changeStyleDynamic(self.ui.runFullModel, 'running', False)
@@ -780,7 +780,7 @@ class BuildModel(object):
         when download of an image starts, we could slew to another point
         when image is saved, we could start with solving
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
@@ -798,7 +798,7 @@ class BuildModel(object):
         """
         defaultSignals clears the signal queue and removes the connections
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.imaging.signals.saved.disconnect(self.modelSolve)
@@ -813,7 +813,7 @@ class BuildModel(object):
         """
         cancelFull aborts imaging and stops all modeling queues and actions
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.app.imaging.abort()
@@ -1014,7 +1014,7 @@ class BuildModel(object):
         is the flag delete images after modeling is set, the entire directory will be
         deleted
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         model = self.collectModelData()
@@ -1054,7 +1054,7 @@ class BuildModel(object):
         the modeling queue will be filled with point and the queue is started.
 
         :param points:
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         app = self.app.mainW.ui.astrometryDevice.currentText()
@@ -1129,7 +1129,7 @@ class BuildModel(object):
         modelFull sets the adequate gui elements, selects the model points and calls the
         core modeling method
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         # checking constraints for modeling
@@ -1158,7 +1158,7 @@ class BuildModel(object):
         modelAlign sets the adequate gui elements, selects the model points and calls the
         core modeling method
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         # checking constraints for modeling

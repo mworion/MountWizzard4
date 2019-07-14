@@ -112,27 +112,27 @@ def test_saveProfile1(qtbot):
 def test_loadProfile1(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
-                           return_value=('config', 'test', 'cfg')):
+                           return_value=('config', 'test_mountwizzard', 'cfg')):
         with mock.patch.object(app,
                                'loadConfig',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.loadProfile()
                 assert suc
-            assert ['Profile: [test] loaded', 0] == blocker.args
+            assert ['Profile: [test_mountwizzard] loaded', 0] == blocker.args
 
 
 def test_loadProfile2(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
-                           return_value=('config', 'test', 'cfg')):
+                           return_value=('config', 'test_mountwizzard', 'cfg')):
         with mock.patch.object(app,
                                'loadConfig',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.loadProfile()
                 assert suc
-            assert ['Profile: [test] cannot no be loaded', 2] == blocker.args
+            assert ['Profile: [test_mountwizzard] cannot no be loaded', 2] == blocker.args
 
 
 def test_loadProfile3(qtbot):
@@ -146,27 +146,27 @@ def test_loadProfile3(qtbot):
 def test_saveProfileAs1(qtbot):
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('config', 'test', 'cfg')):
+                           return_value=('config', 'test_mountwizzard', 'cfg')):
         with mock.patch.object(app,
                                'saveConfig',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveProfileAs()
                 assert suc
-            assert ['Profile: [test] saved', 0] == blocker.args
+            assert ['Profile: [test_mountwizzard] saved', 0] == blocker.args
 
 
 def test_saveProfileAs2(qtbot):
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('config', 'test', 'cfg')):
+                           return_value=('config', 'test_mountwizzard', 'cfg')):
         with mock.patch.object(app,
                                'saveConfig',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveProfileAs()
                 assert suc
-            assert ['Profile: [test] cannot no be saved', 2] == blocker.args
+            assert ['Profile: [test_mountwizzard] cannot no be saved', 2] == blocker.args
 
 
 def test_saveProfileAs3(qtbot):
@@ -187,10 +187,10 @@ def test_saveProfile2(qtbot):
 
 
 def test_mountHost():
-    app.mainW.ui.mountHost.setText('test')
+    app.mainW.ui.mountHost.setText('test_mountwizzard')
     app.mainW.mountHost()
 
-    assert app.mount.host == ('test', 3492)
+    assert app.mount.host == ('test_mountwizzard', 3492)
 
 
 def test_mountMAC():

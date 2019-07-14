@@ -42,7 +42,7 @@ def test_splash_icon():
 
 def test_splash_upcoming():
     splashW = splash.SplashScreen(test)
-    splashW.showMessage('test')
+    splashW.showMessage('test_mountwizzard')
     splashW.setValue(10)
     splashW.setValue(50)
     splashW.setValue(90)

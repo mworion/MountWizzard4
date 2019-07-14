@@ -54,29 +54,29 @@ def test_setupIcons():
 
 
 def test_removePrefix_1():
-    text = 'test is it'
-    pre = 'test'
+    text = 'test_mountwizzard is it'
+    pre = 'test_mountwizzard'
     val = app.mainW._removePrefix(text, pre)
     assert val == 'is it'
 
 
 def test_removePrefix_2():
     text = 'testis it'
-    pre = 'test'
+    pre = 'test_mountwizzard'
     val = app.mainW._removePrefix(text, pre)
     assert val == 'is it'
 
 
 def test_removePrefix_3():
-    text = 'test   is it  '
-    pre = 'test'
+    text = 'test_mountwizzard   is it  '
+    pre = 'test_mountwizzard'
     val = app.mainW._removePrefix(text, pre)
     assert val == 'is it'
 
 
 def test_indiMessage_1(qtbot):
     app.mainW.ui.indiMessage.setChecked(False)
-    device = 'test'
+    device = 'test_mountwizzard'
     text = '[WARNING]'
 
     with qtbot.assertNotEmitted(app.message):
@@ -86,22 +86,22 @@ def test_indiMessage_1(qtbot):
 
 def test_indiMessage_2(qtbot):
     app.mainW.ui.indiMessage.setChecked(True)
-    device = 'test'
-    text = '[WARNING] this is a test'
+    device = 'test_mountwizzard'
+    text = '[WARNING] this is a test_mountwizzard'
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.indiMessage(device, text)
         assert suc
-    assert ['test -> this is a test', 0] == blocker.args
+    assert ['test_mountwizzard -> this is a test_mountwizzard', 0] == blocker.args
 
 
 def test_indiMessage_3(qtbot):
     app.mainW.ui.indiMessage.setChecked(True)
-    device = 'test'
-    text = '[ERROR] this is a test'
+    device = 'test_mountwizzard'
+    text = '[ERROR] this is a test_mountwizzard'
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.indiMessage(device, text)
         assert suc
-    assert ['test -> this is a test', 2] == blocker.args
+    assert ['test_mountwizzard -> this is a test_mountwizzard', 2] == blocker.args
 
 
 def test_showIndiEnvironConnected(qtbot):
@@ -119,26 +119,26 @@ def test_showIndiEnvironDisconnected(qtbot):
 
 
 def test_showIndiNewEnvironDevice_1(qtbot):
-    app.environ.name = 'test'
+    app.environ.name = 'test_mountwizzard'
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiNewEnvironDevice('test')
+        suc = app.mainW.showIndiNewEnvironDevice('test_mountwizzard')
         assert suc
-    assert ['INDI environment device [test] found', 0] == blocker.args
+    assert ['INDI environment device [test_mountwizzard] found', 0] == blocker.args
 
 
 def test_showIndiNewEnvironDevice_2(qtbot):
     app.environ.name = 'snoop'
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiNewEnvironDevice('test')
+        suc = app.mainW.showIndiNewEnvironDevice('test_mountwizzard')
         assert suc
-    assert ['INDI environment device snoops -> [test]', 0] == blocker.args
+    assert ['INDI environment device snoops -> [test_mountwizzard]', 0] == blocker.args
 
 
 def test_showIndiRemoveEnvironDevice(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiRemoveEnvironDevice('test')
+        suc = app.mainW.showIndiRemoveEnvironDevice('test_mountwizzard')
         assert suc
-    assert ['INDI environment device [test] removed', 0] == blocker.args
+    assert ['INDI environment device [test_mountwizzard] removed', 0] == blocker.args
 
 
 def test_showEnvironDeviceConnected():
@@ -166,26 +166,26 @@ def test_showIndiSkymeterDisconnected(qtbot):
 
 
 def test_showIndiNewSkymeterDevice_1(qtbot):
-    app.skymeter.name = 'test'
+    app.skymeter.name = 'test_mountwizzard'
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiNewSkymeterDevice('test')
+        suc = app.mainW.showIndiNewSkymeterDevice('test_mountwizzard')
         assert suc
-    assert ['INDI skymeter device [test] found', 0] == blocker.args
+    assert ['INDI skymeter device [test_mountwizzard] found', 0] == blocker.args
 
 
 def test_showIndiNewSkymeterDevice_2(qtbot):
     app.skymeter.name = 'snoop'
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiNewSkymeterDevice('test')
+        suc = app.mainW.showIndiNewSkymeterDevice('test_mountwizzard')
         assert suc
-    assert ['INDI skymeter device snoops -> [test]', 0] == blocker.args
+    assert ['INDI skymeter device snoops -> [test_mountwizzard]', 0] == blocker.args
 
 
 def test_showIndiRemoveSkymeterDevice(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiRemoveSkymeterDevice('test')
+        suc = app.mainW.showIndiRemoveSkymeterDevice('test_mountwizzard')
         assert suc
-    assert ['INDI skymeter device [test] removed', 0] == blocker.args
+    assert ['INDI skymeter device [test_mountwizzard] removed', 0] == blocker.args
 
 
 def test_showSkymeterDeviceConnected():
@@ -213,26 +213,26 @@ def test_showIndiWeatherDisconnected(qtbot):
 
 
 def test_showIndiNewWeatherDevice_1(qtbot):
-    app.weather.name = 'test'
+    app.weather.name = 'test_mountwizzard'
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiNewWeatherDevice('test')
+        suc = app.mainW.showIndiNewWeatherDevice('test_mountwizzard')
         assert suc
-    assert ['INDI weather device [test] found', 0] == blocker.args
+    assert ['INDI weather device [test_mountwizzard] found', 0] == blocker.args
 
 
 def test_showIndiNewWeatherDevice_2(qtbot):
     app.weather.name = 'snoop'
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiNewWeatherDevice('test')
+        suc = app.mainW.showIndiNewWeatherDevice('test_mountwizzard')
         assert suc
-    assert ['INDI weather device snoops -> [test]', 0] == blocker.args
+    assert ['INDI weather device snoops -> [test_mountwizzard]', 0] == blocker.args
 
 
 def test_showIndiRemoveWeatherDevice(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiRemoveWeatherDevice('test')
+        suc = app.mainW.showIndiRemoveWeatherDevice('test_mountwizzard')
         assert suc
-    assert ['INDI weather device [test] removed', 0] == blocker.args
+    assert ['INDI weather device [test_mountwizzard] removed', 0] == blocker.args
 
 
 def test_showWeatherDeviceConnected():

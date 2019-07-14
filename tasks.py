@@ -48,10 +48,10 @@ def widgets(c):
 
 
 @task(pre=[clean, resource, widgets])
-def test(c):
+def test_mountwizzard(c):
     print('testing')
     c.run('flake8')
-    c.run('pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
+    c.run('pytest mw4/test_mountwizzard/test_units --cov-config .coveragerc --cov mw4/')
 
 
 @task()
@@ -79,7 +79,7 @@ def build_mountwizzard(c):
 
 @task(pre=[build_mountwizzard])
 def build_mac_app(c):
-    print('building mac')
+    print('building mac app and dmg')
     print('update mountcontrol')
     c.run('pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
     print('update indibase')
@@ -90,9 +90,9 @@ def build_mac_app(c):
     c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
 
 
-@task(pre=[test])
+@task(pre=[test_mountwizzard])
 def clean_build_mac_app(c):
-    print('building mac')
+    print('building clean mac app and dmg')
     print('update mountcontrol')
     c.run('pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
     print('update indibase')
@@ -111,7 +111,7 @@ def prepare_linux(c):
 
 @task(pre=[prepare_linux, build_mountwizzard])
 def deploy_ubuntu(c):
-    print('deploy ubuntu')
+    print('deploy ubuntu for test_mountwizzard')
     with c.cd('../mountcontrol'):
         c.run(f'scp dist/*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
     with c.cd('../indibase'):

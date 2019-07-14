@@ -37,8 +37,8 @@ def module_setup_teardown():
 
 
 def test_name():
-    app.name = 'test'
-    assert app.name == 'test'
+    app.name = 'test_mountwizzard'
+    assert app.name == 'test_mountwizzard'
 
 
 def test_serverConnected_1():
@@ -48,13 +48,13 @@ def test_serverConnected_1():
 
 
 def test_serverConnected_2():
-    app.name = 'test'
+    app.name = 'test_mountwizzard'
     with mock.patch.object(app.client,
                            'watchDevice',
                            return_value=True) as call:
         suc = app.serverConnected()
         assert suc
-        call.assert_called_with('test')
+        call.assert_called_with('test_mountwizzard')
 
 
 def test_serverDisconnected():
@@ -67,34 +67,34 @@ def test_newDevice_1():
     with mock.patch.object(app.client,
                            'getDevice',
                            return_value=None):
-        suc = app.newDevice('test')
+        suc = app.newDevice('test_mountwizzard')
         assert suc
         assert None is app.device
 
 
 def test_newDevice_2():
-    app.name = 'test'
+    app.name = 'test_mountwizzard'
     with mock.patch.object(app.client,
                            'getDevice',
                            return_value=Device()):
-        suc = app.newDevice('test')
+        suc = app.newDevice('test_mountwizzard')
         assert suc
         assert app.device is not None
 
 
 def test_removeDevice_1():
-    app.name = 'test'
+    app.name = 'test_mountwizzard'
     app.device = Device()
-    app.data = {'test': 1}
+    app.data = {'test_mountwizzard': 1}
     suc = app.removeDevice('foo')
     assert not suc
 
 
 def test_removeDevice_2():
-    app.name = 'test'
+    app.name = 'test_mountwizzard'
     app.device = Device()
-    app.data = {'test': 1}
-    suc = app.removeDevice('test')
+    app.data = {'test_mountwizzard': 1}
+    suc = app.removeDevice('test_mountwizzard')
     assert suc
     assert app.data == {}
     assert app.device is None
@@ -148,7 +148,7 @@ def test_connectDevice1():
     with mock.patch.object(app.client,
                            'connectDevice',
                            return_value=False):
-        suc = app.connectDevice('test', 'test')
+        suc = app.connectDevice('test_mountwizzard', 'test_mountwizzard')
         assert not suc
 
 
@@ -156,23 +156,23 @@ def test_connectDevice2():
     with mock.patch.object(app.client,
                            'connectDevice',
                            return_value=False):
-        suc = app.connectDevice('test', 'CONNECTION')
+        suc = app.connectDevice('test_mountwizzard', 'CONNECTION')
         assert not suc
 
 
 def test_connectDevice3():
-    app.name = 'test'
+    app.name = 'test_mountwizzard'
     with mock.patch.object(app.client,
                            'connectDevice',
                            return_value=True):
-        suc = app.connectDevice('test', 'CONNECTION')
+        suc = app.connectDevice('test_mountwizzard', 'CONNECTION')
         assert suc
 
 
 def test_connectDevice4():
-    app.name = 'test'
+    app.name = 'test_mountwizzard'
     with mock.patch.object(app.client,
                            'connectDevice',
                            return_value=False):
-        suc = app.connectDevice('test', 'CONNECTION')
+        suc = app.connectDevice('test_mountwizzard', 'CONNECTION')
         assert not suc

@@ -116,7 +116,7 @@ class SatelliteWindow(widget.MWidget):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         if 'satelliteW' not in self.app.config:
@@ -139,7 +139,7 @@ class SatelliteWindow(widget.MWidget):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         if 'satelliteW' not in self.app.config:
             self.app.config['satelliteW'] = {}
@@ -165,7 +165,7 @@ class SatelliteWindow(widget.MWidget):
         it locally sets it an draws the the complete view
 
         :param satellite:
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if satellite is None:
@@ -671,7 +671,7 @@ class SatelliteWindow(widget.MWidget):
         drawSatellite draws 3 different views of the actual satellite situation: a sphere
         a horizon view and an earth view.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         timescale = self.app.mount.obsSite.ts

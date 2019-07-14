@@ -208,14 +208,14 @@ def test_genBuildGoldenSpiral_2(qtbot):
 def test_loadBuildFile_1(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'loadBuildP',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.loadBuildFile()
                 assert suc
-            assert ['Build file [test] loaded', 0] == blocker.args
+            assert ['Build file [test_mountwizzard] loaded', 0] == blocker.args
 
 
 def test_loadBuildFile_2(qtbot):
@@ -229,28 +229,28 @@ def test_loadBuildFile_2(qtbot):
 def test_loadBuildFile_3(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'loadBuildP',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.loadBuildFile()
                 assert suc
-            assert ['Build file [test] cannot no be loaded', 2] == blocker.args
+            assert ['Build file [test_mountwizzard] cannot no be loaded', 2] == blocker.args
 
 
 def test_saveBuildFile_1(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
+    app.mainW.ui.buildPFileName.setText('test_mountwizzard')
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'saveBuildP',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveBuildFile()
                 assert suc
-            assert ['Build file [test] saved', 0] == blocker.args
+            assert ['Build file [test_mountwizzard] saved', 0] == blocker.args
 
 
 def test_saveBuildFile_2(qtbot):
@@ -262,30 +262,30 @@ def test_saveBuildFile_2(qtbot):
 
 
 def test_saveBuildFile_3(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
+    app.mainW.ui.buildPFileName.setText('test_mountwizzard')
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'saveBuildP',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveBuildFile()
                 assert suc
-            assert ['Build file [test] cannot no be saved', 2] == blocker.args
+            assert ['Build file [test_mountwizzard] cannot no be saved', 2] == blocker.args
 
 
 def test_saveBuildFileAs_1(qtbot):
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'saveBuildP',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveBuildFileAs()
                 assert suc
-            assert ['Build file [test] saved', 0] == blocker.args
+            assert ['Build file [test_mountwizzard] saved', 0] == blocker.args
 
 
 def test_saveBuildFileAs_2(qtbot):
@@ -299,14 +299,14 @@ def test_saveBuildFileAs_2(qtbot):
 def test_saveBuildFileAs_3(qtbot):
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test', 'bpts')):
+                           return_value=('build', 'test_mountwizzard', 'bpts')):
         with mock.patch.object(app.data,
                                'saveBuildP',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveBuildFileAs()
                 assert suc
-            assert ['Build file [test] cannot no be saved', 2] == blocker.args
+            assert ['Build file [test_mountwizzard] cannot no be saved', 2] == blocker.args
 
 
 def test_genBuildFile_1(qtbot):
@@ -319,7 +319,7 @@ def test_genBuildFile_1(qtbot):
 
 
 def test_genBuildFile_2(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
+    app.mainW.ui.buildPFileName.setText('test_mountwizzard')
     app.mainW.ui.checkAutoDeletePoints.setChecked(True)
     with mock.patch.object(app.data,
                            'loadBuildP',
@@ -327,11 +327,11 @@ def test_genBuildFile_2(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.genBuildFile()
             assert not suc
-        assert ['Build points file [test] could not be loaded', 2] == blocker.args
+        assert ['Build points file [test_mountwizzard] could not be loaded', 2] == blocker.args
 
 
 def test_genBuildFile_3(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
+    app.mainW.ui.buildPFileName.setText('test_mountwizzard')
     app.mainW.ui.checkAutoDeletePoints.setChecked(True)
     with mock.patch.object(app.data,
                            'loadBuildP',
@@ -341,7 +341,7 @@ def test_genBuildFile_3(qtbot):
 
 
 def test_genBuildFile_4(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
+    app.mainW.ui.buildPFileName.setText('test_mountwizzard')
     app.mainW.ui.checkAutoDeletePoints.setChecked(False)
     with mock.patch.object(app.data,
                            'loadBuildP',
@@ -532,7 +532,7 @@ def test_modelSolveDone_7():
 
     app.mainW.resultQueue.put(mPoint)
 
-    result = (True, 'test')
+    result = (True, 'test_mountwizzard')
     suc = app.mainW.modelSolveDone(result=result)
     assert not suc
 
@@ -737,7 +737,7 @@ def test_saveModel_2():
     mPoint = MPoint(mParam=MParam(number=3,
                                   count=3,
                                   path='testPath',
-                                  name='test',
+                                  name='test_mountwizzard',
                                   timeout=10,
                                   radius=1,
                                   astrometry='astrometry'),
@@ -759,7 +759,7 @@ def test_saveModel_3():
     mPoint = MPoint(mParam=MParam(number=3,
                                   count=3,
                                   path='testPath',
-                                  name='test',
+                                  name='test_mountwizzard',
                                   timeout=10,
                                   radius=1,
                                   astrometry='astrometry'),

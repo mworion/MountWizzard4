@@ -68,7 +68,7 @@ class MessageWindow(widget.MWidget):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
 
         if 'messageW' not in self.app.config:
@@ -90,7 +90,7 @@ class MessageWindow(widget.MWidget):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test purpose
+        :return: True for test_mountwizzard purpose
         """
         if 'messageW' not in self.app.config:
             self.app.config['messageW'] = {}
@@ -130,7 +130,7 @@ class MessageWindow(widget.MWidget):
         """
         clearWindow resets the window and shows empty text.
 
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         self.ui.message.clear()
@@ -147,7 +147,7 @@ class MessageWindow(widget.MWidget):
 
         :param message: message text
         :param mType: message type
-        :return: true for test purpose
+        :return: true for test_mountwizzard purpose
         """
 
         if mType < 0:

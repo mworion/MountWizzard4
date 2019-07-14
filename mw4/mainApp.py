@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import os
+import sys
 import json
 import gc
 # external packages
@@ -146,6 +147,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.setSingleShot(False)
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
+
+        # finishing for test
+        if sys.argv[1] == 'test':
+            self.update3s.connect(self.quitSave)
 
     def toggleHemisphereWindow(self):
         """

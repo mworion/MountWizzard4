@@ -55,13 +55,29 @@ def test(c):
 
 
 @task()
-def build_dist(c):
-    print('building dist')
+def build_mountcontrol(c):
+    print('building dist mountcontrol')
+    with c.cd('../mountcontrol'):
+        c.run('rm -f dist/*.tar.gz')
+        c.run('python setup.py sdist')
+
+
+@task()
+def build_indibase(c):
+    print('building dist indibase')
+    with c.cd('../indibase'):
+        c.run('rm -f dist/*.tar.gz')
+        c.run('python setup.py sdist')
+
+
+@task(pre=[build_mountcontrol, build_indibase])
+def build_mountwizzard(c):
+    print('building dist mountwizzard4')
     c.run('rm -f dist/*.tar.gz')
     c.run('python setup.py sdist')
 
 
-@task(pre=[build_dist])
+@task(pre=[build_mountwizzard])
 def build_mac_app(c):
     print('building mac')
     print('update mountcontrol')
@@ -93,11 +109,14 @@ def prepare_linux(c):
     c.run(f'ssh -t {userUbuntu} "bash -s" < setup_linux.sh')
 
 
-@task(pre=[prepare_linux, build_dist])
+@task(pre=[prepare_linux, build_mountwizzard])
 def deploy_ubuntu(c):
     print('deploy ubuntu')
-    c.run(f'scp ../mountcontrol/dist/mountcontrol-*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
-    c.run(f'scp ../indibase/dist/indibase-*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
-    c.run(f'scp dist/mw4-*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
-    c.run(f'scp mw_start.sh {userUbuntu}:/home/mw/mountwizzard4')
-    c.run(f'ssh {userUbuntu} "bash -s" < mount_install.sh')
+    with c.cd('../mountcontrol'):
+        c.run(f'scp dist/*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
+    with c.cd('../indibase'):
+        c.run(f'scp dist/*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
+    c.run(f'scp dist/*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
+    c.run(f'scp start.sh {userUbuntu}:/home/mw/mountwizzard4')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userUbuntu} "bash -s" < mount_install.sh')

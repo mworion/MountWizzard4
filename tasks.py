@@ -143,3 +143,13 @@ def deploy_ubuntu(c):
     with c.cd('remote_scripts'):
         c.run(f'scp start.sh {userUbuntu}:/home/mw/mountwizzard4')
         c.run(f'ssh {userUbuntu} "bash -s" < install_dist.sh')
+
+
+@task(pre=[])
+def deploy_mac(c):
+    print('deploy mac for test')
+    c.run('rm -rf /Users/mw/PycharmProjects/test')
+    c.run('mkdir /Users/mw/PycharmProjects/test')
+    c.run('cp -R dist/MountWizzard4.app /Users/mw/PycharmProjects/test')
+    with c.cd('/Users/mw/PycharmProjects/test'):
+        c.run('./MountWizzard4.app/Contents/MacOS/MountWizzard4 test')

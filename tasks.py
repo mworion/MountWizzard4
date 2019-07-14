@@ -24,10 +24,29 @@ userUbuntu = 'mw@' + clientUbuntu
 
 
 @task
-def clean(c):
-    print('clean')
+def clean_mountwizzard(c):
+    print('clean mountwizzard')
     c.run('rm -rf .pytest_cache')
+    c.run('rm -rf mw4.egg-info')
     c.run('find ./mw4 | grep -E "(__pycache__)" | xargs rm -rf')
+
+
+@task
+def clean_mountcontrol(c):
+    print('clean mountcontrol')
+    with c.cd('../mountcontrol'):
+        c.run('rm -rf .pytest_cache')
+        c.run('rm -rf mountcontrol.egg-info')
+        c.run('find ./mountcontrol | grep -E "(__pycache__)" | xargs rm -rf')
+
+
+@task
+def clean_indibase(c):
+    print('clean')
+    with c.cd('../indibase'):
+        c.run('rm -rf .pytest_cache')
+        c.run('rm -rf indibase.egg-info')
+        c.run('find ./indibase | grep -E "(__pycache__)" | xargs rm -rf')
 
 
 @task
@@ -70,12 +89,12 @@ def test_mountwizzard(c):
     c.run('pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
 
 
-@task(pre=[test_mountcontrol])
+@task(pre=[test_mountcontrol, clean_mountcontrol])
 def build_mountcontrol(c):
     print('building dist mountcontrol')
     with c.cd('../mountcontrol'):
         c.run('rm -f dist/*.tar.gz')
-        c.run('python setup.py sdist')
+        c.run('python setup.py sdist bdist_egg')
 
 
 @task(pre=[])
@@ -86,7 +105,7 @@ def build_indibase(c):
         c.run('python setup.py sdist')
 
 
-@task(pre=[test_mountwizzard, build_mountcontrol, build_indibase])
+@task(pre=[build_mountcontrol, build_indibase, test_mountwizzard])
 def build_mountwizzard(c):
     print('building dist mountwizzard4')
     c.run('rm -f dist/*.tar.gz')
@@ -109,10 +128,11 @@ def build_mac_app(c):
 @task()
 def prepare_linux(c):
     print('preparing linux')
-    c.run(f'ssh -t {userUbuntu} "bash -s" < setup_linux.sh')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh -t {userUbuntu} "bash -s" < setup_linux.sh')
 
 
-@task(pre=[prepare_linux, build_mountwizzard])
+@task(pre=[prepare_linux])
 def deploy_ubuntu(c):
     print('deploy ubuntu for test')
     with c.cd('../mountcontrol'):
@@ -120,6 +140,6 @@ def deploy_ubuntu(c):
     with c.cd('../indibase'):
         c.run(f'scp dist/*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
     c.run(f'scp dist/*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
-    c.run(f'scp start.sh {userUbuntu}:/home/mw/mountwizzard4')
     with c.cd('remote_scripts'):
-        c.run(f'ssh {userUbuntu} "bash -s" < mount_install.sh')
+        c.run(f'scp start.sh {userUbuntu}:/home/mw/mountwizzard4')
+        c.run(f'ssh {userUbuntu} "bash -s" < install_dist.sh')

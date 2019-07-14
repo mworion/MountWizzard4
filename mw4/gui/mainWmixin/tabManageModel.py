@@ -59,7 +59,7 @@ class ManageModel(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
@@ -73,7 +73,7 @@ class ManageModel(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
@@ -85,7 +85,7 @@ class ManageModel(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test_mountwizzard
+        :return:    True if success for test
         """
         self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
@@ -207,7 +207,7 @@ class ManageModel(object):
         """
         clearRefreshName is the buddy function for refreshName
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         self.changeStyleDynamic(self.ui.refreshName, 'running', 'false')
@@ -226,7 +226,7 @@ class ManageModel(object):
         after it triggers the refresh of names, it finished, because behaviour is event
         driven
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         self.app.mount.signals.namesDone.connect(self.clearRefreshName)
@@ -324,7 +324,7 @@ class ManageModel(object):
         """
         clearRefreshModel is the buddy function for refreshModel
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         self.changeStyleDynamic(self.ui.refreshModel, 'running', 'false')
@@ -344,7 +344,7 @@ class ManageModel(object):
         after it triggers the refresh of names, it finished, because behaviour is event
         driven
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         self.changeStyleDynamic(self.ui.refreshModel, 'running', 'true')
@@ -361,7 +361,7 @@ class ManageModel(object):
         """
         clearRunTargetRMS is the buddy function for runTargetRMS
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         mount = self.app.mount
@@ -397,7 +397,7 @@ class ManageModel(object):
         after it triggers the refresh of names, it finished, because behaviour is event
         driven
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         self.app.message.emit('Start optimizing model', 0)

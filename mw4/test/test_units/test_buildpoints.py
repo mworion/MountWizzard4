@@ -125,7 +125,7 @@ def test_genHaDecParams4():
 
 
 def test_genHaDecParams5():
-    selection = 'test_mountwizzard'
+    selection = 'test'
     val = True
     for i, (_, _, _, _) in enumerate(data.genHaDecParams(selection=selection)):
         val = False
@@ -203,7 +203,7 @@ def test_checkFormat_3():
 
 
 def test_checkFormat_4():
-    a = 'test_mountwizzard'
+    a = 'test'
     suc = data.checkFormat(a)
     assert not suc
 
@@ -228,7 +228,7 @@ def test_buildP2():
 
 def test_buildP3():
     data.buildP = ()
-    data.buildP = [(1, 1), (1, 1), 'test_mountwizzard']
+    data.buildP = [(1, 1), (1, 1), 'test']
     assert len(data.buildP) == 0
 
 
@@ -360,7 +360,7 @@ def test_horizonP2():
 
 def test_horizonP3():
     data.horizonP = ()
-    data.horizonP = [(1, 1), (1, 1), 'test_mountwizzard']
+    data.horizonP = [(1, 1), (1, 1), 'test']
     assert len(data.horizonP) == 2
 
 
@@ -510,13 +510,13 @@ def test_loadBuildP_12():
 def test_loadBuildP_13():
     # load file with path
     data.buildPFile = ''
-    fileName = mwGlob['configDir'] + '/test_mountwizzard.bpts'
+    fileName = mwGlob['configDir'] + '/test.bpts'
     values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
         json.dump(values,
                   outfile,
                   indent=4)
-    suc = data.loadBuildP(fileName='test_mountwizzard')
+    suc = data.loadBuildP(fileName='test')
     assert suc
     assert data.buildP == values
 
@@ -524,10 +524,10 @@ def test_loadBuildP_13():
 def test_loadBuildP_14():
     # load with wrong content
     data.buildPFile = ''
-    fileName = mwGlob['configDir'] + '/test_mountwizzard.bpts'
+    fileName = mwGlob['configDir'] + '/test.bpts'
     with open(fileName, 'wb') as outfile:
         outfile.write(binascii.unhexlify('9f'))
-    suc = data.loadBuildP(fileName='test_mountwizzard')
+    suc = data.loadBuildP(fileName='test')
     assert not suc
     assert data.buildP == []
 
@@ -535,18 +535,18 @@ def test_loadBuildP_14():
 def test_loadBuildP_15():
     # load with wrong content 2
     data.buildPFile = ''
-    fileName = mwGlob['configDir'] + '/test_mountwizzard.bpts'
+    fileName = mwGlob['configDir'] + '/test.bpts'
     with open(fileName, 'w') as outfile:
-        outfile.writelines('[test_mountwizzard, ]],[]}')
-    suc = data.loadBuildP(fileName='test_mountwizzard')
+        outfile.writelines('[test, ]],[]}')
+    suc = data.loadBuildP(fileName='test')
     assert not suc
     assert data.buildP == []
 
 
 def test_loadBuildP_16():
     # load file without path
-    fileName = mwGlob['configDir'] + '/test_mountwizzard.bpts'
-    data.buildPFile = 'test_mountwizzard'
+    fileName = mwGlob['configDir'] + '/test.bpts'
+    data.buildPFile = 'test'
     values = [(1, 1), (2, 2)]
     with open(fileName, 'w') as outfile:
         json.dump(values,
@@ -651,7 +651,7 @@ def test_loadHorizonP_15():
     data.horizonPFile = ''
     fileName = mwGlob['configDir'] + '/test_horizon_2.hpts'
     with open(fileName, 'w') as outfile:
-        outfile.writelines('[test_mountwizzard, ]],[]}')
+        outfile.writelines('[test, ]],[]}')
     suc = data.loadHorizonP(fileName='test_horizon_2')
     assert not suc
     assert data.horizonP == [(0, 0), (0, 360)]

@@ -62,7 +62,7 @@ class SettMisc(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
@@ -101,7 +101,7 @@ class SettMisc(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
@@ -134,7 +134,7 @@ class SettMisc(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test_mountwizzard
+        :return:    True if success for test
         """
         return True
 
@@ -224,7 +224,7 @@ class SettMisc(object):
         """
         setupAudioGui populates the audio selection gui
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         self.guiAudioList['MountSlew'] = self.ui.soundMountSlewFinished
@@ -245,7 +245,7 @@ class SettMisc(object):
         """
         setupAudioSignals pre loads all know audio signals for events handling
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         self.audioSignalsSet['Beep'] = PyQt5.QtMultimedia.QSound(':/beep.wav')

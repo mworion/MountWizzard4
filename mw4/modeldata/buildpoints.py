@@ -330,7 +330,7 @@ class DataPoint(object):
 
         :param eastwest: flag if to be sorted east - west
         :param highlow:  flag if sorted high low altitude
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         if eastwest and highlow:
@@ -653,7 +653,7 @@ class DataPoint(object):
         :param numberPoints:
         :param duration:
         :param timeShift:
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         if numberPoints < 1:
@@ -683,7 +683,7 @@ class DataPoint(object):
         hemisphere.
 
         :param numberPoints:
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.clearBuildP()

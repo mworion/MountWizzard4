@@ -148,8 +148,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
 
-        # finishing for test_mountwizzard
-        if sys.argv[1] == 'test_mountwizzard':
+        # finishing for test
+        if sys.argv[1] == 'test':
             self.update3s.connect(self.quitSave)
 
     def toggleHemisphereWindow(self):
@@ -280,7 +280,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         storeConfig collects all persistent data from mainApp and it's submodules and stores
         it in the persistence dictionary for later saving
 
-        :return: success for test_mountwizzard purpose
+        :return: success for test purpose
         """
 
         config = self.config
@@ -311,7 +311,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     def showWindows(self):
         """
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         if self.config.get('showMessageW', False):
@@ -332,7 +332,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         sendUpdate send regular signals in 1 and 10 seconds to enable regular tasks.
         it tries to avoid sending the signals at the same time.
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.timerCounter += 0.5
@@ -350,7 +350,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
         quit without saving persistence data
 
-        :return:    True for test_mountwizzard purpose
+        :return:    True for test purpose
         """
 
         self.mount.stopTimers()
@@ -365,7 +365,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
         quit with saving persistence data
 
-        :return:    True for test_mountwizzard purpose
+        :return:    True for test purpose
         """
 
         self.mount.stopTimers()

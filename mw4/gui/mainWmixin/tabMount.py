@@ -68,7 +68,7 @@ class Mount(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
@@ -81,7 +81,7 @@ class Mount(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
@@ -93,7 +93,7 @@ class Mount(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test_mountwizzard
+        :return:    True if success for test
         """
         self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
         return True

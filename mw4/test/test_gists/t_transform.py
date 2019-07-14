@@ -30,9 +30,9 @@ test = PyQt5.QtWidgets.QApplication([])
 
 
 mwGlob = {'workDir': '.',
-          'configDir': './mw4/test_mountwizzard/config',
-          'dataDir': './mw4/test_mountwizzard/data',
-          'modeldata': 'test_mountwizzard',
+          'configDir': './mw4/test/config',
+          'dataDir': './mw4/test/data',
+          'modeldata': 'test',
           }
 config = mwGlob['configDir']
 

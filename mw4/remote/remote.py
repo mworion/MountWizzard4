@@ -147,7 +147,7 @@ class Remote(PyQt5.QtCore.QObject):
         """
         removeConnection clear the existing connection
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         connection = self.clientConnection.peerAddress().toString()
@@ -161,7 +161,7 @@ class Remote(PyQt5.QtCore.QObject):
         handleError does error handling -> writing to log
 
         :param socketError:
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         connection = self.clientConnection.peerAddress().toString()

@@ -47,14 +47,30 @@ def widgets(c):
         c.run(f'python -m PyQt5.uic.pyuic -x {name}.ui -o {name}_ui.py')
 
 
-@task(pre=[clean, resource, widgets])
-def test_mountwizzard(c):
-    print('testing')
-    c.run('flake8')
-    c.run('pytest mw4/test_mountwizzard/test_units --cov-config .coveragerc --cov mw4/')
+@task()
+def test_mountcontrol(c):
+    print('testing mountcontrol')
+    with c.cd('../mountcontrol'):
+        c.run('flake8')
+        c.run('pytest mountcontrol/test/test_units --cov-config .coveragerc --cov mountcontrol/')
 
 
 @task()
+def test_indibase(c):
+    print('testing indibase')
+    with c.cd('../indibase'):
+        c.run('flake8')
+        c.run('pytest indibase/test/test_units --cov-config .coveragerc --cov mw4/')
+
+
+@task(pre=[resource, widgets])
+def test_mountwizzard(c):
+    print('testing mountwizzard')
+    c.run('flake8')
+    c.run('pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
+
+
+@task(pre=[test_mountcontrol])
 def build_mountcontrol(c):
     print('building dist mountcontrol')
     with c.cd('../mountcontrol'):
@@ -62,7 +78,7 @@ def build_mountcontrol(c):
         c.run('python setup.py sdist')
 
 
-@task()
+@task(pre=[])
 def build_indibase(c):
     print('building dist indibase')
     with c.cd('../indibase'):
@@ -70,7 +86,7 @@ def build_indibase(c):
         c.run('python setup.py sdist')
 
 
-@task(pre=[build_mountcontrol, build_indibase])
+@task(pre=[test_mountwizzard, build_mountcontrol, build_indibase])
 def build_mountwizzard(c):
     print('building dist mountwizzard4')
     c.run('rm -f dist/*.tar.gz')
@@ -90,19 +106,6 @@ def build_mac_app(c):
     c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
 
 
-@task(pre=[test_mountwizzard])
-def clean_build_mac_app(c):
-    print('building clean mac app and dmg')
-    print('update mountcontrol')
-    c.run('pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
-    print('update indibase')
-    c.run('pip install ../indibase/dist/indibase-*.tar.gz')
-    print('pyinstaller')
-    c.run('pyinstaller -y mw4_mac.spec')
-    print('building dmg')
-    c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
-
-
 @task()
 def prepare_linux(c):
     print('preparing linux')
@@ -111,7 +114,7 @@ def prepare_linux(c):
 
 @task(pre=[prepare_linux, build_mountwizzard])
 def deploy_ubuntu(c):
-    print('deploy ubuntu for test_mountwizzard')
+    print('deploy ubuntu for test')
     with c.cd('../mountcontrol'):
         c.run(f'scp dist/*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
     with c.cd('../indibase'):

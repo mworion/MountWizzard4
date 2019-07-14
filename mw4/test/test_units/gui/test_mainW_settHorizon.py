@@ -59,14 +59,14 @@ def test_setupIcons():
 def test_loadHorizonMaskFile_1(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
-                           return_value=('build', 'test_mountwizzard', 'bpts')):
+                           return_value=('build', 'test', 'bpts')):
         with mock.patch.object(app.data,
                                'loadHorizonP',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.loadHorizonMask()
                 assert suc
-            assert ['Horizon mask [test_mountwizzard] loaded', 0] == blocker.args
+            assert ['Horizon mask [test] loaded', 0] == blocker.args
 
 
 def test_loadHorizonMaskFile_2(qtbot):
@@ -80,28 +80,28 @@ def test_loadHorizonMaskFile_2(qtbot):
 def test_loadHorizonMaskFile_3(qtbot):
     with mock.patch.object(app.mainW,
                            'openFile',
-                           return_value=('build', 'test_mountwizzard', 'bpts')):
+                           return_value=('build', 'test', 'bpts')):
         with mock.patch.object(app.data,
                                'loadHorizonP',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.loadHorizonMask()
                 assert suc
-            assert ['Horizon mask [test_mountwizzard] cannot no be loaded', 2] == blocker.args
+            assert ['Horizon mask [test] cannot no be loaded', 2] == blocker.args
 
 
 def test_saveHorizonMaskFile_1(qtbot):
-    app.mainW.ui.horizonFileName.setText('test_mountwizzard')
+    app.mainW.ui.horizonFileName.setText('test')
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test_mountwizzard', 'bpts')):
+                           return_value=('build', 'test', 'bpts')):
         with mock.patch.object(app.data,
                                'saveHorizonP',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveHorizonMask()
                 assert suc
-            assert ['Horizon mask [test_mountwizzard] saved', 0] == blocker.args
+            assert ['Horizon mask [test] saved', 0] == blocker.args
 
 
 def test_saveHorizonMaskFile_2(qtbot):
@@ -113,30 +113,30 @@ def test_saveHorizonMaskFile_2(qtbot):
 
 
 def test_saveHorizonMaskFile_3(qtbot):
-    app.mainW.ui.horizonFileName.setText('test_mountwizzard')
+    app.mainW.ui.horizonFileName.setText('test')
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test_mountwizzard', 'bpts')):
+                           return_value=('build', 'test', 'bpts')):
         with mock.patch.object(app.data,
                                'saveHorizonP',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveHorizonMask()
                 assert suc
-            assert ['Horizon mask [test_mountwizzard] cannot no be saved', 2] == blocker.args
+            assert ['Horizon mask [test] cannot no be saved', 2] == blocker.args
 
 
 def test_saveHorizonMaskFileAs_1(qtbot):
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test_mountwizzard', 'bpts')):
+                           return_value=('build', 'test', 'bpts')):
         with mock.patch.object(app.data,
                                'saveHorizonP',
                                return_value=True):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveHorizonMaskAs()
                 assert suc
-            assert ['Horizon mask [test_mountwizzard] saved', 0] == blocker.args
+            assert ['Horizon mask [test] saved', 0] == blocker.args
 
 
 def test_saveHorizonMaskFileAs_2(qtbot):
@@ -150,11 +150,11 @@ def test_saveHorizonMaskFileAs_2(qtbot):
 def test_saveHorizonMaskFileAs_3(qtbot):
     with mock.patch.object(app.mainW,
                            'saveFile',
-                           return_value=('build', 'test_mountwizzard', 'bpts')):
+                           return_value=('build', 'test', 'bpts')):
         with mock.patch.object(app.data,
                                'saveHorizonP',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
                 suc = app.mainW.saveHorizonMaskAs()
                 assert suc
-            assert ['Horizon mask [test_mountwizzard] cannot no be saved', 2] == blocker.args
+            assert ['Horizon mask [test] cannot no be saved', 2] == blocker.args

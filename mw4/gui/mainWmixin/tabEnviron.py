@@ -59,7 +59,7 @@ class Environ(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         self.ui.checkRefracNone.setChecked(config.get('checkRefracNone', False))
@@ -73,7 +73,7 @@ class Environ(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
@@ -86,7 +86,7 @@ class Environ(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test_mountwizzard
+        :return:    True if success for test
         """
         return True
 
@@ -121,7 +121,7 @@ class Environ(object):
         clearEnvironGUI clears the gui data
 
         :param deviceName:
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.ui.environTemp.setText('-')
@@ -152,7 +152,7 @@ class Environ(object):
         clearEnvironGUI clears the gui data
 
         :param deviceName:
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.ui.skymeterSQR.setText('-')
@@ -177,7 +177,7 @@ class Environ(object):
         clearEnvironGUI clears the gui data
 
         :param deviceName:
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.ui.weatherTemp.setText('-')

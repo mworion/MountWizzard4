@@ -79,7 +79,7 @@ def test_setupDropDownGui():
 def test_selectImage_1():
     with mock.patch.object(MWidget,
                            'openFile',
-                           return_value=('test_mountwizzard', '', '.fits')):
+                           return_value=('test', '', '.fits')):
         suc = app.imageW.selectImage()
         assert not suc
 
@@ -87,15 +87,15 @@ def test_selectImage_1():
 def test_selectImage_2(qtbot):
     with mock.patch.object(MWidget,
                            'openFile',
-                           return_value=('c:/test_mountwizzard/test_mountwizzard.fits', 'test_mountwizzard', '.fits')):
+                           return_value=('c:/test/test.fits', 'test', '.fits')):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.imageW.selectImage()
             assert suc
             with qtbot.waitSignal(app.imageW.signals.show):
                 suc = app.imageW.selectImage()
                 assert suc
-        assert ['Image [test_mountwizzard] selected', 0] == blocker.args
-        assert app.imageW.folder == 'c:/test_mountwizzard'
+        assert ['Image [test] selected', 0] == blocker.args
+        assert app.imageW.folder == 'c:/test'
 
 
 def test_solveDone_1(qtbot):

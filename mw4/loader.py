@@ -141,7 +141,7 @@ def setupLogging():
     """
     setupLogging defines the logger and formats and disables unnecessary library logging
 
-    :return: true for test_mountwizzard purpose
+    :return: true for test purpose
     """
     warnings.filterwarnings("ignore")
     name = 'mw4-{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
@@ -172,7 +172,7 @@ def writeSystemInfo(mwGlob=None):
     """
     writeSystemInfo print overview data to the log file at the beginning of the start
 
-    :return: true for test_mountwizzard purpose
+    :return: true for test purpose
     """
 
     logging.info('## ------------------------------------------------------------------------')
@@ -218,7 +218,7 @@ def writeSystemInfo(mwGlob=None):
 def preloadDataFiles(mwGlob=None, splashW=None):
     """
 
-    :return: True fpr test_mountwizzard purpose
+    :return: True fpr test purpose
     """
     urls = [
         'https://hpiers.obspm.fr/iers/bul/bulc/Leap_Second.dat',

@@ -74,7 +74,7 @@ class SettDevice(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
@@ -98,7 +98,7 @@ class SettDevice(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
@@ -111,7 +111,7 @@ class SettDevice(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test_mountwizzard
+        :return:    True if success for test
         """
         return True
 
@@ -120,7 +120,7 @@ class SettDevice(object):
         setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.
         therefore we add the necessary entries to populate the list.
 
-        :return: success for test_mountwizzard
+        :return: success for test
         """
 
         for dropDown in self.deviceDropDowns:
@@ -147,7 +147,7 @@ class SettDevice(object):
         """
         relayDispatch allows to run the relay box.
 
-        :return: success for test_mountwizzard
+        :return: success for test
         """
 
         # get index for relay tab
@@ -176,7 +176,7 @@ class SettDevice(object):
         """
         remoteAccess enables or disables the remote access
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         if self.ui.remoteDevice.currentText() == 'Built-In':
@@ -194,7 +194,7 @@ class SettDevice(object):
         """
         measureDispatch enables or disables the on board measurement process
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         if self.ui.measureDevice.currentText().startswith('Built-In'):
@@ -215,7 +215,7 @@ class SettDevice(object):
         in addition this function enables and disables other gui functions, which rely on
         the presence of a running driver
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.app.dome.stopCommunication()
@@ -237,7 +237,7 @@ class SettDevice(object):
         in addition this function enables and disables other gui functions, which rely on
         the presence of a running driver
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.app.imaging.stopCommunication()
@@ -260,7 +260,7 @@ class SettDevice(object):
         in addition this function enables and disables other gui functions, which rely on
         the presence of a running driver
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.ui.environGroup.setEnabled(False)
@@ -285,7 +285,7 @@ class SettDevice(object):
         skymeterDispatch selects the type of device for environment measures and start / stop
         them.
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.ui.skymeterGroup.setEnabled(False)
@@ -306,7 +306,7 @@ class SettDevice(object):
         weatherDispatch selects the type of device for environment measures and start / stop
         them.
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.ui.weatherGroup.setEnabled(False)
@@ -327,7 +327,7 @@ class SettDevice(object):
         powerDispatch selects the type of device for environment measures and start / stop
         them.
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         self.ui.powerGroup.setEnabled(False)
@@ -358,7 +358,7 @@ class SettDevice(object):
         astrometryDispatch selects the type of device for environment measures and start / stop
         them.
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         if self.ui.astrometryDevice.currentText() in self.app.astrometry.available:

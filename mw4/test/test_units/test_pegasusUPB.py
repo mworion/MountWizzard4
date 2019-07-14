@@ -48,7 +48,7 @@ def test_newDevice_1():
         with mock.patch.object(app.client,
                                'getDevice',
                                return_value=1):
-            suc = app.newDevice('test_mountwizzard')
+            suc = app.newDevice('test')
             assert suc
             assert app.device is None
 
@@ -87,15 +87,15 @@ def test_startCommunication_1():
 
 
 def test_setUpdateConfig_1():
-    app.name = 'test_mountwizzard'
+    app.name = 'test'
     suc = app.setUpdateConfig('false')
     assert not suc
 
 
 def test_setUpdateConfig_2():
-    app.name = 'test_mountwizzard'
+    app.name = 'test'
     app.device = None
-    suc = app.setUpdateConfig('test_mountwizzard')
+    suc = app.setUpdateConfig('test')
     assert not suc
 
 
@@ -104,9 +104,9 @@ def test_setUpdateConfig_3():
         @staticmethod
         def getNumber(test):
             return {}
-    app.name = 'test_mountwizzard'
+    app.name = 'test'
     app.device = Test()
-    suc = app.setUpdateConfig('test_mountwizzard')
+    suc = app.setUpdateConfig('test')
     assert not suc
 
 
@@ -115,9 +115,9 @@ def test_setUpdateConfig_4():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 1}
-    app.name = 'test_mountwizzard'
+    app.name = 'test'
     app.device = Test()
-    suc = app.setUpdateConfig('test_mountwizzard')
+    suc = app.setUpdateConfig('test')
     assert not suc
 
 
@@ -126,12 +126,12 @@ def test_setUpdateConfig_5():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 10}
-    app.name = 'test_mountwizzard'
+    app.name = 'test'
     app.device = Test()
     with mock.patch.object(app.client,
                            'sendNewNumber',
                            return_value=False):
-        suc = app.setUpdateConfig('test_mountwizzard')
+        suc = app.setUpdateConfig('test')
         assert not suc
 
 
@@ -140,12 +140,12 @@ def test_setUpdateConfig_6():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 10}
-    app.name = 'test_mountwizzard'
+    app.name = 'test'
     app.device = Test()
     with mock.patch.object(app.client,
                            'sendNewNumber',
                            return_value=True):
-        suc = app.setUpdateConfig('test_mountwizzard')
+        suc = app.setUpdateConfig('test')
         assert suc
 
 

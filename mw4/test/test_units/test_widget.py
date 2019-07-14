@@ -95,32 +95,32 @@ def test_extractNames_1():
 
 
 def test_extractNames_2():
-    name = ['test_mountwizzard']
+    name = ['test']
     name, short, ext = app.mainW.extractNames(name)
-    assert name == 'test_mountwizzard'
-    assert short == 'test_mountwizzard'
+    assert name == 'test'
+    assert short == 'test'
     assert ext == ''
 
 
 def test_extractNames_3():
-    name = ['c:/test_mountwizzard']
+    name = ['c:/test']
     name, short, ext = app.mainW.extractNames(name)
-    assert name == 'c:/test_mountwizzard'
-    assert short == 'test_mountwizzard'
+    assert name == 'c:/test'
+    assert short == 'test'
     assert ext == ''
 
 
 def test_extractNames_4():
-    name = ['c:/test_mountwizzard.cfg']
+    name = ['c:/test.cfg']
     name, short, ext = app.mainW.extractNames(name)
-    assert name == 'c:/test_mountwizzard.cfg'
-    assert short == 'test_mountwizzard'
+    assert name == 'c:/test.cfg'
+    assert short == 'test'
     assert ext == '.cfg'
 
 
 def test_extractNames_5():
-    name = ['c:/test_mountwizzard.cfg', 'c:/test_mountwizzard.cfg']
+    name = ['c:/test.cfg', 'c:/test.cfg']
     name, short, ext = app.mainW.extractNames(name)
-    assert name == ['c:/test_mountwizzard.cfg', 'c:/test_mountwizzard.cfg']
-    assert short == ['test_mountwizzard', 'test_mountwizzard']
+    assert name == ['c:/test.cfg', 'c:/test.cfg']
+    assert short == ['test', 'test']
     assert ext == ['.cfg', '.cfg']

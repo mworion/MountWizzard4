@@ -46,7 +46,7 @@ class Relay(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test_mountwizzard
+        :return:    True if success for test
         """
         return True
 
@@ -54,7 +54,7 @@ class Relay(object):
         """
         updateRelayGui changes the style of the button related to the state of the relay
 
-        :return: success for test_mountwizzard
+        :return: success for test
         """
 
         for status, button in zip(self.app.relay.status, self.relayButtons):

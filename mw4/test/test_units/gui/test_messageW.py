@@ -39,15 +39,15 @@ def test_resizeEvent(qtbot):
 
 def test_writeMessage1(qtbot):
     app.messageW.ui.message.setText('')
-    suc = app.messageW.writeMessage('test_mountwizzard', 0)
+    suc = app.messageW.writeMessage('test', 0)
     assert suc
     val = app.messageW.ui.message.toPlainText()
-    assert val.endswith('test_mountwizzard\n')
+    assert val.endswith('test\n')
 
 
 def test_writeMessage2(qtbot):
     app.messageW.ui.message.setText('')
-    suc = app.messageW.writeMessage('test_mountwizzard', 6)
+    suc = app.messageW.writeMessage('test', 6)
     assert not suc
 
 
@@ -61,5 +61,5 @@ def test_writeMessage3(qtbot):
 
 def test_writeMessage4(qtbot):
     app.messageW.ui.message.setText('')
-    suc = app.messageW.writeMessage('test_mountwizzard', -1)
+    suc = app.messageW.writeMessage('test', -1)
     assert not suc

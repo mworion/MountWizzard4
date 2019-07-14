@@ -151,7 +151,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         _debugOutput writes a nicely formed output for diagnosis in relay environment
 
         :param result: value from requests get commend
-        :return: True fir test_mountwizzard purpose
+        :return: True fir test purpose
         """
 
         if result is None:

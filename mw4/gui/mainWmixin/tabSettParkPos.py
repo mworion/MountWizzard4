@@ -50,7 +50,7 @@ class SettParkPos(object):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         for i, textField in enumerate(self.posTexts):
@@ -71,7 +71,7 @@ class SettParkPos(object):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['mainW']
         for i, textField in enumerate(self.posTexts):
@@ -90,7 +90,7 @@ class SettParkPos(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test_mountwizzard
+        :return:    True if success for test
         """
         return True
 
@@ -99,7 +99,7 @@ class SettParkPos(object):
         setupRelayGui handles the modeldata of list for relay handling. to keep many relay in
         order i collect them in the list for list handling afterwards.
 
-        :return: success for test_mountwizzard
+        :return: success for test
         """
 
         # generate the button list and text entry for later use
@@ -114,7 +114,7 @@ class SettParkPos(object):
         """
         updateParkPosButtonText updates the text in the gui button
 
-        :return: true for test_mountwizzard purpose
+        :return: true for test purpose
         """
 
         for button, textField in zip(self.posButtons, self.posTexts):

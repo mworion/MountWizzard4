@@ -79,7 +79,7 @@ class Power(object):
         setupIcons add icon from standard library to certain buttons for improving the
         gui of the app.
 
-        :return:    True if success for test_mountwizzard
+        :return:    True if success for test
         """
         return True
 
@@ -87,7 +87,7 @@ class Power(object):
         """
         clearPowerGui changes the state of the Pegasus values to '-'
 
-        :return: success for test_mountwizzard
+        :return: success for test
         """
 
         self.ui.powerTemp.setText('-')
@@ -112,7 +112,7 @@ class Power(object):
         """
         updatePowerGui changes the style of the button related to the state of the Pegasus
 
-        :return: success for test_mountwizzard
+        :return: success for test
         """
 
         value = self.app.power.data.get('WEATHER_TEMPERATURE', 0)
@@ -246,7 +246,7 @@ class Power(object):
     def sendDewA(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -267,7 +267,7 @@ class Power(object):
     def sendDewB(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -288,7 +288,7 @@ class Power(object):
     def sendPowerPort1(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -309,7 +309,7 @@ class Power(object):
     def sendPowerPort2(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -330,7 +330,7 @@ class Power(object):
     def sendPowerPort3(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -351,7 +351,7 @@ class Power(object):
     def sendPowerPort4(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -372,7 +372,7 @@ class Power(object):
     def sendPowerBootPort1(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -393,7 +393,7 @@ class Power(object):
     def sendPowerBootPort2(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -414,7 +414,7 @@ class Power(object):
     def sendPowerBootPort3(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -435,7 +435,7 @@ class Power(object):
     def sendPowerBootPort4(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -456,7 +456,7 @@ class Power(object):
     def sendHubUSB(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device
@@ -478,7 +478,7 @@ class Power(object):
     def sendAutoDew(self):
         """
 
-        :return: true fot test_mountwizzard purpose
+        :return: true fot test purpose
         """
 
         device = self.app.power.device

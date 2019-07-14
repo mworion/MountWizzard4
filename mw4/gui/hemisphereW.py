@@ -108,7 +108,7 @@ class HemisphereWindow(widget.MWidget):
         elements. if some initialisations have to be proceeded with the loaded persistent
         data, they will be launched as well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
 
         if 'hemisphereW' not in self.app.config:
@@ -139,7 +139,7 @@ class HemisphereWindow(widget.MWidget):
         saving has to be proceeded to persistent data, they will be launched as
         well in this method.
 
-        :return: True for test_mountwizzard purpose
+        :return: True for test purpose
         """
         config = self.app.config['hemisphereW']
         config['winPosX'] = self.pos().x()
@@ -275,7 +275,7 @@ class HemisphereWindow(widget.MWidget):
         """
         drawCanvas retrieves the static content axe from widget and redraws the canvas
 
-        :return: success for test_mountwizzard
+        :return: success for test
         """
 
         if not self.mutexDraw.tryLock():

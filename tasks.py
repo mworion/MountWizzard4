@@ -112,7 +112,7 @@ def build_mountwizzard(c):
     c.run('python setup.py sdist')
 
 
-@task(pre=[build_mountwizzard])
+@task(pre=[])
 def build_mac_app(c):
     print('building mac app and dmg')
     print('update mountcontrol')

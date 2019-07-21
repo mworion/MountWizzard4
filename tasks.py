@@ -29,6 +29,12 @@ userWindows = 'mw@' + clientWindows
 workWindows = userWindows + ':/Users/mw/mountwizzard4'
 buildWindows = userWindows + ':/Users/mw/MountWizzard'
 
+# same for mac
+clientMAC = 'jupiter.fritz.box'
+userMAC = 'mw@' + clientMAC
+workMAC = userMAC + ':/Users/mw/test'
+buildMAC = userMAC + ':/Users/mw/MountWizzard'
+
 
 @task
 def clean_mountwizzard(c):
@@ -96,8 +102,9 @@ def test_mountwizzard(c):
     c.run('pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
 
 
-@task(pre=[test_mountcontrol, clean_mountcontrol])
+@task(pre=[test_mountcontrol])
 def build_mountcontrol(c):
+
     print('building dist mountcontrol')
     with c.cd('../mountcontrol'):
         c.run('rm -f dist/*.tar.gz')
@@ -106,6 +113,7 @@ def build_mountcontrol(c):
 
 @task(pre=[])
 def build_indibase(c):
+
     print('building dist indibase')
     with c.cd('../indibase'):
         c.run('rm -f dist/*.tar.gz')
@@ -135,35 +143,43 @@ def venv_windows(c):
 
 @task()
 def venv_mac(c):
+    # actually I stay with the local venv machine
     print('preparing mac')
     with c.cd('remote_scripts'):
         pass
+        # c.run(f' < setup_mac.sh')
 
 
-@task(pre=[venv_windows, build_dist])
+@task(pre=[build_indibase, build_mountcontrol, build_dist])
 def build_windows_app(c):
     print('build windows app and exe')
+
+    # preparing the directories
     c.run('rm -rf ./dist/*.exe')
     c.run(f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
     c.run(f'ssh {userWindows} "mkdir MountWizzard"')
+
+    # copy necessary files
     with c.cd('../mountcontrol'):
         c.run(f'scp dist/*.tar.gz {buildWindows}/mc.tar.gz')
     with c.cd('../indibase'):
         c.run(f'scp dist/*.tar.gz {buildWindows}/ib.tar.gz')
     c.run(f'scp dist/*.tar.gz {buildWindows}/mw4.tar.gz')
+
     c.run(f'scp mw4_windows.spec {buildWindows}')
     c.run(f'scp mw4_windows_console.spec {buildWindows}')
     with c.cd('remote_scripts'):
         c.run(f'scp mw4.ico {buildWindows}')
+
+    # doing the build job
     print('build windows windowed')
     with c.cd('remote_scripts'):
         c.run(f'ssh {userWindows} < build_windows.bat')
+    c.run(f'scp {buildWindows}/dist/MountWizzard4.exe ./dist/')
     print('build windows console')
     with c.cd('remote_scripts'):
         c.run(f'ssh {userWindows} < build_windows_console.bat')
-    print('copy app files')
     c.run(f'scp {buildWindows}/dist/MountWizzard4-console.exe ./dist/')
-    c.run(f'scp {buildWindows}/dist/MountWizzard4.exe ./dist/')
 
 
 @task(pre=[venv_mac, build_dist])
@@ -177,7 +193,7 @@ def build_mac_app(c):
     c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
 
 
-@task(pre=[venv_linux])
+@task(pre=[venv_linux, build_dist])
 def deploy_ubuntu(c):
     print('deploy ubuntu for test')
     c.run(f'ssh {userUbuntu} "bash -s" rm -rf mountwizzard4')
@@ -194,6 +210,7 @@ def deploy_ubuntu(c):
 
 @task(pre=[venv_windows, build_dist])
 def deploy_windows_dist(c):
+
     print('deploy windows dist for test')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
@@ -207,19 +224,42 @@ def deploy_windows_dist(c):
         c.run(f'ssh {userWindows} < install_dist_windows.bat')
 
 
-@task(pre=[build_windows_app])
-def deploy_windows_app(c):
+@task()
+def deploy_windows_app_console(c, no_build=False):
+
+    if not no_build:
+        build_windows_app()
+
     print('deploy windows console.exe for test')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
     with c.cd('./dist'):
         c.run(f'scp MountWizzard4-console.exe {workWindows}')
     with c.cd('remote_scripts'):
+        c.run(f'ssh {userWindows} < start_windows_app_console.bat')
+
+
+@task()
+def deploy_windows_app(c, no_build=False):
+
+    if not no_build:
+        build_windows_app()
+
+    print('deploy windows windowed for test')
+    c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
+    c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
+    with c.cd('./dist'):
+        c.run(f'scp MountWizzard4.exe {workWindows}')
+    with c.cd('remote_scripts'):
         c.run(f'ssh {userWindows} < start_windows_app.bat')
 
 
-@task(pre=[build_mac_app])
-def deploy_mac_app(c):
+@task
+def deploy_mac_app(c, no_build=False):
+
+    if not no_build:
+        build_mac_app()
+
     print('deploy mac for test')
     c.run('rm -rf /Users/mw/PycharmProjects/test')
     c.run('mkdir /Users/mw/PycharmProjects/test')

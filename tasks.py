@@ -112,8 +112,8 @@ def build_indibase(c):
         c.run('python setup.py sdist')
 
 
-@task(pre=[build_mountcontrol, build_indibase, test_mountwizzard])
-def build_dist_mountwizzard(c):
+@task(pre=[build_mountcontrol, build_indibase])
+def build_dist(c):
     print('building dist mountwizzard4')
     c.run('rm -f dist/*.tar.gz')
     c.run('python setup.py sdist')
@@ -133,7 +133,7 @@ def venv_windows(c):
         c.run(f'ssh {userWindows} < setup_windows.bat')
 
 
-@task(pre=[])
+@task(pre=[venv_windows])
 def build_windows_app(c):
     print('build windows app and exe')
     c.run(f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
@@ -148,6 +148,7 @@ def build_windows_app(c):
         c.run(f'scp mw4.ico {buildWindows}')
     with c.cd('remote_scripts'):
         c.run(f'ssh {userWindows} < build_windows.bat')
+    c.run(f'scp {buildWindows}/dist/MountWizzard4-console.exe ./dist/')
 
 
 @task(pre=[])
@@ -179,8 +180,8 @@ def deploy_ubuntu(c):
 
 
 @task(pre=[venv_windows])
-def deploy_windows(c):
-    print('deploy windows for test')
+def deploy_windows_dist(c):
+    print('deploy windows dist for test')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
     with c.cd('../mountcontrol'):
@@ -194,7 +195,17 @@ def deploy_windows(c):
 
 
 @task(pre=[])
-def deploy_mac(c):
+def deploy_windows_app(c):
+    print('deploy windows console.exe for test')
+    c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
+    c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
+    with c.cd('./dist'):
+        c.run(f'scp MountWizzard4-console.exe {workWindows}')
+    c.run(f'ssh {userWindows} "mountwizzard4/MountWizzard4-console.exe"')
+
+
+@task(pre=[])
+def deploy_mac_app(c):
     print('deploy mac for test')
     c.run('rm -rf /Users/mw/PycharmProjects/test')
     c.run('mkdir /Users/mw/PycharmProjects/test')

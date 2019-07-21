@@ -37,6 +37,7 @@ sys.modules['FixTk'] = None
 # define paths
 DISTPATH = '../dist'
 WORKPATH = '../build'
+astropy_path, = astropy.__path__
 
 block_cipher = None
 pythonPath = '/Users/mw/PycharmProjects/Envs/mw4/lib/Python3.7'
@@ -51,6 +52,7 @@ a = Analysis(['mw4/loader.py'],
                  ],
              datas=[
                     (sitePack + '/skyfield/data', './skyfield/data'),
+                    (astropy_path, 'astropy'),
              ],
              hiddenimports=['shelve',
                             'numpy.lib.recfunctions',
@@ -58,6 +60,7 @@ a = Analysis(['mw4/loader.py'],
              hookspath=[],
              runtime_hooks=[],
              excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter',
+                       'astropy',
                        ],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
@@ -65,12 +68,14 @@ a = Analysis(['mw4/loader.py'],
              )
 # remove thing to reduce size and number of files in package (have to be extracted)
 a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/sample_data')]
+# a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/fonts')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('PyQt5/Qt/translations')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('QtQuick')]
 a.binaries = [x for x in a.binaries if not x[0].startswith('QtQml')]
 
 # same to datas
 a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/sample_data')]
+# a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/fonts')]
 a.datas = [x for x in a.datas if not x[0].startswith('PyQt5/Qt/translations')]
 a.datas = [x for x in a.datas if not x[0].startswith('QtQuick')]
 a.datas = [x for x in a.datas if not x[0].startswith('QtQml')]

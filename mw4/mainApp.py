@@ -149,6 +149,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.start(500)
 
         # finishing for test
+        if not len(sys.argv) > 1:
+            return
         if sys.argv[1] == 'test':
             self.update3s.connect(self.quitSave)
 

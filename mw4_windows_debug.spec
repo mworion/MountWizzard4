@@ -30,6 +30,7 @@ sys.modules['FixTk'] = None
 # define paths
 DISTPATH = '../dist'
 WORKPATH = '../build'
+astropy_path, = astropy.__path__
 
 block_cipher = None
 pythonPath = '/Users/mw/mw4/Lib'
@@ -46,6 +47,9 @@ a = Analysis([packageDir + '/loader.py'],
                  ],
              datas=[
                  (sitePack + '/skyfield/data', './skyfield/data'),
+                 (astropy_path, 'astropy'),
+                 # (sitePack + '/mountcontrol', './mountcontrol'),
+                 # (sitePack + '/indibase', './indibase'),
              ],
              hiddenimports=[
                  'numpy.lib.recfunctions',
@@ -54,6 +58,7 @@ a = Analysis([packageDir + '/loader.py'],
              hookspath=[],
              runtime_hooks=[],
              excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter',
+                       'astropy',
                        ],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,

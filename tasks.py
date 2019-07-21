@@ -18,13 +18,15 @@
 ###########################################################
 from invoke import task
 
-global clientUbuntu, userUbuntu
+global clientUbuntu, userUbuntu, workUbuntu
 clientUbuntu = 'astro-ubuntu.fritz.box'
 userUbuntu = 'mw@' + clientUbuntu
+workUbuntu = userUbuntu + ':/home/mw/mountwizzard4'
 
-global clientWindows, userWindows
+global clientWindows, userWindows, workWindows
 clientWindows = 'astro-windows.fritz.box'
 userWindows = 'mw@' + clientWindows
+workWindows = userWindows + '/Users\mw/mountwizzard4'
 
 
 @task
@@ -147,12 +149,12 @@ def prepare_windows(c):
 def deploy_ubuntu(c):
     print('deploy ubuntu for test')
     with c.cd('../mountcontrol'):
-        c.run(f'scp dist/*.tar.gz {userWindows}:/Users/mw/mountwizzard4/mc.tar.gz')
+        c.run(f'scp dist/*.tar.gz {workUbuntu}/mc.tar.gz')
     with c.cd('../indibase'):
-        c.run(f'scp dist/*.tar.gz {userWindows}:/Users/mw/mountwizzard4/ib.tar.gz')
-    c.run(f'scp dist/*.tar.gz {userWindows}:/Users/mw/mountwizzard4/mw4.tar.gz')
+        c.run(f'scp dist/*.tar.gz {workUbuntu}ib.tar.gz')
+    c.run(f'scp dist/*.tar.gz {workUbuntu}/mw4.tar.gz')
     with c.cd('remote_scripts'):
-        c.run(f'scp start_ubuntu.sh {userUbuntu}:/home/mw/mountwizzard4')
+        c.run(f'scp start_ubuntu.sh {workUbuntu}')
         c.run(f'ssh {userUbuntu} "bash -s" < install_dist_ubuntu.sh')
 
 
@@ -160,12 +162,12 @@ def deploy_ubuntu(c):
 def deploy_windows(c):
     print('deploy windows for test')
     with c.cd('../mountcontrol'):
-        c.run(f'scp dist/*.tar.gz {userWindows}:/Users/mw/mountwizzard4/mc.tar.gz')
+        c.run(f'scp dist/*.tar.gz {workWindows}/mc.tar.gz')
     with c.cd('../indibase'):
-        c.run(f'scp dist/*.tar.gz {userWindows}:/Users/mw/mountwizzard4/ib.tar.gz')
-    c.run(f'scp dist/*.tar.gz {userWindows}:/Users/mw/mountwizzard4/mw4.tar.gz')
+        c.run(f'scp dist/*.tar.gz {workWindows}/ib.tar.gz')
+    c.run(f'scp dist/*.tar.gz {workWindows}/mw4.tar.gz')
     with c.cd('remote_scripts'):
-        c.run(f'scp start_windows.bat {userWindows}:/Users/mw/mountwizzard4')
+        c.run(f'scp start_windows.bat {workWindows}')
         c.run(f'ssh {userWindows} < install_dist_windows.bat')
 
 

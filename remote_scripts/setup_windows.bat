@@ -1,6 +1,4 @@
 if exist mw4 (rmdir /s/q mw4)
-if exist mountwizzard4 (rmdir /s/q mountwizzard4)
-mkdir mountwizzard4
 python -m venv mw4
 mw4\Scripts\activate.bat
 pip install PyQt5==5.12.2

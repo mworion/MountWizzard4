@@ -18,15 +18,16 @@
 ###########################################################
 from invoke import task
 
-global clientUbuntu, userUbuntu, workUbuntu
+# defining environment for ubuntu
 clientUbuntu = 'astro-ubuntu.fritz.box'
 userUbuntu = 'mw@' + clientUbuntu
 workUbuntu = userUbuntu + ':/home/mw/mountwizzard4'
 
-global clientWindows, userWindows, workWindows
+# same for windows10 with cmd.exe as shell
 clientWindows = 'astro-windows.fritz.box'
 userWindows = 'mw@' + clientWindows
 workWindows = userWindows + ':/Users/mw/mountwizzard4'
+buildWindows = userWindows + ':/Users/mw/MountWizzard'
 
 
 @task
@@ -112,10 +113,23 @@ def build_indibase(c):
 
 
 @task(pre=[build_mountcontrol, build_indibase, test_mountwizzard])
-def build_mountwizzard(c):
+def build_dist_mountwizzard(c):
     print('building dist mountwizzard4')
     c.run('rm -f dist/*.tar.gz')
     c.run('python setup.py sdist')
+
+
+@task(pre=[prepare_windows])
+def build_windows_app(c):
+    print('build windows app and exe')
+    with c.cd('../mountcontrol'):
+        c.run(f'scp dist/*.tar.gz {workWindows}/mc.tar.gz')
+    with c.cd('../indibase'):
+        c.run(f'scp dist/*.tar.gz {workWindows}/ib.tar.gz')
+    c.run(f'scp dist/*.tar.gz {workWindows}/mw4.tar.gz')
+    with c.cd('remote_scripts'):
+        c.run(f'scp start_windows.bat {workWindows}')
+        c.run(f'ssh {userWindows} < install_dist_windows.bat')
 
 
 @task(pre=[])

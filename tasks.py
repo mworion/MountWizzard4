@@ -26,7 +26,7 @@ workUbuntu = userUbuntu + ':/home/mw/mountwizzard4'
 global clientWindows, userWindows, workWindows
 clientWindows = 'astro-windows.fritz.box'
 userWindows = 'mw@' + clientWindows
-workWindows = userWindows + '/Users/mw/mountwizzard4'
+workWindows = userWindows + ':/Users/mw/mountwizzard4'
 
 
 @task

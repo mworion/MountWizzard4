@@ -135,7 +135,7 @@ def venv_windows(c):
 
 @task()
 def venv_mac(c):
-    print('preparing maac')
+    print('preparing mac')
     with c.cd('remote_scripts'):
         pass
 

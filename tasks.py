@@ -150,12 +150,19 @@ def build_windows_app(c):
     with c.cd('../indibase'):
         c.run(f'scp dist/*.tar.gz {buildWindows}/ib.tar.gz')
     c.run(f'scp dist/*.tar.gz {buildWindows}/mw4.tar.gz')
-    c.run(f'scp mw4_windows_debug.spec {buildWindows}')
+    c.run(f'scp mw4_windows.spec {buildWindows}')
+    c.run(f'scp mw4_windows_console.spec {buildWindows}')
     with c.cd('remote_scripts'):
         c.run(f'scp mw4.ico {buildWindows}')
+    print('build windows windowed')
     with c.cd('remote_scripts'):
         c.run(f'ssh {userWindows} < build_windows.bat')
+    print('build windows console')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userWindows} < build_windows_console.bat')
+    print('copy app files')
     c.run(f'scp {buildWindows}/dist/MountWizzard4-console.exe ./dist/')
+    c.run(f'scp {buildWindows}/dist/MountWizzard4.exe ./dist/')
 
 
 @task(pre=[venv_mac, build_dist])

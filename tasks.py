@@ -133,6 +133,13 @@ def venv_windows(c):
         c.run(f'ssh {userWindows} < setup_windows.bat')
 
 
+@task()
+def venv_mac(c):
+    print('preparing maac')
+    with c.cd('remote_scripts'):
+        pass
+
+
 @task(pre=[venv_windows, build_dist])
 def build_windows_app(c):
     print('build windows app and exe')
@@ -151,7 +158,7 @@ def build_windows_app(c):
     c.run(f'scp {buildWindows}/dist/MountWizzard4-console.exe ./dist/')
 
 
-@task(pre=[])
+@task(pre=[venv_mac, build_dist])
 def build_mac_app(c):
     print('building mac app and dmg')
     print('update mountcontrol')
@@ -205,7 +212,7 @@ def deploy_windows_app(c):
         c.run(f'ssh {userWindows} < start_windows_app.bat')
 
 
-@task(pre=[])
+@task(pre=[build_mac_app])
 def deploy_mac_app(c):
     print('deploy mac for test')
     c.run('rm -rf /Users/mw/PycharmProjects/test')

@@ -143,6 +143,7 @@ def venv_mac(c):
 @task(pre=[venv_windows, build_dist])
 def build_windows_app(c):
     print('build windows app and exe')
+    c.run('rm -rf ./dist/*.exe')
     c.run(f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
     c.run(f'ssh {userWindows} "mkdir MountWizzard"')
     with c.cd('../mountcontrol'):
@@ -168,13 +169,11 @@ def build_windows_app(c):
 @task(pre=[venv_mac, build_dist])
 def build_mac_app(c):
     print('building mac app and dmg')
-    print('update mountcontrol')
+    c.run('rm -rf ./dist/*.app')
+    c.run('rm -rf ./dist/*.dmg')
     c.run('pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
-    print('update indibase')
     c.run('pip install ../indibase/dist/indibase-*.tar.gz')
-    print('pyinstaller')
     c.run('pyinstaller -y mw4_mac.spec')
-    print('building dmg')
     c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
 
 

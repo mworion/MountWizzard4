@@ -33,7 +33,7 @@ WORKPATH = '../build'
 astropy_path, = astropy.__path__
 
 block_cipher = None
-pythonPath = '/Users/mw/mw4/Lib'
+pythonPath = '/Users/mw/venv/Lib'
 sitePack = pythonPath + '/site-packages'
 
 

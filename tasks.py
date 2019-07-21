@@ -193,16 +193,24 @@ def build_mac_app(c):
     c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
 
 
-@task(pre=[venv_linux, build_dist])
-def deploy_ubuntu(c):
+@task(pre=[venv_linux])
+def deploy_ubuntu(c, no_build=False):
+
+    if not no_build:
+        build_dist()
+
     print('deploy ubuntu for test')
     c.run(f'ssh {userUbuntu} "bash -s" rm -rf mountwizzard4')
     c.run(f'ssh {userUbuntu} "bash -s" mkdir mountwizzard4')
+
+    # copy necessary files
     with c.cd('../mountcontrol'):
         c.run(f'scp dist/*.tar.gz {workUbuntu}/mc.tar.gz')
     with c.cd('../indibase'):
         c.run(f'scp dist/*.tar.gz {workUbuntu}ib.tar.gz')
     c.run(f'scp dist/*.tar.gz {workUbuntu}/mw4.tar.gz')
+
+    # run the
     with c.cd('remote_scripts'):
         c.run(f'scp start_ubuntu.sh {workUbuntu}')
         c.run(f'ssh {userUbuntu} "bash -s" < install_dist_ubuntu.sh')

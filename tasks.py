@@ -120,7 +120,7 @@ def build_indibase(c):
         c.run('python setup.py sdist')
 
 
-@task(pre=[build_mountcontrol, build_indibase])
+@task(pre=[build_mountcontrol, build_indibase, test_mountwizzard])
 def build_dist(c):
     print('building dist mountwizzard4')
     c.run('rm -f dist/*.tar.gz')
@@ -150,7 +150,7 @@ def venv_mac(c):
         # c.run(f' < setup_mac.sh')
 
 
-@task(pre=[build_indibase, build_mountcontrol, build_dist])
+@task(pre=[build_indibase, build_mountcontrol])
 def build_windows_app(c):
     print('build windows app and exe')
 
@@ -182,7 +182,7 @@ def build_windows_app(c):
     c.run(f'scp {buildWindows}/dist/MountWizzard4-console.exe ./dist/')
 
 
-@task(pre=[venv_mac, build_dist])
+@task(pre=[venv_mac])
 def build_mac_app(c):
     print('building mac app and dmg')
     c.run('rm -rf ./dist/*.app')

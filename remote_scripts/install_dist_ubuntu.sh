@@ -1,6 +1,4 @@
 #!/bin/bash
-rm -rf mountwizzard4
-mkdir mountwizzard4
 source mw4/bin/activate
 cd mountwizzard4
 pip install mc.tar.gz

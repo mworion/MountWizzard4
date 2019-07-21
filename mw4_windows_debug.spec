@@ -30,16 +30,15 @@ sys.modules['FixTk'] = None
 # define paths
 DISTPATH = '../dist'
 WORKPATH = '../build'
-astropy_path, = astropy.__path__
 
 block_cipher = None
-pythonPath = '/Users/astro/Envs/mw4/Lib'
+pythonPath = '/Users/mw/mw4/Lib'
 sitePack = pythonPath + '/site-packages'
 
 
-distDir = '/Users/astro/PycharmProjects/MountWizzard4/dist'
-packageDir = '/Users/astro/PycharmProjects/MountWizzard4/mw4'
-importDir = '/Users/astro/PycharmProjects/MountWizzard4'
+distDir = '/Users/mw/MountWizzard/dist'
+packageDir = '/Users/mw/MountWizzard/mw4'
+importDir = '/Users/mw/MountWizzard'
 
 a = Analysis([packageDir + '/loader.py'],
              pathex=[packageDir],
@@ -47,9 +46,6 @@ a = Analysis([packageDir + '/loader.py'],
                  ],
              datas=[
                  (sitePack + '/skyfield/data', './skyfield/data'),
-                 (astropy_path, 'astropy'),
-                 # (sitePack + '/mountcontrol', './mountcontrol'),
-                 # (sitePack + '/indibase', './indibase'),
              ],
              hiddenimports=[
                  'numpy.lib.recfunctions',
@@ -58,7 +54,6 @@ a = Analysis([packageDir + '/loader.py'],
              hookspath=[],
              runtime_hooks=[],
              excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter',
-                       'astropy',
                        ],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
@@ -92,7 +87,7 @@ exe = EXE(pyz,
           strip=False,
           upx=False,
           console=True,
-          icon='./mw4/gui/media/mw4.ico',
+          icon='mw4.ico',
           )
 
 #
@@ -105,14 +100,14 @@ from mw4.mainApp import MountWizzard4
 BUILD_NO = MountWizzard4.version
 
 buildFile = distDir + '/MountWizzard4.exe'
-buildFileNumber = distDir + '/mountwizzard' + BUILD_NO + '-console.exe'
+buildFileNumber = distDir + '/MountWizzard4-console.exe'
 
 print(BUILD_NO)
 
 app = BUNDLE(exe,
              name='MountWizzard4.exe',
              version=4,
-             icon='./mw4/gui/media/mw4.ico',
+             icon='mw4.ico',
              bundle_identifier=None)
 
 #

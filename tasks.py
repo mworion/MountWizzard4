@@ -119,17 +119,35 @@ def build_dist_mountwizzard(c):
     c.run('python setup.py sdist')
 
 
-@task(pre=[prepare_windows])
+@task()
+def venv_linux(c):
+    print('preparing linux')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh -t {userUbuntu} "bash -s" < setup_linux.sh')
+
+
+@task()
+def venv_windows(c):
+    print('preparing windows')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userWindows} < setup_windows.bat')
+
+
+@task(pre=[])
 def build_windows_app(c):
     print('build windows app and exe')
+    c.run(f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
+    c.run(f'ssh {userWindows} "mkdir MountWizzard"')
     with c.cd('../mountcontrol'):
-        c.run(f'scp dist/*.tar.gz {workWindows}/mc.tar.gz')
+        c.run(f'scp dist/*.tar.gz {buildWindows}/mc.tar.gz')
     with c.cd('../indibase'):
-        c.run(f'scp dist/*.tar.gz {workWindows}/ib.tar.gz')
-    c.run(f'scp dist/*.tar.gz {workWindows}/mw4.tar.gz')
+        c.run(f'scp dist/*.tar.gz {buildWindows}/ib.tar.gz')
+    c.run(f'scp dist/*.tar.gz {buildWindows}/mw4.tar.gz')
+    c.run(f'scp mw4_windows_debug.spec {buildWindows}')
     with c.cd('remote_scripts'):
-        c.run(f'scp start_windows.bat {workWindows}')
-        c.run(f'ssh {userWindows} < install_dist_windows.bat')
+        c.run(f'scp mw4.ico {buildWindows}')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userWindows} < build_windows.bat')
 
 
 @task(pre=[])
@@ -145,23 +163,11 @@ def build_mac_app(c):
     c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
 
 
-@task()
-def prepare_linux(c):
-    print('preparing linux')
-    with c.cd('remote_scripts'):
-        c.run(f'ssh -t {userUbuntu} "bash -s" < setup_linux.sh')
-
-
-@task()
-def prepare_windows(c):
-    print('preparing windows')
-    with c.cd('remote_scripts'):
-        c.run(f'ssh {userWindows} < setup_windows.bat')
-
-
-@task(pre=[prepare_linux])
+@task(pre=[venv_linux])
 def deploy_ubuntu(c):
     print('deploy ubuntu for test')
+    c.run(f'ssh {userUbuntu} "bash -s" rm -rf mountwizzard4')
+    c.run(f'ssh {userUbuntu} "bash -s" mkdir mountwizzard4')
     with c.cd('../mountcontrol'):
         c.run(f'scp dist/*.tar.gz {workUbuntu}/mc.tar.gz')
     with c.cd('../indibase'):
@@ -172,9 +178,11 @@ def deploy_ubuntu(c):
         c.run(f'ssh {userUbuntu} "bash -s" < install_dist_ubuntu.sh')
 
 
-@task(pre=[prepare_windows])
+@task(pre=[venv_windows])
 def deploy_windows(c):
     print('deploy windows for test')
+    c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
+    c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
     with c.cd('../mountcontrol'):
         c.run(f'scp dist/*.tar.gz {workWindows}/mc.tar.gz')
     with c.cd('../indibase'):

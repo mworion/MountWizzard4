@@ -22,6 +22,10 @@ global clientUbuntu, userUbuntu
 clientUbuntu = 'astro-ubuntu.fritz.box'
 userUbuntu = 'mw@' + clientUbuntu
 
+global clientWindows, userWindows
+clientWindows = 'astro-windows.fritz.box'
+userWindows = 'mw@' + clientWindows
+
 
 @task
 def clean_mountwizzard(c):
@@ -132,6 +136,13 @@ def prepare_linux(c):
         c.run(f'ssh -t {userUbuntu} "bash -s" < setup_linux.sh')
 
 
+@task()
+def prepare_windows(c):
+    print('preparing windows')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userWindows} < setup_windows.bat')
+
+
 @task(pre=[prepare_linux])
 def deploy_ubuntu(c):
     print('deploy ubuntu for test')
@@ -141,8 +152,21 @@ def deploy_ubuntu(c):
         c.run(f'scp dist/*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
     c.run(f'scp dist/*.tar.gz {userUbuntu}:/home/mw/mountwizzard4')
     with c.cd('remote_scripts'):
-        c.run(f'scp start.sh {userUbuntu}:/home/mw/mountwizzard4')
-        c.run(f'ssh {userUbuntu} "bash -s" < install_dist.sh')
+        c.run(f'scp start_ubuntu.sh {userUbuntu}:/home/mw/mountwizzard4')
+        c.run(f'ssh {userUbuntu} "bash -s" < install_dist_ubuntu.sh')
+
+
+@task(pre=[prepare_windows])
+def deploy_windows(c):
+    print('deploy windows for test')
+    with c.cd('../mountcontrol'):
+        c.run(f'scp dist/*.tar.gz {userWindows}:/Users/mw/mountwizzard4')
+    with c.cd('../indibase'):
+        c.run(f'scp dist/*.tar.gz {userWindows}:/Users/mw/mountwizzard4')
+    c.run(f'scp dist/*.tar.gz {userWindows}:/Users/mw/mountwizzard4')
+    with c.cd('remote_scripts'):
+        c.run(f'scp start_windows.bat {userWindows}:/Users/mw/mountwizzard4')
+        c.run(f'ssh {userWindows} < install_dist_windows.bat')
 
 
 @task(pre=[])

@@ -1,6 +1,6 @@
 if exist mw4 (rmdir /s/q mw4)
-python -m venv mw4
-mw4\Scripts\activate.bat
+python -m venv venv
+venv\Scripts\activate.bat
 pip install PyQt5==5.12.2
 pip install astropy==3.1.2
 pip install matplotlib==3.1.1

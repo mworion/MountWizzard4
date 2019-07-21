@@ -1,4 +1,4 @@
-mw4\Scripts\activate.bat
+venv\Scripts\activate.bat
 cd MountWizzard
 pip install mc.tar.gz
 pip install ib.tar.gz

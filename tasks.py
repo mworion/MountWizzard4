@@ -133,7 +133,7 @@ def venv_windows(c):
         c.run(f'ssh {userWindows} < setup_windows.bat')
 
 
-@task(pre=[venv_windows])
+@task(pre=[venv_windows, build_dist])
 def build_windows_app(c):
     print('build windows app and exe')
     c.run(f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
@@ -179,7 +179,7 @@ def deploy_ubuntu(c):
         c.run(f'ssh {userUbuntu} "bash -s" < install_dist_ubuntu.sh')
 
 
-@task(pre=[venv_windows])
+@task(pre=[venv_windows, build_dist])
 def deploy_windows_dist(c):
     print('deploy windows dist for test')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
@@ -194,7 +194,7 @@ def deploy_windows_dist(c):
         c.run(f'ssh {userWindows} < install_dist_windows.bat')
 
 
-@task(pre=[])
+@task(pre=[build_windows_app])
 def deploy_windows_app(c):
     print('deploy windows console.exe for test')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')

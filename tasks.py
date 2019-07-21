@@ -208,8 +208,11 @@ def deploy_ubuntu(c):
         c.run(f'ssh {userUbuntu} "bash -s" < install_dist_ubuntu.sh')
 
 
-@task(pre=[venv_windows, build_dist])
-def deploy_windows_dist(c):
+@task(pre=[venv_windows])
+def deploy_windows_dist(c, no_build=False):
+
+    if not no_build:
+        build_dist()
 
     print('deploy windows dist for test')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')

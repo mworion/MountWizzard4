@@ -1,4 +1,4 @@
-if exist mw4 (rmdir /s/q mw4)
+if exist venv (rmdir /s/q venv)
 python -m venv venv
 venv\Scripts\activate.bat
 pip install PyQt5==5.12.2

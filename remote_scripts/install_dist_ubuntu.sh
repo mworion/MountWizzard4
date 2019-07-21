@@ -1,5 +1,5 @@
 #!/bin/bash
-source mw4/bin/activate
+source venv/bin/activate
 cd mountwizzard4
 pip install mc.tar.gz
 pip install ib.tar.gz

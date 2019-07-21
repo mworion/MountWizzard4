@@ -201,7 +201,8 @@ def deploy_windows_app(c):
     c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
     with c.cd('./dist'):
         c.run(f'scp MountWizzard4-console.exe {workWindows}')
-    c.run(f'ssh {userWindows} "mountwizzard4/MountWizzard4-console.exe"')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userWindows} < start_windows_app.bat')
 
 
 @task(pre=[])

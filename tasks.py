@@ -205,7 +205,7 @@ def build_mac_app(c):
 
     c.run(f'scp mw4_mac.spec {buildMAC}')
     with c.cd('remote_scripts'):
-        c.run(f'scp mw4.ico {buildMAC}')
+        c.run(f'scp mw4.icns {buildMAC}')
 
     # doing the build job
     print('build app')

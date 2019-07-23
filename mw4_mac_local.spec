@@ -35,8 +35,6 @@ import astropy
 sys.modules['FixTk'] = None
 
 # define paths
-DISTPATH = '../dist'
-WORKPATH = '../build'
 astropy_path, = astropy.__path__
 
 block_cipher = None

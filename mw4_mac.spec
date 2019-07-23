@@ -22,6 +22,7 @@
 #
 #  remove try case under astropy.visualisation.wcsaxes.__init__.py for loading pytest
 #
+# Important: still using virtualenv==16.1.0 because distutils are missing later on
 
 # standard libraries
 import os
@@ -35,8 +36,6 @@ import astropy
 sys.modules['FixTk'] = None
 
 # define paths
-DISTPATH = '../dist'
-WORKPATH = '../build'
 astropy_path, = astropy.__path__
 
 block_cipher = None

@@ -48,8 +48,6 @@ a = Analysis([packageDir + '/loader.py'],
              datas=[
                  (sitePack + '/skyfield/data', './skyfield/data'),
                  (astropy_path, 'astropy'),
-                 # (sitePack + '/mountcontrol', './mountcontrol'),
-                 # (sitePack + '/indibase', './indibase'),
              ],
              hiddenimports=[
                  'numpy.lib.recfunctions',

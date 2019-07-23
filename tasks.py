@@ -30,7 +30,7 @@ workWindows = userWindows + ':/Users/mw/mountwizzard4'
 buildWindows = userWindows + ':/Users/mw/MountWizzard'
 
 # same for mac
-clientMAC = 'jupiter.fritz.box'
+clientMAC = 'astro-mac.fritz.box'
 userMAC = 'mw@' + clientMAC
 workMAC = userMAC + ':/Users/mw/test'
 buildMAC = userMAC + ':/Users/mw/MountWizzard'
@@ -143,11 +143,9 @@ def venv_windows(c):
 
 @task()
 def venv_mac(c):
-    # actually I stay with the local venv machine
     print('preparing mac')
     with c.cd('remote_scripts'):
-        pass
-        # c.run(f' < setup_mac.sh')
+        c.run(f'ssh {userMAC} < setup_mac.sh')
 
 
 @task(pre=[build_indibase, build_mountcontrol])
@@ -176,14 +174,10 @@ def build_windows_app(c):
     with c.cd('remote_scripts'):
         c.run(f'ssh {userWindows} < build_windows.bat')
     c.run(f'scp {buildWindows}/dist/MountWizzard4.exe ./dist/')
-    print('build windows console')
-    with c.cd('remote_scripts'):
-        c.run(f'ssh {userWindows} < build_windows_console.bat')
-    c.run(f'scp {buildWindows}/dist/MountWizzard4-console.exe ./dist/')
 
 
 @task(pre=[venv_mac])
-def build_mac_app(c):
+def build_mac_app_local(c):
     print('building mac app and dmg')
     c.run('rm -rf ./dist/*.app')
     c.run('rm -rf ./dist/*.dmg')
@@ -191,6 +185,32 @@ def build_mac_app(c):
     c.run('pip install ../indibase/dist/indibase-*.tar.gz')
     c.run('pyinstaller -y mw4_mac.spec')
     c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
+
+
+@task(pre=[build_indibase, build_mountcontrol])
+def build_mac_app(c):
+    print('build mac app')
+
+    # preparing the directories
+    c.run('rm -rf ./dist/*.app')
+    c.run(f'ssh {userMAC} rm -rf MountWizzard')
+    c.run(f'ssh {userMAC} mkdir MountWizzard')
+
+    # copy necessary files
+    with c.cd('../mountcontrol'):
+        c.run(f'scp dist/*.tar.gz {buildMAC}/mc.tar.gz')
+    with c.cd('../indibase'):
+        c.run(f'scp dist/*.tar.gz {buildMAC}/ib.tar.gz')
+    c.run(f'scp dist/*.tar.gz {buildMAC}/mw4.tar.gz')
+
+    c.run(f'scp mw4_mac.spec {buildMAC}')
+    with c.cd('remote_scripts'):
+        c.run(f'scp mw4.ico {buildMAC}')
+
+    # doing the build job
+    print('build app')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userMAC} < build_mac.sh')
 
 
 @task(pre=[])

@@ -92,7 +92,7 @@ exe = EXE(pyz,
           upx=False,
           console=False,
           onefile=True,
-          icon='mw4.icns',
+          icon='remote_scripts/mw4.icns',
           # exclude_binaries=True,
           )
 
@@ -116,6 +116,6 @@ if os.path.isfile(buildFile):
 app = BUNDLE(exe,
              name='MountWizzard4.app',
              version=4,
-             icon='mw4.icns',
+             icon='remote_scripts/mw4.icns',
              bundle_identifier=None)
 

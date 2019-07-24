@@ -31,6 +31,15 @@ import shutil
 import astropy
 # import numpy
 # local import
+
+
+# adding this line helps in virtualenv building packages without problems missing distutils
+# see: https://github.com/pyinstaller/pyinstaller/issues/4064
+import distutils
+if distutils.distutils_path.endswith('__init__.py'):
+    distutils.distutils_path = os.path.dirname(distutils.distutils_path)
+# end fix
+
 # remove TK
 sys.modules['FixTk'] = None
 

@@ -27,6 +27,8 @@ import socket
 import datetime
 import warnings
 import traceback
+import shutil
+from io import BytesIO
 # external packages
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -220,28 +222,25 @@ def preloadDataFiles(mwGlob=None, splashW=None):
 
     :return: True fpr test purpose
     """
-    urls = [
-        'https://hpiers.obspm.fr/iers/bul/bulc/Leap_Second.dat',
-        'http://maia.usno.navy.mil/ser7/deltat.data',
-        'http://maia.usno.navy.mil/ser7/deltat.preds',
-        'ftp://ssd.jpl.nasa.gov/pub/eph/planets/bsp/de421.bsp',
-        'ftp://cdsarc.u-strasbg.fr/cats/I/239/hip_main.dat.gz',
-    ]
     files = [
         'Leap_Second.dat',
         'deltat.data',
         'deltat.preds',
-        'de421.bsp',
-        'hip_main.dat.gz',
+        'de421_23.bsp',
+        'stations.txt',
     ]
-    for url, file in zip(urls, files):
+    for file in files:
         splashW.showMessage('Loading {0}'.format(file))
         filePath = mwGlob['dataDir'] + '/' + file
         if os.path.isfile(filePath):
             continue
-        skyfield.iokit.download(url,
-                                filePath,
-                                verbose=True)
+        # as we cannot access data from Qt resource system, we have to convert it to
+        # ByteIO first
+        stream = PyQt5.QtCore.QFile(f':/{file}')
+        stream.open(PyQt5.QtCore.QFile.ReadOnly)
+        with open(filePath, 'wb') as outFile:
+            outFile.write(stream.readAll())
+        stream.close()
     return True
 
 

@@ -113,7 +113,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                           expire=expireData,
                                           verbose=False,
                                           )
-        self.planets = self.loader('de421.bsp')
+        self.planets = self.loader('de421_23.bsp')
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
         self.dome = dome.Dome(self, host='localhost')

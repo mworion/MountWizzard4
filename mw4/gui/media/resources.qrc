@@ -12,5 +12,10 @@
     <file>beep1.wav</file>
     <file>horn.wav</file>
     <file>worldmap.dat</file>
+    <file>de421_23.bsp</file>
+    <file>active.txt</file>
+    <file>deltat.data</file>
+    <file>deltat.preds</file>
+    <file>Leap_Second.dat</file>
 </qresource>
 </RCC>

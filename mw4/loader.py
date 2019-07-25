@@ -219,6 +219,9 @@ def writeSystemInfo(mwGlob=None):
 
 def preloadDataFiles(mwGlob=None, splashW=None):
     """
+    we have the necessary files for leap second, ephemerides and satellite already stored
+    in the files system of the app. we bring them to the file system of the user, if they
+    do not exist.
 
     :return: True fpr test purpose
     """

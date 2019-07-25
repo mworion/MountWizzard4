@@ -23,6 +23,11 @@ clientUbuntu = 'astro-ubuntu.fritz.box'
 userUbuntu = 'mw@' + clientUbuntu
 workUbuntu = userUbuntu + ':/home/mw/mountwizzard4'
 
+# defining work environment for ubuntu
+clientWork = 'astro-comp.fritz.box'
+userWork = 'mw@' + clientWork
+workWork = userWork + ':/home/mw/mountwizzard4'
+
 # same for windows10 with cmd.exe as shell
 clientWindows = 'astro-windows.fritz.box'
 userWindows = 'mw@' + clientWindows
@@ -131,7 +136,14 @@ def build_dist(c):
 def venv_linux(c):
     print('preparing linux')
     with c.cd('remote_scripts'):
-        c.run(f'ssh -t {userUbuntu} "bash -s" < setup_linux.sh')
+        c.run(f'ssh {userUbuntu} < setup_linux.sh')
+
+
+@task()
+def venv_work(c):
+    print('preparing work')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userWork} < setup_linux.sh')
 
 
 @task()
@@ -233,7 +245,32 @@ def deploy_ubuntu(c, no_build=False):
     # run the
     with c.cd('remote_scripts'):
         c.run(f'scp start_ubuntu.sh {workUbuntu}')
-        c.run(f'ssh {userUbuntu} "bash -s" < install_dist_ubuntu.sh')
+        c.run(f'ssh {userUbuntu} < install_dist_ubuntu.sh')
+
+
+@task(pre=[])
+def deploy_work(c, no_build=False):
+
+    if not no_build:
+        build_dist()
+
+    print('deploy ubuntu mate work')
+    c.run(f'ssh {userWork} rm -rf mountwizzard4')
+    c.run(f'ssh {userWork} mkdir mountwizzard4')
+
+    # copy necessary files
+    with c.cd('../mountcontrol'):
+        c.run(f'scp dist/*.tar.gz {workWork}/mc.tar.gz')
+    with c.cd('../indibase'):
+        c.run(f'scp dist/*.tar.gz {workWork}/ib.tar.gz')
+    c.run(f'scp dist/*.tar.gz {workWork}/mw4.tar.gz')
+
+    # run the
+    with c.cd('remote_scripts'):
+        c.run(f'scp start_work.sh {workWork}')
+        c.run(f'scp MountWizzard4.desktop {workWork}')
+        c.run(f'scp mw4.png {workWork}')
+        c.run(f'ssh {userWork} < install_dist_work.sh')
 
 
 @task(pre=[venv_windows])
@@ -253,6 +290,7 @@ def deploy_windows_dist(c, no_build=False):
     with c.cd('remote_scripts'):
         c.run(f'scp start_windows.bat {workWindows}')
         c.run(f'ssh {userWindows} < install_dist_windows.bat')
+    c.run(f'ssh {userWindows} "rm -rf *.tar.gz"')
 
 
 @task()

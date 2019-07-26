@@ -1,6 +1,6 @@
 if exist venv (rmdir /s/q venv)
 python -m venv venv
-venv\Scripts\activate.bat
+venv\Scripts\activate
 pip install PyQt5==5.12.2
 pip install astropy==3.1.2
 pip install matplotlib==3.1.1

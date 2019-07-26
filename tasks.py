@@ -283,7 +283,6 @@ def deploy_windows_dist(c):
     with c.cd('remote_scripts'):
         c.run(f'scp start_windows.bat {workWindows}')
         c.run(f'ssh {userWindows} < install_dist_windows.bat')
-    c.run(f'ssh {userWindows} "rm -rf *.tar.gz"')
 
 
 @task(pre=[])
@@ -344,7 +343,22 @@ def deploy_mac_dist(c):
         c.run(f'ssh {userMAC} < install_dist_mac.sh')
 
 
-@task(pre=[build_dist, build_windows_app, build_mac_app])
+@task(pre=[])
 def build_all(c):
 
     print('build all')
+    build_dist(c)
+    build_windows_app(c)
+    build_windows_app_console(c)
+    build_mac_app(c)
+
+
+@task(pre=[])
+def deploy_all(c):
+
+    print('deploy all')
+    deploy_ubuntu(c)
+    deploy_windows_dist(c)
+    deploy_windows_app(c)
+    deploy_mac_dist(c)
+    deploy_mac_app(c)

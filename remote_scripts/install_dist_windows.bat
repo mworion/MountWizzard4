@@ -1,4 +1,4 @@
-venv\Scripts\activate.bat
+venv\Scripts\activate
 cd mountwizzard4
 pip install mc.tar.gz
 pip install ib.tar.gz

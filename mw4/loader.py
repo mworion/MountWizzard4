@@ -230,7 +230,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
         'deltat.data',
         'deltat.preds',
         'de421_23.bsp',
-        'stations.txt',
+        'active.txt',
     ]
     for file in files:
         splashW.showMessage('Loading {0}'.format(file))

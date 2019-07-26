@@ -37,7 +37,7 @@ buildWindows = userWindows + ':/Users/mw/MountWizzard'
 # same for mac
 clientMAC = 'astro-mac.fritz.box'
 userMAC = 'mw@' + clientMAC
-workMAC = userMAC + ':/Users/mw/test'
+workMAC = userMAC + ':/Users/mw/mountwizzard4'
 buildMAC = userMAC + ':/Users/mw/MountWizzard'
 
 
@@ -199,7 +199,7 @@ def build_mac_app_local(c):
     c.run('hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
 
 
-@task(pre=[build_indibase, build_mountcontrol])
+@task(pre=[])
 def build_mac_app(c):
     print('build mac app')
 
@@ -223,13 +223,12 @@ def build_mac_app(c):
     print('build app')
     with c.cd('remote_scripts'):
         c.run(f'ssh {userMAC} < build_mac.sh')
+    c.run(f'scp {buildMAC}/dist/MountWizzard4.dmg ./dist')
+    c.run(f'scp -r {buildMAC}/dist/MountWizzard4.app ./dist')
 
 
 @task(pre=[])
-def deploy_ubuntu(c, no_build=False):
-
-    if not no_build:
-        build_dist()
+def deploy_ubuntu(c):
 
     print('deploy ubuntu for test')
     c.run(f'ssh {userUbuntu} rm -rf mountwizzard4')
@@ -249,10 +248,7 @@ def deploy_ubuntu(c, no_build=False):
 
 
 @task(pre=[])
-def deploy_work(c, no_build=False):
-
-    if not no_build:
-        build_dist()
+def deploy_work(c):
 
     print('deploy ubuntu mate work')
     c.run(f'ssh {userWork} rm -rf mountwizzard4')
@@ -274,10 +270,7 @@ def deploy_work(c, no_build=False):
 
 
 @task(pre=[venv_windows])
-def deploy_windows_dist(c, no_build=False):
-
-    if not no_build:
-        build_dist()
+def deploy_windows_dist(c):
 
     print('deploy windows dist for test')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
@@ -293,11 +286,8 @@ def deploy_windows_dist(c, no_build=False):
     c.run(f'ssh {userWindows} "rm -rf *.tar.gz"')
 
 
-@task()
-def deploy_windows_app_console(c, no_build=False):
-
-    if not no_build:
-        build_windows_app()
+@task(pre=[])
+def deploy_windows_app_console(c):
 
     print('deploy windows console.exe for test')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
@@ -308,11 +298,8 @@ def deploy_windows_app_console(c, no_build=False):
         c.run(f'ssh {userWindows} < start_windows_app_console.bat')
 
 
-@task()
-def deploy_windows_app(c, no_build=False):
-
-    if not no_build:
-        build_windows_app()
+@task(pre=[])
+def deploy_windows_app(c):
 
     print('deploy windows windowed for test')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
@@ -323,15 +310,35 @@ def deploy_windows_app(c, no_build=False):
         c.run(f'ssh {userWindows} < start_windows_app.bat')
 
 
-@task
-def deploy_mac_app(c, no_build=False):
+@task(pre=[])
+def deploy_mac_app(c):
 
-    if not no_build:
-        build_mac_app()
+    print('deploy mac app for test')
+    c.run(f'ssh {userMAC} rm -rf mountwizzard4')
+    c.run(f'ssh {userMAC} mkdir mountwizzard4')
 
-    print('deploy mac for test')
-    c.run('rm -rf /Users/mw/PycharmProjects/test')
-    c.run('mkdir /Users/mw/PycharmProjects/test')
-    c.run('cp -R dist/MountWizzard4.app /Users/mw/PycharmProjects/test')
-    with c.cd('/Users/mw/PycharmProjects/test'):
-        c.run('./MountWizzard4.app/Contents/MacOS/MountWizzard4 test')
+    # copy necessary files
+    with c.cd('./dist'):
+        c.run(f'scp -r MountWizzard4.app {workMAC}')
+        comm = '/Users/mw/mountwizzard4/MountWizzard4.app/Contents/MacOS/MountWizzard4 test'
+        c.run(f'ssh {userMAC} {comm}')
+
+
+@task(pre=[])
+def deploy_mac_dist(c):
+
+    print('deploy mac dist for test')
+    c.run(f'ssh {userMAC} rm -rf mountwizzard4')
+    c.run(f'ssh {userMAC} mkdir mountwizzard4')
+
+    # copy necessary files
+    with c.cd('../mountcontrol'):
+        c.run(f'scp dist/*.tar.gz {workMAC}/mc.tar.gz')
+    with c.cd('../indibase'):
+        c.run(f'scp dist/*.tar.gz {workMAC}/ib.tar.gz')
+    c.run(f'scp dist/*.tar.gz {workMAC}/mw4.tar.gz')
+
+    # run the
+    with c.cd('remote_scripts'):
+        c.run(f'scp start_mac.sh {workMAC}')
+        c.run(f'ssh {userMAC} < install_dist_mac.sh')

@@ -7,5 +7,6 @@ pip install ib.tar.gz
 pip install pyinstaller==3.5
 tar -xvzf mw4.tar.gz --strip-components=1
 pyinstaller -y mw4_mac.spec
-hdiutil create ./dist/MountWizzard4.dmg -srcfolder ./dist/*.app -ov
 deactivate
+rm -rf ./dist/*.dmg
+hdiutil create ./dist/MountWizzard4.dmg -srcfolder ./dist/MountWizzard4.app -ov

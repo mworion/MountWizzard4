@@ -190,7 +190,7 @@ def build_windows_app(c):
 
 @task(pre=[venv_mac])
 def build_mac_app_local(c):
-    print('building mac app and dmg')
+    print('building mac app and dmg local')
     c.run('rm -rf ./dist/*.app')
     c.run('rm -rf ./dist/*.dmg')
     c.run('pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
@@ -228,9 +228,9 @@ def build_mac_app(c):
 
 
 @task(pre=[])
-def deploy_ubuntu(c):
+def deploy_ubuntu_dist(c):
 
-    print('deploy ubuntu for test')
+    print('deploy ubuntu dist')
     c.run(f'ssh {userUbuntu} rm -rf mountwizzard4')
     c.run(f'ssh {userUbuntu} mkdir mountwizzard4')
 
@@ -286,21 +286,9 @@ def deploy_windows_dist(c):
 
 
 @task(pre=[])
-def deploy_windows_app_console(c):
-
-    print('deploy windows console.exe for test')
-    c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
-    c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
-    with c.cd('./dist'):
-        c.run(f'scp MountWizzard4-console.exe {workWindows}')
-    with c.cd('remote_scripts'):
-        c.run(f'ssh {userWindows} < start_windows_app_console.bat')
-
-
-@task(pre=[])
 def deploy_windows_app(c):
 
-    print('deploy windows windowed for test')
+    print('deploy windows app')
     c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
     with c.cd('./dist'):
@@ -312,7 +300,7 @@ def deploy_windows_app(c):
 @task(pre=[])
 def deploy_mac_app(c):
 
-    print('deploy mac app for test')
+    print('deploy mac app')
     c.run(f'ssh {userMAC} rm -rf mountwizzard4')
     c.run(f'ssh {userMAC} mkdir mountwizzard4')
 
@@ -323,10 +311,10 @@ def deploy_mac_app(c):
         c.run(f'ssh {userMAC} {comm}')
 
 
-@task(pre=[])
+@task(pre=[venv_mac])
 def deploy_mac_dist(c):
 
-    print('deploy mac dist for test')
+    print('deploy mac dist')
     c.run(f'ssh {userMAC} rm -rf mountwizzard4')
     c.run(f'ssh {userMAC} mkdir mountwizzard4')
 
@@ -349,7 +337,6 @@ def build_all(c):
     print('build all')
     build_dist(c)
     build_windows_app(c)
-    build_windows_app_console(c)
     build_mac_app(c)
 
 
@@ -357,7 +344,7 @@ def build_all(c):
 def deploy_all(c):
 
     print('deploy all')
-    deploy_ubuntu(c)
+    deploy_ubuntu_dist(c)
     deploy_windows_dist(c)
     deploy_windows_app(c)
     deploy_mac_dist(c)

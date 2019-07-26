@@ -7,7 +7,7 @@ requests==2.22.0
 requests_toolbelt==0.9.1
 skyfield==1.10
 wakeonlan==1.1.6
-pytest==4.6.2
+pytest==5.0.1
 pytest-qt==3.2.2
 coverage==4.5.3
 flake8==3.7.7

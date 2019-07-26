@@ -344,8 +344,7 @@ def deploy_mac_dist(c):
         c.run(f'ssh {userMAC} < install_dist_mac.sh')
 
 
-@task(pre=[build_dist, build_indibase, build_mountcontrol, build_windows_app, build_mac_app])
+@task(pre=[build_dist, build_windows_app, build_mac_app])
 def build_all(c):
 
     print('build all')
-

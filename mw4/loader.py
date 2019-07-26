@@ -217,7 +217,7 @@ def writeSystemInfo(mwGlob=None):
     return True
 
 
-def preloadDataFiles(mwGlob=None, splashW=None):
+def extractDataFiles(mwGlob=None, splashW=None):
     """
     we have the necessary files for leap second, ephemerides and satellite already stored
     in the files system of the app. we bring them to the file system of the user, if they
@@ -294,7 +294,7 @@ def main():
     # loading leap seconds, spice kernel and hipparcos catalogue
     splashW.showMessage('Loading star and time data')
     splashW.setValue(60)
-    preloadDataFiles(mwGlob=mwGlob, splashW=splashW)
+    extractDataFiles(mwGlob=mwGlob, splashW=splashW)
 
     # and finally starting the application
     splashW.showMessage('Preparing application')

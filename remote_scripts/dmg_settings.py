@@ -57,8 +57,8 @@ files = [application]
 # image, *or* you can define badge_icon, in which case the icon file you specify
 # will be used to badge the system's Removable Disk icon
 #
-icon = 'laufwerk_mw4.icns'
-# badge_icon = 'laufwerk_mw4.icns'
+icon = 'drive_mw4.icns'
+# badge_icon = 'drive_mw4.icns'
 
 # Where to put the icons
 icon_locations = {

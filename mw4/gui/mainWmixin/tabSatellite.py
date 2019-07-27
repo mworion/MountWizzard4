@@ -74,12 +74,12 @@ class Satellite(object):
         :return: True for test purpose
         """
 
-        self.setupSatelliteSourceGui()
-        self.loadSatelliteSource()
-
         config = self.app.config['mainW']
         self.ui.satExpiresYes.setChecked(config.get('satExpiresYes', False))
         self.ui.satExpiresNo.setChecked(config.get('satExpiresNo', True))
+
+        self.setupSatelliteSourceGui()
+        self.loadSatelliteSource()
 
         return True
 

@@ -83,15 +83,6 @@ def test_checkFrozen_1():
     assert not mwGlob['frozen']
 
 
-def test_checkFrozen_2():
-    setattr(sys, 'frozen', True)
-    setattr(sys, '_MEIPASS', True)
-    mwGlob = loader.checkFrozen()
-    assert mwGlob['frozen']
-    delattr(sys, 'frozen', True)
-    delattr(sys, '_MEIPASS', True)
-
-
 def test_setup_logging():
     suc = loader.setupLogging()
     assert suc

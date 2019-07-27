@@ -171,3 +171,196 @@ def test_colorImage_2():
     app.imageW.ui.color.setCurrentIndex(1)
     suc = app.imageW.colorImage()
     assert suc == 'plasma'
+
+
+def test_setupDistorted_1():
+    image = np.zeros([100, 100], dtype=np.uint8)
+    header = fits.PrimaryHDU().header
+    header['naxis'] = 2
+    wcsObject = wcs.WCS(header)
+    fig = app.imageW.imageMat.figure
+
+    axe = app.imageW.setupDistorted()
+    assert not axe
+
+
+def test_setupDistorted_2():
+    image = np.zeros([100, 100], dtype=np.uint8)
+    header = fits.PrimaryHDU().header
+    header['naxis'] = 2
+    wcsObject = wcs.WCS(header)
+    fig = app.imageW.imageMat.figure
+
+    axe = app.imageW.setupDistorted(figure=fig)
+    assert not axe
+
+
+def test_setupDistorted_3():
+    image = np.zeros([100, 100], dtype=np.uint8)
+    header = fits.PrimaryHDU().header
+    header['naxis'] = 2
+    wcsObject = wcs.WCS(header)
+    fig = app.imageW.imageMat.figure
+
+    axe = app.imageW.setupDistorted(figure=fig, wcsObject=wcsObject)
+    assert axe
+
+
+def test_setupNormal_1():
+    image = np.zeros([100, 100], dtype=np.uint8)
+    header = fits.PrimaryHDU().header
+    header['naxis'] = 2
+    fig = app.imageW.imageMat.figure
+
+    axe = app.imageW.setupNormal()
+    assert not axe
+
+
+def test_setupNormal_2():
+    image = np.zeros([100, 100], dtype=np.uint8)
+    header = fits.PrimaryHDU().header
+    header['naxis'] = 2
+    fig = app.imageW.imageMat.figure
+
+    axe = app.imageW.setupNormal(figure=fig)
+    assert not axe
+
+
+def test_setupNormal_3():
+    image = np.zeros([100, 100], dtype=np.uint8)
+    header = fits.PrimaryHDU().header
+    header['naxis'] = 2
+    fig = app.imageW.imageMat.figure
+
+    axe = app.imageW.setupNormal(figure=fig, header=header)
+    assert axe
+
+
+def test_showFitsImage_1():
+    app.imageW.imageFileName = ''
+    suc = app.imageW.showFitsImage()
+    assert not suc
+
+
+def test_showFitsImage_2():
+    app.imageW.imageFileName = 'test'
+    suc = app.imageW.showFitsImage()
+    assert not suc
+
+
+def test_showFitsImage_3():
+    app.imageW.imageFileName = mwGlob['imageDir'] + '/m51.fit'
+    suc = app.imageW.showFitsImage()
+    assert suc
+
+
+def test_showFitsImageExt_1():
+    suc = app.imageW.showFitsImageExt()
+    assert not suc
+
+
+def test_showFitsImageExt_2():
+    suc = app.imageW.showFitsImageExt(imagePath=mwGlob['imageDir'] + '/m51.fit')
+    assert suc
+
+
+def test_exposeRaw_1(qtbot):
+    app.mainW.ui.expTime.setValue(3)
+    app.mainW.ui.binning.setValue(2)
+    app.mainW.ui.subFrame.setValue(100)
+    with mock.patch.object(app.imaging,
+                           'expose',
+                           ):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.imageW.exposeRaw()
+            assert suc
+        assert ['Exposing   3s  Bin: 2  Sub: 100%', 0] == blocker.args
+
+
+def test_exposeRaw_2(qtbot):
+    app.mainW.ui.expTime.setValue(1)
+    app.mainW.ui.binning.setValue(1)
+    app.mainW.ui.subFrame.setValue(10)
+    with mock.patch.object(app.imaging,
+                           'expose',
+                           ):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.imageW.exposeRaw()
+            assert suc
+        assert ['Exposing   1s  Bin: 1  Sub:  10%', 0] == blocker.args
+
+
+def test_exposeImagingDone(qtbot):
+    app.imaging.signals.saved.connect(app.imageW.exposeImageDone)
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.imageW.exposeImageDone()
+        assert suc
+    assert ['Image exposed', 0] == blocker.args
+
+
+def test_exposeImage_1():
+    app.imaging.data = {}
+    suc = app.imageW.exposeImage()
+    assert not suc
+
+
+def test_exposeImage_2():
+    app.imaging.data = {'test': 'test'}
+    with mock.patch.object(app.imaging,
+                           'expose',
+                           ):
+        suc = app.imageW.exposeImage()
+        assert suc
+
+
+def test_exposeImageN_1():
+    app.imaging.data = {}
+    suc = app.imageW.exposeImageN()
+    assert not suc
+
+
+def test_exposeImageN_2():
+    app.imaging.data = {'test': 'test'}
+    with mock.patch.object(app.imaging,
+                           'expose',
+                           ):
+        suc = app.imageW.exposeImageN()
+        assert suc
+
+
+def test_abortImage_1(qtbot):
+    with mock.patch.object(app.imaging,
+                           'abort',
+                           ):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.imageW.abortImage()
+            assert suc
+        assert ['Image exposing aborted', 2] == blocker.args
+
+
+def test_abortImage_2(qtbot):
+    app.imaging.signals.saved.connect(app.imageW.showFitsImage)
+    app.imageW.ui.exposeN.setEnabled(True)
+    app.imageW.ui.expose.setEnabled(False)
+    app.imaging.signals.saved.connect(app.imageW.exposeRaw)
+    with mock.patch.object(app.imaging,
+                           'abort',
+                           ):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.imageW.abortImage()
+            assert suc
+        assert ['Image exposing aborted', 2] == blocker.args
+
+
+def test_abortImage_3(qtbot):
+    app.imaging.signals.saved.connect(app.imageW.showFitsImage)
+    app.imageW.ui.exposeN.setEnabled(False)
+    app.imageW.ui.expose.setEnabled(True)
+    app.imaging.signals.saved.connect(app.imageW.exposeImageDone)
+    with mock.patch.object(app.imaging,
+                           'abort',
+                           ):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.imageW.abortImage()
+            assert suc
+        assert ['Image exposing aborted', 2] == blocker.args

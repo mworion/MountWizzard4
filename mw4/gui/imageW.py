@@ -496,6 +496,11 @@ class ImageWindow(widget.MWidget):
         :return: axes object to plot onto
         """
 
+        if figure is None:
+            return False
+        if wcsObject is None:
+            return False
+
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.9, bottom=0.1, top=0.9)
 
@@ -536,6 +541,11 @@ class ImageWindow(widget.MWidget):
         :param header:
         :return: axes object to plot onto
         """
+
+        if figure is None:
+            return False
+        if not header:
+            return False
 
         figure.clf()
         figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
@@ -702,6 +712,8 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
+        # checking presence of app.imaging.data shows camera connected ?
+        # todo: better solution in camera !
         if not self.app.imaging.data:
             return False
 
@@ -726,6 +738,8 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
+        # checking presence of app.imaging.data shows camera connected ?
+        # todo: better solution in camera !
         if not self.app.imaging.data:
             return False
 
@@ -769,7 +783,7 @@ class ImageWindow(widget.MWidget):
         self.ui.expose.setEnabled(True)
         self.ui.exposeN.setEnabled(True)
         self.ui.load.setEnabled(True)
-        self.ui.abort.setEnabled(False)
+        self.ui.abortImage.setEnabled(False)
 
         self.app.message.emit('Image exposing aborted', 2)
 

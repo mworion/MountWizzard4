@@ -9,7 +9,7 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.7.3
+# Python  v3.7.4
 #
 # Michael Würtenberger
 # (c) 2019
@@ -93,10 +93,15 @@ def setupWorkDirs(mwGlob=None):
     """
     setupWorkDirs defines the necessary work dirs and checks if they are writable
 
-    :param mwGlob: global setup items
+    :param mwGlob:
     :return: mwGlob
     """
+    if mwGlob is None:
+        mwGlob = dict()
 
+    mwGlob['modeldata'] = mainApp.MountWizzard4.version
+    mwGlob['bundleDir'] = ''
+    mwGlob['frozen'] = False
     mwGlob['workDir'] = os.getcwd()
     mwGlob['configDir'] = os.getcwd() + '/config'
     mwGlob['dataDir'] = os.getcwd() + '/data'
@@ -109,7 +114,6 @@ def setupWorkDirs(mwGlob=None):
             os.makedirs(mwGlob[dirPath])
         if not os.access(mwGlob[dirPath], os.W_OK):
             logging.error('no write access to {0}'.format(dirPath))
-
     return mwGlob
 
 
@@ -121,6 +125,8 @@ def checkFrozen(mwGlob=None):
     :param mwGlob:
     :return:
     """
+    if mwGlob is None:
+        mwGlob = dict()
 
     if getattr(sys, 'frozen', False):
         # we are running in a bundle
@@ -137,6 +143,8 @@ def checkFrozen(mwGlob=None):
         # we are running in a normal Python environment
         mwGlob['bundleDir'] = os.path.dirname(os.path.abspath(__file__))
         mwGlob['frozen'] = False
+
+    return mwGlob
 
 
 def setupLogging():
@@ -225,6 +233,10 @@ def extractDataFiles(mwGlob=None, splashW=None):
 
     :return: True fpr test purpose
     """
+
+    if mwGlob is None:
+        return False
+
     files = [
         'Leap_Second.dat',
         'deltat.data',
@@ -233,7 +245,8 @@ def extractDataFiles(mwGlob=None, splashW=None):
         'active.txt',
     ]
     for file in files:
-        splashW.showMessage('Loading {0}'.format(file))
+        if splashW is not None:
+            splashW.showMessage('Loading {0}'.format(file))
         filePath = mwGlob['dataDir'] + '/' + file
         if os.path.isfile(filePath):
             continue
@@ -257,21 +270,8 @@ def main():
     :return: nothing
     """
 
-    # defining system wide definitions:
-    mwGlob = {
-        'modeldata': mainApp.MountWizzard4.version,
-        'frozen': False,
-        'bundleDir': '',
-        'workDir': '',
-        'configDir': '',
-        'dataDir': '',
-        'imageDir': '',
-        'tempDir': '',
-        'modelDir': '',
-    }
-
+    mwGlob = setupWorkDirs()
     # checking workdir and if the system is started from frozen app
-    checkFrozen(mwGlob)
     # app = MyApp(sys.argv)
     app = PyQt5.QtWidgets.QApplication(sys.argv)
     splashW = splash.SplashScreen(application=app)
@@ -279,7 +279,7 @@ def main():
     # and start with a first splash screen
     splashW.showMessage('Start initialising')
     splashW.setValue(0)
-    mwGlob = setupWorkDirs(mwGlob=mwGlob)
+    mwGlob = checkFrozen(mwGlob=mwGlob)
 
     # now setup the logging environment
     splashW.showMessage('Setup logging')

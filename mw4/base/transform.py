@@ -3,7 +3,7 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.7.3
+# Python  v3.7.4
 #
 # Michael Würtenberger
 # (c) 2016, 2017, 2018

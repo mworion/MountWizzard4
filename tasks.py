@@ -89,7 +89,7 @@ def test_mountcontrol(c):
     print('testing mountcontrol')
     with c.cd('../mountcontrol'):
         c.run('flake8')
-        c.run('pytest mountcontrol/test/test_units --cov-config .coveragerc --cov mountcontrol/')
+        c.run('pytest mountcontrol/test/test_units --cov-config tox.ini --cov mountcontrol/')
 
 
 @task()
@@ -204,9 +204,9 @@ def build_mac_app(c):
     print('build mac app')
 
     # preparing the directories
-    c.run('rm -rf ./dist/*.app')
-    c.run(f'ssh {userMAC} rm -rf MountWizzard')
-    c.run(f'ssh {userMAC} mkdir MountWizzard')
+    #c.run('rm -rf ./dist/*.app')
+    #c.run(f'ssh {userMAC} rm -rf MountWizzard')
+    #c.run(f'ssh {userMAC} mkdir MountWizzard')
 
     # copy necessary files
     with c.cd('../mountcontrol'):
@@ -218,6 +218,9 @@ def build_mac_app(c):
     c.run(f'scp mw4_mac.spec {buildMAC}')
     with c.cd('remote_scripts'):
         c.run(f'scp mw4.icns {buildMAC}')
+        c.run(f'scp dmg_settings.txt {buildMAC}')
+        c.run(f'scp mw4.png {buildMAC}')
+        c.run(f'scp set_image.py {buildMAC}')
 
     # doing the build job
     print('build app')

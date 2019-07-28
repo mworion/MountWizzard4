@@ -1,7 +1,7 @@
 if exist venv (rmdir /s/q venv)
 python -m venv venv
 venv\Scripts\activate
-pip install PyQt5==5.12.2
+pip install PyQt5==5.13
 pip install astropy==3.1.2
 pip install matplotlib==3.1.1
 pip install wakeonlan==1.1.6

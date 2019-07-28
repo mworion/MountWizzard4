@@ -39,7 +39,7 @@ setup(
     ],
     python_requires='>=3.7.2',
     install_requires=[
-        'PyQt5==5.12.2',
+        'PyQt5==5.13',
         'matplotlib==3.1.1',
         'astropy==3.1.2',
         'requests==2.22.0',

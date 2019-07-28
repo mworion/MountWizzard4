@@ -2,7 +2,7 @@
 rm -rf venv
 virtualenv venv -p python3.7
 source venv/bin/activate
-pip install PyQt5==5.12.2
+pip install PyQt5==5.13
 pip install astropy==3.1.2
 pip install matplotlib==3.1.1
 pip install wakeonlan==1.1.6

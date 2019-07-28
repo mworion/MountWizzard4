@@ -68,7 +68,7 @@ class Worker(PyQt5.QtCore.QRunnable):
         try:
             result = self.fn(*self.args, **self.kwargs)
         except Exception as e:
-            self.logger.error('error: {0}, args: {1}'.format(e, *self.args))
+            self.logger.error(f'error: {e}')
             self.signals.error.emit(e)
         else:
             self.signals.result.emit(result)

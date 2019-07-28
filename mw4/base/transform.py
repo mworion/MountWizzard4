@@ -29,6 +29,10 @@ __all__ = [
     'convertToAngle',
     'convertToDMS',
     'convertToHMS',
+    'sphericalToCartesian',
+    'cartesianToSpherical',
+    'cartesianToPolar',
+    'polarToCartesian',
 ]
 version = '0.100.0'
 logger = logging.getLogger()
@@ -225,6 +229,14 @@ def convertToHMS(ra):
 
 
 def sphericalToCartesian(altitude=0, azimuth=0, radius=0):
+    """
+
+    :param altitude:
+    :param azimuth:
+    :param radius:
+    :return:
+    """
+
     rcos_theta = radius * np.cos(altitude)
     x = rcos_theta * np.cos(azimuth)
     y = rcos_theta * np.sin(azimuth)
@@ -233,6 +245,14 @@ def sphericalToCartesian(altitude=0, azimuth=0, radius=0):
 
 
 def cartesianToSpherical(x=0, y=0, z=0):
+    """
+
+    :param x:
+    :param y:
+    :param z:
+    :return:
+    """
+
     hxy = np.hypot(x, y)
     radius = np.hypot(hxy, z)
     altitude = np.arctan2(z, hxy)
@@ -241,12 +261,26 @@ def cartesianToSpherical(x=0, y=0, z=0):
 
 
 def polarToCartesian(theta=0, radius=0):
+    """
+
+    :param theta:
+    :param radius:
+    :return:
+    """
+
     x = radius * np.cos(theta)
     y = radius * np.sin(theta)
     return x, y
 
 
 def cartesianToPolar(x=0, y=0):
+    """
+
+    :param x:
+    :param y:
+    :return:
+    """
+
     radius = np.hypot(x, y)
     theta = np.arctan2(y, x)
     return theta, radius

@@ -41,6 +41,19 @@ _lock = Lock()
 
 
 def JNowToJ2000(ra, dec, timeJD):
+    """
+
+    :param ra:
+    :param dec:
+    :param timeJD:
+    :return:
+    """
+
+    if not isinstance(ra, Angle):
+        return Angle(hours=0), Angle(degrees=0)
+    if not isinstance(dec, Angle):
+        return Angle(hours=0), Angle(degrees=0)
+
     with _lock:
         ra = ra.radians
         dec = dec.radians
@@ -55,6 +68,19 @@ def JNowToJ2000(ra, dec, timeJD):
 
 
 def J2000ToJNow(ra, dec, timeJD):
+    """
+
+    :param ra:
+    :param dec:
+    :param timeJD:
+    :return:
+    """
+
+    if not isinstance(ra, Angle):
+        return Angle(hours=0), Angle(degrees=0)
+    if not isinstance(dec, Angle):
+        return Angle(hours=0), Angle(degrees=0)
+
     with _lock:
         ra = ra.radians
         dec = dec.radians
@@ -68,6 +94,20 @@ def J2000ToJNow(ra, dec, timeJD):
 
 
 def J2000ToAltAz(ra, dec, timeJD, location):
+    """
+
+    :param ra:
+    :param dec:
+    :param timeJD:
+    :param location:
+    :return:
+    """
+
+    if not isinstance(ra, Angle):
+        return Angle(degrees=0), Angle(degrees=0)
+    if not isinstance(dec, Angle):
+        return Angle(degrees=0), Angle(degrees=0)
+
     with _lock:
         ra = ra.radians
         dec = dec.radians

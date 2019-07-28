@@ -23,6 +23,7 @@ import time
 import pytest
 # external packages
 from skyfield.api import Angle
+from skyfield.api import Topos
 import numpy as np
 # local import
 from mw4.test.test_units.setupQt import setupQt
@@ -39,15 +40,65 @@ def module_setup_teardown():
 
 
 def test_JNowToJ2000_1():
-    pass
+    class Test:
+        tt = 2458687
+        ut1 = 1
+
+    ra, dec = transform.JNowToJ2000(180, 180, Test())
+    assert ra.hours == 0
+    assert dec.degrees == 0
 
 
-def test_J2000T0JNow():
-    pass
+def test_JNowToJ2000_2():
+    class Test:
+        tt = 2458687
+        ut1 = 1
+
+    ra, dec = transform.JNowToJ2000(Angle(hours=12), Angle(degrees=180), Test())
+    assert ra.hours != 0
+    assert dec.degrees != 0
 
 
-def test_J2000T0AltAz():
-    pass
+def test_J2000T0JNow_1():
+    class Test:
+        tt = 2458687
+        ut1 = 1
+
+    ra, dec = transform.J2000ToJNow(180, 180, Test())
+    assert ra.hours == 0
+    assert dec.degrees == 0
+
+
+def test_J2000T0JNow_2():
+    class Test:
+        tt = 2458687
+        ut1 = 1
+
+    ra, dec = transform.J2000ToJNow(Angle(hours=12), Angle(degrees=180), Test())
+    assert ra.hours != 0
+    assert dec.degrees != 0
+
+
+def test_J2000T0AltAz_1():
+    class Test:
+        tt = 2458687
+        ut1 = 1
+
+    loc = Topos('42.3583 N', '71.0636 W')
+    alt, az = transform.J2000ToAltAz(180, 180, Test(), loc)
+    assert alt.degrees == 0
+    assert az.degrees == 0
+
+
+def test_J2000T0AltAz_2():
+    class Test:
+        tt = 2458687
+        ut1 = 1
+
+    loc = Topos('42.3583 N', '71.0636 W')
+    alt, az = transform.J2000ToAltAz(Angle(hours=12), Angle(degrees=180), Test(), loc)
+    assert alt.degrees != 0
+    assert az.degrees != 0
 
 
 def test_checkIsHours_1():

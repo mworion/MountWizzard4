@@ -33,8 +33,36 @@ def module_setup_teardown():
     yield
 
 
+def test_initConfig_1():
+    app.config['messageW'] = {}
+    suc = app.messageW.initConfig()
+    assert suc
+
+
+def test_initConfig_2():
+    del app.config['messageW']
+    suc = app.messageW.initConfig()
+    assert suc
+
+
+def test_initConfig_3():
+    app.config['messageW'] = {}
+    app.config['messageW']['winPosX'] = 10000
+    app.config['messageW']['winPosY'] = 10000
+    suc = app.messageW.initConfig()
+    assert suc
+
+
+def test_storeConfig():
+    app.messageW.storeConfig()
+
+
 def test_resizeEvent(qtbot):
     app.messageW.resizeEvent(None)
+
+
+def test_clearWindow():
+    app.messageW.clearWindow()
 
 
 def test_writeMessage1(qtbot):

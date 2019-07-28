@@ -84,6 +84,8 @@ class MessageWindow(widget.MWidget):
         height = config.get('height', 600)
         self.resize(800, height)
 
+        return True
+
     def storeConfig(self):
         """
         storeConfig writes the keys to the configuration dict and stores. if some
@@ -98,6 +100,8 @@ class MessageWindow(widget.MWidget):
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()
         config['height'] = self.height()
+
+        return True
 
     def closeEvent(self, closeEvent):
         self.storeConfig()

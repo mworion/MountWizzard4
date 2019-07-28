@@ -32,7 +32,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 # local imports
 from . import styles
 
-version = '0.1'
+version = '0.100'
 __all__ = [
     'MWidget',
 ]
@@ -68,7 +68,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         super().closeEvent(closeEvent)
 
     @staticmethod
-    def wIcon(gui, icon):
+    def wIcon(gui=None, icon=None):
         """
         widget icon adds an icon to a gui element like an button.
 
@@ -76,6 +76,11 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         :param      icon:       icon to be added
         :return:    true for test purpose
         """
+
+        if not gui:
+            return False
+        if not icon:
+            return False
 
         iconset = PyQt5.QtWidgets.qApp.style().standardIcon(icon)
         gui.setIcon(PyQt5.QtGui.QIcon(iconset))
@@ -115,25 +120,32 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return True
 
     @staticmethod
-    def changeStyleDynamic(ui, item, value):
+    def changeStyleDynamic(widget=None, item=None, value=None):
         """
         changeStyleDynamic changes the stylesheet of a given uii element and makes it
         visible. therefore the element has to be unpolished and polished again.
 
-        :param      ui:     ui element, where the stylesheet has to be changed
+        :param      widget:     widget element, where the stylesheet has to be changed
         :param      item:   stylesheet attribute which has to be changes
         :param      value:  new value of the attribute
         :return:    true for test purpose
         """
 
-        ui.style().unpolish(ui)
-        ui.setProperty(item, value)
-        ui.style().polish(ui)
+        if not widget:
+            return False
+        if not item:
+            return False
+        if not value:
+            return False
+
+        widget.style().unpolish(widget)
+        widget.setProperty(item, value)
+        widget.style().polish(widget)
 
         return True
 
     @staticmethod
-    def clearPolar(widget):
+    def clearPolar(widget=None):
         """
         clearPolar clears and setups the canvas widget for drawing. it sets the labels,
         ticks and some other ui styles.
@@ -142,6 +154,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         :return:    fig        figure in widget
         :return:    axes       axes in figure
         """
+        if not widget:
+            return None, None
+        if not hasattr(widget, 'figure'):
+            return None, None
 
         fig = widget.figure
         fig.clf()
@@ -183,20 +199,23 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return fig, axes
 
     @staticmethod
-    def embedMatplot(ui):
+    def embedMatplot(widget=None):
         """
         IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5
         application gui. you call it with the parent widget, which is linked to matplotlib
         canvas of the same size. the background is set to transparent, so you could layer
         multiple figures on top.
 
-        :param      ui:             parent ui element, which is the reference for embedding
+        :param      widget:             parent ui element, which is the reference for embedding
         :return:    staticCanvas:   matplotlib reference as parent for figures
         """
 
+        if not widget:
+            return None
+
         # to avoid a white flash before drawing on top.
-        ui.setStyleSheet("background:transparent;")
-        layout = PyQt5.QtWidgets.QVBoxLayout(ui)
+        widget.setStyleSheet("background:transparent;")
+        layout = PyQt5.QtWidgets.QVBoxLayout(widget)
         layout.setContentsMargins(0, 0, 0, 0)
         staticCanvas = FigureCanvas(Figure(dpi=75,
                                            facecolor='none',
@@ -205,7 +224,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                                     )
         FigureCanvasQTAgg.updateGeometry(staticCanvas)
         layout.addWidget(staticCanvas)
-        staticCanvas.setParent(ui)
+        staticCanvas.setParent(widget)
         return staticCanvas
 
     @staticmethod

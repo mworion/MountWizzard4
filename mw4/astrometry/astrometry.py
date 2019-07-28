@@ -369,8 +369,9 @@ class Astrometry(object):
 
         if self.process:
             self.process.kill()
-
-        return True
+            return True
+        else:
+            return False
 
     def solve(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
               radius=2, timeout=30, updateFits=False):

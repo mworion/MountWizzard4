@@ -180,6 +180,27 @@ def test_getSolutionFromWCS_1():
     assert header['DEC'] == header['CRVAL2']
 
 
+def test_getSolutionFromWCS_2():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('CRVAL1', 180.0)
+    header.set('CRVAL2', 60.0)
+    header.set('RA', 180.0)
+    header.set('DEC', 60.0)
+    (ra, dec, angle, scale, error, flipped), header = app.getSolutionFromWCS(fitsHeader=header,
+                                                                             wcsHeader=header,
+                                                                             updateFits=True)
+    assert ra.hours == 12
+    assert dec.degrees == 60
+    assert angle == 0
+    assert scale == 0
+    assert not flipped
+
+    assert header['RA'] == header['CRVAL1']
+    assert header['DEC'] == header['CRVAL2']
+
+
 def test_runImage2xy_1():
     suc = app.runImage2xy()
     assert not suc
@@ -187,15 +208,21 @@ def test_runImage2xy_1():
 
 def test_runImage2xy_2():
     class Test1:
-        def decode(self):
+        @staticmethod
+        def decode():
             return 'decode'
 
     class Test:
         returncode = '1'
         stderr = Test1()
         stdout = Test1()
+
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
     with mock.patch.object(subprocess,
-                           'run',
+                           'Popen',
                            return_value=Test()):
         suc = app.runImage2xy()
     assert not suc
@@ -208,7 +235,8 @@ def test_runSolveField_1():
 
 def test_runSolveField_2():
     class Test1:
-        def decode(self):
+        @staticmethod
+        def decode():
             return 'decode'
 
     class Test:
@@ -216,10 +244,36 @@ def test_runSolveField_2():
         stderr = Test1()
         stdout = Test1()
 
+        @staticmethod
+        def communicate(timeout=0):
+            return Test1(), Test1()
+
     with mock.patch.object(subprocess,
-                           'run',
+                           'Popen',
                            return_value=Test()):
         suc = app.runSolveField()
+    assert not suc
+
+
+def test_abort_1():
+    class Test:
+        @staticmethod
+        def kill():
+            return
+
+    app.process = Test()
+    suc = app.abort()
+    assert suc
+
+
+def test_abort_2():
+    class Test:
+        @staticmethod
+        def kill():
+            return
+
+    app.process = None
+    suc = app.abort()
     assert not suc
 
 
@@ -228,22 +282,46 @@ def test_solve_1():
     assert not suc
 
 
-"""
 def test_solve_2():
-    suc = app.solve(app='KStars',
-                    fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                    timeout=5,
-                    )
-    assert suc
+    with mock.patch.object(app,
+                           'runImage2xy',
+                           return_value=False):
+        with mock.patch.object(app,
+                               'runSolveField',
+                               return_value=False):
+            suc = app.solve(app='KStars300',
+                            fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
+                            timeout=5,
+                            )
+        assert not suc
 
 
 def test_solve_3():
-    suc = app.solve(app='KStars',
-                    fitsPath=mwGlob['imageDir'] + '/m51.fits',
-                    timeout=5,
-                    )
-    assert suc
-"""
+    with mock.patch.object(app,
+                           'runImage2xy',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'runSolveField',
+                               return_value=False):
+            suc = app.solve(app='KStars300',
+                            fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
+                            timeout=5,
+                            )
+        assert not suc
+
+
+def test_solve_4():
+    with mock.patch.object(app,
+                           'runImage2xy',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'runSolveField',
+                               return_value=True):
+            suc = app.solve(app='KStars300',
+                            fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
+                            timeout=5,
+                            )
+        assert suc
 
 
 def test_solveClear():

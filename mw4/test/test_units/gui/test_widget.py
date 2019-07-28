@@ -26,6 +26,7 @@ from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QMainWindow
+from PyQt5 import QtCore
 # local import
 from mw4.test.test_units.setupQt import setupQt
 from mw4.gui.widget import MWidget
@@ -177,8 +178,8 @@ def test_prepareFileDialogue_1():
 
 
 def test_prepareFileDialogue_2():
-    dlg = a.prepareFileDialog(QMainWindow())
-    assert not dlg
+    dlg = a.prepareFileDialog(QMainWindow(), False)
+    assert dlg
 
 
 def test_prepareFileDialogue_3():
@@ -188,6 +189,18 @@ def test_prepareFileDialogue_3():
 
 def test_openFile_1():
     a.openFile()
+
+
+def test_openFile_2():
+    a.openFile(QMainWindow())
+
+
+def test_openFile_3():
+    a.openFile(QMainWindow(), 'test')
+
+
+def test_openFile_4():
+    a.openFile(QMainWindow(), 'test', 'test')
 
 
 def test_saveFile_1():

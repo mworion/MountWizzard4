@@ -264,7 +264,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         else:
             return nameList, shortList, extList
 
-    def prepareFileDialog(self, window=None, enableDir=None):
+    def prepareFileDialog(self, window=None, enableDir=False):
         """
         prepareFileDialog does some preparations for geometry and general settings
 
@@ -274,8 +274,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         """
 
         if not window:
-            return None
-        if not enableDir:
             return None
 
         dlg = PyQt5.QtWidgets.QFileDialog()
@@ -341,7 +339,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         if not filterSet:
             return '', '', ''
 
-        dlg = self.prepareFileDialog(window, enableDir)
+        dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
         dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptOpen)
 
         dlg.setWindowTitle(title)
@@ -354,7 +352,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         dlg.exec_()
         filePath = dlg.selectedFiles()
-        full, short, ext = self.extractNames(filePath)
+        full, short, ext = self.extractNames(names=filePath)
         return full, short, ext
 
     def saveFile(self,
@@ -394,7 +392,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         dlg.exec_()
         filePath = dlg.selectedFiles()
-        full, short, ext = self.extractNames(filePath)
+        full, short, ext = self.extractNames(names=filePath)
         return full, short, ext
 
     def openDir(self,
@@ -419,7 +417,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         if not folder:
             return '', '', ''
 
-        dlg = self.prepareFileDialog(window, True)
+        dlg = self.prepareFileDialog(window=window, enableDir=True)
         dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptOpen)
 
         dlg.setWindowTitle(title)
@@ -428,7 +426,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
         dlg.exec_()
         filePath = dlg.selectedFiles()
-        full, short, ext = self.extractNames(filePath)
+        full, short, ext = self.extractNames(names=filePath)
         return full, short, ext
 
     @staticmethod

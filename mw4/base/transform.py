@@ -206,6 +206,12 @@ def convertToDMS(dec):
     :return: converted value as string
     """
 
+    if isinstance(dec, (float, int)):
+        dec = Angle(degrees=dec)
+
+    if isinstance(dec, str):
+        return ''
+
     t = Angle.signed_dms(dec)
     sign = '+' if dec.degrees > 0 else '-'
     value = f'{sign}{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
@@ -222,6 +228,12 @@ def convertToHMS(ra):
     :return: converted value as string
     """
 
+    if isinstance(ra, (float, int)):
+        ra = Angle(hours=ra)
+
+    if isinstance(ra, str):
+        return ''
+
     t = Angle.signed_hms(ra)
     value = f'{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}'
 
@@ -230,6 +242,7 @@ def convertToHMS(ra):
 
 def sphericalToCartesian(altitude=0, azimuth=0, radius=0):
     """
+    does the transformation analog to the numpy style. it could be an array.
 
     :param altitude:
     :param azimuth:
@@ -246,6 +259,7 @@ def sphericalToCartesian(altitude=0, azimuth=0, radius=0):
 
 def cartesianToSpherical(x=0, y=0, z=0):
     """
+    does the transformation analog to the numpy style. it could be an array.
 
     :param x:
     :param y:
@@ -262,6 +276,7 @@ def cartesianToSpherical(x=0, y=0, z=0):
 
 def polarToCartesian(theta=0, radius=0):
     """
+    does the transformation analog to the numpy style. it could be an array.
 
     :param theta:
     :param radius:
@@ -275,6 +290,7 @@ def polarToCartesian(theta=0, radius=0):
 
 def cartesianToPolar(x=0, y=0):
     """
+    does the transformation analog to the numpy style. it could be an array.
 
     :param x:
     :param y:

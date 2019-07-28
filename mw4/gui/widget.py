@@ -228,7 +228,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return staticCanvas
 
     @staticmethod
-    def extractNames(names):
+    def extractNames(names=''):
         """
         extractName splits a given path to basename and extension
         if the input is a multiple list, there will be as return values a multiple list
@@ -241,6 +241,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         """
 
         if not names:
+            return '', '', ''
+        if not isinstance(names, list):
             return '', '', ''
 
         shortList = list()
@@ -262,7 +264,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         else:
             return nameList, shortList, extList
 
-    def prepareFileDialog(self, window, enableDir):
+    def prepareFileDialog(self, window=None, enableDir=None):
         """
         prepareFileDialog does some preparations for geometry and general settings
 
@@ -270,6 +272,11 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         :param enableDir:   allows dir selection in file box
         :return:        dlg, the dialog widget
         """
+
+        if not window:
+            return None
+        if not enableDir:
+            return None
 
         dlg = PyQt5.QtWidgets.QFileDialog()
         dlg.setOptions(PyQt5.QtWidgets.QFileDialog.DontUseNativeDialog)
@@ -304,7 +311,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setGeometry(px + 0.5 * (pw - width), py + 0.5 * (ph - height), 400, 400)
         return dlg
 
-    def openFile(self, window, title, folder, filterSet, enableDir=False, multiple=False):
+    def openFile(self,
+                 window=None,
+                 title='',
+                 folder='',
+                 filterSet=None,
+                 enableDir=False,
+                 multiple=False):
         """
         openFile handles a single file select with filter in a non native format.
 
@@ -318,6 +331,15 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                             short: just file name without extension
                             ext: extension of the file
         """
+
+        if not window:
+            return '', '', ''
+        if not title:
+            return '', '', ''
+        if not folder:
+            return '', '', ''
+        if not filterSet:
+            return '', '', ''
 
         dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptOpen)
@@ -335,7 +357,12 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         full, short, ext = self.extractNames(filePath)
         return full, short, ext
 
-    def saveFile(self, window, title, folder, filterSet, enableDir=False):
+    def saveFile(self,
+                 window=None,
+                 title='',
+                 folder='',
+                 filterSet=None,
+                 enableDir=False):
         """
         saveFile handles a single file save with filter in a non native format.
 
@@ -349,6 +376,15 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                             ext: extension of the file
         """
 
+        if not window:
+            return '', '', ''
+        if not title:
+            return '', '', ''
+        if not folder:
+            return '', '', ''
+        if not filterSet:
+            return '', '', ''
+
         dlg = self.prepareFileDialog(window, enableDir)
         dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptSave)
 
@@ -361,7 +397,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         full, short, ext = self.extractNames(filePath)
         return full, short, ext
 
-    def openDir(self, window, title, folder):
+    def openDir(self,
+                window=None,
+                title='',
+                folder=''):
         """
         openFile handles a single file select with filter in a non native format.
 
@@ -372,6 +411,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                             short: just file name without extension
                             ext: extension of the file
         """
+
+        if not window:
+            return '', '', ''
+        if not title:
+            return '', '', ''
+        if not folder:
+            return '', '', ''
 
         dlg = self.prepareFileDialog(window, True)
         dlg.setAcceptMode(PyQt5.QtWidgets.QFileDialog.AcceptOpen)
@@ -386,7 +432,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return full, short, ext
 
     @staticmethod
-    def clickable(widget):
+    def clickable(widget=None):
         """
         It uses one filter object per label, which is created when the clickable()
         function is called with the widget that is to be click-enabled. The function
@@ -396,6 +442,9 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         :param widget:      widget for what the event filter works
         :return:            filtered event
         """
+
+        if not widget:
+            return None
 
         class Filter(PyQt5.QtCore.QObject):
             clicked = PyQt5.QtCore.pyqtSignal()

@@ -24,6 +24,8 @@ import platform
 from PyQt5.QtWidgets import QStyle
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QMainWindow
 # local import
 from mw4.test.test_units.setupQt import setupQt
 from mw4.gui.widget import MWidget
@@ -31,28 +33,28 @@ from mw4.gui.widget import MWidget
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
-    global app, spy, mwGlob, test
+    global app, spy, mwGlob, test, a
     app, spy, mwGlob, test = setupQt()
+    a = MWidget()
     yield
 
 
 def test_wIcon_1():
-    suc = MWidget.wIcon()
+    suc = a.wIcon()
     assert not suc
 
 
 def test_wIcon_2():
-    suc = MWidget.wIcon(QPushButton())
+    suc = a.wIcon(QPushButton())
     assert not suc
 
 
 def test_wIcon_3():
-    suc = MWidget.wIcon(QPushButton(), QStyle.SP_ComputerIcon)
+    suc = a.wIcon(QPushButton(), QStyle.SP_ComputerIcon)
     assert suc
 
 
 def test_getStyle_1():
-    a = MWidget()
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
@@ -61,7 +63,6 @@ def test_getStyle_1():
 
 
 def test_getStyle_2():
-    a = MWidget()
     with mock.patch.object(platform,
                            'system',
                            return_value='Linux'):
@@ -70,7 +71,6 @@ def test_getStyle_2():
 
 
 def test_getStyle_3():
-    a = MWidget()
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
@@ -79,37 +79,31 @@ def test_getStyle_3():
 
 
 def test_initUI():
-    a = MWidget()
     suc = a.initUI()
     assert suc
 
 
 def test_changeStyleDynamic_1():
-    a = MWidget()
     suc = a.changeStyleDynamic()
     assert not suc
 
 
 def test_changeStyleDynamic_2():
-    a = MWidget()
     suc = a.changeStyleDynamic(QPushButton())
     assert not suc
 
 
 def test_changeStyleDynamic_3():
-    a = MWidget()
     suc = a.changeStyleDynamic(QPushButton(), 'test')
     assert not suc
 
 
 def test_changeStyleDynamic_4():
-    a = MWidget()
     suc = a.changeStyleDynamic(QPushButton(), 'test', 'true')
     assert suc
 
 
 def test_clearPolar_1():
-    a = MWidget()
     fig, axe = a.clearPolar()
 
     assert fig is None
@@ -117,7 +111,6 @@ def test_clearPolar_1():
 
 
 def test_clearPolar_2():
-    a = MWidget()
     fig, axe = a.clearPolar(QWidget())
 
     assert fig is None
@@ -125,7 +118,6 @@ def test_clearPolar_2():
 
 
 def test_clearPolar_3():
-    a = MWidget()
     b = QWidget()
     c = a.embedMatplot(b)
 
@@ -136,7 +128,6 @@ def test_clearPolar_3():
 
 
 def test_embedMatplot_1():
-    a = MWidget()
     b = QWidget()
 
     c = a.embedMatplot()
@@ -145,9 +136,67 @@ def test_embedMatplot_1():
 
 
 def test_embedMatplot_2():
-    a = MWidget()
     b = QWidget()
 
     c = a.embedMatplot(b)
 
     assert c is not None
+
+
+def test_extractNames_1():
+    name, short, ext = a.extractNames()
+    assert name == ''
+    assert short == ''
+    assert ext == ''
+
+
+def test_extractNames_2():
+    name, short, ext = a.extractNames('/User/mw/test.txt')
+    assert name == ''
+    assert short == ''
+    assert ext == ''
+
+
+def test_extractNames_3():
+    name, short, ext = a.extractNames(['/User/mw/test.txt'])
+    assert name == '/User/mw/test.txt'
+    assert short == 'test'
+    assert ext == '.txt'
+
+
+def test_extractNames_4():
+    name, short, ext = a.extractNames(['/User/mw/test.txt', '/User/mw/test.txt'])
+    assert name == ['/User/mw/test.txt', '/User/mw/test.txt']
+    assert short == ['test', 'test']
+    assert ext == ['.txt', '.txt']
+
+
+def test_prepareFileDialogue_1():
+    dlg = a.prepareFileDialog()
+    assert not dlg
+
+
+def test_prepareFileDialogue_2():
+    dlg = a.prepareFileDialog(QMainWindow())
+    assert not dlg
+
+
+def test_prepareFileDialogue_3():
+    dlg = a.prepareFileDialog(QMainWindow(), True)
+    assert dlg
+
+
+def test_openFile_1():
+    a.openFile()
+
+
+def test_saveFile_1():
+    a.saveFile()
+
+
+def test_openDir_1():
+    a.openDir()
+
+
+def test_clickable_1():
+    a.clickable()

@@ -203,12 +203,50 @@ def test_openFile_4():
     a.openFile(QMainWindow(), 'test', 'test')
 
 
+def test_openFile_5():
+    with mock.patch.object(a,
+                           'runDialog'):
+        a.openFile(QMainWindow(), 'test', 'test', '*.txt')
+
+
 def test_saveFile_1():
     a.saveFile()
 
 
+def test_saveFile_2():
+    a.saveFile(QMainWindow())
+
+
+def test_saveFile_3():
+    a.saveFile(QMainWindow(), 'test')
+
+
+def test_saveFile_4():
+    a.saveFile(QMainWindow(), 'test', 'test')
+
+
+def test_saveFile_5():
+    with mock.patch.object(a,
+                           'runDialog'):
+        a.saveFile(QMainWindow(), 'test', 'test', '*.txt')
+
+
 def test_openDir_1():
     a.openDir()
+
+
+def test_openDir_2():
+    a.openDir(QMainWindow())
+
+
+def test_openDir_3():
+    a.openDir(QMainWindow(), 'test')
+
+
+def test_openDir_4():
+    with mock.patch.object(a,
+                           'runDialog'):
+        a.openDir(QMainWindow(), 'test', '*.txt')
 
 
 def test_clickable_1():

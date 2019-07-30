@@ -18,6 +18,10 @@
 ###########################################################
 from invoke import task
 
+#
+# defining all necessary virtual client logins for building over alll platforms
+#
+
 # defining environment for ubuntu
 clientUbuntu = 'astro-ubuntu.fritz.box'
 userUbuntu = 'mw@' + clientUbuntu
@@ -39,6 +43,10 @@ clientMAC = 'astro-mac.fritz.box'
 userMAC = 'mw@' + clientMAC
 workMAC = userMAC + ':/Users/mw/mountwizzard4'
 buildMAC = userMAC + ':/Users/mw/MountWizzard'
+
+#
+# cleaning the caches before new build
+#
 
 
 @task
@@ -66,6 +74,10 @@ def clean_indibase(c):
         c.run('rm -rf indibase.egg-info')
         c.run('find ./indibase | grep -E "(__pycache__)" | xargs rm -rf')
 
+#
+# bulding resource and widgets for qt
+#
+
 
 @task
 def resource(c):
@@ -82,6 +94,10 @@ def widgets(c):
     for widget in widgets:
         name = widgetDir + widget
         c.run(f'python -m PyQt5.uic.pyuic -x {name}.ui -o {name}_ui.py')
+
+#
+# doing all the testing stuff
+#
 
 
 @task()
@@ -105,6 +121,10 @@ def test_mountwizzard(c):
     print('testing mountwizzard')
     c.run('flake8')
     c.run('pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
+
+#
+# building the components
+#
 
 
 @task(pre=[test_mountcontrol])
@@ -131,19 +151,16 @@ def build_dist(c):
     c.run('rm -f dist/*.tar.gz')
     c.run('python setup.py sdist')
 
+#
+# setting up python virtual environments in all plattforms for defined kontext
+#
+
 
 @task()
 def venv_linux(c):
     print('preparing linux')
     with c.cd('remote_scripts'):
         c.run(f'ssh {userUbuntu} < setup_linux.sh')
-
-
-@task()
-def venv_work(c):
-    print('preparing work')
-    with c.cd('remote_scripts'):
-        c.run(f'ssh {userWork} < setup_linux.sh')
 
 
 @task()
@@ -158,6 +175,18 @@ def venv_mac(c):
     print('preparing mac')
     with c.cd('remote_scripts'):
         c.run(f'ssh {userMAC} < setup_mac.sh')
+
+
+@task()
+def venv_work(c):
+    # this is an actual production platform on my mount
+    print('preparing work')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userWork} < setup_linux.sh')
+
+#
+# building the apps based on pyinstaller packages
+#
 
 
 @task(pre=[build_indibase, build_mountcontrol])
@@ -229,6 +258,11 @@ def build_mac_app(c):
         c.run(f'ssh {userMAC} < build_mac.sh')
     c.run(f'scp {buildMAC}/dist/MountWizzard4.dmg ./dist')
     c.run(f'scp -r {buildMAC}/dist/MountWizzard4.app ./dist')
+
+#
+# start deploying the final apps and distributions for first test run on target
+# platform. it starts th app with 'test' parameter -> this end the app after 3 sec
+#
 
 
 @task(pre=[])

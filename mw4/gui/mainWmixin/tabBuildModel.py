@@ -1057,6 +1057,9 @@ class BuildModel(object):
         :return: true for test purpose
         """
 
+        if not points:
+            return False
+
         app = self.app.mainW.ui.astrometryDevice.currentText()
         if app.startswith('No device'):
             return False
@@ -1065,7 +1068,8 @@ class BuildModel(object):
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         self.modelName = f'm-{self.lastModelType}-{nameTime}'
         self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
-        os.mkdir(self.imageDir)
+        if not os.path.isdir(self.imageDir):
+            os.mkdir(self.imageDir)
         if not os.path.isdir(self.imageDir):
             return False
 
@@ -1150,6 +1154,7 @@ class BuildModel(object):
         suc = self.modelCore(points=points)
         if not suc:
             self.defaultGUI()
+            return False
 
         return True
 
@@ -1178,6 +1183,7 @@ class BuildModel(object):
         suc = self.modelCore(points=points)
         if not suc:
             self.defaultGUI()
+            return False
 
         return True
 

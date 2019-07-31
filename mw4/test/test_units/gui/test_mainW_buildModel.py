@@ -189,6 +189,16 @@ def test_genBuildDSO_2(qtbot):
         assert ['DSO Path cannot be generated', 2] == blocker.args
 
 
+def test_genBuildDSO_3(qtbot):
+    app.mount.obsSite.raJNow = 0
+    app.mount.obsSite.decJNow = 0
+    with mock.patch.object(app.data,
+                           'generateDSOPath',
+                           return_value=True):
+        suc = app.mainW.genBuildDSO()
+        assert suc
+
+
 def test_genBuildGoldenSpiral_1(qtbot):
     with qtbot.assertNotEmitted(app.message):
         suc = app.mainW.genBuildGoldenSpiral()
@@ -389,6 +399,12 @@ def test_updateProgress_6():
 def test_updateProgress_7():
     app.mainW.startModeling = time.time()
     suc = app.mainW.updateProgress(number=3, count=3, modelingDone=True)
+    assert not suc
+
+
+def test_updateProgress_8():
+    app.mainW.startModeling = time.time()
+    suc = app.mainW.updateProgress(count=-1)
     assert not suc
 
 
@@ -786,3 +802,209 @@ def test_saveModel_3():
 
     suc = app.mainW.saveModel(model=model)
     assert suc
+
+
+def test_collectModelData():
+    app.mainW.modelQueue.put('test')
+    model = app.mainW.collectModelData()
+    assert model[0] == 'test'
+
+
+def test_generateBuildDataFromJSON_1():
+    inputData = [
+        {
+            "altitude": 44.556745182012854,
+            "azimuth": 37.194805194805184,
+            "binning": 1.0,
+            "count": 0,
+            "decMJNow": 64.3246,
+            "decSJNow": 64.32841185357267,
+            "errorDEC": -229.0210134131381,
+            "errorRMS": 237.1,
+            "errorRa": -61.36599559380768,
+            "expTime": 3.0,
+            "fastReadout": True,
+            "julian": "2019-06-08T08:57:57Z",
+            "name": "m-file-2019-06-08-08-57-44",
+            "number": 3,
+            "path": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08-57-44/image-000.fits",
+            "pierside": "W",
+            "raMJNow": 8.42882,
+            "raSJNow": 8.427692953132278,
+            "sidereal": "02:50:05.92",
+            "subFrame": 100.0
+        },
+    ]
+
+    build = app.mainW.generateBuildDataFromJSON(inputData)
+    assert build[0].mCoord.dec.degrees == 64.3246
+
+
+def test_generateBuildData_1():
+    inputData = [
+        MPoint(MParam,
+               MPoint,
+               IParam,
+               MData(raMJNow=skyfield.api.Angle(hours=0),
+                     decMJNow=skyfield.api.Angle(degrees=64.3246),
+                     raSJNow=skyfield.api.Angle(hours=0),
+                     decSJNow=skyfield.api.Angle(degrees=0),
+                     sidereal=0,
+                     julian=0,
+                     pierside='E'),
+               RData)
+    ]
+
+    build = app.mainW.generateBuildData(inputData)
+    assert build[0].mCoord.dec.degrees == 64.3246
+
+
+def test_modelFinished_1(qtbot):
+    inputData = MPoint(mParam=MParam(number=3,
+                                     count=3,
+                                     path='',
+                                     name='',
+                                     astrometry='',
+                                     timeout=10,
+                                     radius=1,
+                                     ),
+                       iParam=tuple(),
+                       point=tuple(),
+                       mData=MData(raMJNow=skyfield.api.Angle(hours=0),
+                                   decMJNow=skyfield.api.Angle(degrees=64.3246),
+                                   raSJNow=skyfield.api.Angle(hours=0),
+                                   decSJNow=skyfield.api.Angle(degrees=0),
+                                   sidereal=0,
+                                   julian=0,
+                                   pierside='E'),
+                       rData=RData(errorRA=1,
+                                   errorDEC=2,
+                                   errorRMS=3))
+
+    app.mainW.modelQueue.put(inputData)
+
+    app.imaging.signals.saved.connect(app.mainW.modelSolve)
+    app.imaging.signals.integrated.connect(app.mainW.modelSlew)
+    app.astrometry.signals.done.connect(app.mainW.modelSolveDone)
+    app.mainW.collector.ready.connect(app.mainW.modelImage)
+
+    with mock.patch.object(app.mount.model,
+                           'programAlign',
+                           return_value=False):
+        suc = app.mainW.modelFinished()
+        assert suc
+
+
+def test_modelFinished_2(qtbot):
+    inputData = MPoint(mParam=MParam(number=3,
+                                     count=3,
+                                     path='',
+                                     name='',
+                                     astrometry='',
+                                     timeout=10,
+                                     radius=1,
+                                     ),
+                       iParam=tuple(),
+                       point=tuple(),
+                       mData=MData(raMJNow=skyfield.api.Angle(hours=0),
+                                   decMJNow=skyfield.api.Angle(degrees=64.3246),
+                                   raSJNow=skyfield.api.Angle(hours=0),
+                                   decSJNow=skyfield.api.Angle(degrees=0),
+                                   sidereal=0,
+                                   julian=0,
+                                   pierside='E'),
+                       rData=RData(errorRA=1,
+                                   errorDEC=2,
+                                   errorRMS=3))
+
+    app.mainW.modelQueue.put(inputData)
+
+    app.imaging.signals.saved.connect(app.mainW.modelSolve)
+    app.imaging.signals.integrated.connect(app.mainW.modelSlew)
+    app.astrometry.signals.done.connect(app.mainW.modelSolveDone)
+    app.mainW.collector.ready.connect(app.mainW.modelImage)
+
+    with mock.patch.object(app.mount.model,
+                           'programAlign',
+                           return_value=True):
+        suc = app.mainW.modelFinished()
+        assert suc
+
+
+def test_modelCore_1():
+    app.mainW.ui.astrometryDevice.setCurrentIndex(0)
+    with mock.patch.object(app.mainW,
+                           'modelSlew'):
+        suc = app.mainW.modelCore(points=[(0, 0)])
+        assert not suc
+
+
+def test_modelCore_2():
+    app.mainW.ui.astrometryDevice.setCurrentIndex(1)
+    with mock.patch.object(app.mainW,
+                           'modelSlew'):
+        suc = app.mainW.modelCore()
+        assert not suc
+
+
+def test_modelCore_3():
+    app.mainW.ui.astrometryDevice.setCurrentIndex(1)
+    with mock.patch.object(app.mainW,
+                           'modelSlew'):
+        suc = app.mainW.modelCore(points=[(0, 0)])
+        assert suc
+
+
+def test_modelFull_1():
+    with mock.patch.object(app.mainW,
+                           'modelCore',
+                           return_value=False):
+        suc = app.mainW.modelFull()
+        assert not suc
+
+
+def test_modelFull_2():
+    with mock.patch.object(app.mainW,
+                           'modelCore',
+                           return_value=True):
+        suc = app.mainW.modelFull()
+        assert suc
+
+
+def test_modelAlign_1():
+    with mock.patch.object(app.mainW,
+                           'modelCore',
+                           return_value=False):
+        suc = app.mainW.modelAlign()
+        assert not suc
+
+
+def test_modelAlign_2():
+    with mock.patch.object(app.mainW,
+                           'modelCore',
+                           return_value=True):
+        suc = app.mainW.modelAlign()
+        assert suc
+
+
+def test_loadProgramModel_1():
+    with mock.patch.object(app.mainW,
+                           'openFile',
+                           return_value=('', '', '')):
+        with mock.patch.object(app.mount.model,
+                               'programAlign',
+                               return_value=True):
+            suc = app.mainW.loadProgramModel()
+            assert not suc
+
+
+def test_loadProgramModel_2():
+    modelDir = mwGlob['modelDir'] + '/m-test.model'
+    with mock.patch.object(app.mainW,
+                           'openFile',
+                           return_value=(modelDir, 'm-test', '.model')):
+        with mock.patch.object(app.mount.model,
+                               'programAlign',
+                               return_value=True):
+            suc = app.mainW.loadProgramModel()
+            assert suc

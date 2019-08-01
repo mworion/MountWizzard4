@@ -60,7 +60,7 @@ class Camera(indiClass.IndiClass):
         >>>          )
     """
 
-    __all__ = ['Dome',
+    __all__ = ['Camera',
                ]
 
     version = '0.100.0'
@@ -141,24 +141,26 @@ class Camera(indiClass.IndiClass):
         :param propertyName:
         :param element:
         :param value:
-        :return: True for test purpose
+        :return: success
         """
 
         if propertyName == 'CCD_INFO':
             if element == 'CCD_PIXEL_SIZE_X':
                 self.app.mainW.ui.pixelSize.setValue(np.round(value, 1))
-
-        return True
+                return True
+        return False
 
     def setExposureState(self, propertyName='', value=0):
         """
 
         :param propertyName:
         :param value:
-        :return: True for test purpose
+        :return: success
         """
 
         if propertyName == 'CCD_EXPOSURE':
+            if not hasattr(self.device, 'CCD_EXPOSURE'):
+                return False
             if self.device.CCD_EXPOSURE['state'] == 'Idle':
                 self.signals.message.emit('')
             elif self.device.CCD_EXPOSURE['state'] == 'Busy':
@@ -169,8 +171,9 @@ class Camera(indiClass.IndiClass):
                     self.signals.message.emit(f'expose {value:2.0f} s')
             elif self.device.CCD_EXPOSURE['state'] == 'Ok':
                 self.signals.message.emit('')
-
-        return True
+            return True
+        else:
+            return False
 
     def updateNumber(self, deviceName, propertyName):
         """
@@ -316,11 +319,9 @@ class Camera(indiClass.IndiClass):
         """
         if subFrame > 100:
             return False
-        if subFrame == 100:
-            return True
         if subFrame < 10:
             return False
-        if 'CCD_FRAME.X' not in self.data or 'CCD_FRAME.X' not in self.data:
+        if 'CCD_FRAME.X' not in self.data or 'CCD_FRAME.Y' not in self.data:
             return False
 
         return True
@@ -332,8 +333,10 @@ class Camera(indiClass.IndiClass):
         :param binning:
         :return: success
         """
-        if binning == 1:
-            return True
+        if binning < 1:
+            return False
+        if binning > 4:
+            return False
         if 'CCD_BINNING.HOR_BIN' not in self.data:
             return False
 
@@ -347,8 +350,6 @@ class Camera(indiClass.IndiClass):
         :return:
         """
 
-        if filterPos == 0:
-            return True
         if '' not in self.data:
             return False
 

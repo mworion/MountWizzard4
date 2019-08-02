@@ -489,3 +489,194 @@ def test_canBinning_4():
     app.imaging.data['CCD_BINNING.HOR_BIN'] = 1
     suc = app.imaging.canBinning()
     assert suc
+
+
+def test_calcSubFrame_1():
+    app.imaging.data['CCD_INFO.CCD_MAX_X'] = 1000
+    app.imaging.data['CCD_INFO.CCD_MAX_Y'] = 1000
+    subFrame = 100
+
+    px, py, w, h = app.imaging.calcSubFrame(subFrame=subFrame)
+    assert py == 0
+    assert py == 0
+    assert w == 1000
+    assert h == 1000
+
+
+def test_calcSubFrame_2():
+    app.imaging.data['CCD_INFO.CCD_MAX_X'] = 1000
+    app.imaging.data['CCD_INFO.CCD_MAX_Y'] = 1000
+    subFrame = 50
+
+    px, py, w, h = app.imaging.calcSubFrame(subFrame=subFrame)
+    assert py == 250
+    assert py == 250
+    assert w == 500
+    assert h == 500
+
+
+def test_calcSubFrame_3():
+    app.imaging.data['CCD_INFO.CCD_MAX_X'] = 1001
+    app.imaging.data['CCD_INFO.CCD_MAX_Y'] = 1001
+    subFrame = 50
+
+    px, py, w, h = app.imaging.calcSubFrame(subFrame=subFrame)
+    assert py == 250
+    assert py == 250
+    assert w == 500
+    assert h == 500
+
+
+def test_calcSubFrame_4():
+    app.imaging.data['CCD_INFO.CCD_MAX_X'] = 1001
+    app.imaging.data['CCD_INFO.CCD_MAX_Y'] = 1001
+    subFrame = 10
+
+    px, py, w, h = app.imaging.calcSubFrame(subFrame=subFrame)
+    assert py == 450
+    assert py == 450
+    assert w == 100
+    assert h == 100
+
+
+def test_setupExposure_1():
+    class Test:
+        @staticmethod
+        def getSwitch(name):
+            return {'test': False}
+
+    app.imaging.device = Test()
+
+    suc = app.imaging.setupExpose()
+    assert not suc
+
+
+def test_setupExposure_2():
+    class Test:
+        @staticmethod
+        def getSwitch(name):
+            return {'CCD_COMPRESS': False}
+
+    app.imaging.device = Test()
+
+    suc = app.imaging.setupExpose()
+    assert not suc
+
+
+def test_setupExposure_3():
+    class Test:
+        @staticmethod
+        def getSwitch(name):
+            return {'CCD_COMPRESS': False}
+
+    class Test1:
+        @staticmethod
+        def sendNewSwitch(deviceName='',
+                          propertyName='',
+                          elements=None):
+            return True
+
+    app.imaging.device = Test()
+    app.imaging.client = Test1()
+
+    suc = app.imaging.setupExpose()
+    assert not suc
+
+
+def test_setupExposure_4():
+    class Test:
+        @staticmethod
+        def getSwitch(name):
+            return {'CCD_COMPRESS': False,
+                    'FRAME_LIGHT': True}
+
+    class Test1:
+        @staticmethod
+        def sendNewSwitch(deviceName='',
+                          propertyName='',
+                          elements=None):
+            return True
+
+    app.imaging.device = Test()
+    app.imaging.client = Test1()
+
+    suc = app.imaging.setupExpose()
+    assert suc
+
+
+def test_expose_1():
+    suc = app.imaging.expose()
+    assert not suc
+
+
+def test_expose_2():
+    class Test:
+        @staticmethod
+        def getNumber(name):
+            return {}
+
+        @staticmethod
+        def getSwitch(name):
+            return {}
+
+    class Test1:
+        @staticmethod
+        def sendNewNumber(deviceName='',
+                          propertyName='',
+                          elements=None):
+            return True
+
+        @staticmethod
+        def sendNewSwitch(deviceName='',
+                          propertyName='',
+                          elements=None):
+            return True
+
+    app.imaging.device = Test()
+    app.imaging.client = Test1()
+
+    with mock.patch.object(app.imaging,
+                           'setupExpose',
+                           return_value=True):
+        suc = app.imaging.expose(imagePath='test')
+        assert suc
+
+
+def test_abort_1():
+    class Test:
+        @staticmethod
+        def getSwitch(name):
+            return {}
+
+    class Test1:
+        @staticmethod
+        def sendNewSwitch(deviceName='',
+                          propertyName='',
+                          elements=None):
+            return True
+
+    app.imaging.device = Test()
+    app.imaging.client = Test1()
+
+    suc = app.imaging.abort()
+    assert not suc
+
+
+def test_abort_2():
+    class Test:
+        @staticmethod
+        def getSwitch(name):
+            return {'ABORT': True}
+
+    class Test1:
+        @staticmethod
+        def sendNewSwitch(deviceName='',
+                          propertyName='',
+                          elements=None):
+            return True
+
+    app.imaging.device = Test()
+    app.imaging.client = Test1()
+
+    suc = app.imaging.abort()
+    assert suc

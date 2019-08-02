@@ -342,19 +342,6 @@ class Camera(indiClass.IndiClass):
 
         return True
 
-    def canFilterPos(self, filterPos=0):
-        """
-        canFilterPos checks if the camera support filter selection
-
-        :param filterPos:
-        :return:
-        """
-
-        if '' not in self.data:
-            return False
-
-        return True
-
     def calcSubFrame(self, subFrame=100):
         """
         calcSubFrame calculates the subFrame parameters depending on the percentage of
@@ -383,7 +370,6 @@ class Camera(indiClass.IndiClass):
         :return: success
         """
 
-        successOverall = False
         # setting compression to on as default
         indiCmd = self.device.getSwitch('CCD_COMPRESSION')
         if 'CCD_COMPRESS' not in indiCmd:
@@ -393,7 +379,8 @@ class Camera(indiClass.IndiClass):
                                         propertyName='CCD_COMPRESSION',
                                         elements=indiCmd,
                                         )
-        successOverall = successOverall and suc
+        if not suc:
+            return False
 
         # setting frame type to light
         indiCmd = self.device.getSwitch('CCD_FRAME_TYPE')
@@ -404,13 +391,10 @@ class Camera(indiClass.IndiClass):
                                         propertyName='CCD_FRAME_TYPE',
                                         elements=indiCmd,
                                         )
-        successOverall = successOverall and suc
-        return successOverall
-
-        # todo: filter and wcs disable
+        return suc
 
     def expose(self, imagePath='', expTime=3, binning=1,
-               subFrame=100, fastReadout=True, filterPos=0):
+               subFrame=100, fastReadout=True):
         """
 
         :param imagePath:
@@ -418,7 +402,6 @@ class Camera(indiClass.IndiClass):
         :param binning:
         :param subFrame:
         :param fastReadout:
-        :param filterPos:
         :return: success
         """
 
@@ -428,14 +411,12 @@ class Camera(indiClass.IndiClass):
             return False
         if not self.canBinning(binning=binning):
             return False
-        if not self.canFilterPos(filterPos=filterPos):
-            return False
 
-        successOverall = False
         self.imagePath = imagePath
 
         suc = self.setupExpose()
-        successOverall = successOverall and suc
+        if not suc:
+            return False
 
         # setting binning value for x and y equally
         indiCmd = self.device.getNumber('CCD_BINNING')
@@ -445,7 +426,8 @@ class Camera(indiClass.IndiClass):
                                         propertyName='CCD_BINNING',
                                         elements=indiCmd,
                                         )
-        successOverall = successOverall and suc
+        if not suc:
+            return False
 
         # setting subFrame
         posX, posY, width, height = self.calcSubFrame(subFrame)
@@ -459,18 +441,18 @@ class Camera(indiClass.IndiClass):
                                         propertyName='CCD_FRAME',
                                         elements=indiCmd,
                                         )
-        successOverall = successOverall and suc
+        if not suc:
+            return False
 
         # setting fast mode:
         quality = self.device.getSwitch('READOUT_QUALITY')
+        self.logger.debug(f'camera has readout quality entry: {quality}')
         quality['QUALITY_LOW'] = fastReadout
         quality['QUALITY_HIGH'] = not fastReadout
         self.client.sendNewSwitch(deviceName=self.name,
                                   propertyName='READOUT_QUALITY',
                                   elements=quality,
                                   )
-
-        # todo: filter
 
         # setting and starting exposure
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
@@ -479,9 +461,7 @@ class Camera(indiClass.IndiClass):
                                         propertyName='CCD_EXPOSURE',
                                         elements=indiCmd,
                                         )
-        successOverall = successOverall and suc
-
-        return successOverall
+        return suc
 
     def abort(self):
         """

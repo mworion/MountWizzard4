@@ -148,3 +148,98 @@ def test_programTLEToMount_3():
         suc = app.mainW.programTLEToMount()
         assert suc
 
+
+def test_calcTLEParams():
+    with mock.patch.object(app.mount,
+                           'calcTLE'):
+        app.mainW.calcTLEParams()
+
+
+def test_extractSatelliteData_1():
+
+    suc = app.mainW.extractSatelliteData('test', satName='test')
+    assert not suc
+
+
+def test_extractSatelliteData_2():
+
+    suc = app.mainW.extractSatelliteData('test', satName=0)
+    assert not suc
+
+
+def test_extractSatelliteData_3():
+
+    suc = app.mainW.extractSatelliteData('test', satName='ZARYA')
+    assert not suc
+
+
+def test_extractSatelliteData_4():
+
+    suc = app.mainW.extractSatelliteData('test', satName='ZARYA')
+    assert not suc
+
+
+def test_enableTrack_1():
+    suc = app.mainW.enableTrack()
+    assert not suc
+
+
+def test_enableTrack_2():
+    class Test:
+        jdStart = None
+        jdEnd = None
+        flip = False
+        message = None
+        altitude = None
+        setNeedFlip = None
+
+    suc = app.mainW.enableTrack(Test())
+    assert suc
+
+
+def test_startTrack_1():
+    app.mount.mountUp = False
+    suc = app.mainW.startTrack()
+    assert not suc
+
+
+def test_startTrack_2():
+    app.mount.mountUp = True
+    with mock.patch.object(app.mount.satellite,
+                           'slewTLE',
+                           return_value=(False, 'test')):
+        suc = app.mainW.startTrack()
+        assert not suc
+
+
+def test_startTrack_3():
+    app.mount.mountUp = True
+    with mock.patch.object(app.mount.satellite,
+                           'slewTLE',
+                           return_value=(True, 'test')):
+        suc = app.mainW.startTrack()
+        assert suc
+
+
+def test_stopTrack_1():
+    app.mount.mountUp = False
+    suc = app.mainW.stopTrack()
+    assert not suc
+
+
+def test_stopTrack_2():
+    app.mount.mountUp = True
+    with mock.patch.object(app.mount.obsSite,
+                           'stopTracking',
+                           return_value=(False, 'test')):
+        suc = app.mainW.stopTrack()
+        assert suc
+
+
+def test_stopTrack_3():
+    app.mount.mountUp = True
+    with mock.patch.object(app.mount.obsSite,
+                           'stopTracking',
+                           return_value=(True, 'test')):
+        suc = app.mainW.stopTrack()
+        assert suc

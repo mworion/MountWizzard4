@@ -390,11 +390,13 @@ class Satellite(object):
         self.app.satelliteW.signals.show.emit(self.satellite)
         return True
 
-    def enableTrack(self, tleParams):
+    def enableTrack(self, tleParams=None):
         """
 
-        :return:
+        :return: success for test purpose
         """
+        if not tleParams:
+            return False
 
         if tleParams.jdStart is not None:
             time = self.app.mount.obsSite.ts.tt_jd(tleParams.jdStart)
@@ -422,6 +424,8 @@ class Satellite(object):
         else:
             self.ui.stopSatelliteTracking.setEnabled(False)
             self.ui.startSatelliteTracking.setEnabled(False)
+
+        return True
 
     def startTrack(self):
         """
@@ -469,3 +473,5 @@ class Satellite(object):
             self.app.message.emit('Cannot stop tracking', 2)
         else:
             self.app.message.emit('Stopped tracking', 0)
+
+        return suc

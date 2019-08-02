@@ -19,6 +19,7 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import os
 # external packages
 import astropy
 from astropy.io import fits

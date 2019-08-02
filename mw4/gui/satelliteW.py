@@ -62,8 +62,10 @@ class SatelliteWindow(widget.MWidget):
     """
 
     __all__ = ['SatelliteWindow',
+               'receiveSatelliteAndShow',
+               'updatePositions',
                ]
-    version = '0.9'
+    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # length of forecast time in hours
@@ -133,6 +135,8 @@ class SatelliteWindow(widget.MWidget):
         width = config.get('width', 800)
         self.resize(width, height)
 
+        return True
+
     def storeConfig(self):
         """
         storeConfig writes the keys to the configuration dict and stores. if some
@@ -149,6 +153,8 @@ class SatelliteWindow(widget.MWidget):
         config['height'] = self.height()
         config['width'] = self.width()
 
+        return True
+
     def closeEvent(self, closeEvent):
         self.storeConfig()
 
@@ -159,7 +165,7 @@ class SatelliteWindow(widget.MWidget):
         self.receiveSatelliteAndShow(self.app.mainW.satellite)
         self.show()
 
-    def receiveSatelliteAndShow(self, satellite):
+    def receiveSatelliteAndShow(self, satellite=None):
         """
         receiveSatelliteAndShow receives a signal with the content of the selected satellite.
         it locally sets it an draws the the complete view
@@ -171,21 +177,29 @@ class SatelliteWindow(widget.MWidget):
         if satellite is None:
             self.drawSatellite()
             return False
+
         self.satellite = satellite
         if satellite.model.no < 0.02:
             self.FORECAST_TIME = 24
         else:
             self.FORECAST_TIME = 3
         self.drawSatellite()
+
         return True
 
-    def updatePositions(self, observe, subpoint, altaz):
+    def updatePositions(self, observe=None, subpoint=None, altaz=None):
         """
         updatePositions is triggered once a second and update the satellite position in each
         view.
 
         :return: success
         """
+        if observe is None:
+            return False
+        if subpoint is None:
+            return False
+        if altaz is None:
+            return False
 
         if self.satellite is None:
             return False

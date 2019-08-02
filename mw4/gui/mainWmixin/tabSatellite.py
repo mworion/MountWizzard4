@@ -121,12 +121,15 @@ class Satellite(object):
 
         return True
 
-    def prepare(self, tleParams):
+    def prepare(self, tleParams=None):
         """
 
         :param tleParams:
         :return: True for test purpose
         """
+
+        if not tleParams:
+            return False
 
         self.extractSatelliteData(None, satName=tleParams.name)
         return True
@@ -273,7 +276,7 @@ class Satellite(object):
         self.ui.satAzimuth.setText(f'{az:3.2f}')
 
         if not self.app.satelliteW:
-            return
+            return True
 
         self.app.satelliteW.signals.update.emit(observe, subpoint, altaz)
         return True

@@ -34,6 +34,8 @@ def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
     yield
+    import shutil
+    shutil.rmtree(mwGlob['imageDir'] + 'm-file*', ignore_errors=True)
 
 
 def test_cameraSignals_1():

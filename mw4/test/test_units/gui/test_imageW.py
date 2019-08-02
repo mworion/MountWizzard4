@@ -36,6 +36,7 @@ def module_setup_teardown():
     app.config['showImageWindow'] = True
     app.toggleImageWindow()
     yield
+    os.remove(mwGlob['imageDir'] + '/test.fit')
 
 
 def test_storeConfig_1():

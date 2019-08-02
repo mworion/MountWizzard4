@@ -578,8 +578,11 @@ def test_onMouseNormal_6():
         with mock.patch.object(mountcontrol.obsSite.Connection,
                                'communicate',
                                return_value=(True, '1', 1)):
-            suc = app.hemisphereW.onMouseNormal(event=event)
-            assert suc
+            with mock.patch.object(app.mount.obsSite,
+                                   'slewAltAz',
+                                   return_value=True):
+                suc = app.hemisphereW.onMouseNormal(event=event)
+                assert suc
 
 
 def test_addHorizonPoint_1():

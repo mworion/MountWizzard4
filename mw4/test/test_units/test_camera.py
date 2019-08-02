@@ -20,7 +20,9 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+import zlib
 # external packages
+from astropy.io import fits
 # local import
 from mw4.test.test_units.setupQt import setupQt
 from mw4.imaging.camera import CameraSignals, Camera
@@ -435,6 +437,121 @@ def test_updateBLOB_3():
     assert not suc
 
 
+def test_updateBLOB_4():
+    class Test:
+        name = 'test'
+
+        @staticmethod
+        def getBlob(name):
+            return {}
+
+    propertyName = ''
+    app.imaging.device = Test()
+    deviceName = 'test'
+    app.imaging.name = 'test'
+
+    suc = app.imaging.updateBLOB(propertyName=propertyName,
+                                 deviceName=deviceName)
+    assert not suc
+
+
+def test_updateBLOB_5():
+    class Test:
+        name = 'test'
+
+        @staticmethod
+        def getBlob(name):
+            return {'value': 'CCD1'}
+
+    propertyName = ''
+    app.imaging.device = Test()
+    deviceName = 'test'
+    app.imaging.name = 'test'
+    app.imaging.imagePath = 'test'
+
+    suc = app.imaging.updateBLOB(propertyName=propertyName,
+                                 deviceName=deviceName)
+    assert not suc
+
+
+def test_updateBLOB_5():
+    class Test:
+        name = 'test'
+
+        @staticmethod
+        def getBlob(name):
+            return {'name': 'CCD1',
+                    'value': 'CCD1',
+                    'format': '.fits.fz'}
+
+    propertyName = ''
+    app.imaging.device = Test()
+    deviceName = 'test'
+    app.imaging.name = 'test'
+    app.imaging.imagePath = './mw4/test/test_units/image/test.fit'
+
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    with mock.patch.object(fits.HDUList,
+                           'fromstring',
+                           return_value=hdu):
+        suc = app.imaging.updateBLOB(propertyName=propertyName,
+                                     deviceName=deviceName)
+        assert suc
+
+
+def test_updateBLOB_6():
+    class Test:
+        name = 'test'
+
+        @staticmethod
+        def getBlob(name):
+            return {'name': 'CCD1',
+                    'value': zlib.compress(b'CCD1'),
+                    'format': '.fits.z'}
+
+    propertyName = ''
+    app.imaging.device = Test()
+    deviceName = 'test'
+    app.imaging.name = 'test'
+    app.imaging.imagePath = './mw4/test/test_units/image/test.fit'
+
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    with mock.patch.object(fits.HDUList,
+                           'fromstring',
+                           return_value=hdu):
+        suc = app.imaging.updateBLOB(propertyName=propertyName,
+                                     deviceName=deviceName)
+        assert suc
+
+
+def test_updateBLOB_7():
+    class Test:
+        name = 'test'
+
+        @staticmethod
+        def getBlob(name):
+            return {'name': 'CCD1',
+                    'value': 'CCD1',
+                    'format': '.fits'}
+
+    propertyName = ''
+    app.imaging.device = Test()
+    deviceName = 'test'
+    app.imaging.name = 'test'
+    app.imaging.imagePath = './mw4/test/test_units/image/test.fit'
+
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    with mock.patch.object(fits.HDUList,
+                           'fromstring',
+                           return_value=hdu):
+        suc = app.imaging.updateBLOB(propertyName=propertyName,
+                                     deviceName=deviceName)
+        assert suc
+
+
 def test_canSubFrame_1():
     suc = app.imaging.canSubFrame()
     assert not suc
@@ -539,6 +656,18 @@ def test_calcSubFrame_4():
     assert h == 100
 
 
+def test_calcSubFrame_5():
+    app.imaging.data['CCD_INFO.CCD_MAX_X'] = 1001
+    app.imaging.data['CCD_INFO.CCD_MAX_Y'] = 1001
+    subFrame = 5
+
+    px, py, w, h = app.imaging.calcSubFrame(subFrame=subFrame)
+    assert py == 0
+    assert py == 0
+    assert w == 1001
+    assert h == 1001
+
+
 def test_setupExposure_1():
     class Test:
         @staticmethod
@@ -547,7 +676,7 @@ def test_setupExposure_1():
 
     app.imaging.device = Test()
 
-    suc = app.imaging.setupExpose()
+    suc = app.imaging.setupFrameCompress()
     assert not suc
 
 
@@ -559,7 +688,7 @@ def test_setupExposure_2():
 
     app.imaging.device = Test()
 
-    suc = app.imaging.setupExpose()
+    suc = app.imaging.setupFrameCompress()
     assert not suc
 
 
@@ -579,7 +708,7 @@ def test_setupExposure_3():
     app.imaging.device = Test()
     app.imaging.client = Test1()
 
-    suc = app.imaging.setupExpose()
+    suc = app.imaging.setupFrameCompress()
     assert not suc
 
 
@@ -600,7 +729,7 @@ def test_setupExposure_4():
     app.imaging.device = Test()
     app.imaging.client = Test1()
 
-    suc = app.imaging.setupExpose()
+    suc = app.imaging.setupFrameCompress()
     assert suc
 
 
@@ -636,7 +765,7 @@ def test_expose_2():
     app.imaging.client = Test1()
 
     with mock.patch.object(app.imaging,
-                           'setupExpose',
+                           'setupFrameCompress',
                            return_value=True):
         suc = app.imaging.expose(imagePath='test')
         assert suc

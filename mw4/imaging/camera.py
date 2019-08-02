@@ -363,9 +363,9 @@ class Camera(indiClass.IndiClass):
 
         return posX, posY, width, height
 
-    def setupExpose(self):
+    def setupFrameCompress(self):
         """
-        setupExpose prepares the overall INDI setup data for imaging
+        setupFrameCompress prepares the overall INDI setup data for imaging
 
         :return: success
         """
@@ -414,7 +414,7 @@ class Camera(indiClass.IndiClass):
 
         self.imagePath = imagePath
 
-        suc = self.setupExpose()
+        suc = self.setupFrameCompress()
         if not suc:
             return False
 

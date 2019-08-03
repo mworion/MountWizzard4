@@ -1203,7 +1203,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -4277,7 +4277,7 @@ manually</string>
         </rect>
        </property>
        <property name="title">
-        <string>E-Sensor</string>
+        <string>Sensor</string>
        </property>
        <widget class="QLineEdit" name="environTemp">
         <property name="enabled">
@@ -18137,7 +18137,7 @@ manually</string>
           </font>
          </property>
          <property name="text">
-          <string>open source software used: </string>
+          <string>open source software embedded: </string>
          </property>
         </widget>
         <widget class="QLabel" name="le_firmwareProductName_4">

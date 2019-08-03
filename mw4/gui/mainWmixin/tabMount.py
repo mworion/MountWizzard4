@@ -152,7 +152,9 @@ class Mount(object):
             self.ui.pierside.setText('-')
 
         if obs.timeSidereal is not None:
-            self.ui.timeSidereal.setText(obs.timeSidereal[:8])
+            siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
+            siderealText = siderealFormat.format(*obs.timeSidereal.hms())
+            self.ui.timeSidereal.setText(siderealText)
         else:
             self.ui.timeSidereal.setText('-')
 

@@ -158,6 +158,13 @@ class Mount(object):
         else:
             self.ui.timeSidereal.setText('-')
 
+        if obs.haJNow is not None:
+            haFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
+            haText = haFormat.format(*obs.haJNow.hms())
+            self.ui.HA.setText(haText)
+        else:
+            self.ui.HA.setText('-')
+
         return True
 
     def updateSetStatGUI(self, sett):

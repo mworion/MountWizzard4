@@ -1203,7 +1203,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -1228,9 +1228,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>150</y>
+         <y>120</y>
          <width>226</width>
-         <height>41</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -1276,9 +1276,9 @@
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>85</y>
+         <y>70</y>
          <width>226</width>
-         <height>41</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -1324,9 +1324,9 @@
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>150</y>
+         <y>120</y>
          <width>226</width>
-         <height>41</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -1372,9 +1372,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>85</y>
+         <y>70</y>
          <width>226</width>
-         <height>41</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -1420,9 +1420,9 @@
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>65</y>
+         <y>55</y>
          <width>121</width>
-         <height>21</height>
+         <height>16</height>
         </rect>
        </property>
        <property name="font">
@@ -1438,9 +1438,9 @@
        <property name="geometry">
         <rect>
          <x>250</x>
-         <y>130</y>
+         <y>105</y>
          <width>131</width>
-         <height>21</height>
+         <height>16</height>
         </rect>
        </property>
        <property name="font">
@@ -1456,9 +1456,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>65</y>
+         <y>55</y>
          <width>121</width>
-         <height>21</height>
+         <height>16</height>
         </rect>
        </property>
        <property name="font">
@@ -1475,9 +1475,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>105</y>
          <width>121</width>
-         <height>21</height>
+         <height>16</height>
         </rect>
        </property>
        <property name="font">
@@ -1496,7 +1496,7 @@
        <property name="geometry">
         <rect>
          <x>135</x>
-         <y>315</y>
+         <y>320</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1538,7 +1538,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>315</y>
+         <y>320</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1556,7 +1556,7 @@
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>255</y>
+         <y>260</y>
          <width>91</width>
          <height>20</height>
         </rect>
@@ -1580,7 +1580,7 @@
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>255</y>
+         <y>260</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1622,7 +1622,7 @@
        <property name="geometry">
         <rect>
          <x>455</x>
-         <y>225</y>
+         <y>230</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -1645,9 +1645,9 @@
       <widget class="QLabel" name="label_80">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>200</y>
-         <width>61</width>
+         <x>255</x>
+         <y>205</y>
+         <width>231</width>
          <height>21</height>
         </rect>
        </property>
@@ -1659,14 +1659,17 @@
         </font>
        </property>
        <property name="text">
-        <string>Status</string>
+        <string>Status from mount computer</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
       <widget class="Line" name="line_12">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>220</y>
+         <y>225</y>
          <width>766</width>
          <height>1</height>
         </rect>
@@ -1682,7 +1685,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>45</y>
+         <y>40</y>
          <width>251</width>
          <height>1</height>
         </rect>
@@ -1927,7 +1930,7 @@
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>225</y>
+         <y>230</y>
          <width>101</width>
          <height>20</height>
         </rect>
@@ -1951,7 +1954,7 @@
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>225</y>
+         <y>230</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1993,7 +1996,7 @@
        <property name="geometry">
         <rect>
          <x>455</x>
-         <y>255</y>
+         <y>260</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -2039,7 +2042,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>25</y>
+         <y>20</y>
          <width>211</width>
          <height>21</height>
         </rect>
@@ -2059,9 +2062,9 @@
        <property name="geometry">
         <rect>
          <x>260</x>
-         <y>20</y>
+         <y>15</y>
          <width>216</width>
-         <height>41</height>
+         <height>36</height>
         </rect>
        </property>
        <property name="title">
@@ -2141,7 +2144,7 @@
        <property name="geometry">
         <rect>
          <x>105</x>
-         <y>285</y>
+         <y>290</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -2186,7 +2189,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>285</y>
+         <y>290</y>
          <width>96</width>
          <height>21</height>
         </rect>
@@ -2207,7 +2210,7 @@
        <property name="geometry">
         <rect>
          <x>105</x>
-         <y>225</y>
+         <y>230</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -2249,7 +2252,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>225</y>
+         <y>230</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -2270,7 +2273,7 @@
        <property name="geometry">
         <rect>
          <x>105</x>
-         <y>255</y>
+         <y>260</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -2312,7 +2315,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>255</y>
+         <y>260</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -2330,7 +2333,7 @@
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>345</y>
+         <y>350</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -2348,7 +2351,7 @@
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>375</y>
+         <y>380</y>
          <width>116</width>
          <height>21</height>
         </rect>
@@ -2369,7 +2372,7 @@
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>345</y>
+         <y>350</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2418,7 +2421,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>345</y>
+         <y>350</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -2439,7 +2442,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>375</y>
+         <y>380</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2488,7 +2491,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>345</y>
+         <y>350</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -2506,7 +2509,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>375</y>
+         <y>380</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -2527,7 +2530,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>135</x>
-         <y>345</y>
+         <y>350</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2575,7 +2578,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>135</x>
-         <y>375</y>
+         <y>380</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2620,7 +2623,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>375</y>
+         <y>380</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -2638,7 +2641,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>225</y>
+         <y>230</y>
          <width>41</width>
          <height>21</height>
         </rect>
@@ -2656,7 +2659,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>285</y>
+         <y>290</y>
          <width>36</width>
          <height>21</height>
         </rect>
@@ -2677,7 +2680,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>135</x>
-         <y>405</y>
+         <y>410</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2725,7 +2728,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>405</y>
+         <y>410</y>
          <width>126</width>
          <height>21</height>
         </rect>
@@ -2743,7 +2746,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>255</y>
+         <y>260</y>
          <width>36</width>
          <height>21</height>
         </rect>
@@ -2761,7 +2764,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>315</y>
+         <y>320</y>
          <width>126</width>
          <height>21</height>
         </rect>
@@ -2782,7 +2785,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>690</x>
-         <y>315</y>
+         <y>320</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2830,7 +2833,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>315</y>
+         <y>320</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2883,7 +2886,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>405</y>
+         <y>410</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -2901,7 +2904,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>225</y>
+         <y>230</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -2919,7 +2922,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>255</y>
+         <y>260</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -2937,7 +2940,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>460</x>
-         <y>405</y>
+         <y>410</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -2958,7 +2961,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>285</y>
+         <y>290</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -3011,7 +3014,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>740</x>
-         <y>255</y>
+         <y>260</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -3035,7 +3038,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>315</y>
+         <y>320</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -3053,7 +3056,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>455</x>
-         <y>315</y>
+         <y>320</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -3080,7 +3083,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>690</x>
-         <y>255</y>
+         <y>260</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -3141,7 +3144,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>690</x>
-         <y>225</y>
+         <y>230</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -3193,7 +3196,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>455</x>
-         <y>285</y>
+         <y>290</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -3217,7 +3220,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>740</x>
-         <y>225</y>
+         <y>230</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -3241,7 +3244,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>285</y>
+         <y>290</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -3262,7 +3265,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>405</y>
+         <y>410</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -3314,7 +3317,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>345</y>
+         <y>350</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -3332,7 +3335,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>375</y>
+         <y>380</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -3350,7 +3353,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>405</y>
+         <y>410</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -3371,7 +3374,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>645</x>
-         <y>375</y>
+         <y>380</y>
          <width>96</width>
          <height>21</height>
         </rect>
@@ -3426,7 +3429,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>645</x>
-         <y>345</y>
+         <y>350</y>
          <width>96</width>
          <height>21</height>
         </rect>
@@ -3472,7 +3475,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>745</x>
-         <y>375</y>
+         <y>380</y>
          <width>31</width>
          <height>20</height>
         </rect>
@@ -3496,7 +3499,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>740</x>
-         <y>405</y>
+         <y>410</y>
          <width>21</width>
          <height>20</height>
         </rect>
@@ -3520,7 +3523,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>745</x>
-         <y>345</y>
+         <y>350</y>
          <width>31</width>
          <height>20</height>
         </rect>
@@ -3547,7 +3550,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>645</x>
-         <y>405</y>
+         <y>410</y>
          <width>96</width>
          <height>21</height>
         </rect>
@@ -3593,7 +3596,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>285</y>
+         <y>290</y>
          <width>126</width>
          <height>21</height>
         </rect>
@@ -3614,7 +3617,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>690</x>
-         <y>285</y>
+         <y>290</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -3652,6 +3655,72 @@ When clicking the button, you could change the value.</string>
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_57">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>155</y>
+         <width>121</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>HA (HMS)</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="HA">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>170</y>
+         <width>226</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>28</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Display of right ascention in HH:MM:SS</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string>HA</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="large" stdset="0">
         <bool>true</bool>
        </property>
       </widget>
@@ -3737,6 +3806,8 @@ When clicking the button, you could change the value.</string>
       <zorder>siteElevation</zorder>
       <zorder>label_151</zorder>
       <zorder>statusWOL</zorder>
+      <zorder>label_57</zorder>
+      <zorder>HA</zorder>
      </widget>
      <widget class="QWidget" name="Environ">
       <attribute name="title">

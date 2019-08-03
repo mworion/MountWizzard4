@@ -1227,16 +1227,16 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>120</y>
-         <width>226</width>
+         <x>75</x>
+         <y>110</y>
+         <width>141</width>
          <height>31</height>
         </rect>
        </property>
        <property name="font">
         <font>
          <family>Arial</family>
-         <pointsize>28</pointsize>
+         <pointsize>20</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -1275,16 +1275,16 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>250</x>
-         <y>70</y>
-         <width>226</width>
+         <x>330</x>
+         <y>160</y>
+         <width>146</width>
          <height>31</height>
         </rect>
        </property>
        <property name="font">
         <font>
          <family>Arial</family>
-         <pointsize>28</pointsize>
+         <pointsize>20</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -1323,16 +1323,16 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>250</x>
-         <y>120</y>
-         <width>226</width>
+         <x>330</x>
+         <y>110</y>
+         <width>146</width>
          <height>31</height>
         </rect>
        </property>
        <property name="font">
         <font>
          <family>Arial</family>
-         <pointsize>28</pointsize>
+         <pointsize>20</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -1371,16 +1371,16 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>226</width>
+         <x>75</x>
+         <y>160</y>
+         <width>141</width>
          <height>31</height>
         </rect>
        </property>
        <property name="font">
         <font>
          <family>Arial</family>
-         <pointsize>28</pointsize>
+         <pointsize>20</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -1414,79 +1414,6 @@
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_9">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>55</y>
-         <width>121</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>AZ (Deg)</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_10">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>105</y>
-         <width>131</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>DEC (DMS)</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_8">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>55</y>
-         <width>121</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>ALT (Deg)</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_11">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>105</y>
-         <width>121</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>RA (HMS)</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="pierside">
@@ -1645,7 +1572,7 @@
       <widget class="QLabel" name="label_80">
        <property name="geometry">
         <rect>
-         <x>255</x>
+         <x>10</x>
          <y>205</y>
          <width>231</width>
          <height>21</height>
@@ -1662,7 +1589,7 @@
         <string>Status from mount computer</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
       <widget class="Line" name="line_12">
@@ -2064,7 +1991,7 @@
          <x>260</x>
          <y>15</y>
          <width>216</width>
-         <height>36</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="title">
@@ -3658,40 +3585,22 @@ When clicking the button, you could change the value.</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QLabel" name="label_57">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>155</y>
-         <width>121</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>HA (HMS)</string>
-       </property>
-      </widget>
       <widget class="QLineEdit" name="HA">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>170</y>
-         <width>226</width>
+         <x>75</x>
+         <y>60</y>
+         <width>141</width>
          <height>31</height>
         </rect>
        </property>
        <property name="font">
         <font>
          <family>Arial</family>
-         <pointsize>28</pointsize>
+         <pointsize>20</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -3724,6 +3633,126 @@ When clicking the button, you could change the value.</string>
         <bool>true</bool>
        </property>
       </widget>
+      <widget class="QLabel" name="label_58">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>66</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>HA</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_77">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>66</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>RA</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_78">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>160</y>
+         <width>66</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>ALT</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_79">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>160</y>
+         <width>66</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>AZ</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_102">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>110</y>
+         <width>66</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>DEC</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
       <zorder>line_15</zorder>
       <zorder>line_16</zorder>
       <zorder>line_12</zorder>
@@ -3733,10 +3762,6 @@ When clicking the button, you could change the value.</string>
       <zorder>AZ</zorder>
       <zorder>DEC</zorder>
       <zorder>ALT</zorder>
-      <zorder>label_9</zorder>
-      <zorder>label_10</zorder>
-      <zorder>label_8</zorder>
-      <zorder>label_11</zorder>
       <zorder>pierside</zorder>
       <zorder>label_18</zorder>
       <zorder>label_52</zorder>
@@ -3806,8 +3831,12 @@ When clicking the button, you could change the value.</string>
       <zorder>siteElevation</zorder>
       <zorder>label_151</zorder>
       <zorder>statusWOL</zorder>
-      <zorder>label_57</zorder>
       <zorder>HA</zorder>
+      <zorder>label_58</zorder>
+      <zorder>label_77</zorder>
+      <zorder>label_78</zorder>
+      <zorder>label_79</zorder>
+      <zorder>label_102</zorder>
      </widget>
      <widget class="QWidget" name="Environ">
       <attribute name="title">

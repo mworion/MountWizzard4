@@ -958,11 +958,9 @@ class BuildModel(object):
 
         for mPoint in loadModel:
             # prepare data
-            mCoord = skyfield.api.Star(ra_hours=mPoint['raMJNow'],
-                                       dec_degrees=mPoint['decMJNow'])
-            sCoord = skyfield.api.Star(ra_hours=mPoint['raSJNow'],
-                                       dec_degrees=mPoint['decSJNow'])
-            sidereal = skyfield.api.Angle(hours=mPoint['sidereal'])
+            mCoord = (mPoint['raMJNow'], mPoint['decMJNow'])
+            sCoord = (mPoint['raSJNow'], mPoint['decSJNow'])
+            sidereal = mPoint['sidereal']
             pierside = mPoint['pierside']
 
             # combine data into structure

@@ -696,7 +696,7 @@ class BuildModel(object):
 
         mPoint = self.slewQueue.get()
 
-        self.app.dome.slewToAltAz(azimuth=mPoint.point.azimuth)
+        self.app.dome.slewToAltAz(azimuthMount=mPoint.point.azimuth)
         self.app.mount.obsSite.slewAltAz(alt_degrees=mPoint.point.altitude,
                                          az_degrees=mPoint.point.azimuth,
                                          )

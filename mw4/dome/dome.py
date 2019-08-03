@@ -196,12 +196,12 @@ class Dome(indiClass.IndiClass):
 
         return True
 
-    def calculateAz(self,
-                    azimuthMount=0,
-                    domeRadius=0, shutterWidth=0,
-                    offsetN=0, offsetE=0,
-                    offsetUp=0, offsetOTA=0,
-                    pierside='E'):
+    def calcAzDomeFromMount(self,
+                            azimuthMount=0,
+                            domeRadius=0, shutterWidth=0,
+                            offsetN=0, offsetE=0,
+                            offsetUp=0, offsetOTA=0,
+                            pierside='E'):
         """
 
         :param azimuthMount: azimuth of the telescope
@@ -242,13 +242,13 @@ class Dome(indiClass.IndiClass):
 
         return azimuthDome
 
-    def slewToAltAz(self, altitude=0, azimuth=0):
+    def slewToAltAz(self, altitudeMount=0, azimuthMount=0):
         """
         slewToAltAz sends a command to the dome to move to azimuth / altitude. if a dome
-        does not support this
+        does support this
 
-        :param altitude:
-        :param azimuth:
+        :param altitudeMount:
+        :param azimuthMount:
         :return: success
         """
 
@@ -263,7 +263,9 @@ class Dome(indiClass.IndiClass):
         if 'DOME_ABSOLUTE_POSITION' not in position:
             return False
 
-        position['DOME_ABSOLUTE_POSITION'] = azimuth
+        azimuthDome = self.calcAzDomeFromMount(azimuthMount=azimuthMount)
+
+        position['DOME_ABSOLUTE_POSITION'] = azimuthDome
 
         suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='ABS_DOME_POSITION',

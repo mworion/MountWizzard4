@@ -11,14 +11,14 @@
         "errorRa": 1,
         "expTime": 1,
         "fastReadout": false,
-        "julian": "2019-08-02T18:39:05Z",
+        "julian": "2019-08-03T08:49:13Z",
         "name": "test",
         "number": 3,
         "path": "testPath",
         "pierside": "E",
         "raMJNow": 0.0,
         "raSJNow": 0.0,
-        "sidereal": 0,
+        "sidereal": 0.0,
         "subFrame": 100
     },
     {
@@ -33,14 +33,14 @@
         "errorRa": 1,
         "expTime": 1,
         "fastReadout": false,
-        "julian": "2019-08-02T18:39:05Z",
+        "julian": "2019-08-03T08:49:13Z",
         "name": "test",
         "number": 3,
         "path": "testPath",
         "pierside": "E",
         "raMJNow": 0.0,
         "raSJNow": 0.0,
-        "sidereal": 0,
+        "sidereal": 0.0,
         "subFrame": 100
     },
     {
@@ -55,14 +55,14 @@
         "errorRa": 1,
         "expTime": 1,
         "fastReadout": false,
-        "julian": "2019-08-02T18:39:05Z",
+        "julian": "2019-08-03T08:49:13Z",
         "name": "test",
         "number": 3,
         "path": "testPath",
         "pierside": "E",
         "raMJNow": 0.0,
         "raSJNow": 0.0,
-        "sidereal": 0,
+        "sidereal": 0.0,
         "subFrame": 100
     }
 ]

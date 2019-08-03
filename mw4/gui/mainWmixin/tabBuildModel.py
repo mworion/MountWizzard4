@@ -890,7 +890,7 @@ class BuildModel(object):
                       'decMJNow': mPoint.mData.decMJNow.degrees,
                       'raSJNow': mPoint.mData.raSJNow.hours,
                       'decSJNow': mPoint.mData.decSJNow.degrees,
-                      'sidereal': mPoint.mData.sidereal,
+                      'sidereal': mPoint.mData.sidereal.hours,
                       'julian': mPoint.mData.julian.utc_iso(),
                       'pierside': mPoint.mData.pierside,
                       'errorRMS': mPoint.rData.errorRMS,
@@ -962,7 +962,7 @@ class BuildModel(object):
                                        dec_degrees=mPoint['decMJNow'])
             sCoord = skyfield.api.Star(ra_hours=mPoint['raSJNow'],
                                        dec_degrees=mPoint['decSJNow'])
-            sidereal = mPoint['sidereal']
+            sidereal = skyfield.api.Angle(hours=mPoint['sidereal'])
             pierside = mPoint['pierside']
 
             # combine data into structure

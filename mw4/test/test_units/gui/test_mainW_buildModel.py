@@ -789,7 +789,7 @@ def test_saveModel_3():
                                 decMJNow=skyfield.api.Angle(degrees=0),
                                 raSJNow=skyfield.api.Angle(hours=0),
                                 decSJNow=skyfield.api.Angle(degrees=0),
-                                sidereal=0,
+                                sidereal=skyfield.api.Angle(hours=0),
                                 julian=app.mount.obsSite.timeJD,
                                 pierside='E'),
                     rData=RData(errorRA=1,
@@ -831,7 +831,7 @@ def test_generateBuildDataFromJSON_1():
             "pierside": "W",
             "raMJNow": 8.42882,
             "raSJNow": 8.427692953132278,
-            "sidereal": "02:50:05.92",
+            "sidereal": 12.5,
             "subFrame": 100.0
         },
     ]

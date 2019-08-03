@@ -115,7 +115,9 @@ class ManageModel(object):
         """
         showModelPolar draws a polar plot of the align model stars and their errors in
         color. the basic setup of the plot is taking place in the central widget class.
-        which is instantiated from there.
+        which is instantiated from there. important: the coordinate in model is in HA and
+        DEC  and not in RA and DEC. using skyfield is a little bit misleading, because you
+        address the hour angle as .ra.hours
 
         :return:    True if ok for testing
         """

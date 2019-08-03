@@ -34,6 +34,8 @@ class AlignMount(object):
     """
 
     def __init__(self):
+        self.lastModelType = ''
+
         ms = self.app.mount.signals
         ms.alignDone.connect(self.updateAlignGUI)
         ms.alignDone.connect(self.updateTurnKnobsGUI)

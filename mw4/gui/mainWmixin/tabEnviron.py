@@ -114,9 +114,9 @@ class Environ(object):
         lat = loc.latitude.degrees
         lon = loc.longitude.degrees
 
-        webSite = 'http://clearoutside.com/forecast_image_small/'
+        webSite = 'http://clearoutside.com/forecast_image_medium/'
         url = f'{webSite}{lat:4.2f}/{lon:4.2f}/forecast.png'
-        data = requests.get(url, stream=True, timeout=3)
+        data = requests.get(url, stream=True, timeout=10)
 
         if data.status_code != 200:
             self.logger.error('ClearOutside not reachable')
@@ -124,8 +124,12 @@ class Environ(object):
 
         pixmap = PyQt5.QtGui.QPixmap()
         pixmap.loadFromData(data.content)
+        pixmapBase = pixmap.copy(0, 84, 622, 141)
+        pixmapHeader = pixmap.copy(550, 1, 130, 80)
+
         self.logger.debug(f'{url}: {data.status_code}')
-        self.ui.picClearOutside.setPixmap(pixmap)
+        self.ui.picClearOutside.setPixmap(pixmapBase)
+        self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
 
         return True
 

@@ -69,6 +69,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     update3s = PyQt5.QtCore.pyqtSignal()
     update10s = PyQt5.QtCore.pyqtSignal()
     update60s = PyQt5.QtCore.pyqtSignal()
+    update3m = PyQt5.QtCore.pyqtSignal()
+    update10m = PyQt5.QtCore.pyqtSignal()
+    update30m = PyQt5.QtCore.pyqtSignal()
+    update1h = PyQt5.QtCore.pyqtSignal()
 
     def __init__(self,
                  mwGlob=None,
@@ -346,6 +350,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.update10s.emit()
         if (self.timerCounter + 2.5) % 60 == 0:
             self.update60s.emit()
+        if (self.timerCounter + 1.5) % 180 == 0:
+            self.update3m.emit()
+        if (self.timerCounter + 1.5) % 600 == 0:
+            self.update10m.emit()
+        if (self.timerCounter + 1.5) % 1800 == 0:
+            self.update30m.emit()
+        if (self.timerCounter + 1.5) % 3600 == 0:
+            self.update1h.emit()
         return True
 
     def quit(self):

@@ -18,10 +18,12 @@
 #
 ###########################################################
 # standard libraries
+from io import BytesIO
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+import requests
 # local import
 
 
@@ -52,6 +54,7 @@ class Environ(object):
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.app.update10s.connect(self.updateRefractionParameters)
+        self.app.update30m.connect(self.updateClearOutside)
 
     def initConfig(self):
         """
@@ -65,6 +68,9 @@ class Environ(object):
         self.ui.checkRefracNone.setChecked(config.get('checkRefracNone', False))
         self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
+
+        self.updateClearOutside()
+
         return True
 
     def storeConfig(self):
@@ -88,6 +94,34 @@ class Environ(object):
 
         :return:    True if success for test
         """
+        return True
+
+    def updateClearOutside(self):
+        """
+        updateClearOutside downloads the actual clear outside image and displays it in
+        environment tab. it checks first if online is set, otherwise not download will take
+        place. it will be updated every 30 minutes on small part
+
+        :return: success
+        """
+
+        if not True:
+            return False
+
+        # prepare coordinates for website
+        loc = self.app.mount.obsSite.location
+        lat = loc.latitude.degrees
+        lon = loc.longitude.degrees
+
+        webSite = 'http://clearoutside.com/forecast_image_small'
+        url = f'{webSite}/{lat:4.2f}/{lon:4.2f}/forecast.png'
+        data = requests.get(url, stream=True)
+        pixmap = PyQt5.QtGui.QPixmap()
+        pixmap.loadFromData(data.content)
+        self.logger.debug(f'{url}: {data.status_code}')
+
+        self.ui.picClearOutside.setPixmap(pixmap)
+
         return True
 
     def updateRefractionParameters(self):

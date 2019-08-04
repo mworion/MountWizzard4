@@ -1238,7 +1238,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -6420,8 +6420,8 @@ to mount manually</string>
         <rect>
          <x>625</x>
          <y>285</y>
-         <width>140</width>
-         <height>140</height>
+         <width>144</width>
+         <height>144</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -6481,8 +6481,8 @@ to mount manually</string>
         <rect>
          <x>420</x>
          <y>285</y>
-         <width>140</width>
-         <height>140</height>
+         <width>144</width>
+         <height>144</height>
         </rect>
        </property>
        <property name="frameShape">

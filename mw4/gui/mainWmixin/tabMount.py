@@ -126,7 +126,8 @@ class Mount(object):
 
         if ra is not None:
             raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            raText = raFormat.format(*ra.hms())
+            val = [int(x) for x in ra.hms()]
+            raText = raFormat.format(*val)
             self.ui.RA.setText(raText)
         else:
             self.ui.RA.setText('-')
@@ -142,7 +143,7 @@ class Mount(object):
         if obs.timeJD is not None:
             text = obs.timeJD.utc_strftime('%H:%M:%S')
             self.ui.timeJD.setText(text)
-            self.ui.timeUTC.setText(text)
+            self.ui.timeUTC.setText('UTC: ' + text)
         else:
             self.ui.timeJD.setText('-')
 
@@ -153,14 +154,17 @@ class Mount(object):
 
         if obs.timeSidereal is not None:
             siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            siderealText = siderealFormat.format(*obs.timeSidereal.hms())
+            val = [int(x) for x in obs.timeSidereal.hms()]
+            val = obs.timeSidereal.hms()
+            siderealText = siderealFormat.format(*val)
             self.ui.timeSidereal.setText(siderealText)
         else:
             self.ui.timeSidereal.setText('-')
 
         if obs.haJNow is not None:
             haFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            haText = haFormat.format(*obs.haJNow.hms())
+            val = [int(x) for x in obs.haJNow.hms()]
+            haText = haFormat.format(*val)
             self.ui.HA.setText(haText)
         else:
             self.ui.HA.setText('-')

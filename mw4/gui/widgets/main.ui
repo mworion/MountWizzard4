@@ -13030,7 +13030,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>7</number>
+        <number>4</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -15199,7 +15199,7 @@ to mount manually</string>
        </widget>
        <widget class="QWidget" name="Horizon">
         <attribute name="title">
-         <string>Horizon</string>
+         <string>Horizon / API Key</string>
         </attribute>
         <widget class="Line" name="line_96">
          <property name="geometry">
@@ -15479,6 +15479,57 @@ to mount manually</string>
          </property>
          <property name="text">
           <string>Load</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="openWeatherMapKey">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>50</y>
+           <width>305</width>
+           <height>22</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_399">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>20</y>
+           <width>196</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>OpenWeatherMap API Key</string>
+         </property>
+        </widget>
+        <widget class="Line" name="line_115">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>40</y>
+           <width>361</width>
+           <height>1</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </widget>

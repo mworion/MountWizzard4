@@ -75,9 +75,6 @@ class Satellite(object):
         """
 
         config = self.app.config['mainW']
-        self.ui.satExpiresYes.setChecked(config.get('satExpiresYes', False))
-        self.ui.satExpiresNo.setChecked(config.get('satExpiresNo', True))
-
         self.setupSatelliteSourceGui()
         self.loadSatelliteSource()
 
@@ -92,8 +89,6 @@ class Satellite(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        config['satExpiresYes'] = self.ui.satExpiresYes.isChecked()
-        config['satExpiresNo'] = self.ui.satExpiresNo.isChecked()
         return True
 
     def setupIcons(self):
@@ -206,7 +201,7 @@ class Satellite(object):
             return False
 
         source = self.satelliteSourceDropDown[key]
-        reload = self.ui.satExpiresYes.isChecked()
+        reload = self.ui.expiresYes.isChecked()
         self.satellites = self.app.loader.tle(source, reload=reload)
 
         suc = self.loadTLEData(source)

@@ -1238,7 +1238,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -5499,7 +5499,7 @@ to mount manually</string>
         <number>1</number>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string>Clear Outside panel when connected to internet</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_57">
@@ -18453,19 +18453,19 @@ to mount manually</string>
           <rect>
            <x>400</x>
            <y>200</y>
-           <width>176</width>
+           <width>361</width>
            <height>66</height>
           </rect>
          </property>
          <property name="title">
-          <string>Data Updates</string>
+          <string>Internet Online Connection</string>
          </property>
-         <widget class="QRadioButton" name="expiresYes">
+         <widget class="QRadioButton" name="expiresNo">
           <property name="geometry">
            <rect>
             <x>15</x>
             <y>40</y>
-            <width>151</width>
+            <width>326</width>
             <height>21</height>
            </rect>
           </property>
@@ -18478,18 +18478,18 @@ to mount manually</string>
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>keep existing files</string>
+           <string>offline and keep existing files</string>
           </property>
           <property name="checked">
            <bool>false</bool>
           </property>
          </widget>
-         <widget class="QRadioButton" name="expiresNo">
+         <widget class="QRadioButton" name="expiresYes">
           <property name="geometry">
            <rect>
             <x>15</x>
             <y>20</y>
-            <width>161</width>
+            <width>331</width>
             <height>21</height>
            </rect>
           </property>
@@ -18502,7 +18502,7 @@ to mount manually</string>
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>expires, updating</string>
+           <string>online and update data files if necessary</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -19140,67 +19140,6 @@ to mount manually</string>
           <string>HW:</string>
          </property>
         </widget>
-        <widget class="QGroupBox" name="logginLevel_3">
-         <property name="geometry">
-          <rect>
-           <x>585</x>
-           <y>200</y>
-           <width>176</width>
-           <height>66</height>
-          </rect>
-         </property>
-         <property name="title">
-          <string>Sat Updates</string>
-         </property>
-         <widget class="QRadioButton" name="satExpiresYes">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>40</y>
-            <width>151</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>keep existing files</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
-         <widget class="QRadioButton" name="satExpiresNo">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>20</y>
-            <width>161</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>expires, updating</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </widget>
        </widget>
       </widget>
      </widget>
@@ -19371,8 +19310,8 @@ to mount manually</string>
   <tabstop>loglevelInfoMC</tabstop>
   <tabstop>loglevelWarningMC</tabstop>
   <tabstop>loglevelErrorMC</tabstop>
-  <tabstop>expiresNo</tabstop>
   <tabstop>expiresYes</tabstop>
+  <tabstop>expiresNo</tabstop>
   <tabstop>loadFrom</tabstop>
   <tabstop>saveConfigQuit</tabstop>
   <tabstop>saveConfig</tabstop>

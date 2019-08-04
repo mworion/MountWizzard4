@@ -68,7 +68,6 @@ class Environ(object):
         self.ui.checkRefracNone.setChecked(config.get('checkRefracNone', False))
         self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
-
         self.updateClearOutside()
 
         return True
@@ -105,7 +104,7 @@ class Environ(object):
         :return: success
         """
 
-        if not True:
+        if not self.ui.expiresYes.isChecked():
             return False
 
         # prepare coordinates for website
@@ -115,7 +114,7 @@ class Environ(object):
 
         webSite = 'http://clearoutside.com/forecast_image_small'
         url = f'{webSite}/{lat:4.2f}/{lon:4.2f}/forecast.png'
-        data = requests.get(url, stream=True)
+        data = requests.get(url, stream=True, timeout=3)
         pixmap = PyQt5.QtGui.QPixmap()
         pixmap.loadFromData(data.content)
         self.logger.debug(f'{url}: {data.status_code}')

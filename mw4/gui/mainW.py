@@ -439,7 +439,10 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-        # print(self.app.threadPool.activeThreadCount())
+        if self.ui.expiresYes.isChecked():
+            self.changeStyleDynamic(self.ui.timeComputer, 'color', 'green')
+        else:
+            self.changeStyleDynamic(self.ui.timeComputer, 'color', 'yellow')
 
     def updateAstrometryStatus(self, text):
         """

@@ -198,43 +198,6 @@ def test_showSkymeterDeviceDisconnected():
     assert suc
 
 
-def test_showIndiWeatherConnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiWeatherConnected()
-        assert suc
-    assert ['INDI server weather connected', 0] == blocker.args
-
-
-def test_showIndiWeatherDisconnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiWeatherDisconnected()
-        assert suc
-    assert ['INDI server weather disconnected', 0] == blocker.args
-
-
-def test_showIndiNewWeatherDevice_1(qtbot):
-    app.weather.name = 'test'
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiNewWeatherDevice('test')
-        assert suc
-    assert ['INDI weather device [test] found', 0] == blocker.args
-
-
-def test_showIndiNewWeatherDevice_2(qtbot):
-    app.weather.name = 'snoop'
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiNewWeatherDevice('test')
-        assert suc
-    assert ['INDI weather device snoops -> [test]', 0] == blocker.args
-
-
-def test_showIndiRemoveWeatherDevice(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiRemoveWeatherDevice('test')
-        assert suc
-    assert ['INDI weather device [test] removed', 0] == blocker.args
-
-
 def test_showWeatherDeviceConnected():
     suc = app.mainW.showWeatherDeviceConnected()
     assert suc

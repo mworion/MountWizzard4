@@ -140,6 +140,8 @@ class Environ(object):
 
         if not self.ui.expiresYes.isChecked():
             return False
+        if not self.ui.openWeatherMapKey():
+            return False
 
         # prepare coordinates for website
         loc = self.app.mount.obsSite.location

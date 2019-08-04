@@ -196,13 +196,3 @@ def test_showSkymeterDeviceConnected():
 def test_showSkymeterDeviceDisconnected():
     suc = app.mainW.showSkymeterDeviceDisconnected()
     assert suc
-
-
-def test_showWeatherDeviceConnected():
-    suc = app.mainW.showWeatherDeviceConnected()
-    assert suc
-
-
-def test_showWeatherDeviceDisconnected():
-    suc = app.mainW.showWeatherDeviceDisconnected()
-    assert suc

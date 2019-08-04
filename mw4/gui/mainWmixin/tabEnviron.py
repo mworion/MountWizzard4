@@ -140,7 +140,7 @@ class Environ(object):
 
         if not self.ui.expiresYes.isChecked():
             return False
-        if not self.ui.openWeatherMapKey():
+        if not self.ui.openWeatherMapKey.text():
             return False
 
         # prepare coordinates for website

@@ -1238,7 +1238,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -3881,7 +3881,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>275</y>
+         <y>245</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -4509,7 +4509,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>245</y>
+         <y>275</y>
          <width>66</width>
          <height>21</height>
         </rect>
@@ -4523,7 +4523,7 @@ to mount manually</string>
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>Snow vol.</string>
+        <string>Wind Dir</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -4589,54 +4589,6 @@ to mount manually</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="weatherDewPoint">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>8</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
        <widget class="QLineEdit" name="weatherWindSpeed">
         <property name="enabled">
          <bool>false</bool>
@@ -4644,7 +4596,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>230</y>
+          <y>200</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4877,14 +4829,14 @@ to mount manually</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="weatherSnowVol">
+       <widget class="QLineEdit" name="weatherWindDir">
         <property name="enabled">
          <bool>false</bool>
         </property>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>200</y>
+          <y>230</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5207,7 +5159,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>245</y>
+         <y>275</y>
          <width>36</width>
          <height>20</height>
         </rect>
@@ -5218,7 +5170,7 @@ to mount manually</string>
         </font>
        </property>
        <property name="text">
-        <string>[mm]</string>
+        <string>[°]</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -5231,7 +5183,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>275</y>
+         <y>245</y>
          <width>41</width>
          <height>20</height>
         </rect>

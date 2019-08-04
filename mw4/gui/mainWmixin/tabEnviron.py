@@ -46,14 +46,10 @@ class Environ(object):
         signals.newNumber.connect(self.updateSkymeterGUI)
         signals.deviceDisconnected.connect(self.clearSkymeterGUI)
 
-        # weather functions
-        signals = self.app.weather.client.signals
-        signals.newNumber.connect(self.updateWeatherGUI)
-        signals.deviceDisconnected.connect(self.clearWeatherGUI)
-
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.app.update10s.connect(self.updateRefractionParameters)
+        self.app.update10m.connect(self.updateOpenWeatherMap)
         self.app.update30m.connect(self.updateClearOutside)
 
     def initConfig(self):
@@ -68,7 +64,10 @@ class Environ(object):
         self.ui.checkRefracNone.setChecked(config.get('checkRefracNone', False))
         self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
+
+        self.ui.openWeatherMapKey.setText(config.get('openWeatherMapKey', ''))
         self.updateClearOutside()
+        self.updateOpenWeatherMap()
 
         return True
 
@@ -84,6 +83,9 @@ class Environ(object):
         config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
         config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
         config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
+
+        config['openWeatherMapKey'] = self.ui.openWeatherMapKey.text()
+
         return True
 
     def setupIcons(self):
@@ -99,7 +101,7 @@ class Environ(object):
         """
         updateClearOutside downloads the actual clear outside image and displays it in
         environment tab. it checks first if online is set, otherwise not download will take
-        place. it will be updated every 30 minutes on small part
+        place. it will be updated every 30 minutes.
 
         :return: success
         """
@@ -112,14 +114,58 @@ class Environ(object):
         lat = loc.latitude.degrees
         lon = loc.longitude.degrees
 
-        webSite = 'http://clearoutside.com/forecast_image_small'
-        url = f'{webSite}/{lat:4.2f}/{lon:4.2f}/forecast.png'
+        webSite = 'http://clearoutside.com/forecast_image_small/'
+        url = f'{webSite}{lat:4.2f}/{lon:4.2f}/forecast.png'
         data = requests.get(url, stream=True, timeout=3)
+
+        if data.status_code != 200:
+            self.logger.error('ClearOutside not reachable')
+            return False
+
         pixmap = PyQt5.QtGui.QPixmap()
         pixmap.loadFromData(data.content)
         self.logger.debug(f'{url}: {data.status_code}')
-
         self.ui.picClearOutside.setPixmap(pixmap)
+
+        return True
+
+    def updateOpenWeatherMap(self):
+        """
+        updateOpenWeatherMap downloads the actual OpenWeatherMap image and displays it in
+        environment tab. it checks first if online is set, otherwise not download will take
+        place. it will be updated every 10 minutes.
+
+        :return: success
+        """
+
+        if not self.ui.expiresYes.isChecked():
+            return False
+
+        # prepare coordinates for website
+        loc = self.app.mount.obsSite.location
+        lat = loc.latitude.degrees
+        lon = loc.longitude.degrees
+        apiKey = self.ui.openWeatherMapKey.text()
+
+        webSite = 'http://api.openweathermap.org/data/2.5/forecast'
+        url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={apiKey}'
+        data = requests.get(url, timeout=10)
+
+        if data.status_code != 200:
+            self.logger.error('OpenWeatherMap not reachable')
+            return False
+
+        val = data.json()
+        val = val['list'][0]
+        self.logger.debug(f'{url}: {data.status_code}, {val}')
+
+        self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
+        self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
+        self.ui.weatherHumidity.setText(f'{val["main"]["humidity"]:3.0f}')
+        self.ui.weatherCloudCover.setText(f'{val["clouds"]["all"]:3.0f}')
+        self.ui.weatherWindSpeed.setText(f'{val["wind"]["speed"]:3.0f}')
+        self.ui.weatherWindDir.setText(f'{val["wind"]["deg"]:3.0f}')
+        self.ui.weatherRainVol.setText(f'{val["rain"]["3h"]:5.2f}')
 
         return True
 
@@ -204,45 +250,3 @@ class Environ(object):
         self.ui.skymeterSQR.setText('{0:4.1f}'.format(value))
         value = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
         self.ui.skymeterTemp.setText('{0:4.1f}'.format(value))
-
-    def clearWeatherGUI(self, deviceName):
-        """
-        clearEnvironGUI clears the gui data
-
-        :param deviceName:
-        :return: true for test purpose
-        """
-
-        self.ui.weatherTemp.setText('-')
-        self.ui.weatherPress.setText('-')
-        self.ui.weatherDewPoint.setText('-')
-        self.ui.weatherHumidity.setText('-')
-        self.ui.weatherCloudCover.setText('-')
-        self.ui.weatherWindSpeed.setText('-')
-        self.ui.weatherRainVol.setText('-')
-        self.ui.weatherSnowVol.setText('-')
-        return True
-
-    def updateWeatherGUI(self, deviceName):
-        """
-        updateSkymeterGUI shows the data which is received through INDI client
-
-        :return:    True if ok for testing
-        """
-
-        value = self.app.weather.data.get('WEATHER_TEMPERATURE', 0)
-        self.ui.weatherTemp.setText('{0:4.1f}'.format(value))
-        value = self.app.weather.data.get('WEATHER_PRESSURE', 0)
-        self.ui.weatherPress.setText('{0:5.1f}'.format(value))
-        value = self.app.weather.data.get('WEATHER_DEWPOINT', 0)
-        self.ui.weatherDewPoint.setText('{0:4.1f}'.format(value))
-        value = self.app.weather.data.get('WEATHER_HUMIDITY', 0)
-        self.ui.weatherHumidity.setText('{0:3.0f}'.format(value))
-        value = self.app.weather.data.get('WEATHER_CLOUD_COVER', 0)
-        self.ui.weatherCloudCover.setText('{0:3.0f}'.format(value))
-        value = self.app.weather.data.get('WEATHER_WIND_SPEED', 0)
-        self.ui.weatherWindSpeed.setText('{0:3.0f}'.format(value))
-        value = self.app.weather.data.get('WEATHER_RAIN_HOUR', 0)
-        self.ui.weatherRainVol.setText('{0:3.0f}'.format(value))
-        value = self.app.weather.data.get('WEATHER_SNOW_HOUR', 0)
-        self.ui.weatherSnowVol.setText('{0:3.0f}'.format(value))

@@ -52,8 +52,6 @@ class SettHorizon(object):
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
 
-        self.ui.openWeatherMapKey.setText(config.get('openWeatherMapKey', ''))
-
         return True
 
     def storeConfig(self):
@@ -70,8 +68,6 @@ class SettHorizon(object):
         config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()
-
-        config['openWeatherMapKey'] = self.ui.openWeatherMapKey.text()
 
         return True
 

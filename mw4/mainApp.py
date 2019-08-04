@@ -41,7 +41,6 @@ from mw4.dome import dome
 from mw4.imaging import camera
 from mw4.environment import environ
 from mw4.environment import skymeter
-from mw4.environment import weather
 from mw4.powerswitch import pegasusUPB
 from mw4.base import measuredata
 from mw4.remote import remote
@@ -123,7 +122,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.dome = dome.Dome(self, host='localhost')
         self.imaging = camera.Camera(self, host='localhost')
         self.skymeter = skymeter.Skymeter(host='localhost')
-        self.weather = weather.Weather(host='localhost')
         self.power = pegasusUPB.PegasusUPB(host='localhost')
         self.data = buildpoints.DataPoint(self, mwGlob=self.mwGlob)
         self.hipparcos = hipparcos.Hipparcos(self, mwGlob=self.mwGlob)

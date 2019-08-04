@@ -36,20 +36,17 @@ class SettIndi(object):
                                     self.ui.domeDeviceName,
                                     self.ui.environDeviceName,
                                     self.ui.skymeterDeviceName,
-                                    self.ui.weatherDeviceName,
                                     self.ui.powerDeviceName,
                                     ]
         self.deviceNameDropDownKeys = ['imagingDeviceName',
                                        'domeDeviceName',
                                        'environmentDeviceName',
                                        'skymeterDeviceName',
-                                       'weatherDeviceName',
                                        'powerDeviceName',
                                        ]
 
         self.app.environ.client.signals.newMessage.connect(self.indiMessage)
         self.app.skymeter.client.signals.newMessage.connect(self.indiMessage)
-        self.app.weather.client.signals.newMessage.connect(self.indiMessage)
         self.app.power.client.signals.newMessage.connect(self.indiMessage)
 
         sig = self.app.dome.client.signals
@@ -84,14 +81,6 @@ class SettIndi(object):
         sig.newDevice.connect(self.showIndiNewSkymeterDevice)
         sig.removeDevice.connect(self.showIndiRemoveSkymeterDevice)
 
-        sig = self.app.weather.client.signals
-        sig.serverConnected.connect(self.showIndiWeatherConnected)
-        sig.serverDisconnected.connect(self.showIndiWeatherDisconnected)
-        sig.deviceConnected.connect(self.showWeatherDeviceConnected)
-        sig.deviceDisconnected.connect(self.showWeatherDeviceDisconnected)
-        sig.newDevice.connect(self.showIndiNewWeatherDevice)
-        sig.removeDevice.connect(self.showIndiRemoveWeatherDevice)
-
         sig = self.app.power.client.signals
         sig.serverConnected.connect(self.showIndiPowerConnected)
         sig.serverDisconnected.connect(self.showIndiPowerDisconnected)
@@ -104,7 +93,6 @@ class SettIndi(object):
         self.ui.domeDeviceName.currentIndexChanged.connect(self.domeDispatch)
         self.ui.imagingDeviceName.currentIndexChanged.connect(self.imagingDispatch)
         self.ui.skymeterDeviceName.currentIndexChanged.connect(self.skymeterDispatch)
-        self.ui.weatherDeviceName.currentIndexChanged.connect(self.weatherDispatch)
         self.ui.powerDeviceName.currentIndexChanged.connect(self.powerDispatch)
 
     def initConfig(self):
@@ -127,8 +115,6 @@ class SettIndi(object):
         self.ui.domePort.setText(config.get('domePort', '7624'))
         self.ui.skymeterHost.setText(config.get('skymeterHost', ''))
         self.ui.skymeterPort.setText(config.get('skymeterPort', '7624'))
-        self.ui.weatherHost.setText(config.get('weatherHost', ''))
-        self.ui.weatherPort.setText(config.get('weatherPort', '7624'))
         self.ui.powerHost.setText(config.get('powerHost', ''))
         self.ui.powerPort.setText(config.get('powerPort', '7624'))
 
@@ -155,8 +141,6 @@ class SettIndi(object):
         config['domePort'] = self.ui.domePort.text()
         config['skymeterHost'] = self.ui.skymeterHost.text()
         config['skymeterPort'] = self.ui.skymeterPort.text()
-        config['weatherHost'] = self.ui.weatherHost.text()
-        config['weatherPort'] = self.ui.weatherPort.text()
         config['powerHost'] = self.ui.powerHost.text()
         config['powerPort'] = self.ui.powerPort.text()
 
@@ -235,15 +219,6 @@ class SettIndi(object):
 
         self.ui.powerDeviceName.addItem('Pegasus UPB')
 
-        self.ui.weatherDeviceName.addItem('AAG Cloud Watcher')
-        self.ui.weatherDeviceName.addItem('Arduino MeteoStation')
-        self.ui.weatherDeviceName.addItem('MBox')
-        self.ui.weatherDeviceName.addItem('OpenWeatherMap')
-        self.ui.weatherDeviceName.addItem('Vantage')
-        self.ui.weatherDeviceName.addItem('Weather Meta')
-        self.ui.weatherDeviceName.addItem('Weather Simulator')
-        self.ui.weatherDeviceName.addItem('Weather Watcher')
-        self.ui.weatherDeviceName.addItem('WonderGround')
         return True
 
     @staticmethod
@@ -559,74 +534,6 @@ class SettIndi(object):
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
         self.ui.skymeterGroup.setEnabled(False)
-        return True
-
-    def showIndiWeatherConnected(self):
-        """
-        showIndiWeatherConnected writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit('INDI server weather connected', 0)
-        return True
-
-    def showIndiWeatherDisconnected(self):
-        """
-        showIndiWeatherDisconnected writes info to message window and recolors the status
-
-        :return: true for test purpose
-        """
-
-        self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
-        self.app.message.emit('INDI server weather disconnected', 0)
-        return True
-
-    def showIndiNewWeatherDevice(self, deviceName):
-        """
-        showIndiNewWeatherDevice writes info to message window
-
-        :return: true for test purpose
-        """
-
-        if deviceName == self.app.weather.name:
-            self.app.message.emit(f'INDI weather device [{deviceName}] found', 0)
-        else:
-            self.app.message.emit(f'INDI weather device snoops -> [{deviceName}]', 0)
-        return True
-
-    def showIndiRemoveWeatherDevice(self, deviceName):
-        """
-        showIndiRemoveWeatherDevice writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit(f'INDI weather device [{deviceName}] removed', 0)
-        return True
-
-    def showWeatherDeviceConnected(self):
-        """
-        showWeatherDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.weatherDevice.setStyleSheet(self.BACK_GREEN)
-        self.ui.weatherGroup.setEnabled(True)
-        return True
-
-    def showWeatherDeviceDisconnected(self):
-        """
-        showWeatherDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
-        self.ui.weatherGroup.setEnabled(False)
         return True
 
     def showIndiPowerConnected(self):

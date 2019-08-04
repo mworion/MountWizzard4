@@ -39,7 +39,6 @@ class SettDevice(object):
                                 self.ui.domeDevice,
                                 self.ui.environDevice,
                                 self.ui.skymeterDevice,
-                                self.ui.weatherDevice,
                                 self.ui.powerDevice,
                                 self.ui.relayDevice,
                                 self.ui.measureDevice,
@@ -50,7 +49,6 @@ class SettDevice(object):
                                    'domeDevice',
                                    'environmentDevice',
                                    'skymeterDevice',
-                                   'weatherDevice',
                                    'powerDevice',
                                    'relayDevice',
                                    'measureDevice',
@@ -64,7 +62,6 @@ class SettDevice(object):
         self.ui.domeDevice.activated.connect(self.domeDispatch)
         self.ui.environDevice.activated.connect(self.environDispatch)
         self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
-        self.ui.weatherDevice.activated.connect(self.weatherDispatch)
         self.ui.powerDevice.activated.connect(self.powerDispatch)
         self.ui.astrometryDevice.activated.connect(self.astrometryDispatch)
 
@@ -87,7 +84,6 @@ class SettDevice(object):
         self.imagingDispatch()
         self.environDispatch()
         self.skymeterDispatch()
-        self.weatherDispatch()
         self.powerDispatch()
         self.astrometryDispatch()
         return True
@@ -136,7 +132,6 @@ class SettDevice(object):
         self.ui.domeDevice.addItem('INDI')
         self.ui.imagingDevice.addItem('INDI')
         self.ui.skymeterDevice.addItem('INDI')
-        self.ui.weatherDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
         for app in self.app.astrometry.available:
             self.ui.astrometryDevice.addItem(app)
@@ -298,27 +293,6 @@ class SettDevice(object):
             self.app.message.emit('Skymeter enabled', 0)
         else:
             self.app.message.emit('Skymeter disabled', 0)
-
-        return True
-
-    def weatherDispatch(self):
-        """
-        weatherDispatch selects the type of device for environment measures and start / stop
-        them.
-
-        :return: true for test purpose
-        """
-
-        self.ui.weatherGroup.setEnabled(False)
-
-        self.app.weather.stopCommunication()
-        if self.ui.weatherDevice.currentText().startswith('INDI'):
-            self.app.weather.client.host = self.ui.weatherHost.text()
-            self.app.weather.name = self.ui.weatherDeviceName.currentText()
-            self.app.weather.startCommunication()
-            self.app.message.emit('Weather enabled', 0)
-        else:
-            self.app.message.emit('Weather disabled', 0)
 
         return True
 

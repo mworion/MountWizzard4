@@ -1238,7 +1238,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -12982,7 +12982,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>1</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -13446,13 +13446,6 @@ to mount manually</string>
             </property>
            </widget>
           </item>
-          <item row="10" column="8">
-           <widget class="QLabel" name="label_150">
-            <property name="text">
-             <string>Host IP/port</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="8">
            <widget class="QLabel" name="label_51">
             <property name="text">
@@ -13548,16 +13541,6 @@ to mount manually</string>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="9">
-           <widget class="QLineEdit" name="weatherHost">
-            <property name="text">
-             <string>localhost</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -13743,19 +13726,6 @@ to mount manually</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="8">
-           <widget class="QLabel" name="label_135">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Weather</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="10">
            <widget class="QLineEdit" name="skymeterPort">
             <property name="maximumSize">
@@ -13771,9 +13741,6 @@ to mount manually</string>
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
-          </item>
-          <item row="11" column="9">
-           <widget class="QComboBox" name="weatherDeviceName"/>
           </item>
           <item row="7" column="9">
            <widget class="QComboBox" name="powerDeviceName"/>
@@ -13827,22 +13794,6 @@ to mount manually</string>
            <widget class="QLineEdit" name="powerHost">
             <property name="text">
              <string>localhost</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="10">
-           <widget class="QLineEdit" name="weatherPort">
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>7624</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -13998,13 +13949,6 @@ to mount manually</string>
             </property>
             <property name="text">
              <string>Host IP/Port</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="8">
-           <widget class="QLabel" name="label_161">
-            <property name="text">
-             <string>Device Name</string>
             </property>
            </widget>
           </item>
@@ -19361,12 +19305,9 @@ to mount manually</string>
   <tabstop>sensorPower</tabstop>
   <tabstop>astrometryDevice</tabstop>
   <tabstop>imagingDevice</tabstop>
-  <tabstop>weatherDeviceName</tabstop>
   <tabstop>environPort</tabstop>
   <tabstop>imagingDeviceName</tabstop>
   <tabstop>skymeterHost</tabstop>
-  <tabstop>weatherHost</tabstop>
-  <tabstop>weatherPort</tabstop>
   <tabstop>powerPort</tabstop>
   <tabstop>skymeterDeviceName</tabstop>
   <tabstop>skymeterPort</tabstop>

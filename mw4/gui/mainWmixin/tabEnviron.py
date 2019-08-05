@@ -166,7 +166,7 @@ class Environ(object):
         :return: success
         """
 
-        if not self.ui.expiresYes.isChecked():
+        if not self.ui.expiresNo.isChecked():
             return False
 
         # prepare coordinates for website
@@ -224,7 +224,7 @@ class Environ(object):
         :return: success
         """
 
-        if not self.ui.expiresYes.isChecked():
+        if not self.ui.expiresNo.isChecked():
             return False
         if not self.ui.openWeatherMapKey.text():
             return False

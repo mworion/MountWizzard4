@@ -25,6 +25,7 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 import requests
 # local import
+from mw4.base.tpool import Worker
 
 
 class Environ(object):
@@ -97,6 +98,51 @@ class Environ(object):
         """
         return True
 
+    def getWebDataRunner(self, url=''):
+        """
+
+        :param url:
+        :return: data
+        """
+
+        try:
+            data = requests.get(url, timeout=10)
+        except TimeoutError:
+            self.logger.error(f'{url} not reachable')
+            return None
+        if data.status_code != 200:
+            self.logger.error(f'{url}: status nok')
+            return None
+        self.logger.debug(f'{url}: {data.status_code}')
+        return data
+
+    def updateClearOutsideGui(self, data):
+        """
+
+        :param data:
+        :return: True for test purpose
+        """
+
+        pixmap = PyQt5.QtGui.QPixmap()
+        pixmap.loadFromData(data.content)
+        pixmapBase = pixmap.copy(0, 84, 622, 141)
+        pixmapHeader = pixmap.copy(550, 1, 130, 80)
+        self.ui.picClearOutside.setPixmap(pixmapBase)
+        self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
+
+        return True
+
+    def getClearOutside(self, url=''):
+        """
+        getClearOutside
+
+        :param url:
+        :return:
+        """
+        worker = Worker(self.getWebDataRunner, url)
+        worker.signals.result.connect(self.updateClearOutsideGui)
+        self.threadPool.start(worker)
+
     def updateClearOutside(self):
         """
         updateClearOutside downloads the actual clear outside image and displays it in
@@ -116,22 +162,41 @@ class Environ(object):
 
         webSite = 'http://clearoutside.com/forecast_image_medium/'
         url = f'{webSite}{lat:4.2f}/{lon:4.2f}/forecast.png'
-        data = requests.get(url, stream=True, timeout=10)
-
-        if data.status_code != 200:
-            self.logger.error('ClearOutside not reachable')
-            return False
-
-        pixmap = PyQt5.QtGui.QPixmap()
-        pixmap.loadFromData(data.content)
-        pixmapBase = pixmap.copy(0, 84, 622, 141)
-        pixmapHeader = pixmap.copy(550, 1, 130, 80)
-
-        self.logger.debug(f'{url}: {data.status_code}')
-        self.ui.picClearOutside.setPixmap(pixmapBase)
-        self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
+        self.getClearOutside(url=url)
 
         return True
+
+    def updateOpenWeatherMapGui(self, data):
+        """
+        updateOpenWeatherMapGui
+
+        :param data:
+        :return: True for test purpose
+        """
+
+        val = data.json()
+        val = val['list'][0]
+
+        self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
+        self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
+        self.ui.weatherHumidity.setText(f'{val["main"]["humidity"]:3.0f}')
+        self.ui.weatherCloudCover.setText(f'{val["clouds"]["all"]:3.0f}')
+        self.ui.weatherWindSpeed.setText(f'{val["wind"]["speed"]:3.0f}')
+        self.ui.weatherWindDir.setText(f'{val["wind"]["deg"]:3.0f}')
+        self.ui.weatherRainVol.setText(f'{val["rain"]["3h"]:5.2f}')
+
+        return True
+
+    def getOpenWeatherMap(self, url=''):
+        """
+        getOpenWeatherMap
+
+        :param url:
+        :return:
+        """
+        worker = Worker(self.getWebDataRunner, url)
+        worker.signals.result.connect(self.updateOpenWeatherMapGui)
+        self.threadPool.start(worker)
 
     def updateOpenWeatherMap(self):
         """
@@ -155,23 +220,7 @@ class Environ(object):
 
         webSite = 'http://api.openweathermap.org/data/2.5/forecast'
         url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={apiKey}'
-        data = requests.get(url, timeout=10)
-
-        if data.status_code != 200:
-            self.logger.error('OpenWeatherMap not reachable')
-            return False
-
-        val = data.json()
-        val = val['list'][0]
-        self.logger.debug(f'{url}: {data.status_code}, {val}')
-
-        self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
-        self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
-        self.ui.weatherHumidity.setText(f'{val["main"]["humidity"]:3.0f}')
-        self.ui.weatherCloudCover.setText(f'{val["clouds"]["all"]:3.0f}')
-        self.ui.weatherWindSpeed.setText(f'{val["wind"]["speed"]:3.0f}')
-        self.ui.weatherWindDir.setText(f'{val["wind"]["deg"]:3.0f}')
-        self.ui.weatherRainVol.setText(f'{val["rain"]["3h"]:5.2f}')
+        self.getOpenWeatherMap(url=url)
 
         return True
 

@@ -18,7 +18,7 @@
 #
 ###########################################################
 # standard libraries
-from io import BytesIO
+import time
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -114,6 +114,8 @@ class Environ(object):
             self.logger.error(f'{url}: status nok')
             return None
         self.logger.debug(f'{url}: {data.status_code}')
+
+        time.sleep(5)
         return data
 
     def updateClearOutsideGui(self, data):
@@ -122,6 +124,9 @@ class Environ(object):
         :param data:
         :return: True for test purpose
         """
+
+        if data is None:
+            return False
 
         pixmap = PyQt5.QtGui.QPixmap()
         pixmap.loadFromData(data.content)
@@ -149,6 +154,15 @@ class Environ(object):
         environment tab. it checks first if online is set, otherwise not download will take
         place. it will be updated every 30 minutes.
 
+        confirmation for using the service :
+
+        Grant replied Aug 5, 10:01am
+        Hi Michael,
+        No problem at all embedding the forecast as shown in your image :-)
+        We appreciate the support.
+        Kindest Regards,
+        Grant
+
         :return: success
         """
 
@@ -173,6 +187,9 @@ class Environ(object):
         :param data:
         :return: True for test purpose
         """
+
+        if data is None:
+            return False
 
         val = data.json()
         val = val['list'][0]

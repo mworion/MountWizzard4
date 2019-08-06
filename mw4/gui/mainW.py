@@ -439,7 +439,7 @@ class MainWindow(MWidget,
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
-        if self.ui.expiresYes.isChecked():
+        if self.ui.isOnline.isChecked():
             self.changeStyleDynamic(self.ui.timeComputer, 'color', 'green')
         else:
             self.changeStyleDynamic(self.ui.timeComputer, 'color', 'yellow')

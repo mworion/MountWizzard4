@@ -21,6 +21,7 @@
 import time
 # external packages
 import PyQt5.QtCore
+import PyQt5.QtGui
 import PyQt5.QtWidgets
 import PyQt5.uic
 import requests
@@ -96,149 +97,6 @@ class Environ(object):
 
         :return:    True if success for test
         """
-        return True
-
-    def getWebDataRunner(self, url=''):
-        """
-
-        :param url:
-        :return: data
-        """
-
-        try:
-            data = requests.get(url, timeout=10)
-        except TimeoutError:
-            self.logger.error(f'{url} not reachable')
-            return None
-        if data.status_code != 200:
-            self.logger.error(f'{url}: status nok')
-            return None
-        self.logger.debug(f'{url}: {data.status_code}')
-
-        time.sleep(5)
-        return data
-
-    def updateClearOutsideGui(self, data):
-        """
-
-        :param data:
-        :return: True for test purpose
-        """
-
-        if data is None:
-            return False
-
-        pixmap = PyQt5.QtGui.QPixmap()
-        pixmap.loadFromData(data.content)
-        pixmapBase = pixmap.copy(0, 84, 622, 141)
-        pixmapHeader = pixmap.copy(550, 1, 130, 80)
-        self.ui.picClearOutside.setPixmap(pixmapBase)
-        self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
-
-        return True
-
-    def getClearOutside(self, url=''):
-        """
-        getClearOutside
-
-        :param url:
-        :return:
-        """
-        worker = Worker(self.getWebDataRunner, url)
-        worker.signals.result.connect(self.updateClearOutsideGui)
-        self.threadPool.start(worker)
-
-    def updateClearOutside(self):
-        """
-        updateClearOutside downloads the actual clear outside image and displays it in
-        environment tab. it checks first if online is set, otherwise not download will take
-        place. it will be updated every 30 minutes.
-
-        confirmation for using the service :
-
-        Grant replied Aug 5, 10:01am
-        Hi Michael,
-        No problem at all embedding the forecast as shown in your image :-)
-        We appreciate the support.
-        Kindest Regards,
-        Grant
-
-        :return: success
-        """
-
-        if not self.ui.expiresNo.isChecked():
-            return False
-
-        # prepare coordinates for website
-        loc = self.app.mount.obsSite.location
-        lat = loc.latitude.degrees
-        lon = loc.longitude.degrees
-
-        webSite = 'http://clearoutside.com/forecast_image_medium/'
-        url = f'{webSite}{lat:4.2f}/{lon:4.2f}/forecast.png'
-        self.getClearOutside(url=url)
-
-        return True
-
-    def updateOpenWeatherMapGui(self, data):
-        """
-        updateOpenWeatherMapGui
-
-        :param data:
-        :return: True for test purpose
-        """
-
-        if data is None:
-            return False
-
-        val = data.json()
-        val = val['list'][0]
-
-        self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
-        self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
-        self.ui.weatherHumidity.setText(f'{val["main"]["humidity"]:3.0f}')
-        self.ui.weatherCloudCover.setText(f'{val["clouds"]["all"]:3.0f}')
-        self.ui.weatherWindSpeed.setText(f'{val["wind"]["speed"]:3.0f}')
-        self.ui.weatherWindDir.setText(f'{val["wind"]["deg"]:3.0f}')
-        self.ui.weatherRainVol.setText(f'{val["rain"]["3h"]:5.2f}')
-
-        return True
-
-    def getOpenWeatherMap(self, url=''):
-        """
-        getOpenWeatherMap
-
-        :param url:
-        :return:
-        """
-        worker = Worker(self.getWebDataRunner, url)
-        worker.signals.result.connect(self.updateOpenWeatherMapGui)
-        self.threadPool.start(worker)
-
-    def updateOpenWeatherMap(self):
-        """
-        updateOpenWeatherMap downloads the actual OpenWeatherMap image and displays it in
-        environment tab. it checks first if online is set, otherwise not download will take
-        place. it will be updated every 10 minutes.
-
-        :return: success
-        """
-
-        if not self.ui.expiresNo.isChecked():
-            return False
-        if not self.ui.openWeatherMapKey.text():
-            return False
-
-        # prepare coordinates for website
-        loc = self.app.mount.obsSite.location
-        lat = loc.latitude.degrees
-        lon = loc.longitude.degrees
-        apiKey = self.ui.openWeatherMapKey.text()
-
-        webSite = 'http://api.openweathermap.org/data/2.5/forecast'
-        url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={apiKey}'
-        self.getOpenWeatherMap(url=url)
-
         return True
 
     def updateRefractionParameters(self):
@@ -322,3 +180,165 @@ class Environ(object):
         self.ui.skymeterSQR.setText('{0:4.1f}'.format(value))
         value = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
         self.ui.skymeterTemp.setText('{0:4.1f}'.format(value))
+
+    def getWebDataRunner(self, url=''):
+        """
+        getWebDataRunner fetches a given url and does the error handling.
+
+        :param url:
+        :return: data
+        """
+
+        if not url:
+            return None
+
+        try:
+            data = requests.get(url, timeout=10)
+        except TimeoutError:
+            self.logger.error(f'{url} not reachable')
+            return None
+        except Exception as e:
+            self.logger.error(f'{url} general exception: {e}')
+            return None
+
+        if data.status_code != 200:
+            self.logger.error(f'{url}: status nok')
+            return None
+        self.logger.debug(f'{url}: {data.status_code}')
+
+        return data
+
+    def updateClearOutsideGui(self, data):
+        """
+        updateClearOutsideGui takes the returned data from a web fetch and puts the data
+        to the Gui
+
+        :param data:
+        :return: True for test purpose
+        """
+
+        if data is None:
+            return False
+
+        pixmap = PyQt5.QtGui.QPixmap()
+        pixmap.loadFromData(data.content)
+
+        mask = pixmap.createMaskFromColor(PyQt5.QtGui.QColor(255, 255, 255),
+                                          PyQt5.QtCore.Qt.MaskOutColor)
+
+        p = PyQt5.QtGui.QPainter(pixmap)
+        p.setPen(PyQt5.QtGui.QColor(0, 0, 255))
+        p.drawPixmap(pixmap.rect(), mask, mask.rect())
+        p.end()
+
+        pixmapBase = pixmap.copy(0, 84, 622, 141)
+        pixmapHeader = pixmap.copy(550, 1, 130, 80)
+        self.ui.picClearOutside.setPixmap(pixmapBase)
+        self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
+
+        return True
+
+    def getClearOutside(self, url=''):
+        """
+        getClearOutside initiates the worker thread to get the web data fetched
+
+        :param url:
+        :return:
+        """
+        worker = Worker(self.getWebDataRunner, url)
+        worker.signals.result.connect(self.updateClearOutsideGui)
+        self.threadPool.start(worker)
+
+    def updateClearOutside(self):
+        """
+        updateClearOutside downloads the actual clear outside image and displays it in
+        environment tab. it checks first if online is set, otherwise not download will take
+        place. it will be updated every 30 minutes.
+
+        confirmation for using the service :
+
+        Grant replied Aug 5, 10:01am
+        Hi Michael,
+        No problem at all embedding the forecast as shown in your image :-)
+        We appreciate the support.
+        Kindest Regards,
+        Grant
+
+        :return: success
+        """
+
+        if self.ui.isOffline.isChecked():
+            return False
+
+        # prepare coordinates for website
+        loc = self.app.mount.obsSite.location
+        lat = loc.latitude.degrees
+        lon = loc.longitude.degrees
+
+        webSite = 'http://clearoutside.com/forecast_image_medium/'
+        url = f'{webSite}{lat:4.2f}/{lon:4.2f}/forecast.png'
+        self.getClearOutside(url=url)
+
+        return True
+
+    def updateOpenWeatherMapGui(self, data):
+        """
+        updateOpenWeatherMapGui takes the returned data from a web fetch and puts the data
+        to the Gui
+
+        :param data:
+        :return: True for test purpose
+        """
+
+        if data is None:
+            return False
+
+        val = data.json()
+        val = val['list'][0]
+
+        self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
+        self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
+        self.ui.weatherHumidity.setText(f'{val["main"]["humidity"]:3.0f}')
+        self.ui.weatherCloudCover.setText(f'{val["clouds"]["all"]:3.0f}')
+        self.ui.weatherWindSpeed.setText(f'{val["wind"]["speed"]:3.0f}')
+        self.ui.weatherWindDir.setText(f'{val["wind"]["deg"]:3.0f}')
+        self.ui.weatherRainVol.setText(f'{val["rain"]["3h"]:5.2f}')
+
+        return True
+
+    def getOpenWeatherMap(self, url=''):
+        """
+        getOpenWeatherMap initiates the worker thread to get the web data fetched
+
+        :param url:
+        :return:
+        """
+        worker = Worker(self.getWebDataRunner, url)
+        worker.signals.result.connect(self.updateOpenWeatherMapGui)
+        self.threadPool.start(worker)
+
+    def updateOpenWeatherMap(self):
+        """
+        updateOpenWeatherMap downloads the actual OpenWeatherMap image and displays it in
+        environment tab. it checks first if online is set, otherwise not download will take
+        place. it will be updated every 10 minutes.
+
+        :return: success
+        """
+
+        if self.ui.isOffline.isChecked():
+            return False
+        if not self.ui.openWeatherMapKey.text():
+            return False
+
+        # prepare coordinates for website
+        loc = self.app.mount.obsSite.location
+        lat = loc.latitude.degrees
+        lon = loc.longitude.degrees
+        apiKey = self.ui.openWeatherMapKey.text()
+
+        webSite = 'http://api.openweathermap.org/data/2.5/forecast'
+        url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={apiKey}'
+        self.getOpenWeatherMap(url=url)
+
+        return True

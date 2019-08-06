@@ -21,6 +21,7 @@
 import unittest.mock as mock
 import pytest
 # external packages
+import requests
 # local import
 from mw4.test.test_units.setupQt import setupQt
 
@@ -232,3 +233,28 @@ def test_updateSkymeterGUI_2():
     app.skymeter.data['SKY_TEMPERATURE'] = 10.5
     app.mainW.updateSkymeterGUI('test')
     assert app.mainW.ui.skymeterTemp.text() == '10.5'
+
+
+def test_getWebDataRunner_1():
+    suc = app.mainW.getWebDataRunner()
+    assert not suc
+
+
+def test_getWebDataRunner_2():
+    suc = app.mainW.getWebDataRunner(url='http://test')
+    assert not suc
+
+
+def test_getWebDataRunner_3():
+    class Test:
+        status_code = 300
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        suc = app.mainW.getWebDataRunner(url='http://test')
+        assert not suc
+
+
+def test_updateCleaOutsideGui():
+    pass
+

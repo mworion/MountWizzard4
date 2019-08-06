@@ -1238,7 +1238,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -12896,7 +12896,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>7</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -18321,7 +18321,7 @@ to mount manually</string>
          <property name="title">
           <string>Internet Online Connection</string>
          </property>
-         <widget class="QRadioButton" name="expiresNo">
+         <widget class="QRadioButton" name="isOffline">
           <property name="geometry">
            <rect>
             <x>15</x>
@@ -18345,7 +18345,7 @@ to mount manually</string>
            <bool>false</bool>
           </property>
          </widget>
-         <widget class="QRadioButton" name="expiresYes">
+         <widget class="QRadioButton" name="isOnline">
           <property name="geometry">
            <rect>
             <x>15</x>
@@ -19171,8 +19171,8 @@ to mount manually</string>
   <tabstop>loglevelInfoMC</tabstop>
   <tabstop>loglevelWarningMC</tabstop>
   <tabstop>loglevelErrorMC</tabstop>
-  <tabstop>expiresYes</tabstop>
-  <tabstop>expiresNo</tabstop>
+  <tabstop>isOnline</tabstop>
+  <tabstop>isOffline</tabstop>
   <tabstop>loadFrom</tabstop>
   <tabstop>saveConfigQuit</tabstop>
   <tabstop>saveConfig</tabstop>

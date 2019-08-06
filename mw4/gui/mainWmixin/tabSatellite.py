@@ -201,7 +201,7 @@ class Satellite(object):
             return False
 
         source = self.satelliteSourceDropDown[key]
-        reload = self.ui.expiresYes.isChecked()
+        reload = self.ui.isOnline.isChecked()
         self.satellites = self.app.loader.tle(source, reload=reload)
 
         suc = self.loadTLEData(source)

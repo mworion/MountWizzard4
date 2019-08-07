@@ -205,38 +205,64 @@ class Environ(object):
             self.logger.error(f'{url}: status nok')
             return None
         self.logger.debug(f'{url}: {data.status_code}')
-
         return data
 
-    def updateClearOutsideGui(self, data):
+    def updateClearOutsideGui(self, image):
         """
         updateClearOutsideGui takes the returned data from a web fetch and puts the data
         to the Gui
 
-        :param data:
+        :param image:
         :return: True for test purpose
         """
 
-        if data is None:
+        imageBase, imageHeader = image
+
+        if imageBase is None:
+            return False
+        if imageHeader is None:
             return False
 
-        pixmap = PyQt5.QtGui.QPixmap()
-        pixmap.loadFromData(data.content)
-
-        mask = pixmap.createMaskFromColor(PyQt5.QtGui.QColor(255, 255, 255),
-                                          PyQt5.QtCore.Qt.MaskOutColor)
-
-        p = PyQt5.QtGui.QPainter(pixmap)
-        p.setPen(PyQt5.QtGui.QColor(0, 0, 255))
-        p.drawPixmap(pixmap.rect(), mask, mask.rect())
-        p.end()
-
-        pixmapBase = pixmap.copy(0, 84, 622, 141)
-        pixmapHeader = pixmap.copy(550, 1, 130, 80)
+        pixmapBase = PyQt5.QtGui.QPixmap().fromImage(imageBase)
+        pixmapHeader = PyQt5.QtGui.QPixmap().fromImage(imageHeader)
         self.ui.picClearOutside.setPixmap(pixmapBase)
         self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
 
         return True
+
+    def getClearOutsideWorkerHelper(self, url=''):
+        """
+        getClearOutsideHelper
+
+        :param url:
+        :return: True for test purpose
+        """
+
+        data = self.getWebDataRunner(url=url)
+        if not data:
+            return None, None
+
+        dim = 0.7
+        image = PyQt5.QtGui.QImage()
+        image.loadFromData(data.content)
+        imageBase = image.copy(0, 84, 622, 141)
+        imageHeader = image.copy(550, 1, 130, 80)
+
+        for x in range(0, imageBase.width()):
+            for y in range(0, imageBase.height()):
+                point = PyQt5.QtCore.QPoint(x, y)
+                r, g, b, a = imageBase.pixelColor(point).getRgb()
+                if r != g:
+                    r = dim * r
+                    g = dim * g
+                    b = dim * b
+                else:
+                    r = max(255 - r, 32)
+                    g = max(255 - g, 32)
+                    b = max(255 - b, 32)
+                imageBase.setPixelColor(point,
+                                        PyQt5.QtGui.QColor(r, g, b, 255))
+        return imageBase, imageHeader
 
     def getClearOutside(self, url=''):
         """
@@ -245,7 +271,7 @@ class Environ(object):
         :param url:
         :return:
         """
-        worker = Worker(self.getWebDataRunner, url)
+        worker = Worker(self.getClearOutsideWorkerHelper, url)
         worker.signals.result.connect(self.updateClearOutsideGui)
         self.threadPool.start(worker)
 

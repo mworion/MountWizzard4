@@ -236,12 +236,12 @@ def test_updateSkymeterGUI_2():
 
 
 def test_getWebDataRunner_1():
-    suc = app.mainW.getWebDataRunner()
+    suc = app.mainW.getWebDataWorker()
     assert not suc
 
 
 def test_getWebDataRunner_2():
-    suc = app.mainW.getWebDataRunner(url='http://test')
+    suc = app.mainW.getWebDataWorker(url='http://test')
     assert not suc
 
 
@@ -251,7 +251,7 @@ def test_getWebDataRunner_3():
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = app.mainW.getWebDataRunner(url='http://test')
+        suc = app.mainW.getWebDataWorker(url='http://test')
         assert not suc
 
 

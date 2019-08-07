@@ -181,9 +181,9 @@ class Environ(object):
         value = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
         self.ui.skymeterTemp.setText('{0:4.1f}'.format(value))
 
-    def getWebDataRunner(self, url=''):
+    def getWebDataWorker(self, url=''):
         """
-        getWebDataRunner fetches a given url and does the error handling.
+        getWebDataWorker fetches a given url and does the error handling.
 
         :param url:
         :return: data
@@ -232,13 +232,16 @@ class Environ(object):
 
     def getClearOutsideWorkerHelper(self, url=''):
         """
-        getClearOutsideHelper
+        getClearOutsideWorkerHelper replaces the direct call to getWebDataWorker because
+        we need to do the data calculation for the image conversion in the separate thread
+        as well. the calculation take roughly 1s and that's to much to keep the gui
+        responsive
 
         :param url:
         :return: True for test purpose
         """
 
-        data = self.getWebDataRunner(url=url)
+        data = self.getWebDataWorker(url=url)
         if not data:
             return None, None
 
@@ -339,7 +342,7 @@ class Environ(object):
         :param url:
         :return:
         """
-        worker = Worker(self.getWebDataRunner, url)
+        worker = Worker(self.getWebDataWorker, url)
         worker.signals.result.connect(self.updateOpenWeatherMapGui)
         self.threadPool.start(worker)
 

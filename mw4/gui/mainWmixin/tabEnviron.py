@@ -18,13 +18,14 @@
 #
 ###########################################################
 # standard libraries
-import time
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtGui
 import PyQt5.QtWidgets
 import PyQt5.uic
 import requests
+import numpy as np
+import qimage2ndarray
 # local import
 from mw4.base.tpool import Worker
 
@@ -207,21 +208,41 @@ class Environ(object):
         self.logger.debug(f'{url}: {data.status_code}')
         return data
 
-    def updateClearOutsideGui(self, image):
+    def updateClearOutsideGui(self, data):
         """
         updateClearOutsideGui takes the returned data from a web fetch and puts the data
-        to the Gui
+        to the Gui. for the transformation qimage2ndarray is used because of the speed
+        for the calculations. dim is a factor which reduces the lightness of the overall
+        image
 
-        :param image:
-        :return: True for test purpose
+        :param data:
+        :return: success
         """
 
-        imageBase, imageHeader = image
+        if not data:
+            return False
 
-        if imageBase is None:
-            return False
-        if imageHeader is None:
-            return False
+        dim = 0.8
+        image = PyQt5.QtGui.QImage()
+        image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
+        image.loadFromData(data.content)
+        imageBase = image.copy(0, 84, 624, 141)
+        imageHeader = image.copy(550, 1, 130, 80)
+
+        # transformation are done in numpy, because it's much faster
+        # starting the conversion
+        width = imageBase.width()
+        height = imageBase.height()
+        imgArr = qimage2ndarray.rgb_view(imageBase)
+        imgArr = imgArr.reshape(width * height, 3)
+        img_Max = np.maximum(255 - imgArr, [32, 32, 32])
+        temp = imgArr[:, 0] == imgArr[:, 1]
+        check = np.array([temp, temp, temp]).transpose()
+        # do the transform light to dark theme
+        imgArr = np.where(check, img_Max, imgArr)
+        # transforming back
+        imgArr = imgArr.reshape(height, width, 3)
+        imageBase = qimage2ndarray.array2qimage(dim * imgArr)
 
         pixmapBase = PyQt5.QtGui.QPixmap().fromImage(imageBase)
         pixmapHeader = PyQt5.QtGui.QPixmap().fromImage(imageHeader)
@@ -230,43 +251,6 @@ class Environ(object):
 
         return True
 
-    def getClearOutsideWorkerHelper(self, url=''):
-        """
-        getClearOutsideWorkerHelper replaces the direct call to getWebDataWorker because
-        we need to do the data calculation for the image conversion in the separate thread
-        as well. the calculation take roughly 1s and that's to much to keep the gui
-        responsive
-
-        :param url:
-        :return: True for test purpose
-        """
-
-        data = self.getWebDataWorker(url=url)
-        if not data:
-            return None, None
-
-        dim = 0.7
-        image = PyQt5.QtGui.QImage()
-        image.loadFromData(data.content)
-        imageBase = image.copy(0, 84, 622, 141)
-        imageHeader = image.copy(550, 1, 130, 80)
-
-        for x in range(0, imageBase.width()):
-            for y in range(0, imageBase.height()):
-                point = PyQt5.QtCore.QPoint(x, y)
-                r, g, b, a = imageBase.pixelColor(point).getRgb()
-                if r != g:
-                    r = dim * r
-                    g = dim * g
-                    b = dim * b
-                else:
-                    r = max(255 - r, 32)
-                    g = max(255 - g, 32)
-                    b = max(255 - b, 32)
-                imageBase.setPixelColor(point,
-                                        PyQt5.QtGui.QColor(r, g, b, 255))
-        return imageBase, imageHeader
-
     def getClearOutside(self, url=''):
         """
         getClearOutside initiates the worker thread to get the web data fetched
@@ -274,7 +258,7 @@ class Environ(object):
         :param url:
         :return:
         """
-        worker = Worker(self.getClearOutsideWorkerHelper, url)
+        worker = Worker(self.getWebDataWorker, url)
         worker.signals.result.connect(self.updateClearOutsideGui)
         self.threadPool.start(worker)
 

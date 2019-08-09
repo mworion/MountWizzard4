@@ -75,7 +75,7 @@ def clean_indibase(c):
         c.run('find ./indibase | grep -E "(__pycache__)" | xargs rm -rf')
 
 #
-# bulding resource and widgets for qt
+# building resource and widgets for qt
 #
 
 
@@ -152,7 +152,7 @@ def build_dist(c):
     c.run('python setup.py sdist')
 
 #
-# setting up python virtual environments in all plattforms for defined kontext
+# setting up python virtual environments in all platforms for defined context
 #
 
 

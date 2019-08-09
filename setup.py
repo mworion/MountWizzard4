@@ -44,7 +44,7 @@ setup(
         'astropy==3.1.2',
         'requests==2.22.0',
         'requests_toolbelt==0.9.1',
-        'numpy',
+        'numpy==1.17',
         'skyfield==1.10',
         'mountcontrol',
         'indibase',

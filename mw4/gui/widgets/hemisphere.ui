@@ -277,6 +277,9 @@
      </item>
      <item>
       <widget class="QGroupBox" name="groupBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="title">
         <string>Views / Coords</string>
        </property>
@@ -297,7 +300,10 @@
          <number>10</number>
         </property>
         <item row="0" column="0">
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="showAltAz">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -309,7 +315,10 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QRadioButton" name="radioButton_2">
+         <widget class="QRadioButton" name="showPolar">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -321,7 +330,10 @@
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QRadioButton" name="radioButton_3">
+         <widget class="QRadioButton" name="showSphere">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="font">
            <font>
             <pointsize>10</pointsize>

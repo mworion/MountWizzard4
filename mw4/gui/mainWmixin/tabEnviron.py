@@ -309,13 +309,17 @@ class Environ(object):
         val = data.json()
         val = val['list'][0]
 
-        self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
-        self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
-        self.ui.weatherHumidity.setText(f'{val["main"]["humidity"]:3.0f}')
-        self.ui.weatherCloudCover.setText(f'{val["clouds"]["all"]:3.0f}')
-        self.ui.weatherWindSpeed.setText(f'{val["wind"]["speed"]:3.0f}')
-        self.ui.weatherWindDir.setText(f'{val["wind"]["deg"]:3.0f}')
-        self.ui.weatherRainVol.setText(f'{val["rain"]["3h"]:5.2f}')
+        if 'main' in val:
+            self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
+            self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
+            self.ui.weatherHumidity.setText(f'{val["main"]["humidity"]:3.0f}')
+        if 'clouds' in val:
+            self.ui.weatherCloudCover.setText(f'{val["clouds"]["all"]:3.0f}')
+        if 'wind' in val:
+            self.ui.weatherWindSpeed.setText(f'{val["wind"]["speed"]:3.0f}')
+            self.ui.weatherWindDir.setText(f'{val["wind"]["deg"]:3.0f}')
+        if 'rain' in val:
+            self.ui.weatherRainVol.setText(f'{val["rain"]["3h"]:5.2f}')
 
         return True
 

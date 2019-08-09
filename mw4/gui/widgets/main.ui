@@ -1238,7 +1238,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>9</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -12400,7 +12400,7 @@ to mount manually</string>
          <x>10</x>
          <y>10</y>
          <width>766</width>
-         <height>406</height>
+         <height>407</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -12435,17 +12435,82 @@ to mount manually</string>
             <property name="spacing">
              <number>8</number>
             </property>
-            <item row="6" column="2">
-             <widget class="QComboBox" name="rename3">
+            <item row="5" column="0" colspan="4">
+             <widget class="QLabel" name="label_60">
+              <property name="text">
+               <string>Choice of FITS header entries</string>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="0" colspan="5">
+             <widget class="QProgressBar" name="renameProgress">
               <property name="minimumSize">
                <size>
                 <width>0</width>
                 <height>25</height>
                </size>
               </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
              </widget>
             </item>
-            <item row="9" column="2">
+            <item row="2" column="0" colspan="2">
+             <widget class="QLabel" name="label_305">
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Directory</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="5">
+             <widget class="QLabel" name="label_304">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Batch renaming fits files</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0" colspan="5">
+             <widget class="QCheckBox" name="checkIncludeSubdirs">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Include subdirectories</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="5">
+             <widget class="Line" name="line_88">
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <property name="midLineWidth">
+               <number>1</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="13" column="2">
              <spacer name="verticalSpacer_12">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
@@ -12458,8 +12523,11 @@ to mount manually</string>
               </property>
              </spacer>
             </item>
-            <item row="6" column="3">
-             <widget class="QComboBox" name="rename4">
+            <item row="3" column="0" colspan="5">
+             <widget class="QLineEdit" name="renameDir">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -12481,86 +12549,7 @@ to mount manually</string>
               </property>
              </widget>
             </item>
-            <item row="5" column="0" colspan="4">
-             <widget class="QLabel" name="label_60">
-              <property name="text">
-               <string>Choice of FITS header entries</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0">
-             <widget class="QComboBox" name="rename1">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="1">
-             <widget class="QComboBox" name="rename2">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" colspan="5">
-             <widget class="QLabel" name="label_304">
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Batch renaming fits files</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0" colspan="5">
-             <widget class="Line" name="line_88">
-              <property name="frameShadow">
-               <enum>QFrame::Plain</enum>
-              </property>
-              <property name="midLineWidth">
-               <number>1</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0" colspan="5">
-             <widget class="QLineEdit" name="renameDir">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0" colspan="2">
-             <widget class="QLabel" name="label_305">
-              <property name="minimumSize">
-               <size>
-                <width>120</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Directory</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="4">
+            <item row="10" column="0" colspan="5">
              <widget class="QComboBox" name="rename5">
               <property name="minimumSize">
                <size>
@@ -12570,23 +12559,47 @@ to mount manually</string>
               </property>
              </widget>
             </item>
-            <item row="7" column="0" colspan="5">
-             <widget class="QProgressBar" name="renameProgress">
+            <item row="9" column="0" colspan="5">
+             <widget class="QComboBox" name="rename4">
               <property name="minimumSize">
                <size>
                 <width>0</width>
                 <height>25</height>
                </size>
               </property>
-              <property name="value">
-               <number>0</number>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
+             </widget>
+            </item>
+            <item row="8" column="0" colspan="5">
+             <widget class="QComboBox" name="rename3">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
               </property>
              </widget>
             </item>
-            <item row="8" column="4">
+            <item row="7" column="0" colspan="5">
+             <widget class="QComboBox" name="rename2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0" colspan="5">
+             <widget class="QComboBox" name="rename1">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="12" column="4">
              <widget class="QPushButton" name="renameStart">
               <property name="minimumSize">
                <size>
@@ -12596,19 +12609,6 @@ to mount manually</string>
               </property>
               <property name="text">
                <string>Start</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0" colspan="5">
-             <widget class="QCheckBox" name="checkIncludeSubdirs">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Include subdirectories</string>
               </property>
              </widget>
             </item>

@@ -129,7 +129,9 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
-        # self.app.data.clearBuildP()
+        self.ui.showAltAz.setChecked(config.get('showAltAz', True))
+        self.ui.showPolar.setChecked(config.get('showPolar', False))
+        self.ui.showSphere.setChecked(config.get('showSphere', False))
 
         return True
 
@@ -151,6 +153,9 @@ class HemisphereWindow(widget.MWidget):
         config['checkShowCelestial'] = self.ui.checkShowCelestial.isChecked()
         config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
         config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
+        config['showAltAz'] = self.ui.showAltAz.isChecked()
+        config['showPolar'] = self.ui.showPolar.isChecked()
+        config['showSphere'] = self.ui.showSphere.isChecked()
 
     def closeEvent(self, closeEvent):
         """

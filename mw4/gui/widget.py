@@ -135,7 +135,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             return False
         if not item:
             return False
-        if not value:
+        if value is None:
             return False
 
         widget.style().unpolish(widget)

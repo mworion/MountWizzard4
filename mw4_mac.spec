@@ -30,9 +30,6 @@ import sys
 import shutil
 # external packages
 import astropy
-# import numpy
-# local import
-# remove TK
 
 # adding this line helps in virtualenv building packages without problems missing distutils
 # see: https://github.com/pyinstaller/pyinstaller/issues/4064
@@ -67,7 +64,6 @@ a = Analysis(['mw4/loader.py'],
                             'numpy.random.common',
                             'numpy.random.bounded_integers',
                             'numpy.random.entropy',
-                            'qimage2ndarray',
                             ],
              hookspath=[],
              runtime_hooks=[],

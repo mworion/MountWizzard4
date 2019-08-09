@@ -218,7 +218,7 @@ def build_windows_app(c):
 
 
 @task(pre=[venv_mac])
-def build_mac_app_local(c):
+def build_mac_local(c):
     print('building mac app and dmg local')
     c.run('rm -rf ./dist/*.app')
     c.run('rm -rf ./dist/*.dmg')

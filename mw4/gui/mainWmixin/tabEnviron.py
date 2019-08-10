@@ -119,6 +119,7 @@ class Environ(object):
         temp, press = self.app.environ.getFilteredRefracParams()
         if temp is None or press is None:
             return False
+        print(temp, press)
         suc = self.app.mount.obsSite.setRefractionParam(temperature=temp,
                                                         pressure=press)
         if not suc:

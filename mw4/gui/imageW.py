@@ -355,6 +355,18 @@ class ImageWindow(widget.MWidget):
 
         return True
 
+    def abortSolve(self):
+        """
+        abortSolve stops the exposure and resets the gui and the callback signals to default
+        values
+
+        :return: success
+        """
+
+        suc = self.app.astrometry.abort()
+
+        return suc
+
     def writeHeaderToGUI(self, header=None):
         """
         writeHeaderToGUI tries to read relevant values from FITS header and possible
@@ -675,7 +687,7 @@ class ImageWindow(widget.MWidget):
                                 binning=binning,
                                 subFrame=subFrame,
                                 fastReadout=fastReadout,
-                                filterPos=0)
+                                )
 
         text = f'Exposing {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
         self.app.message.emit(text, 0)
@@ -788,15 +800,3 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit('Image exposing aborted', 2)
 
         return True
-
-    def abortSolve(self):
-        """
-        abortSolve stops the exposure and resets the gui and the callback signals to default
-        values
-
-        :return: success
-        """
-
-        suc = self.app.astrometry.abort()
-
-        return suc

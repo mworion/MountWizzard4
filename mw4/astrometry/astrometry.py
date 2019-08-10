@@ -319,7 +319,6 @@ class Astrometry(object):
 
         runnable = [binPath,
                     '--overwrite',
-                    '--no-plots',
                     '--no-remove-lines',
                     '--no-verify-uniformize',
                     '--uniformize', '0',
@@ -462,6 +461,8 @@ class Astrometry(object):
         # version used in KStars throws an error using this option.
         if app == 'CloudMakers':
             options.append('--no-fits2fits')
+        else:
+            options.append('--no-plots')
 
         suc = self.runSolveField(binPath=binPathSolveField,
                                  configPath=configPath,

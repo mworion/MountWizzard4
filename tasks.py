@@ -315,7 +315,7 @@ def deploy_work_dist(c):
 
     # run the
     with c.cd('remote_scripts'):
-        runMW(c, f'scp MountWizzard4.desktop {userWork}/.local/share/applications')
+        runMW(c, f'scp MountWizzard4.desktop {userWork}:.local/share/applications')
         runMW(c, f'scp mw4.png {workWork}')
         runMW(c, f'ssh {userWork} < install_dist_work.sh')
         runMW(c, f'scp start_work.sh {userWork}')

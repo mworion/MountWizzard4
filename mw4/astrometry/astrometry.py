@@ -281,7 +281,7 @@ class Astrometry(object):
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(args=runnable,
-#                                            stdout=subprocess.PIPE,
+                                            stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE,
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
@@ -298,7 +298,7 @@ class Astrometry(object):
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
-#                              + stdout.decode().replace('\n', ' ')
+                              + stdout.decode().replace('\n', ' ')
                               )
 
         success = (self.process.returncode == 0)
@@ -337,7 +337,7 @@ class Astrometry(object):
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(args=runnable,
-#                                            stdout=subprocess.PIPE,
+                                            stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
@@ -354,7 +354,7 @@ class Astrometry(object):
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
-#                              + stdout.decode().replace('\n', ' ')
+                              + stdout.decode().replace('\n', ' ')
                               )
 
         success = (self.process.returncode == 0)

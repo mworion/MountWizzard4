@@ -77,6 +77,7 @@ def clean_mountcontrol(c):
     with c.cd('../mountcontrol'):
         runMW(c, 'rm -rf .pytest_cache')
         runMW(c, 'rm -rf mountcontrol.egg-info')
+        runMW(c, 'rm -rf ./build/*')
         runMW(c, 'find ./mountcontrol | grep -E "(__pycache__)" | xargs rm -rf')
 
 

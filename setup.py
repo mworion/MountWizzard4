@@ -54,4 +54,5 @@ setup(
     author='mw',
     author_email='michael@wuertenberger.org',
     description='tooling for a 10micron mount',
+    zip_safe=True,
 )

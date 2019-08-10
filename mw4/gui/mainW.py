@@ -26,7 +26,6 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 import wakeonlan
-
 # local import
 from mw4.gui.widget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
@@ -73,7 +72,7 @@ class MainWindow(MWidget,
 
     __all__ = ['MainWindow',
                ]
-    version = '0.61'
+    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     def __init__(self, app, threadPool):
@@ -92,7 +91,6 @@ class MainWindow(MWidget,
                                     'cabled LAN port',
                                     'wireless LAN',
                                     ]
-
         self.status = False
 
         # local init of following
@@ -440,9 +438,9 @@ class MainWindow(MWidget,
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():
-            self.ui.statusOnline.setText('Internet Online')
+            self.ui.statusOnline.setText('Setting: Internet Online')
         else:
-            self.ui.statusOnline.setText('Offline No Internet')
+            self.ui.statusOnline.setText('Setting: Offline - No Internet')
 
     def updateAstrometryStatus(self, text):
         """

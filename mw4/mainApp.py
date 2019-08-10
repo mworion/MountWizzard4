@@ -77,7 +77,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                  mwGlob=None,
                  ):
         super().__init__()
-
         # getting global app data
         self.expireData = False
         self.mountUp = False

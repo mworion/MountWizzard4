@@ -77,7 +77,6 @@ class Satellite(object):
         config = self.app.config['mainW']
         self.setupSatelliteSourceGui()
         self.loadSatelliteSource()
-
         return True
 
     def storeConfig(self):
@@ -111,7 +110,7 @@ class Satellite(object):
 
         self.ui.satelliteSource.clear()
         self.ui.satelliteSource.setView(PyQt5.QtWidgets.QListView())
-        for name, _ in self.satelliteSourceDropDown.items():
+        for name in self.satelliteSourceDropDown.keys():
             self.ui.satelliteSource.addItem(name)
 
         return True

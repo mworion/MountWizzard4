@@ -389,6 +389,14 @@ def venv_all(c):
 
 
 @task(pre=[])
+def test_all(c):
+
+    print('test all')
+    test_mountcontrol(c)
+    test_mountwizzard(c)
+
+
+@task(pre=[])
 def build_all(c):
 
     print('build all')

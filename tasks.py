@@ -127,7 +127,7 @@ def test_mountwizzard(c):
 #
 
 
-@task(pre=[test_mountcontrol])
+@task(pre=[])
 def build_mountcontrol(c):
 
     print('building dist mountcontrol')
@@ -145,7 +145,7 @@ def build_indibase(c):
         c.run('python setup.py sdist')
 
 
-@task(pre=[test_mountwizzard])
+@task(pre=[])
 def build_mountwizzard(c):
     print('building dist mountwizzard4')
     c.run('rm -f dist/*.tar.gz')
@@ -157,10 +157,10 @@ def build_mountwizzard(c):
 
 
 @task()
-def venv_linux(c):
-    print('preparing linux')
+def venv_ubuntu(c):
+    print('preparing ubuntu')
     with c.cd('remote_scripts'):
-        c.run(f'ssh {userUbuntu} < setup_linux.sh')
+        c.run(f'ssh {userUbuntu} < setup_ubuntu.sh')
 
 
 @task()
@@ -182,14 +182,14 @@ def venv_work(c):
     # this is an actual production platform on my mount
     print('preparing work')
     with c.cd('remote_scripts'):
-        c.run(f'ssh {userWork} < setup_linux.sh')
+        c.run(f'ssh {userWork} < setup_ubuntu.sh')
 
 #
 # building the apps based on pyinstaller packages
 #
 
 
-@task(pre=[build_indibase, build_mountcontrol])
+@task(pre=[])
 def build_windows_app(c):
     print('build windows app and exe')
 
@@ -286,7 +286,7 @@ def deploy_ubuntu_dist(c):
 
 
 @task(pre=[])
-def deploy_work(c):
+def deploy_work_dist(c):
 
     print('deploy ubuntu mate work')
     c.run(f'ssh {userWork} rm -rf mountwizzard4')
@@ -301,13 +301,12 @@ def deploy_work(c):
 
     # run the
     with c.cd('remote_scripts'):
-        c.run(f'scp start_work.sh {workWork}')
         c.run(f'scp MountWizzard4.desktop {workWork}')
         c.run(f'scp mw4.png {workWork}')
         c.run(f'ssh {userWork} < install_dist_work.sh')
 
 
-@task(pre=[venv_windows])
+@task(pre=[])
 def deploy_windows_dist(c):
 
     print('deploy windows dist for test')
@@ -319,34 +318,7 @@ def deploy_windows_dist(c):
         c.run(f'scp dist/*.tar.gz {workWindows}/ib.tar.gz')
     c.run(f'scp dist/*.tar.gz {workWindows}/mw4.tar.gz')
     with c.cd('remote_scripts'):
-        c.run(f'scp start_windows.bat {workWindows}')
         c.run(f'ssh {userWindows} < install_dist_windows.bat')
-
-
-@task(pre=[])
-def deploy_windows_app(c):
-
-    print('deploy windows app')
-    c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
-    c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
-    with c.cd('./dist'):
-        c.run(f'scp MountWizzard4.exe {workWindows}')
-    with c.cd('remote_scripts'):
-        c.run(f'ssh {userWindows} < start_windows_app.bat')
-
-
-@task(pre=[])
-def deploy_mac_app(c):
-
-    print('deploy mac app')
-    c.run(f'ssh {userMAC} rm -rf mountwizzard4')
-    c.run(f'ssh {userMAC} mkdir mountwizzard4')
-
-    # copy necessary files
-    with c.cd('./dist'):
-        c.run(f'scp -r MountWizzard4.app {workMAC}')
-        comm = '/Users/mw/mountwizzard4/MountWizzard4.app/Contents/MacOS/MountWizzard4 test'
-        c.run(f'ssh {userMAC} {comm}')
 
 
 @task(pre=[venv_mac])
@@ -363,10 +335,66 @@ def deploy_mac_dist(c):
         c.run(f'scp dist/*.tar.gz {workMAC}/ib.tar.gz')
     c.run(f'scp dist/*.tar.gz {workMAC}/mw4.tar.gz')
 
-    # run the
+    # run the installation
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userMAC} < install_dist_mac.sh')
+
+
+@task(pre=[])
+def run_windows_app(c):
+
+    print('deploy windows app')
+    c.run(f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
+    c.run(f'ssh {userWindows} "mkdir mountwizzard4"')
+    with c.cd('./dist'):
+        c.run(f'scp MountWizzard4.exe {workWindows}')
+    with c.cd('remote_scripts'):
+        c.run(f'ssh {userWindows} < start_windows_app.bat')
+
+
+@task(pre=[])
+def run_mac_app(c):
+
+    print('deploy mac app')
+    c.run(f'ssh {userMAC} rm -rf mountwizzard4')
+    c.run(f'ssh {userMAC} mkdir mountwizzard4')
+
+    # copy necessary files
+    with c.cd('./dist'):
+        c.run(f'scp -r MountWizzard4.app {workMAC}')
+        comm = '/Users/mw/mountwizzard4/MountWizzard4.app/Contents/MacOS/MountWizzard4 test'
+        c.run(f'ssh {userMAC} {comm}')
+
+
+@task(pre=[])
+def run_mac_dist(c):
     with c.cd('remote_scripts'):
         c.run(f'scp start_mac.sh {workMAC}')
-        c.run(f'ssh {userMAC} < install_dist_mac.sh')
+    c.run(f'ssh {userMAC} chmod 777 ./mountwizzard4/start_mac.sh')
+    c.run(f'ssh {userMAC} ./mountwizzard4/start_mac.sh')
+
+
+@task(pre=[])
+def run_windows_dist(c):
+    with c.cd('remote_scripts'):
+        c.run(f'scp start_windows.bat {workWindows}')
+    c.run(f'ssh {userWindows} "mountwizzard4\\\\start_windows.bat"')
+
+
+@task(pre=[])
+def run_ubuntu_dist(c):
+    with c.cd('remote_scripts'):
+        c.run(f'scp start_ubuntu.sh {workUbuntu}')
+    c.run(f'ssh {userUbuntu} chmod 777 ./mountwizzard4/start_ubuntu.sh')
+    c.run(f'ssh {userUbuntu} ./mountwizzard4/start_ubuntu.sh')
+
+
+@task(pre=[])
+def run_work_dist(c):
+    with c.cd('remote_scripts'):
+        c.run(f'scp start_work.sh {workWork}')
+    c.run(f'ssh {userWork} chmod 777 ./mountwizzard4/start_work.sh')
+    c.run(f'ssh {userWork} ./mountwizzard4/start_work.sh')
 
 
 @task(pre=[])
@@ -383,7 +411,7 @@ def venv_all(c):
 
     print('venv all')
     venv_mac(c)
-    venv_linux(c)
+    venv_ubuntu(c)
     venv_windows(c)
     venv_work(c)
 
@@ -416,3 +444,14 @@ def deploy_all(c):
     deploy_windows_app(c)
     deploy_mac_dist(c)
     deploy_mac_app(c)
+
+
+@task(pre=[])
+def run_all(c):
+
+    print('run all')
+    run_ubuntu_dist(c)
+    run_windows_dist(c)
+    run_windows_app(c)
+    run_mac_dist(c)
+    run_mac_app(c)

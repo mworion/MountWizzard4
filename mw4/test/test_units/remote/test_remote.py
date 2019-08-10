@@ -31,11 +31,12 @@ def module_setup_teardown():
 
 
 def test_startRemote_1():
-    class Test:
-        @staticmethod
-        def nextPendingConnection():
-            return 0
-    app.remote.tcpServer = Test()
+    suc = app.remote.startRemote()
+    assert suc
+
+
+def test_stopRemote_1():
+    app.remote.tcpServer = '1'
     suc = app.remote.startRemote()
     assert not suc
 
@@ -46,12 +47,13 @@ def test_addConnection_1():
     assert not suc
 
 
-def test_addConnection_2():
-    class Test:
-        @staticmethod
-        def nextPendingConnection():
-            return 0
-    app.remote.tcpServer = Test()
-    suc = app.remote.addConnection()
-    assert not suc
+def test_receiveMessage_1():
+    pass
 
+
+def test_removeConnection_1():
+    pass
+
+
+def test_handleError_1():
+    pass

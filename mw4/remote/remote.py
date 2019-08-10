@@ -77,7 +77,7 @@ class Remote(PyQt5.QtCore.QObject):
         """
         stopRemote kills all connections and stops the tcpServer
 
-        :return: success
+        :return: true for test purpose
         """
 
         if self.clientConnection is not None:

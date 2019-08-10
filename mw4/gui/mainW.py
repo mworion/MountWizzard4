@@ -438,9 +438,9 @@ class MainWindow(MWidget,
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():
-            self.ui.statusOnline.setText('Setting: Internet Online')
+            self.ui.statusOnline.setText('Set: Internet Online')
         else:
-            self.ui.statusOnline.setText('Setting: Offline - No Internet')
+            self.ui.statusOnline.setText('Set: Offline - No Internet')
 
     def updateAstrometryStatus(self, text):
         """

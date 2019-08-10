@@ -139,19 +139,17 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
         stopTimers disables the cyclic timers for polling necessary relay data.
 
-        :return: success
+        :return: True for test purpose
         """
-
         self.timerTask.stop()
-
         return True
 
-    def _debugOutput(self, result=None):
+    def debugOutput(self, result=None):
         """
-        _debugOutput writes a nicely formed output for diagnosis in relay environment
+        debugOutput writes a nicely formed output for diagnosis in relay environment
 
         :param result: value from requests get commend
-        :return: True fir test purpose
+        :return: True for test purpose
         """
 
         if result is None:
@@ -162,10 +160,9 @@ class KMRelay(PyQt5.QtCore.QObject):
         reason = result.reason
         status = result.status_code
         url = result.url
-        code = result.apparent_encoding
         elapsed = result.elapsed
 
-        self.logger.debug(f'Result: {url}, {reason}, {status}, {code}, {elapsed}, {text}')
+        self.logger.debug(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
 
         return True
 
@@ -179,7 +176,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: result: return values from web interface of box
         """
 
-        if self._host is None:
+        if self.host is None:
             return None
 
         if not self.mutexPoll.tryLock():
@@ -201,7 +198,7 @@ class KMRelay(PyQt5.QtCore.QObject):
             self.logger.error(f'Error in request: {e}')
 
         if debug:
-            self._debugOutput(result=result)
+            self.debugOutput(result=result)
 
         self.mutexPoll.unlock()
         return result
@@ -234,11 +231,11 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.statusReady.emit()
         return True
 
-    def _getByte(self, relayNumber=0, state=False):
+    def getByte(self, relayNumber=0, state=False):
         """
-        _getByte generates the right bit mask for setting or resetting the relay mask
+        getByte generates the right bit mask for setting or resetting the relay mask
 
-        :param number: relay number
+        :param relayNumber: relay number
         :param state: state to archive
         :return: bit mask for switching
         """
@@ -265,8 +262,8 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
 
         self.logger.info(f'Pulse relay:{relayNumber}')
-        byteOn = self._getByte(relayNumber=relayNumber, state=True)
-        byteOff = self._getByte(relayNumber=relayNumber, state=False)
+        byteOn = self.getByte(relayNumber=relayNumber, state=True)
+        byteOff = self.getByte(relayNumber=relayNumber, state=False)
         value1 = self.getRelay(f'/FFE0{byteOn:02X}')
         time.sleep(self.PULSEWIDTH)
         value2 = self.getRelay(f'/FFE0{byteOff:02X}')
@@ -310,7 +307,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
 
         self.logger.info(f'Set relay:{relayNumber}')
-        byteOn = self._getByte(relayNumber=relayNumber, state=value)
+        byteOn = self.getByte(relayNumber=relayNumber, state=value)
         value = self.getRelay(f'/FFE0{byteOn:02X}')
 
         if value is None:

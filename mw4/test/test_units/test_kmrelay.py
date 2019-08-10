@@ -35,8 +35,13 @@ def module_setup_teardown():
     yield
 
 
+def test_host_0():
+    app.relay.host = None
+    assert app.relay.host is None
+
+
 def test_host_1():
-    app.relay.host = 0.0
+    app.relay.host = 1.1
     assert app.relay.host is None
 
 
@@ -53,6 +58,95 @@ def test_user():
 def test_password():
     app.relay.password = 'astro'
     assert app.relay.password == 'astro'
+
+
+def test_startTimers_1():
+    app.relay.host = None
+    suc = app.relay.startTimers()
+    assert not suc
+
+
+def test_startTimers_2():
+    app.relay.host = host
+    suc = app.relay.startTimers()
+    assert suc
+
+
+def test_startTimers_3():
+    app.relay.host = host
+    with mock.patch.object(app.relay.timerTask,
+                           'start',):
+        suc = app.relay.startTimers()
+        assert suc
+
+
+def test_stopTimers_1():
+    with mock.patch.object(app.relay.timerTask,
+                           'stop',):
+        suc = app.relay.stopTimers()
+        assert suc
+
+
+def test_debugOutput_1():
+    suc = app.relay.debugOutput()
+    assert not suc
+
+
+def test_debugOutput_2():
+    class Test:
+        reason = 'reason'
+        status_code = 200
+        elapsed = 1
+        text = 'test'
+        url = 'test'
+
+    suc = app.relay.debugOutput(Test())
+    assert suc
+
+
+def getRelay_1():
+    app.relay.host = None
+    suc = app.relay.getRelay()
+    assert suc is None
+
+
+def getRelay_2():
+    app.relay.host = host
+    app.relay.mutexPoll.lock()
+    suc = app.relay.getRelay()
+    assert suc is None
+
+
+def getRelay_3():
+    app.relay.host = host
+    app.relay.mutexPoll.unlock()
+    suc = app.relay.getRelay()
+    assert not suc
+
+
+def test_cyclePolling_1():
+    app.relay.host = None
+    suc = app.relay.cyclePolling()
+    assert not suc
+
+
+def test_cyclePolling_2():
+    app.relay.host = host
+    suc = app.relay.cyclePolling()
+    assert not suc
+
+
+def test_cyclePolling_3():
+    class Test:
+        reason = 'OK'
+        text = 'test'
+
+    app.relay.host = host
+    with mock.patch.object(app.relay,
+                           'getRelay',
+                           return_value=Test()):
+        suc = app.relay.cyclePolling()
+        assert suc
 
 
 def test_status1(qtbot):
@@ -210,7 +304,7 @@ def test_getByte_1():
     state = True
     app.relay.status = [False] * 8
 
-    value = app.relay._getByte(relayNumber=relay, state=state)
+    value = app.relay.getByte(relayNumber=relay, state=state)
     assert value == 0x80
 
 
@@ -219,7 +313,7 @@ def test_getByte_2():
     state = False
     app.relay.status = [True] * 8
 
-    value = app.relay._getByte(relayNumber=relay, state=state)
+    value = app.relay.getByte(relayNumber=relay, state=state)
     assert value == 0x7F
 
 

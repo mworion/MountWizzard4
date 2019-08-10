@@ -1,6 +1,7 @@
 if exist venv (rmdir /s/q venv)
 python -m venv venv
 venv\Scripts\activate
+\Users\mw\venv\Scripts\python -m pip install --upgrade pip
 pip install PyQt5==5.13
 pip install astropy==3.1.2
 pip install matplotlib==3.1.1

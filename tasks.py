@@ -19,7 +19,7 @@
 from invoke import task
 
 #
-# defining all necessary virtual client logins for building over alll platforms
+# defining all necessary virtual client login for building over all platforms
 #
 
 # defining environment for ubuntu
@@ -145,8 +145,8 @@ def build_indibase(c):
         c.run('python setup.py sdist')
 
 
-@task(pre=[build_mountcontrol, build_indibase, test_mountwizzard])
-def build_dist(c):
+@task(pre=[test_mountwizzard])
+def build_mountwizzard(c):
     print('building dist mountwizzard4')
     c.run('rm -f dist/*.tar.gz')
     c.run('python setup.py sdist')
@@ -370,10 +370,31 @@ def deploy_mac_dist(c):
 
 
 @task(pre=[])
+def clean_all(c):
+
+    print('clean all')
+    clean_mountcontrol(c)
+    clean_indibase(c)
+    clean_mountwizzard(c)
+
+
+@task(pre=[])
+def venv_all(c):
+
+    print('venv all')
+    venv_mac(c)
+    venv_linux(c)
+    venv_windows(c)
+    venv_work(c)
+
+
+@task(pre=[])
 def build_all(c):
 
     print('build all')
-    build_dist(c)
+    build_mountcontrol(c)
+    build_indibase(c)
+    build_mountwizzard(c)
     build_windows_app(c)
     build_mac_app(c)
 

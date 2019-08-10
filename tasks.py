@@ -27,10 +27,15 @@ clientUbuntu = 'astro-ubuntu.fritz.box'
 userUbuntu = 'mw@' + clientUbuntu
 workUbuntu = userUbuntu + ':/home/mw/mountwizzard4'
 
-# defining work environment for ubuntu
+# defining work environment for mate working
 clientWork = 'astro-comp.fritz.box'
 userWork = 'mw@' + clientWork
 workWork = userWork + ':/home/mw/mountwizzard4'
+
+# defining work environment for mate test
+clientMate = 'astro-comp.fritz.box'
+userMate = 'mw@' + clientMate
+workMate = userMate + ':/home/mw/test'
 
 # same for windows10 with cmd.exe as shell
 clientWindows = 'astro-windows.fritz.box'
@@ -286,11 +291,30 @@ def deploy_ubuntu_dist(c):
 
 
 @task(pre=[])
+def deploy_mate_dist(c):
+
+    print('deploy mate dist')
+    c.run(f'ssh {userMate} rm -rf test')
+    c.run(f'ssh {userMate} mkdir test')
+
+    # copy necessary files
+    with c.cd('../mountcontrol'):
+        c.run(f'scp dist/*.tar.gz {workMate}/mc.tar.gz')
+    with c.cd('../indibase'):
+        c.run(f'scp dist/*.tar.gz {workMate}/ib.tar.gz')
+    c.run(f'scp dist/*.tar.gz {workMate}/mw4.tar.gz')
+
+    # run the
+    with c.cd('remote_scripts'):
+        c.run(f'scp MountWizzard4.desktop {workMate}')
+        c.run(f'scp mw4.png {workMate}')
+        c.run(f'ssh {userMate} < install_dist_mate.sh')
+
+
+@task(pre=[])
 def deploy_work_dist(c):
 
-    print('deploy ubuntu mate work')
-    c.run(f'ssh {userWork} rm -rf mountwizzard4')
-    c.run(f'ssh {userWork} mkdir mountwizzard4')
+    print('deploy work dist')
 
     # copy necessary files
     with c.cd('../mountcontrol'):
@@ -304,6 +328,9 @@ def deploy_work_dist(c):
         c.run(f'scp MountWizzard4.desktop {workWork}')
         c.run(f'scp mw4.png {workWork}')
         c.run(f'ssh {userWork} < install_dist_work.sh')
+        c.run(f'scp start_work.sh {workMate}')
+    c.run(f'ssh {userWork} chmod 777 ./mountwizzard4/start_work.sh')
+    c.run(f'ssh {userWork} rm -rf *.tar.gz')
 
 
 @task(pre=[])
@@ -354,8 +381,8 @@ def run_windows_app(c):
 
 @task(pre=[])
 def run_mac_app(c):
+    print('run mac app')
 
-    print('deploy mac app')
     c.run(f'ssh {userMAC} rm -rf mountwizzard4')
     c.run(f'ssh {userMAC} mkdir mountwizzard4')
 
@@ -368,6 +395,8 @@ def run_mac_app(c):
 
 @task(pre=[])
 def run_mac_dist(c):
+    print('run mac dist')
+
     with c.cd('remote_scripts'):
         c.run(f'scp start_mac.sh {workMAC}')
     c.run(f'ssh {userMAC} chmod 777 ./mountwizzard4/start_mac.sh')
@@ -376,6 +405,8 @@ def run_mac_dist(c):
 
 @task(pre=[])
 def run_windows_dist(c):
+    print('run windows app')
+
     with c.cd('remote_scripts'):
         c.run(f'scp start_windows.bat {workWindows}')
     c.run(f'ssh {userWindows} "mountwizzard4\\\\start_windows.bat"')
@@ -383,6 +414,8 @@ def run_windows_dist(c):
 
 @task(pre=[])
 def run_ubuntu_dist(c):
+    print('run ubuntu dist')
+
     with c.cd('remote_scripts'):
         c.run(f'scp start_ubuntu.sh {workUbuntu}')
     c.run(f'ssh {userUbuntu} chmod 777 ./mountwizzard4/start_ubuntu.sh')
@@ -390,11 +423,13 @@ def run_ubuntu_dist(c):
 
 
 @task(pre=[])
-def run_work_dist(c):
+def run_mate_dist(c):
+    print('run work dist')
+
     with c.cd('remote_scripts'):
-        c.run(f'scp start_work.sh {workWork}')
-    c.run(f'ssh {userWork} chmod 777 ./mountwizzard4/start_work.sh')
-    c.run(f'ssh {userWork} ./mountwizzard4/start_work.sh')
+        c.run(f'scp start_mate.sh {userMate}')
+    c.run(f'ssh {userMate} chmod 777 ./test/start_mate.sh')
+    c.run(f'ssh {userMate} ./test/start_mate.sh')
 
 
 @task(pre=[])
@@ -440,6 +475,7 @@ def deploy_all(c):
 
     print('deploy all')
     deploy_ubuntu_dist(c)
+    deploy_mate_dist(c)
     deploy_windows_dist(c)
     deploy_windows_app(c)
     deploy_mac_dist(c)
@@ -451,7 +487,7 @@ def run_all(c):
 
     print('run all')
     run_ubuntu_dist(c)
-    run_work_dist(c)
+    run_mate_dist(c)
     run_windows_dist(c)
     run_windows_app(c)
     run_mac_dist(c)

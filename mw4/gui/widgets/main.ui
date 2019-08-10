@@ -1238,7 +1238,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>9</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -1458,7 +1458,7 @@
        <property name="geometry">
         <rect>
          <x>135</x>
-         <y>320</y>
+         <y>315</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1500,7 +1500,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>320</y>
+         <y>315</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -1518,7 +1518,7 @@
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>260</y>
+         <y>255</y>
          <width>91</width>
          <height>20</height>
         </rect>
@@ -1542,7 +1542,7 @@
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>260</y>
+         <y>255</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1584,7 +1584,7 @@
        <property name="geometry">
         <rect>
          <x>455</x>
-         <y>230</y>
+         <y>225</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -1608,7 +1608,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>205</y>
+         <y>200</y>
          <width>231</width>
          <height>21</height>
         </rect>
@@ -1631,7 +1631,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>225</y>
+         <y>220</y>
          <width>766</width>
          <height>1</height>
         </rect>
@@ -1892,7 +1892,7 @@
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>230</y>
+         <y>225</y>
          <width>101</width>
          <height>20</height>
         </rect>
@@ -1916,7 +1916,7 @@
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>230</y>
+         <y>225</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -1958,7 +1958,7 @@
        <property name="geometry">
         <rect>
          <x>455</x>
-         <y>260</y>
+         <y>255</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -2106,7 +2106,7 @@
        <property name="geometry">
         <rect>
          <x>105</x>
-         <y>290</y>
+         <y>285</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -2151,7 +2151,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>290</y>
+         <y>285</y>
          <width>96</width>
          <height>21</height>
         </rect>
@@ -2172,7 +2172,7 @@
        <property name="geometry">
         <rect>
          <x>105</x>
-         <y>230</y>
+         <y>225</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -2214,7 +2214,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>230</y>
+         <y>225</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -2235,7 +2235,7 @@
        <property name="geometry">
         <rect>
          <x>105</x>
-         <y>260</y>
+         <y>255</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -2277,7 +2277,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>260</y>
+         <y>255</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -2295,7 +2295,7 @@
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>350</y>
+         <y>345</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -2313,7 +2313,7 @@
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>380</y>
+         <y>375</y>
          <width>116</width>
          <height>21</height>
         </rect>
@@ -2334,7 +2334,7 @@
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>350</y>
+         <y>345</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2383,7 +2383,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>350</y>
+         <y>345</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -2404,7 +2404,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>380</y>
+         <y>375</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2453,7 +2453,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>350</y>
+         <y>345</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -2471,7 +2471,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>380</y>
+         <y>375</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -2492,7 +2492,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>135</x>
-         <y>350</y>
+         <y>345</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2540,7 +2540,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>135</x>
-         <y>380</y>
+         <y>375</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2585,7 +2585,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>380</y>
+         <y>375</y>
          <width>31</width>
          <height>21</height>
         </rect>
@@ -2603,7 +2603,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>230</y>
+         <y>225</y>
          <width>41</width>
          <height>21</height>
         </rect>
@@ -2621,7 +2621,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>290</y>
+         <y>285</y>
          <width>36</width>
          <height>21</height>
         </rect>
@@ -2642,7 +2642,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>135</x>
-         <y>410</y>
+         <y>405</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2690,7 +2690,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>410</y>
+         <y>405</y>
          <width>126</width>
          <height>21</height>
         </rect>
@@ -2708,7 +2708,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>260</y>
+         <y>255</y>
          <width>36</width>
          <height>21</height>
         </rect>
@@ -2726,7 +2726,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>320</y>
+         <y>315</y>
          <width>126</width>
          <height>21</height>
         </rect>
@@ -2747,7 +2747,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>690</x>
-         <y>320</y>
+         <y>315</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2795,7 +2795,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>320</y>
+         <y>315</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2848,7 +2848,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>410</y>
+         <y>405</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -2866,7 +2866,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>230</y>
+         <y>225</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -2884,7 +2884,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>260</y>
+         <y>255</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -2902,7 +2902,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>460</x>
-         <y>410</y>
+         <y>405</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -2923,7 +2923,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>290</y>
+         <y>285</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -2976,7 +2976,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>740</x>
-         <y>260</y>
+         <y>255</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -3000,7 +3000,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>320</y>
+         <y>315</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -3018,7 +3018,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>455</x>
-         <y>320</y>
+         <y>315</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -3045,7 +3045,7 @@ Please refer to the mount manual for details</string>
        <property name="geometry">
         <rect>
          <x>690</x>
-         <y>260</y>
+         <y>255</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -3106,7 +3106,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>690</x>
-         <y>230</y>
+         <y>225</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -3158,7 +3158,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>455</x>
-         <y>290</y>
+         <y>285</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -3182,7 +3182,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>740</x>
-         <y>230</y>
+         <y>225</y>
          <width>16</width>
          <height>20</height>
         </rect>
@@ -3206,7 +3206,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>285</x>
-         <y>290</y>
+         <y>285</y>
          <width>121</width>
          <height>21</height>
         </rect>
@@ -3227,7 +3227,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>410</y>
+         <y>405</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -3279,7 +3279,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>350</y>
+         <y>345</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -3297,7 +3297,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>380</y>
+         <y>375</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -3315,7 +3315,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>410</y>
+         <y>405</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -3336,7 +3336,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>645</x>
-         <y>380</y>
+         <y>375</y>
          <width>96</width>
          <height>21</height>
         </rect>
@@ -3391,7 +3391,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>645</x>
-         <y>350</y>
+         <y>345</y>
          <width>96</width>
          <height>21</height>
         </rect>
@@ -3437,7 +3437,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>745</x>
-         <y>380</y>
+         <y>375</y>
          <width>31</width>
          <height>20</height>
         </rect>
@@ -3461,7 +3461,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>740</x>
-         <y>410</y>
+         <y>405</y>
          <width>21</width>
          <height>20</height>
         </rect>
@@ -3485,7 +3485,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>745</x>
-         <y>350</y>
+         <y>345</y>
          <width>31</width>
          <height>20</height>
         </rect>
@@ -3512,7 +3512,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>645</x>
-         <y>410</y>
+         <y>405</y>
          <width>96</width>
          <height>21</height>
         </rect>
@@ -3558,7 +3558,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>545</x>
-         <y>290</y>
+         <y>285</y>
          <width>126</width>
          <height>21</height>
         </rect>
@@ -3579,7 +3579,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>690</x>
-         <y>290</y>
+         <y>285</y>
          <width>51</width>
          <height>21</height>
         </rect>
@@ -3881,7 +3881,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>210</y>
+         <y>205</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -3905,7 +3905,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>110</y>
+         <y>105</y>
          <width>66</width>
          <height>21</height>
         </rect>
@@ -3929,7 +3929,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>185</y>
+         <y>180</y>
          <width>66</width>
          <height>21</height>
         </rect>
@@ -3953,7 +3953,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>135</y>
+         <y>130</y>
          <width>66</width>
          <height>21</height>
         </rect>
@@ -3977,7 +3977,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>595</x>
-         <y>130</y>
+         <y>125</y>
          <width>181</width>
          <height>46</height>
         </rect>
@@ -4002,7 +4002,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>160</y>
+         <y>155</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -4026,7 +4026,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>60</y>
+         <y>55</y>
          <width>61</width>
          <height>21</height>
         </rect>
@@ -4050,7 +4050,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>85</y>
+         <y>80</y>
          <width>66</width>
          <height>21</height>
         </rect>
@@ -4074,7 +4074,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>260</y>
+         <y>255</y>
          <width>76</width>
          <height>21</height>
         </rect>
@@ -4098,7 +4098,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>595</x>
-         <y>40</y>
+         <y>35</y>
          <width>181</width>
          <height>86</height>
         </rect>
@@ -4192,7 +4192,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>505</x>
-         <y>40</y>
+         <y>35</y>
          <width>76</width>
          <height>246</height>
         </rect>
@@ -4304,7 +4304,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>415</x>
-         <y>40</y>
+         <y>35</y>
          <width>76</width>
          <height>246</height>
         </rect>
@@ -4509,7 +4509,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>235</y>
+         <y>230</y>
          <width>66</width>
          <height>21</height>
         </rect>
@@ -4533,7 +4533,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>145</x>
-         <y>40</y>
+         <y>35</y>
          <width>76</width>
          <height>246</height>
         </rect>
@@ -4882,7 +4882,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>235</x>
-         <y>40</y>
+         <y>35</y>
          <width>76</width>
          <height>246</height>
         </rect>
@@ -4991,7 +4991,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>60</y>
+         <y>55</y>
          <width>36</width>
          <height>20</height>
         </rect>
@@ -5015,7 +5015,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>85</y>
+         <y>80</y>
          <width>36</width>
          <height>20</height>
         </rect>
@@ -5039,7 +5039,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>260</y>
+         <y>255</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -5063,7 +5063,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>110</y>
+         <y>105</y>
          <width>36</width>
          <height>20</height>
         </rect>
@@ -5087,7 +5087,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>135</y>
+         <y>130</y>
          <width>36</width>
          <height>20</height>
         </rect>
@@ -5111,7 +5111,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>160</y>
+         <y>155</y>
          <width>36</width>
          <height>20</height>
         </rect>
@@ -5135,7 +5135,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>185</y>
+         <y>180</y>
          <width>36</width>
          <height>20</height>
         </rect>
@@ -5159,7 +5159,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>235</y>
+         <y>230</y>
          <width>36</width>
          <height>20</height>
         </rect>
@@ -5183,7 +5183,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>210</y>
+         <y>205</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -5207,7 +5207,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>325</x>
-         <y>40</y>
+         <y>35</y>
          <width>76</width>
          <height>246</height>
         </rect>
@@ -5364,7 +5364,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>15</y>
+         <y>10</y>
          <width>281</width>
          <height>21</height>
         </rect>
@@ -5384,7 +5384,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>35</y>
+         <y>30</y>
          <width>761</width>
          <height>1</height>
         </rect>
@@ -5400,7 +5400,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>145</x>
-         <y>290</y>
+         <y>285</y>
          <width>629</width>
          <height>145</height>
         </rect>
@@ -5425,7 +5425,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>290</y>
+         <y>285</y>
          <width>131</width>
          <height>145</height>
         </rect>
@@ -5665,7 +5665,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>285</y>
+         <y>280</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -5686,7 +5686,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>280</x>
-         <y>315</y>
+         <y>310</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -5731,7 +5731,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>375</y>
+         <y>370</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -5776,7 +5776,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>695</x>
-         <y>265</y>
+         <y>260</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -5821,7 +5821,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>280</x>
-         <y>375</y>
+         <y>370</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -5863,7 +5863,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>315</y>
+         <y>310</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -5881,7 +5881,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>175</x>
-         <y>345</y>
+         <y>340</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -5902,7 +5902,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>345</y>
+         <y>340</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -5947,7 +5947,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>495</x>
-         <y>265</y>
+         <y>260</y>
          <width>81</width>
          <height>21</height>
         </rect>
@@ -5989,7 +5989,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>610</x>
-         <y>265</y>
+         <y>260</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -6007,7 +6007,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>175</x>
-         <y>315</y>
+         <y>310</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -6028,7 +6028,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>285</y>
+         <y>280</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -6073,7 +6073,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>315</y>
+         <y>310</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -6115,7 +6115,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>240</y>
+         <y>235</y>
          <width>291</width>
          <height>21</height>
         </rect>
@@ -6138,7 +6138,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>280</x>
-         <y>345</y>
+         <y>340</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -6180,7 +6180,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>175</x>
-         <y>285</y>
+         <y>280</y>
          <width>106</width>
          <height>21</height>
         </rect>
@@ -6198,7 +6198,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>175</x>
-         <y>375</y>
+         <y>370</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -6219,7 +6219,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>280</x>
-         <y>285</y>
+         <y>280</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -6261,7 +6261,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>345</y>
+         <y>340</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -6279,7 +6279,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>265</y>
+         <y>260</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -6297,7 +6297,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>260</y>
+         <y>255</y>
          <width>366</width>
          <height>1</height>
         </rect>
@@ -6313,7 +6313,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>375</y>
+         <y>370</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -6425,7 +6425,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>625</x>
-         <y>285</y>
+         <y>280</y>
          <width>144</width>
          <height>144</height>
         </rect>
@@ -6486,7 +6486,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>420</x>
-         <y>285</y>
+         <y>280</y>
          <width>144</width>
          <height>144</height>
         </rect>
@@ -6759,7 +6759,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>335</x>
-         <y>285</y>
+         <y>280</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -6783,7 +6783,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>335</x>
-         <y>315</y>
+         <y>310</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -6807,7 +6807,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>335</x>
-         <y>345</y>
+         <y>340</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -6831,7 +6831,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>145</x>
-         <y>375</y>
+         <y>370</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -6855,7 +6855,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>335</x>
-         <y>375</y>
+         <y>370</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -6879,7 +6879,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>240</y>
+         <y>235</y>
          <width>156</width>
          <height>21</height>
         </rect>
@@ -6899,7 +6899,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>260</y>
+         <y>255</y>
          <width>371</width>
          <height>1</height>
         </rect>

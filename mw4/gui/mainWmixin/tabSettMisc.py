@@ -85,7 +85,7 @@ class SettMisc(object):
         self.setLoggingLevelMC()
 
         self.ui.isOnline.setChecked(config.get('isOnline', False))
-        self.ui.isOffline.setChecked(not self.ui.isOnline.isChecked())
+        self.ui.isOffline.setChecked(config.get('isOffline', True))
 
         self.setupAudioGui()
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
@@ -120,6 +120,7 @@ class SettMisc(object):
         config['loglevelErrorMC'] = self.ui.loglevelErrorMC.isChecked()
 
         config['isOnline'] = self.ui.isOnline.isChecked()
+        config['isOffline'] = self.ui.isOffline.isChecked()
 
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()

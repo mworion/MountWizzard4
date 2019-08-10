@@ -451,6 +451,7 @@ def run_all(c):
 
     print('run all')
     run_ubuntu_dist(c)
+    run_work_dist(c)
     run_windows_dist(c)
     run_windows_app(c)
     run_mac_dist(c)

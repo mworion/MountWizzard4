@@ -9,6 +9,7 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
+# Python  v3.7.4
 #
 # Michael Würtenberger
 # (c) 2019
@@ -21,37 +22,25 @@ import unittest.mock as mock
 import pytest
 import platform
 # external packages
-from PyQt5.QtWidgets import QStyle
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5 import QtCore
+import PyQt5.QtWidgets
+import PyQt5.QtTest
+import PyQt5.QtCore
 # local import
 from mw4.test.test_units.setupQt import setupQt
-from mw4.gui.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
-    global app, spy, mwGlob, test, a
+    global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
-    a = MWidget()
     yield
 
 
 def test_wIcon_1():
-    suc = a.wIcon()
-    assert not suc
+    ui = app.mainW.ui.openMessageW
+    icon = PyQt5.QtWidgets.QStyle.SP_ComputerIcon
 
-
-def test_wIcon_2():
-    suc = a.wIcon(QPushButton())
-    assert not suc
-
-
-def test_wIcon_3():
-    suc = a.wIcon(QPushButton(), QStyle.SP_ComputerIcon)
+    suc = app.mainW.wIcon(ui, icon)
     assert suc
 
 
@@ -59,195 +48,79 @@ def test_getStyle_1():
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
-        val = a.getStyle()
-        assert val
+        ret = app.mainW.getStyle()
+        assert ret == app.mainW.MAC_STYLE + app.mainW.BASIC_STYLE
 
 
 def test_getStyle_2():
     with mock.patch.object(platform,
                            'system',
-                           return_value='Linux'):
-        val = a.getStyle()
-        assert val
-
-
-def test_getStyle_3():
-    with mock.patch.object(platform,
-                           'system',
                            return_value='Windows'):
-        val = a.getStyle()
-        assert val
+        ret = app.mainW.getStyle()
+        assert ret == app.mainW.NON_MAC_STYLE + app.mainW.BASIC_STYLE
 
 
-def test_initUI():
-    suc = a.initUI()
+def test_initUI_1():
+    suc = app.mainW.initUI()
     assert suc
 
 
 def test_changeStyleDynamic_1():
-    suc = a.changeStyleDynamic()
-    assert not suc
-
-
-def test_changeStyleDynamic_2():
-    suc = a.changeStyleDynamic(QPushButton())
-    assert not suc
-
-
-def test_changeStyleDynamic_3():
-    suc = a.changeStyleDynamic(QPushButton(), 'test')
-    assert not suc
-
-
-def test_changeStyleDynamic_4():
-    suc = a.changeStyleDynamic(QPushButton(), 'test', 'true')
+    ui = app.mainW.ui.openMessageW
+    suc = app.mainW.changeStyleDynamic(ui, 'color', 'red')
     assert suc
 
 
 def test_clearPolar_1():
-    fig, axe = a.clearPolar()
+    ui = app.mainW.ui.modelPolar
+    widget = app.mainW.embedMatplot(ui)
 
-    assert fig is None
-    assert axe is None
-
-
-def test_clearPolar_2():
-    fig, axe = a.clearPolar(QWidget())
-
-    assert fig is None
-    assert axe is None
+    fig, axes = app.mainW.clearPolar(widget)
+    assert fig
+    assert axes
 
 
-def test_clearPolar_3():
-    b = QWidget()
-    c = a.embedMatplot(b)
-
-    fig, axe = a.clearPolar(c)
-
-    assert fig is not None
-    assert axe is not None
-
-
-def test_embedMatplot_1():
-    b = QWidget()
-
-    c = a.embedMatplot()
-
-    assert c is None
-
-
-def test_embedMatplot_2():
-    b = QWidget()
-
-    c = a.embedMatplot(b)
-
-    assert c is not None
+def test_embedMatplot():
+    ui = app.mainW.ui.modelPolar
+    ret = app.mainW.embedMatplot(ui)
+    assert ret
 
 
 def test_extractNames_1():
-    name, short, ext = a.extractNames()
+    name = ''
+    name, short, ext = app.mainW.extractNames(name)
     assert name == ''
     assert short == ''
     assert ext == ''
 
 
 def test_extractNames_2():
-    name, short, ext = a.extractNames('/User/mw/test.txt')
-    assert name == ''
-    assert short == ''
+    name = ['test']
+    name, short, ext = app.mainW.extractNames(name)
+    assert name == 'test'
+    assert short == 'test'
     assert ext == ''
 
 
 def test_extractNames_3():
-    name, short, ext = a.extractNames(['/User/mw/test.txt'])
-    assert name == '/User/mw/test.txt'
+    name = ['c:/test']
+    name, short, ext = app.mainW.extractNames(name)
+    assert name == 'c:/test'
     assert short == 'test'
-    assert ext == '.txt'
+    assert ext == ''
 
 
 def test_extractNames_4():
-    name, short, ext = a.extractNames(['/User/mw/test.txt', '/User/mw/test.txt'])
-    assert name == ['/User/mw/test.txt', '/User/mw/test.txt']
+    name = ['c:/test.cfg']
+    name, short, ext = app.mainW.extractNames(name)
+    assert name == 'c:/test.cfg'
+    assert short == 'test'
+    assert ext == '.cfg'
+
+
+def test_extractNames_5():
+    name = ['c:/test.cfg', 'c:/test.cfg']
+    name, short, ext = app.mainW.extractNames(name)
+    assert name == ['c:/test.cfg', 'c:/test.cfg']
     assert short == ['test', 'test']
-    assert ext == ['.txt', '.txt']
-
-
-def test_prepareFileDialogue_1():
-    dlg = a.prepareFileDialog()
-    assert not dlg
-
-
-def test_prepareFileDialogue_2():
-    dlg = a.prepareFileDialog(QMainWindow(), False)
-    assert dlg
-
-
-def test_prepareFileDialogue_3():
-    dlg = a.prepareFileDialog(QMainWindow(), True)
-    assert dlg
-
-
-def test_openFile_1():
-    a.openFile()
-
-
-def test_openFile_2():
-    a.openFile(QMainWindow())
-
-
-def test_openFile_3():
-    a.openFile(QMainWindow(), 'test')
-
-
-def test_openFile_4():
-    a.openFile(QMainWindow(), 'test', 'test')
-
-
-def test_openFile_5():
-    with mock.patch.object(a,
-                           'runDialog'):
-        a.openFile(QMainWindow(), 'test', 'test', '*.txt')
-
-
-def test_saveFile_1():
-    a.saveFile()
-
-
-def test_saveFile_2():
-    a.saveFile(QMainWindow())
-
-
-def test_saveFile_3():
-    a.saveFile(QMainWindow(), 'test')
-
-
-def test_saveFile_4():
-    a.saveFile(QMainWindow(), 'test', 'test')
-
-
-def test_saveFile_5():
-    with mock.patch.object(a,
-                           'runDialog'):
-        a.saveFile(QMainWindow(), 'test', 'test', '*.txt')
-
-
-def test_openDir_1():
-    a.openDir()
-
-
-def test_openDir_2():
-    a.openDir(QMainWindow())
-
-
-def test_openDir_3():
-    a.openDir(QMainWindow(), 'test')
-
-
-def test_openDir_4():
-    with mock.patch.object(a,
-                           'runDialog'):
-        a.openDir(QMainWindow(), 'test', '*.txt')
-
-
-def test_clickable_1():
-    a.clickable()
+    assert ext == ['.cfg', '.cfg']

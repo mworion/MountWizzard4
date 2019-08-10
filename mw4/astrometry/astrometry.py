@@ -281,7 +281,7 @@ class Astrometry(object):
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(args=runnable,
-                                            stdout=subprocess.PIPE,
+#                                            stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE,
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
@@ -298,7 +298,7 @@ class Astrometry(object):
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
-                              + stdout.decode().replace('\n', ' ')
+#                              + stdout.decode().replace('\n', ' ')
                               )
 
         success = (self.process.returncode == 0)
@@ -320,6 +320,7 @@ class Astrometry(object):
         runnable = [binPath,
                     '--overwrite',
                     '--no-remove-lines',
+                    '--no-plots',
                     '--no-verify-uniformize',
                     '--uniformize', '0',
                     '--sort-column', 'FLUX',
@@ -336,7 +337,7 @@ class Astrometry(object):
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(args=runnable,
-                                            stdout=subprocess.PIPE,
+#                                            stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
@@ -353,7 +354,7 @@ class Astrometry(object):
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
-                              + stdout.decode().replace('\n', ' ')
+#                              + stdout.decode().replace('\n', ' ')
                               )
 
         success = (self.process.returncode == 0)
@@ -418,7 +419,9 @@ class Astrometry(object):
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
-            outFile.write(f'cpulimit 60\nadd_path {self.indexPath}\nautoindex\n')
+            outFile.write('cpulimit 300\n')
+            outFile.write(f'add_path {self.indexPath}\n')
+            outFile.write('autoindex\n')
 
         suc = self.runImage2xy(binPath=binPathImage2xy,
                                xyPath=xyPath,
@@ -461,8 +464,6 @@ class Astrometry(object):
         # version used in KStars throws an error using this option.
         if app == 'CloudMakers':
             options.append('--no-fits2fits')
-        else:
-            options.append('--no-plots')
 
         suc = self.runSolveField(binPath=binPathSolveField,
                                  configPath=configPath,

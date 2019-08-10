@@ -289,15 +289,17 @@ class Satellite(object):
             return False
 
         satellite = self.app.mount.satellite
-        self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
-        data = self.satelliteTLE[self.satellite.name]
-
-        suc = satellite.setTLE(line0=data['line0'],
-                               line1=data['line1'],
-                               line2=data['line2'])
-        if not suc:
-            self.app.message.emit('Error program TLE', 2)
-            return False
+        if satellite.tleParams.name == self.satellite.name:
+            self.app.message.emit(f'Actual satellite is  [{self.satellite.name}]', 0)
+        else:
+            self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
+            data = self.satelliteTLE[self.satellite.name]
+            suc = satellite.setTLE(line0=data['line0'],
+                                   line1=data['line1'],
+                                   line2=data['line2'])
+            if not suc:
+                self.app.message.emit('Error program TLE', 2)
+                return False
 
         return True
 

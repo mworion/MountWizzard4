@@ -373,8 +373,10 @@ def run_mac_app(c):
     # copy necessary files
     with c.cd('./dist'):
         runMW(c, f'scp -r MountWizzard4.app {workMAC}')
-        comm = '/Users/mw/mountwizzard4/MountWizzard4.app/Contents/MacOS/MountWizzard4 test'
-        runMW(c, f'ssh {userMAC} {comm}')
+    with c.cd('remote_scripts'):
+        runMW(c, f'scp -r start_mac_app.sh {workMAC}')
+        runMW(c, f'ssh {userMAC} chmod 777 ./mountwizzard4/start_mac_app.sh')
+        runMW(c, f'ssh {userMAC} ./mountwizzard4/start_mac_app.sh')
 
 
 @task(pre=[])

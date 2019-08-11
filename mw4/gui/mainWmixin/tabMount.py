@@ -129,16 +129,20 @@ class Mount(object):
             val = ra.hms()
             raText = raFormat.format(*val)
             self.ui.RA.setText(raText)
+            self.ui.RAfloat.setText(f'{ra.hours:3.4f}')
         else:
             self.ui.RA.setText('-')
+            self.ui.RAfloat.setText('-')
 
         if dec is not None:
             decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
             decText = decFormat.format(*dec.signed_dms()[1:4],
                                        sign='+' if dec.degrees > 0 else '-')
             self.ui.DEC.setText(decText)
+            self.ui.DECfloat.setText(f'{dec.degrees:+3.4f}')
         else:
             self.ui.DEC.setText('-')
+            self.ui.DECfloat.setText('-')
 
         if obs.timeJD is not None:
             text = obs.timeJD.utc_strftime('%H:%M:%S')
@@ -165,8 +169,10 @@ class Mount(object):
             val = obs.haJNow.hms()
             haText = haFormat.format(*val)
             self.ui.HA.setText(haText)
+            self.ui.HAfloat.setText(f'{obs.haJNow.hours:3.4f}')
         else:
             self.ui.HA.setText('-')
+            self.ui.HAfloat.setText('-')
 
         return True
 

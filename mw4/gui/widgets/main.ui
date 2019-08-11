@@ -18200,7 +18200,7 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>330</y>
+           <y>320</y>
            <width>361</width>
            <height>21</height>
           </rect>
@@ -18219,7 +18219,7 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>345</y>
+           <y>335</y>
            <width>361</width>
            <height>21</height>
           </rect>
@@ -18238,8 +18238,8 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>315</y>
-           <width>271</width>
+           <y>305</y>
+           <width>361</width>
            <height>21</height>
           </rect>
          </property>
@@ -18282,7 +18282,7 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>360</y>
+           <y>350</y>
            <width>361</width>
            <height>21</height>
           </rect>
@@ -18294,7 +18294,7 @@ to mount manually</string>
           </font>
          </property>
          <property name="text">
-          <string>numpy, requests, astropy, skyfield</string>
+          <string>numpy, requests, astropy, skyfield,</string>
          </property>
         </widget>
         <widget class="Line" name="line_9">
@@ -18324,37 +18324,13 @@ to mount manually</string>
            <x>400</x>
            <y>200</y>
            <width>361</width>
-           <height>66</height>
+           <height>46</height>
           </rect>
          </property>
          <property name="title">
           <string>Internet Online Connection</string>
          </property>
-         <widget class="QRadioButton" name="isOffline">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>40</y>
-            <width>326</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>offline and keep existing files</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QRadioButton" name="isOnline">
+         <widget class="QCheckBox" name="isOnline">
           <property name="geometry">
            <rect>
             <x>15</x>
@@ -19010,6 +18986,25 @@ to mount manually</string>
           <string>HW:</string>
          </property>
         </widget>
+        <widget class="QLabel" name="le_firmwareProductName_6">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>365</y>
+           <width>361</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Courier</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>qimage2ndarray</string>
+         </property>
+        </widget>
        </widget>
       </widget>
      </widget>
@@ -19181,7 +19176,6 @@ to mount manually</string>
   <tabstop>loglevelWarningMC</tabstop>
   <tabstop>loglevelErrorMC</tabstop>
   <tabstop>isOnline</tabstop>
-  <tabstop>isOffline</tabstop>
   <tabstop>loadFrom</tabstop>
   <tabstop>saveConfigQuit</tabstop>
   <tabstop>saveConfig</tabstop>

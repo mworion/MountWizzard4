@@ -62,6 +62,7 @@ class Satellite(object):
 
         self.app.mount.signals.calcTLEdone.connect(self.enableTrack)
         self.app.mount.signals.getTLEdone.connect(self.prepare)
+        self.ui.isOnline.stateChanged.connect(self.loadSatelliteSource)
 
         self.app.update3s.connect(self.updateSatelliteData)
 

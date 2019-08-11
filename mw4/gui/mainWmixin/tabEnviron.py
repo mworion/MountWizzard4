@@ -54,6 +54,8 @@ class Environ(object):
         self.app.update10s.connect(self.updateRefractionParameters)
         self.app.update10m.connect(self.updateOpenWeatherMap)
         self.app.update30m.connect(self.updateClearOutside)
+        self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
+        self.ui.isOnline.stateChanged.connect(self.updateOpenWeatherMap)
 
     def initConfig(self):
         """
@@ -197,7 +199,7 @@ class Environ(object):
             return None
 
         try:
-            data = requests.get(url, timeout=10)
+            data = requests.get(url, timeout=30)
         except TimeoutError:
             self.logger.error(f'{url} not reachable')
             return None
@@ -331,11 +333,14 @@ class Environ(object):
         getOpenWeatherMap initiates the worker thread to get the web data fetched
 
         :param url:
-        :return:
+        :return: true for test purpose
         """
+
         worker = Worker(self.getWebDataWorker, url)
         worker.signals.result.connect(self.updateOpenWeatherMapGui)
         self.threadPool.start(worker)
+
+        return True
 
     def updateOpenWeatherMap(self):
         """

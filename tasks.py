@@ -172,7 +172,7 @@ def build_mountcontrol(c):
     printMW('building dist mountcontrol')
     with c.cd('../mountcontrol'):
         runMW(c, 'rm -f dist/*.tar.gz')
-        runMW(c, 'python setup.py sdist bdist_egg')
+        runMW(c, 'python setup.py sdist')
 
 
 @task(pre=[])

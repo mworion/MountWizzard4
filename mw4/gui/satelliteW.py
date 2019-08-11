@@ -557,7 +557,7 @@ class SatelliteWindow(widget.MWidget):
         axe.plot(lon,
                  lat,
                  marker='o',
-                 markersize=2,
+                 markersize=1,
                  linestyle='none',
                  color=self.M_YELLOW)
 
@@ -666,7 +666,7 @@ class SatelliteWindow(widget.MWidget):
         axe.plot(az,
                  alt,
                  marker='o',
-                 markersize=2,
+                 markersize=1,
                  linestyle='none',
                  color=self.M_YELLOW)
 

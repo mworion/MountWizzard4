@@ -519,7 +519,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>RA [°]</string>
+           <string>RA [hours]</string>
           </property>
          </widget>
         </item>

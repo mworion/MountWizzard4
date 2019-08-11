@@ -227,7 +227,7 @@ class Environ(object):
         if not data:
             return False
 
-        dim = 0.8
+        dim = 0.85
         image = PyQt5.QtGui.QImage()
         image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
         image.loadFromData(data.content)

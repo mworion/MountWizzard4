@@ -1264,7 +1264,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -18306,7 +18306,7 @@ to mount manually</string>
            <string>Info</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
          <widget class="QRadioButton" name="loglevelWarning">
@@ -18330,7 +18330,7 @@ to mount manually</string>
            <string>Warning</string>
           </property>
           <property name="checked">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
          </widget>
          <widget class="QRadioButton" name="loglevelError">
@@ -18500,43 +18500,6 @@ to mount manually</string>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-        </widget>
-        <widget class="QGroupBox" name="logginLevel_2">
-         <property name="geometry">
-          <rect>
-           <x>400</x>
-           <y>200</y>
-           <width>361</width>
-           <height>46</height>
-          </rect>
-         </property>
-         <property name="title">
-          <string>Internet Online Connection</string>
-         </property>
-         <widget class="QCheckBox" name="isOnline">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>20</y>
-            <width>331</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>online and update data files if necessary</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
         </widget>
         <widget class="QGroupBox" name="logLevelMW_2">
          <property name="geometry">
@@ -18761,7 +18724,7 @@ to mount manually</string>
           <rect>
            <x>400</x>
            <y>175</y>
-           <width>161</width>
+           <width>196</width>
            <height>21</height>
           </rect>
          </property>
@@ -18774,7 +18737,7 @@ to mount manually</string>
           </font>
          </property>
          <property name="text">
-          <string>Misc</string>
+          <string>Internet Online Connection</string>
          </property>
         </widget>
         <widget class="Line" name="line_17">
@@ -19188,6 +19151,54 @@ to mount manually</string>
           <string>qimage2ndarray</string>
          </property>
         </widget>
+        <widget class="QCheckBox" name="isOnline">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>200</y>
+           <width>331</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>online and update data files if necessary</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="enableNoise">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>240</y>
+           <width>331</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>add random error for astrometry solving</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
        </widget>
       </widget>
      </widget>
@@ -19358,7 +19369,6 @@ to mount manually</string>
   <tabstop>loglevelInfoMC</tabstop>
   <tabstop>loglevelWarningMC</tabstop>
   <tabstop>loglevelErrorMC</tabstop>
-  <tabstop>isOnline</tabstop>
   <tabstop>loadFrom</tabstop>
   <tabstop>saveConfigQuit</tabstop>
   <tabstop>saveConfig</tabstop>

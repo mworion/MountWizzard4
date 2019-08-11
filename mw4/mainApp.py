@@ -127,7 +127,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.hipparcos = hipparcos.Hipparcos(self, mwGlob=self.mwGlob)
         self.measure = measuredata.MeasureData(self)
         self.remote = remote.Remote(self)
-        self.astrometry = astrometry.Astrometry(tempDir=mwGlob['tempDir'],
+        self.astrometry = astrometry.Astrometry(self,
+                                                tempDir=mwGlob['tempDir'],
                                                 threadPool=self.threadPool)
 
         # get the window widgets up

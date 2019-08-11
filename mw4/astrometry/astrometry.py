@@ -63,7 +63,8 @@ class Astrometry(object):
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
-        >>> astrometry = Astrometry(tempDir=tempDir,
+        >>> astrometry = Astrometry(app=app,
+        >>>                         tempDir=tempDir,
         >>>                         threadPool=threadpool
         >>>                         )
 
@@ -78,7 +79,8 @@ class Astrometry(object):
     version = '0.100.0'
     logger = logging.getLogger(__name__)
 
-    def __init__(self, tempDir='', threadPool=None):
+    def __init__(self, app, tempDir='', threadPool=None):
+        self.app = app
         self.tempDir = tempDir
         self.threadPool = threadPool
         self.mutexSolve = PyQt5.QtCore.QMutex()
@@ -225,13 +227,18 @@ class Astrometry(object):
 
         raJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
         decJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
+
+        if self.app.mainW.ui.enableNoise.isChecked():
+            raJ2000 = Angle(hours=raJ2000.hours + np.random.randn() / 10)
+            decJ2000 = Angle(degrees=decJ2000.degrees + np.random.randn() / 10)
+
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
         raMount = transform.convertToAngle(fitsHeader.get('RA'), isHours=True)
         decMount = transform.convertToAngle(fitsHeader.get('DEC'), isHours=False)
 
         # todo: it would be nice, if adding, subtracting of angels are part of skyfield
-        deltaRA = raJ2000.hours - raMount.hours
+        deltaRA = raJ2000._degrees - raMount._degrees
         deltaDEC = decJ2000.degrees - decMount.degrees
         error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
         # would like to have the error RMS in arcsec

@@ -29,6 +29,7 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 import skyfield.api
 from mountcontrol.model import APoint
+import numpy as np
 # local import
 from mw4.definitions import Point, MPoint, IParam, MParam, MData, RData, Solve, Solution
 from mw4.base import transform
@@ -562,10 +563,15 @@ class BuildModel(object):
             mPoint = self.addResultToModel(mPoint=mPoint, result=result)
             self.modelQueue.put(mPoint)
 
+            deltaRA = mPoint.mData.raMJNow._degrees - mPoint.mData.raSJNow._degrees
+            deltaDEC = mPoint.mData.decMJNow.degrees - mPoint.mData.decSJNow.degrees
+            error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
+
             text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
             text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)}, '
             text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)}, '
-            text += f'Error: {result.solve.error:5.2f}, Angle: {result.solve.angle:3.0f}, '
+            text += f'Error: {error:5.2f}, '
+            text += f'Angle: {result.solve.angle:3.0f}, '
             text += f'Scale: {result.solve.scale:4.6f}'
             self.app.message.emit(text, 0)
         else:
@@ -649,6 +655,13 @@ class BuildModel(object):
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
+        self.app.imaging.expose(imagePath=mPoint.mParam.path,
+                                expTime=mPoint.iParam.expTime,
+                                binning=mPoint.iParam.binning,
+                                subFrame=mPoint.iParam.subFrame,
+                                fastReadout=mPoint.iParam.fastReadout,
+                                )
+
         mPoint = MPoint(mParam=mPoint.mParam,
                         iParam=mPoint.iParam,
                         point=mPoint.point,
@@ -662,13 +675,6 @@ class BuildModel(object):
                                     ),
                         rData=None,
                         )
-
-        self.app.imaging.expose(imagePath=mPoint.mParam.path,
-                                expTime=mPoint.iParam.expTime,
-                                binning=mPoint.iParam.binning,
-                                subFrame=mPoint.iParam.subFrame,
-                                fastReadout=mPoint.iParam.fastReadout,
-                                )
 
         self.solveQueue.put(mPoint)
 

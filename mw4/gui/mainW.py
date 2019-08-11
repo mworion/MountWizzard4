@@ -439,9 +439,9 @@ class MainWindow(MWidget,
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():
-            text = 'Set: Internet Online'
+            text = 'Internet Online Mode'
         else:
-            text = 'Set: Offline - No Internet'
+            text = 'Offline Mode'
         text = f'{self.threadPool.activeThreadCount():2d} - {text}'
         self.ui.statusOnline.setText(text)
 

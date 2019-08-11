@@ -431,16 +431,19 @@ class MainWindow(MWidget,
 
     def updateTime(self):
         """
-        updateTime updates the time display in gui
+        updateTime updates the time display in gui, show the actual thread count an the
+        online status set
 
         :return: success
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
         if self.ui.isOnline.isChecked():
-            self.ui.statusOnline.setText('Set: Internet Online')
+            text = 'Set: Internet Online'
         else:
-            self.ui.statusOnline.setText('Set: Offline - No Internet')
+            text = 'Set: Offline - No Internet'
+        text = f'{self.threadPool.activeThreadCount():2d} - {text}'
+        self.ui.statusOnline.setText(text)
 
     def updateAstrometryStatus(self, text):
         """

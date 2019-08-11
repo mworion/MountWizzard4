@@ -283,7 +283,7 @@ class Environ(object):
         :return: success
         """
 
-        if self.ui.isOffline.isChecked():
+        if not self.ui.isOnline.isChecked():
             return False
 
         # prepare coordinates for website
@@ -346,7 +346,7 @@ class Environ(object):
         :return: success
         """
 
-        if self.ui.isOffline.isChecked():
+        if not self.ui.isOnline.isChecked():
             return False
         if not self.ui.openWeatherMapKey.text():
             return False

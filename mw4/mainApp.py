@@ -89,6 +89,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.imageW = None
         self.satelliteW = None
         self.threadPool = PyQt5.QtCore.QThreadPool()
+        self.threadPool.setMaxThreadCount(20)
 
         pathToData = self.mwGlob['dataDir']
 

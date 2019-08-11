@@ -136,8 +136,8 @@ class Mount(object):
 
         if dec is not None:
             decFormat = '{sign}{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            decText = decFormat.format(*dec.signed_dms()[1:4],
-                                       sign='+' if dec.degrees > 0 else '-')
+            val = dec.signed_dms()[1:4]
+            decText = decFormat.format(*val, sign='+' if dec.degrees > 0 else '-')
             self.ui.DEC.setText(decText)
             self.ui.DECfloat.setText(f'{dec.degrees:+3.4f}')
         else:

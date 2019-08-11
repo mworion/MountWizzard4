@@ -594,7 +594,7 @@ class BuildModel(object):
 
         it shows the actual processed point index in GUI
 
-        :return: true for test purpose
+        :return: success
         """
 
         if self.solveQueue.empty():
@@ -603,6 +603,7 @@ class BuildModel(object):
 
         mPoint = self.solveQueue.get()
 
+        # showing the expose image in the image window
         if self.app.imageW:
             self.app.imageW.signals.showExt.emit(mPoint.mParam.path)
 
@@ -638,7 +639,7 @@ class BuildModel(object):
 
         it shows the actual processed point index in GUI
 
-        :return: true for test purpose
+        :return: success
         """
 
         if self.imageQueue.empty():
@@ -687,7 +688,7 @@ class BuildModel(object):
 
         it shows the actual processed point index in GUI
 
-        :return: true for test purpose
+        :return: success
 
         """
 

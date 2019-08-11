@@ -126,7 +126,7 @@ class Mount(object):
 
         if ra is not None:
             raFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            val = [int(x) for x in ra.hms()]
+            val = ra.hms()
             raText = raFormat.format(*val)
             self.ui.RA.setText(raText)
         else:
@@ -154,7 +154,6 @@ class Mount(object):
 
         if obs.timeSidereal is not None:
             siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            val = [int(x) for x in obs.timeSidereal.hms()]
             val = obs.timeSidereal.hms()
             siderealText = siderealFormat.format(*val)
             self.ui.timeSidereal.setText(siderealText)
@@ -163,7 +162,7 @@ class Mount(object):
 
         if obs.haJNow is not None:
             haFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            val = [int(x) for x in obs.haJNow.hms()]
+            val = obs.haJNow.hms()
             haText = haFormat.format(*val)
             self.ui.HA.setText(haText)
         else:

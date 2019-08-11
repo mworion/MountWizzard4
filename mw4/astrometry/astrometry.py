@@ -163,7 +163,7 @@ class Astrometry(object):
             fitsHeader = fitsHDU[0].header
 
             # todo: there might be the necessity to read more alternative header info
-            # todo: the actual definition fit for EKOS
+            # todo: the actual definition is OK for EKOS
 
             scaleHint = float(fitsHeader.get('SCALE', 0))
             raHint = transform.convertToAngle(fitsHeader.get('RA', 0), isHours=True)
@@ -176,11 +176,11 @@ class Astrometry(object):
     @staticmethod
     def getWCSHeader(wcsHDU=''):
         """
+        getWCSHeader returns the header part of a fits HDU
 
         :param wcsHDU: fits file with wcs data
         :return: wcsHeader
         """
-
         wcsHeader = wcsHDU[0].header
         return wcsHeader
 
@@ -210,8 +210,8 @@ class Astrometry(object):
 
     def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFits=False):
         """
-        getSolutionFromWCS reads the fits header containing the wcs data and returns the
-        basic data needed.
+        getSolutionFromWCS reads the wcs fits file and uses the data in the header
+        containing the wcs data and returns the basic data needed.
         in addition it embeds it to the given fits file with image. it removes all
         entries starting with some keywords given in selection. we starting with
         HISTORY
@@ -230,6 +230,7 @@ class Astrometry(object):
         raMount = transform.convertToAngle(fitsHeader.get('RA'), isHours=True)
         decMount = transform.convertToAngle(fitsHeader.get('DEC'), isHours=False)
 
+        # todo: it would be nice, if adding, subtracting of angels are part of skyfield
         deltaRA = raJ2000.hours - raMount.hours
         deltaDEC = decJ2000.degrees - decMount.degrees
         error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
@@ -257,6 +258,9 @@ class Astrometry(object):
         fitsHeader['PIXSCALE'] = solve.scale
         fitsHeader['ANGLE'] = solve.angle
         fitsHeader['FLIPPED'] = solve.flipped
+        # kee the old values ra, dec as well
+        fitsHeader['RA_OLD'] = raMount._degrees
+        fitsHeader['DEC_OLD'] = decMount.degrees
 
         return solve, fitsHeader
 
@@ -398,7 +402,8 @@ class Astrometry(object):
         :param radius:  search radius around target coordinates
         :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
-        :return: ra, dec, angle, scale, flipped
+
+        :return: success
         """
 
         self.process = None
@@ -497,12 +502,14 @@ class Astrometry(object):
         twice for the same data at the same time. so there is a mutex to prevent this
         behaviour.
 
-        :return:
+        :return: true for test purpose
         """
 
         self.mutexSolve.unlock()
         self.signals.done.emit(self.result)
         self.signals.message.emit('')
+
+        return True
 
     def solveThreading(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
                        radius=2, timeout=30, updateFits=False):

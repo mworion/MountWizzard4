@@ -151,7 +151,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
 
-        return
         # finishing for test
         if not hasattr(sys, 'argv'):
             return

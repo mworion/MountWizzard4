@@ -128,4 +128,3 @@ app = BUNDLE(exe,
              version=4,
              icon='mw4.icns',
              bundle_identifier=None)
-

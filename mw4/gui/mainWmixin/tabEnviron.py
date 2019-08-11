@@ -119,9 +119,11 @@ class Environ(object):
         temp, press = self.app.environ.getFilteredRefracParams()
         if temp is None or press is None:
             return False
-        print(temp, press)
-        suc = self.app.mount.obsSite.setRefractionParam(temperature=temp,
-                                                        pressure=press)
+        for i in range(0, 3):
+            suc = self.app.mount.obsSite.setRefractionParam(temperature=temp,
+                                                            pressure=press)
+            if suc:
+                break
         if not suc:
             self.app.message.emit('Cannot perform refraction update', 2)
             return False

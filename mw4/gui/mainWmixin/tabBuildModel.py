@@ -648,13 +648,6 @@ class BuildModel(object):
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
-        self.app.imaging.expose(imagePath=mPoint.mParam.path,
-                                expTime=mPoint.iParam.expTime,
-                                binning=mPoint.iParam.binning,
-                                subFrame=mPoint.iParam.subFrame,
-                                fastReadout=mPoint.iParam.fastReadout,
-                                )
-
         mPoint = MPoint(mParam=mPoint.mParam,
                         iParam=mPoint.iParam,
                         point=mPoint.point,
@@ -668,6 +661,13 @@ class BuildModel(object):
                                     ),
                         rData=None,
                         )
+
+        self.app.imaging.expose(imagePath=mPoint.mParam.path,
+                                expTime=mPoint.iParam.expTime,
+                                binning=mPoint.iParam.binning,
+                                subFrame=mPoint.iParam.subFrame,
+                                fastReadout=mPoint.iParam.fastReadout,
+                                )
 
         self.solveQueue.put(mPoint)
 

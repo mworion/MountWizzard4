@@ -254,14 +254,23 @@ def build_mac_app(c):
     with c.cd('remote_scripts'):
         runMW(c, f'scp mw4.icns {buildMAC}')
         runMW(c, f'scp dmg_settings.py {buildMAC}')
-        runMW(c, f'scp drive_mw4.png {buildMAC}')
-        runMW(c, f'scp drive_mw4.icns {buildMAC}')
         runMW(c, f'scp set_image.py {buildMAC}')
     # doing the build job
     with c.cd('remote_scripts'):
         runMW(c, f'ssh {userMAC} < build_mac.sh')
-    runMW(c, f'scp {buildMAC}/dist/MountWizzard4.dmg ./dist')
     runMW(c, f'scp -r {buildMAC}/dist/MountWizzard4.app ./dist')
+
+
+@task(pre=[])
+def build_mac_dmg(c):
+    printMW('build mac dmg')
+    with c.cd('remote_scripts'):
+        runMW(c, f'scp dmg_settings.py {buildMAC}')
+        runMW(c, f'scp drive_mw4.icns {buildMAC}')
+    # doing the build job
+    with c.cd('remote_scripts'):
+        runMW(c, f'ssh {userMAC} < build_mac_dmg.sh')
+    runMW(c, f'scp {buildMAC}/dist/MountWizzard4.dmg ./dist')
 
 #
 # start deploying the final apps and distributions for first test run on target

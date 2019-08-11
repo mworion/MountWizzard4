@@ -357,7 +357,7 @@ class SatelliteWindow(widget.MWidget):
 
         # drawing satellite
         x, y, z = observe.position.km
-        axe.plot(x, y, z, color=self.M_GREEN)
+        axe.plot(x, y, z, color=self.M_YELLOW)
 
         self.plotSatPosSphere1, = axe.plot([x[0]], [y[0]], [z[0]],
                                            marker='o',
@@ -460,7 +460,7 @@ class SatelliteWindow(widget.MWidget):
         axe.plot([x], [y], [z],
                  marker='.',
                  markersize=12,
-                 color=self.M_YELLOW,
+                 color=self.M_RED,
                  )
 
         # empty chart if no satellite is chosen
@@ -475,7 +475,7 @@ class SatelliteWindow(widget.MWidget):
         x, y, z = transform.sphericalToCartesian(azimuth=lon,
                                                  altitude=lat,
                                                  radius=elev)
-        axe.plot(x, y, z, color=self.M_GREEN)
+        axe.plot(x, y, z, color=self.M_YELLOW)
 
         # draw satellite position
         self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],
@@ -533,7 +533,8 @@ class SatelliteWindow(widget.MWidget):
         # plot world
         for key in self.world.keys():
             shape = self.world[key]
-            axe.plot(shape['xDeg'], shape['yDeg'], color=self.M_GREY, lw=1)
+            axe.fill(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, alpha=0.2)
+            axe.plot(shape['xDeg'], shape['yDeg'], color=self.M_BLUE, lw=1, alpha=0.4)
 
         # mark the site location in the map
         lat = self.app.mount.obsSite.location.latitude.degrees
@@ -542,7 +543,7 @@ class SatelliteWindow(widget.MWidget):
                  lat,
                  marker='.',
                  markersize=10,
-                 color=self.M_YELLOW)
+                 color=self.M_RED)
 
         # empty chart if no satellite is chosen
         if subpoint is None:
@@ -555,10 +556,10 @@ class SatelliteWindow(widget.MWidget):
 
         axe.plot(lon,
                  lat,
-                 marker='.',
+                 marker='o',
                  markersize=2,
                  linestyle='none',
-                 color=self.M_GREEN)
+                 color=self.M_YELLOW)
 
         # show the actual position
         self.plotSatPosEarth, = axe.plot(lon[0],
@@ -582,8 +583,8 @@ class SatelliteWindow(widget.MWidget):
 
         alt, az = zip(*self.app.data.horizonP)
 
-        axes.fill(az, alt, color=self.M_GREY_LIGHT, zorder=-20)
-        axes.plot(az, alt, color=self.M_GREY, zorder=-20, lw=2)
+        axes.fill(az, alt, color=self.M_GREEN, zorder=-20, alpha=0.2)
+        axes.plot(az, alt, color=self.M_GREEN, zorder=-20, lw=2, alpha=0.4)
 
         return True
 
@@ -635,19 +636,19 @@ class SatelliteWindow(widget.MWidget):
                  fontsize=14,
                  color=self.M_BLUE)
 
-        axe.text(90, 1, 'E',
+        axe.text(85, 1, 'E',
                  fontsize=14,
                  color=self.M_BLUE)
 
-        axe.text(180, 1, 'S',
+        axe.text(175, 1, 'S',
                  fontsize=14,
                  color=self.M_BLUE)
 
-        axe.text(270, 1, 'W',
+        axe.text(265, 1, 'W',
                  fontsize=14,
                  color=self.M_BLUE)
 
-        axe.text(350, 1, 'N',
+        axe.text(345, 1, 'N',
                  fontsize=14,
                  color=self.M_BLUE)
 
@@ -664,15 +665,15 @@ class SatelliteWindow(widget.MWidget):
         # draw path
         axe.plot(az,
                  alt,
-                 marker='.',
+                 marker='o',
                  markersize=2,
                  linestyle='none',
-                 color=self.M_GREEN)
+                 color=self.M_YELLOW)
 
         # draw actual position
         self.plotSatPosHorizon, = axe.plot(az[0],
                                            alt[0],
-                                           marker='X',
+                                           marker='o',
                                            markersize=10,
                                            linestyle='none',
                                            color=self.M_PINK)

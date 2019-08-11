@@ -32,7 +32,7 @@ from mw4.astrometry import astrometry
 from mw4.test.test_units.setupQt import setupQt
 
 
-app, spy, mwGlob, test = setupQt()
+appMain, spy, mwGlob, test = setupQt()
 
 tempDir = mwGlob['tempDir']
 threadPool = ''
@@ -41,7 +41,8 @@ threadPool = ''
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-    app = astrometry.Astrometry(tempDir=tempDir,
+    app = astrometry.Astrometry(appMain,
+                                tempDir=tempDir,
                                 threadPool=threadPool)
     yield
 
@@ -65,7 +66,8 @@ def test_init_2():
     with mock.patch.object(platform,
                            'system',
                            return_value='Linux'):
-        app = astrometry.Astrometry(tempDir=tempDir,
+        app = astrometry.Astrometry(appMain,
+                                    tempDir=tempDir,
                                     threadPool=threadPool)
         assert app.binPath['astrometry-glob'] == binSolve
         assert app.indexPath == index
@@ -76,14 +78,16 @@ def test_init_3():
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
-        app = astrometry.Astrometry(tempDir=tempDir,
+        app = astrometry.Astrometry(appMain,
+                                    tempDir=tempDir,
                                     threadPool=threadPool)
         assert app.binPath == {}
         assert app.indexPath == ''
         assert os.path.isfile(tempDir + '/astrometry.cfg')
 
 
-app = astrometry.Astrometry(tempDir=tempDir,
+app = astrometry.Astrometry(appMain,
+                            tempDir=tempDir,
                             threadPool=threadPool)
 
 

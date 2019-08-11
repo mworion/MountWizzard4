@@ -62,7 +62,7 @@ icon = 'drive_mw4.icns'
 
 # Where to put the icons
 icon_locations = {
-    appname:        (100, 100),
+    appname:        (80, 80),
     }
 
 # .. Window configuration ......................................................
@@ -87,7 +87,7 @@ icon_locations = {
 #
 # Other color components may be expressed either in the range 0 to 1, or
 # as percentages (e.g. 60% is equivalent to 0.6).
-background = '#104860'
+background = '#2096C0'
 
 show_status_bar = False
 show_tab_view = False
@@ -123,8 +123,8 @@ grid_offset = (0, 0)
 grid_spacing = 100
 scroll_position = (0, 0)
 label_pos = 'bottom' # or 'right'
-text_size = 16
-icon_size = 128
+text_size = 12
+icon_size = 64
 
 # .. List view configuration ...................................................
 

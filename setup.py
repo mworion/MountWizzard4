@@ -41,7 +41,7 @@ setup(
     install_requires=[
         'PyQt5==5.13',
         'matplotlib==3.1.1',
-        'astropy==3.1.2',
+        'astropy==3.2.1',
         'requests==2.22.0',
         'requests_toolbelt==0.9.1',
         'numpy==1.17',

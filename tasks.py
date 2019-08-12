@@ -53,7 +53,8 @@ buildMAC = userMAC + ':/Users/mw/MountWizzard'
 
 
 def runMW(c, param):
-    c.run(param, echo=True, hide='out')
+    # c.run(param, echo=True, hide='out')
+    c.run(param)
 
 
 def printMW(param):
@@ -226,15 +227,24 @@ def build_windows_app(c):
     runMW(c, f'scp {buildWindows}/dist/MountWizzard4.exe ./dist/')
 
 
-@task(pre=[venv_mac])
-def build_mac_local(c):
-    printMW('building mac app and dmg local')
+@task(pre=[])
+def build_mac_app_local(c):
+    printMW('building mac app local')
     runMW(c, 'rm -rf ./dist/*.app')
     runMW(c, 'rm -rf ./dist/*.dmg')
     runMW(c, 'pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
     runMW(c, 'pip install ../indibase/dist/indibase-*.tar.gz')
-    runMW(c, 'pyinstaller -y mw4_mac.spec')
-    runMW(c, 'hdiutil create dist/MountWizzard4.dmg -srcfolder dist/*.app -ov')
+    runMW(c, 'pyinstaller -y mw4_mac_local.spec')
+
+
+@task(pre=[])
+def build_mac_app_local_work(c):
+    printMW('building mac app local work')
+    runMW(c, 'rm -rf ./dist/*.app')
+    runMW(c, 'rm -rf ./dist/*.dmg')
+    runMW(c, 'pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
+    runMW(c, 'pip install ../indibase/dist/indibase-*.tar.gz')
+    runMW(c, 'pyinstaller -y mw4_mac_local_work.spec')
 
 
 @task(pre=[])

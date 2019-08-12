@@ -17,3 +17,4 @@ twine==1.13.0
 indibase>=0.100
 mountcontrol>=0.100
 invoke
+qimage2ndarray

@@ -47,11 +47,11 @@ sys.modules['FixTk'] = None
 astropy_path, = astropy.__path__
 
 block_cipher = None
-pythonPath = '/Users/mw/PycharmProjects/Envs/mw4/lib/python3.7'
+pythonPath = '/Users/q115346/PycharmProjects/Envs/mw4/lib/python3.7'
 sitePack = pythonPath + '/site-packages'
 distDir = './dist'
-packageDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4'
-importDir = '/Users/mw/PycharmProjects/MountWizzard4'
+packageDir = '/Users/q115346/PycharmProjects/MountWizzard4/mw4'
+importDir = '/Users/q115346/PycharmProjects/MountWizzard4'
 
 a = Analysis(['mw4/loader.py'],
              pathex=[packageDir],
@@ -62,10 +62,10 @@ a = Analysis(['mw4/loader.py'],
                     (astropy_path, 'astropy'),
              ],
              hiddenimports=['shelve',
+                            'numpy.lib.recfunctions',
                             'numpy.random.common',
                             'numpy.random.bounded_integers',
                             'numpy.random.entropy',
-                            'numpy.lib.recfunctions',
                             ],
              hookspath=[],
              runtime_hooks=[],
@@ -102,7 +102,7 @@ exe = EXE(pyz,
           debug=True,
           strip=True,
           upx=False,
-          console=False,
+          console=True,
           onefile=True,
           icon='remote_scripts/mw4.icns',
           # exclude_binaries=True,

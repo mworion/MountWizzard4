@@ -61,36 +61,36 @@ def clean_all(c):
 @task(pre=[])
 def venv_all(c):
     printMW('venv all')
-    venv_mac(c)
-    venv_ubuntu(c)
-    venv_windows(c)
-    venv_work(c)
+    venv.mac(c)
+    venv.ubuntu(c)
+    venv.windows(c)
+    venv.work(c)
 
 
 @task(pre=[])
 def test_all(c):
     printMW('test all')
-    test_mountcontrol(c)
-    test_mountwizzard(c)
+    test.mountcontrol(c)
+    test.mountwizzard(c)
 
 
 @task(pre=[])
 def build_all(c):
     printMW('build all')
-    build_mountcontrol(c)
-    build_indibase(c)
-    build_mountwizzard(c)
-    build_windows_app(c)
-    build_mac_app(c)
+    build-dist.mountcontrol(c)
+    build-dist.indibase(c)
+    build-dist.mountwizzard(c)
+    build-app.windows(c)
+    build-app.mac(c)
 
 
 @task(pre=[])
 def deploy_all(c):
     printMW('deploy all')
-    deploy_ubuntu_dist(c)
-    deploy_mate_dist(c)
-    deploy_windows_dist(c)
-    deploy_mac_dist(c)
+    deploy-dist.ubuntu(c)
+    deploy-dist.mate(c)
+    deploy-dist.windows(c)
+    deploy-dist.mac(c)
 
 
 @task(pre=[])

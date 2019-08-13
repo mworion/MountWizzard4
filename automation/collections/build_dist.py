@@ -29,7 +29,7 @@ from automation.collections.config_ssh import *
 @task(pre=[])
 def mountcontrol(c):
     printMW('building dist mountcontrol')
-    with c.cd('../mountcontrol'):
+    with c.cd('../../mountcontrol'):
         runMW(c, 'rm -f dist/*.tar.gz')
         runMW(c, 'python setup.py sdist')
 
@@ -37,7 +37,7 @@ def mountcontrol(c):
 @task(pre=[])
 def indibase(c):
     printMW('building dist indibase')
-    with c.cd('../indibase'):
+    with c.cd('../../indibase'):
         runMW(c, 'rm -f dist/*.tar.gz')
         runMW(c, 'python setup.py sdist')
 
@@ -45,5 +45,6 @@ def indibase(c):
 @task(pre=[])
 def mountwizzard(c):
     printMW('building dist mountwizzard4')
-    runMW(c, 'rm -f dist/*.tar.gz')
-    runMW(c, 'python setup.py sdist')
+    with c.cd('..'):
+        runMW(c, 'rm -f dist/*.tar.gz')
+        runMW(c, 'python setup.py sdist')

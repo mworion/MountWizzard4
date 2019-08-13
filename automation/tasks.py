@@ -77,31 +77,31 @@ def test_all(c):
 @task(pre=[])
 def build_all(c):
     printMW('build all')
-    build-dist.mountcontrol(c)
-    build-dist.indibase(c)
-    build-dist.mountwizzard(c)
-    build-app.windows(c)
-    build-app.mac(c)
+    build_dist.mountcontrol(c)
+    build_dist.indibase(c)
+    build_dist.mountwizzard(c)
+    build_app.windows(c)
+    build_app.mac(c)
 
 
 @task(pre=[])
 def deploy_all(c):
     printMW('deploy all')
-    deploy-dist.ubuntu(c)
-    deploy-dist.mate(c)
-    deploy-dist.windows(c)
-    deploy-dist.mac(c)
+    deploy_dist.ubuntu(c)
+    deploy_dist.mate(c)
+    deploy_dist.windows(c)
+    deploy_dist.mac(c)
 
 
 @task(pre=[])
 def run_all(c):
     printMW('run all')
-    run_ubuntu_dist(c)
-    run_mate_dist(c)
-    run_windows_dist(c)
-    run_windows_app(c)
-    run_mac_dist(c)
-    run_mac_app(c)
+    run_dist.ubuntu(c)
+    run_dist.mate(c)
+    run_dist.windows(c)
+    run_app.windows(c)
+    run_dist.mac(c)
+    run_app.mac(c)
 
 
 #

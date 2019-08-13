@@ -29,67 +29,74 @@ from automation.collections.config_ssh import *
 @task(pre=[])
 def windows(c):
     printMW('build windows app and exe')
-    # preparing the directories
-    runMW(c, 'rm -rf ./dist/*.exe')
+    with c.cd('..'):
+        runMW(c, 'rm -rf ./dist/*.exe')
     runMW(c, f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
     runMW(c, f'ssh {userWindows} "mkdir MountWizzard"')
-    # copy necessary files
-    with c.cd('../mountcontrol'):
+    with c.cd('../../mountcontrol'):
         runMW(c, f'scp dist/*.tar.gz {buildWindows}/mc.tar.gz')
-    with c.cd('../indibase'):
+    with c.cd('../../indibase'):
         runMW(c, f'scp dist/*.tar.gz {buildWindows}/ib.tar.gz')
-    runMW(c, f'scp dist/*.tar.gz {buildWindows}/mw4.tar.gz')
-
-    runMW(c, f'scp mw4_windows.spec {buildWindows}')
-    runMW(c, f'scp mw4_windows_console.spec {buildWindows}')
-    with c.cd('remote_scripts'):
+    with c.cd('..'):
+        runMW(c, f'scp dist/*.tar.gz {buildWindows}/mw4.tar.gz')
+    with c.cd('remote_scripts/windows'):
+        runMW(c, f'scp mw4_windows.spec {buildWindows}')
+        runMW(c, f'scp mw4_windows_console.spec {buildWindows}')
+    with c.cd('images'):
         runMW(c, f'scp mw4.ico {buildWindows}')
-    # doing the build job
-    print('build windows windowed')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/windows'):
         runMW(c, f'ssh {userWindows} < build_windows.bat')
-    runMW(c, f'scp {buildWindows}/dist/MountWizzard4.exe ./dist/')
+    with c.cd('../dist'):
+        runMW(c, f'scp {buildWindows}/dist/MountWizzard4.exe .')
 
 
 @task(pre=[])
 def mac_local(c):
     printMW('building mac app local')
-    runMW(c, 'rm -rf ./dist/*.app')
-    runMW(c, 'rm -rf ./dist/*.dmg')
-    runMW(c, 'pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
-    runMW(c, 'pip install ../indibase/dist/indibase-*.tar.gz')
-    runMW(c, 'pyinstaller -y mw4_mac_local.spec')
+    with c.cd('..'):
+        runMW(c, 'rm -rf dist/*.app')
+        runMW(c, 'rm -rf dist/*.dmg')
+    with c.cd('../../mountcontrol'):
+        runMW(c, 'pip install dist/mountcontrol-*.tar.gz')
+    with c.cd('../../indibase'):
+        runMW(c, 'pip install dist/indibase-*.tar.gz')
+    with c.cd('remote_scripts/mac'):
+        runMW(c, 'pyinstaller -y mw4_mac_local.spec')
 
 
 @task(pre=[])
 def mac_local_work(c):
     printMW('building mac app local work')
-    runMW(c, 'rm -rf ./dist/*.app')
-    runMW(c, 'rm -rf ./dist/*.dmg')
-    runMW(c, 'pip install ../mountcontrol/dist/mountcontrol-*.tar.gz')
-    runMW(c, 'pip install ../indibase/dist/indibase-*.tar.gz')
-    runMW(c, 'pyinstaller -y mw4_mac_local_work.spec')
+    with c.cd('..'):
+        runMW(c, 'rm -rf dist/*.app')
+        runMW(c, 'rm -rf dist/*.dmg')
+    with c.cd('../../mountcontrol'):
+        runMW(c, 'pip install dist/mountcontrol-*.tar.gz')
+    with c.cd('../../indibase'):
+        runMW(c, 'pip install dist/indibase-*.tar.gz')
+    with c.cd('remote_scripts/mac'):
+        runMW(c, 'pyinstaller -y mw4_mac_local_work.spec')
 
 
 @task(pre=[])
 def mac(c):
     printMW('build mac app')
-    # preparing the directories
-    runMW(c, 'rm -rf ./dist/*.app')
+    with c.cd('..'):
+        runMW(c, 'rm -rf ./dist/*.app')
     runMW(c, f'ssh {userMAC} rm -rf MountWizzard')
     runMW(c, f'ssh {userMAC} mkdir MountWizzard')
-    # copy necessary files
-    with c.cd('../mountcontrol'):
+    with c.cd('../../mountcontrol'):
         runMW(c, f'scp dist/*.tar.gz {buildMAC}/mc.tar.gz')
-    with c.cd('../indibase'):
+    with c.cd('../../indibase'):
         runMW(c, f'scp dist/*.tar.gz {buildMAC}/ib.tar.gz')
-    runMW(c, f'scp dist/*.tar.gz {buildMAC}/mw4.tar.gz')
-    runMW(c, f'scp mw4_mac.spec {buildMAC}')
-    with c.cd('remote_scripts'):
+    with c.cd('..'):
+        runMW(c, f'scp dist/*.tar.gz {buildMAC}/mw4.tar.gz')
+    with c.cd('images'):
         runMW(c, f'scp mw4.icns {buildMAC}')
+    with c.cd('remote_scripts/mac'):
+        runMW(c, f'scp mw4_mac.spec {buildMAC}')
         runMW(c, f'scp dmg_settings.py {buildMAC}')
         runMW(c, f'scp set_image.py {buildMAC}')
-    # doing the build job
-    with c.cd('remote_scripts'):
         runMW(c, f'ssh {userMAC} < build_mac.sh')
-    runMW(c, f'scp -r {buildMAC}/dist/MountWizzard4.app ./dist')
+    with c.cd('../dist'):
+        runMW(c, f'scp -r {buildMAC}/dist/MountWizzard4.app .')

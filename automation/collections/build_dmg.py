@@ -29,10 +29,11 @@ from automation.collections.config_ssh import *
 @task(pre=[])
 def mac(c):
     printMW('build mac dmg')
-    with c.cd('remote_scripts'):
-        runMW(c, f'scp dmg_settings.py {buildMAC}')
+    with c.cd('images'):
         runMW(c, f'scp drive_mw4.icns {buildMAC}')
-    # doing the build job
-    with c.cd('remote_scripts'):
+        runMW(c, f'scp dmg_background.png {buildMAC}')
+    with c.cd('remote_scripts/mac'):
+        runMW(c, f'scp dmg_settings.py {buildMAC}')
         runMW(c, f'ssh {userMAC} < build_mac_dmg.sh')
-    runMW(c, f'scp {buildMAC}/dist/MountWizzard4.dmg ./dist')
+    with c.cd('..'):
+        runMW(c, f'scp {buildMAC}/dist/MountWizzard4.dmg .')

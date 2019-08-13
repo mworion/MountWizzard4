@@ -29,14 +29,14 @@ from automation.collections.config_ssh import *
 @task
 def resource(c):
     printMW('building resources')
-    resourceDir = 'mw4/gui/media/'
+    resourceDir = '../mw4/gui/media/'
     runMW(c, f'pyrcc5 -o {resourceDir}resources.py {resourceDir}resources.qrc')
 
 
 @task
 def widgets(c):
     printMW('building widgets')
-    widgetDir = 'mw4/gui/widgets/'
+    widgetDir = '../mw4/gui/widgets/'
     widgets = ['hemisphere', 'image', 'main', 'measure', 'message', 'satellite']
     for widget in widgets:
         name = widgetDir + widget

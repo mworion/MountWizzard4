@@ -54,8 +54,8 @@ ns.add_collection((Collection.from_module(build_dist)))
 def clean_all(c):
     printMW('clean all')
     clean.mountcontrol(c)
-    clean_indibase(c)
-    clean_mountwizzard(c)
+    clean.indibase(c)
+    clean.mountwizzard(c)
 
 
 @task(pre=[])

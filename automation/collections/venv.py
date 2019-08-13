@@ -30,26 +30,26 @@ from automation.collections.config_ssh import *
 @task()
 def ubuntu(c):
     printMW('preparing ubuntu')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/ubuntu'):
         runMW(c, f'ssh {userUbuntu} < setup_ubuntu.sh')
 
 
 @task()
 def windows(c):
     printMW('preparing windows')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/windows'):
         runMW(c, f'ssh {userWindows} < setup_windows.bat')
 
 
 @task()
 def mac(c):
     printMW('preparing mac')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/mac'):
         runMW(c, f'ssh {userMAC} < setup_mac.sh')
 
 
 @task()
 def work(c):
     printMW('preparing work')
-    with c.cd('remote_scripts'):
-        runMW(c, f'ssh {userWork} < setup_ubuntu.sh')
+    with c.cd('remote_scripts/work'):
+        runMW(c, f'ssh {userWork} < setup_work.sh')

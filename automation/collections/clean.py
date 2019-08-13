@@ -29,15 +29,16 @@ from automation.collections.config_ssh import *
 @task
 def mountwizzard(c):
     printMW('clean mountwizzard')
-    runMW(c, 'rm -rf .pytest_cache')
-    runMW(c, 'rm -rf mw4.egg-info')
-    runMW(c, 'find ./mw4 | grep -E "(__pycache__)" | xargs rm -rf')
+    with c.cd('../'):
+        runMW(c, 'rm -rf .pytest_cache')
+        runMW(c, 'rm -rf ./mw4.egg-info')
+        runMW(c, 'find ./mw4 | grep -E "(__pycache__)" | xargs rm -rf')
 
 
 @task
 def mountcontrol(c):
     printMW('clean mountcontrol')
-    with c.cd('../mountcontrol'):
+    with c.cd('../../mountcontrol'):
         runMW(c, 'rm -rf .pytest_cache')
         runMW(c, 'rm -rf mountcontrol.egg-info')
         runMW(c, 'rm -rf ./build/*')
@@ -47,7 +48,7 @@ def mountcontrol(c):
 @task
 def indibase(c):
     printMW('clean indibase')
-    with c.cd('../indibase'):
+    with c.cd('../../indibase'):
         runMW(c, 'rm -rf .pytest_cache')
         runMW(c, 'rm -rf indibase.egg-info')
         runMW(c, 'find ./indibase | grep -E "(__pycache__)" | xargs rm -rf')

@@ -17,6 +17,7 @@
 #
 ###########################################################
 from invoke import task, context
+from automation.tasks_ext import config_ssh
 from automation.tasks_ext import clean
 from automation.tasks_ext import venv
 from automation.tasks_ext import test
@@ -27,40 +28,6 @@ from automation.tasks_ext import build_dmg
 from automation.tasks_ext import deploy_dist
 from automation.tasks_ext import run_app
 from automation.tasks_ext import run_dist
-
-
-#
-# defining all necessary virtual client login for building over all platforms
-#
-
-# defining environment for ubuntu
-clientUbuntu = 'astro-ubuntu.fritz.box'
-userUbuntu = 'mw@' + clientUbuntu
-workUbuntu = userUbuntu + ':/home/mw/mountwizzard4'
-
-# defining work environment for mate working
-clientWork = 'astro-comp.fritz.box'
-userWork = 'mw@' + clientWork
-workWork = userWork + ':/home/mw/mountwizzard4'
-
-# defining work environment for mate test
-clientMate = 'astro-comp.fritz.box'
-userMate = 'mw@' + clientMate
-workMate = userMate + ':/home/mw/test'
-
-# same for windows10 with cmd.exe as shell
-clientWindows = 'astro-windows.fritz.box'
-userWindows = 'mw@' + clientWindows
-workWindows = userWindows + ':/Users/mw/mountwizzard4'
-buildWindows = userWindows + ':/Users/mw/MountWizzard'
-
-# same for mac
-clientMAC = 'astro-mac.fritz.box'
-userMAC = 'mw@' + clientMAC
-workMAC = userMAC + ':/Users/mw/mountwizzard4'
-buildMAC = userMAC + ':/Users/mw/MountWizzard'
-
-# cleaning up and refactoring
 
 
 def runMW(c, param):

@@ -16,13 +16,18 @@
 # Licence APL2.0
 #
 ###########################################################
+import sys
+sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+from invoke import task, context
+from automation.collections.gui import printMW, runMW
+from automation.collections.config_ssh import *
 #
 # doing all the testing stuff
 #
 
 
 @task()
-def test_mountcontrol(c):
+def mountcontrol(c):
     printMW('testing mountcontrol')
     with c.cd('../mountcontrol'):
         runMW(c, 'flake8')
@@ -30,15 +35,15 @@ def test_mountcontrol(c):
 
 
 @task()
-def test_indibase(c):
+def indibase(c):
     printMW('testing indibase')
     with c.cd('../indibase'):
         runMW(c, 'flake8')
         runMW(c, 'pytest indibase/test/test_units --cov-config .coveragerc --cov mw4/')
 
 
-@task(pre=[resource, widgets])
-def test_mountwizzard(c):
+@task()
+def mountwizzard(c):
     printMW('testing mountwizzard')
     runMW(c, 'flake8')
     runMW(c, 'pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')

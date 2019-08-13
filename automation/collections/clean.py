@@ -16,13 +16,18 @@
 # Licence APL2.0
 #
 ###########################################################
+import sys
+sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+from invoke import task, context
+from automation.collections.gui import printMW, runMW
+from automation.collections.config_ssh import *
 #
 # cleaning the caches before new build
 #
 
 
 @task
-def clean_mountwizzard(c):
+def mountwizzard(c):
     printMW('clean mountwizzard')
     runMW(c, 'rm -rf .pytest_cache')
     runMW(c, 'rm -rf mw4.egg-info')
@@ -30,7 +35,7 @@ def clean_mountwizzard(c):
 
 
 @task
-def clean_mountcontrol(c):
+def mountcontrol(c):
     printMW('clean mountcontrol')
     with c.cd('../mountcontrol'):
         runMW(c, 'rm -rf .pytest_cache')
@@ -40,7 +45,7 @@ def clean_mountcontrol(c):
 
 
 @task
-def clean_indibase(c):
+def indibase(c):
     printMW('clean indibase')
     with c.cd('../indibase'):
         runMW(c, 'rm -rf .pytest_cache')

@@ -16,6 +16,11 @@
 # Licence APL2.0
 #
 ###########################################################
+import sys
+sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+from invoke import task, context
+from automation.collections.gui import printMW, runMW
+from automation.collections.config_ssh import *
 #
 # start deploying the final apps and distributions for first test run on target
 # platform. it starts th app with 'test' parameter -> this end the app after 3 sec
@@ -23,7 +28,7 @@
 
 
 @task(pre=[])
-def deploy_ubuntu_dist(c):
+def ubuntu(c):
     printMW('deploy ubuntu dist')
     runMW(c, f'ssh {userUbuntu} rm -rf mountwizzard4')
     runMW(c, f'ssh {userUbuntu} mkdir mountwizzard4')
@@ -39,7 +44,7 @@ def deploy_ubuntu_dist(c):
 
 
 @task(pre=[])
-def deploy_mate_dist(c):
+def mate(c):
     printMW('deploy mate dist')
     runMW(c, f'ssh {userMate} rm -rf test')
     runMW(c, f'ssh {userMate} mkdir test')
@@ -57,7 +62,7 @@ def deploy_mate_dist(c):
 
 
 @task(pre=[])
-def deploy_work_dist(c):
+def work(c):
     printMW('deploy work dist')
     # copy necessary files
     with c.cd('../mountcontrol'):
@@ -77,7 +82,7 @@ def deploy_work_dist(c):
 
 
 @task(pre=[])
-def deploy_windows_dist(c):
+def windows(c):
     printMW('deploy windows dist')
     runMW(c, f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     runMW(c, f'ssh {userWindows} "mkdir mountwizzard4"')
@@ -90,8 +95,8 @@ def deploy_windows_dist(c):
         runMW(c, f'ssh {userWindows} < install_dist_windows.bat')
 
 
-@task(pre=[venv_mac])
-def deploy_mac_dist(c):
+@task(pre=[])
+def mac(c):
     printMW('deploy mac dist')
     runMW(c, f'ssh {userMAC} rm -rf mountwizzard4')
     runMW(c, f'ssh {userMAC} mkdir mountwizzard4')

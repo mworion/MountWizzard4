@@ -16,13 +16,18 @@
 # Licence APL2.0
 #
 ###########################################################
+import sys
+sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+from invoke import task, context
+from automation.collections.gui import printMW, runMW
+from automation.collections.config_ssh import *
 #
 # running build apps on target systems
 #
 
 
 @task(pre=[])
-def run_windows_app(c):
+def windows(c):
     printMW('deploy windows app')
     runMW(c, f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     runMW(c, f'ssh {userWindows} "mkdir mountwizzard4"')
@@ -33,7 +38,7 @@ def run_windows_app(c):
 
 
 @task(pre=[])
-def run_mac_app(c):
+def mac(c):
     printMW('run mac app')
     runMW(c, f'ssh {userMAC} rm -rf mountwizzard4')
     runMW(c, f'ssh {userMAC} mkdir mountwizzard4')

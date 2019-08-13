@@ -16,13 +16,18 @@
 # Licence APL2.0
 #
 ###########################################################
+import sys
+sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+from invoke import task, context
+from automation.collections.gui import printMW, runMW
+from automation.collections.config_ssh import *
 #
 # run dists on targets for test
 #
 
 
 @task(pre=[])
-def run_mac_dist(c):
+def mac(c):
     printMW('run mac dist')
     with c.cd('remote_scripts'):
         runMW(c, f'scp start_mac.sh {workMAC}')
@@ -31,7 +36,7 @@ def run_mac_dist(c):
 
 
 @task(pre=[])
-def run_windows_dist(c):
+def windows(c):
     printMW('run windows app')
     with c.cd('remote_scripts'):
         runMW(c, f'scp start_windows.bat {workWindows}')
@@ -39,7 +44,7 @@ def run_windows_dist(c):
 
 
 @task(pre=[])
-def run_ubuntu_dist(c):
+def ubuntu(c):
     printMW('un ubuntu dist')
     with c.cd('remote_scripts'):
         runMW(c, f'scp start_ubuntu.sh {workUbuntu}')
@@ -48,7 +53,7 @@ def run_ubuntu_dist(c):
 
 
 @task(pre=[])
-def run_mate_dist(c):
+def mate(c):
     printMW('run work dist')
     with c.cd('remote_scripts'):
         runMW(c, f'scp start_mate.sh {userMate}')

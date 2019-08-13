@@ -16,13 +16,18 @@
 # Licence APL2.0
 #
 ###########################################################
+import sys
+sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+from invoke import task, context
+from automation.collections.gui import printMW, runMW
+from automation.collections.config_ssh import *
 #
 # building the apps based on pyinstaller packages
 #
 
 
 @task(pre=[])
-def build_windows_app(c):
+def windows(c):
     printMW('build windows app and exe')
     # preparing the directories
     runMW(c, 'rm -rf ./dist/*.exe')
@@ -47,7 +52,7 @@ def build_windows_app(c):
 
 
 @task(pre=[])
-def build_mac_app_local(c):
+def mac_local(c):
     printMW('building mac app local')
     runMW(c, 'rm -rf ./dist/*.app')
     runMW(c, 'rm -rf ./dist/*.dmg')
@@ -57,7 +62,7 @@ def build_mac_app_local(c):
 
 
 @task(pre=[])
-def build_mac_app_local_work(c):
+def mac_local_work(c):
     printMW('building mac app local work')
     runMW(c, 'rm -rf ./dist/*.app')
     runMW(c, 'rm -rf ./dist/*.dmg')
@@ -67,7 +72,7 @@ def build_mac_app_local_work(c):
 
 
 @task(pre=[])
-def build_mac_app(c):
+def mac(c):
     printMW('build mac app')
     # preparing the directories
     runMW(c, 'rm -rf ./dist/*.app')

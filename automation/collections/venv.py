@@ -16,34 +16,40 @@
 # Licence APL2.0
 #
 ###########################################################
+import sys
+sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+from invoke import task, context
+from automation.collections.gui import printMW, runMW
+from automation.collections.config_ssh import *
+
 #
 # setting up python virtual environments in all platforms for defined context
 #
 
 
 @task()
-def venv_ubuntu(c):
+def ubuntu(c):
     printMW('preparing ubuntu')
     with c.cd('remote_scripts'):
         runMW(c, f'ssh {userUbuntu} < setup_ubuntu.sh')
 
 
 @task()
-def venv_windows(c):
+def windows(c):
     printMW('preparing windows')
     with c.cd('remote_scripts'):
         runMW(c, f'ssh {userWindows} < setup_windows.bat')
 
 
 @task()
-def venv_mac(c):
+def mac(c):
     printMW('preparing mac')
     with c.cd('remote_scripts'):
         runMW(c, f'ssh {userMAC} < setup_mac.sh')
 
 
 @task()
-def venv_work(c):
+def work(c):
     printMW('preparing work')
     with c.cd('remote_scripts'):
         runMW(c, f'ssh {userWork} < setup_ubuntu.sh')

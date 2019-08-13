@@ -24,6 +24,7 @@ from pathlib import Path
 import PyQt5
 from astropy.io import fits
 # local import
+from mw4.base.tpool import Worker
 
 
 class Satellite(object):
@@ -184,11 +185,11 @@ class Satellite(object):
                                                  }
         return True
 
-    def loadSatelliteSource(self):
+    def loadSatelliteSourceWorker(self):
         """
-        loadSatelliteSource selects from a drop down list of possible satellite data sources
-        on the web and once selected downloads the data. depending of the setting of reload
-        is true setting, it takes an already loaded file from local disk.
+        loadSatelliteSourceWorker selects from a drop down list of possible satellite
+        data sources on the web and once selected downloads the data. depending of the
+        setting of reload is true setting, it takes an already loaded file from local disk.
         after loading or opening the source file, it updates the satellite list in the list
         view widget for the selection of satellites.
 
@@ -208,7 +209,22 @@ class Satellite(object):
         if not suc:
             return False
 
-        self.setupSatelliteGui()
+        return True
+
+    def loadSatelliteSource(self):
+        """
+        loadSatelliteSource selects from a drop down list of possible satellite data sources
+        on the web and once selected downloads the data. depending of the setting of reload
+        is true setting, it takes an already loaded file from local disk.
+        after loading or opening the source file, it updates the satellite list in the list
+        view widget for the selection of satellites.
+
+        :return: success
+        """
+
+        worker = Worker(self.loadSatelliteSourceWorker)
+        worker.signals.result.connect(self.setupSatelliteGui)
+        self.threadPool.start(worker)
 
         return True
 

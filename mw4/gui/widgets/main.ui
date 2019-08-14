@@ -1264,7 +1264,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -13111,7 +13111,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>7</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -14918,9 +14918,9 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>20</y>
-           <width>134</width>
-           <height>16</height>
+           <y>15</y>
+           <width>201</width>
+           <height>21</height>
           </rect>
          </property>
          <property name="font">
@@ -15012,9 +15012,9 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>15</x>
-           <y>20</y>
+           <y>15</y>
            <width>116</width>
-           <height>16</height>
+           <height>21</height>
           </rect>
          </property>
          <property name="font">
@@ -15103,7 +15103,7 @@ to mount manually</string>
           <rect>
            <x>15</x>
            <y>45</y>
-           <width>52</width>
+           <width>101</width>
            <height>26</height>
           </rect>
          </property>
@@ -15138,10 +15138,10 @@ to mount manually</string>
         <widget class="QPushButton" name="bootRackComp">
          <property name="geometry">
           <rect>
-           <x>265</x>
-           <y>210</y>
+           <x>260</x>
+           <y>215</y>
            <width>112</width>
-           <height>31</height>
+           <height>26</height>
           </rect>
          </property>
          <property name="minimumSize">
@@ -15157,7 +15157,7 @@ to mount manually</string>
         <widget class="Line" name="line_56">
          <property name="geometry">
           <rect>
-           <x>13</x>
+           <x>15</x>
            <y>35</y>
            <width>356</width>
            <height>1</height>
@@ -15231,9 +15231,9 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>13</x>
-           <y>188</y>
+           <y>183</y>
            <width>126</width>
-           <height>16</height>
+           <height>21</height>
           </rect>
          </property>
          <property name="font">

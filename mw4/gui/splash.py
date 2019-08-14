@@ -21,7 +21,6 @@
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-from PyQt5.QtCore import Qt
 import numpy as np
 # local import
 from mw4.gui.media import resources
@@ -54,7 +53,8 @@ class SplashScreen(PyQt5.QtCore.QObject):
         self._qapp = application
         self._pxm = PyQt5.QtGui.QPixmap(':/mw4.ico')
 
-        flags = (Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint)
+        flags = (PyQt5.QtCore.Qt.WindowStaysOnTopHint |
+                 PyQt5.QtCore.Qt.X11BypassWindowManagerHint)
         self._qss = PyQt5.QtWidgets.QSplashScreen(self._pxm, flags)
         self._msg = ''
         self._maxv = 100.0

@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import logging
-import logging.config
 import os
 import sys
 import platform
@@ -27,14 +26,12 @@ import socket
 import datetime
 import warnings
 import traceback
-import shutil
 from io import BytesIO
 # external packages
 import matplotlib
 matplotlib.use('Qt5Agg')
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-import skyfield.iokit
 # local import
 from mw4 import mainApp
 from mw4.gui import splash
@@ -274,6 +271,10 @@ def main():
     # checking workdir and if the system is started from frozen app
     # app = MyApp(sys.argv)
     app = PyQt5.QtWidgets.QApplication(sys.argv)
+
+    label = PyQt5.QtWidgets.QLabel('    \nHello World\n   ')
+    label.show()
+
     splashW = splash.SplashScreen(application=app)
 
     # and start with a first splash screen
@@ -294,15 +295,15 @@ def main():
     # loading leap seconds, spice kernel and hipparcos catalogue
     splashW.showMessage('Loading star and time data')
     splashW.setValue(60)
-    extractDataFiles(mwGlob=mwGlob, splashW=splashW)
+    # extractDataFiles(mwGlob=mwGlob, splashW=splashW)
 
     # and finally starting the application
     splashW.showMessage('Loading Online Data')
     splashW.setValue(80)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
-    mountApp = mainApp.MountWizzard4(mwGlob)
-    mountApp.mainW.show()
+    #mountApp = mainApp.MountWizzard4(mwGlob)
+    #mountApp.mainW.show()
 
     # end of splash screen
     splashW.showMessage('Finishing loading')

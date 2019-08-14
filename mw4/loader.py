@@ -86,44 +86,41 @@ def except_hook(typeException, valueException, tbackException):
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
-def setupWorkDirs(mwGlob=None):
+def setupWorkDirs(mwGlob):
     """
     setupWorkDirs defines the necessary work dirs and checks if they are writable
 
     :param mwGlob:
     :return: mwGlob
     """
-    if mwGlob is None:
-        mwGlob = dict()
 
     mwGlob['modeldata'] = mainApp.MountWizzard4.version
     mwGlob['bundleDir'] = ''
     mwGlob['frozen'] = False
     mwGlob['workDir'] = os.getcwd()
-    mwGlob['configDir'] = os.getcwd() + '/config'
-    mwGlob['dataDir'] = os.getcwd() + '/data'
-    mwGlob['imageDir'] = os.getcwd() + '/image'
-    mwGlob['tempDir'] = os.getcwd() + '/temp'
-    mwGlob['modelDir'] = os.getcwd() + '/model'
+    mwGlob['configDir'] = mwGlob['workDir'] + '/config'
+    mwGlob['dataDir'] = mwGlob['workDir'] + '/data'
+    mwGlob['imageDir'] = mwGlob['workDir'] + '/image'
+    mwGlob['tempDir'] = mwGlob['workDir'] + '/temp'
+    mwGlob['modelDir'] = mwGlob['workDir'] + '/model'
 
     for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir', 'tempDir', 'modelDir']:
         if not os.path.isdir(mwGlob[dirPath]):
-            os.makedirs(mwGlob[dirPath])
+            os.makedir(mwGlob[dirPath])
         if not os.access(mwGlob[dirPath], os.W_OK):
             logging.error('no write access to {0}'.format(dirPath))
     return mwGlob
 
 
-def checkFrozen(mwGlob=None):
+def checkFrozen():
     """
     checkFrozen extracts data needed to distinguish between real python running setup and
     bundled version of pyinstaller
 
-    :param mwGlob:
     :return:
     """
-    if mwGlob is None:
-        mwGlob = dict()
+
+    mwGlob = dict()
 
     if getattr(sys, 'frozen', False):
         # we are running in a bundle
@@ -267,20 +264,17 @@ def main():
     :return: nothing
     """
 
-    mwGlob = setupWorkDirs()
     # checking workdir and if the system is started from frozen app
-    # app = MyApp(sys.argv)
-    app = PyQt5.QtWidgets.QApplication(sys.argv)
-
-    label = PyQt5.QtWidgets.QLabel('    \nHello World\n   ')
-    label.show()
+    mwGlob = checkFrozen()
+    mwGlob = setupWorkDirs(mwGlob)
+    app = MyApp(sys.argv)
+    # app = PyQt5.QtWidgets.QApplication(sys.argv)
 
     splashW = splash.SplashScreen(application=app)
 
     # and start with a first splash screen
     splashW.showMessage('Start initialising')
     splashW.setValue(0)
-    mwGlob = checkFrozen(mwGlob=mwGlob)
 
     # now setup the logging environment
     splashW.showMessage('Setup logging')
@@ -295,15 +289,15 @@ def main():
     # loading leap seconds, spice kernel and hipparcos catalogue
     splashW.showMessage('Loading star and time data')
     splashW.setValue(60)
-    # extractDataFiles(mwGlob=mwGlob, splashW=splashW)
+    extractDataFiles(mwGlob=mwGlob, splashW=splashW)
 
     # and finally starting the application
     splashW.showMessage('Loading Online Data')
     splashW.setValue(80)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
-    #mountApp = mainApp.MountWizzard4(mwGlob)
-    #mountApp.mainW.show()
+    mountApp = mainApp.MountWizzard4(mwGlob)
+    mountApp.mainW.show()
 
     # end of splash screen
     splashW.showMessage('Finishing loading')

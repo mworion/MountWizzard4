@@ -151,7 +151,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
 
-        """
         # finishing for test
         if not hasattr(sys, 'argv'):
             return
@@ -159,7 +158,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             return
         if sys.argv[1] == 'test':
             self.update10s.connect(self.quitSave)
-        """
 
     def toggleHemisphereWindow(self):
         """

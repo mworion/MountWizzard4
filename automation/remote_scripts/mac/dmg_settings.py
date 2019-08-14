@@ -45,11 +45,16 @@ format = defines.get('format', 'UDBZ')
 # Volume size
 size = defines.get('size', None)
 
+webloc_home = 'MW Home.webloc'
+webloc_docu = 'MW Docu.webloc'
+
 # Files to include
-files = [application]
+files = [application,
+         webloc_home,
+         webloc_docu]
 
 # Symlinks to create
-symlinks = {'Desktop': '/Users/mw/Desktop'}
+# symlinks = {'Desktop': '/Users/mw/Desktop'}
 
 # Volume icon
 #
@@ -60,10 +65,12 @@ symlinks = {'Desktop': '/Users/mw/Desktop'}
 icon = 'drive_mw4.icns'
 # badge_icon = 'drive_mw4.icns'
 
+
 # Where to put the icons
 icon_locations = {
+    webloc_home:    (120, 200),
+    webloc_docu:    (290, 200),
     appname:        (120, 360),
-    'Desktop':        (460, 360),
     }
 
 # .. Window configuration ......................................................

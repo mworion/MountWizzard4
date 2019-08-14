@@ -34,6 +34,8 @@ def mac(c):
         runMW(c, f'scp dmg_background.png {buildMAC}')
     with c.cd('remote_scripts/mac'):
         runMW(c, f'scp dmg_settings.py {buildMAC}')
+        runMW(c, f'scp "MW Home.webloc" {buildMAC}')
+        runMW(c, f'scp "MW Docu.webloc" {buildMAC}')
         runMW(c, f'ssh {userMAC} < build_mac_dmg.sh')
     with c.cd('..'):
         runMW(c, f'scp {buildMAC}/dist/MountWizzard4.dmg .')

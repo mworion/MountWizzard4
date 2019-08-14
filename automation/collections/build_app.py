@@ -65,20 +65,6 @@ def mac_local(c):
 
 
 @task(pre=[])
-def mac_local_work(c):
-    printMW('building mac app local work')
-    with c.cd('..'):
-        runMW(c, 'rm -rf dist/*.app')
-        runMW(c, 'rm -rf dist/*.dmg')
-    with c.cd('../../mountcontrol'):
-        runMW(c, 'pip install dist/mountcontrol-*.tar.gz')
-    with c.cd('../../indibase'):
-        runMW(c, 'pip install dist/indibase-*.tar.gz')
-    with c.cd('remote_scripts/mac'):
-        runMW(c, 'pyinstaller -y mw4_mac_local_work.spec')
-
-
-@task(pre=[])
 def mac(c):
     printMW('build mac app')
     with c.cd('..'):

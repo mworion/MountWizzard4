@@ -34,7 +34,6 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 import PyQt5.QtCore
 import PyQt5.QtWidgets
-import skyfield.iokit
 # local import
 from mw4 import mainApp
 from mw4.gui import splash

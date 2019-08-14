@@ -75,7 +75,7 @@ def mac_local_work(c):
     with c.cd('../../indibase'):
         runMW(c, 'pip install dist/indibase-*.tar.gz')
     with c.cd('remote_scripts/mac'):
-        runMW(c, 'pyinstaller -y mw4_mac_local_work.spec')
+        runMW(c, 'pyinstaller -y mw4_mac_work.spec')
 
 
 @task(pre=[])

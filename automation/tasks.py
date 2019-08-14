@@ -17,7 +17,7 @@
 #
 ###########################################################
 import sys
-sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+sys.path.append('/Users/q115346/PycharmProjects/MountWizzard4')
 from invoke import task, context, Collection
 from automation.collections.gui import printMW, runMW
 

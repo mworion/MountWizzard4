@@ -53,7 +53,7 @@ distDir = './dist'
 packageDir = '/Users/q115346/PycharmProjects/MountWizzard4/mw4'
 importDir = '/Users/q115346/PycharmProjects/MountWizzard4'
 
-a = Analysis(['mw4/loader.py'],
+a = Analysis(['mw4/ui_basics.py'],
              pathex=[packageDir],
              binaries=[
                  ],
@@ -78,15 +78,9 @@ a = Analysis(['mw4/loader.py'],
              )
 # remove thing to reduce size and number of files in package (have to be extracted)
 a.binaries = [x for x in a.binaries if not x[0].startswith('mpl-data/sample_data')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('PyQt5/Qt/translations')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('QtQuick')]
-a.binaries = [x for x in a.binaries if not x[0].startswith('QtQml')]
 
 # same to datas
 a.datas = [x for x in a.datas if not x[0].startswith('mpl-data/sample_data')]
-a.datas = [x for x in a.datas if not x[0].startswith('PyQt5/Qt/translations')]
-a.datas = [x for x in a.datas if not x[0].startswith('QtQuick')]
-a.datas = [x for x in a.datas if not x[0].startswith('QtQml')]
 
 pyz = PYZ(a.pure,
           a.zipped_data,
@@ -104,7 +98,7 @@ exe = EXE(pyz,
           upx=False,
           console=True,
           onefile=True,
-          icon='remote_scripts/mw4.icns',
+          icon='automation/images/mw4.icns',
           # exclude_binaries=True,
           )
 
@@ -128,6 +122,6 @@ if os.path.isfile(buildFile):
 app = BUNDLE(exe,
              name='MountWizzard4.app',
              version=4,
-             icon='remote_scripts/mw4.icns',
+             icon='automation/images/mw4.icns',
              bundle_identifier=None)
 

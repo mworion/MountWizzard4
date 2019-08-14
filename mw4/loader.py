@@ -292,7 +292,7 @@ def main():
     extractDataFiles(mwGlob=mwGlob, splashW=splashW)
 
     # and finally starting the application
-    splashW.showMessage('Loading Online Data')
+    splashW.showMessage('Loading Data')
     splashW.setValue(80)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))

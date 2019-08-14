@@ -49,7 +49,7 @@ size = defines.get('size', None)
 files = [application]
 
 # Symlinks to create
-symlinks = {'UserDir': '~'}
+symlinks = {'Desktop': '/Users/mw/Desktop'}
 
 # Volume icon
 #
@@ -63,7 +63,7 @@ icon = 'drive_mw4.icns'
 # Where to put the icons
 icon_locations = {
     appname:        (120, 360),
-    'UserDir':        (460, 360),
+    'Desktop':        (460, 360),
     }
 
 # .. Window configuration ......................................................
@@ -88,7 +88,7 @@ icon_locations = {
 #
 # Other color components may be expressed either in the range 0 to 1, or
 # as percentages (e.g. 60% is equivalent to 0.6).
-background = './dmg_background.png'
+background = 'dmg_background.png'
 
 show_status_bar = False
 show_tab_view = False

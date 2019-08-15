@@ -157,19 +157,6 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="4">
-        <widget class="QCheckBox" name="checkUpdateFits">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Update FITS after solve</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="4" colspan="2">
         <widget class="QCheckBox" name="checkStackImages">
          <property name="enabled">
@@ -206,6 +193,19 @@
          </property>
          <property name="text">
           <string>Abort</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="4">
+        <widget class="QCheckBox" name="checkUpdateFits">
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Update FITS after solve</string>
          </property>
         </widget>
        </item>

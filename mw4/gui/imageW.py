@@ -103,6 +103,7 @@ class ImageWindow(widget.MWidget):
 
         self.initConfig()
         self.showWindow()
+        self.app.update1s.connect(self.updateWindowsStats)
 
     def initConfig(self):
         """
@@ -254,6 +255,27 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.setView(PyQt5.QtWidgets.QListView())
         for text in self.stretchValues:
             self.ui.stretch.addItem(text)
+
+        return True
+
+    def updateWindowsStats(self):
+        """
+
+        :return: true for test purpose
+
+        """
+
+        if self.app.mainW.deviceStat['astrometry']:
+            self.ui.solve.setEnabled(True)
+        else:
+            self.ui.solve.setEnabled(False)
+
+        if self.app.mainW.deviceStat['imaging']:
+            self.ui.expose.setEnabled(True)
+            self.ui.exposeN.setEnabled(True)
+        else:
+            self.ui.expose.setEnabled(False)
+            self.ui.exposeN.setEnabled(False)
 
         return True
 

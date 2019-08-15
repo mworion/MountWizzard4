@@ -47,11 +47,12 @@ size = defines.get('size', None)
 
 webloc_home = 'MW Home.webloc'
 webloc_docu = 'MW Docu.webloc'
+readme = 'readme.txt'
 
 # Files to include
 files = [application,
          webloc_home,
-         webloc_docu]
+         readme]
 
 # Symlinks to create
 # symlinks = {'Desktop': '/Users/mw/Desktop'}
@@ -69,7 +70,7 @@ icon = 'drive_mw4.icns'
 # Where to put the icons
 icon_locations = {
     webloc_home:    (120, 200),
-    webloc_docu:    (290, 200),
+    readme:         (290, 200),
     appname:        (120, 360),
     }
 

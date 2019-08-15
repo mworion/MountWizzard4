@@ -82,62 +82,6 @@ def test_setLoggingLevel4(qtbot):
     assert val == 40
 
 
-def test_setLoggingLevelIB1(qtbot):
-    app.mainW.ui.loglevelDebugIB.setChecked(True)
-    app.mainW.setLoggingLevelIB()
-    val = logging.getLogger('indibase').getEffectiveLevel()
-    assert val == 10
-
-
-def test_setLoggingLevelIB2(qtbot):
-    app.mainW.ui.loglevelInfoIB.setChecked(True)
-    app.mainW.setLoggingLevelIB()
-    val = logging.getLogger('indibase').getEffectiveLevel()
-    assert val == 20
-
-
-def test_setLoggingLevelIB3(qtbot):
-    app.mainW.ui.loglevelWarningIB.setChecked(True)
-    app.mainW.setLoggingLevelIB()
-    val = logging.getLogger('indibase').getEffectiveLevel()
-    assert val == 30
-
-
-def test_setLoggingLevelIB4(qtbot):
-    app.mainW.ui.loglevelErrorIB.setChecked(True)
-    app.mainW.setLoggingLevelIB()
-    val = logging.getLogger('indibase').getEffectiveLevel()
-    assert val == 40
-
-
-def test_setLoggingLevelMC1(qtbot):
-    app.mainW.ui.loglevelDebugMC.setChecked(True)
-    app.mainW.setLoggingLevelMC()
-    val = logging.getLogger('mountcontrol').getEffectiveLevel()
-    assert val == 10
-
-
-def test_setLoggingLevelMC2(qtbot):
-    app.mainW.ui.loglevelInfoMC.setChecked(True)
-    app.mainW.setLoggingLevelMC()
-    val = logging.getLogger('mountcontrol').getEffectiveLevel()
-    assert val == 20
-
-
-def test_setLoggingLevelMC3(qtbot):
-    app.mainW.ui.loglevelWarningMC.setChecked(True)
-    app.mainW.setLoggingLevelMC()
-    val = logging.getLogger('mountcontrol').getEffectiveLevel()
-    assert val == 30
-
-
-def test_setLoggingLevelMC4(qtbot):
-    app.mainW.ui.loglevelErrorMC.setChecked(True)
-    app.mainW.setLoggingLevelMC()
-    val = logging.getLogger('mountcontrol').getEffectiveLevel()
-    assert val == 40
-
-
 def test_updateFwGui_productName():
     value = 'Test1234'
     app.mount.fw.productName = value

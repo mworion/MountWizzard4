@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -6578,9 +6578,9 @@ to mount manually</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>185</x>
+          <x>190</x>
           <y>20</y>
-          <width>176</width>
+          <width>171</width>
           <height>26</height>
          </rect>
         </property>
@@ -6599,7 +6599,7 @@ to mount manually</string>
          <rect>
           <x>5</x>
           <y>20</y>
-          <width>176</width>
+          <width>171</width>
           <height>26</height>
          </rect>
         </property>
@@ -12850,7 +12850,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>6</number>
+        <number>3</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>

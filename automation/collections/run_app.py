@@ -31,7 +31,7 @@ def windows(c):
     printMW('deploy windows app')
     runMW(c, f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     runMW(c, f'ssh {userWindows} "mkdir mountwizzard4"')
-    with c.cd('./dist'):
+    with c.cd('../dist'):
         runMW(c, f'scp MountWizzard4.exe {workWindows}')
     with c.cd('remote_scripts'):
         runMW(c, f'ssh {userWindows} < start_windows_app.bat')
@@ -43,7 +43,7 @@ def mac(c):
     runMW(c, f'ssh {userMAC} rm -rf mountwizzard4')
     runMW(c, f'ssh {userMAC} mkdir mountwizzard4')
     # copy necessary files
-    with c.cd('./dist'):
+    with c.cd('../dist'):
         runMW(c, f'scp -r MountWizzard4.app {workMAC}')
     with c.cd('remote_scripts'):
         runMW(c, f'scp -r start_mac_app.sh {workMAC}')

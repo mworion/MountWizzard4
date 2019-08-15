@@ -91,7 +91,6 @@ class MainWindow(MWidget,
                                     'cabled LAN port',
                                     'wireless LAN',
                                     ]
-        self.status = False
 
         # local init of following
         Mount.__init__(self)
@@ -134,7 +133,7 @@ class MainWindow(MWidget,
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
 
         # initial call for writing the gui
-        self.updateMountConnStat(False)
+        self.updateMountConnStat(None)
         self.initConfig()
 
         # cyclic updates
@@ -197,7 +196,7 @@ class MainWindow(MWidget,
 
         fileName = self.app.config['mainW'].get('horizonFileName')
         self.app.data.loadHorizonP(fileName=fileName)
-        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'red')
+        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
         return True
 
     def storeConfig(self):
@@ -368,15 +367,14 @@ class MainWindow(MWidget,
 
     def updateMountConnStat(self, status):
         """
-        updateMountConnStat show the connection status of the mount.
+        updateMountConnStat show the connection status of the mount. if status is None,
+        which means there is no valid host entry for connection, the status is grey
 
         :param status:
         :return: status changed or new
         """
 
         ui = self.ui.mountConnected
-        if self.status == status:
-            return False
 
         if status:
             self.changeStyleDynamic(ui, 'color', 'green')
@@ -385,16 +383,18 @@ class MainWindow(MWidget,
             self.ui.plateSolveSync.setEnabled(True)
             self.ui.runFlexure.setEnabled(True)
             self.ui.runHysteresis.setEnabled(True)
+            return True
         else:
-            self.changeStyleDynamic(ui, 'color', 'red')
+            if status is None:
+                self.changeStyleDynamic(ui, 'color', 'gray')
+            else:
+                self.changeStyleDynamic(ui, 'color', 'red')
             self.ui.runFullModel.setEnabled(False)
             self.ui.runAlignModel.setEnabled(False)
             self.ui.plateSolveSync.setEnabled(False)
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
-
-        self.status = status
-        return True
+            return False
 
     def updateWindowsStats(self):
         """

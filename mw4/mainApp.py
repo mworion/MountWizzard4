@@ -516,6 +516,12 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :param      status: connection status to mount computer
         :return:    status how it was called
         """
+        if status is None:
+            location = self.mount.obsSite.location
+            self.mount.resetData()
+            self.mount.obsSite.location = location
+            self.mountUp = False
+            return False
         if status and not self.mountUp:
             self.mount.getFW()
             self.mount.getLocation()

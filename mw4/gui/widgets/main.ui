@@ -235,6 +235,9 @@
          <property name="flat">
           <bool>false</bool>
          </property>
+         <property name="color" stdset="0">
+          <string>gray</string>
+         </property>
         </widget>
        </item>
        <item row="2" column="4">
@@ -18293,7 +18296,7 @@ to mount manually</string>
           <rect>
            <x>400</x>
            <y>50</y>
-           <width>111</width>
+           <width>356</width>
            <height>111</height>
           </rect>
          </property>
@@ -18539,224 +18542,6 @@ to mount manually</string>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-        </widget>
-        <widget class="QGroupBox" name="logLevelMW_2">
-         <property name="geometry">
-          <rect>
-           <x>525</x>
-           <y>50</y>
-           <width>111</width>
-           <height>111</height>
-          </rect>
-         </property>
-         <property name="title">
-          <string>INDI Base</string>
-         </property>
-         <widget class="QRadioButton" name="loglevelDebugIB">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>25</y>
-            <width>81</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Debug</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
-         <widget class="QRadioButton" name="loglevelInfoIB">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>45</y>
-            <width>81</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Info</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
-         <widget class="QRadioButton" name="loglevelWarningIB">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>65</y>
-            <width>81</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Warning</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QRadioButton" name="loglevelErrorIB">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>85</y>
-            <width>81</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Error</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </widget>
-        <widget class="QGroupBox" name="logLevelMW_3">
-         <property name="geometry">
-          <rect>
-           <x>650</x>
-           <y>50</y>
-           <width>111</width>
-           <height>111</height>
-          </rect>
-         </property>
-         <property name="title">
-          <string>MountControl</string>
-         </property>
-         <widget class="QRadioButton" name="loglevelDebugMC">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>25</y>
-            <width>81</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Debug</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
-         <widget class="QRadioButton" name="loglevelInfoMC">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>45</y>
-            <width>81</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Info</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
-         <widget class="QRadioButton" name="loglevelWarningMC">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>65</y>
-            <width>81</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Warning</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-         <widget class="QRadioButton" name="loglevelErrorMC">
-          <property name="geometry">
-           <rect>
-            <x>15</x>
-            <y>85</y>
-            <width>81</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Error</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
         </widget>
         <widget class="QLabel" name="label_62">
          <property name="geometry">
@@ -19400,14 +19185,6 @@ to mount manually</string>
   <tabstop>loglevelInfo</tabstop>
   <tabstop>loglevelWarning</tabstop>
   <tabstop>loglevelError</tabstop>
-  <tabstop>loglevelDebugIB</tabstop>
-  <tabstop>loglevelInfoIB</tabstop>
-  <tabstop>loglevelWarningIB</tabstop>
-  <tabstop>loglevelErrorIB</tabstop>
-  <tabstop>loglevelDebugMC</tabstop>
-  <tabstop>loglevelInfoMC</tabstop>
-  <tabstop>loglevelWarningMC</tabstop>
-  <tabstop>loglevelErrorMC</tabstop>
   <tabstop>loadFrom</tabstop>
   <tabstop>saveConfigQuit</tabstop>
   <tabstop>saveConfig</tabstop>

@@ -412,6 +412,34 @@ class MainWindow(MWidget,
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
+        if self.deviceStat['mount']:
+            self.ui.deleteWorstPoint.setEnabled(True)
+            self.ui.clearModel.setEnabled(True)
+            self.ui.refreshModel.setEnabled(True)
+        else:
+            self.ui.deleteWorstPoint.setEnabled(False)
+            self.ui.clearModel.setEnabled(False)
+            self.ui.refreshModel.setEnabled(False)
+
+        if self.deviceStat['environment']:
+            self.ui.environGroup.setEnabled(True)
+            self.ui.refractionGroup.setEnabled(True)
+            self.ui.setRefractionManual.setEnabled(True)
+        else:
+            self.ui.environGroup.setEnabled(False)
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
+
+        if self.deviceStat['skymeter']:
+            self.ui.skymeterGroup.setEnabled(True)
+        else:
+            self.ui.skymeterGroup.setEnabled(False)
+
+        if self.deviceStat['power']:
+            self.ui.powerGroup.setEnabled(True)
+        else:
+            self.ui.powerGroup.setEnabled(False)
+
         return True
 
     def updateWindowsStats(self):
@@ -461,19 +489,10 @@ class MainWindow(MWidget,
 
         if self.deviceStat['environment'] is None:
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
-            self.ui.environGroup.setEnabled(False)
-            self.ui.refractionGroup.setEnabled(False)
-            self.ui.setRefractionManual.setEnabled(False)
         elif self.deviceStat['environment']:
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
-            self.ui.environGroup.setEnabled(True)
-            self.ui.refractionGroup.setEnabled(True)
-            self.ui.setRefractionManual.setEnabled(True)
         else:
             self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
-            self.ui.environGroup.setEnabled(False)
-            self.ui.refractionGroup.setEnabled(False)
-            self.ui.setRefractionManual.setEnabled(False)
 
         if self.deviceStat['astrometry'] is None:
             self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'gray')
@@ -488,20 +507,6 @@ class MainWindow(MWidget,
             self.changeStyleDynamic(self.ui.mountConnected, 'color', 'green')
         else:
             self.changeStyleDynamic(self.ui.mountConnected, 'color', 'red')
-
-        if self.deviceStat['skymeter'] is None:
-            self.ui.skymeterGroup.setEnabled(False)
-        elif self.deviceStat['skymeter']:
-            self.ui.skymeterGroup.setEnabled(True)
-        else:
-            self.ui.skymeterGroup.setEnabled(False)
-
-        if self.deviceStat['power'] is None:
-            self.ui.powerGroup.setEnabled(False)
-        elif self.deviceStat['power']:
-            self.ui.powerGroup.setEnabled(True)
-        else:
-            self.ui.powerGroup.setEnabled(False)
 
         self.smartGui()
 

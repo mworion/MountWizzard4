@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>9</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -5663,221 +5663,11 @@ to mount manually</string>
       <attribute name="title">
        <string>Align Mount</string>
       </attribute>
-      <widget class="QLabel" name="label_116">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>120</y>
-         <width>186</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Generate align build points</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_171">
-       <property name="geometry">
-        <rect>
-         <x>135</x>
-         <y>180</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Azimuth</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_170">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>180</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Altitude</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_27">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>140</y>
-         <width>366</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="azBase">
-       <property name="geometry">
-        <rect>
-         <x>190</x>
-         <y>180</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="maximum">
-        <double>120.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>50.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="runAlignModel">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>50</y>
-         <width>176</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Runs the base model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Run Align Model</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_35">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>366</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="genAlignBuild">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>150</y>
-         <width>366</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates base points based on number, altitude and azimuth settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Generate Align Build Points</string>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="altBase">
-       <property name="geometry">
-        <rect>
-         <x>65</x>
-         <y>180</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>20.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>70.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>50.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="cancelAlignModel">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>600</x>
-         <y>50</y>
-         <width>176</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Cancel Align Model</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>280</y>
+         <x>410</x>
+         <y>60</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -5897,8 +5687,8 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>280</x>
-         <y>310</y>
+         <x>680</x>
+         <y>90</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -5942,8 +5732,8 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>100</x>
-         <y>370</y>
+         <x>500</x>
+         <y>150</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -5987,7 +5777,7 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>695</x>
+         <x>700</x>
          <y>260</y>
          <width>81</width>
          <height>21</height>
@@ -6032,8 +5822,8 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>280</x>
-         <y>370</y>
+         <x>680</x>
+         <y>150</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -6074,8 +5864,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_14">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>310</y>
+         <x>410</x>
+         <y>90</y>
          <width>91</width>
          <height>21</height>
         </rect>
@@ -6092,8 +5882,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_153">
        <property name="geometry">
         <rect>
-         <x>175</x>
-         <y>340</y>
+         <x>575</x>
+         <y>120</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -6113,8 +5903,8 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>100</x>
-         <y>340</y>
+         <x>500</x>
+         <y>120</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -6158,7 +5948,7 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>495</x>
+         <x>500</x>
          <y>260</y>
          <width>81</width>
          <height>21</height>
@@ -6200,7 +5990,7 @@ to mount manually</string>
       <widget class="QLabel" name="label_156">
        <property name="geometry">
         <rect>
-         <x>610</x>
+         <x>615</x>
          <y>260</y>
          <width>91</width>
          <height>21</height>
@@ -6218,8 +6008,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_158">
        <property name="geometry">
         <rect>
-         <x>175</x>
-         <y>310</y>
+         <x>575</x>
+         <y>90</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -6239,8 +6029,8 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>100</x>
-         <y>280</y>
+         <x>500</x>
+         <y>60</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -6284,8 +6074,8 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>100</x>
-         <y>310</y>
+         <x>500</x>
+         <y>90</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -6326,8 +6116,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_155">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>235</y>
+         <x>410</x>
+         <y>15</y>
          <width>291</width>
          <height>21</height>
         </rect>
@@ -6349,8 +6139,8 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>280</x>
-         <y>340</y>
+         <x>680</x>
+         <y>120</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -6391,8 +6181,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_159">
        <property name="geometry">
         <rect>
-         <x>175</x>
-         <y>280</y>
+         <x>575</x>
+         <y>60</y>
          <width>106</width>
          <height>21</height>
         </rect>
@@ -6409,8 +6199,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_15">
        <property name="geometry">
         <rect>
-         <x>175</x>
-         <y>370</y>
+         <x>575</x>
+         <y>150</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -6430,8 +6220,8 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>280</x>
-         <y>280</y>
+         <x>680</x>
+         <y>60</y>
          <width>56</width>
          <height>21</height>
         </rect>
@@ -6472,8 +6262,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_154">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>340</y>
+         <x>410</x>
+         <y>120</y>
          <width>101</width>
          <height>21</height>
         </rect>
@@ -6490,7 +6280,7 @@ to mount manually</string>
       <widget class="QLabel" name="label_157">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>410</x>
          <y>260</y>
          <width>91</width>
          <height>21</height>
@@ -6508,8 +6298,8 @@ to mount manually</string>
       <widget class="Line" name="line_54">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>255</y>
+         <x>410</x>
+         <y>35</y>
          <width>366</width>
          <height>1</height>
         </rect>
@@ -6524,8 +6314,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_160">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>370</y>
+         <x>410</x>
+         <y>150</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -6539,82 +6329,10 @@ to mount manually</string>
         <string>PosAngle</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="plateSolveSync">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>150</y>
-         <width>176</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Image, Platesolve and Sync the alignment model of the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Plate Solve &amp; Sync Model</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_206">
-       <property name="geometry">
-        <rect>
-         <x>275</x>
-         <y>180</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Number</string>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="numberBase">
-       <property name="geometry">
-        <rect>
-         <x>325</x>
-         <y>180</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>3.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>10.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>3.000000000000000</double>
-       </property>
-      </widget>
       <widget class="Line" name="line_64">
        <property name="geometry">
         <rect>
-         <x>385</x>
+         <x>390</x>
          <y>10</y>
          <width>11</width>
          <height>416</height>
@@ -6636,7 +6354,7 @@ to mount manually</string>
       <widget class="QLabel" name="picAZ">
        <property name="geometry">
         <rect>
-         <x>625</x>
+         <x>630</x>
          <y>280</y>
          <width>144</width>
          <height>144</height>
@@ -6656,48 +6374,12 @@ to mount manually</string>
        </property>
        <property name="iconpicture" stdset="0">
         <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="Line" name="line_62">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>40</y>
-         <width>371</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_145">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>20</y>
-         <width>136</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Build Align Model</string>
        </property>
       </widget>
       <widget class="QLabel" name="picALT">
        <property name="geometry">
         <rect>
-         <x>420</x>
+         <x>425</x>
          <y>280</y>
          <width>144</width>
          <height>144</height>
@@ -6719,259 +6401,11 @@ to mount manually</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="Line" name="line_66">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>140</y>
-         <width>371</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_208">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>120</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Fast Align</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="genAlignBuildFile">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>111</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the initial model points from given file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Generate</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="saveAlignBuildPoints">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>70</y>
-         <width>81</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the initial model points in file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Save</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="saveAlignBuildPointsAs">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>295</x>
-         <y>70</y>
-         <width>81</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the initial model points in new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Save as</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="alignBuildPFileName">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>45</y>
-         <width>366</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_147">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>196</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Load align build points file</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="loadAlignBuildPoints">
-       <property name="geometry">
-        <rect>
-         <x>125</x>
-         <y>70</y>
-         <width>81</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the initial model points from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Load</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_127">
-       <property name="geometry">
-        <rect>
-         <x>115</x>
-         <y>180</y>
-         <width>16</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>°</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_128">
-       <property name="geometry">
-        <rect>
-         <x>240</x>
-         <y>180</y>
-         <width>16</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>°</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>false</bool>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_167">
        <property name="geometry">
         <rect>
-         <x>335</x>
-         <y>280</y>
+         <x>735</x>
+         <y>60</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -6994,8 +6428,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_168">
        <property name="geometry">
         <rect>
-         <x>335</x>
-         <y>310</y>
+         <x>735</x>
+         <y>90</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -7018,8 +6452,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_169">
        <property name="geometry">
         <rect>
-         <x>335</x>
-         <y>340</y>
+         <x>735</x>
+         <y>120</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -7042,8 +6476,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_218">
        <property name="geometry">
         <rect>
-         <x>145</x>
-         <y>370</y>
+         <x>545</x>
+         <y>150</y>
          <width>16</width>
          <height>21</height>
         </rect>
@@ -7066,8 +6500,8 @@ to mount manually</string>
       <widget class="QLabel" name="label_201">
        <property name="geometry">
         <rect>
-         <x>335</x>
-         <y>370</y>
+         <x>735</x>
+         <y>150</y>
          <width>46</width>
          <height>21</height>
         </rect>
@@ -7090,7 +6524,7 @@ to mount manually</string>
       <widget class="QLabel" name="label_219">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>410</x>
          <y>235</y>
          <width>156</width>
          <height>21</height>
@@ -7110,7 +6544,7 @@ to mount manually</string>
       <widget class="Line" name="line_75">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>410</x>
          <y>255</y>
          <width>371</width>
          <height>1</height>
@@ -7123,17 +6557,493 @@ to mount manually</string>
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
+      <widget class="QGroupBox" name="groupBox_10">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>300</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Align model build</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QPushButton" name="cancelAlignModel">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>20</y>
+          <width>176</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Cancel Align Model</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="runAlignModel">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>176</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Runs the base model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Run Align Model</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_11">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>125</y>
+         <width>366</width>
+         <height>76</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Generate align points as grid</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QPushButton" name="genAlignBuild">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>45</y>
+          <width>356</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates base points based on number, altitude and azimuth settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Generate Align Build Points</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="numberBase">
+        <property name="geometry">
+         <rect>
+          <x>320</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>3.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>3.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_127">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>°</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_206">
+        <property name="geometry">
+         <rect>
+          <x>265</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Number</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_171">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Azimuth</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_170">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Altitude</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_128">
+        <property name="geometry">
+         <rect>
+          <x>235</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>°</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="azBase">
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <double>120.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>50.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="altBase">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>20.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>70.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>50.000000000000000</double>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_12">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>25</y>
+         <width>366</width>
+         <height>76</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Load align model points from file</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLineEdit" name="alignBuildPFileName">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>356</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Courier</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="saveAlignBuildPointsAs">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>45</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the initial model points in new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Save as</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="saveAlignBuildPoints">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>195</x>
+          <y>45</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the initial model points in file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="genAlignBuildFile">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>45</y>
+          <width>101</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the initial model points from given file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Generate</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="loadAlignBuildPoints">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>45</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the initial model points from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Load</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_9">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>225</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Fast align</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QPushButton" name="plateSolveSync">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>356</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Image, Platesolve and Sync the alignment model of the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Plate Solve &amp; Sync Model</string>
+        </property>
+       </widget>
+      </widget>
       <zorder>line_54</zorder>
-      <zorder>line_27</zorder>
-      <zorder>line_35</zorder>
-      <zorder>label_116</zorder>
-      <zorder>label_171</zorder>
-      <zorder>label_170</zorder>
-      <zorder>azBase</zorder>
-      <zorder>runAlignModel</zorder>
-      <zorder>genAlignBuild</zorder>
-      <zorder>altBase</zorder>
-      <zorder>cancelAlignModel</zorder>
       <zorder>label</zorder>
       <zorder>azimuthError</zorder>
       <zorder>positionAngle</zorder>
@@ -7155,24 +7065,9 @@ to mount manually</string>
       <zorder>label_154</zorder>
       <zorder>label_157</zorder>
       <zorder>label_160</zorder>
-      <zorder>plateSolveSync</zorder>
-      <zorder>label_206</zorder>
-      <zorder>numberBase</zorder>
       <zorder>line_64</zorder>
       <zorder>picAZ</zorder>
-      <zorder>line_62</zorder>
-      <zorder>label_145</zorder>
       <zorder>picALT</zorder>
-      <zorder>line_66</zorder>
-      <zorder>label_208</zorder>
-      <zorder>genAlignBuildFile</zorder>
-      <zorder>saveAlignBuildPoints</zorder>
-      <zorder>saveAlignBuildPointsAs</zorder>
-      <zorder>alignBuildPFileName</zorder>
-      <zorder>label_147</zorder>
-      <zorder>loadAlignBuildPoints</zorder>
-      <zorder>label_127</zorder>
-      <zorder>label_128</zorder>
       <zorder>label_167</zorder>
       <zorder>label_168</zorder>
       <zorder>label_169</zorder>
@@ -7180,297 +7075,19 @@ to mount manually</string>
       <zorder>label_201</zorder>
       <zorder>label_219</zorder>
       <zorder>line_75</zorder>
+      <zorder>groupBox_10</zorder>
+      <zorder>groupBox_11</zorder>
+      <zorder>groupBox_12</zorder>
+      <zorder>groupBox_9</zorder>
      </widget>
      <widget class="QWidget" name="BuildModel">
       <attribute name="title">
        <string>Build Model</string>
       </attribute>
-      <widget class="QPushButton" name="genBuildGrid">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>140</y>
-         <width>366</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a regular pattern with the given parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Generate Grid</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_108">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>115</y>
-         <width>276</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Generate model build points in a grid</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_179">
-       <property name="geometry">
-        <rect>
-         <x>95</x>
-         <y>170</y>
-         <width>26</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Cols</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_178">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>170</y>
-         <width>36</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Rows</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="genBuildMed">
-       <property name="geometry">
-        <rect>
-         <x>105</x>
-         <y>235</y>
-         <width>86</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: medium number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Medium</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="genBuildMax">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>235</y>
-         <width>86</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: high number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Maximal</string>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="numberGridPointsRow">
-       <property name="geometry">
-        <rect>
-         <x>45</x>
-         <y>170</y>
-         <width>41</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of rows in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>2.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>8.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>5.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="Line" name="line_34">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>366</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="numberGridPointsCol">
-       <property name="geometry">
-        <rect>
-         <x>125</x>
-         <y>170</y>
-         <width>41</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of coloms in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>2.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>15.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>2.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>6.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="runFullModel">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>50</y>
-         <width>176</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run full alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Run Model Build</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_26">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>300</y>
-         <width>366</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="cancelFullModel">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>600</x>
-         <y>50</y>
-         <width>176</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Cancel Model Build</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_28">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>135</y>
-         <width>366</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="genBuildDSO">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>305</y>
-         <width>366</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points along DSO track for a give time and other parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Generate DSO Track</string>
-       </property>
-      </widget>
       <widget class="Line" name="line_40">
        <property name="geometry">
         <rect>
-         <x>385</x>
+         <x>390</x>
          <y>10</y>
          <width>11</width>
          <height>416</height>
@@ -7489,1376 +7106,1453 @@ to mount manually</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="Line" name="line_42">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>230</y>
-         <width>366</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="durationDSO">
-       <property name="geometry">
-        <rect>
-         <x>185</x>
-         <y>335</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>15.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>10.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_181">
-       <property name="geometry">
-        <rect>
-         <x>130</x>
-         <y>335</y>
-         <width>56</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Duration</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_188">
+      <widget class="QGroupBox" name="groupBox_2">
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>335</y>
-         <width>41</width>
-         <height>21</height>
+         <y>25</y>
+         <width>366</width>
+         <height>76</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
+       <property name="title">
+        <string>Load model points from file</string>
        </property>
-       <property name="text">
-        <string>Points</string>
+       <property name="large" stdset="0">
+        <bool>true</bool>
        </property>
+       <widget class="QLineEdit" name="buildPFileName">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>356</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Courier</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="saveBuildPointsAs">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>45</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the full model points in new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Save as</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="saveBuildPoints">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>195</x>
+          <y>45</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the full model points in file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="genBuildFile">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>45</y>
+          <width>101</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the full model points from given file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Generate</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="loadBuildPoints">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>45</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the full model points from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Load</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QDoubleSpinBox" name="numberDSOPoints">
+      <widget class="QGroupBox" name="groupBox_3">
        <property name="geometry">
         <rect>
-         <x>55</x>
-         <y>335</y>
-         <width>51</width>
-         <height>21</height>
+         <x>15</x>
+         <y>115</y>
+         <width>366</width>
+         <height>81</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
+       <property name="title">
+        <string>Generate model points as grid</string>
        </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points in the DSO track for the given time in hours&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <property name="large" stdset="0">
+        <bool>true</bool>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>50.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>10.000000000000000</double>
-       </property>
+       <widget class="QLabel" name="label_178">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>25</y>
+          <width>36</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Rows</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="numberGridPointsRow">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>25</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of rows in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>2.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>8.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_179">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>25</y>
+          <width>26</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Cols</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_190">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>25</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>AltMin</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_203">
+        <property name="geometry">
+         <rect>
+          <x>250</x>
+          <y>25</y>
+          <width>16</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>°</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="altitudeMax">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>25</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of coloms in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>85.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>75.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_144">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>25</y>
+          <width>16</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>°</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="numberGridPointsCol">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>25</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of coloms in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>2.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>15.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>2.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>6.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_180">
+        <property name="geometry">
+         <rect>
+          <x>265</x>
+          <y>25</y>
+          <width>46</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>AltMax</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="genBuildGrid">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>50</y>
+          <width>356</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a regular pattern with the given parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Generate Grid</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="altitudeMin">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>25</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of rows in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>85.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>30.000000000000000</double>
+        </property>
+       </widget>
       </widget>
-      <widget class="QLabel" name="label_189">
+      <widget class="QGroupBox" name="groupBox_4">
        <property name="geometry">
         <rect>
-         <x>265</x>
-         <y>335</y>
-         <width>61</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>TimeShift</string>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="timeShiftDSO">
-       <property name="geometry">
-        <rect>
-         <x>325</x>
-         <y>335</y>
-         <width>41</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>-12.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>12.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>0.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_180">
-       <property name="geometry">
-        <rect>
-         <x>275</x>
-         <y>170</y>
-         <width>46</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>AltMax</string>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="altitudeMax">
-       <property name="geometry">
-        <rect>
-         <x>320</x>
-         <y>170</y>
-         <width>46</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of coloms in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>85.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>75.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="altitudeMin">
-       <property name="geometry">
-        <rect>
-         <x>215</x>
-         <y>170</y>
-         <width>46</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of rows in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>85.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>30.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_190">
-       <property name="geometry">
-        <rect>
-         <x>175</x>
-         <y>170</y>
-         <width>41</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>AltMin</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_144">
-       <property name="geometry">
-        <rect>
-         <x>365</x>
-         <y>170</y>
-         <width>16</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>°</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_203">
-       <property name="geometry">
-        <rect>
-         <x>260</x>
-         <y>170</y>
-         <width>16</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>°</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="genBuildMin">
-       <property name="geometry">
-        <rect>
-         <x>290</x>
-         <y>235</y>
-         <width>86</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: low number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Minimal</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_204">
-       <property name="geometry">
-        <rect>
-         <x>370</x>
-         <y>335</y>
-         <width>16</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>h</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_38">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>40</y>
-         <width>371</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_138">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>20</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Model build</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_113">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
+         <x>15</x>
          <y>210</y>
-         <width>361</width>
-         <height>21</height>
+         <width>366</width>
+         <height>51</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
+       <property name="title">
+        <string>Generate model points as greater circles</string>
        </property>
-       <property name="text">
-        <string>Generate model build points based on greater circles</string>
+       <property name="large" stdset="0">
+        <bool>true</bool>
        </property>
+       <widget class="QPushButton" name="genBuildMax">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>86</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: high number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Maximal</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="genBuildMed">
+        <property name="geometry">
+         <rect>
+          <x>95</x>
+          <y>20</y>
+          <width>86</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: medium number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Medium</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="genBuildMin">
+        <property name="geometry">
+         <rect>
+          <x>275</x>
+          <y>20</y>
+          <width>86</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: low number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Minimal</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="genBuildNorm">
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>20</y>
+          <width>86</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: medium number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Norm</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QLabel" name="label_136">
+      <widget class="QGroupBox" name="groupBox_5">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>15</x>
          <y>280</y>
-         <width>361</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Generate model build points based on tracks</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_213">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>216</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Load full model build points file</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="buildPFileName">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>45</y>
          <width>366</width>
-         <height>21</height>
+         <height>76</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <family>Courier</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
+       <property name="title">
+        <string>Generate model points from tracks</string>
        </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="readOnly">
+       <property name="large" stdset="0">
         <bool>true</bool>
        </property>
+       <widget class="QLabel" name="label_188">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Points</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="numberDSOPoints">
+        <property name="geometry">
+         <rect>
+          <x>45</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points in the DSO track for the given time in hours&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>50.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>10.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="durationDSO">
+        <property name="geometry">
+         <rect>
+          <x>165</x>
+          <y>20</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>15.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>10.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="timeShiftDSO">
+        <property name="geometry">
+         <rect>
+          <x>305</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>-12.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>12.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_204">
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>h</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_189">
+        <property name="geometry">
+         <rect>
+          <x>245</x>
+          <y>20</y>
+          <width>61</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TimeShift</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_303">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>h</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_181">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>20</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Duration</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="genBuildDSO">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>45</y>
+          <width>356</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points along DSO track for a give time and other parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Generate DSO Track</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QPushButton" name="genBuildFile">
+      <widget class="QGroupBox" name="groupBox_6">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>111</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the full model points from given file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Generate</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="saveBuildPoints">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>70</y>
-         <width>81</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the full model points in file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Save</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="saveBuildPointsAs">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>295</x>
-         <y>70</y>
-         <width>81</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the full model points in new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Save as</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="loadBuildPoints">
-       <property name="geometry">
-        <rect>
-         <x>125</x>
-         <y>70</y>
-         <width>81</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the full model points from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Load</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="timeToFinish">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>715</x>
-         <y>85</y>
-         <width>61</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>00:00</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_35">
-       <property name="geometry">
-        <rect>
-         <x>605</x>
-         <y>85</y>
-         <width>91</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Time to finish:</string>
-       </property>
-      </widget>
-      <widget class="QProgressBar" name="modelProgress">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>165</y>
-         <width>371</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="maximum">
-        <number>100</number>
-       </property>
-       <property name="value">
-        <number>0</number>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="textVisible">
-        <bool>true</bool>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="invertedAppearance">
-        <bool>false</bool>
-       </property>
-       <property name="textDirection">
-        <enum>QProgressBar::TopToBottom</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_29">
-       <property name="geometry">
-        <rect>
-         <x>605</x>
-         <y>110</y>
-         <width>81</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Elapsed time:</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="batchModel">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>365</y>
-         <width>371</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run model making from a data file stored as analyse file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Choose model from file and program</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_39">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>355</y>
-         <width>371</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_205">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>335</y>
-         <width>151</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Build model from data</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="timeElapsed">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>715</x>
-         <y>110</y>
-         <width>61</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>00:00</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_42">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>85</y>
-         <width>91</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Finishing Time:</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="timeFinished">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>520</x>
-         <y>85</y>
-         <width>61</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>00:00:00</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="genBuildNorm">
-       <property name="geometry">
-        <rect>
-         <x>200</x>
-         <y>235</y>
-         <width>81</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: medium number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Norm</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_303">
-       <property name="geometry">
-        <rect>
-         <x>240</x>
-         <y>335</y>
-         <width>16</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>h</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_87">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>395</y>
+         <x>15</x>
+         <y>370</y>
          <width>366</width>
-         <height>1</height>
+         <height>51</height>
         </rect>
        </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
+       <property name="title">
+        <string>Generate model points equally distributed</string>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="numberSpiralPoints">
-       <property name="geometry">
-        <rect>
-         <x>325</x>
-         <y>400</y>
-         <width>51</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points in the DSO track for the given time in hours&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>0</number>
-       </property>
-       <property name="minimum">
-        <double>20.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>350.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>20.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_308">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>375</y>
-         <width>361</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Generate model build points equally distributed</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_309">
-       <property name="geometry">
-        <rect>
-         <x>285</x>
-         <y>400</y>
-         <width>41</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Points</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="genBuildGoldenSpiral">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>400</y>
-         <width>231</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points along DSO track for a give time and other parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Generate Golden Spiral</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_216">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>135</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Points:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_310">
-       <property name="geometry">
-        <rect>
-         <x>505</x>
-         <y>135</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Slew:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_311">
-       <property name="geometry">
-        <rect>
-         <x>700</x>
-         <y>135</y>
-         <width>46</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Solve:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_312">
-       <property name="geometry">
-        <rect>
-         <x>605</x>
-         <y>135</y>
-         <width>51</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>MS Shell Dlg 2</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Image:</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="mSolve">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>745</x>
-         <y>135</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
+       <property name="large" stdset="0">
         <bool>true</bool>
        </property>
+       <widget class="QPushButton" name="genBuildGoldenSpiral">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>20</y>
+          <width>231</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points along DSO track for a give time and other parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Generate Golden Spiral</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="numberSpiralPoints">
+        <property name="geometry">
+         <rect>
+          <x>45</x>
+          <y>20</y>
+          <width>51</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points in the DSO track for the given time in hours&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>20.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>350.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>20.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_309">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>41</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Points</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QLineEdit" name="mImage">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
+      <widget class="QGroupBox" name="groupBox_7">
        <property name="geometry">
         <rect>
-         <x>655</x>
-         <y>135</y>
-         <width>31</width>
-         <height>21</height>
+         <x>410</x>
+         <y>370</y>
+         <width>366</width>
+         <height>51</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
+       <property name="title">
+        <string>Build model from data file</string>
        </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
+       <property name="large" stdset="0">
         <bool>true</bool>
        </property>
+       <widget class="QPushButton" name="batchModel">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>356</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run model making from a data file stored as analyse file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Choose model from file and program</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QLineEdit" name="mSlew">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
+      <widget class="QGroupBox" name="groupBox_8">
        <property name="geometry">
         <rect>
-         <x>555</x>
-         <y>135</y>
-         <width>31</width>
-         <height>21</height>
+         <x>410</x>
+         <y>25</y>
+         <width>366</width>
+         <height>171</height>
         </rect>
        </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
+       <property name="title">
+        <string>Full model build</string>
        </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
+       <property name="large" stdset="0">
         <bool>true</bool>
        </property>
+       <widget class="QPushButton" name="cancelFullModel">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>20</y>
+          <width>171</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Cancel Model Build</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="mSlew">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>145</x>
+          <y>105</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_35">
+        <property name="geometry">
+         <rect>
+          <x>195</x>
+          <y>55</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Time to finish:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="runFullModel">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>171</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run full alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Run Model Build</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="mPoints">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>105</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_29">
+        <property name="geometry">
+         <rect>
+          <x>195</x>
+          <y>80</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Elapsed time:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="mSolve">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>105</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_310">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>105</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Slew:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_311">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>105</y>
+          <width>46</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Solve:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="mImage">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>245</x>
+          <y>105</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="timeElapsed">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>80</y>
+          <width>61</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>00:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_216">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>105</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Points:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="timeFinished">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>115</x>
+          <y>55</y>
+          <width>61</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>00:00:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QProgressBar" name="modelProgress">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>135</y>
+          <width>356</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="textVisible">
+         <bool>true</bool>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="invertedAppearance">
+         <bool>false</bool>
+        </property>
+        <property name="textDirection">
+         <enum>QProgressBar::TopToBottom</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_312">
+        <property name="geometry">
+         <rect>
+          <x>195</x>
+          <y>105</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Image:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="timeToFinish">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>55</y>
+          <width>61</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>00:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_42">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>55</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Finishing Time:</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QLineEdit" name="mPoints">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>450</x>
-         <y>135</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Progress in modeling.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>0</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <zorder>line_42</zorder>
-      <zorder>line_28</zorder>
-      <zorder>line_34</zorder>
-      <zorder>line_26</zorder>
-      <zorder>genBuildGrid</zorder>
-      <zorder>label_108</zorder>
-      <zorder>label_179</zorder>
-      <zorder>label_178</zorder>
-      <zorder>genBuildMed</zorder>
-      <zorder>genBuildMax</zorder>
-      <zorder>numberGridPointsRow</zorder>
-      <zorder>numberGridPointsCol</zorder>
-      <zorder>runFullModel</zorder>
-      <zorder>cancelFullModel</zorder>
-      <zorder>genBuildDSO</zorder>
-      <zorder>line_40</zorder>
-      <zorder>durationDSO</zorder>
-      <zorder>label_181</zorder>
-      <zorder>label_188</zorder>
-      <zorder>numberDSOPoints</zorder>
-      <zorder>label_189</zorder>
-      <zorder>timeShiftDSO</zorder>
-      <zorder>label_180</zorder>
-      <zorder>altitudeMax</zorder>
-      <zorder>altitudeMin</zorder>
-      <zorder>label_190</zorder>
-      <zorder>label_144</zorder>
-      <zorder>label_203</zorder>
-      <zorder>genBuildMin</zorder>
-      <zorder>label_204</zorder>
-      <zorder>line_38</zorder>
-      <zorder>label_138</zorder>
-      <zorder>label_113</zorder>
-      <zorder>label_136</zorder>
-      <zorder>label_213</zorder>
-      <zorder>buildPFileName</zorder>
-      <zorder>genBuildFile</zorder>
-      <zorder>saveBuildPoints</zorder>
-      <zorder>saveBuildPointsAs</zorder>
-      <zorder>loadBuildPoints</zorder>
-      <zorder>timeToFinish</zorder>
-      <zorder>label_35</zorder>
-      <zorder>modelProgress</zorder>
-      <zorder>label_29</zorder>
-      <zorder>batchModel</zorder>
-      <zorder>line_39</zorder>
-      <zorder>label_205</zorder>
-      <zorder>timeElapsed</zorder>
-      <zorder>label_42</zorder>
-      <zorder>timeFinished</zorder>
-      <zorder>genBuildNorm</zorder>
-      <zorder>label_303</zorder>
-      <zorder>line_87</zorder>
-      <zorder>numberSpiralPoints</zorder>
-      <zorder>label_308</zorder>
-      <zorder>label_309</zorder>
-      <zorder>genBuildGoldenSpiral</zorder>
-      <zorder>label_216</zorder>
-      <zorder>label_310</zorder>
-      <zorder>label_311</zorder>
-      <zorder>label_312</zorder>
-      <zorder>mSolve</zorder>
-      <zorder>mImage</zorder>
-      <zorder>mSlew</zorder>
-      <zorder>mPoints</zorder>
      </widget>
      <widget class="QWidget" name="ManageModel">
       <attribute name="title">
@@ -19085,38 +18779,6 @@ to mount manually</string>
   <tabstop>checkRefracCont</tabstop>
   <tabstop>checkRefracNoTrack</tabstop>
   <tabstop>setRefractionManual</tabstop>
-  <tabstop>genAlignBuildFile</tabstop>
-  <tabstop>loadAlignBuildPoints</tabstop>
-  <tabstop>saveAlignBuildPoints</tabstop>
-  <tabstop>saveAlignBuildPointsAs</tabstop>
-  <tabstop>genAlignBuild</tabstop>
-  <tabstop>altBase</tabstop>
-  <tabstop>azBase</tabstop>
-  <tabstop>numberBase</tabstop>
-  <tabstop>runAlignModel</tabstop>
-  <tabstop>cancelAlignModel</tabstop>
-  <tabstop>plateSolveSync</tabstop>
-  <tabstop>buildPFileName</tabstop>
-  <tabstop>genBuildFile</tabstop>
-  <tabstop>loadBuildPoints</tabstop>
-  <tabstop>saveBuildPoints</tabstop>
-  <tabstop>saveBuildPointsAs</tabstop>
-  <tabstop>genBuildGrid</tabstop>
-  <tabstop>numberGridPointsRow</tabstop>
-  <tabstop>numberGridPointsCol</tabstop>
-  <tabstop>altitudeMin</tabstop>
-  <tabstop>altitudeMax</tabstop>
-  <tabstop>genBuildMax</tabstop>
-  <tabstop>genBuildMed</tabstop>
-  <tabstop>genBuildNorm</tabstop>
-  <tabstop>genBuildMin</tabstop>
-  <tabstop>genBuildDSO</tabstop>
-  <tabstop>durationDSO</tabstop>
-  <tabstop>numberDSOPoints</tabstop>
-  <tabstop>timeShiftDSO</tabstop>
-  <tabstop>runFullModel</tabstop>
-  <tabstop>cancelFullModel</tabstop>
-  <tabstop>batchModel</tabstop>
   <tabstop>deleteWorstPoint</tabstop>
   <tabstop>clearModel</tabstop>
   <tabstop>refreshModel</tabstop>

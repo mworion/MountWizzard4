@@ -56,36 +56,46 @@ class MWStyles(object):
     QWidget {
         background-color: #181818;
         font-family: Arial;
-        font-style: normal;
+        font-weight: normal;
         font-size: 13pt;
     }
     QWidget [large='true'] {
         font-family: Arial;
-        font-style: normal;
+        font-weight: normal;
         font-size: 30pt;
     }
+    QGroupBox[large='true']{
+        font-family: Arial;
+        font-weight: bold;
+        font-size: 13pt;
+    } 
     QGroupBox{
         font-family: Arial;
-        font-style: normal;
-        font-size: 10pt;
+        font-weight: normal;
+        font-size: 11pt;
     } 
     """
     NON_MAC_STYLE = """
     QWidget {
         background-color: #181818;
         font-family: Arial;
-        font-style: normal;
+        font-weight: normal;
         font-size: 10pt;
     }
     QWidget [large='true'] {
         font-family: Arial;
-        font-style: normal;
+        font-weight: bold;
         font-size: 20pt;
     } 
+    QGroupBox[large='true']{
+        font-family: Arial;
+        font-weight: normal;
+        font-size: 10pt;
+    }    
     QGroupBox{
         font-family: Arial;
-        font-style: normal;
-        font-size: 8pt;
+        font-weight: normal;
+        font-size: 9pt;
     }
     """
     BASIC_STYLE = """
@@ -185,6 +195,13 @@ class MWStyles(object):
         subcontrol-origin: margin;
         subcontrol-position: top left; /* position at the top center */
         color: #C0C0C0;
+        background-color: #181818;
+    }
+    QGroupBox::title[large='true'] {
+        left: 5px;
+        subcontrol-origin: margin;
+        subcontrol-position: top left; /* position at the top center */
+        color: rgb(32, 144, 196);
         background-color: #181818;
     }
     QGroupBox:disabled{

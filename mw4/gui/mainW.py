@@ -148,6 +148,13 @@ class MainWindow(MWidget,
 
         :return: True for test purpose
         """
+        #
+        # remove analysis tab while not developed
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+
 
         config = self.app.config
         self.ui.profile.setText(config.get('profileName'))
@@ -197,6 +204,7 @@ class MainWindow(MWidget,
         fileName = self.app.config['mainW'].get('horizonFileName')
         self.app.data.loadHorizonP(fileName=fileName)
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
+
         return True
 
     def storeConfig(self):

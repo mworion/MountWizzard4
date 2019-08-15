@@ -20,6 +20,7 @@
 # standard libraries
 # external packages
 import PyQt5.QtCore
+from PyQt5.QtCore import Qt
 import PyQt5.QtWidgets
 import numpy as np
 # local import
@@ -53,7 +54,7 @@ class SplashScreen(PyQt5.QtCore.QObject):
         self._qapp = application
         self._pxm = PyQt5.QtGui.QPixmap(':/mw4.ico')
 
-        flags = PyQt5.QtCore.Qt.WindowStaysOnTopHint
+        flags = (Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint)
         self._qss = PyQt5.QtWidgets.QSplashScreen(self._pxm, flags)
         self._msg = ''
         self._maxv = 100.0

@@ -264,17 +264,20 @@ def main():
     :return: nothing
     """
 
-    # checking workdir and if the system is started from frozen app
-    mwGlob = checkFrozen()
-    mwGlob = setupWorkDirs(mwGlob)
+    # initiating the main app
     app = MyApp(sys.argv)
     # app = PyQt5.QtWidgets.QApplication(sys.argv)
 
+    # generating splash screen
     splashW = splash.SplashScreen(application=app)
 
     # and start with a first splash screen
     splashW.showMessage('Start initialising')
     splashW.setValue(0)
+
+    # checking workdir and if the system is started from frozen app
+    mwGlob = checkFrozen()
+    mwGlob = setupWorkDirs(mwGlob)
 
     # now setup the logging environment
     splashW.showMessage('Setup logging')

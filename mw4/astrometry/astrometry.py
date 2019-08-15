@@ -136,15 +136,15 @@ class Astrometry(object):
 
             # checking binaries
             if not os.path.isfile(binPathSolveField):
-                self.logger.error(f'{binPathSolveField} not found')
+                self.logger.info(f'{binPathSolveField} not found')
                 suc = False
             if not os.path.isfile(binPathImage2xy):
-                self.logger.error(f'{binPathImage2xy} not found')
+                self.logger.info(f'{binPathImage2xy} not found')
                 suc = False
 
             # checking indexes
             if not glob.glob(self.indexPath + '/index-4*.fits'):
-                self.logger.error('no index files found')
+                self.logger.info('no index files found')
                 suc = False
             if suc:
                 self.available[app] = path

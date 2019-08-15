@@ -393,6 +393,27 @@ class MainWindow(MWidget,
         self.deviceStat['mount'] = status
         return True
 
+    def smartGui(self):
+        """
+
+        :return: true for test purpose
+        """
+        # check if modeling would work (mount + solve + image)
+        if all(self.deviceStat[x] for x in ['mount', 'imaging', 'astrometry']):
+            self.ui.runFullModel.setEnabled(True)
+            self.ui.runAlignModel.setEnabled(True)
+            self.ui.plateSolveSync.setEnabled(True)
+            self.ui.runFlexure.setEnabled(True)
+            self.ui.runHysteresis.setEnabled(True)
+        else:
+            self.ui.runFullModel.setEnabled(False)
+            self.ui.runAlignModel.setEnabled(False)
+            self.ui.plateSolveSync.setEnabled(False)
+            self.ui.runFlexure.setEnabled(False)
+            self.ui.runHysteresis.setEnabled(False)
+
+        return True
+
     def updateWindowsStats(self):
         """
 
@@ -463,25 +484,10 @@ class MainWindow(MWidget,
 
         if self.deviceStat['mount'] is None:
             self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
-            self.ui.runFullModel.setEnabled(False)
-            self.ui.runAlignModel.setEnabled(False)
-            self.ui.plateSolveSync.setEnabled(False)
-            self.ui.runFlexure.setEnabled(False)
-            self.ui.runHysteresis.setEnabled(False)
         elif self.deviceStat['mount']:
             self.changeStyleDynamic(self.ui.mountConnected, 'color', 'green')
-            self.ui.runFullModel.setEnabled(True)
-            self.ui.runAlignModel.setEnabled(True)
-            self.ui.plateSolveSync.setEnabled(True)
-            self.ui.runFlexure.setEnabled(True)
-            self.ui.runHysteresis.setEnabled(True)
         else:
             self.changeStyleDynamic(self.ui.mountConnected, 'color', 'red')
-            self.ui.runFullModel.setEnabled(False)
-            self.ui.runAlignModel.setEnabled(False)
-            self.ui.plateSolveSync.setEnabled(False)
-            self.ui.runFlexure.setEnabled(False)
-            self.ui.runHysteresis.setEnabled(False)
 
         if self.deviceStat['skymeter'] is None:
             self.ui.skymeterGroup.setEnabled(False)
@@ -496,6 +502,8 @@ class MainWindow(MWidget,
             self.ui.powerGroup.setEnabled(True)
         else:
             self.ui.powerGroup.setEnabled(False)
+
+        self.smartGui()
 
         return True
 

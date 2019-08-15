@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -13028,7 +13028,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -13189,7 +13189,7 @@ to mount manually</string>
              </font>
             </property>
             <property name="text">
-             <string>Core</string>
+             <string>Core devices</string>
             </property>
            </widget>
           </item>

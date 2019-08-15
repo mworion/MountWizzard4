@@ -29,7 +29,7 @@ from automation.collections.config_ssh import *
 @task(pre=[])
 def mac(c):
     printMW('run mac dist')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/mac'):
         runMW(c, f'scp start_mac.sh {workMAC}')
     runMW(c, f'ssh {userMAC} chmod 777 ./mountwizzard4/start_mac.sh')
     runMW(c, f'ssh {userMAC} ./mountwizzard4/start_mac.sh')
@@ -38,7 +38,7 @@ def mac(c):
 @task(pre=[])
 def windows(c):
     printMW('run windows app')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/windows'):
         runMW(c, f'scp start_windows.bat {workWindows}')
     runMW(c, f'ssh {userWindows} "mountwizzard4\\\\start_windows.bat"')
 
@@ -46,7 +46,7 @@ def windows(c):
 @task(pre=[])
 def ubuntu(c):
     printMW('un ubuntu dist')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/ubuntu'):
         runMW(c, f'scp start_ubuntu.sh {workUbuntu}')
     runMW(c, f'ssh {userUbuntu} chmod 777 ./mountwizzard4/start_ubuntu.sh')
     runMW(c, f'ssh {userUbuntu} ./mountwizzard4/start_ubuntu.sh')
@@ -55,7 +55,7 @@ def ubuntu(c):
 @task(pre=[])
 def mate(c):
     printMW('run work dist')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/work'):
         runMW(c, f'scp start_mate.sh {userMate}')
     runMW(c, f'ssh {userMate} chmod 777 ./test/start_mate.sh')
     runMW(c, f'ssh {userMate} ./test/start_mate.sh')

@@ -56,6 +56,7 @@ class Environ(object):
         self.app.update30m.connect(self.updateClearOutside)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
         self.ui.isOnline.stateChanged.connect(self.updateOpenWeatherMap)
+        self.ui.openWeatherMapKey.editingFinished.connect(self.updateOpenWeatherMap)
 
     def initConfig(self):
         """
@@ -299,6 +300,21 @@ class Environ(object):
 
         return True
 
+    def clearOpenWeatherMapGui(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.ui.weatherTemp.setText('-')
+        self.ui.weatherPress.setText('-')
+        self.ui.weatherHumidity.setText('-')
+        self.ui.weatherCloudCover.setText('-')
+        self.ui.weatherWindSpeed.setText('-')
+        self.ui.weatherWindDir.setText('-')
+        self.ui.weatherRainVol.setText('-')
+
+        return True
+
     def updateOpenWeatherMapGui(self, data):
         """
         updateOpenWeatherMapGui takes the returned data from a web fetch and puts the data
@@ -314,6 +330,7 @@ class Environ(object):
         val = data.json()
         val = val['list'][0]
 
+        self.clearOpenWeatherMapGui()
         if 'main' in val:
             self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
             self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
@@ -352,8 +369,10 @@ class Environ(object):
         """
 
         if not self.ui.isOnline.isChecked():
+            self.clearOpenWeatherMapGui()
             return False
         if not self.ui.openWeatherMapKey.text():
+            self.clearOpenWeatherMapGui()
             return False
 
         # prepare coordinates for website

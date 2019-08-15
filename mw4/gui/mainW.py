@@ -491,11 +491,11 @@ class MainWindow(MWidget,
             self.ui.skymeterGroup.setEnabled(False)
 
         if self.deviceStat['power'] is None:
-            pass
+            self.ui.powerGroup.setEnabled(False)
         elif self.deviceStat['power']:
-            pass
+            self.ui.powerGroup.setEnabled(True)
         else:
-            pass
+            self.ui.powerGroup.setEnabled(False)
 
         return True
 

@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -12850,7 +12850,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>6</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -16951,7 +16951,7 @@ to mount manually</string>
         <zorder>label_103</zorder>
         <zorder>label_262</zorder>
        </widget>
-       <widget class="QWidget" name="Relay_2">
+       <widget class="QWidget" name="KMTronic">
         <attribute name="title">
          <string>KMTronic</string>
         </attribute>

@@ -148,16 +148,22 @@ class SettDevice(object):
         # get index for relay tab
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        tabWidget2 = self.ui.settingsTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'KMTronic')
+        tabIndex2 = self.ui.settingsTabWidget.indexOf(tabWidget2)
 
         if self.ui.relayDevice.currentText().startswith('Built-In'):
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            self.ui.settingsTabWidget.setTabEnabled(tabIndex2, True)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay enabled', 0)
             self.app.relay.startTimers()
             self.ui.relayDevice.setStyleSheet(self.BACK_GREEN)
         else:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.ui.settingsTabWidget.setTabEnabled(tabIndex2, False)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay disabled', 0)
             self.app.relay.stopTimers()
             self.ui.relayDevice.setStyleSheet(self.BACK_NORM)
@@ -165,6 +171,8 @@ class SettDevice(object):
         # update the style for showing the Relay tab
         self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
         self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
+        self.ui.settingsTabWidget.style().unpolish(self.ui.settingsTabWidget)
+        self.ui.settingsTabWidget.style().polish(self.ui.settingsTabWidget)
         return True
 
     def remoteDispatch(self):
@@ -258,10 +266,6 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.ui.environGroup.setEnabled(False)
-        self.ui.refractionGroup.setEnabled(False)
-        self.ui.setRefractionManual.setEnabled(False)
-
         self.app.environ.stopCommunication()
         if self.ui.environDevice.currentText().startswith('INDI'):
             self.app.environ.client.host = self.ui.environHost.text()
@@ -282,8 +286,6 @@ class SettDevice(object):
 
         :return: true for test purpose
         """
-
-        self.ui.skymeterGroup.setEnabled(False)
 
         self.app.skymeter.stopCommunication()
         if self.ui.skymeterDevice.currentText().startswith('INDI'):
@@ -306,7 +308,6 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.ui.powerGroup.setEnabled(False)
         # get index for power tab
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)

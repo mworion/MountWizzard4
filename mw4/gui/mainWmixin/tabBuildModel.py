@@ -568,11 +568,13 @@ class BuildModel(object):
             error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
 
             text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
-            text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)}, '
-            text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)}, '
-            text += f'Error: {error:5.2f}, '
+            text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)} '
+            text += f'({result.solve.raJ2000.hours:4.3f}), '
+            text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)} '
+            text += f'({result.solve.decJ2000.degrees:4.3f}), '
+            text += f'Error: {error:5.1f}, '
             text += f'Angle: {result.solve.angle:3.0f}, '
-            text += f'Scale: {result.solve.scale:4.6f}'
+            text += f'Scale: {result.solve.scale:4.3f}'
             self.app.message.emit(text, 0)
         else:
             text = f'Solving error for image-{mPoint.mParam.count:03d}'

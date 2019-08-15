@@ -33,7 +33,7 @@ def windows(c):
     runMW(c, f'ssh {userWindows} "mkdir mountwizzard4"')
     with c.cd('../dist'):
         runMW(c, f'scp MountWizzard4.exe {workWindows}')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/windows'):
         runMW(c, f'ssh {userWindows} < start_windows_app.bat')
 
 
@@ -45,7 +45,7 @@ def mac(c):
     # copy necessary files
     with c.cd('../dist'):
         runMW(c, f'scp -r MountWizzard4.app {workMAC}')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/mac'):
         runMW(c, f'scp -r start_mac_app.sh {workMAC}')
         runMW(c, f'ssh {userMAC} chmod 777 ./mountwizzard4/start_mac_app.sh')
         runMW(c, f'ssh {userMAC} ./mountwizzard4/start_mac_app.sh')

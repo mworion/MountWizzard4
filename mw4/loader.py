@@ -106,7 +106,7 @@ def setupWorkDirs(mwGlob):
 
     for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir', 'tempDir', 'modelDir']:
         if not os.path.isdir(mwGlob[dirPath]):
-            os.makedir(mwGlob[dirPath])
+            os.makedirs(mwGlob[dirPath])
         if not os.access(mwGlob[dirPath], os.W_OK):
             logging.error('no write access to {0}'.format(dirPath))
     return mwGlob

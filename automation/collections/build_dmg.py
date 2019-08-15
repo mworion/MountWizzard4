@@ -38,5 +38,5 @@ def mac(c):
     with c.cd('remote_scripts/mac'):
         runMW(c, f'scp dmg_settings.py {buildMAC}')
         runMW(c, f'ssh {userMAC} < build_mac_dmg.sh')
-    with c.cd('..'):
+    with c.cd('../dist'):
         runMW(c, f'scp {buildMAC}/dist/MountWizzard4.dmg .')

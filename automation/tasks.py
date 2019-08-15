@@ -77,6 +77,8 @@ def test_all(c):
 @task(pre=[])
 def build_all(c):
     printMW('build all')
+    support.resource(c)
+    support.widgets(c)
     build_dist.mountcontrol(c)
     build_dist.indibase(c)
     build_dist.mountwizzard(c)

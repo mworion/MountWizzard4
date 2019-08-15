@@ -94,10 +94,10 @@ def test_mountShutdown2(qtbot):
 def test_updateMountConnStat():
     suc = app.mainW.updateMountConnStat(True)
     assert suc
-    assert 'green' == app.mainW.ui.mountConnected.property('color')
+    assert app.mainW.deviceStat['mount']
     suc = app.mainW.updateMountConnStat(False)
     assert suc
-    assert 'red' == app.mainW.ui.mountConnected.property('color')
+    assert not app.mainW.deviceStat['mount']
 
 
 def test_saveProfile1(qtbot):

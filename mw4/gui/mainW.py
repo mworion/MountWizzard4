@@ -91,6 +91,15 @@ class MainWindow(MWidget,
                                     'cabled LAN port',
                                     'wireless LAN',
                                     ]
+        self.deviceStat = {
+            'dome': None,
+            'mount': None,
+            'imaging': None,
+            'astrometry': None,
+            'environ': None,
+            'skymeter': None,
+            'power': None,
+        }
 
         # local init of following
         Mount.__init__(self)
@@ -154,7 +163,6 @@ class MainWindow(MWidget,
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-
 
         config = self.app.config
         self.ui.profile.setText(config.get('profileName'))
@@ -379,30 +387,11 @@ class MainWindow(MWidget,
         which means there is no valid host entry for connection, the status is grey
 
         :param status:
-        :return: status changed or new
+        :return: true for test purpose
         """
 
-        ui = self.ui.mountConnected
-
-        if status:
-            self.changeStyleDynamic(ui, 'color', 'green')
-            self.ui.runFullModel.setEnabled(True)
-            self.ui.runAlignModel.setEnabled(True)
-            self.ui.plateSolveSync.setEnabled(True)
-            self.ui.runFlexure.setEnabled(True)
-            self.ui.runHysteresis.setEnabled(True)
-            return True
-        else:
-            if status is None:
-                self.changeStyleDynamic(ui, 'color', 'gray')
-            else:
-                self.changeStyleDynamic(ui, 'color', 'red')
-            self.ui.runFullModel.setEnabled(False)
-            self.ui.runAlignModel.setEnabled(False)
-            self.ui.plateSolveSync.setEnabled(False)
-            self.ui.runFlexure.setEnabled(False)
-            self.ui.runHysteresis.setEnabled(False)
-            return False
+        self.deviceStat['mount'] = status
+        return True
 
     def updateWindowsStats(self):
         """
@@ -434,6 +423,79 @@ class MainWindow(MWidget,
             self.changeStyleDynamic(self.ui.openSatelliteW, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.openSatelliteW, 'running', False)
+
+        if self.deviceStat['dome'] is None:
+            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'gray')
+        elif self.deviceStat['dome']:
+            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'green')
+        else:
+            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
+
+        if self.deviceStat['imaging'] is None:
+            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'gray')
+        elif self.deviceStat['imaging']:
+            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'green')
+        else:
+            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'red')
+
+        if self.deviceStat['environment'] is None:
+            self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
+            self.ui.environGroup.setEnabled(False)
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
+        elif self.deviceStat['environment']:
+            self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
+            self.ui.environGroup.setEnabled(True)
+            self.ui.refractionGroup.setEnabled(True)
+            self.ui.setRefractionManual.setEnabled(True)
+        else:
+            self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
+            self.ui.environGroup.setEnabled(False)
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
+
+        if self.deviceStat['astrometry'] is None:
+            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'gray')
+        elif self.deviceStat['astrometry']:
+            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'green')
+        else:
+            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')
+
+        if self.deviceStat['mount'] is None:
+            self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
+            self.ui.runFullModel.setEnabled(False)
+            self.ui.runAlignModel.setEnabled(False)
+            self.ui.plateSolveSync.setEnabled(False)
+            self.ui.runFlexure.setEnabled(False)
+            self.ui.runHysteresis.setEnabled(False)
+        elif self.deviceStat['mount']:
+            self.changeStyleDynamic(self.ui.mountConnected, 'color', 'green')
+            self.ui.runFullModel.setEnabled(True)
+            self.ui.runAlignModel.setEnabled(True)
+            self.ui.plateSolveSync.setEnabled(True)
+            self.ui.runFlexure.setEnabled(True)
+            self.ui.runHysteresis.setEnabled(True)
+        else:
+            self.changeStyleDynamic(self.ui.mountConnected, 'color', 'red')
+            self.ui.runFullModel.setEnabled(False)
+            self.ui.runAlignModel.setEnabled(False)
+            self.ui.plateSolveSync.setEnabled(False)
+            self.ui.runFlexure.setEnabled(False)
+            self.ui.runHysteresis.setEnabled(False)
+
+        if self.deviceStat['skymeter'] is None:
+            self.ui.skymeterGroup.setEnabled(False)
+        elif self.deviceStat['skymeter']:
+            self.ui.skymeterGroup.setEnabled(True)
+        else:
+            self.ui.skymeterGroup.setEnabled(False)
+
+        if self.deviceStat['power'] is None:
+            pass
+        elif self.deviceStat['power']:
+            pass
+        else:
+            pass
 
         return True
 

@@ -218,11 +218,11 @@ class SettDevice(object):
             self.app.dome.client.host = self.ui.domeHost.text()
             self.app.dome.name = self.ui.domeDeviceName.currentText()
             self.app.dome.startCommunication()
-            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
             self.app.message.emit('Dome enabled', 0)
+            self.deviceStat['dome'] = True
         else:
-            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'gray')
             self.app.message.emit('Dome disabled', 0)
+            self.deviceStat['dome'] = None
 
         return True
 
@@ -240,10 +240,10 @@ class SettDevice(object):
             self.app.imaging.client.host = self.ui.imagingHost.text()
             self.app.imaging.name = self.ui.imagingDeviceName.currentText()
             self.app.imaging.startCommunication()
-            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'red')
+            self.deviceStat['imaging'] = True
             self.app.message.emit('Imaging enabled', 0)
         else:
-            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'gray')
+            self.deviceStat['imaging'] = None
             self.app.message.emit('Imaging disabled', 0)
 
         return True
@@ -267,10 +267,10 @@ class SettDevice(object):
             self.app.environ.client.host = self.ui.environHost.text()
             self.app.environ.name = self.ui.environDeviceName.currentText()
             self.app.environ.startCommunication()
-            self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
+            self.deviceStat['environment'] = True
             self.app.message.emit('Environment enabled', 0)
         else:
-            self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
+            self.deviceStat['environment'] = None
             self.app.message.emit('Environment disabled', 0)
 
         return True
@@ -291,8 +291,10 @@ class SettDevice(object):
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
             self.app.skymeter.startCommunication()
             self.app.message.emit('Skymeter enabled', 0)
+            self.deviceStat['skymeter'] = True
         else:
             self.app.message.emit('Skymeter disabled', 0)
+            self.deviceStat['skymeter'] = None
 
         return True
 
@@ -317,10 +319,12 @@ class SettDevice(object):
             self.app.message.emit('Power enabled', 0)
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
+            self.deviceStat['power'] = True
         else:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Power disabled', 0)
+            self.deviceStat['power'] = None
 
         # update the style for showing the Relay tab
         self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
@@ -338,14 +342,14 @@ class SettDevice(object):
         if self.ui.astrometryDevice.currentText() in self.app.astrometry.available:
             if self.ui.astrometryDevice.currentText() not in self.app.astrometry.binPath:
                 self.app.message.emit('Astrometry not available', 2)
-                self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')
+                self.deviceStat['astrometry'] = False
                 return False
             self.ui.astrometryDevice.setStyleSheet(self.BACK_GREEN)
-            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'green')
+            self.deviceStat['astrometry'] = True
             self.app.message.emit('Astrometry enabled', 0)
         else:
             self.app.message.emit('Astrometry disabled', 0)
-            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'gray')
+            self.deviceStat['astrometry'] = None
             self.ui.astrometryDevice.setStyleSheet(self.BACK_NORM)
 
         return True

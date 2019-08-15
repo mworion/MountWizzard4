@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>9</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -12612,7 +12612,7 @@ to mount manually</string>
          <x>10</x>
          <y>10</y>
          <width>766</width>
-         <height>407</height>
+         <height>702</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -12647,29 +12647,6 @@ to mount manually</string>
             <property name="spacing">
              <number>8</number>
             </property>
-            <item row="5" column="0" colspan="4">
-             <widget class="QLabel" name="label_60">
-              <property name="text">
-               <string>Choice of FITS header entries</string>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="0" colspan="5">
-             <widget class="QProgressBar" name="renameProgress">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-              <property name="value">
-               <number>0</number>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0" colspan="2">
              <widget class="QLabel" name="label_305">
               <property name="minimumSize">
@@ -12761,56 +12738,6 @@ to mount manually</string>
               </property>
              </widget>
             </item>
-            <item row="10" column="0" colspan="5">
-             <widget class="QComboBox" name="rename5">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="0" colspan="5">
-             <widget class="QComboBox" name="rename4">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="0" colspan="5">
-             <widget class="QComboBox" name="rename3">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="0" colspan="5">
-             <widget class="QComboBox" name="rename2">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0" colspan="5">
-             <widget class="QComboBox" name="rename1">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
-            </item>
             <item row="12" column="4">
              <widget class="QPushButton" name="renameStart">
               <property name="minimumSize">
@@ -12821,6 +12748,121 @@ to mount manually</string>
               </property>
               <property name="text">
                <string>Start</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0" colspan="5">
+             <widget class="QLabel" name="label_60">
+              <property name="text">
+               <string>Choice of FITS header entries</string>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="1" colspan="4">
+             <widget class="QProgressBar" name="renameProgress">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="1" colspan="4">
+             <widget class="QComboBox" name="rename5">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="1" colspan="4">
+             <widget class="QComboBox" name="rename4">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1" colspan="4">
+             <widget class="QComboBox" name="rename3">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1" colspan="4">
+             <widget class="QComboBox" name="rename2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1" colspan="4">
+             <widget class="QComboBox" name="rename1">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Position 1</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Position 2</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Position 3</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Position 4</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="0">
+             <widget class="QLabel" name="label_39">
+              <property name="text">
+               <string>Position 5</string>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="0">
+             <widget class="QLabel" name="label_57">
+              <property name="text">
+               <string>Position 6</string>
               </property>
              </widget>
             </item>
@@ -13114,7 +13156,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>7</number>
+        <number>0</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -18107,8 +18149,8 @@ to mount manually</string>
         <widget class="QComboBox" name="soundMountSlewFinished">
          <property name="geometry">
           <rect>
-           <x>190</x>
-           <y>50</y>
+           <x>580</x>
+           <y>245</y>
            <width>181</width>
            <height>21</height>
           </rect>
@@ -18120,8 +18162,8 @@ to mount manually</string>
         <widget class="QLabel" name="label_210">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>20</y>
+           <x>400</x>
+           <y>215</y>
            <width>161</width>
            <height>21</height>
           </rect>
@@ -18140,8 +18182,8 @@ to mount manually</string>
         <widget class="Line" name="line_24">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>40</y>
+           <x>400</x>
+           <y>235</y>
            <width>361</width>
            <height>1</height>
           </rect>
@@ -18183,8 +18225,8 @@ to mount manually</string>
         <widget class="QComboBox" name="soundMountAlert">
          <property name="geometry">
           <rect>
-           <x>190</x>
-           <y>110</y>
+           <x>580</x>
+           <y>295</y>
            <width>181</width>
            <height>21</height>
           </rect>
@@ -18196,8 +18238,8 @@ to mount manually</string>
         <widget class="QComboBox" name="soundDomeSlewFinished">
          <property name="geometry">
           <rect>
-           <x>190</x>
-           <y>80</y>
+           <x>580</x>
+           <y>270</y>
            <width>181</width>
            <height>21</height>
           </rect>
@@ -18209,8 +18251,8 @@ to mount manually</string>
         <widget class="QLabel" name="label_212">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>50</y>
+           <x>400</x>
+           <y>245</y>
            <width>136</width>
            <height>21</height>
           </rect>
@@ -18227,8 +18269,8 @@ to mount manually</string>
         <widget class="QLabel" name="label_214">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>80</y>
+           <x>400</x>
+           <y>270</y>
            <width>136</width>
            <height>21</height>
           </rect>
@@ -18245,8 +18287,8 @@ to mount manually</string>
         <widget class="QLabel" name="label_215">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>110</y>
+           <x>400</x>
+           <y>295</y>
            <width>136</width>
            <height>21</height>
           </rect>
@@ -18263,8 +18305,8 @@ to mount manually</string>
         <widget class="QLabel" name="label_217">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>140</y>
+           <x>400</x>
+           <y>320</y>
            <width>136</width>
            <height>21</height>
           </rect>
@@ -18281,8 +18323,8 @@ to mount manually</string>
         <widget class="QComboBox" name="soundModelingFinished">
          <property name="geometry">
           <rect>
-           <x>190</x>
-           <y>140</y>
+           <x>580</x>
+           <y>320</y>
            <width>181</width>
            <height>21</height>
           </rect>
@@ -18295,9 +18337,9 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>50</y>
+           <y>40</y>
            <width>356</width>
-           <height>111</height>
+           <height>101</height>
           </rect>
          </property>
          <property name="title">
@@ -18307,7 +18349,7 @@ to mount manually</string>
           <property name="geometry">
            <rect>
             <x>15</x>
-            <y>25</y>
+            <y>15</y>
             <width>81</width>
             <height>21</height>
            </rect>
@@ -18324,14 +18366,14 @@ to mount manually</string>
            <string>Debug</string>
           </property>
           <property name="checked">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
          </widget>
          <widget class="QRadioButton" name="loglevelInfo">
           <property name="geometry">
            <rect>
             <x>15</x>
-            <y>45</y>
+            <y>35</y>
             <width>81</width>
             <height>21</height>
            </rect>
@@ -18355,7 +18397,7 @@ to mount manually</string>
           <property name="geometry">
            <rect>
             <x>15</x>
-            <y>65</y>
+            <y>55</y>
             <width>81</width>
             <height>21</height>
            </rect>
@@ -18372,14 +18414,14 @@ to mount manually</string>
            <string>Warning</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
          <widget class="QRadioButton" name="loglevelError">
           <property name="geometry">
            <rect>
             <x>15</x>
-            <y>85</y>
+            <y>75</y>
             <width>81</width>
             <height>21</height>
            </rect>
@@ -18404,7 +18446,7 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>20</y>
+           <y>15</y>
            <width>161</width>
            <height>21</height>
           </rect>
@@ -18421,68 +18463,11 @@ to mount manually</string>
           <string>Log Levels</string>
          </property>
         </widget>
-        <widget class="QLabel" name="le_firmwareProductName_3">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>320</y>
-           <width>361</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>open source software embedded: </string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="le_firmwareProductName_4">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>335</y>
-           <width>361</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>pyqt5, matplotlib, wakeonlan,</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="le_firmwareProductName_2">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>305</y>
-           <width>361</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>MountWizzard4 (C) 2019 MWORION</string>
-         </property>
-        </widget>
         <widget class="QPushButton" name="btn_resetWindowSizes">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>220</y>
+           <y>110</y>
            <width>176</width>
            <height>26</height>
           </rect>
@@ -18503,30 +18488,11 @@ to mount manually</string>
           <string>Collect Windows</string>
          </property>
         </widget>
-        <widget class="QLabel" name="le_firmwareProductName_5">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>350</y>
-           <width>361</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>numpy, requests, astropy, skyfield,</string>
-         </property>
-        </widget>
         <widget class="Line" name="line_9">
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>40</y>
+           <y>35</y>
            <width>361</width>
            <height>1</height>
           </rect>
@@ -18547,7 +18513,7 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>175</y>
+           <y>155</y>
            <width>196</width>
            <height>21</height>
           </rect>
@@ -18568,7 +18534,7 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>195</y>
+           <y>175</y>
            <width>361</width>
            <height>1</height>
           </rect>
@@ -18588,8 +18554,8 @@ to mount manually</string>
         <widget class="QLabel" name="label_401">
          <property name="geometry">
           <rect>
-           <x>400</x>
-           <y>290</y>
+           <x>10</x>
+           <y>15</y>
            <width>161</width>
            <height>21</height>
           </rect>
@@ -18608,8 +18574,8 @@ to mount manually</string>
         <widget class="QLabel" name="firmwareProductName_3">
          <property name="geometry">
           <rect>
-           <x>400</x>
-           <y>340</y>
+           <x>10</x>
+           <y>65</y>
            <width>56</width>
            <height>21</height>
           </rect>
@@ -18629,8 +18595,8 @@ to mount manually</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>455</x>
-           <y>340</y>
+           <x>65</x>
+           <y>65</y>
            <width>56</width>
            <height>21</height>
           </rect>
@@ -18674,8 +18640,8 @@ to mount manually</string>
         <widget class="QLabel" name="firmwareProductName_4">
          <property name="geometry">
           <rect>
-           <x>530</x>
-           <y>340</y>
+           <x>140</x>
+           <y>65</y>
            <width>36</width>
            <height>21</height>
           </rect>
@@ -18695,8 +18661,8 @@ to mount manually</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>700</x>
-           <y>340</y>
+           <x>310</x>
+           <y>65</y>
            <width>61</width>
            <height>21</height>
           </rect>
@@ -18740,8 +18706,8 @@ to mount manually</string>
         <widget class="QLabel" name="firmwareProductName_5">
          <property name="geometry">
           <rect>
-           <x>665</x>
-           <y>340</y>
+           <x>275</x>
+           <y>65</y>
            <width>36</width>
            <height>21</height>
           </rect>
@@ -18761,8 +18727,8 @@ to mount manually</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>455</x>
-           <y>315</y>
+           <x>65</x>
+           <y>40</y>
            <width>166</width>
            <height>21</height>
           </rect>
@@ -18806,8 +18772,8 @@ to mount manually</string>
         <widget class="QLabel" name="firmwareProductName_2">
          <property name="geometry">
           <rect>
-           <x>400</x>
-           <y>315</y>
+           <x>10</x>
+           <y>40</y>
            <width>56</width>
            <height>21</height>
           </rect>
@@ -18827,8 +18793,8 @@ to mount manually</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>665</x>
-           <y>315</y>
+           <x>275</x>
+           <y>40</y>
            <width>96</width>
            <height>21</height>
           </rect>
@@ -18875,8 +18841,8 @@ to mount manually</string>
          </property>
          <property name="geometry">
           <rect>
-           <x>565</x>
-           <y>340</y>
+           <x>175</x>
+           <y>65</y>
            <width>86</width>
            <height>21</height>
           </rect>
@@ -18920,8 +18886,8 @@ to mount manually</string>
         <widget class="Line" name="line_116">
          <property name="geometry">
           <rect>
-           <x>400</x>
-           <y>310</y>
+           <x>10</x>
+           <y>35</y>
            <width>361</width>
            <height>1</height>
           </rect>
@@ -18941,8 +18907,8 @@ to mount manually</string>
         <widget class="QLabel" name="Hardware">
          <property name="geometry">
           <rect>
-           <x>635</x>
-           <y>315</y>
+           <x>245</x>
+           <y>40</y>
            <width>31</width>
            <height>21</height>
           </rect>
@@ -18956,30 +18922,11 @@ to mount manually</string>
           <string>HW:</string>
          </property>
         </widget>
-        <widget class="QLabel" name="le_firmwareProductName_6">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>365</y>
-           <width>361</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>qimage2ndarray</string>
-         </property>
-        </widget>
         <widget class="QCheckBox" name="isOnline">
          <property name="geometry">
           <rect>
-           <x>400</x>
-           <y>200</y>
+           <x>405</x>
+           <y>180</y>
            <width>331</width>
            <height>21</height>
           </rect>
@@ -19002,8 +18949,8 @@ to mount manually</string>
         <widget class="QCheckBox" name="enableNoise">
          <property name="geometry">
           <rect>
-           <x>400</x>
-           <y>240</y>
+           <x>15</x>
+           <y>220</y>
            <width>331</width>
            <height>21</height>
           </rect>
@@ -19022,6 +18969,95 @@ to mount manually</string>
          <property name="checked">
           <bool>false</bool>
          </property>
+        </widget>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>290</y>
+           <width>351</width>
+           <height>91</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>MountWizzard4 (C) 2019 MWORION</string>
+         </property>
+         <widget class="QLabel" name="le_firmwareProductName_6">
+          <property name="geometry">
+           <rect>
+            <x>5</x>
+            <y>65</y>
+            <width>341</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Courier</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>qimage2ndarray</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="le_firmwareProductName_3">
+          <property name="geometry">
+           <rect>
+            <x>5</x>
+            <y>20</y>
+            <width>341</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Courier</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>open source software embedded: </string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="le_firmwareProductName_4">
+          <property name="geometry">
+           <rect>
+            <x>5</x>
+            <y>35</y>
+            <width>341</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Courier</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>pyqt5, matplotlib, wakeonlan,</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="le_firmwareProductName_5">
+          <property name="geometry">
+           <rect>
+            <x>5</x>
+            <y>50</y>
+            <width>341</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Courier</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>numpy, requests, astropy, skyfield,</string>
+          </property>
+         </widget>
         </widget>
        </widget>
       </widget>

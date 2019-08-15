@@ -41,14 +41,6 @@ class SettMisc(object):
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
-        self.ui.loglevelDebugIB.clicked.connect(self.setLoggingLevelIB)
-        self.ui.loglevelInfoIB.clicked.connect(self.setLoggingLevelIB)
-        self.ui.loglevelWarningIB.clicked.connect(self.setLoggingLevelIB)
-        self.ui.loglevelErrorIB.clicked.connect(self.setLoggingLevelIB)
-        self.ui.loglevelDebugMC.clicked.connect(self.setLoggingLevelMC)
-        self.ui.loglevelInfoMC.clicked.connect(self.setLoggingLevelMC)
-        self.ui.loglevelWarningMC.clicked.connect(self.setLoggingLevelMC)
-        self.ui.loglevelErrorMC.clicked.connect(self.setLoggingLevelMC)
 
         self.app.mount.signals.fwDone.connect(self.updateFwGui)
 
@@ -70,19 +62,7 @@ class SettMisc(object):
         self.ui.loglevelWarning.setChecked(config.get('loglevelWarning', False))
         self.ui.loglevelError.setChecked(config.get('loglevelError', False))
 
-        self.ui.loglevelDebugIB.setChecked(config.get('loglevelDebugIB', True))
-        self.ui.loglevelInfoIB.setChecked(config.get('loglevelInfoIB', False))
-        self.ui.loglevelWarningIB.setChecked(config.get('loglevelWarningIB', False))
-        self.ui.loglevelErrorIB.setChecked(config.get('loglevelErrorIB', False))
-
-        self.ui.loglevelDebugMC.setChecked(config.get('loglevelDebugMC', True))
-        self.ui.loglevelInfoMC.setChecked(config.get('loglevelInfoMC', False))
-        self.ui.loglevelWarningMC.setChecked(config.get('loglevelWarningMC', False))
-        self.ui.loglevelErrorMC.setChecked(config.get('loglevelErrorMC', False))
-
         self.setLoggingLevel()
-        self.setLoggingLevelIB()
-        self.setLoggingLevelMC()
 
         self.ui.isOnline.setChecked(config.get('isOnline', False))
 
@@ -107,16 +87,6 @@ class SettMisc(object):
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
         config['loglevelWarning'] = self.ui.loglevelWarning.isChecked()
         config['loglevelError'] = self.ui.loglevelError.isChecked()
-
-        config['loglevelDebugIB'] = self.ui.loglevelDebugIB.isChecked()
-        config['loglevelInfoIB'] = self.ui.loglevelInfoIB.isChecked()
-        config['loglevelWarningIB'] = self.ui.loglevelWarningIB.isChecked()
-        config['loglevelErrorIB'] = self.ui.loglevelErrorIB.isChecked()
-
-        config['loglevelDebugMC'] = self.ui.loglevelDebugMC.isChecked()
-        config['loglevelInfoMC'] = self.ui.loglevelInfoMC.isChecked()
-        config['loglevelWarningMC'] = self.ui.loglevelWarningMC.isChecked()
-        config['loglevelErrorMC'] = self.ui.loglevelErrorMC.isChecked()
 
         config['isOnline'] = self.ui.isOnline.isChecked()
 
@@ -179,43 +149,19 @@ class SettMisc(object):
 
         if self.ui.loglevelDebug.isChecked():
             logging.getLogger().setLevel(logging.DEBUG)
+            logging.getLogger('indibase').setLevel(logging.DEBUG)
+            logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
         elif self.ui.loglevelInfo.isChecked():
             logging.getLogger().setLevel(logging.INFO)
+            logging.getLogger('indibase').setLevel(logging.INFO)
+            logging.getLogger('mountcontrol').setLevel(logging.INFO)
         elif self.ui.loglevelWarning.isChecked():
             logging.getLogger().setLevel(logging.WARNING)
+            logging.getLogger('indibase').setLevel(logging.WARNING)
+            logging.getLogger('mountcontrol').setLevel(logging.WARNING)
         elif self.ui.loglevelError.isChecked():
             logging.getLogger().setLevel(logging.ERROR)
-
-    def setLoggingLevelIB(self):
-        """
-        Setting the log level according to the setting in the gui.
-
-        :return: nothing
-        """
-
-        if self.ui.loglevelDebugIB.isChecked():
-            logging.getLogger('indibase').setLevel(logging.DEBUG)
-        elif self.ui.loglevelInfoIB.isChecked():
-            logging.getLogger('indibase').setLevel(logging.INFO)
-        elif self.ui.loglevelWarningIB.isChecked():
-            logging.getLogger('indibase').setLevel(logging.WARNING)
-        elif self.ui.loglevelErrorIB.isChecked():
             logging.getLogger('indibase').setLevel(logging.ERROR)
-
-    def setLoggingLevelMC(self):
-        """
-        Setting the log level according to the setting in the gui.
-
-        :return: nothing
-        """
-
-        if self.ui.loglevelDebugMC.isChecked():
-            logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
-        elif self.ui.loglevelInfoMC.isChecked():
-            logging.getLogger('mountcontrol').setLevel(logging.INFO)
-        elif self.ui.loglevelWarningMC.isChecked():
-            logging.getLogger('mountcontrol').setLevel(logging.WARNING)
-        elif self.ui.loglevelErrorMC.isChecked():
             logging.getLogger('mountcontrol').setLevel(logging.ERROR)
 
     def setupAudioGui(self):

@@ -45,12 +45,12 @@ class Tools(object):
                                    'rename5': self.ui.rename5,
                                    }
         self.fitsHeaderKeywords = {'None': [''],
-                                   'CCD Temp': ['CCD-TEMP'],
-                                   'Frame': ['FRAME', 'IMAGETYP'],
-                                   'Binning': ['XBINNING'],
-                                   'Filter': ['FILTER'],
                                    'Datetime': ['DATE-OBS'],
+                                   'Frame': ['FRAME', 'IMAGETYP'],
+                                   'Filter': ['FILTER'],
+                                   'Binning': ['XBINNING'],
                                    'Exp Time': ['EXPTIME'],
+                                   'CCD Temp': ['CCD-TEMP'],
                                    }
 
         self.setupSelectorGui()

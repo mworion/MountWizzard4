@@ -34,6 +34,7 @@ import numpy as np
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
 from mw4.base import transform
+from mw4.astrometry.affine import Transformation
 
 
 class ImageWindowSignals(PyQt5.QtCore.QObject):
@@ -73,16 +74,19 @@ class ImageWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.signals = ImageWindowSignals()
+
         self.imageFileName = ''
         self.imageFileNameOld = ''
-        self.imageData = None
+        self.imageStack = None
+        self.headerStack = None
+        self.numberStack = 0
         self.folder = ''
+
         self.deviceStat = {
             'expose': False,
             'exposeN': False,
             'solve': False,
         }
-
         self.colorMaps = {'Grey': 'gray',
                           'Cool': 'plasma',
                           'Rainbow': 'rainbow',
@@ -529,7 +533,7 @@ class ImageWindow(widget.MWidget):
 
         return axe
 
-    def setupNormal(self, figure=None, header={}):
+    def setupNormal(self, figure=None, header=None):
         """
         setupNormal build the image widget to show it with pixels as axes. the center of
         the image will have coordinates 0,0.
@@ -541,7 +545,7 @@ class ImageWindow(widget.MWidget):
 
         if figure is None:
             return False
-        if not header:
+        if header is None:
             return False
 
         figure.clf()
@@ -581,6 +585,31 @@ class ImageWindow(widget.MWidget):
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         return axe
 
+    def stackImages(self, imageData=None, header=None):
+        """
+
+        :param imageData:
+        :param header:
+        :return:
+        """
+
+        # if first image, we just store the data as reference frame
+        if self.imageStack is None:
+            self.imageStack = imageData
+            self.headerStack = header
+            self.numberStack = 1
+            return imageData
+
+        # now we are going to stack the results
+        self.numberStack += 1
+
+        if 'CTYPE1' in header:
+            print('autoSolve')
+
+        self.imageStack = np.add(self.imageStack, imageData)
+
+        return self.imageStack / self.numberStack
+
     def showImage(self, imagePath=''):
         """
         showImage shows the fits image. therefore it calculates color map, stretch,
@@ -600,7 +629,7 @@ class ImageWindow(widget.MWidget):
         self.ui.imageFileName.setText(short)
 
         with fits.open(imagePath, mode='update') as fitsHandle:
-            self.imageData = fitsHandle[0].data
+            imageData = fitsHandle[0].data
             header = fitsHandle[0].header
 
             # correct faulty headers, because some imaging programs did not
@@ -613,20 +642,27 @@ class ImageWindow(widget.MWidget):
 
         # check the data content and capabilities
         hasDistortion, wcsObject = self.writeHeaderToGUI(header=header)
+        stackImages = self.ui.checkStackImages.isChecked()
+
+        if stackImages:
+            imageData = self.stackImages(imageData=imageData,
+                                         header=header)
 
         # process the image for viewing
-        self.imageData = self.zoomImage(image=self.imageData, wcsObject=wcsObject)
-        norm = self.stretchImage(image=self.imageData)
+        imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
+        norm = self.stretchImage(image=imageData)
         colorMap = self.colorImage()
 
         # check which type of presentation we would like to have
-        if hasDistortion and self.ui.checkUseWCS.isChecked():
+        useWCS = self.ui.checkUseWCS.isChecked()
+
+        if hasDistortion and useWCS and not stackImages:
             axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
         else:
             axe = self.setupNormal(figure=self.imageMat.figure, header=header)
 
         # finally show it
-        axe.imshow(self.imageData, norm=norm, cmap=colorMap, origin='lower')
+        axe.imshow(imageData, norm=norm, cmap=colorMap, origin='lower')
         axe.figure.canvas.draw()
 
         return True
@@ -700,11 +736,6 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        # checking presence of app.imaging.data shows camera connected ?
-        # todo: better solution in camera !
-        if not self.app.imaging.data:
-            return False
-
         self.deviceStat['expose'] = True
         self.app.imaging.signals.saved.connect(self.exposeImageDone)
         self.exposeRaw()
@@ -741,11 +772,7 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        # checking presence of app.imaging.data shows camera connected ?
-        # todo: better solution in camera !
-        if not self.app.imaging.data:
-            return False
-
+        self.imageStack = None
         self.deviceStat['exposeN'] = True
         self.app.imaging.signals.saved.connect(self.exposeImageNDone)
         self.exposeRaw()

@@ -183,19 +183,6 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QPushButton" name="pushButton">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Test</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="1" colspan="4">
         <widget class="QLineEdit" name="imageFileName">
          <property name="enabled">

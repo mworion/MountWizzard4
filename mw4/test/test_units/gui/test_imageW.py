@@ -257,12 +257,12 @@ def test_showFitsImage_3():
 
 
 def test_showFitsImageExt_1():
-    suc = app.imageW.showFitsImageExt()
+    suc = app.imageW.showFitsFile()
     assert not suc
 
 
 def test_showFitsImageExt_2():
-    suc = app.imageW.showFitsImageExt(imagePath=mwGlob['imageDir'] + '/m51.fit')
+    suc = app.imageW.showFitsFile(imagePath=mwGlob['imageDir'] + '/m51.fit')
     assert suc
 
 

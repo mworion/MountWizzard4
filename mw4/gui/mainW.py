@@ -395,6 +395,11 @@ class MainWindow(MWidget,
 
     def smartGui(self):
         """
+        smartGui enables and disables gui actions depending on the actual state of the
+        different devices. this should be the core of avoiding user misused during running
+        operations. smartGui is run every 1 second synchronously, because it can't be
+        simpler done with dynamic approach. all different situations in a running
+        environment is done locally.
 
         :return: true for test purpose
         """

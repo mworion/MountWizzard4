@@ -46,10 +46,10 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['ImageWindowSignals']
-    version = '0.1'
+    version = '0.101'
 
-    show = PyQt5.QtCore.pyqtSignal()
-    showExt = PyQt5.QtCore.pyqtSignal(object)
+    showExisting = PyQt5.QtCore.pyqtSignal()
+    showFitsFile = PyQt5.QtCore.pyqtSignal(object)
     solve = PyQt5.QtCore.pyqtSignal()
 
 
@@ -62,7 +62,7 @@ class ImageWindow(widget.MWidget):
 
     __all__ = ['ImageWindow',
                ]
-    version = '0.9'
+    version = '0.101'
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):
@@ -179,24 +179,24 @@ class ImageWindow(widget.MWidget):
         :return: true for test purpose
         """
 
-        self.showFitsImage()
+        self.showFitsFile(self.imageFileName)
         self.show()
 
         # gui signals
         self.ui.load.clicked.connect(self.selectImage)
-        self.ui.color.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.stretch.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
-        self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
-        self.ui.checkShowCrosshair.clicked.connect(self.showFitsImage)
+        self.ui.color.currentIndexChanged.connect(self.showExisting)
+        self.ui.stretch.currentIndexChanged.connect(self.showExisting)
+        self.ui.zoom.currentIndexChanged.connect(self.showExisting)
+        self.ui.checkUseWCS.clicked.connect(self.showExisting)
+        self.ui.checkUsePixel.clicked.connect(self.showExisting)
+        self.ui.checkShowCrosshair.clicked.connect(self.showExisting)
         self.ui.solve.clicked.connect(self.solveImage)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
-        self.signals.show.connect(self.showFitsImage)
-        self.signals.showExt.connect(self.showFitsImageExt)
+        self.signals.showExisting.connect(self.showExisting)
+        self.signals.showFitsFile.connect(self.showFitsFile)
         self.signals.solve.connect(self.solveImage)
 
         return True
@@ -216,19 +216,19 @@ class ImageWindow(widget.MWidget):
 
         # gui signals
         self.ui.load.clicked.disconnect(self.selectImage)
-        self.ui.color.currentIndexChanged.disconnect(self.showFitsImage)
-        self.ui.stretch.currentIndexChanged.disconnect(self.showFitsImage)
-        self.ui.zoom.currentIndexChanged.disconnect(self.showFitsImage)
-        self.ui.checkUseWCS.clicked.disconnect(self.showFitsImage)
-        self.ui.checkUsePixel.clicked.disconnect(self.showFitsImage)
-        self.ui.checkShowCrosshair.clicked.disconnect(self.showFitsImage)
+        self.ui.color.currentIndexChanged.disconnect(self.showExisting)
+        self.ui.stretch.currentIndexChanged.disconnect(self.showExisting)
+        self.ui.zoom.currentIndexChanged.disconnect(self.showExisting)
+        self.ui.checkUseWCS.clicked.disconnect(self.showExisting)
+        self.ui.checkUsePixel.clicked.disconnect(self.showExisting)
+        self.ui.checkShowCrosshair.clicked.disconnect(self.showExisting)
         self.ui.solve.clicked.disconnect(self.solveImage)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
-        self.signals.show.disconnect(self.showFitsImage)
-        self.signals.showExt.disconnect(self.showFitsImageExt)
+        self.signals.showExisting.disconnect(self.showExisting)
+        self.signals.showFitsFile.disconnect(self.showFitsFile)
         self.signals.solve.disconnect(self.solveImage)
 
         plt.close(self.imageMat.figure)
@@ -260,6 +260,8 @@ class ImageWindow(widget.MWidget):
 
     def updateWindowsStats(self):
         """
+        updateWindowsStats changes dynamically the enable and disable of user gui elements
+        depending of the actual state of processing
 
         :return: true for test purpose
 
@@ -302,7 +304,7 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit(f'Image [{name}] selected', 0)
         self.ui.checkUsePixel.setChecked(True)
         self.folder = os.path.dirname(loadFilePath)
-        self.signals.show.emit()
+        self.signals.showFitsFile.emit(self.imageFileName)
 
         return True
 
@@ -339,7 +341,7 @@ class ImageWindow(widget.MWidget):
         text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
         text += f'Scale: {rData.scale:4.3f}'
         self.app.message.emit('Solved: ' + text, 0)
-        self.signals.show.emit()
+        self.signals.showFitsFile.emit(self.imageFileName)
 
         return True
 
@@ -620,9 +622,9 @@ class ImageWindow(widget.MWidget):
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         return axe
 
-    def showFitsImage(self):
+    def showImage(self):
         """
-        showFitsImage shows the fits image. therefore it calculates color map, stretch,
+        showImage shows the fits image. therefore it calculates color map, stretch,
         zoom and other topics.
 
         :return: success
@@ -670,7 +672,7 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def showFitsImageExt(self, imagePath=''):
+    def showFitsFile(self, imagePath=''):
         """
 
         :param imagePath:
@@ -680,11 +682,18 @@ class ImageWindow(widget.MWidget):
         if not imagePath:
             return False
 
-        self.imageFileName = imagePath
         full, short, ext = self.extractNames([imagePath])
         self.ui.imageFileName.setText(short)
-        self.showFitsImage()
+        self.showImage()
 
+        return True
+
+    def showExisting(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.showImage()
         return True
 
     def exposeRaw(self):
@@ -734,8 +743,8 @@ class ImageWindow(widget.MWidget):
         self.ui.abortImage.setEnabled(False)
 
         self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
-
         self.app.message.emit('Image exposed', 0)
+        self.signals.showFitsFile.emit(self.imageFileName)
 
         return True
 
@@ -760,7 +769,7 @@ class ImageWindow(widget.MWidget):
         self.ui.abortImage.setEnabled(True)
 
         self.app.imaging.signals.saved.connect(self.exposeImageDone)
-        self.app.imaging.signals.saved.connect(self.showFitsImage)
+        self.app.imaging.signals.saved.connect(self.showFitsFile)
         self.exposeRaw()
 
         return True
@@ -785,7 +794,7 @@ class ImageWindow(widget.MWidget):
         self.ui.solve.setEnabled(False)
         self.ui.abortImage.setEnabled(True)
 
-        self.app.imaging.signals.saved.connect(self.showFitsImage)
+        self.app.imaging.signals.saved.connect(self.showFitsFile)
         self.app.imaging.signals.saved.connect(self.exposeRaw)
         self.exposeRaw()
 
@@ -800,7 +809,7 @@ class ImageWindow(widget.MWidget):
         """
 
         self.app.imaging.abort()
-        self.app.imaging.signals.saved.disconnect(self.showFitsImage)
+        self.app.imaging.signals.saved.disconnect(self.showFitsFile)
 
         # for disconnection we have to split which slots were connected to disable the
         # right ones

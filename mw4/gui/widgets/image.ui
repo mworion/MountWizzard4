@@ -176,7 +176,7 @@
        <item row="2" column="5">
         <widget class="QCheckBox" name="checkStackImages">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="text">
           <string>Stack Images</string>

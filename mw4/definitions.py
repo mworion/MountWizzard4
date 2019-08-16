@@ -47,7 +47,7 @@ MPoint = namedtuple('MPoint', 'mParam iParam point mData rData')
 # during solving we extract some data from headers and store them
 
 # solving values
-Solve = namedtuple('Solve', 'raJ2000 decJ2000 angle scale error flipped')
+Solve = namedtuple('Solve', 'raJ2000 decJ2000 angle scale error flipped path')
 
 # overall structure which as well add the solve success part
 Solution = namedtuple('Solution', 'success solve')

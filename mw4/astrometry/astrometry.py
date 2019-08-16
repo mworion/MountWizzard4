@@ -249,7 +249,8 @@ class Astrometry(object):
                       angle=angle,
                       scale=scale,
                       error=error,
-                      flipped=flipped)
+                      flipped=flipped,
+                      path='')
 
         if not updateFits:
             return solve, fitsHeader
@@ -499,6 +500,13 @@ class Astrometry(object):
                                                     updateFits=updateFits)
             fitsHDU[0].header = header
 
+        solve = Solve(raJ2000=solve.raJ2000,
+                      decJ2000=solve.decJ2000,
+                      angle=solve.angle,
+                      scale=solve.scale,
+                      error=solve.error,
+                      flipped=solve.flipped,
+                      path=fitsPath)
         self.result = Solution(success=True,
                                solve=solve)
         return True

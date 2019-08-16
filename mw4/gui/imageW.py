@@ -49,9 +49,9 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     __all__ = ['ImageWindowSignals']
     version = '0.101'
 
-    showExisting = PyQt5.QtCore.pyqtSignal()
+    showCurrent = PyQt5.QtCore.pyqtSignal()
     showFitsFile = PyQt5.QtCore.pyqtSignal(object)
-    solve = PyQt5.QtCore.pyqtSignal()
+    solve = PyQt5.QtCore.pyqtSignal(object)
 
 
 class ImageWindow(widget.MWidget):
@@ -192,18 +192,18 @@ class ImageWindow(widget.MWidget):
 
         # gui signals
         self.ui.load.clicked.connect(self.selectImage)
-        self.ui.color.currentIndexChanged.connect(self.showExisting)
-        self.ui.stretch.currentIndexChanged.connect(self.showExisting)
-        self.ui.zoom.currentIndexChanged.connect(self.showExisting)
-        self.ui.checkUseWCS.clicked.connect(self.showExisting)
-        self.ui.checkUsePixel.clicked.connect(self.showExisting)
-        self.ui.checkShowCrosshair.clicked.connect(self.showExisting)
-        self.ui.solve.clicked.connect(self.solveImage)
+        self.ui.color.currentIndexChanged.connect(self.showCurrent)
+        self.ui.stretch.currentIndexChanged.connect(self.showCurrent)
+        self.ui.zoom.currentIndexChanged.connect(self.showCurrent)
+        self.ui.checkUseWCS.clicked.connect(self.showCurrent)
+        self.ui.checkUsePixel.clicked.connect(self.showCurrent)
+        self.ui.checkShowCrosshair.clicked.connect(self.showCurrent)
+        self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
-        self.signals.showExisting.connect(self.showExisting)
+        self.signals.showCurrent.connect(self.showCurrent)
         self.signals.showFitsFile.connect(self.showFitsFile)
         self.signals.solve.connect(self.solveImage)
 
@@ -224,18 +224,18 @@ class ImageWindow(widget.MWidget):
 
         # gui signals
         self.ui.load.clicked.disconnect(self.selectImage)
-        self.ui.color.currentIndexChanged.disconnect(self.showExisting)
-        self.ui.stretch.currentIndexChanged.disconnect(self.showExisting)
-        self.ui.zoom.currentIndexChanged.disconnect(self.showExisting)
-        self.ui.checkUseWCS.clicked.disconnect(self.showExisting)
-        self.ui.checkUsePixel.clicked.disconnect(self.showExisting)
-        self.ui.checkShowCrosshair.clicked.disconnect(self.showExisting)
-        self.ui.solve.clicked.disconnect(self.solveImage)
+        self.ui.color.currentIndexChanged.disconnect(self.showCurrent)
+        self.ui.stretch.currentIndexChanged.disconnect(self.showCurrent)
+        self.ui.zoom.currentIndexChanged.disconnect(self.showCurrent)
+        self.ui.checkUseWCS.clicked.disconnect(self.showCurrent)
+        self.ui.checkUsePixel.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowCrosshair.clicked.disconnect(self.showCurrent)
+        self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
-        self.signals.showExisting.disconnect(self.showExisting)
+        self.signals.showCurrent.disconnect(self.showCurrent)
         self.signals.showFitsFile.disconnect(self.showFitsFile)
         self.signals.solve.disconnect(self.solveImage)
 
@@ -351,98 +351,6 @@ class ImageWindow(widget.MWidget):
         self.signals.showFitsFile.emit(self.imageFileName)
 
         return True
-
-    def solveDone(self, result):
-        """
-        solveDone is the partner method for solveImage. it enables the gui elements back
-        removes the signal / slot connection for receiving solving results, checks the
-        solving result itself and emits messages about the result. if solving succeeded,
-        solveDone will redraw the image in the image window.
-
-        :param result: result (named tuple)
-        :return: success
-        """
-
-        self.deviceStat['solve'] = False
-        self.app.astrometry.signals.done.disconnect(self.solveDone)
-
-        if not result.success:
-            self.app.message.emit('Solving error', 2)
-            return False
-
-        rData = result.solve
-        if not isinstance(rData, tuple):
-            return False
-        text = f'Ra: {transform.convertToHMS(rData.raJ2000)} '
-        text += f'({rData.raJ2000.hours:4.3f}), '
-        text += f'Dec: {transform.convertToDMS(rData.decJ2000)} '
-        text += f'({rData.decJ2000.degrees:4.3f}), '
-        text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
-        text += f'Scale: {rData.scale:4.3f}'
-        self.app.message.emit('Solved: ' + text, 0)
-        self.signals.showFitsFile.emit(self.imageFileName)
-
-        return True
-
-    def solveImage(self):
-        """
-        solveImage calls astrometry for solving th actual image in a threading manner.
-        as result the gui will be active while the solving process takes part a
-        background task. if the check update fits is selected the solution will be
-        stored in the image header as well.
-        solveImage will disable gui elements which might interfere when doing solve
-        in background and sets the signal / slot connection for receiving the signal
-        for finishing. this is linked to a second method solveDone, which is basically
-        the partner method for handling this async behaviour of the gui.
-        finally it emit a message about the start of solving
-
-        :return:
-        """
-
-        updateFits = True
-        solveTimeout = self.app.mainW.ui.solveTimeout.value()
-        searchRadius = self.app.mainW.ui.searchRadius.value()
-        app = self.app.mainW.ui.astrometryDevice.currentText()
-        self.app.astrometry.solveThreading(app=app,
-                                           fitsPath=self.imageFileName,
-                                           radius=searchRadius,
-                                           timeout=solveTimeout,
-                                           updateFits=updateFits,
-                                           )
-        self.deviceStat['solve'] = True
-        self.app.astrometry.signals.done.connect(self.solveDone)
-        self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
-
-        return True
-
-    def solveFitsFile(self, imagePath=''):
-        """
-        solveFitsFile
-
-        :param imagePath:
-        :return: true for test purpose
-        """
-
-        if not imagePath:
-            return False
-
-        full, short, ext = self.extractNames([imagePath])
-        self.ui.imageFileName.setText(short)
-        self.solveImage()
-
-        return True
-
-    def abortSolve(self):
-        """
-        abortSolve stops the exposure and resets the gui and the callback signals to default
-        values
-
-        :return: success
-        """
-
-        suc = self.app.astrometry.abort()
-
-        return suc
 
     def writeHeaderToGUI(self, header=None):
         """
@@ -688,9 +596,6 @@ class ImageWindow(widget.MWidget):
         if not os.path.isfile(imagePath):
             return False
 
-        full, short, ext = self.extractNames([self.imageFileName])
-        self.ui.imageFileName.setText(short)
-
         with fits.open(imagePath, mode='update') as fitsHandle:
             self.imageData = fitsHandle[0].data
             header = fitsHandle[0].header
@@ -733,13 +638,14 @@ class ImageWindow(widget.MWidget):
         if not imagePath:
             return False
 
+        self.imageFileName = imagePath
         full, short, ext = self.extractNames([imagePath])
         self.ui.imageFileName.setText(short)
         self.showImage()
 
         return True
 
-    def showExisting(self):
+    def showCurrent(self):
         """
 
         :return: true for test purpose
@@ -778,12 +684,13 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def exposeImageDone(self):
+    def exposeImageDone(self, imagePath=''):
         """
         exposeImageDone is the partner method to exposeImage. it resets the gui elements
         to it's default state and disconnects the signal for the callback. finally when
         all elements are done it emits the showImage signal.
 
+        :param imagePath:
         :return: True for test purpose
         """
 
@@ -792,9 +699,10 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit('Image exposed', 0)
 
         if self.ui.checkAutoSolve.isChecked():
-            self.solveFitsFile(self.imageFileName)
+            self.solveImage(self.imageFileName)
         else:
-            self.signals.showFitsFile.emit(self.imageFileName)
+            self.signals.showFitsFile.emit(imagePath)
+            print('expose -> showFits')
 
         return True
 
@@ -818,20 +726,23 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def exposeImageNDone(self):
+    def exposeImageNDone(self, imagePath=''):
         """
         exposeImageNDone is the partner method to exposeImage. it resets the gui elements
         to it's default state and disconnects the signal for the callback. finally when
         all elements are done it emits the showImage signal.
 
+        :param imagePath:
         :return: True for test purpose
         """
 
         self.app.message.emit('Image exposed', 0)
-        self.signals.showFitsFile.emit(self.imageFileName)
 
         if self.ui.checkAutoSolve.isChecked():
-            self.solveFitsFile(copy.copy(self.imageFileName))
+            self.signals.solve.emit(imagePath)
+        else:
+            self.signals.showFitsFile.emit(imagePath)
+            print('exposeN -> showFits')
 
         self.exposeRaw()
 
@@ -881,3 +792,98 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit('Image exposing aborted', 2)
 
         return True
+
+    def solveDone(self, result):
+        """
+        solveDone is the partner method for solveImage. it enables the gui elements back
+        removes the signal / slot connection for receiving solving results, checks the
+        solving result itself and emits messages about the result. if solving succeeded,
+        solveDone will redraw the image in the image window.
+
+        :param result: result (named tuple)
+        :return: success
+        """
+
+        self.deviceStat['solve'] = False
+        self.app.astrometry.signals.done.disconnect(self.solveDone)
+
+        if not result.success:
+            self.app.message.emit('Solving error', 2)
+            return False
+
+        rData = result.solve
+        if not isinstance(rData, tuple):
+            return False
+        text = f'Ra: {transform.convertToHMS(rData.raJ2000)} '
+        text += f'({rData.raJ2000.hours:4.3f}), '
+        text += f'Dec: {transform.convertToDMS(rData.decJ2000)} '
+        text += f'({rData.decJ2000.degrees:4.3f}), '
+        text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
+        text += f'Scale: {rData.scale:4.3f}'
+        self.app.message.emit('Solved: ' + text, 0)
+
+        isStack = self.ui.checkStackImages.isChecked()
+        isAutoSolve = self.ui.checkAutoSolve.isChecked()
+        if not isStack or isAutoSolve:
+            print('solve -> show fits')
+            self.signals.showFitsFile.emit(result.solve.path)
+
+        return True
+
+    def solveImage(self, imagePath=''):
+        """
+        solveImage calls astrometry for solving th actual image in a threading manner.
+        as result the gui will be active while the solving process takes part a
+        background task. if the check update fits is selected the solution will be
+        stored in the image header as well.
+        solveImage will disable gui elements which might interfere when doing solve
+        in background and sets the signal / slot connection for receiving the signal
+        for finishing. this is linked to a second method solveDone, which is basically
+        the partner method for handling this async behaviour of the gui.
+        finally it emit a message about the start of solving
+
+        :param imagePath:
+        :return:
+        """
+
+        if not imagePath:
+            return False
+        if not os.path.isfile(imagePath):
+            return False
+
+        updateFits = True
+        solveTimeout = self.app.mainW.ui.solveTimeout.value()
+        searchRadius = self.app.mainW.ui.searchRadius.value()
+        app = self.app.mainW.ui.astrometryDevice.currentText()
+        self.app.astrometry.solveThreading(app=app,
+                                           fitsPath=imagePath,
+                                           radius=searchRadius,
+                                           timeout=solveTimeout,
+                                           updateFits=updateFits,
+                                           )
+        self.deviceStat['solve'] = True
+        self.app.astrometry.signals.done.connect(self.solveDone)
+        self.app.message.emit(f'Solving: [{imagePath}]', 0)
+
+        return True
+
+    def solveCurrent(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.signals.solve.emit(self.imageFileName)
+        return True
+
+    def abortSolve(self):
+        """
+        abortSolve stops the exposure and resets the gui and the callback signals to default
+        values
+
+        :return: success
+        """
+
+        suc = self.app.astrometry.abort()
+
+        return suc

@@ -76,6 +76,11 @@ class ImageWindow(widget.MWidget):
         self.imageFileNameOld = ''
         self.imageData = None
         self.folder = ''
+        self.deviceStat = {
+            'expose': False,
+            'exposeN': False,
+            'solve': False,
+        }
 
         self.colorMaps = {'Grey': 'gray',
                           'Cool': 'plasma',
@@ -267,17 +272,58 @@ class ImageWindow(widget.MWidget):
 
         """
 
-        if self.app.mainW.deviceStat['astrometry']:
-            self.ui.solve.setEnabled(True)
-        else:
+        if self.deviceStat['expose']:
+            self.ui.exposeN.setEnabled(False)
             self.ui.solve.setEnabled(False)
+            self.ui.load.setEnabled(False)
+            self.ui.abortImage.setEnabled(True)
 
-        if self.app.mainW.deviceStat['imaging']:
-            self.ui.expose.setEnabled(True)
-            self.ui.exposeN.setEnabled(True)
-        else:
+        elif self.deviceStat['exposeN']:
+            self.ui.expose.setEnabled(False)
+            self.ui.solve.setEnabled(False)
+            self.ui.load.setEnabled(False)
+            self.ui.abortImage.setEnabled(True)
+
+        elif self.deviceStat['solve']:
+            self.ui.abortSolve.setEnabled(True)
             self.ui.expose.setEnabled(False)
             self.ui.exposeN.setEnabled(False)
+            self.ui.load.setEnabled(False)
+
+        else:
+            self.ui.solve.setEnabled(True)
+            self.ui.expose.setEnabled(True)
+            self.ui.exposeN.setEnabled(True)
+            self.ui.load.setEnabled(True)
+            self.ui.abortImage.setEnabled(False)
+            self.ui.abortSolve.setEnabled(False)
+
+        if not self.app.mainW.deviceStat['imaging']:
+            self.ui.expose.setEnabled(False)
+            self.ui.exposeN.setEnabled(False)
+
+        if not self.app.mainW.deviceStat['astrometry']:
+            self.ui.solve.setEnabled(False)
+
+        if self.deviceStat['expose']:
+            self.changeStyleDynamic(self.ui.expose, 'running', 'true')
+            self.changeStyleDynamic(self.ui.abortImage, 'cancel', 'true')
+
+        elif self.deviceStat['exposeN']:
+            self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
+            self.changeStyleDynamic(self.ui.abortImage, 'cancel', 'true')
+
+        else:
+            self.changeStyleDynamic(self.ui.expose, 'running', 'false')
+            self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
+            self.changeStyleDynamic(self.ui.abortImage, 'cancel', 'false')
+
+        if self.deviceStat['solve']:
+            self.changeStyleDynamic(self.ui.solve, 'running', 'true')
+            self.changeStyleDynamic(self.ui.abortSolve, 'cancel', 'true')
+        else:
+            self.changeStyleDynamic(self.ui.solve, 'running', 'false')
+            self.changeStyleDynamic(self.ui.abortSolve, 'cancel', 'false')
 
         return True
 
@@ -319,12 +365,7 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        self.changeStyleDynamic(self.ui.solve, 'running', 'false')
-        self.ui.expose.setEnabled(True)
-        self.ui.abortSolve.setEnabled(False)
-        self.ui.exposeN.setEnabled(True)
-        self.ui.load.setEnabled(True)
-
+        self.deviceStat['solve'] = False
         self.app.astrometry.signals.done.disconnect(self.solveDone)
 
         if not result.success:
@@ -370,12 +411,7 @@ class ImageWindow(widget.MWidget):
                                            timeout=solveTimeout,
                                            updateFits=updateFits,
                                            )
-        self.changeStyleDynamic(self.ui.solve, 'running', 'true')
-        self.ui.abortSolve.setEnabled(True)
-        self.ui.expose.setEnabled(False)
-        self.ui.exposeN.setEnabled(False)
-        self.ui.load.setEnabled(False)
-
+        self.deviceStat['solve'] = True
         self.app.astrometry.signals.done.connect(self.solveDone)
         self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
 
@@ -736,12 +772,7 @@ class ImageWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        self.changeStyleDynamic(self.ui.expose, 'running', 'false')
-        self.ui.solve.setEnabled(True)
-        self.ui.exposeN.setEnabled(True)
-        self.ui.load.setEnabled(True)
-        self.ui.abortImage.setEnabled(False)
-
+        self.deviceStat['expose'] = False
         self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
         self.app.message.emit('Image exposed', 0)
         self.signals.showFitsFile.emit(self.imageFileName)
@@ -762,14 +793,23 @@ class ImageWindow(widget.MWidget):
         if not self.app.imaging.data:
             return False
 
-        self.changeStyleDynamic(self.ui.expose, 'running', 'true')
-        self.ui.exposeN.setEnabled(False)
-        self.ui.load.setEnabled(False)
-        self.ui.solve.setEnabled(False)
-        self.ui.abortImage.setEnabled(True)
-
+        self.deviceStat['expose'] = True
         self.app.imaging.signals.saved.connect(self.exposeImageDone)
-        self.app.imaging.signals.saved.connect(self.showFitsFile)
+        self.exposeRaw()
+
+        return True
+
+    def exposeImageNDone(self):
+        """
+        exposeImageNDone is the partner method to exposeImage. it resets the gui elements
+        to it's default state and disconnects the signal for the callback. finally when
+        all elements are done it emits the showImage signal.
+
+        :return: True for test purpose
+        """
+
+        self.app.message.emit('Image exposed', 0)
+        self.signals.showFitsFile.emit(self.imageFileName)
         self.exposeRaw()
 
         return True
@@ -788,14 +828,8 @@ class ImageWindow(widget.MWidget):
         if not self.app.imaging.data:
             return False
 
-        self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
-        self.ui.expose.setEnabled(False)
-        self.ui.load.setEnabled(False)
-        self.ui.solve.setEnabled(False)
-        self.ui.abortImage.setEnabled(True)
-
-        self.app.imaging.signals.saved.connect(self.showFitsFile)
-        self.app.imaging.signals.saved.connect(self.exposeRaw)
+        self.deviceStat['exposeN'] = True
+        self.app.imaging.signals.saved.connect(self.exposeImageNDone)
         self.exposeRaw()
 
         return True
@@ -809,27 +843,18 @@ class ImageWindow(widget.MWidget):
         """
 
         self.app.imaging.abort()
-        self.app.imaging.signals.saved.disconnect(self.showFitsFile)
 
         # for disconnection we have to split which slots were connected to disable the
         # right ones
-
-        if self.ui.exposeN.isEnabled():
-            self.app.imaging.signals.saved.disconnect(self.exposeRaw)
-        if self.ui.expose.isEnabled():
+        if self.deviceStat['expose']:
             self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
+        if self.deviceStat['exposeN']:
+            self.app.imaging.signals.saved.disconnect(self.exposeImageNDone)
 
         # last image file was nor stored, so getting last valid it back
         self.imageFileName = self.imageFileNameOld
-
-        self.changeStyleDynamic(self.ui.expose, 'running', 'false')
-        self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
-        self.ui.solve.setEnabled(True)
-        self.ui.expose.setEnabled(True)
-        self.ui.exposeN.setEnabled(True)
-        self.ui.load.setEnabled(True)
-        self.ui.abortImage.setEnabled(False)
-
+        self.deviceStat['expose'] = False
+        self.deviceStat['exposeN'] = False
         self.app.message.emit('Image exposing aborted', 2)
 
         return True

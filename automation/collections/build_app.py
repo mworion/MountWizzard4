@@ -41,13 +41,35 @@ def windows(c):
         runMW(c, f'scp dist/*.tar.gz {buildWindows}/mw4.tar.gz')
     with c.cd('remote_scripts/windows'):
         runMW(c, f'scp mw4_windows.spec {buildWindows}')
-        runMW(c, f'scp mw4_windows_console.spec {buildWindows}')
     with c.cd('images'):
         runMW(c, f'scp mw4.ico {buildWindows}')
     with c.cd('remote_scripts/windows'):
         runMW(c, f'ssh {userWindows} < build_windows.bat')
     with c.cd('../dist'):
         runMW(c, f'scp {buildWindows}/dist/MountWizzard4.exe .')
+
+
+@task(pre=[])
+def windows_dbg(c):
+    printMW('build windows app and exe debug')
+    with c.cd('..'):
+        runMW(c, 'rm -rf ./dist/*.exe')
+    runMW(c, f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
+    runMW(c, f'ssh {userWindows} "mkdir MountWizzard"')
+    with c.cd('../../mountcontrol'):
+        runMW(c, f'scp dist/*.tar.gz {buildWindows}/mc.tar.gz')
+    with c.cd('../../indibase'):
+        runMW(c, f'scp dist/*.tar.gz {buildWindows}/ib.tar.gz')
+    with c.cd('..'):
+        runMW(c, f'scp dist/*.tar.gz {buildWindows}/mw4.tar.gz')
+    with c.cd('remote_scripts/windows'):
+        runMW(c, f'scp mw4_windows_dbg.spec {buildWindows}')
+    with c.cd('images'):
+        runMW(c, f'scp mw4.ico {buildWindows}')
+    with c.cd('remote_scripts/windows'):
+        runMW(c, f'ssh {userWindows} < build_windows_dbg.bat')
+    with c.cd('../dist'):
+        runMW(c, f'scp {buildWindows}/dist/MountWizzard4-dbg.exe .')
 
 
 @task(pre=[])

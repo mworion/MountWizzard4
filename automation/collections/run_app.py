@@ -38,6 +38,17 @@ def windows(c):
 
 
 @task(pre=[])
+def windows_dbg(c):
+    printMW('deploy windows app debug')
+    runMW(c, f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
+    runMW(c, f'ssh {userWindows} "mkdir mountwizzard4"')
+    with c.cd('../dist'):
+        runMW(c, f'scp MountWizzard4-dbg.exe {workWindows}')
+    with c.cd('remote_scripts/windows'):
+        runMW(c, f'ssh {userWindows} < start_windows_app_dbg.bat')
+
+
+@task(pre=[])
 def mac(c):
     printMW('run mac app')
     runMW(c, f'ssh {userMAC} rm -rf mountwizzard4')

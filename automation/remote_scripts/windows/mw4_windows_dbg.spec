@@ -51,6 +51,9 @@ a = Analysis([packageDir + '/loader.py'],
              ],
              hiddenimports=[
                  'numpy.lib.recfunctions',
+                 'numpy.random.common',
+                 'numpy.random.bounded_integers',
+                 'numpy.random.entropy',
                  'shelve',
                  ],
              hookspath=[],
@@ -103,7 +106,7 @@ from mw4.mainApp import MountWizzard4
 BUILD_NO = MountWizzard4.version
 
 buildFile = distDir + '/MountWizzard4.exe'
-buildFileNumber = distDir + '/MountWizzard4-console.exe'
+buildFileNumber = distDir + '/MountWizzard4-dbg.exe'
 
 print(BUILD_NO)
 

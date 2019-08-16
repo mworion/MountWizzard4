@@ -83,6 +83,7 @@ def build_all(c):
     build_dist.indibase(c)
     build_dist.mountwizzard(c)
     build_app.windows(c)
+    build_app.windows-dbg(c)
     build_app.mac(c)
 
 
@@ -92,6 +93,7 @@ def deploy_all(c):
     deploy_dist.ubuntu(c)
     deploy_dist.mate(c)
     deploy_dist.windows(c)
+    deploy_dist.windows-dbg(c)
     deploy_dist.mac(c)
 
 
@@ -102,6 +104,7 @@ def run_all(c):
     run_dist.mate(c)
     run_dist.windows(c)
     run_app.windows(c)
+    run_app.windows-dbg(c)
     run_dist.mac(c)
     run_app.mac(c)
 

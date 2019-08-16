@@ -613,7 +613,7 @@ class BuildModel(object):
 
         # showing the expose image in the image window
         if self.app.imageW:
-            self.app.imageW.signals.showFitsFile.emit(mPoint.mParam.path)
+            self.app.imageW.signals.showImage.emit(mPoint.mParam.path)
 
         self.app.astrometry.solveThreading(app=mPoint.mParam.astrometry,
                                            fitsPath=mPoint.mParam.path,

@@ -50,8 +50,8 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     version = '0.101'
 
     showCurrent = PyQt5.QtCore.pyqtSignal()
-    showFitsFile = PyQt5.QtCore.pyqtSignal(object)
-    solve = PyQt5.QtCore.pyqtSignal(object)
+    showImage = PyQt5.QtCore.pyqtSignal(object)
+    solveImage = PyQt5.QtCore.pyqtSignal(object)
 
 
 class ImageWindow(widget.MWidget):
@@ -187,7 +187,7 @@ class ImageWindow(widget.MWidget):
         :return: true for test purpose
         """
 
-        self.showFitsFile(self.imageFileName)
+        self.showImage(self.imageFileName)
         self.show()
 
         # gui signals
@@ -204,8 +204,8 @@ class ImageWindow(widget.MWidget):
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.signals.showCurrent.connect(self.showCurrent)
-        self.signals.showFitsFile.connect(self.showFitsFile)
-        self.signals.solve.connect(self.solveImage)
+        self.signals.showImage.connect(self.showImage)
+        self.signals.solveImage.connect(self.solveImage)
 
         return True
 
@@ -236,8 +236,8 @@ class ImageWindow(widget.MWidget):
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
         self.signals.showCurrent.disconnect(self.showCurrent)
-        self.signals.showFitsFile.disconnect(self.showFitsFile)
-        self.signals.solve.disconnect(self.solveImage)
+        self.signals.showImage.disconnect(self.showImage)
+        self.signals.solveImage.disconnect(self.solveImage)
 
         plt.close(self.imageMat.figure)
         super().closeEvent(closeEvent)
@@ -284,16 +284,16 @@ class ImageWindow(widget.MWidget):
             self.ui.expose.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortImage.setEnabled(True)
-
-        elif self.deviceStat['solve']:
-            self.ui.abortSolve.setEnabled(True)
-
         else:
             self.ui.solve.setEnabled(True)
             self.ui.expose.setEnabled(True)
             self.ui.exposeN.setEnabled(True)
             self.ui.load.setEnabled(True)
             self.ui.abortImage.setEnabled(False)
+
+        if self.deviceStat['solve']:
+            self.ui.abortSolve.setEnabled(True)
+        else:
             self.ui.abortSolve.setEnabled(False)
 
         if not self.app.mainW.deviceStat['imaging']:
@@ -348,7 +348,7 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit(f'Image [{name}] selected', 0)
         self.ui.checkUsePixel.setChecked(True)
         self.folder = os.path.dirname(loadFilePath)
-        self.signals.showFitsFile.emit(self.imageFileName)
+        self.signals.showImage.emit(self.imageFileName)
 
         return True
 
@@ -581,20 +581,23 @@ class ImageWindow(widget.MWidget):
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         return axe
 
-    def showImage(self):
+    def showImage(self, imagePath=''):
         """
         showImage shows the fits image. therefore it calculates color map, stretch,
         zoom and other topics.
 
+        :param imagePath:
         :return: success
         """
-
-        imagePath = self.imageFileName
 
         if not imagePath:
             return False
         if not os.path.isfile(imagePath):
             return False
+
+        self.imageFileName = imagePath
+        full, short, ext = self.extractNames([imagePath])
+        self.ui.imageFileName.setText(short)
 
         with fits.open(imagePath, mode='update') as fitsHandle:
             self.imageData = fitsHandle[0].data
@@ -628,29 +631,12 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def showFitsFile(self, imagePath=''):
-        """
-
-        :param imagePath:
-        :return: true for test purpose
-        """
-
-        if not imagePath:
-            return False
-
-        self.imageFileName = imagePath
-        full, short, ext = self.extractNames([imagePath])
-        self.ui.imageFileName.setText(short)
-        self.showImage()
-
-        return True
-
     def showCurrent(self):
         """
 
         :return: true for test purpose
         """
-        self.showImage()
+        self.showImage(self.imageFileName)
         return True
 
     def exposeRaw(self):
@@ -699,10 +685,9 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit('Image exposed', 0)
 
         if self.ui.checkAutoSolve.isChecked():
-            self.solveImage(self.imageFileName)
+            self.signals.solveImage.emit(imagePath)
         else:
-            self.signals.showFitsFile.emit(imagePath)
-            print('expose -> showFits')
+            self.signals.showImage.emit(imagePath)
 
         return True
 
@@ -739,10 +724,9 @@ class ImageWindow(widget.MWidget):
         self.app.message.emit('Image exposed', 0)
 
         if self.ui.checkAutoSolve.isChecked():
-            self.signals.solve.emit(imagePath)
+            self.signals.solveImage.emit(imagePath)
         else:
-            self.signals.showFitsFile.emit(imagePath)
-            print('exposeN -> showFits')
+            self.signals.showImage.emit(imagePath)
 
         self.exposeRaw()
 
@@ -825,8 +809,7 @@ class ImageWindow(widget.MWidget):
         isStack = self.ui.checkStackImages.isChecked()
         isAutoSolve = self.ui.checkAutoSolve.isChecked()
         if not isStack or isAutoSolve:
-            print('solve -> show fits')
-            self.signals.showFitsFile.emit(result.solve.path)
+            self.signals.showImage.emit(result.solve.path)
 
         return True
 
@@ -873,7 +856,7 @@ class ImageWindow(widget.MWidget):
         :return: true for test purpose
         """
 
-        self.signals.solve.emit(self.imageFileName)
+        self.signals.solveImage.emit(self.imageFileName)
         return True
 
     def abortSolve(self):

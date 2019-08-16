@@ -19,6 +19,7 @@
 # standard libraries
 import logging
 import os
+import copy
 # external packages
 import PyQt5.QtWidgets
 from astropy.io import fits
@@ -148,6 +149,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
         self.ui.checkStackImages.setChecked(config.get('checkStackImages', False))
         self.ui.checkShowCrosshair.setChecked(config.get('checkShowCrosshair', False))
+        self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
 
         return True
 
@@ -173,6 +175,7 @@ class ImageWindow(widget.MWidget):
         config['checkUseWCS'] = self.ui.checkUseWCS.isChecked()
         config['checkStackImages'] = self.ui.checkStackImages.isChecked()
         config['checkShowCrosshair'] = self.ui.checkShowCrosshair.isChecked()
+        config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
 
         return True
 
@@ -274,21 +277,16 @@ class ImageWindow(widget.MWidget):
 
         if self.deviceStat['expose']:
             self.ui.exposeN.setEnabled(False)
-            self.ui.solve.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortImage.setEnabled(True)
 
         elif self.deviceStat['exposeN']:
             self.ui.expose.setEnabled(False)
-            self.ui.solve.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortImage.setEnabled(True)
 
         elif self.deviceStat['solve']:
             self.ui.abortSolve.setEnabled(True)
-            self.ui.expose.setEnabled(False)
-            self.ui.exposeN.setEnabled(False)
-            self.ui.load.setEnabled(False)
 
         else:
             self.ui.solve.setEnabled(True)
@@ -401,7 +399,7 @@ class ImageWindow(widget.MWidget):
         :return:
         """
 
-        updateFits = self.ui.checkUpdateFits.isChecked()
+        updateFits = True
         solveTimeout = self.app.mainW.ui.solveTimeout.value()
         searchRadius = self.app.mainW.ui.searchRadius.value()
         app = self.app.mainW.ui.astrometryDevice.currentText()
@@ -414,6 +412,23 @@ class ImageWindow(widget.MWidget):
         self.deviceStat['solve'] = True
         self.app.astrometry.signals.done.connect(self.solveDone)
         self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
+
+        return True
+
+    def solveFitsFile(self, imagePath=''):
+        """
+        solveFitsFile
+
+        :param imagePath:
+        :return: true for test purpose
+        """
+
+        if not imagePath:
+            return False
+
+        full, short, ext = self.extractNames([imagePath])
+        self.ui.imageFileName.setText(short)
+        self.solveImage()
 
         return True
 
@@ -775,7 +790,11 @@ class ImageWindow(widget.MWidget):
         self.deviceStat['expose'] = False
         self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
         self.app.message.emit('Image exposed', 0)
-        self.signals.showFitsFile.emit(self.imageFileName)
+
+        if self.ui.checkAutoSolve.isChecked():
+            self.solveFitsFile(self.imageFileName)
+        else:
+            self.signals.showFitsFile.emit(self.imageFileName)
 
         return True
 
@@ -810,6 +829,10 @@ class ImageWindow(widget.MWidget):
 
         self.app.message.emit('Image exposed', 0)
         self.signals.showFitsFile.emit(self.imageFileName)
+
+        if self.ui.checkAutoSolve.isChecked():
+            self.solveFitsFile(copy.copy(self.imageFileName))
+
         self.exposeRaw()
 
         return True

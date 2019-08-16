@@ -157,12 +157,6 @@ class MainWindow(MWidget,
 
         :return: True for test purpose
         """
-        #
-        # remove analysis tab while not developed
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 
         config = self.app.config
         self.ui.profile.setText(config.get('profileName'))
@@ -178,6 +172,15 @@ class MainWindow(MWidget,
         self.move(x, y)
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
+
+        ################################################################################
+        # remove analysis tab while not developed
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+        ################################################################################
+
         self.ui.mountHost.setText(config.get('mountHost', ''))
         self.mountHost()
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
@@ -417,24 +420,24 @@ class MainWindow(MWidget,
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
+        currentName = self.ui.mainTabWidget.currentWidget().objectName()
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'ManageModel')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+
         if self.deviceStat['mount']:
-            self.ui.deleteWorstPoint.setEnabled(True)
-            self.ui.clearModel.setEnabled(True)
-            self.ui.refreshModel.setEnabled(True)
-            self.ui.runTargetRMS.setEnabled(True)
-            self.ui.loadName.setEnabled(True)
-            self.ui.saveName.setEnabled(True)
-            self.ui.deleteName.setEnabled(True)
-            self.ui.refreshName.setEnabled(True)
+            self.ui.batchModel.setEnabled(True)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
         else:
-            self.ui.deleteWorstPoint.setEnabled(False)
-            self.ui.clearModel.setEnabled(False)
-            self.ui.refreshModel.setEnabled(False)
-            self.ui.runTargetRMS.setEnabled(False)
-            self.ui.loadName.setEnabled(False)
-            self.ui.saveName.setEnabled(False)
-            self.ui.deleteName.setEnabled(False)
-            self.ui.refreshName.setEnabled(False)
+            self.ui.batchModel.setEnabled(False)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            if currentName == 'ManageModel':
+                tabIndex -= 1
+
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, currentName)
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setCurrentIndex(tabIndex)
 
         if self.deviceStat['environment']:
             self.ui.environGroup.setEnabled(True)

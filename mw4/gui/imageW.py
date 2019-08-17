@@ -689,8 +689,8 @@ class ImageWindow(widget.MWidget):
                                 fastReadout=fastReadout,
                                 )
 
-        text = f'Duration: {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
         self.app.message.emit(f'Exposing: [{os.path.basename(imagePath)}]', 0)
+        text = f'Duration: {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
         self.app.message.emit(f'     {text}', 0)
 
         return True
@@ -707,7 +707,7 @@ class ImageWindow(widget.MWidget):
 
         self.deviceStat['expose'] = False
         self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
-        self.app.message.emit(f'Image exposed: [{os.path.basename(imagePath)}]', 0)
+        self.app.message.emit(f'Exposed: [{os.path.basename(imagePath)}]', 0)
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -741,7 +741,7 @@ class ImageWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        self.app.message.emit(f'Image exposed: [{os.path.basename(imagePath)}]', 0)
+        self.app.message.emit(f'Exposed: [{os.path.basename(imagePath)}]', 0)
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -789,7 +789,7 @@ class ImageWindow(widget.MWidget):
         self.imageFileName = self.imageFileNameOld
         self.deviceStat['expose'] = False
         self.deviceStat['exposeN'] = False
-        self.app.message.emit('Image exposing aborted', 2)
+        self.app.message.emit('Exposing aborted', 2)
 
         return True
 

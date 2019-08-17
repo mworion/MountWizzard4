@@ -17,11 +17,12 @@
 #
 ###########################################################
 from setuptools import setup
-from mw4.mainApp import MountWizzard4
+
+mw4_version = '0.107'
 
 setup(
     name='mw4',
-    version=MountWizzard4.version,
+    version=mw4_version,
     packages=[
         'mw4',
         'mw4.astrometry',

@@ -18,7 +18,7 @@
 ###########################################################
 from setuptools import setup
 
-mw4_version = '0.107'
+mw4_version = '0.108'
 
 setup(
     name='mw4',

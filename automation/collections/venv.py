@@ -54,11 +54,7 @@ def mac_local(c):
     with c.cd('/Users/mw/PycharmProjects'):
         runMW(c, 'rm -rf venv_test')
         runMW(c, 'virtualenv venv_test -p python3.7')
-        # runMW(c, 'scp MountWizzard4/dist/*.tar.gz mw4.tar.gz')
-        runMW(c, 'source venv_test/bin/activate; pip install indibase --no-cache-dir')
-        #runMW(c, 'source venv_test/bin/activate; pip install mountcontrol')
-        #runMW(c, 'source venv_test/bin/activate; pip install mw4')
-        runMW(c, 'rm -rf mw4.tar.gz')
+        runMW(c, 'source venv_test/bin/activate; pip install mw4 --no-cache-dir --upgrade')
 
 
 @task()

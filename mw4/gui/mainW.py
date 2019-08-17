@@ -33,6 +33,7 @@ from mw4.gui.mainWmixin.tabMount import Mount
 from mw4.gui.mainWmixin.tabEnviron import Environ
 from mw4.gui.mainWmixin.tabAlignMount import AlignMount
 from mw4.gui.mainWmixin.tabBuildModel import BuildModel
+from mw4.gui.mainWmixin.tabBuildFunc import BuildFunc
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
 from mw4.gui.mainWmixin.tabSatellite import Satellite
 from mw4.gui.mainWmixin.tabRelay import Relay
@@ -51,6 +52,7 @@ class MainWindow(MWidget,
                  Environ,
                  AlignMount,
                  BuildModel,
+                 BuildFunc,
                  ManageModel,
                  Satellite,
                  Relay,
@@ -106,6 +108,7 @@ class MainWindow(MWidget,
         Environ.__init__(self)
         AlignMount.__init__(self)
         BuildModel.__init__(self)
+        BuildFunc.__init__(self)
         ManageModel.__init__(self)
         Satellite.__init__(self)
         Relay.__init__(self)
@@ -200,6 +203,7 @@ class MainWindow(MWidget,
         Environ.initConfig(self)
         AlignMount.initConfig(self)
         BuildModel.initConfig(self)
+        BuildFunc.initConfig(self)
         ManageModel.initConfig(self)
         Satellite.initConfig(self)
         Relay.initConfig(self)
@@ -253,6 +257,7 @@ class MainWindow(MWidget,
         Environ.storeConfig(self)
         AlignMount.storeConfig(self)
         BuildModel.storeConfig(self)
+        BuildFunc.storeConfig(self)
         ManageModel.storeConfig(self)
         Satellite.storeConfig(self)
         Relay.storeConfig(self)
@@ -310,6 +315,7 @@ class MainWindow(MWidget,
         Environ.setupIcons(self)
         AlignMount.setupIcons(self)
         BuildModel.setupIcons(self)
+        BuildFunc.setupIcons(self)
         ManageModel.setupIcons(self)
         Satellite.setupIcons(self)
         Relay.setupIcons(self)

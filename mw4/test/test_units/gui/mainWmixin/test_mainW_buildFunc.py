@@ -112,7 +112,7 @@ def test_addResultToModel_1():
 
     solve = Solve(raJ2000=skyfield.api.Angle(degrees=0),
                   decJ2000=skyfield.api.Angle(degrees=0),
-                  angle=0, scale=1, error=1, flipped=False)
+                  angle=0, scale=1, error=1, flipped=False, path='')
     result = Solution(success=True, solve=solve)
     mPoint = MPoint(mParam=tuple(),
                     iParam=tuple(),
@@ -169,7 +169,7 @@ def test_modelSolveDone_3(qtbot):
                     rData=tuple())
 
     app.mainW.resultQueue.put(mPoint)
-    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
+    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False, path='')
     result = Solution(success=False, solve=solve)
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.modelSolveDone(result=result)
@@ -224,7 +224,7 @@ def test_modelSolveDone_6():
     app.mainW.resultQueue.put(mPoint)
     solve = Solve(raJ2000=skyfield.api.Angle(hours=0),
                   decJ2000=skyfield.api.Angle(degrees=0),
-                  angle=0, scale=1, error=1, flipped=False)
+                  angle=0, scale=1, error=1, flipped=False, path='')
     result = Solution(success=True, solve=solve)
     suc = app.mainW.modelSolveDone(result=result)
     assert suc
@@ -662,6 +662,7 @@ def test_modelFull_1():
 
 
 def test_modelFull_2():
+    app.mainW.genBuildMin()
     with mock.patch.object(app.mainW,
                            'modelCore',
                            return_value=True):
@@ -678,6 +679,7 @@ def test_modelAlign_1():
 
 
 def test_modelAlign_2():
+    app.mainW.genBuildMin()
     with mock.patch.object(app.mainW,
                            'modelCore',
                            return_value=True):

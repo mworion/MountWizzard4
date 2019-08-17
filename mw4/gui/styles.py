@@ -74,6 +74,11 @@ class MWStyles(object):
         font-weight: normal;
         font-size: 11pt;
     } 
+    QTextBrowser {
+        font-family: arial;
+        font-weight: normal;
+        font-size: 13pt;
+    }
     """
     NON_MAC_STYLE = """
     QWidget {
@@ -96,6 +101,11 @@ class MWStyles(object):
         font-family: Arial;
         font-weight: normal;
         font-size: 9pt;
+    }
+    QTextBrowser {
+        font-family: arial;
+        font-weight: normal;
+        font-size: 10pt;
     }
     """
     BASIC_STYLE = """

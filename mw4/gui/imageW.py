@@ -19,7 +19,6 @@
 # standard libraries
 import logging
 import os
-import copy
 # external packages
 import PyQt5.QtWidgets
 from astropy.io import fits
@@ -690,8 +689,9 @@ class ImageWindow(widget.MWidget):
                                 fastReadout=fastReadout,
                                 )
 
-        text = f'Exposing {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
-        self.app.message.emit(text, 0)
+        text = f'Duration: {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
+        self.app.message.emit(f'Exposing: [{os.path.basename(imagePath)}]', 0)
+        self.app.message.emit(f'     {text}', 0)
 
         return True
 
@@ -707,7 +707,7 @@ class ImageWindow(widget.MWidget):
 
         self.deviceStat['expose'] = False
         self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
-        self.app.message.emit('Image exposed', 0)
+        self.app.message.emit(f'Image exposed: [{os.path.basename(imagePath)}]', 0)
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -741,7 +741,7 @@ class ImageWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        self.app.message.emit('Image exposed', 0)
+        self.app.message.emit(f'Image exposed: [{os.path.basename(imagePath)}]', 0)
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -821,7 +821,8 @@ class ImageWindow(widget.MWidget):
         text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
         text += f'Scale: {rData.scale:4.3f}'
         if result.success:
-            self.app.message.emit('Solved: ' + text, 0)
+            self.app.message.emit(f'Solved: [{os.path.basename(result.solve.path)}]', 0)
+            self.app.message.emit(f'     {text}', 0)
         else:
             self.app.message.emit('Solving error', 2)
 
@@ -865,7 +866,7 @@ class ImageWindow(widget.MWidget):
                                            )
         self.deviceStat['solve'] = True
         self.app.astrometry.signals.done.connect(self.solveDone)
-        self.app.message.emit(f'Solving: [{imagePath}]', 0)
+        self.app.message.emit(f'Solving: [{os.path.basename(imagePath)}]', 0)
 
         return True
 

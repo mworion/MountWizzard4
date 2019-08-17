@@ -40,6 +40,7 @@ def module_setup_teardown():
 
 
 def test_init_1():
+    home = os.environ.get('HOME')
     binSolve = '/Applications/KStars300.app/Contents/MacOS/astrometry/bin'
     index = home + '/Library/Application Support/Astrometry'
     assert app.astrometry.binPath['KStars300'] == binSolve

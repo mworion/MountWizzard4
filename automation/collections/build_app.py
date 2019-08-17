@@ -30,7 +30,7 @@ from automation.collections.config_ssh import *
 def windows(c):
     printMW('build windows app and exe')
     with c.cd('..'):
-        runMW(c, 'rm -rf ./dist/*.exe')
+        runMW(c, 'rm -rf ./dist/MountWizzard4.exe')
     runMW(c, f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
     runMW(c, f'ssh {userWindows} "mkdir MountWizzard"')
     with c.cd('../../mountcontrol'):
@@ -53,7 +53,7 @@ def windows(c):
 def windows_dbg(c):
     printMW('build windows app and exe debug')
     with c.cd('..'):
-        runMW(c, 'rm -rf ./dist/*.exe')
+        runMW(c, 'rm -rf ./dist/MountWizzard4-dbg.exe')
     runMW(c, f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
     runMW(c, f'ssh {userWindows} "mkdir MountWizzard"')
     with c.cd('../../mountcontrol'):

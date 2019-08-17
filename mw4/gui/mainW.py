@@ -420,7 +420,6 @@ class MainWindow(MWidget,
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
-        currentName = self.ui.mainTabWidget.currentWidget().objectName()
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'ManageModel')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 
@@ -434,10 +433,6 @@ class MainWindow(MWidget,
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             if currentName == 'ManageModel':
                 tabIndex -= 1
-
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, currentName)
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        self.ui.mainTabWidget.setCurrentIndex(tabIndex)
 
         if self.deviceStat['environment']:
             self.ui.environGroup.setEnabled(True)

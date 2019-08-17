@@ -245,7 +245,8 @@ class HemisphereWindow(widget.MWidget):
             gc.collect()
 
         figure.clf()
-        figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        # used constrained_layout = True instead
+        # figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
         axe = self.hemisphereMat.figure.add_subplot(1, 1, 1, facecolor=None)
 
         axe.set_facecolor((0, 0, 0, 0))

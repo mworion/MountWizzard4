@@ -133,11 +133,8 @@ class ManageModel(object):
         if hasNoStars:
             # clear the plot and return
             fig, axes = self.clearPolar(self.polarPlot)
-            fig.subplots_adjust(left=0.1,
-                                right=0.9,
-                                bottom=0.1,
-                                top=0.85,
-                                )
+            # used constrained_layout = True instead
+            # fig.subplots_adjust(left=0.1, right=0.9, bottom=0.1, top=0.85)
             axes.figure.canvas.draw()
             return False
 

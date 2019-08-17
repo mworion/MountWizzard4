@@ -174,11 +174,8 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                        fontweight='bold',
                        pad=15,
                        )
-        fig.subplots_adjust(left=0.07,
-                            right=1,
-                            bottom=0.03,
-                            top=0.97,
-                            )
+        # used constrained_layout = True instead
+        # fig.subplots_adjust(left=0.07, right=1, bottom=0.03, top=0.97)
         axes.set_facecolor((32 / 256, 32 / 256, 32 / 256))
         axes.tick_params(axis='x',
                          colors='#2090C0',
@@ -220,6 +217,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         staticCanvas = FigureCanvas(Figure(dpi=75,
                                            facecolor='none',
                                            frameon=False,
+                                           constrained_layout=True,
                                            )
                                     )
         FigureCanvasQTAgg.updateGeometry(staticCanvas)

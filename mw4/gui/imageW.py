@@ -546,7 +546,7 @@ class ImageWindow(widget.MWidget):
             return False
 
         figure.clf()
-        figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
+        # figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
 
         axe = figure.add_subplot(1, 1, 1, facecolor=None)
 
@@ -820,7 +820,10 @@ class ImageWindow(widget.MWidget):
         text += f'({rData.decJ2000.degrees:4.3f}), '
         text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
         text += f'Scale: {rData.scale:4.3f}'
-        self.app.message.emit('Solved: ' + text, 0)
+        if result.success:
+            self.app.message.emit('Solved: ' + text, 0)
+        else:
+            self.app.message.emit('Solving error', 2)
 
         isStack = self.ui.checkStackImages.isChecked()
         isAutoSolve = self.ui.checkAutoSolve.isChecked()

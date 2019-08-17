@@ -37,7 +37,9 @@ def module_setup_teardown():
     app.config['showImageWindow'] = True
     app.toggleImageWindow()
     yield
-    os.remove(mwGlob['imageDir'] + '/test.fit')
+    file = mwGlob['imageDir'] + '/test.fit'
+    if os.path.isfile(file):
+        os.remove(file)
 
 
 def test_storeConfig_1():
@@ -91,9 +93,7 @@ def test_selectImage_2(qtbot):
                            'openFile',
                            return_value=('c:/test/test.fits', 'test', '.fits')):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.imageW.selectImage()
-            assert suc
-            with qtbot.waitSignal(app.imageW.signals.show):
+            with qtbot.waitSignal(app.imageW.signals.showImage):
                 suc = app.imageW.selectImage()
                 assert suc
         assert ['Image [test] selected', 0] == blocker.args
@@ -238,31 +238,26 @@ def test_setupNormal_3():
     assert axe
 
 
-def test_showFitsImage_1():
+def test_showImage_1():
     app.imageW.imageFileName = ''
-    suc = app.imageW.showFitsImage()
+    suc = app.imageW.showImage()
     assert not suc
 
 
-def test_showFitsImage_2():
+def test_showImage_2():
     app.imageW.imageFileName = 'test'
-    suc = app.imageW.showFitsImage()
+    suc = app.imageW.showImage()
     assert not suc
 
 
-def test_showFitsImage_3():
+def test_showImage_3():
     app.imageW.imageFileName = mwGlob['imageDir'] + '/m51.fit'
-    suc = app.imageW.showFitsImage()
+    suc = app.imageW.showCurrent()
     assert suc
 
 
-def test_showFitsImageExt_1():
-    suc = app.imageW.showFitsFile()
-    assert not suc
-
-
-def test_showFitsImageExt_2():
-    suc = app.imageW.showFitsFile(imagePath=mwGlob['imageDir'] + '/m51.fit')
+def test_showCurrent_1():
+    suc = app.imageW.showCurrent()
     assert suc
 
 
@@ -276,20 +271,6 @@ def test_exposeRaw_1(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.imageW.exposeRaw()
             assert suc
-        assert ['Exposing   3s  Bin: 2  Sub: 100%', 0] == blocker.args
-
-
-def test_exposeRaw_2(qtbot):
-    app.mainW.ui.expTime.setValue(1)
-    app.mainW.ui.binning.setValue(1)
-    app.mainW.ui.subFrame.setValue(10)
-    with mock.patch.object(app.imaging,
-                           'expose',
-                           ):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.imageW.exposeRaw()
-            assert suc
-        assert ['Exposing   1s  Bin: 1  Sub:  10%', 0] == blocker.args
 
 
 def test_exposeImagingDone(qtbot):
@@ -297,37 +278,19 @@ def test_exposeImagingDone(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.imageW.exposeImageDone()
         assert suc
-    assert ['Image exposed', 0] == blocker.args
+    assert ['Exposed: []', 0] == blocker.args
 
 
 def test_exposeImage_1():
     app.imaging.data = {}
     suc = app.imageW.exposeImage()
-    assert not suc
-
-
-def test_exposeImage_2():
-    app.imaging.data = {'test': 'test'}
-    with mock.patch.object(app.imaging,
-                           'expose',
-                           ):
-        suc = app.imageW.exposeImage()
-        assert suc
+    assert suc
 
 
 def test_exposeImageN_1():
     app.imaging.data = {}
     suc = app.imageW.exposeImageN()
-    assert not suc
-
-
-def test_exposeImageN_2():
-    app.imaging.data = {'test': 'test'}
-    with mock.patch.object(app.imaging,
-                           'expose',
-                           ):
-        suc = app.imageW.exposeImageN()
-        assert suc
+    assert suc
 
 
 def test_abortImage_1(qtbot):
@@ -337,11 +300,11 @@ def test_abortImage_1(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.imageW.abortImage()
             assert suc
-        assert ['Image exposing aborted', 2] == blocker.args
+        assert ['Exposing aborted', 2] == blocker.args
 
 
 def test_abortImage_2(qtbot):
-    app.imaging.signals.saved.connect(app.imageW.showFitsImage)
+    app.imaging.signals.saved.connect(app.imageW.showImage)
     app.imageW.ui.exposeN.setEnabled(True)
     app.imageW.ui.expose.setEnabled(False)
     app.imaging.signals.saved.connect(app.imageW.exposeRaw)
@@ -351,11 +314,11 @@ def test_abortImage_2(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.imageW.abortImage()
             assert suc
-        assert ['Image exposing aborted', 2] == blocker.args
+        assert ['Exposing aborted', 2] == blocker.args
 
 
 def test_abortImage_3(qtbot):
-    app.imaging.signals.saved.connect(app.imageW.showFitsImage)
+    app.imaging.signals.saved.connect(app.imageW.showImage)
     app.imageW.ui.exposeN.setEnabled(False)
     app.imageW.ui.expose.setEnabled(True)
     app.imaging.signals.saved.connect(app.imageW.exposeImageDone)
@@ -365,4 +328,4 @@ def test_abortImage_3(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.imageW.abortImage()
             assert suc
-        assert ['Image exposing aborted', 2] == blocker.args
+        assert ['Exposing aborted', 2] == blocker.args

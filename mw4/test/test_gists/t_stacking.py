@@ -8,7 +8,7 @@ if self.imageStack is None:
     self.angleStack = angle = np.arctan2(CD12, CD11)
     self.scaleStack = CD11 / np.cos(angle)
     self.numberStack = 1
-    return imageData
+    # return imageData
 
 # now we are going to stack the results
 self.numberStack += 1

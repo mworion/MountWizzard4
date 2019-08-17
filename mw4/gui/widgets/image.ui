@@ -89,19 +89,6 @@
        <property name="verticalSpacing">
         <number>4</number>
        </property>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="expose">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Expose 1</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="exposeN">
          <property name="minimumSize">
@@ -144,13 +131,19 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="5">
-        <widget class="QCheckBox" name="checkStackImages">
+       <item row="1" column="1">
+        <widget class="QPushButton" name="abortImage">
          <property name="enabled">
-          <bool>true</bool>
+          <bool>false</bool>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
          </property>
          <property name="text">
-          <string>Stack Images</string>
+          <string>Abort</string>
          </property>
         </widget>
        </item>
@@ -180,22 +173,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="abortImage">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Abort</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="1" colspan="4">
         <widget class="QLineEdit" name="imageFileName">
          <property name="enabled">
@@ -206,6 +183,29 @@
            <width>200</width>
            <height>25</height>
           </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="expose">
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Expose 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="5">
+        <widget class="QCheckBox" name="checkStackImages">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Stack Images</string>
          </property>
         </widget>
        </item>

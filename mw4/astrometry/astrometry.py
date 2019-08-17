@@ -83,7 +83,6 @@ class Astrometry(object):
         self.app = app
         self.tempDir = tempDir
         self.threadPool = threadPool
-        self.mutexSolve = PyQt5.QtCore.QMutex()
         self.signals = AstrometrySignals()
         self.process = None
         self.available = {}
@@ -520,7 +519,6 @@ class Astrometry(object):
         :return: true for test purpose
         """
 
-        self.mutexSolve.unlock()
         self.signals.done.emit(self.result)
         self.signals.message.emit('')
 
@@ -549,10 +547,6 @@ class Astrometry(object):
             self.signals.done.emit(self.result)
             return False
         if not self.checkAvailability():
-            self.signals.done.emit(self.result)
-            return False
-        if not self.mutexSolve.tryLock():
-            self.logger.info('overrun in solve threading')
             self.signals.done.emit(self.result)
             return False
 

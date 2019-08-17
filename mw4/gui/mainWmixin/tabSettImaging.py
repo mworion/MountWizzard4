@@ -27,7 +27,7 @@ class SettImaging(object):
     """
 
     def __init__(self):
-        self.app.relay.statusReady.connect(self.updateRelayGui)
+        pass
 
     def initConfig(self):
         """

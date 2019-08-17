@@ -41,6 +41,7 @@ from mw4.gui.mainWmixin.tabPower import Power
 from mw4.gui.mainWmixin.tabTools import Tools
 from mw4.gui.mainWmixin.tabSettDevice import SettDevice
 from mw4.gui.mainWmixin.tabSettIndi import SettIndi
+from mw4.gui.mainWmixin.tabSettMount import SettMount
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
 from mw4.gui.mainWmixin.tabSettImaging import SettImaging
 from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
@@ -61,6 +62,7 @@ class MainWindow(MWidget,
                  Tools,
                  SettDevice,
                  SettIndi,
+                 SettMount,
                  SettHorizon,
                  SettImaging,
                  SettParkPos,
@@ -117,6 +119,7 @@ class MainWindow(MWidget,
         Power.__init__(self)
         Tools.__init__(self)
         SettIndi.__init__(self)
+        SettMount.__init__(self)
         SettDevice.__init__(self)
         SettHorizon.__init__(self)
         SettImaging.__init__(self)
@@ -129,7 +132,6 @@ class MainWindow(MWidget,
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
-        self.app.mount.signals.settDone.connect(self.setMountMAC)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
@@ -138,14 +140,9 @@ class MainWindow(MWidget,
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
-        self.ui.mountOn.clicked.connect(self.mountBoot)
-        self.ui.mountOff.clicked.connect(self.mountShutdown)
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
-        self.ui.mountHost.editingFinished.connect(self.mountHost)
-        self.ui.mountMAC.editingFinished.connect(self.mountMAC)
-        self.ui.bootRackComp.clicked.connect(self.bootRackComp)
 
         # initial call for writing the gui
         self.updateMountConnStat(None)
@@ -187,12 +184,6 @@ class MainWindow(MWidget,
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
         ################################################################################
 
-        self.ui.mountHost.setText(config.get('mountHost', ''))
-        self.mountHost()
-        self.ui.mountMAC.setText(config.get('mountMAC', ''))
-        self.mountMAC()
-        self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
-
         Mount.initConfig(self)
         Environ.initConfig(self)
         AlignMount.initConfig(self)
@@ -204,6 +195,7 @@ class MainWindow(MWidget,
         Power.initConfig(self)
         Tools.initConfig(self)
         SettIndi.initConfig(self)
+        SettMount.initConfig(self)
         SettHorizon.initConfig(self)
         SettImaging.initConfig(self)
         SettParkPos.initConfig(self)
@@ -233,9 +225,6 @@ class MainWindow(MWidget,
         config['winPosY'] = self.pos().y()
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
-        config['mountHost'] = self.ui.mountHost.text()
-        config['mountMAC'] = self.ui.mountMAC.text()
-        config['rackCompMAC'] = self.ui.rackCompMAC.text()
 
         Mount.storeConfig(self)
         Environ.storeConfig(self)
@@ -248,6 +237,7 @@ class MainWindow(MWidget,
         Power.storeConfig(self)
         Tools.storeConfig(self)
         SettIndi.storeConfig(self)
+        SettMount.storeConfig(self)
         SettHorizon.storeConfig(self)
         SettImaging.storeConfig(self)
         SettParkPos.storeConfig(self)
@@ -286,8 +276,6 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.loadFrom, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
         self.wIcon(self.ui.saveConfig, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.saveConfigQuit, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
-        self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
         self.wIcon(self.ui.runFlexure, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
@@ -304,73 +292,13 @@ class MainWindow(MWidget,
         Tools.setupIcons(self)
         SettDevice.setupIcons(self)
         SettIndi.setupIcons(self)
+        SettMount.setupIcons(self)
         SettHorizon.setupIcons(self)
         SettImaging.setupIcons(self)
         SettParkPos.setupIcons(self)
         SettRelay.setupIcons(self)
         SettMisc.setupIcons(self)
         return True
-
-    def mountBoot(self):
-        if self.app.mount.bootMount():
-            self.app.message.emit('Sent boot command to mount', 0)
-            return True
-        else:
-            self.app.message.emit('Mount cannot be booted', 2)
-            return False
-
-    def mountShutdown(self):
-        if self.app.mount.shutdown():
-            self.app.message.emit('Shutting mount down', 0)
-            return True
-        else:
-            self.app.message.emit('Mount cannot be shutdown', 2)
-            return False
-
-    def checkFormatMAC(self, value):
-        """
-        checkFormatMAC makes some checks to ensure that the format of the string is ok for
-        WOL package.
-
-        :param      value: string with mac address
-        :return:    checked string in upper cases
-        """
-
-        if not value:
-            self.logger.error('wrong MAC value: {0}'.format(value))
-            return None
-        if not isinstance(value, str):
-            self.logger.error('wrong MAC value: {0}'.format(value))
-            return None
-        value = value.upper()
-        value = value.replace('.', ':')
-        value = value.split(':')
-        if len(value) != 6:
-            self.logger.error('wrong MAC value: {0}'.format(value))
-            return None
-        for chunk in value:
-            if len(chunk) != 2:
-                self.logger.error('wrong MAC value: {0}'.format(value))
-                return None
-            for char in chunk:
-                if char not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                                'A', 'B', 'C', 'D', 'E', 'F']:
-                    self.logger.error('wrong MAC value: {0}'.format(value))
-                    return None
-        # now we build the right format
-        value = '{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}'.format(*value)
-        return value
-
-    def bootRackComp(self):
-        MAC = self.ui.rackCompMAC.text()
-        MAC = self.checkFormatMAC(MAC)
-        if MAC is not None:
-            wakeonlan.send_magic_packet(MAC)
-            self.app.message.emit('Sent boot command to rack computer', 0)
-            return True
-        else:
-            self.app.message.emit('Rack computer cannot be booted', 2)
-            return False
 
     def updateMountConnStat(self, status):
         """
@@ -664,28 +592,6 @@ class MainWindow(MWidget,
         else:
             self.app.message.emit('Actual profile cannot not be saved', 2)
         return suc
-
-    def mountHost(self):
-        self.app.mount.host = self.ui.mountHost.text()
-
-    def mountMAC(self):
-        self.app.mount.MAC = self.ui.mountMAC.text()
-
-    def setMountMAC(self, sett):
-        """
-
-        :param sett:
-        :return:
-        """
-
-        if sett.addressLanMAC is not None and sett.addressLanMAC:
-            self.app.mount.MAC = sett.addressLanMAC
-        if self.app.mount.MAC is not None:
-            self.ui.mountMAC.setText(self.app.mount.MAC)
-
-        if sett.typeConnection is not None:
-            text = self.typeConnectionTexts[sett.typeConnection]
-            self.ui.mountTypeConnection.setText(text)
 
     def remoteCommand(self, command):
         """

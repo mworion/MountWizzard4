@@ -52,6 +52,9 @@ class SettHorizon(object):
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
 
+        fileName = self.app.config['mainW'].get('horizonFileName')
+        self.app.data.loadHorizonP(fileName=fileName)
+
         return True
 
     def storeConfig(self):

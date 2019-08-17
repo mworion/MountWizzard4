@@ -132,6 +132,11 @@ class BuildFunc(object):
         :return:    True for test purpose
         """
 
+        self.wIcon(self.ui.runAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+
         return True
 
     def updateProgress(self, number=0, count=0, modelingDone=False):

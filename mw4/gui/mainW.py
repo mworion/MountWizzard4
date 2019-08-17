@@ -42,6 +42,7 @@ from mw4.gui.mainWmixin.tabTools import Tools
 from mw4.gui.mainWmixin.tabSettDevice import SettDevice
 from mw4.gui.mainWmixin.tabSettIndi import SettIndi
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
+from mw4.gui.mainWmixin.tabSettImaging import SettImaging
 from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
 from mw4.gui.mainWmixin.tabSettRelay import SettRelay
 from mw4.gui.mainWmixin.tabSettMisc import SettMisc
@@ -61,6 +62,7 @@ class MainWindow(MWidget,
                  SettDevice,
                  SettIndi,
                  SettHorizon,
+                 SettImaging,
                  SettParkPos,
                  SettRelay,
                  SettMisc,
@@ -74,7 +76,7 @@ class MainWindow(MWidget,
 
     __all__ = ['MainWindow',
                ]
-    version = '0.100.0'
+    version = '0.101'
     logger = logging.getLogger(__name__)
 
     def __init__(self, app, threadPool):
@@ -117,6 +119,7 @@ class MainWindow(MWidget,
         SettIndi.__init__(self)
         SettDevice.__init__(self)
         SettHorizon.__init__(self)
+        SettImaging.__init__(self)
         SettParkPos.__init__(self)
         SettRelay.__init__(self)
         SettMisc.__init__(self)
@@ -189,15 +192,6 @@ class MainWindow(MWidget,
         self.ui.mountMAC.setText(config.get('mountMAC', ''))
         self.mountMAC()
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
-        self.ui.expTime.setValue(config.get('expTime', 1))
-        self.ui.binning.setValue(config.get('binning', 1))
-        self.ui.subFrame.setValue(config.get('subFrame', 100))
-        self.ui.subFrame.setValue(config.get('subFrame', 100))
-        self.ui.subFrame.setValue(config.get('subFrame', 100))
-        self.ui.checkFastDownload.setChecked(config.get('checkFastDownload', False))
-        self.ui.checkKeepImages.setChecked(config.get('checkKeepImages', False))
-        self.ui.searchRadius.setValue(config.get('searchRadius', 2))
-        self.ui.solveTimeout.setValue(config.get('solveTimeout', 30))
 
         Mount.initConfig(self)
         Environ.initConfig(self)
@@ -211,13 +205,12 @@ class MainWindow(MWidget,
         Tools.initConfig(self)
         SettIndi.initConfig(self)
         SettHorizon.initConfig(self)
+        SettImaging.initConfig(self)
         SettParkPos.initConfig(self)
         SettRelay.initConfig(self)
         SettMisc.initConfig(self)
         SettDevice.initConfig(self)
 
-        fileName = self.app.config['mainW'].get('horizonFileName')
-        self.app.data.loadHorizonP(fileName=fileName)
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
 
         return True
@@ -243,15 +236,6 @@ class MainWindow(MWidget,
         config['mountHost'] = self.ui.mountHost.text()
         config['mountMAC'] = self.ui.mountMAC.text()
         config['rackCompMAC'] = self.ui.rackCompMAC.text()
-        config['expTime'] = self.ui.expTime.value()
-        config['binning'] = self.ui.binning.value()
-        config['subFrame'] = self.ui.subFrame.value()
-        config['searchRadius'] = self.ui.searchRadius.value()
-        config['solveTimeout'] = self.ui.solveTimeout.value()
-        config['checkFastDownload'] = self.ui.checkFastDownload.isChecked()
-        config['checkKeepImages'] = self.ui.checkKeepImages.isChecked()
-        config['settleTimeMount'] = self.ui.settleTimeMount.value()
-        config['settleTimeDome'] = self.ui.settleTimeDome.value()
 
         Mount.storeConfig(self)
         Environ.storeConfig(self)
@@ -265,6 +249,7 @@ class MainWindow(MWidget,
         Tools.storeConfig(self)
         SettIndi.storeConfig(self)
         SettHorizon.storeConfig(self)
+        SettImaging.storeConfig(self)
         SettParkPos.storeConfig(self)
         SettRelay.storeConfig(self)
         SettMisc.storeConfig(self)
@@ -303,10 +288,6 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.saveConfigQuit, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
-        self.wIcon(self.ui.runAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.runFlexure, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
@@ -324,6 +305,7 @@ class MainWindow(MWidget,
         SettDevice.setupIcons(self)
         SettIndi.setupIcons(self)
         SettHorizon.setupIcons(self)
+        SettImaging.setupIcons(self)
         SettParkPos.setupIcons(self)
         SettRelay.setupIcons(self)
         SettMisc.setupIcons(self)

@@ -34,7 +34,6 @@ import numpy as np
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
 from mw4.base import transform
-from mw4.astrometry.affine import Transformation
 
 
 class ImageWindowSignals(PyQt5.QtCore.QObject):
@@ -78,7 +77,10 @@ class ImageWindow(widget.MWidget):
         self.imageFileName = ''
         self.imageFileNameOld = ''
         self.imageStack = None
-        self.headerStack = None
+        self.raStack = 0
+        self.decStack = 0
+        self.angleStack = 0
+        self.scaleStack = 0
         self.numberStack = 0
         self.folder = ''
 
@@ -149,10 +151,10 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
-        self.ui.checkUsePixel.setChecked(config.get('checkUsePixel', True))
         self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
         self.ui.checkStackImages.setChecked(config.get('checkStackImages', False))
         self.ui.checkShowCrosshair.setChecked(config.get('checkShowCrosshair', False))
+        self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
 
         return True
@@ -175,10 +177,10 @@ class ImageWindow(widget.MWidget):
         config['zoom'] = self.ui.zoom.currentIndex()
         config['stretch'] = self.ui.stretch.currentIndex()
         config['imageFileName'] = self.imageFileName
-        config['checkUsePixel'] = self.ui.checkUsePixel.isChecked()
         config['checkUseWCS'] = self.ui.checkUseWCS.isChecked()
         config['checkStackImages'] = self.ui.checkStackImages.isChecked()
         config['checkShowCrosshair'] = self.ui.checkShowCrosshair.isChecked()
+        config['checkShowGrid'] = self.ui.checkShowGrid.isChecked()
         config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
 
         return True
@@ -200,7 +202,7 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.currentIndexChanged.connect(self.showCurrent)
         self.ui.zoom.currentIndexChanged.connect(self.showCurrent)
         self.ui.checkUseWCS.clicked.connect(self.showCurrent)
-        self.ui.checkUsePixel.clicked.connect(self.showCurrent)
+        self.ui.checkShowGrid.clicked.connect(self.showCurrent)
         self.ui.checkShowCrosshair.clicked.connect(self.showCurrent)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
@@ -232,7 +234,7 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.currentIndexChanged.disconnect(self.showCurrent)
         self.ui.zoom.currentIndexChanged.disconnect(self.showCurrent)
         self.ui.checkUseWCS.clicked.disconnect(self.showCurrent)
-        self.ui.checkUsePixel.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowGrid.clicked.disconnect(self.showCurrent)
         self.ui.checkShowCrosshair.clicked.disconnect(self.showCurrent)
         self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
@@ -309,23 +311,18 @@ class ImageWindow(widget.MWidget):
 
         if self.deviceStat['expose']:
             self.changeStyleDynamic(self.ui.expose, 'running', 'true')
-            self.changeStyleDynamic(self.ui.abortImage, 'cancel', 'true')
 
         elif self.deviceStat['exposeN']:
             self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
-            self.changeStyleDynamic(self.ui.abortImage, 'cancel', 'true')
 
         else:
             self.changeStyleDynamic(self.ui.expose, 'running', 'false')
             self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
-            self.changeStyleDynamic(self.ui.abortImage, 'cancel', 'false')
 
         if self.deviceStat['solve']:
             self.changeStyleDynamic(self.ui.solve, 'running', 'true')
-            self.changeStyleDynamic(self.ui.abortSolve, 'cancel', 'true')
         else:
             self.changeStyleDynamic(self.ui.solve, 'running', 'false')
-            self.changeStyleDynamic(self.ui.abortSolve, 'cancel', 'false')
 
         return True
 
@@ -350,7 +347,7 @@ class ImageWindow(widget.MWidget):
         self.ui.imageFileName.setText(name)
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image [{name}] selected', 0)
-        self.ui.checkUsePixel.setChecked(True)
+        self.ui.checkUseWCS.setChecked(False)
         self.folder = os.path.dirname(loadFilePath)
         self.signals.showImage.emit(self.imageFileName)
 
@@ -403,7 +400,7 @@ class ImageWindow(widget.MWidget):
         self.ui.sqm.setText(f'{sqm:5.2f}')
 
         flipped = header.get('FLIPPED', False)
-        self.ui.checkIsFlipped.setChecked(flipped)
+        self.ui.isFlipped.setEnabled(flipped)
 
         # check if distortion is in header
         if 'CTYPE1' in header:
@@ -415,9 +412,8 @@ class ImageWindow(widget.MWidget):
             hasCelestial = False
             hasDistortion = False
 
-        self.ui.checkHasDistortion.setChecked(hasDistortion)
-        self.ui.checkHasWCS.setChecked(hasCelestial)
-        self.ui.checkUseWCS.setEnabled(hasDistortion)
+        self.ui.hasDistortion.setEnabled(hasDistortion)
+        self.ui.hasWCS.setEnabled(hasCelestial)
 
         return hasDistortion, wcsObject
 
@@ -510,8 +506,9 @@ class ImageWindow(widget.MWidget):
 
         axe0 = axe.coords[0]
         axe1 = axe.coords[1]
-        axe0.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
-        axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+        if self.ui.checkShowGrid.isChecked():
+            axe0.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+            axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
         axe0.tick_params(colors=self.M_BLUE, labelsize=12)
         axe1.tick_params(colors=self.M_BLUE, labelsize=12)
         axe0.set_axislabel('Right Ascension',
@@ -578,7 +575,7 @@ class ImageWindow(widget.MWidget):
         if self.ui.checkShowCrosshair.isChecked():
             axe.axvline(midX, color=self.M_RED)
             axe.axhline(midY, color=self.M_RED)
-        else:
+        if self.ui.checkShowGrid.isChecked():
             axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
 
         axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
@@ -589,25 +586,19 @@ class ImageWindow(widget.MWidget):
         """
 
         :param imageData:
-        :param header:
+        :param header: is only used, when stacking with alignment
         :return:
         """
 
         # if first image, we just store the data as reference frame
         if self.imageStack is None:
             self.imageStack = imageData
-            self.headerStack = header
             self.numberStack = 1
             return imageData
 
         # now we are going to stack the results
         self.numberStack += 1
-
-        if 'CTYPE1' in header:
-            print('autoSolve')
-
         self.imageStack = np.add(self.imageStack, imageData)
-
         return self.imageStack / self.numberStack
 
     def showImage(self, imagePath=''):
@@ -642,9 +633,8 @@ class ImageWindow(widget.MWidget):
 
         # check the data content and capabilities
         hasDistortion, wcsObject = self.writeHeaderToGUI(header=header)
-        stackImages = self.ui.checkStackImages.isChecked()
 
-        if stackImages:
+        if self.ui.checkStackImages.isChecked():
             imageData = self.stackImages(imageData=imageData,
                                          header=header)
 
@@ -656,7 +646,7 @@ class ImageWindow(widget.MWidget):
         # check which type of presentation we would like to have
         useWCS = self.ui.checkUseWCS.isChecked()
 
-        if hasDistortion and useWCS and not stackImages:
+        if hasDistortion and useWCS:
             axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
         else:
             axe = self.setupNormal(figure=self.imageMat.figure, header=header)
@@ -692,7 +682,6 @@ class ImageWindow(widget.MWidget):
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
 
         self.imageFileNameOld = self.imageFileName
-        self.imageFileName = imagePath
 
         self.app.imaging.expose(imagePath=imagePath,
                                 expTime=expTime,

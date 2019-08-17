@@ -89,8 +89,8 @@
        <property name="verticalSpacing">
         <number>4</number>
        </property>
-       <item row="0" column="4">
-        <widget class="QPushButton" name="load">
+       <item row="0" column="0">
+        <widget class="QPushButton" name="expose">
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -98,11 +98,24 @@
           </size>
          </property>
          <property name="text">
-          <string>Load FITS</string>
+          <string>Expose 1</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
+        <widget class="QPushButton" name="exposeN">
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Expose N</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <widget class="QPushButton" name="solve">
          <property name="minimumSize">
           <size>
@@ -115,7 +128,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="5">
+       <item row="2" column="1">
         <widget class="QPushButton" name="abortSolve">
          <property name="enabled">
           <bool>false</bool>
@@ -131,33 +144,43 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="expose">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>25</height>
-          </size>
+       <item row="1" column="5">
+        <widget class="QCheckBox" name="checkStackImages">
+         <property name="enabled">
+          <bool>true</bool>
          </property>
          <property name="text">
-          <string>Expose 1</string>
+          <string>Stack Images</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1" colspan="3">
-        <widget class="QPushButton" name="exposeN">
+       <item row="2" column="5">
+        <widget class="QCheckBox" name="checkAutoSolve">
          <property name="minimumSize">
           <size>
-           <width>80</width>
+           <width>0</width>
            <height>25</height>
           </size>
          </property>
          <property name="text">
-          <string>Expose N</string>
+          <string>Auto Solve</string>
          </property>
         </widget>
        </item>
        <item row="0" column="5">
+        <widget class="QPushButton" name="load">
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Load FITS</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
         <widget class="QPushButton" name="abortImage">
          <property name="enabled">
           <bool>false</bool>
@@ -173,17 +196,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="5">
-        <widget class="QCheckBox" name="checkStackImages">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="text">
-          <string>Stack Images</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" colspan="4">
+       <item row="0" column="1" colspan="4">
         <widget class="QLineEdit" name="imageFileName">
          <property name="enabled">
           <bool>false</bool>
@@ -193,19 +206,6 @@
            <width>200</width>
            <height>25</height>
           </size>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="QCheckBox" name="checkAutoSolve">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Autosolve</string>
          </property>
         </widget>
        </item>
@@ -229,7 +229,7 @@
        <property name="title">
         <string>Views / Coords</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0">
         <property name="spacing">
          <number>4</number>
         </property>
@@ -246,14 +246,7 @@
          <number>4</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="checkUsePixel">
-          <property name="text">
-           <string>WCS Pixel</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="checkUseWCS">
+         <widget class="QCheckBox" name="checkUseWCS">
           <property name="minimumSize">
            <size>
             <width>80</width>
@@ -261,7 +254,7 @@
            </size>
           </property>
           <property name="text">
-           <string>WCS Distortion</string>
+           <string>Show RA / DEC</string>
           </property>
          </widget>
         </item>
@@ -275,6 +268,13 @@
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkShowGrid">
+          <property name="text">
+           <string>Show grid</string>
           </property>
          </widget>
         </item>
@@ -306,7 +306,7 @@
        <property name="title">
         <string>Image attributes</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
+       <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,0,0,0,1">
         <property name="spacing">
          <number>4</number>
         </property>
@@ -323,34 +323,60 @@
          <number>4</number>
         </property>
         <item>
-         <widget class="QCheckBox" name="checkHasWCS">
-          <property name="enabled">
-           <bool>false</bool>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>5</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="hasWCS">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>16</height>
+           </size>
           </property>
           <property name="text">
-           <string>has WCS</string>
+           <string>WCS Header</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkHasDistortion">
+         <widget class="QLabel" name="hasDistortion">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
-           <string>has Distortion</string>
+           <string>Distortion Param</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkIsFlipped">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
+         <widget class="QLabel" name="isFlipped">
           <property name="text">
-           <string>is Flipped</string>
+           <string>Is Flipped</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>10</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>

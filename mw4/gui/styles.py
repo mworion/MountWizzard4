@@ -111,6 +111,10 @@ class MWStyles(object):
         background-color: transparent;
         color: #C0C0C0;
     }
+    QLabel:disabled{
+        background-color: transparent;
+        color: #404040;
+    }
     QLabel[color='blue'] {
         border-width: 3px;
         border-color: rgb(16, 72, 96);

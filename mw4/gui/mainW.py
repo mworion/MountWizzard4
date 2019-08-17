@@ -431,8 +431,6 @@ class MainWindow(MWidget,
             self.ui.batchModel.setEnabled(False)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-            if currentName == 'ManageModel':
-                tabIndex -= 1
 
         if self.deviceStat['environment']:
             self.ui.environGroup.setEnabled(True)

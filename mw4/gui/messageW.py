@@ -20,6 +20,7 @@
 # standard libraries
 import logging
 import time
+import pkg_resources
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -116,15 +117,17 @@ class MessageWindow(widget.MWidget):
         self.show()
 
         # write basic data to message window
-        verMC = self.app.mount.version
-        verIB = qtIndiBase.Client.version
         profile = self.app.config.get('profileName', '-')
+        verIB = pkg_resources.get_distribution('indibase').version
+        verMC = pkg_resources.get_distribution('mountcontrol').version
+        verMW = pkg_resources.get_distribution('mw4').version
+
         self.writeMessage('MountWizzard4 started', 1)
-        self.writeMessage('build version: [{0}]'.format(self.app.version), 1)
-        self.writeMessage('mountcontrol version: [{0}]'.format(verMC), 1)
-        self.writeMessage('indibase version: [{0}]'.format(verIB), 1)
-        self.writeMessage('Workdir is: [{0}]'.format(self.app.mwGlob['workDir']), 1)
-        self.writeMessage('Profile [{0}] loaded'.format(profile), 0)
+        self.writeMessage(f'build version: [{verMW}]', 1)
+        self.writeMessage(f'mountcontrol version: [{verMC}]', 1)
+        self.writeMessage(f'indibase version: [{verIB}]', 1)
+        self.writeMessage(f'Workdir is: [{self.app.mwGlob["workDir"]}]', 1)
+        self.writeMessage(f'Profile [{profile}] loaded', 0)
 
         # gui signals
         self.ui.clear.clicked.connect(self.clearWindow)

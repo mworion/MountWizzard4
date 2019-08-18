@@ -31,7 +31,7 @@ from mw4.base import transform
 from mw4.definitions import Solution, Solve
 
 
-class AstrometryNet(object):
+class AstrometryNET(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
 
@@ -45,7 +45,7 @@ class AstrometryNet(object):
 
     """
 
-    __all__ = ['AstrometryNet',
+    __all__ = ['AstrometryNET',
                'solveNET',
                'abortNET',
                ]
@@ -54,7 +54,7 @@ class AstrometryNet(object):
     logger = logging.getLogger(__name__)
 
     def __init__(self):
-        self.process = None
+        self.processNET = None
         self.result = (False, [])
 
     def runImage2xy(self, binPath='', xyPath='', fitsPath='', timeout=30):
@@ -77,11 +77,11 @@ class AstrometryNet(object):
 
         timeStart = time.time()
         try:
-            self.process = subprocess.Popen(args=runnable,
-                                            stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE,
-                                            )
-            stdout, stderr = self.process.communicate(timeout=timeout)
+            self.processNET = subprocess.Popen(args=runnable,
+                                               stdout=subprocess.PIPE,
+                                               stderr=subprocess.PIPE,
+                                               )
+            stdout, stderr = self.processNET.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
             self.logger.debug(e)
             return False
@@ -91,14 +91,14 @@ class AstrometryNet(object):
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'image2xy took {delta}s return code: '
-                              + str(self.process.returncode)
+                              + str(self.processNET.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
                               + stdout.decode().replace('\n', ' ')
                               )
 
-        success = (self.process.returncode == 0)
+        success = (self.processNET.returncode == 0)
         return success
 
     def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=30):
@@ -133,11 +133,11 @@ class AstrometryNet(object):
 
         timeStart = time.time()
         try:
-            self.process = subprocess.Popen(args=runnable,
-                                            stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE
-                                            )
-            stdout, stderr = self.process.communicate(timeout=timeout)
+            self.processNET = subprocess.Popen(args=runnable,
+                                               stdout=subprocess.PIPE,
+                                               stderr=subprocess.PIPE
+                                               )
+            stdout, stderr = self.processNET.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
             self.logger.debug(e)
             return False
@@ -147,14 +147,14 @@ class AstrometryNet(object):
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'solve-field took {delta}s return code: '
-                              + str(self.process.returncode)
+                              + str(self.processNET.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
                               + stdout.decode().replace('\n', ' ')
                               )
 
-        success = (self.process.returncode == 0)
+        success = (self.processNET.returncode == 0)
 
         return success
 
@@ -165,8 +165,8 @@ class AstrometryNet(object):
         :return: success
         """
 
-        if self.process:
-            self.process.kill()
+        if self.processNET:
+            self.processNET.kill()
             return True
         else:
             return False
@@ -200,7 +200,7 @@ class AstrometryNet(object):
         :return: success
         """
 
-        self.process = None
+        self.processNET = None
         self.result = Solution(success=False,
                                solve=[])
 

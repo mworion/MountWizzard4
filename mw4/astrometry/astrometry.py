@@ -36,7 +36,8 @@ import numpy as np
 from mw4.base import tpool
 from mw4.base import transform
 from mw4.definitions import Solution, Solve
-from mw4.astrometry.astrometryNet import AstrometryNet
+from mw4.astrometry.astrometryNET import AstrometryNET
+from mw4.astrometry.astrometryASTAP import AstrometryASTAP
 
 
 class AstrometrySignals(PyQt5.QtCore.QObject):
@@ -54,7 +55,7 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
     message = PyQt5.QtCore.pyqtSignal(object)
 
 
-class Astrometry(AstrometryNet):
+class Astrometry(AstrometryNET, AstrometryASTAP):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
 

@@ -76,7 +76,7 @@ class Satellite(object):
         :return: True for test purpose
         """
 
-        config = self.app.config['mainW']
+        # config = self.app.config['mainW']
         self.setupSatelliteSourceGui()
         self.loadSatelliteSource()
         return True
@@ -89,7 +89,7 @@ class Satellite(object):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
+        # config = self.app.config['mainW']
         return True
 
     def setupIcons(self):

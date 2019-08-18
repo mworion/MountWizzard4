@@ -32,8 +32,6 @@ import PyQt5.QtWidgets
 from mw4.base import transform
 from skyfield.api import Angle
 from astropy.io import fits
-from astropy.wcs import WCS
-import astropy.wcs
 from PyQt5.QtTest import QTest
 import numpy as np
 # local imports
@@ -56,9 +54,9 @@ class AstrometryNet(object):
     """
 
     __all__ = ['AstrometryNet',
-               'solve',
-               'abort',
-              ]
+               'solveNET',
+               'abortNET',
+               ]
 
     version = '0.100.0'
     logger = logging.getLogger(__name__)
@@ -156,7 +154,7 @@ class AstrometryNet(object):
             return False
         else:
             delta = time.time() - timeStart
-            self.logger.debug(f'solve-field took {delta}s return code: '
+            self.logger.debug(f'solveNET-field took {delta}s return code: '
                               + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
@@ -168,8 +166,9 @@ class AstrometryNet(object):
 
         return success
 
-    def abort(self):
+    def abortNET(self):
         """
+        abortNET stops the solving function hardly just by killing the process
 
         :return: success
         """
@@ -180,8 +179,8 @@ class AstrometryNet(object):
         else:
             return False
 
-    def solve(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
-              radius=2, timeout=30, updateFits=False):
+    def solveNET(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
+                 radius=2, timeout=30, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -199,9 +198,9 @@ class AstrometryNet(object):
 
         :param app: which astrometry implementation to choose
         :param fitsPath:  full path to fits file
-        :param raHint:  ra dest to look for solve in J2000
-        :param decHint:  dec dest to look for solve in J2000
-        :param scaleHint:  scale to look for solve in J2000
+        :param raHint:  ra dest to look for solveNET in J2000
+        :param decHint:  dec dest to look for solveNET in J2000
+        :param scaleHint:  scale to look for solveNET in J2000
         :param radius:  search radius around target coordinates
         :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
@@ -223,7 +222,7 @@ class AstrometryNet(object):
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
         binPathImage2xy = self.binPath[app] + '/image2xy'
-        binPathSolveField = self.binPath[app] + '/solve-field'
+        binPathSolveField = self.binPath[app] + '/solveNET-field'
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
@@ -268,7 +267,7 @@ class AstrometryNet(object):
                    ]
 
         # split between ekos and cloudmakers as cloudmakers use an older version of
-        # solve-field, which need the option '--no-fits2fits', whereas the actual
+        # solveNET-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
         if app == 'CloudMakers':
             options.append('--no-fits2fits')
@@ -280,10 +279,10 @@ class AstrometryNet(object):
                                  timeout=timeout,
                                  )
         if not suc:
-            self.logger.error(f'solve-field error in [{fitsPath}]')
+            self.logger.error(f'solveNET-field error in [{fitsPath}]')
             return False
         if not (os.path.isfile(solvedPath) and os.path.isfile(wcsPath)):
-            self.logger.error(f'solve files for [{fitsPath}] missing')
+            self.logger.error(f'solveNET files for [{fitsPath}] missing')
             return False
 
         with fits.open(wcsPath) as wcsHDU:

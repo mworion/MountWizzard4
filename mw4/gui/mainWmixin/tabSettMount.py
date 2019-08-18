@@ -20,6 +20,7 @@
 # standard libraries
 # external packages
 import PyQt5
+import wakeonlan
 # local import
 
 

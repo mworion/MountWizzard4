@@ -71,10 +71,10 @@ class Astrometry(AstrometryNet):
     """
 
     __all__ = ['Astrometry',
-               'solve',
+               'solveNET',
                'solveThreading',
                'checkAvailability',
-               'abort',
+               'abortNET',
                ]
 
     version = '0.100.0'
@@ -124,15 +124,15 @@ class Astrometry(AstrometryNet):
     def checkAvailability(self):
         """
         checkAvailability searches for the existence of the core runtime modules from
-        astrometry.net namely image2xy and solve-field
+        astrometry.net namely image2xy and solveNET-field
 
-        :return: True if local solve and components is available
+        :return: True if local solveNET and components is available
         """
 
         self.available = {}
         for app, path in self.binPath.items():
             suc = True
-            binPathSolveField = path + '/solve-field'
+            binPathSolveField = path + '/solveNET-field'
             binPathImage2xy = path + '/image2xy'
 
             # checking binaries
@@ -290,16 +290,16 @@ class Astrometry(AstrometryNet):
     def solveThreading(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
                        radius=2, timeout=30, updateFits=False):
         """
-        solveThreading is the wrapper for doing the solve process in a threadpool
+        solveThreading is the wrapper for doing the solveNET process in a threadpool
         environment of Qt. Otherwise the HMI would be stuck all the time during solving.
         it is done with an securing mutex to avoid starting solving twice. to solveClear
-        is the partner of solve Threading
+        is the partner of solveNET Threading
 
         :param app: which astrometry implementation to choose
         :param fitsPath: full path to the fits image file to be solved
-        :param raHint:  ra dest to look for solve in J2000
-        :param decHint:  dec dest to look for solve in J2000
-        :param scaleHint:  scale to look for solve in J2000
+        :param raHint:  ra dest to look for solveNET in J2000
+        :param decHint:  dec dest to look for solveNET in J2000
+        :param scaleHint:  scale to look for solveNET in J2000
         :param radius:  search radius around target coordinates
         :param timeout: as said
         :param updateFits: flag, if the results should be written to the original file
@@ -314,7 +314,7 @@ class Astrometry(AstrometryNet):
             return False
 
         self.signals.message.emit('solving')
-        worker = tpool.Worker(self.solve,
+        worker = tpool.Worker(self.solveNET,
                               app=app,
                               fitsPath=fitsPath,
                               raHint=raHint,

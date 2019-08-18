@@ -35,9 +35,9 @@ X, Y, FLUX to   fitsname.xy.fits .
    image2xy 'file.fits[2]'   - process second extension
    image2xy file.fits+2      - same as above
 
-solve-field is an upper layer api for using solving astro images.
+solveNET-field is an upper layer api for using solving astro images.
 
-Option for solve-field:
+Option for solveNET-field:
 
   -h / --help: print this help message
   -v / --verbose: be more chatty -- repeat for even more verboseness
@@ -47,7 +47,7 @@ Option for solve-field:
           "astrometry-engine" program
   --config <filename>: use this config file for the "astrometry-engine" program
   --batch: run astrometry-engine once, rather than once per input file
-  -f / --files-on-stdin: read filenames to solve on stdin, one per line
+  -f / --files-on-stdin: read filenames to solveNET on stdin, one per line
   -p / --no-plots: don't create any plots of the results
   --plot-scale <scale>: scale the plots by this factor (eg, 0.25)
   --plot-bg <filename (JPEG)>: set the background image to use for plots
@@ -89,8 +89,8 @@ Option for solve-field:
   -Q / --quad-size-max <fraction>: maximum size of quads to try, as a fraction
           of the image hypotenuse, default 1.0
   --odds-to-tune-up <odds>: odds ratio at which to try tuning up a match that
-          isn't good enough to solve (default: 1e6)
-  --odds-to-solve <odds>: odds ratio at which to consider a field solved
+          isn't good enough to solveNET (default: 1e6)
+  --odds-to-solveNET <odds>: odds ratio at which to consider a field solved
           (default: 1e9)
   --odds-to-reject <odds>: odds ratio at which to reject a hypothesis (default:
           1e-100)
@@ -162,7 +162,7 @@ Option for solve-field:
   -t / --tweak-order <int>: polynomial order of SIP WCS corrections
   -m / --temp-dir <dir>: where to put temp files, default /tmp
 The following options are valid for xylist inputs only:
-  -F / --fields <number or range>: the FITS extension(s) to solve, inclusive
+  -F / --fields <number or range>: the FITS extension(s) to solveNET, inclusive
   -w / --width <pixels>: specify the field width
   -e / --height <pixels>: specify the field height
   -X / --x-column <column-name>: the FITS column containing the X coordinate of

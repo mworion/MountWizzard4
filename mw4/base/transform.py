@@ -240,7 +240,7 @@ def convertToAngle(value, isHours=None):
 def convertToDMS(dec):
     """
     takes the given DEC value, which should be in DMS format (but different types) and
-    convert it to solve-field readable string in sDD:MM:SS
+    convert it to solveNET-field readable string in sDD:MM:SS
 
     :param dec: declination as Angle
     :return: converted value as string
@@ -262,7 +262,7 @@ def convertToDMS(dec):
 def convertToHMS(ra):
     """
     takes the given RA value, which should be in HMS format (but different types) and
-    convert it to solve-field readable string in HH:MM:SS
+    convert it to solveNET-field readable string in HH:MM:SS
 
     :param ra: right ascension as Angle
     :return: converted value as string

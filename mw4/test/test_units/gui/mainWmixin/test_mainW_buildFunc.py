@@ -356,7 +356,7 @@ def test_cancelFull(qtbot):
     suc = app.mainW.prepareSignals()
     assert suc
     with mock.patch.object(app.imaging,
-                           'abort'):
+                           'abortNET'):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.cancelFull()
             assert suc

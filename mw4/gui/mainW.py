@@ -151,6 +151,9 @@ class MainWindow(MWidget,
         # cyclic updates
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateWindowsStats)
+        self.app.update1s.connect(self.smartGui)
+        self.app.update1s.connect(self.updateWindowsStats)
+        self.app.update1s.connect(self.updateDeviceStats)
 
     def initConfig(self):
         """
@@ -322,7 +325,7 @@ class MainWindow(MWidget,
 
         :return: true for test purpose
         """
-        # check if modeling would work (mount + solve + image)
+        # check if modeling would work (mount + solveNET + image)
         if all(self.deviceStat[x] for x in ['mount', 'imaging', 'astrometry']):
             self.ui.runFullModel.setEnabled(True)
             self.ui.runAlignModel.setEnabled(True)
@@ -400,6 +403,14 @@ class MainWindow(MWidget,
         else:
             self.changeStyleDynamic(self.ui.openSatelliteW, 'running', False)
 
+        return True
+
+    def updateDeviceStats(self):
+        """
+
+        :return: True for test purpose
+        """
+
         if self.deviceStat['dome'] is None:
             self.changeStyleDynamic(self.ui.domeConnected, 'color', 'gray')
         elif self.deviceStat['dome']:
@@ -434,8 +445,6 @@ class MainWindow(MWidget,
             self.changeStyleDynamic(self.ui.mountConnected, 'color', 'green')
         else:
             self.changeStyleDynamic(self.ui.mountConnected, 'color', 'red')
-
-        self.smartGui()
 
         return True
 

@@ -154,7 +154,7 @@ class AstrometryNet(object):
             return False
         else:
             delta = time.time() - timeStart
-            self.logger.debug(f'solveNET-field took {delta}s return code: '
+            self.logger.debug(f'solve-field took {delta}s return code: '
                               + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
@@ -198,9 +198,9 @@ class AstrometryNet(object):
 
         :param app: which astrometry implementation to choose
         :param fitsPath:  full path to fits file
-        :param raHint:  ra dest to look for solveNET in J2000
-        :param decHint:  dec dest to look for solveNET in J2000
-        :param scaleHint:  scale to look for solveNET in J2000
+        :param raHint:  ra dest to look for solve in J2000
+        :param decHint:  dec dest to look for solve in J2000
+        :param scaleHint:  scale to look for solve in J2000
         :param radius:  search radius around target coordinates
         :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
@@ -222,7 +222,7 @@ class AstrometryNet(object):
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
         binPathImage2xy = self.binPath[app] + '/image2xy'
-        binPathSolveField = self.binPath[app] + '/solveNET-field'
+        binPathSolveField = self.binPath[app] + '/solve-field'
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
@@ -267,7 +267,7 @@ class AstrometryNet(object):
                    ]
 
         # split between ekos and cloudmakers as cloudmakers use an older version of
-        # solveNET-field, which need the option '--no-fits2fits', whereas the actual
+        # solve-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
         if app == 'CloudMakers':
             options.append('--no-fits2fits')
@@ -279,10 +279,10 @@ class AstrometryNet(object):
                                  timeout=timeout,
                                  )
         if not suc:
-            self.logger.error(f'solveNET-field error in [{fitsPath}]')
+            self.logger.error(f'solve-field error in [{fitsPath}]')
             return False
         if not (os.path.isfile(solvedPath) and os.path.isfile(wcsPath)):
-            self.logger.error(f'solveNET files for [{fitsPath}] missing')
+            self.logger.error(f'solve files for [{fitsPath}] missing')
             return False
 
         with fits.open(wcsPath) as wcsHDU:

@@ -295,7 +295,7 @@ def test_exposeImageN_1():
 
 def test_abortImage_1(qtbot):
     with mock.patch.object(app.imaging,
-                           'abortNET',
+                           'abort',
                            ):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.imageW.abortImage()
@@ -309,7 +309,7 @@ def test_abortImage_2(qtbot):
     app.imageW.ui.expose.setEnabled(False)
     app.imaging.signals.saved.connect(app.imageW.exposeRaw)
     with mock.patch.object(app.imaging,
-                           'abortNET',
+                           'abort',
                            ):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.imageW.abortImage()
@@ -323,7 +323,7 @@ def test_abortImage_3(qtbot):
     app.imageW.ui.expose.setEnabled(True)
     app.imaging.signals.saved.connect(app.imageW.exposeImageDone)
     with mock.patch.object(app.imaging,
-                           'abortNET',
+                           'abort',
                            ):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.imageW.abortImage()

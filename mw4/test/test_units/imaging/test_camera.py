@@ -789,7 +789,7 @@ def test_abort_1():
     app.imaging.device = Test()
     app.imaging.client = Test1()
 
-    suc = app.imaging.abortNET()
+    suc = app.imaging.abort()
     assert not suc
 
 
@@ -809,5 +809,5 @@ def test_abort_2():
     app.imaging.device = Test()
     app.imaging.client = Test1()
 
-    suc = app.imaging.abortNET()
+    suc = app.imaging.abort()
     assert suc

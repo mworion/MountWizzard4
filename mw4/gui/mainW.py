@@ -325,7 +325,7 @@ class MainWindow(MWidget,
 
         :return: true for test purpose
         """
-        # check if modeling would work (mount + solveNET + image)
+        # check if modeling would work (mount + solve + image)
         if all(self.deviceStat[x] for x in ['mount', 'imaging', 'astrometry']):
             self.ui.runFullModel.setEnabled(True)
             self.ui.runAlignModel.setEnabled(True)

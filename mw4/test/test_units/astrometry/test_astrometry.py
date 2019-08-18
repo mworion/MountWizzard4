@@ -208,7 +208,7 @@ def test_abort_1():
             return
 
     app.astrometry.process = Test()
-    suc = app.astrometry.abortNET()
+    suc = app.astrometry.abort()
     assert suc
 
 
@@ -219,12 +219,12 @@ def test_abort_2():
             return
 
     app.astrometry.process = None
-    suc = app.astrometry.abortNET()
+    suc = app.astrometry.abort()
     assert not suc
 
 
 def test_solve_1():
-    suc = app.astrometry.solveNET()
+    suc = app.astrometry.solve()
     assert not suc
 
 
@@ -235,10 +235,10 @@ def test_solve_2():
         with mock.patch.object(app.astrometry,
                                'runSolveField',
                                return_value=False):
-            suc = app.astrometry.solveNET(app='KStars300',
-                                          fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                                          timeout=5,
-                                          )
+            suc = app.astrometry.solve(app='KStars300',
+                                       fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
+                                       timeout=5,
+                                       )
         assert not suc
 
 
@@ -249,10 +249,10 @@ def test_solve_3():
         with mock.patch.object(app.astrometry,
                                'runSolveField',
                                return_value=False):
-            suc = app.astrometry.solveNET(app='KStars300',
-                                          fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                                          timeout=5,
-                                          )
+            suc = app.astrometry.solve(app='KStars300',
+                                       fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
+                                       timeout=5,
+                                       )
         assert not suc
 
 
@@ -263,10 +263,10 @@ def test_solve_4():
         with mock.patch.object(app.astrometry,
                                'runSolveField',
                                return_value=True):
-            suc = app.astrometry.solveNET(app='KStars',
-                                          fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                                          timeout=5,
-                                          )
+            suc = app.astrometry.solve(app='KStars',
+                                       fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
+                                       timeout=5,
+                                       )
         assert suc
 
 

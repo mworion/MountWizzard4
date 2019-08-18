@@ -86,7 +86,7 @@ class ImageWindow(widget.MWidget):
         self.deviceStat = {
             'expose': False,
             'exposeN': False,
-            'solveNET': False,
+            'solve': False,
         }
         self.colorMaps = {'Grey': 'gray',
                           'Cool': 'plasma',
@@ -296,7 +296,7 @@ class ImageWindow(widget.MWidget):
             self.ui.load.setEnabled(True)
             self.ui.abortImage.setEnabled(False)
 
-        if self.deviceStat['solveNET']:
+        if self.deviceStat['solve']:
             self.ui.abortSolve.setEnabled(True)
         else:
             self.ui.abortSolve.setEnabled(False)
@@ -318,7 +318,7 @@ class ImageWindow(widget.MWidget):
             self.changeStyleDynamic(self.ui.expose, 'running', 'false')
             self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
 
-        if self.deviceStat['solveNET']:
+        if self.deviceStat['solve']:
             self.changeStyleDynamic(self.ui.solve, 'running', 'true')
         else:
             self.changeStyleDynamic(self.ui.solve, 'running', 'false')
@@ -776,7 +776,7 @@ class ImageWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        self.app.imaging.abortNET()
+        self.app.imaging.abort()
 
         # for disconnection we have to split which slots were connected to disable the
         # right ones
@@ -804,14 +804,14 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        self.deviceStat['solveNET'] = False
+        self.deviceStat['solve'] = False
         self.app.astrometry.signals.done.disconnect(self.solveDone)
 
         if not result.success:
             self.app.message.emit('Solving error', 2)
             return False
 
-        rData = result.solveNET
+        rData = result.solve
         if not isinstance(rData, tuple):
             return False
         text = f'Ra: {transform.convertToHMS(rData.raJ2000)} '
@@ -821,7 +821,7 @@ class ImageWindow(widget.MWidget):
         text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
         text += f'Scale: {rData.scale:4.3f}'
         if result.success:
-            self.app.message.emit(f'Solved: [{os.path.basename(result.solveNET.path)}]', 0)
+            self.app.message.emit(f'Solved: [{os.path.basename(result.solve.path)}]', 0)
             self.app.message.emit(f'     {text}', 0)
         else:
             self.app.message.emit('Solving error', 2)
@@ -829,7 +829,7 @@ class ImageWindow(widget.MWidget):
         isStack = self.ui.checkStackImages.isChecked()
         isAutoSolve = self.ui.checkAutoSolve.isChecked()
         if not isStack or isAutoSolve:
-            self.signals.showImage.emit(result.solveNET.path)
+            self.signals.showImage.emit(result.solve.path)
 
         return True
 
@@ -839,7 +839,7 @@ class ImageWindow(widget.MWidget):
         as result the gui will be active while the solving process takes part a
         background task. if the check update fits is selected the solution will be
         stored in the image header as well.
-        solveImage will disable gui elements which might interfere when doing solveNET
+        solveImage will disable gui elements which might interfere when doing solve
         in background and sets the signal / slot connection for receiving the signal
         for finishing. this is linked to a second method solveDone, which is basically
         the partner method for handling this async behaviour of the gui.
@@ -864,7 +864,7 @@ class ImageWindow(widget.MWidget):
                                            timeout=solveTimeout,
                                            updateFits=updateFits,
                                            )
-        self.deviceStat['solveNET'] = True
+        self.deviceStat['solve'] = True
         self.app.astrometry.signals.done.connect(self.solveDone)
         self.app.message.emit(f'Solving: [{os.path.basename(imagePath)}]', 0)
 
@@ -887,6 +887,6 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        suc = self.app.astrometry.abortNET()
+        suc = self.app.astrometry.abort()
 
         return suc

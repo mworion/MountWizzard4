@@ -183,7 +183,7 @@ class BuildFunc(object):
         :return: model
         """
 
-        rData = result.solveNET
+        rData = result.solve
         raJNow, decJNow = transform.J2000ToJNow(rData.raJ2000,
                                                 rData.decJ2000,
                                                 mPoint.mData.julian)
@@ -232,7 +232,7 @@ class BuildFunc(object):
             self.logger.info(f'Solving result is malformed: {result}')
             self.logger.error('empty result queue')
             return False
-        if not isinstance(result.solveNET, Solve):
+        if not isinstance(result.solve, Solve):
             self.logger.info(f'Solving result is malformed: {result}')
             self.logger.error('empty result queue')
             return False
@@ -247,13 +247,13 @@ class BuildFunc(object):
             error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
 
             text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
-            text += f'Ra: {transform.convertToHMS(result.solveNET.raJ2000)} '
-            text += f'({result.solveNET.raJ2000.hours:4.3f}), '
-            text += f'Dec: {transform.convertToDMS(result.solveNET.decJ2000)} '
-            text += f'({result.solveNET.decJ2000.degrees:4.3f}), '
+            text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)} '
+            text += f'({result.solve.raJ2000.hours:4.3f}), '
+            text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)} '
+            text += f'({result.solve.decJ2000.degrees:4.3f}), '
             text += f'Error: {error:5.1f}, '
-            text += f'Angle: {result.solveNET.angle:3.0f}, '
-            text += f'Scale: {result.solveNET.scale:4.3f}'
+            text += f'Angle: {result.solve.angle:3.0f}, '
+            text += f'Scale: {result.solve.scale:4.3f}'
             self.app.message.emit(text, 0)
         else:
             text = f'Solving error for image-{mPoint.mParam.count:03d}'
@@ -285,7 +285,7 @@ class BuildFunc(object):
         """
 
         if self.solveQueue.empty():
-            self.logger.error('empty solveNET queue')
+            self.logger.error('empty solve queue')
             return False
 
         mPoint = self.solveQueue.get()
@@ -504,8 +504,8 @@ class BuildFunc(object):
         :return: true for test purpose
         """
 
-        self.app.imaging.abortNET()
-        self.app.astrometry.abortNET()
+        self.app.imaging.abort()
+        self.app.astrometry.abort()
         self.defaultSignals()
         self.clearQueues()
         self.defaultGUI()

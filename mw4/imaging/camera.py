@@ -465,7 +465,7 @@ class Camera(indiClass.IndiClass):
 
     def abort(self):
         """
-        abortNET cancels the exposing
+        abort cancels the exposing
 
         :return: success
         """

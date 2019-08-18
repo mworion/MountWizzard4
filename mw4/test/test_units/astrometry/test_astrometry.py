@@ -41,32 +41,54 @@ def module_setup_teardown():
 
 def test_init_1():
     home = os.environ.get('HOME')
-    binSolve = '/Applications/KStars.app/Contents/MacOS/astrometry/bin'
-    index = home + '/Library/Application Support/Astrometry'
-    assert app.astrometry.binPath['KStars'] == binSolve
-    assert app.astrometry.indexPath == index
+    app.astrometry.solveApp = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
     assert os.path.isfile(app.mwGlob['tempDir'] + '/astrometry.cfg')
 
 
 def test_checkAvailability_1():
-    app.astrometry.indexPath = ''
-    app.astrometry.binPath = {}
+    app.astrometry.solveApp = {
+        'CloudMakers': {
+            'programPath': '',
+            'indexPath': '',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
     suc = app.astrometry.checkAvailability()
     assert suc
     assert app.astrometry.available == {}
 
 
 def test_checkAvailability_3():
-    app.astrometry.indexPath = '/usr/share/astrometry'
-    app.astrometry.binPath = {'KStars': '/Applications/KStars.app/Contents/MacOS/astrometry/bin'}
+    app.astrometry.solveApp = {
+        'KStars': {
+            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'indexPath': '/usr/share/astrometry',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
     suc = app.astrometry.checkAvailability()
     assert suc
     assert app.astrometry.available == {}
 
 
 def test_checkAvailability_4():
-    app.astrometry.indexPath = '/Users/mw/Library/Application Support/Astrometry'
-    app.astrometry.binPath = {'KStars': '/Applications/KStars.app/Contents/MacOS/astrometry/bin'}
+    app.astrometry.solveApp = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': '/Users/mw/Library/Application Support/Astrometry',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
     suc = app.astrometry.checkAvailability()
     assert suc
     assert 'KStars' in app.astrometry.available
@@ -202,28 +224,12 @@ def test_runSolveField_2():
 
 
 def test_abort_1():
-    class Test:
-        @staticmethod
-        def kill():
-            return
-
-    app.astrometry.process = Test()
-    suc = app.astrometry.abort()
-    assert suc
-
-
-def test_abort_2():
-    class Test:
-        @staticmethod
-        def kill():
-            return
-
-    app.astrometry.process = None
     suc = app.astrometry.abort()
     assert not suc
 
 
 def test_solveClear():
+    app.astrometry.mutexSolve.lock()
     app.astrometry.solveClear()
 
 

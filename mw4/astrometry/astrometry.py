@@ -22,14 +22,11 @@ import logging
 import subprocess
 import os
 import glob
-import re
-import fnmatch
 import platform
 import time
 from collections import namedtuple
 # external packages
-import PyQt5.QtWidgets
-from mw4.base import transform
+import PyQt5
 from skyfield.api import Angle
 from astropy.io import fits
 from astropy.wcs import WCS
@@ -37,6 +34,7 @@ import astropy.wcs
 import numpy as np
 # local imports
 from mw4.base import tpool
+from mw4.base import transform
 from mw4.definitions import Solution, Solve
 from mw4.astrometry.astrometryNet import AstrometryNet
 
@@ -95,17 +93,8 @@ class Astrometry(AstrometryNet):
 
             self.binPath = {
                 'CloudMakers': '/Applications/Astrometry.app/Contents/MacOS',
+                'KStars': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
             }
-            # getting all versions of KStars, of the are multiple versions in app folder
-            pattern = re.compile(fnmatch.translate('kstars*.app'), re.IGNORECASE)
-            header = '/Applications'
-            trailer = '/Contents/MacOS/astrometry/bin'
-            for name in sorted(os.listdir('/Applications')):
-                if not pattern.match(name):
-                    continue
-                title = name.strip('.app')
-                appPath = f'{header}/{name}{trailer}'
-                self.binPath[title] = appPath
             self.indexPath = home + '/Library/Application Support/Astrometry'
 
         elif platform.system() == 'Linux':
@@ -114,6 +103,11 @@ class Astrometry(AstrometryNet):
                 'astrometry-local': '/usr/local/astrometry/bin',
             }
             self.indexPath = '/usr/share/astrometry'
+
+        elif platform.system() == 'windows':
+            self.binPath = {
+            }
+            self.indexPath = ''
 
         else:
             self.binPath = {}
@@ -124,7 +118,9 @@ class Astrometry(AstrometryNet):
     def checkAvailability(self):
         """
         checkAvailability searches for the existence of the core runtime modules from
-        astrometry.net namely image2xy and solve-field
+        all applications. to this family belong:
+            astrometry.net namely image2xy and solve-field
+            ASTP files
 
         :return: True if local solve and components is available
         """

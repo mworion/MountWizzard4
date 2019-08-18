@@ -21,21 +21,13 @@
 import logging
 import subprocess
 import os
-import glob
-import re
 import fnmatch
-import platform
 import time
 from collections import namedtuple
 # external packages
-import PyQt5.QtWidgets
-from mw4.base import transform
-from skyfield.api import Angle
 from astropy.io import fits
-from PyQt5.QtTest import QTest
-import numpy as np
 # local imports
-from mw4.base import tpool
+from mw4.base import transform
 from mw4.definitions import Solution, Solve
 
 

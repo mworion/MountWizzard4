@@ -886,7 +886,7 @@ class ImageWindow(widget.MWidget):
 
         :return: success
         """
-
-        suc = self.app.astrometry.abort()
+        app = self.app.mainW.ui.astrometryDevice.currentText()
+        suc = self.app.astrometry.abort(app=app)
 
         return suc

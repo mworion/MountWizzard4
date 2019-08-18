@@ -70,7 +70,6 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
     """
 
     __all__ = ['Astrometry',
-               'solve',
                'solveThreading',
                'checkAvailability',
                'abort',
@@ -87,32 +86,64 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         self.threadPool = threadPool
         self.signals = AstrometrySignals()
         self.available = {}
+        self.mutexSolve = PyQt5.QtCore.QMutex()
         self.result = (False, [])
+        self.process = None
 
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME')
-
-            self.binPath = {
-                'CloudMakers': '/Applications/Astrometry.app/Contents/MacOS',
-                'KStars': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            self.solveApp = {
+                'CloudMakers': {
+                    'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+                    'indexPath': home + '/Library/Application Support/Astrometry',
+                    'solve': self.solveNET,
+                    'abort': self.abortNET,
+                },
+                'KStars': {
+                    'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+                    'indexPath': home + '/Library/Application Support/Astrometry',
+                    'solve': self.solveNET,
+                    'abort': self.abortNET,
+                },
+                'ASTAP': {
+                    'programPath': '/Applications/ASTAP.app/Contents/MacOS',
+                    'indexPath': '/Applications/ASTAP.app/Contents/MacOS',
+                    'solve': self.solveASTAP,
+                    'abort': self.abortASTAP,
+                }
             }
-            self.indexPath = home + '/Library/Application Support/Astrometry'
 
         elif platform.system() == 'Linux':
-            self.binPath = {
-                'astrometry-glob': '/usr/bin',
-                'astrometry-local': '/usr/local/astrometry/bin',
+            self.solveApp = {
+                'astrometry-glob': {
+                    'programPath': '/usr/bin',
+                    'indexPath': '/usr/share/astrometry',
+                    'solve': self.solveNET,
+                    'abort': self.abortNET,
+                },
+                'astrometry-local': {
+                    'programPath': '/usr/local/astrometry/bin',
+                    'indexPath': '/usr/share/astrometry',
+                    'solve': self.solveNET,
+                    'abort': self.abortNET,
+                },
             }
-            self.indexPath = '/usr/share/astrometry'
 
         elif platform.system() == 'windows':
-            self.binPath = {
+            self.solveApp = {
+                '': {
+                    'programPath': '',
+                    'indexPath': '',
+                },
             }
-            self.indexPath = ''
 
         else:
-            self.binPath = {}
-            self.indexPath = ''
+            self.solveApp = {
+                '': {
+                    'programPath': '',
+                    'indexPath': '',
+                },
+            }
 
         self.checkAvailability()
 
@@ -127,26 +158,29 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         """
 
         self.available = {}
-        for app, path in self.binPath.items():
+        for solver in self.solveApp:
             suc = True
-            binPathSolveField = path + '/solve-field'
-            binPathImage2xy = path + '/image2xy'
+
+            if solver != 'ASTAP':
+                program = self.solveApp[solver]['programPath'] + '/solve-field'
+                index = '/*.fits'
+            else:
+                program = self.solveApp[solver]['programPath'] + '/astap'
+                index = '/*.290'
 
             # checking binaries
-            if not os.path.isfile(binPathSolveField):
-                self.logger.info(f'{binPathSolveField} not found')
-                suc = False
-            if not os.path.isfile(binPathImage2xy):
-                self.logger.info(f'{binPathImage2xy} not found')
+            if not os.path.isfile(program):
+                self.logger.info(f'{program} not found')
                 suc = False
 
             # checking indexes
-            if not glob.glob(self.indexPath + '/index-4*.fits'):
+            if not glob.glob(self.solveApp[solver]['indexPath'] + index):
                 self.logger.info('no index files found')
                 suc = False
+
             if suc:
-                self.available[app] = path
-                self.logger.info(f'binary and index files available for {app}')
+                self.available[solver] = solver
+                self.logger.info(f'binary and index files available for {solver}')
 
         return True
 
@@ -270,15 +304,6 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
 
         return solve, fitsHeader
 
-    def abort(self):
-        """
-
-        :return:
-        """
-
-        suc = self.abortNET()
-        return suc
-
     def solveClear(self):
         """
         the cyclic or long lasting tasks for solving the image should not run
@@ -288,6 +313,7 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         :return: true for test purpose
         """
 
+        self.mutexSolve.unlock()
         self.signals.done.emit(self.result)
         self.signals.message.emit('')
 
@@ -312,15 +338,21 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         :return: success
         """
 
+        if app not in self.solveApp:
+            return False
         if not os.path.isfile(fitsPath):
             self.signals.done.emit(self.result)
             return False
         if not self.checkAvailability():
             self.signals.done.emit(self.result)
             return False
+        if not self.mutexSolve.tryLock():
+            self.logger.info('overrun in solve threading')
+            self.signals.done.emit(self.result)
+            return False
 
         self.signals.message.emit('solving')
-        worker = tpool.Worker(self.solveNET,
+        worker = tpool.Worker(self.solveApp[app]['solve'],
                               app=app,
                               fitsPath=fitsPath,
                               raHint=raHint,
@@ -334,3 +366,16 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         self.threadPool.start(worker)
 
         return True
+
+    def abort(self, app=''):
+        """
+
+        :param app: which astrometry implementation to choose
+        :return:
+        """
+
+        if app not in self.solveApp:
+            return False
+
+        suc = self.solveApp[app]['abort']()
+        return suc

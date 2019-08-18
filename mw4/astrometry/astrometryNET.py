@@ -54,8 +54,8 @@ class AstrometryNET(object):
     logger = logging.getLogger(__name__)
 
     def __init__(self):
-        self.processNET = None
         self.result = (False, [])
+        self.process = None
 
     def runImage2xy(self, binPath='', xyPath='', fitsPath='', timeout=30):
         """
@@ -77,11 +77,11 @@ class AstrometryNET(object):
 
         timeStart = time.time()
         try:
-            self.processNET = subprocess.Popen(args=runnable,
-                                               stdout=subprocess.PIPE,
-                                               stderr=subprocess.PIPE,
-                                               )
-            stdout, stderr = self.processNET.communicate(timeout=timeout)
+            self.process = subprocess.Popen(args=runnable,
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE,
+                                            )
+            stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
             self.logger.debug(e)
             return False
@@ -91,14 +91,14 @@ class AstrometryNET(object):
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'image2xy took {delta}s return code: '
-                              + str(self.processNET.returncode)
+                              + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
                               + stdout.decode().replace('\n', ' ')
                               )
 
-        success = (self.processNET.returncode == 0)
+        success = (self.process.returncode == 0)
         return success
 
     def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=30):
@@ -133,11 +133,11 @@ class AstrometryNET(object):
 
         timeStart = time.time()
         try:
-            self.processNET = subprocess.Popen(args=runnable,
-                                               stdout=subprocess.PIPE,
-                                               stderr=subprocess.PIPE
-                                               )
-            stdout, stderr = self.processNET.communicate(timeout=timeout)
+            self.process = subprocess.Popen(args=runnable,
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE
+                                            )
+            stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
             self.logger.debug(e)
             return False
@@ -147,29 +147,16 @@ class AstrometryNET(object):
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'solve-field took {delta}s return code: '
-                              + str(self.processNET.returncode)
+                              + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
                               + stdout.decode().replace('\n', ' ')
                               )
 
-        success = (self.processNET.returncode == 0)
+        success = (self.process.returncode == 0)
 
         return success
-
-    def abortNET(self):
-        """
-        abortNET stops the solving function hardly just by killing the process
-
-        :return: success
-        """
-
-        if self.processNET:
-            self.processNET.kill()
-            return True
-        else:
-            return False
 
     def solveNET(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
                  radius=2, timeout=30, updateFits=False):
@@ -200,26 +187,24 @@ class AstrometryNET(object):
         :return: success
         """
 
-        self.processNET = None
+        self.process = None
         self.result = Solution(success=False,
                                solve=[])
 
         if not os.path.isfile(fitsPath):
-            return False
-        if app not in self.binPath:
             return False
 
         xyPath = self.tempDir + '/temp.xy'
         configPath = self.tempDir + '/astrometry.cfg'
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
-        binPathImage2xy = self.binPath[app] + '/image2xy'
-        binPathSolveField = self.binPath[app] + '/solve-field'
+        binPathImage2xy = self.solveApp[app]['programPath'] + '/image2xy'
+        binPathSolveField = self.solveApp[app]['programPath'] + '/solve-field'
 
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
             outFile.write('cpulimit 300\n')
-            outFile.write(f'add_path {self.indexPath}\n')
+            outFile.write(f'add_path {self.solveApp[app]["indexPath"]}\n')
             outFile.write('autoindex\n')
 
         suc = self.runImage2xy(binPath=binPathImage2xy,
@@ -296,3 +281,16 @@ class AstrometryNET(object):
         self.result = Solution(success=True,
                                solve=solve)
         return True
+
+    def abortNET(self):
+        """
+        abortNET stops the solving function hardly just by killing the process
+
+        :return: success
+        """
+
+        if self.process:
+            self.process.kill()
+            return True
+        else:
+            return False

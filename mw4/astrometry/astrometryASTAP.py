@@ -51,8 +51,8 @@ class AstrometryASTAP(object):
     logger = logging.getLogger(__name__)
 
     def __init__(self):
-        self.processASTAP = None
         self.result = (False, [])
+        self.process = None
 
     def runASTAP(self, binPath='', fitsTempPath='', options='', timeout=30):
         """
@@ -74,11 +74,11 @@ class AstrometryASTAP(object):
 
         timeStart = time.time()
         try:
-            self.processASTAP = subprocess.Popen(args=runnable,
-                                                 stdout=subprocess.PIPE,
-                                                 stderr=subprocess.PIPE
-                                                 )
-            stdout, stderr = self.processASTAP.communicate(timeout=timeout)
+            self.process = subprocess.Popen(args=runnable,
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE
+                                            )
+            stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
             self.logger.debug(e)
             return False
@@ -88,29 +88,16 @@ class AstrometryASTAP(object):
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'astap took {delta}s return code: '
-                              + str(self.processASTAP.returncode)
+                              + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
                               + ' stdout: '
                               + stdout.decode().replace('\n', ' ')
                               )
 
-        success = (self.processASTAP.returncode == 0)
+        success = (self.process.returncode == 0)
 
         return success
-
-    def abortNET(self):
-        """
-        abortNET stops the solving function hardly just by killing the process
-
-        :return: success
-        """
-
-        if self.processASTAP:
-            self.processASTAP.kill()
-            return True
-        else:
-            return False
 
     def solveASTAP(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
                    radius=2, timeout=30, updateFits=False):
@@ -141,13 +128,11 @@ class AstrometryASTAP(object):
         :return: success
         """
 
-        self.processASTAP = None
+        self.process = None
         self.result = Solution(success=False,
                                solve=[])
 
         if not os.path.isfile(fitsPath):
-            return False
-        if app not in self.binPath:
             return False
 
         fitsTempPath = self.tempDir + '/temp.solved'
@@ -202,3 +187,16 @@ class AstrometryASTAP(object):
         self.result = Solution(success=True,
                                solve=solve)
         return True
+
+    def abortASTAP(self):
+        """
+        abortNET stops the solving function hardly just by killing the process
+
+        :return: success
+        """
+
+        if self.process:
+            self.process.kill()
+            return True
+        else:
+            return False

@@ -341,7 +341,7 @@ class SettDevice(object):
         """
 
         if self.ui.astrometryDevice.currentText() in self.app.astrometry.available:
-            if self.ui.astrometryDevice.currentText() not in self.app.astrometry.binPath:
+            if self.ui.astrometryDevice.currentText() not in self.app.astrometry.solveApp:
                 self.app.message.emit('Astrometry not available', 2)
                 self.deviceStat['astrometry'] = False
                 return False

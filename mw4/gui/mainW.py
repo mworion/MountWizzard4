@@ -106,6 +106,11 @@ class MainWindow(MWidget,
             'skymeter': None,
             'power': None,
         }
+        self.deviceStatGui = {'dome': self.ui.domeConnected,
+                              'imaging': self.ui.imagingConnected,
+                              'environment': self.ui.environConnected,
+                              'astrometry': self.ui.astrometryConnected,
+                              'mount': self.ui.mountConnected}
 
         # local init of following
         Mount.__init__(self)
@@ -411,40 +416,13 @@ class MainWindow(MWidget,
         :return: True for test purpose
         """
 
-        if self.deviceStat['dome'] is None:
-            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'gray')
-        elif self.deviceStat['dome']:
-            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'green')
-        else:
-            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
-
-        if self.deviceStat['imaging'] is None:
-            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'gray')
-        elif self.deviceStat['imaging']:
-            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'green')
-        else:
-            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'red')
-
-        if self.deviceStat['environment'] is None:
-            self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
-        elif self.deviceStat['environment']:
-            self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
-        else:
-            self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
-
-        if self.deviceStat['astrometry'] is None:
-            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'gray')
-        elif self.deviceStat['astrometry']:
-            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'green')
-        else:
-            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')
-
-        if self.deviceStat['mount'] is None:
-            self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
-        elif self.deviceStat['mount']:
-            self.changeStyleDynamic(self.ui.mountConnected, 'color', 'green')
-        else:
-            self.changeStyleDynamic(self.ui.mountConnected, 'color', 'red')
+        for device, ui in self.deviceStatGui.items():
+            if self.deviceStat[device] is None:
+                self.changeStyleDynamic(ui, 'color', 'gray')
+            elif self.deviceStat[device]:
+                self.changeStyleDynamic(ui, 'color', 'green')
+            else:
+                self.changeStyleDynamic(ui, 'color', 'red')
 
         return True
 

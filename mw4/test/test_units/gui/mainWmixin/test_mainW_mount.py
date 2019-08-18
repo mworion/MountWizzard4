@@ -103,18 +103,18 @@ def test_updatePointGui_dec():
     assert '-' == app.mainW.ui.DEC.text()
 
 
-def test_updatePointGui_jd1():
+def test_updateTimeGui_jd1():
     value = '2451544.5'
     app.mount.obsSite.utc_ut1 = '0'
     app.mount.obsSite.timeJD = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
+    app.mainW.updateTimeGUI(app.mount.obsSite)
     assert '00:00:00' == app.mainW.ui.timeJD.text()
 
 
-def test_updatePointGui_jd2():
+def test_updateTimeGui_jd2():
     value = None
     app.mount.obsSite.timeJD = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
+    app.mainW.updateTimeGUI(app.mount.obsSite)
     assert '-' != app.mainW.ui.timeJD.text()
 
 
@@ -129,14 +129,14 @@ def test_updatePointGui_pierside():
     assert '-' == app.mainW.ui.pierside.text()
 
 
-def test_updatePointGui_sidereal():
+def test_updateTimeGui_sidereal():
     value = '45:45:45'
     app.mount.obsSite.timeSidereal = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
+    app.mainW.updateTimeGUI(app.mount.obsSite)
     assert '45:45:45' == app.mainW.ui.timeSidereal.text()
     value = None
     app.mount.obsSite.timeSidereal = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
+    app.mainW.updateTimeGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.timeSidereal.text()
 
 

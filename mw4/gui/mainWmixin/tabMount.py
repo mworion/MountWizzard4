@@ -39,6 +39,7 @@ class Mount(object):
         ms = self.app.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
+        ms.pointDone.connect(self.updateTimeGUI)
         ms.settDone.connect(self.updateSettingGUI)
         ms.settDone.connect(self.updateSetStatGUI)
         ms.settDone.connect(self.updateTrackingGui)
@@ -144,25 +145,10 @@ class Mount(object):
             self.ui.DEC.setText('-')
             self.ui.DECfloat.setText('-')
 
-        if obs.timeJD is not None:
-            text = obs.timeJD.utc_strftime('%H:%M:%S')
-            self.ui.timeJD.setText(text)
-            self.ui.timeUTC.setText('UTC: ' + text)
-        else:
-            self.ui.timeJD.setText('-')
-
         if obs.pierside is not None:
             self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
         else:
             self.ui.pierside.setText('-')
-
-        if obs.timeSidereal is not None:
-            siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            val = obs.timeSidereal.hms()
-            siderealText = siderealFormat.format(*val)
-            self.ui.timeSidereal.setText(siderealText)
-        else:
-            self.ui.timeSidereal.setText('-')
 
         if obs.haJNow is not None:
             haFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
@@ -173,6 +159,33 @@ class Mount(object):
         else:
             self.ui.HA.setText('-')
             self.ui.HAfloat.setText('-')
+
+        return True
+
+    def updateTimeGUI(self, obs):
+        """
+        updateTimeGUI update the gui upon events triggered be the reception of new data
+        from the mount. the mount data is polled, so we use this signal as well for the
+        update process.
+
+        :param obs:
+        :return:    True if ok for testing
+        """
+
+        if obs.timeJD is not None:
+            text = obs.timeJD.utc_strftime('%H:%M:%S')
+            self.ui.timeJD.setText(text)
+            self.ui.timeUTC.setText('UTC: ' + text)
+        else:
+            self.ui.timeJD.setText('-')
+
+        if obs.timeSidereal is not None:
+            siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
+            val = obs.timeSidereal.hms()
+            siderealText = siderealFormat.format(*val)
+            self.ui.timeSidereal.setText(siderealText)
+        else:
+            self.ui.timeSidereal.setText('-')
 
         return True
 

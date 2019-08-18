@@ -200,12 +200,14 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
             # todo: the actual definition is OK for EKOS
 
             scaleHint = float(fitsHeader.get('SCALE', 0))
-            raHint = transform.convertToAngle(fitsHeader.get('RA', 0), isHours=True)
-            decHint = transform.convertToAngle(fitsHeader.get('DEC', 0), isHours=False)
+            ra = fitsHeader.get('RA', 0)
+            dec = fitsHeader.get('DEC', 0)
+            raHint = transform.convertToAngle(ra, isHours=True)
+            decHint = transform.convertToAngle(dec, isHours=False)
 
         self.logger.debug(f'RA: {raHint}, DEC: {decHint}, Scale: {scaleHint}')
 
-        return raHint, decHint, scaleHint
+        return raHint, decHint, scaleHint, ra, dec
 
     @staticmethod
     def getWCSHeader(wcsHDU=''):

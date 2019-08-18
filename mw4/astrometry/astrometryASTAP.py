@@ -21,7 +21,7 @@
 import logging
 import subprocess
 import os
-import fnmatch
+import shutil
 import time
 from collections import namedtuple
 # external packages
@@ -54,20 +54,21 @@ class AstrometryASTAP(object):
         self.result = (False, [])
         self.process = None
 
-    def runASTAP(self, binPath='', fitsTempPath='', options='', timeout=30):
+    def runASTAP(self, binPath='', fitsPath='', options='', timeout=30):
         """
         runSolveField solves finally the xy star list and writes the WCS data in a fits
         file format
 
         :param binPath:   full path to image2xy executable
-        :param fitsTempPath: full path to fits file in temp dir
+        :param fitsPath: full path to fits file in temp dir
         :param options: additional solver options e.g. ra and dec hint
         :param timeout:
         :return: success
         """
 
         runnable = [binPath,
-                    fitsTempPath,
+                    '-f',
+                    fitsPath,
                     ]
 
         runnable += options
@@ -102,19 +103,11 @@ class AstrometryASTAP(object):
     def solveASTAP(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
                    radius=2, timeout=30, updateFits=False):
         """
-        Solve uses the astrometry.net solver capabilities. The intention is to use an
+        Solve uses the astap solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
-        platform and we need to focus on MW function, we use the astrometry.net package
-        which is distributed with KStars / EKOS. Many thanks to them providing such a
+        platform and we need to focus on MW function, we use the astap package
+        which could be downloaded for all platforms. Many thanks to them providing such a
         nice package.
-        As we go using astrometry.net we focus on the minimum feature set possible to
-        omit many of the installation and wrapping work to be done. So we only support
-        solving of FITS files, use no python environment for astrometry.net parts (as we
-        could access these via MW directly)
-
-        The base outside ideas of implementation come from astrometry.net itself and the
-        astrometry implementation from cloudmakers.eu (another nice package for MAC Astro
-        software)
 
         :param app: which astrometry implementation to choose
         :param fitsPath:  full path to fits file
@@ -135,12 +128,15 @@ class AstrometryASTAP(object):
         if not os.path.isfile(fitsPath):
             return False
 
-        fitsTempPath = self.tempDir + '/temp.solved'
+        # get the filename without extension
+        filename = fitsPath.split('.')[0]
+        solvedPath = filename + '.wcs'
+        iniPath = filename + '.ini'
         wcsPath = self.tempDir + '/temp.wcs'
 
-        binPathASTAP = self.binPath[app]
+        binPathASTAP = self.solveApp[app]['programPath'] + '/astap'
 
-        raFITS, decFITS, scaleFITS = self.readFitsData(fitsPath=fitsPath)
+        _, _, scaleFITS, raFITS, decFITS = self.readFitsData(fitsPath=fitsPath)
 
         # if parameters are passed, they have priority
         if raHint is None:
@@ -154,19 +150,26 @@ class AstrometryASTAP(object):
                    f'{decHint + 90}',
                    '-r',
                    f'{radius:1.1f}',
+                   '-t',
+                   '0.005',
                    ]
 
         suc = self.runASTAP(binPath=binPathASTAP,
-                            fitsTempPath=fitsTempPath,
+                            fitsPath=fitsPath,
                             options=options,
                             timeout=timeout,
                             )
         if not suc:
-            self.logger.error(f'solve-field error in [{fitsPath}]')
+            self.logger.error(f'astap error in [{fitsPath}]')
             return False
-        if not (os.path.isfile(solvedPath) and os.path.isfile(wcsPath)):
+        if not os.path.isfile(solvedPath):
             self.logger.error(f'solve files for [{fitsPath}] missing')
             return False
+
+        # as astap has not output file option, I have to copy it
+        shutil.move(solvedPath, wcsPath)
+        if os.path.isfile(iniPath):
+            os.remove(iniPath)
 
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)

@@ -270,7 +270,13 @@ class Astrometry(AstrometryNet):
         return solve, fitsHeader
 
     def abort(self):
-        self.abortNET()
+        """
+
+        :return:
+        """
+
+        suc = self.abortNET()
+        return suc
 
     def solveClear(self):
         """

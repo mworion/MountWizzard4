@@ -41,9 +41,9 @@ def module_setup_teardown():
 
 def test_init_1():
     home = os.environ.get('HOME')
-    binSolve = '/Applications/KStars300.app/Contents/MacOS/astrometry/bin'
+    binSolve = '/Applications/KStars.app/Contents/MacOS/astrometry/bin'
     index = home + '/Library/Application Support/Astrometry'
-    assert app.astrometry.binPath['KStars300'] == binSolve
+    assert app.astrometry.binPath['KStars'] == binSolve
     assert app.astrometry.indexPath == index
     assert os.path.isfile(app.mwGlob['tempDir'] + '/astrometry.cfg')
 
@@ -58,7 +58,7 @@ def test_checkAvailability_1():
 
 def test_checkAvailability_3():
     app.astrometry.indexPath = '/usr/share/astrometry'
-    app.astrometry.binPath = {'KStars': '/Applications/KStars300.app/Contents/MacOS/astrometry/bin'}
+    app.astrometry.binPath = {'KStars': '/Applications/KStars.app/Contents/MacOS/astrometry/bin'}
     suc = app.astrometry.checkAvailability()
     assert suc
     assert app.astrometry.available == {}
@@ -66,7 +66,7 @@ def test_checkAvailability_3():
 
 def test_checkAvailability_4():
     app.astrometry.indexPath = '/Users/mw/Library/Application Support/Astrometry'
-    app.astrometry.binPath = {'KStars': '/Applications/KStars300.app/Contents/MacOS/astrometry/bin'}
+    app.astrometry.binPath = {'KStars': '/Applications/KStars.app/Contents/MacOS/astrometry/bin'}
     suc = app.astrometry.checkAvailability()
     assert suc
     assert 'KStars' in app.astrometry.available
@@ -221,53 +221,6 @@ def test_abort_2():
     app.astrometry.process = None
     suc = app.astrometry.abort()
     assert not suc
-
-
-def test_solve_1():
-    suc = app.astrometry.solve()
-    assert not suc
-
-
-def test_solve_2():
-    with mock.patch.object(app.astrometry,
-                           'runImage2xy',
-                           return_value=False):
-        with mock.patch.object(app.astrometry,
-                               'runSolveField',
-                               return_value=False):
-            suc = app.astrometry.solve(app='KStars300',
-                                       fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                                       timeout=5,
-                                       )
-        assert not suc
-
-
-def test_solve_3():
-    with mock.patch.object(app.astrometry,
-                           'runImage2xy',
-                           return_value=True):
-        with mock.patch.object(app.astrometry,
-                               'runSolveField',
-                               return_value=False):
-            suc = app.astrometry.solve(app='KStars300',
-                                       fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                                       timeout=5,
-                                       )
-        assert not suc
-
-
-def test_solve_4():
-    with mock.patch.object(app.astrometry,
-                           'runImage2xy',
-                           return_value=True):
-        with mock.patch.object(app.astrometry,
-                               'runSolveField',
-                               return_value=True):
-            suc = app.astrometry.solve(app='KStars',
-                                       fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                                       timeout=5,
-                                       )
-        assert suc
 
 
 def test_solveClear():

@@ -1,2 +1,8 @@
 [run]
-omit = mw4/test/*, mw4/generate/*, mw4/gui/media/*, mw4/gui/widgets/*, automation/*
+omit = mw4/test/*,
+       mw4/generate/*,
+       mw4/gui/media/*,
+       mw4/gui/widgets/*,
+       automation/*,
+       */__init__.py,
+       /Users/mw/PycharmProjects/Envs/mw4/*

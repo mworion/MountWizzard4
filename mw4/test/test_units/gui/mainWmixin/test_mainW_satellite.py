@@ -21,6 +21,7 @@
 import unittest.mock as mock
 import pytest
 # external packages
+from skyfield.api import Angle
 # local import
 from mw4.test.test_units.setupQt import setupQt
 
@@ -97,6 +98,11 @@ def test_loadTLEData_3():
     assert suc
 
 
+def test_loadSatelliteSourceWorker_1():
+    suc = app.mainW.loadSatelliteSourceWorker()
+    assert suc
+
+
 def test_loadSatelliteSource_1():
     suc = app.mainW.loadSatelliteSource()
     assert suc
@@ -114,7 +120,17 @@ def test_updateSatelliteData_2():
 
 
 def test_updateSatelliteData_3():
-    app.mainW.loadSatelliteSource()
+    app.mainW.loadSatelliteSourceWorker()
+    app.mainW.satellite = app.mainW.satellites['ZARYA']
+    app.mainW.ui.mainTabWidget.setCurrentIndex(5)
+    suc = app.mainW.updateSatelliteData()
+    assert suc
+
+
+def test_updateSatelliteData_4():
+    app.mount.obsSite.setRefractionPress = 1000
+    app.mount.obsSite.setRefractionTemp = 10
+    app.mainW.loadSatelliteSourceWorker()
     app.mainW.satellite = app.mainW.satellites['ZARYA']
     app.mainW.ui.mainTabWidget.setCurrentIndex(5)
     suc = app.mainW.updateSatelliteData()
@@ -128,7 +144,7 @@ def test_programTLEToMount_1():
 
 
 def test_programTLEToMount_2():
-    app.mainW.loadSatelliteSource()
+    app.mainW.loadSatelliteSourceWorker()
     app.mount.mountUp = True
 
     with mock.patch.object(app.mount.satellite,
@@ -139,7 +155,7 @@ def test_programTLEToMount_2():
 
 
 def test_programTLEToMount_3():
-    app.mainW.loadSatelliteSource()
+    app.mainW.loadSatelliteSourceWorker()
     app.mount.mountUp = True
 
     with mock.patch.object(app.mount.satellite,
@@ -149,10 +165,19 @@ def test_programTLEToMount_3():
         assert suc
 
 
-def test_calcTLEParams():
+def test_calcTLEParams_1():
     with mock.patch.object(app.mount,
                            'calcTLE'):
-        app.mainW.calcTLEParams()
+        suc = app.mainW.calcTLEParams()
+        assert suc
+
+
+def test_calcTLEParams_2():
+    app.mainW.satellite = None
+    with mock.patch.object(app.mount,
+                           'calcTLE'):
+        suc = app.mainW.calcTLEParams()
+        assert not suc
 
 
 def test_extractSatelliteData_1():
@@ -191,7 +216,18 @@ def test_enableTrack_2():
         flip = False
         message = None
         altitude = None
-        setNeedFlip = None
+
+    suc = app.mainW.enableTrack(Test())
+    assert suc
+
+
+def test_enableTrack_3():
+    class Test:
+        jdStart = 2458715.14771
+        jdEnd = 2458715.15
+        flip = False
+        message = 'test'
+        altitude = Angle(degrees=50)
 
     suc = app.mainW.enableTrack(Test())
     assert suc
@@ -216,6 +252,26 @@ def test_startTrack_3():
     app.mount.mountUp = True
     with mock.patch.object(app.mount.satellite,
                            'slewTLE',
+                           return_value=(False, 'test')):
+        suc = app.mainW.startTrack()
+        assert not suc
+
+
+def test_startTrack_4():
+    app.mount.mountUp = True
+    app.mount.obsSite.status = 5
+    with mock.patch.object(app.mount.satellite,
+                           'slewTLE',
+                           return_value=(False, 'test')):
+        suc = app.mainW.startTrack()
+        assert not suc
+
+
+def test_startTrack_5():
+    app.mount.mountUp = True
+    app.mount.obsSite.status = 5
+    with mock.patch.object(app.mount.satellite,
+                           'slewTLE',
                            return_value=(True, 'test')):
         suc = app.mainW.startTrack()
         assert suc
@@ -231,15 +287,15 @@ def test_stopTrack_2():
     app.mount.mountUp = True
     with mock.patch.object(app.mount.obsSite,
                            'stopTracking',
-                           return_value=(False, 'test')):
+                           return_value=False):
         suc = app.mainW.stopTrack()
-        assert suc
+        assert not suc
 
 
 def test_stopTrack_3():
     app.mount.mountUp = True
     with mock.patch.object(app.mount.obsSite,
                            'stopTracking',
-                           return_value=(True, 'test')):
+                           return_value=True):
         suc = app.mainW.stopTrack()
         assert suc

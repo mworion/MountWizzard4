@@ -793,7 +793,7 @@ class ImageWindow(widget.MWidget):
 
         return True
 
-    def solveDone(self, result):
+    def solveDone(self, result=None):
         """
         solveDone is the partner method for solveImage. it enables the gui elements back
         removes the signal / slot connection for receiving solving results, checks the
@@ -807,24 +807,24 @@ class ImageWindow(widget.MWidget):
         self.deviceStat['solve'] = False
         self.app.astrometry.signals.done.disconnect(self.solveDone)
 
-        if not result.success:
+        if not result:
             self.app.message.emit('Solving error', 2)
             return False
-
-        rData = result.solve
-        if not isinstance(rData, tuple):
-            return False
-        text = f'Ra: {transform.convertToHMS(rData.raJ2000)} '
-        text += f'({rData.raJ2000.hours:4.3f}), '
-        text += f'Dec: {transform.convertToDMS(rData.decJ2000)} '
-        text += f'({rData.decJ2000.degrees:4.3f}), '
-        text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
-        text += f'Scale: {rData.scale:4.3f}'
         if result.success:
+            rData = result.solve
+            if not isinstance(rData, tuple):
+                return False
+            text = f'Ra: {transform.convertToHMS(rData.raJ2000)} '
+            text += f'({rData.raJ2000.hours:4.3f}), '
+            text += f'Dec: {transform.convertToDMS(rData.decJ2000)} '
+            text += f'({rData.decJ2000.degrees:4.3f}), '
+            text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
+            text += f'Scale: {rData.scale:4.3f}'
             self.app.message.emit(f'Solved: [{os.path.basename(result.solve.path)}]', 0)
             self.app.message.emit(f'     {text}', 0)
         else:
             self.app.message.emit('Solving error', 2)
+            return False
 
         isStack = self.ui.checkStackImages.isChecked()
         isAutoSolve = self.ui.checkAutoSolve.isChecked()

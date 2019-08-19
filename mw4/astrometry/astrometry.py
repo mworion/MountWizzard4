@@ -205,7 +205,7 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
             raHint = transform.convertToAngle(ra, isHours=True)
             decHint = transform.convertToAngle(dec, isHours=False)
 
-        self.logger.debug(f'RA: {raHint}, DEC: {decHint}, Scale: {scaleHint}')
+        self.logger.info(f'RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale: {scaleHint}')
 
         return raHint, decHint, scaleHint, ra, dec
 

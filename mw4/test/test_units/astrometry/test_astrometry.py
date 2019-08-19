@@ -94,6 +94,16 @@ def test_checkAvailability_4():
     assert 'KStars' in app.astrometry.available
 
 
+def test_readFitsData_1():
+    file = mwGlob['imageDir'] + '/m51.fits'
+    ra, dec, sc, ra1, dec1 = app.astrometry.readFitsData(file)
+    assert ra
+    assert dec
+    assert sc
+    assert ra1
+    assert dec1
+
+
 def test_getWCSHeader():
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
@@ -233,6 +243,89 @@ def test_solveClear():
     app.astrometry.solveClear()
 
 
-def test_solveThreading():
+def test_solveThreading_1():
     suc = app.astrometry.solveThreading()
     assert not suc
+
+
+def test_solveThreading_2():
+    home = os.environ.get('HOME')
+    app.astrometry.solveApp = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
+    suc = app.astrometry.solveThreading(app='KStars')
+    assert not suc
+
+
+def test_solveThreading_3():
+    home = os.environ.get('HOME')
+    app.astrometry.solveApp = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
+    file = mwGlob['imageDir'] + '/m51.fits'
+    suc = app.astrometry.solveThreading(app='KStars',
+                                        fitsPath=file,
+                                        )
+    assert suc
+
+
+def test_solveThreading_4():
+    home = os.environ.get('HOME')
+    app.astrometry.solveApp = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
+    file = mwGlob['imageDir'] + '/m51.fits'
+    suc = app.astrometry.solveThreading(app='KStars',
+                                        fitsPath=file,
+                                        )
+    assert not suc
+
+
+def test_solveThreading_5():
+    app.astrometry.solveApp = {
+        'CloudMakers': {
+            'programPath': '',
+            'indexPath': '',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
+    file = mwGlob['imageDir'] + '/m51.fits'
+    suc = app.astrometry.solveThreading(app='KStars',
+                                        fitsPath=file,
+                                        )
+    assert not suc
+
+
+def test_abort_1():
+    suc = app.astrometry.abort()
+    assert not suc
+
+
+def test_abort_2():
+    home = os.environ.get('HOME')
+    app.astrometry.solveApp = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
+    suc = app.astrometry.abort(app='KStars')
+    assert suc

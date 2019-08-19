@@ -5,4 +5,4 @@ omit = mw4/test/*,
        mw4/gui/widgets/*,
        automation/*,
        */__init__.py,
-       /Users/mw/PycharmProjects/Envs/mw4/*
+       /Users/mw/PycharmProjects/Envs/*.py,

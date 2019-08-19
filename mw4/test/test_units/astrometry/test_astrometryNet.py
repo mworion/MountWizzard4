@@ -85,7 +85,7 @@ def test_solve_4():
                                'runSolveField',
                                return_value=True):
             suc = app.astrometry.solveNET(app='KStars',
-                                          fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
+                                          fitsPath=mwGlob['imageDir'] + '/m51.fits',
                                           timeout=5,
                                           )
         assert suc

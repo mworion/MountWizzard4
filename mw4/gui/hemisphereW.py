@@ -887,7 +887,7 @@ class HemisphereWindow(widget.MWidget):
             self.app.message.emit('Slewing to: {0}'.format(name), 0)
         return suc
 
-    def _staticHorizon(self, axes=None):
+    def staticHorizon(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -908,7 +908,7 @@ class HemisphereWindow(widget.MWidget):
             self.horizonMarker.set_color('#FF00FF')
         return True
 
-    def _staticModelData(self, axes=None):
+    def staticModelData(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -971,7 +971,7 @@ class HemisphereWindow(widget.MWidget):
                                         visible=visible)
         return True
 
-    def _staticMeridianLimits(self, axes=None):
+    def staticMeridianLimits(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -1004,7 +1004,7 @@ class HemisphereWindow(widget.MWidget):
         axes.add_patch(self.meridianTrack)
         return True
 
-    def _staticAltitudeLimits(self, axes=None):
+    def staticAltitudeLimits(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -1049,11 +1049,11 @@ class HemisphereWindow(widget.MWidget):
         :return:
         """
 
-        self._staticHorizon(axes=axes)
-        self._staticModelData(axes=axes)
+        self.staticHorizon(axes=axes)
+        self.staticModelData(axes=axes)
         self._staticCelestialEquator(axes=axes)
-        self._staticMeridianLimits(axes=axes)
-        self._staticAltitudeLimits(axes=axes)
+        self.staticMeridianLimits(axes=axes)
+        self.staticAltitudeLimits(axes=axes)
 
     def drawHemisphereMoving(self, axes=None):
         """

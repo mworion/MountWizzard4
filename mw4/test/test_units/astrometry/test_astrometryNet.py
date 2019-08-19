@@ -21,10 +21,6 @@
 from unittest import mock
 import pytest
 import os
-import platform
-import numpy as np
-import subprocess
-from astropy.io import fits
 
 # external packages
 # local import
@@ -73,6 +69,15 @@ def test_solve_3():
 
 
 def test_solve_4():
+    home = os.environ.get('HOME')
+    app.astrometry.solveApp = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solve': app.astrometry.solveNET,
+            'abort': app.astrometry.abortNET,
+        }
+    }
     with mock.patch.object(app.astrometry,
                            'runImage2xy',
                            return_value=True):

@@ -104,6 +104,12 @@ def test_showModelPolar4():
     assert not suc
 
 
+def test_clearRefreshName():
+    app.mount.signals.namesDone.connect(app.mainW.clearRefreshName)
+    suc = app.mainW.clearRefreshName()
+    assert suc
+
+
 def test_refreshName_1():
     with mock.patch.object(app.mount,
                            'getNames',
@@ -305,6 +311,79 @@ def test_cancelTargetRMS():
     assert not app.mainW.runningTargetRMS
 
 
+def test_clearRefreshModel():
+    app.mount.signals.alignDone.connect(app.mainW.clearRefreshModel)
+    suc = app.mainW.clearRefreshModel()
+    assert suc
+
+
+def test_refreshModel():
+    app.mount.signals.alignDone.connect(app.mainW.clearRefreshModel)
+    with mock.patch.object(app.mount,
+                           'getAlign'):
+        suc = app.mainW.clearRefreshModel()
+        assert suc
+
+
+def test_clearRunTargetRMS_1():
+    app.mount.signals.alignDone.connect(app.mainW.clearRunTargetRMS)
+    app.mount.model.errorRMS = 0.1
+    suc = app.mainW.clearRunTargetRMS()
+    assert suc
+
+
+def test_clearRunTargetRMS_2():
+    app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
+    app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    app.mount.model.errorRMS = 100
+    app.mainW.runningTargetRMS = True
+    app.mount.signals.alignDone.connect(app.mainW.clearRunTargetRMS)
+    with mock.patch.object(app.mount.model,
+                           'deletePoint',
+                           return_value=False):
+        with mock.patch.object(app.mount,
+                               'getAlign'):
+            suc = app.mainW.clearRunTargetRMS()
+            assert suc
+
+
+def test_clearRunTargetRMS_3():
+    app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
+    app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    app.mount.model.errorRMS = 100
+    app.mainW.runningTargetRMS = True
+    app.mount.signals.alignDone.connect(app.mainW.clearRunTargetRMS)
+    with mock.patch.object(app.mount.model,
+                           'deletePoint',
+                           return_value=True):
+        with mock.patch.object(app.mount,
+                               'getAlign'):
+            suc = app.mainW.clearRunTargetRMS()
+            assert suc
+
+
+def test_clearRunTargetRMS_4():
+    app.mount.model.errorRMS = 100
+    app.mainW.runningTargetRMS = False
+    app.mount.signals.alignDone.connect(app.mainW.clearRunTargetRMS)
+    suc = app.mainW.clearRunTargetRMS()
+    assert suc
+
+
+def test_runTargetRMS():
+    with mock.patch.object(app.mainW,
+                           'clearRunTargetRMS'):
+        suc = app.mainW.runTargetRMS()
+        assert suc
+    app.mount.signals.alignDone.connect(app.mainW.clearRunTargetRMS)
+
+
+def test_cancelTargetRMS():
+    suc = app.mainW.cancelTargetRMS()
+    assert suc
+    assert not app.mainW.runningTargetRMS
+
+
 def test_clearModel_1(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
@@ -337,3 +416,25 @@ def test_clearModel_3(qtbot):
                 suc = app.mainW.clearModel()
                 assert suc
                 assert ['Actual model cleared', 0] == blocker.args
+
+
+def test_deleteWorstPoint_1():
+    app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
+    app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    with mock.patch.object(app.mount.model,
+                           'deletePoint',
+                           return_value=False):
+        suc = app.mainW.deleteWorstPoint()
+        assert not suc
+
+
+def test_deleteWorstPoint_2():
+    app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
+    app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    with mock.patch.object(app.mount.model,
+                           'deletePoint',
+                           return_value=True):
+        with mock.patch.object(app.mainW,
+                               'refreshModel'):
+            suc = app.mainW.deleteWorstPoint()
+            assert suc

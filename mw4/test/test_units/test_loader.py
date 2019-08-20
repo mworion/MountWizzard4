@@ -21,6 +21,7 @@
 import traceback
 import sys
 import os
+import glob
 import unittest.mock as mock
 # external packages
 import PyQt5.QtGui
@@ -31,15 +32,11 @@ from mw4 import loader
 from mw4.test.test_units.setupQt import setupQt
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
     yield
-
-
-def test_MyApp():
-    loader.MyApp(sys.argv)
 
 
 def test_except_hook():
@@ -62,7 +59,7 @@ def test_setupWorkDirs_1():
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=True):
-                mwGlob = loader.setupWorkDirs()
+                loader.setupWorkDirs(mwGlob=mwGlob)
 
 
 def test_setupWorkDirs_2():
@@ -75,7 +72,7 @@ def test_setupWorkDirs_2():
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=False):
-                mwGlob = loader.setupWorkDirs()
+                loader.setupWorkDirs(mwGlob=mwGlob)
 
 
 def test_checkFrozen_1():
@@ -102,6 +99,14 @@ def test_extractDataFiles_1():
 
 
 def test_extractDataFiles_2():
+    suc = loader.extractDataFiles(mwGlob=mwGlob)
+    assert suc
+
+
+def test_extractDataFiles_3():
+    files = glob.glob(mwGlob['dataDir'] + '/*')
+    for f in files:
+        os.remove(f)
     suc = loader.extractDataFiles(mwGlob=mwGlob)
     assert suc
 

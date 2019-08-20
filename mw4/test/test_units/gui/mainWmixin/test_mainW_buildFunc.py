@@ -21,6 +21,7 @@
 import unittest.mock as mock
 import pytest
 import time
+import os
 # external packages
 import skyfield.api
 from mountcontrol.model import AlignStar
@@ -499,7 +500,43 @@ def test_saveModel_3():
     model.append(mPoint)
 
     suc = app.mainW.saveModel(model=model)
+    assert not suc
+
+
+def test_saveModel_4():
+
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='testPath',
+                                  name='test',
+                                  timeout=10,
+                                  radius=1,
+                                  astrometry='astrometry'),
+                    iParam=IParam(expTime=1,
+                                  binning=1,
+                                  subFrame=100,
+                                  fastReadout=False),
+                    point=Point(azimuth=0,
+                                altitude=0),
+                    mData=MData(raMJNow=skyfield.api.Angle(hours=0),
+                                decMJNow=skyfield.api.Angle(degrees=0),
+                                raSJNow=skyfield.api.Angle(hours=0),
+                                decSJNow=skyfield.api.Angle(degrees=0),
+                                sidereal=skyfield.api.Angle(hours=0),
+                                julian=app.mount.obsSite.timeJD,
+                                pierside='E'),
+                    rData=RData(errorRA=1,
+                                errorDEC=2,
+                                errorRMS=3))
+    model = list()
+    model.append(mPoint)
+    model.append(mPoint)
+    model.append(mPoint)
+
+    suc = app.mainW.saveModel(model=model, name='test')
     assert suc
+
+    os.remove(mwGlob['modelDir'] + '/test.model')
 
 
 def test_collectModelData():

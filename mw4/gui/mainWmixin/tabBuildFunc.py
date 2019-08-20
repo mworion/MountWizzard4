@@ -562,7 +562,7 @@ class BuildFunc(object):
         :return: save model format
         """
 
-        saveModel = list()
+        modelDataForSave = list()
         for mPoint in model:
             sPoint = {'name': mPoint.mParam.name,
                       'path': mPoint.mParam.path,
@@ -585,10 +585,10 @@ class BuildFunc(object):
                       'errorRa': mPoint.rData.errorRA,
                       'errorDEC': mPoint.rData.errorDEC,
                       }
-            saveModel.append(sPoint)
-        return saveModel
+            modelDataForSave.append(sPoint)
+        return modelDataForSave
 
-    def saveModel(self, model=None):
+    def saveModel(self, model=None, name=''):
         """
         saveModel saves the model data for later use. with this data, the model could
         be reprogrammed without doing some imaging, it could be added with other data to
@@ -596,10 +596,13 @@ class BuildFunc(object):
         in addition it should be possible to make som analyses with this data.
 
         :param model:
+        :param name:
         :return: success
         """
 
         if model is None:
+            return False
+        if not name:
             return False
         if len(model) < 3:
             self.logger.debug(f'only {len(model)} points available')
@@ -607,9 +610,9 @@ class BuildFunc(object):
 
         saveModel = self.generateSaveModel(model)
 
-        self.app.message.emit(f'writing model [{self.modelName}]', 0)
+        self.app.message.emit(f'writing model [{name}]', 0)
 
-        modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
+        modelPath = f'{self.app.mwGlob["modelDir"]}/{name}.model'
         with open(modelPath, 'w') as outfile:
             json.dump(saveModel,
                       outfile,
@@ -719,7 +722,7 @@ class BuildFunc(object):
             self.app.message.emit('Model programmed with success', 0)
             self.refreshModel()
             model = self.retrofitModel(model=model)
-            self.saveModel(model=model)
+            self.saveModel(model=model, name=self.modelName)
         else:
             self.app.message.emit('Model programming error', 2)
 

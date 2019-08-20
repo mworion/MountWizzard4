@@ -24,18 +24,17 @@ import os
 import glob
 import unittest.mock as mock
 # external packages
-import PyQt5.QtGui
-import PyQt5.QtWidgets
 import pytest
 # local import
 from mw4 import loader
 from mw4.test.test_units.setupQt import setupQt
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
-    global app, spy, mwGlob, test
+    global app, spy, mwGlob, test, testGlob
     app, spy, mwGlob, test = setupQt()
+    testGlob = mwGlob
     yield
 
 
@@ -59,7 +58,7 @@ def test_setupWorkDirs_1():
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=True):
-                loader.setupWorkDirs(mwGlob=mwGlob)
+                loader.setupWorkDirs(mwGlob=testGlob)
 
 
 def test_setupWorkDirs_2():
@@ -72,7 +71,7 @@ def test_setupWorkDirs_2():
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=False):
-                loader.setupWorkDirs(mwGlob=mwGlob)
+                loader.setupWorkDirs(mwGlob=testGlob)
 
 
 def test_checkFrozen_1():
@@ -89,7 +88,7 @@ def test_writeSystemInfo():
     mwGlob['modeldata'] = ''
     mwGlob['frozen'] = ''
     mwGlob['bundleDir'] = ''
-    suc = loader.writeSystemInfo(mwGlob=mwGlob)
+    suc = loader.writeSystemInfo(mwGlob=testGlob)
     assert suc
 
 

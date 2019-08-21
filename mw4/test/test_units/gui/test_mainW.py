@@ -186,20 +186,6 @@ def test_saveProfile2(qtbot):
         assert ['Actual profile cannot not be saved', 2] == blocker.args
 
 
-def test_mountHost():
-    app.mainW.ui.mountHost.setText('test')
-    app.mainW.mountHost()
-
-    assert app.mount.host == ('test', 3492)
-
-
-def test_mountMAC():
-    app.mainW.ui.mountMAC.setText('00:00:00:00:00:00')
-    app.mainW.mountMAC()
-
-    assert app.mount.MAC == '00:00:00:00:00:00'
-
-
 def test_config():
     app.config = {
         'profileName': 'config',

@@ -82,7 +82,6 @@ def test_solve_4():
 
 
 def test_solve_5():
-
     src = mwGlob['tempDir'] + '/temp.wcs'
     dest = mwGlob['imageDir'] + '/m51.wcs'
     shutil.copyfile(src, dest)

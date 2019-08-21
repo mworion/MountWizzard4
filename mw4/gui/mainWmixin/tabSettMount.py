@@ -128,6 +128,11 @@ class SettMount(object):
         return value
 
     def bootRackComp(self):
+        """
+
+        :return:
+        """
+
         MAC = self.ui.rackCompMAC.text()
         MAC = self.checkFormatMAC(MAC)
         if MAC is not None:

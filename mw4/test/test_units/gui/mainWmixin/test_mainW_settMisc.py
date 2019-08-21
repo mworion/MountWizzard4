@@ -20,7 +20,9 @@
 # standard libraries
 import logging
 import pytest
+import unittest.mock as mock
 # external packages
+import PyQt5
 # local import
 from mw4.test.test_units.setupQt import setupQt
 
@@ -135,3 +137,31 @@ def test_updateFwGui_fwtime():
     app.mount.fw.fwtime = value
     app.mainW.updateFwGui(app.mount.fw)
     assert '-' == app.mainW.ui.fwtime.text()
+
+
+def test_playAudioDomeSlewFinished_1():
+    with mock.patch.object(PyQt5.QtMultimedia.QSound,
+                           'play'):
+        suc = app.mainW.playAudioDomeSlewFinished()
+        assert suc
+
+
+def test_playAudioMountSlewFinished_1():
+    with mock.patch.object(PyQt5.QtMultimedia.QSound,
+                           'play'):
+        suc = app.mainW.playAudioMountSlewFinished()
+        assert suc
+
+
+def test_playAudioMountAlert_1():
+    with mock.patch.object(PyQt5.QtMultimedia.QSound,
+                           'play'):
+        suc = app.mainW.playAudioMountAlert()
+        assert suc
+
+
+def test_playAudioModelFinished_1():
+    with mock.patch.object(PyQt5.QtMultimedia.QSound,
+                           'play'):
+        suc = app.mainW.playAudioModelFinished()
+        assert suc

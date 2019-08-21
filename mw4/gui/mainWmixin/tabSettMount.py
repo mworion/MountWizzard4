@@ -29,6 +29,12 @@ class SettMount(object):
     """
 
     def __init__(self):
+        self.typeConnectionTexts = ['serial RS-232 port',
+                                    'GPS or GPS/RS-232 port',
+                                    'cabled LAN port',
+                                    'wireless LAN',
+                                    ]
+
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
         self.ui.mountHost.editingFinished.connect(self.mountHost)
@@ -144,23 +150,48 @@ class SettMount(object):
             return False
 
     def mountHost(self):
+        """
+
+        :return: true for test purpose
+        """
         self.app.mount.host = self.ui.mountHost.text()
+        return True
 
     def mountMAC(self):
-        self.app.mount.MAC = self.ui.mountMAC.text()
+        """
 
-    def setMountMAC(self, sett):
+        :return: true for test purpose
+        """
+        self.app.mount.MAC = self.ui.mountMAC.text()
+        return True
+
+    def setMountMAC(self, sett=None):
         """
 
         :param sett:
-        :return:
+        :return: true for test purpose
         """
+        if sett is None:
+            return False
 
-        if sett.addressLanMAC is not None and sett.addressLanMAC:
-            self.app.mount.MAC = sett.addressLanMAC
-        if self.app.mount.MAC is not None:
-            self.ui.mountMAC.setText(self.app.mount.MAC)
+        if sett.addressLanMAC is None:
+            return False
+        if not sett.addressLanMAC:
+            return False
+        self.app.mount.MAC = sett.addressLanMAC
 
-        if sett.typeConnection is not None:
-            text = self.typeConnectionTexts[sett.typeConnection]
-            self.ui.mountTypeConnection.setText(text)
+        if self.app.mount.MAC is None:
+            return False
+        self.ui.mountMAC.setText(self.app.mount.MAC)
+
+        if sett.typeConnection is None:
+            return False
+        if sett.typeConnection < 0:
+            return False
+        if sett.typeConnection > len(self.typeConnectionTexts):
+            return False
+
+        text = self.typeConnectionTexts[sett.typeConnection]
+        self.ui.mountTypeConnection.setText(text)
+
+        return True

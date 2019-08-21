@@ -92,11 +92,7 @@ class MainWindow(MWidget,
         self.initUI()
         self.setupIcons()
         self.setWindowTitle(f'MountWizzard4 - v{self.app.version}')
-        self.typeConnectionTexts = ['serial RS-232 port',
-                                    'GPS or GPS/RS-232 port',
-                                    'cabled LAN port',
-                                    'wireless LAN',
-                                    ]
+
         self.deviceStat = {
             'dome': None,
             'mount': None,

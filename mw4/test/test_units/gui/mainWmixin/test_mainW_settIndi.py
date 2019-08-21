@@ -104,16 +104,16 @@ def test_indiMessage_3(qtbot):
     assert ['test -> this is a test', 2] == blocker.args
 
 
-def test_showIndiEnvironConnected(qtbot):
+def test_showIndiDomeConnected(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiEnvironConnected()
+        suc = app.mainW.showIndiDomeConnected()
         assert suc
     assert ['INDI server environment connected', 0] == blocker.args
 
 
-def test_showIndiEnvironDisconnected(qtbot):
+def test_showIndiDomeDisconnected(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiEnvironDisconnected()
+        suc = app.mainW.showIndiDomeDisconnected()
         assert suc
     assert ['INDI server environment disconnected', 0] == blocker.args
 
@@ -148,6 +148,100 @@ def test_showEnvironDeviceConnected():
 
 def test_showEnvironDeviceDisconnected():
     suc = app.mainW.showEnvironDeviceDisconnected()
+    assert suc
+
+
+def test_showIndiDomeConnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiDomeConnected()
+        assert suc
+    assert ['INDI server dome connected', 0] == blocker.args
+
+
+def test_showIndiDomeDisconnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiDomeDisconnected()
+        assert suc
+    assert ['INDI server dome disconnected', 0] == blocker.args
+
+
+def test_showIndiNewDomeDevice_1(qtbot):
+    app.dome.name = 'test'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewDomeDevice('test')
+        assert suc
+    assert ['INDI dome device [test] found', 0] == blocker.args
+
+
+def test_showIndiNewDomeDevice_2(qtbot):
+    app.dome.name = 'snoop'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewDomeDevice('test')
+        assert suc
+    assert ['INDI dome device snoops -> [test]', 0] == blocker.args
+
+
+def test_showIndiRemoveDomeDevice(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiRemoveDomeDevice('test')
+        assert suc
+    assert ['INDI dome device [test] removed', 0] == blocker.args
+
+
+def test_showDomeDeviceConnected():
+    suc = app.mainW.showDomeDeviceConnected()
+    assert suc
+
+
+def test_showDomeDeviceDisconnected():
+    suc = app.mainW.showDomeDeviceDisconnected()
+    assert suc
+
+
+def test_showIndiImagingConnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiImagingConnected()
+        assert suc
+    assert ['INDI server imaging connected', 0] == blocker.args
+
+
+def test_showIndiImagingDisconnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiImagingDisconnected()
+        assert suc
+    assert ['INDI server imaging disconnected', 0] == blocker.args
+
+
+def test_showIndiNewImagingDevice_1(qtbot):
+    app.imaging.name = 'test'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewImagingDevice('test')
+        assert suc
+    assert ['INDI imaging device [test] found', 0] == blocker.args
+
+
+def test_showIndiNewImagingDevice_2(qtbot):
+    app.imaging.name = 'snoop'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewImagingDevice('test')
+        assert suc
+    assert ['INDI imaging device snoops -> [test]', 0] == blocker.args
+
+
+def test_showIndiRemoveImagingDevice(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiRemoveImagingDevice('test')
+        assert suc
+    assert ['INDI imaging device [test] removed', 0] == blocker.args
+
+
+def test_showImagingDeviceConnected():
+    suc = app.mainW.showImagingDeviceConnected()
+    assert suc
+
+
+def test_showImagingDeviceDisconnected():
+    suc = app.mainW.showImagingDeviceDisconnected()
     assert suc
 
 
@@ -193,6 +287,53 @@ def test_showSkymeterDeviceConnected():
     assert suc
 
 
-def test_showSkymeterDeviceDisconnected():
-    suc = app.mainW.showSkymeterDeviceDisconnected()
+def test_showPowerDeviceDisconnected():
+    suc = app.mainW.showPowerDeviceDisconnected()
+    assert suc
+
+
+def test_showIndiPowerConnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiPowerConnected()
+        assert suc
+    assert ['INDI server power connected', 0] == blocker.args
+
+
+def test_showIndiPowerDisconnected(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiPowerDisconnected()
+        assert suc
+    assert ['INDI server power disconnected', 0] == blocker.args
+
+
+def test_showIndiNewPowerDevice_1(qtbot):
+    app.power.name = 'test'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewPowerDevice('test')
+        assert suc
+    assert ['INDI power device [test] found', 0] == blocker.args
+
+
+def test_showIndiNewPowerDevice_2(qtbot):
+    app.power.name = 'snoop'
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiNewPowerDevice('test')
+        assert suc
+    assert ['INDI power device snoops -> [test]', 0] == blocker.args
+
+
+def test_showIndiRemovePowerDevice(qtbot):
+    with qtbot.waitSignal(app.message) as blocker:
+        suc = app.mainW.showIndiRemovePowerDevice('test')
+        assert suc
+    assert ['INDI power device [test] removed', 0] == blocker.args
+
+
+def test_showPowerDeviceConnected():
+    suc = app.mainW.showPowerDeviceConnected()
+    assert suc
+
+
+def test_showPowerDeviceDisconnected():
+    suc = app.mainW.showPowerDeviceDisconnected()
     assert suc

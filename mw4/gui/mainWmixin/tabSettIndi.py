@@ -341,6 +341,7 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        self.app.message.emit('INDI server imaging disconnected', 0)
         self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
         return True
 

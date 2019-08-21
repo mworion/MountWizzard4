@@ -103,6 +103,30 @@ def test_updatePointGui_dec():
     assert '-' == app.mainW.ui.DEC.text()
 
 
+def test_updatePointGui_pierside():
+    value = 'W'
+    app.mount.obsSite.pierside = value
+    app.mainW.updatePointGUI(app.mount.obsSite)
+    assert 'WEST' == app.mainW.ui.pierside.text()
+    value = None
+    app.mount.obsSite.pierside = value
+    app.mainW.updatePointGUI(app.mount.obsSite)
+    assert '-' == app.mainW.ui.pierside.text()
+
+
+def test_updatePointGui_ha():
+    value = '12'
+    app.mount.obsSite.raJNow = value
+    app.mount.obsSite.timeSidereal = '00:00:00'
+    app.mainW.updatePointGUI(app.mount.obsSite)
+    assert '12:00:00' == app.mainW.ui.HA.text()
+    value = None
+    app.mount.obsSite.timeSidereal = '00:00:00'
+    app.mount.obsSite.raJNow = value
+    app.mainW.updatePointGUI(app.mount.obsSite)
+    assert '-' == app.mainW.ui.HA.text()
+
+
 def test_updateTimeGui_jd1():
     value = '2451544.5'
     app.mount.obsSite.utc_ut1 = '0'
@@ -113,20 +137,9 @@ def test_updateTimeGui_jd1():
 
 def test_updateTimeGui_jd2():
     value = None
-    app.mount.obsSite.timeJD = value
+    app.mount.obsSite._timeJD = value
     app.mainW.updateTimeGUI(app.mount.obsSite)
     assert '-' != app.mainW.ui.timeJD.text()
-
-
-def test_updatePointGui_pierside():
-    value = 'W'
-    app.mount.obsSite.pierside = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
-    assert 'WEST' == app.mainW.ui.pierside.text()
-    value = None
-    app.mount.obsSite.pierside = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
-    assert '-' == app.mainW.ui.pierside.text()
 
 
 def test_updateTimeGui_sidereal():
@@ -215,15 +228,15 @@ def test_updateSetting_statusUnattendedFlip():
     assert 'OFF' == app.mainW.ui.statusUnattendedFlip.text()
 
 
-def test_updateSetting_statusDualTracking():
+def test_updateSetting_statusDualAxisTracking():
     value = '1'
-    app.mount.sett.statusDualTracking = value
+    app.mount.sett.statusDualAxisTracking = value
     app.mainW.updateSetStatGUI(app.mount.sett)
-    assert 'ON' == app.mainW.ui.statusDualTracking.text()
+    assert 'ON' == app.mainW.ui.statusDualAxisTracking.text()
     value = None
-    app.mount.sett.statusDualTracking = value
+    app.mount.sett.statusDualAxisTracking = value
     app.mainW.updateSetStatGUI(app.mount.sett)
-    assert 'OFF' == app.mainW.ui.statusDualTracking.text()
+    assert 'OFF' == app.mainW.ui.statusDualAxisTracking.text()
 
 
 def test_updateSetting_statusRefraction():
@@ -609,7 +622,7 @@ def test_updateSetting_refractionPress():
     assert '-' == app.mainW.ui.refractionPress1.text()
 
 
-def test_updateSetting_meridianLimitTrack():
+def test_updateSetting_meridianLimitTrack_1():
     value = '15'
     app.mount.sett.meridianLimitTrack = value
     app.mainW.updateSettingGUI(app.mount.sett)
@@ -958,4 +971,94 @@ def test_setElevation4(qtbot):
                                'setElevation',
                                return_value=True):
             suc = app.mainW.setElevation()
+            assert suc
+
+
+def test_setUnattendedFlip1(qtbot):
+    app.mount.sett._statusUnattendedFlip = None
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setUnattendedFlip()
+        assert not suc
+
+
+def test_setUnattendedFlip3(qtbot):
+    app.mount.sett.statusUnattendedFlip = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', False)):
+        suc = app.mainW.setUnattendedFlip()
+        assert not suc
+
+
+def test_setUnattendedFlip4(qtbot):
+    app.mount.sett.statusUnattendedFlip = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setUnattendedFlip',
+                               return_value=True):
+            suc = app.mainW.setUnattendedFlip()
+            assert suc
+
+
+def test_setDualAxisTracking1(qtbot):
+    app.mount.sett._statusDualAxisTracking = None
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setDualAxisTracking()
+        assert not suc
+
+
+def test_setDualAxisTracking3(qtbot):
+    app.mount.sett.statusDualAxisTracking = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', False)):
+        suc = app.mainW.setDualAxisTracking()
+        assert not suc
+
+
+def test_setDualAxisTracking4(qtbot):
+    app.mount.sett.statusDualAxisTracking = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setDualAxisTracking',
+                               return_value=True):
+            suc = app.mainW.setDualAxisTracking()
+            assert suc
+
+
+def test_setRefraction1(qtbot):
+    app.mount.sett._statusRefraction = None
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setRefraction()
+        assert not suc
+
+
+def test_setRefraction3(qtbot):
+    app.mount.sett.statusRefraction = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', False)):
+        suc = app.mainW.setRefraction()
+        assert not suc
+
+
+def test_setRefraction4(qtbot):
+    app.mount.sett.statusRefraction = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefraction',
+                               return_value=True):
+            suc = app.mainW.setRefraction()
             assert suc

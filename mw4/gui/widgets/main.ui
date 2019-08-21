@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -2426,7 +2426,7 @@ When clicking the button, you could change the value.</string>
         <string>Unattended Flip</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="statusDualTracking">
+      <widget class="QLineEdit" name="statusDualAxisTracking">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -4036,7 +4036,7 @@ When clicking the button, you could change the value.</string>
       <zorder>label_74</zorder>
       <zorder>statusUnattendedFlip</zorder>
       <zorder>label_55</zorder>
-      <zorder>statusDualTracking</zorder>
+      <zorder>statusDualAxisTracking</zorder>
       <zorder>label_232</zorder>
       <zorder>label_242</zorder>
       <zorder>refractionTemp</zorder>

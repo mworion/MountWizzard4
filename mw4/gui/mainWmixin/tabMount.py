@@ -60,7 +60,7 @@ class Mount(object):
         self.clickable(self.ui.siteElevation).connect(self.setElevation)
 
         self.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
-        self.clickable(self.ui.statusDualTracking).connect(self.setDualAxisTracking)
+        self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
 
     def initConfig(self):
@@ -220,10 +220,10 @@ class Mount(object):
         else:
             self.ui.statusUnattendedFlip.setText('-')
 
-        if sett.statusDualTracking is not None:
-            self.ui.statusDualTracking.setText('ON' if sett.statusDualTracking else 'OFF')
+        if sett.statusDualAxisTracking is not None:
+            self.ui.statusDualAxisTracking.setText('ON' if sett.statusDualAxisTracking else 'OFF')
         else:
-            self.ui.statusDualTracking.setText('-')
+            self.ui.statusDualAxisTracking.setText('-')
 
         if sett.statusRefraction is not None:
             self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
@@ -759,6 +759,8 @@ class Mount(object):
         else:
             self.app.message.emit('Unattended flip cannot be set', 2)
 
+        return suc
+
     def setDualAxisTracking(self):
         """
         setDualAxisTracking implements a modal dialog for entering the value
@@ -769,7 +771,7 @@ class Mount(object):
         sett = self.app.mount.sett
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
-        if sett.statusDualTracking is None:
+        if sett.statusDualAxisTracking is None:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -790,6 +792,8 @@ class Mount(object):
             self.app.message.emit(f'Dual axis tracking set to [{value}]', 0)
         else:
             self.app.message.emit('Dual axis tracking cannot be set', 2)
+
+        return suc
 
     def setRefraction(self):
         """
@@ -822,3 +826,5 @@ class Mount(object):
             self.app.message.emit(f'Refraction correction set to [{value}]', 0)
         else:
             self.app.message.emit('Refraction correction cannot be set', 2)
+
+        return suc

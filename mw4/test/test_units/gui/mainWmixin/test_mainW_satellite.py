@@ -120,7 +120,7 @@ def test_updateSatelliteData_2():
 
 
 def test_updateSatelliteData_3():
-    app.mainW.loadSatelliteSourceWorker()
+    app.mainW.loadTLEData(f'{mwGlob["dataDir"]}/active.txt')
     app.mainW.satellite = app.mainW.satellites['ZARYA']
     app.mainW.ui.mainTabWidget.setCurrentIndex(5)
     suc = app.mainW.updateSatelliteData()
@@ -128,6 +128,7 @@ def test_updateSatelliteData_3():
 
 
 def test_updateSatelliteData_4():
+    app.mainW.loadTLEData(f'{mwGlob["dataDir"]}/active.txt')
     app.mount.obsSite.setRefractionPress = 1000
     app.mount.obsSite.setRefractionTemp = 10
     app.mainW.loadSatelliteSourceWorker()
@@ -144,7 +145,7 @@ def test_programTLEToMount_1():
 
 
 def test_programTLEToMount_2():
-    app.mainW.loadSatelliteSourceWorker()
+    app.mainW.loadTLEData(f'{mwGlob["dataDir"]}/active.txt')
     app.mount.mountUp = True
 
     with mock.patch.object(app.mount.satellite,
@@ -155,7 +156,7 @@ def test_programTLEToMount_2():
 
 
 def test_programTLEToMount_3():
-    app.mainW.loadSatelliteSourceWorker()
+    app.mainW.loadTLEData(f'{mwGlob["dataDir"]}/active.txt')
     app.mount.mountUp = True
 
     with mock.patch.object(app.mount.satellite,

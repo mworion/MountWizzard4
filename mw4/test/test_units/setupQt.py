@@ -23,6 +23,7 @@ import sys
 import PyQt5
 # local import
 from mw4 import mainApp
+from mw4 import loader
 
 
 def setupQt():
@@ -37,6 +38,7 @@ def setupQt():
     test = PyQt5.QtWidgets.QApplication(sys.argv)
     app = mainApp.MountWizzard4(mwGlob=mwGlob)
     spy = PyQt5.QtTest.QSignalSpy(app.message)
+    loader.extractDataFiles()
     app.mount.stopTimers()
     app.measure.timerTask.stop()
     app.relay.timerTask.stop()

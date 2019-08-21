@@ -20,6 +20,8 @@
 # standard libraries
 from unittest import mock
 import pytest
+import shutil
+import subprocess
 # external packages
 # local import
 from mw4.astrometry import astrometry
@@ -73,7 +75,46 @@ def test_solve_4():
                            'runASTAP',
                            return_value=True):
         suc = app.astrometry.solveASTAP(app='ASTAP',
-                                        fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
+                                        fitsPath=mwGlob['imageDir'] + '/m51.fits',
                                         timeout=5,
                                         )
     assert not suc
+
+
+def test_solve_5():
+
+    src = mwGlob['tempDir'] + '/temp.wcs'
+    dest = mwGlob['imageDir'] + '/m51.wcs'
+    shutil.copyfile(src, dest)
+    app.astrometry.solveApp = {
+        'ASTAP': {
+            'programPath': '/Applications/ASTAP.app/Contents/MacOS',
+            'indexPath': '/Applications/ASTAP.app/Contents/MacOS',
+            'solve': app.astrometry.solveASTAP,
+            'abort': app.astrometry.abortASTAP,
+        }
+    }
+    with mock.patch.object(app.astrometry,
+                           'runASTAP',
+                           return_value=True):
+        suc = app.astrometry.solveASTAP(app='ASTAP',
+                                        fitsPath=mwGlob['imageDir'] + '/m51.fits',
+                                        timeout=5,
+                                        )
+        assert suc
+
+
+def test_abort_1():
+    app.astrometry.process = None
+    suc = app.astrometry.abortASTAP()
+    assert not suc
+
+
+def test_abort_2():
+    class Test:
+        @staticmethod
+        def kill():
+            return True
+    app.astrometry.process = Test()
+    suc = app.astrometry.abortASTAP()
+    assert suc

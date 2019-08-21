@@ -22,6 +22,7 @@ import traceback
 import sys
 import os
 import glob
+import copy
 import unittest.mock as mock
 # external packages
 import pytest
@@ -34,7 +35,7 @@ from mw4.test.test_units.setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test, testGlob
     app, spy, mwGlob, test = setupQt()
-    testGlob = mwGlob
+    testGlob = copy.copy(mwGlob)
     yield
 
 

@@ -89,3 +89,19 @@ def test_solve_4():
                                           timeout=5,
                                           )
         assert suc
+
+
+def test_abort_1():
+    app.astrometry.process = None
+    suc = app.astrometry.abortNET()
+    assert not suc
+
+
+def test_abort_2():
+    class Test:
+        @staticmethod
+        def kill():
+            return True
+    app.astrometry.process = Test()
+    suc = app.astrometry.abortNET()
+    assert suc

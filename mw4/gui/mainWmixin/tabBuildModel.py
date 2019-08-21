@@ -41,6 +41,7 @@ class BuildModel(object):
     """
 
     def __init__(self):
+        self.lastGenerator = 'none'
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
@@ -147,6 +148,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastGenerator = 'grid'
         row = self.ui.numberGridPointsRow.value()
         col = self.ui.numberGridPointsCol.value()
         minAlt = self.ui.altitudeMin.value()
@@ -172,6 +174,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastGenerator = 'max'
         suc = self.app.data.genGreaterCircle(selection='max')
         if not suc:
             self.app.message.emit('Build points [max] cannot be generated', 2)
@@ -191,6 +194,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastGenerator = 'med'
         suc = self.app.data.genGreaterCircle(selection='med')
         if not suc:
             self.app.message.emit('Build points [med] cannot be generated', 2)
@@ -210,6 +214,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastGenerator = 'norm'
         suc = self.app.data.genGreaterCircle(selection='norm')
         if not suc:
             self.app.message.emit('Build points [norm] cannot be generated', 2)
@@ -229,6 +234,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastGenerator = 'min'
         suc = self.app.data.genGreaterCircle(selection='min')
         if not suc:
             self.app.message.emit('Build points [min] cannot be generated', 2)
@@ -246,6 +252,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastGenerator = 'dso'
         ra = self.app.mount.obsSite.raJNow
         dec = self.app.mount.obsSite.decJNow
         timeJD = self.app.mount.obsSite.timeJD
@@ -284,6 +291,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastGenerator = 'spiral'
         numberPoints = self.ui.numberSpiralPoints.value()
 
         suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
@@ -375,6 +383,7 @@ class BuildModel(object):
         :return: success
         """
 
+        self.lastGenerator = 'file'
         fileName = self.ui.buildPFileName.text()
         if not fileName:
             self.app.message.emit('Build points file name not given', 2)

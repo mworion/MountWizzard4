@@ -22,6 +22,8 @@ import unittest.mock as mock
 import pytest
 import time
 import os
+import shutil
+import glob
 # external packages
 import skyfield.api
 from mountcontrol.model import AlignStar
@@ -34,7 +36,13 @@ from mw4.definitions import Solution, Solve, MPoint, MData, MParam, IParam, Poin
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
+    app.mainW.lastGenerator = 'test'
     yield
+    files = glob.glob(mwGlob['modelDir'] + '/m-*.model')
+    for f in files:
+        os.remove(f)
+    for path in glob.glob(mwGlob['imageDir'] + '/m-*'):
+        shutil.rmtree(path)
 
 
 def test_initConfig_1():
@@ -736,7 +744,7 @@ def test_loadProgramModel_1():
 
 
 def test_loadProgramModel_2():
-    modelDir = mwGlob['modelDir'] + '/m-test.model'
+    modelDir = mwGlob['modelDir'] + '/test.test'
     with mock.patch.object(app.mainW,
                            'openFile',
                            return_value=(modelDir, 'm-test', '.model')):

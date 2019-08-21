@@ -608,13 +608,13 @@ class BuildFunc(object):
             self.logger.debug(f'only {len(model)} points available')
             return False
 
-        saveModel = self.generateSaveModel(model)
+        saveData = self.generateSaveModel(model)
 
         self.app.message.emit(f'writing model [{name}]', 0)
 
         modelPath = f'{self.app.mwGlob["modelDir"]}/{name}.model'
         with open(modelPath, 'w') as outfile:
-            json.dump(saveModel,
+            json.dump(saveData,
                       outfile,
                       sort_keys=True,
                       indent=4)
@@ -755,7 +755,7 @@ class BuildFunc(object):
 
         # collection locations for files
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        self.modelName = f'm-{self.lastModelType}-{nameTime}'
+        self.modelName = f'm-{self.lastGenerator}-{nameTime}'
         self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
         if not os.path.isdir(self.imageDir):
             os.mkdir(self.imageDir)

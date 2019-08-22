@@ -26,6 +26,7 @@ import time
 from collections import namedtuple
 # external packages
 from astropy.io import fits
+import numpy as np
 # local imports
 from mw4.base import transform
 from mw4.definitions import Solution, Solve

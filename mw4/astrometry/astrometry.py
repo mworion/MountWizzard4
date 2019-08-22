@@ -278,10 +278,7 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         if not updateFits:
             return solve, fitsHeader
 
-        remove = ['COMMENT', 'HISTORY']
         for key in wcsHeader:
-            if key in remove:
-                continue
             print(key, wcsHeader[key])
             fitsHeader.update({key: wcsHeader[key]})
 
@@ -293,9 +290,20 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         fitsHeader['PIXSCALE'] = solve.scale
         fitsHeader['ANGLE'] = solve.angle
         fitsHeader['FLIPPED'] = solve.flipped
-        # kee the old values ra, dec as well
-        fitsHeader['RA_OLD'] = raMount._degrees
-        fitsHeader['DEC_OLD'] = decMount.degrees
+
+        # remove keys if 'SIP' is not selected i CTYPE1 and CTYPE2
+        if 'SIP' in fitsHeader['CTYPE1'] and 'SIP' in fitsHeader['CTYPE2']:
+            return solve, fitsHeader
+
+        for key in fitsHeader:
+            if key.startswith('A_'):
+                del fitsHeader[key]
+            elif key.startswith('B_'):
+                del fitsHeader[key]
+            elif key.startswith('AP_'):
+                del fitsHeader[key]
+            elif key.startswith('BP_'):
+                del fitsHeader[key]
 
         return solve, fitsHeader
 

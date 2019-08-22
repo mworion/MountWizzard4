@@ -400,7 +400,7 @@ class ImageWindow(widget.MWidget):
                   )
         self.ui.sqm.setText(f'{sqm:5.2f}')
 
-        flipped = header.get('FLIPPED', False)
+        flipped = bool(header.get('FLIPPED', False))
         self.ui.isFlipped.setEnabled(flipped)
 
         # check if distortion is in header

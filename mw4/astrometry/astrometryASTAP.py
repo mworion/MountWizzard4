@@ -66,7 +66,7 @@ class AstrometryASTAP(object):
         """
 
         def removeKey(line):
-            remove = ['SIMPLE', 'BITPIX', 'NAXIS', 'EXTEND', 'END']
+            remove = ['SIMPLE', 'BITPIX', 'NAXIS', 'EXTEND', 'END', 'COMMENT']
             for key in remove:
                 if line.startswith(key):
                     return True
@@ -88,10 +88,6 @@ class AstrometryASTAP(object):
                     comment = ''
                 else:
                     comment = splitValueComment[1].strip()
-            elif line.startswith('COMMENT'):
-                key = 'COMMENT'
-                value = line.strip('\n').strip().replace("'", '"')[8:]
-                comment = ''
             else:
                 key = line
                 value = "''"

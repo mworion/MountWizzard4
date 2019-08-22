@@ -80,7 +80,6 @@ class AstrometryASTAP(object):
                 pass
             finally:
                 pass
-            print(key, value)
             wcsHeader[key] = value
         return wcsHeader
 

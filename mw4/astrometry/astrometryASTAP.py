@@ -55,12 +55,42 @@ class AstrometryASTAP(object):
         self.result = (False, [])
         self.process = None
 
-    def runASTAP(self, binPath='', fitsPath='', options='', timeout=30):
+    @staticmethod
+    def getWCSHeaderASTAP(wcsTextFile=''):
+        """
+        getWCSHeader reads the text file give by astap line by line and returns the values as
+        part of a header part of a fits HDU header back.
+
+        :param wcsTextFile: fits file with wcs data
+        :return: wcsHeader
+        """
+        wcsHeader = fits.PrimaryHDU().header
+        for line in wcsTextFile:
+            if line.startswith('COMMENT'):
+                continue
+            if line.startswith('END'):
+                continue
+            key, value = line.split('=')
+            key = key.strip()
+            value = value.split('/')
+            value = value[0].strip()
+            try:
+                value = float(value)
+            except Exception:
+                pass
+            finally:
+                pass
+            print(key, value)
+            wcsHeader[key] = value
+        return wcsHeader
+
+    def runASTAP(self, binPath='', tempPath='', fitsPath='', options='', timeout=30):
         """
         runSolveField solves finally the xy star list and writes the WCS data in a fits
         file format
 
         :param binPath:   full path to image2xy executable
+        :param tempPath:  full path to star file
         :param fitsPath: full path to fits file in temp dir
         :param options: additional solver options e.g. ra and dec hint
         :param timeout:
@@ -70,6 +100,8 @@ class AstrometryASTAP(object):
         runnable = [binPath,
                     '-f',
                     fitsPath,
+                    '-o',
+                    tempPath,
                     ]
 
         runnable += options
@@ -129,10 +161,7 @@ class AstrometryASTAP(object):
         if not os.path.isfile(fitsPath):
             return False
 
-        # get the filename without extension
-        filename = fitsPath.split('.')[0]
-        solvedPath = filename + '.wcs'
-        iniPath = filename + '.ini'
+        tempPath = self.tempDir + '/temp'
         wcsPath = self.tempDir + '/temp.wcs'
 
         binPathASTAP = self.solveApp[app]['programPath'] + '/astap'
@@ -157,23 +186,20 @@ class AstrometryASTAP(object):
 
         suc = self.runASTAP(binPath=binPathASTAP,
                             fitsPath=fitsPath,
+                            tempPath=tempPath,
                             options=options,
                             timeout=timeout,
                             )
         if not suc:
             self.logger.error(f'astap error in [{fitsPath}]')
             return False
-        if not os.path.isfile(solvedPath):
-            self.logger.error(f'solve files for [{fitsPath}] missing')
+
+        if not os.path.isfile(wcsPath):
+            self.logger.error(f'solve files for [{wcsPath}] missing')
             return False
 
-        # as astap has not output file option, I have to copy it
-        shutil.move(solvedPath, wcsPath)
-        if os.path.isfile(iniPath):
-            os.remove(iniPath)
-
-        with fits.open(wcsPath) as wcsHDU:
-            wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
+        with open(wcsPath) as wcsTextFile:
+            wcsHeader = self.getWCSHeaderASTAP(wcsTextFile=wcsTextFile)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
             solve, header = self.getSolutionFromWCS(wcsHeader=wcsHeader,

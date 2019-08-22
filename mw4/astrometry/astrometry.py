@@ -31,6 +31,7 @@ from skyfield.api import Angle
 from astropy.io import fits
 from astropy.wcs import WCS
 import astropy.wcs
+import numpy as np
 # local imports
 from mw4.base import tpool
 from mw4.base import transform
@@ -207,6 +208,93 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         self.logger.info(f'RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale: {scaleHint}')
 
         return raHint, decHint, scaleHint, ra, dec
+
+    @staticmethod
+    def calcAngleScaleFromWCS(wcsHeader=None):
+        """
+        calcAngleScaleFromWCS as the name says. important is to use the numpy arctan2
+        function, because it handles the zero points and extend the calculation back
+        to the full range from -pi to pi
+
+        :return: angle in degrees and scale in arc second per pixel (app) and status if
+                 image is flipped
+        """
+
+        CD11 = wcsHeader.get('CD1_1', 0)
+        CD12 = wcsHeader.get('CD1_2', 0)
+        CD21 = wcsHeader.get('CD2_1', 0)
+        CD22 = wcsHeader.get('CD2_2', 0)
+
+        flipped = (CD11 * CD22 - CD12 * CD21) < 0
+
+        angleRad = np.arctan2(CD12, CD11)
+        angle = np.degrees(angleRad)
+        scale = CD11 / np.cos(angleRad) * 3600
+
+        return angle, scale, flipped
+
+    def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFits=False):
+        """
+        getSolutionFromWCS reads the wcs fits file and uses the data in the header
+        containing the wcs data and returns the basic data needed.
+        in addition it embeds it to the given fits file with image. it removes all
+        entries starting with some keywords given in selection. we starting with
+        HISTORY
+
+        :param fitsHeader:
+        :param wcsHeader:
+        :param updateFits:
+        :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
+                 error in arcsec and flag if image is flipped
+        """
+
+        raJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
+        decJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
+
+        if self.app.mainW.ui.enableNoise.isChecked():
+            raJ2000 = Angle(hours=raJ2000.hours + np.random.randn() / 10)
+            decJ2000 = Angle(degrees=decJ2000.degrees + np.random.randn() / 10)
+
+        angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
+
+        raMount = transform.convertToAngle(fitsHeader.get('RA'), isHours=True)
+        decMount = transform.convertToAngle(fitsHeader.get('DEC'), isHours=False)
+
+        # todo: it would be nice, if adding, subtracting of angels are part of skyfield
+        deltaRA = raJ2000._degrees - raMount._degrees
+        deltaDEC = decJ2000.degrees - decMount.degrees
+        error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
+        # would like to have the error RMS in arcsec
+        error *= 3600
+
+        solve = Solve(raJ2000=raJ2000,
+                      decJ2000=decJ2000,
+                      angle=angle,
+                      scale=scale,
+                      error=error,
+                      flipped=flipped,
+                      path='')
+
+        # if not updateFits:
+        if True:
+            return solve, fitsHeader
+
+        remove = ['COMMENT', 'HISTORY']
+        fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
+
+        fitsHeader['RA'] = solve.raJ2000._degrees
+        fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
+        fitsHeader['DEC'] = solve.decJ2000.degrees
+        fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
+        fitsHeader['SCALE'] = solve.scale
+        fitsHeader['PIXSCALE'] = solve.scale
+        fitsHeader['ANGLE'] = solve.angle
+        fitsHeader['FLIPPED'] = solve.flipped
+        # kee the old values ra, dec as well
+        fitsHeader['RA_OLD'] = raMount._degrees
+        fitsHeader['DEC_OLD'] = decMount.degrees
+
+        return solve, fitsHeader
 
     def solveClear(self):
         """

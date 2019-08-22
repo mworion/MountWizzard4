@@ -57,13 +57,13 @@ class AstrometryNET(object):
         self.result = (False, [])
         self.process = None
 
-    def runImage2xy(self, binPath='', xyPath='', fitsPath='', timeout=30):
+    def runImage2xy(self, binPath='', tempPath='', fitsPath='', timeout=30):
         """
         runImage2xy extracts a list of stars out of the fits image. there is a timeout of
         3 seconds set to get the process finished
 
         :param binPath:   full path to image2xy executable
-        :param xyPath:  full path to star file
+        :param tempPath:  full path to star file
         :param fitsPath:  full path to fits file
         :param timeout:
         :return: success
@@ -72,7 +72,7 @@ class AstrometryNET(object):
         runnable = [binPath,
                     '-O',
                     '-o',
-                    xyPath,
+                    tempPath,
                     fitsPath]
 
         timeStart = time.time()
@@ -101,14 +101,14 @@ class AstrometryNET(object):
         success = (self.process.returncode == 0)
         return success
 
-    def runSolveField(self, binPath='', configPath='', xyPath='', options='', timeout=30):
+    def runSolveField(self, binPath='', configPath='', tempPath='', options='', timeout=30):
         """
         runSolveField solves finally the xy star list and writes the WCS data in a fits
         file format
 
         :param binPath:   full path to image2xy executable
         :param configPath: full path to astrometry.cfg file
-        :param xyPath:  full path to star file
+        :param tempPath:  full path to star file
         :param options: additional solver options e.g. ra and dec hint
         :param timeout:
         :return: success
@@ -126,7 +126,7 @@ class AstrometryNET(object):
                     '--cpulimit', str(timeout),
                     '--config',
                     configPath,
-                    xyPath,
+                    tempPath,
                     ]
 
         runnable += options
@@ -159,7 +159,7 @@ class AstrometryNET(object):
         return success
 
     @staticmethod
-    def getWCSHeader(wcsHDU=''):
+    def getWCSHeaderNET(wcsHDU=''):
         """
         getWCSHeader returns the header part of a fits HDU
 
@@ -168,92 +168,6 @@ class AstrometryNET(object):
         """
         wcsHeader = wcsHDU[0].header
         return wcsHeader
-
-    @staticmethod
-    def calcAngleScaleFromWCS(wcsHeader=None):
-        """
-        calcAngleScaleFromWCS as the name says. important is to use the numpy arctan2
-        function, because it handles the zero points and extend the calculation back
-        to the full range from -pi to pi
-
-        :return: angle in degrees and scale in arc second per pixel (app) and status if
-                 image is flipped
-        """
-
-        CD11 = wcsHeader.get('CD1_1', 0)
-        CD12 = wcsHeader.get('CD1_2', 0)
-        CD21 = wcsHeader.get('CD2_1', 0)
-        CD22 = wcsHeader.get('CD2_2', 0)
-
-        flipped = (CD11 * CD22 - CD12 * CD21) < 0
-
-        angleRad = np.arctan2(CD12, CD11)
-        angle = np.degrees(angleRad)
-        scale = CD11 / np.cos(angleRad) * 3600
-
-        return angle, scale, flipped
-
-    def getSolutionFromWCS(self, fitsHeader=None, wcsHeader=None, updateFits=False):
-        """
-        getSolutionFromWCS reads the wcs fits file and uses the data in the header
-        containing the wcs data and returns the basic data needed.
-        in addition it embeds it to the given fits file with image. it removes all
-        entries starting with some keywords given in selection. we starting with
-        HISTORY
-
-        :param fitsHeader:
-        :param wcsHeader:
-        :param updateFits:
-        :return: ra in hours, dec in degrees, angle in degrees, scale in arcsec/pixel
-                 error in arcsec and flag if image is flipped
-        """
-
-        raJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
-        decJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
-
-        if self.app.mainW.ui.enableNoise.isChecked():
-            raJ2000 = Angle(hours=raJ2000.hours + np.random.randn() / 10)
-            decJ2000 = Angle(degrees=decJ2000.degrees + np.random.randn() / 10)
-
-        angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
-
-        raMount = transform.convertToAngle(fitsHeader.get('RA'), isHours=True)
-        decMount = transform.convertToAngle(fitsHeader.get('DEC'), isHours=False)
-
-        # todo: it would be nice, if adding, subtracting of angels are part of skyfield
-        deltaRA = raJ2000._degrees - raMount._degrees
-        deltaDEC = decJ2000.degrees - decMount.degrees
-        error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
-        # would like to have the error RMS in arcsec
-        error *= 3600
-
-        solve = Solve(raJ2000=raJ2000,
-                      decJ2000=decJ2000,
-                      angle=angle,
-                      scale=scale,
-                      error=error,
-                      flipped=flipped,
-                      path='')
-
-        if not updateFits:
-            return solve, fitsHeader
-
-        remove = ['COMMENT', 'HISTORY']
-        fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
-
-        fitsHeader['RA'] = solve.raJ2000._degrees
-        fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
-        fitsHeader['DEC'] = solve.decJ2000.degrees
-        fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
-        fitsHeader['SCALE'] = solve.scale
-        fitsHeader['PIXSCALE'] = solve.scale
-        fitsHeader['ANGLE'] = solve.angle
-        fitsHeader['FLIPPED'] = solve.flipped
-        # kee the old values ra, dec as well
-        fitsHeader['RA_OLD'] = raMount._degrees
-        fitsHeader['DEC_OLD'] = decMount.degrees
-
-        return solve, fitsHeader
 
     def solveNET(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
                  radius=2, timeout=30, updateFits=False):
@@ -291,7 +205,7 @@ class AstrometryNET(object):
         if not os.path.isfile(fitsPath):
             return False
 
-        xyPath = self.tempDir + '/temp.xy'
+        tempPath = self.tempDir + '/temp.xy'
         configPath = self.tempDir + '/astrometry.cfg'
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
@@ -305,7 +219,7 @@ class AstrometryNET(object):
             outFile.write('autoindex\n')
 
         suc = self.runImage2xy(binPath=binPathImage2xy,
-                               xyPath=xyPath,
+                               tempPath=tempPath,
                                fitsPath=fitsPath,
                                timeout=timeout,
                                )
@@ -348,7 +262,7 @@ class AstrometryNET(object):
 
         suc = self.runSolveField(binPath=binPathSolveField,
                                  configPath=configPath,
-                                 xyPath=xyPath,
+                                 tempPath=tempPath,
                                  options=options,
                                  timeout=timeout,
                                  )
@@ -360,7 +274,7 @@ class AstrometryNET(object):
             return False
 
         with fits.open(wcsPath) as wcsHDU:
-            wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
+            wcsHeader = self.getWCSHeaderNET(wcsHDU=wcsHDU)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
             solve, header = self.getSolutionFromWCS(wcsHeader=wcsHeader,

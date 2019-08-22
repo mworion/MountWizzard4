@@ -56,7 +56,7 @@ class AstrometryASTAP(object):
         self.process = None
 
     @staticmethod
-    def getWCSHeaderASTAP(wcsTextFile=''):
+    def getWCSHeaderASTAP(wcsTextFile=None):
         """
         getWCSHeader reads the text file give by astap line by line and returns the values as
         part of a header part of a fits HDU header back.
@@ -64,23 +64,55 @@ class AstrometryASTAP(object):
         :param wcsTextFile: fits file with wcs data
         :return: wcsHeader
         """
+
+        def removeKey(line):
+            remove = ['SIMPLE', 'BITPIX', 'NAXIS', 'EXTEND', 'END']
+            for key in remove:
+                if line.startswith(key):
+                    return True
+            return False
+
         wcsHeader = fits.PrimaryHDU().header
         for line in wcsTextFile:
-            if line.startswith('COMMENT'):
+            if removeKey(line):
                 continue
-            if line.startswith('END'):
-                continue
-            key, value = line.split('=')
+            if '=' in line:
+                splitKeyValue = line.split('=')
+                if len(splitKeyValue) != 2:
+                    continue
+                key, value = splitKeyValue
+                # splitting inline comments and removing them
+                splitValueComment = value.split('/')
+                value = splitValueComment[0].strip()
+                if len(splitValueComment) == 1:
+                    comment = ''
+                else:
+                    comment = splitValueComment[1].strip()
+            elif line.startswith('COMMENT'):
+                key = 'COMMENT'
+                value = line.strip('\n').strip().replace("'", '"')[8:]
+                comment = ''
+            else:
+                key = line
+                value = "''"
+                comment = ''
             key = key.strip()
-            value = value.split('/')
-            value = value[0].strip()
-            try:
-                value = float(value)
-            except Exception:
-                pass
-            finally:
-                pass
-            wcsHeader[key] = value
+            if value.startswith("'"):
+                value = value.strip("'").strip()
+            else:
+                try:
+                    if '.' in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                except Exception:
+                    value = str(value)
+                finally:
+                    pass
+            if comment:
+                wcsHeader.append((key, value, comment))
+            else:
+                wcsHeader.append((key, value))
         return wcsHeader
 
     def runASTAP(self, binPath='', tempPath='', fitsPath='', options='', timeout=30):
@@ -162,6 +194,8 @@ class AstrometryASTAP(object):
 
         tempPath = self.tempDir + '/temp'
         wcsPath = self.tempDir + '/temp.wcs'
+        if os.path.isfile(wcsPath):
+            os.remove(wcsPath)
 
         binPathASTAP = self.solveApp[app]['programPath'] + '/astap'
 
@@ -201,8 +235,8 @@ class AstrometryASTAP(object):
             wcsHeader = self.getWCSHeaderASTAP(wcsTextFile=wcsTextFile)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
-            solve, header = self.getSolutionFromWCS(wcsHeader=wcsHeader,
-                                                    fitsHeader=fitsHDU[0].header,
+            solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,
+                                                    wcsHeader=wcsHeader,
                                                     updateFits=updateFits)
             fitsHDU[0].header = header
 

@@ -212,6 +212,9 @@ class AstrometryNET(object):
         binPathImage2xy = self.solveApp[app]['programPath'] + '/image2xy'
         binPathSolveField = self.solveApp[app]['programPath'] + '/solve-field'
 
+        if os.path.isfile(wcsPath):
+            os.remove(wcsPath)
+
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
             outFile.write('cpulimit 300\n')
@@ -269,16 +272,21 @@ class AstrometryNET(object):
         if not suc:
             self.logger.error(f'solve-field error in [{fitsPath}]')
             return False
-        if not (os.path.isfile(solvedPath) and os.path.isfile(wcsPath)):
+
+        if not os.path.isfile(solvedPath):
             self.logger.error(f'solve files for [{fitsPath}] missing')
+            return False
+
+        if not os.path.isfile(wcsPath):
+            self.logger.error(f'solve files for [{wcsPath}] missing')
             return False
 
         with fits.open(wcsPath) as wcsHDU:
             wcsHeader = self.getWCSHeaderNET(wcsHDU=wcsHDU)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
-            solve, header = self.getSolutionFromWCS(wcsHeader=wcsHeader,
-                                                    fitsHeader=fitsHDU[0].header,
+            solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,
+                                                    wcsHeader=wcsHeader,
                                                     updateFits=updateFits)
             fitsHDU[0].header = header
 

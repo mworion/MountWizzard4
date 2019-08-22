@@ -279,7 +279,11 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
             return solve, fitsHeader
 
         remove = ['COMMENT', 'HISTORY']
-        fitsHeader.update({k: wcsHeader[k] for k in wcsHeader if k not in remove})
+        for key in wcsHeader:
+            if key in remove:
+                continue
+            print(key, wcsHeader[key])
+            fitsHeader.update({key: wcsHeader[key]})
 
         fitsHeader['RA'] = solve.raJ2000._degrees
         fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)

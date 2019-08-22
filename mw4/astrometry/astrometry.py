@@ -275,8 +275,7 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
                       flipped=flipped,
                       path='')
 
-        # if not updateFits:
-        if True:
+        if not updateFits:
             return solve, fitsHeader
 
         remove = ['COMMENT', 'HISTORY']

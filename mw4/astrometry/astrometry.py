@@ -248,8 +248,10 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
                  error in arcsec and flag if image is flipped
         """
 
-        raJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL1'), isHours=True)
-        decJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL2'), isHours=False)
+        raJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL1'),
+                                           isHours=True)
+        decJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL2'),
+                                            isHours=False)
 
         if self.app.mainW.ui.enableNoise.isChecked():
             raJ2000 = Angle(hours=raJ2000.hours + np.random.randn() / 10)
@@ -257,13 +259,16 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
 
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
-        raMount = transform.convertToAngle(fitsHeader.get('RA'), isHours=True)
-        decMount = transform.convertToAngle(fitsHeader.get('DEC'), isHours=False)
+        raMount = transform.convertToAngle(fitsHeader.get('RA'),
+                                           isHours=True)
+        decMount = transform.convertToAngle(fitsHeader.get('DEC'),
+                                            isHours=False)
 
         # todo: it would be nice, if adding, subtracting of angels are part of skyfield
         deltaRA = raJ2000._degrees - raMount._degrees
         deltaDEC = decJ2000.degrees - decMount.degrees
         error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
+
         # would like to have the error RMS in arcsec
         error *= 3600
 
@@ -287,7 +292,9 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
                           unique=True,
                           update=True)
 
-        # remove keys if 'SIP' is not selected i CTYPE1 and CTYPE2
+        # remove polynomial coefficients keys if '-SIP' is not selected in CTYPE1 and CTYPE2
+        # this might occur, if you solve a fits file a second time with another solver
+
         if '-SIP' in fitsHeader['CTYPE1'] and '-SIP' in fitsHeader['CTYPE2']:
             return solve, fitsHeader
 

@@ -19,7 +19,8 @@
 ###########################################################
 # standard libraries
 import logging
-import PyQt5.QtCore
+import PyQt5
+import sys
 # external packages
 # local imports
 
@@ -44,8 +45,8 @@ class WorkerSignals(PyQt5.QtCore.QObject):
 
 class Worker(PyQt5.QtCore.QRunnable):
     """
-    The Worker class offers a generic interface to allow any function to be executed as a thread
-    in an threadpool
+    The Worker class offers a generic interface to allow any function to be executed as
+    a thread in an threadpool
     """
 
     __all__ = ['Worker',
@@ -65,11 +66,30 @@ class Worker(PyQt5.QtCore.QRunnable):
 
     @PyQt5.QtCore.pyqtSlot()
     def run(self):
+        """
+        runs an arbitrary methods with it's parameters and catches the result
+
+        :return: nothing, but sends results and status as signals
+        """
+
         try:
             result = self.fn(*self.args, **self.kwargs)
         except Exception as e:
-            self.logger.error(f'error: {e}')
-            self.signals.error.emit(e)
+            # as we want to send a clear message to the log file
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            tb = exc_traceback
+
+            # moving toward the end of the trace
+            while tb.tb_next is not None:
+                tb = tb.tb_next
+
+            # getting data out for processing
+            file = tb.tb_frame.f_code.co_filename
+            line = tb.tb_frame.f_lineno
+
+            errorString = f'{file}, line {line} {exc_value}'
+            self.logger.error(errorString)
+            self.signals.error.emit(errorString)
         else:
             self.signals.result.emit(result)
         finally:

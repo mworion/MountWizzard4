@@ -278,24 +278,20 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         if not updateFits:
             return solve, fitsHeader
 
-        for key in wcsHeader:
-            print(key, wcsHeader[key])
-            fitsHeader.update({key: wcsHeader[key]})
+        fitsHeader.append(('SCALE', solve.scale, 'MountWizzard4'))
+        fitsHeader.append(('PIXSCALE', solve.scale, 'MountWizzard4'))
+        fitsHeader.append(('ANGLE', solve.angle, 'MountWizzard4'))
+        fitsHeader.append(('FLIPPED', solve.flipped, 'MountWizzard4'))
 
-        fitsHeader['RA'] = solve.raJ2000._degrees
-        fitsHeader['OBJCTRA'] = transform.convertToHMS(solve.raJ2000)
-        fitsHeader['DEC'] = solve.decJ2000.degrees
-        fitsHeader['OBJCTDEC'] = transform.convertToDMS(solve.decJ2000)
-        fitsHeader['SCALE'] = solve.scale
-        fitsHeader['PIXSCALE'] = solve.scale
-        fitsHeader['ANGLE'] = solve.angle
-        fitsHeader['FLIPPED'] = solve.flipped
+        fitsHeader.extend(wcsHeader,
+                          unique=True,
+                          update=True)
 
         # remove keys if 'SIP' is not selected i CTYPE1 and CTYPE2
-        if 'SIP' in fitsHeader['CTYPE1'] and 'SIP' in fitsHeader['CTYPE2']:
+        if '-SIP' in fitsHeader['CTYPE1'] and '-SIP' in fitsHeader['CTYPE2']:
             return solve, fitsHeader
 
-        for key in fitsHeader:
+        for key in list(fitsHeader.keys()):
             if key.startswith('A_'):
                 del fitsHeader[key]
             elif key.startswith('B_'):

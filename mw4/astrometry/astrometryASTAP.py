@@ -65,50 +65,15 @@ class AstrometryASTAP(object):
         :return: wcsHeader
         """
 
-        def removeKey(line):
-            remove = ['SIMPLE', 'BITPIX', 'NAXIS', 'EXTEND', 'END', 'COMMENT']
-            for key in remove:
-                if line.startswith(key):
-                    return True
-            return False
-
-        wcsHeader = fits.PrimaryHDU().header
+        tempString = ''
         for line in wcsTextFile:
-            if removeKey(line):
+            if line.startswith('END'):
                 continue
-            if '=' in line:
-                splitKeyValue = line.split('=')
-                if len(splitKeyValue) != 2:
-                    continue
-                key, value = splitKeyValue
-                # splitting inline comments and removing them
-                splitValueComment = value.split('/')
-                value = splitValueComment[0].strip()
-                if len(splitValueComment) == 1:
-                    comment = ''
-                else:
-                    comment = splitValueComment[1].strip()
-            else:
-                key = line
-                value = "''"
-                comment = ''
-            key = key.strip()
-            if value.startswith("'"):
-                value = value.strip("'").strip()
-            else:
-                try:
-                    if '.' in value:
-                        value = float(value)
-                    else:
-                        value = int(value)
-                except Exception:
-                    value = str(value)
-                finally:
-                    pass
-            if comment:
-                wcsHeader.append((key, value, comment))
-            else:
-                wcsHeader.append((key, value))
+            tempString += line
+
+        wcsHeader = fits.PrimaryHDU().header.fromstring(tempString,
+                                                        sep='\n')
+
         return wcsHeader
 
     def runASTAP(self, binPath='', tempPath='', fitsPath='', options='', timeout=30):

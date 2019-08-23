@@ -159,7 +159,7 @@ class AstrometryNET(object):
         return success
 
     @staticmethod
-    def getWCSHeaderNET(wcsHDU=''):
+    def getWCSHeaderNET(wcsHDU=None):
         """
         getWCSHeader returns the header part of a fits HDU
 

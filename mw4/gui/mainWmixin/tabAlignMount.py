@@ -92,22 +92,6 @@ class AlignMount(object):
         config['numberBase'] = self.ui.numberBase.value()
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-
-        self.wIcon(self.ui.genAlignBuild, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
-        self.ui.picAZ.setPixmap(pixmap)
-        pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
-        self.ui.picALT.setPixmap(pixmap)
-        return True
-
     def updateAlignGUI(self, model):
         """
         updateAlignGUI shows the data which is received through the getain command. this is

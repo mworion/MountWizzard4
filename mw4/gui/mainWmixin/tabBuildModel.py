@@ -123,23 +123,6 @@ class BuildModel(object):
 
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True for test purpose
-        """
-
-        self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildMax, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildMed, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildNorm, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildMin, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.genBuildDSO, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-
-        return True
-
     def genBuildGrid(self):
         """
         genBuildGrid generates a grid of point for model build based on gui data. the cols

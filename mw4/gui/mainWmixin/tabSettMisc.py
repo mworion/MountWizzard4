@@ -97,15 +97,6 @@ class SettMisc(object):
 
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        return True
-
     def updateFwGui(self, fw):
         """
         updateFwGui write all firmware data to the gui.

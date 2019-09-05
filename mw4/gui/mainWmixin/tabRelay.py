@@ -41,15 +41,6 @@ class Relay(object):
         # config = self.app.config['mainW']
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        return True
-
     def updateRelayGui(self):
         """
         updateRelayGui changes the style of the button related to the state of the relay

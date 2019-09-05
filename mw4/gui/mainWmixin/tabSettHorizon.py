@@ -74,15 +74,6 @@ class SettHorizon(object):
 
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        return True
-
     def loadHorizonMask(self):
         """
         loadHorizonMask calls a file selector box and selects the filename to be loaded

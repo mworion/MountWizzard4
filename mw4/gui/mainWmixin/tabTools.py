@@ -88,18 +88,6 @@ class Tools(object):
             config[name] = ui.currentIndex()
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-
-        self.wIcon(self.ui.renameStart, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-
-        return True
-
     def setupSelectorGui(self):
         """
         setupSelectorGui handles the dropdown lists for all devices possible in

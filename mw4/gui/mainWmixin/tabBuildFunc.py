@@ -122,21 +122,6 @@ class BuildFunc(object):
         # config = self.app.config['mainW']
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True for test purpose
-        """
-
-        self.wIcon(self.ui.runAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-
-        return True
-
     def updateProgress(self, number=0, count=0, modelingDone=False):
         """
         updateProgress calculated from the elapsed time and number of point with taking

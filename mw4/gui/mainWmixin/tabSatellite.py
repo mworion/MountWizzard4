@@ -92,16 +92,6 @@ class Satellite(object):
         # config = self.app.config['mainW']
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-
-        return True
-
     def setupSatelliteSourceGui(self):
         """
         setupSatelliteSourceGui handles the dropdown list for the satellite data online

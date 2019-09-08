@@ -89,16 +89,6 @@ class Mount(object):
         config['checkJNow'] = self.ui.checkJNow.isChecked()
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
-        return True
-
     def updatePointGUI(self, obs):
         """
         updatePointGUI update the gui upon events triggered be the reception of new data

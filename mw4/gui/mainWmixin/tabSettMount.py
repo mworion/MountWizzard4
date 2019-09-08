@@ -70,19 +70,6 @@ class SettMount(object):
 
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-
-        self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
-
-        return True
-
     def mountBoot(self):
         if self.app.mount.bootMount():
             self.app.message.emit('Sent boot command to mount', 0)

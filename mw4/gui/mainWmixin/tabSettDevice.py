@@ -102,15 +102,6 @@ class SettDevice(object):
 
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        return True
-
     def setupDeviceGui(self):
         """
         setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.

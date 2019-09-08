@@ -108,25 +108,7 @@ class MainWindow(MWidget,
                               'astrometry': self.ui.astrometryConnected,
                               'mount': self.ui.mountConnected}
 
-        # local init of following
-        Mount.__init__(self)
-        Environ.__init__(self)
-        AlignMount.__init__(self)
-        BuildModel.__init__(self)
-        BuildFunc.__init__(self)
-        ManageModel.__init__(self)
-        Satellite.__init__(self)
-        Relay.__init__(self)
-        Power.__init__(self)
-        Tools.__init__(self)
-        SettIndi.__init__(self)
-        SettMount.__init__(self)
-        SettDevice.__init__(self)
-        SettHorizon.__init__(self)
-        SettImaging.__init__(self)
-        SettParkPos.__init__(self)
-        SettRelay.__init__(self)
-        SettMisc.__init__(self)
+        self.mwSuper('__init__')
 
         # polarPlot ui instance has to be defined central, not in the mixins
         self.polarPlot = self.embedMatplot(self.ui.modelPolar)
@@ -155,6 +137,14 @@ class MainWindow(MWidget,
         self.app.update1s.connect(self.smartGui)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.updateDeviceStats)
+
+    def mwSuper(self, func):
+        for base in MainWindow.__bases__:
+            if base.__name__ == 'MWidget':
+                continue
+            if hasattr(base, func):
+                funcAttrib = getattr(base, func)
+                funcAttrib(self)
 
     def initConfig(self):
         """
@@ -188,25 +178,7 @@ class MainWindow(MWidget,
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
         ################################################################################
 
-        Mount.initConfig(self)
-        Environ.initConfig(self)
-        AlignMount.initConfig(self)
-        BuildModel.initConfig(self)
-        BuildFunc.initConfig(self)
-        ManageModel.initConfig(self)
-        Satellite.initConfig(self)
-        Relay.initConfig(self)
-        Power.initConfig(self)
-        Tools.initConfig(self)
-        SettIndi.initConfig(self)
-        SettMount.initConfig(self)
-        SettHorizon.initConfig(self)
-        SettImaging.initConfig(self)
-        SettParkPos.initConfig(self)
-        SettRelay.initConfig(self)
-        SettMisc.initConfig(self)
-        SettDevice.initConfig(self)
-
+        self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
 
         return True
@@ -230,25 +202,7 @@ class MainWindow(MWidget,
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
 
-        Mount.storeConfig(self)
-        Environ.storeConfig(self)
-        AlignMount.storeConfig(self)
-        BuildModel.storeConfig(self)
-        BuildFunc.storeConfig(self)
-        ManageModel.storeConfig(self)
-        Satellite.storeConfig(self)
-        Relay.storeConfig(self)
-        Power.storeConfig(self)
-        Tools.storeConfig(self)
-        SettIndi.storeConfig(self)
-        SettMount.storeConfig(self)
-        SettHorizon.storeConfig(self)
-        SettImaging.storeConfig(self)
-        SettParkPos.storeConfig(self)
-        SettRelay.storeConfig(self)
-        SettMisc.storeConfig(self)
-        SettDevice.storeConfig(self)
-
+        self.mwSuper('storeConfig')
         return True
 
     def closeEvent(self, closeEvent):
@@ -284,24 +238,39 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
 
-        Mount.setupIcons(self)
-        Environ.setupIcons(self)
-        AlignMount.setupIcons(self)
-        BuildModel.setupIcons(self)
-        BuildFunc.setupIcons(self)
-        ManageModel.setupIcons(self)
-        Satellite.setupIcons(self)
-        Relay.setupIcons(self)
-        Power.setupIcons(self)
-        Tools.setupIcons(self)
-        SettDevice.setupIcons(self)
-        SettIndi.setupIcons(self)
-        SettMount.setupIcons(self)
-        SettHorizon.setupIcons(self)
-        SettImaging.setupIcons(self)
-        SettParkPos.setupIcons(self)
-        SettRelay.setupIcons(self)
-        SettMisc.setupIcons(self)
+        self.wIcon(self.ui.genAlignBuild, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
+        self.ui.picAZ.setPixmap(pixmap)
+        pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
+        self.ui.picALT.setPixmap(pixmap)
+
+        self.wIcon(self.ui.runAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+
+        self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildMax, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildMed, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildNorm, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildMin, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildDSO, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+
+        self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
+        self.wIcon(self.ui.saveName, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
+        self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
+        self.wIcon(self.ui.refreshName, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
+        self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
+
+        self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
+
+        self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
+        self.wIcon(self.ui.renameStart, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+
         return True
 
     def updateMountConnStat(self, status):

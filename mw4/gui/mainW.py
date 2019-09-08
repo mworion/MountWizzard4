@@ -139,12 +139,22 @@ class MainWindow(MWidget,
         self.app.update1s.connect(self.updateDeviceStats)
 
     def mwSuper(self, func):
-        for base in MainWindow.__bases__:
+        """
+        mwSuper is a replacement for super() to manage the mixin style of implementation
+        it's not an ideal way to do it, but mwSuper() call the methode of every ! parent
+        class if they exist.
+
+        :param func:
+        :return: true for test purpose
+        """
+
+        for base in self.__class__.__bases__:
             if base.__name__ == 'MWidget':
                 continue
             if hasattr(base, func):
                 funcAttrib = getattr(base, func)
                 funcAttrib(self)
+        return True
 
     def initConfig(self):
         """

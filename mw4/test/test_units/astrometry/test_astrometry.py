@@ -234,4 +234,4 @@ def test_abort_1():
     }
     app.astrometry.solverSelected = 'KStars'
     suc = app.astrometry.abort()
-    assert not suc
+    assert suc

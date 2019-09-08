@@ -223,7 +223,7 @@ class AstrometryNET(object):
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
             outFile.write('cpulimit 300\n')
-            outFile.write(f'add_path {self.solveApp[app]["indexPath"]}\n')
+            outFile.write(f'add_path {solver["indexPath"]}\n')
             outFile.write('autoindex\n')
 
         suc = self.runImage2xy(binPath=binPathImage2xy,
@@ -265,7 +265,7 @@ class AstrometryNET(object):
         # split between ekos and cloudmakers as cloudmakers use an older version of
         # solve-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
-        if app == 'CloudMakers':
+        if 'Astrometry.app' in solve['programPath']:
             options.append('--no-fits2fits')
 
         suc = self.runSolveField(binPath=binPathSolveField,

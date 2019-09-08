@@ -26,7 +26,7 @@ import shutil
 import glob
 # external packages
 import skyfield.api
-from mountcontrol.model import AlignStar
+from mountcontrol.modelStar import ModelStar
 # local import
 from mw4.test.test_units.setupQt import setupQt
 from mw4.definitions import Solution, Solve, MPoint, MData, MParam, IParam, Point, RData
@@ -374,7 +374,7 @@ def test_cancelFull(qtbot):
 
 def test_retrofitModel_1():
     app.mount.model.starList = list()
-    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
                       errorAngle=skyfield.api.Angle(degrees=0))
@@ -395,7 +395,7 @@ def test_retrofitModel_1():
 
 def test_retrofitModel_2():
     app.mount.model.starList = list()
-    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
                       errorAngle=skyfield.api.Angle(degrees=0))
@@ -415,7 +415,7 @@ def test_retrofitModel_2():
 
 def test_retrofitModel_3():
     app.mount.model.starList = list()
-    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
                       errorAngle=skyfield.api.Angle(degrees=0))
@@ -434,7 +434,7 @@ def test_retrofitModel_3():
 
 def test_retrofitModel_4():
     app.mount.model.starList = list()
-    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
                       errorAngle=skyfield.api.Angle(degrees=0))

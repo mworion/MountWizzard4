@@ -29,6 +29,7 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 import skyfield.api
 from mountcontrol.modelStar import ModelStar
+from mountcontrol.alignStar import AlignStar
 import numpy as np
 # local import
 from mw4.definitions import Point, MPoint, IParam, MParam, MData, RData, Solve, Solution
@@ -640,7 +641,7 @@ class BuildFunc(object):
             pierside = mPoint['pierside']
 
             # combine data into structure
-            programmingPoint = ModelStar(mCoord=mCoord,
+            programmingPoint = AlignStar(mCoord=mCoord,
                                          sCoord=sCoord,
                                          sidereal=sidereal,
                                          pierside=pierside,
@@ -671,7 +672,7 @@ class BuildFunc(object):
             pierside = mPoint.mData.pierside
 
             # combine data into structure
-            programmingPoint = ModelStar(mCoord=mCoord,
+            programmingPoint = AlignStar(mCoord=mCoord,
                                          sCoord=sCoord,
                                          sidereal=sidereal,
                                          pierside=pierside,

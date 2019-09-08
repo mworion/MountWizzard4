@@ -74,7 +74,7 @@ class Worker(PyQt5.QtCore.QRunnable):
 
         try:
             result = self.fn(*self.args, **self.kwargs)
-        except Exception as e:
+        except Exception:
             # as we want to send a clear message to the log file
             exc_type, exc_value, exc_traceback = sys.exc_info()
             tb = exc_traceback

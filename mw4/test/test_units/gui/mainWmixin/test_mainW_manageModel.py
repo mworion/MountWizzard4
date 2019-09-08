@@ -70,12 +70,12 @@ def test_setNameList():
 
 def test_showModelPolar1():
     app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
-    app.mount.model._parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
-                                 '21:06:10.79,+45*20:52.8,  12.1,329',
-                                 '23:13:58.02,+38*48:18.8,  31.0,162',
-                                 '17:43:41.26,+59*15:30.7,   8.4,005',
-                                 ],
-                                4)
+    app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
+                                '21:06:10.79,+45*20:52.8,  12.1,329',
+                                '23:13:58.02,+38*48:18.8,  31.0,162',
+                                '17:43:41.26,+59*15:30.7,   8.4,005',
+                                ],
+                               4)
     app.mainW.ui.checkShowErrorValues.setChecked(True)
     suc = app.mainW.showModelPolar(app.mount.model)
     assert suc

@@ -86,35 +86,35 @@ def test_setLoggingLevel4(qtbot):
 
 def test_updateFwGui_productName():
     value = 'Test1234'
-    app.mount.firmware.productName = value
+    app.mount.firmware.product = value
     app.mainW.updateFwGui(app.mount.firmware)
-    assert value == app.mainW.ui.productName.text()
+    assert value == app.mainW.ui.product.text()
     value = None
-    app.mount.firmware.productName = value
+    app.mount.firmware.product = value
     app.mainW.updateFwGui(app.mount.firmware)
-    assert '-' == app.mainW.ui.productName.text()
+    assert '-' == app.mainW.ui.product.text()
 
 
 def test_updateFwGui_hwVersion():
     value = 'Test1234'
     app.mount.firmware.hardware = value
     app.mainW.updateFwGui(app.mount.firmware)
-    assert value == app.mainW.ui.hwVersion.text()
+    assert value == app.mainW.ui.hardware.text()
     value = None
     app.mount.firmware.hardware = value
     app.mainW.updateFwGui(app.mount.firmware)
-    assert '-' == app.mainW.ui.hwVersion.text()
+    assert '-' == app.mainW.ui.hardware.text()
 
 
 def test_updateFwGui_numberString():
     value = '2.15.18'
     app.mount.firmware.vString = value
     app.mainW.updateFwGui(app.mount.firmware)
-    assert value == app.mainW.ui.numberString.text()
+    assert value == app.mainW.ui.vString.text()
     value = None
     app.mount.firmware.vString = value
     app.mainW.updateFwGui(app.mount.firmware)
-    assert '-' == app.mainW.ui.numberString.text()
+    assert '-' == app.mainW.ui.vString.text()
 
 
 def test_updateFwGui_fwdate():

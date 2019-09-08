@@ -19,7 +19,7 @@
 import sys
 import platform
 
-if platform.system == 'Darwin':
+if platform.system() == 'Darwin':
     sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
 else:
     sys.path.append('/home/mw/PycharmProjects/MountWizzard4')

@@ -187,7 +187,7 @@ COMMENT --
 END                                                                             """
     file = mwGlob['tempDir'] + '/net.wcs'
     with fits.open(file) as fitsHandle:
-        wcsHeader = app.astrometry.getWCSHeaderNET(wcsHDU=fitsHandle)
+        wcsHeader = app.astrometry.getWCSHeader(wcsHDU=fitsHandle)
     assert wcsHeader.tostring(sep='\n', endcard=True, padding=False) == val
 
 

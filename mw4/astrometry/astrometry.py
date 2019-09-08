@@ -312,6 +312,8 @@ class Astrometry:
         # remove polynomial coefficients keys if '-SIP' is not selected in CTYPE1 and CTYPE2
         # this might occur, if you solve a fits file a second time with another solver
 
+        if 'CTYPE1' not in fitsHeader or 'CTYPE2' not in fitsHeader:
+            return solve, fitsHeader
         if '-SIP' in fitsHeader['CTYPE1'] and '-SIP' in fitsHeader['CTYPE2']:
             return solve, fitsHeader
 
@@ -338,8 +340,11 @@ class Astrometry:
 
         if not self.solverSelected:
             return False
+        if self.solverSelected not in self.solverEnviron:
+            return False
 
-        solver = self.solverEnviron[self.solverSelected]['solver']
+        solverEnviron = self.solverEnviron[self.solverSelected]
+        solver = solverEnviron['solver']
 
         self.mutexSolve.unlock()
         self.signals.done.emit(solver.result)
@@ -366,6 +371,8 @@ class Astrometry:
         """
 
         if not self.solverSelected:
+            return False
+        if self.solverSelected not in self.solverEnviron:
             return False
 
         solverEnviron = self.solverEnviron[self.solverSelected]
@@ -402,6 +409,8 @@ class Astrometry:
         """
 
         if not self.solverSelected:
+            return False
+        if self.solverSelected not in self.solverEnviron:
             return False
 
         solverEnviron = self.solverEnviron[self.solverSelected]

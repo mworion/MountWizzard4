@@ -164,7 +164,7 @@ class AstrometryNET(object):
         return success
 
     @staticmethod
-    def getWCSHeaderNET(wcsHDU=None):
+    def getWCSHeader(wcsHDU=None):
         """
         getWCSHeader returns the header part of a fits HDU
 
@@ -287,7 +287,7 @@ class AstrometryNET(object):
             return False
 
         with fits.open(wcsPath) as wcsHDU:
-            wcsHeader = self.getWCSHeaderNET(wcsHDU=wcsHDU)
+            wcsHeader = self.getWCSHeader(wcsHDU=wcsHDU)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,

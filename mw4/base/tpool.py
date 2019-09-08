@@ -19,9 +19,9 @@
 ###########################################################
 # standard libraries
 import logging
-import PyQt5
 import sys
 # external packages
+import PyQt5
 # local imports
 
 

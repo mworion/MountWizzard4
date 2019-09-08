@@ -859,9 +859,7 @@ class ImageWindow(widget.MWidget):
         updateFits = self.ui.checkEmbedData.isChecked()
         solveTimeout = self.app.mainW.ui.solveTimeout.value()
         searchRadius = self.app.mainW.ui.searchRadius.value()
-        app = self.app.mainW.ui.astrometryDevice.currentText()
-        self.app.astrometry.solveThreading(app=app,
-                                           fitsPath=imagePath,
+        self.app.astrometry.solveThreading(fitsPath=imagePath,
                                            radius=searchRadius,
                                            timeout=solveTimeout,
                                            updateFits=updateFits,
@@ -888,7 +886,6 @@ class ImageWindow(widget.MWidget):
 
         :return: success
         """
-        app = self.app.mainW.ui.astrometryDevice.currentText()
-        suc = self.app.astrometry.abort(app=app)
+        suc = self.app.astrometry.abort()
 
         return suc

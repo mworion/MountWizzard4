@@ -27,11 +27,13 @@ from collections import namedtuple
 # external packages
 from astropy.io import fits
 import numpy as np
+from forwardable import forwardable, def_delegators
 # local imports
 from mw4.base import transform
 from mw4.definitions import Solution, Solve
 
 
+@forwardable()
 class AstrometryASTAP(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
@@ -43,6 +45,10 @@ class AstrometryASTAP(object):
 
     """
 
+    def_delegators('parent',
+                   'tempDir, readFitsData, getSolutionFromWCS',
+                   )
+
     __all__ = ['AstrometryASTAP',
                'solveASTAP',
                'abortASTAP',
@@ -51,34 +57,14 @@ class AstrometryASTAP(object):
     version = '0.100.0'
     logger = logging.getLogger(__name__)
 
-    def __init__(self):
+    def __init__(self, parent):
+        self.parent = parent
         self.result = (False, [])
         self.process = None
 
-    @staticmethod
-    def getWCSHeaderASTAP(wcsTextFile=None):
-        """
-        getWCSHeader reads the text file give by astap line by line and returns the values as
-        part of a header part of a fits HDU header back.
-
-        :param wcsTextFile: fits file with wcs data
-        :return: wcsHeader
-        """
-
-        tempString = ''
-        for line in wcsTextFile:
-            if line.startswith('END'):
-                continue
-            tempString += line
-
-        wcsHeader = fits.PrimaryHDU().header.fromstring(tempString,
-                                                        sep='\n')
-
-        return wcsHeader
-
     def runASTAP(self, binPath='', tempPath='', fitsPath='', options='', timeout=30):
         """
-        runSolveField solves finally the xy star list and writes the WCS data in a fits
+        runASTAP solves finally the xy star list and writes the WCS data in a fits
         file format
 
         :param binPath:   full path to image2xy executable
@@ -125,8 +111,29 @@ class AstrometryASTAP(object):
 
         return success
 
-    def solveASTAP(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
-                   radius=2, timeout=30, updateFits=False):
+    @staticmethod
+    def getWCSHeader(wcsTextFile=None):
+        """
+        getWCSHeader reads the text file give by astap line by line and returns the values as
+        part of a header part of a fits HDU header back.
+
+        :param wcsTextFile: fits file with wcs data
+        :return: wcsHeader
+        """
+
+        tempString = ''
+        for line in wcsTextFile:
+            if line.startswith('END'):
+                continue
+            tempString += line
+
+        wcsHeader = fits.PrimaryHDU().header.fromstring(tempString,
+                                                        sep='\n')
+
+        return wcsHeader
+
+    def solve(self, solver={}, fitsPath='', raHint=None, decHint=None, scaleHint=None,
+              radius=2, timeout=30, updateFits=False):
         """
         Solve uses the astap solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -134,7 +141,7 @@ class AstrometryASTAP(object):
         which could be downloaded for all platforms. Many thanks to them providing such a
         nice package.
 
-        :param app: which astrometry implementation to choose
+        :param solver: which astrometry implementation to choose
         :param fitsPath:  full path to fits file
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
@@ -158,7 +165,7 @@ class AstrometryASTAP(object):
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
-        binPathASTAP = self.solveApp[app]['programPath'] + '/astap'
+        binPathASTAP = solver['programPath'] + '/astap'
 
         _, _, scaleFITS, raFITS, decFITS = self.readFitsData(fitsPath=fitsPath)
 
@@ -193,7 +200,7 @@ class AstrometryASTAP(object):
             return False
 
         with open(wcsPath) as wcsTextFile:
-            wcsHeader = self.getWCSHeaderASTAP(wcsTextFile=wcsTextFile)
+            wcsHeader = self.getWCSHeader(wcsTextFile=wcsTextFile)
 
         with fits.open(fitsPath, mode='update') as fitsHDU:
             solve, header = self.getSolutionFromWCS(fitsHeader=fitsHDU[0].header,
@@ -212,9 +219,9 @@ class AstrometryASTAP(object):
                                solve=solve)
         return True
 
-    def abortASTAP(self):
+    def abort(self):
         """
-        abortNET stops the solving function hardly just by killing the process
+        abort stops the solving function hardly just by killing the process
 
         :return: success
         """

@@ -280,8 +280,7 @@ class BuildFunc(object):
         if self.app.imageW:
             self.app.imageW.signals.showImage.emit(mPoint.mParam.path)
 
-        self.app.astrometry.solveThreading(app=mPoint.mParam.astrometry,
-                                           fitsPath=mPoint.mParam.path,
+        self.app.astrometry.solveThreading(fitsPath=mPoint.mParam.path,
                                            radius=mPoint.mParam.radius,
                                            timeout=mPoint.mParam.timeout,
                                            updateFits=False,

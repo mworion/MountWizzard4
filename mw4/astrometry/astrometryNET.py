@@ -26,11 +26,13 @@ from collections import namedtuple
 # external packages
 import numpy as np
 from astropy.io import fits
+from forwardable import forwardable, def_delegators
 # local imports
 from mw4.base import transform
 from mw4.definitions import Solution, Solve
 
 
+@forwardable()
 class AstrometryNET(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
@@ -38,12 +40,14 @@ class AstrometryNET(object):
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
-        >>> astrometry = Astrometry(app=app,
-        >>>                         tempDir=tempDir,
-        >>>                         threadPool=threadpool
+        >>> astrometry = AstrometryNET(app=app,
         >>>                         )
 
     """
+
+    def_delegators('parent',
+                   'tempDir, readFitsData, getSolutionFromWCS',
+                   )
 
     __all__ = ['AstrometryNET',
                'solveNET',
@@ -53,7 +57,8 @@ class AstrometryNET(object):
     version = '0.100.0'
     logger = logging.getLogger(__name__)
 
-    def __init__(self):
+    def __init__(self, parent):
+        self.parent = parent
         self.result = (False, [])
         self.process = None
 
@@ -169,8 +174,8 @@ class AstrometryNET(object):
         wcsHeader = wcsHDU[0].header
         return wcsHeader
 
-    def solveNET(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
-                 radius=2, timeout=30, updateFits=False):
+    def solve(self, solver={}, fitsPath='', raHint=None, decHint=None, scaleHint=None,
+              radius=2, timeout=30, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -186,7 +191,7 @@ class AstrometryNET(object):
         astrometry implementation from cloudmakers.eu (another nice package for MAC Astro
         software)
 
-        :param app: which astrometry implementation to choose
+        :param solver: which astrometry implementation to choose
         :param fitsPath:  full path to fits file
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
@@ -209,8 +214,8 @@ class AstrometryNET(object):
         configPath = self.tempDir + '/astrometry.cfg'
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
-        binPathImage2xy = self.solveApp[app]['programPath'] + '/image2xy'
-        binPathSolveField = self.solveApp[app]['programPath'] + '/solve-field'
+        binPathImage2xy = solver['programPath'] + '/image2xy'
+        binPathSolveField = solver['programPath'] + '/solve-field'
 
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
@@ -301,7 +306,7 @@ class AstrometryNET(object):
                                solve=solve)
         return True
 
-    def abortNET(self):
+    def abort(self):
         """
         abortNET stops the solving function hardly just by killing the process
 

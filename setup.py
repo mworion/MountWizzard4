@@ -47,6 +47,7 @@ setup(
         'requests_toolbelt>=0.9.1',
         'numpy>=1.17',
         'skyfield>=1.10',
+        'forwardable',
     ],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

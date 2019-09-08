@@ -124,7 +124,7 @@ class SettDevice(object):
         self.ui.imagingDevice.addItem('INDI')
         self.ui.skymeterDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
-        for app in self.app.astrometry.available:
+        for app in self.app.astrometry.solverAvailable:
             self.ui.astrometryDevice.addItem(app)
 
         return True
@@ -331,11 +331,8 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        if self.ui.astrometryDevice.currentText() in self.app.astrometry.available:
-            if self.ui.astrometryDevice.currentText() not in self.app.astrometry.solveApp:
-                self.app.message.emit('Astrometry not available', 2)
-                self.deviceStat['astrometry'] = False
-                return False
+        if self.ui.astrometryDevice.currentText() in self.app.astrometry.solverAvailable:
+            self.app.astrometry.solverSelected = self.ui.astrometryDevice.currentText()
             self.ui.astrometryDevice.setStyleSheet(self.BACK_GREEN)
             self.deviceStat['astrometry'] = True
             self.app.message.emit('Astrometry enabled', 0)

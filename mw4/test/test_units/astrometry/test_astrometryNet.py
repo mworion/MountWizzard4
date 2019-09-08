@@ -21,6 +21,7 @@
 from unittest import mock
 import pytest
 import os
+import subprocess
 # external packages
 import astropy.io.fits as fits
 # local import

@@ -94,7 +94,7 @@ END                                                                             
 
     file = mwGlob['tempDir'] + '/astap.wcs'
     with open(file) as fileHandle:
-        wcsHeader = app.astrometry.getWCSHeaderASTAP(wcsTextFile=fileHandle)
+        wcsHeader = app.astrometry.getWCSHeader(wcsTextFile=fileHandle)
     assert wcsHeader.tostring(sep='\n', endcard=True, padding=False) == val
 
 

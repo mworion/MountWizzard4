@@ -55,7 +55,7 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
     message = PyQt5.QtCore.pyqtSignal(object)
 
 
-class Astrometry(AstrometryNET, AstrometryASTAP):
+class Astrometry:
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
 
@@ -83,69 +83,86 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
 
         self.app = app
         self.tempDir = tempDir
+        self.solverASTAP = AstrometryASTAP(self)
+        self.solverNET = AstrometryNET(self)
+
         self.threadPool = threadPool
         self.signals = AstrometrySignals()
-        self.available = {}
         self.mutexSolve = PyQt5.QtCore.QMutex()
-        self.result = (False, [])
-        self.process = None
+
+        self._solverSelected = ''
+        self.solverEnviron = {}
+        self.setSolverEnviron()
+        self.solverAvailable = self.checkAvailability()
+
+    @property
+    def solverSelected(self):
+        return self._solverSelected
+
+    @solverSelected.setter
+    def solverSelected(self, value):
+        if value in self.solverAvailable:
+            self._solverSelected = value
+        else:
+            self._solverSelected = ''
+
+    def setSolverEnviron(self):
+        """
+
+        :return: true for test purpose
+        """
 
         if platform.system() == 'Darwin':
             home = os.environ.get('HOME')
-            self.solveApp = {
+            self.solverEnviron = {
                 'CloudMakers': {
                     'programPath': '/Applications/Astrometry.app/Contents/MacOS',
                     'indexPath': home + '/Library/Application Support/Astrometry',
-                    'solve': self.solveNET,
-                    'abort': self.abortNET,
+                    'solver': self.solverNET,
                 },
                 'KStars': {
                     'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
                     'indexPath': home + '/Library/Application Support/Astrometry',
-                    'solve': self.solveNET,
-                    'abort': self.abortNET,
+                    'solver': self.solverNET,
                 },
                 'ASTAP': {
                     'programPath': '/Applications/ASTAP.app/Contents/MacOS',
                     'indexPath': '/Applications/ASTAP.app/Contents/MacOS',
-                    'solve': self.solveASTAP,
-                    'abort': self.abortASTAP,
+                    'solver': self.solverASTAP,
                 }
             }
 
         elif platform.system() == 'Linux':
-            self.solveApp = {
+            self.solverEnviron = {
                 'astrometry-glob': {
                     'programPath': '/usr/bin',
                     'indexPath': '/usr/share/astrometry',
-                    'solve': self.solveNET,
-                    'abort': self.abortNET,
+                    'solver': self.solverNET,
                 },
                 'astrometry-local': {
                     'programPath': '/usr/local/astrometry/bin',
                     'indexPath': '/usr/share/astrometry',
-                    'solve': self.solveNET,
-                    'abort': self.abortNET,
+                    'solver': self.solverNET,
                 },
             }
 
         elif platform.system() == 'windows':
-            self.solveApp = {
+            self.solverEnviron = {
                 '': {
                     'programPath': '',
                     'indexPath': '',
+                    'solver': '',
                 },
             }
 
         else:
-            self.solveApp = {
+            self.solverEnviron = {
                 '': {
                     'programPath': '',
                     'indexPath': '',
+                    'solver': '',
                 },
             }
-
-        self.checkAvailability()
 
     def checkAvailability(self):
         """
@@ -154,18 +171,18 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
             astrometry.net namely image2xy and solve-field
             ASTP files
 
-        :return: True if local solve and components is available
+        :return: available solver environments
         """
 
-        self.available = {}
-        for solver in self.solveApp:
+        available = {}
+        for solver in self.solverEnviron:
             suc = True
 
             if solver != 'ASTAP':
-                program = self.solveApp[solver]['programPath'] + '/solve-field'
+                program = self.solverEnviron[solver]['programPath'] + '/solve-field'
                 index = '/*.fits'
             else:
-                program = self.solveApp[solver]['programPath'] + '/astap'
+                program = self.solverEnviron[solver]['programPath'] + '/astap'
                 index = '/*.290'
 
             # checking binaries
@@ -174,15 +191,15 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
                 suc = False
 
             # checking indexes
-            if not glob.glob(self.solveApp[solver]['indexPath'] + index):
+            if not glob.glob(self.solverEnviron[solver]['indexPath'] + index):
                 self.logger.info('no index files found')
                 suc = False
 
             if suc:
-                self.available[solver] = solver
+                available[solver] = solver
                 self.logger.info(f'binary and index files available for {solver}')
 
-        return True
+        return available
 
     def readFitsData(self, fitsPath):
         """
@@ -319,13 +336,18 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         :return: true for test purpose
         """
 
+        if not self.solverSelected:
+            return False
+
+        solver = self.solverEnviron[self.solverSelected]['solver']
+
         self.mutexSolve.unlock()
-        self.signals.done.emit(self.result)
+        self.signals.done.emit(solver.result)
         self.signals.message.emit('')
 
         return True
 
-    def solveThreading(self, app='', fitsPath='', raHint=None, decHint=None, scaleHint=None,
+    def solveThreading(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
                        radius=2, timeout=30, updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a threadpool
@@ -333,7 +355,6 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         it is done with an securing mutex to avoid starting solving twice. to solveClear
         is the partner of solve Threading
 
-        :param app: which astrometry implementation to choose
         :param fitsPath: full path to the fits image file to be solved
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
@@ -344,22 +365,23 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
         :return: success
         """
 
-        if app not in self.solveApp:
+        if not self.solverSelected:
             return False
+
+        solverEnviron = self.solverEnviron[self.solverSelected]
+        solver = solverEnviron['solver']
+
         if not os.path.isfile(fitsPath):
-            self.signals.done.emit(self.result)
-            return False
-        if not self.checkAvailability():
-            self.signals.done.emit(self.result)
+            self.signals.done.emit(solver.result)
             return False
         if not self.mutexSolve.tryLock():
             self.logger.info('overrun in solve threading')
-            self.signals.done.emit(self.result)
+            self.signals.done.emit(solver.result)
             return False
 
         self.signals.message.emit('solving')
-        worker = tpool.Worker(self.solveApp[app]['solve'],
-                              app=app,
+        worker = tpool.Worker(solver.solve,
+                              solver=solverEnviron,
                               fitsPath=fitsPath,
                               raHint=raHint,
                               decHint=decHint,
@@ -373,15 +395,16 @@ class Astrometry(AstrometryNET, AstrometryASTAP):
 
         return True
 
-    def abort(self, app=''):
+    def abort(self):
         """
 
-        :param app: which astrometry implementation to choose
         :return:
         """
 
-        if app not in self.solveApp:
+        if not self.solverSelected:
             return False
 
-        suc = self.solveApp[app]['abort']()
+        solverEnviron = self.solverEnviron[self.solverSelected]
+        solver = solverEnviron['solver']
+        suc = solver.abort()
         return suc

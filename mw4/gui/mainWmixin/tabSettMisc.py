@@ -42,7 +42,7 @@ class SettMisc(object):
         self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
 
-        self.app.mount.signals.fwDone.connect(self.updateFwGui)
+        self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
 
         self.app.mount.signals.alert.connect(self.playAudioMountAlert)
         self.app.dome.signals.slewFinished.connect(self.playAudioDomeSlewFinished)
@@ -113,30 +113,30 @@ class SettMisc(object):
         :return:    True if ok for testing
         """
 
-        if fw.productName is not None:
-            self.ui.productName.setText(fw.productName)
+        if fw.product is not None:
+            self.ui.product.setText(fw.product)
         else:
-            self.ui.productName.setText('-')
+            self.ui.product.setText('-')
 
-        if fw.numberString is not None:
-            self.ui.numberString.setText(fw.numberString)
+        if fw.vString is not None:
+            self.ui.vString.setText(fw.vString)
         else:
-            self.ui.numberString.setText('-')
+            self.ui.vString.setText('-')
 
-        if fw.fwdate is not None:
-            self.ui.fwdate.setText(fw.fwdate)
+        if fw.date is not None:
+            self.ui.fwdate.setText(fw.date)
         else:
             self.ui.fwdate.setText('-')
 
-        if fw.fwtime is not None:
-            self.ui.fwtime.setText(fw.fwtime)
+        if fw.time is not None:
+            self.ui.fwtime.setText(fw.time)
         else:
             self.ui.fwtime.setText('-')
 
-        if fw.hwVersion is not None:
-            self.ui.hwVersion.setText(fw.hwVersion)
+        if fw.hardware is not None:
+            self.ui.hardware.setText(fw.hardware)
         else:
-            self.ui.hwVersion.setText('-')
+            self.ui.hardware.setText('-')
 
         return True
 

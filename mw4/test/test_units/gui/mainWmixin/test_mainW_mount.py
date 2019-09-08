@@ -164,134 +164,134 @@ def test_updateStatusGui_statusText():
 
 def test_updateSetting_slewRate():
     value = '15'
-    app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.slewRate = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '15' == app.mainW.ui.slewRate.text()
     value = None
-    app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.slewRate = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.slewRate.text()
 
 
 def test_updateSetting_timeToFlip():
     value = '15'
-    app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToFlip = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert ' 15' == app.mainW.ui.timeToFlip.text()
     value = None
-    app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToFlip = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.timeToFlip.text()
 
 
 def test_updateSettingExt_UTCExpire():
     value = '2020-10-05'
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
 def test_updateSettingExt_UTCExpire1():
     value = '2016-10-05'
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
 def test_updateSettingExt_UTCExpire2():
     value = '2018-10-05'
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
 def test_updateSetting_statusUnattendedFlip():
     value = '1'
-    app.mount.sett.statusUnattendedFlip = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusUnattendedFlip = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'ON' == app.mainW.ui.statusUnattendedFlip.text()
     value = None
-    app.mount.sett.statusUnattendedFlip = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusUnattendedFlip = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'OFF' == app.mainW.ui.statusUnattendedFlip.text()
 
 
 def test_updateSetting_statusDualAxisTracking():
     value = '1'
-    app.mount.sett.statusDualAxisTracking = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusDualAxisTracking = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'ON' == app.mainW.ui.statusDualAxisTracking.text()
     value = None
-    app.mount.sett.statusDualAxisTracking = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusDualAxisTracking = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'OFF' == app.mainW.ui.statusDualAxisTracking.text()
 
 
 def test_updateSetting_statusRefraction():
     value = '1'
-    app.mount.sett.statusRefraction = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusRefraction = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'ON' == app.mainW.ui.statusRefraction.text()
     value = None
-    app.mount.sett.statusRefraction = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusRefraction = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'OFF' == app.mainW.ui.statusRefraction.text()
 
 
 def test_updateSetting_statusGPSSynced_1():
     value = True
-    app.mount.sett.gpsSynced = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.gpsSynced = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert app.mainW.ui.statusGPSSynced.text() == 'YES'
 
 
 def test_updateSetting_statusGPSSynced_2():
     value = None
-    app.mount.sett.gpsSynced = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.gpsSynced = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert app.mainW.ui.statusGPSSynced.text() == 'NO'
 
 
 def test_updateSetting_statusGPSSynced_3():
     value = False
-    app.mount.sett.gpsSynced = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.gpsSynced = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert app.mainW.ui.statusGPSSynced.text() == 'NO'
 
 
 def test_tracking_speed1():
-    with mock.patch.object(app.mount.sett,
+    with mock.patch.object(app.mount.setting,
                            'checkRateLunar',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui(app.mount.sett)
+        suc = app.mainW.updateTrackingGui(app.mount.setting)
         assert suc
 
 
 def test_tracking_speed2():
-    with mock.patch.object(app.mount.sett,
+    with mock.patch.object(app.mount.setting,
                            'checkRateSidereal',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui(app.mount.sett)
+        suc = app.mainW.updateTrackingGui(app.mount.setting)
         assert suc
 
 
 def test_tracking_speed3():
-    with mock.patch.object(app.mount.sett,
+    with mock.patch.object(app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui(app.mount.sett)
+        suc = app.mainW.updateTrackingGui(app.mount.setting)
         assert suc
 
 
@@ -565,30 +565,30 @@ def test_stop2(qtbot):
 
 def test_updateSetting_slewRate():
     value = '5'
-    app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.slewRate = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert app.mainW.ui.slewRate.text() == ' 5'
     value = None
-    app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.slewRate = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.slewRate.text()
 
 
 def test_updateSetting_timeToFlip():
     value = '5'
-    app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToFlip = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert app.mainW.ui.timeToFlip.text() == '  5'
     value = None
-    app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToFlip = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.timeToFlip.text()
 
 
 def test_updateSetting_timeToMeridian():
     value = '5'
-    app.mount.sett.timeToMeridian = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToMeridian = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert app.mainW.ui.timeToMeridian.text() == '  5'
     value = None
     app.mount.sett.timeToMeridian = value

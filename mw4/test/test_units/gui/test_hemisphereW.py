@@ -90,32 +90,32 @@ def test_updateCelestialPath_3(qtbot):
 
 def test_updateMeridian_1(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.meridianLimitSlew = 3
-    app.mount.sett.meridianLimitTrack = 3
+    app.mount.setting.meridianLimitSlew = 3
+    app.mount.setting.meridianLimitTrack = 3
     suc = app.hemisphereW.updateMeridian()
     assert suc
 
 
 def test_updateMeridian_3(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.meridianLimitSlew = None
-    app.mount.sett.meridianLimitTrack = 3
+    app.mount.setting.meridianLimitSlew = None
+    app.mount.setting.meridianLimitTrack = 3
     suc = app.hemisphereW.updateMeridian()
     assert not suc
 
 
 def test_updateMeridian_4(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.meridianLimitSlew = 3
-    app.mount.sett.meridianLimitTrack = None
+    app.mount.setting.meridianLimitSlew = 3
+    app.mount.setting.meridianLimitTrack = None
     suc = app.hemisphereW.updateMeridian()
     assert not suc
 
 
 def test_updateMeridian_5(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.meridianLimitSlew = 3
-    app.mount.sett.meridianLimitTrack = 3
+    app.mount.setting.meridianLimitSlew = 3
+    app.mount.setting.meridianLimitTrack = 3
     app.hemisphereW.meridianTrack = None
     suc = app.hemisphereW.updateMeridian()
     assert not suc
@@ -123,8 +123,8 @@ def test_updateMeridian_5(qtbot):
 
 def test_updateMeridian_6(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.meridianLimitSlew = 3
-    app.mount.sett.meridianLimitTrack = 3
+    app.mount.setting.meridianLimitSlew = 3
+    app.mount.setting.meridianLimitTrack = 3
     app.hemisphereW.meridianSlew = None
     suc = app.hemisphereW.updateMeridian()
     assert not suc
@@ -132,32 +132,32 @@ def test_updateMeridian_6(qtbot):
 
 def test_updateHorizonLimits_1(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.horizonLimitHigh = 80
-    app.mount.sett.horizonLimitLow = 10
+    app.mount.setting.horizonLimitHigh = 80
+    app.mount.setting.horizonLimitLow = 10
     suc = app.hemisphereW.updateHorizonLimits()
     assert suc
 
 
 def test_updateHorizonLimits_3(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.horizonLimitHigh = None
-    app.mount.sett.horizonLimitLow = 10
+    app.mount.setting.horizonLimitHigh = None
+    app.mount.setting.horizonLimitLow = 10
     suc = app.hemisphereW.updateHorizonLimits()
     assert not suc
 
 
 def test_updateHorizonLimits_4(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.horizonLimitHigh = 80
-    app.mount.sett.horizonLimitLow = None
+    app.mount.setting.horizonLimitHigh = 80
+    app.mount.setting.horizonLimitLow = None
     suc = app.hemisphereW.updateHorizonLimits()
     assert not suc
 
 
 def test_updateHorizonLimits_5(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.horizonLimitHigh = 80
-    app.mount.sett.horizonLimitLow = 10
+    app.mount.setting.horizonLimitHigh = 80
+    app.mount.setting.horizonLimitLow = 10
     app.hemisphereW.horizonLimitLow = None
     suc = app.hemisphereW.updateHorizonLimits()
     assert not suc
@@ -165,8 +165,8 @@ def test_updateHorizonLimits_5(qtbot):
 
 def test_updateHorizonLimits_6(qtbot):
     app.hemisphereW.drawHemisphere()
-    app.mount.sett.horizonLimitHigh = 80
-    app.mount.sett.horizonLimitLow = 10
+    app.mount.setting.horizonLimitHigh = 80
+    app.mount.setting.horizonLimitLow = 10
     app.hemisphereW.horizonLimitHigh = None
     suc = app.hemisphereW.updateHorizonLimits()
     assert not suc

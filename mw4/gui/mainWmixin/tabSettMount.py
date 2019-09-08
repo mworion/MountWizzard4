@@ -40,7 +40,7 @@ class SettMount(object):
         self.ui.mountHost.editingFinished.connect(self.mountHost)
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
-        self.app.mount.signals.settDone.connect(self.setMountMAC)
+        self.app.mount.signals.settingDone.connect(self.setMountMAC)
 
     def initConfig(self):
         """

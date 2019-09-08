@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -13028,7 +13028,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>7</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -18461,7 +18461,7 @@ to mount manually</string>
           <string>FW:</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="numberString">
+        <widget class="QLineEdit" name="vString">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -18593,7 +18593,7 @@ to mount manually</string>
           <string>Time:</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="productName">
+        <widget class="QLineEdit" name="product">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -18659,7 +18659,7 @@ to mount manually</string>
           <string>Product:</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="hwVersion">
+        <widget class="QLineEdit" name="hardware">
          <property name="enabled">
           <bool>false</bool>
          </property>

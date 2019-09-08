@@ -28,7 +28,7 @@ from datetime import datetime, timedelta
 import PyQt5.QtWidgets
 import PyQt5.uic
 import skyfield.api
-from mountcontrol.model import APoint
+from mountcontrol.modelStar import ModelStar
 import numpy as np
 # local import
 from mw4.definitions import Point, MPoint, IParam, MParam, MData, RData, Solve, Solution
@@ -655,11 +655,11 @@ class BuildFunc(object):
             pierside = mPoint['pierside']
 
             # combine data into structure
-            programmingPoint = APoint(mCoord=mCoord,
-                                      sCoord=sCoord,
-                                      sidereal=sidereal,
-                                      pierside=pierside,
-                                      )
+            programmingPoint = ModelStar(mCoord=mCoord,
+                                         sCoord=sCoord,
+                                         sidereal=sidereal,
+                                         pierside=pierside,
+                                         )
             build.append(programmingPoint)
 
         return build
@@ -686,11 +686,11 @@ class BuildFunc(object):
             pierside = mPoint.mData.pierside
 
             # combine data into structure
-            programmingPoint = APoint(mCoord=mCoord,
-                                      sCoord=sCoord,
-                                      sidereal=sidereal,
-                                      pierside=pierside,
-                                      )
+            programmingPoint = ModelStar(mCoord=mCoord,
+                                         sCoord=sCoord,
+                                         sidereal=sidereal,
+                                         pierside=pierside,
+                                         )
             build.append(programmingPoint)
 
         return build
@@ -776,7 +776,7 @@ class BuildFunc(object):
         # setting overall parameters
         settleMount = self.app.mainW.ui.settleTimeMount.value()
         settleDome = self.app.mainW.ui.settleTimeDome.value()
-        self.app.mount.settlingTime = settleMount
+        self.app.mount.settinglingTime = settleMount
         self.app.dome.settlingTime = settleDome
 
         self.prepareGUI()

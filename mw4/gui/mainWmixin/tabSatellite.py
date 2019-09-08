@@ -253,7 +253,7 @@ class Satellite(object):
 
         now = self.app.mount.obsSite.ts.now()
         observe = self.satellite.at(now)
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
 
         subpoint = observe.subpoint()
         difference = self.satellite - self.app.mount.obsSite.location

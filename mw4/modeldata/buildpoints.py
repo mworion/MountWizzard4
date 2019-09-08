@@ -170,12 +170,12 @@ class DataPoint(object):
         if not isinstance(position, (int, float)):
             self.logger.error('malformed position: {0}'.format(position))
             return False
-        if self.app.mount.sett.horizonLimitHigh is not None:
-            high = self.app.mount.sett.horizonLimitHigh
+        if self.app.mount.setting.horizonLimitHigh is not None:
+            high = self.app.mount.setting.horizonLimitHigh
         else:
             high = 90
-        if self.app.mount.sett.horizonLimitLow is not None:
-            low = self.app.mount.sett.horizonLimitLow
+        if self.app.mount.setting.horizonLimitLow is not None:
+            low = self.app.mount.setting.horizonLimitLow
         else:
             low = 0
         if value[0] > high:

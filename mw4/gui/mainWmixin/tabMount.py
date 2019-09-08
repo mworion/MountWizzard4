@@ -40,9 +40,9 @@ class Mount(object):
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
         ms.pointDone.connect(self.updateTimeGUI)
-        ms.settDone.connect(self.updateSettingGUI)
-        ms.settDone.connect(self.updateSetStatGUI)
-        ms.settDone.connect(self.updateTrackingGui)
+        ms.settingDone.connect(self.updateSettingGUI)
+        ms.settingDone.connect(self.updateSetStatGUI)
+        ms.settingDone.connect(self.updateTrackingGui)
 
         self.ui.park.clicked.connect(self.changePark)
         self.ui.tracking.clicked.connect(self.changeTracking)
@@ -456,7 +456,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         msg = PyQt5.QtWidgets.QMessageBox
         obs = self.app.mount.obsSite
         actValue = sett.meridianLimitTrack
@@ -492,7 +492,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.meridianLimitSlew
@@ -528,7 +528,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.horizonLimitHigh
@@ -564,7 +564,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.horizonLimitLow
@@ -600,7 +600,7 @@ class Mount(object):
 
         :return:    success as bool if value could be changed
         """
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.slewRate
@@ -734,7 +734,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         if sett.statusUnattendedFlip is None:
@@ -768,7 +768,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         if sett.statusDualAxisTracking is None:
@@ -802,7 +802,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         if sett.statusRefraction is None:

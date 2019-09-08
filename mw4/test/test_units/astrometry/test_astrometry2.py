@@ -39,11 +39,10 @@ def module_setup_teardown():
 
 
 def test_init_1():
-    app.astrometry.solveApp = {
+    app.astrometry.solverEnviron = {
         'astrometry-glob': {
             'programPath': '/usr/bin',
             'indexPath': '/usr/share/astrometry',
-            'solve': app.astrometry.solveNET,
-            'abort': app.astrometry.abortNET,
+            'solver': app.astrometry.solverNET,
         }
     }

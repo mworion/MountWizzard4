@@ -162,8 +162,6 @@ class AstrometryASTAP(object):
 
         tempPath = self.tempDir + '/temp'
         wcsPath = self.tempDir + '/temp.wcs'
-        if os.path.isfile(wcsPath):
-            os.remove(wcsPath)
 
         binPathASTAP = solver['programPath'] + '/astap'
 

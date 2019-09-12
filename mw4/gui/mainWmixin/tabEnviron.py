@@ -120,6 +120,7 @@ class Environ(object):
                 break
         if not suc:
             self.app.message.emit('Cannot perform refraction update', 2)
+            self.logger.info(f'No refraction update Temp:{temp}, Press:{press}')
             return False
         return True
 

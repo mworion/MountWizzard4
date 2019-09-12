@@ -470,6 +470,9 @@ class Camera(indiClass.IndiClass):
         :return: success
         """
 
+        if not self.device:
+            return False
+
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
         if 'ABORT' not in indiCmd:
             return False

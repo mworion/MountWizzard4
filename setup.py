@@ -19,7 +19,7 @@
 from setuptools import setup
 
 setup(
-    name='mountwizzard4',
+    name='mw4',
     version='0.111',
     packages=[
         'mw4',

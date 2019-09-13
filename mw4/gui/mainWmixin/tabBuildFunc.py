@@ -761,7 +761,7 @@ class BuildFunc(object):
         # setting overall parameters
         settleMount = self.app.mainW.ui.settleTimeMount.value()
         settleDome = self.app.mainW.ui.settleTimeDome.value()
-        self.app.mount.settinglingTime = settleMount
+        self.app.mount.settlingTime = settleMount
         self.app.dome.settlingTime = settleDome
 
         self.prepareGUI()

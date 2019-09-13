@@ -38,7 +38,7 @@ def windows(c):
 
 
 @task(pre=[])
-def windows_dbg(c):
+def windowsdbg(c):
     printMW('deploy windows app debug')
     runMW(c, f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     runMW(c, f'ssh {userWindows} "mkdir mountwizzard4"')

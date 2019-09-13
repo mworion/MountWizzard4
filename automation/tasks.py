@@ -99,7 +99,7 @@ def deploy_all(c):
     deploy_dist.ubuntu(c)
     deploy_dist.mate(c)
     deploy_dist.windows(c)
-    deploy_dist.windows_dbg(c)
+    # deploy_dist.windowsdbg(c)
     deploy_dist.mac(c)
 
 
@@ -110,7 +110,7 @@ def run_all(c):
     run_dist.mate(c)
     run_dist.windows(c)
     run_app.windows(c)
-    run_app.windows_dbg(c)
+    run_app.windowsdbg(c)
     run_dist.mac(c)
     run_app.mac(c)
 

@@ -230,7 +230,7 @@ class BuildFunc(object):
 
             deltaRA = mPoint.mData.raMJNow._degrees - mPoint.mData.raSJNow._degrees
             deltaDEC = mPoint.mData.decMJNow.degrees - mPoint.mData.decSJNow.degrees
-            error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
+            error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC)) * 3600
 
             text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
             text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)} '

@@ -121,11 +121,12 @@ class MeasureData(object):
 
         if trackingIsStable:
             if self.raRef is None:
-                self.raRef = obs.raJNow.hours * 3600
+                self.raRef = obs.raJNow._degrees
             if self.decRef is None:
-                self.decRef = obs.decJNow.degrees * 3600
-            raJNow = obs.raJNow.hours * 3600 - self.raRef
-            decJNow = obs.decJNow.degrees * 3600 - self.decRef
+                self.decRef = obs.decJNow.degrees
+            # we would like to have the difference in arcsec
+            raJNow = (obs.raJNow._degrees - self.raRef) * 3600
+            decJNow = (obs.decJNow.degrees - self.decRef) * 3600
         else:
             self.raRef = None
             self.decRef = None

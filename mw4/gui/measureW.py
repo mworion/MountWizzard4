@@ -290,7 +290,7 @@ class MeasureWindow(widget.MWidget):
                  color=self.M_WHITE,
                  )
         axe.grid(True, color=self.M_GREY, alpha=1)
-        axe.set_ylim(-0.4, 0.4)
+        axe.set_ylim(-4, 4)
         axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
                                                              integer=True,
                                                              min_n_ticks=4,

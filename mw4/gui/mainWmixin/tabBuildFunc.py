@@ -403,13 +403,16 @@ class BuildFunc(object):
     def prepareGUI(self):
         """
         prepareGUI sets GUI elements to state, whereas there will be no influence for
-        running actions
+        running actions. this is valid for imaging window if present as well.
 
         :return: true for test purpose
         """
 
         self.ui.batchModel.setEnabled(False)
-
+        # disable stacking and auto solve when modeling if imageWindow is present
+        if self.app.imageW:
+            self.app.imageW.ui.checkAutoSolve.setChecked(False)
+            self.app.imageW.ui.checkStackImages.setChecked(False)
         return True
 
     def defaultGUI(self):

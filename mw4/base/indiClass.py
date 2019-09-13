@@ -45,7 +45,8 @@ class IndiClass(object):
 
     # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 1
-    RETRY_DELAY = 3000
+    RETRY_DELAY = 1000
+    NUMBER_RETRY = 5
 
     def __init__(self,
                  host=None,
@@ -56,6 +57,7 @@ class IndiClass(object):
         self.client = qtIndiBase.Client(host=host)
         self.name = name
         self.data = {}
+        self.retryCounter = 0
         self.device = None
 
         self.timerRetry = PyQt5.QtCore.QTimer()
@@ -142,11 +144,16 @@ class IndiClass(object):
 
         :return: True for test purpose
         """
+
+        self.retryCounter += 1
         if not self.data:
             self.stopCommunication()
             self.startCommunication()
             self.logger.info(f'Indi server {self.name} connection retry')
-
+        else:
+            self.retryCounter = 0
+        if self.retryCounter < self.NUMBER_RETRY:
+            self.timerRetry.start(self.RETRY_DELAY)
         return True
 
     def startCommunication(self):
@@ -157,11 +164,12 @@ class IndiClass(object):
         """
 
         self.client.startTimers()
-
-        # adding a single retry if first connect does not happen after 1 second
-        self.timerRetry.start(self.RETRY_DELAY)
-
         suc = self.client.connectServer()
+        if not suc:
+            self.logger.debug(f'Cannot start connection to: {self.name}')
+        else:
+            # adding a single retry if first connect does not happen
+            self.timerRetry.start(self.RETRY_DELAY)
         return suc
 
     def stopCommunication(self):

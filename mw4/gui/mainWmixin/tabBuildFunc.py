@@ -219,11 +219,9 @@ class BuildFunc(object):
 
         if not isinstance(result, Solution):
             self.logger.info(f'Solving result is malformed: {result}')
-            self.logger.error('empty result queue')
             return False
         if not isinstance(result.solve, Solve):
             self.logger.info(f'Solving result is malformed: {result}')
-            self.logger.error('empty result queue')
             return False
 
         # processing only the model point which are OK

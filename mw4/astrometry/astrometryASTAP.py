@@ -59,7 +59,7 @@ class AstrometryASTAP(object):
 
     def __init__(self, parent):
         self.parent = parent
-        self.result = (False, [])
+        self.result = Solution(success=False, solve=Solve)
         self.process = None
 
     def runASTAP(self, binPath='', tempPath='', fitsPath='', options='', timeout=30):
@@ -154,8 +154,7 @@ class AstrometryASTAP(object):
         """
 
         self.process = None
-        self.result = Solution(success=False,
-                               solve=[])
+        self.result = Solution(success=False, solve=Solve)
 
         if not os.path.isfile(fitsPath):
             return False
@@ -194,7 +193,7 @@ class AstrometryASTAP(object):
             return False
 
         if not os.path.isfile(wcsPath):
-            self.logger.error(f'solve files for [{wcsPath}] missing')
+            self.logger.debug(f'solve files for [{wcsPath}] missing')
             return False
 
         with open(wcsPath) as wcsTextFile:
@@ -213,8 +212,7 @@ class AstrometryASTAP(object):
                       error=solve.error,
                       flipped=solve.flipped,
                       path=fitsPath)
-        self.result = Solution(success=True,
-                               solve=solve)
+        self.result = Solution(success=True, solve=solve)
         return True
 
     def abort(self):

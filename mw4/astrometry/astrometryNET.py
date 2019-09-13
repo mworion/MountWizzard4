@@ -59,7 +59,7 @@ class AstrometryNET(object):
 
     def __init__(self, parent):
         self.parent = parent
-        self.result = (False, [])
+        self.result = Solution(success=False, solve=Solve)
         self.process = None
 
     def runImage2xy(self, binPath='', tempPath='', fitsPath='', timeout=30):
@@ -204,8 +204,7 @@ class AstrometryNET(object):
         """
 
         self.process = None
-        self.result = Solution(success=False,
-                               solve=[])
+        self.result = Solution(success=False, solve=Solve)
 
         if not os.path.isfile(fitsPath):
             return False
@@ -279,11 +278,11 @@ class AstrometryNET(object):
             return False
 
         if not os.path.isfile(solvedPath):
-            self.logger.error(f'solve files for [{fitsPath}] missing')
+            self.logger.debug(f'solve files for [{fitsPath}] missing')
             return False
 
         if not os.path.isfile(wcsPath):
-            self.logger.error(f'solve files for [{wcsPath}] missing')
+            self.logger.debug(f'solve files for [{wcsPath}] missing')
             return False
 
         with fits.open(wcsPath) as wcsHDU:
@@ -302,8 +301,7 @@ class AstrometryNET(object):
                       error=solve.error,
                       flipped=solve.flipped,
                       path=fitsPath)
-        self.result = Solution(success=True,
-                               solve=solve)
+        self.result = Solution(success=True, solve=solve)
         return True
 
     def abort(self):

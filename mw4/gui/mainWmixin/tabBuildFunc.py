@@ -83,6 +83,9 @@ class BuildFunc(object):
     processing if needed.
     """
 
+    # define a max error which throws point out of queue in arcsec
+    MAX_ERROR_MODEL_POINT = 9999
+
     def __init__(self):
 
         self.slewQueue = queue.Queue()
@@ -226,11 +229,16 @@ class BuildFunc(object):
         # processing only the model point which are OK
         if result.success:
             mPoint = self.addResultToModel(mPoint=mPoint, result=result)
-            self.modelQueue.put(mPoint)
 
             deltaRA = mPoint.mData.raMJNow._degrees - mPoint.mData.raSJNow._degrees
             deltaDEC = mPoint.mData.decMJNow.degrees - mPoint.mData.decSJNow.degrees
             error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC)) * 3600
+
+            if error < self.MAX_ERROR_MODEL_POINT:
+                self.modelQueue.put(mPoint)
+            else:
+                text = f'Solving error for image-{mPoint.mParam.count:03d}'
+                self.app.message.emit(text, 2)
 
             text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
             text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)} '

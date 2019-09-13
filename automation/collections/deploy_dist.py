@@ -57,9 +57,10 @@ def mate(c):
     with c.cd('..'):
         runMW(c, f'scp dist/*.tar.gz {workMate}/mw4.tar.gz')
 
+    with c.cd('images'):
+        runMW(c, f'scp mw4.png {workWork}')
     with c.cd('remote_scripts/ubuntu'):
         runMW(c, f'scp MountWizzard4.desktop {workMate}')
-        runMW(c, f'scp mw4.png {workMate}')
         runMW(c, f'ssh {userMate} < install_dist_mate.sh')
 
 
@@ -75,9 +76,10 @@ def work(c):
         runMW(c, f'scp dist/*.tar.gz {workWork}/mw4.tar.gz')
 
     # run the
+    with c.cd('images'):
+        runMW(c, f'scp mw4.png {workWork}')
     with c.cd('remote_scripts/work'):
         runMW(c, f'scp MountWizzard4.desktop {userWork}:.local/share/applications')
-        runMW(c, f'scp mw4.png {workWork}')
         runMW(c, f'ssh {userWork} < install_dist_work.sh')
         runMW(c, f'scp start_work.sh {userWork}')
     runMW(c, f'ssh {userWork} chmod 777 ./mountwizzard4/start_work.sh')

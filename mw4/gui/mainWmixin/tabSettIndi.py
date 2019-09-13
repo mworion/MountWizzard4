@@ -92,6 +92,7 @@ class SettIndi(object):
         self.setupDeviceNameGui()
         self.ui.domeDeviceName.currentIndexChanged.connect(self.domeDispatch)
         self.ui.imagingDeviceName.currentIndexChanged.connect(self.imagingDispatch)
+        self.ui.environDeviceName.currentIndexChanged.connect(self.environDispatch)
         self.ui.skymeterDeviceName.currentIndexChanged.connect(self.skymeterDispatch)
         self.ui.powerDeviceName.currentIndexChanged.connect(self.powerDispatch)
 

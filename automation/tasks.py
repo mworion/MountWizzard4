@@ -89,7 +89,7 @@ def build_all(c):
     build_dist.indibase(c)
     build_dist.mountwizzard(c)
     build_app.windows(c)
-    build_app.windows_dbg(c)
+    build_app.windowsdbg(c)
     build_app.mac(c)
 
 

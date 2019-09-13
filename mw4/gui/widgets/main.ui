@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>10</number>
+      <number>8</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -11807,7 +11807,7 @@ to mount manually</string>
        <widget class="QCheckBox" name="powerBootPort1">
         <property name="geometry">
          <rect>
-          <x>215</x>
+          <x>220</x>
           <y>45</y>
           <width>106</width>
           <height>21</height>
@@ -11826,7 +11826,7 @@ to mount manually</string>
        <widget class="QCheckBox" name="powerPort1">
         <property name="geometry">
          <rect>
-          <x>215</x>
+          <x>220</x>
           <y>20</y>
           <width>109</width>
           <height>21</height>

@@ -33,6 +33,7 @@ from mw4.gui.mainWmixin.tabMount import Mount
 from mw4.gui.mainWmixin.tabEnviron import Environ
 from mw4.gui.mainWmixin.tabAlignMount import AlignMount
 from mw4.gui.mainWmixin.tabBuildModel import BuildModel
+from mw4.gui.mainWmixin.tabBuildFunc import BuildFunc
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
 from mw4.gui.mainWmixin.tabSatellite import Satellite
 from mw4.gui.mainWmixin.tabRelay import Relay
@@ -40,7 +41,9 @@ from mw4.gui.mainWmixin.tabPower import Power
 from mw4.gui.mainWmixin.tabTools import Tools
 from mw4.gui.mainWmixin.tabSettDevice import SettDevice
 from mw4.gui.mainWmixin.tabSettIndi import SettIndi
+from mw4.gui.mainWmixin.tabSettMount import SettMount
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
+from mw4.gui.mainWmixin.tabSettImaging import SettImaging
 from mw4.gui.mainWmixin.tabSettParkPos import SettParkPos
 from mw4.gui.mainWmixin.tabSettRelay import SettRelay
 from mw4.gui.mainWmixin.tabSettMisc import SettMisc
@@ -51,6 +54,7 @@ class MainWindow(MWidget,
                  Environ,
                  AlignMount,
                  BuildModel,
+                 BuildFunc,
                  ManageModel,
                  Satellite,
                  Relay,
@@ -58,7 +62,9 @@ class MainWindow(MWidget,
                  Tools,
                  SettDevice,
                  SettIndi,
+                 SettMount,
                  SettHorizon,
+                 SettImaging,
                  SettParkPos,
                  SettRelay,
                  SettMisc,
@@ -72,7 +78,7 @@ class MainWindow(MWidget,
 
     __all__ = ['MainWindow',
                ]
-    version = '0.100.0'
+    version = '0.101'
     logger = logging.getLogger(__name__)
 
     def __init__(self, app, threadPool):
@@ -86,36 +92,29 @@ class MainWindow(MWidget,
         self.initUI()
         self.setupIcons()
         self.setWindowTitle(f'MountWizzard4 - v{self.app.version}')
-        self.typeConnectionTexts = ['serial RS-232 port',
-                                    'GPS or GPS/RS-232 port',
-                                    'cabled LAN port',
-                                    'wireless LAN',
-                                    ]
-        self.status = False
 
-        # local init of following
-        Mount.__init__(self)
-        Environ.__init__(self)
-        AlignMount.__init__(self)
-        BuildModel.__init__(self)
-        ManageModel.__init__(self)
-        Satellite.__init__(self)
-        Relay.__init__(self)
-        Power.__init__(self)
-        Tools.__init__(self)
-        SettIndi.__init__(self)
-        SettDevice.__init__(self)
-        SettHorizon.__init__(self)
-        SettParkPos.__init__(self)
-        SettRelay.__init__(self)
-        SettMisc.__init__(self)
+        self.deviceStat = {
+            'dome': None,
+            'mount': None,
+            'imaging': None,
+            'astrometry': None,
+            'environ': None,
+            'skymeter': None,
+            'power': None,
+        }
+        self.deviceStatGui = {'dome': self.ui.domeConnected,
+                              'imaging': self.ui.imagingConnected,
+                              'environment': self.ui.environConnected,
+                              'astrometry': self.ui.astrometryConnected,
+                              'mount': self.ui.mountConnected}
+
+        self.mwSuper('__init__')
 
         # polarPlot ui instance has to be defined central, not in the mixins
         self.polarPlot = self.embedMatplot(self.ui.modelPolar)
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
-        self.app.mount.signals.settDone.connect(self.setMountMAC)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
@@ -124,22 +123,38 @@ class MainWindow(MWidget,
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
-        self.ui.mountOn.clicked.connect(self.mountBoot)
-        self.ui.mountOff.clicked.connect(self.mountShutdown)
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
-        self.ui.mountHost.editingFinished.connect(self.mountHost)
-        self.ui.mountMAC.editingFinished.connect(self.mountMAC)
-        self.ui.bootRackComp.clicked.connect(self.bootRackComp)
 
         # initial call for writing the gui
-        self.updateMountConnStat(False)
+        self.updateMountConnStat(None)
         self.initConfig()
 
         # cyclic updates
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateWindowsStats)
+        self.app.update1s.connect(self.smartGui)
+        self.app.update1s.connect(self.updateWindowsStats)
+        self.app.update1s.connect(self.updateDeviceStats)
+
+    def mwSuper(self, func):
+        """
+        mwSuper is a replacement for super() to manage the mixin style of implementation
+        it's not an ideal way to do it, but mwSuper() call the methode of every ! parent
+        class if they exist.
+
+        :param func:
+        :return: true for test purpose
+        """
+
+        for base in self.__class__.__bases__:
+            if base.__name__ == 'MWidget':
+                continue
+            if hasattr(base, func):
+                funcAttrib = getattr(base, func)
+                funcAttrib(self)
+        return True
 
     def initConfig(self):
         """
@@ -164,40 +179,18 @@ class MainWindow(MWidget,
         self.move(x, y)
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
-        self.ui.mountHost.setText(config.get('mountHost', ''))
-        self.mountHost()
-        self.ui.mountMAC.setText(config.get('mountMAC', ''))
-        self.mountMAC()
-        self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
-        self.ui.expTime.setValue(config.get('expTime', 1))
-        self.ui.binning.setValue(config.get('binning', 1))
-        self.ui.subFrame.setValue(config.get('subFrame', 100))
-        self.ui.subFrame.setValue(config.get('subFrame', 100))
-        self.ui.subFrame.setValue(config.get('subFrame', 100))
-        self.ui.checkFastDownload.setChecked(config.get('checkFastDownload', False))
-        self.ui.checkKeepImages.setChecked(config.get('checkKeepImages', False))
-        self.ui.searchRadius.setValue(config.get('searchRadius', 2))
-        self.ui.solveTimeout.setValue(config.get('solveTimeout', 30))
 
-        Mount.initConfig(self)
-        Environ.initConfig(self)
-        AlignMount.initConfig(self)
-        BuildModel.initConfig(self)
-        ManageModel.initConfig(self)
-        Satellite.initConfig(self)
-        Relay.initConfig(self)
-        Power.initConfig(self)
-        Tools.initConfig(self)
-        SettIndi.initConfig(self)
-        SettHorizon.initConfig(self)
-        SettParkPos.initConfig(self)
-        SettRelay.initConfig(self)
-        SettMisc.initConfig(self)
-        SettDevice.initConfig(self)
+        ################################################################################
+        # remove analysis tab while not developed
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+        ################################################################################
 
-        fileName = self.app.config['mainW'].get('horizonFileName')
-        self.app.data.loadHorizonP(fileName=fileName)
-        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'red')
+        self.mwSuper('initConfig')
+        self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
+
         return True
 
     def storeConfig(self):
@@ -218,35 +211,8 @@ class MainWindow(MWidget,
         config['winPosY'] = self.pos().y()
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
-        config['mountHost'] = self.ui.mountHost.text()
-        config['mountMAC'] = self.ui.mountMAC.text()
-        config['rackCompMAC'] = self.ui.rackCompMAC.text()
-        config['expTime'] = self.ui.expTime.value()
-        config['binning'] = self.ui.binning.value()
-        config['subFrame'] = self.ui.subFrame.value()
-        config['searchRadius'] = self.ui.searchRadius.value()
-        config['solveTimeout'] = self.ui.solveTimeout.value()
-        config['checkFastDownload'] = self.ui.checkFastDownload.isChecked()
-        config['checkKeepImages'] = self.ui.checkKeepImages.isChecked()
-        config['settleTimeMount'] = self.ui.settleTimeMount.value()
-        config['settleTimeDome'] = self.ui.settleTimeDome.value()
 
-        Mount.storeConfig(self)
-        Environ.storeConfig(self)
-        AlignMount.storeConfig(self)
-        BuildModel.storeConfig(self)
-        ManageModel.storeConfig(self)
-        Satellite.storeConfig(self)
-        Relay.storeConfig(self)
-        Power.storeConfig(self)
-        Tools.storeConfig(self)
-        SettIndi.storeConfig(self)
-        SettHorizon.storeConfig(self)
-        SettParkPos.storeConfig(self)
-        SettRelay.storeConfig(self)
-        SettMisc.storeConfig(self)
-        SettDevice.storeConfig(self)
-
+        self.mwSuper('storeConfig')
         return True
 
     def closeEvent(self, closeEvent):
@@ -278,122 +244,112 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.loadFrom, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
         self.wIcon(self.ui.saveConfig, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.saveConfigQuit, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
-        self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
-        self.wIcon(self.ui.runAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.runFlexure, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
 
-        Mount.setupIcons(self)
-        Environ.setupIcons(self)
-        AlignMount.setupIcons(self)
-        BuildModel.setupIcons(self)
-        ManageModel.setupIcons(self)
-        Satellite.setupIcons(self)
-        Relay.setupIcons(self)
-        Power.setupIcons(self)
-        Tools.setupIcons(self)
-        SettDevice.setupIcons(self)
-        SettIndi.setupIcons(self)
-        SettHorizon.setupIcons(self)
-        SettParkPos.setupIcons(self)
-        SettRelay.setupIcons(self)
-        SettMisc.setupIcons(self)
+        self.wIcon(self.ui.genAlignBuild, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
+        self.ui.picAZ.setPixmap(pixmap)
+        pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
+        self.ui.picALT.setPixmap(pixmap)
+
+        self.wIcon(self.ui.runAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+
+        self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildMax, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildMed, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildNorm, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildMin, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.genBuildDSO, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+
+        self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
+        self.wIcon(self.ui.saveName, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
+        self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
+        self.wIcon(self.ui.refreshName, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
+        self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
+
+        self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
+
+        self.wIcon(self.ui.mountOn, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.mountOff, PyQt5.QtWidgets.QStyle.SP_MessageBoxCritical)
+        self.wIcon(self.ui.renameStart, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+
         return True
-
-    def mountBoot(self):
-        if self.app.mount.bootMount():
-            self.app.message.emit('Sent boot command to mount', 0)
-            return True
-        else:
-            self.app.message.emit('Mount cannot be booted', 2)
-            return False
-
-    def mountShutdown(self):
-        if self.app.mount.shutdown():
-            self.app.message.emit('Shutting mount down', 0)
-            return True
-        else:
-            self.app.message.emit('Mount cannot be shutdown', 2)
-            return False
-
-    def checkFormatMAC(self, value):
-        """
-        checkFormatMAC makes some checks to ensure that the format of the string is ok for
-        WOL package.
-
-        :param      value: string with mac address
-        :return:    checked string in upper cases
-        """
-
-        if not value:
-            self.logger.error('wrong MAC value: {0}'.format(value))
-            return None
-        if not isinstance(value, str):
-            self.logger.error('wrong MAC value: {0}'.format(value))
-            return None
-        value = value.upper()
-        value = value.replace('.', ':')
-        value = value.split(':')
-        if len(value) != 6:
-            self.logger.error('wrong MAC value: {0}'.format(value))
-            return None
-        for chunk in value:
-            if len(chunk) != 2:
-                self.logger.error('wrong MAC value: {0}'.format(value))
-                return None
-            for char in chunk:
-                if char not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                                'A', 'B', 'C', 'D', 'E', 'F']:
-                    self.logger.error('wrong MAC value: {0}'.format(value))
-                    return None
-        # now we build the right format
-        value = '{0:2s}:{1:2s}:{2:2s}:{3:2s}:{4:2s}:{5:2s}'.format(*value)
-        return value
-
-    def bootRackComp(self):
-        MAC = self.ui.rackCompMAC.text()
-        MAC = self.checkFormatMAC(MAC)
-        if MAC is not None:
-            wakeonlan.send_magic_packet(MAC)
-            self.app.message.emit('Sent boot command to rack computer', 0)
-            return True
-        else:
-            self.app.message.emit('Rack computer cannot be booted', 2)
-            return False
 
     def updateMountConnStat(self, status):
         """
-        updateMountConnStat show the connection status of the mount.
+        updateMountConnStat show the connection status of the mount. if status is None,
+        which means there is no valid host entry for connection, the status is grey
 
         :param status:
-        :return: status changed or new
+        :return: true for test purpose
         """
 
-        ui = self.ui.mountConnected
-        if self.status == status:
-            return False
+        self.deviceStat['mount'] = status
+        return True
 
-        if status:
-            self.changeStyleDynamic(ui, 'color', 'green')
+    def smartGui(self):
+        """
+        smartGui enables and disables gui actions depending on the actual state of the
+        different devices. this should be the core of avoiding user misused during running
+        operations. smartGui is run every 1 second synchronously, because it can't be
+        simpler done with dynamic approach. all different situations in a running
+        environment is done locally.
+
+        :return: true for test purpose
+        """
+        # check if modeling would work (mount + solve + image)
+        if all(self.deviceStat[x] for x in ['mount', 'imaging', 'astrometry']):
             self.ui.runFullModel.setEnabled(True)
             self.ui.runAlignModel.setEnabled(True)
             self.ui.plateSolveSync.setEnabled(True)
             self.ui.runFlexure.setEnabled(True)
             self.ui.runHysteresis.setEnabled(True)
         else:
-            self.changeStyleDynamic(ui, 'color', 'red')
             self.ui.runFullModel.setEnabled(False)
             self.ui.runAlignModel.setEnabled(False)
             self.ui.plateSolveSync.setEnabled(False)
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
-        self.status = status
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'ManageModel')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+
+        if self.deviceStat['mount']:
+            self.ui.batchModel.setEnabled(True)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+        else:
+            self.ui.batchModel.setEnabled(False)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+
+        if self.deviceStat['environment']:
+            self.ui.environGroup.setEnabled(True)
+            self.ui.refractionGroup.setEnabled(True)
+            self.ui.setRefractionManual.setEnabled(True)
+        else:
+            self.ui.environGroup.setEnabled(False)
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
+
+        if self.deviceStat['skymeter']:
+            self.ui.skymeterGroup.setEnabled(True)
+        else:
+            self.ui.skymeterGroup.setEnabled(False)
+
+        if self.deviceStat['power']:
+            self.ui.powerGroup.setEnabled(True)
+        else:
+            self.ui.powerGroup.setEnabled(False)
+
         return True
 
     def updateWindowsStats(self):
@@ -426,6 +382,22 @@ class MainWindow(MWidget,
             self.changeStyleDynamic(self.ui.openSatelliteW, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.openSatelliteW, 'running', False)
+
+        return True
+
+    def updateDeviceStats(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        for device, ui in self.deviceStatGui.items():
+            if self.deviceStat[device] is None:
+                self.changeStyleDynamic(ui, 'color', 'gray')
+            elif self.deviceStat[device]:
+                self.changeStyleDynamic(ui, 'color', 'green')
+            else:
+                self.changeStyleDynamic(ui, 'color', 'red')
 
         return True
 
@@ -582,28 +554,6 @@ class MainWindow(MWidget,
         else:
             self.app.message.emit('Actual profile cannot not be saved', 2)
         return suc
-
-    def mountHost(self):
-        self.app.mount.host = self.ui.mountHost.text()
-
-    def mountMAC(self):
-        self.app.mount.MAC = self.ui.mountMAC.text()
-
-    def setMountMAC(self, sett):
-        """
-
-        :param sett:
-        :return:
-        """
-
-        if sett.addressLanMAC is not None and sett.addressLanMAC:
-            self.app.mount.MAC = sett.addressLanMAC
-        if self.app.mount.MAC is not None:
-            self.ui.mountMAC.setText(self.app.mount.MAC)
-
-        if sett.typeConnection is not None:
-            text = self.typeConnectionTexts[sett.typeConnection]
-            self.ui.mountTypeConnection.setText(text)
 
     def remoteCommand(self, command):
         """

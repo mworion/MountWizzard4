@@ -45,11 +45,17 @@ format = defines.get('format', 'UDBZ')
 # Volume size
 size = defines.get('size', None)
 
+webloc_home = 'MW Home.webloc'
+webloc_docu = 'MW Docu.webloc'
+readme = 'readme.txt'
+
 # Files to include
-files = [application]
+files = [application,
+         webloc_home,
+         readme]
 
 # Symlinks to create
-symlinks = {'UserDir': '~'}
+# symlinks = {'Desktop': '/Users/mw/Desktop'}
 
 # Volume icon
 #
@@ -60,10 +66,12 @@ symlinks = {'UserDir': '~'}
 icon = 'drive_mw4.icns'
 # badge_icon = 'drive_mw4.icns'
 
+
 # Where to put the icons
 icon_locations = {
+    webloc_home:    (120, 200),
+    readme:         (290, 200),
     appname:        (120, 360),
-    'UserDir':        (460, 360),
     }
 
 # .. Window configuration ......................................................
@@ -88,7 +96,7 @@ icon_locations = {
 #
 # Other color components may be expressed either in the range 0 to 1, or
 # as percentages (e.g. 60% is equivalent to 0.6).
-background = './dmg_background.png'
+background = 'dmg_background.png'
 
 show_status_bar = False
 show_tab_view = False

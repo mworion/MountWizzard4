@@ -52,6 +52,9 @@ class SettHorizon(object):
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
 
+        fileName = self.app.config['mainW'].get('horizonFileName')
+        self.app.data.loadHorizonP(fileName=fileName)
+
         return True
 
     def storeConfig(self):
@@ -69,15 +72,6 @@ class SettHorizon(object):
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()
 
-        return True
-
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
         return True
 
     def loadHorizonMask(self):

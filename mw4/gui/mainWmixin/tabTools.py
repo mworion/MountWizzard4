@@ -45,12 +45,12 @@ class Tools(object):
                                    'rename5': self.ui.rename5,
                                    }
         self.fitsHeaderKeywords = {'None': [''],
-                                   'CCD Temp': ['CCD-TEMP'],
-                                   'Frame': ['FRAME', 'IMAGETYP'],
-                                   'Binning': ['XBINNING'],
-                                   'Filter': ['FILTER'],
                                    'Datetime': ['DATE-OBS'],
+                                   'Frame': ['FRAME', 'IMAGETYP'],
+                                   'Filter': ['FILTER'],
+                                   'Binning': ['XBINNING'],
                                    'Exp Time': ['EXPTIME'],
+                                   'CCD Temp': ['CCD-TEMP'],
                                    }
 
         self.setupSelectorGui()
@@ -86,18 +86,6 @@ class Tools(object):
         config['checkIncludeSubdirs'] = self.ui.checkIncludeSubdirs.isChecked()
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
-        return True
-
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-
-        self.wIcon(self.ui.renameStart, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-
         return True
 
     def setupSelectorGui(self):

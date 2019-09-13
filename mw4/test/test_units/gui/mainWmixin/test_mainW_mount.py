@@ -103,21 +103,6 @@ def test_updatePointGui_dec():
     assert '-' == app.mainW.ui.DEC.text()
 
 
-def test_updatePointGui_jd1():
-    value = '2451544.5'
-    app.mount.obsSite.utc_ut1 = '0'
-    app.mount.obsSite.timeJD = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
-    assert '00:00:00' == app.mainW.ui.timeJD.text()
-
-
-def test_updatePointGui_jd2():
-    value = None
-    app.mount.obsSite.timeJD = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
-    assert '-' != app.mainW.ui.timeJD.text()
-
-
 def test_updatePointGui_pierside():
     value = 'W'
     app.mount.obsSite.pierside = value
@@ -129,14 +114,42 @@ def test_updatePointGui_pierside():
     assert '-' == app.mainW.ui.pierside.text()
 
 
-def test_updatePointGui_sidereal():
+def test_updatePointGui_ha():
+    value = '12'
+    app.mount.obsSite.raJNow = value
+    app.mount.obsSite.timeSidereal = '00:00:00'
+    app.mainW.updatePointGUI(app.mount.obsSite)
+    assert '12:00:00' == app.mainW.ui.HA.text()
+    value = None
+    app.mount.obsSite.timeSidereal = '00:00:00'
+    app.mount.obsSite.raJNow = value
+    app.mainW.updatePointGUI(app.mount.obsSite)
+    assert '-' == app.mainW.ui.HA.text()
+
+
+def test_updateTimeGui_jd1():
+    value = '2451544.5'
+    app.mount.obsSite.utc_ut1 = '0'
+    app.mount.obsSite.timeJD = value
+    app.mainW.updateTimeGUI(app.mount.obsSite)
+    assert '00:00:00' == app.mainW.ui.timeJD.text()
+
+
+def test_updateTimeGui_jd2():
+    value = None
+    app.mount.obsSite._timeJD = value
+    app.mainW.updateTimeGUI(app.mount.obsSite)
+    assert '-' != app.mainW.ui.timeJD.text()
+
+
+def test_updateTimeGui_sidereal():
     value = '45:45:45'
     app.mount.obsSite.timeSidereal = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
+    app.mainW.updateTimeGUI(app.mount.obsSite)
     assert '45:45:45' == app.mainW.ui.timeSidereal.text()
     value = None
     app.mount.obsSite.timeSidereal = value
-    app.mainW.updatePointGUI(app.mount.obsSite)
+    app.mainW.updateTimeGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.timeSidereal.text()
 
 
@@ -151,134 +164,134 @@ def test_updateStatusGui_statusText():
 
 def test_updateSetting_slewRate():
     value = '15'
-    app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.slewRate = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '15' == app.mainW.ui.slewRate.text()
     value = None
-    app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.slewRate = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.slewRate.text()
 
 
 def test_updateSetting_timeToFlip():
     value = '15'
-    app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToFlip = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert ' 15' == app.mainW.ui.timeToFlip.text()
     value = None
-    app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToFlip = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.timeToFlip.text()
 
 
 def test_updateSettingExt_UTCExpire():
     value = '2020-10-05'
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
 def test_updateSettingExt_UTCExpire1():
     value = '2016-10-05'
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
 def test_updateSettingExt_UTCExpire2():
     value = '2018-10-05'
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert value == app.mainW.ui.UTCExpire.text()
     value = None
-    app.mount.sett.UTCExpire = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.UTCExpire = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert '-' == app.mainW.ui.UTCExpire.text()
 
 
 def test_updateSetting_statusUnattendedFlip():
     value = '1'
-    app.mount.sett.statusUnattendedFlip = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusUnattendedFlip = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'ON' == app.mainW.ui.statusUnattendedFlip.text()
     value = None
-    app.mount.sett.statusUnattendedFlip = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusUnattendedFlip = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'OFF' == app.mainW.ui.statusUnattendedFlip.text()
 
 
-def test_updateSetting_statusDualTracking():
+def test_updateSetting_statusDualAxisTracking():
     value = '1'
-    app.mount.sett.statusDualTracking = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
-    assert 'ON' == app.mainW.ui.statusDualTracking.text()
+    app.mount.setting.statusDualAxisTracking = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
+    assert 'ON' == app.mainW.ui.statusDualAxisTracking.text()
     value = None
-    app.mount.sett.statusDualTracking = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
-    assert 'OFF' == app.mainW.ui.statusDualTracking.text()
+    app.mount.setting.statusDualAxisTracking = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
+    assert 'OFF' == app.mainW.ui.statusDualAxisTracking.text()
 
 
 def test_updateSetting_statusRefraction():
     value = '1'
-    app.mount.sett.statusRefraction = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusRefraction = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'ON' == app.mainW.ui.statusRefraction.text()
     value = None
-    app.mount.sett.statusRefraction = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.statusRefraction = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert 'OFF' == app.mainW.ui.statusRefraction.text()
 
 
 def test_updateSetting_statusGPSSynced_1():
     value = True
-    app.mount.sett.gpsSynced = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.gpsSynced = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert app.mainW.ui.statusGPSSynced.text() == 'YES'
 
 
 def test_updateSetting_statusGPSSynced_2():
     value = None
-    app.mount.sett.gpsSynced = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.gpsSynced = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert app.mainW.ui.statusGPSSynced.text() == 'NO'
 
 
 def test_updateSetting_statusGPSSynced_3():
     value = False
-    app.mount.sett.gpsSynced = value
-    app.mainW.updateSetStatGUI(app.mount.sett)
+    app.mount.setting.gpsSynced = value
+    app.mainW.updateSetStatGUI(app.mount.setting)
     assert app.mainW.ui.statusGPSSynced.text() == 'NO'
 
 
 def test_tracking_speed1():
-    with mock.patch.object(app.mount.sett,
+    with mock.patch.object(app.mount.setting,
                            'checkRateLunar',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui(app.mount.sett)
+        suc = app.mainW.updateTrackingGui(app.mount.setting)
         assert suc
 
 
 def test_tracking_speed2():
-    with mock.patch.object(app.mount.sett,
+    with mock.patch.object(app.mount.setting,
                            'checkRateSidereal',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui(app.mount.sett)
+        suc = app.mainW.updateTrackingGui(app.mount.setting)
         assert suc
 
 
 def test_tracking_speed3():
-    with mock.patch.object(app.mount.sett,
+    with mock.patch.object(app.mount.setting,
                            'checkRateSolar',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui(app.mount.sett)
+        suc = app.mainW.updateTrackingGui(app.mount.setting)
         assert suc
 
 
@@ -552,117 +565,117 @@ def test_stop2(qtbot):
 
 def test_updateSetting_slewRate():
     value = '5'
-    app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.slewRate = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert app.mainW.ui.slewRate.text() == ' 5'
     value = None
-    app.mount.sett.slewRate = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.slewRate = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.slewRate.text()
 
 
 def test_updateSetting_timeToFlip():
     value = '5'
-    app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToFlip = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert app.mainW.ui.timeToFlip.text() == '  5'
     value = None
-    app.mount.sett.timeToFlip = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToFlip = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.timeToFlip.text()
 
 
 def test_updateSetting_timeToMeridian():
     value = '5'
-    app.mount.sett.timeToMeridian = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToMeridian = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert app.mainW.ui.timeToMeridian.text() == '  5'
     value = None
-    app.mount.sett.timeToMeridian = value
+    app.mount.setting.timeToMeridian = value
     app.mainW.updateSettingGUI(app.mount.sett)
     assert '-' == app.mainW.ui.timeToMeridian.text()
 
 
 def test_updateSetting_refractionTemp():
     value = '15'
-    app.mount.sett.refractionTemp = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.refractionTemp = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '+15.0' == app.mainW.ui.refractionTemp.text()
     assert '+15.0' == app.mainW.ui.refractionTemp1.text()
     value = None
-    app.mount.sett.refractionTemp = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.refractionTemp = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.refractionTemp.text()
     assert '-' == app.mainW.ui.refractionTemp1.text()
 
 
 def test_updateSetting_refractionPress():
     value = '1050.0'
-    app.mount.sett.refractionPress = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.refractionPress = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert value == app.mainW.ui.refractionPress.text()
     assert value == app.mainW.ui.refractionPress1.text()
     value = None
-    app.mount.sett.refractionPress = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.refractionPress = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.refractionPress.text()
     assert '-' == app.mainW.ui.refractionPress1.text()
 
 
-def test_updateSetting_meridianLimitTrack():
+def test_updateSetting_meridianLimitTrack_1():
     value = '15'
-    app.mount.sett.meridianLimitTrack = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.meridianLimitTrack = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '15.0' == app.mainW.ui.meridianLimitTrack.text()
     value = None
-    app.mount.sett.meridianLimitTrack = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.meridianLimitTrack = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.meridianLimitTrack.text()
 
 
 def test_updateSetting_meridianLimitSlew():
     value = '15'
-    app.mount.sett.meridianLimitSlew = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.meridianLimitSlew = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '15.0' == app.mainW.ui.meridianLimitSlew.text()
     value = None
-    app.mount.sett.meridianLimitSlew = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.meridianLimitSlew = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.meridianLimitSlew.text()
 
 
 def test_updateSetting_horizonLimitLow():
     value = '0'
-    app.mount.sett.horizonLimitLow = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.horizonLimitLow = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '0.0' == app.mainW.ui.horizonLimitLow.text()
     value = None
-    app.mount.sett.horizonLimitLow = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.horizonLimitLow = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.horizonLimitLow.text()
 
 
 def test_updateSetting_horizonLimitHigh():
     value = '50'
-    app.mount.sett.horizonLimitHigh = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.horizonLimitHigh = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '50.0' == app.mainW.ui.horizonLimitHigh.text()
     value = None
-    app.mount.sett.horizonLimitHigh = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.horizonLimitHigh = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.horizonLimitHigh.text()
 
 
 def test_updateSetting_timeToMeridian():
-    app.mount.sett.timeToFlip = '100'
-    app.mount.sett.meridianLimitTrack = '15'
+    app.mount.setting.timeToFlip = '100'
+    app.mount.setting.meridianLimitTrack = '15'
 
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert ' 40' == app.mainW.ui.timeToMeridian.text()
     value = None
-    app.mount.sett.timeToFlip = value
-    app.mount.sett.meridianLimitTrack = value
-    app.mainW.updateSettingGUI(app.mount.sett)
+    app.mount.setting.timeToFlip = value
+    app.mount.setting.meridianLimitTrack = value
+    app.mainW.updateSettingGUI(app.mount.setting)
     assert '-' == app.mainW.ui.timeToMeridian.text()
 
 
@@ -680,7 +693,7 @@ def test_updateSettingExt_location():
 
 
 def test_setMeridianLimitTrack1(qtbot):
-    app.mount.sett.meridianLimitTrack = None
+    app.mount.setting.meridianLimitTrack = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
@@ -689,7 +702,7 @@ def test_setMeridianLimitTrack1(qtbot):
 
 
 def test_setMeridianLimitTrack3(qtbot):
-    app.mount.sett.meridianLimitTrack = 10
+    app.mount.setting.meridianLimitTrack = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, False)):
@@ -698,7 +711,7 @@ def test_setMeridianLimitTrack3(qtbot):
 
 
 def test_setMeridianLimitTrack4(qtbot):
-    app.mount.sett.meridianLimitTrack = 10
+    app.mount.setting.meridianLimitTrack = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
@@ -710,7 +723,7 @@ def test_setMeridianLimitTrack4(qtbot):
 
 
 def test_setMeridianLimitSlew1(qtbot):
-    app.mount.sett.meridianLimitSlew = None
+    app.mount.setting.meridianLimitSlew = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
@@ -719,7 +732,7 @@ def test_setMeridianLimitSlew1(qtbot):
 
 
 def test_setMeridianLimitSlew3(qtbot):
-    app.mount.sett.meridianLimitSlew = 10
+    app.mount.setting.meridianLimitSlew = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, False)):
@@ -728,7 +741,7 @@ def test_setMeridianLimitSlew3(qtbot):
 
 
 def test_setMeridianLimitSlew4(qtbot):
-    app.mount.sett.meridianLimitSlew = 10
+    app.mount.setting.meridianLimitSlew = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
@@ -740,7 +753,7 @@ def test_setMeridianLimitSlew4(qtbot):
 
 
 def test_setHorizonLimitHigh1(qtbot):
-    app.mount.sett.horizonLimitHigh = None
+    app.mount.setting.horizonLimitHigh = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
@@ -749,7 +762,7 @@ def test_setHorizonLimitHigh1(qtbot):
 
 
 def test_setHorizonLimitHigh3(qtbot):
-    app.mount.sett.horizonLimitHigh = 10
+    app.mount.setting.horizonLimitHigh = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, False)):
@@ -758,7 +771,7 @@ def test_setHorizonLimitHigh3(qtbot):
 
 
 def test_setHorizonLimitHigh4(qtbot):
-    app.mount.sett.horizonLimitHigh = 10
+    app.mount.setting.horizonLimitHigh = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
@@ -770,7 +783,7 @@ def test_setHorizonLimitHigh4(qtbot):
 
 
 def test_setHorizonLimitLow1(qtbot):
-    app.mount.sett.horizonLimitLow = None
+    app.mount.setting.horizonLimitLow = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
@@ -779,7 +792,7 @@ def test_setHorizonLimitLow1(qtbot):
 
 
 def test_setHorizonLimitLow3(qtbot):
-    app.mount.sett.horizonLimitLow = 10
+    app.mount.setting.horizonLimitLow = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, False)):
@@ -788,7 +801,7 @@ def test_setHorizonLimitLow3(qtbot):
 
 
 def test_setHorizonLimitLow4(qtbot):
-    app.mount.sett.horizonLimitLow = 10
+    app.mount.setting.horizonLimitLow = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
@@ -800,7 +813,7 @@ def test_setHorizonLimitLow4(qtbot):
 
 
 def test_setSlewRate1(qtbot):
-    app.mount.sett.slewRate = None
+    app.mount.setting.slewRate = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
@@ -809,7 +822,7 @@ def test_setSlewRate1(qtbot):
 
 
 def test_setSlewRate3(qtbot):
-    app.mount.sett.slewRate = 10
+    app.mount.setting.slewRate = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, False)):
@@ -818,7 +831,7 @@ def test_setSlewRate3(qtbot):
 
 
 def test_setSlewRate4(qtbot):
-    app.mount.sett.slewRate = 10
+    app.mount.setting.slewRate = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
@@ -958,4 +971,94 @@ def test_setElevation4(qtbot):
                                'setElevation',
                                return_value=True):
             suc = app.mainW.setElevation()
+            assert suc
+
+
+def test_setUnattendedFlip1(qtbot):
+    app.mount.setting._statusUnattendedFlip = None
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setUnattendedFlip()
+        assert not suc
+
+
+def test_setUnattendedFlip3(qtbot):
+    app.mount.setting.statusUnattendedFlip = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', False)):
+        suc = app.mainW.setUnattendedFlip()
+        assert not suc
+
+
+def test_setUnattendedFlip4(qtbot):
+    app.mount.setting.statusUnattendedFlip = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setUnattendedFlip',
+                               return_value=True):
+            suc = app.mainW.setUnattendedFlip()
+            assert suc
+
+
+def test_setDualAxisTracking1(qtbot):
+    app.mount.setting._statusDualAxisTracking = None
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setDualAxisTracking()
+        assert not suc
+
+
+def test_setDualAxisTracking3(qtbot):
+    app.mount.setting.statusDualAxisTracking = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', False)):
+        suc = app.mainW.setDualAxisTracking()
+        assert not suc
+
+
+def test_setDualAxisTracking4(qtbot):
+    app.mount.setting.statusDualAxisTracking = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setDualAxisTracking',
+                               return_value=True):
+            suc = app.mainW.setDualAxisTracking()
+            assert suc
+
+
+def test_setRefraction1(qtbot):
+    app.mount.setting._statusRefraction = None
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.mainW.setRefraction()
+        assert not suc
+
+
+def test_setRefraction3(qtbot):
+    app.mount.setting.statusRefraction = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', False)):
+        suc = app.mainW.setRefraction()
+        assert not suc
+
+
+def test_setRefraction4(qtbot):
+    app.mount.setting.statusRefraction = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.mount.obsSite,
+                               'setRefraction',
+                               return_value=True):
+            suc = app.mainW.setRefraction()
             assert suc

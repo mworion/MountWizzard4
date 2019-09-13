@@ -74,15 +74,6 @@ class Power(object):
         # config = self.app.config['mainW']
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        return True
-
     def clearPowerGui(self):
         """
         clearPowerGui changes the state of the Pegasus values to '-'

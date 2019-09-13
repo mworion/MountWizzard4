@@ -1,7 +1,7 @@
 
 problems occurred:
 
-necessary feature:
+‚necessary feature:
 - tooltips
 
 nice to have:
@@ -11,7 +11,6 @@ nice to have:
 - check if daylight timezone fits to the computer or set it up !
 - max error for modeling solving
 - INDI FlipFlat Device open 
-- adding stacking of images 
 
 architecture:
 - replace mixin with subclassing ?

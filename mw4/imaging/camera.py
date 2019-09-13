@@ -44,7 +44,7 @@ class CameraSignals(PyQt5.QtCore.QObject):
     version = '0.100.0'
 
     integrated = PyQt5.QtCore.pyqtSignal()
-    saved = PyQt5.QtCore.pyqtSignal()
+    saved = PyQt5.QtCore.pyqtSignal(object)
     message = PyQt5.QtCore.pyqtSignal(object)
 
 
@@ -307,7 +307,7 @@ class Camera(indiClass.IndiClass):
         else:
             self.logger.debug('Image BLOB is not supported')
 
-        self.signals.saved.emit()
+        self.signals.saved.emit(self.imagePath)
         return True
 
     def canSubFrame(self, subFrame=100):
@@ -469,6 +469,9 @@ class Camera(indiClass.IndiClass):
 
         :return: success
         """
+
+        if not self.device:
+            return False
 
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
         if 'ABORT' not in indiCmd:

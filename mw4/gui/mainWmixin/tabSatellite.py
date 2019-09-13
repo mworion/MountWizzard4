@@ -76,7 +76,7 @@ class Satellite(object):
         :return: True for test purpose
         """
 
-        config = self.app.config['mainW']
+        # config = self.app.config['mainW']
         self.setupSatelliteSourceGui()
         self.loadSatelliteSource()
         return True
@@ -89,17 +89,7 @@ class Satellite(object):
 
         :return: True for test purpose
         """
-        config = self.app.config['mainW']
-        return True
-
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-
+        # config = self.app.config['mainW']
         return True
 
     def setupSatelliteSourceGui(self):
@@ -253,7 +243,7 @@ class Satellite(object):
 
         now = self.app.mount.obsSite.ts.now()
         observe = self.satellite.at(now)
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
 
         subpoint = observe.subpoint()
         difference = self.satellite - self.app.mount.obsSite.location

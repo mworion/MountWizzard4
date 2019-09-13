@@ -39,9 +39,10 @@ class Mount(object):
         ms = self.app.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
-        ms.settDone.connect(self.updateSettingGUI)
-        ms.settDone.connect(self.updateSetStatGUI)
-        ms.settDone.connect(self.updateTrackingGui)
+        ms.pointDone.connect(self.updateTimeGUI)
+        ms.settingDone.connect(self.updateSettingGUI)
+        ms.settingDone.connect(self.updateSetStatGUI)
+        ms.settingDone.connect(self.updateTrackingGui)
 
         self.ui.park.clicked.connect(self.changePark)
         self.ui.tracking.clicked.connect(self.changeTracking)
@@ -59,7 +60,7 @@ class Mount(object):
         self.clickable(self.ui.siteElevation).connect(self.setElevation)
 
         self.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
-        self.clickable(self.ui.statusDualTracking).connect(self.setDualAxisTracking)
+        self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
 
     def initConfig(self):
@@ -86,16 +87,6 @@ class Mount(object):
         config = self.app.config['mainW']
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()
-        return True
-
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        self.wIcon(self.ui.stop, PyQt5.QtWidgets.QStyle.SP_MessageBoxWarning)
         return True
 
     def updatePointGUI(self, obs):
@@ -144,25 +135,10 @@ class Mount(object):
             self.ui.DEC.setText('-')
             self.ui.DECfloat.setText('-')
 
-        if obs.timeJD is not None:
-            text = obs.timeJD.utc_strftime('%H:%M:%S')
-            self.ui.timeJD.setText(text)
-            self.ui.timeUTC.setText('UTC: ' + text)
-        else:
-            self.ui.timeJD.setText('-')
-
         if obs.pierside is not None:
             self.ui.pierside.setText('WEST' if obs.pierside == 'W' else 'EAST')
         else:
             self.ui.pierside.setText('-')
-
-        if obs.timeSidereal is not None:
-            siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
-            val = obs.timeSidereal.hms()
-            siderealText = siderealFormat.format(*val)
-            self.ui.timeSidereal.setText(siderealText)
-        else:
-            self.ui.timeSidereal.setText('-')
 
         if obs.haJNow is not None:
             haFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
@@ -173,6 +149,33 @@ class Mount(object):
         else:
             self.ui.HA.setText('-')
             self.ui.HAfloat.setText('-')
+
+        return True
+
+    def updateTimeGUI(self, obs):
+        """
+        updateTimeGUI update the gui upon events triggered be the reception of new data
+        from the mount. the mount data is polled, so we use this signal as well for the
+        update process.
+
+        :param obs:
+        :return:    True if ok for testing
+        """
+
+        if obs.timeJD is not None:
+            text = obs.timeJD.utc_strftime('%H:%M:%S')
+            self.ui.timeJD.setText(text)
+            self.ui.timeUTC.setText('UTC: ' + text)
+        else:
+            self.ui.timeJD.setText('-')
+
+        if obs.timeSidereal is not None:
+            siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'
+            val = obs.timeSidereal.hms()
+            siderealText = siderealFormat.format(*val)
+            self.ui.timeSidereal.setText(siderealText)
+        else:
+            self.ui.timeSidereal.setText('-')
 
         return True
 
@@ -207,10 +210,10 @@ class Mount(object):
         else:
             self.ui.statusUnattendedFlip.setText('-')
 
-        if sett.statusDualTracking is not None:
-            self.ui.statusDualTracking.setText('ON' if sett.statusDualTracking else 'OFF')
+        if sett.statusDualAxisTracking is not None:
+            self.ui.statusDualAxisTracking.setText('ON' if sett.statusDualAxisTracking else 'OFF')
         else:
-            self.ui.statusDualTracking.setText('-')
+            self.ui.statusDualAxisTracking.setText('-')
 
         if sett.statusRefraction is not None:
             self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
@@ -443,7 +446,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         msg = PyQt5.QtWidgets.QMessageBox
         obs = self.app.mount.obsSite
         actValue = sett.meridianLimitTrack
@@ -479,7 +482,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.meridianLimitSlew
@@ -515,7 +518,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.horizonLimitHigh
@@ -551,7 +554,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.horizonLimitLow
@@ -587,7 +590,7 @@ class Mount(object):
 
         :return:    success as bool if value could be changed
         """
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.slewRate
@@ -721,7 +724,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         if sett.statusUnattendedFlip is None:
@@ -746,6 +749,8 @@ class Mount(object):
         else:
             self.app.message.emit('Unattended flip cannot be set', 2)
 
+        return suc
+
     def setDualAxisTracking(self):
         """
         setDualAxisTracking implements a modal dialog for entering the value
@@ -753,10 +758,10 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
-        if sett.statusDualTracking is None:
+        if sett.statusDualAxisTracking is None:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -778,6 +783,8 @@ class Mount(object):
         else:
             self.app.message.emit('Dual axis tracking cannot be set', 2)
 
+        return suc
+
     def setRefraction(self):
         """
         setRefractionCorrection implements a modal dialog for entering the value
@@ -785,7 +792,7 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.sett
+        sett = self.app.mount.setting
         obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         if sett.statusRefraction is None:
@@ -809,3 +816,5 @@ class Mount(object):
             self.app.message.emit(f'Refraction correction set to [{value}]', 0)
         else:
             self.app.message.emit('Refraction correction cannot be set', 2)
+
+        return suc

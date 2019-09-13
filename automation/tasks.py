@@ -17,7 +17,13 @@
 #
 ###########################################################
 import sys
-sys.path.append('/Users/q115346/PycharmProjects/MountWizzard4')
+import platform
+
+if platform.system() == 'Darwin':
+    sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+else:
+    sys.path.append('/home/mw/PycharmProjects/MountWizzard4')
+
 from invoke import task, context, Collection
 from automation.collections.gui import printMW, runMW
 
@@ -77,10 +83,13 @@ def test_all(c):
 @task(pre=[])
 def build_all(c):
     printMW('build all')
+    support.resource(c)
+    support.widgets(c)
     build_dist.mountcontrol(c)
     build_dist.indibase(c)
     build_dist.mountwizzard(c)
     build_app.windows(c)
+    build_app.windows_dbg(c)
     build_app.mac(c)
 
 
@@ -90,6 +99,7 @@ def deploy_all(c):
     deploy_dist.ubuntu(c)
     deploy_dist.mate(c)
     deploy_dist.windows(c)
+    deploy_dist.windows_dbg(c)
     deploy_dist.mac(c)
 
 
@@ -100,6 +110,7 @@ def run_all(c):
     run_dist.mate(c)
     run_dist.windows(c)
     run_app.windows(c)
+    run_app.windows_dbg(c)
     run_dist.mac(c)
     run_app.mac(c)
 

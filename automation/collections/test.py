@@ -29,7 +29,7 @@ from automation.collections.config_ssh import *
 @task()
 def mountcontrol(c):
     printMW('testing mountcontrol')
-    with c.cd('../mountcontrol'):
+    with c.cd('../../mountcontrol'):
         runMW(c, 'flake8')
         runMW(c, 'pytest mountcontrol/test/test_units --cov-config tox.ini --cov mountcontrol/')
 
@@ -37,7 +37,7 @@ def mountcontrol(c):
 @task()
 def indibase(c):
     printMW('testing indibase')
-    with c.cd('../indibase'):
+    with c.cd('../../indibase'):
         runMW(c, 'flake8')
         runMW(c, 'pytest indibase/test/test_units --cov-config .coveragerc --cov mw4/')
 
@@ -45,5 +45,6 @@ def indibase(c):
 @task()
 def mountwizzard(c):
     printMW('testing mountwizzard')
-    runMW(c, 'flake8')
-    runMW(c, 'pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
+    with c.cd('..'):
+        runMW(c, 'flake8')
+        runMW(c, 'pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')

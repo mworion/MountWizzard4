@@ -46,11 +46,11 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['ImageWindowSignals']
-    version = '0.1'
+    version = '0.101'
 
-    show = PyQt5.QtCore.pyqtSignal()
-    showExt = PyQt5.QtCore.pyqtSignal(object)
-    solve = PyQt5.QtCore.pyqtSignal()
+    showCurrent = PyQt5.QtCore.pyqtSignal()
+    showImage = PyQt5.QtCore.pyqtSignal(object)
+    solveImage = PyQt5.QtCore.pyqtSignal(object)
 
 
 class ImageWindow(widget.MWidget):
@@ -62,7 +62,7 @@ class ImageWindow(widget.MWidget):
 
     __all__ = ['ImageWindow',
                ]
-    version = '0.9'
+    version = '0.101'
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):
@@ -72,11 +72,22 @@ class ImageWindow(widget.MWidget):
         self.ui.setupUi(self)
         self.initUI()
         self.signals = ImageWindowSignals()
+
         self.imageFileName = ''
         self.imageFileNameOld = ''
-        self.imageData = None
+        self.imageStack = None
+        self.raStack = 0
+        self.decStack = 0
+        self.angleStack = 0
+        self.scaleStack = 0
+        self.numberStack = 0
         self.folder = ''
 
+        self.deviceStat = {
+            'expose': False,
+            'exposeN': False,
+            'solve': False,
+        }
         self.colorMaps = {'Grey': 'gray',
                           'Cool': 'plasma',
                           'Rainbow': 'rainbow',
@@ -103,6 +114,7 @@ class ImageWindow(widget.MWidget):
 
         self.initConfig()
         self.showWindow()
+        self.app.update1s.connect(self.updateWindowsStats)
 
     def initConfig(self):
         """
@@ -138,10 +150,12 @@ class ImageWindow(widget.MWidget):
         self.ui.stretch.setCurrentIndex(config.get('stretch', 0))
         self.imageFileName = config.get('imageFileName', '')
         self.folder = self.app.mwGlob.get('imageDir', '')
-        self.ui.checkUsePixel.setChecked(config.get('checkUsePixel', True))
         self.ui.checkUseWCS.setChecked(config.get('checkUseWCS', False))
         self.ui.checkStackImages.setChecked(config.get('checkStackImages', False))
         self.ui.checkShowCrosshair.setChecked(config.get('checkShowCrosshair', False))
+        self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
+        self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
+        self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
 
         return True
 
@@ -163,10 +177,12 @@ class ImageWindow(widget.MWidget):
         config['zoom'] = self.ui.zoom.currentIndex()
         config['stretch'] = self.ui.stretch.currentIndex()
         config['imageFileName'] = self.imageFileName
-        config['checkUsePixel'] = self.ui.checkUsePixel.isChecked()
         config['checkUseWCS'] = self.ui.checkUseWCS.isChecked()
         config['checkStackImages'] = self.ui.checkStackImages.isChecked()
         config['checkShowCrosshair'] = self.ui.checkShowCrosshair.isChecked()
+        config['checkShowGrid'] = self.ui.checkShowGrid.isChecked()
+        config['checkAutoSolve'] = self.ui.checkAutoSolve.isChecked()
+        config['checkEmbedData'] = self.ui.checkEmbedData.isChecked()
 
         return True
 
@@ -178,25 +194,25 @@ class ImageWindow(widget.MWidget):
         :return: true for test purpose
         """
 
-        self.showFitsImage()
+        self.showImage(self.imageFileName)
         self.show()
 
         # gui signals
         self.ui.load.clicked.connect(self.selectImage)
-        self.ui.color.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.stretch.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.zoom.currentIndexChanged.connect(self.showFitsImage)
-        self.ui.checkUseWCS.clicked.connect(self.showFitsImage)
-        self.ui.checkUsePixel.clicked.connect(self.showFitsImage)
-        self.ui.checkShowCrosshair.clicked.connect(self.showFitsImage)
-        self.ui.solve.clicked.connect(self.solveImage)
+        self.ui.color.currentIndexChanged.connect(self.showCurrent)
+        self.ui.stretch.currentIndexChanged.connect(self.showCurrent)
+        self.ui.zoom.currentIndexChanged.connect(self.showCurrent)
+        self.ui.checkUseWCS.clicked.connect(self.showCurrent)
+        self.ui.checkShowGrid.clicked.connect(self.showCurrent)
+        self.ui.checkShowCrosshair.clicked.connect(self.showCurrent)
+        self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
         self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abortImage.clicked.connect(self.abortImage)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
-        self.signals.show.connect(self.showFitsImage)
-        self.signals.showExt.connect(self.showFitsImageExt)
-        self.signals.solve.connect(self.solveImage)
+        self.signals.showCurrent.connect(self.showCurrent)
+        self.signals.showImage.connect(self.showImage)
+        self.signals.solveImage.connect(self.solveImage)
 
         return True
 
@@ -215,20 +231,20 @@ class ImageWindow(widget.MWidget):
 
         # gui signals
         self.ui.load.clicked.disconnect(self.selectImage)
-        self.ui.color.currentIndexChanged.disconnect(self.showFitsImage)
-        self.ui.stretch.currentIndexChanged.disconnect(self.showFitsImage)
-        self.ui.zoom.currentIndexChanged.disconnect(self.showFitsImage)
-        self.ui.checkUseWCS.clicked.disconnect(self.showFitsImage)
-        self.ui.checkUsePixel.clicked.disconnect(self.showFitsImage)
-        self.ui.checkShowCrosshair.clicked.disconnect(self.showFitsImage)
-        self.ui.solve.clicked.disconnect(self.solveImage)
+        self.ui.color.currentIndexChanged.disconnect(self.showCurrent)
+        self.ui.stretch.currentIndexChanged.disconnect(self.showCurrent)
+        self.ui.zoom.currentIndexChanged.disconnect(self.showCurrent)
+        self.ui.checkUseWCS.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowGrid.clicked.disconnect(self.showCurrent)
+        self.ui.checkShowCrosshair.clicked.disconnect(self.showCurrent)
+        self.ui.solve.clicked.disconnect(self.solveCurrent)
         self.ui.expose.clicked.disconnect(self.exposeImage)
         self.ui.exposeN.clicked.disconnect(self.exposeImageN)
         self.ui.abortImage.clicked.disconnect(self.abortImage)
         self.ui.abortSolve.clicked.disconnect(self.abortSolve)
-        self.signals.show.disconnect(self.showFitsImage)
-        self.signals.showExt.disconnect(self.showFitsImageExt)
-        self.signals.solve.disconnect(self.solveImage)
+        self.signals.showCurrent.disconnect(self.showCurrent)
+        self.signals.showImage.disconnect(self.showImage)
+        self.signals.solveImage.disconnect(self.solveImage)
 
         plt.close(self.imageMat.figure)
         super().closeEvent(closeEvent)
@@ -257,6 +273,60 @@ class ImageWindow(widget.MWidget):
 
         return True
 
+    def updateWindowsStats(self):
+        """
+        updateWindowsStats changes dynamically the enable and disable of user gui elements
+        depending of the actual state of processing
+
+        :return: true for test purpose
+
+        """
+
+        if self.deviceStat['expose']:
+            self.ui.exposeN.setEnabled(False)
+            self.ui.load.setEnabled(False)
+            self.ui.abortImage.setEnabled(True)
+
+        elif self.deviceStat['exposeN']:
+            self.ui.expose.setEnabled(False)
+            self.ui.load.setEnabled(False)
+            self.ui.abortImage.setEnabled(True)
+        else:
+            self.ui.solve.setEnabled(True)
+            self.ui.expose.setEnabled(True)
+            self.ui.exposeN.setEnabled(True)
+            self.ui.load.setEnabled(True)
+            self.ui.abortImage.setEnabled(False)
+
+        if self.deviceStat['solve']:
+            self.ui.abortSolve.setEnabled(True)
+        else:
+            self.ui.abortSolve.setEnabled(False)
+
+        if not self.app.mainW.deviceStat['imaging']:
+            self.ui.expose.setEnabled(False)
+            self.ui.exposeN.setEnabled(False)
+
+        if not self.app.mainW.deviceStat['astrometry']:
+            self.ui.solve.setEnabled(False)
+
+        if self.deviceStat['expose']:
+            self.changeStyleDynamic(self.ui.expose, 'running', 'true')
+
+        elif self.deviceStat['exposeN']:
+            self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
+
+        else:
+            self.changeStyleDynamic(self.ui.expose, 'running', 'false')
+            self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
+
+        if self.deviceStat['solve']:
+            self.changeStyleDynamic(self.ui.solve, 'running', 'true')
+        else:
+            self.changeStyleDynamic(self.ui.solve, 'running', 'false')
+
+        return True
+
     def selectImage(self):
         """
         selectImage does a dialog to choose a FITS file for viewing. The file will not
@@ -278,94 +348,11 @@ class ImageWindow(widget.MWidget):
         self.ui.imageFileName.setText(name)
         self.imageFileName = loadFilePath
         self.app.message.emit(f'Image [{name}] selected', 0)
-        self.ui.checkUsePixel.setChecked(True)
+        self.ui.checkUseWCS.setChecked(False)
         self.folder = os.path.dirname(loadFilePath)
-        self.signals.show.emit()
+        self.signals.showImage.emit(self.imageFileName)
 
         return True
-
-    def solveDone(self, result):
-        """
-        solveDone is the partner method for solveImage. it enables the gui elements back
-        removes the signal / slot connection for receiving solving results, checks the
-        solving result itself and emits messages about the result. if solving succeeded,
-        solveDone will redraw the image in the image window.
-
-        :param result: result (named tuple)
-        :return: success
-        """
-
-        self.changeStyleDynamic(self.ui.solve, 'running', 'false')
-        self.ui.expose.setEnabled(True)
-        self.ui.abortSolve.setEnabled(False)
-        self.ui.exposeN.setEnabled(True)
-        self.ui.load.setEnabled(True)
-
-        self.app.astrometry.signals.done.disconnect(self.solveDone)
-
-        if not result.success:
-            self.app.message.emit('Solving error', 2)
-            return False
-
-        rData = result.solve
-        if not isinstance(rData, tuple):
-            return False
-        text = f'Ra: {transform.convertToHMS(rData.raJ2000)}, '
-        text += f'Dec: {transform.convertToDMS(rData.decJ2000)}, '
-        text += f'Error: {rData.error:5.2f}, Angle: {rData.angle:3.0f}, '
-        text += f'Scale: {rData.scale:4.6f}'
-        self.app.message.emit('Solved: ' + text, 0)
-        self.signals.show.emit()
-
-        return True
-
-    def solveImage(self):
-        """
-        solveImage calls astrometry for solving th actual image in a threading manner.
-        as result the gui will be active while the solving process takes part a
-        background task. if the check update fits is selected the solution will be
-        stored in the image header as well.
-        solveImage will disable gui elements which might interfere when doing solve
-        in background and sets the signal / slot connection for receiving the signal
-        for finishing. this is linked to a second method solveDone, which is basically
-        the partner method for handling this async behaviour of the gui.
-        finally it emit a message about the start of solving
-
-        :return:
-        """
-
-        updateFits = self.ui.checkUpdateFits.isChecked()
-        solveTimeout = self.app.mainW.ui.solveTimeout.value()
-        searchRadius = self.app.mainW.ui.searchRadius.value()
-        app = self.app.mainW.ui.astrometryDevice.currentText()
-        self.app.astrometry.solveThreading(app=app,
-                                           fitsPath=self.imageFileName,
-                                           radius=searchRadius,
-                                           timeout=solveTimeout,
-                                           updateFits=updateFits,
-                                           )
-        self.changeStyleDynamic(self.ui.solve, 'running', 'true')
-        self.ui.abortSolve.setEnabled(True)
-        self.ui.expose.setEnabled(False)
-        self.ui.exposeN.setEnabled(False)
-        self.ui.load.setEnabled(False)
-
-        self.app.astrometry.signals.done.connect(self.solveDone)
-        self.app.message.emit(f'Solving: [{self.imageFileName}]', 0)
-
-        return True
-
-    def abortSolve(self):
-        """
-        abortSolve stops the exposure and resets the gui and the callback signals to default
-        values
-
-        :return: success
-        """
-
-        suc = self.app.astrometry.abort()
-
-        return suc
 
     def writeHeaderToGUI(self, header=None):
         """
@@ -413,8 +400,8 @@ class ImageWindow(widget.MWidget):
                   )
         self.ui.sqm.setText(f'{sqm:5.2f}')
 
-        flipped = header.get('FLIPPED', False)
-        self.ui.checkIsFlipped.setChecked(flipped)
+        flipped = bool(header.get('FLIPPED', False))
+        self.ui.isFlipped.setEnabled(flipped)
 
         # check if distortion is in header
         if 'CTYPE1' in header:
@@ -426,9 +413,8 @@ class ImageWindow(widget.MWidget):
             hasCelestial = False
             hasDistortion = False
 
-        self.ui.checkHasDistortion.setChecked(hasDistortion)
-        self.ui.checkHasWCS.setChecked(hasCelestial)
-        self.ui.checkUseWCS.setEnabled(hasDistortion)
+        self.ui.hasDistortion.setEnabled(hasDistortion)
+        self.ui.hasWCS.setEnabled(hasCelestial)
 
         return hasDistortion, wcsObject
 
@@ -521,8 +507,9 @@ class ImageWindow(widget.MWidget):
 
         axe0 = axe.coords[0]
         axe1 = axe.coords[1]
-        axe0.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
-        axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+        if self.ui.checkShowGrid.isChecked():
+            axe0.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+            axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
         axe0.tick_params(colors=self.M_BLUE, labelsize=12)
         axe1.tick_params(colors=self.M_BLUE, labelsize=12)
         axe0.set_axislabel('Right Ascension',
@@ -544,7 +531,7 @@ class ImageWindow(widget.MWidget):
 
         return axe
 
-    def setupNormal(self, figure=None, header={}):
+    def setupNormal(self, figure=None, header=None):
         """
         setupNormal build the image widget to show it with pixels as axes. the center of
         the image will have coordinates 0,0.
@@ -556,11 +543,11 @@ class ImageWindow(widget.MWidget):
 
         if figure is None:
             return False
-        if not header:
+        if header is None:
             return False
 
         figure.clf()
-        figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
+        # figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
 
         axe = figure.add_subplot(1, 1, 1, facecolor=None)
 
@@ -589,33 +576,52 @@ class ImageWindow(widget.MWidget):
         if self.ui.checkShowCrosshair.isChecked():
             axe.axvline(midX, color=self.M_RED)
             axe.axhline(midY, color=self.M_RED)
-        else:
+        if self.ui.checkShowGrid.isChecked():
             axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
 
         axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         return axe
 
-    def showFitsImage(self):
+    def stackImages(self, imageData=None, header=None):
         """
-        showFitsImage shows the fits image. therefore it calculates color map, stretch,
+
+        :param imageData:
+        :param header: is only used, when stacking with alignment
+        :return:
+        """
+
+        # if first image, we just store the data as reference frame
+        if self.imageStack is None:
+            self.imageStack = imageData
+            self.numberStack = 1
+            return imageData
+
+        # now we are going to stack the results
+        self.numberStack += 1
+        self.imageStack = np.add(self.imageStack, imageData)
+        return self.imageStack / self.numberStack
+
+    def showImage(self, imagePath=''):
+        """
+        showImage shows the fits image. therefore it calculates color map, stretch,
         zoom and other topics.
 
+        :param imagePath:
         :return: success
         """
-
-        imagePath = self.imageFileName
 
         if not imagePath:
             return False
         if not os.path.isfile(imagePath):
             return False
 
-        full, short, ext = self.extractNames([self.imageFileName])
+        self.imageFileName = imagePath
+        full, short, ext = self.extractNames([imagePath])
         self.ui.imageFileName.setText(short)
 
         with fits.open(imagePath, mode='update') as fitsHandle:
-            self.imageData = fitsHandle[0].data
+            imageData = fitsHandle[0].data
             header = fitsHandle[0].header
 
             # correct faulty headers, because some imaging programs did not
@@ -629,38 +635,35 @@ class ImageWindow(widget.MWidget):
         # check the data content and capabilities
         hasDistortion, wcsObject = self.writeHeaderToGUI(header=header)
 
+        if self.ui.checkStackImages.isChecked():
+            imageData = self.stackImages(imageData=imageData,
+                                         header=header)
+
         # process the image for viewing
-        self.imageData = self.zoomImage(image=self.imageData, wcsObject=wcsObject)
-        norm = self.stretchImage(image=self.imageData)
+        imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
+        norm = self.stretchImage(image=imageData)
         colorMap = self.colorImage()
 
         # check which type of presentation we would like to have
-        if hasDistortion and self.ui.checkUseWCS.isChecked():
+        useWCS = self.ui.checkUseWCS.isChecked()
+
+        if hasDistortion and useWCS:
             axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
         else:
             axe = self.setupNormal(figure=self.imageMat.figure, header=header)
 
         # finally show it
-        axe.imshow(self.imageData, norm=norm, cmap=colorMap, origin='lower')
+        axe.imshow(imageData, norm=norm, cmap=colorMap, origin='lower')
         axe.figure.canvas.draw()
 
         return True
 
-    def showFitsImageExt(self, imagePath=''):
+    def showCurrent(self):
         """
 
-        :param imagePath:
         :return: true for test purpose
         """
-
-        if not imagePath:
-            return False
-
-        self.imageFileName = imagePath
-        full, short, ext = self.extractNames([imagePath])
-        self.ui.imageFileName.setText(short)
-        self.showFitsImage()
-
+        self.showImage(self.imageFileName)
         return True
 
     def exposeRaw(self):
@@ -680,7 +683,6 @@ class ImageWindow(widget.MWidget):
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
 
         self.imageFileNameOld = self.imageFileName
-        self.imageFileName = imagePath
 
         self.app.imaging.expose(imagePath=imagePath,
                                 expTime=expTime,
@@ -689,29 +691,30 @@ class ImageWindow(widget.MWidget):
                                 fastReadout=fastReadout,
                                 )
 
-        text = f'Exposing {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
-        self.app.message.emit(text, 0)
+        self.app.message.emit(f'Exposing: [{os.path.basename(imagePath)}]', 0)
+        text = f'Duration: {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
+        self.app.message.emit(f'     {text}', 0)
 
         return True
 
-    def exposeImageDone(self):
+    def exposeImageDone(self, imagePath=''):
         """
         exposeImageDone is the partner method to exposeImage. it resets the gui elements
         to it's default state and disconnects the signal for the callback. finally when
         all elements are done it emits the showImage signal.
 
+        :param imagePath:
         :return: True for test purpose
         """
 
-        self.changeStyleDynamic(self.ui.expose, 'running', 'false')
-        self.ui.solve.setEnabled(True)
-        self.ui.exposeN.setEnabled(True)
-        self.ui.load.setEnabled(True)
-        self.ui.abortImage.setEnabled(False)
-
+        self.deviceStat['expose'] = False
         self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
+        self.app.message.emit(f'Exposed: [{os.path.basename(imagePath)}]', 0)
 
-        self.app.message.emit('Image exposed', 0)
+        if self.ui.checkAutoSolve.isChecked():
+            self.signals.solveImage.emit(imagePath)
+        else:
+            self.signals.showImage.emit(imagePath)
 
         return True
 
@@ -724,19 +727,29 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        # checking presence of app.imaging.data shows camera connected ?
-        # todo: better solution in camera !
-        if not self.app.imaging.data:
-            return False
-
-        self.changeStyleDynamic(self.ui.expose, 'running', 'true')
-        self.ui.exposeN.setEnabled(False)
-        self.ui.load.setEnabled(False)
-        self.ui.solve.setEnabled(False)
-        self.ui.abortImage.setEnabled(True)
-
+        self.deviceStat['expose'] = True
         self.app.imaging.signals.saved.connect(self.exposeImageDone)
-        self.app.imaging.signals.saved.connect(self.showFitsImage)
+        self.exposeRaw()
+
+        return True
+
+    def exposeImageNDone(self, imagePath=''):
+        """
+        exposeImageNDone is the partner method to exposeImage. it resets the gui elements
+        to it's default state and disconnects the signal for the callback. finally when
+        all elements are done it emits the showImage signal.
+
+        :param imagePath:
+        :return: True for test purpose
+        """
+
+        self.app.message.emit(f'Exposed: [{os.path.basename(imagePath)}]', 0)
+
+        if self.ui.checkAutoSolve.isChecked():
+            self.signals.solveImage.emit(imagePath)
+        else:
+            self.signals.showImage.emit(imagePath)
+
         self.exposeRaw()
 
         return True
@@ -750,19 +763,9 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
-        # checking presence of app.imaging.data shows camera connected ?
-        # todo: better solution in camera !
-        if not self.app.imaging.data:
-            return False
-
-        self.changeStyleDynamic(self.ui.exposeN, 'running', 'true')
-        self.ui.expose.setEnabled(False)
-        self.ui.load.setEnabled(False)
-        self.ui.solve.setEnabled(False)
-        self.ui.abortImage.setEnabled(True)
-
-        self.app.imaging.signals.saved.connect(self.showFitsImage)
-        self.app.imaging.signals.saved.connect(self.exposeRaw)
+        self.imageStack = None
+        self.deviceStat['exposeN'] = True
+        self.app.imaging.signals.saved.connect(self.exposeImageNDone)
         self.exposeRaw()
 
         return True
@@ -776,27 +779,113 @@ class ImageWindow(widget.MWidget):
         """
 
         self.app.imaging.abort()
-        self.app.imaging.signals.saved.disconnect(self.showFitsImage)
 
         # for disconnection we have to split which slots were connected to disable the
         # right ones
-
-        if self.ui.exposeN.isEnabled():
-            self.app.imaging.signals.saved.disconnect(self.exposeRaw)
-        if self.ui.expose.isEnabled():
+        if self.deviceStat['expose']:
             self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
+        if self.deviceStat['exposeN']:
+            self.app.imaging.signals.saved.disconnect(self.exposeImageNDone)
 
         # last image file was nor stored, so getting last valid it back
         self.imageFileName = self.imageFileNameOld
-
-        self.changeStyleDynamic(self.ui.expose, 'running', 'false')
-        self.changeStyleDynamic(self.ui.exposeN, 'running', 'false')
-        self.ui.solve.setEnabled(True)
-        self.ui.expose.setEnabled(True)
-        self.ui.exposeN.setEnabled(True)
-        self.ui.load.setEnabled(True)
-        self.ui.abortImage.setEnabled(False)
-
-        self.app.message.emit('Image exposing aborted', 2)
+        self.deviceStat['expose'] = False
+        self.deviceStat['exposeN'] = False
+        self.app.message.emit('Exposing aborted', 2)
 
         return True
+
+    def solveDone(self, result=None):
+        """
+        solveDone is the partner method for solveImage. it enables the gui elements back
+        removes the signal / slot connection for receiving solving results, checks the
+        solving result itself and emits messages about the result. if solving succeeded,
+        solveDone will redraw the image in the image window.
+
+        :param result: result (named tuple)
+        :return: success
+        """
+
+        self.deviceStat['solve'] = False
+        self.app.astrometry.signals.done.disconnect(self.solveDone)
+
+        if not result:
+            self.app.message.emit('Solving error', 2)
+            return False
+        if result.success:
+            rData = result.solve
+            if not isinstance(rData, tuple):
+                return False
+            text = f'Ra: {transform.convertToHMS(rData.raJ2000)} '
+            text += f'({rData.raJ2000.hours:4.3f}), '
+            text += f'Dec: {transform.convertToDMS(rData.decJ2000)} '
+            text += f'({rData.decJ2000.degrees:4.3f}), '
+            text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
+            text += f'Scale: {rData.scale:4.3f}'
+            self.app.message.emit(f'Solved: [{os.path.basename(result.solve.path)}]', 0)
+            self.app.message.emit(f'     {text}', 0)
+        else:
+            self.app.message.emit('Solving error', 2)
+            return False
+
+        isStack = self.ui.checkStackImages.isChecked()
+        isAutoSolve = self.ui.checkAutoSolve.isChecked()
+        if not isStack or isAutoSolve:
+            self.signals.showImage.emit(result.solve.path)
+
+        return True
+
+    def solveImage(self, imagePath=''):
+        """
+        solveImage calls astrometry for solving th actual image in a threading manner.
+        as result the gui will be active while the solving process takes part a
+        background task. if the check update fits is selected the solution will be
+        stored in the image header as well.
+        solveImage will disable gui elements which might interfere when doing solve
+        in background and sets the signal / slot connection for receiving the signal
+        for finishing. this is linked to a second method solveDone, which is basically
+        the partner method for handling this async behaviour of the gui.
+        finally it emit a message about the start of solving
+
+        :param imagePath:
+        :return:
+        """
+
+        if not imagePath:
+            return False
+        if not os.path.isfile(imagePath):
+            return False
+
+        updateFits = self.ui.checkEmbedData.isChecked()
+        solveTimeout = self.app.mainW.ui.solveTimeout.value()
+        searchRadius = self.app.mainW.ui.searchRadius.value()
+        self.app.astrometry.solveThreading(fitsPath=imagePath,
+                                           radius=searchRadius,
+                                           timeout=solveTimeout,
+                                           updateFits=updateFits,
+                                           )
+        self.deviceStat['solve'] = True
+        self.app.astrometry.signals.done.connect(self.solveDone)
+        self.app.message.emit(f'Solving: [{os.path.basename(imagePath)}]', 0)
+
+        return True
+
+    def solveCurrent(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.signals.solveImage.emit(self.imageFileName)
+        return True
+
+    def abortSolve(self):
+        """
+        abortSolve stops the exposure and resets the gui and the callback signals to default
+        values
+
+        :return: success
+        """
+        suc = self.app.astrometry.abort()
+
+        return suc

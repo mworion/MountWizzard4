@@ -31,10 +31,21 @@ def windows(c):
     printMW('deploy windows app')
     runMW(c, f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     runMW(c, f'ssh {userWindows} "mkdir mountwizzard4"')
-    with c.cd('./dist'):
+    with c.cd('../dist'):
         runMW(c, f'scp MountWizzard4.exe {workWindows}')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/windows'):
         runMW(c, f'ssh {userWindows} < start_windows_app.bat')
+
+
+@task(pre=[])
+def windows_dbg(c):
+    printMW('deploy windows app debug')
+    runMW(c, f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
+    runMW(c, f'ssh {userWindows} "mkdir mountwizzard4"')
+    with c.cd('../dist'):
+        runMW(c, f'scp MountWizzard4-dbg.exe {workWindows}')
+    with c.cd('remote_scripts/windows'):
+        runMW(c, f'ssh {userWindows} < start_windows_app_dbg.bat')
 
 
 @task(pre=[])
@@ -43,9 +54,9 @@ def mac(c):
     runMW(c, f'ssh {userMAC} rm -rf mountwizzard4')
     runMW(c, f'ssh {userMAC} mkdir mountwizzard4')
     # copy necessary files
-    with c.cd('./dist'):
+    with c.cd('../dist'):
         runMW(c, f'scp -r MountWizzard4.app {workMAC}')
-    with c.cd('remote_scripts'):
+    with c.cd('remote_scripts/mac'):
         runMW(c, f'scp -r start_mac_app.sh {workMAC}')
         runMW(c, f'ssh {userMAC} chmod 777 ./mountwizzard4/start_mac_app.sh')
         runMW(c, f'ssh {userMAC} ./mountwizzard4/start_mac_app.sh')

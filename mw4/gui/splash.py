@@ -20,8 +20,8 @@
 # standard libraries
 # external packages
 import PyQt5.QtCore
-import PyQt5.QtWidgets
 from PyQt5.QtCore import Qt
+import PyQt5.QtWidgets
 import numpy as np
 # local import
 from mw4.gui.media import resources
@@ -64,7 +64,7 @@ class SplashScreen(PyQt5.QtCore.QObject):
         self._qss.drawContents = self._drawContents
         self._qss.show()
         self._qss.raise_()
-        self.processEvents()
+        PyQt5.QtWidgets.QApplication.processEvents()
 
     def close(self):
         self.update()
@@ -81,7 +81,7 @@ class SplashScreen(PyQt5.QtCore.QObject):
 
     def update(self):
         self._qss.update()
-        self.processEvents()
+        PyQt5.QtWidgets.QApplication.processEvents()
 
     def _drawContents(self, painter):
         view_port = painter.viewport()
@@ -107,7 +107,3 @@ class SplashScreen(PyQt5.QtCore.QObject):
 
     def finish(self, qwid):
         self._qss.finish(qwid)
-
-    def processEvents(self):
-        if self._qapp is not None:
-            self._qapp.processEvents()

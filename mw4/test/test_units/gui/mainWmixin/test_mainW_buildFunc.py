@@ -21,9 +21,12 @@
 import unittest.mock as mock
 import pytest
 import time
+import os
+import shutil
+import glob
 # external packages
 import skyfield.api
-from mountcontrol.model import AlignStar
+from mountcontrol.modelStar import ModelStar
 # local import
 from mw4.test.test_units.setupQt import setupQt
 from mw4.definitions import Solution, Solve, MPoint, MData, MParam, IParam, Point, RData
@@ -33,7 +36,13 @@ from mw4.definitions import Solution, Solve, MPoint, MData, MParam, IParam, Poin
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
+    app.mainW.lastGenerator = 'test'
     yield
+    files = glob.glob(mwGlob['modelDir'] + '/m-*.model')
+    for f in files:
+        os.remove(f)
+    for path in glob.glob(mwGlob['imageDir'] + '/m-*'):
+        shutil.rmtree(path)
 
 
 def test_initConfig_1():
@@ -56,308 +65,6 @@ def test_storeConfig_1():
 def test_setupIcons():
     suc = app.mainW.setupIcons()
     assert suc
-
-
-def test_genBuildGrid_1():
-    app.mainW.ui.numberGridPointsRow.setValue(10)
-    app.mainW.ui.numberGridPointsCol.setValue(10)
-    app.mainW.ui.altitudeMin.setValue(10)
-    app.mainW.ui.altitudeMax.setValue(60)
-    suc = app.mainW.genBuildGrid()
-    assert suc
-
-
-def test_genBuildGrid_2():
-    app.mainW.ui.numberGridPointsRow.setValue(10)
-    app.mainW.ui.numberGridPointsCol.setValue(9)
-    app.mainW.ui.altitudeMin.setValue(10)
-    app.mainW.ui.altitudeMax.setValue(60)
-    suc = app.mainW.genBuildGrid()
-    assert not suc
-
-
-def test_genBuildMax_1(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
-    with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildMax()
-        assert suc
-
-
-def test_genBuildMax_1b(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
-    with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildMax()
-        assert suc
-
-
-def test_genBuildMax_2(qtbot):
-    with mock.patch.object(app.data,
-                           'genGreaterCircle',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.genBuildMax()
-            assert not suc
-        assert ['Build points [max] cannot be generated', 2] == blocker.args
-
-
-def test_genBuildMed_1(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
-    with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildMed()
-        assert suc
-
-
-def test_genBuildMed_1b(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
-    with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildMed()
-        assert suc
-
-
-def test_genBuildMed_2(qtbot):
-    with mock.patch.object(app.data,
-                           'genGreaterCircle',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.genBuildMed()
-            assert not suc
-        assert ['Build points [med] cannot be generated', 2] == blocker.args
-
-
-def test_genBuildNorm_1(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
-    with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildNorm()
-        assert suc
-
-
-def test_genBuildNorm_1b(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
-    with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildNorm()
-        assert suc
-
-
-def test_genBuildNorm_2(qtbot):
-    with mock.patch.object(app.data,
-                           'genGreaterCircle',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.genBuildNorm()
-            assert not suc
-        assert ['Build points [norm] cannot be generated', 2] == blocker.args
-
-
-def test_genBuildMin_1(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
-    with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildMin()
-        assert suc
-
-
-def test_genBuildMin_1b(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
-    with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildMin()
-        assert suc
-
-
-def test_genBuildMin_2(qtbot):
-    with mock.patch.object(app.data,
-                           'genGreaterCircle',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.genBuildMin()
-            assert not suc
-        assert ['Build points [min] cannot be generated', 2] == blocker.args
-
-
-def test_genBuildDSO_1(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.genBuildDSO()
-        assert not suc
-    assert ['DSO Path cannot be generated', 2] == blocker.args
-
-
-def test_genBuildDSO_2(qtbot):
-    with mock.patch.object(app.data,
-                           'generateDSOPath',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.genBuildDSO()
-            assert not suc
-        assert ['DSO Path cannot be generated', 2] == blocker.args
-
-
-def test_genBuildDSO_3(qtbot):
-    app.mount.obsSite.raJNow = 0
-    app.mount.obsSite.decJNow = 0
-    with mock.patch.object(app.data,
-                           'generateDSOPath',
-                           return_value=True):
-        suc = app.mainW.genBuildDSO()
-        assert suc
-
-
-def test_genBuildGoldenSpiral_1(qtbot):
-    with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildGoldenSpiral()
-        assert suc
-
-
-def test_genBuildGoldenSpiral_2(qtbot):
-    with mock.patch.object(app.data,
-                           'generateGoldenSpiral',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.genBuildGoldenSpiral()
-            assert not suc
-        assert ['Golden spiral cannot be generated', 2] == blocker.args
-
-
-def test_loadBuildFile_1(qtbot):
-    with mock.patch.object(app.mainW,
-                           'openFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(app.data,
-                               'loadBuildP',
-                               return_value=True):
-            with qtbot.waitSignal(app.message) as blocker:
-                suc = app.mainW.loadBuildFile()
-                assert suc
-            assert ['Build file [test] loaded', 0] == blocker.args
-
-
-def test_loadBuildFile_2(qtbot):
-    with mock.patch.object(app.mainW,
-                           'openFile',
-                           return_value=('', '', '')):
-        suc = app.mainW.loadBuildFile()
-        assert not suc
-
-
-def test_loadBuildFile_3(qtbot):
-    with mock.patch.object(app.mainW,
-                           'openFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(app.data,
-                               'loadBuildP',
-                               return_value=False):
-            with qtbot.waitSignal(app.message) as blocker:
-                suc = app.mainW.loadBuildFile()
-                assert suc
-            assert ['Build file [test] cannot no be loaded', 2] == blocker.args
-
-
-def test_saveBuildFile_1(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
-    with mock.patch.object(app.mainW,
-                           'saveFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(app.data,
-                               'saveBuildP',
-                               return_value=True):
-            with qtbot.waitSignal(app.message) as blocker:
-                suc = app.mainW.saveBuildFile()
-                assert suc
-            assert ['Build file [test] saved', 0] == blocker.args
-
-
-def test_saveBuildFile_2(qtbot):
-    app.mainW.ui.buildPFileName.setText('')
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.saveBuildFile()
-        assert not suc
-    assert ['Build points file name not given', 2] == blocker.args
-
-
-def test_saveBuildFile_3(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
-    with mock.patch.object(app.mainW,
-                           'saveFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(app.data,
-                               'saveBuildP',
-                               return_value=False):
-            with qtbot.waitSignal(app.message) as blocker:
-                suc = app.mainW.saveBuildFile()
-                assert suc
-            assert ['Build file [test] cannot no be saved', 2] == blocker.args
-
-
-def test_saveBuildFileAs_1(qtbot):
-    with mock.patch.object(app.mainW,
-                           'saveFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(app.data,
-                               'saveBuildP',
-                               return_value=True):
-            with qtbot.waitSignal(app.message) as blocker:
-                suc = app.mainW.saveBuildFileAs()
-                assert suc
-            assert ['Build file [test] saved', 0] == blocker.args
-
-
-def test_saveBuildFileAs_2(qtbot):
-    with mock.patch.object(app.mainW,
-                           'saveFile',
-                           return_value=('', '', '')):
-        suc = app.mainW.saveBuildFileAs()
-        assert not suc
-
-
-def test_saveBuildFileAs_3(qtbot):
-    with mock.patch.object(app.mainW,
-                           'saveFile',
-                           return_value=('build', 'test', 'bpts')):
-        with mock.patch.object(app.data,
-                               'saveBuildP',
-                               return_value=False):
-            with qtbot.waitSignal(app.message) as blocker:
-                suc = app.mainW.saveBuildFileAs()
-                assert suc
-            assert ['Build file [test] cannot no be saved', 2] == blocker.args
-
-
-def test_genBuildFile_1(qtbot):
-    app.mainW.ui.buildPFileName.setText('')
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.genBuildFile()
-        assert not suc
-    assert ['Build points file name not given', 2] == blocker.args
-
-
-def test_genBuildFile_2(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
-    with mock.patch.object(app.data,
-                           'loadBuildP',
-                           return_value=False):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.genBuildFile()
-            assert not suc
-        assert ['Build points file [test] could not be loaded', 2] == blocker.args
-
-
-def test_genBuildFile_3(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
-    with mock.patch.object(app.data,
-                           'loadBuildP',
-                           return_value=True):
-        suc = app.mainW.genBuildFile()
-        assert suc
-
-
-def test_genBuildFile_4(qtbot):
-    app.mainW.ui.buildPFileName.setText('test')
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
-    with mock.patch.object(app.data,
-                           'loadBuildP',
-                           return_value=True):
-        suc = app.mainW.genBuildFile()
-        assert suc
 
 
 def test_updateProgress_1():
@@ -414,7 +121,7 @@ def test_addResultToModel_1():
 
     solve = Solve(raJ2000=skyfield.api.Angle(degrees=0),
                   decJ2000=skyfield.api.Angle(degrees=0),
-                  angle=0, scale=1, error=1, flipped=False)
+                  angle=0, scale=1, error=1, flipped=False, path='')
     result = Solution(success=True, solve=solve)
     mPoint = MPoint(mParam=tuple(),
                     iParam=tuple(),
@@ -471,7 +178,7 @@ def test_modelSolveDone_3(qtbot):
                     rData=tuple())
 
     app.mainW.resultQueue.put(mPoint)
-    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False)
+    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False, path='')
     result = Solution(success=False, solve=solve)
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.modelSolveDone(result=result)
@@ -526,7 +233,7 @@ def test_modelSolveDone_6():
     app.mainW.resultQueue.put(mPoint)
     solve = Solve(raJ2000=skyfield.api.Angle(hours=0),
                   decJ2000=skyfield.api.Angle(degrees=0),
-                  angle=0, scale=1, error=1, flipped=False)
+                  angle=0, scale=1, error=1, flipped=False, path='')
     result = Solution(success=True, solve=solve)
     suc = app.mainW.modelSolveDone(result=result)
     assert suc
@@ -667,7 +374,7 @@ def test_cancelFull(qtbot):
 
 def test_retrofitModel_1():
     app.mount.model.starList = list()
-    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
                       errorAngle=skyfield.api.Angle(degrees=0))
@@ -688,7 +395,7 @@ def test_retrofitModel_1():
 
 def test_retrofitModel_2():
     app.mount.model.starList = list()
-    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
                       errorAngle=skyfield.api.Angle(degrees=0))
@@ -708,7 +415,7 @@ def test_retrofitModel_2():
 
 def test_retrofitModel_3():
     app.mount.model.starList = list()
-    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
                       errorAngle=skyfield.api.Angle(degrees=0))
@@ -727,7 +434,7 @@ def test_retrofitModel_3():
 
 def test_retrofitModel_4():
     app.mount.model.starList = list()
-    point = AlignStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
                       errorAngle=skyfield.api.Angle(degrees=0))
@@ -801,7 +508,43 @@ def test_saveModel_3():
     model.append(mPoint)
 
     suc = app.mainW.saveModel(model=model)
+    assert not suc
+
+
+def test_saveModel_4():
+
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='testPath',
+                                  name='test',
+                                  timeout=10,
+                                  radius=1,
+                                  astrometry='astrometry'),
+                    iParam=IParam(expTime=1,
+                                  binning=1,
+                                  subFrame=100,
+                                  fastReadout=False),
+                    point=Point(azimuth=0,
+                                altitude=0),
+                    mData=MData(raMJNow=skyfield.api.Angle(hours=0),
+                                decMJNow=skyfield.api.Angle(degrees=0),
+                                raSJNow=skyfield.api.Angle(hours=0),
+                                decSJNow=skyfield.api.Angle(degrees=0),
+                                sidereal=skyfield.api.Angle(hours=0),
+                                julian=app.mount.obsSite.timeJD,
+                                pierside='E'),
+                    rData=RData(errorRA=1,
+                                errorDEC=2,
+                                errorRMS=3))
+    model = list()
+    model.append(mPoint)
+    model.append(mPoint)
+    model.append(mPoint)
+
+    suc = app.mainW.saveModel(model=model, name='test')
     assert suc
+
+    os.remove(mwGlob['modelDir'] + '/test.model')
 
 
 def test_collectModelData():
@@ -964,6 +707,7 @@ def test_modelFull_1():
 
 
 def test_modelFull_2():
+    app.mainW.genBuildMin()
     with mock.patch.object(app.mainW,
                            'modelCore',
                            return_value=True):
@@ -980,6 +724,7 @@ def test_modelAlign_1():
 
 
 def test_modelAlign_2():
+    app.mainW.genBuildMin()
     with mock.patch.object(app.mainW,
                            'modelCore',
                            return_value=True):
@@ -999,7 +744,7 @@ def test_loadProgramModel_1():
 
 
 def test_loadProgramModel_2():
-    modelDir = mwGlob['modelDir'] + '/m-test.model'
+    modelDir = mwGlob['modelDir'] + '/test.test'
     with mock.patch.object(app.mainW,
                            'openFile',
                            return_value=(modelDir, 'm-test', '.model')):

@@ -179,9 +179,9 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowAlignStar.clicked.disconnect(self.configOperationMode)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
-        self.app.mount.signals.settDone.disconnect(self.updateMeridian)
-        self.app.mount.signals.settDone.disconnect(self.updateHorizonLimits)
-        self.app.mount.signals.settDone.disconnect(self.updateCelestialPath)
+        self.app.mount.signals.settingDone.disconnect(self.updateMeridian)
+        self.app.mount.signals.settingDone.disconnect(self.updateHorizonLimits)
+        self.app.mount.signals.settingDone.disconnect(self.updateCelestialPath)
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.client.signals.deviceDisconnected.disconnect(self.updateDome)
         self.app.update1s.disconnect(self.drawCanvas)
@@ -213,9 +213,9 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
-        self.app.mount.signals.settDone.connect(self.updateMeridian)
-        self.app.mount.signals.settDone.connect(self.updateHorizonLimits)
-        self.app.mount.signals.settDone.connect(self.updateCelestialPath)
+        self.app.mount.signals.settingDone.connect(self.updateMeridian)
+        self.app.mount.signals.settingDone.connect(self.updateHorizonLimits)
+        self.app.mount.signals.settingDone.connect(self.updateCelestialPath)
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.client.signals.deviceDisconnected.connect(self.updateDome)
         self.app.update1s.connect(self.drawCanvas)
@@ -245,7 +245,8 @@ class HemisphereWindow(widget.MWidget):
             gc.collect()
 
         figure.clf()
-        figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        # used constrained_layout = True instead
+        # figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
         axe = self.hemisphereMat.figure.add_subplot(1, 1, 1, facecolor=None)
 
         axe.set_facecolor((0, 0, 0, 0))
@@ -316,8 +317,8 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        slew = self.app.mount.sett.meridianLimitSlew
-        track = self.app.mount.sett.meridianLimitTrack
+        slew = self.app.mount.setting.meridianLimitSlew
+        track = self.app.mount.setting.meridianLimitTrack
         if slew is None or track is None:
             return False
         if self.meridianTrack is None:
@@ -342,8 +343,8 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        high = self.app.mount.sett.horizonLimitHigh
-        low = self.app.mount.sett.horizonLimitLow
+        high = self.app.mount.setting.horizonLimitHigh
+        low = self.app.mount.setting.horizonLimitLow
         if high is None or low is None:
             return False
         if self.horizonLimitLow is None:
@@ -886,7 +887,7 @@ class HemisphereWindow(widget.MWidget):
             self.app.message.emit('Slewing to: {0}'.format(name), 0)
         return suc
 
-    def _staticHorizon(self, axes=None):
+    def staticHorizon(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -907,7 +908,7 @@ class HemisphereWindow(widget.MWidget):
             self.horizonMarker.set_color('#FF00FF')
         return True
 
-    def _staticModelData(self, axes=None):
+    def staticModelData(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -970,7 +971,7 @@ class HemisphereWindow(widget.MWidget):
                                         visible=visible)
         return True
 
-    def _staticMeridianLimits(self, axes=None):
+    def staticMeridianLimits(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -978,8 +979,8 @@ class HemisphereWindow(widget.MWidget):
         """
 
         # draw meridian limits
-        if self.app.mount.sett.meridianLimitSlew is not None:
-            slew = self.app.mount.sett.meridianLimitSlew
+        if self.app.mount.setting.meridianLimitSlew is not None:
+            slew = self.app.mount.setting.meridianLimitSlew
         else:
             slew = 0
         visible = self.ui.checkShowMeridian.isChecked()
@@ -990,8 +991,8 @@ class HemisphereWindow(widget.MWidget):
                                                color='#00008080',
                                                visible=visible)
         axes.add_patch(self.meridianSlew)
-        if self.app.mount.sett.meridianLimitTrack is not None:
-            track = self.app.mount.sett.meridianLimitTrack
+        if self.app.mount.setting.meridianLimitTrack is not None:
+            track = self.app.mount.setting.meridianLimitTrack
         else:
             track = 0
         self.meridianTrack = mpatches.Rectangle((180 - track, 0),
@@ -1003,19 +1004,19 @@ class HemisphereWindow(widget.MWidget):
         axes.add_patch(self.meridianTrack)
         return True
 
-    def _staticAltitudeLimits(self, axes=None):
+    def staticAltitudeLimits(self, axes=None):
         """
 
         :param axes: matplotlib axes object
         :return: success
         """
 
-        if self.app.mount.sett.horizonLimitHigh is not None:
-            high = self.app.mount.sett.horizonLimitHigh
+        if self.app.mount.setting.horizonLimitHigh is not None:
+            high = self.app.mount.setting.horizonLimitHigh
         else:
             high = 90
-        if self.app.mount.sett.horizonLimitLow is not None:
-            low = self.app.mount.sett.horizonLimitLow
+        if self.app.mount.setting.horizonLimitLow is not None:
+            low = self.app.mount.setting.horizonLimitLow
         else:
             low = 0
         self.horizonLimitHigh = mpatches.Rectangle((0, high),
@@ -1048,11 +1049,11 @@ class HemisphereWindow(widget.MWidget):
         :return:
         """
 
-        self._staticHorizon(axes=axes)
-        self._staticModelData(axes=axes)
+        self.staticHorizon(axes=axes)
+        self.staticModelData(axes=axes)
         self._staticCelestialEquator(axes=axes)
-        self._staticMeridianLimits(axes=axes)
-        self._staticAltitudeLimits(axes=axes)
+        self.staticMeridianLimits(axes=axes)
+        self.staticAltitudeLimits(axes=axes)
 
     def drawHemisphereMoving(self, axes=None):
         """

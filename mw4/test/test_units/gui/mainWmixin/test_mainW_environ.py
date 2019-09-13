@@ -20,7 +20,9 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+from io import BytesIO
 # external packages
+import PyQt5
 import requests
 # local import
 from mw4.test.test_units.setupQt import setupQt
@@ -255,6 +257,147 @@ def test_getWebDataRunner_3():
         assert not suc
 
 
-def test_updateCleaOutsideGui():
-    pass
+def test_getWebDataRunner_4():
+    class Test:
+        status_code = 200
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test()):
+        suc = app.mainW.getWebDataWorker(url='http://test')
+        assert suc
 
+
+def test_updateClearOutsideImages_1():
+    suc = app.mainW.updateClearOutsideImages()
+    assert not suc
+
+
+def test_updateClearOutsideImages_2():
+    image = PyQt5.QtGui.QImage(mwGlob['imageDir'] + '/forecast.png')
+    suc = app.mainW.updateClearOutsideImages(image=image)
+    assert suc
+
+
+def test_updateClearOutsideGui_1():
+    suc = app.mainW.updateClearOutsideGui()
+    assert not suc
+
+
+def test_updateClearOutsideGui_2():
+    class Test:
+        content = 'test'
+    with mock.patch.object(PyQt5.QtGui.QImage,
+                           'loadFromData',
+                           return_value='test'):
+        with mock.patch.object(app.mainW,
+                               'updateClearOutsideImages',
+                               return_value=False):
+            suc = app.mainW.updateClearOutsideGui(Test())
+            assert not suc
+
+
+def test_updateClearOutsideGui_3():
+    class Test:
+        content = 'test'
+    with mock.patch.object(PyQt5.QtGui.QImage,
+                           'loadFromData',
+                           return_value='test'):
+        with mock.patch.object(app.mainW,
+                               'updateClearOutsideImages',
+                               return_value=True):
+            suc = app.mainW.updateClearOutsideGui(Test())
+            assert suc
+
+
+def test_updateClearOutside_1():
+    app.mainW.ui.isOnline.setChecked(False)
+    suc = app.mainW.updateClearOutside()
+    assert not suc
+
+
+def test_updateClearOutside_2():
+    app.mainW.ui.isOnline.setChecked(True)
+    suc = app.mainW.updateClearOutside()
+    assert suc
+
+
+def test_clearOpenWeatherMapGui_1():
+    app.mainW.clearOpenWeatherMapGui()
+    assert app.mainW.ui.weatherTemp.text() == '-'
+    assert app.mainW.ui.weatherPress.text() == '-'
+    assert app.mainW.ui.weatherHumidity.text() == '-'
+    assert app.mainW.ui.weatherCloudCover.text() == '-'
+    assert app.mainW.ui.weatherWindSpeed.text() == '-'
+    assert app.mainW.ui.weatherWindDir.text() == '-'
+    assert app.mainW.ui.weatherRainVol.text() == '-'
+
+
+def test_updateOpenWeatherMapGui_1():
+    suc = app.mainW.updateOpenWeatherMapGui()
+    assert not suc
+
+
+def test_updateOpenWeatherMapGui_2():
+    class Test:
+        @staticmethod
+        def json():
+            val = {}
+            return val
+    suc = app.mainW.updateOpenWeatherMapGui(Test())
+    assert not suc
+
+
+def test_updateOpenWeatherMapGui_3():
+    class Test:
+        @staticmethod
+        def json():
+            val = {'list': []}
+            return val
+    suc = app.mainW.updateOpenWeatherMapGui(Test())
+    assert not suc
+
+
+def test_updateOpenWeatherMapGui_4():
+    class Test:
+        @staticmethod
+        def json():
+            data = {'main': {'temp': 290,
+                             'grnd_level': 1000,
+                             'humidity': 50,
+                             },
+                    'clouds': {'all': 40,
+                               },
+                    'wind': {'speed': 100,
+                             'deg': 300,
+                             },
+                    'rain': {'3h': 10,
+                             }
+                    }
+            val = {'list': [data]}
+            return val
+    suc = app.mainW.updateOpenWeatherMapGui(Test())
+    assert suc
+
+
+def test_updateOpenWeatherMap_1():
+    app.mainW.ui.isOnline.setChecked(False)
+    app.mainW.ui.openWeatherMapKey.setText('')
+
+    suc = app.mainW.updateOpenWeatherMap()
+    assert not suc
+
+
+def test_updateOpenWeatherMap_2():
+    app.mainW.ui.isOnline.setChecked(True)
+    app.mainW.ui.openWeatherMapKey.setText('')
+
+    suc = app.mainW.updateOpenWeatherMap()
+    assert not suc
+
+
+def test_updateOpenWeatherMap_3():
+    app.mainW.ui.isOnline.setChecked(True)
+    app.mainW.ui.openWeatherMapKey.setText('key')
+
+    suc = app.mainW.updateOpenWeatherMap()
+    assert suc

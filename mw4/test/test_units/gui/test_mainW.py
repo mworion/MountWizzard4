@@ -94,10 +94,10 @@ def test_mountShutdown2(qtbot):
 def test_updateMountConnStat():
     suc = app.mainW.updateMountConnStat(True)
     assert suc
-    assert 'green' == app.mainW.ui.mountConnected.property('color')
+    assert app.mainW.deviceStat['mount']
     suc = app.mainW.updateMountConnStat(False)
     assert suc
-    assert 'red' == app.mainW.ui.mountConnected.property('color')
+    assert not app.mainW.deviceStat['mount']
 
 
 def test_saveProfile1(qtbot):
@@ -184,20 +184,6 @@ def test_saveProfile2(qtbot):
         with qtbot.waitSignal(app.message) as blocker:
             app.mainW.saveProfile()
         assert ['Actual profile cannot not be saved', 2] == blocker.args
-
-
-def test_mountHost():
-    app.mainW.ui.mountHost.setText('test')
-    app.mainW.mountHost()
-
-    assert app.mount.host == ('test', 3492)
-
-
-def test_mountMAC():
-    app.mainW.ui.mountMAC.setText('00:00:00:00:00:00')
-    app.mainW.mountMAC()
-
-    assert app.mount.MAC == '00:00:00:00:00:00'
 
 
 def test_config():

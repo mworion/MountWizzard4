@@ -2,7 +2,7 @@ venv\Scripts\activate.bat
 cd MountWizzard
 pip install mc.tar.gz
 pip install ib.tar.gz
-pip install pyinstaller==3.5
+pip install https://github.com/pyinstaller/pyinstaller/tarball/develop
 tar -xvzf mw4.tar.gz --strip-components=1
-pyinstaller -y mw4_windows_console.spec
+pyinstaller -y mw4_windows_dbg.spec
 deactivate

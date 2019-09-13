@@ -85,15 +85,6 @@ class SettParkPos(object):
             config[keyConfig] = textField.text()
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        return True
-
     def setupParkPosGui(self):
         """
         setupRelayGui handles the modeldata of list for relay handling. to keep many relay in

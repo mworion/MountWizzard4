@@ -21,7 +21,7 @@ Needs 10micron firmware 2.16 or newer.
 - Hemisphere window for edit/load/save model points, horizon an many other attributes
 - Direct slew mount to any az/alt position with mouse click
 - Shows and selects alignment star out of handbook with automatic polar alignment
-- Make single or continuously Images and solve them.
+- Make single or continuously Images and solveNET them.
 - Remote control via TCP for shutdown of App and boot / shutdown of mount computer
 - Boots mount via ethernet WOL if in the same subnet
 - Audio output for end of slewing / modeling / emergency stop

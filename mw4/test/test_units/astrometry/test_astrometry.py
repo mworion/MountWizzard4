@@ -24,119 +24,76 @@ import os
 import platform
 import numpy as np
 import subprocess
-from astropy.io import fits
-
 # external packages
+from astropy.io import fits
 # local import
 from mw4.astrometry import astrometry
 from mw4.test.test_units.setupQt import setupQt
 
 
-appMain, spy, mwGlob, test = setupQt()
-
-tempDir = mwGlob['tempDir']
-threadPool = ''
-
-
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
-    global app
-    app = astrometry.Astrometry(appMain,
-                                tempDir=tempDir,
-                                threadPool=threadPool)
+    global app, spy, mwGlob, test
+    app, spy, mwGlob, test = setupQt()
     yield
 
 
 def test_init_1():
     home = os.environ.get('HOME')
-    binSolve = '/Applications/KStars300.app/Contents/MacOS/astrometry/bin'
-    index = home + '/Library/Application Support/Astrometry'
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-
-        assert app.binPath['KStars300'] == binSolve
-        assert app.indexPath == index
-        assert os.path.isfile(tempDir + '/astrometry.cfg')
-
-
-def test_init_2():
-    binSolve = '/usr/bin'
-    index = '/usr/share/astrometry'
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Linux'):
-        app = astrometry.Astrometry(appMain,
-                                    tempDir=tempDir,
-                                    threadPool=threadPool)
-        assert app.binPath['astrometry-glob'] == binSolve
-        assert app.indexPath == index
-        assert os.path.isfile(tempDir + '/astrometry.cfg')
-
-
-def test_init_3():
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        app = astrometry.Astrometry(appMain,
-                                    tempDir=tempDir,
-                                    threadPool=threadPool)
-        assert app.binPath == {}
-        assert app.indexPath == ''
-        assert os.path.isfile(tempDir + '/astrometry.cfg')
-
-
-app = astrometry.Astrometry(appMain,
-                            tempDir=tempDir,
-                            threadPool=threadPool)
+    app.astrometry.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solver': app.astrometry.solverNET,
+        }
+    }
+    assert os.path.isfile(app.mwGlob['tempDir'] + '/astrometry.cfg')
 
 
 def test_checkAvailability_1():
-    app.indexPath = ''
-    app.binPath = {}
-    suc = app.checkAvailability()
-    assert suc
-    assert app.available == {}
-
-
-def test_checkAvailability_2():
-    app.indexPath = '/usr/share/astrometry'
-    app.binPath = {'KStars': '/Applications/KStars300.app/Contents/MacOS/astrometry/bin'}
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Linux'):
-        suc = app.checkAvailability()
-        assert suc
-        assert app.available == {}
+    app.astrometry.solverEnviron = {
+        'CloudMakers': {
+            'programPath': '',
+            'indexPath': '',
+            'solver': app.astrometry.solverNET,
+        }
+    }
+    val = app.astrometry.checkAvailability()
+    assert val == {}
 
 
 def test_checkAvailability_3():
-    app.indexPath = '/usr/share/astrometry'
-    app.binPath = {'KStars': '/Applications/KStars300.app/Contents/MacOS/astrometry/bin'}
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        suc = app.checkAvailability()
-        assert suc
-        assert app.available == {}
+    app.astrometry.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'indexPath': '/usr/share/astrometry',
+            'solver': app.astrometry.solverNET,
+        }
+    }
+    val = app.astrometry.checkAvailability()
+    assert val == {}
 
 
 def test_checkAvailability_4():
-    app.indexPath = '/Users/mw/Library/Application Support/Astrometry'
-    app.binPath = {'KStars': '/Applications/KStars300.app/Contents/MacOS/astrometry/bin'}
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        suc = app.checkAvailability()
-        assert suc
-        assert 'KStars' in app.available
+    app.astrometry.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': '/Users/mw/Library/Application Support/Astrometry',
+            'solver': app.astrometry.solverNET,
+        }
+    }
+    val = app.astrometry.checkAvailability()
+    assert 'KStars' in val
 
 
-def test_getWCSHeader():
-    hdu = fits.HDUList()
-    hdu.append(fits.PrimaryHDU())
-    value = app.getWCSHeader(wcsHDU=hdu)
-    assert value == hdu[0].header
+def test_readFitsData_1():
+    file = mwGlob['imageDir'] + '/m51.fits'
+    ra, dec, sc, ra1, dec1 = app.astrometry.readFitsData(file)
+    assert ra
+    assert dec
+    assert sc
+    assert ra1
+    assert dec1
 
 
 def test_calcAngleScaleFromWCS_1():
@@ -150,7 +107,7 @@ def test_calcAngleScaleFromWCS_1():
         CD12 = scaleX * np.sin(phi)
         header.set('CD1_1', CD11)
         header.set('CD1_2', CD12)
-        angle, scale, flip = app.calcAngleScaleFromWCS(wcsHeader=header)
+        angle, scale, flip = app.astrometry.calcAngleScaleFromWCS(wcsHeader=header)
         assert np.round(scale, 0) == scaleX * 3600
         assert np.round(angle, 3) == np.round(angleX, 3)
 
@@ -159,7 +116,7 @@ def test_calcAngleScaleFromWCS_2():
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
-    angle, scale, flip = app.calcAngleScaleFromWCS(wcsHeader=header)
+    angle, scale, flip = app.astrometry.calcAngleScaleFromWCS(wcsHeader=header)
     assert angle == 0
     assert scale == 0
 
@@ -172,8 +129,9 @@ def test_getSolutionFromWCS_1():
     header.set('CRVAL2', 60.0)
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
-    (ra, dec, angle, scale, error, flipped), header = app.getSolutionFromWCS(fitsHeader=header,
-                                                                             wcsHeader=header)
+    (ra, dec, angle, scale, error, flipped, path), header \
+        = app.astrometry.getSolutionFromWCS(fitsHeader=header,
+                                            wcsHeader=header)
     assert ra.hours == 12
     assert dec.degrees == 60
     assert angle == 0
@@ -192,9 +150,10 @@ def test_getSolutionFromWCS_2():
     header.set('CRVAL2', 60.0)
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
-    (ra, dec, angle, scale, error, flipped), header = app.getSolutionFromWCS(fitsHeader=header,
-                                                                             wcsHeader=header,
-                                                                             updateFits=True)
+    (ra, dec, angle, scale, error, flipped, path), header \
+        = app.astrometry.getSolutionFromWCS(fitsHeader=header,
+                                            wcsHeader=header,
+                                            updateFits=True)
     assert ra.hours == 12
     assert dec.degrees == 60
     assert angle == 0
@@ -205,134 +164,74 @@ def test_getSolutionFromWCS_2():
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_runImage2xy_1():
-    suc = app.runImage2xy()
+def test_abort_1():
+    suc = app.astrometry.abort()
     assert not suc
 
 
-def test_runImage2xy_2():
-    class Test1:
-        @staticmethod
-        def decode():
-            return 'decode'
+def test_solveClear():
+    app.astrometry.mutexSolve.lock()
+    app.astrometry.solveClear()
 
-    class Test:
-        returncode = '1'
-        stderr = Test1()
-        stdout = Test1()
 
-        @staticmethod
-        def communicate(timeout=0):
-            return Test1(), Test1()
-
-    with mock.patch.object(subprocess,
-                           'Popen',
-                           return_value=Test()):
-        suc = app.runImage2xy()
+def test_solveThreading_1():
+    suc = app.astrometry.solveThreading()
+    app.astrometry.mutexSolve.unlock()
     assert not suc
 
 
-def test_runSolveField_1():
-    suc = app.runSolveField()
+def test_solveThreading_2():
+    home = os.environ.get('HOME')
+    app.astrometry.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solver': app.astrometry.solverNET,
+        }
+    }
+    app.astrometry.solverSelected = 'KStars'
+    suc = app.astrometry.solveThreading()
     assert not suc
 
 
-def test_runSolveField_2():
-    class Test1:
-        @staticmethod
-        def decode():
-            return 'decode'
+def test_solveThreading_3():
+    home = os.environ.get('HOME')
+    app.astrometry.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solver': app.astrometry.solverNET,
+        }
+    }
+    app.astrometry.solverSelected = 'KStars'
+    file = mwGlob['imageDir'] + '/m51.fits'
+    suc = app.astrometry.solveThreading(fitsPath=file)
+    assert suc
 
-    class Test:
-        returncode = '1'
-        stderr = Test1()
-        stdout = Test1()
 
-        @staticmethod
-        def communicate(timeout=0):
-            return Test1(), Test1()
-
-    with mock.patch.object(subprocess,
-                           'Popen',
-                           return_value=Test()):
-        suc = app.runSolveField()
+def test_solveThreading_5():
+    app.astrometry.solverEnviron = {
+        'CloudMakers': {
+            'programPath': '',
+            'indexPath': '',
+            'solver': app.astrometry.solverNET,
+        }
+    }
+    app.astrometry.solverSelected = 'KStars'
+    file = mwGlob['imageDir'] + '/m51.fits'
+    suc = app.astrometry.solveThreading(fitsPath=file)
     assert not suc
 
 
 def test_abort_1():
-    class Test:
-        @staticmethod
-        def kill():
-            return
-
-    app.process = Test()
-    suc = app.abort()
+    home = os.environ.get('HOME')
+    app.astrometry.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': home + '/Library/Application Support/Astrometry',
+            'solver': app.astrometry.solverNET,
+        }
+    }
+    app.astrometry.solverSelected = 'KStars'
+    suc = app.astrometry.abort()
     assert suc
-
-
-def test_abort_2():
-    class Test:
-        @staticmethod
-        def kill():
-            return
-
-    app.process = None
-    suc = app.abort()
-    assert not suc
-
-
-def test_solve_1():
-    suc = app.solve()
-    assert not suc
-
-
-def test_solve_2():
-    with mock.patch.object(app,
-                           'runImage2xy',
-                           return_value=False):
-        with mock.patch.object(app,
-                               'runSolveField',
-                               return_value=False):
-            suc = app.solve(app='KStars300',
-                            fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                            timeout=5,
-                            )
-        assert not suc
-
-
-def test_solve_3():
-    with mock.patch.object(app,
-                           'runImage2xy',
-                           return_value=True):
-        with mock.patch.object(app,
-                               'runSolveField',
-                               return_value=False):
-            suc = app.solve(app='KStars300',
-                            fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                            timeout=5,
-                            )
-        assert not suc
-
-
-def test_solve_4():
-    with mock.patch.object(app,
-                           'runImage2xy',
-                           return_value=True):
-        with mock.patch.object(app,
-                               'runSolveField',
-                               return_value=True):
-            suc = app.solve(app='KStars300',
-                            fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                            timeout=5,
-                            )
-        assert suc
-
-
-def test_solveClear():
-    app.mutexSolve.lock()
-    app.solveClear()
-
-
-def test_solveThreading():
-    suc = app.solveThreading()
-    assert not suc

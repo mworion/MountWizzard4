@@ -80,22 +80,6 @@ class ManageModel(object):
         config['targetRMS'] = self.ui.targetRMS.value()
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
-        self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
-        self.wIcon(self.ui.saveName, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
-        self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)
-        self.wIcon(self.ui.refreshName, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
-        self.wIcon(self.ui.refreshModel, PyQt5.QtWidgets.QStyle.SP_BrowserReload)
-        return True
-
     def setNameList(self, model):
         """
         setNameList populates the list of model names in the main window. before adding the
@@ -133,11 +117,8 @@ class ManageModel(object):
         if hasNoStars:
             # clear the plot and return
             fig, axes = self.clearPolar(self.polarPlot)
-            fig.subplots_adjust(left=0.1,
-                                right=0.9,
-                                bottom=0.1,
-                                top=0.85,
-                                )
+            # used constrained_layout = True instead
+            # fig.subplots_adjust(left=0.1, right=0.9, bottom=0.1, top=0.85)
             axes.figure.canvas.draw()
             return False
 

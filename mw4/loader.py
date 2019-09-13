@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import logging
-import logging.config
 import os
 import sys
 import platform
@@ -27,7 +26,6 @@ import socket
 import datetime
 import warnings
 import traceback
-import shutil
 from io import BytesIO
 # external packages
 import matplotlib
@@ -88,25 +86,23 @@ def except_hook(typeException, valueException, tbackException):
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
-def setupWorkDirs(mwGlob=None):
+def setupWorkDirs(mwGlob):
     """
     setupWorkDirs defines the necessary work dirs and checks if they are writable
 
     :param mwGlob:
     :return: mwGlob
     """
-    if mwGlob is None:
-        mwGlob = dict()
 
     mwGlob['modeldata'] = mainApp.MountWizzard4.version
     mwGlob['bundleDir'] = ''
     mwGlob['frozen'] = False
     mwGlob['workDir'] = os.getcwd()
-    mwGlob['configDir'] = os.getcwd() + '/config'
-    mwGlob['dataDir'] = os.getcwd() + '/data'
-    mwGlob['imageDir'] = os.getcwd() + '/image'
-    mwGlob['tempDir'] = os.getcwd() + '/temp'
-    mwGlob['modelDir'] = os.getcwd() + '/model'
+    mwGlob['configDir'] = mwGlob['workDir'] + '/config'
+    mwGlob['dataDir'] = mwGlob['workDir'] + '/data'
+    mwGlob['imageDir'] = mwGlob['workDir'] + '/image'
+    mwGlob['tempDir'] = mwGlob['workDir'] + '/temp'
+    mwGlob['modelDir'] = mwGlob['workDir'] + '/model'
 
     for dirPath in ['workDir', 'configDir', 'imageDir', 'dataDir', 'tempDir', 'modelDir']:
         if not os.path.isdir(mwGlob[dirPath]):
@@ -116,16 +112,15 @@ def setupWorkDirs(mwGlob=None):
     return mwGlob
 
 
-def checkFrozen(mwGlob=None):
+def checkFrozen():
     """
     checkFrozen extracts data needed to distinguish between real python running setup and
     bundled version of pyinstaller
 
-    :param mwGlob:
     :return:
     """
-    if mwGlob is None:
-        mwGlob = dict()
+
+    mwGlob = dict()
 
     if getattr(sys, 'frozen', False):
         # we are running in a bundle
@@ -269,16 +264,20 @@ def main():
     :return: nothing
     """
 
-    mwGlob = setupWorkDirs()
-    # checking workdir and if the system is started from frozen app
-    # app = MyApp(sys.argv)
-    app = PyQt5.QtWidgets.QApplication(sys.argv)
+    # initiating the main app
+    app = MyApp(sys.argv)
+    # app = PyQt5.QtWidgets.QApplication(sys.argv)
+
+    # generating splash screen
     splashW = splash.SplashScreen(application=app)
 
     # and start with a first splash screen
     splashW.showMessage('Start initialising')
     splashW.setValue(0)
-    mwGlob = checkFrozen(mwGlob=mwGlob)
+
+    # checking workdir and if the system is started from frozen app
+    mwGlob = checkFrozen()
+    mwGlob = setupWorkDirs(mwGlob)
 
     # now setup the logging environment
     splashW.showMessage('Setup logging')
@@ -296,7 +295,7 @@ def main():
     extractDataFiles(mwGlob=mwGlob, splashW=splashW)
 
     # and finally starting the application
-    splashW.showMessage('Loading Online Data')
+    splashW.showMessage('Loading Data')
     splashW.setValue(80)
     sys.excepthook = except_hook
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))

@@ -148,15 +148,6 @@ class SettIndi(object):
 
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        return True
-
     def setupDeviceNameGui(self):
         """
         setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.
@@ -309,7 +300,7 @@ class SettIndi(object):
         """
 
         self.ui.domeDevice.setStyleSheet(self.BACK_GREEN)
-        self.changeStyleDynamic(self.ui.domeConnected, 'color', 'green')
+        self.deviceStat['dome'] = True
         return True
 
     def showDomeDeviceDisconnected(self):
@@ -321,7 +312,7 @@ class SettIndi(object):
         """
 
         self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
-        self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
+        self.deviceStat['dome'] = False
         return True
 
     def showIndiImagingConnected(self):
@@ -341,8 +332,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
         self.app.message.emit('INDI server imaging disconnected', 0)
+        self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
         return True
 
     def showIndiNewImagingDevice(self, deviceName):
@@ -378,7 +369,7 @@ class SettIndi(object):
         """
 
         self.ui.imagingDevice.setStyleSheet(self.BACK_GREEN)
-        self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'green')
+        self.deviceStat['imaging'] = True
         return True
 
     def showImagingDeviceDisconnected(self):
@@ -390,7 +381,7 @@ class SettIndi(object):
         """
 
         self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
-        self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'red')
+        self.deviceStat['imaging'] = False
         return True
 
     def showIndiEnvironConnected(self):
@@ -447,10 +438,7 @@ class SettIndi(object):
         """
 
         self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
-        self.changeStyleDynamic(self.ui.environConnected, 'color', 'green')
-        self.ui.environGroup.setEnabled(True)
-        self.ui.refractionGroup.setEnabled(True)
-        self.ui.setRefractionManual.setEnabled(True)
+        self.deviceStat['environment'] = True
         return True
 
     def showEnvironDeviceDisconnected(self):
@@ -462,10 +450,7 @@ class SettIndi(object):
         """
 
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
-        self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
-        self.ui.environGroup.setEnabled(False)
-        self.ui.refractionGroup.setEnabled(False)
-        self.ui.setRefractionManual.setEnabled(False)
+        self.deviceStat['environment'] = False
         return True
 
     def showIndiSkymeterConnected(self):
@@ -521,7 +506,7 @@ class SettIndi(object):
         """
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_GREEN)
-        self.ui.skymeterGroup.setEnabled(True)
+        self.deviceStat['skymeter'] = True
         return True
 
     def showSkymeterDeviceDisconnected(self):
@@ -533,7 +518,7 @@ class SettIndi(object):
         """
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
-        self.ui.skymeterGroup.setEnabled(False)
+        self.deviceStat['skymeter'] = False
         return True
 
     def showIndiPowerConnected(self):
@@ -589,6 +574,7 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        self.deviceStat['power'] = True
         self.ui.powerDevice.setStyleSheet(self.BACK_GREEN)
         return True
 
@@ -600,5 +586,6 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        self.deviceStat['power'] = False
         self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
         return True

@@ -49,6 +49,15 @@ def mac(c):
 
 
 @task()
+def mac_local(c):
+    printMW('generating new test venv mac')
+    with c.cd('/Users/mw/PycharmProjects'):
+        runMW(c, 'rm -rf venv_test')
+        runMW(c, 'virtualenv venv_test -p python3.7')
+        runMW(c, 'source venv_test/bin/activate; pip install mw4 --no-cache-dir --upgrade')
+
+
+@task()
 def work(c):
     printMW('generating new venv work')
     with c.cd('remote_scripts/work'):

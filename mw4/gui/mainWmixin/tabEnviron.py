@@ -56,6 +56,7 @@ class Environ(object):
         self.app.update30m.connect(self.updateClearOutside)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
         self.ui.isOnline.stateChanged.connect(self.updateOpenWeatherMap)
+        self.ui.openWeatherMapKey.editingFinished.connect(self.updateOpenWeatherMap)
 
     def initConfig(self):
         """
@@ -93,15 +94,6 @@ class Environ(object):
 
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        return True
-
     def updateRefractionParameters(self):
         """
         updateRefractionParameters takes the actual conditions for update into account and
@@ -128,6 +120,7 @@ class Environ(object):
                 break
         if not suc:
             self.app.message.emit('Cannot perform refraction update', 2)
+            self.logger.info(f'No refraction update Temp:{temp}, Press:{press}')
             return False
         return True
 
@@ -213,27 +206,24 @@ class Environ(object):
         self.logger.debug(f'{url}: {data.status_code}')
         return data
 
-    def updateClearOutsideGui(self, data):
+    def updateClearOutsideImages(self, image=None):
         """
-        updateClearOutsideGui takes the returned data from a web fetch and puts the data
+        updateClearOutsideImages takes the image, split it and puts the image
         to the Gui. for the transformation qimage2ndarray is used because of the speed
         for the calculations. dim is a factor which reduces the lightness of the overall
         image
 
-        :param data:
+        :param image:
         :return: success
         """
 
-        if not data:
+        if image is None:
             return False
 
         dim = 0.85
-        image = PyQt5.QtGui.QImage()
         image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
-        image.loadFromData(data.content)
         imageBase = image.copy(0, 84, 624, 141)
         imageHeader = image.copy(550, 1, 130, 80)
-
         # transformation are done in numpy, because it's much faster
         # starting the conversion
         width = imageBase.width()
@@ -255,6 +245,23 @@ class Environ(object):
         self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
 
         return True
+
+    def updateClearOutsideGui(self, data=None):
+        """
+        updateClearOutsideGui takes the returned data from a web fetch and makes an image
+        out of it
+
+        :param data:
+        :return: success
+        """
+
+        if data is None:
+            return False
+
+        image = PyQt5.QtGui.QImage()
+        image.loadFromData(data.content)
+        suc = self.updateClearOutsideImages(image=image)
+        return suc
 
     def getClearOutside(self, url=''):
         """
@@ -299,7 +306,22 @@ class Environ(object):
 
         return True
 
-    def updateOpenWeatherMapGui(self, data):
+    def clearOpenWeatherMapGui(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.ui.weatherTemp.setText('-')
+        self.ui.weatherPress.setText('-')
+        self.ui.weatherHumidity.setText('-')
+        self.ui.weatherCloudCover.setText('-')
+        self.ui.weatherWindSpeed.setText('-')
+        self.ui.weatherWindDir.setText('-')
+        self.ui.weatherRainVol.setText('-')
+
+        return True
+
+    def updateOpenWeatherMapGui(self, data=None):
         """
         updateOpenWeatherMapGui takes the returned data from a web fetch and puts the data
         to the Gui
@@ -312,8 +334,15 @@ class Environ(object):
             return False
 
         val = data.json()
+
+        if 'list' not in val:
+            return False
+        if len(val['list']) == 0:
+            return False
+
         val = val['list'][0]
 
+        self.clearOpenWeatherMapGui()
         if 'main' in val:
             self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
             self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
@@ -352,8 +381,10 @@ class Environ(object):
         """
 
         if not self.ui.isOnline.isChecked():
+            self.clearOpenWeatherMapGui()
             return False
         if not self.ui.openWeatherMapKey.text():
+            self.clearOpenWeatherMapGui()
             return False
 
         # prepare coordinates for website

@@ -102,15 +102,6 @@ class SettDevice(object):
 
         return True
 
-    def setupIcons(self):
-        """
-        setupIcons add icon from standard library to certain buttons for improving the
-        gui of the app.
-
-        :return:    True if success for test
-        """
-        return True
-
     def setupDeviceGui(self):
         """
         setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.
@@ -133,7 +124,7 @@ class SettDevice(object):
         self.ui.imagingDevice.addItem('INDI')
         self.ui.skymeterDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
-        for app in self.app.astrometry.available:
+        for app in self.app.astrometry.solverAvailable:
             self.ui.astrometryDevice.addItem(app)
 
         return True
@@ -148,16 +139,22 @@ class SettDevice(object):
         # get index for relay tab
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        tabWidget2 = self.ui.settingsTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'KMTronic')
+        tabIndex2 = self.ui.settingsTabWidget.indexOf(tabWidget2)
 
         if self.ui.relayDevice.currentText().startswith('Built-In'):
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            self.ui.settingsTabWidget.setTabEnabled(tabIndex2, True)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay enabled', 0)
             self.app.relay.startTimers()
             self.ui.relayDevice.setStyleSheet(self.BACK_GREEN)
         else:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.ui.settingsTabWidget.setTabEnabled(tabIndex2, False)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay disabled', 0)
             self.app.relay.stopTimers()
             self.ui.relayDevice.setStyleSheet(self.BACK_NORM)
@@ -165,6 +162,8 @@ class SettDevice(object):
         # update the style for showing the Relay tab
         self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
         self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
+        self.ui.settingsTabWidget.style().unpolish(self.ui.settingsTabWidget)
+        self.ui.settingsTabWidget.style().polish(self.ui.settingsTabWidget)
         return True
 
     def remoteDispatch(self):
@@ -218,11 +217,11 @@ class SettDevice(object):
             self.app.dome.client.host = self.ui.domeHost.text()
             self.app.dome.name = self.ui.domeDeviceName.currentText()
             self.app.dome.startCommunication()
-            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'red')
             self.app.message.emit('Dome enabled', 0)
+            self.deviceStat['dome'] = True
         else:
-            self.changeStyleDynamic(self.ui.domeConnected, 'color', 'gray')
             self.app.message.emit('Dome disabled', 0)
+            self.deviceStat['dome'] = None
 
         return True
 
@@ -240,10 +239,10 @@ class SettDevice(object):
             self.app.imaging.client.host = self.ui.imagingHost.text()
             self.app.imaging.name = self.ui.imagingDeviceName.currentText()
             self.app.imaging.startCommunication()
-            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'red')
+            self.deviceStat['imaging'] = True
             self.app.message.emit('Imaging enabled', 0)
         else:
-            self.changeStyleDynamic(self.ui.imagingConnected, 'color', 'gray')
+            self.deviceStat['imaging'] = None
             self.app.message.emit('Imaging disabled', 0)
 
         return True
@@ -258,19 +257,15 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.ui.environGroup.setEnabled(False)
-        self.ui.refractionGroup.setEnabled(False)
-        self.ui.setRefractionManual.setEnabled(False)
-
         self.app.environ.stopCommunication()
         if self.ui.environDevice.currentText().startswith('INDI'):
             self.app.environ.client.host = self.ui.environHost.text()
             self.app.environ.name = self.ui.environDeviceName.currentText()
             self.app.environ.startCommunication()
-            self.changeStyleDynamic(self.ui.environConnected, 'color', 'red')
+            self.deviceStat['environment'] = True
             self.app.message.emit('Environment enabled', 0)
         else:
-            self.changeStyleDynamic(self.ui.environConnected, 'color', 'gray')
+            self.deviceStat['environment'] = None
             self.app.message.emit('Environment disabled', 0)
 
         return True
@@ -283,16 +278,16 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.ui.skymeterGroup.setEnabled(False)
-
         self.app.skymeter.stopCommunication()
         if self.ui.skymeterDevice.currentText().startswith('INDI'):
             self.app.skymeter.client.host = self.ui.skymeterHost.text()
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
             self.app.skymeter.startCommunication()
             self.app.message.emit('Skymeter enabled', 0)
+            self.deviceStat['skymeter'] = True
         else:
             self.app.message.emit('Skymeter disabled', 0)
+            self.deviceStat['skymeter'] = None
 
         return True
 
@@ -304,7 +299,6 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.ui.powerGroup.setEnabled(False)
         # get index for power tab
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
@@ -317,10 +311,12 @@ class SettDevice(object):
             self.app.message.emit('Power enabled', 0)
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
+            self.deviceStat['power'] = True
         else:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Power disabled', 0)
+            self.deviceStat['power'] = None
 
         # update the style for showing the Relay tab
         self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
@@ -335,17 +331,14 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        if self.ui.astrometryDevice.currentText() in self.app.astrometry.available:
-            if self.ui.astrometryDevice.currentText() not in self.app.astrometry.binPath:
-                self.app.message.emit('Astrometry not available', 2)
-                self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'red')
-                return False
+        if self.ui.astrometryDevice.currentText() in self.app.astrometry.solverAvailable:
+            self.app.astrometry.solverSelected = self.ui.astrometryDevice.currentText()
             self.ui.astrometryDevice.setStyleSheet(self.BACK_GREEN)
-            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'green')
+            self.deviceStat['astrometry'] = True
             self.app.message.emit('Astrometry enabled', 0)
         else:
             self.app.message.emit('Astrometry disabled', 0)
-            self.changeStyleDynamic(self.ui.astrometryConnected, 'color', 'gray')
+            self.deviceStat['astrometry'] = None
             self.ui.astrometryDevice.setStyleSheet(self.BACK_NORM)
 
         return True

@@ -48,8 +48,8 @@ block_cipher = None
 pythonPath = '/Users/mw/venv/lib/python3.7'
 sitePack = pythonPath + '/site-packages'
 distDir = './dist'
-packageDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4'
-importDir = '/Users/mw/PycharmProjects/MountWizzard4'
+packageDir = '/Users/mw/MountWizzard4/mw4'
+importDir = '/Users/mw/MountWizzard4'
 
 a = Analysis(['mw4/loader.py'],
              pathex=[packageDir],

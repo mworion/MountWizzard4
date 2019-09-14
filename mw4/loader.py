@@ -151,7 +151,7 @@ def setupLogging():
     name = 'mw4-{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s.%(msecs)03d]'
-                               '[%(levelname)7s]'
+                               '[%(levelname)8s]'
                                '[%(filename)20s]'
                                '[%(lineno)5s]'
                                '[%(funcName)20s]'
@@ -169,6 +169,7 @@ def setupLogging():
     # urllib3 is used by requests, so we have to add this as well
     logging.getLogger('urllib3').setLevel(logging.ERROR)
     logging.getLogger('matplotlib').setLevel(logging.ERROR)
+    logging.getLogger('astropy').setLevel(logging.ERROR)
     return True
 
 
@@ -179,19 +180,19 @@ def writeSystemInfo(mwGlob=None):
     :return: true for test purpose
     """
 
-    logging.info('## ------------------------------------------------------------------------')
-    logging.info('##')
-    logging.info('## MountWizzard {0} started !'.format(mwGlob['modeldata']))
-    logging.info('##')
-    logging.info('## ------------------------------------------------------------------------')
-    logging.info('## Platform         : {0}'.format(platform.system()))
-    logging.info('## Release          : {0}'.format(platform.release()))
-    logging.info('## Machine          : {0}'.format(platform.machine()))
-    logging.info('## CPU              : {0}'.format(platform.processor()))
-    logging.info('## Python           : {0}'.format(platform.python_version()))
-    logging.info('## PyQt5            : {0}'.format(PyQt5.QtCore.PYQT_VERSION_STR))
-    logging.info('## Qt               : {0}'.format(PyQt5.QtCore.QT_VERSION_STR))
-    logging.info('## Node             : {0}'.format(platform.node()))
+    logging.info('----------------------------------------------------')
+    logging.info('')
+    logging.info(f' MountWizzard {mwGlob["modeldata"]} started !')
+    logging.info('')
+    logging.info('----------------------------------------------------')
+    logging.info(f' Platform         : {platform.system()}')
+    logging.info(f' Release          : {platform.release()}')
+    logging.info(f' Machine          : {platform.machine()}')
+    logging.info(f' CPU              : {platform.processor()}')
+    logging.info(f' Python           : {platform.python_version()}')
+    logging.info(f' PyQt5            : {PyQt5.QtCore.PYQT_VERSION_STR}')
+    logging.info(f' Qt               : {PyQt5.QtCore.QT_VERSION_STR}')
+    logging.info(f' Node             : {platform.node()}')
 
     # in some environments I don't get a fully qualified host name
     try:
@@ -204,17 +205,17 @@ def writeSystemInfo(mwGlob=None):
         hostsList = hostSummary[2]
         host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
         for hostname in host:
-            logging.info('## IP addr.         : {0}'.format(hostname))
-        logging.info('## Hosts            : {0}'.format(hostSummary))
+            logging.info(f' IP addr.         : {hostname}')
+        logging.info(f' Hosts            : {hostSummary}')
 
-    logging.info('## Environment is   : {0}'.format('frozen' if mwGlob['frozen'] else 'live'))
-    logging.info('## Actual workdir   : {0}'.format(mwGlob['workDir']))
-    logging.info('## Bundle dir       : {0}'.format(mwGlob['bundleDir']))
-    logging.info('## sys.argv[0]      : {0}'.format(sys.argv[0]))
-    logging.info('## os.path.basename : {0}'.format(os.path.basename(sys.argv[0])))
-    logging.info('## sys.executable   : {0}'.format(sys.executable))
+    logging.info(f' Environment is   : {"frozen" if mwGlob["frozen"] else "live"}')
+    logging.info(f' Actual workdir   : {mwGlob["workDir"]}')
+    logging.info(f' Bundle dir       : {mwGlob["bundleDir"]}')
+    logging.info(f' sys.argv[0]      : {sys.argv[0]}')
+    logging.info(f' os.path.basename : {os.path.basename(sys.argv[0])}')
+    logging.info(f' sys.executable   : {sys.executable}')
 
-    logging.info('## ------------------------------------------------------------------------')
+    logging.info('----------------------------------------------------')
     logging.info('')
     return True
 

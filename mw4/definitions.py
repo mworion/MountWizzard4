@@ -50,4 +50,4 @@ MPoint = namedtuple('MPoint', 'mParam iParam point mData rData')
 Solve = namedtuple('Solve', 'raJ2000 decJ2000 angle scale error flipped path')
 
 # overall structure which as well add the solve success part
-Solution = namedtuple('Solution', 'success solve')
+Solution = namedtuple('Solution', 'success solve message')

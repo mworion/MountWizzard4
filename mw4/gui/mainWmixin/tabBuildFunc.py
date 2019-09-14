@@ -217,10 +217,11 @@ class BuildFunc(object):
         count = mPoint.mParam.count
         modelingDone = (number == count + 1)
 
-        if not isinstance(result, Solution):
-            self.logger.info(f'Solving result is malformed: {result}')
+        if not result:
+            self.logger.info('Solving result is missing')
             return False
-        if not isinstance(result.solve, Solve):
+
+        if not isinstance(result, Solution):
             self.logger.info(f'Solving result is malformed: {result}')
             return False
 
@@ -235,7 +236,7 @@ class BuildFunc(object):
             if error < self.MAX_ERROR_MODEL_POINT:
                 self.modelQueue.put(mPoint)
             else:
-                text = f'Solving error for image-{mPoint.mParam.count:03d}'
+                text = f'Solving failed for image-{mPoint.mParam.count:03d}'
                 self.app.message.emit(text, 2)
 
             text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
@@ -248,7 +249,8 @@ class BuildFunc(object):
             text += f'Scale: {result.solve.scale:4.3f}'
             self.app.message.emit(text, 0)
         else:
-            text = f'Solving error for image-{mPoint.mParam.count:03d}'
+            message = result.message
+            text = f'Solving error for image-{mPoint.mParam.count:03d}, reason:{message}'
             self.app.message.emit(text, 2)
 
         self.updateProgress(number=number, count=count, modelingDone=modelingDone)

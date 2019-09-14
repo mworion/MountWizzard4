@@ -33,6 +33,7 @@ import numpy as np
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
 from mw4.base import transform
+from mw4.definitions import Solution
 
 
 class ImageWindowSignals(PyQt5.QtCore.QObject):
@@ -810,22 +811,26 @@ class ImageWindow(widget.MWidget):
         self.app.astrometry.signals.done.disconnect(self.solveDone)
 
         if not result:
-            self.app.message.emit('Solving error', 2)
+            self.app.message.emit('Solving error, result missing', 2)
             return False
+
+        if not isinstance(result, Solution):
+            self.app.message.emit(f'Solving result is malformed: {result}')
+            return False
+
         if result.success:
-            rData = result.solve
-            if not isinstance(rData, tuple):
-                return False
-            text = f'Ra: {transform.convertToHMS(rData.raJ2000)} '
-            text += f'({rData.raJ2000.hours:4.3f}), '
-            text += f'Dec: {transform.convertToDMS(rData.decJ2000)} '
-            text += f'({rData.decJ2000.degrees:4.3f}), '
-            text += f'Error: {rData.error:5.1f}, Angle: {rData.angle:3.0f}, '
-            text += f'Scale: {rData.scale:4.3f}'
-            self.app.message.emit(f'Solved: [{os.path.basename(result.solve.path)}]', 0)
+            solve = result.solve
+            text = f'Ra: {transform.convertToHMS(solve.raJ2000)} '
+            text += f'({solve.raJ2000.hours:4.3f}), '
+            text += f'Dec: {transform.convertToDMS(solve.decJ2000)} '
+            text += f'({solve.decJ2000.degrees:4.3f}), '
+            text += f'Error: {solve.error:5.1f}, Angle: {solve.angle:3.0f}, '
+            text += f'Scale: {solve.scale:4.3f}'
+            self.app.message.emit(f'Solved: [{os.path.basename(solve.path)}]', 0)
             self.app.message.emit(f'     {text}', 0)
         else:
-            self.app.message.emit('Solving error', 2)
+            message = result.message
+            self.app.message.emit(f'Solving error: {message}', 2)
             return False
 
         isStack = self.ui.checkStackImages.isChecked()

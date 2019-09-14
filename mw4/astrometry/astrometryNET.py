@@ -59,7 +59,7 @@ class AstrometryNET(object):
 
     def __init__(self, parent):
         self.parent = parent
-        self.result = Solution(success=False, solve=Solve)
+        self.result = Solution(success=False, solve=Solve, message='')
         self.process = None
 
     def runImage2xy(self, binPath='', tempPath='', fitsPath='', timeout=30):
@@ -204,9 +204,10 @@ class AstrometryNET(object):
         """
 
         self.process = None
-        self.result = Solution(success=False, solve=Solve)
+        self.result = Solution(success=False, solve=Solve, message='default')
 
         if not os.path.isfile(fitsPath):
+            self.result = Solution(success=False, solve=solve, message='image missing')
             return False
 
         tempPath = self.tempDir + '/temp.xy'
@@ -232,6 +233,7 @@ class AstrometryNET(object):
                                )
         if not suc:
             self.logger.error(f'image2xy error in [{fitsPath}]')
+            self.result = Solution(success=False, solve=solve, message='image2xy error')
             return False
 
         raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)
@@ -275,14 +277,17 @@ class AstrometryNET(object):
                                  )
         if not suc:
             self.logger.error(f'solve-field error in [{fitsPath}]')
+            self.result = Solution(success=False, solve=Solve, message='solve-field error')
             return False
 
         if not os.path.isfile(solvedPath):
             self.logger.debug(f'solve files for [{fitsPath}] missing')
+            self.result = Solution(success=False, solve=Solve, message='solve failed')
             return False
 
         if not os.path.isfile(wcsPath):
             self.logger.debug(f'solve files for [{wcsPath}] missing')
+            self.result = Solution(success=False, solve=Solve, message='solve failed')
             return False
 
         with fits.open(wcsPath) as wcsHDU:
@@ -301,7 +306,7 @@ class AstrometryNET(object):
                       error=solve.error,
                       flipped=solve.flipped,
                       path=fitsPath)
-        self.result = Solution(success=True, solve=solve)
+        self.result = Solution(success=True, solve=solve, message='solved')
         return True
 
     def abort(self):

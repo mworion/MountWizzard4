@@ -59,7 +59,7 @@ class AstrometryASTAP(object):
 
     def __init__(self, parent):
         self.parent = parent
-        self.result = Solution(success=False, solve=Solve)
+        self.result = Solution(success=False, solve=Solve, message='-')
         self.process = None
 
     def runASTAP(self, binPath='', tempPath='', fitsPath='', options='', timeout=30):
@@ -154,9 +154,10 @@ class AstrometryASTAP(object):
         """
 
         self.process = None
-        self.result = Solution(success=False, solve=Solve)
+        self.result = Solution(success=False, solve=Solve, message='default')
 
         if not os.path.isfile(fitsPath):
+            self.result = Solution(success=False, solve=Solve, message='image missing')
             return False
 
         tempPath = self.tempDir + '/temp'
@@ -189,10 +190,12 @@ class AstrometryASTAP(object):
                             timeout=timeout,
                             )
         if not suc:
+            self.result = Solution(success=False, solve=Solve, message='astap error')
             self.logger.error(f'astap error in [{fitsPath}]')
             return False
 
         if not os.path.isfile(wcsPath):
+            self.result = Solution(success=False, solve=Solve, message='solve failed')
             self.logger.debug(f'solve files for [{wcsPath}] missing')
             return False
 
@@ -212,7 +215,7 @@ class AstrometryASTAP(object):
                       error=solve.error,
                       flipped=solve.flipped,
                       path=fitsPath)
-        self.result = Solution(success=True, solve=solve)
+        self.result = Solution(success=True, solve=solve, message='solved')
         return True
 
     def abort(self):

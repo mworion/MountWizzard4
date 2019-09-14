@@ -118,14 +118,7 @@ class MessageWindow(widget.MWidget):
 
         # write basic data to message window
         profile = self.app.config.get('profileName', '-')
-        verIB = pkg_resources.get_distribution('indibase').version
-        verMC = pkg_resources.get_distribution('mountcontrol').version
-        verMW = pkg_resources.get_distribution('mw4').version
-
         self.writeMessage('MountWizzard4 started', 1)
-        self.writeMessage(f'build version: [{verMW}]', 1)
-        self.writeMessage(f'mountcontrol version: [{verMC}]', 1)
-        self.writeMessage(f'indibase version: [{verIB}]', 1)
         self.writeMessage(f'Workdir is: [{self.app.mwGlob["workDir"]}]', 1)
         self.writeMessage(f'Profile [{profile}] loaded', 0)
 

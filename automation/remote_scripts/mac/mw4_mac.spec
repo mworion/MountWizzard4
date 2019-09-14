@@ -51,7 +51,7 @@ distDir = './dist'
 packageDir = '/Users/mw/MountWizzard4/mw4'
 
 a = Analysis(['mw4/loader.py'],
-#             pathex=[packageDir],
+             pathex=[packageDir],
              binaries=[
                  ],
              datas=[

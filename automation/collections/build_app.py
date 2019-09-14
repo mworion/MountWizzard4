@@ -82,6 +82,8 @@ def mac_local(c):
         runMW(c, 'pip install dist/mountcontrol-*.tar.gz')
     with c.cd('../../indibase'):
         runMW(c, 'pip install dist/indibase-*.tar.gz')
+    with c.cd('images'):
+        runMW(c, 'scp mw4.icns /Users/mw/PycharmProjects/MountWizzard4')
     with c.cd('remote_scripts/mac'):
         runMW(c, 'cp mw4_mac_local.spec /Users/mw/PycharmProjects/MountWizzard4')
     with c.cd('..'):

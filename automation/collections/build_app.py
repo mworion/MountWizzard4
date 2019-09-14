@@ -50,7 +50,7 @@ def windows(c):
 
 
 @task(pre=[])
-def windowsdbg(c):
+def windows_dbg(c):
     printMW('build windows app and exe debug')
     with c.cd('..'):
         runMW(c, 'rm -rf ./dist/MountWizzard4-dbg.exe')

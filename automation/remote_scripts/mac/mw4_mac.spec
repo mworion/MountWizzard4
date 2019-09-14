@@ -49,10 +49,9 @@ pythonPath = '/Users/mw/venv/lib/python3.7'
 sitePack = pythonPath + '/site-packages'
 distDir = './dist'
 packageDir = '/Users/mw/MountWizzard4/mw4'
-importDir = '/Users/mw/MountWizzard4'
 
 a = Analysis(['mw4/loader.py'],
-             pathex=[packageDir],
+#             pathex=[packageDir],
              binaries=[
                  ],
              datas=[
@@ -60,6 +59,8 @@ a = Analysis(['mw4/loader.py'],
                     (astropy_path, 'astropy'),
              ],
              hiddenimports=['shelve',
+                            'indibase',
+                            'mountcontrol',
                             'numpy.lib.recfunctions',
                             'numpy.random.common',
                             'numpy.random.bounded_integers',
@@ -111,13 +112,7 @@ exe = EXE(pyz,
 # if file present, we have to delete python3 --version
 #
 
-sys.path.append(importDir)
-from mw4.mainApp import MountWizzard4
-BUILD_NO = MountWizzard4.version
-
 buildFile = distDir + '/MountWizzard4.app'
-
-print('Build No:', BUILD_NO)
 
 if os.path.isfile(buildFile):
     os.remove(buildFile)

@@ -51,7 +51,6 @@ pythonPath = '/Users/mw/PycharmProjects/Envs/mw4/lib/python3.7'
 sitePack = pythonPath + '/site-packages'
 distDir = './dist'
 packageDir = '/Users/mw/PycharmProjects/MountWizzard4/mw4'
-importDir = '/Users/mw/PycharmProjects/MountWizzard4'
 
 a = Analysis(['mw4/loader.py'],
              pathex=[packageDir],
@@ -112,14 +111,7 @@ exe = EXE(pyz,
 # we have to prepare the build as there is an error when overwriting it
 # if file present, we have to delete python3 --version
 #
-
-sys.path.append(importDir)
-from mw4.mainApp import MountWizzard4
-BUILD_NO = MountWizzard4.version
-
 buildFile = distDir + '/MountWizzard4.app'
-
-print('Build No:', BUILD_NO)
 
 if os.path.isfile(buildFile):
     os.remove(buildFile)

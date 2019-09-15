@@ -39,6 +39,7 @@ class SettDevice(object):
                                 self.ui.domeDevice,
                                 self.ui.environDevice,
                                 self.ui.skymeterDevice,
+                                self.ui.telescopeDevice,
                                 self.ui.powerDevice,
                                 self.ui.relayDevice,
                                 self.ui.measureDevice,
@@ -49,6 +50,7 @@ class SettDevice(object):
                                    'domeDevice',
                                    'environmentDevice',
                                    'skymeterDevice',
+                                   'telescopeDevice',
                                    'powerDevice',
                                    'relayDevice',
                                    'measureDevice',
@@ -62,6 +64,7 @@ class SettDevice(object):
         self.ui.domeDevice.activated.connect(self.domeDispatch)
         self.ui.environDevice.activated.connect(self.environDispatch)
         self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
+        self.ui.telescopeDevice.activated.connect(self.telescopeDispatch)
         self.ui.powerDevice.activated.connect(self.powerDispatch)
         self.ui.astrometryDevice.activated.connect(self.astrometryDispatch)
 
@@ -77,6 +80,7 @@ class SettDevice(object):
         for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
             dropDown.setCurrentIndex(config.get(key, 0))
 
+        self.telescopeDispatch()
         self.relayDispatch()
         self.remoteDispatch()
         self.measureDispatch()
@@ -123,6 +127,7 @@ class SettDevice(object):
         self.ui.domeDevice.addItem('INDI')
         self.ui.imagingDevice.addItem('INDI')
         self.ui.skymeterDevice.addItem('INDI')
+        self.ui.telescopeDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
         for app in self.app.astrometry.solverAvailable:
             self.ui.astrometryDevice.addItem(app)
@@ -288,6 +293,27 @@ class SettDevice(object):
         else:
             self.app.message.emit('Skymeter disabled', 0)
             self.deviceStat['skymeter'] = None
+
+        return True
+
+    def telescopeDispatch(self):
+        """
+        telescopeDispatch selects the type of device for environment measures and start / stop
+        them.
+
+        :return: true for test purpose
+        """
+
+        self.app.telescope.stopCommunication()
+        if self.ui.telescopeDevice.currentText().startswith('INDI'):
+            self.app.telescope.client.host = self.ui.telescopeHost.text()
+            self.app.telescope.name = self.ui.telescopeDeviceName.currentText()
+            self.app.telescope.startCommunication()
+            self.app.message.emit('Telescope enabled', 0)
+            self.deviceStat['telescope'] = True
+        else:
+            self.app.message.emit('Telescope disabled', 0)
+            self.deviceStat['telescope'] = None
 
         return True
 

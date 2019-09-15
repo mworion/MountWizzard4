@@ -81,6 +81,14 @@ class SettIndi(object):
         sig.newDevice.connect(self.showIndiNewSkymeterDevice)
         sig.removeDevice.connect(self.showIndiRemoveSkymeterDevice)
 
+        sig = self.app.telescope.client.signals
+        sig.serverConnected.connect(self.showIndiTelescopeConnected)
+        sig.serverDisconnected.connect(self.showIndiTelescopeDisconnected)
+        sig.deviceConnected.connect(self.showTelescopeDeviceConnected)
+        sig.deviceDisconnected.connect(self.showTelescopeDeviceDisconnected)
+        sig.newDevice.connect(self.showIndiNewTelescopeDevice)
+        sig.removeDevice.connect(self.showIndiRemoveTelescopeDevice)
+
         sig = self.app.power.client.signals
         sig.serverConnected.connect(self.showIndiPowerConnected)
         sig.serverDisconnected.connect(self.showIndiPowerDisconnected)
@@ -93,6 +101,7 @@ class SettIndi(object):
         self.ui.domeDeviceName.currentIndexChanged.connect(self.domeDispatch)
         self.ui.imagingDeviceName.currentIndexChanged.connect(self.imagingDispatch)
         self.ui.environDeviceName.currentIndexChanged.connect(self.environDispatch)
+        self.ui.telescopeDeviceName.currentIndexChanged.connect(self.telescopeDispatch)
         self.ui.skymeterDeviceName.currentIndexChanged.connect(self.skymeterDispatch)
         self.ui.powerDeviceName.currentIndexChanged.connect(self.powerDispatch)
 
@@ -114,6 +123,8 @@ class SettIndi(object):
         self.ui.imagingPort.setText(config.get('imagingPort', '7624'))
         self.ui.domeHost.setText(config.get('domeHost', ''))
         self.ui.domePort.setText(config.get('domePort', '7624'))
+        self.ui.telescopeHost.setText(config.get('telescopeHost', ''))
+        self.ui.telescopePort.setText(config.get('telescopePort', '7624'))
         self.ui.skymeterHost.setText(config.get('skymeterHost', ''))
         self.ui.skymeterPort.setText(config.get('skymeterPort', '7624'))
         self.ui.powerHost.setText(config.get('powerHost', ''))
@@ -142,6 +153,8 @@ class SettIndi(object):
         config['domePort'] = self.ui.domePort.text()
         config['skymeterHost'] = self.ui.skymeterHost.text()
         config['skymeterPort'] = self.ui.skymeterPort.text()
+        config['telescopeHost'] = self.ui.telescopeHost.text()
+        config['telescopePort'] = self.ui.telescopePort.text()
         config['powerHost'] = self.ui.powerHost.text()
         config['powerPort'] = self.ui.powerPort.text()
 
@@ -208,6 +221,8 @@ class SettIndi(object):
         self.ui.environDeviceName.addItem('WonderGround')
 
         self.ui.skymeterDeviceName.addItem('SQM')
+
+        self.ui.telescopeDeviceName.addItem('LX200 10micron')
 
         self.ui.powerDeviceName.addItem('Pegasus UPB')
 
@@ -520,6 +535,75 @@ class SettIndi(object):
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['skymeter'] = False
+        return True
+
+
+    def showIndiTelescopeConnected(self):
+        """
+        showIndiTelescopeConnected writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit('INDI server telescope connected', 0)
+        return True
+
+    def showIndiTelescopeDisconnected(self):
+        """
+        showIndiTelescopeDisconnected writes info to message window and recolors the status
+
+        :return: true for test purpose
+        """
+
+        self.ui.telescopeDevice.setStyleSheet(self.BACK_NORM)
+        self.app.message.emit('INDI server telescope disconnected', 0)
+        return True
+
+    def showIndiNewTelescopeDevice(self, deviceName):
+        """
+        showIndiNewTelescopeDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        if deviceName == self.app.telescope.name:
+            self.app.message.emit(f'INDI telescope device [{deviceName}] found', 0)
+        else:
+            self.app.message.emit(f'INDI telescope device snoops -> [{deviceName}]', 0)
+        return True
+
+    def showIndiRemoveTelescopeDevice(self, deviceName):
+        """
+        showIndiRemoveTelescopeDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI telescope device [{deviceName}] removed', 0)
+        return True
+
+    def showTelescopeDeviceConnected(self):
+        """
+        showTelescopeDeviceConnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.telescopeDevice.setStyleSheet(self.BACK_GREEN)
+        self.deviceStat['telescope'] = True
+        return True
+
+    def showTelescopeDeviceDisconnected(self):
+        """
+        showTelescopeDeviceDisconnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.ui.telescopeDevice.setStyleSheet(self.BACK_NORM)
+        self.deviceStat['telescope'] = False
         return True
 
     def showIndiPowerConnected(self):

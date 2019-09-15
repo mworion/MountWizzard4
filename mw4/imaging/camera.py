@@ -82,6 +82,10 @@ class Camera(indiClass.IndiClass):
         self.signals = CameraSignals()
         self.imagePath = ''
         self.filterNames = dict()
+        self.pixelSizeX = 0
+        self.pixelSizeY = 0
+        self.pixelX = 0
+        self.pixelY = 0
 
     def setUpdateConfig(self, deviceName):
         """
@@ -98,8 +102,12 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
 
-        # reset the filers as well
+        # reset the data as well
         self.filterNames = dict()
+        self.pixelSizeX = 0
+        self.pixelSizeY = 0
+        self.pixelX = 0
+        self.pixelY = 0
 
         # set BLOB mode also
         self.client.setBlobMode(blobHandling='Also',
@@ -150,14 +158,19 @@ class Camera(indiClass.IndiClass):
 
         if propertyName == 'CCD_INFO':
             if element == 'CCD_PIXEL_SIZE_X':
+                self.pixelSizeX = value
                 self.app.mainW.ui.pixelSizeX.setText(f'{value:2.2f}')
             if element == 'CCD_PIXEL_SIZE_Y':
+                self.pixelSizeY = value
                 self.app.mainW.ui.pixelSizeY.setText(f'{value:2.2f}')
             if element == 'CCD_MAX_X':
+                self.pixelX = value
                 self.app.mainW.ui.pixelX.setText(f'{value:5.0f}')
             if element == 'CCD_MAX_Y':
+                self.pixelY = value
                 self.app.mainW.ui.pixelY.setText(f'{value:5.0f}')
             return True
+
         return False
 
     def setExposureState(self, propertyName='', value=0):
@@ -202,11 +215,13 @@ class Camera(indiClass.IndiClass):
                 key = f'FILTER_SLOT_NAME_{value:1.0f}'
                 text = self.filterNames.get(key, 'not found')
                 self.app.mainW.ui.filterText.setText(f'{text}')
+            return True
 
         if propertyName == 'CCD_ROTATION':
             if element == 'CCD_ROTATION_VALUE':
                 self.app.mainW.ui.rotation.setText(f'{value:3.1f}')
             return True
+
         return False
 
     def updateNumber(self, deviceName, propertyName):
@@ -227,7 +242,7 @@ class Camera(indiClass.IndiClass):
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
 
             self.setPixelSize(propertyName=propertyName, element=element, value=value)
             self.setExposureState(propertyName=propertyName, value=value)

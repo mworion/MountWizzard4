@@ -100,7 +100,7 @@ class IndiClass(object):
 
         if self.name:
             suc = self.client.watchDevice(self.name)
-            self.logger.info(f'Indi server {self.name} connected, watch: result:{suc}')
+            self.logger.info(f'Indi watch: {self.name}, watch: result:{suc}')
             return suc
         return False
 

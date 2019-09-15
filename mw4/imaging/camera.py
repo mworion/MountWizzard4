@@ -222,7 +222,6 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
         if deviceName != self.name:
-            # print(propertyName, element, value)
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
@@ -265,7 +264,6 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
         if deviceName != self.name:
-            # print(propertyName, element, value)
             return False
 
         for element, value in self.device.getText(propertyName).items():
@@ -273,7 +271,7 @@ class Camera(indiClass.IndiClass):
             self.data[key] = value
 
             self.setParametersText(propertyName=propertyName, element=element, value=value)
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
         return True
 
     def updateSwitch(self, deviceName, propertyName):
@@ -289,7 +287,6 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
         if deviceName != self.name:
-            # print(propertyName, element, value)
             return False
 
         for element, value in self.device.getSwitch(propertyName).items():
@@ -311,7 +308,6 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
         if deviceName != self.name:
-            # print(propertyName, element, value)
             return False
 
         for element, value in self.device.getLight(propertyName).items():

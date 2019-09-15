@@ -36,17 +36,21 @@ class SettIndi(object):
                                     self.ui.domeDeviceName,
                                     self.ui.environDeviceName,
                                     self.ui.skymeterDeviceName,
+                                    self.ui.coverDeviceName,
                                     self.ui.powerDeviceName,
                                     ]
         self.deviceNameDropDownKeys = ['imagingDeviceName',
                                        'domeDeviceName',
                                        'environmentDeviceName',
                                        'skymeterDeviceName',
+                                       'coverDeviceName',
                                        'powerDeviceName',
                                        ]
 
         self.app.environ.client.signals.newMessage.connect(self.indiMessage)
         self.app.skymeter.client.signals.newMessage.connect(self.indiMessage)
+        self.app.cover.client.signals.newMessage.connect(self.indiMessage)
+        self.app.telescope.client.signals.newMessage.connect(self.indiMessage)
         self.app.power.client.signals.newMessage.connect(self.indiMessage)
 
         sig = self.app.dome.client.signals
@@ -72,6 +76,14 @@ class SettIndi(object):
         sig.deviceDisconnected.connect(self.showEnvironDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewEnvironDevice)
         sig.removeDevice.connect(self.showIndiRemoveEnvironDevice)
+
+        sig = self.app.cover.client.signals
+        sig.serverConnected.connect(self.showIndiCoverConnected)
+        sig.serverDisconnected.connect(self.showIndiCoverDisconnected)
+        sig.deviceConnected.connect(self.showCoverDeviceConnected)
+        sig.deviceDisconnected.connect(self.showCoverDeviceDisconnected)
+        sig.newDevice.connect(self.showIndiNewCoverDevice)
+        sig.removeDevice.connect(self.showIndiRemoveCoverDevice)
 
         sig = self.app.skymeter.client.signals
         sig.serverConnected.connect(self.showIndiSkymeterConnected)
@@ -101,6 +113,7 @@ class SettIndi(object):
         self.ui.domeDeviceName.currentIndexChanged.connect(self.domeDispatch)
         self.ui.imagingDeviceName.currentIndexChanged.connect(self.imagingDispatch)
         self.ui.environDeviceName.currentIndexChanged.connect(self.environDispatch)
+        self.ui.coverDeviceName.currentIndexChanged.connect(self.coverDispatch)
         self.ui.telescopeDeviceName.currentIndexChanged.connect(self.telescopeDispatch)
         self.ui.skymeterDeviceName.currentIndexChanged.connect(self.skymeterDispatch)
         self.ui.powerDeviceName.currentIndexChanged.connect(self.powerDispatch)
@@ -119,6 +132,8 @@ class SettIndi(object):
 
         self.ui.environHost.setText(config.get('environHost', ''))
         self.ui.environPort.setText(config.get('environPort', '7624'))
+        self.ui.coverHost.setText(config.get('coverHost', ''))
+        self.ui.coverPort.setText(config.get('coverPort', '7624'))
         self.ui.imagingHost.setText(config.get('imagingHost', ''))
         self.ui.imagingPort.setText(config.get('imagingPort', '7624'))
         self.ui.domeHost.setText(config.get('domeHost', ''))
@@ -147,6 +162,8 @@ class SettIndi(object):
             config[key] = dropDown.currentIndex()
         config['environHost'] = self.ui.environHost.text()
         config['environPort'] = self.ui.environPort.text()
+        config['coverHost'] = self.ui.coverHost.text()
+        config['coverPort'] = self.ui.coverPort.text()
         config['imagingHost'] = self.ui.imagingHost.text()
         config['imagingPort'] = self.ui.imagingPort.text()
         config['domeHost'] = self.ui.domeHost.text()
@@ -221,10 +238,9 @@ class SettIndi(object):
         self.ui.environDeviceName.addItem('WonderGround')
 
         self.ui.skymeterDeviceName.addItem('SQM')
-
         self.ui.telescopeDeviceName.addItem('LX200 10micron')
-
         self.ui.powerDeviceName.addItem('Pegasus UPB')
+        self.ui.coverDeviceName.addItem('Flip Flat')
 
         return True
 
@@ -673,4 +689,72 @@ class SettIndi(object):
 
         self.deviceStat['power'] = False
         self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
+        return True
+
+    def showIndiCoverConnected(self):
+        """
+        showIndiCoverConnected writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit('INDI server cover connected', 0)
+        return True
+
+    def showIndiCoverDisconnected(self):
+        """
+        showIndiCoverDisconnected writes info to message window and recolors the status
+
+        :return: true for test purpose
+        """
+
+        self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
+        self.app.message.emit('INDI server cover disconnected', 0)
+        return True
+
+    def showIndiNewCoverDevice(self, deviceName):
+        """
+        showIndiNewCoverDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        if deviceName == self.app.cover.name:
+            self.app.message.emit(f'INDI cover device [{deviceName}] found', 0)
+        else:
+            self.app.message.emit(f'INDI cover device snoops -> [{deviceName}]', 0)
+        return True
+
+    def showIndiRemoveCoverDevice(self, deviceName):
+        """
+        showIndiRemoveCoverDevice writes info to message window
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit(f'INDI cover device [{deviceName}] removed', 0)
+        return True
+
+    def showCoverDeviceConnected(self):
+        """
+        showCoverDeviceConnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.deviceStat['cover'] = True
+        self.ui.coverDevice.setStyleSheet(self.BACK_GREEN)
+        return True
+
+    def showCoverDeviceDisconnected(self):
+        """
+        showCoverDeviceDisconnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.deviceStat['cover'] = False
+        self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
         return True

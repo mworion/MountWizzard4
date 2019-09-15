@@ -39,6 +39,7 @@ class SettDevice(object):
                                 self.ui.domeDevice,
                                 self.ui.environDevice,
                                 self.ui.skymeterDevice,
+                                self.ui.coverDevice,
                                 self.ui.telescopeDevice,
                                 self.ui.powerDevice,
                                 self.ui.relayDevice,
@@ -50,6 +51,7 @@ class SettDevice(object):
                                    'domeDevice',
                                    'environmentDevice',
                                    'skymeterDevice',
+                                   'coverDevice',
                                    'telescopeDevice',
                                    'powerDevice',
                                    'relayDevice',
@@ -64,6 +66,7 @@ class SettDevice(object):
         self.ui.domeDevice.activated.connect(self.domeDispatch)
         self.ui.environDevice.activated.connect(self.environDispatch)
         self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
+        self.ui.coverDevice.activated.connect(self.coverDispatch)
         self.ui.telescopeDevice.activated.connect(self.telescopeDispatch)
         self.ui.powerDevice.activated.connect(self.powerDispatch)
         self.ui.astrometryDevice.activated.connect(self.astrometryDispatch)
@@ -88,6 +91,7 @@ class SettDevice(object):
         self.imagingDispatch()
         self.environDispatch()
         self.skymeterDispatch()
+        self.coverDispatch()
         self.powerDispatch()
         self.astrometryDispatch()
         return True
@@ -127,6 +131,7 @@ class SettDevice(object):
         self.ui.domeDevice.addItem('INDI')
         self.ui.imagingDevice.addItem('INDI')
         self.ui.skymeterDevice.addItem('INDI')
+        self.ui.coverDevice.addItem('INDI')
         self.ui.telescopeDevice.addItem('INDI')
         self.ui.powerDevice.addItem('INDI')
         for app in self.app.astrometry.solverAvailable:
@@ -293,6 +298,27 @@ class SettDevice(object):
         else:
             self.app.message.emit('Skymeter disabled', 0)
             self.deviceStat['skymeter'] = None
+
+        return True
+
+    def coverDispatch(self):
+        """
+        coverDispatch selects the type of device for environment measures and start / stop
+        them.
+
+        :return: true for test purpose
+        """
+
+        self.app.cover.stopCommunication()
+        if self.ui.coverDevice.currentText().startswith('INDI'):
+            self.app.cover.client.host = self.ui.coverHost.text()
+            self.app.cover.name = self.ui.coverDeviceName.currentText()
+            self.app.cover.startCommunication()
+            self.app.message.emit('Cover enabled', 0)
+            self.deviceStat['cover'] = True
+        else:
+            self.app.message.emit('Cover disabled', 0)
+            self.deviceStat['cover'] = None
 
         return True
 

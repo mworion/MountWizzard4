@@ -41,6 +41,7 @@ from mw4.dome import dome
 from mw4.imaging import camera
 from mw4.environment import environ
 from mw4.environment import skymeter
+from mw4.cover import flipflat
 from mw4.telescope import telescope
 from mw4.powerswitch import pegasusUPB
 from mw4.base import measuredata
@@ -120,6 +121,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.planets = self.loader('de421_23.bsp')
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
+        self.cover = flipflat.FlipFlat(host='localhost')
         self.dome = dome.Dome(self, host='localhost')
         self.imaging = camera.Camera(self, host='localhost')
         self.telescope = telescope.Telescope(self, host='localhost')

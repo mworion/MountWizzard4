@@ -100,6 +100,8 @@ class MainWindow(MWidget,
             'astrometry': None,
             'environ': None,
             'skymeter': None,
+            'cover': None,
+            'telescope': None,
             'power': None,
         }
         self.deviceStatGui = {'dome': self.ui.domeConnected,

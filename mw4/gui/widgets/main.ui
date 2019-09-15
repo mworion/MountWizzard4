@@ -15758,9 +15758,9 @@ to mount manually</string>
         <widget class="QGroupBox" name="groupBox_30">
          <property name="geometry">
           <rect>
-           <x>5</x>
-           <y>260</y>
-           <width>366</width>
+           <x>195</x>
+           <y>175</y>
+           <width>176</width>
            <height>76</height>
           </rect>
          </property>
@@ -15775,7 +15775,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>45</y>
-            <width>136</width>
+            <width>96</width>
             <height>21</height>
            </rect>
           </property>
@@ -15793,7 +15793,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>20</y>
-            <width>136</width>
+            <width>91</width>
             <height>21</height>
            </rect>
           </property>
@@ -15809,7 +15809,7 @@ to mount manually</string>
          <widget class="QDoubleSpinBox" name="searchRadius">
           <property name="geometry">
            <rect>
-            <x>150</x>
+            <x>120</x>
             <y>20</y>
             <width>51</width>
             <height>21</height>
@@ -15847,7 +15847,7 @@ to mount manually</string>
          <widget class="QDoubleSpinBox" name="solveTimeout">
           <property name="geometry">
            <rect>
-            <x>150</x>
+            <x>120</x>
             <y>45</y>
             <width>51</width>
             <height>21</height>
@@ -15888,7 +15888,7 @@ to mount manually</string>
           <rect>
            <x>5</x>
            <y>175</y>
-           <width>366</width>
+           <width>176</width>
            <height>76</height>
           </rect>
          </property>
@@ -15903,7 +15903,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>20</y>
-            <width>136</width>
+            <width>76</width>
             <height>21</height>
            </rect>
           </property>
@@ -15913,7 +15913,7 @@ to mount manually</string>
            </font>
           </property>
           <property name="text">
-           <string>Mount Settle Time</string>
+           <string>Mount Settle</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_100">
@@ -15921,7 +15921,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>45</y>
-            <width>136</width>
+            <width>81</width>
             <height>21</height>
            </rect>
           </property>
@@ -15931,13 +15931,13 @@ to mount manually</string>
            </font>
           </property>
           <property name="text">
-           <string>Dome Settle Time</string>
+           <string>Dome Settle</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_314">
           <property name="geometry">
            <rect>
-            <x>205</x>
+            <x>160</x>
             <y>45</y>
             <width>16</width>
             <height>21</height>
@@ -15955,7 +15955,7 @@ to mount manually</string>
          <widget class="QLabel" name="label_295">
           <property name="geometry">
            <rect>
-            <x>205</x>
+            <x>160</x>
             <y>20</y>
             <width>16</width>
             <height>21</height>
@@ -15973,9 +15973,9 @@ to mount manually</string>
          <widget class="QDoubleSpinBox" name="settleTimeMount">
           <property name="geometry">
            <rect>
-            <x>150</x>
+            <x>115</x>
             <y>20</y>
-            <width>51</width>
+            <width>41</width>
             <height>21</height>
            </rect>
           </property>
@@ -16011,9 +16011,9 @@ to mount manually</string>
          <widget class="QDoubleSpinBox" name="settleTimeDome">
           <property name="geometry">
            <rect>
-            <x>150</x>
+            <x>115</x>
             <y>45</y>
-            <width>51</width>
+            <width>41</width>
             <height>21</height>
            </rect>
           </property>
@@ -16292,9 +16292,9 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>5</x>
-           <y>345</y>
+           <y>260</y>
            <width>366</width>
-           <height>46</height>
+           <height>51</height>
           </rect>
          </property>
          <property name="title">

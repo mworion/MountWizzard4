@@ -180,12 +180,12 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>100</width>
+           <width>80</width>
            <height>0</height>
           </size>
          </property>
          <property name="text">
-          <string>Stack Images</string>
+          <string>Stacking</string>
          </property>
         </widget>
        </item>
@@ -452,7 +452,7 @@
          <widget class="QComboBox" name="zoom">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>90</width>
             <height>25</height>
            </size>
           </property>

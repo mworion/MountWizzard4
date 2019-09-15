@@ -290,10 +290,10 @@ class MeasureWindow(widget.MWidget):
                  color=self.M_WHITE,
                  )
         axe.grid(True, color=self.M_GREY, alpha=1)
-        axe.set_ylim(-5, 5)
-        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=10,
+        axe.set_ylim(-4, 4)
+        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
                                                              integer=True,
-                                                             min_n_ticks=5,
+                                                             min_n_ticks=4,
                                                              prune='both',
                                                              ))
         axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',
@@ -330,10 +330,10 @@ class MeasureWindow(widget.MWidget):
                  color=self.M_WHITE,
                  )
         axe.grid(True, color=self.M_GREY, alpha=1)
-        axe.set_ylim(-5, 5)
-        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=10,
+        axe.set_ylim(-4, 4)
+        axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
                                                              integer=True,
-                                                             min_n_ticks=5,
+                                                             min_n_ticks=4,
                                                              prune='both',
                                                              ))
         axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.1f',

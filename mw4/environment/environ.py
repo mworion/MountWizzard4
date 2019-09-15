@@ -30,10 +30,9 @@ class Environ(indiClass.IndiClass):
     """
     the class Environ inherits all information and handling of the environment device
 
-        >>> fw = Environ(
-        >>>                  host=host
-        >>>                  name=''
-        >>>                 )
+        >>> Environ(host=None,
+        >>>         name=''
+        >>>         )
     """
 
     __all__ = ['Environ',

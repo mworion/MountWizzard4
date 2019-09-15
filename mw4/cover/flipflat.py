@@ -67,7 +67,7 @@ class FlipFlat(indiClass.IndiClass):
         if self.device is None:
             return False
 
-        update = self.device.getNumber('WEATHER_UPDATE')
+        update = self.device.getNumber('PERIOD_MS')
 
         if 'PERIOD' not in update:
             return False
@@ -77,7 +77,7 @@ class FlipFlat(indiClass.IndiClass):
 
         update['PERIOD'] = self.UPDATE_RATE
         suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='WEATHER_UPDATE',
+                                        propertyName='PERIOD_MS',
                                         elements=update)
         return suc
 
@@ -98,6 +98,69 @@ class FlipFlat(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
-            # print(element, value)
+            print('number', element, value)
+
+        return True
+
+    def updateText(self, deviceName, propertyName):
+        """
+        updateNumber is called whenever a new number is received in client. it runs
+        through the device list and writes the number data to the according locations.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getText(propertyName).items():
+            self.data[element] = value
+            print('text', propertyName, element, value)
+
+        return True
+
+    def updateSwitch(self, deviceName, propertyName):
+        """
+        updateNumber is called whenever a new number is received in client. it runs
+        through the device list and writes the number data to the according locations.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getSwitch(propertyName).items():
+            self.data[element] = value
+            print('switch', propertyName, element, value)
+
+        return True
+
+    def updateLight(self, deviceName, propertyName):
+        """
+        updateNumber is called whenever a new number is received in client. it runs
+        through the device list and writes the number data to the according locations.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getLight(propertyName).items():
+            self.data[element] = value
+            print('light', propertyName, element, value)
 
         return True

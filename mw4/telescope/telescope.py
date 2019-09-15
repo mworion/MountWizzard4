@@ -126,8 +126,7 @@ class Telescope(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
+            self.data[element] = value
             # print(propertyName, element, value)
 
             self.setParametersNumber(propertyName=propertyName, element=element, value=value)

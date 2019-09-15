@@ -12995,7 +12995,7 @@ to mount manually</string>
          <x>5</x>
          <y>0</y>
          <width>776</width>
-         <height>421</height>
+         <height>426</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -13028,7 +13028,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -15759,7 +15759,7 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>5</x>
-           <y>270</y>
+           <y>260</y>
            <width>366</width>
            <height>76</height>
           </rect>
@@ -15775,7 +15775,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>45</y>
-            <width>96</width>
+            <width>136</width>
             <height>21</height>
            </rect>
           </property>
@@ -15793,7 +15793,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>20</y>
-            <width>96</width>
+            <width>136</width>
             <height>21</height>
            </rect>
           </property>
@@ -15887,7 +15887,7 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>5</x>
-           <y>180</y>
+           <y>175</y>
            <width>366</width>
            <height>76</height>
           </rect>
@@ -15903,7 +15903,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>20</y>
-            <width>166</width>
+            <width>136</width>
             <height>21</height>
            </rect>
           </property>
@@ -15921,7 +15921,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>45</y>
-            <width>166</width>
+            <width>136</width>
             <height>21</height>
            </rect>
           </property>
@@ -16051,7 +16051,7 @@ to mount manually</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>235</y>
+           <y>230</y>
            <width>366</width>
            <height>101</height>
           </rect>
@@ -16285,6 +16285,35 @@ to mount manually</string>
           </property>
           <property name="text">
            <string>arcsec</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_43">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>345</y>
+           <width>366</width>
+           <height>46</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Flip Flat</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <widget class="QPushButton" name="coverStatus">
+          <property name="geometry">
+           <rect>
+            <x>5</x>
+            <y>15</y>
+            <width>356</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Cover is open</string>
           </property>
          </widget>
         </widget>

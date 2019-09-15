@@ -250,7 +250,7 @@ class BuildFunc(object):
             self.app.message.emit(text, 0)
         else:
             message = result.message
-            text = f'Solving error for image-{mPoint.mParam.count:03d}, reason:{message}'
+            text = f'Solving error for image-{mPoint.mParam.count:03d}: {message}'
             self.app.message.emit(text, 2)
 
         self.updateProgress(number=number, count=count, modelingDone=modelingDone)

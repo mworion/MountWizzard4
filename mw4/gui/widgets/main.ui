@@ -15859,7 +15859,7 @@ to mount manually</string>
            <x>400</x>
            <y>235</y>
            <width>366</width>
-           <height>121</height>
+           <height>101</height>
           </rect>
          </property>
          <property name="title">
@@ -16091,24 +16091,6 @@ to mount manually</string>
           </property>
           <property name="text">
            <string>arcsec</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_407">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>95</y>
-            <width>101</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Fitting for seeing</string>
           </property>
          </widget>
         </widget>

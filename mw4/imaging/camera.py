@@ -53,11 +53,10 @@ class Camera(indiClass.IndiClass):
     the class Camera inherits all information and handling of the Camera device.
 
 
-        >>> fw = Camera(
-        >>>           app=app
-        >>>           host=host
-        >>>           name=''
-        >>>          )
+        >>> Camera(app=None,
+        >>>        host=host,
+        >>>        name='',
+        >>>       )
     """
 
     __all__ = ['Camera',
@@ -101,13 +100,6 @@ class Camera(indiClass.IndiClass):
 
         if self.device is None:
             return False
-
-        # reset the data as well
-        self.filterNames = dict()
-        self.pixelSizeX = 0
-        self.pixelSizeY = 0
-        self.pixelX = 0
-        self.pixelY = 0
 
         # set BLOB mode also
         self.client.setBlobMode(blobHandling='Also',

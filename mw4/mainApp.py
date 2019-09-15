@@ -117,12 +117,12 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                           expire=expireData,
                                           verbose=False,
                                           )
-        self.telescope = telescope.Telescope(host='localhost')
         self.planets = self.loader('de421_23.bsp')
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
         self.dome = dome.Dome(self, host='localhost')
         self.imaging = camera.Camera(self, host='localhost')
+        self.telescope = telescope.Telescope(self, host='localhost')
         self.skymeter = skymeter.Skymeter(host='localhost')
         self.power = pegasusUPB.PegasusUPB(host='localhost')
         self.data = buildpoints.DataPoint(self, mwGlob=self.mwGlob)

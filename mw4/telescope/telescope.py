@@ -30,10 +30,10 @@ class Telescope(indiClass.IndiClass):
     """
     the class SnoopTelescope inherits all information and handling of the Skymeter device
 
-        >>>  Telescope(
-        >>>                  host=host
-        >>>                  name=''
-        >>>                 )
+        >>>  Telescope(app=None,
+        >>>            host=host,
+        >>>            name='',
+        >>>            )
     """
 
     __all__ = ['Telescope',
@@ -46,12 +46,14 @@ class Telescope(indiClass.IndiClass):
     UPDATE_RATE = 10
 
     def __init__(self,
+                 app=None,
                  host=None,
                  name='',
                  ):
         super().__init__(host=host,
                          name=name
                          )
+        self.app = app
         self.focalLength = 0
         self.aperture = 0
 
@@ -69,10 +71,6 @@ class Telescope(indiClass.IndiClass):
 
         if self.device is None:
             return False
-
-        # reset basic data when started
-        self.focalLength = 0
-        self.aperture = 0
 
         update = self.device.getNumber('PERIOD_MS')
 
@@ -99,11 +97,11 @@ class Telescope(indiClass.IndiClass):
 
         if propertyName == 'TELESCOPE_INFO':
             if element == 'TELESCOPE_APERTURE':
-                print('telescope', value)
                 self.aperture = value
+                self.app.mainW.ui.aperture.setText(f'{value:4.0f}')
             if element == 'TELESCOPE_FOCAL_LENGTH':
-                print('telescope', value)
                 self.focalLength = value
+                self.app.mainW.ui.focalLength.setText(f'{value:4.0f}')
             return True
         return False
 

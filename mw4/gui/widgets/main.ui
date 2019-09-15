@@ -13040,395 +13040,425 @@ to mount manually</string>
         <attribute name="title">
          <string>Devices</string>
         </attribute>
-        <widget class="QWidget" name="gridLayoutWidget">
+        <widget class="Line" name="line_108">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>5</y>
-           <width>767</width>
-           <height>381</height>
+           <x>380</x>
+           <y>10</y>
+           <width>11</width>
+           <height>371</height>
           </rect>
          </property>
-         <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
-          <property name="leftMargin">
-           <number>6</number>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>2</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_40">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>20</y>
+           <width>366</width>
+           <height>146</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Accessories</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <widget class="QComboBox" name="powerDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>80</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
           </property>
-          <property name="topMargin">
-           <number>15</number>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
           </property>
-          <property name="spacing">
-           <number>6</number>
+         </widget>
+         <widget class="QLabel" name="po">
+          <property name="geometry">
+           <rect>
+            <x>12</x>
+            <y>80</y>
+            <width>126</width>
+            <height>21</height>
+           </rect>
           </property>
-          <item row="13" column="0" rowspan="2">
-           <widget class="QLabel" name="sky">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Sky Meter Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QComboBox" name="domeDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="4" rowspan="18">
-           <widget class="Line" name="line_86">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="lineWidth">
-             <number>2</number>
-            </property>
-            <property name="midLineWidth">
-             <number>2</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="6">
-           <widget class="QLabel" name="label_264">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Accessories</string>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="1" rowspan="2">
-           <widget class="QComboBox" name="skymeterDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="7">
-           <widget class="QComboBox" name="powerDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="6" colspan="2">
-           <widget class="Line" name="line_81">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="15" column="0" rowspan="2">
-           <widget class="QLabel" name="env">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Environment Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="5">
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="6" rowspan="2">
-           <widget class="QLabel" name="label_48">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Measure Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="15" column="1" rowspan="2">
-           <widget class="QComboBox" name="environDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" rowspan="2">
-           <widget class="QLabel" name="ccd">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Imaging Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="Line" name="line_80">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="6">
-           <widget class="QLabel" name="label_46">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Relay Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0" colspan="2">
-           <widget class="Line" name="line_82">
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="midLineWidth">
-             <number>1</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1" rowspan="3">
-           <widget class="QComboBox" name="astrometryDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QLabel" name="label_263">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Core devices</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="6" rowspan="3">
-           <widget class="QLabel" name="label_49">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Remote Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="7" rowspan="2">
-           <widget class="QComboBox" name="measureDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="7">
-           <widget class="QComboBox" name="relayDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0" rowspan="3">
-           <widget class="QLabel" name="ast">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Astrometry Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="6">
-           <widget class="QLabel" name="po">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>PowerBox Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="dome_3">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Telescope Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0" rowspan="2" colspan="2">
-           <widget class="QLabel" name="label_302">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Oberservation Conditions</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1" rowspan="2">
-           <widget class="QComboBox" name="imagingDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="dome">
-            <property name="font">
-             <font>
-              <weight>50</weight>
-              <bold>false</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Dome Device</string>
-            </property>
-           </widget>
-          </item>
-          <item row="17" column="0" colspan="2">
-           <spacer name="verticalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="4" column="7" rowspan="3">
-           <widget class="QComboBox" name="remoteDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="8" column="1">
-           <widget class="QComboBox" name="telescopeDevice">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>25</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>PowerBox Device</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_46">
+          <property name="geometry">
+           <rect>
+            <x>12</x>
+            <y>110</y>
+            <width>106</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Relay Device</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="measureDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>20</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_48">
+          <property name="geometry">
+           <rect>
+            <x>12</x>
+            <y>20</y>
+            <width>126</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Measure Device</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="remoteDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>50</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_49">
+          <property name="geometry">
+           <rect>
+            <x>12</x>
+            <y>50</y>
+            <width>126</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Remote Device</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="relayDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>110</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_41">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>20</y>
+           <width>366</width>
+           <height>146</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Core devices</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <widget class="QLabel" name="dome">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>80</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Dome Device</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="ccd">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>20</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Imaging Device</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="domeDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>80</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="imagingDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>20</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="telescopeDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>110</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QLabel" name="dome_3">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>110</y>
+            <width>126</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Telescope Device</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="ast">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>50</y>
+            <width>126</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Astrometry Device</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="astrometryDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>50</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_42">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>170</y>
+           <width>366</width>
+           <height>86</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Obervation conditions</string>
+         </property>
+         <property name="large" stdset="0">
+          <bool>true</bool>
+         </property>
+         <widget class="QLabel" name="sky">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>20</y>
+            <width>126</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Sky Meter Device</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="environDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>50</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+         <widget class="QLabel" name="env">
+          <property name="geometry">
+           <rect>
+            <x>11</x>
+            <y>50</y>
+            <width>131</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Environment Device</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="skymeterDevice">
+          <property name="geometry">
+           <rect>
+            <x>160</x>
+            <y>20</y>
+            <width>200</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
         </widget>
        </widget>
        <widget class="QWidget" name="INDI">
@@ -13544,7 +13574,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>20</y>
-            <width>71</width>
+            <width>81</width>
             <height>21</height>
            </rect>
           </property>
@@ -13562,7 +13592,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>45</y>
-            <width>76</width>
+            <width>81</width>
             <height>21</height>
            </rect>
           </property>
@@ -13596,7 +13626,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>20</y>
-            <width>71</width>
+            <width>81</width>
             <height>21</height>
            </rect>
           </property>
@@ -13614,7 +13644,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>45</y>
-            <width>76</width>
+            <width>81</width>
             <height>21</height>
            </rect>
           </property>
@@ -13737,7 +13767,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>20</y>
-            <width>71</width>
+            <width>81</width>
             <height>21</height>
            </rect>
           </property>
@@ -13755,7 +13785,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>50</y>
-            <width>76</width>
+            <width>81</width>
             <height>21</height>
            </rect>
           </property>
@@ -13878,7 +13908,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>20</y>
-            <width>71</width>
+            <width>81</width>
             <height>21</height>
            </rect>
           </property>
@@ -13896,7 +13926,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>45</y>
-            <width>76</width>
+            <width>81</width>
             <height>21</height>
            </rect>
           </property>
@@ -13978,7 +14008,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>20</y>
-            <width>71</width>
+            <width>86</width>
             <height>21</height>
            </rect>
           </property>
@@ -13996,7 +14026,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>45</y>
-            <width>76</width>
+            <width>86</width>
             <height>21</height>
            </rect>
           </property>
@@ -14100,7 +14130,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>20</y>
-            <width>71</width>
+            <width>86</width>
             <height>21</height>
            </rect>
           </property>
@@ -14118,7 +14148,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>45</y>
-            <width>76</width>
+            <width>86</width>
             <height>21</height>
            </rect>
           </property>
@@ -14200,7 +14230,7 @@ to mount manually</string>
            <rect>
             <x>9</x>
             <y>20</y>
-            <width>71</width>
+            <width>86</width>
             <height>21</height>
            </rect>
           </property>
@@ -14218,7 +14248,7 @@ to mount manually</string>
            <rect>
             <x>10</x>
             <y>45</y>
-            <width>76</width>
+            <width>86</width>
             <height>21</height>
            </rect>
           </property>
@@ -20514,8 +20544,6 @@ to mount manually</string>
   <tabstop>powerBootPort2</tabstop>
   <tabstop>checkJNow</tabstop>
   <tabstop>dewCurrentB</tabstop>
-  <tabstop>astrometryDevice</tabstop>
-  <tabstop>imagingDevice</tabstop>
  </tabstops>
  <resources/>
  <connections/>

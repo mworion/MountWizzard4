@@ -729,6 +729,7 @@ class ImageWindow(widget.MWidget):
         """
 
         self.deviceStat['expose'] = True
+        self.ui.checkStackImages.setChecked(False)
         self.app.imaging.signals.saved.connect(self.exposeImageDone)
         self.exposeRaw()
 

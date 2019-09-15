@@ -28,7 +28,16 @@ class SettImaging(object):
     """
 
     def __init__(self):
+        # updating gui regular
         self.app.update1s.connect(self.updateParameters)
+
+        # update when driver changes items
+        self.app.cover.client.signals.newSwitch.connect(self.updateCoverStatGui)
+        self.app.cover.client.signals.newText.connect(self.updateCoverStatGui)
+        self.app.cover.client.signals.newNumber.connect(self.updateCoverStatGui)
+
+        # gui actions
+        self.ui.coverOpen.clicked.connect(self.sendCoverStat)
 
     def initConfig(self):
         """
@@ -104,3 +113,53 @@ class SettImaging(object):
             FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
             self.app.mainW.ui.FOVX.setText(f'{FOVX:2.2f}')
             self.app.mainW.ui.FOVY.setText(f'{FOVY:2.2f}')
+
+    def updateCoverStatGui(self):
+        """
+        updateCoverStatGui changes the style of the button related to the state of the FliFlat
+
+        :return: success for test
+        """
+
+        value = self.app.cover.data.get('Cover', '-').strip().upper()
+        if value == 'OPEN':
+            self.changeStyleDynamic(self.ui.coverOpen, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.coverOpen, 'running', False)
+
+        value = self.app.cover.data.get('Cover', '-')
+        self.ui.coverStatusText.setText(value)
+        value = self.app.cover.data.get('Motor', '-')
+        self.ui.coverMotorText.setText(value)
+
+    def sendCoverStat(self):
+        """
+
+        :return: true fot test purpose
+        """
+
+        device = self.app.cover.device
+        name = self.app.cover.name
+        client = self.app.cover.client
+
+        if device is None:
+            return False
+
+        cover = device.getSwitch('CAP_PARK')
+
+        value = self.app.cover.data.get('Cover', '-').strip().upper()
+        if value == 'OPEN':
+            newState = False
+        elif value == 'CLOSED':
+            newState = True
+        else:
+            # undefined state goes first to close
+            newState = False
+
+        cover['UNPARK'] = newState
+        cover['PARK'] = not newState
+        client.sendNewSwitch(deviceName=name,
+                             propertyName='CAP_PARK',
+                             elements=cover,
+                             )
+        return True

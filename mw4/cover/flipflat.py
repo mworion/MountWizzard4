@@ -98,7 +98,7 @@ class FlipFlat(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
-            print('number', element, value)
+            # print('number', element, value)
 
         return True
 
@@ -119,7 +119,7 @@ class FlipFlat(indiClass.IndiClass):
 
         for element, value in self.device.getText(propertyName).items():
             self.data[element] = value
-            print('text', propertyName, element, value)
+            # print('text', propertyName, element, value)
 
         return True
 
@@ -140,7 +140,7 @@ class FlipFlat(indiClass.IndiClass):
 
         for element, value in self.device.getSwitch(propertyName).items():
             self.data[element] = value
-            print('switch', propertyName, element, value)
+            # print('switch', propertyName, element, value)
 
         return True
 
@@ -161,6 +161,6 @@ class FlipFlat(indiClass.IndiClass):
 
         for element, value in self.device.getLight(propertyName).items():
             self.data[element] = value
-            print('light', propertyName, element, value)
+            # print('light', propertyName, element, value)
 
         return True

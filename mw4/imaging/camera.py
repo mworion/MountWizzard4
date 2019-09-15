@@ -81,6 +81,7 @@ class Camera(indiClass.IndiClass):
         self.app = app
         self.signals = CameraSignals()
         self.imagePath = ''
+        self.filterNames = dict()
 
     def setUpdateConfig(self, deviceName):
         """
@@ -96,6 +97,9 @@ class Camera(indiClass.IndiClass):
 
         if self.device is None:
             return False
+
+        # reset the filers as well
+        self.filterNames = dict()
 
         # set BLOB mode also
         self.client.setBlobMode(blobHandling='Also',
@@ -149,6 +153,10 @@ class Camera(indiClass.IndiClass):
                 self.app.mainW.ui.pixelSizeX.setText(f'{value:2.2f}')
             if element == 'CCD_PIXEL_SIZE_Y':
                 self.app.mainW.ui.pixelSizeY.setText(f'{value:2.2f}')
+            if element == 'CCD_MAX_X':
+                self.app.mainW.ui.pixelX.setText(f'{value:5.0f}')
+            if element == 'CCD_MAX_Y':
+                self.app.mainW.ui.pixelY.setText(f'{value:5.0f}')
             return True
         return False
 
@@ -177,6 +185,30 @@ class Camera(indiClass.IndiClass):
         else:
             return False
 
+    def setParametersNumber(self, propertyName='', element='', value=0):
+        """
+
+        :param propertyName:
+        :param element:
+        :param value:
+        :return: success
+        """
+
+        if propertyName == 'FILTER_SLOT':
+            if element == 'FILTER_SLOT_VALUE':
+                self.app.mainW.ui.filterNumber.setText(f'{value:1.0f}')
+                if not self.filterNames:
+                    return False
+                key = f'FILTER_SLOT_NAME_{value:1.0f}'
+                text = self.filterNames.get(key, 'not found')
+                self.app.mainW.ui.filterText.setText(f'{text}')
+
+        if propertyName == 'CCD_ROTATION':
+            if element == 'CCD_ROTATION_VALUE':
+                self.app.mainW.ui.rotation.setText(f'{value:3.1f}')
+            return True
+        return False
+
     def updateNumber(self, deviceName, propertyName):
         """
         updateNumber is called whenever a new number is received in client. it runs
@@ -190,17 +222,35 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
         if deviceName != self.name:
+            # print(propertyName, element, value)
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            # print(propertyName, element, value)
+            print(propertyName, element, value)
 
             self.setPixelSize(propertyName=propertyName, element=element, value=value)
             self.setExposureState(propertyName=propertyName, value=value)
+            self.setParametersNumber(propertyName=propertyName, element=element, value=value)
 
         return True
+
+    def setParametersText(self, propertyName='', element='', value=0):
+        """
+
+        :param propertyName:
+        :param element:
+        :param value:
+        :return: success
+        """
+
+        if propertyName == 'FILTER_NAME':
+            if element in self.filterNames:
+                return True
+            self.filterNames[element] = value
+            return True
+        return False
 
     def updateText(self, deviceName, propertyName):
         """
@@ -215,12 +265,15 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
         if deviceName != self.name:
+            # print(propertyName, element, value)
             return False
 
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            # print(propertyName, element, value)
+
+            self.setParametersText(propertyName=propertyName, element=element, value=value)
+            print(propertyName, element, value)
         return True
 
     def updateSwitch(self, deviceName, propertyName):
@@ -236,6 +289,7 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
         if deviceName != self.name:
+            # print(propertyName, element, value)
             return False
 
         for element, value in self.device.getSwitch(propertyName).items():
@@ -257,6 +311,7 @@ class Camera(indiClass.IndiClass):
         if self.device is None:
             return False
         if deviceName != self.name:
+            # print(propertyName, element, value)
             return False
 
         for element, value in self.device.getLight(propertyName).items():

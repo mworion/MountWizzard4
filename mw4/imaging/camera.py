@@ -146,8 +146,10 @@ class Camera(indiClass.IndiClass):
 
         if propertyName == 'CCD_INFO':
             if element == 'CCD_PIXEL_SIZE_X':
-                self.app.mainW.ui.pixelSize.setValue(np.round(value, 1))
-                return True
+                self.app.mainW.ui.pixelSizeX.setText(f'{value:2.2f}')
+            if element == 'CCD_PIXEL_SIZE_Y':
+                self.app.mainW.ui.pixelSizeY.setText(f'{value:2.2f}')
+            return True
         return False
 
     def setExposureState(self, propertyName='', value=0):

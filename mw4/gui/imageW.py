@@ -625,29 +625,28 @@ class ImageWindow(widget.MWidget):
             imageData = fitsHandle[0].data
             header = fitsHandle[0].header
 
-            # correct faulty headers, because some imaging programs did not
-            # interpret the Keywords in the right manner (SGPro)
+        # correct faulty headers, because some imaging programs did not
+        # interpret the Keywords in the right manner (SGPro)
+        if header.get('CTYPE1', '').endswith('DEF'):
+            header['CTYPE1'] = header['CTYPE1'].replace('DEF', 'TAN')
+        if header.get('CTYPE2', '').endswith('DEF'):
+            header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
 
-            if header.get('CTYPE1', '').endswith('DEF'):
-                header['CTYPE1'] = header['CTYPE1'].replace('DEF', 'TAN')
-            if header.get('CTYPE2', '').endswith('DEF'):
-                header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
+        if self.ui.checkStackImages.isChecked():
+            imageData = self.stackImages(imageData=imageData, header=header)
 
         # check the data content and capabilities
         hasDistortion, wcsObject = self.writeHeaderToGUI(header=header)
-
-        if self.ui.checkStackImages.isChecked():
-            imageData = self.stackImages(imageData=imageData,
-                                         header=header)
 
         # process the image for viewing
         imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
         norm = self.stretchImage(image=imageData)
         colorMap = self.colorImage()
 
-        # check which type of presentation we would like to have
+        # check the data content and capabilities
         useWCS = self.ui.checkUseWCS.isChecked()
 
+        # check which type of presentation we would like to have
         if hasDistortion and useWCS:
             axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
         else:

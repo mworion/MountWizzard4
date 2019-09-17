@@ -465,7 +465,7 @@ class ImageWindow(widget.MWidget):
         vmin, vmax = interval.get_limits(image)
         # cutout the noise
         delta = vmax - vmin
-        vmin = min(vmin + delta * 0.00, vmax)
+        vmin = min(vmin + delta * 0.01, vmax)
 
         norm = ImageNormalize(image,
                               vmin=vmin,

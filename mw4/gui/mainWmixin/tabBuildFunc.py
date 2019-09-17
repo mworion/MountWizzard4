@@ -209,7 +209,7 @@ class BuildFunc(object):
         """
 
         if self.resultQueue.empty():
-            self.logger.error('empty result queue')
+            self.logger.debug('empty result queue')
             return False
 
         mPoint = self.resultQueue.get()
@@ -279,7 +279,7 @@ class BuildFunc(object):
         """
 
         if self.solveQueue.empty():
-            self.logger.error('empty solve queue')
+            self.logger.debug('empty solve queue')
             return False
 
         mPoint = self.solveQueue.get()
@@ -323,7 +323,7 @@ class BuildFunc(object):
         """
 
         if self.imageQueue.empty():
-            self.logger.error('empty image queue')
+            self.logger.debug('empty image queue')
             return False
 
         mPoint = self.imageQueue.get()

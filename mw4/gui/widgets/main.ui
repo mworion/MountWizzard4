@@ -13028,7 +13028,7 @@ to mount manually</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -14408,6 +14408,33 @@ to mount manually</string>
          </property>
          <property name="text">
           <string>Show INDI messages in message window</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="shareIndiServer">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>370</y>
+           <width>264</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>Use same IP settings for all devices</string>
          </property>
          <property name="checked">
           <bool>false</bool>
@@ -20571,22 +20598,22 @@ to mount manually</string>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>powerCurrent1</tabstop>
-  <tabstop>powerCurrent2</tabstop>
-  <tabstop>dewB</tabstop>
-  <tabstop>tracking</tabstop>
-  <tabstop>flipMount</tabstop>
-  <tabstop>setLunarTracking</tabstop>
-  <tabstop>setSolarTracking</tabstop>
-  <tabstop>setSiderealTracking</tabstop>
-  <tabstop>park</tabstop>
-  <tabstop>stop</tabstop>
-  <tabstop>checkRefracNone</tabstop>
-  <tabstop>checkRefracCont</tabstop>
-  <tabstop>checkRefracNoTrack</tabstop>
-  <tabstop>setRefractionManual</tabstop>
-  <tabstop>deleteWorstPoint</tabstop>
-  <tabstop>clearModel</tabstop>
+  <tabstop>environHost</tabstop>
+  <tabstop>environPort</tabstop>
+  <tabstop>imagingHost</tabstop>
+  <tabstop>imagingPort</tabstop>
+  <tabstop>domeHost</tabstop>
+  <tabstop>domePort</tabstop>
+  <tabstop>powerHost</tabstop>
+  <tabstop>powerPort</tabstop>
+  <tabstop>skymeterHost</tabstop>
+  <tabstop>skymeterPort</tabstop>
+  <tabstop>coverHost</tabstop>
+  <tabstop>coverPort</tabstop>
+  <tabstop>telescopeHost</tabstop>
+  <tabstop>telescopePort</tabstop>
+  <tabstop>indiMessage</tabstop>
+  <tabstop>shareIndiServer</tabstop>
   <tabstop>refreshModel</tabstop>
   <tabstop>runTargetRMS</tabstop>
   <tabstop>cancelTargetRMS</tabstop>
@@ -20692,12 +20719,155 @@ to mount manually</string>
   <tabstop>relayButton0</tabstop>
   <tabstop>checkJ2000</tabstop>
   <tabstop>powerPort2</tabstop>
-  <tabstop>indiMessage</tabstop>
+  <tabstop>deleteWorstPoint</tabstop>
   <tabstop>powerPort1</tabstop>
   <tabstop>powerBootPort1</tabstop>
   <tabstop>powerBootPort2</tabstop>
   <tabstop>checkJNow</tabstop>
   <tabstop>dewCurrentB</tabstop>
+  <tabstop>cancelAlignModel</tabstop>
+  <tabstop>runAlignModel</tabstop>
+  <tabstop>genAlignBuild</tabstop>
+  <tabstop>numberBase</tabstop>
+  <tabstop>azBase</tabstop>
+  <tabstop>altBase</tabstop>
+  <tabstop>saveAlignBuildPointsAs</tabstop>
+  <tabstop>saveAlignBuildPoints</tabstop>
+  <tabstop>genAlignBuildFile</tabstop>
+  <tabstop>loadAlignBuildPoints</tabstop>
+  <tabstop>plateSolveSync</tabstop>
+  <tabstop>buildPFileName</tabstop>
+  <tabstop>saveBuildPointsAs</tabstop>
+  <tabstop>saveBuildPoints</tabstop>
+  <tabstop>genBuildFile</tabstop>
+  <tabstop>loadBuildPoints</tabstop>
+  <tabstop>numberGridPointsRow</tabstop>
+  <tabstop>altitudeMax</tabstop>
+  <tabstop>numberGridPointsCol</tabstop>
+  <tabstop>genBuildGrid</tabstop>
+  <tabstop>altitudeMin</tabstop>
+  <tabstop>genBuildMax</tabstop>
+  <tabstop>genBuildMed</tabstop>
+  <tabstop>genBuildMin</tabstop>
+  <tabstop>genBuildNorm</tabstop>
+  <tabstop>numberDSOPoints</tabstop>
+  <tabstop>durationDSO</tabstop>
+  <tabstop>timeShiftDSO</tabstop>
+  <tabstop>genBuildDSO</tabstop>
+  <tabstop>genBuildGoldenSpiral</tabstop>
+  <tabstop>numberSpiralPoints</tabstop>
+  <tabstop>batchModel</tabstop>
+  <tabstop>cancelFullModel</tabstop>
+  <tabstop>runFullModel</tabstop>
+  <tabstop>satelliteSource</tabstop>
+  <tabstop>satelliteDataAge</tabstop>
+  <tabstop>satAzimuth</tabstop>
+  <tabstop>satAltitude</tabstop>
+  <tabstop>satRa</tabstop>
+  <tabstop>satDec</tabstop>
+  <tabstop>satelliteNumber</tabstop>
+  <tabstop>satLongitude</tabstop>
+  <tabstop>satLatitude</tabstop>
+  <tabstop>satNeedFlip</tabstop>
+  <tabstop>satTransitStartUTC</tabstop>
+  <tabstop>satTransitEndUTC</tabstop>
+  <tabstop>stopSatelliteTracking</tabstop>
+  <tabstop>le_analyseFileName</tabstop>
+  <tabstop>loadAnalyseData</tabstop>
+  <tabstop>delayTimeFlexure</tabstop>
+  <tabstop>numberRunsTimeChange</tabstop>
+  <tabstop>altitudeTimeChange</tabstop>
+  <tabstop>azimuthTimeChange</tabstop>
+  <tabstop>runFlexure</tabstop>
+  <tabstop>delayTimeHysterese</tabstop>
+  <tabstop>altitudeHysterese2</tabstop>
+  <tabstop>altitudeHysterese1</tabstop>
+  <tabstop>numberRunsHysterese</tabstop>
+  <tabstop>azimuthHysterese2</tabstop>
+  <tabstop>azimuthHysterese1</tabstop>
+  <tabstop>runHysteresis</tabstop>
+  <tabstop>powerPort4</tabstop>
+  <tabstop>powerCurrent4</tabstop>
+  <tabstop>powerBootPort4</tabstop>
+  <tabstop>powerCurrent3</tabstop>
+  <tabstop>powerBootPort3</tabstop>
+  <tabstop>powerPort3</tabstop>
+  <tabstop>hubUSB</tabstop>
+  <tabstop>sensorPower</tabstop>
+  <tabstop>sensorVoltage</tabstop>
+  <tabstop>consumptionWattHours</tabstop>
+  <tabstop>sensorCurrent</tabstop>
+  <tabstop>consumptionAvgAmps</tabstop>
+  <tabstop>consumptionAmpHours</tabstop>
+  <tabstop>dewCurrentA</tabstop>
+  <tabstop>dewA</tabstop>
+  <tabstop>autoDew</tabstop>
+  <tabstop>checkIncludeSubdirs</tabstop>
+  <tabstop>renameDir</tabstop>
+  <tabstop>renameInputSelect</tabstop>
+  <tabstop>renameStart</tabstop>
+  <tabstop>rename5</tabstop>
+  <tabstop>rename4</tabstop>
+  <tabstop>rename3</tabstop>
+  <tabstop>rename2</tabstop>
+  <tabstop>rename1</tabstop>
+  <tabstop>posButton6</tabstop>
+  <tabstop>posButton4</tabstop>
+  <tabstop>posButton5</tabstop>
+  <tabstop>posButton3</tabstop>
+  <tabstop>posButton1</tabstop>
+  <tabstop>posButton0</tabstop>
+  <tabstop>posButton2</tabstop>
+  <tabstop>posButton7</tabstop>
+  <tabstop>powerDevice</tabstop>
+  <tabstop>measureDevice</tabstop>
+  <tabstop>remoteDevice</tabstop>
+  <tabstop>relayDevice</tabstop>
+  <tabstop>coverDevice</tabstop>
+  <tabstop>domeDevice</tabstop>
+  <tabstop>imagingDevice</tabstop>
+  <tabstop>telescopeDevice</tabstop>
+  <tabstop>astrometryDevice</tabstop>
+  <tabstop>environDevice</tabstop>
+  <tabstop>skymeterDevice</tabstop>
+  <tabstop>powerCurrent2</tabstop>
+  <tabstop>environDeviceName</tabstop>
+  <tabstop>powerCurrent1</tabstop>
+  <tabstop>tracking</tabstop>
+  <tabstop>imagingDeviceName</tabstop>
+  <tabstop>dewB</tabstop>
+  <tabstop>setLunarTracking</tabstop>
+  <tabstop>flipMount</tabstop>
+  <tabstop>domeDeviceName</tabstop>
+  <tabstop>setSolarTracking</tabstop>
+  <tabstop>setSiderealTracking</tabstop>
+  <tabstop>powerDeviceName</tabstop>
+  <tabstop>park</tabstop>
+  <tabstop>skymeterDeviceName</tabstop>
+  <tabstop>stop</tabstop>
+  <tabstop>coverDeviceName</tabstop>
+  <tabstop>checkRefracNone</tabstop>
+  <tabstop>checkRefracCont</tabstop>
+  <tabstop>setRefractionManual</tabstop>
+  <tabstop>telescopeDeviceName</tabstop>
+  <tabstop>checkRefracNoTrack</tabstop>
+  <tabstop>expTime</tabstop>
+  <tabstop>binning</tabstop>
+  <tabstop>subFrame</tabstop>
+  <tabstop>checkFastDownload</tabstop>
+  <tabstop>isoSetting</tabstop>
+  <tabstop>checkKeepImages</tabstop>
+  <tabstop>searchRadius</tabstop>
+  <tabstop>solveTimeout</tabstop>
+  <tabstop>settleTimeMount</tabstop>
+  <tabstop>settleTimeDome</tabstop>
+  <tabstop>coverOpen</tabstop>
+  <tabstop>openWeatherMapKey</tabstop>
+  <tabstop>bootRackComp</tabstop>
+  <tabstop>rackCompMAC</tabstop>
+  <tabstop>isOnline</tabstop>
+  <tabstop>enableNoise</tabstop>
+  <tabstop>clearModel</tabstop>
  </tabstops>
  <resources/>
  <connections/>

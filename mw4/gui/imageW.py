@@ -103,11 +103,11 @@ class ImageWindow(widget.MWidget):
                               'Super X': (1, 99.8),
                               }
 
-        self.zoomLevel = {'Zoom 1x': 1,
-                          'Zoom 2x': 2,
-                          'Zoom 4x': 4,
-                          'Zoom 8x': 8,
-                          'Zoom 16x': 16,
+        self.zoomLevel = {' 1x Zoom': 1,
+                          ' 2x Zoom': 2,
+                          ' 4x Zoom': 4,
+                          ' 8x Zoom': 8,
+                          '16x Zoom': 16,
                           }
 
         self.imageMat = self.embedMatplot(self.ui.image)

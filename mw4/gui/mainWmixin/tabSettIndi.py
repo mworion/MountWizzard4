@@ -47,6 +47,7 @@ class SettIndi(object):
                                        'powerDeviceName',
                                        ]
 
+        # all internal signal for handling
         self.app.environ.client.signals.newMessage.connect(self.indiMessage)
         self.app.skymeter.client.signals.newMessage.connect(self.indiMessage)
         self.app.cover.client.signals.newMessage.connect(self.indiMessage)
@@ -110,6 +111,8 @@ class SettIndi(object):
         sig.removeDevice.connect(self.showIndiRemovePowerDevice)
 
         self.setupDeviceNameGui()
+
+        # signals from gui
         self.ui.domeDeviceName.currentIndexChanged.connect(self.domeDispatch)
         self.ui.imagingDeviceName.currentIndexChanged.connect(self.imagingDispatch)
         self.ui.environDeviceName.currentIndexChanged.connect(self.environDispatch)
@@ -117,6 +120,22 @@ class SettIndi(object):
         self.ui.telescopeDeviceName.currentIndexChanged.connect(self.telescopeDispatch)
         self.ui.skymeterDeviceName.currentIndexChanged.connect(self.skymeterDispatch)
         self.ui.powerDeviceName.currentIndexChanged.connect(self.powerDispatch)
+
+        self.ui.environHost.editingFinished.connect(self.shareServerHost)
+        self.ui.coverHost.editingFinished.connect(self.shareServerHost)
+        self.ui.imagingHost.editingFinished.connect(self.shareServerHost)
+        self.ui.domeHost.editingFinished.connect(self.shareServerHost)
+        self.ui.telescopeHost.editingFinished.connect(self.shareServerHost)
+        self.ui.skymeterHost.editingFinished.connect(self.shareServerHost)
+        self.ui.powerHost.editingFinished.connect(self.shareServerHost)
+
+        self.ui.environPort.editingFinished.connect(self.shareServerPort)
+        self.ui.coverPort.editingFinished.connect(self.shareServerPort)
+        self.ui.imagingPort.editingFinished.connect(self.shareServerPort)
+        self.ui.domePort.editingFinished.connect(self.shareServerPort)
+        self.ui.telescopePort.editingFinished.connect(self.shareServerPort)
+        self.ui.skymeterPort.editingFinished.connect(self.shareServerPort)
+        self.ui.powerPort.editingFinished.connect(self.shareServerPort)
 
     def initConfig(self):
         """
@@ -146,6 +165,7 @@ class SettIndi(object):
         self.ui.powerPort.setText(config.get('powerPort', '7624'))
 
         self.ui.indiMessage.setChecked(config.get('indiMessage', False))
+        self.ui.shareIndiServer.setChecked(config.get('shareIndiServer', False))
 
         return True
 
@@ -176,6 +196,7 @@ class SettIndi(object):
         config['powerPort'] = self.ui.powerPort.text()
 
         config['indiMessage'] = self.ui.indiMessage.isChecked()
+        config['shareIndiServer'] = self.ui.shareIndiServer.isChecked()
 
         return True
 
@@ -244,8 +265,65 @@ class SettIndi(object):
 
         return True
 
+    def shareServerHost(self):
+        """
+
+        :return:
+        """
+
+        if not self.ui.shareIndiServer.isChecked():
+            return False
+
+        hosts = [self.ui.environHost,
+                 self.ui.coverHost,
+                 self.ui.imagingHost,
+                 self.ui.domeHost,
+                 self.ui.skymeterHost,
+                 self.ui.telescopeHost,
+                 self.ui.powerHost,
+                 self.ui.skymeterHost,
+                 ]
+
+        if self.sender() not in hosts:
+            return False
+
+        for host in hosts:
+            if self.sender() == host:
+                continue
+            host.setText(self.sender().text())
+
+        return True
+
+    def shareServerPort(self):
+        """
+
+        :return:
+        """
+
+        if not self.ui.shareIndiServer.isChecked():
+            return False
+
+        ports = [self.ui.environPort,
+                 self.ui.coverPort,
+                 self.ui.imagingPort,
+                 self.ui.domePort,
+                 self.ui.skymeterPort,
+                 self.ui.telescopePort,
+                 self.ui.powerPort,
+                 ]
+
+        if self.sender() not in ports:
+            return False
+
+        for port in ports:
+            if self.sender() == port:
+                continue
+            port.setText(self.sender().text())
+
+        return True
+
     @staticmethod
-    def _removePrefix(text, prefix):
+    def removePrefix(text, prefix):
         """
 
         :param text:
@@ -268,10 +346,10 @@ class SettIndi(object):
         """
         if self.ui.indiMessage.isChecked():
             if text.startswith('[WARNING]'):
-                text = self._removePrefix(text, '[WARNING]')
+                text = self.removePrefix(text, '[WARNING]')
                 self.app.message.emit(device + ' -> ' + text, 0)
             elif text.startswith('[ERROR]'):
-                text = self._removePrefix(text, '[ERROR]')
+                text = self.removePrefix(text, '[ERROR]')
                 self.app.message.emit(device + ' -> ' + text, 2)
             else:
                 self.app.message.emit(device + ' -> ' + text, 0)

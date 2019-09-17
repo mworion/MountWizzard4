@@ -56,21 +56,21 @@ def test_setupIcons():
 def test_removePrefix_1():
     text = 'test is it'
     pre = 'test'
-    val = app.mainW._removePrefix(text, pre)
+    val = app.mainW.removePrefix(text, pre)
     assert val == 'is it'
 
 
 def test_removePrefix_2():
     text = 'testis it'
     pre = 'test'
-    val = app.mainW._removePrefix(text, pre)
+    val = app.mainW.removePrefix(text, pre)
     assert val == 'is it'
 
 
 def test_removePrefix_3():
     text = 'test   is it  '
     pre = 'test'
-    val = app.mainW._removePrefix(text, pre)
+    val = app.mainW.removePrefix(text, pre)
     assert val == 'is it'
 
 

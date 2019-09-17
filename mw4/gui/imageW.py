@@ -95,7 +95,7 @@ class ImageWindow(widget.MWidget):
                           'Spectral': 'nipy_spectral',
                           }
 
-        self.stretchValues = {'Low X': (99, 99.999),
+        self.stretchValues = {'Low X': (98, 99.999),
                               'Low': (90, 99.995),
                               'Mid': (50, 99.99),
                               'High': (20, 99.98),
@@ -463,6 +463,9 @@ class ImageWindow(widget.MWidget):
         values = self.stretchValues[self.ui.stretch.currentText()]
         interval = AsymmetricPercentileInterval(*values)
         vmin, vmax = interval.get_limits(image)
+        # cutout the noise
+        delta = vmax - vmin
+        vmin = min(vmin + delta * 0.00, vmax)
 
         norm = ImageNormalize(image,
                               vmin=vmin,
@@ -470,7 +473,7 @@ class ImageWindow(widget.MWidget):
                               stretch=SqrtStretch(),
                               )
 
-        return norm
+        return norm, vmin, vmax
 
     def colorImage(self):
         """
@@ -530,7 +533,7 @@ class ImageWindow(widget.MWidget):
         axe1.set_ticklabel_position('tb')
         axe1.set_axislabel_position('tb')
 
-        return axe
+        return figure, axe
 
     def setupNormal(self, figure=None, header=None):
         """
@@ -582,7 +585,7 @@ class ImageWindow(widget.MWidget):
 
         axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
-        return axe
+        return figure, axe
 
     def stackImages(self, imageData=None, header=None):
         """
@@ -640,7 +643,7 @@ class ImageWindow(widget.MWidget):
 
         # process the image for viewing
         imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
-        norm = self.stretchImage(image=imageData)
+        norm, iMin, iMax = self.stretchImage(image=imageData)
         colorMap = self.colorImage()
 
         # check the data content and capabilities
@@ -648,9 +651,9 @@ class ImageWindow(widget.MWidget):
 
         # check which type of presentation we would like to have
         if hasDistortion and useWCS:
-            axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
+            fig, axe = self.setupDistorted(figure=self.imageMat.figure, wcsObject=wcsObject)
         else:
-            axe = self.setupNormal(figure=self.imageMat.figure, header=header)
+            fig, axe = self.setupNormal(figure=self.imageMat.figure, header=header)
 
         # finally show it
         axe.imshow(imageData, norm=norm, cmap=colorMap, origin='lower')

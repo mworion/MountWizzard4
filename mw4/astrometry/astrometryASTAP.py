@@ -184,7 +184,7 @@ class AstrometryASTAP(object):
                    f'{radius:1.1f}',
                    '-t',
                    '0.005',
-                   '-d',
+                   '-downsample',
                    '0',
                    ]
 

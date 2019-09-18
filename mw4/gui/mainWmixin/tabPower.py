@@ -20,6 +20,7 @@
 # standard libraries
 import copy
 # external packages
+import PyQt5
 # local import
 
 
@@ -54,8 +55,8 @@ class Power(object):
         signals.newText.connect(self.setPowerText)
         signals.defText.connect(self.setPowerText)
 
-        self.ui.dewA.valueChanged.connect(self.sendDewA)
-        self.ui.dewB.valueChanged.connect(self.sendDewB)
+        self.clickable(self.ui.dewA).connect(self.sendDewA)
+        self.clickable(self.ui.dewB).connect(self.sendDewB)
 
         self.ui.powerPort1.clicked.connect(self.sendPowerPort1)
         self.ui.powerPort2.clicked.connect(self.sendPowerPort2)
@@ -165,13 +166,9 @@ class Power(object):
 
         for element, value in device.getNumber(propertyName).items():
             if element == 'DEW_A':
-                self.ui.dewA.valueChanged.disconnect(self.sendDewA)
-                self.ui.dewA.setValue(round(value, -1))
-                self.ui.dewA.valueChanged.connect(self.sendDewA)
+                self.ui.dewA.setText(f'{value:3.0f}')
             elif element == 'DEW_B':
-                self.ui.dewB.valueChanged.disconnect(self.sendDewB)
-                self.ui.dewB.setValue(round(value, -1))
-                self.ui.dewB.valueChanged.connect(self.sendDewB)
+                self.ui.dewB.setText(f'{value:3.0f}')
             # print(deviceName, propertyName, element, value)
 
         return True
@@ -195,7 +192,6 @@ class Power(object):
             return False
 
         for element, value in device.getSwitch(propertyName).items():
-            print(propertyName, element, value)
             if element in self.powerOnOFF:
                 if value:
                     self.changeStyleDynamic(self.powerOnOFF[element], 'running', True)
@@ -257,8 +253,22 @@ class Power(object):
         if device is None:
             return False
 
+        actValue = int(self.ui.dewA.text())
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set dew PWM A',
+                               'Value (0-100):',
+                               actValue,
+                               0,
+                               100,
+                               10,
+                               )
+
+        if not ok:
+            return False
+
         dew = device.getNumber('DEW_PWM')
-        dew['DEW_A'] = self.ui.dewA.value()
+        dew['DEW_A'] = value
         client.sendNewNumber(deviceName=name,
                              propertyName='DEW_PWM',
                              elements=dew,
@@ -278,8 +288,22 @@ class Power(object):
         if device is None:
             return False
 
+        actValue = int(self.ui.dewB.text())
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set dew PWM B',
+                               'Value (0-100):',
+                               actValue,
+                               0,
+                               100,
+                               10,
+                               )
+
+        if not ok:
+            return False
+
         dew = device.getNumber('DEW_PWM')
-        dew['DEW_B'] = self.ui.dewB.value()
+        dew['DEW_B'] = value
         client.sendNewNumber(deviceName=name,
                              propertyName='DEW_PWM',
                              elements=dew,

@@ -25,6 +25,7 @@ setup(
         'mw4',
         'mw4.astrometry',
         'mw4.base',
+        'mw4.cover',
         'mw4.dome',
         'mw4.environment',
         'mw4.gui',
@@ -35,6 +36,7 @@ setup(
         'mw4.modeldata',
         'mw4.powerswitch',
         'mw4.remote',
+        'mw4.telescope',
     ],
     python_requires='>=3.7.2',
     install_requires=[

@@ -18,6 +18,7 @@
 #
 ###########################################################
 # standard libraries
+import copy
 # external packages
 # local import
 
@@ -32,15 +33,16 @@ class Power(object):
 
     def __init__(self):
 
-        self.controls = {'POWER_CONTROL_1': self.ui.powerPort1,
-                         'POWER_CONTROL_2': self.ui.powerPort2,
-                         'POWER_CONTROL_3': self.ui.powerPort3,
-                         'POWER_CONTROL_4': self.ui.powerPort4,
-                         'POWER_PORT_1': self.ui.powerBootPort1,
-                         'POWER_PORT_2': self.ui.powerBootPort2,
-                         'POWER_PORT_3': self.ui.powerBootPort3,
-                         'POWER_PORT_4': self.ui.powerBootPort4,
-                         }
+        self.powerOnOFF = {'POWER_CONTROL_1': self.ui.powerPort1,
+                           'POWER_CONTROL_2': self.ui.powerPort2,
+                           'POWER_CONTROL_3': self.ui.powerPort3,
+                           'POWER_CONTROL_4': self.ui.powerPort4,
+                           }
+        self.powerBoot = {'POWER_PORT_1': self.ui.powerBootPort1,
+                          'POWER_PORT_2': self.ui.powerBootPort2,
+                          'POWER_PORT_3': self.ui.powerBootPort3,
+                          'POWER_PORT_4': self.ui.powerBootPort4,
+                          }
 
         signals = self.app.power.client.signals
         signals.newNumber.connect(self.updatePowerGui)
@@ -193,10 +195,18 @@ class Power(object):
             return False
 
         for element, value in device.getSwitch(propertyName).items():
-            if element in self.controls:
-                self.controls[element].setChecked(value)
-            elif propertyName == 'USB_PORT_CONTROL' and element == 'ENABLED':
-                self.ui.hubUSB.setChecked(value)
+            print(propertyName, element, value)
+            if element in self.powerOnOFF:
+                if value:
+                    self.changeStyleDynamic(self.powerOnOFF[element], 'running', True)
+                else:
+                    self.changeStyleDynamic(self.powerOnOFF[element], 'running', False)
+            elif element in self.powerBoot:
+                self.powerBoot[element].setChecked(value)
+            elif propertyName == 'USB_HUB_CONTROL' and element == 'ENABLED':
+                self.changeStyleDynamic(self.ui.hubUSB, 'running', value)
+            elif propertyName == 'USB_HUB_CONTROL' and element == 'DISABLED':
+                self.changeStyleDynamic(self.ui.hubUSB, 'running', not value)
             elif propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':
                 self.ui.autoDew.setChecked(value)
             # print(deviceName, propertyName, element, value)
@@ -290,7 +300,7 @@ class Power(object):
             return False
 
         power = device.getSwitch('POWER_CONTROL')
-        power['POWER_CONTROL_1'] = self.ui.powerPort1.isChecked()
+        power['POWER_CONTROL_1'] = not power['POWER_CONTROL_1']
         client.sendNewSwitch(deviceName=name,
                              propertyName='POWER_CONTROL',
                              elements=power,
@@ -311,7 +321,7 @@ class Power(object):
             return False
 
         power = device.getSwitch('POWER_CONTROL')
-        power['POWER_CONTROL_2'] = self.ui.powerPort2.isChecked()
+        power['POWER_CONTROL_2'] = not power['POWER_CONTROL_2']
         client.sendNewSwitch(deviceName=name,
                              propertyName='POWER_CONTROL',
                              elements=power,
@@ -332,7 +342,7 @@ class Power(object):
             return False
 
         power = device.getSwitch('POWER_CONTROL')
-        power['POWER_CONTROL_3'] = self.ui.powerPort3.isChecked()
+        power['POWER_CONTROL_3'] = not power['POWER_CONTROL_3']
         client.sendNewSwitch(deviceName=name,
                              propertyName='POWER_CONTROL',
                              elements=power,
@@ -353,7 +363,7 @@ class Power(object):
             return False
 
         power = device.getSwitch('POWER_CONTROL')
-        power['POWER_CONTROL_4'] = self.ui.powerPort4.isChecked()
+        power['POWER_CONTROL_4'] = not power['POWER_CONTROL_4']
         client.sendNewSwitch(deviceName=name,
                              propertyName='POWER_CONTROL',
                              elements=power,
@@ -457,11 +467,11 @@ class Power(object):
         if device is None:
             return False
 
-        usb = device.getSwitch('USB_PORT_CONTROL')
-        usb['ENABLED'] = self.ui.hubUSB.isChecked()
-        usb['DISABLED'] = not self.ui.hubUSB.isChecked()
+        usb = device.getSwitch('USB_HUB_CONTROL')
+        usb['ENABLED'] = not usb['ENABLED']
+        usb['DISABLED'] = not usb['DISABLED']
         client.sendNewSwitch(deviceName=name,
-                             propertyName='USB_PORT_CONTROL',
+                             propertyName='USB_HUB_CONTROL',
                              elements=usb,
                              )
         return True

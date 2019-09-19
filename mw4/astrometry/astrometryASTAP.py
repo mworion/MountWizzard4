@@ -184,6 +184,8 @@ class AstrometryASTAP(object):
                    f'{radius:1.1f}',
                    '-t',
                    '0.005',
+                   '-z',
+                   '1',
                    ]
 
         suc = self.runASTAP(binPath=binPathASTAP,

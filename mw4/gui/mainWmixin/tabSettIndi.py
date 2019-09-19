@@ -409,6 +409,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['dome'] is None:
+            return False
         self.ui.domeDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['dome'] = True
         return True
@@ -421,6 +423,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['dome'] is None:
+            return False
         self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['dome'] = False
         return True
@@ -478,6 +482,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['imaging'] is None:
+            return False
         self.ui.imagingDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['imaging'] = True
         return True
@@ -490,6 +496,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['imaging'] is None:
+            return False
         self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['imaging'] = False
         return True
@@ -547,6 +555,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['environment'] is None:
+            return False
         self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['environment'] = True
         return True
@@ -559,6 +569,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['environment'] is None:
+            return False
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['environment'] = False
         return True
@@ -615,6 +627,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['skymeter'] is None:
+            return False
         self.ui.skymeterDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['skymeter'] = True
         return True
@@ -627,6 +641,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['skymeter'] is None:
+            return False
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['skymeter'] = False
         return True
@@ -684,6 +700,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['telescope'] is None:
+            return False
         self.ui.telescopeDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['telescope'] = True
         return True
@@ -696,6 +714,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['telescope'] is None:
+            return False
         self.ui.telescopeDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['telescope'] = False
         return True
@@ -753,6 +773,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['power'] is None:
+            return False
         self.deviceStat['power'] = True
         self.ui.powerDevice.setStyleSheet(self.BACK_GREEN)
         return True
@@ -765,6 +787,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['power'] is None:
+            return False
         self.deviceStat['power'] = False
         self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
         return True
@@ -821,6 +845,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['cover'] is None:
+            return False
         self.deviceStat['cover'] = True
         self.ui.coverDevice.setStyleSheet(self.BACK_GREEN)
         return True
@@ -833,6 +859,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
+        if self.deviceStat['cover'] is None:
+            return False
         self.deviceStat['cover'] = False
         self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
         return True

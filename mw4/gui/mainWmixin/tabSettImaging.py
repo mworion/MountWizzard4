@@ -129,7 +129,12 @@ class SettImaging(object):
 
         value = self.app.cover.data.get('Cover', '-')
         self.ui.coverStatusText.setText(value)
+
         value = self.app.cover.data.get('Motor', '-')
+        if value.strip().upper() == 'RUNNING':
+            self.ui.coverOpen.setEnabled(False)
+        else:
+            self.ui.coverOpen.setEnabled(True)
         self.ui.coverMotorText.setText(value)
 
     def sendCoverStat(self):

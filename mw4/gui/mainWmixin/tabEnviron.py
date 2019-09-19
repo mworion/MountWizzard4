@@ -176,7 +176,7 @@ class Environ(object):
         """
 
         value = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
-        self.ui.skymeterSQR.setText('{0:4.1f}'.format(value))
+        self.ui.skymeterSQR.setText('{0:5.2f}'.format(value))
         value = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
         self.ui.skymeterTemp.setText('{0:4.1f}'.format(value))
 

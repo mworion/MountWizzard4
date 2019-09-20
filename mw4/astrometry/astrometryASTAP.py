@@ -185,7 +185,7 @@ class AstrometryASTAP(object):
                    '-t',
                    '0.005',
                    '-z',
-                   '1',
+                   '0',
                    ]
 
         suc = self.runASTAP(binPath=binPathASTAP,

@@ -12042,7 +12042,7 @@ to mount manually</string>
          <rect>
           <x>10</x>
           <y>70</y>
-          <width>61</width>
+          <width>66</width>
           <height>21</height>
          </rect>
         </property>
@@ -12069,14 +12069,14 @@ to mount manually</string>
        <widget class="QLabel" name="label_287">
         <property name="geometry">
          <rect>
-          <x>205</x>
+          <x>185</x>
           <y>45</y>
-          <width>56</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
-         <string>Avg. Curr.</string>
+         <string>Aver. Current</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_165">
@@ -12084,7 +12084,7 @@ to mount manually</string>
          <rect>
           <x>10</x>
           <y>21</y>
-          <width>43</width>
+          <width>66</width>
           <height>21</height>
          </rect>
         </property>
@@ -12097,7 +12097,7 @@ to mount manually</string>
          <rect>
           <x>200</x>
           <y>70</y>
-          <width>62</width>
+          <width>66</width>
           <height>21</height>
          </rect>
         </property>
@@ -12110,7 +12110,7 @@ to mount manually</string>
          <rect>
           <x>215</x>
           <y>20</y>
-          <width>42</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -12139,7 +12139,7 @@ to mount manually</string>
          <rect>
           <x>10</x>
           <y>45</y>
-          <width>36</width>
+          <width>66</width>
           <height>21</height>
          </rect>
         </property>
@@ -12287,7 +12287,7 @@ to mount manually</string>
          <rect>
           <x>215</x>
           <y>20</y>
-          <width>42</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -12410,7 +12410,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>215</x>
           <y>20</y>
-          <width>42</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>

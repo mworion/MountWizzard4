@@ -363,12 +363,34 @@ class Environ(object):
         self.ui.weatherTemp.setText('-')
         self.ui.weatherPress.setText('-')
         self.ui.weatherHumidity.setText('-')
+        self.ui.weatherDewPoint.setText('-')
         self.ui.weatherCloudCover.setText('-')
         self.ui.weatherWindSpeed.setText('-')
         self.ui.weatherWindDir.setText('-')
         self.ui.weatherRainVol.setText('-')
 
         return True
+
+    @staticmethod
+    def getDewPoint(tempAir, relativeHumidity):
+        """
+        Compute the dew point in degrees Celsius
+
+        :param tempAir: current ambient temperature in degrees Celsius
+        :param relativeHumidity: relative humidity in %
+        :return: the dew point in degrees Celsius
+        """
+
+        if tempAir < -40 or tempAir > 80:
+            return 0
+        if relativeHumidity < 0 or relativeHumidity > 100:
+            return 0
+
+        A = 17.27
+        B = 237.7
+        alpha = ((A * tempAir) / (B + tempAir)) + np.log(relativeHumidity / 100.0)
+        dewPoint = (B * alpha) / (A - alpha)
+        return dewPoint
 
     def updateOpenWeatherMapGui(self, data=None):
         """
@@ -393,9 +415,14 @@ class Environ(object):
 
         self.clearOpenWeatherMapGui()
         if 'main' in val:
-            self.ui.weatherTemp.setText(f'{val["main"]["temp"]-273.15:4.1f}')
-            self.ui.weatherPress.setText(f'{val["main"]["grnd_level"]:5.1f}')
-            self.ui.weatherHumidity.setText(f'{val["main"]["humidity"]:3.0f}')
+            temp = val['main']['temp']-273.15
+            press = val['main']['grnd_level']
+            humid = val['main']['humidity']
+            dewPoint = self.getDewPoint(temp, humid)
+            self.ui.weatherTemp.setText(f'{temp:4.1f}')
+            self.ui.weatherPress.setText(f'{press:5.1f}')
+            self.ui.weatherHumidity.setText(f'{humid:3.0f}')
+            self.ui.weatherDewPoint.setText(f'{dewPoint:4.1f}')
         if 'clouds' in val:
             self.ui.weatherCloudCover.setText(f'{val["clouds"]["all"]:3.0f}')
         if 'wind' in val:

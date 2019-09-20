@@ -39,6 +39,10 @@ class Environ(object):
     """
 
     def __init__(self):
+
+        self.filteredTemperature = None
+        self.filteredPressure = None
+
         # environment functions
         signals = self.app.environ.client.signals
         signals.newNumber.connect(self.updateEnvironGUI)
@@ -51,12 +55,15 @@ class Environ(object):
 
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
-        self.app.update10s.connect(self.updateRefractionParameters)
-        self.app.update10m.connect(self.updateOpenWeatherMap)
-        self.app.update30m.connect(self.updateClearOutside)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
         self.ui.isOnline.stateChanged.connect(self.updateOpenWeatherMap)
         self.ui.openWeatherMapKey.editingFinished.connect(self.updateOpenWeatherMap)
+
+        # cyclic functions
+        self.app.update1s.connect(self.updateFilterRefractionParameters)
+        self.app.update10s.connect(self.updateRefractionParameters)
+        self.app.update10m.connect(self.updateOpenWeatherMap)
+        self.app.update30m.connect(self.updateClearOutside)
 
     def initConfig(self):
         """
@@ -94,6 +101,48 @@ class Environ(object):
 
         return True
 
+    def updateFilterRefractionParameters(self):
+        """
+        updateFilter initializes the filter with the first values or is rolling the
+        moving average
+
+        :return:
+        """
+
+        temp = self.app.environ.data.get('WEATHER_TEMPERATURE', None)
+        press = self.app.environ.data.get('WEATHER_PRESSURE', None)
+
+        if temp is None or press is None:
+            return False
+
+        if self.filteredTemperature is None:
+            self.filteredTemperature = np.full(100, temp)
+        else:
+            self.filteredTemperature = np.roll(self.filteredTemperature, 1)
+            self.filteredTemperature[0] = temp
+        if self.filteredPressure is None:
+            self.filteredPressure = np.full(100, press)
+        else:
+            self.filteredPressure = np.roll(self.filteredPressure, 1)
+            self.filteredPressure[0] = press
+
+        return True
+
+    def movingAverageRefractionParameters(self):
+        """
+        getFilteredRefracParams filters local temperature and pressure with and moving
+        average filter over 5 minutes and returns the filtered values.
+
+        :return:  temperature and pressure
+        """
+
+        if self.filteredTemperature.any() and self.filteredPressure.any():
+            temp = np.mean(self.filteredTemperature[:10])
+            press = np.mean(self.filteredPressure[:10])
+            return temp, press
+        else:
+            return None, None
+
     def updateRefractionParameters(self):
         """
         updateRefractionParameters takes the actual conditions for update into account and
@@ -110,7 +159,7 @@ class Environ(object):
         if self.ui.checkRefracNoTrack.isChecked():
             if self.app.mount.obsSite.status == 0:
                 return False
-        temp, press = self.app.environ.getFilteredRefracParams()
+        temp, press = self.movingAverageRefractionParameters()
         if temp is None or press is None:
             return False
         for i in range(0, 3):

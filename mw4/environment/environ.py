@@ -131,16 +131,6 @@ class Environ(indiClass.IndiClass):
                 key = element
 
             self.data[key] = value
-            elArray = key + '_ARRAY'
-            elTime = key + '_TIME'
-            if elArray not in self.data:
-                self.data[elArray] = np.full(100, value)
-                self.data[elTime] = np.full(100, datetime.now())
-            else:
-                self.data[elArray] = np.roll(self.data[elArray], 1)
-                self.data[elArray][0] = value
-                self.data[elTime] = np.roll(self.data[elTime], 1)
-                self.data[elTime][0] = datetime.now()
 
         if 'WEATHER_DEWPOINT' in self.data:
             return True
@@ -155,20 +145,3 @@ class Environ(indiClass.IndiClass):
         self.data['WEATHER_DEWPOINT'] = dewPoint
 
         return True
-
-    def getFilteredRefracParams(self):
-        """
-        getFilteredRefracParams filters local temperature and pressure with and moving
-        average filter over 5 minutes and returns the filtered values.
-
-        :return:  temperature and pressure
-        """
-
-        isTemperature = 'WEATHER_TEMPERATURE_ARRAY' in self.data
-        isPressure = 'WEATHER_PRESSURE_ARRAY' in self.data
-        if isTemperature and isPressure:
-            temp = np.mean(self.data['WEATHER_TEMPERATURE_ARRAY'][:10])
-            press = np.mean(self.data['WEATHER_PRESSURE_ARRAY'][:10])
-            return temp, press
-        else:
-            return None, None

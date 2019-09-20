@@ -118,6 +118,7 @@ class MeasureWindow(widget.MWidget):
         self.ui.measureSet2.setCurrentIndex(config.get('measureSet2', 0))
         self.ui.measureSet3.setCurrentIndex(config.get('measureSet3', 0))
         self.ui.timeSet.setCurrentIndex(config.get('timeSet', 0))
+        self.setCycleRefresh()
 
         return True
 
@@ -204,7 +205,7 @@ class MeasureWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        self.refreshCounter = 0
+        self.refreshCounter = 1
         self.cycleRefresh()
 
         return True

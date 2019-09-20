@@ -415,7 +415,7 @@ class Environ(object):
 
         self.clearOpenWeatherMapGui()
         if 'main' in val:
-            temp = val['main']['temp']-273.15
+            temp = val['main']['temp'] - 273.15
             press = val['main']['grnd_level']
             humid = val['main']['humidity']
             dewPoint = self.getDewPoint(temp, humid)

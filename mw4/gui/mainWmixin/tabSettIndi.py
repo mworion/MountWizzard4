@@ -647,7 +647,6 @@ class SettIndi(object):
         self.deviceStat['skymeter'] = False
         return True
 
-
     def showIndiTelescopeConnected(self):
         """
         showIndiTelescopeConnected writes info to message window

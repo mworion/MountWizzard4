@@ -207,7 +207,7 @@ class AstrometryNET(object):
         self.result = Solution(success=False, solve=Solve, message='default')
 
         if not os.path.isfile(fitsPath):
-            self.result = Solution(success=False, solve=solve, message='image missing')
+            self.result = Solution(success=False, solve=Solve, message='image missing')
             return False
 
         tempPath = self.tempDir + '/temp.xy'
@@ -233,7 +233,7 @@ class AstrometryNET(object):
                                )
         if not suc:
             self.logger.error(f'image2xy error in [{fitsPath}]')
-            self.result = Solution(success=False, solve=solve, message='image2xy error')
+            self.result = Solution(success=False, solve=Solve, message='image2xy error')
             return False
 
         raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)

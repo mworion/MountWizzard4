@@ -45,6 +45,7 @@ class Tools(object):
                                    'rename5': self.ui.rename5,
                                    }
         self.fitsHeaderKeywords = {'None': [''],
+                                   'Text': ['RenameText'],
                                    'Datetime': ['DATE-OBS'],
                                    'Frame': ['FRAME', 'IMAGETYP'],
                                    'Filter': ['FILTER'],
@@ -66,6 +67,7 @@ class Tools(object):
         config = self.app.config['mainW']
         defaultDir = self.app.mwGlob['imageDir']
         self.ui.renameDir.setText(config.get('renameDir', defaultDir))
+        self.ui.renameText.setText(config.get('renameText', ''))
         self.ui.checkIncludeSubdirs.setChecked(config.get('checkIncludeSubdirs', False))
         for name, ui in self.selectorsDropDowns.items():
             ui.setCurrentIndex(config.get(name, 0))
@@ -83,6 +85,7 @@ class Tools(object):
         """
         config = self.app.config['mainW']
         config['renameDir'] = self.ui.renameDir.text()
+        config['renameText'] = self.ui.renameText.text()
         config['checkIncludeSubdirs'] = self.ui.checkIncludeSubdirs.isChecked()
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
@@ -152,6 +155,8 @@ class Tools(object):
             chunk = f'{entry}'
         elif fitsKey == 'FILTER':
             chunk = f'{entry}'
+        elif fitskey == 'RenameText':
+            chunk = self.ui.renameText.upper()
         else:
             chunk = ''
 

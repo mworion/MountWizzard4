@@ -19,6 +19,7 @@ nice to have:
 - calculation dome
 - consolidate transformations
 - test indibase without server
+- test connection if no setup, but still available (dome )
 
 architecture:
 - mainApp refactor to better understandable implementation

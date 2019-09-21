@@ -228,7 +228,6 @@ class SettDevice(object):
             self.app.dome.name = self.ui.domeDeviceName.currentText()
             self.app.dome.startCommunication()
             self.app.message.emit('Dome enabled', 0)
-            self.deviceStat['dome'] = True
         else:
             self.app.message.emit('Dome disabled', 0)
             self.deviceStat['dome'] = None
@@ -249,7 +248,6 @@ class SettDevice(object):
             self.app.imaging.client.host = self.ui.imagingHost.text()
             self.app.imaging.name = self.ui.imagingDeviceName.currentText()
             self.app.imaging.startCommunication()
-            self.deviceStat['imaging'] = True
             self.app.message.emit('Imaging enabled', 0)
         else:
             self.deviceStat['imaging'] = None
@@ -272,7 +270,6 @@ class SettDevice(object):
             self.app.environ.client.host = self.ui.environHost.text()
             self.app.environ.name = self.ui.environDeviceName.currentText()
             self.app.environ.startCommunication()
-            self.deviceStat['environment'] = True
             self.app.message.emit('Environment enabled', 0)
         else:
             self.deviceStat['environment'] = None
@@ -294,7 +291,6 @@ class SettDevice(object):
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
             self.app.skymeter.startCommunication()
             self.app.message.emit('Skymeter enabled', 0)
-            self.deviceStat['skymeter'] = True
         else:
             self.app.message.emit('Skymeter disabled', 0)
             self.deviceStat['skymeter'] = None
@@ -315,7 +311,6 @@ class SettDevice(object):
             self.app.cover.name = self.ui.coverDeviceName.currentText()
             self.app.cover.startCommunication()
             self.app.message.emit('Cover enabled', 0)
-            self.deviceStat['cover'] = True
         else:
             self.app.message.emit('Cover disabled', 0)
             self.deviceStat['cover'] = None
@@ -336,7 +331,6 @@ class SettDevice(object):
             self.app.telescope.name = self.ui.telescopeDeviceName.currentText()
             self.app.telescope.startCommunication()
             self.app.message.emit('Telescope enabled', 0)
-            self.deviceStat['telescope'] = True
         else:
             self.app.message.emit('Telescope disabled', 0)
             self.deviceStat['telescope'] = None
@@ -363,7 +357,6 @@ class SettDevice(object):
             self.app.message.emit('Power enabled', 0)
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
-            self.deviceStat['power'] = True
         else:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())

@@ -136,7 +136,7 @@ class Environ(object):
         :return:  temperature and pressure
         """
 
-        if self.filteredTemperature.any() and self.filteredPressure.any():
+        if self.filteredTemperature is not None and self.filteredPressure is not None:
             temp = np.mean(self.filteredTemperature[:10])
             press = np.mean(self.filteredPressure[:10])
             return temp, press

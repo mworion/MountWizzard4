@@ -55,7 +55,6 @@ class SettIndi(object):
         self.app.power.client.signals.newMessage.connect(self.indiMessage)
 
         sig = self.app.dome.client.signals
-        sig.serverConnected.connect(self.showIndiDomeConnected)
         sig.serverDisconnected.connect(self.showIndiDomeDisconnected)
         sig.deviceConnected.connect(self.showDomeDeviceConnected)
         sig.deviceDisconnected.connect(self.showDomeDeviceDisconnected)
@@ -63,7 +62,6 @@ class SettIndi(object):
         sig.removeDevice.connect(self.showIndiRemoveDomeDevice)
 
         sig = self.app.imaging.client.signals
-        sig.serverConnected.connect(self.showIndiImagingConnected)
         sig.serverDisconnected.connect(self.showIndiImagingDisconnected)
         sig.deviceConnected.connect(self.showImagingDeviceConnected)
         sig.deviceDisconnected.connect(self.showImagingDeviceDisconnected)
@@ -71,7 +69,6 @@ class SettIndi(object):
         sig.removeDevice.connect(self.showIndiRemoveImagingDevice)
 
         sig = self.app.environ.client.signals
-        sig.serverConnected.connect(self.showIndiEnvironConnected)
         sig.serverDisconnected.connect(self.showIndiEnvironDisconnected)
         sig.deviceConnected.connect(self.showEnvironDeviceConnected)
         sig.deviceDisconnected.connect(self.showEnvironDeviceDisconnected)
@@ -79,7 +76,6 @@ class SettIndi(object):
         sig.removeDevice.connect(self.showIndiRemoveEnvironDevice)
 
         sig = self.app.cover.client.signals
-        sig.serverConnected.connect(self.showIndiCoverConnected)
         sig.serverDisconnected.connect(self.showIndiCoverDisconnected)
         sig.deviceConnected.connect(self.showCoverDeviceConnected)
         sig.deviceDisconnected.connect(self.showCoverDeviceDisconnected)
@@ -87,7 +83,6 @@ class SettIndi(object):
         sig.removeDevice.connect(self.showIndiRemoveCoverDevice)
 
         sig = self.app.skymeter.client.signals
-        sig.serverConnected.connect(self.showIndiSkymeterConnected)
         sig.serverDisconnected.connect(self.showIndiSkymeterDisconnected)
         sig.deviceConnected.connect(self.showSkymeterDeviceConnected)
         sig.deviceDisconnected.connect(self.showSkymeterDeviceDisconnected)
@@ -95,7 +90,6 @@ class SettIndi(object):
         sig.removeDevice.connect(self.showIndiRemoveSkymeterDevice)
 
         sig = self.app.telescope.client.signals
-        sig.serverConnected.connect(self.showIndiTelescopeConnected)
         sig.serverDisconnected.connect(self.showIndiTelescopeDisconnected)
         sig.deviceConnected.connect(self.showTelescopeDeviceConnected)
         sig.deviceDisconnected.connect(self.showTelescopeDeviceDisconnected)
@@ -103,7 +97,6 @@ class SettIndi(object):
         sig.removeDevice.connect(self.showIndiRemoveTelescopeDevice)
 
         sig = self.app.power.client.signals
-        sig.serverConnected.connect(self.showIndiPowerConnected)
         sig.serverDisconnected.connect(self.showIndiPowerDisconnected)
         sig.deviceConnected.connect(self.showPowerDeviceConnected)
         sig.deviceDisconnected.connect(self.showPowerDeviceDisconnected)
@@ -267,6 +260,8 @@ class SettIndi(object):
 
     def shareServerHost(self):
         """
+        shareServerHost is called whenever a indi server host is edited. if checkbox
+        for sharing is set, the new entry will be copied to all other indi servers
 
         :return:
         """
@@ -296,6 +291,8 @@ class SettIndi(object):
 
     def shareServerPort(self):
         """
+        shareServerPort is called whenever a indi server port is edited. if checkbox
+        for sharing is set, the new entry will be copied to all other indi servers
 
         :return:
         """
@@ -356,16 +353,6 @@ class SettIndi(object):
             return True
         return False
 
-    def showIndiDomeConnected(self):
-        """
-        showIndiDomeConnected writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit('INDI server dome connected', 0)
-        return True
-
     def showIndiDomeDisconnected(self):
         """
         showIndiDomeDisconnected writes info to message window and recolors the status
@@ -374,7 +361,6 @@ class SettIndi(object):
         """
 
         self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
-        self.app.message.emit('INDI server dome disconnected', 0)
         return True
 
     def showIndiNewDomeDevice(self, deviceName):
@@ -409,8 +395,6 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['dome'] is None:
-            return False
         self.ui.domeDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['dome'] = True
         return True
@@ -423,20 +407,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['dome'] is None:
-            return False
         self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['dome'] = False
-        return True
-
-    def showIndiImagingConnected(self):
-        """
-        showIndiImagingConnected writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit('INDI server imaging connected', 0)
         return True
 
     def showIndiImagingDisconnected(self):
@@ -446,7 +418,6 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        self.app.message.emit('INDI server imaging disconnected', 0)
         self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
         return True
 
@@ -482,8 +453,6 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['imaging'] is None:
-            return False
         self.ui.imagingDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['imaging'] = True
         return True
@@ -496,20 +465,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['imaging'] is None:
-            return False
         self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['imaging'] = False
-        return True
-
-    def showIndiEnvironConnected(self):
-        """
-        showIndiEnvironConnected writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit('INDI server environment connected', 0)
         return True
 
     def showIndiEnvironDisconnected(self):
@@ -520,7 +477,6 @@ class SettIndi(object):
         """
 
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
-        self.app.message.emit('INDI server environment disconnected', 0)
         return True
 
     def showIndiNewEnvironDevice(self, deviceName):
@@ -555,8 +511,6 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['environment'] is None:
-            return False
         self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['environment'] = True
         return True
@@ -569,20 +523,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['environment'] is None:
-            return False
         self.ui.environDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['environment'] = False
-        return True
-
-    def showIndiSkymeterConnected(self):
-        """
-        showIndiSkymeterConnected writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit('INDI server skymeter connected', 0)
         return True
 
     def showIndiSkymeterDisconnected(self):
@@ -593,7 +535,6 @@ class SettIndi(object):
         """
 
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
-        self.app.message.emit('INDI server skymeter disconnected', 0)
         return True
 
     def showIndiNewSkymeterDevice(self, deviceName):
@@ -627,8 +568,6 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['skymeter'] is None:
-            return False
         self.ui.skymeterDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['skymeter'] = True
         return True
@@ -641,20 +580,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['skymeter'] is None:
-            return False
         self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['skymeter'] = False
-        return True
-
-    def showIndiTelescopeConnected(self):
-        """
-        showIndiTelescopeConnected writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit('INDI server telescope connected', 0)
         return True
 
     def showIndiTelescopeDisconnected(self):
@@ -665,7 +592,6 @@ class SettIndi(object):
         """
 
         self.ui.telescopeDevice.setStyleSheet(self.BACK_NORM)
-        self.app.message.emit('INDI server telescope disconnected', 0)
         return True
 
     def showIndiNewTelescopeDevice(self, deviceName):
@@ -699,8 +625,6 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['telescope'] is None:
-            return False
         self.ui.telescopeDevice.setStyleSheet(self.BACK_GREEN)
         self.deviceStat['telescope'] = True
         return True
@@ -713,21 +637,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['telescope'] is None:
-            return False
         self.ui.telescopeDevice.setStyleSheet(self.BACK_NORM)
         self.deviceStat['telescope'] = False
-        return True
-
-    def showIndiPowerConnected(self):
-        """
-        showIndiPowerConnected writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.ui.powerGroup.setEnabled(True)
-        self.app.message.emit('INDI server power connected', 0)
         return True
 
     def showIndiPowerDisconnected(self):
@@ -738,7 +649,6 @@ class SettIndi(object):
         """
 
         self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
-        self.app.message.emit('INDI server power disconnected', 0)
         return True
 
     def showIndiNewPowerDevice(self, deviceName):
@@ -772,9 +682,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['power'] is None:
-            return False
         self.deviceStat['power'] = True
+        self.ui.powerGroup.setEnabled(True)
         self.ui.powerDevice.setStyleSheet(self.BACK_GREEN)
         return True
 
@@ -786,20 +695,8 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['power'] is None:
-            return False
         self.deviceStat['power'] = False
         self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-    def showIndiCoverConnected(self):
-        """
-        showIndiCoverConnected writes info to message window
-
-        :return: true for test purpose
-        """
-
-        self.app.message.emit('INDI server cover connected', 0)
         return True
 
     def showIndiCoverDisconnected(self):
@@ -810,7 +707,6 @@ class SettIndi(object):
         """
 
         self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
-        self.app.message.emit('INDI server cover disconnected', 0)
         return True
 
     def showIndiNewCoverDevice(self, deviceName):
@@ -844,8 +740,6 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['cover'] is None:
-            return False
         self.deviceStat['cover'] = True
         self.ui.coverDevice.setStyleSheet(self.BACK_GREEN)
         return True
@@ -858,8 +752,6 @@ class SettIndi(object):
         :return: true for test purpose
         """
 
-        if self.deviceStat['cover'] is None:
-            return False
         self.deviceStat['cover'] = False
         self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
         return True

@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>9</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -12848,13 +12848,6 @@ When clicking the button, you could change the value.</string>
              <widget class="QLabel" name="label_39">
               <property name="text">
                <string>Position 5</string>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="0">
-             <widget class="QLabel" name="label_57">
-              <property name="text">
-               <string>Position 6</string>
               </property>
              </widget>
             </item>

@@ -214,6 +214,11 @@ class Camera(indiClass.IndiClass):
                 self.app.mainW.ui.rotation.setText(f'{value:3.1f}')
             return True
 
+        if propertyName == 'CCD_TEMPERATURE':
+            if element == 'CCD_TEMPERATURE_VALUE':
+                self.app.mainW.ui.coolerTemp.setText(f'{value:3.1f}')
+            return True
+
         return False
 
     def updateNumber(self, deviceName, propertyName):

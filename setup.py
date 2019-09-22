@@ -50,6 +50,7 @@ setup(
         'numpy>=1.17',
         'skyfield>=1.10',
         'forwardable',
+        'qimage2ndarray',
     ],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

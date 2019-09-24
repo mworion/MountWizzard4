@@ -46,7 +46,7 @@ class SettIndi(object):
                                        'skymeterDeviceName',
                                        'coverDeviceName',
                                        'powerDeviceName',
-                                       'telescopeDeviceName',‚
+                                       'telescopeDeviceName',
                                        ]
 
         # all internal signal for handling

@@ -683,7 +683,6 @@ class SettIndi(object):
         """
 
         self.deviceStat['power'] = True
-        self.ui.powerGroup.setEnabled(True)
         self.ui.powerDevice.setStyleSheet(self.BACK_GREEN)
         return True
 

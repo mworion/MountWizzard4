@@ -48,18 +48,13 @@ class SettIndi(object):
                                        ]
 
         # all internal signal for handling
-        self.app.environ.client.signals.newMessage.connect(self.indiMessage)
-        self.app.skymeter.client.signals.newMessage.connect(self.indiMessage)
-        self.app.cover.client.signals.newMessage.connect(self.indiMessage)
-        self.app.telescope.client.signals.newMessage.connect(self.indiMessage)
-        self.app.power.client.signals.newMessage.connect(self.indiMessage)
-
         sig = self.app.dome.client.signals
         sig.serverDisconnected.connect(self.showIndiDomeDisconnected)
         sig.deviceConnected.connect(self.showDomeDeviceConnected)
         sig.deviceDisconnected.connect(self.showDomeDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewDomeDevice)
         sig.removeDevice.connect(self.showIndiRemoveDomeDevice)
+        sig.newMessage.connect(self.indiMessage)
 
         sig = self.app.imaging.client.signals
         sig.serverDisconnected.connect(self.showIndiImagingDisconnected)
@@ -67,6 +62,7 @@ class SettIndi(object):
         sig.deviceDisconnected.connect(self.showImagingDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewImagingDevice)
         sig.removeDevice.connect(self.showIndiRemoveImagingDevice)
+        sig.newMessage.connect(self.indiMessage)
 
         sig = self.app.environ.client.signals
         sig.serverDisconnected.connect(self.showIndiEnvironDisconnected)
@@ -74,6 +70,7 @@ class SettIndi(object):
         sig.deviceDisconnected.connect(self.showEnvironDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewEnvironDevice)
         sig.removeDevice.connect(self.showIndiRemoveEnvironDevice)
+        sig.newMessage.connect(self.indiMessage)
 
         sig = self.app.cover.client.signals
         sig.serverDisconnected.connect(self.showIndiCoverDisconnected)
@@ -81,6 +78,7 @@ class SettIndi(object):
         sig.deviceDisconnected.connect(self.showCoverDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewCoverDevice)
         sig.removeDevice.connect(self.showIndiRemoveCoverDevice)
+        sig.newMessage.connect(self.indiMessage)
 
         sig = self.app.skymeter.client.signals
         sig.serverDisconnected.connect(self.showIndiSkymeterDisconnected)
@@ -88,6 +86,7 @@ class SettIndi(object):
         sig.deviceDisconnected.connect(self.showSkymeterDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewSkymeterDevice)
         sig.removeDevice.connect(self.showIndiRemoveSkymeterDevice)
+        sig.newMessage.connect(self.indiMessage)
 
         sig = self.app.telescope.client.signals
         sig.serverDisconnected.connect(self.showIndiTelescopeDisconnected)
@@ -95,6 +94,7 @@ class SettIndi(object):
         sig.deviceDisconnected.connect(self.showTelescopeDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewTelescopeDevice)
         sig.removeDevice.connect(self.showIndiRemoveTelescopeDevice)
+        sig.newMessage.connect(self.indiMessage)
 
         sig = self.app.power.client.signals
         sig.serverDisconnected.connect(self.showIndiPowerDisconnected)
@@ -102,6 +102,7 @@ class SettIndi(object):
         sig.deviceDisconnected.connect(self.showPowerDeviceDisconnected)
         sig.newDevice.connect(self.showIndiNewPowerDevice)
         sig.removeDevice.connect(self.showIndiRemovePowerDevice)
+        sig.newMessage.connect(self.indiMessage)
 
         self.setupDeviceNameGui()
 

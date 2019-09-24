@@ -106,6 +106,7 @@ class SettIndi(object):
         self.setupDeviceNameGui()
 
         # signals from gui
+
         self.ui.domeDeviceName.currentIndexChanged.connect(self.domeDispatch)
         self.ui.imagingDeviceName.currentIndexChanged.connect(self.imagingDispatch)
         self.ui.environDeviceName.currentIndexChanged.connect(self.environDispatch)

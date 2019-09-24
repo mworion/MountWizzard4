@@ -225,7 +225,7 @@ class IndiClass(object):
     def updateSwitch(self, deviceName, propertyName):
         """
         updateSwitch is called whenever a new switch is received in client. it runs
-        through the device list and writes the number data to the according locations.
+        through the device list and writes the switch data to the according locations.
 
         :param deviceName:
         :param propertyName:
@@ -236,7 +236,7 @@ class IndiClass(object):
     def updateText(self, deviceName, propertyName):
         """
         updateText is called whenever a new text is received in client. it runs
-        through the device list and writes the number data to the according locations.
+        through the device list and writes the text data to the according locations.
 
         :param deviceName:
         :param propertyName:
@@ -247,7 +247,7 @@ class IndiClass(object):
     def updateLight(self, deviceName, propertyName):
         """
         updateLight is called whenever a new light is received in client. it runs
-        through the device list and writes the number data to the according locations.
+        through the device list and writes the light data to the according locations.
 
         :param deviceName:
         :param propertyName:
@@ -258,7 +258,7 @@ class IndiClass(object):
     def updateBLOB(self, deviceName, propertyName):
         """
         updateBLOB is called whenever a new BLOB is received in client. it runs
-        through the device list and writes the number data to the according locations.
+        through the device list and writes the BLOB data to the according locations.
 
         :param deviceName:
         :param propertyName:

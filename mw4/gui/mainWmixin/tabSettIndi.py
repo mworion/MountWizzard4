@@ -38,6 +38,7 @@ class SettIndi(object):
                                     self.ui.skymeterDeviceName,
                                     self.ui.coverDeviceName,
                                     self.ui.powerDeviceName,
+                                    self.ui.telescopeDeviceName,
                                     ]
         self.deviceNameDropDownKeys = ['imagingDeviceName',
                                        'domeDeviceName',
@@ -45,6 +46,7 @@ class SettIndi(object):
                                        'skymeterDeviceName',
                                        'coverDeviceName',
                                        'powerDeviceName',
+                                       'telescopeDeviceName',‚
                                        ]
 
         # all internal signal for handling

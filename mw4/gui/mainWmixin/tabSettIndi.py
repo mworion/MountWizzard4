@@ -32,22 +32,24 @@ class SettIndi(object):
     """
 
     def __init__(self):
-        self.deviceNameDropDowns = [self.ui.imagingDeviceName,
-                                    self.ui.domeDeviceName,
-                                    self.ui.environDeviceName,
-                                    self.ui.skymeterDeviceName,
-                                    self.ui.coverDeviceName,
-                                    self.ui.powerDeviceName,
-                                    self.ui.telescopeDeviceName,
-                                    ]
-        self.deviceNameDropDownKeys = ['imagingDeviceName',
-                                       'domeDeviceName',
-                                       'environmentDeviceName',
-                                       'skymeterDeviceName',
-                                       'coverDeviceName',
-                                       'powerDeviceName',
-                                       'telescopeDeviceName',
-                                       ]
+        self.deviceNames = [self.ui.imagingDeviceName,
+                            self.ui.domeDeviceName,
+                            self.ui.environDeviceName,
+                            self.ui.skymeterDeviceName,
+                            self.ui.coverDeviceName,
+                            self.ui.powerDeviceName,
+                            self.ui.telescopeDeviceName,
+                            ]
+        self.deviceNameKeys = ['imagingDeviceName',
+                               'domeDeviceName',
+                               'environmentDeviceName',
+                               'skymeterDeviceName',
+                               'coverDeviceName',
+                               'powerDeviceName',
+                               'telescopeDeviceName',
+                               ]
+
+        self.setupDeviceNameGui()
 
         # all internal signal for handling
         sig = self.app.dome.client.signals
@@ -106,8 +108,6 @@ class SettIndi(object):
         sig.removeDevice.connect(self.showIndiRemovePowerDevice)
         sig.newMessage.connect(self.indiMessage)
 
-        self.setupDeviceNameGui()
-
         # signals from gui
 
         self.ui.domeDeviceName.currentIndexChanged.connect(self.domeDispatch)
@@ -143,7 +143,7 @@ class SettIndi(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        for dropDown, key in zip(self.deviceNameDropDowns, self.deviceNameDropDownKeys):
+        for dropDown, key in zip(self.deviceNames, self.deviceNameKeys):
             dropDown.setCurrentIndex(config.get(key, 0))
 
         self.ui.environHost.setText(config.get('environHost', ''))
@@ -175,7 +175,7 @@ class SettIndi(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        for dropDown, key in zip(self.deviceNameDropDowns, self.deviceNameDropDownKeys):
+        for dropDown, key in zip(self.deviceNames, self.deviceNameKeys):
             config[key] = dropDown.currentIndex()
         config['environHost'] = self.ui.environHost.text()
         config['environPort'] = self.ui.environPort.text()
@@ -205,7 +205,7 @@ class SettIndi(object):
         :return: success for test
         """
 
-        for dropDown in self.deviceNameDropDowns:
+        for dropDown in self.deviceNames:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('No device driver selected')
@@ -391,7 +391,7 @@ class SettIndi(object):
         self.app.message.emit(f'INDI dome device [{deviceName}] removed', 0)
         return True
 
-    def showDomeDeviceConnected(self):
+    def showDomeDeviceConnected(self, deviceName):
         """
         showDomeDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -449,7 +449,7 @@ class SettIndi(object):
         self.app.message.emit(f'INDI imaging device [{deviceName}] removed', 0)
         return True
 
-    def showImagingDeviceConnected(self):
+    def showImagingDeviceConnected(self, deviceName):
         """
         showImagingDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -507,7 +507,7 @@ class SettIndi(object):
         self.app.message.emit(f'INDI environment device [{deviceName}] removed', 0)
         return True
 
-    def showEnvironDeviceConnected(self):
+    def showEnvironDeviceConnected(self, deviceName):
         """
         showEnvironDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -519,7 +519,7 @@ class SettIndi(object):
         self.deviceStat['environment'] = True
         return True
 
-    def showEnvironDeviceDisconnected(self):
+    def showEnvironDeviceDisconnected(self, deviceName):
         """
         showEnvironDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -564,7 +564,7 @@ class SettIndi(object):
         self.app.message.emit(f'INDI skymeter device [{deviceName}] removed', 0)
         return True
 
-    def showSkymeterDeviceConnected(self):
+    def showSkymeterDeviceConnected(self, deviceName):
         """
         showSkymeterDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -576,7 +576,7 @@ class SettIndi(object):
         self.deviceStat['skymeter'] = True
         return True
 
-    def showSkymeterDeviceDisconnected(self):
+    def showSkymeterDeviceDisconnected(self, deviceName):
         """
         showSkymeterDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -621,7 +621,7 @@ class SettIndi(object):
         self.app.message.emit(f'INDI telescope device [{deviceName}] removed', 0)
         return True
 
-    def showTelescopeDeviceConnected(self):
+    def showTelescopeDeviceConnected(self, deviceName):
         """
         showTelescopeDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -633,7 +633,7 @@ class SettIndi(object):
         self.deviceStat['telescope'] = True
         return True
 
-    def showTelescopeDeviceDisconnected(self):
+    def showTelescopeDeviceDisconnected(self, deviceName):
         """
         showTelescopeDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -678,7 +678,7 @@ class SettIndi(object):
         self.app.message.emit(f'INDI power device [{deviceName}] removed', 0)
         return True
 
-    def showPowerDeviceConnected(self):
+    def showPowerDeviceConnected(self, deviceName):
         """
         showPowerDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -690,7 +690,7 @@ class SettIndi(object):
         self.ui.powerDevice.setStyleSheet(self.BACK_GREEN)
         return True
 
-    def showPowerDeviceDisconnected(self):
+    def showPowerDeviceDisconnected(self, deviceName):
         """
         showPowerDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -735,7 +735,7 @@ class SettIndi(object):
         self.app.message.emit(f'INDI cover device [{deviceName}] removed', 0)
         return True
 
-    def showCoverDeviceConnected(self):
+    def showCoverDeviceConnected(self, deviceName):
         """
         showCoverDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -747,7 +747,7 @@ class SettIndi(object):
         self.ui.coverDevice.setStyleSheet(self.BACK_GREEN)
         return True
 
-    def showCoverDeviceDisconnected(self):
+    def showCoverDeviceDisconnected(self, deviceName):
         """
         showCoverDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available

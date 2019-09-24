@@ -127,8 +127,7 @@ class Tools(object):
         number = sum(1 for _ in Path(pathDir).glob(search))
         return number
 
-    @staticmethod
-    def convertHeaderEntry(entry='', fitsKey=''):
+    def convertHeaderEntry(self, entry='', fitsKey=''):
         """
         convertHeaderEntry takes the fitsHeader entry and reformat it to a reasonable
         string.
@@ -155,7 +154,7 @@ class Tools(object):
             chunk = f'{entry}'
         elif fitsKey == 'FILTER':
             chunk = f'{entry}'
-        elif fitskey == 'RenameText':
+        elif fitsKey == 'RenameText':
             chunk = self.ui.renameText.upper()
         else:
             chunk = ''

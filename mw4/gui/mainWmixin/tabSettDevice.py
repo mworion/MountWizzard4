@@ -146,34 +146,17 @@ class SettDevice(object):
         :return: success for test
         """
 
-        # get index for relay tab
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        tabWidget2 = self.ui.settingsTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'KMTronic')
-        tabIndex2 = self.ui.settingsTabWidget.indexOf(tabWidget2)
-
         if self.ui.relayDevice.currentText().startswith('Built-In'):
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-            self.ui.settingsTabWidget.setTabEnabled(tabIndex2, True)
-            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay enabled', 0)
+            self.deviceStat['relay'] = True
             self.app.relay.startTimers()
             self.ui.relayDevice.setStyleSheet(self.BACK_GREEN)
         else:
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-            self.ui.settingsTabWidget.setTabEnabled(tabIndex2, False)
-            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Relay disabled', 0)
+            self.deviceStat['relay'] = False
             self.app.relay.stopTimers()
             self.ui.relayDevice.setStyleSheet(self.BACK_NORM)
 
-        # update the style for showing the Relay tab
-        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
-        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
-        self.ui.settingsTabWidget.style().unpolish(self.ui.settingsTabWidget)
-        self.ui.settingsTabWidget.style().polish(self.ui.settingsTabWidget)
         return True
 
     def remoteDispatch(self):
@@ -345,27 +328,16 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        # get index for power tab
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-
         self.app.power.stopCommunication()
         if self.ui.powerDevice.currentText().startswith('INDI'):
             self.app.power.startCommunication()
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Power enabled', 0)
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
         else:
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.app.message.emit('Power disabled', 0)
             self.deviceStat['power'] = None
 
-        # update the style for showing the Relay tab
-        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
-        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
         return True
 
     def astrometryDispatch(self):

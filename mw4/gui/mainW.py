@@ -143,7 +143,7 @@ class MainWindow(MWidget,
     def mwSuper(self, func):
         """
         mwSuper is a replacement for super() to manage the mixin style of implementation
-        it's not an ideal way to do it, but mwSuper() call the methode of every ! parent
+        it's not an ideal way to do it, but mwSuper() call the method of every ! parent
         class if they exist.
 
         :param func:
@@ -321,8 +321,10 @@ class MainWindow(MWidget,
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
+        """
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'ManageModel')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        """
 
         if self.deviceStat['mount']:
             self.ui.batchModel.setEnabled(True)
@@ -349,8 +351,35 @@ class MainWindow(MWidget,
 
         if self.deviceStat['power']:
             self.ui.powerGroup.setEnabled(True)
+            powerStat = True
         else:
             self.ui.powerGroup.setEnabled(False)
+            powerStat = False
+
+        # removing tabs, which are not needed...
+        # get index for power tab
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, powerStat)
+        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+        # update the style for showing the Relay tab
+        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
+        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
+
+        # get index for both relay tabs
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        tabWidget2 = self.ui.settingsTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'KMTronic')
+        tabIndex2 = self.ui.settingsTabWidget.indexOf(tabWidget2)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, self.deviceStat['relay'])
+        self.ui.settingsTabWidget.setTabEnabled(tabIndex2, self.deviceStat['relay'])
+        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+        self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
+        # update the style for showing the Relay tab
+        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
+        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
+        self.ui.settingsTabWidget.style().unpolish(self.ui.settingsTabWidget)
+        self.ui.settingsTabWidget.style().polish(self.ui.settingsTabWidget)
 
         return True
 

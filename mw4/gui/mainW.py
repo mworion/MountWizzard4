@@ -321,19 +321,16 @@ class MainWindow(MWidget,
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
-        """
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'ManageModel')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        """
 
         if self.deviceStat['mount']:
             self.ui.batchModel.setEnabled(True)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
         else:
             self.ui.batchModel.setEnabled(False)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 
         if self.deviceStat['environment']:
             self.ui.environGroup.setEnabled(True)
@@ -349,22 +346,17 @@ class MainWindow(MWidget,
         else:
             self.ui.skymeterGroup.setEnabled(False)
 
-        if self.deviceStat['power']:
-            self.ui.powerGroup.setEnabled(True)
-            powerStat = True
-        else:
-            self.ui.powerGroup.setEnabled(False)
-            powerStat = False
-
-        # removing tabs, which are not needed...
-        # get index for power tab
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        self.ui.mainTabWidget.setTabEnabled(tabIndex, powerStat)
+
+        if self.deviceStat['power']:
+            self.ui.powerGroup.setEnabled(True)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+        else:
+            self.ui.powerGroup.setEnabled(False)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-        # update the style for showing the Relay tab
-        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
-        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
 
         # get index for both relay tabs
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
@@ -375,11 +367,6 @@ class MainWindow(MWidget,
         self.ui.settingsTabWidget.setTabEnabled(tabIndex2, self.deviceStat['relay'])
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
         self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
-        # update the style for showing the Relay tab
-        self.ui.mainTabWidget.style().unpolish(self.ui.mainTabWidget)
-        self.ui.mainTabWidget.style().polish(self.ui.mainTabWidget)
-        self.ui.settingsTabWidget.style().unpolish(self.ui.settingsTabWidget)
-        self.ui.settingsTabWidget.style().polish(self.ui.settingsTabWidget)
 
         return True
 

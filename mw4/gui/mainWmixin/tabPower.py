@@ -324,6 +324,9 @@ class Power(object):
             return False
 
         power = device.getSwitch('POWER_CONTROL')
+        if 'POWER_CONTROL_1' not in power:
+            return False
+
         power['POWER_CONTROL_1'] = not power['POWER_CONTROL_1']
         client.sendNewSwitch(deviceName=name,
                              propertyName='POWER_CONTROL',
@@ -345,6 +348,9 @@ class Power(object):
             return False
 
         power = device.getSwitch('POWER_CONTROL')
+        if 'POWER_CONTROL_2' not in power:
+            return False
+
         power['POWER_CONTROL_2'] = not power['POWER_CONTROL_2']
         client.sendNewSwitch(deviceName=name,
                              propertyName='POWER_CONTROL',
@@ -366,6 +372,9 @@ class Power(object):
             return False
 
         power = device.getSwitch('POWER_CONTROL')
+        if 'POWER_CONTROL_3' not in power:
+            return False
+
         power['POWER_CONTROL_3'] = not power['POWER_CONTROL_3']
         client.sendNewSwitch(deviceName=name,
                              propertyName='POWER_CONTROL',
@@ -387,6 +396,9 @@ class Power(object):
             return False
 
         power = device.getSwitch('POWER_CONTROL')
+        if 'POWER_CONTROL_4' not in power:
+            return False
+
         power['POWER_CONTROL_4'] = not power['POWER_CONTROL_4']
         client.sendNewSwitch(deviceName=name,
                              propertyName='POWER_CONTROL',

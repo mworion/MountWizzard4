@@ -214,7 +214,6 @@ class KMRelay(PyQt5.QtCore.QObject):
         value = self.getRelay('/status.xml', debug=False)
 
         if value is None:
-            self.logger.error('Polling error')
             return False
         if value.reason != 'OK':
             self.logger.error('Polling error')

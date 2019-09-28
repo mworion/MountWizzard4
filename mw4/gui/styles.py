@@ -75,7 +75,7 @@ class MWStyles(object):
         font-size: 11pt;
     } 
     QTextBrowser {
-        font-family: arial;
+        font-family: courier;
         font-weight: normal;
         font-size: 13pt;
     }
@@ -103,7 +103,7 @@ class MWStyles(object):
         font-size: 9pt;
     }
     QTextBrowser {
-        font-family: arial;
+        font-family: courier;
         font-weight: normal;
         font-size: 10pt;
     }

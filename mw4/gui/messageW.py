@@ -154,7 +154,7 @@ class MessageWindow(widget.MWidget):
             return False
         if mType > len(self.messColor):
             return False
-        prefix = time.strftime('%H:%M:%S - ', time.localtime())
+        prefix = time.strftime('%H:%M:%S ', time.localtime())
         message = prefix + message
         self.logger.info('Message window: [{0}]'.format(message))
         self.ui.message.setTextColor(self.messColor[mType])

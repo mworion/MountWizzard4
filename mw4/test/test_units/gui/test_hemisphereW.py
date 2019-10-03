@@ -579,7 +579,7 @@ def test_onMouseNormal_6():
                                'communicate',
                                return_value=(True, '1', 1)):
             with mock.patch.object(app.mount.obsSite,
-                                   'slewAltAz',
+                                   'setTargetAltAz',
                                    return_value=True):
                 suc = app.hemisphereW.onMouseNormal(event=event)
                 assert suc
@@ -1012,7 +1012,7 @@ def test_onMouseStar_6():
                                'communicate',
                                return_value=(True, '1', 1)):
             with mock.patch.object(app.mount.obsSite,
-                                   'slewRaDec',
+                                   'setTargetRaDec',
                                    return_value=True):
                 suc = app.hemisphereW.onMouseStar(event=event)
                 assert suc
@@ -1053,7 +1053,7 @@ def test_onMouseStar_8():
                                'communicate',
                                return_value=(True, '1', 1)):
             with mock.patch.object(app.mount.obsSite,
-                                   'slewRaDec',
+                                   'setTargetRaDec',
                                    return_value=False):
                 suc = app.hemisphereW.onMouseStar(event=event)
                 assert not suc
@@ -1078,7 +1078,7 @@ def test_onMouseStar_9():
                                'communicate',
                                return_value=(True, '1', 1)):
             with mock.patch.object(app.mount.obsSite,
-                                   'slewRaDec',
+                                   'setTargetRaDec',
                                    return_value=True):
                 suc = app.hemisphereW.onMouseStar(event=event)
                 assert suc

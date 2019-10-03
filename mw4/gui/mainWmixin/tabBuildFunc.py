@@ -378,9 +378,10 @@ class BuildFunc(object):
         mPoint = self.slewQueue.get()
 
         self.app.dome.slewToAltAz(azimuthMount=mPoint.point.azimuth)
-        self.app.mount.obsSite.slewAltAz(alt_degrees=mPoint.point.altitude,
-                                         az_degrees=mPoint.point.azimuth,
-                                         )
+        self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint.point.altitude,
+                                              az_degrees=mPoint.point.azimuth,
+                                              )
+        self.app.mount.obsSite.startSlewing()
 
         self.imageQueue.put(mPoint)
 

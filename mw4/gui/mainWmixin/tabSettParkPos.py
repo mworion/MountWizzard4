@@ -138,9 +138,10 @@ class SettParkPos(object):
                 self.logger.error(f'no usable values in data: error {e}')
                 self.app.message.emit('Missing correct entries in settings', 2)
             else:
-                suc = self.app.mount.obsSite.slewAltAz(alt_degrees=altValue,
-                                                       az_degrees=azValue,
-                                                       slewType='normal')
+                suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
+                                                            az_degrees=azValue)
+                if suc:
+                    suc = self.app.mount.obsSite.startSlewing()
                 if suc:
                     self.app.message.emit(f'Slew to [{posTextValue}]', 0)
                 else:

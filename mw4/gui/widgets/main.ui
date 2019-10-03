@@ -13283,7 +13283,7 @@ When clicking the button, you could change the value.</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>8</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -20925,6 +20925,21 @@ When clicking the button, you could change the value.</string>
            <string>numpy, requests, astropy, skyfield,</string>
           </property>
          </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Seite</string>
+        </attribute>
+        <widget class="QWidget" name="widget3D" native="true">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>20</y>
+           <width>751</width>
+           <height>366</height>
+          </rect>
+         </property>
         </widget>
        </widget>
       </widget>

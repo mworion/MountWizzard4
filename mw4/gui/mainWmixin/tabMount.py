@@ -26,6 +26,54 @@ import PyQt5.uic
 # local import
 from mw4.base import transform
 
+from PyQt5.QtWidgets import QWidget, QVBoxLayout
+from PyQt5.Qt3DExtras import Qt3DWindow, QFirstPersonCameraController
+from PyQt5.Qt3DCore import QEntity
+
+
+class Contained3dWindow(QWidget):
+    def __init__(self, parent=None):
+        super().__init__()
+        lay = QVBoxLayout(self)
+        self.view = Qt3DWindow(parent)
+        container = QWidget.createWindowContainer(self.view)
+        lay.addWidget(container)
+        self.rootEntity = QEntity()
+        cameraEntity = self.view.camera()
+        camController = QFirstPersonCameraController(self.rootEntity)
+        camController.setCamera(cameraEntity)
+        self.view.setRootEntity(self.rootEntity)
+
+
+class View3D(QWidget):
+    def __init__(self, parent=None):
+        super().__init__()
+
+        self.window = Qt3DWindow(parent)
+        self.container = self.createWindowContainer(self.window)
+        self.rootEntity = QEntity()
+
+        vboxlayout = QHBoxLayout()
+        vboxlayout.addWidget(self.container)
+        self.setLayout(vboxlayout)
+
+        # put some nodes in the scene
+        scene = createScene()
+        # Camera
+        camera = self.window.camera()
+        camera.lens().setPerspectiveProjection(45.0, 16.0 / 9.0, 0.1, 1000.0)
+        camera.setPosition(QVector3D(0.0, 0.0, 40.0))
+        camera.setViewCenter(QVector3D(0.0, 0.0, 0.0))
+
+        # For camera controls.
+        camController = QFirstPersonCameraController(scene)
+        camController.setLinearSpeed(50.0)
+        camController.setLookSpeed(180.0)
+        camController.setCamera(camera)
+
+        # assign root node to the view
+        self.window.setRootEntity(scene)
+
 
 class Mount(object):
     """
@@ -36,10 +84,15 @@ class Mount(object):
     """
 
     def __init__(self):
+
+        self.a = Contained3dWindow()
+        # self.a.setupUi(self)
+
         ms = self.app.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
         ms.pointDone.connect(self.updateTimeGUI)
+        ms.pointDone.connect(self.testGeometry)
         ms.settingDone.connect(self.updateSettingGUI)
         ms.settingDone.connect(self.updateSetStatGUI)
         ms.settingDone.connect(self.updateTrackingGui)
@@ -88,6 +141,27 @@ class Mount(object):
         config['checkJ2000'] = self.ui.checkJ2000.isChecked()
         config['checkJNow'] = self.ui.checkJNow.isChecked()
         return True
+
+    def testGeometry(self, obs):
+        if obs.haJNow is None:
+            return False
+        if obs.decJNow is None:
+            return False
+        if obs.location is None:
+            return False
+
+        ha = obs.haJNow.radians
+        dec = obs.decJNow.radians
+        lat = obs.location.latitude.radians
+        pierside = obs.pierside
+        alt, az = self.app.mount.geometry.calcTransformationMatrices(ha=ha,
+                                                                     dec=dec,
+                                                                     lat=lat,
+                                                                     pierside=pierside)
+
+        self.a.show()
+
+        print(pierside, alt.degrees, obs.Alt.degrees, az.degrees, obs.Az.degrees)
 
     def updatePointGUI(self, obs):
         """

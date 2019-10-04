@@ -205,11 +205,11 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        print('stop', self.app.dome.stopCommunication())
+        self.app.dome.stopCommunication()
         if self.ui.domeDevice.currentText().startswith('INDI'):
             self.app.dome.client.host = self.ui.domeHost.text()
             self.app.dome.name = self.ui.domeDeviceName.currentText()
-            print('start', self.app.dome.startCommunication())
+            self.app.dome.startCommunication()
             self.app.message.emit('Dome enabled', 0)
         else:
             self.app.dome.name = ''
@@ -234,6 +234,7 @@ class SettDevice(object):
             self.app.imaging.startCommunication()
             self.app.message.emit('Imaging enabled', 0)
         else:
+            self.app.imaging.name = ''
             self.deviceStat['imaging'] = None
             self.app.message.emit('Imaging disabled', 0)
 
@@ -256,6 +257,7 @@ class SettDevice(object):
             self.app.environ.startCommunication()
             self.app.message.emit('Environment enabled', 0)
         else:
+            self.app.environ.name = ''
             self.deviceStat['environment'] = None
             self.app.message.emit('Environment disabled', 0)
 
@@ -276,6 +278,7 @@ class SettDevice(object):
             self.app.skymeter.startCommunication()
             self.app.message.emit('Skymeter enabled', 0)
         else:
+            self.app.skymeter.name = ''
             self.app.message.emit('Skymeter disabled', 0)
             self.deviceStat['skymeter'] = None
 
@@ -296,6 +299,7 @@ class SettDevice(object):
             self.app.cover.startCommunication()
             self.app.message.emit('Cover enabled', 0)
         else:
+            self.app.cover.name = ''
             self.app.message.emit('Cover disabled', 0)
             self.deviceStat['cover'] = None
 
@@ -316,6 +320,7 @@ class SettDevice(object):
             self.app.telescope.startCommunication()
             self.app.message.emit('Telescope enabled', 0)
         else:
+            self.app.telescope.name = ''
             self.app.message.emit('Telescope disabled', 0)
             self.deviceStat['telescope'] = None
 
@@ -336,6 +341,7 @@ class SettDevice(object):
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
         else:
+            self.app.power.name =''
             self.app.message.emit('Power disabled', 0)
             self.deviceStat['power'] = None
 

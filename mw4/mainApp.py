@@ -550,10 +550,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return: success
         """
         # todo: is this the right position for this function ?
-        # check if dome should be used
-        if not self.mainW.deviceStat[dome]:
+        if not self.mainW.deviceStat['dome']:
             return False
-        if self.ui.checkDomeGeometry.isChecked():
+        isGeometry = self.mainW.ui.checkDomeGeometry.isChecked()
+        if isGeometry:
             ha = self.mount.obsSite.haJNowTarget.radians
             dec = self.mount.obsSite.decJNowTarget.radians
             lat = self.mount.obsSite.location.latitude.radians
@@ -562,8 +562,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                                                      dec=dec,
                                                                      lat=lat,
                                                                      pierside=pierside)
+            alt = alt.degrees
+            az = az.degrees
         else:
             alt = altitude
             az = azimuth
+        geoStat = 'On' if isGeometry else 'Off'
+        text = f'Dome geometry is: {geoStat}, Azimuth Mount:{azimuth:4.1f} Dome:{az:4.1f}'
+        self.message.emit(text, 0)
         self.dome.slewToAltAz(azimuthMount=az)
         return True

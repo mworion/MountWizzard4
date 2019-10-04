@@ -13283,7 +13283,7 @@ When clicking the button, you could change the value.</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>5</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -17516,9 +17516,9 @@ When clicking the button, you could change the value.</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>225</y>
+           <y>230</y>
            <width>176</width>
-           <height>161</height>
+           <height>156</height>
           </rect>
          </property>
          <property name="frameShape">
@@ -17541,9 +17541,9 @@ When clicking the button, you could change the value.</string>
          <property name="geometry">
           <rect>
            <x>590</x>
-           <y>225</y>
+           <y>230</y>
            <width>176</width>
-           <height>161</height>
+           <height>156</height>
           </rect>
          </property>
          <property name="frameShape">
@@ -17568,7 +17568,7 @@ When clicking the button, you could change the value.</string>
            <x>400</x>
            <y>25</y>
            <width>366</width>
-           <height>196</height>
+           <height>201</height>
           </rect>
          </property>
          <property name="title">
@@ -17581,7 +17581,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>240</x>
-            <y>80</y>
+            <y>70</y>
             <width>86</width>
             <height>21</height>
            </rect>
@@ -17637,7 +17637,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>335</x>
-            <y>140</y>
+            <y>120</y>
             <width>21</width>
             <height>21</height>
            </rect>
@@ -17655,7 +17655,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>140</y>
+            <y>120</y>
             <width>121</width>
             <height>21</height>
            </rect>
@@ -17711,7 +17711,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>335</x>
-            <y>80</y>
+            <y>70</y>
             <width>21</width>
             <height>21</height>
            </rect>
@@ -17729,7 +17729,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>240</x>
-            <y>50</y>
+            <y>45</y>
             <width>86</width>
             <height>21</height>
            </rect>
@@ -17767,7 +17767,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>80</y>
+            <y>70</y>
             <width>121</width>
             <height>21</height>
            </rect>
@@ -17785,7 +17785,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>110</y>
+            <y>95</y>
             <width>121</width>
             <height>21</height>
            </rect>
@@ -17821,7 +17821,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>170</y>
+            <y>175</y>
             <width>264</width>
             <height>20</height>
            </rect>
@@ -17848,7 +17848,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>335</x>
-            <y>50</y>
+            <y>45</y>
             <width>21</width>
             <height>21</height>
            </rect>
@@ -17866,7 +17866,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>335</x>
-            <y>110</y>
+            <y>95</y>
             <width>21</width>
             <height>21</height>
            </rect>
@@ -17884,7 +17884,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>240</x>
-            <y>110</y>
+            <y>95</y>
             <width>86</width>
             <height>21</height>
            </rect>
@@ -17922,7 +17922,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>50</y>
+            <y>45</y>
             <width>121</width>
             <height>21</height>
            </rect>
@@ -17936,11 +17936,11 @@ When clicking the button, you could change the value.</string>
            <string>North Offset</string>
           </property>
          </widget>
-         <widget class="QDoubleSpinBox" name="domeGEMOffset">
+         <widget class="QDoubleSpinBox" name="offGEM">
           <property name="geometry">
            <rect>
             <x>240</x>
-            <y>140</y>
+            <y>120</y>
             <width>86</width>
             <height>21</height>
            </rect>
@@ -17972,6 +17972,80 @@ When clicking the button, you could change the value.</string>
           </property>
           <property name="value">
            <double>0.000000000000000</double>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_135">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>145</y>
+            <width>121</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>OTA Offset</string>
+          </property>
+         </widget>
+         <widget class="QDoubleSpinBox" name="offOTA">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>145</y>
+            <width>86</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_136">
+          <property name="geometry">
+           <rect>
+            <x>335</x>
+            <y>145</y>
+            <width>21</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>m</string>
           </property>
          </widget>
         </widget>

@@ -44,6 +44,14 @@ class SettParkPos(object):
         for button in self.posButtons:
             button.clicked.connect(self.slewToParkPos)
 
+        # signals on gui
+        self.ui.offGEM.valueChanged.connect(self.adjustOTAOffset)
+        self.ui.offOTA.valueChanged.connect(self.adjustGEMOffset)
+        self.ui.domeDiameter.valueChanged.connect(self.setDomeDiameter)
+        self.ui.domeNorthOffset.valueChanged.connect(self.setDomeNorthOffset)
+        self.ui.domeEastOffset.valueChanged.connect(self.setDomeEastOffset)
+        self.ui.domeVerticalOffset.valueChanged.connect(self.setDomeVerticalOffset)
+
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -53,6 +61,14 @@ class SettParkPos(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
+        self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
+        self.ui.domeDiameter.setValue(config.get('domeDiameter', 3))
+        self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
+        self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
+        self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
+        self.ui.offGEM.setValue(config.get('offGEM', 0))
+        self.ui.offOTA.setValue(config.get('offOTA', 0))
+
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
             textField.setText(config.get(keyConfig, 'Park Pos {0:1d}'.format(i)))
@@ -74,6 +90,14 @@ class SettParkPos(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
+        config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
+        config['domeDiameter'] = self.ui.domeDiameter.value()
+        config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
+        config['domeEastOffset'] = self.ui.domeEastOffset.value()
+        config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
+        config['offGEM'] = self.ui.offGEM.value()
+        config['offOTA'] = self.ui.offOTA.value()
+
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
             config[keyConfig] = textField.text()
@@ -149,3 +173,53 @@ class SettParkPos(object):
                 return suc
 
         return False
+
+    def adjustGEMOffset(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.app.mount.geometry.offGEM = self.ui.offGEM.value()
+        self.ui.offOTA.setValue(self.app.mount.offPlateOTA)
+        return True
+
+    def adjustOTAOffset(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.app.mount.geometry.offPlateOTA = self.ui.offOTA.value()
+        self.ui.offGEM.setValue(self.app.mount.offGEM)
+        return True
+
+    def setDomeDiameter(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.app.mount.geometry.domeRadius = self.ui.domeDiameter.value() / 2
+        return True
+
+    def setDomeNorthOffset(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
+        return True
+
+    def setDomeEastOffset(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
+        return True
+
+    def setDomeVerticalOffset(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
+        return True

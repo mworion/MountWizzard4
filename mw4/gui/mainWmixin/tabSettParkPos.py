@@ -45,12 +45,15 @@ class SettParkPos(object):
             button.clicked.connect(self.slewToParkPos)
 
         # signals on gui
-        self.ui.offGEM.valueChanged.connect(self.adjustOTAOffset)
         self.ui.offOTA.valueChanged.connect(self.adjustGEMOffset)
+        self.ui.offGEM.valueChanged.connect(self.adjustOTAOffset)
         self.ui.domeDiameter.valueChanged.connect(self.setDomeDiameter)
         self.ui.domeNorthOffset.valueChanged.connect(self.setDomeNorthOffset)
         self.ui.domeEastOffset.valueChanged.connect(self.setDomeEastOffset)
         self.ui.domeVerticalOffset.valueChanged.connect(self.setDomeVerticalOffset)
+
+        # signals from functions
+        self.app.mount.signals.firmwareDone.connect(self.adjustOTAOffset)
 
     def initConfig(self):
         """
@@ -66,8 +69,8 @@ class SettParkPos(object):
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
-        self.ui.offGEM.setValue(config.get('offGEM', 0))
         self.ui.offOTA.setValue(config.get('offOTA', 0))
+        self.ui.offGEM.setValue(config.get('offGEM', 0))
 
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
@@ -95,8 +98,8 @@ class SettParkPos(object):
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
         config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
-        config['offGEM'] = self.ui.offGEM.value()
         config['offOTA'] = self.ui.offOTA.value()
+        config['offGEM'] = self.ui.offGEM.value()
 
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
@@ -179,8 +182,8 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
-        self.app.mount.geometry.offGEM = self.ui.offGEM.value()
-        self.ui.offOTA.setValue(self.app.mount.offPlateOTA)
+        self.app.mount.geometry.offPlateOTA = self.ui.offOTA.value()
+        self.ui.offGEM.setValue(self.app.mount.geometry.offGEM)
         return True
 
     def adjustOTAOffset(self):
@@ -188,8 +191,11 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
-        self.app.mount.geometry.offPlateOTA = self.ui.offOTA.value()
-        self.ui.offGEM.setValue(self.app.mount.offGEM)
+        value = self.ui.offGEM.value()
+        value = max(value, self.app.mount.geometry.offGemPlate)
+        self.ui.offGEM.setValue(value)
+        self.app.mount.geometry.offGEM = value
+        self.ui.offOTA.setValue(self.app.mount.geometry.offPlateOTA)
         return True
 
     def setDomeDiameter(self):

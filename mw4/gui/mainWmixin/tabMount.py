@@ -42,7 +42,7 @@ class Mount(object):
         ms.pointDone.connect(self.updateTimeGUI)
         ms.settingDone.connect(self.updateSettingGUI)
         ms.settingDone.connect(self.updateSetStatGUI)
-        ms.settingDone.connect(self.updateTrackingGui)
+        ms.locationDone.connect(self.updateTrackingGui)
 
         self.ui.park.clicked.connect(self.changePark)
         self.ui.tracking.clicked.connect(self.changeTracking)
@@ -292,43 +292,50 @@ class Mount(object):
 
         return True
 
-    def updateLocGUI(self, location):
+    def updateLocGUI(self, obs):
         """
         updateLocGUI update the gui upon events triggered be the reception of new
         settings from the mount. the mount data is polled, so we use this signal as well
         for the update process.
 
+        :param obs:
         :return:    True if ok for testing
         """
-
-        if location is not None:
-            lon = location.longitude.dstr().replace('deg', '')
-            self.ui.siteLongitude.setText(lon)
-            lat = location.latitude.dstr().replace('deg', '')
-            self.ui.siteLatitude.setText(lat)
-            self.ui.siteElevation.setText(str(location.elevation.m))
+        if obs is None:
+            return False
+        location = obs.location
+        if location is None:
+            return False
+        lon = location.longitude.dstr().replace('deg', '')
+        self.ui.siteLongitude.setText(lon)
+        lat = location.latitude.dstr().replace('deg', '')
+        self.ui.siteLatitude.setText(lat)
+        self.ui.siteElevation.setText(str(location.elevation.m))
 
         return True
 
-    def updateTrackingGui(self, sett):
+    def updateTrackingGui(self, obs):
         """
         updateTrackingGui update the gui upon events triggered be the reception of new
         settings from the mount. the mount data is polled, so we use this signal as well
         for the update process.
 
-        :param sett:
+        :param obs:
         :return:    True if ok for testing
         """
 
-        if sett.checkRateLunar():
+        if obs is None:
+            return False
+
+        if obs.checkRateLunar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
-        elif sett.checkRateSidereal():
+        elif obs.checkRateSidereal():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'true')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'false')
-        elif sett.checkRateSolar():
+        elif obs.checkRateSolar():
             self.changeStyleDynamic(self.ui.setLunarTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSiderealTracking, 'running', 'false')
             self.changeStyleDynamic(self.ui.setSolarTracking, 'running', 'true')
@@ -385,8 +392,8 @@ class Mount(object):
         :return:
         """
 
-        obs = self.app.mount.obsSite
-        suc = obs.setLunarTracking()
+        sett = self.app.mount.setting
+        suc = sett.setLunarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Lunar', 2)
             return False
@@ -400,8 +407,8 @@ class Mount(object):
         :return:
         """
 
-        obs = self.app.mount.obsSite
-        suc = obs.setSiderealTracking()
+        sett = self.app.mount.setting
+        suc = sett.setSiderealTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Sidereal', 2)
             return False
@@ -415,8 +422,8 @@ class Mount(object):
         :return:
         """
 
-        obs = self.app.mount.obsSite
-        suc = obs.setSolarTracking()
+        sett = self.app.mount.setting
+        suc = sett.setSolarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Solar', 2)
             return False
@@ -446,9 +453,8 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.setting
         msg = PyQt5.QtWidgets.QMessageBox
-        obs = self.app.mount.obsSite
+        sett = self.app.mount.setting
         actValue = sett.meridianLimitTrack
         if actValue is None:
             msg.critical(self,
@@ -468,7 +474,7 @@ class Mount(object):
         if not ok:
             return False
 
-        if obs.setMeridianLimitTrack(value):
+        if sett.setMeridianLimitTrack(value):
             self.app.message.emit(f'Meridian Limit Track: [{value}]', 0)
             return True
         else:
@@ -483,7 +489,6 @@ class Mount(object):
         """
 
         sett = self.app.mount.setting
-        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.meridianLimitSlew
         if actValue is None:
@@ -504,7 +509,7 @@ class Mount(object):
         if not ok:
             return False
 
-        if obs.setMeridianLimitSlew(value):
+        if sett.setMeridianLimitSlew(value):
             self.app.message.emit(f'Meridian Limit Slew: [{value}]', 0)
             return True
         else:
@@ -519,7 +524,6 @@ class Mount(object):
         """
 
         sett = self.app.mount.setting
-        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.horizonLimitHigh
         if actValue is None:
@@ -540,7 +544,7 @@ class Mount(object):
         if not ok:
             return False
 
-        if obs.setHorizonLimitHigh(value):
+        if sett.setHorizonLimitHigh(value):
             self.app.message.emit(f'Horizon Limit High: [{value}]', 0)
             return True
         else:
@@ -555,7 +559,6 @@ class Mount(object):
         """
 
         sett = self.app.mount.setting
-        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.horizonLimitLow
         if actValue is None:
@@ -577,7 +580,7 @@ class Mount(object):
         if not ok:
             return False
 
-        if obs.setHorizonLimitLow(value):
+        if sett.setHorizonLimitLow(value):
             self.app.message.emit(f'Horizon Limit Low: [{value}]', 0)
             return True
         else:
@@ -591,7 +594,6 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
         sett = self.app.mount.setting
-        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         actValue = sett.slewRate
         if actValue is None:
@@ -613,7 +615,7 @@ class Mount(object):
         if not ok:
             return False
 
-        if obs.setSlewRate(value):
+        if sett.setSlewRate(value):
             self.app.message.emit(f'Slew Rate: [{value}]', 0)
             return True
         else:
@@ -725,7 +727,7 @@ class Mount(object):
         """
 
         sett = self.app.mount.setting
-        obs = self.app.mount.obsSite
+
         msg = PyQt5.QtWidgets.QMessageBox
         if sett.statusUnattendedFlip is None:
             msg.critical(self,
@@ -743,7 +745,7 @@ class Mount(object):
         if not ok:
             return False
 
-        suc = obs.setUnattendedFlip(value == 'ON')
+        suc = sett.setUnattendedFlip(value == 'ON')
         if suc:
             self.app.message.emit(f'Unattended flip set to [{value}]', 0)
         else:
@@ -759,7 +761,6 @@ class Mount(object):
         """
 
         sett = self.app.mount.setting
-        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         if sett.statusDualAxisTracking is None:
             msg.critical(self,
@@ -777,7 +778,7 @@ class Mount(object):
         if not ok:
             return False
 
-        suc = obs.setDualAxisTracking(value == 'ON')
+        suc = sett.setDualAxisTracking(value == 'ON')
         if suc:
             self.app.message.emit(f'Dual axis tracking set to [{value}]', 0)
         else:
@@ -793,7 +794,6 @@ class Mount(object):
         """
 
         sett = self.app.mount.setting
-        obs = self.app.mount.obsSite
         msg = PyQt5.QtWidgets.QMessageBox
         if sett.statusRefraction is None:
             msg.critical(self,
@@ -811,19 +811,10 @@ class Mount(object):
         if not ok:
             return False
 
-        suc = obs.setRefraction(value == 'ON')
+        suc = sett.setRefraction(value == 'ON')
         if suc:
             self.app.message.emit(f'Refraction correction set to [{value}]', 0)
         else:
             self.app.message.emit('Refraction correction cannot be set', 2)
 
         return suc
-
-
-if __name__ == '__main__':
-    from PyQt5.QtWidgets import QApplication
-    import sys
-    app = QApplication(sys.argv)
-    view = View3D()
-    view.view.show()
-    app.exec_()

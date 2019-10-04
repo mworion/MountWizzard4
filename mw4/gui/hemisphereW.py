@@ -397,7 +397,7 @@ class HemisphereWindow(widget.MWidget):
             self.pointerDome.set_visible(False)
             return False
 
-        visible = (azimuth != -1)
+        visible = self.app.mainW.deviceStat['dome'] is not None
 
         self.pointerDome.set_xy((azimuth - 15, 0))
         self.pointerDome.set_visible(visible)
@@ -642,6 +642,9 @@ class HemisphereWindow(widget.MWidget):
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
         if suc:
+            self.app.slewDome(altitude=altitude,
+                              azimuth=azimuth
+                              )
             suc = self.app.mount.obsSite.startSlewing()
         if not suc:
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
@@ -883,6 +886,9 @@ class HemisphereWindow(widget.MWidget):
                                                     dec_degrees=dec,
                                                     )
         if suc:
+            self.app.slewDome(altitude=altitude,
+                              azimuth=azimuth
+                              )
             suc = self.app.mount.obsSite.startSlewing(slewType=f'{alignType}')
         if not suc:
             self.app.message.emit('Cannot slew to: {0}'.format(name), 2)
@@ -1082,8 +1088,7 @@ class HemisphereWindow(widget.MWidget):
                                        visible=False,
                                        )
         # adding pointer of dome if dome is present
-        az = self.app.dome.data.get('DOME_ABSOLUTE_POSITION', -1)
-        visible = (az != -1)
+        visible = self.app.mainW.deviceStat['dome'] is not None
         self.pointerDome = mpatches.Rectangle((165, 0),
                                               30,
                                               90,

@@ -376,13 +376,15 @@ class BuildFunc(object):
             return False
 
         mPoint = self.slewQueue.get()
-
-        self.app.dome.slewToAltAz(azimuthMount=mPoint.point.azimuth)
-        self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint.point.altitude,
-                                              az_degrees=mPoint.point.azimuth,
-                                              )
+        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint.point.altitude,
+                                                    az_degrees=mPoint.point.azimuth,
+                                                    )
+        if not suc:
+            return False
+        self.app.slewDome(altitude=mPoint.point.altitude,
+                          azimuth=mPoint.point.azimuth
+                          )
         self.app.mount.obsSite.startSlewing()
-
         self.imageQueue.put(mPoint)
 
         text = f'Slewing  image-{mPoint.mParam.count:03d} ->   '

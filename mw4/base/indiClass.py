@@ -145,6 +145,8 @@ class IndiClass(object):
         :return: True for test purpose
         """
 
+        if not self.name:
+            return False
         self.retryCounter += 1
         if not self.data:
             self.stopCommunication()

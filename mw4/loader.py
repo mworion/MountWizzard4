@@ -48,6 +48,7 @@ class MyApp(PyQt5.QtWidgets.QApplication):
     including event and object name to be analyse the input methods.
     """
 
+    """
     def notify(self, obj, event):
         try:
             returnValue = PyQt5.QtWidgets.QApplication.notify(self, obj, event)
@@ -63,6 +64,8 @@ class MyApp(PyQt5.QtWidgets.QApplication):
                 if event.button():
                     logging.debug(f'Mouse: {obj.objectName()}, {event.button()}')
         return returnValue
+    """
+    pass
 
 
 def except_hook(typeException, valueException, tbackException):

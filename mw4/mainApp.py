@@ -541,3 +541,29 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.obsSite.location = location
             self.mountUp = False
             return False
+
+    def slewDome(self, altitude=0, azimuth=0):
+        """
+
+        :param altitude:
+        :param azimuth:
+        :return: success
+        """
+        # todo: is this the right position for this function ?
+        # check if dome should be used
+        if not self.mainW.deviceStat[dome]:
+            return False
+        if self.ui.checkDomeGeometry.isChecked():
+            ha = self.mount.obsSite.haJNowTarget.radians
+            dec = self.mount.obsSite.decJNowTarget.radians
+            lat = self.mount.obsSite.location.latitude.radians
+            pierside = self.mount.obsSite.piersideTarget
+            alt, az = self.mount.geometry.calcTransformationMatrices(ha=ha,
+                                                                     dec=dec,
+                                                                     lat=lat,
+                                                                     pierside=pierside)
+        else:
+            alt = altitude
+            az = azimuth
+        self.dome.slewToAltAz(azimuthMount=az)
+        return True

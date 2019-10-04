@@ -205,13 +205,14 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.app.dome.stopCommunication()
+        print('stop', self.app.dome.stopCommunication())
         if self.ui.domeDevice.currentText().startswith('INDI'):
             self.app.dome.client.host = self.ui.domeHost.text()
             self.app.dome.name = self.ui.domeDeviceName.currentText()
-            self.app.dome.startCommunication()
+            print('start', self.app.dome.startCommunication())
             self.app.message.emit('Dome enabled', 0)
         else:
+            self.app.dome.name = ''
             self.app.message.emit('Dome disabled', 0)
             self.deviceStat['dome'] = None
 

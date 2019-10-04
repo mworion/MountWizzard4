@@ -163,7 +163,7 @@ class Environ(object):
         if temp is None or press is None:
             return False
         for i in range(0, 3):
-            suc = self.app.mount.obsSite.setRefractionParam(temperature=temp,
+            suc = self.app.mount.setting.setRefractionParam(temperature=temp,
                                                             pressure=press)
             if suc:
                 break

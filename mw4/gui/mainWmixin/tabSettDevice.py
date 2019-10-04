@@ -341,7 +341,7 @@ class SettDevice(object):
             self.app.power.client.host = self.ui.powerHost.text()
             self.app.power.name = self.ui.powerDeviceName.currentText()
         else:
-            self.app.power.name =''
+            self.app.power.name = ''
             self.app.message.emit('Power disabled', 0)
             self.deviceStat['power'] = None
 

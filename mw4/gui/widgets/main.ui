@@ -5825,9 +5825,9 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>700</x>
+         <x>690</x>
          <y>260</y>
-         <width>81</width>
+         <width>91</width>
          <height>21</height>
         </rect>
        </property>
@@ -5996,9 +5996,9 @@ to mount manually</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>500</x>
+         <x>495</x>
          <y>260</y>
-         <width>81</width>
+         <width>101</width>
          <height>21</height>
         </rect>
        </property>
@@ -6038,7 +6038,7 @@ to mount manually</string>
       <widget class="QLabel" name="label_156">
        <property name="geometry">
         <rect>
-         <x>615</x>
+         <x>605</x>
          <y>260</y>
          <width>91</width>
          <height>21</height>
@@ -6328,7 +6328,7 @@ to mount manually</string>
       <widget class="QLabel" name="label_157">
        <property name="geometry">
         <rect>
-         <x>410</x>
+         <x>405</x>
          <y>260</y>
          <width>91</width>
          <height>21</height>
@@ -17516,34 +17516,9 @@ When clicking the button, you could change the value.</string>
          <property name="geometry">
           <rect>
            <x>400</x>
-           <y>230</y>
+           <y>225</y>
            <width>176</width>
-           <height>156</height>
-          </rect>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <property name="midLineWidth">
-          <number>0</number>
-         </property>
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="iconpicture" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLabel" name="picDome2">
-         <property name="geometry">
-          <rect>
-           <x>590</x>
-           <y>230</y>
-           <width>176</width>
-           <height>156</height>
+           <height>161</height>
           </rect>
          </property>
          <property name="frameShape">
@@ -17568,7 +17543,7 @@ When clicking the button, you could change the value.</string>
            <x>400</x>
            <y>25</y>
            <width>366</width>
-           <height>201</height>
+           <height>196</height>
           </rect>
          </property>
          <property name="title">
@@ -17630,7 +17605,7 @@ When clicking the button, you could change the value.</string>
            </font>
           </property>
           <property name="text">
-           <string>Diameter</string>
+           <string>Dome diameter</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_134">
@@ -17666,7 +17641,7 @@ When clicking the button, you could change the value.</string>
            </font>
           </property>
           <property name="text">
-           <string>GEM Offset</string>
+           <string>GEM offset</string>
           </property>
          </widget>
          <widget class="QDoubleSpinBox" name="domeDiameter">
@@ -17778,7 +17753,7 @@ When clicking the button, you could change the value.</string>
            </font>
           </property>
           <property name="text">
-           <string>East Offset</string>
+           <string>East offset</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_110">
@@ -17796,7 +17771,7 @@ When clicking the button, you could change the value.</string>
            </font>
           </property>
           <property name="text">
-           <string>Vertical Offset</string>
+           <string>Vertical offset</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_116">
@@ -17821,7 +17796,7 @@ When clicking the button, you could change the value.</string>
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>175</y>
+            <y>170</y>
             <width>264</width>
             <height>20</height>
            </rect>
@@ -17933,7 +17908,7 @@ When clicking the button, you could change the value.</string>
            </font>
           </property>
           <property name="text">
-           <string>North Offset</string>
+           <string>North offset</string>
           </property>
          </widget>
          <widget class="QDoubleSpinBox" name="offGEM">
@@ -17989,7 +17964,7 @@ When clicking the button, you could change the value.</string>
            </font>
           </property>
           <property name="text">
-           <string>OTA Offset</string>
+           <string>OTA offset</string>
           </property>
          </widget>
          <widget class="QDoubleSpinBox" name="offOTA">
@@ -18055,7 +18030,7 @@ When clicking the button, you could change the value.</string>
            <x>5</x>
            <y>25</y>
            <width>366</width>
-           <height>286</height>
+           <height>361</height>
           </rect>
          </property>
          <property name="title">
@@ -19579,6 +19554,114 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
          </widget>
+        </widget>
+        <widget class="QLabel" name="label_137">
+         <property name="geometry">
+          <rect>
+           <x>580</x>
+           <y>315</y>
+           <width>186</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>GEM Offset: distance A to B</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_138">
+         <property name="geometry">
+          <rect>
+           <x>580</x>
+           <y>340</y>
+           <width>186</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>OTA Offset: distance C to B</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_140">
+         <property name="geometry">
+          <rect>
+           <x>580</x>
+           <y>365</y>
+           <width>186</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Use either one !</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_145">
+         <property name="geometry">
+          <rect>
+           <x>580</x>
+           <y>230</y>
+           <width>186</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>A: cross point RA / DEC axis</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_147">
+         <property name="geometry">
+          <rect>
+           <x>580</x>
+           <y>255</y>
+           <width>186</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>B: cross point DEC / OTA axis</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_150">
+         <property name="geometry">
+          <rect>
+           <x>580</x>
+           <y>280</y>
+           <width>186</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>C: cross point DEC axis / plate</string>
+         </property>
         </widget>
        </widget>
        <widget class="QWidget" name="KMTronic">

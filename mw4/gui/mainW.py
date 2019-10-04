@@ -256,6 +256,8 @@ class MainWindow(MWidget,
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
         self.ui.picALT.setPixmap(pixmap)
+        pixmap = PyQt5.QtGui.QPixmap(':/offset.png')
+        self.ui.picDome1.setPixmap(pixmap)
 
         self.wIcon(self.ui.runAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)

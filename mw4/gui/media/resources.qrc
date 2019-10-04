@@ -17,7 +17,6 @@
     <file>deltat.data</file>
     <file>deltat.preds</file>
     <file>Leap_Second.dat</file>
-    <file>allsky_019.obj</file>
-    <file>allsky_019.mtl</file>
+    <file>offset.png</file>
 </qresource>
 </RCC>

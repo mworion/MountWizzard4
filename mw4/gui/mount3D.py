@@ -67,20 +67,20 @@ class OrbitTransformController(QTransform):
         self.m_radius = radius
         self.radiusChanged.emit()
 
-    def radius(self, ): #  : # method of "", returning float OrbitTransformController (const)
+    def radius(self, ):
         return self.m_radius
 
-    def setAngle(self, angle): #  : # method of "", returning void OrbitTransformController ()
+    def setAngle(self, angle):
         if fuzzyCompareDouble(angle, self.m_angle):
             return
         self.m_angle = angle
         self.updateMatrix()
         self.angleChanged.emit()
 
-    def angle(self): #  : # method of "", returning float OrbitTransformController (const)
+    def angle(self):
         return self.m_angle
 
-    def updateMatrix(self, ): #  : # method of "", returning void OrbitTransformController ()
+    def updateMatrix(self, ):
         self.m_matrix.setToIdentity()
         self.m_matrix.rotate(self.m_angle, QVector3D(0.0, 1.0, 0.0))
         self.m_matrix.translate(self.m_radius, 0.0, 0.0)

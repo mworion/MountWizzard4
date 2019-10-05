@@ -33,9 +33,10 @@ from mw4.test.test_units.setupQt import setupQt
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
-    global app, spy, mwGlob, test, testGlob
+    global app, spy, mwGlob, test, testGlob, workDir
     app, spy, mwGlob, test = setupQt()
     testGlob = copy.copy(mwGlob)
+    workDir = os.getcwd()
     yield
 
 
@@ -52,7 +53,7 @@ def test_except_hook():
 def test_setupWorkDirs_1():
     with mock.patch.object(os,
                            'getcwd',
-                           return_value='test'):
+                           return_value=workDir):
         with mock.patch.object(os,
                                'makedirs',
                                return_value=True):
@@ -65,7 +66,7 @@ def test_setupWorkDirs_1():
 def test_setupWorkDirs_2():
     with mock.patch.object(os,
                            'getcwd',
-                           return_value='test'):
+                           return_value=workDir):
         with mock.patch.object(os,
                                'makedirs',
                                return_value=True):

@@ -196,59 +196,13 @@ class Dome(indiClass.IndiClass):
 
         return True
 
-    def calcAzDomeFromMount(self,
-                            azimuthMount=0,
-                            domeRadius=0, shutterWidth=0,
-                            offsetN=0, offsetE=0,
-                            offsetUp=0, offsetOTA=0,
-                            pierside='E'):
-        """
-
-        :param azimuthMount: azimuth of the telescope
-
-        :param domeRadius: radius at Equator - The radius of your dome at the equator.  This
-        should be measured from where your shutter opening is.  For example if your dome is
-        skinned on the outside you would measure from the outside diameter.  If it is
-        skinned on the inside you would measure the inside radius.
-
-        :param shutterWidth: width of the shutter
-
-        :param offsetN: North Offset - The offset from the center of intersection of the
-        Right Ascension and Declination axis to the center of the dome.  If the RA/Dec
-        intersection is north of the dome center this value is positive.  If the RA/Dec
-        intersection is south of this location the value should be negative.
-
-        :param offsetE: East Offset - The offset from the center of the intersection of the
-        Right Ascension and Declination axis to the center of the dome.  If the RA/Dec
-        intersection is east of the dome center this value is positive.  If the RA/Dec
-        intersection is west of this location the value should be negative.
-
-        :param offsetUp: Vertical Offset - The offset from the center of the intersection
-        of the Right Ascension and Declination axis to the center of the dome.If the RA/Dec
-        intersection is above the dome center this value is positive.  If the RA/Dec
-        intersection is below this location the value should be negative.
-
-        :param offsetOTA: The distance from the center of the Right Ascension axis to the
-        center of the telescope.  This value can vary depending on how your scopes are
-        setup on your mount.  It is best to use some trial and error here.  If the top of
-        your scope is being eclipsed by your dome increase this value.  If the bottom of
-        your scope is being eclipsed decrease this value.
-
-        :param pierside: side of the pier, where the OTA is intended to be after slewing.
-
-        :return: azimuthDome calculated for right position for dome
-        """
-        azimuthDome = azimuthMount
-
-        return azimuthDome
-
-    def slewToAltAz(self, altitudeMount=0, azimuthMount=0):
+    def slewToAltAz(self, altitude=0, azimuth=0):
         """
         slewToAltAz sends a command to the dome to move to azimuth / altitude. if a dome
         does support this
 
-        :param altitudeMount:
-        :param azimuthMount:
+        :param altitude:
+        :param azimuth:
         :return: success
         """
 
@@ -263,9 +217,7 @@ class Dome(indiClass.IndiClass):
         if 'DOME_ABSOLUTE_POSITION' not in position:
             return False
 
-        azimuthDome = self.calcAzDomeFromMount(azimuthMount=azimuthMount)
-
-        position['DOME_ABSOLUTE_POSITION'] = azimuthDome
+        position['DOME_ABSOLUTE_POSITION'] = azimuth
 
         suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='ABS_DOME_POSITION',

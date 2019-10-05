@@ -566,5 +566,5 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         geoStat = 'On' if isGeometry else 'Off'
         text = f'Slewing  dome:      az correction: {geoStat}, delta: {azimuth-az:3.1f}°'
         self.message.emit(text, 0)
-        self.dome.slewToAltAz(azimuthMount=az)
+        self.dome.slewToAltAz(azimuth=az)
         return True

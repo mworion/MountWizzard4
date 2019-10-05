@@ -322,8 +322,41 @@ class DataPoint(object):
         else:
             return False
 
+    def isCloseMeridian(self, point):
+        """
+        isCloseMeridian check if a point is in inner to meridian slew limit
+
+        :param point:
+        :return: status
+        """
+
+        value = max(self.app.mount.setting.meridianLimitSlew,
+                    self.app.mount.setting.meridianLimitTrack)
+        lower = 180 - value
+        upper = 180 + value
+        if lower < point[1] < upper:
+            return False
+        else:
+            return True
+
     def deleteBelowHorizon(self):
+        """
+        deleteBelowHorizon deletes all points which are below horizon line
+
+        :return: true for test purpose
+        """
         self._buildP = [x for x in self._buildP if self.isAboveHorizon(x)]
+        return True
+
+    def deleteCloseMeridian(self):
+        """
+        deleteCloseMeridian deletes all points which are too close to the meridian and
+        therefore need to flip all the time
+
+        :return: true for test purpose
+        """
+        self._buildP = [x for x in self._buildP if self.isCloseMeridian(x)]
+        return True
 
     def sort(self, eastwest=False, highlow=False):
         """

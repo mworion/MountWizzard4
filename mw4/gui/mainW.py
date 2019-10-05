@@ -602,6 +602,7 @@ class MainWindow(MWidget,
 
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
+            self.app.data.deleteCloseMeridian()
         self.app.redrawHemisphere.emit()
         return True
 

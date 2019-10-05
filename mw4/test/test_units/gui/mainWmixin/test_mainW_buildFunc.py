@@ -122,7 +122,7 @@ def test_addResultToModel_1():
     solve = Solve(raJ2000=skyfield.api.Angle(degrees=0),
                   decJ2000=skyfield.api.Angle(degrees=0),
                   angle=0, scale=1, error=1, flipped=False, path='')
-    result = Solution(success=True, solve=solve)
+    result = Solution(success=True, solve=solve, message='')
     mPoint = MPoint(mParam=tuple(),
                     iParam=tuple(),
                     point=tuple(),
@@ -179,31 +179,11 @@ def test_modelSolveDone_3(qtbot):
 
     app.mainW.resultQueue.put(mPoint)
     solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False, path='')
-    result = Solution(success=False, solve=solve)
+    result = Solution(success=False, solve=solve, message='test')
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.modelSolveDone(result=result)
         assert suc
-    assert ['Solving error for image-003', 2] == blocker.args
-
-
-def test_modelSolveDone_5():
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='',
-                                  name='',
-                                  astrometry='',
-                                  timeout=10,
-                                  radius=1,
-                                  ),
-                    iParam=tuple(),
-                    point=tuple(),
-                    mData=tuple(),
-                    rData=tuple())
-
-    app.mainW.resultQueue.put(mPoint)
-    result = Solution(success=True, solve=None)
-    suc = app.mainW.modelSolveDone(result=result)
-    assert not suc
+    assert ['Solving error for image-003: test', 2] == blocker.args
 
 
 def test_modelSolveDone_6():
@@ -234,7 +214,7 @@ def test_modelSolveDone_6():
     solve = Solve(raJ2000=skyfield.api.Angle(hours=0),
                   decJ2000=skyfield.api.Angle(degrees=0),
                   angle=0, scale=1, error=1, flipped=False, path='')
-    result = Solution(success=True, solve=solve)
+    result = Solution(success=True, solve=solve, message='')
     suc = app.mainW.modelSolveDone(result=result)
     assert suc
 
@@ -317,6 +297,7 @@ def test_modelSlew_1():
 
 
 def test_modelSlew_2():
+    app.mainW.deviceStat['dome'] = False
     mPoint = MPoint(mParam=MParam(number=3,
                                   count=3,
                                   path='',
@@ -333,7 +314,31 @@ def test_modelSlew_2():
     with mock.patch.object(app.imaging,
                            'expose'):
         suc = app.mainW.modelSlew()
-        assert suc
+        assert not suc
+
+
+def test_modelSlew_3():
+    app.mainW.deviceStat['dome'] = True
+    mPoint = MPoint(mParam=MParam(number=3,
+                                  count=3,
+                                  path='',
+                                  name='',
+                                  timeout=10,
+                                  radius=1,
+                                  astrometry=''),
+                    iParam=tuple(),
+                    point=Point(azimuth=0,
+                                altitude=0),
+                    mData=tuple(),
+                    rData=tuple())
+    app.mainW.slewQueue.put(mPoint)
+    with mock.patch.object(app.imaging,
+                           'expose'):
+        with mock.patch.object(app.mount.obsSite,
+                               'setTargetAltAz',
+                               return_value=True):
+            suc = app.mainW.modelSlew()
+            assert suc
 
 
 def test_clearQueues():

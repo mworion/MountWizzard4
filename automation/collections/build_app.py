@@ -112,4 +112,5 @@ def mac(c):
         runMW(c, f'ssh {userMAC} < build_mac.sh')
     with c.cd('../dist'):
         runMW(c, f'scp -r {buildMAC}/dist/MountWizzard4.app .')
+        printMW('signing')
         runMW(c, "codesign -s 'Mac Developer: Michael Wuertenberger (2M9FQU8X23)' MountWizzard4.app")

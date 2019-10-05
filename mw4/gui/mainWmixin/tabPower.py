@@ -504,6 +504,11 @@ class Power(object):
             return False
 
         usb = device.getSwitch('USB_HUB_CONTROL')
+        if 'ENABLED' not in usb:
+            return False
+        if 'DISABLED' not in usb:
+            return False
+
         usb['ENABLED'] = not usb['ENABLED']
         usb['DISABLED'] = not usb['DISABLED']
         client.sendNewSwitch(deviceName=name,

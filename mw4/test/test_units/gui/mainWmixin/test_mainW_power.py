@@ -19,7 +19,9 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 # external packages
+import PyQt5
 # local import
 from mw4.test.test_units.setupQt import setupQt
 
@@ -99,8 +101,8 @@ def test_setPowerNumber_4():
 
     suc = app.mainW.setPowerNumber('test', '')
     assert suc
-    assert app.mainW.ui.dewA.value() == 100
-    assert app.mainW.ui.dewB.value() == 100
+    assert app.mainW.ui.dewA.text() == '124'
+    assert app.mainW.ui.dewB.text() == '124'
 
 
 def test_setPowerNumber_5():
@@ -114,8 +116,8 @@ def test_setPowerNumber_5():
 
     suc = app.mainW.setPowerNumber('test', '')
     assert suc
-    assert app.mainW.ui.dewA.value() == 60
-    assert app.mainW.ui.dewB.value() == 40
+    assert app.mainW.ui.dewA.text() == ' 56'
+    assert app.mainW.ui.dewB.text() == ' 42'
 
 
 def test_setPowerSwitch_1():
@@ -151,12 +153,10 @@ def test_setPowerSwitch_4():
                     }
     app.power.device = Test()
     app.power.name = 'test'
-    app.mainW.ui.hubUSB.setChecked(False)
     app.mainW.ui.autoDew.setChecked(False)
 
     suc = app.mainW.setPowerSwitch('test', 'USB_PORT_CONTROL')
     assert suc
-    assert app.mainW.ui.hubUSB.isChecked()
     assert not app.mainW.ui.autoDew.isChecked()
 
 
@@ -168,12 +168,10 @@ def test_setPowerSwitch_5():
                     }
     app.power.device = Test()
     app.power.name = 'test'
-    app.mainW.ui.hubUSB.setChecked(False)
     app.mainW.ui.autoDew.setChecked(False)
 
     suc = app.mainW.setPowerSwitch('test', 'AUTO_DEW')
     assert suc
-    assert not app.mainW.ui.hubUSB.isChecked()
     assert app.mainW.ui.autoDew.isChecked()
 
 
@@ -227,8 +225,11 @@ def test_setPowerText_4():
 
 def test_sendDewA_1():
     app.power.device = None
-    suc = app.mainW.sendDewA()
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.sendDewA()
+        assert not suc
 
 
 def test_sendDewA_2():
@@ -236,14 +237,20 @@ def test_sendDewA_2():
         def getNumber(self, name):
             return {}
     app.power.device = Test()
-    suc = app.mainW.sendDewA()
-    assert suc
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.sendDewA()
+        assert suc
 
 
 def test_sendDewB_1():
     app.power.device = None
-    suc = app.mainW.sendDewB()
-    assert not suc
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.sendDewB()
+        assert not suc
 
 
 def test_sendDewB_2():
@@ -251,8 +258,11 @@ def test_sendDewB_2():
         def getNumber(self, name):
             return {}
     app.power.device = Test()
-    suc = app.mainW.sendDewB()
-    assert suc
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        suc = app.mainW.sendDewB()
+        assert suc
 
 
 def test_sendPowerPort1_1():
@@ -265,6 +275,15 @@ def test_sendPowerPort1_2():
     class Test:
         def getSwitch(self, name):
             return {}
+    app.power.device = Test()
+    suc = app.mainW.sendPowerPort1()
+    assert not suc
+
+
+def test_sendPowerPort1_3():
+    class Test:
+        def getSwitch(self, name):
+            return {'POWER_CONTROL_1': ''}
     app.power.device = Test()
     suc = app.mainW.sendPowerPort1()
     assert suc
@@ -282,6 +301,15 @@ def test_sendPowerPort2_2():
             return {}
     app.power.device = Test()
     suc = app.mainW.sendPowerPort2()
+    assert not suc
+
+
+def test_sendPowerPort2_3():
+    class Test:
+        def getSwitch(self, name):
+            return {'POWER_CONTROL_2': ''}
+    app.power.device = Test()
+    suc = app.mainW.sendPowerPort2()
     assert suc
 
 
@@ -297,6 +325,15 @@ def test_sendPowerPort3_2():
             return {}
     app.power.device = Test()
     suc = app.mainW.sendPowerPort3()
+    assert not suc
+
+
+def test_sendPowerPort3_3():
+    class Test:
+        def getSwitch(self, name):
+            return {'POWER_CONTROL_3': ''}
+    app.power.device = Test()
+    suc = app.mainW.sendPowerPort3()
     assert suc
 
 
@@ -310,6 +347,15 @@ def test_sendPowerPort4_2():
     class Test:
         def getSwitch(self, name):
             return {}
+    app.power.device = Test()
+    suc = app.mainW.sendPowerPort4()
+    assert not suc
+
+
+def test_sendPowerPort4_3():
+    class Test:
+        def getSwitch(self, name):
+            return {'POWER_CONTROL_4': ''}
     app.power.device = Test()
     suc = app.mainW.sendPowerPort4()
     assert suc
@@ -390,7 +436,20 @@ def test_sendHubUSB_2():
             pass
 
     app.power.device = Test()
-    app.mainW.ui.hubUSB.setChecked(True)
+    suc = app.mainW.sendHubUSB()
+    assert not suc
+
+
+def test_sendHubUSB_3():
+    class Test:
+        def getSwitch(self, name):
+            return {'ENABLED': True,
+                    'DISABLED': False}
+
+        def sendNewSwitch(self, a, b, c):
+            pass
+
+    app.power.device = Test()
     suc = app.mainW.sendHubUSB()
     assert suc
 

@@ -885,8 +885,8 @@ class HemisphereWindow(widget.MWidget):
         suc = self.app.mount.obsSite.setTargetRaDec(ra_hours=ra,
                                                     dec_degrees=dec,
                                                     )
-        alt = self.app.mount.obsSite.AltTarget.degrees
-        az = self.app.mount.obsSite.AzTarget.degrees
+        alt = self.app.mount.obsSite.Alt.degrees
+        az = self.app.mount.obsSite.Az.degrees
         if suc:
             self.app.slewDome(altitude=alt,
                               azimuth=az

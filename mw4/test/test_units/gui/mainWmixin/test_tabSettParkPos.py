@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 # external packages
 # local import
 from mw4.test.test_units.setupQt import setupQt
@@ -82,7 +83,6 @@ def test_setupParkPosGui(qtbot):
     assert 8 == len(app.mainW.posAz)
 
 
-
 def test_slewParkPos_1(qtbot):
     class Test:
         @staticmethod
@@ -96,41 +96,50 @@ def test_slewParkPos_1(qtbot):
     app.mainW.posAz = az
 
     with mock.patch.object(app.mount.obsSite,
-                           'slewAltAz',
+                           'setTargetAltAz',
                            return_value=True):
-        for button in buttons:
-            with mock.patch.object(app.mainW,
-                                   'sender',
-                                   return_value=button):
-                suc = app.mainW.slewToParkPos()
-                assert suc
+        with mock.patch.object(app.mount.obsSite,
+                               'startSlewing',
+                               return_value=True):
+            for button in buttons:
+                with mock.patch.object(app.mainW,
+                                       'sender',
+                                       return_value=button):
+                    suc = app.mainW.slewToParkPos()
+                    assert suc
 
 
 def test_slewParkPos_2(qtbot):
     buttons = str(range(0, 8))
     app.mainW.posButtons = buttons
     with mock.patch.object(app.mount.obsSite,
-                           'slewAltAz',
-                           return_value=False):
-        for button in buttons:
-            with mock.patch.object(app.mainW,
-                                   'sender',
-                                   return_value=button):
-                suc = app.mainW.slewToParkPos()
-                assert not suc
+                           'setTargetAltAz',
+                           return_value=True):
+        with mock.patch.object(app.mount.obsSite,
+                               'startSlewing',
+                               return_value=False):
+            for button in buttons:
+                with mock.patch.object(app.mainW,
+                                       'sender',
+                                       return_value=button):
+                    suc = app.mainW.slewToParkPos()
+                    assert not suc
 
 
 def test_slewParkPos_3(qtbot):
     buttons = range(0, 8)
     app.mainW.posButtons = buttons
     with mock.patch.object(app.mount.obsSite,
-                           'slewAltAz',
+                           'setTargetAltAz',
                            return_value=False):
-        with mock.patch.object(app.mainW,
-                               'sender',
-                               return_value=None):
-            suc = app.mainW.slewToParkPos()
-            assert not suc
+        with mock.patch.object(app.mount.obsSite,
+                               'startSlewing',
+                               return_value=True):
+            with mock.patch.object(app.mainW,
+                                   'sender',
+                                   return_value=None):
+                suc = app.mainW.slewToParkPos()
+                assert not suc
 
 
 def test_slewParkPos_4(qtbot):
@@ -147,15 +156,18 @@ def test_slewParkPos_4(qtbot):
 
     with qtbot.waitSignal(app.message) as blocker:
         with mock.patch.object(app.mount.obsSite,
-                               'slewAltAz',
+                               'setTargetAltAz',
                                return_value=True):
-            for button in buttons:
-                with mock.patch.object(app.mainW,
-                                       'sender',
-                                       return_value=button):
-                    suc = app.mainW.slewToParkPos()
-                    assert suc
-            assert ['Slew to [Park Pos 0]', 0] == blocker.args
+            with mock.patch.object(app.mount.obsSite,
+                                   'startSlewing',
+                                   return_value=True):
+                for button in buttons:
+                    with mock.patch.object(app.mainW,
+                                           'sender',
+                                           return_value=button):
+                        suc = app.mainW.slewToParkPos()
+                        assert suc
+                assert ['Slew to [0]', 0] == blocker.args
 
 
 def test_slewParkPos_5(qtbot):
@@ -172,12 +184,15 @@ def test_slewParkPos_5(qtbot):
 
     with qtbot.waitSignal(app.message) as blocker:
         with mock.patch.object(app.mount.obsSite,
-                               'slewAltAz',
-                               return_value=False):
-            for button in buttons:
-                with mock.patch.object(app.mainW,
-                                       'sender',
-                                       return_value=button):
-                    suc = app.mainW.slewToParkPos()
-                    assert not suc
-            assert ['Cannot slew to [Park Pos 0]', 2] == blocker.args
+                               'setTargetAltAz',
+                               return_value=True):
+            with mock.patch.object(app.mount.obsSite,
+                                   'startSlewing',
+                                   return_value=False):
+                for button in buttons:
+                    with mock.patch.object(app.mainW,
+                                           'sender',
+                                           return_value=button):
+                        suc = app.mainW.slewToParkPos()
+                        assert not suc
+                assert ['Cannot slew to [0]', 2] == blocker.args

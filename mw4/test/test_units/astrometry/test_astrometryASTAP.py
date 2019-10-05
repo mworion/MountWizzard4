@@ -103,11 +103,13 @@ def test_solve_5():
     with mock.patch.object(app.astrometry.solverASTAP,
                            'runASTAP',
                            return_value=True):
-        suc = app.astrometry.solverASTAP.solve(solver=a,
-                                               fitsPath=mwGlob['imageDir'] + '/m51.fits',
-                                               timeout=5,
-                                               )
-        assert suc
+        with mock.patch.object(os,
+                               'remove'):
+            suc = app.astrometry.solverASTAP.solve(solver=a,
+                                                   fitsPath=mwGlob['imageDir'] + '/m51.fits',
+                                                   timeout=5,
+                                                   )
+            assert suc
 
 
 def test_abort_1():

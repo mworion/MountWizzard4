@@ -25,7 +25,6 @@ import subprocess
 # external packages
 import astropy.io.fits as fits
 # local import
-from mw4.astrometry import astrometry
 from mw4.test.test_units.setupQt import setupQt
 
 
@@ -37,7 +36,7 @@ def module_setup_teardown():
 
 
 def test_runImage2xy_1():
-    suc = app.astrometry.runImage2xy()
+    suc = app.astrometry.solverNET.runImage2xy()
     assert not suc
 
 
@@ -59,12 +58,12 @@ def test_runImage2xy_2():
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        suc = app.astrometry.runImage2xy()
+        suc = app.astrometry.solverNET.runImage2xy()
     assert not suc
 
 
 def test_runSolveField_1():
-    suc = app.astrometry.runSolveField()
+    suc = app.astrometry.solverNET.runSolveField()
     assert not suc
 
 
@@ -86,69 +85,18 @@ def test_runSolveField_2():
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        suc = app.astrometry.runSolveField()
+        suc = app.astrometry.solverNET.runSolveField()
     assert not suc
 
 
 def test_solveNet_1():
-    suc = app.astrometry.solveNET()
+    suc = app.astrometry.solverNET.solve()
     assert not suc
-
-
-def test_solveNet_2():
-    with mock.patch.object(app.astrometry,
-                           'runImage2xy',
-                           return_value=False):
-        with mock.patch.object(app.astrometry,
-                               'runSolveField',
-                               return_value=False):
-            suc = app.astrometry.solveNET(app='KStars',
-                                          fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                                          timeout=5,
-                                          )
-        assert not suc
-
-
-def test_solveNet_3():
-    with mock.patch.object(app.astrometry,
-                           'runImage2xy',
-                           return_value=True):
-        with mock.patch.object(app.astrometry,
-                               'runSolveField',
-                               return_value=False):
-            suc = app.astrometry.solveNET(app='KStars',
-                                          fitsPath=mwGlob['imageDir'] + '/nonsolve.fits',
-                                          timeout=5,
-                                          )
-        assert not suc
-
-
-def test_solveNet_4():
-    home = os.environ.get('HOME')
-    app.astrometry.solveApp = {
-        'KStars': {
-            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
-            'indexPath': home + '/Library/Application Support/Astrometry',
-            'solve': app.astrometry.solveNET,
-            'abort': app.astrometry.abortNET,
-        }
-    }
-    with mock.patch.object(app.astrometry,
-                           'runImage2xy',
-                           return_value=True):
-        with mock.patch.object(app.astrometry,
-                               'runSolveField',
-                               return_value=True):
-            suc = app.astrometry.solveNET(app='KStars',
-                                          fitsPath=mwGlob['imageDir'] + '/m51.fits',
-                                          timeout=5,
-                                          )
-        assert suc
 
 
 def test_abortNet_1():
     app.astrometry.process = None
-    suc = app.astrometry.abortNET()
+    suc = app.astrometry.solverNET.abort()
     assert not suc
 
 
@@ -157,6 +105,6 @@ def test_abortNet_2():
         @staticmethod
         def kill():
             return True
-    app.astrometry.process = Test()
-    suc = app.astrometry.abortNET()
+    app.astrometry.solverNET.process = Test()
+    suc = app.astrometry.solverNET.abort()
     assert suc

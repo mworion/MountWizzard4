@@ -96,7 +96,7 @@ def test_calculateReference_1():
     app.mount.obsSite.raJNow = 1
     app.mount.obsSite.decJNow = 1
     app.measure.data['status'] = np.array([])
-    ra, dec = app.measure._calculateReference()
+    ra, dec = app.measure.calculateReference()
     assert ra == 0
     assert dec == 0
 
@@ -107,29 +107,29 @@ def test_calculateReference_2():
     app.mount.obsSite.raJNow = 1
     app.mount.obsSite.decJNow = 1
     app.measure.data['status'] = np.array([0, 0, 0, 0, 0])
-    ra, dec = app.measure._calculateReference()
-    assert ra == 3600
+    ra, dec = app.measure.calculateReference()
+    assert round(ra, 0) == 54000
     assert dec == 3600
 
 
 def test_calculateReference_3():
-    app.measure.raRef = 1800
-    app.measure.decRef = 1800
+    app.measure.raRef = 7.5
+    app.measure.decRef = 0.5
     app.mount.obsSite.raJNow = 1
     app.mount.obsSite.decJNow = 1
     app.measure.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
-    ra, dec = app.measure._calculateReference()
-    assert ra == 1800
+    ra, dec = app.measure.calculateReference()
+    assert round(ra, 0) == 27000
     assert dec == 1800
 
 
 def test_calculateReference_4():
-    app.measure.raRef = 1800
+    app.measure.raRef = 27000
     app.measure.decRef = 1800
     app.mount.obsSite.raJNow = 1
     app.mount.obsSite.decJNow = 1
     app.measure.data['status'] = np.array([0, 0, 0, 0, 1, 0, 0, 0])
-    ra, dec = app.measure._calculateReference()
+    ra, dec = app.measure.calculateReference()
     assert ra == 0
     assert dec == 0
     assert app.measure.raRef is None
@@ -142,7 +142,7 @@ def test_calculateReference_5():
     app.mount.obsSite.raJNow = 1
     app.mount.obsSite.decJNow = 1
     app.measure.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
-    ra, dec = app.measure._calculateReference()
+    ra, dec = app.measure.calculateReference()
     assert ra == 0
     assert dec == 0
     assert app.measure.raRef is not None
@@ -155,8 +155,8 @@ def test_calculateReference_6():
     app.mount.obsSite.raJNow = 1
     app.mount.obsSite.decJNow = 1
     app.measure.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
-    ra, dec = app.measure._calculateReference()
-    assert ra == 3600.0
+    ra, dec = app.measure.calculateReference()
+    assert round(ra, 0) == 54000
     assert dec == 3600.0
 
 
@@ -166,7 +166,7 @@ def test_calculateReference_7():
     app.mount.obsSite.raJNow = 1
     app.mount.obsSite.decJNow = 1
     app.measure.data['status'] = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-    ra, dec = app.measure._calculateReference()
+    ra, dec = app.measure.calculateReference()
     assert ra == 0.0
     assert dec == 0.0
 

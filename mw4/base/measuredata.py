@@ -87,9 +87,9 @@ class MeasureData(object):
     def stopMeasurement(self):
         self.timerTask.stop()
 
-    def _calculateReference(self):
+    def calculateReference(self):
         """
-        _calculateReference run the states to get the calculation with references for
+        calculateReference run the states to get the calculation with references for
         RaDec deviations better stable. it takes into account, when the mount is tracking
         and when we calculate the offset (ref) to make the deviations balanced to zero
 
@@ -188,7 +188,7 @@ class MeasureData(object):
         skySQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
         skyTemp = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
         # gathering mount data
-        raJNow, decJNow = self._calculateReference()
+        raJNow, decJNow = self.calculateReference()
         # gathering data from power
         powCurr1 = self.app.power.data.get('POWER_CURRENT_1', 0)
         powCurr2 = self.app.power.data.get('POWER_CURRENT_2', 0)

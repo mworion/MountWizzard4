@@ -233,5 +233,8 @@ def test_abort_1():
         }
     }
     app.astrometry.solverSelected = 'KStars'
-    suc = app.astrometry.abort()
-    assert suc
+    with mock.patch.object(app.astrometry.solverNET,
+                           'abort',
+                           return_value=True):
+        suc = app.astrometry.abort()
+        assert suc

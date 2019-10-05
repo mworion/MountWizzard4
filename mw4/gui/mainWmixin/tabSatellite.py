@@ -36,7 +36,7 @@ class Satellite(object):
     """
 
     def __init__(self):
-        self. satellites = list()
+        self.satellites = dict()
         self.satellite = None
         self.satelliteTLE = {}
 
@@ -193,7 +193,7 @@ class Satellite(object):
 
         source = self.satelliteSourceDropDown[key]
         reload = self.ui.isOnline.isChecked()
-        self.satellites = self.app.loader.tle(source, reload=reload)
+        self.satellites = self.app.mount.obsSite.loader.tle(source, reload=reload)
 
         suc = self.loadTLEData(source)
         if not suc:

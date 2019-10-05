@@ -114,11 +114,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get all planets for calculation
-        self.loader = skyfield.api.Loader(pathToData,
-                                          expire=expireData,
-                                          verbose=False,
-                                          )
-        self.planets = self.loader('de421_23.bsp')
+        self.planets = self.mount.obsSite.loader('de421_23.bsp')
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
         self.environ = environ.Environ(host='localhost')
         self.cover = flipflat.FlipFlat(host='localhost')

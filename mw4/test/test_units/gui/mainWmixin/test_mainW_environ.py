@@ -401,3 +401,10 @@ def test_updateOpenWeatherMap_3():
 
     suc = app.mainW.updateOpenWeatherMap()
     assert suc
+
+
+def test_getDewPoint():
+    temp = 20
+    hum = 50
+    value = app.getDewPoint(temp, hum)
+    assert value == 9.254294282076941

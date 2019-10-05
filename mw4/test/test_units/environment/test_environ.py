@@ -151,13 +151,6 @@ def test_setUpdateConfig_6():
         assert suc
 
 
-def test_getDewPoint():
-    temp = 20
-    hum = 50
-    value = app._getDewPoint(temp, hum)
-    assert value == 9.254294282076941
-
-
 def test_updateNumber_1():
     app.device = None
     app.name = 'test'
@@ -210,7 +203,7 @@ def test_updateNumber_5():
                            'getNumber',
                            return_value=values):
         suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
-        assert not suc
+        assert suc
 
 
 def test_updateNumber_6():
@@ -222,60 +215,4 @@ def test_updateNumber_6():
                            'getNumber',
                            return_value=values):
         suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
-        assert not suc
-
-
-def test_updateNumber_7():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
-    values = {'WEATHER_TEMPERATURE': 20,
-              'WEATHER_HUMIDITY': 50,
-              }
-    with mock.patch.object(app.device,
-                           'getNumber',
-                           return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
-        assert app.data['WEATHER_DEWPOINT'] == 9.254294282076941
-
-
-def test_updateNumber_8():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
-    t = datetime.datetime.utcnow()
-    values = {'WEATHER_DEWPOINT': 5,
-              'WEATHER_TEMPERATURE': 10,
-              'WEATHER_HUMIDITY': 50,
-              }
-    app.data = {'WEATHER_DEWPOINT': 5,
-                'WEATHER_TEMPERATURE': 10,
-                'WEATHER_HUMIDITY': 50,
-                'WEATHER_TEMPERATURE_ARRAY': [10, 10],
-                'WEATHER_DEWPOINT_ARRAY': [10, 10],
-                'WEATHER_HUMIDITY_ARRAY': [10, 10],
-                'WEATHER_TEMPERATURE_TIME': [t, t],
-                'WEATHER_DEWPOINT_TIME': [t, t],
-                'WEATHER_HUMIDITY_TIME': [t, t],
-                }
-    with mock.patch.object(app.device,
-                           'getNumber',
-                           return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
-        assert suc
-
-
-def test_getFilteredData_1():
-    app.data = {'WEATHER_TEMPERATURE_ARRAY': [10, 10],
-                'WEATHER_PRESSURE_ARRAY': [10, 10],
-                'WEATHER_HUMIDITY_ARRAY': [10, 10],
-                }
-    val1, val2 = app.getFilteredRefracParams()
-    assert val1 == 10
-    assert val2 == 10
-
-
-def test_getFilteredData_2():
-    app.data = {}
-    val1, val2 = app.getFilteredRefracParams()
-    assert val1 is None
-    assert val2 is None

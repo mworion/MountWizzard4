@@ -122,4 +122,6 @@ app = BUNDLE(exe,
              name='MountWizzard4.app',
              version=4,
              icon='mw4.icns',
-             bundle_identifier=None)
+             bundle_identifier=None,
+#             osx_bundle_identifier='org.mworion.mountwizzard4',
+             )

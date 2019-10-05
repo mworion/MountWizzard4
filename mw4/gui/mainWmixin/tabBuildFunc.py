@@ -239,12 +239,13 @@ class BuildFunc(object):
                 text = f'Solving failed for image-{mPoint.mParam.count:03d}'
                 self.app.message.emit(text, 2)
 
-            text = f'Solved   image-{mPoint.mParam.count:03d} ->   '
+            text = f'Solved   image-{mPoint.mParam.count:03d}: '
             text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)} '
             text += f'({result.solve.raJ2000.hours:4.3f}), '
             text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)} '
             text += f'({result.solve.decJ2000.degrees:4.3f}), '
-            text += f'Error: {error:5.1f}, '
+            self.app.message.emit(text, 0)
+            text = f'                    Error: {error:5.1f}, '
             text += f'Angle: {result.solve.angle:3.0f}, '
             text += f'Scale: {result.solve.scale:4.3f}'
             self.app.message.emit(text, 0)
@@ -295,7 +296,7 @@ class BuildFunc(object):
                                            )
         self.resultQueue.put(mPoint)
 
-        text = f'Solving  image-{mPoint.mParam.count:03d} ->   '
+        text = f'Solving  image-{mPoint.mParam.count:03d}: '
         text += f'{os.path.basename(mPoint.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mSolve.setText(f'{mPoint.mParam.count + 1:2d}')
@@ -352,7 +353,7 @@ class BuildFunc(object):
 
         self.solveQueue.put(mPoint)
 
-        text = f'Exposing image-{mPoint.mParam.count:03d} ->   '
+        text = f'Exposing image-{mPoint.mParam.count:03d}: '
         text += f'path: {os.path.basename(mPoint.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mImage.setText(f'{mPoint.mParam.count + 1 :2d}')
@@ -387,7 +388,7 @@ class BuildFunc(object):
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
 
-        text = f'Slewing  image-{mPoint.mParam.count:03d} ->   '
+        text = f'Slewing  image-{mPoint.mParam.count:03d}: '
         text += f'altitude: {mPoint.point.altitude:3.0f}, '
         text += f'azimuth: {mPoint.point.azimuth:3.0f}'
         self.app.message.emit(text, 0)

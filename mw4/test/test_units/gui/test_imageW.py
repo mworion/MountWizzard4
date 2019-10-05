@@ -175,7 +175,7 @@ def test_stretchImage_1():
 
 def test_stretchImage_2():
     image = np.zeros([100, 100], dtype=np.uint8)
-    suc = app.imageW.stretchImage(image=image)
+    suc, a, b = app.imageW.stretchImage(image=image)
     assert isinstance(suc, astropy.visualization.mpl_normalize.ImageNormalize)
 
 
@@ -429,7 +429,7 @@ def test_solveDone_1(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.imageW.solveDone()
         assert not suc
-    assert ['Solving error', 2] == blocker.args
+    assert ['Solving error, result missing', 2] == blocker.args
 
 
 def test_solveDone_2(qtbot):
@@ -440,13 +440,14 @@ def test_solveDone_2(qtbot):
                                   scale=1,
                                   error=3,
                                   flipped=False,
-                                  path='test'))
+                                  path='test'),
+                      message='test')
 
     app.astrometry.signals.done.connect(app.imageW.solveDone)
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.imageW.solveDone(result=result)
         assert not suc
-    assert ['Solving error', 2] == blocker.args
+    assert ['Solving error: test', 2] == blocker.args
 
 
 def test_solveDone_3(qtbot):
@@ -459,7 +460,8 @@ def test_solveDone_3(qtbot):
                                   scale=1,
                                   error=3,
                                   flipped=False,
-                                  path='test'))
+                                  path='test'),
+                      message='test')
 
     app.astrometry.signals.done.connect(app.imageW.solveDone)
     with qtbot.waitSignal(app.message) as blocker:
@@ -478,7 +480,8 @@ def test_solveDone_4(qtbot):
                                   scale=1,
                                   error=3,
                                   flipped=False,
-                                  path='test'))
+                                  path='test'),
+                      message='test')
 
     app.astrometry.signals.done.connect(app.imageW.solveDone)
     with qtbot.waitSignal(app.imageW.signals.showImage):

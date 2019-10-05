@@ -104,13 +104,6 @@ def test_indiMessage_3(qtbot):
     assert ['test -> this is a test', 2] == blocker.args
 
 
-def test_showIndiDomeConnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiDomeConnected()
-        assert suc
-    assert ['INDI server environment connected', 0] == blocker.args
-
-
 def test_showIndiDomeDisconnected(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.showIndiDomeDisconnected()
@@ -142,27 +135,18 @@ def test_showIndiRemoveEnvironDevice(qtbot):
 
 
 def test_showEnvironDeviceConnected():
-    suc = app.mainW.showEnvironDeviceConnected()
+    suc = app.mainW.showEnvironDeviceConnected('test')
     assert suc
 
 
 def test_showEnvironDeviceDisconnected():
-    suc = app.mainW.showEnvironDeviceDisconnected()
+    suc = app.mainW.showEnvironDeviceDisconnected('test')
     assert suc
 
 
-def test_showIndiDomeConnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiDomeConnected()
-        assert suc
-    assert ['INDI server dome connected', 0] == blocker.args
-
-
 def test_showIndiDomeDisconnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiDomeDisconnected()
-        assert suc
-    assert ['INDI server dome disconnected', 0] == blocker.args
+    suc = app.mainW.showIndiDomeDisconnected()
+    assert suc
 
 
 def test_showIndiNewDomeDevice_1(qtbot):
@@ -189,7 +173,7 @@ def test_showIndiRemoveDomeDevice(qtbot):
 
 
 def test_showDomeDeviceConnected():
-    suc = app.mainW.showDomeDeviceConnected()
+    suc = app.mainW.showDomeDeviceConnected('test')
     assert suc
 
 
@@ -198,18 +182,9 @@ def test_showDomeDeviceDisconnected():
     assert suc
 
 
-def test_showIndiImagingConnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiImagingConnected()
-        assert suc
-    assert ['INDI server imaging connected', 0] == blocker.args
-
-
 def test_showIndiImagingDisconnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiImagingDisconnected()
-        assert suc
-    assert ['INDI server imaging disconnected', 0] == blocker.args
+    suc = app.mainW.showIndiImagingDisconnected()
+    assert suc
 
 
 def test_showIndiNewImagingDevice_1(qtbot):
@@ -236,7 +211,7 @@ def test_showIndiRemoveImagingDevice(qtbot):
 
 
 def test_showImagingDeviceConnected():
-    suc = app.mainW.showImagingDeviceConnected()
+    suc = app.mainW.showImagingDeviceConnected('test')
     assert suc
 
 
@@ -245,18 +220,9 @@ def test_showImagingDeviceDisconnected():
     assert suc
 
 
-def test_showIndiSkymeterConnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiSkymeterConnected()
-        assert suc
-    assert ['INDI server skymeter connected', 0] == blocker.args
-
-
 def test_showIndiSkymeterDisconnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiSkymeterDisconnected()
-        assert suc
-    assert ['INDI server skymeter disconnected', 0] == blocker.args
+    suc = app.mainW.showIndiSkymeterDisconnected()
+    assert suc
 
 
 def test_showIndiNewSkymeterDevice_1(qtbot):
@@ -283,7 +249,7 @@ def test_showIndiRemoveSkymeterDevice(qtbot):
 
 
 def test_showSkymeterDeviceConnected():
-    suc = app.mainW.showSkymeterDeviceConnected()
+    suc = app.mainW.showSkymeterDeviceConnected('test')
     assert suc
 
 
@@ -292,18 +258,9 @@ def test_showPowerDeviceDisconnected():
     assert suc
 
 
-def test_showIndiPowerConnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiPowerConnected()
-        assert suc
-    assert ['INDI server power connected', 0] == blocker.args
-
-
 def test_showIndiPowerDisconnected(qtbot):
-    with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.showIndiPowerDisconnected()
-        assert suc
-    assert ['INDI server power disconnected', 0] == blocker.args
+    suc = app.mainW.showIndiPowerDisconnected()
+    assert suc
 
 
 def test_showIndiNewPowerDevice_1(qtbot):
@@ -330,10 +287,10 @@ def test_showIndiRemovePowerDevice(qtbot):
 
 
 def test_showPowerDeviceConnected():
-    suc = app.mainW.showPowerDeviceConnected()
+    suc = app.mainW.showPowerDeviceConnected('test')
     assert suc
 
 
 def test_showPowerDeviceDisconnected():
-    suc = app.mainW.showPowerDeviceDisconnected()
+    suc = app.mainW.showPowerDeviceDisconnected('test')
     assert suc

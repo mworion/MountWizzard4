@@ -152,16 +152,19 @@ class Camera(indiClass.IndiClass):
             if element == 'CCD_PIXEL_SIZE_X':
                 self.pixelSizeX = value
                 self.app.mainW.ui.pixelSizeX.setText(f'{value:2.2f}')
-            if element == 'CCD_PIXEL_SIZE_Y':
+                return True
+            elif element == 'CCD_PIXEL_SIZE_Y':
                 self.pixelSizeY = value
                 self.app.mainW.ui.pixelSizeY.setText(f'{value:2.2f}')
-            if element == 'CCD_MAX_X':
+                return True
+            elif element == 'CCD_MAX_X':
                 self.pixelX = value
                 self.app.mainW.ui.pixelX.setText(f'{value:5.0f}')
-            if element == 'CCD_MAX_Y':
+                return True
+            elif element == 'CCD_MAX_Y':
                 self.pixelY = value
                 self.app.mainW.ui.pixelY.setText(f'{value:5.0f}')
-            return True
+                return True
 
         return False
 

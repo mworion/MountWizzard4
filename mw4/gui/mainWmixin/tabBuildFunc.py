@@ -245,9 +245,9 @@ class BuildFunc(object):
             text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)} '
             text += f'({result.solve.decJ2000.degrees:4.3f}), '
             self.app.message.emit(text, 0)
-            text = f'                    Error: {error:5.1f}, '
-            text += f'Angle: {result.solve.angle:3.0f}, '
-            text += f'Scale: {result.solve.scale:4.3f}'
+            text = f'                    error: {error:5.1f}, '
+            text += f'angle: {result.solve.angle:3.0f}, '
+            text += f'scale: {result.solve.scale:4.3f}'
             self.app.message.emit(text, 0)
         else:
             message = result.message
@@ -297,7 +297,7 @@ class BuildFunc(object):
         self.resultQueue.put(mPoint)
 
         text = f'Solving  image-{mPoint.mParam.count:03d}: '
-        text += f'{os.path.basename(mPoint.mParam.path)}'
+        text += f'path: {os.path.basename(mPoint.mParam.path)}'
         self.app.message.emit(text, 0)
         self.ui.mSolve.setText(f'{mPoint.mParam.count + 1:2d}')
 
@@ -388,7 +388,7 @@ class BuildFunc(object):
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
 
-        text = f'Slewing  image-{mPoint.mParam.count:03d}: '
+        text = f'Slewing  mount:     point: {mPoint.mParam.count:03d}, '
         text += f'altitude: {mPoint.point.altitude:3.0f}, '
         text += f'azimuth: {mPoint.point.azimuth:3.0f}'
         self.app.message.emit(text, 0)

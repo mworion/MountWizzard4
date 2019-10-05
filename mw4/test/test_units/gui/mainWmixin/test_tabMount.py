@@ -272,26 +272,26 @@ def test_updateSetting_statusGPSSynced_3():
 
 
 def test_tracking_speed1():
-    with mock.patch.object(app.mount.setting,
+    with mock.patch.object(app.mount.obsSite,
                            'checkRateLunar',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui(app.mount.setting)
+        suc = app.mainW.updateTrackingGui(app.mount.obsSite)
         assert suc
 
 
 def test_tracking_speed2():
-    with mock.patch.object(app.mount.setting,
+    with mock.patch.object(app.mount.obsSite,
                            'checkRateSidereal',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui(app.mount.setting)
+        suc = app.mainW.updateTrackingGui(app.mount.obsSite)
         assert suc
 
 
 def test_tracking_speed3():
-    with mock.patch.object(app.mount.setting,
+    with mock.patch.object(app.mount.obsSite,
                            'checkRateSolar',
                            return_value=True):
-        suc = app.mainW.updateTrackingGui(app.mount.setting)
+        suc = app.mainW.updateTrackingGui(app.mount.obsSite)
         assert suc
 
 
@@ -443,106 +443,6 @@ def test_setSolarTracking2(qtbot):
         assert ['Cannot set tracking to Solar', 2] == blocker.args
 
 
-def test_slewParkPos_1(qtbot):
-    class Test:
-        @staticmethod
-        def text():
-            return '1'
-    buttons = range(0, 8)
-    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
-    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
-    app.mainW.posButtons = buttons
-    app.mainW.posAlt = alt
-    app.mainW.posAz = az
-
-    with mock.patch.object(app.mount.obsSite,
-                           'slewAltAz',
-                           return_value=True):
-        for button in buttons:
-            with mock.patch.object(app.mainW,
-                                   'sender',
-                                   return_value=button):
-                suc = app.mainW.slewToParkPos()
-                assert suc
-
-
-def test_slewParkPos_2(qtbot):
-    buttons = str(range(0, 8))
-    app.mainW.posButtons = buttons
-    with mock.patch.object(app.mount.obsSite,
-                           'slewAltAz',
-                           return_value=False):
-        for button in buttons:
-            with mock.patch.object(app.mainW,
-                                   'sender',
-                                   return_value=button):
-                suc = app.mainW.slewToParkPos()
-                assert not suc
-
-
-def test_slewParkPos_3(qtbot):
-    buttons = range(0, 8)
-    app.mainW.posButtons = buttons
-    with mock.patch.object(app.mount.obsSite,
-                           'slewAltAz',
-                           return_value=False):
-        with mock.patch.object(app.mainW,
-                               'sender',
-                               return_value=None):
-            suc = app.mainW.slewToParkPos()
-            assert not suc
-
-
-def test_slewParkPos_4(qtbot):
-    class Test:
-        @staticmethod
-        def text():
-            return '1'
-    buttons = range(0, 8)
-    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
-    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
-    app.mainW.posButtons = buttons
-    app.mainW.posAlt = alt
-    app.mainW.posAz = az
-
-    with qtbot.waitSignal(app.message) as blocker:
-        with mock.patch.object(app.mount.obsSite,
-                               'slewAltAz',
-                               return_value=True):
-            for button in buttons:
-                with mock.patch.object(app.mainW,
-                                       'sender',
-                                       return_value=button):
-                    suc = app.mainW.slewToParkPos()
-                    assert suc
-            assert ['Slew to [Park Pos 0]', 0] == blocker.args
-
-
-def test_slewParkPos_5(qtbot):
-    class Test:
-        @staticmethod
-        def text():
-            return '1'
-    buttons = range(0, 8)
-    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
-    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
-    app.mainW.posButtons = buttons
-    app.mainW.posAlt = alt
-    app.mainW.posAz = az
-
-    with qtbot.waitSignal(app.message) as blocker:
-        with mock.patch.object(app.mount.obsSite,
-                               'slewAltAz',
-                               return_value=False):
-            for button in buttons:
-                with mock.patch.object(app.mainW,
-                                       'sender',
-                                       return_value=button):
-                    suc = app.mainW.slewToParkPos()
-                    assert not suc
-            assert ['Cannot slew to [Park Pos 0]', 2] == blocker.args
-
-
 def test_stop1(qtbot):
     with mock.patch.object(app.mount.obsSite,
                            'stop',
@@ -681,12 +581,12 @@ def test_updateSetting_timeToMeridian():
 
 def test_updateSettingExt_location():
     app.mount.obsSite.location = ['49:00:00', '11:00:00', '500']
-    app.mainW.updateLocGUI(app.mount.obsSite.location)
+    app.mainW.updateLocGUI(app.mount.obsSite)
     assert '11 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
     assert '49 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
     assert '500.0' == app.mainW.ui.siteElevation.text()
     app.mount.obsSite.location = None
-    app.mainW.updateLocGUI(app.mount.obsSite.location)
+    app.mainW.updateLocGUI(app.mount.obsSite)
     assert '11 00\' 00.0\"' == app.mainW.ui.siteLongitude.text()
     assert '49 00\' 00.0\"' == app.mainW.ui.siteLatitude.text()
     assert '500.0' == app.mainW.ui.siteElevation.text()
@@ -715,7 +615,7 @@ def test_setMeridianLimitTrack4(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setMeridianLimitTrack',
                                return_value=True):
             suc = app.mainW.setMeridianLimitTrack()
@@ -745,7 +645,7 @@ def test_setMeridianLimitSlew4(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setMeridianLimitSlew',
                                return_value=True):
             suc = app.mainW.setMeridianLimitSlew()
@@ -775,7 +675,7 @@ def test_setHorizonLimitHigh4(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setHorizonLimitHigh',
                                return_value=True):
             suc = app.mainW.setHorizonLimitHigh()
@@ -805,7 +705,7 @@ def test_setHorizonLimitLow4(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setHorizonLimitLow',
                                return_value=True):
             suc = app.mainW.setHorizonLimitLow()
@@ -835,7 +735,7 @@ def test_setSlewRate4(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
                            return_value=(10, True)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setSlewRate',
                                return_value=True):
             suc = app.mainW.setSlewRate()
@@ -997,7 +897,7 @@ def test_setUnattendedFlip4(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getItem',
                            return_value=('ON', True)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setUnattendedFlip',
                                return_value=True):
             suc = app.mainW.setUnattendedFlip()
@@ -1027,7 +927,7 @@ def test_setDualAxisTracking4(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getItem',
                            return_value=('ON', True)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setDualAxisTracking',
                                return_value=True):
             suc = app.mainW.setDualAxisTracking()
@@ -1057,7 +957,7 @@ def test_setRefraction4(qtbot):
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getItem',
                            return_value=('ON', True)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setRefraction',
                                return_value=True):
             suc = app.mainW.setRefraction()

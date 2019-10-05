@@ -62,10 +62,10 @@ def test_updateRefractionParameters_1(qtbot):
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
+    with mock.patch.object(app.mainW,
+                           'movingAverageRefractionParameters',
                            return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setRefractionParam',
                                return_value=True):
             suc = app.mainW.updateRefractionParameters()
@@ -77,10 +77,10 @@ def test_updateRefractionParameters_2(qtbot):
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
+    with mock.patch.object(app.mainW,
+                           'movingAverageRefractionParameters',
                            return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setRefractionParam',
                                return_value=True):
             suc = app.mainW.updateRefractionParameters()
@@ -92,10 +92,10 @@ def test_updateRefractionParameters_3(qtbot):
     app.mainW.ui.checkRefracNone.setChecked(True)
     app.mainW.ui.checkRefracNoTrack.setChecked(False)
     app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
+    with mock.patch.object(app.mainW,
+                           'movingAverageRefractionParameters',
                            return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setRefractionParam',
                                return_value=True):
             suc = app.mainW.updateRefractionParameters()
@@ -107,10 +107,10 @@ def test_updateRefractionParameters_4(qtbot):
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '1'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
+    with mock.patch.object(app.mainW,
+                           'movingAverageRefractionParameters',
                            return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setRefractionParam',
                                return_value=True):
             suc = app.mainW.updateRefractionParameters()
@@ -122,10 +122,10 @@ def test_updateRefractionParameters_5(qtbot):
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
+    with mock.patch.object(app.mainW,
+                           'movingAverageRefractionParameters',
                            return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setRefractionParam',
                                return_value=False):
             suc = app.mainW.updateRefractionParameters()
@@ -137,10 +137,10 @@ def test_updateRefractionParameters_6(qtbot):
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
+    with mock.patch.object(app.mainW,
+                           'movingAverageRefractionParameters',
                            return_value=(None, 10)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setRefractionParam',
                                return_value=True):
             suc = app.mainW.updateRefractionParameters()
@@ -152,10 +152,10 @@ def test_updateRefractionParameters_7(qtbot):
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
+    with mock.patch.object(app.mainW,
+                           'movingAverageRefractionParameters',
                            return_value=(10, None)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setRefractionParam',
                                return_value=True):
             suc = app.mainW.updateRefractionParameters()
@@ -168,10 +168,10 @@ def test_updateRefractionParameters_8(qtbot):
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '1'
-    with mock.patch.object(app.environ,
-                           'getFilteredRefracParams',
+    with mock.patch.object(app.mainW,
+                           'movingAverageRefractionParameters',
                            return_value=(10, 10)):
-        with mock.patch.object(app.mount.obsSite,
+        with mock.patch.object(app.mount.setting,
                                'setRefractionParam',
                                return_value=False):
             with qtbot.waitSignal(app.message) as blocker:
@@ -227,7 +227,7 @@ def test_updateSkymeterGUI_1():
     app.skymeter.name = 'test'
     app.skymeter.data['SKY_BRIGHTNESS'] = 10.5
     app.mainW.updateSkymeterGUI('test')
-    assert app.mainW.ui.skymeterSQR.text() == '10.5'
+    assert app.mainW.ui.skymeterSQR.text() == '10.50'
 
 
 def test_updateSkymeterGUI_2():
@@ -406,5 +406,5 @@ def test_updateOpenWeatherMap_3():
 def test_getDewPoint():
     temp = 20
     hum = 50
-    value = app.getDewPoint(temp, hum)
+    value = app.mainW.getDewPoint(temp, hum)
     assert value == 9.254294282076941

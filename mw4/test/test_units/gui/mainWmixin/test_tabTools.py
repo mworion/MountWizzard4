@@ -196,3 +196,103 @@ def test_renameRunGUI_3(qtbot):
             suc = app.mainW.renameRunGUI()
             assert suc
         assert ['3 images were renamed', 0] == blocker.args
+
+
+def test_slewParkPos_1(qtbot):
+    class Test:
+        @staticmethod
+        def text():
+            return '1'
+    buttons = range(0, 8)
+    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    app.mainW.posButtons = buttons
+    app.mainW.posAlt = alt
+    app.mainW.posAz = az
+
+    with mock.patch.object(app.mount.obsSite,
+                           'slewAltAz',
+                           return_value=True):
+        for button in buttons:
+            with mock.patch.object(app.mainW,
+                                   'sender',
+                                   return_value=button):
+                suc = app.mainW.slewToParkPos()
+                assert suc
+
+
+def test_slewParkPos_2(qtbot):
+    buttons = str(range(0, 8))
+    app.mainW.posButtons = buttons
+    with mock.patch.object(app.mount.obsSite,
+                           'slewAltAz',
+                           return_value=False):
+        for button in buttons:
+            with mock.patch.object(app.mainW,
+                                   'sender',
+                                   return_value=button):
+                suc = app.mainW.slewToParkPos()
+                assert not suc
+
+
+def test_slewParkPos_3(qtbot):
+    buttons = range(0, 8)
+    app.mainW.posButtons = buttons
+    with mock.patch.object(app.mount.obsSite,
+                           'slewAltAz',
+                           return_value=False):
+        with mock.patch.object(app.mainW,
+                               'sender',
+                               return_value=None):
+            suc = app.mainW.slewToParkPos()
+            assert not suc
+
+
+def test_slewParkPos_4(qtbot):
+    class Test:
+        @staticmethod
+        def text():
+            return '1'
+    buttons = range(0, 8)
+    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    app.mainW.posButtons = buttons
+    app.mainW.posAlt = alt
+    app.mainW.posAz = az
+
+    with qtbot.waitSignal(app.message) as blocker:
+        with mock.patch.object(app.mount.obsSite,
+                               'slewAltAz',
+                               return_value=True):
+            for button in buttons:
+                with mock.patch.object(app.mainW,
+                                       'sender',
+                                       return_value=button):
+                    suc = app.mainW.slewToParkPos()
+                    assert suc
+            assert ['Slew to [Park Pos 0]', 0] == blocker.args
+
+
+def test_slewParkPos_5(qtbot):
+    class Test:
+        @staticmethod
+        def text():
+            return '1'
+    buttons = range(0, 8)
+    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    app.mainW.posButtons = buttons
+    app.mainW.posAlt = alt
+    app.mainW.posAz = az
+
+    with qtbot.waitSignal(app.message) as blocker:
+        with mock.patch.object(app.mount.obsSite,
+                               'slewAltAz',
+                               return_value=False):
+            for button in buttons:
+                with mock.patch.object(app.mainW,
+                                       'sender',
+                                       return_value=button):
+                    suc = app.mainW.slewToParkPos()
+                    assert not suc
+            assert ['Cannot slew to [Park Pos 0]', 2] == blocker.args

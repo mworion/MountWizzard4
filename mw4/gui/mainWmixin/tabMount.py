@@ -392,8 +392,8 @@ class Mount(object):
         :return:
         """
 
-        sett = self.app.mount.setting
-        suc = sett.setLunarTracking()
+        obs = self.app.mount.obsSite
+        suc = obs.setLunarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Lunar', 2)
             return False
@@ -407,8 +407,8 @@ class Mount(object):
         :return:
         """
 
-        sett = self.app.mount.setting
-        suc = sett.setSiderealTracking()
+        obs = self.app.mount.obsSite
+        suc = obs.setSiderealTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Sidereal', 2)
             return False
@@ -422,8 +422,8 @@ class Mount(object):
         :return:
         """
 
-        sett = self.app.mount.setting
-        suc = sett.setSolarTracking()
+        obs = self.app.mount.obsSite
+        suc = obs.setSolarTracking()
         if not suc:
             self.app.message.emit('Cannot set tracking to Solar', 2)
             return False

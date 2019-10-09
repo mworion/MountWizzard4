@@ -258,9 +258,12 @@ class HemisphereWindow(widget.MWidget):
         axe.spines['right'].set_color('#2090C0')
         axe.grid(True, color='#404040')
         axe.tick_params(axis='x',
+                        bottom=True,
                         colors='#2090C0',
                         labelsize=12)
-        axe.set_xticks(np.arange(0, 361, 30))
+        axe.set_xticks(np.arange(0, 361, 45))
+        axe.set_xticklabels(['0/N', '45/NE', '90/E', '135/SE', '180/S', '225/SW', '270/W',
+                             '315/NW', '360/N'])
         axe.tick_params(axis='y',
                         colors='#2090C0',
                         which='both',
@@ -962,7 +965,7 @@ class HemisphereWindow(widget.MWidget):
             self.pointsBuildAnnotate.append(annotation)
         return True
 
-    def _staticCelestialEquator(self, axes=None):
+    def staticCelestialEquator(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -1062,7 +1065,7 @@ class HemisphereWindow(widget.MWidget):
 
         self.staticHorizon(axes=axes)
         self.staticModelData(axes=axes)
-        self._staticCelestialEquator(axes=axes)
+        self.staticCelestialEquator(axes=axes)
         self.staticMeridianLimits(axes=axes)
         self.staticAltitudeLimits(axes=axes)
 

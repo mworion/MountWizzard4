@@ -330,8 +330,14 @@ class DataPoint(object):
         :return: status
         """
 
-        value = max(self.app.mount.setting.meridianLimitSlew,
-                    self.app.mount.setting.meridianLimitTrack)
+        slew = self.app.mount.setting.meridianLimitSlew
+        track = self.app.mount.setting.meridianLimitTrack
+
+        if slew is None or track is None:
+            return True
+
+        value = max(slew, track)
+
         lower = 180 - value
         upper = 180 + value
         if lower < point[1] < upper:
@@ -665,7 +671,12 @@ class DataPoint(object):
         celestialEquator = list()
         lat = self.app.mount.obsSite.location.latitude.degrees
         for dec in range(-15, 90, 15):
-            for ha in range(- 119, 120, 3):
+            for ha in range(- 119, 120, 2):
+                az, alt = HaDecToAltAz(ha / 10, dec, lat)
+                if alt > 0:
+                    celestialEquator.append((az, alt))
+        for ha in range(-115, 120, 10):
+            for dec in range(- 90, 90, 2):
                 az, alt = HaDecToAltAz(ha / 10, dec, lat)
                 if alt > 0:
                     celestialEquator.append((az, alt))

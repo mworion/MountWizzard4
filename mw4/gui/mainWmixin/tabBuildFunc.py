@@ -100,8 +100,6 @@ class BuildFunc(object):
 
         self.ui.runFullModel.clicked.connect(self.modelFull)
         self.ui.cancelFullModel.clicked.connect(self.cancelFull)
-        self.ui.runAlignModel.clicked.connect(self.modelAlign)
-        self.ui.cancelAlignModel.clicked.connect(self.cancelFull)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
 
     def initConfig(self):

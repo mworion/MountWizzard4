@@ -250,7 +250,6 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.runHysteresis, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
 
-        self.wIcon(self.ui.genAlignBuild, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
         self.ui.picAZ.setPixmap(pixmap)
@@ -259,10 +258,8 @@ class MainWindow(MWidget,
         pixmap = PyQt5.QtGui.QPixmap(':/offset.png')
         self.ui.picDome1.setPixmap(pixmap)
 
-        self.wIcon(self.ui.runAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.cancelFullModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.runFullModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelAlignModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
 
         self.wIcon(self.ui.genBuildGrid, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildMax, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
@@ -312,13 +309,11 @@ class MainWindow(MWidget,
         # check if modeling would work (mount + solve + image)
         if all(self.deviceStat[x] for x in ['mount', 'imaging', 'astrometry']):
             self.ui.runFullModel.setEnabled(True)
-            self.ui.runAlignModel.setEnabled(True)
             self.ui.plateSolveSync.setEnabled(True)
             self.ui.runFlexure.setEnabled(True)
             self.ui.runHysteresis.setEnabled(True)
         else:
             self.ui.runFullModel.setEnabled(False)
-            self.ui.runAlignModel.setEnabled(False)
             self.ui.plateSolveSync.setEnabled(False)
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)

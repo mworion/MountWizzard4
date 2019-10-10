@@ -129,9 +129,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowCelestial.setChecked(config.get('checkShowCelestial', False))
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
-        self.ui.showAltAz.setChecked(config.get('showAltAz', True))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
-        self.ui.showSphere.setChecked(config.get('showSphere', False))
 
         return True
 
@@ -153,9 +151,7 @@ class HemisphereWindow(widget.MWidget):
         config['checkShowCelestial'] = self.ui.checkShowCelestial.isChecked()
         config['checkShowAlignStar'] = self.ui.checkShowAlignStar.isChecked()
         config['checkUseHorizon'] = self.ui.checkUseHorizon.isChecked()
-        config['showAltAz'] = self.ui.showAltAz.isChecked()
         config['showPolar'] = self.ui.showPolar.isChecked()
-        config['showSphere'] = self.ui.showSphere.isChecked()
 
     def closeEvent(self, closeEvent):
         """
@@ -250,18 +246,27 @@ class HemisphereWindow(widget.MWidget):
         axe.set_facecolor((0, 0, 0, 0))
         axe.set_xlim(0, 360)
         axe.set_ylim(0, 90)
-        axe.spines['bottom'].set_color('#2090C0')
-        axe.spines['top'].set_color('#2090C0')
-        axe.spines['left'].set_color('#2090C0')
-        axe.spines['right'].set_color('#2090C0')
         axe.grid(True, color='#404040')
         axe.tick_params(axis='x',
                         bottom=True,
                         colors='#2090C0',
                         labelsize=12)
+        axeTop = axe.twiny()
+        axeTop.set_facecolor((0, 0, 0, 0))
+        axeTop.set_xlim(0, 360)
+        axeTop.tick_params(axis='x',
+                           top=True,
+                           colors='#2090C0',
+                           labelsize=12)
+        axeTop.set_xticks(np.arange(0, 361, 45))
+        axeTop.grid(axis='both', visible=False)
+        axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
+        axeTop.spines['bottom'].set_color('#2090C0')
+        axeTop.spines['top'].set_color('#2090C0')
+        axeTop.spines['left'].set_color('#2090C0')
+        axeTop.spines['right'].set_color('#2090C0')
         axe.set_xticks(np.arange(0, 361, 45))
-        axe.set_xticklabels(['0/N', '45/NE', '90/E', '135/SE', '180/S', '225/SW', '270/W',
-                             '315/NW', '360/N'])
+        axe.set_xticklabels(['0', '45', '90', '135', '180', '225', '270', '315', '360'])
         axe.tick_params(axis='y',
                         colors='#2090C0',
                         which='both',

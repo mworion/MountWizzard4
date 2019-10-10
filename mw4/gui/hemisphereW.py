@@ -97,10 +97,16 @@ class HemisphereWindow(widget.MWidget):
         # doing the matplotlib embedding
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
+        # doing the matplotlib embedding
+        self.hemisphere2Mat = self.embedMatplot(self.ui.hemisphere2)
+        self.hemisphere2Mat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.initConfig()
         self.configOperationMode()
+        self.togglePolar()
         self.showWindow()
+
+        self.ui.showPolar.clicked.connect(self.togglePolar)
 
     def initConfig(self):
         """
@@ -221,27 +227,44 @@ class HemisphereWindow(widget.MWidget):
 
         return True
 
-    def setupAxes(self, figure=None):
+    def togglePolar(self):
+        """
+
+        :return: success
+        """
+
+        if self.ui.showPolar.isChecked():
+            self.ui.hemisphere2.setMaximumSize(16777215, 16777215)
+            self.ui.hemisphere2.setVisible(True)
+        else:
+            self.ui.hemisphere2.setFixedWidth(1)
+            self.ui.hemisphere2.setVisible(False)
+
+        self.drawHemisphere()
+        return True
+
+    @staticmethod
+    def setupAxes(widget=None):
         """
         setupAxes cleans up the axes object in figure an setup a new plotting. it draws
         grid, ticks etc.
 
-        :param figure: axes object of figure
+        :param widget: object of embedded canvas
         :return:
         """
 
-        if figure is None:
+        if widget is None:
             return None
 
-        for axe in figure.axes:
+        for axe in widget.figure.axes:
             axe.cla()
             del axe
             gc.collect()
 
-        figure.clf()
+        widget.figure.clf()
         # used constrained_layout = True instead
         # figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
-        axe = self.hemisphereMat.figure.add_subplot(1, 1, 1, facecolor=None)
+        axe = widget.figure.add_subplot(1, 1, 1, facecolor=None)
 
         axe.set_facecolor((0, 0, 0, 0))
         axe.set_xlim(0, 360)
@@ -295,6 +318,10 @@ class HemisphereWindow(widget.MWidget):
         axe = self.hemisphereMat.figure.axes[0]
         axe.figure.canvas.draw()
         axe.figure.canvas.flush_events()
+        if self.ui.showPolar.isChecked():
+            axe = self.hemisphere2Mat.figure.axes[0]
+            axe.figure.canvas.draw()
+            axe.figure.canvas.flush_events()
         self.mutexDraw.unlock()
         return True
 
@@ -1177,7 +1204,11 @@ class HemisphereWindow(widget.MWidget):
 
         # clearing axes before drawing, only static visible, dynamic only when content
         # is available. visibility is handled with their update method
-        axes = self.setupAxes(figure=self.hemisphereMat.figure)
+        axes = self.setupAxes(widget=self.hemisphereMat)
+        if self.ui.showPolar.isChecked():
+            axesP = self.setupAxes(widget=self.hemisphere2Mat)
+            self.drawHemisphereStatic(axes=axesP)
+            axesP.figure.canvas.draw()
 
         # calling renderer
         self.drawHemisphereStatic(axes=axes)

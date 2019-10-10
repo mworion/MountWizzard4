@@ -63,6 +63,9 @@ class BuildModel(object):
         self.ui.numberSpiralPoints.valueChanged.connect(self.genBuildGoldenSpiral)
         self.ui.genBuildGoldenSpiral.clicked.connect(self.genBuildGoldenSpiral)
         self.ui.clearBuildP.clicked.connect(self.clearBuildP)
+        self.ui.checkSortNothing.clicked.connect(self.updateSorting)
+        self.ui.checkSortEW.clicked.connect(self.updateSorting)
+        self.ui.checkSortHL.clicked.connect(self.updateSorting)
 
     def initConfig(self):
         """
@@ -395,3 +398,11 @@ class BuildModel(object):
         self.app.hemisphereW.clearHemisphere()
 
         return True
+
+    def updateSorting(self):
+        """
+
+        :return:
+        """
+        self.autoSortPoints()
+        self.app.redrawHemisphere.emit()

@@ -62,6 +62,7 @@ class BuildModel(object):
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
         self.ui.numberSpiralPoints.valueChanged.connect(self.genBuildGoldenSpiral)
         self.ui.genBuildGoldenSpiral.clicked.connect(self.genBuildGoldenSpiral)
+        self.ui.clearBuildP.clicked.connect(self.clearBuildP)
 
     def initConfig(self):
         """
@@ -379,5 +380,18 @@ class BuildModel(object):
             return False
 
         self.autoDeletePoints()
+
+        return True
+
+    def clearBuildP(self):
+        """
+
+        :return: success
+        """
+
+        if not self.app.hemisphereW:
+            return False
+
+        self.app.hemisphereW.clearHemisphere()
 
         return True

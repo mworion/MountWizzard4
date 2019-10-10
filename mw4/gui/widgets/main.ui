@@ -6831,6 +6831,39 @@ to mount manually</string>
         </property>
        </widget>
       </widget>
+      <widget class="QPushButton" name="clearBuildP">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>230</y>
+         <width>361</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete all points on coordinate window including Base / Model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>Clear Points</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="Modelrun">
       <attribute name="title">

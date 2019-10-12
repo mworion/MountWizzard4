@@ -104,8 +104,8 @@ class Model(object):
         ms.alignDone.connect(self.updateTurnKnobsGUI)
 
         # ui signals
-        self.ui.runFullModel.clicked.connect(self.modelFull)
-        self.ui.cancelFullModel.clicked.connect(self.cancelFull)
+        self.ui.runModel.clicked.connect(self.modelBuild)
+        self.ui.cancelModel.clicked.connect(self.cancelBuild)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
 
     def initConfig(self):
@@ -529,14 +529,10 @@ class Model(object):
         :return: true for test purpose
         """
 
-        self.changeStyleDynamic(self.ui.runFullModel, 'running', False)
-        self.changeStyleDynamic(self.ui.cancelFullModel, 'cancel', False)
-        self.changeStyleDynamic(self.ui.runAlignModel, 'running', False)
-        self.changeStyleDynamic(self.ui.cancelAlignModel, 'cancel', False)
-        self.ui.runFullModel.setEnabled(True)
-        self.ui.cancelFullModel.setEnabled(False)
-        self.ui.runAlignModel.setEnabled(True)
-        self.ui.cancelAlignModel.setEnabled(False)
+        self.changeStyleDynamic(self.ui.runModel, 'running', False)
+        self.changeStyleDynamic(self.ui.cancelModel, 'cancel', False)
+        self.ui.runModel.setEnabled(True)
+        self.ui.cancelModel.setEnabled(False)
         self.ui.batchModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(True)
         self.ui.runFlexure.setEnabled(True)
@@ -591,9 +587,9 @@ class Model(object):
 
         return True
 
-    def cancelFull(self):
+    def cancelBuild(self):
         """
-        cancelFull aborts imaging and stops all modeling queues and actions
+        cancelBuild aborts imaging and stops all modeling queues and actions
 
         :return: true for test purpose
         """
@@ -911,9 +907,9 @@ class Model(object):
 
         return True
 
-    def modelFull(self):
+    def modelBuild(self):
         """
-        modelFull sets the adequate gui elements, selects the model points and calls the
+        modelBuild sets the adequate gui elements, selects the model points and calls the
         core modeling method
 
         :return: true for test purpose
@@ -925,43 +921,13 @@ class Model(object):
         if not 2 < number < 100:
             return False
 
-        self.changeStyleDynamic(self.ui.runFullModel, 'running', True)
-        self.changeStyleDynamic(self.ui.cancelFullModel, 'cancel', True)
-        self.ui.cancelFullModel.setEnabled(True)
-        self.ui.runAlignModel.setEnabled(False)
+        self.changeStyleDynamic(self.ui.runModel, 'running', True)
+        self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)
+        self.ui.cancelModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(False)
         self.ui.runFlexure.setEnabled(False)
         self.ui.runHysteresis.setEnabled(False)
-        self.ui.cancelFullModel.setEnabled(True)
-
-        suc = self.modelCore(points=points)
-        if not suc:
-            self.defaultGUI()
-            return False
-
-        return True
-
-    def modelAlign(self):
-        """
-        modelAlign sets the adequate gui elements, selects the model points and calls the
-        core modeling method
-
-        :return: true for test purpose
-        """
-
-        # checking constraints for modeling
-        points = self.app.data.buildP
-        number = len(points)
-        if not 2 < number < 100:
-            return False
-
-        self.changeStyleDynamic(self.ui.runAlignModel, 'running', True)
-        self.changeStyleDynamic(self.ui.cancelAlignModel, 'cancel', True)
-        self.ui.cancelAlignModel.setEnabled(True)
-        self.ui.runFullModel.setEnabled(False)
-        self.ui.plateSolveSync.setEnabled(False)
-        self.ui.runFlexure.setEnabled(False)
-        self.ui.runHysteresis.setEnabled(False)
+        self.ui.cancelModel.setEnabled(True)
 
         suc = self.modelCore(points=points)
         if not suc:

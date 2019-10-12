@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -7118,7 +7118,7 @@ to mount manually</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QPushButton" name="cancelFullModel">
+       <widget class="QPushButton" name="cancelModel">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -7206,7 +7206,7 @@ to mount manually</string>
          <string>Time to finish:</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="runFullModel">
+       <widget class="QPushButton" name="runModel">
         <property name="geometry">
          <rect>
           <x>5</x>

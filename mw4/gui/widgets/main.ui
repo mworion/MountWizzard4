@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -4189,7 +4189,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>595</x>
-         <y>125</y>
+         <y>130</y>
          <width>181</width>
          <height>46</height>
         </rect>
@@ -4310,7 +4310,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>595</x>
-         <y>35</y>
+         <y>40</y>
          <width>181</width>
          <height>86</height>
         </rect>
@@ -4404,9 +4404,9 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>505</x>
-         <y>35</y>
+         <y>40</y>
          <width>76</width>
-         <height>246</height>
+         <height>241</height>
         </rect>
        </property>
        <property name="title">
@@ -4419,7 +4419,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4467,7 +4467,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4516,9 +4516,9 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>415</x>
-         <y>35</y>
+         <y>40</y>
          <width>76</width>
-         <height>246</height>
+         <height>241</height>
         </rect>
        </property>
        <property name="title">
@@ -4531,7 +4531,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4579,7 +4579,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4627,7 +4627,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
+          <y>65</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4675,7 +4675,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>95</y>
+          <y>90</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4745,9 +4745,9 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>145</x>
-         <y>35</y>
+         <y>40</y>
          <width>76</width>
-         <height>246</height>
+         <height>241</height>
         </rect>
        </property>
        <property name="title">
@@ -4760,7 +4760,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>145</y>
+          <y>140</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4808,7 +4808,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>170</y>
+          <y>165</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4856,7 +4856,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>120</y>
+          <y>115</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4904,7 +4904,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -4952,7 +4952,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5000,7 +5000,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>95</y>
+          <y>90</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5048,7 +5048,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>195</y>
+          <y>190</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5096,7 +5096,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
+          <y>65</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5142,9 +5142,9 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>235</x>
-         <y>35</y>
+         <y>40</y>
          <width>76</width>
-         <height>246</height>
+         <height>241</height>
         </rect>
        </property>
        <property name="title">
@@ -5157,7 +5157,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>220</y>
+          <y>215</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5205,7 +5205,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5467,9 +5467,9 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>325</x>
-         <y>35</y>
+         <y>40</y>
          <width>76</width>
-         <height>246</height>
+         <height>241</height>
         </rect>
        </property>
        <property name="title">
@@ -5482,7 +5482,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>15</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5530,7 +5530,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
+          <y>65</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5578,7 +5578,7 @@ to mount manually</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>95</y>
+          <y>90</y>
           <width>51</width>
           <height>21</height>
          </rect>
@@ -5624,7 +5624,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>10</y>
+         <y>15</y>
          <width>281</width>
          <height>21</height>
         </rect>
@@ -5644,7 +5644,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>30</y>
+         <y>35</y>
          <width>761</width>
          <height>1</height>
         </rect>
@@ -5660,9 +5660,9 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>145</x>
-         <y>285</y>
+         <y>315</y>
          <width>629</width>
-         <height>145</height>
+         <height>116</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -5677,6 +5677,9 @@ to mount manually</string>
        <property name="text">
         <string>Clear Outside panel when connected to internet</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
        <property name="iconpicture" stdset="0">
         <bool>true</bool>
        </property>
@@ -5684,10 +5687,10 @@ to mount manually</string>
       <widget class="QLabel" name="picClearOutsideHeader">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>285</y>
-         <width>131</width>
-         <height>145</height>
+         <x>60</x>
+         <y>389</y>
+         <width>83</width>
+         <height>43</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -5705,6 +5708,51 @@ to mount manually</string>
        <property name="iconpicture" stdset="0">
         <bool>true</bool>
        </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_27">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>280</y>
+         <width>476</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Use for refraction update</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <widget class="QRadioButton" name="radioButton">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>10</y>
+          <width>21</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton_2">
+        <property name="geometry">
+         <rect>
+          <x>435</x>
+          <y>10</y>
+          <width>21</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="Modelpoints">

@@ -272,9 +272,7 @@ class Environ(object):
         dim = 0.85
         image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
         imageBase = image.copy(0, 84, 624, 141)
-        imageHeader = image.copy(550, 1, 130, 80)
         # transformation are done in numpy, because it's much faster
-        # starting the conversion
         width = imageBase.width()
         height = imageBase.height()
         imgArr = qimage2ndarray.rgb_view(imageBase)
@@ -286,10 +284,24 @@ class Environ(object):
         imgArr = np.where(check, img_Max, imgArr)
         # transforming back
         imgArr = imgArr.reshape(height, width, 3)
+        # removing some lines
+        m = np.isin(imgArr, [[32, 32, 32], [255, 0, 0]])
+        toDelete = []
+        maxLine = 1
+        line = maxLine
+        for i in range(0, len(m[:])):
+            if not line and m[i][:].all() and i > 15:
+                toDelete.append(i)
+            elif line:
+                line -= 1
+            elif not m[i][:].all():
+                line = maxLine
+        imgArr = np.delete(imgArr, toDelete, axis=0)
+        # re transfer to QImage from numpy array
         imageBase = qimage2ndarray.array2qimage(dim * imgArr)
 
         pixmapBase = PyQt5.QtGui.QPixmap().fromImage(imageBase)
-        pixmapHeader = PyQt5.QtGui.QPixmap().fromImage(imageHeader)
+        pixmapHeader = PyQt5.QtGui.QPixmap(':/clearoutside.png')
         self.ui.picClearOutside.setPixmap(pixmapBase)
         self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
 

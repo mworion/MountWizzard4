@@ -335,10 +335,10 @@ class HemisphereWindow(widget.MWidget):
         :return: success for testing
         """
 
-        if self.celestialPath is None:
-            return False
-        self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
-        return True
+        if self.celestialPath:
+            self.celestialPath.set_visible(self.ui.checkShowCelestial.isChecked())
+            return True
+        return False
 
     def updateMeridian(self):
         """
@@ -368,7 +368,7 @@ class HemisphereWindow(widget.MWidget):
 
     def updateHorizonLimits(self):
         """
-        updateMeridian is called whenever an update of settings from mount are given. it
+        updateHorizonLimits is called whenever an update of settings from mount are given. it
         takes updateHorizonLimits actual values and corrects the point in window if window
         is in show status.
         If the object is not created, the routing returns false.

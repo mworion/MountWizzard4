@@ -224,6 +224,8 @@ class HemisphereWindow(widget.MWidget):
         # finally setting the mouse handler
         self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
                                                      self.onMouseDispatcher)
+        self.hemisphereMat.figure.canvas.mpl_connect('motion_notify_event',
+                                                     self.showMouseCoordinates)
 
         return True
 
@@ -659,9 +661,10 @@ class HemisphereWindow(widget.MWidget):
         if event.button != 1 or not event.dblclick:
             return False
 
-        textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
         azimuth = int(event.xdata + 0.5)
         altitude = int(event.ydata + 0.5)
+        textFormat = 'Do you want to slew the mount to:\n\nAzimuth:\t{0}°\nAltitude:\t{1}°'
+
         question = textFormat.format(azimuth, altitude)
         msg = PyQt5.QtWidgets.QMessageBox
         reply = msg.question(self,
@@ -1169,6 +1172,22 @@ class HemisphereWindow(widget.MWidget):
                                        visible=visible,
                                        )
             self.starsAlignAnnotate.append(annotation)
+
+    def showMouseCoordinates(self, event):
+        """
+
+        :param event:
+        :return: success
+        """
+
+        if event.xdata is None:
+            return False
+        if event.ydata is None:
+            return False
+
+        self.ui.altitude.setText(f'{event.xdata:3.1f}')
+        self.ui.azimuth.setText(f'{event.ydata:3.1f}')
+        return True
 
     def onMouseDispatcher(self, event):
         """

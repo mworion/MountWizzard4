@@ -10,16 +10,18 @@ nice to have:
 - temperature of CCD
 - choice which data to be used for refraction update
 - polar hemisphere
-- font in message window fixed font
 - improve stretch further
 - histogram to image window
 - autofocus with FFT
 - stack with align
 - indi image snooping
-- calculation dome
 - consolidate transformations
 - test indibase without server
-- test connection if no setup, but still available (dome )
+- Editable 3D telescope view shows the current orientation of your telescope and mount.
+- Can save/recall multiple RA/Dec and Alt/Az slew coordinates (Add on to slew)
+- Site management allows easily changeable setup for multiple sites.
+- Display and change time zone settings.
+- Move scope
 
 architecture:
 - mainApp refactor to better understandable implementation

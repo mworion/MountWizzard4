@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -6917,132 +6917,6 @@ to mount manually</string>
       <attribute name="title">
        <string>Model Build</string>
       </attribute>
-      <widget class="QLineEdit" name="azimuthTurns">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>295</x>
-         <y>260</y>
-         <width>91</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Turns azimuth ajustment knobs for correction (left if polar axis has to be moved to the left) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>--- left/right</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="altitudeTurns">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>260</y>
-         <width>101</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Turns altitude ajustment knobs for correction (down if the polar axis has to be moved downwards) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
-       </property>
-       <property name="text">
-        <string>--- left/right</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_156">
-       <property name="geometry">
-        <rect>
-         <x>210</x>
-         <y>260</y>
-         <width>91</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Turn Knob AZ</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_157">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>260</y>
-         <width>91</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Turn Knob ALT</string>
-       </property>
-      </widget>
       <widget class="Line" name="line_64">
        <property name="geometry">
         <rect>
@@ -7063,92 +6937,6 @@ to mount manually</string>
        </property>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="picAZ">
-       <property name="geometry">
-        <rect>
-         <x>235</x>
-         <y>280</y>
-         <width>144</width>
-         <height>144</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="midLineWidth">
-        <number>0</number>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-       <property name="iconpicture" stdset="0">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="picALT">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>280</y>
-         <width>144</width>
-         <height>144</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="midLineWidth">
-        <number>0</number>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-       <property name="iconpicture" stdset="0">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_219">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>235</y>
-         <width>156</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Ajust Polar Alignment</string>
-       </property>
-      </widget>
-      <widget class="Line" name="line_75">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>255</y>
-         <width>371</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
       <widget class="QGroupBox" name="groupBox_11">
@@ -7795,7 +7583,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>210</y>
+         <y>215</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -7830,7 +7618,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>275</y>
+         <y>285</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -8405,6 +8193,198 @@ to mount manually</string>
         </property>
         <property name="text">
          <string>Finishing Time:</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_28">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>185</y>
+         <width>366</width>
+         <height>226</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Adjust polar alignment</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_157">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>25</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Turn Knob ALT</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="picALT">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>70</y>
+          <width>144</width>
+          <height>144</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <property name="midLineWidth">
+         <number>0</number>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+        <property name="iconpicture" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="altitudeTurns">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>45</y>
+          <width>146</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Turns altitude ajustment knobs for correction (down if the polar axis has to be moved downwards) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>--- left/right</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_156">
+        <property name="geometry">
+         <rect>
+          <x>205</x>
+          <y>25</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Turn Knob AZ</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="azimuthTurns">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>205</x>
+          <y>45</y>
+          <width>146</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Turns azimuth ajustment knobs for correction (left if polar axis has to be moved to the left) &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>--- left/right</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="picAZ">
+        <property name="geometry">
+         <rect>
+          <x>205</x>
+          <y>70</y>
+          <width>144</width>
+          <height>144</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <property name="midLineWidth">
+         <number>0</number>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+        <property name="iconpicture" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>

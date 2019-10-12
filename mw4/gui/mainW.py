@@ -31,9 +31,8 @@ from mw4.gui.widget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
 from mw4.gui.mainWmixin.tabEnviron import Environ
-from mw4.gui.mainWmixin.tabAlignMount import AlignMount
-from mw4.gui.mainWmixin.tabBuildModel import BuildModel
-from mw4.gui.mainWmixin.tabBuildFunc import BuildFunc
+from mw4.gui.mainWmixin.tabModel import Model
+from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
 from mw4.gui.mainWmixin.tabSatellite import Satellite
 from mw4.gui.mainWmixin.tabRelay import Relay
@@ -52,9 +51,8 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 class MainWindow(MWidget,
                  Mount,
                  Environ,
-                 AlignMount,
-                 BuildModel,
-                 BuildFunc,
+                 Model,
+                 BuildPoints,
                  ManageModel,
                  Satellite,
                  Relay,
@@ -586,36 +584,3 @@ class MainWindow(MWidget,
         elif command == 'boot mount':
             self.mountBoot()
             self.app.message.emit('Boot mount remotely', 2)
-
-    def autoDeletePoints(self):
-        """
-        autoDeletePoints removes all generated or visible build points below the horizon line
-        and redraws the hemisphere window.
-
-        :return: True for test purpose
-        """
-
-        if self.ui.checkAutoDeletePoints.isChecked():
-            self.app.data.deleteBelowHorizon()
-            self.app.data.deleteCloseMeridian()
-        self.app.redrawHemisphere.emit()
-        return True
-
-    def autoSortPoints(self):
-        """
-        autoSortPoints sort the given build point first to east and west and than based
-        on the decision high altitude to low altitude or east to west in each hemisphere
-
-        :return: success if sorted
-        """
-
-        eastwest = self.ui.checkSortEW.isChecked()
-        highlow = self.ui.checkSortHL.isChecked()
-
-        if not eastwest and not highlow:
-            return False
-
-        self.app.data.sort(eastwest=eastwest, highlow=highlow)
-        self.app.redrawHemisphere.emit()
-
-        return True

@@ -5707,7 +5707,7 @@ to mount manually</string>
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="ModelPoints">
+     <widget class="QWidget" name="Modelpoints">
       <attribute name="title">
        <string>Model Points</string>
       </attribute>
@@ -6835,7 +6835,7 @@ to mount manually</string>
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>230</y>
+         <y>390</y>
          <width>361</width>
          <height>25</height>
         </rect>
@@ -6865,9 +6865,9 @@ to mount manually</string>
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="Modelrun">
+     <widget class="QWidget" name="Modelbuild">
       <attribute name="title">
-       <string>Model run</string>
+       <string>Model Build</string>
       </attribute>
       <widget class="QLineEdit" name="azimuthTurns">
        <property name="enabled">

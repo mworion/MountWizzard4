@@ -32,7 +32,7 @@ import numpy as np
 # local import
 
 
-class BuildModel(object):
+class BuildPoints(object):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -396,6 +396,39 @@ class BuildModel(object):
             return False
 
         self.app.hemisphereW.clearHemisphere()
+
+        return True
+
+    def autoDeletePoints(self):
+        """
+        autoDeletePoints removes all generated or visible build points below the horizon line
+        and redraws the hemisphere window.
+
+        :return: True for test purpose
+        """
+
+        if self.ui.checkAutoDeletePoints.isChecked():
+            self.app.data.deleteBelowHorizon()
+            self.app.data.deleteCloseMeridian()
+        self.app.redrawHemisphere.emit()
+        return True
+
+    def autoSortPoints(self):
+        """
+        autoSortPoints sort the given build point first to east and west and than based
+        on the decision high altitude to low altitude or east to west in each hemisphere
+
+        :return: success if sorted
+        """
+
+        eastwest = self.ui.checkSortEW.isChecked()
+        highlow = self.ui.checkSortHL.isChecked()
+
+        if not eastwest and not highlow:
+            return False
+
+        self.app.data.sort(eastwest=eastwest, highlow=highlow)
+        self.app.redrawHemisphere.emit()
 
         return True
 

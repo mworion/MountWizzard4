@@ -29,7 +29,7 @@ from automation.collections.config_ssh import *
 @task
 def resource(c):
     printMW('building resources')
-    resourceDir = '../mw4/resource'
+    resourceDir = '../mw4/resource/'
     runMW(c, f'pyrcc5 -o {resourceDir}resources.py {resourceDir}resources.qrc')
 
 

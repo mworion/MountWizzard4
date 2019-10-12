@@ -65,7 +65,7 @@
     <number>4</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,1">
      <property name="spacing">
       <number>4</number>
      </property>
@@ -339,9 +339,15 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="maximumSize">
+            <property name="minimumSize">
              <size>
               <width>60</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -351,7 +357,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Altitude</string>
+             <string>Altitude:</string>
             </property>
            </widget>
           </item>
@@ -369,6 +375,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
            </widget>
           </item>
           <item row="1" column="0">
@@ -379,9 +388,15 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="maximumSize">
+            <property name="minimumSize">
              <size>
               <width>60</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -391,7 +406,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Azimuth</string>
+             <string>Azimuth:</string>
             </property>
            </widget>
           </item>
@@ -408,6 +423,9 @@
               <width>60</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>

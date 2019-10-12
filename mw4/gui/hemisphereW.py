@@ -308,6 +308,52 @@ class HemisphereWindow(widget.MWidget):
                        fontsize=12)
         return axe
 
+    @staticmethod
+    def setupAxesPolar(widget=None):
+        """
+        setupAxesPolar cleans up the axes object in figure an setup a new plotting. it draws
+        grid, ticks etc.
+
+        :param widget: object of embedded canvas
+        :return:
+        """
+
+        if widget is None:
+            return None
+
+        for axe in widget.figure.axes:
+            axe.cla()
+            del axe
+            gc.collect()
+
+        widget.figure.clf()
+        # used constrained_layout = True instead
+        # figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+
+        axe = widget.figure.add_subplot(1, 1, 1, facecolor=None, polar=True)
+
+        axe.set_facecolor((0, 0, 0, 0))
+        axe.set_rmax(90)
+        axe.set_rmin(0)
+        axe.grid(True, color='#404040')
+        axe.tick_params(axis='x',
+                        colors='#2090C0',
+                        labelsize=12)
+        axe.tick_params(axis='y',
+                        colors='#2090C0',
+                        labelsize=12)
+        axe.spines['polar'].set_color('#2090C0')
+        axe.spines['inner'].set_color('#2090C0')
+        axe.set_theta_zero_location('N')
+        axe.set_theta_direction(-1)
+        axe.set_yticks(range(0, 90, 10))
+        yLabel = ['', '', '', '', '', '', '', '', '', '']
+        axe.set_yticklabels(yLabel,
+                            color='#2090C0',
+                            fontweight='bold')
+        axe.set_rlabel_position(45)
+        return axe
+
     def drawCanvas(self):
         """
         drawCanvas retrieves the static content axe from widget and redraws the canvas
@@ -934,10 +980,11 @@ class HemisphereWindow(widget.MWidget):
             self.app.message.emit('Slewing to: {0}'.format(name), 0)
         return suc
 
-    def staticHorizon(self, axes=None):
+    def staticHorizon(self, axes=None, polar=False):
         """
 
         :param axes: matplotlib axes object
+        :param polar: hint for polar chart
         :return:
         """
 
@@ -947,6 +994,11 @@ class HemisphereWindow(widget.MWidget):
             return False
 
         alt, az = zip(*self.app.data.horizonP)
+        alt = np.array(alt)
+        az = np.array(az)
+        if polar:
+            alt = 90 - alt
+            az = az / 180.0 * np.pi
 
         self.horizonFill, = axes.fill(az, alt, color='#002000', zorder=-20)
         self.horizonMarker, = axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
@@ -955,10 +1007,11 @@ class HemisphereWindow(widget.MWidget):
             self.horizonMarker.set_color('#FF00FF')
         return True
 
-    def staticModelData(self, axes=None):
+    def staticModelData(self, axes=None, polar=False):
         """
 
         :param axes: matplotlib axes object
+        :param polar: hint for polar chart
         :return: success
         """
 
@@ -966,6 +1019,12 @@ class HemisphereWindow(widget.MWidget):
             return False
 
         alt, az = zip(*self.app.data.buildP)
+        alt = np.array(alt)
+        az = np.array(az)
+        if polar:
+            alt = 90 - alt
+            az = az / 180.0 * np.pi
+
         # show line path pf slewing
         if self.ui.checkShowSlewPath.isChecked():
             ls = ':'
@@ -998,12 +1057,16 @@ class HemisphereWindow(widget.MWidget):
             self.pointsBuildAnnotate.append(annotation)
         return True
 
-    def staticCelestialEquator(self, axes=None):
+    def staticCelestialEquator(self, axes=None, polar=False):
         """
 
         :param axes: matplotlib axes object
+        :param polar: hint for polar chart
         :return: success
         """
+
+        if polar:
+            return False
 
         # draw celestial equator
         visible = self.ui.checkShowCelestial.isChecked()
@@ -1018,12 +1081,16 @@ class HemisphereWindow(widget.MWidget):
                                         visible=visible)
         return True
 
-    def staticMeridianLimits(self, axes=None):
+    def staticMeridianLimits(self, axes=None, polar=False):
         """
 
         :param axes: matplotlib axes object
+        :param polar: hint for polar chart
         :return: success
         """
+
+        if polar:
+            return False
 
         # draw meridian limits
         if self.app.mount.setting.meridianLimitSlew is not None:
@@ -1051,12 +1118,16 @@ class HemisphereWindow(widget.MWidget):
         axes.add_patch(self.meridianTrack)
         return True
 
-    def staticAltitudeLimits(self, axes=None):
+    def staticAltitudeLimits(self, axes=None, polar=False):
         """
 
         :param axes: matplotlib axes object
+        :param polar: hint for polar chart
         :return: success
         """
+
+        if polar:
+            return False
 
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
@@ -1082,7 +1153,7 @@ class HemisphereWindow(widget.MWidget):
         axes.add_patch(self.horizonLimitLow)
         return True
 
-    def drawHemisphereStatic(self, axes=None):
+    def drawHemisphereStatic(self, axes=None, polar=False):
         """
          drawHemisphereStatic renders the static part of the hemisphere window and puts
          all drawing on the static plane. the content consist of:
@@ -1093,16 +1164,18 @@ class HemisphereWindow(widget.MWidget):
         with all their styles an coloring
 
         :param axes: matplotlib axes object
+        :param polar: hint for polar chart
         :return:
         """
 
-        self.staticHorizon(axes=axes)
-        self.staticModelData(axes=axes)
-        self.staticCelestialEquator(axes=axes)
-        self.staticMeridianLimits(axes=axes)
-        self.staticAltitudeLimits(axes=axes)
+        self.staticHorizon(axes=axes, polar=polar)
+        self.staticModelData(axes=axes, polar=polar)
+        self.staticCelestialEquator(axes=axes, polar=polar)
+        self.staticMeridianLimits(axes=axes, polar=polar)
+        self.staticAltitudeLimits(axes=axes, polar=polar)
+        return True
 
-    def drawHemisphereMoving(self, axes=None):
+    def drawHemisphereMoving(self, axes=None, polar=False):
         """
         drawHemisphereMoving is rendering the moving part which consists of:
             - pointer: where the mount points to
@@ -1111,8 +1184,12 @@ class HemisphereWindow(widget.MWidget):
         because we update this part very often.
 
         :param axes: matplotlib axes object
+        :param polar: chart type
         :return:
         """
+
+        if polar:
+            return False
 
         # pointer
         self.pointerAltAz, = axes.plot(180, 45,
@@ -1136,16 +1213,21 @@ class HemisphereWindow(widget.MWidget):
                                               fill=True,
                                               visible=visible)
         axes.add_patch(self.pointerDome)
+        return True
 
-    def drawHemisphereStars(self, axes=None):
+    def drawHemisphereStars(self, axes=None, polar=False):
         """
         drawHemisphereStars is rendering the alignment star map. this moves over time with
         the speed of earth turning. so we have to update the rendering, but on low speed
         without having any user interaction.
 
         :param axes: matplotlib axes object
+        :param polar: chart type
         :return:
         """
+
+        if polar:
+            return False
 
         visible = self.ui.checkShowAlignStar.isChecked()
         self.starsAlignAnnotate = list()
@@ -1225,16 +1307,22 @@ class HemisphereWindow(widget.MWidget):
         # is available. visibility is handled with their update method
         axes = self.setupAxes(widget=self.hemisphereMat)
         if self.ui.showPolar.isChecked():
-            axesP = self.setupAxes(widget=self.hemisphere2Mat)
-            self.drawHemisphereStatic(axes=axesP)
-            axesP.figure.canvas.draw()
+            axesP = self.setupAxesPolar(widget=self.hemisphere2Mat)
+        else:
+            axesP = None
 
         # calling renderer
         self.drawHemisphereStatic(axes=axes)
         self.drawHemisphereMoving(axes=axes)
         self.drawHemisphereStars(axes=axes)
+        if axesP:
+            self.drawHemisphereStatic(axes=axesP, polar=True)
+            self.drawHemisphereMoving(axes=axes, polar=True)
+            self.drawHemisphereStars(axes=axes, polar=True)
 
         self.setOperationMode()
 
         # drawing the canvas
         axes.figure.canvas.draw()
+        if axesP:
+            axesP.figure.canvas.draw()

@@ -1,7 +1,7 @@
 [run]
 omit = mw4/test/*,
        mw4/generate/*,
-       mw4/gui/media/*,
+       mw4/resource/*,
        mw4/gui/widgets/*,
        automation/*,
        gists/*,

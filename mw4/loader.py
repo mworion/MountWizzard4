@@ -35,6 +35,7 @@ import PyQt5.QtWidgets
 # local import
 from mw4 import mainApp
 from mw4.gui import splash
+import mw4.resource
 
 
 class MyApp(PyQt5.QtWidgets.QApplication):
@@ -48,7 +49,6 @@ class MyApp(PyQt5.QtWidgets.QApplication):
     including event and object name to be analyse the input methods.
     """
 
-    """
     def notify(self, obj, event):
         try:
             returnValue = PyQt5.QtWidgets.QApplication.notify(self, obj, event)
@@ -64,8 +64,6 @@ class MyApp(PyQt5.QtWidgets.QApplication):
                 if event.button():
                     logging.debug(f'Mouse: {obj.objectName()}, {event.button()}')
         return returnValue
-    """
-    pass
 
 
 def except_hook(typeException, valueException, tbackException):
@@ -273,8 +271,8 @@ def main():
     """
 
     # initiating the main app
-    app = MyApp(sys.argv)
-    # app = PyQt5.QtWidgets.QApplication(sys.argv)
+    # app = MyApp(sys.argv)
+    app = PyQt5.QtWidgets.QApplication(sys.argv)
 
     # generating splash screen
     splashW = splash.SplashScreen(application=app)

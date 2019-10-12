@@ -58,15 +58,13 @@ def test_initConfig_3():
 
 def test_setupAxes1(qtbot):
     app.hemisphereW.drawHemisphere()
-    fig = app.hemisphereW.hemisphereMat.figure
-    suc = app.hemisphereW.setupAxes(fig)
+    suc = app.hemisphereW.setupAxes(app.hemisphereW.hemisphereMat)
     assert suc
 
 
 def test_setupAxes2(qtbot):
     app.hemisphereW.drawHemisphere()
-    fig = app.hemisphereW.hemisphereMat.figure
-    app.hemisphereW.setupAxes(fig)
+    app.hemisphereW.setupAxes(app.hemisphereW.hemisphereMat)
 
 
 def test_drawCanvas(qtbot):

@@ -1,9 +1,7 @@
 import PyQt5.QtWidgets as QtWidgets
-import PyQt5.QtCore as QtCore
 import PyQt5
 import sys
 import mw4.gui.widget as widget
-from mw4.gui.media import resources
 
 
 class HelloWindow(QtWidgets.QMainWindow, widget.MWidget):

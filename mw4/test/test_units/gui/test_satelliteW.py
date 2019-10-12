@@ -20,10 +20,9 @@
 # standard libraries
 import pytest
 # external packages
-import mw4.gui.media.resources
 # local import
 from mw4.test.test_units.setupQt import setupQt
-from mw4.gui.satelliteW import SatelliteWindow, SatelliteWindowSignals
+from mw4.gui.satelliteW import SatelliteWindowSignals
 
 
 @pytest.fixture(autouse=True, scope='module')

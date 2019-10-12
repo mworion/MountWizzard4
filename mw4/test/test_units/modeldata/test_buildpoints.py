@@ -924,7 +924,7 @@ def test_sort_6():
 
 def test_generateCelestialEquator():
     value = data.generateCelestialEquator()
-    assert len(value) == 560
+    assert len(value) == 3000
 
 
 def test_generateDSOPath_1():

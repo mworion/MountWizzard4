@@ -17,7 +17,6 @@ nice to have:
 - consolidate transformations
 - test indibase without server
 - Editable 3D telescope view shows the current orientation of your telescope and mount.
-- Can save/recall multiple RA/Dec and Alt/Az slew coordinates (Add on to slew)
 - Site management allows easily changeable setup for multiple sites.
 - Display and change time zone settings.
 - Move scope

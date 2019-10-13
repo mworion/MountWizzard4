@@ -309,8 +309,7 @@ class HemisphereWindow(widget.MWidget):
                        fontsize=12)
         return axe
 
-    @staticmethod
-    def setupAxesPolar(widget=None):
+    def setupAxesPolar(self, widget=None):
         """
         setupAxesPolar cleans up the axes object in figure an setup a new plotting. it draws
         grid, ticks etc.
@@ -332,7 +331,13 @@ class HemisphereWindow(widget.MWidget):
         # widget.figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
         axe = widget.figure.add_subplot(1, 1, 1, polar=True)
 
-        axe.set_facecolor((0, 32 / 255, 0, 1))
+        # as we have a negative drawing, we need to take into consideration that no horizon
+        # is defined and we don't want to have a full green background in this situation
+        if self.app.data.horizonP:
+            axe.set_facecolor((0, 48 / 255, 0, 1))
+        else:
+            axe.set_facecolor((0, 0, 0, 0))
+
         axe.spines['polar'].set_color('#2090C0')
         axe.spines['inner'].set_color('#2090C0')
         axe.set_theta_zero_location('N')
@@ -348,8 +353,7 @@ class HemisphereWindow(widget.MWidget):
         axe.set_yticks(range(0, 90, 10))
         yLabel = ['', '80', '', '60', '', '40', '', '20', '', '']
         axe.set_yticklabels(yLabel,
-                            color='#2090C0',
-                            fontweight='bold')
+                            color='#2090C0')
         axe.set_rlabel_position(45)
         return axe
 
@@ -1010,7 +1014,6 @@ class HemisphereWindow(widget.MWidget):
 
         if polar:
             axes.fill(az, alt, color='#202020', zorder=-20)
-            axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
         else:
             self.horizonFill, = axes.fill(az, alt, color='#002000', zorder=-20)
             self.horizonMarker, = axes.plot(az, alt, color='#006000', zorder=-20, lw=3)

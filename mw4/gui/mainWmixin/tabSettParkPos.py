@@ -36,13 +36,23 @@ class SettParkPos(object):
         self.posTexts = list()
         self.posAlt = list()
         self.posAz = list()
-
+        self.posSaveButtons = [self.ui.posSave0,
+                               self.ui.posSave1,
+                               self.ui.posSave2,
+                               self.ui.posSave3,
+                               self.ui.posSave4,
+                               self.ui.posSave5,
+                               self.ui.posSave6,
+                               self.ui.posSave7,
+                               ]
         # dynamically generate the widgets
         self.setupParkPosGui()
         for posText in self.posTexts:
             posText.editingFinished.connect(self.updateParkPosButtonText)
         for button in self.posButtons:
             button.clicked.connect(self.slewToParkPos)
+        for button in self.posSaveButtons:
+            button.clicked.connect(self.saveActualPosition)
 
         # signals on gui
         self.ui.offOTA.valueChanged.connect(self.adjustGEMOffset)
@@ -176,6 +186,27 @@ class SettParkPos(object):
                 return suc
 
         return False
+
+    def saveActualPosition(self):
+        """
+        saveActualPosition takes the actual mount position and stores it in the alt az fields
+
+        :return: success
+        """
+
+        obs = self.app.mount.obsSite
+        for button, alt, az in zip(self.posSaveButtons,
+                                   self.posAlt,
+                                   self.posAz,
+                                   ):
+
+            if button != self.sender():
+                continue
+
+            alt.setText(f'{obs.Alt.degrees:3.0f}')
+            az.setText(f'{obs.Az.degrees:3.0f}')
+
+        return True
 
     def adjustGEMOffset(self):
         """

@@ -20,7 +20,7 @@ from setuptools import setup
 
 setup(
     name='mw4',
-    version='0.118',
+    version='0.119',
     packages=[
         'mw4',
         'mw4.astrometry',

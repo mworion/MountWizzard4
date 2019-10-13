@@ -26,6 +26,7 @@ import socket
 import datetime
 import warnings
 import traceback
+import locale
 from io import BytesIO
 # external packages
 import matplotlib
@@ -269,6 +270,8 @@ def main():
 
     :return: nothing
     """
+    # setting locale
+    locale.setlocale(locale.LC_ALL, '')
 
     # initiating the main app
     # app = MyApp(sys.argv)

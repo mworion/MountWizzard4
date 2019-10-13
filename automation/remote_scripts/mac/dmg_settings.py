@@ -40,7 +40,7 @@ filename = 'dist/MountWizzard4.dmg'
 volume_name = 'MountWizzard4'
 
 # Volume format (see hdiutil create -help)
-format = defines.get('format', 'UDZO')
+format = defines.get('format', 'UDBZ')
 
 # Volume size
 size = defines.get('size', None)

@@ -90,7 +90,26 @@ def mac_local(c):
         runMW(c, 'pyinstaller -y mw4_mac_local.spec')
 
 
-@task(pre=[])
+@task()
+def sign(c):
+    with c.cd('../dist'):
+        printMW('signing')
+        command = "codesign --deep --force --verbose=4"
+        command += " --sign 'Mac Developer: Michael Wuertenberger (2M9FQU8X23)'"
+        command += " MountWizzard4.app"
+        runMW(c, command)
+
+        printMW('make it online')
+        command = "xattr -w com.apple.quarantine"
+        command += "'0081;5a37dc6a;Google Chrome;F15F7E1C-F894-4B7D-91B4-E110D11C4858"
+        command += " MountWizzard4.app"
+        printMW('verify')
+        command = "codesign --verify --verbose=4 "
+        command += "MountWizzard4.app"
+        runMW(c, command)
+
+
+@task(pre=[], post=[sign])
 def mac(c):
     printMW('build mac app')
     with c.cd('..'):
@@ -112,5 +131,3 @@ def mac(c):
         runMW(c, f'ssh {userMAC} < build_mac.sh')
     with c.cd('../dist'):
         runMW(c, f'scp -r {buildMAC}/dist/MountWizzard4.app .')
-        printMW('signing')
-        runMW(c, "codesign -s 'Mac Developer: Michael Wuertenberger (2M9FQU8X23)' MountWizzard4.app")

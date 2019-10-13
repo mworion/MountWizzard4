@@ -26,6 +26,16 @@ from automation.collections.config_ssh import *
 #
 
 
+@task()
+def sign(c):
+    with c.cd('../dist'):
+        printMW('attach dmg')
+        runMW(c, 'hdiutil attach -owners on MountWizzard4.dmg -shadow')
+        runMW(c, 'cp -a MountWizzard4.app/. /Volumes/MountWizzard4/MountWizzard4.app')
+    printMW('detach dmg')
+    runMW(c, 'hdiutil detach /Volumes/MountWizzard4')
+
+
 @task(pre=[])
 def mac(c):
     printMW('build mac dmg')

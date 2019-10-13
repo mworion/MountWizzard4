@@ -332,7 +332,7 @@ class HemisphereWindow(widget.MWidget):
         # widget.figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
         axe = widget.figure.add_subplot(1, 1, 1, polar=True)
 
-        axe.set_facecolor((0, 32/255, 0, 1))
+        axe.set_facecolor((0, 32 / 255, 0, 1))
         axe.spines['polar'].set_color('#2090C0')
         axe.spines['inner'].set_color('#2090C0')
         axe.set_theta_zero_location('N')

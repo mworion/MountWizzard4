@@ -42,6 +42,10 @@ class Environ(object):
 
         self.filteredTemperature = None
         self.filteredPressure = None
+        self.refractionSources = [self.ui.weatherGroup,
+                                  self.ui.environGroup,
+                                  ]
+        self.refractionSource = None
 
         # environment functions
         signals = self.app.environ.client.signals
@@ -58,6 +62,8 @@ class Environ(object):
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
         self.ui.isOnline.stateChanged.connect(self.updateOpenWeatherMap)
         self.ui.openWeatherMapKey.editingFinished.connect(self.updateOpenWeatherMap)
+        self.ui.weatherGroup.clicked.connect(self.selectRefractionSource)
+        self.ui.environGroup.clicked.connect(self.selectRefractionSource)
 
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
@@ -78,6 +84,9 @@ class Environ(object):
         self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
 
+        self.refractionSource = config.get('refractionSource', 1)
+        self.setRefractionSourceGui()
+
         self.ui.openWeatherMapKey.setText(config.get('openWeatherMapKey', ''))
         self.updateClearOutside()
         self.updateOpenWeatherMap()
@@ -96,8 +105,41 @@ class Environ(object):
         config['checkRefracNone'] = self.ui.checkRefracNone.isChecked()
         config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
         config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
-
+        config['refractionSource'] = self.refractionSource
         config['openWeatherMapKey'] = self.ui.openWeatherMapKey.text()
+
+        return True
+
+    def setRefractionSourceGui(self):
+        """
+        setRefractionSourceGui sets the gui elements to a recognizable setting and disables
+        all others
+
+        :return: success
+        """
+        for i, group in enumerate(self.refractionSources):
+            if self.refractionSource == i:
+                self.changeStyleDynamic(group, 'refraction', True)
+                group.setChecked(True)
+            else:
+                self.changeStyleDynamic(group, 'refraction', False)
+                group.setChecked(False)
+        return True
+
+    def selectRefractionSource(self):
+        """
+        selectRefractionSource receives all button presses on groups and checks which of the
+        groups was clicked on. whit that information is detects the index in the list of
+        groups.
+
+        :return: success
+        """
+
+        for i, group in enumerate(self.refractionSources):
+            if group != self.sender():
+                continue
+            self.refractionSource = i
+        self.setRefractionSourceGui()
 
         return True
 
@@ -109,8 +151,15 @@ class Environ(object):
         :return:
         """
 
-        temp = self.app.environ.data.get('WEATHER_TEMPERATURE', None)
-        press = self.app.environ.data.get('WEATHER_PRESSURE', None)
+        if self.refractionSource == 0:
+            temp = float(self.ui.weatherTemp.text())
+            press = float(self.ui.weatherPress.text())
+        elif self.refractionSource == 1:
+            temp = self.app.environ.data.get('WEATHER_TEMPERATURE', None)
+            press = self.app.environ.data.get('WEATHER_PRESSURE', None)
+        else:
+            temp = None
+            press = None
 
         if temp is None or press is None:
             return False
@@ -131,14 +180,14 @@ class Environ(object):
     def movingAverageRefractionParameters(self):
         """
         getFilteredRefracParams filters local temperature and pressure with and moving
-        average filter over 5 minutes and returns the filtered values.
+        average filter over 100 seconds and returns the filtered values.
 
         :return:  temperature and pressure
         """
 
         if self.filteredTemperature is not None and self.filteredPressure is not None:
-            temp = np.mean(self.filteredTemperature[:10])
-            press = np.mean(self.filteredPressure[:10])
+            temp = np.mean(self.filteredTemperature)
+            press = np.mean(self.filteredPressure)
             return temp, press
         else:
             return None, None

@@ -173,29 +173,6 @@ class MWStyles(object):
         border-color: rgb(16, 72, 96);
         border-style: outset;
     }    
-
-    /* Checkboxes */
-    QCheckBox {
-        color: #C0C0C0;
-        spacing: 8px;
-        background-color: transparent;
-    }
-    QCheckBox::indicator {
-        border-width: 1px;
-        border-color: #404040;
-        background-color: #101010;
-        border-style: outset;
-        border-radius: 2px;
-        width: 13px;
-        height: 13px;
-    }
-    QCheckBox::indicator:checked {
-        background-color: rgb(32, 144, 192);
-        image: url(:/checkmark.ico);
-    }
-    QCheckBox:disabled {
-        color: rgb(32, 144, 192);
-    }
     /* Group Box */
     QGroupBox {
         background-color: #181818;
@@ -225,6 +202,49 @@ class MWStyles(object):
     }
     QGroupBox::title:disabled {
         color: #404040;
+    }
+    QGroupBox::title[refraction='true']{
+        color: rgb(32, 144, 192);
+    }
+    QGroupBox[refraction='true'] {
+        border-width: 2px;
+        border-color: rgb(32, 144, 192);
+    }
+    QGroupBox::indicator {
+        border-width: 1px;
+        border-color: #404040;
+        background-color: #101010;
+        border-style: outset;
+        border-radius: 2px;
+        width: 13px;
+        height: 13px;
+    }
+    QGroupBox::indicator:checked {
+        background-color: rgb(32, 144, 192);
+        image: url(:/checkmark.ico);
+    }
+    
+    /* Checkboxes */
+    QCheckBox {
+        color: #C0C0C0;
+        spacing: 8px;
+        background-color: transparent;
+    }
+    QCheckBox::indicator {
+        border-width: 1px;
+        border-color: #404040;
+        background-color: #101010;
+        border-style: outset;
+        border-radius: 2px;
+        width: 13px;
+        height: 13px;
+    }
+    QCheckBox::indicator:checked {
+        background-color: rgb(32, 144, 192);
+        image: url(:/checkmark.ico);
+    }
+    QCheckBox:disabled {
+        color: rgb(32, 144, 192);
     }
     QRadioButton {
         color: #C0C0C0;

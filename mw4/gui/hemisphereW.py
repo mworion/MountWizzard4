@@ -166,6 +166,8 @@ class HemisphereWindow(widget.MWidget):
         :param closeEvent:
         :return:
         """
+        self.app.update1s.disconnect(self.drawCanvas)
+        self.app.update10s.disconnect(self.updateAlignStar)
         self.storeConfig()
 
         # signals for gui
@@ -186,11 +188,8 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.settingDone.disconnect(self.updateCelestialPath)
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.client.signals.deviceDisconnected.disconnect(self.updateDome)
-        self.app.update1s.disconnect(self.drawCanvas)
-        self.app.update10s.disconnect(self.updateAlignStar)
 
         plt.close(self.hemisphereMat.figure)
-
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -333,7 +332,7 @@ class HemisphereWindow(widget.MWidget):
 
         # as we have a negative drawing, we need to take into consideration that no horizon
         # is defined and we don't want to have a full green background in this situation
-        if self.app.data.horizonP:
+        if self.app.data.horizonP and self.ui.checkUseHorizon.isChecked():
             axe.set_facecolor((0, 48 / 255, 0, 1))
         else:
             axe.set_facecolor((0, 0, 0, 0))

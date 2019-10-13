@@ -165,13 +165,13 @@ class MeasureWindow(widget.MWidget):
         :return:
         """
 
+        self.app.update1s.disconnect(self.cycleRefresh)
         self.storeConfig()
         # signals for gui
         self.ui.timeSet.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet1.currentIndexChanged.disconnect(self.cycleRefresh)
         self.ui.measureSet2.currentIndexChanged.disconnect(self.cycleRefresh)
         self.ui.measureSet3.currentIndexChanged.disconnect(self.cycleRefresh)
-        self.app.update1s.disconnect(self.cycleRefresh)
 
         plt.close(self.measureMat.figure)
 

@@ -41,7 +41,7 @@ class HemisphereWindow(widget.MWidget):
 
     __all__ = ['HemisphereWindow',
                ]
-    version = '0.8'
+    version = '0.100'
     logger = logging.getLogger(__name__)
 
     MODE = dict(

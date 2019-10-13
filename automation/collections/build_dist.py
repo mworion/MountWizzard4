@@ -21,6 +21,7 @@ sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
 from invoke import task, context
 from automation.collections.gui import printMW, runMW
 from automation.collections.config_ssh import *
+from automation.collections.support import *
 #
 # building the components
 #
@@ -42,7 +43,7 @@ def indibase(c):
         runMW(c, 'python setup.py sdist')
 
 
-@task(pre=[])
+@task(pre=[resource, widgets])
 def mountwizzard(c):
     printMW('building dist mountwizzard4')
     with c.cd('..'):

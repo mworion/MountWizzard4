@@ -7,7 +7,6 @@ problems occurred:
 nice to have:
 - astrometry online
 - hemisphere: show best altitude when polar align is on
-- temperature of CCD
 - choice which data to be used for refraction update
 - polar hemisphere
 - improve stretch further

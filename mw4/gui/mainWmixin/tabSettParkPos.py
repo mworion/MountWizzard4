@@ -36,15 +36,8 @@ class SettParkPos(object):
         self.posTexts = list()
         self.posAlt = list()
         self.posAz = list()
-        self.posSaveButtons = [self.ui.posSave0,
-                               self.ui.posSave1,
-                               self.ui.posSave2,
-                               self.ui.posSave3,
-                               self.ui.posSave4,
-                               self.ui.posSave5,
-                               self.ui.posSave6,
-                               self.ui.posSave7,
-                               ]
+        self.posSaveButtons = list()
+
         # dynamically generate the widgets
         self.setupParkPosGui()
         for posText in self.posTexts:
@@ -131,11 +124,12 @@ class SettParkPos(object):
         """
 
         # generate the button list and text entry for later use
-        for i in range(0, 8):
+        for i in range(0, 10):
             self.posButtons.append(eval('self.ui.posButton{0:1d}'.format(i)))
             self.posTexts.append(eval('self.ui.posText{0:1d}'.format(i)))
             self.posAlt.append(eval('self.ui.posAlt{0:1d}'.format(i)))
             self.posAz.append(eval('self.ui.posAz{0:1d}'.format(i)))
+            self.posSaveButtons.append(eval('self.ui.posSave{0:1d}'.format(i)))
         return True
 
     def updateParkPosButtonText(self):

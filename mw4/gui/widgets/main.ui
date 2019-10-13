@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>9</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -13070,7 +13070,7 @@ When clicking the button, you could change the value.</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -16459,9 +16459,9 @@ When clicking the button, you could change the value.</string>
           </property>
           <property name="geometry">
            <rect>
-            <x>225</x>
+            <x>235</x>
             <y>20</y>
-            <width>136</width>
+            <width>126</width>
             <height>21</height>
            </rect>
           </property>
@@ -16504,7 +16504,7 @@ When clicking the button, you could change the value.</string>
           </property>
           <property name="geometry">
            <rect>
-            <x>120</x>
+            <x>140</x>
             <y>20</y>
             <width>91</width>
             <height>21</height>
@@ -16543,17 +16543,30 @@ When clicking the button, you could change the value.</string>
            <bool>true</bool>
           </property>
          </widget>
-         <widget class="QPushButton" name="coverOpen">
+         <widget class="QPushButton" name="coverPark">
           <property name="geometry">
            <rect>
             <x>10</x>
             <y>20</y>
-            <width>96</width>
+            <width>56</width>
             <height>21</height>
            </rect>
           </property>
           <property name="text">
-           <string>Open / Close</string>
+           <string>Park</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="coverUnpark">
+          <property name="geometry">
+           <rect>
+            <x>75</x>
+            <y>20</y>
+            <width>56</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Unpark</string>
           </property>
          </widget>
         </widget>
@@ -21699,7 +21712,7 @@ When clicking the button, you could change the value.</string>
   <tabstop>solveTimeout</tabstop>
   <tabstop>settleTimeMount</tabstop>
   <tabstop>settleTimeDome</tabstop>
-  <tabstop>coverOpen</tabstop>
+  <tabstop>coverPark</tabstop>
   <tabstop>openWeatherMapKey</tabstop>
   <tabstop>bootRackComp</tabstop>
   <tabstop>rackCompMAC</tabstop>

@@ -37,7 +37,8 @@ class SettImaging(object):
         self.app.cover.client.signals.newNumber.connect(self.updateCoverStatGui)
 
         # gui actions
-        self.ui.coverOpen.clicked.connect(self.sendCoverStat)
+        self.ui.coverPark.clicked.connect(self.sendCoverPark)
+        self.ui.coverUnpark.clicked.connect(self.sendCoverUnpark)
 
     def initConfig(self):
         """
@@ -123,21 +124,20 @@ class SettImaging(object):
 
         value = self.app.cover.data.get('Cover', '-').strip().upper()
         if value == 'OPEN':
-            self.changeStyleDynamic(self.ui.coverOpen, 'running', True)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
+        elif value == 'CLOSED':
+            self.changeStyleDynamic(self.ui.coverPark, 'running', True)
         else:
-            self.changeStyleDynamic(self.ui.coverOpen, 'running', False)
+            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
 
         value = self.app.cover.data.get('Cover', '-')
         self.ui.coverStatusText.setText(value)
 
         value = self.app.cover.data.get('Motor', '-')
-        if value.strip().upper() == 'RUNNING':
-            self.ui.coverOpen.setEnabled(False)
-        else:
-            self.ui.coverOpen.setEnabled(True)
         self.ui.coverMotorText.setText(value)
 
-    def sendCoverStat(self):
+    def sendCoverPark(self):
         """
 
         :return: true fot test purpose
@@ -152,17 +152,30 @@ class SettImaging(object):
 
         cover = device.getSwitch('CAP_PARK')
 
-        value = self.app.cover.data.get('Cover', '-').strip().upper()
-        if value == 'OPEN':
-            newState = False
-        elif value == 'CLOSED':
-            newState = True
-        else:
-            # undefined state goes first to close
-            newState = False
+        cover['UNPARK'] = False
+        cover['PARK'] = True
+        client.sendNewSwitch(deviceName=name,
+                             propertyName='CAP_PARK',
+                             elements=cover,
+                             )
+        return True
 
-        cover['UNPARK'] = newState
-        cover['PARK'] = not newState
+    def sendCoverUnpark(self):
+        """
+
+        :return: true fot test purpose
+        """
+
+        device = self.app.cover.device
+        name = self.app.cover.name
+        client = self.app.cover.client
+
+        if device is None:
+            return False
+
+        cover = device.getSwitch('CAP_PARK')
+        cover['UNPARK'] = True
+        cover['PARK'] = False
         client.sendNewSwitch(deviceName=name,
                              propertyName='CAP_PARK',
                              elements=cover,

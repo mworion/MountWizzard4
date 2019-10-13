@@ -56,7 +56,7 @@ def test_setupIcons():
 
 def test_initConfig_1():
     config = app.config['mainW']
-    for i in range(0, 8):
+    for i in range(0, 10):
         config[f'posText{i:1d}'] = str(i)
         config[f'posAlt{i:1d}'] = str(i)
         config[f'posAz{i:1d}'] = str(i)
@@ -77,10 +77,11 @@ def test_storeConfig_1():
 
 
 def test_setupParkPosGui(qtbot):
-    assert 8 == len(app.mainW.posButtons)
-    assert 8 == len(app.mainW.posTexts)
-    assert 8 == len(app.mainW.posAlt)
-    assert 8 == len(app.mainW.posAz)
+    assert 10 == len(app.mainW.posButtons)
+    assert 10 == len(app.mainW.posTexts)
+    assert 10 == len(app.mainW.posAlt)
+    assert 10 == len(app.mainW.posAz)
+    assert 10 == len(app.mainW.posSaveButtons)
 
 
 def test_slewParkPos_1(qtbot):
@@ -88,9 +89,9 @@ def test_slewParkPos_1(qtbot):
         @staticmethod
         def text():
             return '1'
-    buttons = range(0, 8)
-    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
-    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    buttons = range(0, 10)
+    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
     app.mainW.posButtons = buttons
     app.mainW.posAlt = alt
     app.mainW.posAz = az
@@ -110,7 +111,7 @@ def test_slewParkPos_1(qtbot):
 
 
 def test_slewParkPos_2(qtbot):
-    buttons = str(range(0, 8))
+    buttons = str(range(0, 10))
     app.mainW.posButtons = buttons
     with mock.patch.object(app.mount.obsSite,
                            'setTargetAltAz',
@@ -127,7 +128,7 @@ def test_slewParkPos_2(qtbot):
 
 
 def test_slewParkPos_3(qtbot):
-    buttons = range(0, 8)
+    buttons = range(0, 10)
     app.mainW.posButtons = buttons
     with mock.patch.object(app.mount.obsSite,
                            'setTargetAltAz',
@@ -147,9 +148,9 @@ def test_slewParkPos_4(qtbot):
         @staticmethod
         def text():
             return '1'
-    buttons = range(0, 8)
-    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
-    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    buttons = range(0, 10)
+    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
     app.mainW.posButtons = buttons
     app.mainW.posAlt = alt
     app.mainW.posAz = az
@@ -175,9 +176,9 @@ def test_slewParkPos_5(qtbot):
         @staticmethod
         def text():
             return '1'
-    buttons = range(0, 8)
-    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
-    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    buttons = range(0, 10)
+    alt = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
+    az = [Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test(), Test()]
     app.mainW.posButtons = buttons
     app.mainW.posAlt = alt
     app.mainW.posAz = az

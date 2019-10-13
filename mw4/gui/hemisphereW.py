@@ -81,6 +81,7 @@ class HemisphereWindow(widget.MWidget):
 
         # attributes to be stored in class
         self.pointerAltAz = None
+        self.pointerAltAzPolar = None
         self.pointerDome = None
         self.pointsBuild = None
         self.pointsBuildAnnotate = list()
@@ -328,13 +329,15 @@ class HemisphereWindow(widget.MWidget):
 
         widget.figure.clf()
         # used constrained_layout = True instead
-        # figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        # widget.figure.subplots_adjust(left=0.075, right=0.95, bottom=0.1, top=0.975)
+        axe = widget.figure.add_subplot(1, 1, 1, polar=True)
 
-        axe = widget.figure.add_subplot(1, 1, 1, facecolor=None, polar=True)
-
-        axe.set_facecolor((0, 0, 0, 0))
-        axe.set_rmax(90)
-        axe.set_rmin(0)
+        axe.set_facecolor((0, 32/255, 0, 1))
+        axe.spines['polar'].set_color('#2090C0')
+        axe.spines['inner'].set_color('#2090C0')
+        axe.set_theta_zero_location('N')
+        axe.set_theta_direction(-1)
+        axe.set_ylim(0, 90)
         axe.grid(True, color='#404040')
         axe.tick_params(axis='x',
                         colors='#2090C0',
@@ -342,12 +345,8 @@ class HemisphereWindow(widget.MWidget):
         axe.tick_params(axis='y',
                         colors='#2090C0',
                         labelsize=12)
-        axe.spines['polar'].set_color('#2090C0')
-        axe.spines['inner'].set_color('#2090C0')
-        axe.set_theta_zero_location('N')
-        axe.set_theta_direction(-1)
         axe.set_yticks(range(0, 90, 10))
-        yLabel = ['', '', '', '', '', '', '', '', '', '']
+        yLabel = ['', '80', '', '60', '', '40', '', '20', '', '']
         axe.set_yticklabels(yLabel,
                             color='#2090C0',
                             fontweight='bold')
@@ -459,6 +458,12 @@ class HemisphereWindow(widget.MWidget):
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
         self.pointerAltAz.set_visible(True)
+
+        if self.pointerAltAzPolar is not None:
+            az = az / 180 * np.pi
+            self.pointerAltAzPolar.set_data((az, 90 - alt))
+            self.pointerAltAzPolar.set_visible(True)
+
         return True
 
     def updateDome(self, azimuth):
@@ -982,6 +987,9 @@ class HemisphereWindow(widget.MWidget):
 
     def staticHorizon(self, axes=None, polar=False):
         """
+        staticHorizon draw the horizon line. in case of a polar plot it will be reversed,
+        which mean the background will be green and to horizon polygon will be drawn in
+        background color
 
         :param axes: matplotlib axes object
         :param polar: hint for polar chart
@@ -1000,15 +1008,20 @@ class HemisphereWindow(widget.MWidget):
             alt = 90 - alt
             az = az / 180.0 * np.pi
 
-        self.horizonFill, = axes.fill(az, alt, color='#002000', zorder=-20)
-        self.horizonMarker, = axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
-        if self.ui.checkEditHorizonMask.isChecked():
-            self.horizonMarker.set_marker('o')
-            self.horizonMarker.set_color('#FF00FF')
+        if polar:
+            axes.fill(az, alt, color='#202020', zorder=-20)
+            axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
+        else:
+            self.horizonFill, = axes.fill(az, alt, color='#002000', zorder=-20)
+            self.horizonMarker, = axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
+            if self.ui.checkEditHorizonMask.isChecked():
+                self.horizonMarker.set_marker('o')
+                self.horizonMarker.set_color('#FF00FF')
         return True
 
     def staticModelData(self, axes=None, polar=False):
         """
+        staticModelData draw in the chart the build points and their index as annotations
 
         :param axes: matplotlib axes object
         :param polar: hint for polar chart
@@ -1036,49 +1049,69 @@ class HemisphereWindow(widget.MWidget):
             color = '#FF00FF'
         else:
             color = '#00A000'
-        self.pointsBuild, = axes.plot(az, alt,
-                                      marker=self.markerPoint(),
-                                      markersize=9,
-                                      linestyle=ls,
-                                      lw=lw,
-                                      fillstyle='none',
-                                      color=color,
-                                      zorder=20,
-                                      )
-        self.pointsBuildAnnotate = list()
-        for i, AltAz in enumerate(zip(az, alt)):
-            annotation = axes.annotate('{0:2d}'.format(i),
-                                       xy=AltAz,
-                                       xytext=(2, -10),
-                                       textcoords='offset points',
-                                       color='#E0E0E0',
-                                       zorder=10,
-                                       )
-            self.pointsBuildAnnotate.append(annotation)
+
+        if polar:
+            axes.plot(az, alt,
+                      marker=self.markerPoint(),
+                      markersize=9,
+                      linestyle=ls,
+                      lw=lw,
+                      fillstyle='none',
+                      color=color,
+                      zorder=20,
+                      )
+        else:
+            self.pointsBuild, = axes.plot(az, alt,
+                                          marker=self.markerPoint(),
+                                          markersize=9,
+                                          linestyle=ls,
+                                          lw=lw,
+                                          fillstyle='none',
+                                          color=color,
+                                          zorder=20,
+                                          )
+            self.pointsBuildAnnotate = list()
+            for i, AltAz in enumerate(zip(az, alt)):
+                annotation = axes.annotate('{0:2d}'.format(i),
+                                           xy=AltAz,
+                                           xytext=(2, -10),
+                                           textcoords='offset points',
+                                           color='#E0E0E0',
+                                           zorder=10,
+                                           )
+                self.pointsBuildAnnotate.append(annotation)
         return True
 
     def staticCelestialEquator(self, axes=None, polar=False):
         """
+        staticCelestialEquator draw ra / dec lines on the chart
 
         :param axes: matplotlib axes object
         :param polar: hint for polar chart
         :return: success
         """
 
-        if polar:
-            return False
-
         # draw celestial equator
         visible = self.ui.checkShowCelestial.isChecked()
         celestial = self.app.data.generateCelestialEquator()
         alt, az = zip(*celestial)
-        self.celestialPath, = axes.plot(az,
-                                        alt,
-                                        '.',
-                                        markersize=1,
-                                        fillstyle='none',
-                                        color='#808080',
-                                        visible=visible)
+
+        if polar:
+            axes.plot(az,
+                      alt,
+                      '.',
+                      markersize=1,
+                      fillstyle='none',
+                      color='#808080',
+                      visible=visible)
+        else:
+            self.celestialPath, = axes.plot(az,
+                                            alt,
+                                            '.',
+                                            markersize=1,
+                                            fillstyle='none',
+                                            color='#808080',
+                                            visible=visible)
         return True
 
     def staticMeridianLimits(self, axes=None, polar=False):
@@ -1189,19 +1222,33 @@ class HemisphereWindow(widget.MWidget):
         """
 
         if polar:
+            # pointer for polar
+            self.pointerAltAzPolar, = axes.plot(np.pi, 45,
+                                                zorder=10,
+                                                color='#FF00FF',
+                                                marker=self.markerAltAz(),
+                                                markersize=25,
+                                                linestyle='none',
+                                                fillstyle='none',
+                                                clip_on=False,
+                                                visible=False,
+                                                )
+        else:
+            # pointer
+            self.pointerAltAz, = axes.plot(180, 45,
+                                           zorder=10,
+                                           color='#FF00FF',
+                                           marker=self.markerAltAz(),
+                                           markersize=25,
+                                           linestyle='none',
+                                           fillstyle='none',
+                                           clip_on=False,
+                                           visible=False,
+                                           )
+
+        if polar:
             return False
 
-        # pointer
-        self.pointerAltAz, = axes.plot(180, 45,
-                                       zorder=10,
-                                       color='#FF00FF',
-                                       marker=self.markerAltAz(),
-                                       markersize=25,
-                                       linestyle='none',
-                                       fillstyle='none',
-                                       clip_on=False,
-                                       visible=False,
-                                       )
         # adding pointer of dome if dome is present
         visible = self.app.mainW.deviceStat['dome'] is not None
         self.pointerDome = mpatches.Rectangle((165, 0),
@@ -1317,10 +1364,8 @@ class HemisphereWindow(widget.MWidget):
         self.drawHemisphereStars(axes=axes)
         if axesP:
             self.drawHemisphereStatic(axes=axesP, polar=True)
-            self.drawHemisphereMoving(axes=axes, polar=True)
-            self.drawHemisphereStars(axes=axes, polar=True)
-
-        self.setOperationMode()
+            self.drawHemisphereMoving(axes=axesP, polar=True)
+            self.drawHemisphereStars(axes=axesP, polar=True)
 
         # drawing the canvas
         axes.figure.canvas.draw()

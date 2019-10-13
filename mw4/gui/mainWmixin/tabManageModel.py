@@ -181,8 +181,7 @@ class ManageModel(object):
         matplotlib.pyplot.setp(yTicks,
                                color='#2090C0',
                                fontweight='bold')
-        axes.set_rmax(90)
-        axes.set_rmin(0)
+        axes.set_ylim(0, 90)
         axes.figure.canvas.draw()
         return True
 

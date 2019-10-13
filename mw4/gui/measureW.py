@@ -354,7 +354,7 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
-        ylabel = 'Temperature [°C]'
+        ylabel = 'Temperature [deg C]'
         start = -self.NUMBER_POINTS * cycle
 
         axe.set_title(title,

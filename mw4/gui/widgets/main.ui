@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -8652,93 +8652,6 @@ to mount manually</string>
       <attribute name="title">
        <string>Satellite</string>
       </attribute>
-      <widget class="Line" name="line_20">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>100</y>
-         <width>356</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_126">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>80</y>
-         <width>251</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>List of available satellites</string>
-       </property>
-      </widget>
-      <widget class="QListWidget" name="listSatelliteNames">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>105</y>
-         <width>356</width>
-         <height>316</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="Line" name="line_67">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>40</y>
-         <width>356</width>
-         <height>1</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_223">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>20</y>
-         <width>121</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Satellite data file</string>
-       </property>
-      </widget>
       <widget class="Line" name="line_68">
        <property name="geometry">
         <rect>
@@ -8759,22 +8672,6 @@ to mount manually</string>
        </property>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="satelliteSource">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>45</y>
-         <width>356</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
        </property>
       </widget>
       <widget class="QGroupBox" name="groupBox_12">
@@ -9828,6 +9725,64 @@ to mount manually</string>
         </property>
         <property name="text">
          <string>Start satellite tracking</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_27">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>366</width>
+         <height>56</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Satellite data file</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QComboBox" name="satelliteSource">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>25</y>
+          <width>346</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_52">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>100</y>
+         <width>366</width>
+         <height>316</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>List of available satellites</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QListWidget" name="listSatelliteNames">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>25</y>
+          <width>346</width>
+          <height>281</height>
+         </rect>
         </property>
        </widget>
       </widget>
@@ -21379,7 +21334,6 @@ When clicking the button, you could change the value.</string>
   <tabstop>openMessageW</tabstop>
   <tabstop>mountConnected</tabstop>
   <tabstop>settingsTabWidget</tabstop>
-  <tabstop>listSatelliteNames</tabstop>
   <tabstop>mainTabWidget</tabstop>
   <tabstop>relayButton0</tabstop>
   <tabstop>deleteWorstPoint</tabstop>
@@ -21406,7 +21360,6 @@ When clicking the button, you could change the value.</string>
   <tabstop>genBuildDSO</tabstop>
   <tabstop>genBuildGoldenSpiral</tabstop>
   <tabstop>numberSpiralPoints</tabstop>
-  <tabstop>satelliteSource</tabstop>
   <tabstop>le_analyseFileName</tabstop>
   <tabstop>loadAnalyseData</tabstop>
   <tabstop>delayTimeFlexure</tabstop>

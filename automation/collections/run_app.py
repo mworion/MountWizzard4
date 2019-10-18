@@ -49,14 +49,28 @@ def windows_dbg(c):
 
 
 @task(pre=[])
-def mac(c):
+def macMojave(c):
     printMW('run mac app')
-    runMW(c, f'ssh {userMAC} rm -rf mountwizzard4')
-    runMW(c, f'ssh {userMAC} mkdir mountwizzard4')
+    runMW(c, f'ssh {userMojave} rm -rf mountwizzard4')
+    runMW(c, f'ssh {userMojave} mkdir mountwizzard4')
     # copy necessary files
     with c.cd('../dist'):
-        runMW(c, f'scp -r MountWizzard4.app {workMAC}')
+        runMW(c, f'scp -r MountWizzard4.app {workMojave}')
     with c.cd('remote_scripts/mac'):
-        runMW(c, f'scp -r start_mac_app.sh {workMAC}')
-        runMW(c, f'ssh {userMAC} chmod 777 ./mountwizzard4/start_mac_app.sh')
-        runMW(c, f'ssh {userMAC} ./mountwizzard4/start_mac_app.sh')
+        runMW(c, f'scp -r start_mac_app.sh {workMojave}')
+        runMW(c, f'ssh {userMojave} chmod 777 ./mountwizzard4/start_mac_app.sh')
+        runMW(c, f'ssh {userMojave} ./mountwizzard4/start_mac_app.sh')
+
+
+@task(pre=[])
+def macCatalina(c):
+    printMW('run mac app')
+    runMW(c, f'ssh {userCatalina} rm -rf mountwizzard4')
+    runMW(c, f'ssh {userCatalina} mkdir mountwizzard4')
+    # copy necessary files
+    with c.cd('../dist'):
+        runMW(c, f'scp -r MountWizzard4.app {workCatalina}')
+    with c.cd('remote_scripts/mac'):
+        runMW(c, f'scp -r start_mac_app.sh {workCatalina}')
+        runMW(c, f'ssh {userCatalina} chmod 777 ./mountwizzard4/start_mac_app.sh')
+        runMW(c, f'ssh {userCatalina} ./mountwizzard4/start_mac_app.sh')

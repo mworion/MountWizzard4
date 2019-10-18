@@ -27,12 +27,21 @@ from automation.collections.config_ssh import *
 
 
 @task(pre=[])
-def mac(c):
+def macMojave(c):
     printMW('run mac dist')
     with c.cd('remote_scripts/mac'):
-        runMW(c, f'scp start_mac.sh {workMAC}')
-    runMW(c, f'ssh {userMAC} chmod 777 ./mountwizzard4/start_mac.sh')
-    runMW(c, f'ssh {userMAC} ./mountwizzard4/start_mac.sh')
+        runMW(c, f'scp start_mac.sh {workMojave}')
+    runMW(c, f'ssh {userMojave} chmod 777 ./mountwizzard4/start_mac.sh')
+    runMW(c, f'ssh {userMojave} ./mountwizzard4/start_mac.sh')
+
+
+@task(pre=[])
+def macCatalina(c):
+    printMW('run mac dist')
+    with c.cd('remote_scripts/mac'):
+        runMW(c, f'scp start_mac.sh {workCatalina}')
+    runMW(c, f'ssh {userCatalina} chmod 777 ./mountwizzard4/start_mac.sh')
+    runMW(c, f'ssh {userCatalina} ./mountwizzard4/start_mac.sh')
 
 
 @task(pre=[])

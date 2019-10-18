@@ -42,10 +42,17 @@ def windows(c):
 
 
 @task()
-def mac(c):
+def macMojave(c):
     printMW('generating new venv mac')
     with c.cd('remote_scripts/mac'):
-        runMW(c, f'ssh {userMAC} < setup_mac.sh')
+        runMW(c, f'ssh {userMojave} < setup_mac.sh')
+
+
+@task()
+def macCatalina(c):
+    printMW('generating new venv mac')
+    with c.cd('remote_scripts/mac'):
+        runMW(c, f'ssh {userCatalina} < setup_mac.sh')
 
 
 @task()

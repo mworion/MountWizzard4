@@ -102,18 +102,36 @@ def windows(c):
 
 
 @task(pre=[])
-def mac(c):
+def macMojave(c):
     printMW('deploy mac dist')
-    runMW(c, f'ssh {userMAC} rm -rf mountwizzard4')
-    runMW(c, f'ssh {userMAC} mkdir mountwizzard4')
+    runMW(c, f'ssh {userMojave} rm -rf mountwizzard4')
+    runMW(c, f'ssh {userMojave} mkdir mountwizzard4')
     # copy necessary files
     with c.cd('../../mountcontrol'):
-        runMW(c, f'scp dist/*.tar.gz {workMAC}/mc.tar.gz')
+        runMW(c, f'scp dist/*.tar.gz {workMojave}/mc.tar.gz')
     with c.cd('../../indibase'):
-        runMW(c, f'scp dist/*.tar.gz {workMAC}/ib.tar.gz')
+        runMW(c, f'scp dist/*.tar.gz {workMojave}/ib.tar.gz')
     with c.cd('..'):
-        runMW(c, f'scp dist/*.tar.gz {workMAC}/mw4.tar.gz')
+        runMW(c, f'scp dist/*.tar.gz {workMojave}/mw4.tar.gz')
 
     # run the installation
     with c.cd('remote_scripts/mac'):
-        runMW(c, f'ssh {userMAC} < install_dist_mac.sh')
+        runMW(c, f'ssh {userMojave} < install_dist_mac.sh')
+
+
+@task(pre=[])
+def macCatalina(c):
+    printMW('deploy mac dist')
+    runMW(c, f'ssh {userCatalina} rm -rf mountwizzard4')
+    runMW(c, f'ssh {userCatalina} mkdir mountwizzard4')
+    # copy necessary files
+    with c.cd('../../mountcontrol'):
+        runMW(c, f'scp dist/*.tar.gz {workCatalina}/mc.tar.gz')
+    with c.cd('../../indibase'):
+        runMW(c, f'scp dist/*.tar.gz {workCatalina}/ib.tar.gz')
+    with c.cd('..'):
+        runMW(c, f'scp dist/*.tar.gz {workCatalina}/mw4.tar.gz')
+
+    # run the installation
+    with c.cd('remote_scripts/mac'):
+        runMW(c, f'ssh {userCatalina} < install_dist_mac.sh')

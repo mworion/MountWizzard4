@@ -37,16 +37,32 @@ def sign(c):
 
 
 @task(pre=[])
-def mac(c):
+def macMojave(c):
     printMW('build mac dmg')
     with c.cd('images'):
-        runMW(c, f'scp drive_mw4.icns {buildMAC}')
-        runMW(c, f'scp dmg_background.png {buildMAC}')
+        runMW(c, f'scp drive_mw4.icns {buildMojave}')
+        runMW(c, f'scp dmg_background.png {buildMojave}')
     with c.cd('addons'):
-        runMW(c, f'scp "MW Home.webloc" {buildMAC}')
-        runMW(c, f'scp "readme.txt" {buildMAC}')
+        runMW(c, f'scp "MW Home.webloc" {buildMojave}')
+        runMW(c, f'scp "readme.txt" {buildMojave}')
     with c.cd('remote_scripts/mac'):
-        runMW(c, f'scp dmg_settings.py {buildMAC}')
-        runMW(c, f'ssh {userMAC} < build_mac_dmg.sh')
+        runMW(c, f'scp dmg_settings.py {buildMojave}')
+        runMW(c, f'ssh {userMojave} < build_mac_dmg.sh')
     with c.cd('../dist'):
-        runMW(c, f'scp {buildMAC}/dist/MountWizzard4.dmg .')
+        runMW(c, f'scp {buildMojave}/dist/MountWizzard4.dmg .')
+
+
+@task(pre=[])
+def macCatalina(c):
+    printMW('build mac dmg')
+    with c.cd('images'):
+        runMW(c, f'scp drive_mw4.icns {buildCatalina}')
+        runMW(c, f'scp dmg_background.png {buildCatalina}')
+    with c.cd('addons'):
+        runMW(c, f'scp "MW Home.webloc" {buildCatalina}')
+        runMW(c, f'scp "readme.txt" {buildCatalina}')
+    with c.cd('remote_scripts/mac'):
+        runMW(c, f'scp dmg_settings.py {buildCatalina}')
+        runMW(c, f'ssh {userCatalina} < build_mac_dmg.sh')
+    with c.cd('../dist'):
+        runMW(c, f'scp {buildCatalina}/dist/MountWizzard4.dmg .')

@@ -41,8 +41,14 @@ userWindows = 'mw@' + clientWindows
 workWindows = userWindows + ':/Users/mw/mountwizzard4'
 buildWindows = userWindows + ':/Users/mw/MountWizzard'
 
-# same for mac
-clientMAC = 'astro-mac.fritz.box'
-userMAC = 'mw@' + clientMAC
-workMAC = userMAC + ':/Users/mw/mountwizzard4'
-buildMAC = userMAC + ':/Users/mw/MountWizzard'
+# same for mac mojave
+clientMojave = 'astro-mac-mojave.fritz.box'
+userMojave = 'mw@' + clientMojave
+workMojave = userMojave + ':/Users/mw/mountwizzard4'
+buildMojave = userMojave + ':/Users/mw/MountWizzard'
+
+# same for mac catalina
+clientCatalina = 'astro-mac-catalina.fritz.box'
+userCatalina = 'mw@' + clientCatalina
+workCatalina = userCatalina + ':/Users/mw/mountwizzard4'
+buildCatalina = userCatalina + ':/Users/mw/MountWizzard'

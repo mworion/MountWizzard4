@@ -110,24 +110,48 @@ def sign(c):
 
 
 @task(pre=[], post=[sign])
-def mac(c):
+def macMojave(c):
     printMW('build mac app')
     with c.cd('..'):
         runMW(c, 'rm -rf ./dist/*.app')
-    runMW(c, f'ssh {userMAC} rm -rf MountWizzard')
-    runMW(c, f'ssh {userMAC} mkdir MountWizzard')
+    runMW(c, f'ssh {userMojave} rm -rf MountWizzard')
+    runMW(c, f'ssh {userMojave} mkdir MountWizzard')
     with c.cd('../../mountcontrol'):
-        runMW(c, f'scp dist/*.tar.gz {buildMAC}/mc.tar.gz')
+        runMW(c, f'scp dist/*.tar.gz {buildMojave}/mc.tar.gz')
     with c.cd('../../indibase'):
-        runMW(c, f'scp dist/*.tar.gz {buildMAC}/ib.tar.gz')
+        runMW(c, f'scp dist/*.tar.gz {buildMojave}/ib.tar.gz')
     with c.cd('..'):
-        runMW(c, f'scp dist/*.tar.gz {buildMAC}/mw4.tar.gz')
+        runMW(c, f'scp dist/*.tar.gz {buildMojave}/mw4.tar.gz')
     with c.cd('images'):
-        runMW(c, f'scp mw4.icns {buildMAC}')
+        runMW(c, f'scp mw4.icns {buildMojave}')
     with c.cd('remote_scripts/mac'):
-        runMW(c, f'scp mw4_mac.spec {buildMAC}')
-        runMW(c, f'scp dmg_settings.py {buildMAC}')
-        runMW(c, f'scp set_image.py {buildMAC}')
-        runMW(c, f'ssh {userMAC} < build_mac.sh')
+        runMW(c, f'scp mw4_mac.spec {buildMojave}')
+        runMW(c, f'scp dmg_settings.py {buildMojave}')
+        runMW(c, f'scp set_image.py {buildMojave}')
+        runMW(c, f'ssh {userMojave} < build_mac.sh')
     with c.cd('../dist'):
-        runMW(c, f'scp -r {buildMAC}/dist/MountWizzard4.app .')
+        runMW(c, f'scp -r {buildMojave}/dist/MountWizzard4.app .')
+
+
+@task(pre=[], post=[sign])
+def macCatalina(c):
+    printMW('build mac app')
+    with c.cd('..'):
+        runMW(c, 'rm -rf ./dist/*.app')
+    runMW(c, f'ssh {userCatalina} rm -rf MountWizzard')
+    runMW(c, f'ssh {userCatalina} mkdir MountWizzard')
+    with c.cd('../../mountcontrol'):
+        runMW(c, f'scp dist/*.tar.gz {buildCatalina}/mc.tar.gz')
+    with c.cd('../../indibase'):
+        runMW(c, f'scp dist/*.tar.gz {buildCatalina}/ib.tar.gz')
+    with c.cd('..'):
+        runMW(c, f'scp dist/*.tar.gz {buildCatalina}/mw4.tar.gz')
+    with c.cd('images'):
+        runMW(c, f'scp mw4.icns {buildCatalina}')
+    with c.cd('remote_scripts/mac'):
+        runMW(c, f'scp mw4_mac.spec {buildCatalina}')
+        runMW(c, f'scp dmg_settings.py {buildCatalina}')
+        runMW(c, f'scp set_image.py {buildCatalina}')
+        runMW(c, f'ssh {userCatalina} < build_mac.sh')
+    with c.cd('../dist'):
+        runMW(c, f'scp -r {buildCatalina}/dist/MountWizzard4.app .')

@@ -50,6 +50,17 @@ class Tools(object):
                                    'Exp Time': ['EXPTIME'],
                                    'CCD Temp': ['CCD-TEMP'],
                                    }
+        self.slewSpeeds = {'max': self.ui.slewSpeedLow,
+                           'high': self.ui.slewSpeedMed,
+                           'med': self.ui.slewSpeedHigh,
+                           'low': self.ui.slewSpeedMax,
+                           }
+        self.slewSpeedFuncs = {'max': self.app.mount.setting.setSlewSpeedMax,
+                               'high': self.app.mount.setting.setSlewSpeedHigh,
+                               'med': self.app.mount.setting.setSlewSpeedMed,
+                               'low': self.app.mount.setting.setSlewSpeedLow,
+                               }
+        self.slewSpeedSelected = None
 
         self.setupSelectorGui()
 
@@ -65,10 +76,10 @@ class Tools(object):
         self.ui.moveNorthEast.clicked.connect(self.moveNorthEast)
         self.ui.moveSouthEast.clicked.connect(self.moveSouthEast)
         self.ui.moveSouthWest.clicked.connect(self.moveSouthWest)
-        self.ui.slewSpeedMax.clicked.connect(self.setSlewSpeedMax)
-        self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeedHigh)
-        self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeedMed)
-        self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeedLow)
+        self.ui.slewSpeedMax.clicked.connect(self.setSlewSpeed)
+        self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeed)
+        self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeed)
+        self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeed)
 
     def initConfig(self):
         """
@@ -87,7 +98,12 @@ class Tools(object):
             ui.setCurrentIndex(config.get(name, 0))
 
         self.ui.renameProgress.setValue(0)
-        self.setSlewSpeedMed()
+
+        key = config.get('slewSpeed', 'high')
+        self.slewSpeedSelected = key
+        self.changeStyleDynamic(self.slewSpeeds[key], 'running', True)
+        self.slewSpeedFuncs[key]()
+
         return True
 
     def storeConfig(self):
@@ -104,6 +120,7 @@ class Tools(object):
         config['checkIncludeSubdirs'] = self.ui.checkIncludeSubdirs.isChecked()
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
+        config['slewSpeed'] = self.slewSpeedSelected
         return True
 
     def setupSelectorGui(self):
@@ -403,54 +420,20 @@ class Tools(object):
         self.changeStyleDynamic(self.ui.moveNorthWest, 'running', False)
         return True
 
-    def setSlewSpeedMax(self):
+    def setSlewSpeed(self):
         """
 
         :return: success
         """
-        self.app.mount.setting.setSlewSpeedMax()
-        self.changeStyleDynamic(self.ui.slewSpeedMax, 'running', True)
-        self.changeStyleDynamic(self.ui.slewSpeedHigh, 'running', False)
-        self.changeStyleDynamic(self.ui.slewSpeedMed, 'running', False)
-        self.changeStyleDynamic(self.ui.slewSpeedLow, 'running', False)
 
-        return True
-
-    def setSlewSpeedHigh(self):
-        """
-
-        :return: success
-        """
-        self.app.mount.setting.setSlewSpeedHigh()
-        self.changeStyleDynamic(self.ui.slewSpeedMax, 'running', False)
-        self.changeStyleDynamic(self.ui.slewSpeedHigh, 'running', True)
-        self.changeStyleDynamic(self.ui.slewSpeedMed, 'running', False)
-        self.changeStyleDynamic(self.ui.slewSpeedLow, 'running', False)
-
-        return True
-
-    def setSlewSpeedMed(self):
-        """
-
-        :return: success
-        """
-        self.app.mount.setting.setSlewSpeedMed()
-        self.changeStyleDynamic(self.ui.slewSpeedMax, 'running', False)
-        self.changeStyleDynamic(self.ui.slewSpeedHigh, 'running', False)
-        self.changeStyleDynamic(self.ui.slewSpeedMed, 'running', True)
-        self.changeStyleDynamic(self.ui.slewSpeedLow, 'running', False)
-
-        return True
-
-    def setSlewSpeedLow(self):
-        """
-
-        :return: success
-        """
-        self.app.mount.setting.setSlewSpeedLow()
-        self.changeStyleDynamic(self.ui.slewSpeedMax, 'running', False)
-        self.changeStyleDynamic(self.ui.slewSpeedHigh, 'running', False)
-        self.changeStyleDynamic(self.ui.slewSpeedMed, 'running', False)
-        self.changeStyleDynamic(self.ui.slewSpeedLow, 'running', True)
+        for key, ui, func in zip(self.slewSpeeds.keys(),
+                                 self.slewSpeeds.values(),
+                                 self.slewSpeedFuncs.values()):
+            if ui != self.sender():
+                self.changeStyleDynamic(ui, 'running', False)
+                continue
+            self.changeStyleDynamic(ui, 'running', True)
+            self.slewSpeedSelected = key
+            func()
 
         return True

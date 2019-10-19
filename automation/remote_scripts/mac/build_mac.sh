@@ -5,7 +5,8 @@ cd MountWizzard
 pip install mc.tar.gz
 pip install ib.tar.gz
 tar -xvzf mw4.tar.gz --strip-components=1
-pip install pyinstaller==3.5
+# pip install pyinstaller==3.5
+# pip install https://github.com/pyinstaller/pyinstaller/archive/develop.zip
 pyinstaller -y mw4_mac.spec
 deactivate
 #chmod 777 set_image.py

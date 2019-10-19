@@ -33,6 +33,7 @@ def mountcontrol(c):
     with c.cd('../../mountcontrol'):
         runMW(c, 'rm -f dist/*.tar.gz')
         runMW(c, 'python setup.py sdist')
+        runMW(c, 'cp dist/mountcontrol*.tar.gz ../MountWizzard4/dist/mc.tar.gz')
 
 
 @task(pre=[])
@@ -41,11 +42,13 @@ def indibase(c):
     with c.cd('../../indibase'):
         runMW(c, 'rm -f dist/*.tar.gz')
         runMW(c, 'python setup.py sdist')
+        runMW(c, 'cp dist/indibase*.tar.gz ../MountWizzard4/dist/ib.tar.gz')
 
 
-@task(pre=[resource, widgets])
+@task(pre=[resource, widgets, mountcontrol, indibase])
 def mountwizzard(c):
     printMW('building dist mountwizzard4')
     with c.cd('..'):
-        runMW(c, 'rm -f dist/*.tar.gz')
+        runMW(c, 'rm -f dist/mw*.tar.gz')
         runMW(c, 'python setup.py sdist')
+        runMW(c, 'cp dist/mw4*.tar.gz ../MountWizzard4/dist/mw4.tar.gz')

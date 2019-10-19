@@ -33,12 +33,10 @@ def windows(c):
         runMW(c, 'rm -rf ./dist/MountWizzard4.exe')
     runMW(c, f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
     runMW(c, f'ssh {userWindows} "mkdir MountWizzard"')
-    with c.cd('../../mountcontrol'):
-        runMW(c, f'scp dist/*.tar.gz {buildWindows}/mc.tar.gz')
-    with c.cd('../../indibase'):
-        runMW(c, f'scp dist/*.tar.gz {buildWindows}/ib.tar.gz')
     with c.cd('..'):
-        runMW(c, f'scp dist/*.tar.gz {buildWindows}/mw4.tar.gz')
+        runMW(c, f'scp dist/ib.tar.gz {buildWindows}/ib.tar.gz')
+        runMW(c, f'scp dist/mc.tar.gz {buildWindows}/mc.tar.gz')
+        runMW(c, f'scp dist/mw4.tar.gz {buildWindows}/mw4.tar.gz')
     with c.cd('remote_scripts/windows'):
         runMW(c, f'scp mw4_windows.spec {buildWindows}')
     with c.cd('images'):
@@ -56,12 +54,10 @@ def windows_dbg(c):
         runMW(c, 'rm -rf ./dist/MountWizzard4-dbg.exe')
     runMW(c, f'ssh {userWindows} "if exist MountWizzard (rmdir /s/q MountWizzard)"')
     runMW(c, f'ssh {userWindows} "mkdir MountWizzard"')
-    with c.cd('../../mountcontrol'):
-        runMW(c, f'scp dist/*.tar.gz {buildWindows}/mc.tar.gz')
-    with c.cd('../../indibase'):
-        runMW(c, f'scp dist/*.tar.gz {buildWindows}/ib.tar.gz')
     with c.cd('..'):
-        runMW(c, f'scp dist/*.tar.gz {buildWindows}/mw4.tar.gz')
+        runMW(c, f'scp dist/ib.tar.gz {buildWindows}/ib.tar.gz')
+        runMW(c, f'scp dist/mc.tar.gz {buildWindows}/mc.tar.gz')
+        runMW(c, f'scp dist/mw4.tar.gz {buildWindows}/mw4.tar.gz')
     with c.cd('remote_scripts/windows'):
         runMW(c, f'scp mw4_windows_dbg.spec {buildWindows}')
     with c.cd('images'):
@@ -116,12 +112,10 @@ def macMojave(c):
         runMW(c, 'rm -rf ./dist/*.app')
     runMW(c, f'ssh {userMojave} rm -rf MountWizzard')
     runMW(c, f'ssh {userMojave} mkdir MountWizzard')
-    with c.cd('../../mountcontrol'):
-        runMW(c, f'scp dist/*.tar.gz {buildMojave}/mc.tar.gz')
-    with c.cd('../../indibase'):
-        runMW(c, f'scp dist/*.tar.gz {buildMojave}/ib.tar.gz')
     with c.cd('..'):
-        runMW(c, f'scp dist/*.tar.gz {buildMojave}/mw4.tar.gz')
+        runMW(c, f'scp dist/ib.tar.gz {buildMojave}/ib.tar.gz')
+        runMW(c, f'scp dist/mc.tar.gz {buildMojave}/mc.tar.gz')
+        runMW(c, f'scp dist/mw4.tar.gz {buildMojave}/mw4.tar.gz')
     with c.cd('images'):
         runMW(c, f'scp mw4.icns {buildMojave}')
     with c.cd('remote_scripts/mac'):
@@ -140,12 +134,10 @@ def macCatalina(c):
         runMW(c, 'rm -rf ./dist/*.app')
     runMW(c, f'ssh {userCatalina} rm -rf MountWizzard')
     runMW(c, f'ssh {userCatalina} mkdir MountWizzard')
-    with c.cd('../../mountcontrol'):
-        runMW(c, f'scp dist/*.tar.gz {buildCatalina}/mc.tar.gz')
-    with c.cd('../../indibase'):
-        runMW(c, f'scp dist/*.tar.gz {buildCatalina}/ib.tar.gz')
     with c.cd('..'):
-        runMW(c, f'scp dist/*.tar.gz {buildCatalina}/mw4.tar.gz')
+        runMW(c, f'scp dist/ib.tar.gz {buildCatalina}/ib.tar.gz')
+        runMW(c, f'scp dist/mc.tar.gz {buildCatalina}/mc.tar.gz')
+        runMW(c, f'scp dist/mw4.tar.gz {buildCatalina}/mw4.tar.gz')
     with c.cd('images'):
         runMW(c, f'scp mw4.icns {buildCatalina}')
     with c.cd('remote_scripts/mac'):

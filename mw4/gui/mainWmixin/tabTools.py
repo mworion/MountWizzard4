@@ -35,9 +35,6 @@ class Tools(object):
     """
 
     def __init__(self):
-        self.ui.renameStart.clicked.connect(self.renameRunGUI)
-        self.ui.renameInputSelect.clicked.connect(self.chooseDir)
-
         self.selectorsDropDowns = {'rename1': self.ui.rename1,
                                    'rename2': self.ui.rename2,
                                    'rename3': self.ui.rename3,
@@ -55,6 +52,19 @@ class Tools(object):
                                    }
 
         self.setupSelectorGui()
+
+        # matching gui signals
+        self.ui.renameStart.clicked.connect(self.renameRunGUI)
+        self.ui.renameInputSelect.clicked.connect(self.chooseDir)
+        self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
+        self.ui.moveNorth.clicked.connect(self.moveNorth)
+        self.ui.moveEast.clicked.connect(self.moveEast)
+        self.ui.moveSouth.clicked.connect(self.moveSouth)
+        self.ui.moveWest.clicked.connect(self.moveWest)
+        self.ui.moveNorthWest.clicked.connect(self.moveNorthWest)
+        self.ui.moveNorthEast.clicked.connect(self.moveNorthEast)
+        self.ui.moveSouthEast.clicked.connect(self.moveSouthEast)
+        self.ui.moveSouthWest.clicked.connect(self.moveSouthWest)
 
     def initConfig(self):
         """
@@ -276,4 +286,52 @@ class Tools(object):
         if pathDir:
             self.ui.renameDir.setText(pathDir)
             self.ui.renameProgress.setValue(0)
+        return True
+
+    def moveNorth(self):
+
+        self.app.mount.obsSite.moveNorth()
+        return True
+
+    def moveEast(self):
+
+        self.app.mount.obsSite.moveEast()
+        return True
+
+    def moveSouth(self):
+
+        self.app.mount.obsSite.moveSouth()
+        return True
+
+    def moveWest(self):
+
+        self.app.mount.obsSite.moveWest()
+        return True
+
+    def moveNorthWest(self):
+
+        self.app.mount.obsSite.moveWest()
+        self.app.mount.obsSite.moveNorth()
+        return True
+
+    def moveNorthEast(self):
+
+        self.app.mount.obsSite.moveEast()
+        self.app.mount.obsSite.moveNorth()
+        return True
+
+    def moveSouthEast(self):
+
+        self.app.mount.obsSite.moveEast()
+        self.app.mount.obsSite.moveSouth()
+        return True
+
+    def moveSouthWest(self):
+
+        self.app.mount.obsSite.moveWest()
+        self.app.mount.obsSite.moveSouth()
+        return True
+
+    def stopMoveAll(self):
+        self.app.mount.obsSite.stopMoveAll()
         return True

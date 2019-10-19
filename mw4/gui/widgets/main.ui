@@ -3563,7 +3563,7 @@ Please refer to the mount manual for details</string>
          </font>
         </property>
         <property name="text">
-         <string>Slew Rate</string>
+         <string>Max Slew Rate</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_81">
@@ -12751,7 +12751,7 @@ When clicking the button, you could change the value.</string>
          <x>415</x>
          <y>225</y>
          <width>366</width>
-         <height>126</height>
+         <height>166</height>
         </rect>
        </property>
        <property name="title">
@@ -13001,6 +13001,114 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>SE</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="slewSpeedMax">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>130</y>
+          <width>66</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Slew max</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="slewSpeedLow">
+        <property name="geometry">
+         <rect>
+          <x>285</x>
+          <y>130</y>
+          <width>66</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Slew low</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="slewSpeedMed">
+        <property name="geometry">
+         <rect>
+          <x>195</x>
+          <y>130</y>
+          <width>66</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Slew med</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="slewSpeedHigh">
+        <property name="geometry">
+         <rect>
+          <x>105</x>
+          <y>130</y>
+          <width>66</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Slew high</string>
         </property>
        </widget>
       </widget>

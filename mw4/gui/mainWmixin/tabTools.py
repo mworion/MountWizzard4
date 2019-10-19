@@ -65,6 +65,10 @@ class Tools(object):
         self.ui.moveNorthEast.clicked.connect(self.moveNorthEast)
         self.ui.moveSouthEast.clicked.connect(self.moveSouthEast)
         self.ui.moveSouthWest.clicked.connect(self.moveSouthWest)
+        self.ui.slewSpeedMax.clicked.connect(self.setSlewSpeedMax)
+        self.ui.slewSpeedHigh.clicked.connect(self.setSlewSpeedHigh)
+        self.ui.slewSpeedMed.clicked.connect(self.setSlewSpeedMed)
+        self.ui.slewSpeedLow.clicked.connect(self.setSlewSpeedLow)
 
     def initConfig(self):
         """
@@ -289,49 +293,131 @@ class Tools(object):
         return True
 
     def moveNorth(self):
+        """
+        moveNorth slews the mount at speed.
+
+        :return: success
+        """
 
         self.app.mount.obsSite.moveNorth()
         return True
 
     def moveEast(self):
+        """
+        moveEast slews the mount at speed.
+
+        :return: success
+        """
 
         self.app.mount.obsSite.moveEast()
         return True
 
     def moveSouth(self):
+        """
+        moveSouth slews the mount at speed.
+
+        :return: success
+        """
 
         self.app.mount.obsSite.moveSouth()
         return True
 
     def moveWest(self):
+        """
+        moveWest slews the mount at speed.
+
+        :return: success
+        """
 
         self.app.mount.obsSite.moveWest()
         return True
 
     def moveNorthWest(self):
+        """
+        moveNorthWest slews the mount at speed.
+
+        :return: success
+        """
 
         self.app.mount.obsSite.moveWest()
         self.app.mount.obsSite.moveNorth()
         return True
 
     def moveNorthEast(self):
+        """
+        moveNorthEast slews the mount at speed.
+
+        :return: success
+        """
 
         self.app.mount.obsSite.moveEast()
         self.app.mount.obsSite.moveNorth()
         return True
 
     def moveSouthEast(self):
+        """
+        moveSouthEast slews the mount at speed.
+
+        :return: success
+        """
 
         self.app.mount.obsSite.moveEast()
         self.app.mount.obsSite.moveSouth()
         return True
 
     def moveSouthWest(self):
+        """
+        moveSouthWest slews the mount at speed.
+
+        :return: success
+        """
 
         self.app.mount.obsSite.moveWest()
         self.app.mount.obsSite.moveSouth()
         return True
 
     def stopMoveAll(self):
+        """
+        stopMoveAll stop the mount slew.
+
+        :return: success
+        """
+
         self.app.mount.obsSite.stopMoveAll()
+        return True
+
+    def setSlewSpeedMax(self):
+        """
+
+        :return: success
+        """
+        self.app.mount.setting.setSlewSpeedMax()
+
+        return True
+
+    def setSlewSpeedHigh(self):
+        """
+
+        :return: success
+        """
+        self.app.mount.setting.setSlewSpeedHigh()
+
+        return True
+
+    def setSlewSpeedMed(self):
+        """
+
+        :return: success
+        """
+        self.app.mount.setting.setSlewSpeedMed()
+
+        return True
+
+    def setSlewSpeedLow(self):
+        """
+
+        :return: success
+        """
+        self.app.mount.setting.setSlewSpeedLow()
+
         return True

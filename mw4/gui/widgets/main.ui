@@ -3563,7 +3563,7 @@ Please refer to the mount manual for details</string>
          </font>
         </property>
         <property name="text">
-         <string>Max Slew Rate</string>
+         <string>Slew Rate</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_81">
@@ -12748,10 +12748,10 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="groupBox_53">
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>405</x>
          <y>225</y>
          <width>366</width>
-         <height>166</height>
+         <height>146</height>
         </rect>
        </property>
        <property name="title">
@@ -12763,8 +12763,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="moveNorth">
         <property name="geometry">
          <rect>
-          <x>150</x>
-          <y>20</y>
+          <x>90</x>
+          <y>30</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -12790,8 +12790,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="moveSouth">
         <property name="geometry">
          <rect>
-          <x>150</x>
-          <y>90</y>
+          <x>90</x>
+          <y>100</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -12817,8 +12817,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="moveEast">
         <property name="geometry">
          <rect>
-          <x>230</x>
-          <y>55</y>
+          <x>170</x>
+          <y>65</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -12844,8 +12844,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="moveWest">
         <property name="geometry">
          <rect>
-          <x>70</x>
-          <y>55</y>
+          <x>10</x>
+          <y>65</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -12871,8 +12871,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="stopMoveAll">
         <property name="geometry">
          <rect>
-          <x>150</x>
-          <y>55</y>
+          <x>90</x>
+          <y>65</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -12898,8 +12898,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="moveNorthWest">
         <property name="geometry">
          <rect>
-          <x>70</x>
-          <y>20</y>
+          <x>10</x>
+          <y>30</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -12925,8 +12925,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="moveSouthWest">
         <property name="geometry">
          <rect>
-          <x>70</x>
-          <y>90</y>
+          <x>10</x>
+          <y>100</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -12952,8 +12952,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="moveNorthEast">
         <property name="geometry">
          <rect>
-          <x>230</x>
-          <y>20</y>
+          <x>170</x>
+          <y>30</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -12979,8 +12979,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="moveSouthEast">
         <property name="geometry">
          <rect>
-          <x>230</x>
-          <y>90</y>
+          <x>170</x>
+          <y>100</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -13003,38 +13003,11 @@ When clicking the button, you could change the value.</string>
          <string>SE</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="slewSpeedMax">
-        <property name="geometry">
-         <rect>
-          <x>15</x>
-          <y>130</y>
-          <width>66</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Slew max</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="slewSpeedLow">
         <property name="geometry">
          <rect>
-          <x>285</x>
-          <y>130</y>
+          <x>290</x>
+          <y>110</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -13060,8 +13033,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="slewSpeedMed">
         <property name="geometry">
          <rect>
-          <x>195</x>
-          <y>130</y>
+          <x>290</x>
+          <y>80</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -13087,8 +13060,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="slewSpeedHigh">
         <property name="geometry">
          <rect>
-          <x>105</x>
-          <y>130</y>
+          <x>290</x>
+          <y>50</y>
           <width>66</width>
           <height>25</height>
          </rect>
@@ -13109,6 +13082,33 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>Slew high</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="slewSpeedMax">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>20</y>
+          <width>66</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Slew max</string>
         </property>
        </widget>
       </widget>

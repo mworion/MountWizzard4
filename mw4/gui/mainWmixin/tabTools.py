@@ -87,6 +87,7 @@ class Tools(object):
             ui.setCurrentIndex(config.get(name, 0))
 
         self.ui.renameProgress.setValue(0)
+        self.setSlewSpeedMed()
         return True
 
     def storeConfig(self):
@@ -300,6 +301,7 @@ class Tools(object):
         """
 
         self.app.mount.obsSite.moveNorth()
+        self.changeStyleDynamic(self.ui.moveNorth, 'running', True)
         return True
 
     def moveEast(self):
@@ -310,6 +312,7 @@ class Tools(object):
         """
 
         self.app.mount.obsSite.moveEast()
+        self.changeStyleDynamic(self.ui.moveEast, 'running', True)
         return True
 
     def moveSouth(self):
@@ -320,6 +323,7 @@ class Tools(object):
         """
 
         self.app.mount.obsSite.moveSouth()
+        self.changeStyleDynamic(self.ui.moveSouth, 'running', True)
         return True
 
     def moveWest(self):
@@ -330,6 +334,7 @@ class Tools(object):
         """
 
         self.app.mount.obsSite.moveWest()
+        self.changeStyleDynamic(self.ui.moveWest, 'running', True)
         return True
 
     def moveNorthWest(self):
@@ -341,6 +346,7 @@ class Tools(object):
 
         self.app.mount.obsSite.moveWest()
         self.app.mount.obsSite.moveNorth()
+        self.changeStyleDynamic(self.ui.moveNorthWest, 'running', True)
         return True
 
     def moveNorthEast(self):
@@ -352,6 +358,7 @@ class Tools(object):
 
         self.app.mount.obsSite.moveEast()
         self.app.mount.obsSite.moveNorth()
+        self.changeStyleDynamic(self.ui.moveNorthEast, 'running', True)
         return True
 
     def moveSouthEast(self):
@@ -363,6 +370,7 @@ class Tools(object):
 
         self.app.mount.obsSite.moveEast()
         self.app.mount.obsSite.moveSouth()
+        self.changeStyleDynamic(self.ui.moveSouthEast, 'running', True)
         return True
 
     def moveSouthWest(self):
@@ -374,6 +382,7 @@ class Tools(object):
 
         self.app.mount.obsSite.moveWest()
         self.app.mount.obsSite.moveSouth()
+        self.changeStyleDynamic(self.ui.moveSouthWest, 'running', True)
         return True
 
     def stopMoveAll(self):
@@ -384,6 +393,14 @@ class Tools(object):
         """
 
         self.app.mount.obsSite.stopMoveAll()
+        self.changeStyleDynamic(self.ui.moveNorth, 'running', False)
+        self.changeStyleDynamic(self.ui.moveNorthEast, 'running', False)
+        self.changeStyleDynamic(self.ui.moveEast, 'running', False)
+        self.changeStyleDynamic(self.ui.moveSouthEast, 'running', False)
+        self.changeStyleDynamic(self.ui.moveSouth, 'running', False)
+        self.changeStyleDynamic(self.ui.moveSouthWest, 'running', False)
+        self.changeStyleDynamic(self.ui.moveWest, 'running', False)
+        self.changeStyleDynamic(self.ui.moveNorthWest, 'running', False)
         return True
 
     def setSlewSpeedMax(self):
@@ -392,6 +409,10 @@ class Tools(object):
         :return: success
         """
         self.app.mount.setting.setSlewSpeedMax()
+        self.changeStyleDynamic(self.ui.slewSpeedMax, 'running', True)
+        self.changeStyleDynamic(self.ui.slewSpeedHigh, 'running', False)
+        self.changeStyleDynamic(self.ui.slewSpeedMed, 'running', False)
+        self.changeStyleDynamic(self.ui.slewSpeedLow, 'running', False)
 
         return True
 
@@ -401,6 +422,10 @@ class Tools(object):
         :return: success
         """
         self.app.mount.setting.setSlewSpeedHigh()
+        self.changeStyleDynamic(self.ui.slewSpeedMax, 'running', False)
+        self.changeStyleDynamic(self.ui.slewSpeedHigh, 'running', True)
+        self.changeStyleDynamic(self.ui.slewSpeedMed, 'running', False)
+        self.changeStyleDynamic(self.ui.slewSpeedLow, 'running', False)
 
         return True
 
@@ -410,6 +435,10 @@ class Tools(object):
         :return: success
         """
         self.app.mount.setting.setSlewSpeedMed()
+        self.changeStyleDynamic(self.ui.slewSpeedMax, 'running', False)
+        self.changeStyleDynamic(self.ui.slewSpeedHigh, 'running', False)
+        self.changeStyleDynamic(self.ui.slewSpeedMed, 'running', True)
+        self.changeStyleDynamic(self.ui.slewSpeedLow, 'running', False)
 
         return True
 
@@ -419,5 +448,9 @@ class Tools(object):
         :return: success
         """
         self.app.mount.setting.setSlewSpeedLow()
+        self.changeStyleDynamic(self.ui.slewSpeedMax, 'running', False)
+        self.changeStyleDynamic(self.ui.slewSpeedHigh, 'running', False)
+        self.changeStyleDynamic(self.ui.slewSpeedMed, 'running', False)
+        self.changeStyleDynamic(self.ui.slewSpeedLow, 'running', True)
 
         return True

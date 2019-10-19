@@ -602,13 +602,15 @@ class Mount(object):
                          'Value cannot be set when mount not connected !')
             return False
 
+        minRate = sett.slewRateMin
+        maxRate = sett.slewRateMax
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Slew Rate',
-                               'Value (1-20):',
+                               f'Value ({minRate}-{maxRate}):',
                                actValue,
-                               1,
-                               20,
+                               minRate,
+                               maxRate,
                                1,
                                )
 

@@ -1267,7 +1267,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>9</number>
+      <number>10</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideRight</enum>
@@ -13156,7 +13156,7 @@ When clicking the button, you could change the value.</string>
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideLeft</enum>
@@ -14514,7 +14514,7 @@ When clicking the button, you could change the value.</string>
           </property>
          </widget>
         </widget>
-        <widget class="QCheckBox" name="indiMessage">
+        <widget class="QCheckBox" name="checkMessageINDI">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -21633,7 +21633,7 @@ When clicking the button, you could change the value.</string>
   <tabstop>coverPort</tabstop>
   <tabstop>telescopeHost</tabstop>
   <tabstop>telescopePort</tabstop>
-  <tabstop>indiMessage</tabstop>
+  <tabstop>checkMessageINDI</tabstop>
   <tabstop>shareIndiServer</tabstop>
   <tabstop>refreshModel</tabstop>
   <tabstop>runTargetRMS</tabstop>

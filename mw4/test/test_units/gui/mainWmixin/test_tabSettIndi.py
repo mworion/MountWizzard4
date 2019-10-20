@@ -75,31 +75,31 @@ def test_removePrefix_3():
 
 
 def test_indiMessage_1(qtbot):
-    app.mainW.ui.indiMessage.setChecked(False)
+    app.mainW.ui.message.setChecked(False)
     device = 'test'
     text = '[WARNING]'
 
     with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.indiMessage(device, text)
+        suc = app.mainW.message(device, text)
         assert not suc
 
 
 def test_indiMessage_2(qtbot):
-    app.mainW.ui.indiMessage.setChecked(True)
+    app.mainW.ui.message.setChecked(True)
     device = 'test'
     text = '[WARNING] this is a test'
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.indiMessage(device, text)
+        suc = app.mainW.message(device, text)
         assert suc
     assert ['test -> this is a test', 0] == blocker.args
 
 
 def test_indiMessage_3(qtbot):
-    app.mainW.ui.indiMessage.setChecked(True)
+    app.mainW.ui.message.setChecked(True)
     device = 'test'
     text = '[ERROR] this is a test'
     with qtbot.waitSignal(app.message) as blocker:
-        suc = app.mainW.indiMessage(device, text)
+        suc = app.mainW.message(device, text)
         assert suc
     assert ['test -> this is a test', 2] == blocker.args
 

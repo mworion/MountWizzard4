@@ -46,12 +46,14 @@ class PegasusUPB(indiClass.IndiClass):
     UPDATE_RATE = 1000
 
     def __init__(self,
+                 app=None,
                  host=None,
                  name='',
                  ):
         super().__init__(host=host,
                          name=name
                          )
+        self.app = app
 
     def setUpdateConfig(self, deviceName):
         """

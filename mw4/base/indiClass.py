@@ -81,6 +81,7 @@ class IndiClass(object):
         self.client.signals.deviceConnected.connect(self.setUpdateConfig)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)
+        self.client.signals.newMessage.connect(self.updateMessage)
 
     @property
     def name(self):
@@ -119,6 +120,10 @@ class IndiClass(object):
 
         if deviceName == self.name:
             self.device = self.client.getDevice(deviceName)
+            self.app.message.emit(f'INDI device [{deviceName}] found', 0)
+        else:
+            self.app.message.emit(f'INDI device snoops: [{deviceName}]', 0)
+
         return True
 
     def removeDevice(self, deviceName):
@@ -131,6 +136,7 @@ class IndiClass(object):
         """
 
         if deviceName == self.name:
+            self.app.message.emit(f'INDI removed device: [{deviceName}]', 0)
             self.device = None
             self.data = {}
             return True
@@ -267,3 +273,24 @@ class IndiClass(object):
         :return:
         """
         pass
+
+    def updateMessage(self, device, text):
+        """
+        message take a message send by indi device and puts them in the user message
+        window as well.
+
+        :param device: device name
+        :param text: message received
+        :return: success
+        """
+        if self.app.mainW.ui.checkMessageINDI.isChecked():
+            if text.startswith('[WARNING]'):
+                text = self.removePrefix(text, '[WARNING]')
+                self.app.message.emit(device + ' -> ' + text, 0)
+            elif text.startswith('[ERROR]'):
+                text = self.removePrefix(text, '[ERROR]')
+                self.app.message.emit(device + ' -> ' + text, 2)
+            else:
+                self.app.message.emit(device + ' -> ' + text, 0)
+            return True
+        return False

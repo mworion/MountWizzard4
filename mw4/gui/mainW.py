@@ -428,7 +428,7 @@ class MainWindow(MWidget,
         else:
             text = 'Offline Mode'
         text = f'{self.threadPool.activeThreadCount():2d} - {text}'
-        self.ui.statusOnline.setText(text)
+        self.ui.statusOnline.setTitle(text)
 
     def updateAstrometryStatus(self, text):
         """

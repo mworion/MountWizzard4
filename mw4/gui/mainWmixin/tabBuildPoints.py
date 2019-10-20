@@ -44,6 +44,9 @@ class BuildPoints(object):
         self.lastGenerator = 'none'
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
+        self.ui.genBuildAlign3.clicked.connect(self.genBuildAlign3)
+        self.ui.genBuildAlign6.clicked.connect(self.genBuildAlign6)
+        self.ui.genBuildAlign9.clicked.connect(self.genBuildAlign9)
         self.ui.numberGridPointsCol.valueChanged.connect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.connect(self.genBuildGrid)
         self.ui.altitudeMin.valueChanged.connect(self.genBuildGrid)
@@ -144,6 +147,63 @@ class BuildPoints(object):
                                     maxAlt=maxAlt,
                                     numbRows=row,
                                     numbCols=col)
+        if not suc:
+            return False
+
+        self.autoDeletePoints()
+        self.autoSortPoints()
+
+        return True
+
+    def genBuildAlign3(self):
+        """
+        genBuildAlign3 generates a grid of 3 point for model build based on gui data.
+
+        :return: success
+        """
+
+        self.lastGenerator = 'align3'
+        suc = self.app.data.genAlign(altBase=55,
+                                     azBase=10,
+                                     numberBase=3)
+        if not suc:
+            return False
+
+        self.autoDeletePoints()
+        self.autoSortPoints()
+
+        return True
+
+    def genBuildAlign6(self):
+        """
+        genBuildAlign6 generates a grid of 6 point for model build based on gui data.
+
+        :return: success
+        """
+
+        self.lastGenerator = 'align6'
+        suc = self.app.data.genAlign(altBase=55,
+                                     azBase=10,
+                                     numberBase=6)
+        if not suc:
+            return False
+
+        self.autoDeletePoints()
+        self.autoSortPoints()
+
+        return True
+
+    def genBuildAlign9(self):
+        """
+        genBuildAlign9 generates a grid of 9 point for model build based on gui data.
+
+        :return: success
+        """
+
+        self.lastGenerator = 'align9'
+        suc = self.app.data.genAlign(altBase=55,
+                                     azBase=10,
+                                     numberBase=9)
         if not suc:
             return False
 

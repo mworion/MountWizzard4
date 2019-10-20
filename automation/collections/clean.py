@@ -31,7 +31,7 @@ def mountwizzard(c):
     printMW('clean mountwizzard')
     with c.cd('../'):
         runMW(c, 'rm -rf .pytest_cache')
-        runMW(c, 'rm -rf ./mw4.egg-info')
+        runMW(c, 'rm -rf ./mountwizzard4*.egg-info')
         runMW(c, 'find ./mw4 | grep -E "(__pycache__)" | xargs rm -rf')
 
 

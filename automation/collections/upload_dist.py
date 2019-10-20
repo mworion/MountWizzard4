@@ -30,19 +30,19 @@ from automation.collections.support import *
 @task(pre=[])
 def mountcontrol(c):
     printMW('uploading dist mountcontrol')
-    with c.cd('../dist'):
-        runMW(c, 'twine upload mountcontrol.tar.gz -r pypi')
+    with c.cd('../../mountcontrol/dist'):
+        runMW(c, 'twine upload mountcontrol-*.tar.gz -r pypi')
 
 
 @task(pre=[])
 def indibase(c):
     printMW('uploading dist indibase')
-    with c.cd('../dist'):
-        runMW(c, 'twine upload indibase.tar.gz -r pypi')
+    with c.cd('../../indibase/dist'):
+        runMW(c, 'twine upload indibase-*.tar.gz -r pypi')
 
 
 @task(pre=[])
 def mountwizzard(c):
     printMW('uploading dist mountwizzard4')
     with c.cd('../dist'):
-        runMW(c, 'twine upload mountwizzard4.tar.gz -r pypi')
+        runMW(c, 'twine upload mountwizzard4-*.tar.gz -r pypi')

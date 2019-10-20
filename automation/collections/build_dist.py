@@ -51,4 +51,4 @@ def mountwizzard(c):
     with c.cd('..'):
         runMW(c, 'rm -f dist/mountwizzard4*.tar.gz')
         runMW(c, 'python setup.py sdist')
-        runMW(c, 'mv dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')
+        runMW(c, 'cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')

@@ -60,7 +60,7 @@ setup(
     zip_safe=True,
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'Programming language :: Python :: 3',
+        'Programming Language :: Python :: 3',
         'Operating System :: OS Independent',
         'Topic :: Utilities',
         'License :: OSI Approved :: Apache Software License',

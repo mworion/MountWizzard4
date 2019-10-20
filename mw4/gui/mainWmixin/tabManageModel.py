@@ -42,7 +42,7 @@ class ManageModel(object):
         ms.alignDone.connect(self.showModelPolar)
         ms.namesDone.connect(self.setNameList)
 
-        self.ui.checkShowErrorValues.stateChanged.connect(self.showModelPolar)
+        self.ui.checkShowErrorValues.stateChanged.connect(self.refreshModel)
         self.ui.refreshName.clicked.connect(self.refreshName)
         self.ui.refreshModel.clicked.connect(self.refreshModel)
         self.ui.clearModel.clicked.connect(self.clearModel)

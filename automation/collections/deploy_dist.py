@@ -34,9 +34,9 @@ def ubuntu(c):
     runMW(c, f'ssh {userUbuntu} mkdir mountwizzard4')
     # copy necessary files
     with c.cd('..'):
-        runMW(c, f'scp dist/ib.tar.gz {workUbuntu}/ib.tar.gz')
-        runMW(c, f'scp dist/mc.tar.gz {workUbuntu}/mc.tar.gz')
-        runMW(c, f'scp dist/mw4.tar.gz {workUbuntu}/mw4.tar.gz')
+        runMW(c, f'scp dist/indibase.tar.gz {workUbuntu}/indibase.tar.gz')
+        runMW(c, f'scp dist/mountcontrol.tar.gz {workUbuntu}/mountcontrol.tar.gz')
+        runMW(c, f'scp dist/mountwizzard4.tar.gz {workUbuntu}/mountwizzard4.tar.gz')
     with c.cd('remote_scripts/ubuntu'):
         runMW(c, f'scp start_ubuntu.sh {workUbuntu}')
         runMW(c, f'ssh {userUbuntu} < install_dist_ubuntu.sh')
@@ -49,9 +49,9 @@ def mate(c):
     runMW(c, f'ssh {userMate} mkdir test')
     # copy necessary files
     with c.cd('..'):
-        runMW(c, f'scp dist/ib.tar.gz {workWork}/ib.tar.gz')
-        runMW(c, f'scp dist/mc.tar.gz {workWork}/mc.tar.gz')
-        runMW(c, f'scp dist/mw4.tar.gz {workWork}/mw4.tar.gz')
+        runMW(c, f'scp dist/ib.tar.gz {workWork}/indibase.tar.gz')
+        runMW(c, f'scp dist/mountcontrol.tar.gz {workWork}/mountcontrol.tar.gz')
+        runMW(c, f'scp dist/mountwizzard4.tar.gz {workWork}/mountwizzard4.tar.gz')
     with c.cd('images'):
         runMW(c, f'scp mw4.png {workWork}')
     with c.cd('remote_scripts/ubuntu'):
@@ -64,7 +64,7 @@ def work(c):
     printMW('deploy work dist')
     # copy necessary files
     with c.cd('..'):
-        runMW(c, f'scp dist/*.tar.gz {workWork}/mw4.tar.gz')
+        runMW(c, f'scp dist/*.tar.gz {workWork}/mountwizzard4.tar.gz')
 
     # run the
     with c.cd('images'):
@@ -83,9 +83,9 @@ def windows(c):
     runMW(c, f'ssh {userWindows} "if exist mountwizzard4 (rmdir /s/q mountwizzard4)"')
     runMW(c, f'ssh {userWindows} "mkdir mountwizzard4"')
     with c.cd('..'):
-        runMW(c, f'scp dist/ib.tar.gz {userWindows}/ib.tar.gz')
-        runMW(c, f'scp dist/mc.tar.gz {userWindows}/mc.tar.gz')
-        runMW(c, f'scp dist/mw4.tar.gz {userWindows}/mw4.tar.gz')
+        runMW(c, f'scp dist/indibase.tar.gz {userWindows}/indibase.tar.gz')
+        runMW(c, f'scp dist/mountcontrol.tar.gz {userWindows}/mountcontrol.tar.gz')
+        runMW(c, f'scp dist/mountwizzard4.tar.gz {userWindows}/mountwizzard4.tar.gz')
     with c.cd('remote_scripts/windows'):
         runMW(c, f'ssh {userWindows} < install_dist_windows.bat')
 
@@ -97,9 +97,9 @@ def macMojave(c):
     runMW(c, f'ssh {userMojave} mkdir mountwizzard4')
     # copy necessary files
     with c.cd('..'):
-        runMW(c, f'scp dist/ib.tar.gz {userMojave}/ib.tar.gz')
-        runMW(c, f'scp dist/mc.tar.gz {userMojave}/mc.tar.gz')
-        runMW(c, f'scp dist/mw4.tar.gz {userMojave}/mw4.tar.gz')
+        runMW(c, f'scp dist/indibase.tar.gz {userMojave}/indibase.tar.gz')
+        runMW(c, f'scp dist/mountcontrol.tar.gz {userMojave}/mountcontrol.tar.gz')
+        runMW(c, f'scp dist/mountwizzard4.tar.gz {userMojave}/mountwizzard4.tar.gz')
 
     # run the installation
     with c.cd('remote_scripts/mac'):
@@ -113,9 +113,9 @@ def macCatalina(c):
     runMW(c, f'ssh {userCatalina} mkdir mountwizzard4')
     # copy necessary files
     with c.cd('..'):
-        runMW(c, f'scp dist/ib.tar.gz {workCatalina}/ib.tar.gz')
-        runMW(c, f'scp dist/mc.tar.gz {workCatalina}/mc.tar.gz')
-        runMW(c, f'scp dist/mw4.tar.gz {workCatalina}/mw4.tar.gz')
+        runMW(c, f'scp dist/indibase.tar.gz {workCatalina}/indibase.tar.gz')
+        runMW(c, f'scp dist/mountcontrol.tar.gz {workCatalina}/mountcontrol.tar.gz')
+        runMW(c, f'scp dist/mountwizzard4.tar.gz {workCatalina}/mountwizzard4.tar.gz')
 
     # run the installation
     with c.cd('remote_scripts/mac'):

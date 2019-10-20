@@ -19,7 +19,7 @@
 from setuptools import setup
 
 setup(
-    name='mw4',
+    name='mountwizzard4',
     version='0.121',
     packages=[
         'mw4',
@@ -60,7 +60,7 @@ setup(
     zip_safe=True,
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'Programming language .. Python .. 3.7',
+        'Programming language :: Python :: 3',
         'Operating System :: OS Independent',
         'Topic :: Utilities',
         'License :: OSI Approved :: Apache Software License',

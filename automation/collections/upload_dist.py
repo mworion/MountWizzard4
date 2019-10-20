@@ -29,26 +29,20 @@ from automation.collections.support import *
 
 @task(pre=[])
 def mountcontrol(c):
-    printMW('building dist mountcontrol')
-    with c.cd('../../mountcontrol'):
-        runMW(c, 'rm -f dist/*.tar.gz')
-        runMW(c, 'python setup.py sdist')
-        runMW(c, 'cp dist/mountcontrol*.tar.gz ../MountWizzard4/dist/mountcontrol.tar.gz')
+    printMW('uploading dist mountcontrol')
+    with c.cd('../dist'):
+        runMW(c, 'twine upload mountcontrol.tar.gz -r pypi')
 
 
 @task(pre=[])
 def indibase(c):
-    printMW('building dist indibase')
-    with c.cd('../../indibase'):
-        runMW(c, 'rm -f dist/*.tar.gz')
-        runMW(c, 'python setup.py sdist')
-        runMW(c, 'cp dist/indibase*.tar.gz ../MountWizzard4/dist/indibase.tar.gz')
+    printMW('uploading dist indibase')
+    with c.cd('../dist'):
+        runMW(c, 'twine upload indibase.tar.gz -r pypi')
 
 
-@task(pre=[resource, widgets, mountcontrol, indibase])
+@task(pre=[])
 def mountwizzard(c):
-    printMW('building dist mountwizzard4')
-    with c.cd('..'):
-        runMW(c, 'rm -f dist/mw*.tar.gz')
-        runMW(c, 'python setup.py sdist')
-        runMW(c, 'cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')
+    printMW('uploading dist mountwizzard4')
+    with c.cd('../dist'):
+        runMW(c, 'twine upload mountwizzard4.tar.gz -r pypi')

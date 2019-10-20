@@ -39,6 +39,7 @@ from automation.collections import deploy_dist
 from automation.collections import build_dmg
 from automation.collections import build_app
 from automation.collections import build_dist
+from automation.collections import upload_dist
 #
 # build collections
 #
@@ -56,6 +57,7 @@ ns.add_collection((Collection.from_module(deploy_dist)))
 ns.add_collection((Collection.from_module(build_dmg)))
 ns.add_collection((Collection.from_module(build_app)))
 ns.add_collection((Collection.from_module(build_dist)))
+ns.add_collection((Collection.from_module(upload_dist)))
 
 
 @task(pre=[])

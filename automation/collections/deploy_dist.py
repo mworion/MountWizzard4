@@ -64,8 +64,9 @@ def work(c):
     printMW('deploy work dist')
     # copy necessary files
     with c.cd('..'):
-        runMW(c, f'scp dist/*.tar.gz {workWork}/mountwizzard4.tar.gz')
-
+        runMW(c, f'scp dist/indibase.tar.gz {workWork}/indibase.tar.gz')
+        runMW(c, f'scp dist/mountcontrol.tar.gz {workWork}/mountcontrol.tar.gz')
+        runMW(c, f'scp dist/mountwizzard4.tar.gz {workWork}/mountwizzard4.tar.gz')
     # run the
     with c.cd('images'):
         runMW(c, f'scp mw4.png {workWork}')

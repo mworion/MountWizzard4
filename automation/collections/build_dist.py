@@ -49,6 +49,6 @@ def indibase(c):
 def mountwizzard(c):
     printMW('building dist mountwizzard4')
     with c.cd('..'):
-        runMW(c, 'rm -f dist/mw*.tar.gz')
+        runMW(c, 'rm -f dist/mountwizzard4*.tar.gz')
         runMW(c, 'python setup.py sdist')
-        runMW(c, 'cp dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')
+        runMW(c, 'mv dist/mountwizzard4*.tar.gz ../MountWizzard4/dist/mountwizzard4.tar.gz')

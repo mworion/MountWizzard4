@@ -199,3 +199,87 @@ def test_renameRunGUI_3(qtbot):
             suc = app.mainW.renameRunGUI()
             assert suc
         assert ['3 images were renamed', 0] == blocker.args
+
+
+def test_moveNorth():
+    with mock.patch.object(app.mount.obsSite,
+                           'moveNorth',
+                           return_value=True):
+        suc = app.mainW.moveNorth()
+        assert suc
+
+
+def test_moveEast():
+    with mock.patch.object(app.mount.obsSite,
+                           'moveEast',
+                           return_value=True):
+        suc = app.mainW.moveEast()
+        assert suc
+
+
+def test_moveSouth():
+    with mock.patch.object(app.mount.obsSite,
+                           'moveSouth',
+                           return_value=True):
+        suc = app.mainW.moveSouth()
+        assert suc
+
+
+def test_moveWest():
+    with mock.patch.object(app.mount.obsSite,
+                           'moveWest',
+                           return_value=True):
+        suc = app.mainW.moveWest()
+        assert suc
+
+
+def test_moveNorthEast():
+    with mock.patch.object(app.mount.obsSite,
+                           'moveNorth',
+                           return_value=True):
+        with mock.patch.object(app.mount.obsSite,
+                               'moveEast',
+                               return_value=True):
+            suc = app.mainW.moveNorthEast()
+            assert suc
+
+
+def test_moveSouthEast():
+    with mock.patch.object(app.mount.obsSite,
+                           'moveEast',
+                           return_value=True):
+        with mock.patch.object(app.mount.obsSite,
+                               'moveEast',
+                               return_value=True):
+            suc = app.mainW.moveSouthEast()
+            assert suc
+
+
+def test_moveSouthWest():
+    with mock.patch.object(app.mount.obsSite,
+                           'moveSouth',
+                           return_value=True):
+        with mock.patch.object(app.mount.obsSite,
+                               'moveWest',
+                               return_value=True):
+            suc = app.mainW.moveSouthWest()
+            assert suc
+
+
+def test_moveNorthWest():
+    with mock.patch.object(app.mount.obsSite,
+                           'moveWest',
+                           return_value=True):
+        with mock.patch.object(app.mount.obsSite,
+                               'moveWest',
+                               return_value=True):
+            suc = app.mainW.moveNorthWest()
+            assert suc
+
+
+def test_stopMoveAll():
+    with mock.patch.object(app.mount.obsSite,
+                           'stopMoveAll',
+                           return_value=True):
+        suc = app.mainW.stopMoveAll()
+        assert suc

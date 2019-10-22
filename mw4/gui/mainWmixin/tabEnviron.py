@@ -152,8 +152,16 @@ class Environ(object):
         """
 
         if self.refractionSource == 0:
-            temp = float(self.ui.weatherTemp.text())
-            press = float(self.ui.weatherPress.text())
+            value = self.ui.weatherTemp.text()
+            if value.strip() == '-':
+                temp = None
+            else:
+                temp = float(value)
+            value = self.ui.weatherPress.text()
+            if value.strip() == '-':
+                press = None
+            else:
+                press = float(value)
         elif self.refractionSource == 1:
             temp = self.app.environ.data.get('WEATHER_TEMPERATURE', None)
             press = self.app.environ.data.get('WEATHER_PRESSURE', None)

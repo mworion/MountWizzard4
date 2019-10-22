@@ -26,6 +26,7 @@ import PyQt5.uic
 import requests
 import numpy as np
 import qimage2ndarray
+from mountcontrol.convert import valueToFloat
 # local import
 from mw4.base.tpool import Worker
 
@@ -152,16 +153,8 @@ class Environ(object):
         """
 
         if self.refractionSource == 0:
-            value = self.ui.weatherTemp.text()
-            if value.strip() == '-':
-                temp = None
-            else:
-                temp = float(value)
-            value = self.ui.weatherPress.text()
-            if value.strip() == '-':
-                press = None
-            else:
-                press = float(value)
+            temp = valueToFloat(self.ui.weatherTemp.text())
+            press = valueToFloat(self.ui.weatherPress.text())
         elif self.refractionSource == 1:
             temp = self.app.environ.data.get('WEATHER_TEMPERATURE', None)
             press = self.app.environ.data.get('WEATHER_PRESSURE', None)

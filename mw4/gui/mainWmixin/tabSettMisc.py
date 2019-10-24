@@ -51,6 +51,9 @@ class SettMisc(object):
         self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.showUpdates)
+        self.ui.versionAlpha.clicked.connect(self.showUpdates)
+        self.ui.versionBeta.clicked.connect(self.showUpdates)
+        self.ui.versionRelease.clicked.connect(self.showUpdates)
 
     def initConfig(self):
         """
@@ -100,8 +103,7 @@ class SettMisc(object):
 
         return True
 
-    @staticmethod
-    def versionPackage(packageName):
+    def versionPackage(self, packageName):
         """
 
         :param packageName:
@@ -110,9 +112,16 @@ class SettMisc(object):
 
         url = f'https://pypi.python.org/pypi/{packageName}/json'
         response = requests.get(url).json()
-        vPackage = list(response["releases"].keys())
+        vPackage = reversed(list(response['releases'].keys()))
 
-        return vPackage[-1]
+        if self.ui.versionBeta.isChecked():
+            vPackage = [x for x in vPackage if 'b' in x]
+        elif self.ui.versionAlpha.isChecked():
+            vPackage = [x for x in vPackage if 'a' in x]
+        else:
+            vPackage = [x for x in vPackage if 'a' not in x and 'b' not in x]
+
+        return vPackage[0]
 
     def showUpdates(self):
         """

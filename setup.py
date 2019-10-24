@@ -51,6 +51,7 @@ setup(
         'skyfield>=1.10',
         'forwardable',
         'qimage2ndarray',
+        'importlib_metadata',
     ],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

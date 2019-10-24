@@ -26,8 +26,6 @@ import pkg_resources
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
-import requests
-from distutils.version import StrictVersion
 # local import
 import mw4
 from mw4.gui import widget
@@ -116,25 +114,12 @@ class MessageWindow(widget.MWidget):
 
         super().closeEvent(closeEvent)
 
-    @staticmethod
-    def versionPackage(packageName):
-        from importlib_metadata import version
-        actPackage = version(packageName)
-
-        url = f'https://pypi.python.org/pypi/{packageName}/json'
-        response = requests.get(url).json()
-
-        vPackage = list(response["releases"].keys())
-        return vPackage[-1], actPackage
-
     def showWindow(self):
         self.show()
 
         # write basic data to message window
         profile = self.app.config.get('profileName', '-')
         self.writeMessage('MountWizzard4 started', 1)
-        avail, act = self.versionPackage('mountwizzard4')
-        self.writeMessage(f'Actual version:{act} installed version:{avail}')
         self.writeMessage(f'Workdir is: [{self.app.mwGlob["workDir"]}]', 1)
         self.writeMessage(f'Profile [{profile}] loaded', 0)
 

@@ -89,7 +89,7 @@ class MainWindow(MWidget,
         self.ui.setupUi(self)
         self.initUI()
         self.setupIcons()
-        self.setWindowTitle(f'MountWizzard4 - v{self.app.version}')
+        self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
         self.deviceStat = {
             'dome': None,

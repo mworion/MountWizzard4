@@ -27,6 +27,7 @@ import gc
 import PyQt5.QtCore
 import skyfield
 from mountcontrol import qtmount
+from importlib_metadata import version
 # local import
 from mw4.gui import mainW
 from mw4.gui import messageW
@@ -59,7 +60,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     __all__ = ['MountWizzard4',
                ]
-    version = '0.125'
+    __version__ = version('mountwizzard4')
     logger = logging.getLogger(__name__)
 
     # central message and logging dispatching

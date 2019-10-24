@@ -21,6 +21,8 @@
 import logging
 # external packages
 import PyQt5.QtMultimedia
+import requests
+from importlib_metadata import version
 # local import
 
 
@@ -37,16 +39,18 @@ class SettMisc(object):
 
         self.setupAudioSignals()
 
+        # setting functional signals
+        self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
+        self.app.mount.signals.alert.connect(self.playAudioMountAlert)
+        self.app.dome.signals.slewFinished.connect(self.playAudioDomeSlewFinished)
+        self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)
+
+        # setting ui signals
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
-
-        self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
-
-        self.app.mount.signals.alert.connect(self.playAudioMountAlert)
-        self.app.dome.signals.slewFinished.connect(self.playAudioDomeSlewFinished)
-        self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)
+        self.ui.isOnline.clicked.connect(self.showUpdates)
 
     def initConfig(self):
         """
@@ -61,16 +65,15 @@ class SettMisc(object):
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
         self.ui.loglevelWarning.setChecked(config.get('loglevelWarning', False))
         self.ui.loglevelError.setChecked(config.get('loglevelError', False))
-
         self.setLoggingLevel()
-
         self.ui.isOnline.setChecked(config.get('isOnline', False))
-
         self.setupAudioGui()
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
         self.ui.soundModelingFinished.setCurrentIndex(config.get('soundModelingFinished', 0))
+
+        self.showUpdates()
 
         return True
 
@@ -94,6 +97,37 @@ class SettMisc(object):
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
         config['soundMountAlert'] = self.ui.soundMountAlert.currentIndex()
         config['soundModelingFinished'] = self.ui.soundModelingFinished.currentIndex()
+
+        return True
+
+    @staticmethod
+    def versionPackage(packageName):
+        """
+
+        :param packageName:
+        :return:
+        """
+
+        url = f'https://pypi.python.org/pypi/{packageName}/json'
+        response = requests.get(url).json()
+        vPackage = list(response["releases"].keys())
+
+        return vPackage[-1]
+
+    def showUpdates(self):
+        """
+
+        :return:
+        """
+
+        packageName = 'mountwizzard4'
+        actPackage = version(packageName)
+        self.ui.versionActual.setText(actPackage)
+        if not self.ui.isOnline.isChecked():
+            self.ui.versionAvailable.setText('not online')
+            return False
+        availPackage = self.versionPackage(packageName)
+        self.ui.versionAvailable.setText(availPackage)
 
         return True
 

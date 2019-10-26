@@ -93,9 +93,7 @@ class SettMisc(object):
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
         config['loglevelWarning'] = self.ui.loglevelWarning.isChecked()
         config['loglevelError'] = self.ui.loglevelError.isChecked()
-
         config['isOnline'] = self.ui.isOnline.isChecked()
-
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
         config['soundMountAlert'] = self.ui.soundMountAlert.currentIndex()

@@ -99,14 +99,14 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # persistence management through dict
         self.config = {}
         self.loadConfig()
-        expireData, topo = self.initConfig()
+        topo = self.initConfig()
 
         # initialize commands to mount
         self.mount = qtmount.Mount(host='192.168.2.15',
                                    MAC='00.c0.08.87.35.db',
                                    threadPool=self.threadPool,
                                    pathToData=pathToData,
-                                   expire=expireData,
+                                   expire=False,
                                    verbose=False,
                                    )
 
@@ -268,11 +268,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
 
-        # check if data for skyfield expires or not and get the status for it
-        if 'mainW' in self.config:
-            expireData = self.config['mainW'].get('expiresYes', True)
-        else:
-            expireData = True
         # set observer position to last one first, to greenwich if not known
         lat = self.config.get('topoLat', 51.47)
         lon = self.config.get('topoLon', 0)
@@ -281,7 +276,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                   latitude_degrees=lat,
                                   elevation_m=elev)
 
-        return expireData, topo
+        return topo
 
     def storeConfig(self):
         """

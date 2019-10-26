@@ -62,13 +62,13 @@ class AstrometryASTAP(object):
         self.result = Solution(success=False, solve=Solve, message='-')
         self.process = None
 
-    def runASTAP(self, binPath='', tempPath='', fitsPath='', options='', timeout=30):
+    def runASTAP(self, binPath='', tempFile='', fitsPath='', options='', timeout=30):
         """
         runASTAP solves finally the xy star list and writes the WCS data in a fits
         file format
 
         :param binPath:   full path to image2xy executable
-        :param tempPath:  full path to star file
+        :param tempFile:  full path to star file
         :param fitsPath: full path to fits file in temp dir
         :param options: additional solver options e.g. ra and dec hint
         :param timeout:
@@ -79,7 +79,7 @@ class AstrometryASTAP(object):
                     '-f',
                     fitsPath,
                     '-o',
-                    tempPath,
+                    tempFile,
                     ]
 
         runnable += options
@@ -158,9 +158,10 @@ class AstrometryASTAP(object):
 
         if not os.path.isfile(fitsPath):
             self.result = Solution(success=False, solve=Solve, message='image missing')
+            self.logger.info('Image missing for solving')
             return False
 
-        tempPath = self.tempDir + '/temp'
+        tempFile = self.tempDir + '/temp'
         wcsPath = self.tempDir + '/temp.wcs'
 
         if os.path.isfile(wcsPath):
@@ -190,7 +191,7 @@ class AstrometryASTAP(object):
 
         suc = self.runASTAP(binPath=binPathASTAP,
                             fitsPath=fitsPath,
-                            tempPath=tempPath,
+                            tempFile=tempFile,
                             options=options,
                             timeout=timeout,
                             )

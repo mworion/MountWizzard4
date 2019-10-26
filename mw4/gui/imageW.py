@@ -823,14 +823,16 @@ class ImageWindow(widget.MWidget):
 
         if result.success:
             solve = result.solve
-            text = f'Ra: {transform.convertToHMS(solve.raJ2000)} '
-            text += f'({solve.raJ2000.hours:4.3f}), '
-            text += f'Dec: {transform.convertToDMS(solve.decJ2000)} '
-            text += f'({solve.decJ2000.degrees:4.3f}), '
-            text += f'Error: {solve.error:5.1f}, Angle: {solve.angle:3.0f}, '
-            text += f'Scale: {solve.scale:4.3f}'
-            self.app.message.emit(f'Solved: [{os.path.basename(solve.path)}]', 0)
-            self.app.message.emit(f'     {text}', 0)
+            text = f'Solved : '
+            text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)} '
+            text += f'({result.solve.raJ2000.hours:4.3f}), '
+            text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)} '
+            text += f'({result.solve.decJ2000.degrees:4.3f}), '
+            self.app.message.emit(text, 0)
+            text = f'         '
+            text += f'Angle: {result.solve.angle:3.0f}, '
+            text += f'Scale: {result.solve.scale:4.3f}'
+            self.app.message.emit(text, 0)
         else:
             message = result.message
             self.app.message.emit(f'Solving error: {message}', 2)

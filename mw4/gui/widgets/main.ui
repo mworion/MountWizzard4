@@ -19687,7 +19687,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>pyqt5, matplotlib, wakeonlan,</string>
+         <string>pyqt5, matplotlib, wakeonlan, numpy</string>
         </property>
        </widget>
        <widget class="QLabel" name="le_firmwareProductName_5">
@@ -19706,7 +19706,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>numpy, requests, astropy, skyfield,</string>
+         <string>requests, astropy, skyfield, forwardable</string>
         </property>
        </widget>
       </widget>

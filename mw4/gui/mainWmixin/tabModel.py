@@ -339,9 +339,9 @@ class Model(object):
             text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)} '
             text += f'({result.solve.decJ2000.degrees:4.3f}), '
             self.app.message.emit(text, 0)
-            text = f'                    error: {error:5.1f}, '
-            text += f'angle: {result.solve.angle:3.0f}, '
-            text += f'scale: {result.solve.scale:4.3f}'
+            text = f'                    Error: {error:5.1f}, '
+            text += f'Angle: {result.solve.angle:3.0f}, '
+            text += f'Scale: {result.solve.scale:4.3f}'
             self.app.message.emit(text, 0)
         else:
             message = result.message

@@ -270,10 +270,6 @@ class Astrometry:
         decJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL2'),
                                             isHours=False)
 
-        if self.app.mainW.ui.enableNoise.isChecked():
-            raJ2000 = Angle(hours=raJ2000.hours + np.random.randn() / 10)
-            decJ2000 = Angle(degrees=decJ2000.degrees + np.random.randn() / 10)
-
         angle, scale, flipped = self.calcAngleScaleFromWCS(wcsHeader=wcsHeader)
 
         raMount = transform.convertToAngle(fitsHeader.get('RA'),

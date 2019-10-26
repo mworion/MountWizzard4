@@ -274,8 +274,8 @@ def main():
     locale.setlocale(locale.LC_ALL, '')
 
     # initiating the main app
-    # app = MyApp(sys.argv)
-    app = PyQt5.QtWidgets.QApplication(sys.argv)
+    app = MyApp(sys.argv)
+    # app = PyQt5.QtWidgets.QApplication(sys.argv)
 
     # generating splash screen
     splashW = splash.SplashScreen(application=app)

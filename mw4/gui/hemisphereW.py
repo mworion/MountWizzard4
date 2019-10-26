@@ -107,8 +107,6 @@ class HemisphereWindow(widget.MWidget):
         self.togglePolar()
         self.showWindow()
 
-        self.ui.showPolar.clicked.connect(self.togglePolar)
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -181,6 +179,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkPolarAlignment.clicked.disconnect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.disconnect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.disconnect(self.configOperationMode)
+        self.ui.showPolar.clicked.disconnect(self.togglePolar)
         self.app.redrawHemisphere.disconnect(self.drawHemisphere)
         self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
         self.app.mount.signals.settingDone.disconnect(self.updateMeridian)
@@ -190,6 +189,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.dome.client.signals.deviceDisconnected.disconnect(self.updateDome)
 
         plt.close(self.hemisphereMat.figure)
+        plt.close(self.hemisphere2Mat.figure)
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -211,6 +211,7 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
+        self.ui.showPolar.clicked.connect(self.togglePolar)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.mount.signals.settingDone.connect(self.updateMeridian)

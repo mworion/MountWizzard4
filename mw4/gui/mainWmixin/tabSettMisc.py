@@ -19,6 +19,10 @@
 ###########################################################
 # standard libraries
 import logging
+import time
+import subprocess
+import os
+import sys
 # external packages
 import PyQt5.QtMultimedia
 import requests
@@ -36,6 +40,7 @@ class SettMisc(object):
 
         self.audioSignalsSet = dict()
         self.guiAudioList = dict()
+        self.process = None
 
         self.setupAudioSignals()
 
@@ -54,6 +59,7 @@ class SettMisc(object):
         self.ui.versionAlpha.clicked.connect(self.showUpdates)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
+        self.ui.installVersion.clicked.connect(self.installVersion)
 
     def initConfig(self):
         """
@@ -109,34 +115,117 @@ class SettMisc(object):
         """
 
         url = f'https://pypi.python.org/pypi/{packageName}/json'
-        response = requests.get(url).json()
-        vPackage = reversed(list(response['releases'].keys()))
-
-        if self.ui.versionBeta.isChecked():
-            vPackage = [x for x in vPackage if 'b' in x]
-        elif self.ui.versionAlpha.isChecked():
-            vPackage = [x for x in vPackage if 'a' in x]
+        try:
+            response = requests.get(url).json()
+        except Exception as e:
+            self.logger.error(f'Cannot determine package version: {e}')
+            return None
         else:
-            vPackage = [x for x in vPackage if 'a' not in x and 'b' not in x]
+            vPackage = reversed(list(response['releases'].keys()))
 
-        return vPackage[0]
+            if self.ui.versionBeta.isChecked():
+                vPackage = [x for x in vPackage if 'b' in x]
+            elif self.ui.versionAlpha.isChecked():
+                vPackage = [x for x in vPackage if 'a' in x]
+            else:
+                vPackage = [x for x in vPackage if 'a' not in x and 'b' not in x]
+
+            return vPackage[0]
 
     def showUpdates(self):
         """
 
-        :return:
+        :return: success
         """
 
         packageName = 'mountwizzard4'
         actPackage = version(packageName)
         self.ui.versionActual.setText(actPackage)
-        if not self.ui.isOnline.isChecked():
+        if self.ui.isOnline.isChecked():
+            availPackage = self.versionPackage(packageName)
+            if availPackage is None:
+                self.app.message.emit('Failed get package', 2)
+                return False
+            self.ui.versionAvailable.setText(availPackage)
+            self.ui.installVersion.setEnabled(True)
+            return True
+        else:
             self.ui.versionAvailable.setText('not online')
+            self.ui.installVersion.setEnabled(False)
             return False
-        availPackage = self.versionPackage(packageName)
-        self.ui.versionAvailable.setText(availPackage)
 
-        return True
+    @staticmethod
+    def isVenv():
+        return (hasattr(sys, 'real_prefix') or
+                (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
+
+    def runInstall(self, versionPackage='', timeout=30):
+        """
+        runInstall enables the virtual environment and install via pip the desired
+        package version
+
+        :param versionPackage:   package version to install
+        :param timeout:
+        :return: success
+        """
+
+        """
+        runnable = ['pip',
+                    'list',
+                    ]
+        """
+        runnable = ['pip',
+                    'install',
+                    f'mountwizzard4=={versionPackage}',
+                    '--upgrade',
+                    '--no-cache-dir',
+                    ]
+
+        timeStart = time.time()
+        try:
+            self.process = subprocess.Popen(args=runnable,
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE
+                                            )
+            stdout, stderr = self.process.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired as e:
+            self.logger.debug(e)
+            return False
+        except Exception as e:
+            self.logger.error(f'error: {e} happened')
+            return False
+        else:
+            delta = time.time() - timeStart
+            self.logger.debug(f'astap took {delta}s return code: '
+                              + str(self.process.returncode)
+                              + ' stderr: '
+                              + stderr.decode().replace('\n', ' ')
+                              + ' stdout: '
+                              + stdout.decode().replace('\n', ' ')
+                              )
+
+        success = (self.process.returncode == 0)
+        return success
+
+    def installVersion(self):
+        """
+
+        :return: success
+        """
+
+        if not self.isVenv():
+            self.app.message.emit('Not running in Virtual Environment', 2)
+            return False
+
+        versionPackage = self.ui.versionAvailable.text()
+        self.app.message.emit('Installing MountWizzard4 please wait', 1)
+        suc = self.runInstall(versionPackage=versionPackage)
+        if suc:
+            self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 0)
+            self.app.message.emit('Please restart to enable new version', 0)
+        else:
+            self.app.message.emit(f'Cannot install MountWizzard4 {versionPackage}', 2)
+        return suc
 
     def updateFwGui(self, fw):
         """

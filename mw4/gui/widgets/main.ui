@@ -20251,7 +20251,7 @@ When clicking the button, you could change the value.</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QPushButton" name="updateProgram">
+       <widget class="QPushButton" name="installVersion">
         <property name="geometry">
          <rect>
           <x>280</x>
@@ -20261,7 +20261,7 @@ When clicking the button, you could change the value.</string>
          </rect>
         </property>
         <property name="text">
-         <string>Update</string>
+         <string>Install</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_23">

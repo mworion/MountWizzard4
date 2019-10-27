@@ -203,7 +203,7 @@ class Camera(indiClass.IndiClass):
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
 
         return True
 
@@ -225,7 +225,7 @@ class Camera(indiClass.IndiClass):
         for element, value in self.device.getSwitch(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            # print(propertyName, element, value)
+            print(propertyName, element, value)
         return True
 
     def updateLight(self, deviceName, propertyName):
@@ -488,34 +488,36 @@ class Camera(indiClass.IndiClass):
         sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
 
         :param coolerOn:
-        :return: true for test purpose
+        :return: success
         """
 
         # setting fast mode:
         cooler = self.device.getSwitch('CCD_COOLER')
-        cooler['CCD_COOLER_ON'] = coolerOn
-        cooler['CCD_COOLER_OFF'] = not coolerOn
-        self.client.sendNewSwitch(deviceName=self.name,
-                                  propertyName='CCD_COOLER',
-                                  elements=cooler,
-                                  )
+        cooler['COOLER_ON'] = coolerOn
+        cooler['COOLER_OFF'] = not coolerOn
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='CCD_COOLER',
+                                        elements=cooler,
+                                        )
 
-        return True
+        print(suc, cooler)
+
+        return suc
 
     def sendCoolerTemp(self, temperature=0):
         """
         sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
 
         :param temperature:
-        :return: true for test purpose
+        :return: success
         """
 
         # setting fast mode:
         temp = self.device.getNumber('CCD_TEMPERATURE')
         temp['CCD_TEMPERATURE_VALUE'] = temperature
-        self.client.sendNewNumber(deviceName=self.name,
-                                  propertyName='CCD_TEMPERATURE',
-                                  elements=temp,
-                                  )
+        suc = self.client.sendNewNumber(deviceName=self.name,
+                                        propertyName='CCD_TEMPERATURE',
+                                        elements=temp,
+                                        )
 
-        return True
+        return suc

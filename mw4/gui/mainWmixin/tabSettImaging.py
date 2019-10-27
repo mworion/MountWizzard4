@@ -40,7 +40,10 @@ class SettImaging(object):
         # gui actions
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
-        self.ui.checkFastDownload.clicked.connect(self.setDownloadMode)
+        self.ui.downloadFast.clicked.connect(self.setDownloadModeFast)
+        self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)
+        self.ui.coolerOn.clicked.connect(self.setCoolerOn)
+        self.ui.coolerOff.clicked.connect(self.setCoolerOff)
         self.clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
 
     def initConfig(self):
@@ -96,6 +99,8 @@ class SettImaging(object):
         rotation = self.app.imaging.data.get('CCD_ROTATION.CCD_ROTATION_VALUE', 0)
         coolerTemp = self.app.imaging.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         coolerPower = self.app.imaging.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
+        coolerOn = self.app.imaging.data.get('CCD_COOLER.COOLER_ON', False)
+        downloadFast = self.app.imaging.data.get('READOUT_QUALITY.QUALITY_LOW', True)
 
         filterNumber = self.app.imaging.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
@@ -112,6 +117,13 @@ class SettImaging(object):
         self.ui.filterNumber.setText(f'{filterNumber:1.0f}')
         self.ui.coolerTemp.setText(f'{coolerTemp:3.1f}')
         self.ui.coolerPower.setText(f'{coolerPower:3.1f}')
+
+        if coolerOn:
+            self.changeStyleDynamic(self.ui.coolerOn, 'running', True)
+            self.changeStyleDynamic(self.ui.coolerOff, 'running', False)
+        else:
+            self.changeStyleDynamic(self.ui.coolerOn, 'running', False)
+            self.changeStyleDynamic(self.ui.coolerOff, 'running', True)
 
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
@@ -181,7 +193,7 @@ class SettImaging(object):
 
     def setCoolerTemp(self):
         """
-        setCoolerTemp sends the desired cooler temp but does not change the cooler on / off
+        setCoolerTemp sends the desired cooler temp and switches the cooler on.
         setting
 
         :return: true for test purpose
@@ -212,14 +224,46 @@ class SettImaging(object):
 
         return True
 
-    def setDownloadMode(self):
+    def setDownloadModeFast(self):
         """
-        setDownloadMode set the download speed high / low for image download.
+        setDownloadModeFast set the download speed high for image download.
 
         :return:
         """
 
-        mode = self.ui.checkFastDownload.isChecked()
-        self.app.imaging.sendDownloadMode(fastReadout=mode)
+        self.app.imaging.sendDownloadMode(fastReadout=True)
+
+        return True
+
+    def setDownloadModeSlow(self):
+        """
+        setDownloadModeSlow set the download speed low for image download.
+
+        :return:
+        """
+
+        self.app.imaging.sendDownloadMode(fastReadout=False)
+
+        return True
+
+    def setCoolerOn(self):
+        """
+        setCoolerOn set the on
+
+        :return:
+        """
+
+        self.app.imaging.sendCoolerSwitch(coolerOn=True)
+
+        return True
+
+    def setCoolerOff(self):
+        """
+        setCoolerOff set the off
+
+        :return:
+        """
+
+        self.app.imaging.sendCoolerSwitch(coolerOn=False)
 
         return True

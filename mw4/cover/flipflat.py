@@ -171,7 +171,7 @@ class FlipFlat(indiClass.IndiClass):
         """
 
         :param park:
-        :return: true fot test purpose
+        :return: success
         """
 
         if self.device is None:
@@ -181,8 +181,8 @@ class FlipFlat(indiClass.IndiClass):
 
         cover['UNPARK'] = park
         cover['PARK'] = not park
-        self.client.sendNewSwitch(deviceName=self.name,
-                                  propertyName='CAP_PARK',
-                                  elements=cover,
-                                  )
-        return True
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='CAP_PARK',
+                                        elements=cover,
+                                        )
+        return suc

@@ -225,7 +225,7 @@ class Camera(indiClass.IndiClass):
         for element, value in self.device.getSwitch(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
         return True
 
     def updateLight(self, deviceName, propertyName):
@@ -499,8 +499,6 @@ class Camera(indiClass.IndiClass):
                                         propertyName='CCD_COOLER',
                                         elements=cooler,
                                         )
-
-        print(suc, cooler)
 
         return suc
 

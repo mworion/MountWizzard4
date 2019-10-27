@@ -595,6 +595,9 @@ class ImageWindow(widget.MWidget):
         :return:
         """
 
+        if np.shape(imageData) != np.shape(self.imageStack):
+            self.imageStack = None
+
         # if first image, we just store the data as reference frame
         if self.imageStack is None:
             self.imageStack = imageData
@@ -637,6 +640,10 @@ class ImageWindow(widget.MWidget):
 
         if self.ui.checkStackImages.isChecked():
             imageData = self.stackImages(imageData=imageData, header=header)
+            self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
+        else:
+            self.imageStack = None
+            self.ui.numberStacks.setText('single')
 
         # check the data content and capabilities
         hasDistortion, wcsObject = self.writeHeaderToGUI(header=header)
@@ -730,6 +737,7 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
+        self.imageStack = None
         self.deviceStat['expose'] = True
         self.ui.checkStackImages.setChecked(False)
         self.app.imaging.signals.saved.connect(self.exposeImageDone)

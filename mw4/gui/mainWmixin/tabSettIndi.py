@@ -285,7 +285,6 @@ class SettIndi(object):
             return False
 
         deviceName = list(deviceList.keys())[0]
-        print('disconnect', deviceList)
 
         for device in self.indiDevices:
             if self.indiDevices[device]['class'].name != deviceName:
@@ -300,7 +299,6 @@ class SettIndi(object):
 
         :return: true for test purpose
         """
-        print('enable', deviceName)
 
         for device in self.indiDevices:
             if self.indiDevices[device]['class'].name != deviceName:
@@ -316,7 +314,6 @@ class SettIndi(object):
 
         :return: true for test purpose
         """
-        print('disable', deviceName)
 
         for device in self.indiDevices:
             if self.indiDevices[device]['class'].name != deviceName:

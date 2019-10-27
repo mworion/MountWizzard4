@@ -125,9 +125,9 @@ class IndiClass(object):
 
         if deviceName == self.name:
             self.device = self.client.getDevice(deviceName)
-            self.app.message.emit(f'INDI device [{deviceName}] found', 0)
-        else:
-            self.app.message.emit(f'INDI device snoops: [{deviceName}]', 0)
+            self.app.message.emit(f'INDI device found:  [{deviceName}]', 0)
+        # else:
+        #    self.app.message.emit(f'INDI device {self.name} snoops: [{deviceName}]', 0)
 
         return True
 
@@ -160,7 +160,7 @@ class IndiClass(object):
             return False
         self.retryCounter += 1
         if not self.data:
-            self.stopCommunication()
+            # self.stopCommunication()
             self.startCommunication()
             self.logger.info(f'Indi server {self.name} connection retry')
         else:
@@ -193,7 +193,7 @@ class IndiClass(object):
         """
 
         self.client.stopTimers()
-        suc = self.client.disconnectServer()
+        suc = self.client.disconnectServer(self.name)
         return suc
 
     def connectDevice(self, deviceName, propertyName):

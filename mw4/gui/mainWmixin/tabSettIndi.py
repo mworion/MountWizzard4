@@ -97,7 +97,7 @@ class SettIndi(object):
                  'port': self.ui.powerPort,
                  'host': self.ui.powerHost,
                  },
-            }
+        }
 
         # signals from functions
         for name, item in self.indiDevices.items():

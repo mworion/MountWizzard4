@@ -179,7 +179,7 @@ class Camera(indiClass.IndiClass):
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
 
             self.setExposureState(propertyName=propertyName, value=value)
 
@@ -203,7 +203,7 @@ class Camera(indiClass.IndiClass):
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            # print(propertyName, element, value)
+            print(propertyName, element, value)
 
         return True
 
@@ -379,6 +379,25 @@ class Camera(indiClass.IndiClass):
                                         )
         return suc
 
+    def sendDownloadMode(self, fastReadout=False):
+        """
+        setDownloadMode sets the readout speed of the camera
+
+        :return: success
+        """
+
+        # setting fast mode:
+        quality = self.device.getSwitch('READOUT_QUALITY')
+        self.logger.debug(f'camera has readout quality entry: {quality}')
+        quality['QUALITY_LOW'] = fastReadout
+        quality['QUALITY_HIGH'] = not fastReadout
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='READOUT_QUALITY',
+                                        elements=quality,
+                                        )
+
+        return suc
+
     def expose(self, imagePath='', expTime=3, binning=1,
                subFrame=100, fastReadout=True):
         """
@@ -401,6 +420,10 @@ class Camera(indiClass.IndiClass):
         self.imagePath = imagePath
 
         suc = self.setupFrameCompress()
+        if not suc:
+            return False
+
+        suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
             return False
 
@@ -429,16 +452,6 @@ class Camera(indiClass.IndiClass):
                                         )
         if not suc:
             return False
-
-        # setting fast mode:
-        quality = self.device.getSwitch('READOUT_QUALITY')
-        self.logger.debug(f'camera has readout quality entry: {quality}')
-        quality['QUALITY_LOW'] = fastReadout
-        quality['QUALITY_HIGH'] = not fastReadout
-        self.client.sendNewSwitch(deviceName=self.name,
-                                  propertyName='READOUT_QUALITY',
-                                  elements=quality,
-                                  )
 
         # setting and starting exposure
         indiCmd = self.device.getNumber('CCD_EXPOSURE')
@@ -469,25 +482,6 @@ class Camera(indiClass.IndiClass):
                                         )
 
         return suc
-
-    def sendDownloadMode(self, fastReadout=False):
-        """
-        setDownloadMode sets the readout speed of the camera
-
-        :return:
-        """
-
-        # setting fast mode:
-        quality = self.device.getSwitch('READOUT_QUALITY')
-        self.logger.debug(f'camera has readout quality entry: {quality}')
-        quality['QUALITY_LOW'] = fastReadout
-        quality['QUALITY_HIGH'] = not fastReadout
-        self.client.sendNewSwitch(deviceName=self.name,
-                                  propertyName='READOUT_QUALITY',
-                                  elements=quality,
-                                  )
-
-        return True
 
     def sendCoolerSwitch(self, coolerOn=False):
         """

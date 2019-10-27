@@ -89,28 +89,29 @@ class SettImaging(object):
 
         focalLength = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
         aperture = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0)
-
         pixelSizeX = self.app.imaging.data.get('CCD_INFO.CCD_PIXEL_SIZE_X', 0)
         pixelSizeY = self.app.imaging.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y', 0)
         pixelX = self.app.imaging.data.get('CCD_INFO.CCD_MAX_X', 0)
         pixelY = self.app.imaging.data.get('CCD_INFO.CCD_MAX_Y', 0)
-        filterNumber = self.app.imaging.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+        rotation = self.app.imaging.data.get('CCD_ROTATION.CCD_ROTATION_VALUE', 0)
         coolerTemp = self.app.imaging.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         coolerPower = self.app.imaging.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
 
+        filterNumber = self.app.imaging.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+        key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
+        text = self.app.imaging.data.get(key, 'not found')
+        self.ui.filterText.setText(f'{text}')
+
+        self.ui.focalLength.setText(f'{focalLength:4.0f}')
+        self.ui.aperture.setText(f'{aperture:3.0f}')
         self.ui.pixelSizeX.setText(f'{pixelSizeX:2.2f}')
         self.ui.pixelSizeY.setText(f'{pixelSizeY:2.2f}')
         self.ui.pixelX.setText(f'{pixelX:5.0f}')
         self.ui.pixelY.setText(f'{pixelY:5.0f}')
+        self.ui.rotation.setText(f'{rotation:3.1f}')
         self.ui.filterNumber.setText(f'{filterNumber:1.0f}')
         self.ui.coolerTemp.setText(f'{coolerTemp:3.1f}')
         self.ui.coolerPower.setText(f'{coolerPower:3.1f}')
-
-        #if not filterNames:
-        #    return False
-        #key = f'FILTER_SLOT_NAME_{filterNumber:1.0f}'
-        #text = filterNames.get(key, 'not found')
-        #self.ui.filterText.setText(f'{text}')
 
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
@@ -187,7 +188,8 @@ class SettImaging(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = self.app.imaging.coolerTemp
+        actValue = self.app.imaging.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
+
         if actValue is None:
             msg.critical(self,
                          'Error Message',

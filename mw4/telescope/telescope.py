@@ -107,6 +107,6 @@ class Telescope(indiClass.IndiClass):
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            print(propertyName, element, value)
+            # print(propertyName, element, value)
 
         return True

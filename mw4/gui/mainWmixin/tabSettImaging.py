@@ -87,16 +87,16 @@ class SettImaging(object):
         :return: success
         """
 
-        focalLength = self.app.telescope.focalLength
-        aperture = self.app.telescope.aperture
-        pixelSizeX = self.app.imaging.pixelSizeX
-        pixelSizeY = self.app.imaging.pixelSizeY
-        pixelX = self.app.imaging.pixelX
-        pixelY = self.app.imaging.pixelY
-        filterNumber = self.app.imaging.filterNumber
-        filterNames = self.app.imaging.filterNames
-        coolerTemp = self.app.imaging.coolerTemp
-        coolerPower = self.app.imaging.coolerPower
+        focalLength = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
+        aperture = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0)
+
+        pixelSizeX = self.app.imaging.data.get('CCD_INFO.CCD_PIXEL_SIZE_X', 0)
+        pixelSizeY = self.app.imaging.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y', 0)
+        pixelX = self.app.imaging.data.get('CCD_INFO.CCD_MAX_X', 0)
+        pixelY = self.app.imaging.data.get('CCD_INFO.CCD_MAX_Y', 0)
+        filterNumber = self.app.imaging.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+        coolerTemp = self.app.imaging.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
+        coolerPower = self.app.imaging.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
 
         self.ui.pixelSizeX.setText(f'{pixelSizeX:2.2f}')
         self.ui.pixelSizeY.setText(f'{pixelSizeY:2.2f}')
@@ -106,11 +106,11 @@ class SettImaging(object):
         self.ui.coolerTemp.setText(f'{coolerTemp:3.1f}')
         self.ui.coolerPower.setText(f'{coolerPower:3.1f}')
 
-        if not filterNames:
-            return False
-        key = f'FILTER_SLOT_NAME_{filterNumber:1.0f}'
-        text = filterNames.get(key, 'not found')
-        self.ui.filterText.setText(f'{text}')
+        #if not filterNames:
+        #    return False
+        #key = f'FILTER_SLOT_NAME_{filterNumber:1.0f}'
+        #text = filterNames.get(key, 'not found')
+        #self.ui.filterText.setText(f'{text}')
 
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
@@ -160,6 +160,7 @@ class SettImaging(object):
 
     def setCoverPark(self):
         """
+        setCoverPark closes the cover
 
         :return: success
         """
@@ -169,6 +170,7 @@ class SettImaging(object):
 
     def setCoverUnpark(self):
         """
+        setCoverPark opens the cover
 
         :return: success
         """
@@ -178,6 +180,8 @@ class SettImaging(object):
 
     def setCoolerTemp(self):
         """
+        setCoolerTemp sends the desired cooler temp but does not change the cooler on / off
+        setting
 
         :return: true for test purpose
         """
@@ -208,11 +212,12 @@ class SettImaging(object):
 
     def setDownloadMode(self):
         """
+        setDownloadMode set the download speed high / low for image download.
 
         :return:
         """
 
         mode = self.ui.checkFastDownload.isChecked()
-        self.app.imaging.setDownloadMode(fastReadout=mode)
+        self.app.imaging.sendDownloadMode(fastReadout=mode)
 
         return True

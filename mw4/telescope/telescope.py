@@ -54,8 +54,6 @@ class Telescope(indiClass.IndiClass):
                          name=name
                          )
         self.app = app
-        self.focalLength = 0
-        self.aperture = 0
 
     def setUpdateConfig(self, deviceName):
         """
@@ -86,25 +84,6 @@ class Telescope(indiClass.IndiClass):
                                         elements=update)
         return suc
 
-    def setParametersNumber(self, propertyName='', element='', value=0):
-        """
-
-        :param propertyName:
-        :param element:
-        :param value:
-        :return: success
-        """
-
-        if propertyName == 'TELESCOPE_INFO':
-            if element == 'TELESCOPE_APERTURE':
-                self.aperture = value
-                self.app.mainW.ui.aperture.setText(f'{value:4.0f}')
-            if element == 'TELESCOPE_FOCAL_LENGTH':
-                self.focalLength = value
-                self.app.mainW.ui.focalLength.setText(f'{value:4.0f}')
-            return True
-        return False
-
     def updateNumber(self, deviceName, propertyName):
         """
         updateNumber is called whenever a new number is received in client. it runs
@@ -126,9 +105,8 @@ class Telescope(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            self.data[element] = value
-            # print(propertyName, element, value)
-
-            self.setParametersNumber(propertyName=propertyName, element=element, value=value)
+            key = propertyName + '.' + element
+            self.data[key] = value
+            print(propertyName, element, value)
 
         return True

@@ -82,12 +82,6 @@ class Camera(indiClass.IndiClass):
         self.imagePath = ''
         self.filterNames = dict()
         self.filterNumber = 0
-        self.coolerTemp = 0
-        self.coolerPower = 0
-        self.pixelSizeX = 0
-        self.pixelSizeY = 0
-        self.pixelX = 0
-        self.pixelY = 0
 
     def setUpdateConfig(self, deviceName):
         """
@@ -142,31 +136,6 @@ class Camera(indiClass.IndiClass):
 
         return suc
 
-    def setPixelSize(self, propertyName='', element='', value=0):
-        """
-
-        :param propertyName:
-        :param element:
-        :param value:
-        :return: success
-        """
-
-        if propertyName == 'CCD_INFO':
-            if element == 'CCD_PIXEL_SIZE_X':
-                self.pixelSizeX = value
-                return True
-            elif element == 'CCD_PIXEL_SIZE_Y':
-                self.pixelSizeY = value
-                return True
-            elif element == 'CCD_MAX_X':
-                self.pixelX = value
-                return True
-            elif element == 'CCD_MAX_Y':
-                self.pixelY = value
-                return True
-
-        return False
-
     def setExposureState(self, propertyName='', value=0):
         """
 
@@ -192,37 +161,6 @@ class Camera(indiClass.IndiClass):
         else:
             return False
 
-    def setParametersNumber(self, propertyName='', element='', value=0):
-        """
-
-        :param propertyName:
-        :param element:
-        :param value:
-        :return: success
-        """
-
-        if propertyName == 'FILTER_SLOT':
-            if element == 'FILTER_SLOT_VALUE':
-                self.filterNumber = value
-            return True
-
-        if propertyName == 'CCD_ROTATION':
-            if element == 'CCD_ROTATION_VALUE':
-                self.app.mainW.ui.rotation.setText(f'{value:3.1f}')
-            return True
-
-        if propertyName == 'CCD_TEMPERATURE':
-            if element == 'CCD_TEMPERATURE_VALUE':
-                self.coolerTemp = value
-            return True
-
-        if propertyName == 'CCD_COOLER_POWER':
-            if element == 'CCD_COOLER_VALUE':
-                self.coolerPower = value
-            return True
-
-        return False
-
     def updateNumber(self, deviceName, propertyName):
         """
         updateNumber is called whenever a new number is received in client. it runs
@@ -243,27 +181,9 @@ class Camera(indiClass.IndiClass):
             self.data[key] = value
             print(propertyName, element, value)
 
-            self.setPixelSize(propertyName=propertyName, element=element, value=value)
             self.setExposureState(propertyName=propertyName, value=value)
-            self.setParametersNumber(propertyName=propertyName, element=element, value=value)
 
         return True
-
-    def setParametersText(self, propertyName='', element='', value=0):
-        """
-
-        :param propertyName:
-        :param element:
-        :param value:
-        :return: success
-        """
-
-        if propertyName == 'FILTER_NAME':
-            if element in self.filterNames:
-                return True
-            self.filterNames[element] = value
-            return True
-        return False
 
     def updateText(self, deviceName, propertyName):
         """
@@ -283,9 +203,8 @@ class Camera(indiClass.IndiClass):
         for element, value in self.device.getText(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-
-            self.setParametersText(propertyName=propertyName, element=element, value=value)
             # print(propertyName, element, value)
+
         return True
 
     def updateSwitch(self, deviceName, propertyName):
@@ -551,8 +470,9 @@ class Camera(indiClass.IndiClass):
 
         return suc
 
-    def setDownloadMode(self, fastReadout=False):
+    def sendDownloadMode(self, fastReadout=False):
         """
+        setDownloadMode sets the readout speed of the camera
 
         :return:
         """
@@ -569,8 +489,28 @@ class Camera(indiClass.IndiClass):
 
         return True
 
+    def sendCoolerSwitch(self, coolerOn=False):
+        """
+        sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
+
+        :param coolerOn:
+        :return: true for test purpose
+        """
+
+        # setting fast mode:
+        cooler = self.device.getSwitch('CCD_COOLER')
+        cooler['CCD_COOLER_ON'] = coolerOn
+        cooler['CCD_COOLER_OFF'] = not coolerOn
+        self.client.sendNewSwitch(deviceName=self.name,
+                                  propertyName='CCD_COOLER',
+                                  elements=cooler,
+                                  )
+
+        return True
+
     def sendCoolerTemp(self, temperature=0):
         """
+        sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
 
         :param temperature:
         :return: true for test purpose

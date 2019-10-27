@@ -156,11 +156,12 @@ class SettIndi(object):
         :return: success for test
         """
 
-        dropDowns = list(self.indiDevices[name]['uiName'] for name in self.indiDevices)
+        dropDowns = list(self.indiDevices[device]['uiName'] for device in self.indiDevices)
         for dropDown in dropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('No device driver selected')
+
         # adding special items
         self.indiDevices['imaging']['uiName'].addItem('Altair')
         self.indiDevices['imaging']['uiName'].addItem('Apogee CCD')
@@ -225,7 +226,7 @@ class SettIndi(object):
         if not self.ui.shareIndiServer.isChecked():
             return False
 
-        hosts = list(self.indiDevices[name]['host'] for name in self.indiDevices)
+        hosts = list(self.indiDevices[device]['host'] for device in self.indiDevices)
 
         if self.sender() not in hosts:
             return False
@@ -248,7 +249,7 @@ class SettIndi(object):
         if not self.ui.shareIndiServer.isChecked():
             return False
 
-        ports = list(self.indiDevices[name]['port'] for name in self.indiDevices)
+        ports = list(self.indiDevices[device]['port'] for device in self.indiDevices)
 
         if self.sender() not in ports:
             return False

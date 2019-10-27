@@ -34,42 +34,57 @@ class SettDevice(object):
     """
 
     def __init__(self):
-        self.deviceDropDowns = [self.ui.imagingDevice,
-                                self.ui.astrometryDevice,
-                                self.ui.domeDevice,
-                                self.ui.environDevice,
-                                self.ui.skymeterDevice,
-                                self.ui.coverDevice,
-                                self.ui.telescopeDevice,
-                                self.ui.powerDevice,
-                                self.ui.relayDevice,
-                                self.ui.measureDevice,
-                                self.ui.remoteDevice,
-                                ]
-        self.deviceDropDownKeys = ['imagingDevice',
-                                   'astrometryDevice',
-                                   'domeDevice',
-                                   'environmentDevice',
-                                   'skymeterDevice',
-                                   'coverDevice',
-                                   'telescopeDevice',
-                                   'powerDevice',
-                                   'relayDevice',
-                                   'measureDevice',
-                                   'remoteDevice',
-                                   ]
+        self.drivers = {
+            'dome': {
+                'uiDriver': self.ui.domeDevice,
+                'dispatch': self.domeDispatch,
+            },
+            'imaging': {
+                'uiDriver': self.ui.imagingDevice,
+                'dispatch': self.imagingDispatch,
+            },
+            'environ': {
+                'uiDriver': self.ui.environDevice,
+                'dispatch': self.environDispatch,
+            },
+            'cover': {
+                'uiDriver': self.ui.coverDevice,
+                'dispatch': self.coverDispatch,
+            },
+            'skymeter': {
+                'uiDriver': self.ui.skymeterDevice,
+                'dispatch': self.skymeterDispatch,
+            },
+            'telescope': {
+                'uiDriver': self.ui.telescopeDevice,
+                'dispatch': self.telescopeDispatch,
+            },
+            'power': {
+                'uiDriver': self.ui.powerDevice,
+                'dispatch': self.powerDispatch,
+            },
+            'relay': {
+                'uiDriver': self.ui.relayDevice,
+                'dispatch': self.relayDispatch,
+            },
+            'astrometry': {
+                'uiDriver': self.ui.astrometryDevice,
+                'dispatch': self.astrometryDispatch,
+            },
+            'remote': {
+                'uiDriver': self.ui.remoteDevice,
+                'dispatch': self.remoteDispatch,
+            },
+            'measure': {
+                'uiDriver': self.ui.measureDevice,
+                'dispatch': self.measureDispatch,
+            },
+        }
+
         self.setupDeviceGui()
-        self.ui.imagingDevice.activated.connect(self.imagingDispatch)
-        self.ui.relayDevice.activated.connect(self.relayDispatch)
-        self.ui.remoteDevice.activated.connect(self.remoteDispatch)
-        self.ui.measureDevice.activated.connect(self.measureDispatch)
-        self.ui.domeDevice.activated.connect(self.domeDispatch)
-        self.ui.environDevice.activated.connect(self.environDispatch)
-        self.ui.skymeterDevice.activated.connect(self.skymeterDispatch)
-        self.ui.coverDevice.activated.connect(self.coverDispatch)
-        self.ui.telescopeDevice.activated.connect(self.telescopeDispatch)
-        self.ui.powerDevice.activated.connect(self.powerDispatch)
-        self.ui.astrometryDevice.activated.connect(self.astrometryDispatch)
+
+        for driver in self.drivers:
+            self.drivers[driver]['uiDriver'].activated.connect(self.drivers[driver]['dispatch'])
 
     def initConfig(self):
         """
@@ -80,20 +95,11 @@ class SettDevice(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
-            dropDown.setCurrentIndex(config.get(key, 0))
 
-        self.telescopeDispatch()
-        self.relayDispatch()
-        self.remoteDispatch()
-        self.measureDispatch()
-        self.domeDispatch()
-        self.imagingDispatch()
-        self.environDispatch()
-        self.skymeterDispatch()
-        self.coverDispatch()
-        self.powerDispatch()
-        self.astrometryDispatch()
+        for driver in self.drivers:
+            self.drivers[driver]['uiDriver'].setCurrentIndex(config.get(driver, 0))
+            self.drivers[driver]['dispatch']()
+
         return True
 
     def storeConfig(self):
@@ -105,8 +111,8 @@ class SettDevice(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        for dropDown, key in zip(self.deviceDropDowns, self.deviceDropDownKeys):
-            config[key] = dropDown.currentIndex()
+        for driver in self.drivers:
+            config[driver] = self.drivers[driver]['uiDriver'].currentIndex()
 
         return True
 
@@ -118,24 +124,25 @@ class SettDevice(object):
         :return: success for test
         """
 
-        for dropDown in self.deviceDropDowns:
+        dropDowns = list(self.drivers[driver]['uiDriver'] for driver in self.drivers)
+        for dropDown in dropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('No device selected')
 
         # adding special items
-        self.ui.measureDevice.addItem('Built-In')
-        self.ui.remoteDevice.addItem('Built-In')
-        self.ui.relayDevice.addItem('Built-In')
-        self.ui.environDevice.addItem('INDI')
-        self.ui.domeDevice.addItem('INDI')
-        self.ui.imagingDevice.addItem('INDI')
-        self.ui.skymeterDevice.addItem('INDI')
-        self.ui.coverDevice.addItem('INDI')
-        self.ui.telescopeDevice.addItem('INDI')
-        self.ui.powerDevice.addItem('INDI')
+        self.drivers['dome']['uiDriver'].addItem('INDI')
+        self.drivers['imaging']['uiDriver'].addItem('INDI')
+        self.drivers['environ']['uiDriver'].addItem('INDI')
+        self.drivers['cover']['uiDriver'].addItem('INDI')
+        self.drivers['skymeter']['uiDriver'].addItem('INDI')
+        self.drivers['telescope']['uiDriver'].addItem('INDI')
+        self.drivers['power']['uiDriver'].addItem('INDI')
+        self.drivers['relay']['uiDriver'].addItem('Built-In')
         for app in self.app.astrometry.solverAvailable:
-            self.ui.astrometryDevice.addItem(app)
+            self.drivers['astrometry']['uiDriver'].addItem(app)
+        self.drivers['remote']['uiDriver'].addItem('Built-In')
+        self.drivers['measure']['uiDriver'].addItem('Built-In')
 
         return True
 

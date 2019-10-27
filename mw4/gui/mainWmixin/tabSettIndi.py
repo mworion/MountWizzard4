@@ -48,6 +48,66 @@ class SettIndi(object):
                                'powerDeviceName',
                                'telescopeDeviceName',
                                ]
+        self.indiSignals = [self.app.dome.client.signals,
+                            self.app.imaging.client.signals,
+                            self.app.environ.client.signals,
+                            self.app.cover.client.signals,
+                            self.app.skymeter.client.signals,
+                            self.app.telescope.client.signals,
+                            self.app.power.client.signals,
+                            ]
+
+        self.indiDevices = {
+            'dome':
+                {'uiName': self.ui.domeDeviceName,
+                 'dispatch': self.domeDispatch,
+                 'signals': self.app.dome.client.signals,
+                 'port': self.ui.domePort,
+                 'host': self.ui.domeHost,
+                 },
+            'imaging':
+                {'uiName': self.ui.imagingDeviceName,
+                 'dispatch': self.imagingDispatch,
+                 'signals': self.app.imaging.client.signals,
+                 'port': self.ui.imagingPort,
+                 'host': self.ui.imagingHost,
+                 },
+            'environ':
+                {'uiName': self.ui.environDeviceName,
+                 'dispatch': self.environDispatch,
+                 'signals': self.app.environ.client.signals,
+                 'port': self.ui.environPort,
+                 'host': self.ui.environHost,
+                 },
+            'cover':
+                {'uiName': self.ui.coverDeviceName,
+                 'dispatch': self.coverDispatch,
+                 'signals': self.app.cover.client.signals,
+                 'port': self.ui.coverPort,
+                 'host': self.ui.coverHost,
+                 },
+            'skymeter':
+                {'uiName': self.ui.skymeterDeviceName,
+                 'dispatch': self.skymeterDispatch,
+                 'signals': self.app.skymeter.client.signals,
+                 'port': self.ui.skymeterPort,
+                 'host': self.ui.skymeterHost,
+                 },
+            'telescope':
+                {'uiName': self.ui.telescopeDeviceName,
+                 'dispatch': self.telescopeDispatch,
+                 'signals': self.app.telescope.client.signals,
+                 'port': self.ui.telescopePort,
+                 'host': self.ui.telescopeHost,
+                 },
+            'power':
+                {'uiName': self.ui.powerDeviceName,
+                 'dispatch': self.powerDispatch,
+                 'signals': self.app.power.client.signals,
+                 'port': self.ui.powerPort,
+                 'host': self.ui.powerHost,
+                 },
+            }
 
         self.setupDeviceNameGui()
 
@@ -89,29 +149,13 @@ class SettIndi(object):
 
         # signals from gui
 
-        self.ui.domeDeviceName.currentIndexChanged.connect(self.domeDispatch)
-        self.ui.imagingDeviceName.currentIndexChanged.connect(self.imagingDispatch)
-        self.ui.environDeviceName.currentIndexChanged.connect(self.environDispatch)
-        self.ui.coverDeviceName.currentIndexChanged.connect(self.coverDispatch)
-        self.ui.telescopeDeviceName.currentIndexChanged.connect(self.telescopeDispatch)
-        self.ui.skymeterDeviceName.currentIndexChanged.connect(self.skymeterDispatch)
-        self.ui.powerDeviceName.currentIndexChanged.connect(self.powerDispatch)
-
-        self.ui.environHost.editingFinished.connect(self.shareServerHost)
-        self.ui.coverHost.editingFinished.connect(self.shareServerHost)
-        self.ui.imagingHost.editingFinished.connect(self.shareServerHost)
-        self.ui.domeHost.editingFinished.connect(self.shareServerHost)
-        self.ui.telescopeHost.editingFinished.connect(self.shareServerHost)
-        self.ui.skymeterHost.editingFinished.connect(self.shareServerHost)
-        self.ui.powerHost.editingFinished.connect(self.shareServerHost)
-
-        self.ui.environPort.editingFinished.connect(self.shareServerPort)
-        self.ui.coverPort.editingFinished.connect(self.shareServerPort)
-        self.ui.imagingPort.editingFinished.connect(self.shareServerPort)
-        self.ui.domePort.editingFinished.connect(self.shareServerPort)
-        self.ui.telescopePort.editingFinished.connect(self.shareServerPort)
-        self.ui.skymeterPort.editingFinished.connect(self.shareServerPort)
-        self.ui.powerPort.editingFinished.connect(self.shareServerPort)
+        for name, item in self.indiDevices.items():
+            item['uiName'].currentIndexChanged.connect(item['dispatch'])
+            item['host'].editingFinished.connect(self.shareServerHost)
+            item['port'].editingFinished.connect(self.shareServerPort)
+            #item['signals'].serverDisconnected.connect(self.showIndiDisconnected)
+            #item['signals'].deviceConnected.connect(self.showDeviceConnected)
+            #item['signals'].deviceDisconnected.connect(self.showDeviceDisconnected)
 
     def initConfig(self):
         """
@@ -122,26 +166,13 @@ class SettIndi(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        for dropDown, key in zip(self.deviceNames, self.deviceNameKeys):
-            dropDown.setCurrentIndex(config.get(key, 0))
-
-        self.ui.environHost.setText(config.get('environHost', ''))
-        self.ui.environPort.setText(config.get('environPort', '7624'))
-        self.ui.coverHost.setText(config.get('coverHost', ''))
-        self.ui.coverPort.setText(config.get('coverPort', '7624'))
-        self.ui.imagingHost.setText(config.get('imagingHost', ''))
-        self.ui.imagingPort.setText(config.get('imagingPort', '7624'))
-        self.ui.domeHost.setText(config.get('domeHost', ''))
-        self.ui.domePort.setText(config.get('domePort', '7624'))
-        self.ui.telescopeHost.setText(config.get('telescopeHost', ''))
-        self.ui.telescopePort.setText(config.get('telescopePort', '7624'))
-        self.ui.skymeterHost.setText(config.get('skymeterHost', ''))
-        self.ui.skymeterPort.setText(config.get('skymeterPort', '7624'))
-        self.ui.powerHost.setText(config.get('powerHost', ''))
-        self.ui.powerPort.setText(config.get('powerPort', '7624'))
+        for name, item in self.indiDevices.items():
+            self.indiDevices[name]['uiName'].setCurrentIndex(config.get(f'{name}Name', 0))
+            self.indiDevices[name]['port'].setText(config.get(f'{name}Port', '7624'))
+            self.indiDevices[name]['host'].setText(config.get(f'{name}Host', ''))
 
         self.ui.checkMessageINDI.setChecked(config.get('checkMessageINDI', False))
-        self.ui.shareIndiServer.setChecked(config.get('shareIndiServer', False))
+        self.ui.shareIndiServer.setChecked(config.get('shareIndiServer', True))
 
         return True
 
@@ -154,22 +185,10 @@ class SettIndi(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
-        for dropDown, key in zip(self.deviceNames, self.deviceNameKeys):
-            config[key] = dropDown.currentIndex()
-        config['environHost'] = self.ui.environHost.text()
-        config['environPort'] = self.ui.environPort.text()
-        config['coverHost'] = self.ui.coverHost.text()
-        config['coverPort'] = self.ui.coverPort.text()
-        config['imagingHost'] = self.ui.imagingHost.text()
-        config['imagingPort'] = self.ui.imagingPort.text()
-        config['domeHost'] = self.ui.domeHost.text()
-        config['domePort'] = self.ui.domePort.text()
-        config['skymeterHost'] = self.ui.skymeterHost.text()
-        config['skymeterPort'] = self.ui.skymeterPort.text()
-        config['telescopeHost'] = self.ui.telescopeHost.text()
-        config['telescopePort'] = self.ui.telescopePort.text()
-        config['powerHost'] = self.ui.powerHost.text()
-        config['powerPort'] = self.ui.powerPort.text()
+        for name, item in self.indiDevices.items():
+            config[f'{name}Name'] = self.indiDevices[name]['uiName'].currentIndex()
+            config[f'{name}Port'] = self.indiDevices[name]['port'].text()
+            config[f'{name}Host'] = self.indiDevices[name]['host'].text()
 
         config['checkMessageINDI'] = self.ui.checkMessageINDI.isChecked()
         config['shareIndiServer'] = self.ui.shareIndiServer.isChecked()
@@ -189,55 +208,55 @@ class SettIndi(object):
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('No device driver selected')
         # adding special items
-        self.ui.imagingDeviceName.addItem('Altair')
-        self.ui.imagingDeviceName.addItem('Apogee CCD')
-        self.ui.imagingDeviceName.addItem('Atik CCD')
-        self.ui.imagingDeviceName.addItem('CCD Simulator')
-        self.ui.imagingDeviceName.addItem('Canon DSLR')
-        self.ui.imagingDeviceName.addItem('DMK CCD')
-        self.ui.imagingDeviceName.addItem('FLI CCD')
-        self.ui.imagingDeviceName.addItem('FireFly MV')
-        self.ui.imagingDeviceName.addItem('GPhoto CCD')
-        self.ui.imagingDeviceName.addItem('Guide Simulator')
-        self.ui.imagingDeviceName.addItem('MI CCD (ETH)')
-        self.ui.imagingDeviceName.addItem('MI CCD (USB)')
-        self.ui.imagingDeviceName.addItem('Meade Deep Sky Imager')
-        self.ui.imagingDeviceName.addItem('Nightscape 8300 CCD')
-        self.ui.imagingDeviceName.addItem('Nikon DSLR')
-        self.ui.imagingDeviceName.addItem('Pentax DSLR')
-        self.ui.imagingDeviceName.addItem('QHY CCD')
-        self.ui.imagingDeviceName.addItem('QSI CCD')
-        self.ui.imagingDeviceName.addItem('SBIG CCD')
-        self.ui.imagingDeviceName.addItem('SBIG ST-I')
-        self.ui.imagingDeviceName.addItem('SX CCD')
-        self.ui.imagingDeviceName.addItem('Sony DSLR')
-        self.ui.imagingDeviceName.addItem('Starfish CCD')
-        self.ui.imagingDeviceName.addItem('ToupCam')
-        self.ui.imagingDeviceName.addItem('V4L2 CCD')
-        self.ui.imagingDeviceName.addItem('ZWO CCD')
+        self.indiDevices['imaging']['uiName'].addItem('Altair')
+        self.indiDevices['imaging']['uiName'].addItem('Apogee CCD')
+        self.indiDevices['imaging']['uiName'].addItem('Atik CCD')
+        self.indiDevices['imaging']['uiName'].addItem('CCD Simulator')
+        self.indiDevices['imaging']['uiName'].addItem('Canon DSLR')
+        self.indiDevices['imaging']['uiName'].addItem('DMK CCD')
+        self.indiDevices['imaging']['uiName'].addItem('FLI CCD')
+        self.indiDevices['imaging']['uiName'].addItem('FireFly MV')
+        self.indiDevices['imaging']['uiName'].addItem('GPhoto CCD')
+        self.indiDevices['imaging']['uiName'].addItem('Guide Simulator')
+        self.indiDevices['imaging']['uiName'].addItem('MI CCD (ETH)')
+        self.indiDevices['imaging']['uiName'].addItem('MI CCD (USB)')
+        self.indiDevices['imaging']['uiName'].addItem('Meade Deep Sky Imager')
+        self.indiDevices['imaging']['uiName'].addItem('Nightscape 8300 CCD')
+        self.indiDevices['imaging']['uiName'].addItem('Nikon DSLR')
+        self.indiDevices['imaging']['uiName'].addItem('Pentax DSLR')
+        self.indiDevices['imaging']['uiName'].addItem('QHY CCD')
+        self.indiDevices['imaging']['uiName'].addItem('QSI CCD')
+        self.indiDevices['imaging']['uiName'].addItem('SBIG CCD')
+        self.indiDevices['imaging']['uiName'].addItem('SBIG ST-I')
+        self.indiDevices['imaging']['uiName'].addItem('SX CCD')
+        self.indiDevices['imaging']['uiName'].addItem('Sony DSLR')
+        self.indiDevices['imaging']['uiName'].addItem('Starfish CCD')
+        self.indiDevices['imaging']['uiName'].addItem('ToupCam')
+        self.indiDevices['imaging']['uiName'].addItem('V4L2 CCD')
+        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD')
 
-        self.ui.domeDeviceName.addItem('Baader Dome')
-        self.ui.domeDeviceName.addItem('Dome Scripting Gateway')
-        self.ui.domeDeviceName.addItem('Dome Simulator')
-        self.ui.domeDeviceName.addItem('MaxDome II')
-        self.ui.domeDeviceName.addItem('NexDome')
-        self.ui.domeDeviceName.addItem('RollOff Simulator')
-        self.ui.domeDeviceName.addItem('ScopeDome Dome')
+        self.indiDevices['dome']['uiName'].addItem('Baader Dome')
+        self.indiDevices['dome']['uiName'].addItem('Dome Scripting Gateway')
+        self.indiDevices['dome']['uiName'].addItem('Dome Simulator')
+        self.indiDevices['dome']['uiName'].addItem('MaxDome II')
+        self.indiDevices['dome']['uiName'].addItem('NexDome')
+        self.indiDevices['dome']['uiName'].addItem('RollOff Simulator')
+        self.indiDevices['dome']['uiName'].addItem('ScopeDome Dome')
 
-        self.ui.environDeviceName.addItem('AAG Cloud Watcher')
-        self.ui.environDeviceName.addItem('Arduino MeteoStation')
-        self.ui.environDeviceName.addItem('MBox')
-        self.ui.environDeviceName.addItem('OpenWeatherMap')
-        self.ui.environDeviceName.addItem('Vantage')
-        self.ui.environDeviceName.addItem('Weather Meta')
-        self.ui.environDeviceName.addItem('Weather Simulator')
-        self.ui.environDeviceName.addItem('Weather Watcher')
-        self.ui.environDeviceName.addItem('WonderGround')
+        self.indiDevices['environ']['uiName'].addItem('AAG Cloud Watcher')
+        self.indiDevices['environ']['uiName'].addItem('Arduino MeteoStation')
+        self.indiDevices['environ']['uiName'].addItem('MBox')
+        self.indiDevices['environ']['uiName'].addItem('OpenWeatherMap')
+        self.indiDevices['environ']['uiName'].addItem('Vantage')
+        self.indiDevices['environ']['uiName'].addItem('Weather Meta')
+        self.indiDevices['environ']['uiName'].addItem('Weather Simulator')
+        self.indiDevices['environ']['uiName'].addItem('Weather Watcher')
+        self.indiDevices['environ']['uiName'].addItem('WonderGround')
 
-        self.ui.skymeterDeviceName.addItem('SQM')
-        self.ui.telescopeDeviceName.addItem('LX200 10micron')
-        self.ui.powerDeviceName.addItem('Pegasus UPB')
-        self.ui.coverDeviceName.addItem('Flip Flat')
+        self.indiDevices['skymeter']['uiName'].addItem('SQM')
+        self.indiDevices['telescope']['uiName'].addItem('LX200 10micron')
+        self.indiDevices['power']['uiName'].addItem('Pegasus UPB')
+        self.indiDevices['cover']['uiName'].addItem('Flip Flat')
 
         return True
 
@@ -252,15 +271,7 @@ class SettIndi(object):
         if not self.ui.shareIndiServer.isChecked():
             return False
 
-        hosts = [self.ui.environHost,
-                 self.ui.coverHost,
-                 self.ui.imagingHost,
-                 self.ui.domeHost,
-                 self.ui.skymeterHost,
-                 self.ui.telescopeHost,
-                 self.ui.powerHost,
-                 self.ui.skymeterHost,
-                 ]
+        hosts = list(self.indiDevices[name]['host'] for name in self.indiDevices)
 
         if self.sender() not in hosts:
             return False
@@ -283,14 +294,7 @@ class SettIndi(object):
         if not self.ui.shareIndiServer.isChecked():
             return False
 
-        ports = [self.ui.environPort,
-                 self.ui.coverPort,
-                 self.ui.imagingPort,
-                 self.ui.domePort,
-                 self.ui.skymeterPort,
-                 self.ui.telescopePort,
-                 self.ui.powerPort,
-                 ]
+        ports = list(self.indiDevices[name]['port'] for name in self.indiDevices)
 
         if self.sender() not in ports:
             return False
@@ -542,6 +546,43 @@ class SettIndi(object):
         return True
 
     def showCoverDeviceDisconnected(self, deviceName):
+        """
+        showCoverDeviceDisconnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.deviceStat['cover'] = False
+        self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
+        return True
+
+
+    def showIndiDisconnected(self):
+        """
+        showIndiDisconnected writes info to message window and recolors the status
+
+        :return: true for test purpose
+        """
+        a = self.sender()
+        print(a)
+
+        self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
+        return True
+
+    def showDeviceConnected(self, deviceName):
+        """
+        showCoverDeviceConnected changes the style of related ui groups to make it clear
+        to the user, which function is actually available
+
+        :return: true for test purpose
+        """
+
+        self.deviceStat['cover'] = True
+        self.ui.coverDevice.setStyleSheet(self.BACK_GREEN)
+        return True
+
+    def showDeviceDisconnected(self, deviceName):
         """
         showCoverDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available

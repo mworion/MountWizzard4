@@ -319,7 +319,7 @@ class MainWindow(MWidget,
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'ManageModel')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 
-        if self.deviceStat['mount']:
+        if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
         else:
@@ -327,7 +327,7 @@ class MainWindow(MWidget,
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 
-        if self.deviceStat['environment']:
+        if self.deviceStat.get('environment', False):
             self.ui.environGroup.setEnabled(True)
             self.ui.refractionGroup.setEnabled(True)
             self.ui.setRefractionManual.setEnabled(True)
@@ -336,7 +336,7 @@ class MainWindow(MWidget,
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
 
-        if self.deviceStat['skymeter']:
+        if self.deviceStat.get('skymeter', False):
             self.ui.skymeterGroup.setEnabled(True)
         else:
             self.ui.skymeterGroup.setEnabled(False)
@@ -344,7 +344,7 @@ class MainWindow(MWidget,
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 
-        if self.deviceStat['power']:
+        if self.deviceStat.get('power', False):
             self.ui.powerGroup.setEnabled(True)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
         else:
@@ -405,7 +405,7 @@ class MainWindow(MWidget,
         """
 
         for device, ui in self.deviceStatGui.items():
-            if self.deviceStat[device] is None:
+            if self.deviceStat.get(device, None) is None:
                 self.changeStyleDynamic(ui, 'color', 'gray')
             elif self.deviceStat[device]:
                 self.changeStyleDynamic(ui, 'color', 'green')

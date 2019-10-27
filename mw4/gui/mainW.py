@@ -104,7 +104,7 @@ class MainWindow(MWidget,
         }
         self.deviceStatGui = {'dome': self.ui.domeConnected,
                               'imaging': self.ui.imagingConnected,
-                              'environment': self.ui.environConnected,
+                              'environ': self.ui.environConnected,
                               'astrometry': self.ui.astrometryConnected,
                               'mount': self.ui.mountConnected}
 

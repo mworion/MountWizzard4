@@ -86,7 +86,7 @@ class KMRelay(PyQt5.QtCore.QObject):
     def checkFormat(self, value):
         # checking format
         if not value:
-            self.logger.error(f'Wrong host value: {value}')
+            self.logger.info('Host value not configured')
             return None
         if not isinstance(value, (tuple, str)):
             self.logger.error(f'Wrong host value: {value}')

@@ -99,7 +99,6 @@ class SettIndi(object):
                  },
             }
 
-
         # signals from functions
         for name, item in self.indiDevices.items():
             item['uiName'].currentIndexChanged.connect(item['dispatch'])

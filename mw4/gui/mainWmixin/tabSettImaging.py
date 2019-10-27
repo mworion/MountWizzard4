@@ -102,7 +102,7 @@ class SettImaging(object):
         coolerTemp = self.app.imaging.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
         coolerPower = self.app.imaging.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
         coolerOn = self.app.imaging.data.get('CCD_COOLER.COOLER_ON', False)
-        downloadFast = self.app.imaging.data.get('READOUT_QUALITY.QUALITY_LOW', True)
+        downloadFast = self.app.imaging.data.get('READOUT_QUALITY.QUALITY_LOW', False)
 
         filterNumber = self.app.imaging.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'

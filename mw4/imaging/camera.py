@@ -81,6 +81,9 @@ class Camera(indiClass.IndiClass):
         self.signals = CameraSignals()
         self.imagePath = ''
         self.filterNames = dict()
+        self.filterNumber = 0
+        self.coolerTemp = 0
+        self.coolerPower = 0
         self.pixelSizeX = 0
         self.pixelSizeY = 0
         self.pixelX = 0
@@ -151,19 +154,15 @@ class Camera(indiClass.IndiClass):
         if propertyName == 'CCD_INFO':
             if element == 'CCD_PIXEL_SIZE_X':
                 self.pixelSizeX = value
-                self.app.mainW.ui.pixelSizeX.setText(f'{value:2.2f}')
                 return True
             elif element == 'CCD_PIXEL_SIZE_Y':
                 self.pixelSizeY = value
-                self.app.mainW.ui.pixelSizeY.setText(f'{value:2.2f}')
                 return True
             elif element == 'CCD_MAX_X':
                 self.pixelX = value
-                self.app.mainW.ui.pixelX.setText(f'{value:5.0f}')
                 return True
             elif element == 'CCD_MAX_Y':
                 self.pixelY = value
-                self.app.mainW.ui.pixelY.setText(f'{value:5.0f}')
                 return True
 
         return False
@@ -204,12 +203,7 @@ class Camera(indiClass.IndiClass):
 
         if propertyName == 'FILTER_SLOT':
             if element == 'FILTER_SLOT_VALUE':
-                self.app.mainW.ui.filterNumber.setText(f'{value:1.0f}')
-                if not self.filterNames:
-                    return False
-                key = f'FILTER_SLOT_NAME_{value:1.0f}'
-                text = self.filterNames.get(key, 'not found')
-                self.app.mainW.ui.filterText.setText(f'{text}')
+                self.filterNumber = value
             return True
 
         if propertyName == 'CCD_ROTATION':
@@ -219,7 +213,12 @@ class Camera(indiClass.IndiClass):
 
         if propertyName == 'CCD_TEMPERATURE':
             if element == 'CCD_TEMPERATURE_VALUE':
-                self.app.mainW.ui.coolerTemp.setText(f'{value:3.1f}')
+                self.coolerTemp = value
+            return True
+
+        if propertyName == 'CCD_COOLER_POWER':
+            if element == 'CCD_COOLER_VALUE':
+                self.coolerPower = value
             return True
 
         return False
@@ -242,7 +241,7 @@ class Camera(indiClass.IndiClass):
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            # print(propertyName, element, value)
+            print(propertyName, element, value)
 
             self.setPixelSize(propertyName=propertyName, element=element, value=value)
             self.setExposureState(propertyName=propertyName, value=value)
@@ -551,3 +550,38 @@ class Camera(indiClass.IndiClass):
                                         )
 
         return suc
+
+    def setDownloadMode(self, fastReadout=False):
+        """
+
+        :return:
+        """
+
+        # setting fast mode:
+        quality = self.device.getSwitch('READOUT_QUALITY')
+        self.logger.debug(f'camera has readout quality entry: {quality}')
+        quality['QUALITY_LOW'] = fastReadout
+        quality['QUALITY_HIGH'] = not fastReadout
+        self.client.sendNewSwitch(deviceName=self.name,
+                                  propertyName='READOUT_QUALITY',
+                                  elements=quality,
+                                  )
+
+        return True
+
+    def sendCoolerTemp(self, temperature=0):
+        """
+
+        :param temperature:
+        :return: true for test purpose
+        """
+
+        # setting fast mode:
+        temp = self.device.getNumber('CCD_TEMPERATURE')
+        temp['CCD_TEMPERATURE_VALUE'] = temperature
+        self.client.sendNewNumber(deviceName=self.name,
+                                  propertyName='CCD_TEMPERATURE',
+                                  elements=temp,
+                                  )
+
+        return True

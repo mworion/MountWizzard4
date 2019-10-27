@@ -166,3 +166,23 @@ class FlipFlat(indiClass.IndiClass):
             # print('light', propertyName, element, value)
 
         return True
+
+    def sendCoverPark(self, park=True):
+        """
+
+        :param park:
+        :return: true fot test purpose
+        """
+
+        if self.device is None:
+            return False
+
+        cover = self.device.getSwitch('CAP_PARK')
+
+        cover['UNPARK'] = park
+        cover['PARK'] = not park
+        self.client.sendNewSwitch(deviceName=self.name,
+                                  propertyName='CAP_PARK',
+                                  elements=cover,
+                                  )
+        return True

@@ -11948,7 +11948,7 @@ When clicking the button, you could change the value.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -13393,7 +13393,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>20</y>
          <width>366</width>
-         <height>146</height>
+         <height>171</height>
         </rect>
        </property>
        <property name="title">
@@ -13479,9 +13479,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_41">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>210</x>
           <y>20</y>
-          <width>121</width>
+          <width>86</width>
           <height>21</height>
          </rect>
         </property>
@@ -13491,15 +13491,15 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>Binning (X, Y equal)</string>
+         <string>Binning</string>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="binning">
         <property name="geometry">
          <rect>
-          <x>320</x>
+          <x>265</x>
           <y>20</y>
-          <width>41</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -13610,7 +13610,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>100</y>
+          <y>125</y>
           <width>166</width>
           <height>20</height>
          </rect>
@@ -13690,7 +13690,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>120</y>
+          <y>145</y>
           <width>231</width>
           <height>21</height>
          </rect>
@@ -13713,6 +13713,178 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
        </widget>
+       <widget class="QLineEdit" name="coolerTemp">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>95</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Shows the actual set slew rate for the mount.
+When clicking the button, you could change the value.</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="cursorPosition">
+         <number>1</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_402">
+        <property name="geometry">
+         <rect>
+          <x>175</x>
+          <y>95</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>°</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_400">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>95</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Cooler Temp</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="coolerPower">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>265</x>
+          <y>95</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Shows the time until meridian is reached</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_401">
+        <property name="geometry">
+         <rect>
+          <x>215</x>
+          <y>95</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Power</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_298">
+        <property name="geometry">
+         <rect>
+          <x>340</x>
+          <y>95</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>%</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_26">
        <property name="geometry">
@@ -13720,7 +13892,7 @@ When clicking the button, you could change the value.</string>
          <x>400</x>
          <y>20</y>
          <width>366</width>
-         <height>226</height>
+         <height>201</height>
         </rect>
        </property>
        <property name="title">
@@ -14701,93 +14873,12 @@ When clicking the button, you could change the value.</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="label_400">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>195</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Cooler Temp</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="coolerTemp">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>195</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_402">
-        <property name="geometry">
-         <rect>
-          <x>145</x>
-          <y>195</y>
-          <width>16</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>°</string>
-        </property>
-       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_30">
        <property name="geometry">
         <rect>
          <x>195</x>
-         <y>175</y>
+         <y>205</y>
          <width>176</width>
          <height>76</height>
         </rect>
@@ -14915,7 +15006,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>175</y>
+         <y>205</y>
          <width>176</width>
          <height>76</height>
         </rect>
@@ -15079,7 +15170,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>280</y>
+         <y>255</y>
          <width>366</width>
          <height>101</height>
         </rect>
@@ -15320,7 +15411,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>260</y>
+         <y>295</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -20242,7 +20333,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>145</y>
          <width>366</width>
-         <height>91</height>
+         <height>96</height>
         </rect>
        </property>
        <property name="title">
@@ -20255,9 +20346,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>12</y>
+          <y>20</y>
           <width>75</width>
-          <height>71</height>
+          <height>66</height>
          </rect>
         </property>
         <property name="text">
@@ -20268,7 +20359,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>15</y>
+          <y>20</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -20281,7 +20372,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>40</y>
+          <y>45</y>
           <width>106</width>
           <height>21</height>
          </rect>
@@ -20294,7 +20385,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>155</x>
-          <y>65</y>
+          <y>70</y>
           <width>66</width>
           <height>21</height>
          </rect>
@@ -20318,7 +20409,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>90</x>
-          <y>65</y>
+          <y>70</y>
           <width>66</width>
           <height>21</height>
          </rect>
@@ -20342,7 +20433,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>65</y>
+          <y>70</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -20369,7 +20460,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>135</x>
-          <y>15</y>
+          <y>20</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -20417,7 +20508,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>135</x>
-          <y>40</y>
+          <y>45</y>
           <width>101</width>
           <height>21</height>
          </rect>

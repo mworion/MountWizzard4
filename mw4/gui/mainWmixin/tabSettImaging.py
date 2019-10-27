@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 # external packages
+import PyQt5
 import numpy as np
 # local import
 
@@ -37,8 +38,10 @@ class SettImaging(object):
         self.app.cover.client.signals.newNumber.connect(self.updateCoverStatGui)
 
         # gui actions
-        self.ui.coverPark.clicked.connect(self.sendCoverPark)
-        self.ui.coverUnpark.clicked.connect(self.sendCoverUnpark)
+        self.ui.coverPark.clicked.connect(self.setCoverPark)
+        self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
+        self.ui.checkFastDownload.clicked.connect(self.setDownloadMode)
+        self.clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
 
     def initConfig(self):
         """
@@ -90,6 +93,24 @@ class SettImaging(object):
         pixelSizeY = self.app.imaging.pixelSizeY
         pixelX = self.app.imaging.pixelX
         pixelY = self.app.imaging.pixelY
+        filterNumber = self.app.imaging.filterNumber
+        filterNames = self.app.imaging.filterNames
+        coolerTemp = self.app.imaging.coolerTemp
+        coolerPower = self.app.imaging.coolerPower
+
+        self.ui.pixelSizeX.setText(f'{pixelSizeX:2.2f}')
+        self.ui.pixelSizeY.setText(f'{pixelSizeY:2.2f}')
+        self.ui.pixelX.setText(f'{pixelX:5.0f}')
+        self.ui.pixelY.setText(f'{pixelY:5.0f}')
+        self.ui.filterNumber.setText(f'{filterNumber:1.0f}')
+        self.ui.coolerTemp.setText(f'{coolerTemp:3.1f}')
+        self.ui.coolerPower.setText(f'{coolerPower:3.1f}')
+
+        if not filterNames:
+            return False
+        key = f'FILTER_SLOT_NAME_{filterNumber:1.0f}'
+        text = filterNames.get(key, 'not found')
+        self.ui.filterText.setText(f'{text}')
 
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
@@ -137,47 +158,61 @@ class SettImaging(object):
         value = self.app.cover.data.get('Motor', '-')
         self.ui.coverMotorText.setText(value)
 
-    def sendCoverPark(self):
+    def setCoverPark(self):
         """
 
-        :return: true fot test purpose
+        :return: success
         """
 
-        device = self.app.cover.device
-        name = self.app.cover.name
-        client = self.app.cover.client
-
-        if device is None:
-            return False
-
-        cover = device.getSwitch('CAP_PARK')
-
-        cover['UNPARK'] = False
-        cover['PARK'] = True
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='CAP_PARK',
-                             elements=cover,
-                             )
+        self.app.cover.sendCoverPark(park=True)
         return True
 
-    def sendCoverUnpark(self):
+    def setCoverUnpark(self):
         """
 
-        :return: true fot test purpose
+        :return: success
         """
 
-        device = self.app.cover.device
-        name = self.app.cover.name
-        client = self.app.cover.client
+        self.app.cover.sendCoverPark(park=False)
+        return True
 
-        if device is None:
+    def setCoolerTemp(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        msg = PyQt5.QtWidgets.QMessageBox
+        actValue = self.app.imaging.coolerTemp
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when not connected !')
+            return False
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set cooler temperature',
+                               'Value (-20..+20):',
+                               actValue,
+                               -20,
+                               20,
+                               1,
+                               )
+
+        if not ok:
             return False
 
-        cover = device.getSwitch('CAP_PARK')
-        cover['UNPARK'] = True
-        cover['PARK'] = False
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='CAP_PARK',
-                             elements=cover,
-                             )
+        self.app.imaging.sendCoolerTemp(temperature=value)
+
+        return True
+
+    def setDownloadMode(self):
+        """
+
+        :return:
+        """
+
+        mode = self.ui.checkFastDownload.isChecked()
+        self.app.imaging.setDownloadMode(fastReadout=mode)
+
         return True

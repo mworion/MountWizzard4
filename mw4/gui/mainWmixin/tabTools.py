@@ -102,7 +102,6 @@ class Tools(object):
         key = config.get('slewSpeed', 'high')
         self.slewSpeedSelected = key
         self.changeStyleDynamic(self.slewSpeeds[key], 'running', True)
-        self.slewSpeedFuncs[key]()
 
         return True
 

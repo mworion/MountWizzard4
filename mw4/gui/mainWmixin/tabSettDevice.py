@@ -205,13 +205,15 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.app.dome.stopCommunication()
         if self.ui.domeDevice.currentText().startswith('INDI'):
             self.app.dome.client.host = self.ui.domeHost.text()
+            if self.app.dome.name != self.ui.domeDeviceName.currentText():
+                self.app.dome.stopCommunication()
             self.app.dome.name = self.ui.domeDeviceName.currentText()
             self.app.dome.startCommunication()
             self.app.message.emit('Dome enabled', 0)
         else:
+            self.app.dome.stopCommunication()
             self.app.dome.name = ''
             self.app.message.emit('Dome disabled', 0)
             self.deviceStat['dome'] = None
@@ -227,13 +229,15 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.app.imaging.stopCommunication()
         if self.ui.imagingDevice.currentText().startswith('INDI'):
             self.app.imaging.client.host = self.ui.imagingHost.text()
+            if self.app.imaging.name != self.ui.imagingDeviceName.currentText():
+                self.app.imaging.stopCommunication()
             self.app.imaging.name = self.ui.imagingDeviceName.currentText()
             self.app.imaging.startCommunication()
             self.app.message.emit('Imaging enabled', 0)
         else:
+            self.app.imaging.stopCommunication()
             self.app.imaging.name = ''
             self.deviceStat['imaging'] = None
             self.app.message.emit('Imaging disabled', 0)
@@ -250,15 +254,17 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.app.environ.stopCommunication()
         if self.ui.environDevice.currentText().startswith('INDI'):
             self.app.environ.client.host = self.ui.environHost.text()
+            if self.app.environ.name != self.ui.environDeviceName.currentText():
+                self.app.environ.stopCommunication()
             self.app.environ.name = self.ui.environDeviceName.currentText()
             self.app.environ.startCommunication()
             self.app.message.emit('Environment enabled', 0)
         else:
+            self.app.environ.stopCommunication()
             self.app.environ.name = ''
-            self.deviceStat['environment'] = None
+            self.deviceStat['environ'] = None
             self.app.message.emit('Environment disabled', 0)
 
         return True
@@ -271,13 +277,15 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.app.skymeter.stopCommunication()
         if self.ui.skymeterDevice.currentText().startswith('INDI'):
             self.app.skymeter.client.host = self.ui.skymeterHost.text()
+            if self.app.skymeter.name != self.ui.skymeterDeviceName.currentText():
+                self.app.skymeter.stopCommunication()
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
             self.app.skymeter.startCommunication()
             self.app.message.emit('Skymeter enabled', 0)
         else:
+            self.app.skymeter.stopCommunication()
             self.app.skymeter.name = ''
             self.app.message.emit('Skymeter disabled', 0)
             self.deviceStat['skymeter'] = None
@@ -292,13 +300,15 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.app.cover.stopCommunication()
         if self.ui.coverDevice.currentText().startswith('INDI'):
             self.app.cover.client.host = self.ui.coverHost.text()
+            if self.app.cover.name != self.ui.coverDeviceName.currentText():
+                self.app.cover.stopCommunication()
             self.app.cover.name = self.ui.coverDeviceName.currentText()
             self.app.cover.startCommunication()
             self.app.message.emit('Cover enabled', 0)
         else:
+            self.app.cover.stopCommunication()
             self.app.cover.name = ''
             self.app.message.emit('Cover disabled', 0)
             self.deviceStat['cover'] = None
@@ -313,13 +323,15 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.app.telescope.stopCommunication()
         if self.ui.telescopeDevice.currentText().startswith('INDI'):
             self.app.telescope.client.host = self.ui.telescopeHost.text()
+            if self.app.telescope.name != self.ui.telescopeDeviceName.currentText():
+                self.app.telescope.stopCommunication()
             self.app.telescope.name = self.ui.telescopeDeviceName.currentText()
             self.app.telescope.startCommunication()
             self.app.message.emit('Telescope enabled', 0)
         else:
+            self.app.telescope.stopCommunication()
             self.app.telescope.name = ''
             self.app.message.emit('Telescope disabled', 0)
             self.deviceStat['telescope'] = None
@@ -334,13 +346,15 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        self.app.power.stopCommunication()
         if self.ui.powerDevice.currentText().startswith('INDI'):
+            self.app.power.client.host = self.ui.powerHost.text()
+            if self.app.power.name != self.ui.powerDeviceName.currentText():
+                self.app.power.stopCommunication()
+            self.app.power.name = self.ui.powerDeviceName.currentText()
             self.app.power.startCommunication()
             self.app.message.emit('Power enabled', 0)
-            self.app.power.client.host = self.ui.powerHost.text()
-            self.app.power.name = self.ui.powerDeviceName.currentText()
         else:
+            self.app.power.stopCommunication()
             self.app.power.name = ''
             self.app.message.emit('Power disabled', 0)
             self.deviceStat['power'] = None

@@ -105,9 +105,14 @@ class IndiClass(object):
             return suc
         return False
 
-    @staticmethod
-    def serverDisconnected():
-        return True
+    def serverDisconnected(self, devices):
+        """
+
+        :param devices:
+        :return:
+        """
+
+        pass
 
     def newDevice(self, deviceName):
         """

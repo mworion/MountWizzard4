@@ -327,7 +327,7 @@ class MainWindow(MWidget,
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 
-        if self.deviceStat.get('environment', False):
+        if self.deviceStat.get('environ', False):
             self.ui.environGroup.setEnabled(True)
             self.ui.refractionGroup.setEnabled(True)
             self.ui.setRefractionManual.setEnabled(True)

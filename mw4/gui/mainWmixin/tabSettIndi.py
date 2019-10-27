@@ -32,34 +32,12 @@ class SettIndi(object):
     """
 
     def __init__(self):
-        self.deviceNames = [self.ui.imagingDeviceName,
-                            self.ui.domeDeviceName,
-                            self.ui.environDeviceName,
-                            self.ui.skymeterDeviceName,
-                            self.ui.coverDeviceName,
-                            self.ui.powerDeviceName,
-                            self.ui.telescopeDeviceName,
-                            ]
-        self.deviceNameKeys = ['imagingDeviceName',
-                               'domeDeviceName',
-                               'environmentDeviceName',
-                               'skymeterDeviceName',
-                               'coverDeviceName',
-                               'powerDeviceName',
-                               'telescopeDeviceName',
-                               ]
-        self.indiSignals = [self.app.dome.client.signals,
-                            self.app.imaging.client.signals,
-                            self.app.environ.client.signals,
-                            self.app.cover.client.signals,
-                            self.app.skymeter.client.signals,
-                            self.app.telescope.client.signals,
-                            self.app.power.client.signals,
-                            ]
 
         self.indiDevices = {
             'dome':
                 {'uiName': self.ui.domeDeviceName,
+                 'uiDevice': self.ui.domeDevice,
+                 'class': self.app.dome,
                  'dispatch': self.domeDispatch,
                  'signals': self.app.dome.client.signals,
                  'port': self.ui.domePort,
@@ -67,6 +45,8 @@ class SettIndi(object):
                  },
             'imaging':
                 {'uiName': self.ui.imagingDeviceName,
+                 'uiDevice': self.ui.imagingDevice,
+                 'class': self.app.imaging,
                  'dispatch': self.imagingDispatch,
                  'signals': self.app.imaging.client.signals,
                  'port': self.ui.imagingPort,
@@ -74,6 +54,8 @@ class SettIndi(object):
                  },
             'environ':
                 {'uiName': self.ui.environDeviceName,
+                 'uiDevice': self.ui.environDevice,
+                 'class': self.app.environ,
                  'dispatch': self.environDispatch,
                  'signals': self.app.environ.client.signals,
                  'port': self.ui.environPort,
@@ -81,6 +63,8 @@ class SettIndi(object):
                  },
             'cover':
                 {'uiName': self.ui.coverDeviceName,
+                 'uiDevice': self.ui.coverDevice,
+                 'class': self.app.cover,
                  'dispatch': self.coverDispatch,
                  'signals': self.app.cover.client.signals,
                  'port': self.ui.coverPort,
@@ -88,6 +72,8 @@ class SettIndi(object):
                  },
             'skymeter':
                 {'uiName': self.ui.skymeterDeviceName,
+                 'uiDevice': self.ui.skymeterDevice,
+                 'class': self.app.skymeter,
                  'dispatch': self.skymeterDispatch,
                  'signals': self.app.skymeter.client.signals,
                  'port': self.ui.skymeterPort,
@@ -95,6 +81,8 @@ class SettIndi(object):
                  },
             'telescope':
                 {'uiName': self.ui.telescopeDeviceName,
+                 'uiDevice': self.ui.telescopeDevice,
+                 'class': self.app.telescope,
                  'dispatch': self.telescopeDispatch,
                  'signals': self.app.telescope.client.signals,
                  'port': self.ui.telescopePort,
@@ -102,6 +90,8 @@ class SettIndi(object):
                  },
             'power':
                 {'uiName': self.ui.powerDeviceName,
+                 'uiDevice': self.ui.powerDevice,
+                 'class': self.app.power,
                  'dispatch': self.powerDispatch,
                  'signals': self.app.power.client.signals,
                  'port': self.ui.powerPort,
@@ -109,53 +99,17 @@ class SettIndi(object):
                  },
             }
 
-        self.setupDeviceNameGui()
 
-        # all internal signal for handling
-        sig = self.app.dome.client.signals
-        sig.serverDisconnected.connect(self.showIndiDomeDisconnected)
-        sig.deviceConnected.connect(self.showDomeDeviceConnected)
-        sig.deviceDisconnected.connect(self.showDomeDeviceDisconnected)
-
-        sig = self.app.imaging.client.signals
-        sig.serverDisconnected.connect(self.showIndiImagingDisconnected)
-        sig.deviceConnected.connect(self.showImagingDeviceConnected)
-        sig.deviceDisconnected.connect(self.showImagingDeviceDisconnected)
-
-        sig = self.app.environ.client.signals
-        sig.serverDisconnected.connect(self.showIndiEnvironDisconnected)
-        sig.deviceConnected.connect(self.showEnvironDeviceConnected)
-        sig.deviceDisconnected.connect(self.showEnvironDeviceDisconnected)
-
-        sig = self.app.cover.client.signals
-        sig.serverDisconnected.connect(self.showIndiCoverDisconnected)
-        sig.deviceConnected.connect(self.showCoverDeviceConnected)
-        sig.deviceDisconnected.connect(self.showCoverDeviceDisconnected)
-
-        sig = self.app.skymeter.client.signals
-        sig.serverDisconnected.connect(self.showIndiSkymeterDisconnected)
-        sig.deviceConnected.connect(self.showSkymeterDeviceConnected)
-        sig.deviceDisconnected.connect(self.showSkymeterDeviceDisconnected)
-
-        sig = self.app.telescope.client.signals
-        sig.serverDisconnected.connect(self.showIndiTelescopeDisconnected)
-        sig.deviceConnected.connect(self.showTelescopeDeviceConnected)
-        sig.deviceDisconnected.connect(self.showTelescopeDeviceDisconnected)
-
-        sig = self.app.power.client.signals
-        sig.serverDisconnected.connect(self.showIndiPowerDisconnected)
-        sig.deviceConnected.connect(self.showPowerDeviceConnected)
-        sig.deviceDisconnected.connect(self.showPowerDeviceDisconnected)
-
-        # signals from gui
-
+        # signals from functions
         for name, item in self.indiDevices.items():
             item['uiName'].currentIndexChanged.connect(item['dispatch'])
             item['host'].editingFinished.connect(self.shareServerHost)
             item['port'].editingFinished.connect(self.shareServerPort)
-            #item['signals'].serverDisconnected.connect(self.showIndiDisconnected)
-            #item['signals'].deviceConnected.connect(self.showDeviceConnected)
-            #item['signals'].deviceDisconnected.connect(self.showDeviceDisconnected)
+            item['signals'].serverDisconnected.connect(self.showIndiDisconnected)
+            item['signals'].deviceConnected.connect(self.showDeviceConnected)
+            item['signals'].deviceDisconnected.connect(self.showDeviceDisconnected)
+
+        self.setupDeviceNameGui()
 
     def initConfig(self):
         """
@@ -203,7 +157,8 @@ class SettIndi(object):
         :return: success for test
         """
 
-        for dropDown in self.deviceNames:
+        dropDowns = list(self.indiDevices[name]['uiName'] for name in self.indiDevices)
+        for dropDown in dropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('No device driver selected')
@@ -319,255 +274,23 @@ class SettIndi(object):
         value = value.strip()
         return value
 
-    def showIndiDomeDisconnected(self):
-        """
-        showIndiDomeDisconnected writes info to message window and recolors the status
-
-        :return: true for test purpose
-        """
-
-        self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-    def showDomeDeviceConnected(self, deviceName):
-        """
-        showDomeDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.domeDevice.setStyleSheet(self.BACK_GREEN)
-        self.deviceStat['dome'] = True
-        return True
-
-    def showDomeDeviceDisconnected(self):
-        """
-        showDomeDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.domeDevice.setStyleSheet(self.BACK_NORM)
-        self.deviceStat['dome'] = False
-        return True
-
-    def showIndiImagingDisconnected(self):
-        """
-        showIndiImagingDisconnected writes info to message window and recolors the status
-
-        :return: true for test purpose
-        """
-
-        self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-    def showImagingDeviceConnected(self, deviceName):
-        """
-        showImagingDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.imagingDevice.setStyleSheet(self.BACK_GREEN)
-        self.deviceStat['imaging'] = True
-        return True
-
-    def showImagingDeviceDisconnected(self):
-        """
-        showImagingDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.imagingDevice.setStyleSheet(self.BACK_NORM)
-        self.deviceStat['imaging'] = False
-        return True
-
-    def showIndiEnvironDisconnected(self):
-        """
-        showIndiEnvironDisconnected writes info to message window and recolors the status
-
-        :return: true for test purpose
-        """
-
-        self.ui.environDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-    def showEnvironDeviceConnected(self, deviceName):
-        """
-        showEnvironDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.environDevice.setStyleSheet(self.BACK_GREEN)
-        self.deviceStat['environment'] = True
-        return True
-
-    def showEnvironDeviceDisconnected(self, deviceName):
-        """
-        showEnvironDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.environDevice.setStyleSheet(self.BACK_NORM)
-        self.deviceStat['environment'] = False
-        return True
-
-    def showIndiSkymeterDisconnected(self):
-        """
-        showIndiSkymeterDisconnected writes info to message window and recolors the status
-
-        :return: true for test purpose
-        """
-
-        self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-    def showSkymeterDeviceConnected(self, deviceName):
-        """
-        showSkymeterDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.skymeterDevice.setStyleSheet(self.BACK_GREEN)
-        self.deviceStat['skymeter'] = True
-        return True
-
-    def showSkymeterDeviceDisconnected(self, deviceName):
-        """
-        showSkymeterDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.skymeterDevice.setStyleSheet(self.BACK_NORM)
-        self.deviceStat['skymeter'] = False
-        return True
-
-    def showIndiTelescopeDisconnected(self):
-        """
-        showIndiTelescopeDisconnected writes info to message window and recolors the status
-
-        :return: true for test purpose
-        """
-
-        self.ui.telescopeDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-    def showTelescopeDeviceConnected(self, deviceName):
-        """
-        showTelescopeDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.telescopeDevice.setStyleSheet(self.BACK_GREEN)
-        self.deviceStat['telescope'] = True
-        return True
-
-    def showTelescopeDeviceDisconnected(self, deviceName):
-        """
-        showTelescopeDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.ui.telescopeDevice.setStyleSheet(self.BACK_NORM)
-        self.deviceStat['telescope'] = False
-        return True
-
-    def showIndiPowerDisconnected(self):
-        """
-        showIndiPowerDisconnected writes info to message window and recolors the status
-
-        :return: true for test purpose
-        """
-
-        self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-    def showPowerDeviceConnected(self, deviceName):
-        """
-        showPowerDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.deviceStat['power'] = True
-        self.ui.powerDevice.setStyleSheet(self.BACK_GREEN)
-        return True
-
-    def showPowerDeviceDisconnected(self, deviceName):
-        """
-        showPowerDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.deviceStat['power'] = False
-        self.ui.powerDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-    def showIndiCoverDisconnected(self):
-        """
-        showIndiCoverDisconnected writes info to message window and recolors the status
-
-        :return: true for test purpose
-        """
-
-        self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-    def showCoverDeviceConnected(self, deviceName):
-        """
-        showCoverDeviceConnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.deviceStat['cover'] = True
-        self.ui.coverDevice.setStyleSheet(self.BACK_GREEN)
-        return True
-
-    def showCoverDeviceDisconnected(self, deviceName):
-        """
-        showCoverDeviceDisconnected changes the style of related ui groups to make it clear
-        to the user, which function is actually available
-
-        :return: true for test purpose
-        """
-
-        self.deviceStat['cover'] = False
-        self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
-        return True
-
-
-    def showIndiDisconnected(self):
+    def showIndiDisconnected(self, deviceList):
         """
         showIndiDisconnected writes info to message window and recolors the status
 
         :return: true for test purpose
         """
-        a = self.sender()
-        print(a)
 
-        self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
+        if not deviceList:
+            return False
+
+        deviceName = list(deviceList.keys())[0]
+        print('disconnect', deviceList)
+
+        for device in self.indiDevices:
+            if self.indiDevices[device]['class'].name != deviceName:
+                continue
+            self.indiDevices[device]['uiDevice'].setStyleSheet(self.BACK_NORM)
         return True
 
     def showDeviceConnected(self, deviceName):
@@ -577,9 +300,13 @@ class SettIndi(object):
 
         :return: true for test purpose
         """
+        print('enable', deviceName)
 
-        self.deviceStat['cover'] = True
-        self.ui.coverDevice.setStyleSheet(self.BACK_GREEN)
+        for device in self.indiDevices:
+            if self.indiDevices[device]['class'].name != deviceName:
+                continue
+            self.indiDevices[device]['uiDevice'].setStyleSheet(self.BACK_GREEN)
+            self.deviceStat[device] = True
         return True
 
     def showDeviceDisconnected(self, deviceName):
@@ -589,7 +316,11 @@ class SettIndi(object):
 
         :return: true for test purpose
         """
+        print('disable', deviceName)
 
-        self.deviceStat['cover'] = False
-        self.ui.coverDevice.setStyleSheet(self.BACK_NORM)
+        for device in self.indiDevices:
+            if self.indiDevices[device]['class'].name != deviceName:
+                continue
+            self.indiDevices[device]['uiDevice'].setStyleSheet(self.BACK_NORM)
+            self.deviceStat[device] = False
         return True

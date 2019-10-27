@@ -45,6 +45,8 @@ class SettImaging(object):
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
         self.ui.coolerOff.clicked.connect(self.setCoolerOff)
         self.clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
+        self.clickable(self.ui.filterNumber).connect(self.setFilterNumber)
+        self.clickable(self.ui.filterName).connect(self.setFilterName)
 
     def initConfig(self):
         """
@@ -105,7 +107,7 @@ class SettImaging(object):
         filterNumber = self.app.imaging.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
         text = self.app.imaging.data.get(key, 'not found')
-        self.ui.filterText.setText(f'{text}')
+        self.ui.filterName.setText(f'{text}')
 
         self.ui.focalLength.setText(f'{focalLength:4.0f}')
         self.ui.aperture.setText(f'{aperture:3.0f}')
@@ -203,11 +205,11 @@ class SettImaging(object):
         setCoolerTemp sends the desired cooler temp and switches the cooler on.
         setting
 
-        :return: true for test purpose
+        :return: success
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = self.app.imaging.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
+        actValue = self.app.imaging.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
 
         if actValue is None:
             msg.critical(self,
@@ -228,6 +230,80 @@ class SettImaging(object):
             return False
 
         self.app.imaging.sendCoolerTemp(temperature=value)
+
+        return True
+
+    def setFilterNumber(self):
+        """
+        setFilterNumber sends the desired filter number.
+        setting
+
+        :return: success
+        """
+
+        msg = PyQt5.QtWidgets.QMessageBox
+        data = self.app.imaging.data
+
+        actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when not connected !')
+            return False
+
+        availNames = list(data[key] for key in data if 'FILTER_SLOT_NAME_' in key)
+        numberFilter = len(availNames)
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set filter number',
+                               f'Value (1..{numberFilter}):',
+                               actValue,
+                               1,
+                               numberFilter,
+                               1,
+                               )
+
+        if not ok:
+            return False
+
+        self.app.imaging.sendFilterNumber(filterNumber=value)
+
+        return True
+
+    def setFilterName(self):
+        """
+        setFilterName sends the desired filter name
+        setting
+
+        :return: success
+        """
+
+        msg = PyQt5.QtWidgets.QMessageBox
+        data = self.app.imaging.data
+
+        actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
+        if actValue is None:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when not connected !')
+            return False
+
+        availNames = list(data[key] for key in data if 'FILTER_SLOT_NAME_' in key)
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getItem(self,
+                                'Set filter',
+                                'Filter Name: ',
+                                availNames,
+                                actValue - 1,
+                                )
+
+        if not ok:
+            return False
+
+        number = availNames.index(value) + 1
+        self.app.imaging.sendFilterNumber(filterNumber=number)
 
         return True
 

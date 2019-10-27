@@ -504,7 +504,7 @@ class Camera(indiClass.IndiClass):
 
     def sendCoolerTemp(self, temperature=0):
         """
-        sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
+        sendCoolerTemp send the desired cooler temp, indi does automatically start cooler
 
         :param temperature:
         :return: success
@@ -516,6 +516,24 @@ class Camera(indiClass.IndiClass):
         suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_TEMPERATURE',
                                         elements=temp,
+                                        )
+
+        return suc
+
+    def sendFilterNumber(self, filterNumber=1):
+        """
+        sendFilterNumber send the desired filter number
+
+        :param filterNumber:
+        :return: success
+        """
+
+        # setting fast mode:
+        filterNo = self.device.getNumber('FILTER_SLOT')
+        filterNo['FILTER_SLOT_VALUE'] = filterNumber
+        suc = self.client.sendNewNumber(deviceName=self.name,
+                                        propertyName='FILTER_SLOT',
+                                        elements=filterNo,
                                         )
 
         return suc

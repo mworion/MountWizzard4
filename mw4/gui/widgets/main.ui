@@ -13877,7 +13877,7 @@ When clicking the button, you could change the value.</string>
          </rect>
         </property>
         <property name="text">
-         <string>Slow</string>
+         <string>High Qual</string>
         </property>
        </widget>
        <widget class="QPushButton" name="coolerOn">

@@ -156,8 +156,9 @@ class SettMisc(object):
 
     @staticmethod
     def isVenv():
-        return (hasattr(sys, 'real_prefix') or
-                (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
+        hasReal = hasattr(sys, 'real_prefix')
+        hasBase = hasattr(sys, 'base_prefix')
+        return hasReal or hasBase and sys.base_prefix != sys.prefix
 
     def runInstall(self, versionPackage='', timeout=30):
         """

@@ -125,6 +125,13 @@ class SettImaging(object):
             self.changeStyleDynamic(self.ui.coolerOn, 'running', False)
             self.changeStyleDynamic(self.ui.coolerOff, 'running', True)
 
+        if downloadFast:
+            self.changeStyleDynamic(self.ui.downloadFast, 'running', True)
+            self.changeStyleDynamic(self.ui.downloadSlow, 'running', False)
+        else:
+            self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
+            self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)
+
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
             resolutionY = pixelSizeY / focalLength * 206.265

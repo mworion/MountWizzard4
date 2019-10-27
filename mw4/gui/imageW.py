@@ -822,7 +822,6 @@ class ImageWindow(widget.MWidget):
             return False
 
         if result.success:
-            solve = result.solve
             text = f'Solved : '
             text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)} '
             text += f'({result.solve.raJ2000.hours:4.3f}), '

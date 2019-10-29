@@ -512,12 +512,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :param      status: connection status to mount computer
         :return:    status how it was called
         """
-        if status is None:
-            location = self.mount.obsSite.location
-            self.mount.resetData()
-            self.mount.obsSite.location = location
-            self.mountUp = False
-            return False
+
         if status and not self.mountUp:
             self.mount.getFW()
             self.mount.getLocation()
@@ -533,6 +528,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.obsSite.location = location
             self.mountUp = False
             return False
+        else:
+            pass
+
+        return status
 
     def slewDome(self, altitude=0, azimuth=0):
         """
@@ -541,6 +540,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :param azimuth:
         :return: success
         """
+
         # todo: is this the right position for this function ?
         if not self.mainW.deviceStat['dome']:
             return False
@@ -563,4 +563,5 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         text = f'Slewing  dome:      az correction: {geoStat}, delta: {azimuth-az:3.1f}°'
         self.message.emit(text, 0)
         self.dome.slewToAltAz(azimuth=az)
+
         return True

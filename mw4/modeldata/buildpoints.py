@@ -86,10 +86,11 @@ class DataPoint(object):
                'clearHorizonP',
                'generateCelestialEquator',
                'generateDSOPath',
+               'generateGoldenSpiral',
                'genAlign',
                'hip',
                ]
-    version = '0.100.0'
+
     logger = logging.getLogger(__name__)
 
     # data for generating greater circles, dec and step only for east, west is reversed
@@ -539,6 +540,9 @@ class DataPoint(object):
         :return: yields alt, az tuples which are above horizon
         """
 
+        if not self.app.mount.obsSite.location:
+            return False
+
         self.clearBuildP()
         lat = self.app.mount.obsSite.location.latitude.degrees
         for dec, step, start, stop in self.genHaDecParams(selection):
@@ -669,6 +673,9 @@ class DataPoint(object):
         """
 
         celestialEquator = list()
+        if not self.app.mount.obsSite.location:
+            return celestialEquator
+
         lat = self.app.mount.obsSite.location.latitude.degrees
         for dec in range(-15, 90, 15):
             for ha in range(- 119, 120, 2):

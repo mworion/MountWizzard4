@@ -74,6 +74,9 @@ class Mount(object):
         config = self.app.config['mainW']
         self.ui.checkJ2000.setChecked(config.get('checkJ2000', False))
         self.ui.checkJNow.setChecked(config.get('checkJNow', False))
+
+        # showing once location data, because without mount heartbeat it won't show up
+        self.updateLocGUI(self.app.mount.obsSite)
         return True
 
     def storeConfig(self):
@@ -454,13 +457,15 @@ class Mount(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        sett = self.app.mount.setting
-        actValue = sett.meridianLimitTrack
-        if actValue is None:
+        if not self.app.mountUp:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
             return False
+
+        sett = self.app.mount.setting
+        actValue = sett.meridianLimitTrack
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Meridian Limit Track',
@@ -488,14 +493,16 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.setting
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = sett.meridianLimitSlew
-        if actValue is None:
+        if not self.app.mountUp:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
             return False
+
+        sett = self.app.mount.setting
+        actValue = sett.meridianLimitSlew
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Meridian Limit Slew',
@@ -523,14 +530,16 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.setting
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = sett.horizonLimitHigh
-        if actValue is None:
+        if not self.app.mountUp:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
             return False
+
+        sett = self.app.mount.setting
+        actValue = sett.horizonLimitHigh
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Horizon Limit High',
@@ -558,14 +567,15 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.setting
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = sett.horizonLimitLow
-        if actValue is None:
+        if not self.app.mountUp:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
             return False
+
+        sett = self.app.mount.setting
+        actValue = sett.horizonLimitLow
 
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
@@ -593,14 +603,16 @@ class Mount(object):
 
         :return:    success as bool if value could be changed
         """
-        sett = self.app.mount.setting
+
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = sett.slewRate
-        if actValue is None:
+        if not self.app.mountUp:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
             return False
+
+        sett = self.app.mount.setting
+        actValue = sett.slewRate
 
         minRate = sett.slewRateMin
         maxRate = sett.slewRateMax
@@ -632,12 +644,7 @@ class Mount(object):
         """
 
         obs = self.app.mount.obsSite
-        msg = PyQt5.QtWidgets.QMessageBox
-        if obs.location is None:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
-            return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Longitude',
@@ -646,6 +653,17 @@ class Mount(object):
                                 obs.location.longitude.dstr(),
                                 )
         if not ok:
+            return False
+
+        topo = (value,
+                self.app.mount.obsSite.location.latitude,
+                self.app.mount.obsSite.elevation.m)
+        self.app.mount.obsSite.location = topo
+
+        self.app.mount.obsSite.location.longitude = stringToAngle(value)
+
+        if not self.app.mountUp:
+            self.updateLocGUI(obs)
             return False
 
         if obs.setLongitude(value):
@@ -664,12 +682,7 @@ class Mount(object):
         """
 
         obs = self.app.mount.obsSite
-        msg = PyQt5.QtWidgets.QMessageBox
-        if obs.location is None:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
-            return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Latitude',
@@ -678,6 +691,15 @@ class Mount(object):
                                 obs.location.latitude.dstr(),
                                 )
         if not ok:
+            return False
+
+        topo = (self.app.mount.obsSite.location.longitude,
+                value,
+                self.app.mount.obsSite.elevation.m)
+        self.app.mount.obsSite.location = topo
+
+        if not self.app.mountUp:
+            self.updateLocGUI(obs)
             return False
 
         if obs.setLatitude(value):
@@ -696,12 +718,7 @@ class Mount(object):
         """
 
         obs = self.app.mount.obsSite
-        msg = PyQt5.QtWidgets.QMessageBox
-        if obs.location is None:
-            msg.critical(self,
-                         'Error Message',
-                         'Value cannot be set when mount not connected !')
-            return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getDouble(self,
                                   'Set Site Elevation',
@@ -712,6 +729,15 @@ class Mount(object):
                                   1,
                                   )
         if not ok:
+            return False
+
+        topo = (self.app.mount.obsSite.location.longitude,
+                self.app.mount.obsSite.location.latitude,
+                value)
+        self.app.mount.obsSite.location = topo
+
+        if not self.app.mountUp:
+            self.updateLocGUI(obs)
             return False
 
         if obs.setElevation(value):
@@ -728,14 +754,15 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.setting
-
         msg = PyQt5.QtWidgets.QMessageBox
-        if sett.statusUnattendedFlip is None:
+        if not self.app.mountUp:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
             return False
+
+        sett = self.app.mount.setting
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Unattended Flip',
@@ -762,13 +789,15 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.setting
         msg = PyQt5.QtWidgets.QMessageBox
-        if sett.statusDualAxisTracking is None:
+        if not self.app.mountUp:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
             return False
+
+        sett = self.app.mount.setting
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Dual Axis Tracking',
@@ -795,13 +824,15 @@ class Mount(object):
         :return:    success as bool if value could be changed
         """
 
-        sett = self.app.mount.setting
         msg = PyQt5.QtWidgets.QMessageBox
-        if sett.statusRefraction is None:
+        if not self.app.mountUp:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
             return False
+
+        sett = self.app.mount.setting
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
                                 'Set Refraction Correction',

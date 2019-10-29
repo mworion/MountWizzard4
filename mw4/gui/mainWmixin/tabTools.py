@@ -50,10 +50,10 @@ class Tools(object):
                                    'Exp Time': ['EXPTIME'],
                                    'CCD Temp': ['CCD-TEMP'],
                                    }
-        self.slewSpeeds = {'max': self.ui.slewSpeedLow,
-                           'high': self.ui.slewSpeedMed,
-                           'med': self.ui.slewSpeedHigh,
-                           'low': self.ui.slewSpeedMax,
+        self.slewSpeeds = {'max': self.ui.slewSpeedMax,
+                           'high': self.ui.slewSpeedHigh,
+                           'med': self.ui.slewSpeedMed,
+                           'low': self.ui.slewSpeedLow,
                            }
         self.slewSpeedFuncs = {'max': self.app.mount.setting.setSlewSpeedMax,
                                'high': self.app.mount.setting.setSlewSpeedHigh,

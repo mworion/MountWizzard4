@@ -28,6 +28,7 @@ import PyQt5.QtMultimedia
 import requests
 from importlib_metadata import version
 # local import
+from mw4.base import tpool
 
 
 class SettMisc(object):
@@ -41,6 +42,7 @@ class SettMisc(object):
         self.audioSignalsSet = dict()
         self.guiAudioList = dict()
         self.process = None
+        self.mutexInstall = PyQt5.QtCore.QMutex()
 
         self.setupAudioSignals()
 
@@ -160,7 +162,7 @@ class SettMisc(object):
         hasBase = hasattr(sys, 'base_prefix')
         return hasReal or hasBase and sys.base_prefix != sys.prefix
 
-    def runInstall(self, versionPackage='', timeout=30):
+    def runInstall(self, versionPackage='', timeout=10):
         """
         runInstall enables the virtual environment and install via pip the desired
         package version
@@ -170,11 +172,6 @@ class SettMisc(object):
         :return: success
         """
 
-        """
-        runnable = ['pip',
-                    'list',
-                    ]
-        """
         runnable = ['pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
@@ -206,6 +203,24 @@ class SettMisc(object):
                               )
 
         success = (self.process.returncode == 0)
+        return success, versionPackage
+
+    def installFinished(self, result):
+        """
+
+        :param result:
+        :return:
+        """
+
+        success, versionPackage = result
+        if success:
+            self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 1)
+            self.app.message.emit('Please restart to enable new version', 1)
+        else:
+            self.app.message.emit(f'Could not install MountWizzard4 {versionPackage}', 2)
+        self.mutexInstall.unlock()
+        self.changeStyleDynamic(self.ui.installVersion, 'running', False)
+
         return success
 
     def installVersion(self):
@@ -218,15 +233,19 @@ class SettMisc(object):
             self.app.message.emit('Not running in Virtual Environment', 2)
             return False
 
+        if not self.mutexInstall.tryLock():
+            self.app.message.emit('Install already running', 2)
+            return False
+
         versionPackage = self.ui.versionAvailable.text()
-        self.app.message.emit('Installing MountWizzard4 please wait', 1)
-        suc = self.runInstall(versionPackage=versionPackage)
-        if suc:
-            self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 0)
-            self.app.message.emit('Please restart to enable new version', 0)
-        else:
-            self.app.message.emit(f'Cannot install MountWizzard4 {versionPackage}', 2)
-        return suc
+        self.changeStyleDynamic(self.ui.installVersion, 'running', True)
+        self.app.message.emit('Installing selected version ... please wait', 1)
+
+        worker = tpool.Worker(self.runInstall,
+                              versionPackage=versionPackage)
+
+        worker.signals.result.connect(self.installFinished)
+        self.threadPool.start(worker)
 
     def updateFwGui(self, fw):
         """

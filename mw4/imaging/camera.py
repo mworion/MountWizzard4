@@ -421,7 +421,8 @@ class Camera(indiClass.IndiClass):
 
         suc = self.setupFrameCompress()
         if not suc:
-            return False
+            if not suc:
+                self.logger.info('Camera has no compression settings')
 
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:

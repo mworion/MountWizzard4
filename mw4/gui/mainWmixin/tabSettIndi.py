@@ -181,9 +181,11 @@ class SettIndi(object):
         self.indiDevices['imaging']['uiName'].addItem('Sony DSLR')
         self.indiDevices['imaging']['uiName'].addItem('Starfish CCD')
         self.indiDevices['imaging']['uiName'].addItem('V4L2 CCD')
-        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI 120 MC')
-        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI 1600 MC')
-        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI 1600 MM Pro')
+        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI120MC')
+        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI1600MC')
+        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI290MM Mini')
+        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI1600MM Pro')
+        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI1600MM-Cool')
 
         self.indiDevices['dome']['uiName'].addItem('Baader Dome')
         self.indiDevices['dome']['uiName'].addItem('Dome Scripting Gateway')
@@ -201,7 +203,7 @@ class SettIndi(object):
         self.indiDevices['environ']['uiName'].addItem('Weather Meta')
         self.indiDevices['environ']['uiName'].addItem('Weather Simulator')
         self.indiDevices['environ']['uiName'].addItem('Weather Watcher')
-        self.indiDevices['environ']['uiName'].addItem('WonderGround')
+        self.indiDevices['environ']['uiName'].addItem('WunderGround')
 
         self.indiDevices['skymeter']['uiName'].addItem('SQM')
         self.indiDevices['telescope']['uiName'].addItem('LX200 10micron')

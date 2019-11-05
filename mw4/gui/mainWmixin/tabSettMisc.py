@@ -55,8 +55,6 @@ class SettMisc(object):
         # setting ui signals
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
-        self.ui.loglevelWarning.clicked.connect(self.setLoggingLevel)
-        self.ui.loglevelError.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.versionAlpha.clicked.connect(self.showUpdates)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
@@ -74,8 +72,6 @@ class SettMisc(object):
         config = self.app.config['mainW']
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
-        self.ui.loglevelWarning.setChecked(config.get('loglevelWarning', False))
-        self.ui.loglevelError.setChecked(config.get('loglevelError', False))
         self.setLoggingLevel()
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.setupAudioGui()
@@ -99,8 +95,6 @@ class SettMisc(object):
         config = self.app.config['mainW']
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
-        config['loglevelWarning'] = self.ui.loglevelWarning.isChecked()
-        config['loglevelError'] = self.ui.loglevelError.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()

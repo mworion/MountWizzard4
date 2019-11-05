@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -11948,7 +11948,7 @@ When clicking the button, you could change the value.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -19710,7 +19710,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>15</x>
           <y>20</y>
-          <width>66</width>
+          <width>86</width>
           <height>21</height>
          </rect>
         </property>
@@ -19723,7 +19723,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Debug</string>
+         <string>Debugging</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -19734,7 +19734,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>115</x>
           <y>20</y>
-          <width>66</width>
+          <width>96</width>
           <height>21</height>
          </rect>
         </property>
@@ -19747,55 +19747,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Info</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="loglevelWarning">
-        <property name="geometry">
-         <rect>
-          <x>200</x>
-          <y>20</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Warn</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="loglevelError">
-        <property name="geometry">
-         <rect>
-          <x>285</x>
-          <y>20</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Error</string>
+         <string>Information</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -21961,8 +21913,6 @@ When clicking the button, you could change the value.</string>
   <tabstop>installVersion</tabstop>
   <tabstop>loglevelDebug</tabstop>
   <tabstop>loglevelInfo</tabstop>
-  <tabstop>loglevelWarning</tabstop>
-  <tabstop>loglevelError</tabstop>
   <tabstop>isOnline</tabstop>
   <tabstop>soundMountSlewFinished</tabstop>
   <tabstop>soundDomeSlewFinished</tabstop>

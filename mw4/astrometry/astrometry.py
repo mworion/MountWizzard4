@@ -132,12 +132,12 @@ class Astrometry:
 
         elif platform.system() == 'Linux':
             self.solverEnviron = {
-                'astrometry-glob': {
+                'astrometry.net local all': {
                     'programPath': '/usr/bin',
                     'indexPath': '/usr/share/astrometry',
                     'solver': self.solverNET,
                 },
-                'astrometry-local': {
+                'astrometry.net local user': {
                     'programPath': '/usr/local/astrometry/bin',
                     'indexPath': '/usr/share/astrometry',
                     'solver': self.solverNET,

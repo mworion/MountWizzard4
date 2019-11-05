@@ -96,7 +96,7 @@ def setupWorkDirs(mwGlob):
     :return: mwGlob
     """
 
-    mwGlob['modeldata'] = mainApp.MountWizzard4.__version__
+    mwGlob['modeldata'] = '4.0'
     mwGlob['bundleDir'] = ''
     mwGlob['frozen'] = False
     mwGlob['workDir'] = os.getcwd()

@@ -20,7 +20,7 @@ import sys
 import platform
 
 if platform.system() == 'Darwin':
-    sys.path.append('/Users/mw/PycharmProjects/MountWizzard4')
+    sys.path.append('/Users/q115346/PycharmProjects/MountWizzard4')
 elif platform.system() == 'Windows':
     sys.path.append('C:\\Users\\astro\\PycharmProjects\\MountWizzard4')
 else:

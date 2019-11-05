@@ -297,7 +297,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat1.figure
         figure.clf()
-        figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.3)
+        figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
         axe = figure.add_subplot(111, projection='3d')
 
         # switching all visual grids and planes off
@@ -388,7 +388,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat2.figure
         figure.clf()
-        figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.3)
+        figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
         axe = figure.add_subplot(111, projection='3d')
 
         # switching all visual grids and planes off

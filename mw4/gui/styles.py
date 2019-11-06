@@ -202,10 +202,6 @@ class MWStyles(object):
         color: rgb(32, 144, 196);
         background-color: #181818;
     }
-    QGroupBox:disabled{
-        color: #404040;
-        background-color: #381818;
-    }
     QGroupBox::title:disabled {
         color: #404040;
     }
@@ -215,6 +211,10 @@ class MWStyles(object):
     QGroupBox[refraction='true'] {
         border-width: 2px;
         border-color: rgb(32, 144, 192);
+    }
+    QGroupBox:disabled{
+        border-width: 2px;
+        border-color: red;
     }
     QGroupBox::indicator {
         border-width: 1px;

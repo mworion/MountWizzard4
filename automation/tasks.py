@@ -18,9 +18,11 @@
 ###########################################################
 import sys
 import platform
+from pathlib import Path
 
+home = str(Path.home())
 if platform.system() == 'Darwin':
-    sys.path.append('/Users/q115346/PycharmProjects/MountWizzard4')
+    sys.path.append(home + '/PycharmProjects/MountWizzard4')
 elif platform.system() == 'Windows':
     sys.path.append('C:\\Users\\astro\\PycharmProjects\\MountWizzard4')
 else:

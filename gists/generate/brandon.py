@@ -25,4 +25,4 @@ print(ra, dec, dist)
 
 # this calculation throws the named error
 alt, az, dist = observer.at(t).observe(starsDF).apparent().altaz()
-print(alt, au, dist)
+print(alt, dist)

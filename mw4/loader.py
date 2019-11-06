@@ -153,7 +153,7 @@ def setupLogging():
 
     :return: true for test purpose
     """
-    warnings.filterwarnings("ignore")
+    warnings.filterwarnings('ignore')
     name = 'mw4-{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
     logging.basicConfig(level=logging.DEBUG,
                         format='[%(asctime)s.%(msecs)03d]'

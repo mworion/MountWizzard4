@@ -80,6 +80,9 @@ class MWStyles(object):
         font-weight: normal;
         font-size: 13pt;
     }
+    QToolTip {
+        font-size: 13pt;
+    }
     """
     NON_MAC_STYLE = """
     QWidget {
@@ -107,6 +110,9 @@ class MWStyles(object):
         font-family: courier;
         font-weight: normal;
         font-size: 10pt;
+    }
+    QToolTip {
+        font-size: 13pt;
     }
     """
     BASIC_STYLE = """

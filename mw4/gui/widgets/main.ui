@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -468,7 +468,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Status feedback from mount </string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Display of right ascention in decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -510,7 +510,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Display of altitude</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display of altitude in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -579,7 +579,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Status feedback from mount </string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Display of declination in decimal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -663,7 +663,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Status feedback from mount </string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Display of hour angle in decimal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string>-</string>
@@ -801,7 +801,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Display of right ascention in HH:MM:SS</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display of hour angle in HH:MM:SS&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -849,7 +849,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Display of azimuth</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Display of azimuth in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1105,7 +1105,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows the status if the mount takes refraction parameters into account. When clicking the button, you could change the value.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the status if the mount takes refraction parameters into account. When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1192,8 +1192,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows the actual set slew rate for the mount.
-When clicking the button, you could change the value.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual set slew rate for the mount.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1340,8 +1339,7 @@ When clicking the button, you could change the value.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows the logitude of the site.
-When clicking the button, you could change the value.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the logitude of the site.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1521,8 +1519,7 @@ When clicking the button, you could change the value.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows the latitude of the site.
-When clicking the button, you could change the value.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the latitude of the site.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1633,8 +1630,7 @@ When clicking the button, you could change the value.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Status of unattended Flip.
-When clicking the button, you could change the value.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of unattended Flip.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1832,8 +1828,7 @@ When clicking the button, you could change the value.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Actual horizon limit for slewing for high values (upper boundary).
-When clicking the button, you could change the value.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual horizon limit for slewing for high values (upper boundary).&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1887,8 +1882,7 @@ When clicking the button, you could change the value.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows the elevation of the site.
-When clicking the button, you could change the value.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the elevation of the site.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1978,9 +1972,7 @@ When clicking the button, you could change the value.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows the amount of degrees when the mount will flip after the meridian is passed when slewing. Positive values show after meridian, negative values before meridian.
-When clicking the button, you could change the value.
-Please refer to the mount manual for details</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the amount of degrees when the mount will flip after the meridian is passed when slewing. Positive values show after meridian, negative values before meridian.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;p&gt;Please refer to the mount manual for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -2052,8 +2044,7 @@ Please refer to the mount manual for details</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Status of dual tracking.
-When clicking the button, you could change the value.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of dual tracking.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -2170,7 +2161,7 @@ When clicking the button, you could change the value.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows if the mount is synced to an attache GPS receiver.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows if the mount is synced to an attached GPS receiver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -2278,9 +2269,7 @@ When clicking the button, you could change the value.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows the amount of degrees when the mount will flip after the meridian is passed when tracking. Positive values show after meridian, negative values before meridian.
-When clicking the button, you could change the value.
-Please refer to the mount manual for details</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the amount of degrees when the mount will flip after the meridian is passed when tracking. Positive values show after meridian, negative values before meridian.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;p&gt;Please refer to the mount manual for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -2688,8 +2677,7 @@ Please refer to the mount manual for details</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Actual horizon limit for slewing for low limit (lower boundary).
-When clicking the button, you could change the value.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual horizon limit for slewing for low limit (lower boundary).&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -20665,7 +20653,7 @@ When clicking the button, you could change the value.</string>
      <bool>false</bool>
     </property>
     <property name="toolTip">
-     <string>Status feedback from mount </string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status feedback from solver source&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string/>
@@ -21079,7 +21067,7 @@ When clicking the button, you could change the value.</string>
      <bool>false</bool>
     </property>
     <property name="toolTip">
-     <string>Status feedback from mount </string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status feedback from imaging source&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string/>
@@ -21272,7 +21260,7 @@ When clicking the button, you could change the value.</string>
      <bool>false</bool>
     </property>
     <property name="toolTip">
-     <string>Status feedback from mount </string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status feedback from dome if connected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string/>
@@ -21384,7 +21372,7 @@ When clicking the button, you could change the value.</string>
      <bool>false</bool>
     </property>
     <property name="toolTip">
-     <string>Shows the actual selected profile name.</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual utc of site&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string>-</string>

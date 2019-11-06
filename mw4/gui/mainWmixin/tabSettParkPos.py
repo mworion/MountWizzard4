@@ -213,6 +213,7 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
+
         self.app.mount.geometry.offPlateOTA = self.ui.offOTA.value()
         self.ui.offGEM.setValue(self.app.mount.geometry.offGEM)
         return True
@@ -222,6 +223,7 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
+
         value = self.ui.offGEM.value()
         value = max(value, self.app.mount.geometry.offGemPlate)
         self.ui.offGEM.setValue(value)
@@ -234,6 +236,7 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
+
         self.app.mount.geometry.domeRadius = self.ui.domeDiameter.value() / 2
         return True
 
@@ -242,6 +245,7 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
+
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         return True
 
@@ -250,6 +254,7 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
+
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
         return True
 
@@ -258,5 +263,6 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
+
         self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
         return True

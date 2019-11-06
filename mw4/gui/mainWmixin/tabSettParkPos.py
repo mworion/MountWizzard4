@@ -189,6 +189,12 @@ class SettParkPos(object):
         """
 
         obs = self.app.mount.obsSite
+
+        if not obs.Alt:
+            return False
+        if not obs.Az:
+            return False
+
         for button, alt, az in zip(self.posSaveButtons,
                                    self.posAlt,
                                    self.posAz,

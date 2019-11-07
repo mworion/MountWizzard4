@@ -176,10 +176,12 @@ class SettDevice(object):
         if self.ui.remoteDevice.currentText() == 'Built-In':
             self.app.remote.startRemote()
             self.app.message.emit('Remote enabled', 0)
+            self.deviceStat['remote'] = True
             self.ui.remoteDevice.setStyleSheet(self.BACK_GREEN)
         else:
             self.app.remote.stopRemote()
             self.app.message.emit('Remote disabled', 0)
+            self.deviceStat['remote'] = None
             self.ui.remoteDevice.setStyleSheet(self.BACK_NORM)
 
         return True
@@ -194,10 +196,12 @@ class SettDevice(object):
         if self.ui.measureDevice.currentText().startswith('Built-In'):
             self.app.measure.startMeasurement()
             self.app.message.emit('Measurement enabled', 0)
+            self.deviceStat['measure'] = True
             self.ui.measureDevice.setStyleSheet(self.BACK_GREEN)
         else:
             self.app.measure.stopMeasurement()
             self.app.message.emit('Measurement disabled', 0)
+            self.deviceStat['measure'] = None
             self.ui.measureDevice.setStyleSheet(self.BACK_NORM)
 
         return True
@@ -219,6 +223,7 @@ class SettDevice(object):
             self.app.dome.name = self.ui.domeDeviceName.currentText()
             self.app.dome.startCommunication()
             self.app.message.emit('Dome enabled', 0)
+            self.deviceStat['dome'] = False
         else:
             self.app.dome.stopCommunication()
             self.app.dome.name = ''
@@ -243,11 +248,12 @@ class SettDevice(object):
             self.app.imaging.name = self.ui.imagingDeviceName.currentText()
             self.app.imaging.startCommunication()
             self.app.message.emit('Imaging enabled', 0)
+            self.deviceStat['imaging'] = False
         else:
             self.app.imaging.stopCommunication()
             self.app.imaging.name = ''
-            self.deviceStat['imaging'] = None
             self.app.message.emit('Imaging disabled', 0)
+            self.deviceStat['imaging'] = None
 
         return True
 
@@ -268,11 +274,12 @@ class SettDevice(object):
             self.app.environ.name = self.ui.environDeviceName.currentText()
             self.app.environ.startCommunication()
             self.app.message.emit('Environment enabled', 0)
+            self.deviceStat['environ'] = False
         else:
             self.app.environ.stopCommunication()
             self.app.environ.name = ''
-            self.deviceStat['environ'] = None
             self.app.message.emit('Environment disabled', 0)
+            self.deviceStat['environ'] = None
 
         return True
 
@@ -291,6 +298,7 @@ class SettDevice(object):
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
             self.app.skymeter.startCommunication()
             self.app.message.emit('Skymeter enabled', 0)
+            self.deviceStat['skymeter'] = False
         else:
             self.app.skymeter.stopCommunication()
             self.app.skymeter.name = ''
@@ -314,6 +322,7 @@ class SettDevice(object):
             self.app.cover.name = self.ui.coverDeviceName.currentText()
             self.app.cover.startCommunication()
             self.app.message.emit('Cover enabled', 0)
+            self.deviceStat['cover'] = False
         else:
             self.app.cover.stopCommunication()
             self.app.cover.name = ''
@@ -337,6 +346,7 @@ class SettDevice(object):
             self.app.telescope.name = self.ui.telescopeDeviceName.currentText()
             self.app.telescope.startCommunication()
             self.app.message.emit('Telescope enabled', 0)
+            self.deviceStat['telescope'] = False
         else:
             self.app.telescope.stopCommunication()
             self.app.telescope.name = ''
@@ -360,6 +370,7 @@ class SettDevice(object):
             self.app.power.name = self.ui.powerDeviceName.currentText()
             self.app.power.startCommunication()
             self.app.message.emit('Power enabled', 0)
+            self.deviceStat['power'] = False
         else:
             self.app.power.stopCommunication()
             self.app.power.name = ''

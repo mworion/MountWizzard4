@@ -101,6 +101,9 @@ class MainWindow(MWidget,
             'cover': None,
             'telescope': None,
             'power': None,
+            'remote': None,
+            'relay': None,
+            'measure': None,
         }
         self.deviceStatGui = {'dome': self.ui.domeConnected,
                               'imaging': self.ui.imagingConnected,
@@ -327,39 +330,62 @@ class MainWindow(MWidget,
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 
-        if self.deviceStat.get('environ', False):
+        stat = self.deviceStat.get('environ', None)
+        if stat is None:
+            self.ui.environGroup.setFixedWidth(0)
+            self.ui.environGroup.setEnabled(False)
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
+        elif stat:
+            self.ui.environGroup.setMaximumSize(16777215, 16777215)
             self.ui.environGroup.setEnabled(True)
             self.ui.refractionGroup.setEnabled(True)
             self.ui.setRefractionManual.setEnabled(True)
         else:
+            self.ui.environGroup.setMaximumSize(16777215, 16777215)
             self.ui.environGroup.setEnabled(False)
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
 
-        if self.deviceStat.get('skymeter', False):
+        stat = self.deviceStat.get('skymeter', None)
+        if stat is None:
+            self.ui.skymeterGroup.setFixedWidth(0)
+            self.ui.skymeterGroup.setEnabled(False)
+        elif stat:
+            self.ui.skymeterGroup.setMaximumSize(16777215, 16777215)
             self.ui.skymeterGroup.setEnabled(True)
         else:
+            self.ui.skymeterGroup.setMaximumSize(16777215, 16777215)
             self.ui.skymeterGroup.setEnabled(False)
 
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 
-        if self.deviceStat.get('power', False):
+        stat = self.deviceStat.get('power', None)
+        if stat is None:
+            self.ui.powerGroup.setFixedWidth(0)
+            self.ui.powerGroup.setEnabled(False)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+        elif stat:
+            self.ui.powerGroup.setMaximumSize(16777215, 16777215)
             self.ui.powerGroup.setEnabled(True)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
         else:
+            self.ui.powerGroup.setMaximumSize(16777215, 16777215)
             self.ui.powerGroup.setEnabled(False)
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
 
-        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-
-        # get index for both relay tabs
+        # get index for both relay tabs under main
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, self.deviceStat['relay'])
+
+        # and setting
         tabWidget2 = self.ui.settingsTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'KMTronic')
         tabIndex2 = self.ui.settingsTabWidget.indexOf(tabWidget2)
-        self.ui.mainTabWidget.setTabEnabled(tabIndex, self.deviceStat['relay'])
         self.ui.settingsTabWidget.setTabEnabled(tabIndex2, self.deviceStat['relay'])
+
+        # redraw tabs
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
         self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
 

@@ -47,6 +47,10 @@ class SettDevice(object):
                 'uiDriver': self.ui.environDevice,
                 'dispatch': self.environDispatch,
             },
+            'weather': {
+                'uiDriver': self.ui.weatherDevice,
+                'dispatch': self.weatherDispatch,
+            },
             'cover': {
                 'uiDriver': self.ui.coverDevice,
                 'dispatch': self.coverDispatch,
@@ -134,6 +138,7 @@ class SettDevice(object):
         self.drivers['dome']['uiDriver'].addItem('INDI')
         self.drivers['imaging']['uiDriver'].addItem('INDI')
         self.drivers['environ']['uiDriver'].addItem('INDI')
+        self.drivers['weather']['uiDriver'].addItem('Built-In')
         self.drivers['cover']['uiDriver'].addItem('INDI')
         self.drivers['skymeter']['uiDriver'].addItem('INDI')
         self.drivers['telescope']['uiDriver'].addItem('INDI')
@@ -398,3 +403,10 @@ class SettDevice(object):
             self.ui.astrometryDevice.setStyleSheet(self.BACK_NORM)
 
         return True
+
+    def weatherDispatch(self):
+        """
+
+        :return:
+        """
+        pass

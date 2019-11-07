@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -11927,7 +11927,7 @@ When clicking the button, you could change the value.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -12314,7 +12314,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>170</y>
          <width>366</width>
-         <height>86</height>
+         <height>121</height>
         </rect>
        </property>
        <property name="title">
@@ -12382,6 +12382,41 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>160</x>
           <y>20</y>
+          <width>200</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QLabel" name="env_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>146</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Weather Device</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="weatherDevice">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>80</y>
           <width>200</width>
           <height>25</height>
          </rect>

@@ -337,12 +337,12 @@ class MainWindow(MWidget,
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
         elif stat:
-            self.ui.environGroup.setMaximumSize(16777215, 16777215)
+            self.ui.environGroup.setMinimumSize(80, 0)
             self.ui.environGroup.setEnabled(True)
             self.ui.refractionGroup.setEnabled(True)
             self.ui.setRefractionManual.setEnabled(True)
         else:
-            self.ui.environGroup.setMaximumSize(16777215, 16777215)
+            self.ui.environGroup.setMinimumSize(80, 0)
             self.ui.environGroup.setEnabled(False)
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
@@ -352,10 +352,10 @@ class MainWindow(MWidget,
             self.ui.skymeterGroup.setFixedWidth(0)
             self.ui.skymeterGroup.setEnabled(False)
         elif stat:
-            self.ui.skymeterGroup.setMaximumSize(16777215, 16777215)
+            self.ui.skymeterGroup.setMinimumSize(80, 0)
             self.ui.skymeterGroup.setEnabled(True)
         else:
-            self.ui.skymeterGroup.setMaximumSize(16777215, 16777215)
+            self.ui.skymeterGroup.setMinimumSize(80, 0)
             self.ui.skymeterGroup.setEnabled(False)
 
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
@@ -367,11 +367,11 @@ class MainWindow(MWidget,
             self.ui.powerGroup.setEnabled(False)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
         elif stat:
-            self.ui.powerGroup.setMaximumSize(16777215, 16777215)
+            self.ui.powerGroup.setMinimumSize(80, 0)
             self.ui.powerGroup.setEnabled(True)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
         else:
-            self.ui.powerGroup.setMaximumSize(16777215, 16777215)
+            self.ui.powerGroup.setMinimumSize(80, 0)
             self.ui.powerGroup.setEnabled(False)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
 

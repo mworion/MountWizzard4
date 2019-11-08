@@ -205,8 +205,6 @@ class Weather(object):
 
         if not self.app.mainW:
             return False
-            # todo: move gui parts to gui
-
         if not self.keyAPI:
             return False
         if not self.online:

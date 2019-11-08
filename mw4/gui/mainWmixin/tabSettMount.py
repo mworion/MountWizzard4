@@ -56,6 +56,7 @@ class SettMount(object):
         self.mountMAC()
         self.ui.rackCompMAC.setText(config.get('rackCompMAC', ''))
         self.ui.openWeatherMapKey.setText(config.get('openWeatherMapKey', ''))
+        self.setOpenWeatherMapAPIKey()
 
         return True
 
@@ -197,6 +198,6 @@ class SettMount(object):
         if not weather:
             return False
 
-        weather.keyAPI = self.app.mainW.ui.popenWeatherMapKey.text()
+        weather.keyAPI = self.ui.openWeatherMapKey.text()
 
         return True

@@ -203,8 +203,6 @@ class Weather(object):
         :return: success
         """
 
-        if not self.app.mainW:
-            return False
         if not self.keyAPI:
             return False
         if not self.online:
@@ -216,10 +214,9 @@ class Weather(object):
         loc = self.app.mount.obsSite.location
         lat = loc.latitude.degrees
         lon = loc.longitude.degrees
-        apiKey = self.app.mainW.ui.openWeatherMapKey.text()
 
         webSite = 'http://api.openweathermap.org/data/2.5/forecast'
-        url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={apiKey}'
+        url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={self.keyAPI}'
         self.getOpenWeatherMapData(url=url)
 
         return True

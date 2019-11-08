@@ -30,7 +30,7 @@ class Weather(object):
     """
     the class Skymeter inherits all information and handling of the Skymeter device
 
-        >>> weather = Weather()
+        >>> weather = Weather(app, threadPool)
     """
 
     __all__ = ['Weather',
@@ -40,13 +40,15 @@ class Weather(object):
 
     def __init__(self,
                  app=None,
+                 threadPool=None,
                  ):
         self.app = app
+        self.threadPool = threadPool
 
         self.data = {}
         self.running = False
 
-        self.app.update10m.connect(self.updateOpenWeatherMapData)
+        self.app.update10s.connect(self.updateOpenWeatherMapData)
 
     def startCommunication(self):
         """
@@ -179,6 +181,10 @@ class Weather(object):
         :return: success
         """
 
+        if not self.app.mainW:
+            return False
+            # todo: move gui parts to gui
+
         if not self.app.mainW.ui.isOnline.isChecked():
             return False
         if not self.app.mainW.ui.openWeatherMapKey.text():
@@ -190,7 +196,7 @@ class Weather(object):
         loc = self.app.mount.obsSite.location
         lat = loc.latitude.degrees
         lon = loc.longitude.degrees
-        apiKey = self.ui.app.mainW.openWeatherMapKey.text()
+        apiKey = self.app.mainW.ui.openWeatherMapKey.text()
 
         webSite = 'http://api.openweathermap.org/data/2.5/forecast'
         url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={apiKey}'

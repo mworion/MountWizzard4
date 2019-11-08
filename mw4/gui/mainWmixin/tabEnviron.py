@@ -85,8 +85,6 @@ class Environ(object):
 
         self.refractionSource = config.get('refractionSource', 1)
         self.setRefractionSourceGui()
-
-        self.ui.openWeatherMapKey.setText(config.get('openWeatherMapKey', ''))
         self.updateClearOutside()
 
         return True
@@ -104,7 +102,6 @@ class Environ(object):
         config['checkRefracCont'] = self.ui.checkRefracCont.isChecked()
         config['checkRefracNoTrack'] = self.ui.checkRefracNoTrack.isChecked()
         config['refractionSource'] = self.refractionSource
-        config['openWeatherMapKey'] = self.ui.openWeatherMapKey.text()
 
         return True
 

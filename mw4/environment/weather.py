@@ -47,8 +47,30 @@ class Weather(object):
 
         self.data = {}
         self.running = False
+        self._keyAPI = ''
+        self._online = False
 
         self.app.update10s.connect(self.updateOpenWeatherMapData)
+
+    @property
+    def keyAPI(self):
+        return self._keyAPI
+
+    @keyAPI.setter
+    def keyAPI(self, value):
+        self._keyAPI = value
+        if value:
+            self.updateOpenWeatherMapData()
+
+    @property
+    def online(self):
+        return self._online
+
+    @online.setter
+    def online(self, value):
+        self._online = value
+        if value:
+            self.updateOpenWeatherMapData()
 
     def startCommunication(self):
         """
@@ -185,9 +207,9 @@ class Weather(object):
             return False
             # todo: move gui parts to gui
 
-        if not self.app.mainW.ui.isOnline.isChecked():
+        if not self.keyAPI:
             return False
-        if not self.app.mainW.ui.openWeatherMapKey.text():
+        if not self.online:
             return False
         if not self.running:
             return False

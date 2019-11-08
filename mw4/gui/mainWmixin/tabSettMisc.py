@@ -56,6 +56,7 @@ class SettMisc(object):
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.showUpdates)
+        self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.versionAlpha.clicked.connect(self.showUpdates)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
@@ -74,6 +75,7 @@ class SettMisc(object):
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
         self.setLoggingLevel()
         self.ui.isOnline.setChecked(config.get('isOnline', False))
+        self.setWeatherOnline()
         self.setupAudioGui()
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
@@ -100,6 +102,21 @@ class SettMisc(object):
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
         config['soundMountAlert'] = self.ui.soundMountAlert.currentIndex()
         config['soundModelingFinished'] = self.ui.soundModelingFinished.currentIndex()
+
+        return True
+
+    def setWeatherOnline(self):
+        """
+
+        :return: success
+        """
+
+        weather = self.app.weather
+
+        if not weather:
+            return False
+
+        weather.online = self.ui.isOnline.isChecked()
 
         return True
 

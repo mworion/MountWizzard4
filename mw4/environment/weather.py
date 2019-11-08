@@ -21,11 +21,12 @@
 import logging
 # external packages
 import numpy as np
+import requests
 # local imports
 from mw4.base.tpool import Worker
 
 
-class Weather():
+class Weather(object):
     """
     the class Skymeter inherits all information and handling of the Skymeter device
 
@@ -36,9 +37,6 @@ class Weather():
                ]
 
     logger = logging.getLogger(__name__)
-
-    # update rate to 1 seconds for setting indi server
-    UPDATE_RATE = 1
 
     def __init__(self,
                  app=None,
@@ -121,7 +119,7 @@ class Weather():
         dewPoint = (B * alpha) / (A - alpha)
         return dewPoint
 
-    def updateDate(self, data=None):
+    def updateData(self, data=None):
         """
         updateDate takes the returned data from a web fetch and puts the data in a dict
 
@@ -129,6 +127,7 @@ class Weather():
 
         :return: success
         """
+
         if data is None:
             return False
 
@@ -157,9 +156,9 @@ class Weather():
 
         return True
 
-    def getOpenWeatherMap(self, url=''):
+    def getOpenWeatherMapData(self, url=''):
         """
-        getOpenWeatherMap initiates the worker thread to get the web data fetched
+        getOpenWeatherMapData initiates the worker thread to get the web data fetched
 
         :param url:
         :return: true for test purpose
@@ -180,9 +179,9 @@ class Weather():
         :return: success
         """
 
-        if not self.ui.isOnline.isChecked():
+        if not self.app.mainW.ui.isOnline.isChecked():
             return False
-        if not self.ui.openWeatherMapKey.text():
+        if not self.app.mainW.ui.openWeatherMapKey.text():
             return False
         if not self.running:
             return False
@@ -191,11 +190,11 @@ class Weather():
         loc = self.app.mount.obsSite.location
         lat = loc.latitude.degrees
         lon = loc.longitude.degrees
-        apiKey = self.ui.openWeatherMapKey.text()
+        apiKey = self.ui.app.mainW.openWeatherMapKey.text()
 
         webSite = 'http://api.openweathermap.org/data/2.5/forecast'
         url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={apiKey}'
-        self.getOpenWeatherMap(url=url)
+        self.getOpenWeatherMapData(url=url)
 
         return True
 

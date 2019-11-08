@@ -66,6 +66,7 @@ class Environ(object):
 
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
+        self.app.update1s.connect(self.updateOpenWeatherMapGui)
         self.app.update10s.connect(self.updateRefractionParameters)
         self.app.update30m.connect(self.updateClearOutside)
 
@@ -437,16 +438,26 @@ class Environ(object):
         """
 
         data = self.app.weather.data
+        if not data:
+            return False
 
         self.clearOpenWeatherMapGui()
 
-        self.ui.weatherTemp.setText(f'{data["temperature"]:4.1f}')
-        self.ui.weatherPress.setText(f'{data["pressure"]:5.1f}')
-        self.ui.weatherHumidity.setText(f'{data["humidity"]:3.0f}')
-        self.ui.weatherDewPoint.setText(f'{data["dewPoint"]:4.1f}')
-        self.ui.weatherCloudCover.setText(f'{data["cloudCover"]:3.0f}')
-        self.ui.weatherWindSpeed.setText(f'{data["windSpeed"]:3.0f}')
-        self.ui.weatherWindDir.setText(f'{data["windDir"]:3.0f}')
-        self.ui.weatherRainVol.setText(f'{data["rain"]:5.2f}')
+        if 'temperature' in data:
+            self.ui.weatherTemp.setText(f'{data["temperature"]:4.1f}')
+        if 'pressure' in data:
+            self.ui.weatherPress.setText(f'{data["pressure"]:5.1f}')
+        if 'humidity' in data:
+            self.ui.weatherHumidity.setText(f'{data["humidity"]:3.0f}')
+        if 'dewPoint' in data:
+            self.ui.weatherDewPoint.setText(f'{data["dewPoint"]:4.1f}')
+        if 'cloudCover' in data:
+            self.ui.weatherCloudCover.setText(f'{data["cloudCover"]:3.0f}')
+        if 'windSpeed' in data:
+            self.ui.weatherWindSpeed.setText(f'{data["windSpeed"]:3.0f}')
+        if 'windDir' in data:
+            self.ui.weatherWindDir.setText(f'{data["windDir"]:3.0f}')
+        if 'rain' in data:
+            self.ui.weatherRainVol.setText(f'{data["rain"]:5.2f}')
 
         return True

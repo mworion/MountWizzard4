@@ -383,7 +383,7 @@ def test_updateOpenWeatherMap_1():
     app.mainW.ui.isOnline.setChecked(False)
     app.mainW.ui.openWeatherMapKey.setText('')
 
-    suc = app.mainW.updateOpenWeatherMap()
+    suc = app.mainW.updateOpenWeatherMapData()
     assert not suc
 
 
@@ -391,7 +391,7 @@ def test_updateOpenWeatherMap_2():
     app.mainW.ui.isOnline.setChecked(True)
     app.mainW.ui.openWeatherMapKey.setText('')
 
-    suc = app.mainW.updateOpenWeatherMap()
+    suc = app.mainW.updateOpenWeatherMapData()
     assert not suc
 
 
@@ -399,7 +399,7 @@ def test_updateOpenWeatherMap_3():
     app.mainW.ui.isOnline.setChecked(True)
     app.mainW.ui.openWeatherMapKey.setText('key')
 
-    suc = app.mainW.updateOpenWeatherMap()
+    suc = app.mainW.updateOpenWeatherMapData()
     assert suc
 
 

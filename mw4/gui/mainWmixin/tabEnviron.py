@@ -61,15 +61,12 @@ class Environ(object):
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
-        self.ui.isOnline.stateChanged.connect(self.updateOpenWeatherMap)
-        self.ui.openWeatherMapKey.editingFinished.connect(self.updateOpenWeatherMap)
         self.ui.weatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.environGroup.clicked.connect(self.selectRefractionSource)
 
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update10s.connect(self.updateRefractionParameters)
-        self.app.update10m.connect(self.updateOpenWeatherMap)
         self.app.update30m.connect(self.updateClearOutside)
 
     def initConfig(self):
@@ -90,7 +87,6 @@ class Environ(object):
 
         self.ui.openWeatherMapKey.setText(config.get('openWeatherMapKey', ''))
         self.updateClearOutside()
-        self.updateOpenWeatherMap()
 
         return True
 
@@ -433,106 +429,24 @@ class Environ(object):
 
         return True
 
-    @staticmethod
-    def getDewPoint(tempAir, relativeHumidity):
+    def updateOpenWeatherMapGui(self):
         """
-        Compute the dew point in degrees Celsius
+        updateOpenWeatherMapGui takes the returned data from the dict to the Gui
 
-        :param tempAir: current ambient temperature in degrees Celsius
-        :param relativeHumidity: relative humidity in %
-        :return: the dew point in degrees Celsius
-        """
-
-        if tempAir < -40 or tempAir > 80:
-            return 0
-        if relativeHumidity < 0 or relativeHumidity > 100:
-            return 0
-
-        A = 17.27
-        B = 237.7
-        alpha = ((A * tempAir) / (B + tempAir)) + np.log(relativeHumidity / 100.0)
-        dewPoint = (B * alpha) / (A - alpha)
-        return dewPoint
-
-    def updateOpenWeatherMapGui(self, data=None):
-        """
-        updateOpenWeatherMapGui takes the returned data from a web fetch and puts the data
-        to the Gui
-
-        :param data:
         :return: True for test purpose
         """
 
-        if data is None:
-            return False
-
-        val = data.json()
-
-        if 'list' not in val:
-            return False
-        if len(val['list']) == 0:
-            return False
-
-        val = val['list'][0]
+        data = self.app.weather.data
 
         self.clearOpenWeatherMapGui()
-        if 'main' in val:
-            temp = val['main']['temp'] - 273.15
-            press = val['main']['grnd_level']
-            humid = val['main']['humidity']
-            dewPoint = self.getDewPoint(temp, humid)
-            self.ui.weatherTemp.setText(f'{temp:4.1f}')
-            self.ui.weatherPress.setText(f'{press:5.1f}')
-            self.ui.weatherHumidity.setText(f'{humid:3.0f}')
-            self.ui.weatherDewPoint.setText(f'{dewPoint:4.1f}')
-        if 'clouds' in val:
-            self.ui.weatherCloudCover.setText(f'{val["clouds"]["all"]:3.0f}')
-        if 'wind' in val:
-            self.ui.weatherWindSpeed.setText(f'{val["wind"]["speed"]:3.0f}')
-            self.ui.weatherWindDir.setText(f'{val["wind"]["deg"]:3.0f}')
-        if 'rain' in val:
-            self.ui.weatherRainVol.setText(f'{val["rain"]["3h"]:5.2f}')
 
-        return True
-
-    def getOpenWeatherMap(self, url=''):
-        """
-        getOpenWeatherMap initiates the worker thread to get the web data fetched
-
-        :param url:
-        :return: true for test purpose
-        """
-
-        worker = Worker(self.getWebDataWorker, url)
-        worker.signals.result.connect(self.updateOpenWeatherMapGui)
-        self.threadPool.start(worker)
-
-        return True
-
-    def updateOpenWeatherMap(self):
-        """
-        updateOpenWeatherMap downloads the actual OpenWeatherMap image and displays it in
-        environment tab. it checks first if online is set, otherwise not download will take
-        place. it will be updated every 10 minutes.
-
-        :return: success
-        """
-
-        if not self.ui.isOnline.isChecked():
-            self.clearOpenWeatherMapGui()
-            return False
-        if not self.ui.openWeatherMapKey.text():
-            self.clearOpenWeatherMapGui()
-            return False
-
-        # prepare coordinates for website
-        loc = self.app.mount.obsSite.location
-        lat = loc.latitude.degrees
-        lon = loc.longitude.degrees
-        apiKey = self.ui.openWeatherMapKey.text()
-
-        webSite = 'http://api.openweathermap.org/data/2.5/forecast'
-        url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={apiKey}'
-        self.getOpenWeatherMap(url=url)
+        self.ui.weatherTemp.setText(f'{data["temperature"]:4.1f}')
+        self.ui.weatherPress.setText(f'{data["pressure"]:5.1f}')
+        self.ui.weatherHumidity.setText(f'{data["humidity"]:3.0f}')
+        self.ui.weatherDewPoint.setText(f'{data["dewPoint"]:4.1f}')
+        self.ui.weatherCloudCover.setText(f'{data["cloudCover"]:3.0f}')
+        self.ui.weatherWindSpeed.setText(f'{data["windSpeed"]:3.0f}')
+        self.ui.weatherWindDir.setText(f'{data["windDir"]:3.0f}')
+        self.ui.weatherRainVol.setText(f'{data["rain"]:5.2f}')
 
         return True

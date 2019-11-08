@@ -409,4 +409,16 @@ class SettDevice(object):
 
         :return:
         """
-        pass
+
+        if self.ui.weatherDevice.currentText().startswith('Built-In'):
+            self.app.weather.startCommunication()
+            self.app.message.emit('Weather enabled', 0)
+            self.deviceStat['weather'] = True
+            self.ui.weatherDevice.setStyleSheet(self.BACK_GREEN)
+        else:
+            self.app.weather.stopCommunication()
+            self.app.message.emit('Weather disabled', 0)
+            self.deviceStat['weather'] = None
+            self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
+
+        return True

@@ -116,6 +116,7 @@ class EnvironGui(object):
 
         :return: success
         """
+
         for source, group in self.refractionSources.items():
             if self.refractionSource == source:
                 self.changeStyleDynamic(group, 'refraction', True)
@@ -137,7 +138,11 @@ class EnvironGui(object):
         for source, group in self.refractionSources.items():
             if group != self.sender():
                 continue
-            self.refractionSource = source
+            if group.isChecked():
+                self.refractionSource = source
+            else:
+                self.refractionSource = ''
+
         self.setRefractionSourceGui()
 
         return True

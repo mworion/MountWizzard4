@@ -485,7 +485,10 @@ class MainWindow(MWidget,
         # setting the selected source right at this point as it is synchronous if
         # state is switching
 
-        self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
+        if self.refractionSource in self.deviceStat:
+            self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
+        else:
+            self.deviceStat['environOverall'] = None
 
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device, None) is None:

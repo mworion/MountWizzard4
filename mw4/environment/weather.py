@@ -180,6 +180,7 @@ class Weather(object):
         if 'list' not in val:
             self.signals.connected.emit(False)
             return False
+
         if len(val['list']) == 0:
             self.csignals.onnected.emit(False)
             return False

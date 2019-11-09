@@ -287,7 +287,7 @@ class MeasureWindow(widget.MWidget):
         axe.plot(data['time'][start:-1:cycle],
                  data['raJNow'][start:-1:cycle],
                  marker='o',
-                 markersize=1,
+                 markersize=3,
                  color=self.M_WHITE,
                  )
         axe.grid(True, color=self.M_GREY, alpha=1)
@@ -327,7 +327,7 @@ class MeasureWindow(widget.MWidget):
         axe.plot(data['time'][start:-1:cycle],
                  data['decJNow'][start:-1:cycle],
                  marker='o',
-                 markersize=1,
+                 markersize=3,
                  color=self.M_WHITE,
                  )
         axe.grid(True, color=self.M_GREY, alpha=1)
@@ -367,44 +367,44 @@ class MeasureWindow(widget.MWidget):
                        fontsize=12)
         r1, = axe.plot(data['time'][start:-1:cycle],
                        data['envTemp'][start:-1:cycle],
-                       marker='o',
-                       markersize=1,
+                       marker='.',
+                       markersize=3,
                        color=self.M_WHITE,
                        )
         r2, = axe.plot(data['time'][start:-1:cycle],
                        data['powTemp'][start:-1:cycle],
-                       marker='o',
-                       markersize=1,
+                       marker='.',
+                       markersize=3,
                        color=self.M_PINK,
                        )
         r3, = axe.plot(data['time'][start:-1:cycle],
                        data['skyTemp'][start:-1:cycle],
-                       marker='o',
-                       markersize=1,
+                       marker='.',
+                       markersize=3,
                        color=self.M_YELLOW,
                        )
         r4, = axe.plot(data['time'][start:-1:cycle],
                        data['weatherTemp'][start:-1:cycle],
-                       marker='o',
-                       markersize=1,
+                       marker='.',
+                       markersize=3,
                        color=self.M_GREEN,
                        )
         r5, = axe.plot(data['time'][start:-1:cycle],
                        data['envDew'][start:-1:cycle],
-                       marker=':',
-                       markersize=1,
+                       marker='d',
+                       markersize=3,
                        color=self.M_WHITE,
                        )
         r6, = axe.plot(data['time'][start:-1:cycle],
                        data['powDew'][start:-1:cycle],
-                       marker=':',
-                       markersize=1,
+                       marker='d',
+                       markersize=3,
                        color=self.M_PINK,
                        )
         r7, = axe.plot(data['time'][start:-1:cycle],
                        data['weatherDew'][start:-1:cycle],
-                       marker=':',
-                       markersize=1,
+                       marker='d',
+                       markersize=3,
                        color=self.M_GREEN,
                        )
         legend = axe.legend([r1, r2, r3, r4, r5, r6, r7],
@@ -452,13 +452,13 @@ class MeasureWindow(widget.MWidget):
         r1, = axe.plot(data['time'][start:-1:cycle],
                        data['envPress'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_WHITE,
                        )
         r2, = axe.plot(data['time'][start:-1:cycle],
                        data['weatherPress'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_WHITE,
                        )
         legend = axe.legend([r1, r2],
@@ -506,19 +506,19 @@ class MeasureWindow(widget.MWidget):
         r1, = axe.plot(data['time'][start:-1:cycle],
                        data['envHum'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_WHITE,
                        )
         r2, = axe.plot(data['time'][start:-1:cycle],
                        data['powHum'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_PINK,
                        )
         r3, = axe.plot(data['time'][start:-1:cycle],
                        data['weatherHum'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_RED,
                        )
         legend = axe.legend([r1, r2, r3],
@@ -565,7 +565,7 @@ class MeasureWindow(widget.MWidget):
         axe.plot(data['time'][start:-1:cycle],
                  data['skySQR'][start:-1:cycle],
                  marker='o',
-                 markersize=1,
+                 markersize=3,
                  color=self.M_WHITE,
                  )
         axe.grid(True, color=self.M_GREY, alpha=1)
@@ -605,7 +605,7 @@ class MeasureWindow(widget.MWidget):
         axe.plot(data['time'][start:-1:cycle],
                  data['powVolt'][start:-1:cycle],
                  marker='o',
-                 markersize=1,
+                 markersize=3,
                  color=self.M_WHITE,
                  )
         axe.grid(True, color=self.M_GREY, alpha=1)
@@ -645,31 +645,31 @@ class MeasureWindow(widget.MWidget):
         r1, = axe.plot(data['time'][start:-1:cycle],
                        data['powCurr'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_WHITE,
                        )
         r2, = axe.plot(data['time'][start:-1:cycle],
                        data['powCurr1'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_PINK,
                        )
         r3, = axe.plot(data['time'][start:-1:cycle],
                        data['powCurr2'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_YELLOW,
                        )
         r4, = axe.plot(data['time'][start:-1:cycle],
                        data['powCurr3'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_GREEN,
                        )
         r5, = axe.plot(data['time'][start:-1:cycle],
                        data['powCurr4'][start:-1:cycle],
                        marker='o',
-                       markersize=1,
+                       markersize=3,
                        color=self.M_RED,
                        )
         legend = axe.legend([r1, r2, r3, r4, r5],

@@ -35,7 +35,7 @@ def module_setup_teardown():
 def test_measureTask_1():
     app.mainW.ui.measureDevice.setCurrentIndex(1)
     app.environ.data = {}
-    suc = app.measure._measureTask()
+    suc = app.measure.measureTask()
     assert suc
     assert app.measure.data['envTemp'].shape[0]
     assert app.measure.data['envHum'].shape[0]
@@ -67,7 +67,7 @@ def test_measureTask_2():
         'powTemp': np.empty(shape=[0, 1]),
         'powDew': np.empty(shape=[0, 1]),
     }
-    suc = app.measure._measureTask()
+    suc = app.measure.measureTask()
     assert suc
     assert app.measure.data['envTemp'].shape[0] == 1
     assert app.measure.data['envHum'].shape[0] == 1
@@ -81,7 +81,7 @@ def test_measureTask_3():
     app.environ.data['WEATHER_PRESSURE'] = 1000
     app.environ.data['WEATHER_DEWPOINT'] = 10
     app.environ.data['WEATHER_HUMIDITY'] = 10
-    suc = app.measure._measureTask()
+    suc = app.measure.measureTask()
     assert suc
     assert app.measure.data['envTemp'][1] == 10
     assert app.measure.data['envHum'][1] == 10
@@ -182,7 +182,7 @@ def test_checkSize_1():
     app.measure.data['decJNow'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.MAXSIZE = 20
-    suc = app.measure._checkSize()
+    suc = app.measure.checkSize()
     assert not suc
 
 
@@ -198,5 +198,5 @@ def test_checkSize_2():
     app.measure.data['decJNow'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.MAXSIZE = 5
-    suc = app.measure._checkSize()
+    suc = app.measure.checkSize()
     assert suc

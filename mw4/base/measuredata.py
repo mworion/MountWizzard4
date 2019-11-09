@@ -61,6 +61,10 @@ class MeasureData(object):
             'envHum': np.empty(shape=[0, 1]),
             'envPress': np.empty(shape=[0, 1]),
             'envDew': np.empty(shape=[0, 1]),
+            'internalTemp': np.empty(shape=[0, 1]),
+            'internalHum': np.empty(shape=[0, 1]),
+            'internalPress': np.empty(shape=[0, 1]),
+            'internalDew': np.empty(shape=[0, 1]),
             'skyTemp': np.empty(shape=[0, 1]),
             'skySQR': np.empty(shape=[0, 1]),
             'raJNow': np.empty(shape=[0, 1]),
@@ -79,7 +83,7 @@ class MeasureData(object):
 
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
-        self.timerTask.timeout.connect(self._measureTask)
+        self.timerTask.timeout.connect(self.measureTask)
 
     def startMeasurement(self):
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
@@ -133,21 +137,29 @@ class MeasureData(object):
 
         return raJNow, decJNow
 
-    def _checkSize(self):
+    def checkStart(self, lenData):
         """
-        _reduceSize keep tracking of memory usage of the measurement. if the measurement
-        get s too much data, it split the history by half and only keeps the latest only
-        for work.
-        if as well throws the first N measurements away, because they or not valid
+        checkStart throws the first N measurements away, because they or not valid
 
+        :param lenData:
         :return: True if splitting happens
         """
 
-        lenData = len(self.data['time'])
         if self.shorteningStart and lenData > 2:
             self.shorteningStart = False
             for measure in self.data:
                 self.data[measure] = np.delete(self.data[measure], range(0, 2))
+
+    def checkSize(self, lenData):
+        """
+        checkSize keep tracking of memory usage of the measurement. if the measurement
+        get s too much data, it split the history by half and only keeps the latest only
+        for work.
+        if as well throws the first N measurements away, because they or not valid
+
+        :param lenData:
+        :return: True if splitting happens
+        """
 
         if lenData < self.MAXSIZE:
             return False
@@ -156,9 +168,9 @@ class MeasureData(object):
             self.data[measure] = np.split(self.data[measure], 2)[1]
         return True
 
-    def _measureTask(self):
+    def measureTask(self):
         """
-        _measureTask runs all necessary pre processing and collecting task to assemble a
+        measureTask runs all necessary pre processing and collecting task to assemble a
         large dict of lists, where all measurement data is stored. the intention later on
         would be to store and export this data.
         the time object is related to the time held in mount computer and is in utc timezone.
@@ -174,7 +186,9 @@ class MeasureData(object):
             self.logger.info('overrun in measure')
             return False
 
-        self._checkSize()
+        lenData = len(self.data['time'])
+        self.checkStart(lenData)
+        self.checkSize(lenData)
 
         dat = self.data
         obs = self.app.mount.obsSite
@@ -184,6 +198,11 @@ class MeasureData(object):
         envPress = self.app.environ.data.get('WEATHER_PRESSURE', 0)
         envDew = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
         envHum = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
+        # gathering the environment data
+        # internalTemp = self.app.internal.data.get('WEATHER_TEMPERATURE', 0)
+        # internalPress = self.app.internal.data.get('WEATHER_PRESSURE', 0)
+        # internalDew = self.app.internal.data.get('WEATHER_DEWPOINT', 0)
+        # internalHum = self.app.internal.data.get('WEATHER_HUMIDITY', 0)
         # gathering sqr values
         skySQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
         skyTemp = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
@@ -207,6 +226,10 @@ class MeasureData(object):
         dat['envHum'] = np.append(dat['envHum'], envHum)
         dat['envPress'] = np.append(dat['envPress'], envPress)
         dat['envDew'] = np.append(dat['envDew'], envDew)
+        # dat['internalTemp'] = np.append(dat['internalTemp'], internalTemp)
+        # dat['internalHum'] = np.append(dat['internalHum'], internalHum)
+        # dat['internalPress'] = np.append(dat['internalPress'], internalPress)
+        # dat['internalDew'] = np.append(dat['internalDew'], internalDew)
         dat['skySQR'] = np.append(dat['skySQR'], skySQR)
         dat['skyTemp'] = np.append(dat['skyTemp'], skyTemp)
         dat['raJNow'] = np.append(dat['raJNow'], raJNow)

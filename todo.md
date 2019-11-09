@@ -22,7 +22,7 @@ nice to have:
 - tests update
 - check more camera
 - implement upb2 features with others
-- 
+- check detection of slew speed for movement and set this value
 
 architecture:
 - mainApp refactor to better understandable implementation

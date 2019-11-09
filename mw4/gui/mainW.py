@@ -369,15 +369,26 @@ class MainWindow(MWidget,
         :return: true for test purpose
         """
 
+        stat = self.deviceStat.get('internalSensor', None)
+        if stat is None:
+            self.ui.internalGroup.setFixedWidth(0)
+            self.ui.internalGroup.setEnabled(False)
+        elif stat:
+            self.ui.internalGroup.setMinimumSize(75, 0)
+            self.ui.internalGroup.setEnabled(True)
+        else:
+            self.ui.internalGroup.setMinimumSize(75, 0)
+            self.ui.internalGroup.setEnabled(False)
+
         stat = self.deviceStat.get('environ', None)
         if stat is None:
             self.ui.environGroup.setFixedWidth(0)
             self.ui.environGroup.setEnabled(False)
         elif stat:
-            self.ui.environGroup.setMinimumSize(80, 0)
+            self.ui.environGroup.setMinimumSize(75, 0)
             self.ui.environGroup.setEnabled(True)
         else:
-            self.ui.environGroup.setMinimumSize(80, 0)
+            self.ui.environGroup.setMinimumSize(75, 0)
             self.ui.environGroup.setEnabled(False)
 
         stat = self.deviceStat.get('weather', None)
@@ -387,11 +398,11 @@ class MainWindow(MWidget,
             self.ui.weatherGroup.setEnabled(False)
         elif self.app.weather.connected:
             self.deviceStat['weather'] = True
-            self.ui.weatherGroup.setMinimumSize(80, 0)
+            self.ui.weatherGroup.setMinimumSize(75, 0)
             self.ui.weatherGroup.setEnabled(True)
         else:
             self.deviceStat['weather'] = False
-            self.ui.weatherGroup.setMinimumSize(80, 0)
+            self.ui.weatherGroup.setMinimumSize(75, 0)
             self.ui.weatherGroup.setEnabled(False)
 
         stat = self.deviceStat.get('skymeter', None)
@@ -399,10 +410,10 @@ class MainWindow(MWidget,
             self.ui.skymeterGroup.setFixedWidth(0)
             self.ui.skymeterGroup.setEnabled(False)
         elif stat:
-            self.ui.skymeterGroup.setMinimumSize(80, 0)
+            self.ui.skymeterGroup.setMinimumSize(75, 0)
             self.ui.skymeterGroup.setEnabled(True)
         else:
-            self.ui.skymeterGroup.setMinimumSize(80, 0)
+            self.ui.skymeterGroup.setMinimumSize(75, 0)
             self.ui.skymeterGroup.setEnabled(False)
 
         stat = self.deviceStat.get('power', None)
@@ -410,10 +421,10 @@ class MainWindow(MWidget,
             self.ui.powerGroup.setFixedWidth(0)
             self.ui.powerGroup.setEnabled(False)
         elif stat:
-            self.ui.powerGroup.setMinimumSize(80, 0)
+            self.ui.powerGroup.setMinimumSize(75, 0)
             self.ui.powerGroup.setEnabled(True)
         else:
-            self.ui.powerGroup.setMinimumSize(80, 0)
+            self.ui.powerGroup.setMinimumSize(75, 0)
             self.ui.powerGroup.setEnabled(False)
 
         return True

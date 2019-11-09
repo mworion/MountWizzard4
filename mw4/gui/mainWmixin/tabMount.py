@@ -220,8 +220,10 @@ class Mount(object):
 
         if sett.statusRefraction is not None:
             self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
+            self.ui.statusRefraction_2.setText('ON' if sett.statusRefraction else 'OFF')
         else:
             self.ui.statusRefraction.setText('-')
+            self.ui.statusRefraction_2.setText('-')
 
         if sett.gpsSynced is not None:
             self.ui.statusGPSSynced.setText('YES' if sett.gpsSynced else 'NO')

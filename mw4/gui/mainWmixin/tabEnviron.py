@@ -85,6 +85,7 @@ class Environ(object):
         self.refractionSource = config.get('refractionSource', 1)
         self.setRefractionSourceGui()
         self.updateClearOutside()
+        self.deviceStat['internalSensor'] = None
 
         return True
 

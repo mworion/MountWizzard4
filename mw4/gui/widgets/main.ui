@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -6530,7 +6530,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Image, Platesolve and Sync the alignment model of the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Image, Platesolve and Sync the alignment model of the mount to the given image coordinates. There is no model point added nor the model refined. It is just a matching of the model to that point. Attention: this might lead in worse model quality elsewhere.</string>
       </property>
       <property name="text">
        <string>Plate Solve &amp; Sync Model</string>
@@ -6565,7 +6565,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run model making from a data file stored as analyse file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Select on or more existing model data files and program them into the mount as a new mount model. Only existing models are used. It is ideal for combining multiple model runs, like adding a DSO path to an overall model.</string>
       </property>
       <property name="text">
        <string>Choose model from file and program</string>
@@ -6600,7 +6600,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Cancels a model build.</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -6685,7 +6685,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run full alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Run a model build.</string>
       </property>
       <property name="text">
        <string>Run Model Build</string>

@@ -381,13 +381,16 @@ class MainWindow(MWidget,
             self.ui.environGroup.setEnabled(False)
 
         stat = self.deviceStat.get('weather', None)
+        # todo: getting here the weather status is not good, should try to get a signal
         if stat is None:
             self.ui.weatherGroup.setFixedWidth(0)
             self.ui.weatherGroup.setEnabled(False)
-        elif stat:
+        elif self.app.weather.connected:
+            self.deviceStat['weather'] = True
             self.ui.weatherGroup.setMinimumSize(80, 0)
             self.ui.weatherGroup.setEnabled(True)
         else:
+            self.deviceStat['weather'] = False
             self.ui.weatherGroup.setMinimumSize(80, 0)
             self.ui.weatherGroup.setEnabled(False)
 

@@ -42,10 +42,11 @@ class EnvironGui(object):
 
         self.filteredTemperature = None
         self.filteredPressure = None
-        self.refractionSources = [self.ui.weatherGroup,
-                                  self.ui.environGroup,
-                                  ]
-        self.refractionSource = None
+        self.refractionSources = {'weather': self.ui.weatherGroup,
+                                  'environ': self.ui.environGroup,
+                                  'internalSensor': self.ui.internalGroup,
+                                  }
+        self.refractionSource = ''
 
         # environment functions
         signals = self.app.environ.client.signals
@@ -65,10 +66,12 @@ class EnvironGui(object):
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
         self.ui.weatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.environGroup.clicked.connect(self.selectRefractionSource)
+        self.ui.internalGroup.clicked.connect(self.selectRefractionSource)
 
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateRefractionParameters)
+        self.app.update1s.connect(self.checkRefractionSource)
         self.app.update30m.connect(self.updateClearOutside)
 
     def initConfig(self):
@@ -84,7 +87,7 @@ class EnvironGui(object):
         self.ui.checkRefracCont.setChecked(config.get('checkRefracCont', False))
         self.ui.checkRefracNoTrack.setChecked(config.get('checkRefracNoTrack', False))
 
-        self.refractionSource = config.get('refractionSource', 1)
+        self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
         self.updateClearOutside()
         self.deviceStat['internalSensor'] = None
@@ -114,8 +117,8 @@ class EnvironGui(object):
 
         :return: success
         """
-        for i, group in enumerate(self.refractionSources):
-            if self.refractionSource == i:
+        for source, group in self.refractionSources.items():
+            if self.refractionSource == source:
                 self.changeStyleDynamic(group, 'refraction', True)
                 group.setChecked(True)
             else:
@@ -132,11 +135,21 @@ class EnvironGui(object):
         :return: success
         """
 
-        for i, group in enumerate(self.refractionSources):
+        for source, group in self.refractionSources.items():
             if group != self.sender():
                 continue
-            self.refractionSource = i
+            self.refractionSource = source
         self.setRefractionSourceGui()
+
+        return True
+
+    def checkRefractionSource(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
 
         return True
 
@@ -148,12 +161,12 @@ class EnvironGui(object):
         :return:
         """
 
-        if self.refractionSource == 0:
+        if self.refractionSource == 'weather':
             if not self.app.weather.data:
                 return False
             temp = self.app.weather.data['temperature']
             press = self.app.weather.data['pressure']
-        elif self.refractionSource == 1:
+        elif self.refractionSource == 'environ':
             temp = self.app.environ.data.get('WEATHER_TEMPERATURE', None)
             press = self.app.environ.data.get('WEATHER_PRESSURE', None)
         else:
@@ -205,9 +218,7 @@ class EnvironGui(object):
         temp, press = self.movingAverageRefractionParameters()
 
         if temp is None or press is None:
-            self.deviceStat['environOverall'] = False
             return False
-        self.deviceStat['environOverall'] = True
 
         if not self.app.mount.mountUp:
             return False
@@ -449,9 +460,8 @@ class EnvironGui(object):
         """
 
         if not data:
+            self.clearOpenWeatherMapGui()
             return False
-
-        self.clearOpenWeatherMapGui()
 
         if 'temperature' in data:
             self.ui.weatherTemp.setText(f'{data["temperature"]:4.1f}')

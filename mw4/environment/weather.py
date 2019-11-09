@@ -172,6 +172,7 @@ class Weather(object):
         """
 
         if data is None:
+            self.signals.dataReceived.emit(None)
             self.signals.connected.emit(False)
             return False
 
@@ -179,10 +180,12 @@ class Weather(object):
 
         if 'list' not in val:
             self.signals.connected.emit(False)
+            self.signals.dataReceived.emit(None)
             return False
 
         if len(val['list']) == 0:
             self.csignals.onnected.emit(False)
+            self.signals.dataReceived.emit(None)
             return False
 
         val = val['list'][0]
@@ -230,8 +233,12 @@ class Weather(object):
 
         if not self.keyAPI:
             return False
+
         if not self.online:
+            self.signals.connected.emit(False)
+            self.signals.dataReceived.emit(None)
             return False
+
         if not self.running:
             return False
 

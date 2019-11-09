@@ -475,9 +475,17 @@ class MainWindow(MWidget,
 
     def updateDeviceStats(self):
         """
+        updateDeviceStats sets the colors in main window upper bar for getting
+        important overview, which functions are available.
 
         :return: True for test purpose
         """
+
+        # the refraction sources etc are defined in tabEnviron, but it is optimal
+        # setting the selected source right at this point as it is synchronous if
+        # state is switching
+
+        self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
 
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device, None) is None:

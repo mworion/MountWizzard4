@@ -71,7 +71,6 @@ class EnvironGui(object):
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateRefractionParameters)
-        self.app.update1s.connect(self.checkRefractionSource)
         self.app.update30m.connect(self.updateClearOutside)
 
     def initConfig(self):
@@ -140,16 +139,6 @@ class EnvironGui(object):
                 continue
             self.refractionSource = source
         self.setRefractionSourceGui()
-
-        return True
-
-    def checkRefractionSource(self):
-        """
-
-        :return: True for test purpose
-        """
-
-        self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
 
         return True
 

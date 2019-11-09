@@ -66,7 +66,7 @@ class Environ(object):
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateOpenWeatherMapGui)
-        self.app.update10s.connect(self.updateRefractionParameters)
+        self.app.update1s.connect(self.updateRefractionParameters)
         self.app.update30m.connect(self.updateClearOutside)
 
     def initConfig(self):
@@ -159,6 +159,8 @@ class Environ(object):
             press = None
 
         if temp is None or press is None:
+            self.filteredTemperature = None
+            self.filteredPressure = None
             return False
 
         if self.filteredTemperature is None:
@@ -198,6 +200,13 @@ class Environ(object):
         :return: success if update happened
         """
 
+        temp, press = self.movingAverageRefractionParameters()
+
+        if temp is None or press is None:
+            self.deviceStat['environOverall'] = False
+            return False
+        self.deviceStat['environOverall'] = True
+
         if not self.app.mount.mountUp:
             return False
         if self.ui.checkRefracNone.isChecked():
@@ -205,16 +214,6 @@ class Environ(object):
         if self.ui.checkRefracNoTrack.isChecked():
             if self.app.mount.obsSite.status == 0:
                 return False
-
-        temp, press = self.movingAverageRefractionParameters()
-
-        if temp is None or press is None:
-            self.ui.refractionGroup.setEnabled(False)
-            self.ui.setRefractionManual.setEnabled(False)
-            return False
-        else:
-            self.ui.refractionGroup.setEnabled(True)
-            self.ui.setRefractionManual.setEnabled(True)
 
         suc = self.app.mount.setting.setRefractionParam(temperature=temp,
                                                         pressure=press)

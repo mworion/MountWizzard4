@@ -96,6 +96,7 @@ class MainWindow(MWidget,
             'mount': None,
             'imaging': None,
             'astrometry': None,
+            'environOverall': None,
             'environ': None,
             'weather': None,
             'skymeter': None,
@@ -108,7 +109,7 @@ class MainWindow(MWidget,
         }
         self.deviceStatGui = {'dome': self.ui.domeConnected,
                               'imaging': self.ui.imagingConnected,
-                              'environ': self.ui.environConnected,
+                              'environOverall': self.ui.environConnected,
                               'astrometry': self.ui.astrometryConnected,
                               'mount': self.ui.mountConnected}
 
@@ -356,6 +357,17 @@ class MainWindow(MWidget,
         # redraw tabs
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
         self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
+
+        stat = self.deviceStat.get('environOverall', None)
+        if stat is None:
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
+        elif stat:
+            self.ui.refractionGroup.setEnabled(True)
+            self.ui.setRefractionManual.setEnabled(True)
+        else:
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
 
         return True
 

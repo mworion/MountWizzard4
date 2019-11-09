@@ -30,7 +30,7 @@ import wakeonlan
 from mw4.gui.widget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
-from mw4.gui.mainWmixin.tabEnviron import Environ
+from mw4.gui.mainWmixin.tabEnviron import EnvironGui
 from mw4.gui.mainWmixin.tabModel import Model
 from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
@@ -50,7 +50,7 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 
 class MainWindow(MWidget,
                  Mount,
-                 Environ,
+                 EnvironGui,
                  Model,
                  BuildPoints,
                  ManageModel,
@@ -125,6 +125,7 @@ class MainWindow(MWidget,
         self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
         self.app.imaging.signals.message.connect(self.updateImagingStatus)
+        self.app.weather.signals.connected.connect(self.updateWeatherStat)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
@@ -404,16 +405,13 @@ class MainWindow(MWidget,
             self.ui.environGroup.setEnabled(False)
 
         stat = self.deviceStat.get('weather', None)
-        # todo: getting here the weather status is not good, should try to get a signal
         if stat is None:
             self.ui.weatherGroup.setFixedWidth(0)
             self.ui.weatherGroup.setEnabled(False)
-        elif self.app.weather.connected:
-            self.deviceStat['weather'] = True
+        elif stat:
             self.ui.weatherGroup.setMinimumSize(75, 0)
             self.ui.weatherGroup.setEnabled(True)
         else:
-            self.deviceStat['weather'] = False
             self.ui.weatherGroup.setMinimumSize(75, 0)
             self.ui.weatherGroup.setEnabled(False)
 
@@ -487,6 +485,17 @@ class MainWindow(MWidget,
                 self.changeStyleDynamic(ui, 'color', 'green')
             else:
                 self.changeStyleDynamic(ui, 'color', 'red')
+
+        return True
+
+    def updateWeatherStat(self, stat):
+        """
+
+        :param stat:
+        :return: True for test purpose
+        """
+
+        self.deviceStat['weather'] = stat
 
         return True
 

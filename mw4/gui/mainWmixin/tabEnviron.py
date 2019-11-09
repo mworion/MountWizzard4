@@ -30,7 +30,7 @@ import qimage2ndarray
 from mw4.base.tpool import Worker
 
 
-class Environ(object):
+class EnvironGui(object):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
@@ -57,6 +57,9 @@ class Environ(object):
         signals.newNumber.connect(self.updateSkymeterGUI)
         signals.deviceDisconnected.connect(self.clearSkymeterGUI)
 
+        # weather functions
+        self.app.weather.signals.dataReceived.connect(self.updateOpenWeatherMapGui)
+
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
@@ -65,7 +68,6 @@ class Environ(object):
 
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
-        self.app.update1s.connect(self.updateOpenWeatherMapGui)
         self.app.update1s.connect(self.updateRefractionParameters)
         self.app.update30m.connect(self.updateClearOutside)
 
@@ -435,14 +437,13 @@ class Environ(object):
 
         return True
 
-    def updateOpenWeatherMapGui(self):
+    def updateOpenWeatherMapGui(self, data):
         """
         updateOpenWeatherMapGui takes the returned data from the dict to the Gui
 
         :return: True for test purpose
         """
 
-        data = self.app.weather.data
         if not data:
             return False
 

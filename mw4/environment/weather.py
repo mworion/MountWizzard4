@@ -20,10 +20,27 @@
 # standard libraries
 import logging
 # external packages
+import PyQt5.QtCore
 import numpy as np
 import requests
 # local imports
 from mw4.base.tpool import Worker
+
+
+class WeatherSignals(PyQt5.QtCore.QObject):
+    """
+    The WeatherSignals class offers a list of signals to be used and instantiated by
+    the Mount class to get signals for triggers for finished tasks to
+    enable a gui to update their values transferred to the caller back.
+
+    This has to be done in a separate class as the signals have to be subclassed from
+    QObject and the Mount class itself is subclassed from object
+    """
+
+    __all__ = ['WeatherSignals']
+
+    dataReceived = PyQt5.QtCore.pyqtSignal(object)
+    connected = PyQt5.QtCore.pyqtSignal(bool)
 
 
 class Weather(object):
@@ -47,7 +64,7 @@ class Weather(object):
 
         self.data = {}
         self.running = False
-        self.connected = False
+        self.signals = WeatherSignals()
 
         self._keyAPI = ''
         self._online = False
@@ -155,19 +172,18 @@ class Weather(object):
         """
 
         if data is None:
-            self.connected = False
+            self.signals.connected.emit(False)
             return False
 
         val = data.json()
 
         if 'list' not in val:
-            self.connected = False
+            self.signals.connected.emit(False)
             return False
         if len(val['list']) == 0:
-            self.connected = False
+            self.csignals.onnected.emit(False)
             return False
 
-        self.connected = True
         val = val['list'][0]
 
         if 'main' in val:
@@ -184,6 +200,8 @@ class Weather(object):
         if 'rain' in val:
             self.data['rain'] = val['rain']['3h']
 
+        self.signals.connected.emit(True)
+        self.signals.dataReceived.emit(self.data)
         return True
 
     def getOpenWeatherMapData(self, url=''):

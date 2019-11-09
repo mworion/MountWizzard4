@@ -20,7 +20,7 @@ from setuptools import setup
 
 setup(
     name='mountwizzard4',
-    version='0.130b6',
+    version='0.131a1',
     packages=[
         'mw4',
         'mw4.astrometry',

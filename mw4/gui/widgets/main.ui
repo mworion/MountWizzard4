@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -2837,7 +2837,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Settin g refraction update from MountWizzard to the mount</string>
+         <string>Setting refraction update types from MountWizzard to the mount</string>
         </property>
         <property name="title">
          <string>Refraction update</string>
@@ -2857,7 +2857,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>Update the refraction parameters to the mount continiously with mov ing average filter over 1 minute</string>
+          <string>Update the refraction parameters to the mount continiously with moving average filter over 1 minute</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
@@ -2934,7 +2934,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Actual used refraction parameters from the mount, if refraction is enabled</string>
+         <string>Actual used refraction parameters from the mount, if refraction is enabled.</string>
         </property>
         <property name="title">
          <string>Mount</string>
@@ -3142,7 +3142,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Select sensor device as source for refraction updates.</string>
+         <string>Select internal sensor device which is directly linked to mount (e.g. MBox) as source for refraction updates.</string>
         </property>
         <property name="title">
          <string>Internal</string>
@@ -3412,6 +3412,9 @@
           <height>0</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>iIf UPB power is present, show its values</string>
+        </property>
         <property name="title">
          <string>Power</string>
         </property>
@@ -3569,7 +3572,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pushes the refraction temperature and pressure to mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Pushes the refraction temperature and pressure to mount from the selected source</string>
         </property>
         <property name="text">
          <string>Push 
@@ -3998,6 +4001,9 @@ to mount</string>
           <width>75</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>iIf skymeter is present, show its values</string>
         </property>
         <property name="title">
          <string>SkyMeter</string>
@@ -4672,7 +4678,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Name of Model Points file, where the data is stored. </string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -4702,7 +4708,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the full model points in new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Saves the model points in a new file</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -4729,7 +4735,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the full model points in file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Saves the model points in file.</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -4753,7 +4759,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the full model points from given file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Show the model points from given file</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -4777,7 +4783,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the full model points from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Loads the model points from file</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -5046,7 +5052,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a regular pattern with the given parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates a regular pattern with the given parameters.</string>
       </property>
       <property name="text">
        <string>Generate Grid</string>
@@ -5116,7 +5122,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: high number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates a pointcloud with greater circles: maximal number of stars.</string>
       </property>
       <property name="text">
        <string>Maximal</string>
@@ -5132,7 +5138,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: medium number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates a pointcloud with greater circles: medium number of stars.</string>
       </property>
       <property name="text">
        <string>Medium</string>
@@ -5148,7 +5154,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: low number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates a pointcloud with greater circles: low number of stars.</string>
       </property>
       <property name="text">
        <string>Minimal</string>
@@ -5164,7 +5170,8 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: medium number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates a pointcloud with greater circles: medium number of stars.
+</string>
       </property>
       <property name="text">
        <string>Norm</string>
@@ -5400,7 +5407,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points along DSO track for a give time and other parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates model points along DSO track for a give time and other parameters.</string>
       </property>
       <property name="text">
        <string>Generate DSO Track</string>
@@ -5432,7 +5439,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points along DSO track for a give time and other parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
       </property>
       <property name="text">
        <string>Generate Golden Spiral</string>
@@ -5464,16 +5471,16 @@ to mount</string>
        <number>0</number>
       </property>
       <property name="minimum">
-       <double>20.000000000000000</double>
+       <double>50.000000000000000</double>
       </property>
       <property name="maximum">
-       <double>350.000000000000000</double>
+       <double>500.000000000000000</double>
       </property>
       <property name="singleStep">
-       <double>5.000000000000000</double>
+       <double>25.000000000000000</double>
       </property>
       <property name="value">
-       <double>20.000000000000000</double>
+       <double>50.000000000000000</double>
       </property>
      </widget>
      <widget class="QLabel" name="label_309">
@@ -5504,6 +5511,9 @@ to mount</string>
        <height>86</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Different types of sorting model points</string>
+     </property>
      <property name="title">
       <string>Auto sort points</string>
      </property>
@@ -5522,7 +5532,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sorts the modeling points EAST / WEST side of pier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Sorts the model points low to high altitude.</string>
       </property>
       <property name="text">
        <string>High / Low</string>
@@ -5543,7 +5553,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sorts the modeling points EAST / WEST side of pier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Sorts the model points EAST / WEST side of pier.</string>
       </property>
       <property name="text">
        <string>East / West</string>
@@ -5604,7 +5614,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the horizon mask in file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Saves the horizon mask in the given file.</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -5631,7 +5641,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the horizon mask in new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Saves the horizon mask in a new file.</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -5655,7 +5665,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the horizon mask from given file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Loads the horizon mask from given file.</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -5694,7 +5704,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Name of Horizon Points file, where the data is stored. </string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -5721,7 +5731,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Removes modeling points, which are below the horizon mask.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>If checked, all model points are deleted, which are below the horizon mask, out from horizon limits or other parameters.</string>
       </property>
       <property name="text">
        <string>Auto delete points below horizon</string>
@@ -5755,7 +5765,7 @@ to mount</string>
       </font>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete all points on coordinate window including Base / Model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Delete all model points on coordinate window and for usage.</string>
      </property>
      <property name="text">
       <string>Clear Points</string>
@@ -5786,7 +5796,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: high number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates three stars.</string>
       </property>
       <property name="text">
        <string>3 points</string>
@@ -5802,7 +5812,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: medium number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates six stars.</string>
       </property>
       <property name="text">
        <string>6 points</string>
@@ -5818,7 +5828,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a pointcloud with greater circles: medium number of stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Generates nine stars.</string>
       </property>
       <property name="text">
        <string>9 points</string>

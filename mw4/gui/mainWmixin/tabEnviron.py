@@ -355,9 +355,7 @@ class EnvironGui(object):
         imageBase = qimage2ndarray.array2qimage(dim * imgArr)
 
         pixmapBase = PyQt5.QtGui.QPixmap().fromImage(imageBase)
-        pixmapHeader = PyQt5.QtGui.QPixmap(':/clearoutside.png')
         self.ui.picClearOutside.setPixmap(pixmapBase)
-        self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
 
         return True
 
@@ -407,7 +405,13 @@ class EnvironGui(object):
         :return: success
         """
 
+        pixmapHeader = PyQt5.QtGui.QPixmap(':/clearoutside.png')
+        self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
+
         if not self.ui.isOnline.isChecked():
+            # pixmap = PyQt5.QtGui.QPixmap(':/clearoutside.png')
+            # self.ui.picClearOutsideBase.setPixmap(pixmap)
+            # todo: pixmap eine leere zeigen mit hinweis of offline !
             return False
 
         # prepare coordinates for website

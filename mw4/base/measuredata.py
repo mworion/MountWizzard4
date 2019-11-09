@@ -61,6 +61,10 @@ class MeasureData(object):
             'envHum': np.empty(shape=[0, 1]),
             'envPress': np.empty(shape=[0, 1]),
             'envDew': np.empty(shape=[0, 1]),
+            'weatherTemp': np.empty(shape=[0, 1]),
+            'weatherHum': np.empty(shape=[0, 1]),
+            'weatherPress': np.empty(shape=[0, 1]),
+            'weatherDew': np.empty(shape=[0, 1]),
             'internalTemp': np.empty(shape=[0, 1]),
             'internalHum': np.empty(shape=[0, 1]),
             'internalPress': np.empty(shape=[0, 1]),
@@ -198,6 +202,10 @@ class MeasureData(object):
         envPress = self.app.environ.data.get('WEATHER_PRESSURE', 0)
         envDew = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
         envHum = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
+        weatherTemp = self.app.weather.data.get('temperature', 0)
+        weatherPress = self.app.weather.data.get('pressure', 0)
+        weatherDew = self.app.weather.data.get('dewPoint', 0)
+        weatherHum = self.app.weather.data.get('humidity', 0)
         # gathering the environment data
         # internalTemp = self.app.internal.data.get('WEATHER_TEMPERATURE', 0)
         # internalPress = self.app.internal.data.get('WEATHER_PRESSURE', 0)
@@ -226,6 +234,10 @@ class MeasureData(object):
         dat['envHum'] = np.append(dat['envHum'], envHum)
         dat['envPress'] = np.append(dat['envPress'], envPress)
         dat['envDew'] = np.append(dat['envDew'], envDew)
+        dat['weatherTemp'] = np.append(dat['weatherTemp'], weatherTemp)
+        dat['weatherHum'] = np.append(dat['weatherHum'], weatherHum)
+        dat['weatherPress'] = np.append(dat['weatherPress'], weatherPress)
+        dat['weatherDew'] = np.append(dat['weatherDew'], weatherDew)
         # dat['internalTemp'] = np.append(dat['internalTemp'], internalTemp)
         # dat['internalHum'] = np.append(dat['internalHum'], internalHum)
         # dat['internalPress'] = np.append(dat['internalPress'], internalPress)

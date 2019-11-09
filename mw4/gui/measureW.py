@@ -384,19 +384,32 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_YELLOW,
                        )
         r4, = axe.plot(data['time'][start:-1:cycle],
-                       data['envDew'][start:-1:cycle],
+                       data['weatherTemp'][start:-1:cycle],
                        marker='o',
                        markersize=1,
                        color=self.M_GREEN,
                        )
         r5, = axe.plot(data['time'][start:-1:cycle],
-                       data['powDew'][start:-1:cycle],
-                       marker='o',
+                       data['envDew'][start:-1:cycle],
+                       marker=':',
                        markersize=1,
-                       color=self.M_RED,
+                       color=self.M_WHITE,
                        )
-        legend = axe.legend([r1, r2, r3, r4, r5],
-                            ['Env Temp', 'Pow Temp', 'Sky Temp', 'Env Dew', 'Pow Dew'],
+        r6, = axe.plot(data['time'][start:-1:cycle],
+                       data['powDew'][start:-1:cycle],
+                       marker=':',
+                       markersize=1,
+                       color=self.M_PINK,
+                       )
+        r7, = axe.plot(data['time'][start:-1:cycle],
+                       data['weatherDew'][start:-1:cycle],
+                       marker=':',
+                       markersize=1,
+                       color=self.M_GREEN,
+                       )
+        legend = axe.legend([r1, r2, r3, r4, r5, r6, r7],
+                            ['Env Temp', 'Pow Temp', 'Sky Temp', 'Weather Temp',
+                             'Env Dew', 'Pow Dew', 'Weather Dew'],
                             facecolor=self.M_BLACK,
                             edgecolor=self.M_BLUE,
                             )
@@ -436,12 +449,26 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        axe.plot(data['time'][start:-1:cycle],
-                 data['envPress'][start:-1:cycle],
-                 marker='o',
-                 markersize=1,
-                 color=self.M_WHITE,
-                 )
+        r1, = axe.plot(data['time'][start:-1:cycle],
+                       data['envPress'][start:-1:cycle],
+                       marker='o',
+                       markersize=1,
+                       color=self.M_WHITE,
+                       )
+        r2, = axe.plot(data['time'][start:-1:cycle],
+                       data['weatherPress'][start:-1:cycle],
+                       marker='o',
+                       markersize=1,
+                       color=self.M_WHITE,
+                       )
+        legend = axe.legend([r1, r2],
+                            ['Env Press', 'Weather Press'],
+                            facecolor=self.M_BLACK,
+                            edgecolor=self.M_BLUE,
+                            )
+        for text in legend.get_texts():
+            text.set_color(self.M_BLUE)
+
         axe.grid(True, color=self.M_GREY, alpha=1)
         axe.margins(y=0.2)
         axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
@@ -488,8 +515,14 @@ class MeasureWindow(widget.MWidget):
                        markersize=1,
                        color=self.M_PINK,
                        )
-        legend = axe.legend([r1, r2],
-                            ['Env Hum', 'Pow Hum'],
+        r3, = axe.plot(data['time'][start:-1:cycle],
+                       data['weatherHum'][start:-1:cycle],
+                       marker='o',
+                       markersize=1,
+                       color=self.M_RED,
+                       )
+        legend = axe.legend([r1, r2, r3],
+                            ['Env Hum', 'Pow Hum', 'Weather Hum'],
                             facecolor=self.M_BLACK,
                             edgecolor=self.M_BLUE,
                             )

@@ -26,7 +26,6 @@ import PyQt5.uic
 import requests
 import numpy as np
 import qimage2ndarray
-from mountcontrol.convert import valueToFloat
 # local import
 from mw4.base.tpool import Worker
 
@@ -147,8 +146,10 @@ class Environ(object):
         """
 
         if self.refractionSource == 0:
-            temp = valueToFloat(self.ui.weatherTemp.text())
-            press = valueToFloat(self.ui.weatherPress.text())
+            if not self.app.weather.data:
+                return False
+            temp = self.app.weather.data['temperature']
+            press = self.app.weather.data['pressure']
         elif self.refractionSource == 1:
             temp = self.app.environ.data.get('WEATHER_TEMPERATURE', None)
             press = self.app.environ.data.get('WEATHER_PRESSURE', None)
@@ -203,18 +204,25 @@ class Environ(object):
         if self.ui.checkRefracNoTrack.isChecked():
             if self.app.mount.obsSite.status == 0:
                 return False
+
         temp, press = self.movingAverageRefractionParameters()
+
         if temp is None or press is None:
+            self.ui.refractionGroup.setEnabled(False)
+            self.ui.setRefractionManual.setEnabled(False)
             return False
-        for i in range(0, 3):
-            suc = self.app.mount.setting.setRefractionParam(temperature=temp,
-                                                            pressure=press)
-            if suc:
-                break
+        else:
+            self.ui.refractionGroup.setEnabled(True)
+            self.ui.setRefractionManual.setEnabled(True)
+
+        suc = self.app.mount.setting.setRefractionParam(temperature=temp,
+                                                        pressure=press)
+
         if not suc:
             self.app.message.emit('Cannot perform refraction update', 2)
             self.logger.info(f'No refraction update Temp:{temp}, Press:{press}')
             return False
+
         return True
 
     def clearEnvironGUI(self, deviceName):

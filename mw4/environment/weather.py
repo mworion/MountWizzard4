@@ -47,6 +47,8 @@ class Weather(object):
 
         self.data = {}
         self.running = False
+        self.connected = False
+
         self._keyAPI = ''
         self._online = False
 
@@ -153,15 +155,19 @@ class Weather(object):
         """
 
         if data is None:
+            self.connected = False
             return False
 
         val = data.json()
 
         if 'list' not in val:
+            self.connected = False
             return False
         if len(val['list']) == 0:
+            self.connected = False
             return False
 
+        self.connected = True
         val = val['list'][0]
 
         if 'main' in val:

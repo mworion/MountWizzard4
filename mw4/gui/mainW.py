@@ -138,7 +138,8 @@ class MainWindow(MWidget,
         # cyclic updates
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateWindowsStats)
-        self.app.update1s.connect(self.smartGui)
+        self.app.update1s.connect(self.smartDeviceGui)
+        self.app.update1s.connect(self.smartEnvironGui)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.updateDeviceStats)
 
@@ -298,7 +299,7 @@ class MainWindow(MWidget,
         self.deviceStat['mount'] = status
         return True
 
-    def smartGui(self):
+    def smartDeviceGui(self):
         """
         smartGui enables and disables gui actions depending on the actual state of the
         different devices. this should be the core of avoiding user misused during running
@@ -331,49 +332,15 @@ class MainWindow(MWidget,
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
 
-        stat = self.deviceStat.get('environ', None)
-        if stat is None:
-            self.ui.environGroup.setFixedWidth(0)
-            self.ui.environGroup.setEnabled(False)
-            self.ui.refractionGroup.setEnabled(False)
-            self.ui.setRefractionManual.setEnabled(False)
-        elif stat:
-            self.ui.environGroup.setMinimumSize(80, 0)
-            self.ui.environGroup.setEnabled(True)
-            self.ui.refractionGroup.setEnabled(True)
-            self.ui.setRefractionManual.setEnabled(True)
-        else:
-            self.ui.environGroup.setMinimumSize(80, 0)
-            self.ui.environGroup.setEnabled(False)
-            self.ui.refractionGroup.setEnabled(False)
-            self.ui.setRefractionManual.setEnabled(False)
-
-        stat = self.deviceStat.get('skymeter', None)
-        if stat is None:
-            self.ui.skymeterGroup.setFixedWidth(0)
-            self.ui.skymeterGroup.setEnabled(False)
-        elif stat:
-            self.ui.skymeterGroup.setMinimumSize(80, 0)
-            self.ui.skymeterGroup.setEnabled(True)
-        else:
-            self.ui.skymeterGroup.setMinimumSize(80, 0)
-            self.ui.skymeterGroup.setEnabled(False)
-
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
 
         stat = self.deviceStat.get('power', None)
         if stat is None:
-            self.ui.powerGroup.setFixedWidth(0)
-            self.ui.powerGroup.setEnabled(False)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
         elif stat:
-            self.ui.powerGroup.setMinimumSize(80, 0)
-            self.ui.powerGroup.setEnabled(True)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
         else:
-            self.ui.powerGroup.setMinimumSize(80, 0)
-            self.ui.powerGroup.setEnabled(False)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
 
         # get index for both relay tabs under main
@@ -389,6 +356,62 @@ class MainWindow(MWidget,
         # redraw tabs
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
         self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
+
+        return True
+
+    def smartEnvironGui(self):
+        """
+        smartEnvironGui enables and disables gui actions depending on the actual state
+        of the different environment devices. it is run every 1 second synchronously,
+        because it can't be simpler done with dynamic approach. all different situations
+        in a running environment is done locally.
+
+        :return: true for test purpose
+        """
+
+        stat = self.deviceStat.get('environ', None)
+        if stat is None:
+            self.ui.environGroup.setFixedWidth(0)
+            self.ui.environGroup.setEnabled(False)
+        elif stat:
+            self.ui.environGroup.setMinimumSize(80, 0)
+            self.ui.environGroup.setEnabled(True)
+        else:
+            self.ui.environGroup.setMinimumSize(80, 0)
+            self.ui.environGroup.setEnabled(False)
+
+        stat = self.deviceStat.get('weather', None)
+        if stat is None:
+            self.ui.weatherGroup.setFixedWidth(0)
+            self.ui.weatherGroup.setEnabled(False)
+        elif stat:
+            self.ui.weatherGroup.setMinimumSize(80, 0)
+            self.ui.weatherGroup.setEnabled(True)
+        else:
+            self.ui.weatherGroup.setMinimumSize(80, 0)
+            self.ui.weatherGroup.setEnabled(False)
+
+        stat = self.deviceStat.get('skymeter', None)
+        if stat is None:
+            self.ui.skymeterGroup.setFixedWidth(0)
+            self.ui.skymeterGroup.setEnabled(False)
+        elif stat:
+            self.ui.skymeterGroup.setMinimumSize(80, 0)
+            self.ui.skymeterGroup.setEnabled(True)
+        else:
+            self.ui.skymeterGroup.setMinimumSize(80, 0)
+            self.ui.skymeterGroup.setEnabled(False)
+
+        stat = self.deviceStat.get('power', None)
+        if stat is None:
+            self.ui.powerGroup.setFixedWidth(0)
+            self.ui.powerGroup.setEnabled(False)
+        elif stat:
+            self.ui.powerGroup.setMinimumSize(80, 0)
+            self.ui.powerGroup.setEnabled(True)
+        else:
+            self.ui.powerGroup.setMinimumSize(80, 0)
+            self.ui.powerGroup.setEnabled(False)
 
         return True
 

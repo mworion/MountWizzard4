@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>9</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7357,7 +7357,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear the alignment model in mount. Can't be revised.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Clear the alignment model in mount. Can't be revised.</string>
       </property>
       <property name="text">
        <string>Clear Model</string>
@@ -7391,7 +7391,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels the optimise run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Cancels the optimise run.</string>
       </property>
       <property name="text">
        <string>Cancel</string>
@@ -7452,7 +7452,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deletes worst point of actual alignment model until error is below target RMS.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Deletes the worst points of actual alignment model until error is below target RMS.</string>
       </property>
       <property name="text">
        <string>Optimise</string>
@@ -7468,7 +7468,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reloads the refinement model from mount. Needed if you change things manually with handcontroller or other software&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Reloads the model from mount. Needed if you change things manually with handcontroller or other software.</string>
       </property>
       <property name="text">
        <string>Refresh</string>
@@ -7621,7 +7621,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deletes worst point of actual alignment model in the mount. It could happen, that the overall RMS rises.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Deletes worst point of actual alignment model in the mount. It could happen, that the overall RMS rises.</string>
       </property>
       <property name="text">
        <string>Delete Worst</string>
@@ -7653,7 +7653,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the actual selected alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Loads the actual selected alignment model.</string>
       </property>
       <property name="text">
        <string>Load</string>
@@ -7679,7 +7679,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deletes the actual selected alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Refreshes the list of in the mount stored models </string>
       </property>
       <property name="text">
        <string>Refresh</string>
@@ -7695,7 +7695,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deletes the actual selected alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Deletes the actual selected alignment model.</string>
       </property>
       <property name="text">
        <string>Delete</string>
@@ -7711,7 +7711,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves actual alignment model under selected name or edited name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Saves actual alignment model under selected name or edited name.</string>
       </property>
       <property name="text">
        <string>Save</string>
@@ -8767,7 +8767,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Stops the satellite tracking mode. In some cases this does not work. Please start / stop tracking under mount.</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -8789,7 +8789,7 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels model run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Starts the satellite tracking mode.</string>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
@@ -8829,6 +8829,9 @@ to mount</string>
         <height>25</height>
        </size>
       </property>
+      <property name="toolTip">
+       <string>Selects the TLE database from where the satellite list shoufl be loaded.</string>
+      </property>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_52">
@@ -8854,6 +8857,9 @@ to mount</string>
         <width>346</width>
         <height>281</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string>List of satellites.</string>
       </property>
      </widget>
     </widget>
@@ -9848,7 +9854,7 @@ to mount</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Starts for Relay the defined function (Switch or Pulse)</string>
           </property>
           <property name="text">
            <string>Relay1</string>
@@ -9864,7 +9870,7 @@ to mount</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Starts for Relay the defined function (Switch or Pulse)</string>
           </property>
           <property name="text">
            <string>Relay2</string>
@@ -9880,7 +9886,7 @@ to mount</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Starts for Relay the defined function (Switch or Pulse)</string>
           </property>
           <property name="text">
            <string>Relay3</string>
@@ -9896,7 +9902,7 @@ to mount</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Starts for Relay the defined function (Switch or Pulse)</string>
           </property>
           <property name="text">
            <string>Relay4</string>
@@ -9912,7 +9918,7 @@ to mount</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Starts for Relay the defined function (Switch or Pulse)</string>
           </property>
           <property name="text">
            <string>Relay5</string>
@@ -9928,7 +9934,7 @@ to mount</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Starts for Relay the defined function (Switch or Pulse)</string>
           </property>
           <property name="text">
            <string>Relay6</string>
@@ -9944,7 +9950,7 @@ to mount</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Starts for Relay the defined function (Switch or Pulse)</string>
           </property>
           <property name="text">
            <string>Relay7</string>
@@ -9960,7 +9966,7 @@ to mount</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Starts for Relay the defined function (Switch or Pulse)</string>
           </property>
           <property name="text">
            <string>Relay8</string>
@@ -10139,6 +10145,9 @@ to mount</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>Switches the power output on and off.</string>
+      </property>
       <property name="text">
        <string>Power</string>
       </property>
@@ -10241,6 +10250,9 @@ to mount</string>
         <width>101</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the power output on and off.</string>
       </property>
       <property name="text">
        <string>Power</string>
@@ -10345,6 +10357,9 @@ to mount</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>Switches the power output on and off.</string>
+      </property>
       <property name="text">
        <string>Power</string>
       </property>
@@ -10448,6 +10463,9 @@ to mount</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>Switches the power output on and off.</string>
+      </property>
       <property name="text">
        <string>Power</string>
       </property>
@@ -10539,6 +10557,9 @@ to mount</string>
         <width>101</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the USB Hub on and off</string>
       </property>
       <property name="text">
        <string>Power</string>
@@ -10967,8 +10988,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Actual horizon limit for slewing for high values (upper boundary).
-When clicking the button, you could change the value.</string>
+       <string>Sets the dew heater power from 0 to 100 %</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11106,8 +11126,7 @@ When clicking the button, you could change the value.</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Actual horizon limit for slewing for high values (upper boundary).
-When clicking the button, you could change the value.</string>
+       <string>Sets the dew heater power from 0 to 100 %</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -11156,6 +11175,9 @@ When clicking the button, you could change the value.</string>
         <height>21</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>Switches the automatic dew calculation on. UPB uses dew measure for setting the right power.</string>
+      </property>
       <property name="text">
        <string>Enable Auto Dew</string>
       </property>
@@ -11196,6 +11218,9 @@ When clicking the button, you could change the value.</string>
        <width>366</width>
        <height>186</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Slews and parks the mount to a preprogrammed position.</string>
      </property>
      <property name="title">
       <string>Defined park positions (slew &amp; park)</string>
@@ -11504,6 +11529,9 @@ When clicking the button, you could change the value.</string>
         <height>0</height>
        </size>
       </property>
+      <property name="toolTip">
+       <string>Chooses the FITS header Entry for renaming.</string>
+      </property>
      </widget>
      <widget class="QLabel" name="label_306">
       <property name="geometry">
@@ -11557,6 +11585,9 @@ When clicking the button, you could change the value.</string>
         <width>0</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="toolTip">
+       <string>Chooses the FITS header Entry for renaming.</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="renameDir">
@@ -11612,6 +11643,9 @@ When clicking the button, you could change the value.</string>
         <height>0</height>
        </size>
       </property>
+      <property name="toolTip">
+       <string>Select the directory for file manipulations.</string>
+      </property>
       <property name="text">
        <string>Select</string>
       </property>
@@ -11660,7 +11694,7 @@ When clicking the button, you could change the value.</string>
        <rect>
         <x>15</x>
         <y>45</y>
-        <width>149</width>
+        <width>171</width>
         <height>25</height>
        </rect>
       </property>
@@ -11669,6 +11703,9 @@ When clicking the button, you could change the value.</string>
         <width>0</width>
         <height>25</height>
        </size>
+      </property>
+      <property name="toolTip">
+       <string>If checked, the renaming process will run through all subdirectories.</string>
       </property>
       <property name="text">
        <string>Include subdirectories</string>
@@ -11689,6 +11726,9 @@ When clicking the button, you could change the value.</string>
         <height>0</height>
        </size>
       </property>
+      <property name="toolTip">
+       <string>Chooses the FITS header Entry for renaming.</string>
+      </property>
      </widget>
      <widget class="QComboBox" name="rename4">
       <property name="geometry">
@@ -11704,6 +11744,9 @@ When clicking the button, you could change the value.</string>
         <width>0</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="toolTip">
+       <string>Chooses the FITS header Entry for renaming.</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_57">
@@ -11782,6 +11825,9 @@ When clicking the button, you could change the value.</string>
         <height>0</height>
        </size>
       </property>
+      <property name="toolTip">
+       <string>Starts the renaming process. There will be no backup files made. Please take care about your raw files !</string>
+      </property>
       <property name="text">
        <string>Start</string>
       </property>
@@ -11814,6 +11860,9 @@ When clicking the button, you could change the value.</string>
         <height>0</height>
        </size>
       </property>
+      <property name="toolTip">
+       <string>Chooses the FITS header Entry for renaming.</string>
+      </property>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_53">
@@ -11824,6 +11873,9 @@ When clicking the button, you could change the value.</string>
        <width>366</width>
        <height>146</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Allows to move the mount in different directions and slew speeds.</string>
      </property>
      <property name="title">
       <string>Mount move</string>

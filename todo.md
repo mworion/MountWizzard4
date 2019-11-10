@@ -25,7 +25,6 @@ nice to have:
 - check detection of slew speed for movement and set this value
 - naming from environment sensor and internal sensor
 - architecture: check event based and move away from time triggered
-- move UPB functions from gui to class
 
 architecture:
 - mainApp refactor to better understandable implementation

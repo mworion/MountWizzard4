@@ -267,7 +267,7 @@ def test_sendDewB_2():
 
 def test_sendPowerPort1_1():
     app.power.device = None
-    suc = app.mainW.sendPowerPort1()
+    suc = app.mainW.togglePowerPort1()
     assert not suc
 
 
@@ -276,7 +276,7 @@ def test_sendPowerPort1_2():
         def getSwitch(self, name):
             return {}
     app.power.device = Test()
-    suc = app.mainW.sendPowerPort1()
+    suc = app.mainW.togglePowerPort1()
     assert not suc
 
 
@@ -285,13 +285,13 @@ def test_sendPowerPort1_3():
         def getSwitch(self, name):
             return {'POWER_CONTROL_1': ''}
     app.power.device = Test()
-    suc = app.mainW.sendPowerPort1()
+    suc = app.mainW.togglePowerPort1()
     assert suc
 
 
 def test_sendPowerPort2_1():
     app.power.device = None
-    suc = app.mainW.sendPowerPort2()
+    suc = app.mainW.togglePowerPort2()
     assert not suc
 
 
@@ -300,7 +300,7 @@ def test_sendPowerPort2_2():
         def getSwitch(self, name):
             return {}
     app.power.device = Test()
-    suc = app.mainW.sendPowerPort2()
+    suc = app.mainW.togglePowerPort2()
     assert not suc
 
 
@@ -309,7 +309,7 @@ def test_sendPowerPort2_3():
         def getSwitch(self, name):
             return {'POWER_CONTROL_2': ''}
     app.power.device = Test()
-    suc = app.mainW.sendPowerPort2()
+    suc = app.mainW.togglePowerPort2()
     assert suc
 
 

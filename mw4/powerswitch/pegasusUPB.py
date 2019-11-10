@@ -129,3 +129,99 @@ class PegasusUPB(indiClass.IndiClass):
             # print(propertyName, element, value)
 
         return True
+
+    def togglePowerPort(self, port=None):
+        """
+        togglePowerPort
+
+        :param port:
+        :return: true fot test purpose
+        """
+
+        if port is None:
+            return False
+
+        if self.device is None:
+            return False
+
+        power = self.device.getSwitch('POWER_CONTROL')
+        portName = f'POWER_CONTROL_{port:1.0f}'
+        if portName not in power:
+            return False
+
+        power[portName] = not power[portName]
+        self.client.sendNewSwitch(deviceName=self.name,
+                                  propertyName='POWER_CONTROL',
+                                  elements=power,
+                                  )
+        return True
+
+    def togglePowerPortBoot(self, port=None):
+        """
+        togglePowerPortBoot
+
+        :param port:
+        :return: true fot test purpose
+        """
+
+        if port is None:
+            return False
+
+        if self.device is None:
+            return False
+
+        power = self.device.getSwitch('POWER_ON_BOOT')
+        portName = f'POWER_PORT_{port:1.0f}'
+        if portName not in power:
+            return False
+
+        power[portName] = not power[portName]
+        self.client.sendNewSwitch(deviceName=self.name,
+                                  propertyName='POWER_ON_BOOT',
+                                  elements=power,
+                                  )
+        return True
+
+    def toggleHubUSB(self):
+        """
+        toggleHubUSB
+
+        :return: true fot test purpose
+        """
+
+        if self.device is None:
+            return False
+
+        usb = self.device.getSwitch('USB_HUB_CONTROL')
+        if 'ENABLED' not in usb:
+            return False
+        if 'DISABLED' not in usb:
+            return False
+
+        usb['ENABLED'] = not usb['ENABLED']
+        usb['DISABLED'] = not usb['DISABLED']
+        self.client.sendNewSwitch(deviceName=self.name,
+                                  propertyName='USB_HUB_CONTROL',
+                                  elements=usb,
+                                  )
+        return True
+
+    def sendAutoDew(self, value=False):
+        """
+        sendAutoDew
+
+        :param value:
+        :return: true fot test purpose
+        """
+
+        if self.device is None:
+            return False
+
+        autoDew = self.device.getSwitch('AUTO_DEW')
+        autoDew['AUTO_DEW_ENABLED'] = value
+        autoDew['AUTO_DEW_DISABLED'] = not value
+        self.client.sendNewSwitch(deviceName=self.name,
+                                  propertyName='AUTO_DEW',
+                                  elements=autoDew,
+                                  )
+        return True

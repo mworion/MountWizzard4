@@ -59,16 +59,16 @@ class Power(object):
         self.clickable(self.ui.dewB).connect(self.sendDewB)
         self.clickable(self.ui.dewC).connect(self.sendDewC)
 
-        self.ui.powerPort1.clicked.connect(self.sendPowerPort1)
-        self.ui.powerPort2.clicked.connect(self.sendPowerPort2)
-        self.ui.powerPort3.clicked.connect(self.sendPowerPort3)
-        self.ui.powerPort4.clicked.connect(self.sendPowerPort4)
-        self.ui.powerBootPort1.clicked.connect(self.sendPowerBootPort1)
-        self.ui.powerBootPort2.clicked.connect(self.sendPowerBootPort2)
-        self.ui.powerBootPort3.clicked.connect(self.sendPowerBootPort3)
-        self.ui.powerBootPort4.clicked.connect(self.sendPowerBootPort4)
-        self.ui.hubUSB.clicked.connect(self.sendHubUSB)
-        self.ui.autoDew.clicked.connect(self.sendAutoDew)
+        self.ui.powerPort1.clicked.connect(self.togglePowerPort1)
+        self.ui.powerPort2.clicked.connect(self.togglePowerPort2)
+        self.ui.powerPort3.clicked.connect(self.togglePowerPort3)
+        self.ui.powerPort4.clicked.connect(self.togglePowerPort4)
+        self.ui.powerBootPort1.clicked.connect(self.togglePowerBootPort1)
+        self.ui.powerBootPort2.clicked.connect(self.togglePowerBootPort2)
+        self.ui.powerBootPort3.clicked.connect(self.togglePowerBootPort3)
+        self.ui.powerBootPort4.clicked.connect(self.togglePowerBootPort4)
+        self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
+        self.ui.autoDew.clicked.connect(self.setAutoDew)
 
     def initConfig(self):
         # config = self.app.config['mainW']
@@ -350,231 +350,84 @@ class Power(object):
                              )
         return True
 
-    def sendPowerPort1(self):
+    def togglePowerPort1(self):
         """
+        togglePowerPort1 toggles the state of the power switch
+        :return: success
+        """
+        suc = self.app.power.togglePowerPort(port=1)
+        return suc
+
+    def togglePowerPort2(self):
+        """
+        togglePowerPort2 toggles the state of the power switch
+        :return: success
+        """
+        suc = self.app.power.togglePowerPort(port=2)
+        return suc
+
+    def togglePowerPort3(self):
+        """
+        togglePowerPort3 toggles the state of the power switch
+        :return: success
+        """
+        suc = self.app.power.togglePowerPort(port=3)
+        return suc
+
+    def togglePowerPort4(self):
+        """
+        togglePowerPort4 toggles the state of the power switch
+        :return: success
+        """
+        suc = self.app.power.togglePowerPort(port=4)
+        return suc
+
+    def togglePowerBootPort1(self):
+        """
+        togglePowerBootPort1 toggles the state of the power switch
+        :return: true fot test purpose
+        """
+        suc = self.app.power.togglePowerPortBoot(port=1)
+        return suc
+
+    def togglePowerBootPort2(self):
+        """
+        togglePowerBootPort2 toggles the state of the power switch
+        :return: true fot test purpose
+        """
+        suc = self.app.power.togglePowerPortBoot(port=2)
+        return suc
+
+    def togglePowerBootPort3(self):
+        """
+        togglePowerBootPort3 toggles the state of the power switch
+        :return: true fot test purpose
+        """
+        suc = self.app.power.togglePowerPortBoot(port=3)
+        return suc
+
+    def togglePowerBootPort4(self):
+        """
+        togglePowerBootPort4 toggles the state of the power switch
+        :return: true fot test purpose
+        """
+        suc = self.app.power.togglePowerPortBoot(port=4)
+        return suc
+
+    def toggleHubUSB(self):
+        """
+        toggleHubUSB
 
         :return: true fot test purpose
         """
+        suc = self.app.power.toggleHubUSB()
+        return suc
 
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        power = device.getSwitch('POWER_CONTROL')
-        if 'POWER_CONTROL_1' not in power:
-            return False
-
-        power['POWER_CONTROL_1'] = not power['POWER_CONTROL_1']
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='POWER_CONTROL',
-                             elements=power,
-                             )
-        return True
-
-    def sendPowerPort2(self):
+    def setAutoDew(self):
         """
+        setAutoDew
 
         :return: true fot test purpose
         """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        power = device.getSwitch('POWER_CONTROL')
-        if 'POWER_CONTROL_2' not in power:
-            return False
-
-        power['POWER_CONTROL_2'] = not power['POWER_CONTROL_2']
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='POWER_CONTROL',
-                             elements=power,
-                             )
-        return True
-
-    def sendPowerPort3(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        power = device.getSwitch('POWER_CONTROL')
-        if 'POWER_CONTROL_3' not in power:
-            return False
-
-        power['POWER_CONTROL_3'] = not power['POWER_CONTROL_3']
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='POWER_CONTROL',
-                             elements=power,
-                             )
-        return True
-
-    def sendPowerPort4(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        power = device.getSwitch('POWER_CONTROL')
-        if 'POWER_CONTROL_4' not in power:
-            return False
-
-        power['POWER_CONTROL_4'] = not power['POWER_CONTROL_4']
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='POWER_CONTROL',
-                             elements=power,
-                             )
-        return True
-
-    def sendPowerBootPort1(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        power = device.getSwitch('POWER_ON_BOOT')
-        power['POWER_PORT_1'] = self.ui.powerBootPort1.isChecked()
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='POWER_ON_BOOT',
-                             elements=power,
-                             )
-        return True
-
-    def sendPowerBootPort2(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        power = device.getSwitch('POWER_ON_BOOT')
-        power['POWER_PORT_2'] = self.ui.powerBootPort2.isChecked()
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='POWER_ON_BOOT',
-                             elements=power,
-                             )
-        return True
-
-    def sendPowerBootPort3(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        power = device.getSwitch('POWER_ON_BOOT')
-        power['POWER_PORT_3'] = self.ui.powerBootPort3.isChecked()
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='POWER_ON_BOOT',
-                             elements=power,
-                             )
-        return True
-
-    def sendPowerBootPort4(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        power = device.getSwitch('POWER_ON_BOOT')
-        power['POWER_PORT_4'] = self.ui.powerBootPort4.isChecked()
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='POWER_ON_BOOT',
-                             elements=power,
-                             )
-        return True
-
-    def sendHubUSB(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        usb = device.getSwitch('USB_HUB_CONTROL')
-        if 'ENABLED' not in usb:
-            return False
-        if 'DISABLED' not in usb:
-            return False
-
-        usb['ENABLED'] = not usb['ENABLED']
-        usb['DISABLED'] = not usb['DISABLED']
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='USB_HUB_CONTROL',
-                             elements=usb,
-                             )
-        return True
-
-    def sendAutoDew(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        autoDew = device.getSwitch('AUTO_DEW')
-        autoDew['AUTO_DEW_ENABLED'] = self.ui.autoDew.isChecked()
-        autoDew['AUTO_DEW_DISABLED'] = not self.ui.autoDew.isChecked()
-        client.sendNewSwitch(deviceName=name,
-                             propertyName='AUTO_DEW',
-                             elements=autoDew,
-                             )
-        return True
+        suc = self.app.power.sendAutoDew(value=self.ui.autoDew.isChecked())
+        return suc

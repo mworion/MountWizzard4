@@ -223,7 +223,11 @@ class SettMisc(object):
         :return:
         """
 
-        success, versionPackage = result
+        if isinstance(result, tuple):
+            success, versionPackage = result
+        else:
+            success = False
+
         if success:
             self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 1)
             self.app.message.emit('Please restart to enable new version', 1)

@@ -389,7 +389,6 @@ class MainWindow(MWidget,
 
         # redraw tabs only when a change occurred
         if tabChanged:
-            print('changed')
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
 

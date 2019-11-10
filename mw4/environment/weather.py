@@ -252,4 +252,3 @@ class Weather(object):
         self.getOpenWeatherMapData(url=url)
 
         return True
-

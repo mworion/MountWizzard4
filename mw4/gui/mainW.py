@@ -312,6 +312,9 @@ class MainWindow(MWidget,
 
         :return: true for test purpose
         """
+
+        tabChanged = False
+
         # check if modeling would work (mount + solve + image)
         if all(self.deviceStat[x] for x in ['mount', 'imaging', 'astrometry']):
             self.ui.runModel.setEnabled(True)
@@ -326,39 +329,36 @@ class MainWindow(MWidget,
 
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'ManageModel')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        tabStatus = self.ui.mainTabWidget.isTabEnabled(tabIndex)
 
         if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            if not tabStatus:
+                tabChanged = True
         else:
             self.ui.batchModel.setEnabled(False)
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            if tabStatus:
+                tabChanged = True
 
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        tabStatus = self.ui.mainTabWidget.isTabEnabled(tabIndex)
 
         stat = self.deviceStat.get('power', None)
         if stat is None:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
+            if tabStatus:
+                tabChanged = True
         elif stat:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
+            if not tabStatus:
+                tabChanged = True
         else:
             self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-
-        # get index for both relay tabs under main
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        self.ui.mainTabWidget.setTabEnabled(tabIndex, self.deviceStat['relay'])
-
-        # and setting
-        tabWidget2 = self.ui.settingsTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'KMTronic')
-        tabIndex2 = self.ui.settingsTabWidget.indexOf(tabWidget2)
-        self.ui.settingsTabWidget.setTabEnabled(tabIndex2, self.deviceStat['relay'])
-
-        # redraw tabs
-        self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-        self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
+            if not tabStatus:
+                tabChanged = True
 
         stat = self.deviceStat.get('environOverall', None)
         if stat is None:
@@ -370,6 +370,28 @@ class MainWindow(MWidget,
         else:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
+
+        # relay
+        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
+        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
+        tabStatus = self.ui.mainTabWidget.isTabEnabled(tabIndex)
+        if tabStatus != self.deviceStat['relay']:
+            tabChanged = True
+        self.ui.mainTabWidget.setTabEnabled(tabIndex, self.deviceStat['relay'])
+
+        # and setting
+        tabWidget = self.ui.settingsTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'KMTronic')
+        tabIndex = self.ui.settingsTabWidget.indexOf(tabWidget)
+        tabStatus = self.ui.settingsTabWidget.isTabEnabled(tabIndex)
+        if tabStatus != self.deviceStat['relay']:
+            tabChanged = True
+        self.ui.settingsTabWidget.setTabEnabled(tabIndex, self.deviceStat['relay'])
+
+        # redraw tabs only when a change occurred
+        if tabChanged:
+            print('changed')
+            self.ui.mainTabWidget.setStyleSheet(self.getStyle())
+            self.ui.settingsTabWidget.setStyleSheet(self.getStyle())
 
         return True
 

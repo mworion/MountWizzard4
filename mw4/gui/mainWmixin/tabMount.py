@@ -23,6 +23,7 @@ import datetime
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+from mountcontrol.convert import stringToAngle
 # local import
 from mw4.base import transform
 

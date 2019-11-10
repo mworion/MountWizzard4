@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>9</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3183,7 +3183,7 @@
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>shows the refraction temperature used in mount</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
@@ -3231,7 +3231,7 @@
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>shows the refraction pressure used in mount</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
@@ -3448,7 +3448,7 @@
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>shows the refraction temperature used in mount</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
@@ -3748,7 +3748,7 @@ to mount</string>
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>shows the refraction temperature used in mount</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
@@ -3796,7 +3796,7 @@ to mount</string>
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>shows the refraction pressure used in mount</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
@@ -4038,7 +4038,7 @@ to mount</string>
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>shows the refraction correction status on / off</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
@@ -4086,7 +4086,7 @@ to mount</string>
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>shows the refraction correction status on / off</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>

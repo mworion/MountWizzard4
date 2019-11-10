@@ -12417,7 +12417,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -20190,9 +20190,9 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>295</y>
+         <y>320</y>
          <width>366</width>
-         <height>91</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
@@ -20202,7 +20202,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>65</y>
+          <y>45</y>
           <width>341</width>
           <height>21</height>
          </rect>
@@ -20214,33 +20214,14 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>qimage2ndarray</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="le_firmwareProductName_3">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>20</y>
-          <width>341</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Courier</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>open source software embedded: </string>
+         <string>qimage2ndarray, importlib_metadata</string>
         </property>
        </widget>
        <widget class="QLabel" name="le_firmwareProductName_4">
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>35</y>
+          <y>15</y>
           <width>341</width>
           <height>21</height>
          </rect>
@@ -20259,7 +20240,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>50</y>
+          <y>30</y>
           <width>341</width>
           <height>21</height>
          </rect>
@@ -20281,7 +20262,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>25</y>
          <width>366</width>
-         <height>96</height>
+         <height>101</height>
         </rect>
        </property>
        <property name="title">
@@ -20805,7 +20786,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>145</y>
+         <y>150</y>
          <width>366</width>
          <height>96</height>
         </rect>

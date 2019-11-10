@@ -161,6 +161,8 @@ class SettMisc(object):
                 return False
             self.ui.versionAvailable.setText(availPackage)
             self.ui.installVersion.setEnabled(True)
+            if availPackage > actPackage:
+                self.app.message.emit('A new version of MountWizzard is available', 1)
             return True
         else:
             self.ui.versionAvailable.setText('not online')

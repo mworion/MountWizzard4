@@ -232,6 +232,7 @@ class Weather(object):
         """
 
         if not self.keyAPI:
+            self.signals.connected.emit(False)
             return False
 
         if not self.online:

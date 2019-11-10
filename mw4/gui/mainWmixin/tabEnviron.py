@@ -414,9 +414,8 @@ class EnvironGui(object):
         self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
 
         if not self.ui.isOnline.isChecked():
-            # pixmap = PyQt5.QtGui.QPixmap(':/clearoutside.png')
-            # self.ui.picClearOutsideBase.setPixmap(pixmap)
-            # todo: pixmap eine leere zeigen mit hinweis of offline !
+            pixmap = PyQt5.QtGui.QPixmap(':/clearoutsideoff.png')
+            self.ui.picClearOutside.setPixmap(pixmap)
             return False
 
         # prepare coordinates for website

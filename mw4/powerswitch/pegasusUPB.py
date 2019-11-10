@@ -108,3 +108,24 @@ class PegasusUPB(indiClass.IndiClass):
             # print(propertyName, element, value)
 
         return True
+
+    def updateSwitch(self, deviceName, propertyName):
+        """
+        updateSwitch is called whenever a new number is received in client. it runs
+        through the device list and writes the number data to the according locations.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getSwitch(propertyName).items():
+            self.data[element] = value
+            # print(propertyName, element, value)
+
+        return True

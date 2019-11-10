@@ -57,6 +57,7 @@ class Power(object):
 
         self.clickable(self.ui.dewA).connect(self.sendDewA)
         self.clickable(self.ui.dewB).connect(self.sendDewB)
+        self.clickable(self.ui.dewC).connect(self.sendDewC)
 
         self.ui.powerPort1.clicked.connect(self.sendPowerPort1)
         self.ui.powerPort2.clicked.connect(self.sendPowerPort2)
@@ -143,6 +144,8 @@ class Power(object):
         self.ui.dewCurrentA.setText('{0:4.2f}'.format(value))
         value = self.app.power.data.get('DEW_CURRENT_B', 0)
         self.ui.dewCurrentB.setText('{0:4.2f}'.format(value))
+        value = self.app.power.data.get('DEW_CURRENT_C', 0)
+        self.ui.dewCurrentC.setText('{0:4.2f}'.format(value))
 
         return True
 
@@ -169,6 +172,8 @@ class Power(object):
                 self.ui.dewA.setText(f'{value:3.0f}')
             elif element == 'DEW_B':
                 self.ui.dewB.setText(f'{value:3.0f}')
+            elif element == 'DEW_C':
+                self.ui.dewC.setText(f'{value:3.0f}')
             # print(deviceName, propertyName, element, value)
 
         return True
@@ -304,6 +309,41 @@ class Power(object):
 
         dew = device.getNumber('DEW_PWM')
         dew['DEW_B'] = value
+        client.sendNewNumber(deviceName=name,
+                             propertyName='DEW_PWM',
+                             elements=dew,
+                             )
+        return True
+
+    def sendDewC(self):
+        """
+
+        :return: true fot test purpose
+        """
+
+        device = self.app.power.device
+        name = self.app.power.name
+        client = self.app.power.client
+
+        if device is None:
+            return False
+
+        actValue = int(self.ui.dewB.text())
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getInt(self,
+                               'Set dew PWM C',
+                               'Value (0-100):',
+                               actValue,
+                               0,
+                               100,
+                               10,
+                               )
+
+        if not ok:
+            return False
+
+        dew = device.getNumber('DEW_PWM')
+        dew['DEW_C'] = value
         client.sendNewNumber(deviceName=name,
                              propertyName='DEW_PWM',
                              elements=dew,

@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -10879,7 +10879,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>165</y>
+       <y>160</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -11017,7 +11017,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>235</y>
+       <y>225</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -11155,7 +11155,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>305</y>
+       <y>355</y>
        <width>366</width>
        <height>46</height>
       </rect>
@@ -11180,6 +11180,144 @@ to mount</string>
       </property>
       <property name="text">
        <string>Enable Auto Dew</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_61">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>290</y>
+       <width>366</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Dew heater C</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QLabel" name="label_282">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>20</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>%</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_277">
+      <property name="geometry">
+       <rect>
+        <x>215</x>
+        <y>20</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Current</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_290">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>20</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>A</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_278">
+      <property name="geometry">
+       <rect>
+        <x>11</x>
+        <y>20</y>
+        <width>79</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>DutyCycle</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="dewCurrentC">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>20</y>
+        <width>56</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="dewC">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>20</y>
+        <width>36</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Sets the dew heater power from 0 to 100 %</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="inputMask">
+       <string/>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="cursorPosition">
+       <number>1</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="input" stdset="0">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

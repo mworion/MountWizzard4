@@ -6,7 +6,6 @@ problems occurred:
 
 nice to have:
 - astrometry online
-- hemisphere: show best altitude when polar align is on
 - improve stretch further
 - histogram to image window
 - autofocus with FFT

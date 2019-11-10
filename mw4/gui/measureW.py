@@ -40,7 +40,7 @@ class MeasureWindow(widget.MWidget):
 
     __all__ = ['MeasureWindow',
                ]
-    version = '0.5'
+
     logger = logging.getLogger(__name__)
 
     NUMBER_POINTS = 250
@@ -118,6 +118,7 @@ class MeasureWindow(widget.MWidget):
         self.ui.measureSet2.setCurrentIndex(config.get('measureSet2', 0))
         self.ui.measureSet3.setCurrentIndex(config.get('measureSet3', 0))
         self.ui.timeSet.setCurrentIndex(config.get('timeSet', 0))
+        self.ui.checkSaveCSV.setChecked(config.get('checkSaveCSV', False))
         self.setCycleRefresh()
 
         return True
@@ -139,6 +140,7 @@ class MeasureWindow(widget.MWidget):
         config['measureSet2'] = self.ui.measureSet2.currentIndex()
         config['measureSet3'] = self.ui.measureSet3.currentIndex()
         config['timeSet'] = self.ui.timeSet.currentIndex()
+        config['checkSaveCSV'] = self.ui.checkSaveCSV.isChecked()
 
         return True
 
@@ -592,7 +594,7 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
-        ylabel = 'Power Voltage on Rack [V]'
+        ylabel = 'Power Voltage [V]'
         start = -self.NUMBER_POINTS * cycle
         axe.set_title(title,
                       color=self.M_BLUE,

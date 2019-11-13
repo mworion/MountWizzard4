@@ -279,6 +279,19 @@ class IndiClass(object):
         """
         pass
 
+    @staticmethod
+    def removePrefix(text, prefix):
+        """
+
+        :param text:
+        :param prefix:
+        :return:
+        """
+
+        value = text[text.startswith(prefix) and len(prefix):]
+        value = value.strip()
+        return value
+
     def updateMessage(self, device, text):
         """
         message take a message send by indi device and puts them in the user message

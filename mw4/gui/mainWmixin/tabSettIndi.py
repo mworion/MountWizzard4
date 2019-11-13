@@ -258,19 +258,6 @@ class SettIndi(object):
 
         return True
 
-    @staticmethod
-    def removePrefix(text, prefix):
-        """
-
-        :param text:
-        :param prefix:
-        :return:
-        """
-
-        value = text[text.startswith(prefix) and len(prefix):]
-        value = value.strip()
-        return value
-
     def showIndiDisconnected(self, deviceList):
         """
         showIndiDisconnected writes info to message window and recolors the status

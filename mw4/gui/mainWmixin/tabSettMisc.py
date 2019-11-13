@@ -207,7 +207,7 @@ class SettMisc(object):
             return False
         else:
             delta = time.time() - timeStart
-            self.logger.debug(f'astap took {delta}s return code: '
+            self.logger.debug(f'pip install took {delta}s return code: '
                               + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')

@@ -49,6 +49,16 @@ class Power(object):
                     'B': self.ui.dewB,
                     'C': self.ui.dewC,
                     }
+        self.current = {'1': self.ui.powerCurrent1,
+                        '2': self.ui.powerCurrent2,
+                        '3': self.ui.powerCurrent3,
+                        '4': self.ui.powerCurrent4,
+                        }
+        self.label = {'1': self.ui.powerLabel1,
+                      '2': self.ui.powerLabel2,
+                      '3': self.ui.powerLabel3,
+                      '4': self.ui.powerLabel4,
+                      }
 
         # gui tasks
         self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
@@ -112,44 +122,24 @@ class Power(object):
         value = self.app.power.data.get('WEATHER_DEWPOINT', 0)
         self.ui.powerDewPoint.setText('{0:4.1f}'.format(value))
 
-        value = self.app.power.data.get('POWER_CONTROL_1', False)
-        if value:
-            self.changeStyleDynamic(self.powerOnOFF['1'], 'running', True)
-        else:
-            self.changeStyleDynamic(self.powerOnOFF['1'], 'running', False)
-        value = self.app.power.data.get('POWER_CONTROL_2', False)
-        if value:
-            self.changeStyleDynamic(self.powerOnOFF['2'], 'running', True)
-        else:
-            self.changeStyleDynamic(self.powerOnOFF['2'], 'running', False)
-        value = self.app.power.data.get('POWER_CONTROL_3', False)
-        if value:
-            self.changeStyleDynamic(self.powerOnOFF['3'], 'running', True)
-        else:
-            self.changeStyleDynamic(self.powerOnOFF['3'], 'running', False)
-        value = self.app.power.data.get('POWER_CONTROL_4', False)
-        if value:
-            self.changeStyleDynamic(self.powerOnOFF['4'], 'running', True)
-        else:
-            self.changeStyleDynamic(self.powerOnOFF['4'], 'running', False)
+        for name, button in self.powerOnOFF.items():
+            value = self.app.power.data.get(f'POWER_CONTROL_{name}', False)
+            if value:
+                self.changeStyleDynamic(button, 'running', True)
+            else:
+                self.changeStyleDynamic(button, 'running', False)
 
-        value = self.app.power.data.get('POWER_PORT_1', False)
-        self.ui.powerBootPort1.setChecked(value)
-        value = self.app.power.data.get('POWER_PORT_2', False)
-        self.ui.powerBootPort2.setChecked(value)
-        value = self.app.power.data.get('POWER_PORT_3', False)
-        self.ui.powerBootPort3.setChecked(value)
-        value = self.app.power.data.get('POWER_PORT_4', False)
-        self.ui.powerBootPort4.setChecked(value)
+        for name, button in self.powerOnOFF.items():
+            value = self.app.power.data.get(f'POWER_PORT_{name}', False)
+            button.setChecked(value)
 
-        value = self.app.power.data.get('POWER_CURRENT_1', 0)
-        self.ui.powerCurrent1.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('POWER_CURRENT_2', 0)
-        self.ui.powerCurrent2.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('POWER_CURRENT_3', 0)
-        self.ui.powerCurrent3.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('POWER_CURRENT_4', 0)
-        self.ui.powerCurrent4.setText('{0:4.2f}'.format(value))
+        for name, button in self.current.items():
+            value = self.app.power.data.get(f'POWER_CURRENT_{name}', 0)
+            button.setText(f'{value:4.2f}')
+
+        for name, button in self.label.items():
+            value = self.app.power.data.get(f'POWER_LABEL_{name}', f'Power {name}')
+            button.setText(value)
 
         value = self.app.power.data.get('CONSUMPTION_AVG_AMPS', 0)
         self.ui.consumptionAvgAmps.setText('{0:4.2f}'.format(value))
@@ -180,15 +170,6 @@ class Power(object):
             self.changeStyleDynamic(self.ui.hubUSB, 'running', True)
         else:
             self.changeStyleDynamic(self.ui.hubUSB, 'running', False)
-
-        value = self.app.power.data.get('POWER_LABEL_1', 'Power 1')
-        self.ui.powerLabel1.setText(value)
-        value = self.app.power.data.get('POWER_LABEL_2', 'Power 2')
-        self.ui.powerLabel2.setText(value)
-        value = self.app.power.data.get('POWER_LABEL_3', 'Power 3')
-        self.ui.powerLabel3.setText(value)
-        value = self.app.power.data.get('POWER_LABEL_4', 'Power 4')
-        self.ui.powerLabel4.setText(value)
 
         return True
 

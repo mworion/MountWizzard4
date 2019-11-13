@@ -21,6 +21,7 @@
 import copy
 # external packages
 import PyQt5
+from mountcontrol.convert import valueToInt
 # local import
 
 
@@ -246,15 +247,22 @@ class Power(object):
 
     def setDew(self):
         """
+        setDew send the new dew value to power. as self.sender() gives only the object
+        back, which is in case of an QLineEdit a wrapper, we have to go to the parent
+        object to get the line edit object directly
 
         :return: true fot test purpose
         """
 
         for name, button in self.dew.items():
-            if button != self.sender():
+            if button != self.sender().parent():
                 continue
 
-            actValue = int(button.text())
+            actValue = valueToInt(button.text())
+
+            if actValue is None:
+                return False
+
             dlg = PyQt5.QtWidgets.QInputDialog()
             value, ok = dlg.getInt(self,
                                    f'Set dew PWM {name}',

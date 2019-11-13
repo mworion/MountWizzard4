@@ -454,13 +454,13 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             return None
 
         class Filter(PyQt5.QtCore.QObject):
-            clicked = PyQt5.QtCore.pyqtSignal()
+            clicked = PyQt5.QtCore.pyqtSignal(object)
 
             def eventFilter(self, obj, event):
                 if obj == widget:
                     if event.type() == PyQt5.QtCore.QEvent.MouseButtonRelease:
                         if obj.rect().contains(event.pos()):
-                            self.clicked.emit()
+                            self.clicked.emit(widget)
                             return True
                 return False
 

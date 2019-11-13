@@ -130,6 +130,27 @@ class PegasusUPB(indiClass.IndiClass):
 
         return True
 
+    def updateText(self, deviceName, propertyName):
+        """
+        updateText is called whenever a new text is received in client. it runs
+        through the device list and writes the text data to the according locations.
+
+        :param deviceName:
+        :param propertyName:
+        :return:
+        """
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getText(propertyName).items():
+            self.data[element] = value
+            # print(propertyName, element, value)
+
+        return True
+
     def togglePowerPort(self, port=None):
         """
         togglePowerPort
@@ -145,16 +166,16 @@ class PegasusUPB(indiClass.IndiClass):
             return False
 
         power = self.device.getSwitch('POWER_CONTROL')
-        portName = f'POWER_CONTROL_{port:1.0f}'
+        portName = f'POWER_CONTROL_{port}'
         if portName not in power:
             return False
 
         power[portName] = not power[portName]
-        self.client.sendNewSwitch(deviceName=self.name,
-                                  propertyName='POWER_CONTROL',
-                                  elements=power,
-                                  )
-        return True
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='POWER_CONTROL',
+                                        elements=power,
+                                        )
+        return suc
 
     def togglePowerPortBoot(self, port=None):
         """
@@ -171,16 +192,16 @@ class PegasusUPB(indiClass.IndiClass):
             return False
 
         power = self.device.getSwitch('POWER_ON_BOOT')
-        portName = f'POWER_PORT_{port:1.0f}'
+        portName = f'POWER_PORT_{port}'
         if portName not in power:
             return False
 
         power[portName] = not power[portName]
-        self.client.sendNewSwitch(deviceName=self.name,
-                                  propertyName='POWER_ON_BOOT',
-                                  elements=power,
-                                  )
-        return True
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='POWER_ON_BOOT',
+                                        elements=power,
+                                        )
+        return suc
 
     def toggleHubUSB(self):
         """
@@ -200,11 +221,11 @@ class PegasusUPB(indiClass.IndiClass):
 
         usb['ENABLED'] = not usb['ENABLED']
         usb['DISABLED'] = not usb['DISABLED']
-        self.client.sendNewSwitch(deviceName=self.name,
-                                  propertyName='USB_HUB_CONTROL',
-                                  elements=usb,
-                                  )
-        return True
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='USB_HUB_CONTROL',
+                                        elements=usb,
+                                        )
+        return suc
 
     def sendAutoDew(self, value=False):
         """
@@ -220,11 +241,11 @@ class PegasusUPB(indiClass.IndiClass):
         autoDew = self.device.getSwitch('AUTO_DEW')
         autoDew['AUTO_DEW_ENABLED'] = value
         autoDew['AUTO_DEW_DISABLED'] = not value
-        self.client.sendNewSwitch(deviceName=self.name,
-                                  propertyName='AUTO_DEW',
-                                  elements=autoDew,
-                                  )
-        return True
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='AUTO_DEW',
+                                        elements=autoDew,
+                                        )
+        return suc
 
     def sendDew(self, port='', value=None):
         """
@@ -239,7 +260,8 @@ class PegasusUPB(indiClass.IndiClass):
 
         dew = self.device.getNumber('DEW_PWM')
         dew[f'DEW_{port}'] = value
-        self.client.sendNewNumber(deviceName=self.name,
-                                  propertyName='DEW_PWM',
-                                  elements=dew,
-                                  )
+        suc = self.client.sendNewNumber(deviceName=self.name,
+                                        propertyName='DEW_PWM',
+                                        elements=dew,
+                                        )
+        return suc

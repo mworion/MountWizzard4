@@ -50,16 +50,11 @@ class Power(object):
                     'C': self.ui.dewC,
                     }
 
-        signals = self.app.power.client.signals
-        signals.newNumber.connect(self.updatePowerGui)
-        signals.deviceDisconnected.connect(self.clearPowerGui)
-        signals.newNumber.connect(self.setPowerNumber)
-        signals.defNumber.connect(self.setPowerNumber)
-        signals.newSwitch.connect(self.setPowerSwitch)
-        signals.defSwitch.connect(self.setPowerSwitch)
-        signals.newText.connect(self.setPowerText)
-        signals.defText.connect(self.setPowerText)
+        # gui tasks
+        self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
+        self.ui.autoDew.clicked.connect(self.setAutoDew)
 
+        # setting gui elements
         for name, button in self.dew.items():
             self.clickable(button).connect(self.setDew)
         for name, button in self.powerOnOFF.items():
@@ -67,8 +62,8 @@ class Power(object):
         for name, button in self.powerBoot.items():
             button.clicked.connect(self.togglePowerBootPort)
 
-        self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
-        self.ui.autoDew.clicked.connect(self.setAutoDew)
+        # cyclic tasks
+        self.app.update1s.connect(self.updatePowerGui)
 
     def initConfig(self):
         # config = self.app.config['mainW']
@@ -117,6 +112,36 @@ class Power(object):
         value = self.app.power.data.get('WEATHER_DEWPOINT', 0)
         self.ui.powerDewPoint.setText('{0:4.1f}'.format(value))
 
+        value = self.app.power.data.get('POWER_CONTROL_1', False)
+        if value:
+            self.changeStyleDynamic(self.powerOnOFF['1'], 'running', True)
+        else:
+            self.changeStyleDynamic(self.powerOnOFF['1'], 'running', False)
+        value = self.app.power.data.get('POWER_CONTROL_2', False)
+        if value:
+            self.changeStyleDynamic(self.powerOnOFF['2'], 'running', True)
+        else:
+            self.changeStyleDynamic(self.powerOnOFF['2'], 'running', False)
+        value = self.app.power.data.get('POWER_CONTROL_3', False)
+        if value:
+            self.changeStyleDynamic(self.powerOnOFF['3'], 'running', True)
+        else:
+            self.changeStyleDynamic(self.powerOnOFF['3'], 'running', False)
+        value = self.app.power.data.get('POWER_CONTROL_4', False)
+        if value:
+            self.changeStyleDynamic(self.powerOnOFF['4'], 'running', True)
+        else:
+            self.changeStyleDynamic(self.powerOnOFF['4'], 'running', False)
+
+        value = self.app.power.data.get('POWER_PORT_1', False)
+        self.ui.powerBootPort1.setChecked(value)
+        value = self.app.power.data.get('POWER_PORT_2', False)
+        self.ui.powerBootPort2.setChecked(value)
+        value = self.app.power.data.get('POWER_PORT_3', False)
+        self.ui.powerBootPort3.setChecked(value)
+        value = self.app.power.data.get('POWER_PORT_4', False)
+        self.ui.powerBootPort4.setChecked(value)
+
         value = self.app.power.data.get('POWER_CURRENT_1', 0)
         self.ui.powerCurrent1.setText('{0:4.2f}'.format(value))
         value = self.app.power.data.get('POWER_CURRENT_2', 0)
@@ -147,101 +172,23 @@ class Power(object):
         value = self.app.power.data.get('DEW_CURRENT_C', 0)
         self.ui.dewCurrentC.setText('{0:4.2f}'.format(value))
 
-        return True
+        value = self.app.power.data.get('AUTO_DEW_ENABLED', False)
+        self.ui.autoDew.setChecked(value)
 
-    def setPowerNumber(self, deviceName, propertyName):
-        """
+        value = self.app.power.data.get('ENABLED', False)
+        if value:
+            self.changeStyleDynamic(self.ui.hubUSB, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.hubUSB, 'running', False)
 
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-
-        if device is None:
-            return False
-        if deviceName != name:
-            return False
-        if not getattr(device, 'getNumber', False):
-            return False
-
-        for element, value in device.getNumber(propertyName).items():
-            if element == 'DEW_A':
-                self.ui.dewA.setText(f'{value:3.0f}')
-            elif element == 'DEW_B':
-                self.ui.dewB.setText(f'{value:3.0f}')
-            elif element == 'DEW_C':
-                self.ui.dewC.setText(f'{value:3.0f}')
-            # print(deviceName, propertyName, element, value)
-
-        return True
-
-    def setPowerSwitch(self, deviceName, propertyName):
-        """
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-
-        if device is None:
-            return False
-        if deviceName != name:
-            return False
-        if not getattr(device, 'getSwitch', False):
-            return False
-
-        for element, value in device.getSwitch(propertyName).items():
-            if element in self.powerOnOFF:
-                if value:
-                    self.changeStyleDynamic(self.powerOnOFF[element], 'running', True)
-                else:
-                    self.changeStyleDynamic(self.powerOnOFF[element], 'running', False)
-            elif element in self.powerBoot:
-                self.powerBoot[element].setChecked(value)
-            elif propertyName == 'USB_HUB_CONTROL' and element == 'ENABLED':
-                self.changeStyleDynamic(self.ui.hubUSB, 'running', value)
-            elif propertyName == 'USB_HUB_CONTROL' and element == 'DISABLED':
-                self.changeStyleDynamic(self.ui.hubUSB, 'running', not value)
-            elif propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':
-                self.ui.autoDew.setChecked(value)
-            # print(deviceName, propertyName, element, value)
-
-        return True
-
-    def setPowerText(self, deviceName, propertyName):
-        """
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-
-        if device is None:
-            return False
-        if deviceName != name:
-            return False
-        if not getattr(device, 'getText', False):
-            return False
-
-        for element, value in device.getText(propertyName).items():
-            if element == 'POWER_LABEL_1':
-                self.ui.powerLabel1.setText(value)
-            elif element == 'POWER_LABEL_2':
-                self.ui.powerLabel2.setText(value)
-            elif element == 'POWER_LABEL_3':
-                self.ui.powerLabel3.setText(value)
-            elif element == 'POWER_LABEL_4':
-                self.ui.powerLabel4.setText(value)
-            # print(deviceName, propertyName, element, value)
+        value = self.app.power.data.get('POWER_LABEL_1', 'Power 1')
+        self.ui.powerLabel1.setText(value)
+        value = self.app.power.data.get('POWER_LABEL_2', 'Power 2')
+        self.ui.powerLabel2.setText(value)
+        value = self.app.power.data.get('POWER_LABEL_3', 'Power 3')
+        self.ui.powerLabel3.setText(value)
+        value = self.app.power.data.get('POWER_LABEL_4', 'Power 4')
+        self.ui.powerLabel4.setText(value)
 
         return True
 
@@ -288,7 +235,7 @@ class Power(object):
         for name, button in self.powerOnOFF.items():
             if button != self.sender():
                 continue
-            suc = self.app.power.togglePowerPort(port=int(name))
+            suc = self.app.power.togglePowerPort(port=name)
         return suc
 
     def togglePowerBootPort(self):
@@ -300,7 +247,7 @@ class Power(object):
         for name, button in self.powerBoot.items():
             if button != self.sender():
                 continue
-            suc = self.app.power.togglePowerPortBoot(port=int(name))
+            suc = self.app.power.togglePowerPortBoot(port=name)
         return suc
 
     def toggleHubUSB(self):
@@ -318,5 +265,6 @@ class Power(object):
 
         :return: true fot test purpose
         """
+
         suc = self.app.power.sendAutoDew(value=self.ui.autoDew.isChecked())
         return suc

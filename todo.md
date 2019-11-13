@@ -20,8 +20,6 @@ nice to have:
 - mount model 3d simplified
 - tests update
 - check more camera
-- implement upb2 features with others
-- check detection of slew speed for movement and set this value
 - naming from environment sensor and internal sensor
 - architecture: check event based and move away from time triggered
 

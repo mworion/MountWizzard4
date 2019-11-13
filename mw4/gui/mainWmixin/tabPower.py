@@ -34,16 +34,20 @@ class Power(object):
 
     def __init__(self):
 
-        self.powerOnOFF = {'POWER_CONTROL_1': self.ui.powerPort1,
-                           'POWER_CONTROL_2': self.ui.powerPort2,
-                           'POWER_CONTROL_3': self.ui.powerPort3,
-                           'POWER_CONTROL_4': self.ui.powerPort4,
+        self.powerOnOFF = {'1': self.ui.powerPort1,
+                           '2': self.ui.powerPort2,
+                           '3': self.ui.powerPort3,
+                           '4': self.ui.powerPort4,
                            }
-        self.powerBoot = {'POWER_PORT_1': self.ui.powerBootPort1,
-                          'POWER_PORT_2': self.ui.powerBootPort2,
-                          'POWER_PORT_3': self.ui.powerBootPort3,
-                          'POWER_PORT_4': self.ui.powerBootPort4,
+        self.powerBoot = {'1': self.ui.powerBootPort1,
+                          '2': self.ui.powerBootPort2,
+                          '3': self.ui.powerBootPort3,
+                          '4': self.ui.powerBootPort4,
                           }
+        self.dew = {'A': self.ui.dewA,
+                    'B': self.ui.dewB,
+                    'C': self.ui.dewC,
+                    }
 
         signals = self.app.power.client.signals
         signals.newNumber.connect(self.updatePowerGui)
@@ -55,18 +59,13 @@ class Power(object):
         signals.newText.connect(self.setPowerText)
         signals.defText.connect(self.setPowerText)
 
-        self.clickable(self.ui.dewA).connect(self.sendDewA)
-        self.clickable(self.ui.dewB).connect(self.sendDewB)
-        self.clickable(self.ui.dewC).connect(self.sendDewC)
+        for name, button in self.dew.items():
+            self.clickable(button).connect(self.setDew)
+        for name, button in self.powerOnOFF.items():
+            button.clicked.connect(self.togglePowerPort)
+        for name, button in self.powerBoot.items():
+            button.clicked.connect(self.togglePowerBootPort)
 
-        self.ui.powerPort1.clicked.connect(self.togglePowerPort1)
-        self.ui.powerPort2.clicked.connect(self.togglePowerPort2)
-        self.ui.powerPort3.clicked.connect(self.togglePowerPort3)
-        self.ui.powerPort4.clicked.connect(self.togglePowerPort4)
-        self.ui.powerBootPort1.clicked.connect(self.togglePowerBootPort1)
-        self.ui.powerBootPort2.clicked.connect(self.togglePowerBootPort2)
-        self.ui.powerBootPort3.clicked.connect(self.togglePowerBootPort3)
-        self.ui.powerBootPort4.clicked.connect(self.togglePowerBootPort4)
         self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
         self.ui.autoDew.clicked.connect(self.setAutoDew)
 
@@ -245,173 +244,55 @@ class Power(object):
 
         return True
 
-    def sendDewA(self):
+    def setDew(self):
         """
 
         :return: true fot test purpose
         """
 
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
+        for name, button in self.dew.items():
+            if button != self.sender():
+                continue
 
-        if device is None:
-            return False
+            actValue = int(button.text())
+            dlg = PyQt5.QtWidgets.QInputDialog()
+            value, ok = dlg.getInt(self,
+                                   f'Set dew PWM {name}',
+                                   'Value (0-100):',
+                                   actValue,
+                                   0,
+                                   100,
+                                   10,
+                                   )
 
-        actValue = int(self.ui.dewA.text())
-        dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set dew PWM A',
-                               'Value (0-100):',
-                               actValue,
-                               0,
-                               100,
-                               10,
-                               )
+            if not ok:
+                return False
 
-        if not ok:
-            return False
+            suc = self.app.power.sendDew(port=name, value=value)
+            return suc
 
-        dew = device.getNumber('DEW_PWM')
-        dew['DEW_A'] = value
-        client.sendNewNumber(deviceName=name,
-                             propertyName='DEW_PWM',
-                             elements=dew,
-                             )
-        return True
-
-    def sendDewB(self):
+    def togglePowerPort(self):
         """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        actValue = int(self.ui.dewB.text())
-        dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set dew PWM B',
-                               'Value (0-100):',
-                               actValue,
-                               0,
-                               100,
-                               10,
-                               )
-
-        if not ok:
-            return False
-
-        dew = device.getNumber('DEW_PWM')
-        dew['DEW_B'] = value
-        client.sendNewNumber(deviceName=name,
-                             propertyName='DEW_PWM',
-                             elements=dew,
-                             )
-        return True
-
-    def sendDewC(self):
-        """
-
-        :return: true fot test purpose
-        """
-
-        device = self.app.power.device
-        name = self.app.power.name
-        client = self.app.power.client
-
-        if device is None:
-            return False
-
-        actValue = int(self.ui.dewB.text())
-        dlg = PyQt5.QtWidgets.QInputDialog()
-        value, ok = dlg.getInt(self,
-                               'Set dew PWM C',
-                               'Value (0-100):',
-                               actValue,
-                               0,
-                               100,
-                               10,
-                               )
-
-        if not ok:
-            return False
-
-        dew = device.getNumber('DEW_PWM')
-        dew['DEW_C'] = value
-        client.sendNewNumber(deviceName=name,
-                             propertyName='DEW_PWM',
-                             elements=dew,
-                             )
-        return True
-
-    def togglePowerPort1(self):
-        """
-        togglePowerPort1 toggles the state of the power switch
+        togglePowerPort  toggles the state of the power switch
         :return: success
         """
-        suc = self.app.power.togglePowerPort(port=1)
+
+        for name, button in self.powerOnOFF.items():
+            if button != self.sender():
+                continue
+            suc = self.app.power.togglePowerPort(port=int(name))
         return suc
 
-    def togglePowerPort2(self):
+    def togglePowerBootPort(self):
         """
-        togglePowerPort2 toggles the state of the power switch
+        togglePowerPort  toggles the state of the power switch
         :return: success
         """
-        suc = self.app.power.togglePowerPort(port=2)
-        return suc
 
-    def togglePowerPort3(self):
-        """
-        togglePowerPort3 toggles the state of the power switch
-        :return: success
-        """
-        suc = self.app.power.togglePowerPort(port=3)
-        return suc
-
-    def togglePowerPort4(self):
-        """
-        togglePowerPort4 toggles the state of the power switch
-        :return: success
-        """
-        suc = self.app.power.togglePowerPort(port=4)
-        return suc
-
-    def togglePowerBootPort1(self):
-        """
-        togglePowerBootPort1 toggles the state of the power switch
-        :return: true fot test purpose
-        """
-        suc = self.app.power.togglePowerPortBoot(port=1)
-        return suc
-
-    def togglePowerBootPort2(self):
-        """
-        togglePowerBootPort2 toggles the state of the power switch
-        :return: true fot test purpose
-        """
-        suc = self.app.power.togglePowerPortBoot(port=2)
-        return suc
-
-    def togglePowerBootPort3(self):
-        """
-        togglePowerBootPort3 toggles the state of the power switch
-        :return: true fot test purpose
-        """
-        suc = self.app.power.togglePowerPortBoot(port=3)
-        return suc
-
-    def togglePowerBootPort4(self):
-        """
-        togglePowerBootPort4 toggles the state of the power switch
-        :return: true fot test purpose
-        """
-        suc = self.app.power.togglePowerPortBoot(port=4)
+        for name, button in self.powerBoot.items():
+            if button != self.sender():
+                continue
+            suc = self.app.power.togglePowerPortBoot(port=int(name))
         return suc
 
     def toggleHubUSB(self):

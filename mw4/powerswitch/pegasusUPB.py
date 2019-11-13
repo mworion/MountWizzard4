@@ -225,3 +225,21 @@ class PegasusUPB(indiClass.IndiClass):
                                   elements=autoDew,
                                   )
         return True
+
+    def sendDew(self, port='', value=None):
+        """
+
+        :param port:
+        :param value:
+        :return: success
+        """
+
+        if self.device is None:
+            return False
+
+        dew = self.device.getNumber('DEW_PWM')
+        dew[f'DEW_{port}'] = value
+        self.client.sendNewNumber(deviceName=self.name,
+                                  propertyName='DEW_PWM',
+                                  elements=dew,
+                                  )

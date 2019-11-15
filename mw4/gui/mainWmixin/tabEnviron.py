@@ -115,25 +115,6 @@ class EnvironGui(object):
 
         return True
 
-    def setRefractionUpdateType(self):
-        """
-
-        :return: success
-        """
-
-        if not self.refractionSource == 'internalSensor':
-            return False
-
-        # otherwise we have to switch it on or off
-        if self.sender() == self.ui.checkRefracNone:
-            suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
-        elif self.sender() == self.ui.checkRefracNoTrack:
-            suc = self.app.mount.setting.setDirectWeatherUpdateType(1)
-        else:
-            suc = self.app.mount.setting.setDirectWeatherUpdateType(2)
-
-        return suc
-
     def updateRefractionUpdateType(self, setting):
         """
 
@@ -148,10 +129,30 @@ class EnvironGui(object):
             self.ui.checkRefracNone.setChecked(True)
         elif setting.weatherStatus == 1:
             self.ui.checkRefracNoTrack.setChecked(True)
-        else:
+        elif setting.weatherStatus == 2:
             self.ui.checkRefracCont.setChecked(True)
 
         return True
+
+    def setRefractionUpdateType(self):
+        """
+
+        :return: success
+        """
+
+        if not self.refractionSource == 'internalSensor':
+            suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
+            return suc
+
+        # otherwise we have to switch it on or off
+        if self.ui.checkRefracNone.isChecked():
+            suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
+        elif self.ui.checkRefracNoTrack.isChecked():
+            suc = self.app.mount.setting.setDirectWeatherUpdateType(1)
+        else:
+            suc = self.app.mount.setting.setDirectWeatherUpdateType(2)
+
+        return suc
 
     def setRefractionSourceGui(self):
         """
@@ -179,6 +180,8 @@ class EnvironGui(object):
         :return: success
         """
 
+        old = self.refractionSource
+
         for source, group in self.refractionSources.items():
             if group != self.sender():
                 continue
@@ -186,6 +189,10 @@ class EnvironGui(object):
                 self.refractionSource = source
             else:
                 self.refractionSource = ''
+
+        if old != self.refractionSource:
+            self.filteredTemperature = None
+            self.filteredPressure = None
 
         self.setRefractionSourceGui()
         self.setRefractionUpdateType()

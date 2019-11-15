@@ -229,6 +229,8 @@ class Mount(object):
                 self.changeStyleDynamic(self.ui.refractionPress1, 'color', 'yellow')
         else:
             self.ui.statusRefraction.setText('-')
+            self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
+            self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
 
         if sett.gpsSynced is not None:
             self.ui.statusGPSSynced.setText('YES' if sett.gpsSynced else 'NO')

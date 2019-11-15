@@ -264,13 +264,13 @@ class EnvironGui(object):
         if self.refractionSource == 'internalSensor':
             return False
 
-        temp, press = self.movingAverageRefractionParameters()
+        if not self.app.mount.mountUp:
+            return False
 
+        temp, press = self.movingAverageRefractionParameters()
         if temp is None or press is None:
             return False
 
-        if not self.app.mount.mountUp:
-            return False
         if self.ui.checkRefracNone.isChecked():
             return False
         if self.ui.checkRefracNoTrack.isChecked():
@@ -282,7 +282,6 @@ class EnvironGui(object):
 
         if not suc:
             self.app.message.emit('Cannot perform refraction update', 2)
-            self.logger.info(f'No refraction update Temp:{temp}, Press:{press}')
             return False
 
         return True

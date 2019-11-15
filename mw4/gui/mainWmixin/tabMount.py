@@ -62,7 +62,6 @@ class Mount(object):
         self.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
         self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
-        self.clickable(self.ui.statusRefraction_2).connect(self.setRefraction)
 
     def initConfig(self):
         """
@@ -220,11 +219,16 @@ class Mount(object):
             self.ui.statusDualAxisTracking.setText('-')
 
         if sett.statusRefraction is not None:
-            self.ui.statusRefraction.setText('ON' if sett.statusRefraction else 'OFF')
-            self.ui.statusRefraction_2.setText('ON' if sett.statusRefraction else 'OFF')
+            status = sett.statusRefraction
+            self.ui.statusRefraction.setText('ON' if status else 'OFF')
+            if status:
+                self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
+                self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
+            else:
+                self.changeStyleDynamic(self.ui.refractionTemp1, 'color', 'yellow')
+                self.changeStyleDynamic(self.ui.refractionPress1, 'color', 'yellow')
         else:
             self.ui.statusRefraction.setText('-')
-            self.ui.statusRefraction_2.setText('-')
 
         if sett.gpsSynced is not None:
             self.ui.statusGPSSynced.setText('YES' if sett.gpsSynced else 'NO')

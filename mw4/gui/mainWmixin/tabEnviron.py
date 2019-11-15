@@ -61,6 +61,9 @@ class EnvironGui(object):
         # weather functions
         self.app.weather.signals.dataReceived.connect(self.updateOpenWeatherMapGui)
 
+        # weather functions
+        self.app.mount.signals.settingDone.connect(self.updateInternalWeatherGui)
+
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
@@ -89,7 +92,6 @@ class EnvironGui(object):
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
         self.updateClearOutside()
-        self.deviceStat['internalSensor'] = None
 
         return True
 
@@ -472,5 +474,47 @@ class EnvironGui(object):
             self.ui.weatherWindDir.setText(f'{data["windDir"]:3.0f}')
         if 'rain' in data:
             self.ui.weatherRainVol.setText(f'{data["rain"]:5.2f}')
+
+        return True
+
+    def clearInternalWeatherMapGui(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.ui.internalTemp.setText('-')
+        self.ui.internalPress.setText('-')
+        self.ui.internalHumidity.setText('-')
+        self.ui.internalDewPoint.setText('-')
+
+        return True
+
+    def updateInternalWeatherGui(self, setting):
+        """
+        updateOpenWeatherMapGui takes the returned data from the dict to the Gui
+
+
+        :param setting:
+        :return: success
+        """
+
+        if self.deviceStat['internalSensor'] is None:
+            return False
+
+        if setting is None:
+            self.deviceStat['internalSensor'] = False
+            self.clearInternalWeatherMapGui()
+            return False
+
+        self.deviceStat['internalSensor'] = True
+
+        if setting.weatherTemperature is not None:
+            self.ui.internalTemp.setText(f'{setting.weatherTemperature:4.1f}')
+        if setting.weatherPressure is not None:
+            self.ui.internalPress.setText(f'{setting.weatherPressure:5.1f}')
+        if setting.weatherHumidity is not None:
+            self.ui.internalHumidity.setText(f'{setting.weatherHumidity:3.0f}')
+        if setting.weatherDewPoint is not None:
+            self.ui.internalDewPoint.setText(f'{setting.weatherDewPoint:4.1f}')
 
         return True

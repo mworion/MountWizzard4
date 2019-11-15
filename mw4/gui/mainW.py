@@ -76,7 +76,7 @@ class MainWindow(MWidget,
 
     __all__ = ['MainWindow',
                ]
-    version = '0.101'
+
     logger = logging.getLogger(__name__)
 
     def __init__(self, app, threadPool):

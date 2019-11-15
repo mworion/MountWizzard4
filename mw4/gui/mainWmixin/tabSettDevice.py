@@ -47,6 +47,10 @@ class SettDevice(object):
                 'uiDriver': self.ui.environDevice,
                 'dispatch': self.environDispatch,
             },
+            'internal': {
+                'uiDriver': self.ui.internalDevice,
+                'dispatch': self.internalDispatch,
+            },
             'weather': {
                 'uiDriver': self.ui.weatherDevice,
                 'dispatch': self.weatherDispatch,
@@ -138,6 +142,7 @@ class SettDevice(object):
         self.drivers['dome']['uiDriver'].addItem('INDI')
         self.drivers['imaging']['uiDriver'].addItem('INDI')
         self.drivers['environ']['uiDriver'].addItem('INDI')
+        self.drivers['internal']['uiDriver'].addItem('Built-In')
         self.drivers['weather']['uiDriver'].addItem('Built-In')
         self.drivers['cover']['uiDriver'].addItem('INDI')
         self.drivers['skymeter']['uiDriver'].addItem('INDI')
@@ -420,5 +425,22 @@ class SettDevice(object):
             self.app.message.emit('Weather disabled', 0)
             self.deviceStat['weather'] = None
             self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
+
+        return True
+
+    def internalDispatch(self):
+        """
+
+        :return:
+        """
+
+        if self.ui.internalDevice.currentText().startswith('Built-In'):
+            self.app.message.emit('Internal Weather enabled', 0)
+            self.deviceStat['internalSensor'] = True
+            self.ui.internalDevice.setStyleSheet(self.BACK_GREEN)
+        else:
+            self.app.message.emit('Internal Weather disabled', 0)
+            self.deviceStat['internalSensor'] = None
+            self.ui.internalDevice.setStyleSheet(self.BACK_NORM)
 
         return True

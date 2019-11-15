@@ -554,7 +554,7 @@ class EnvironGui(object):
         if self.deviceStat['internalSensor'] is None:
             return False
 
-        if setting is None:
+        if setting is None or not self.app.mount.mountUp:
             self.deviceStat['internalSensor'] = False
             self.clearInternalWeatherMapGui()
             return False

@@ -63,6 +63,7 @@ class EnvironGui(object):
 
         # weather functions
         self.app.mount.signals.settingDone.connect(self.updateInternalWeatherGui)
+        self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
 
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
@@ -133,6 +134,25 @@ class EnvironGui(object):
 
         return suc
 
+    def updateRefractionUpdateType(self, setting):
+        """
+
+        :param setting:
+        :return: success
+        """
+
+        if not self.refractionSource == 'internalSensor':
+            return False
+
+        if setting.weatherStatus == 0:
+            self.ui.checkRefracNone.setChecked(True)
+        elif setting.weatherStatus == 1:
+            self.ui.checkRefracNoTrack.setChecked(True)
+        else:
+            self.ui.checkRefracCont.setChecked(True)
+
+        return True
+
     def setRefractionSourceGui(self):
         """
         setRefractionSourceGui sets the gui elements to a recognizable setting and disables
@@ -166,7 +186,9 @@ class EnvironGui(object):
                 self.refractionSource = source
             else:
                 self.refractionSource = ''
+
         self.setRefractionSourceGui()
+        self.setRefractionUpdateType()
 
         return True
 

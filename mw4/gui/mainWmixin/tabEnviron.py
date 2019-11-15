@@ -70,6 +70,9 @@ class EnvironGui(object):
         self.ui.weatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.environGroup.clicked.connect(self.selectRefractionSource)
         self.ui.internalGroup.clicked.connect(self.selectRefractionSource)
+        self.ui.checkRefracNone.clicked.connect(self.setRefractionUpdateType)
+        self.ui.checkRefracCont.clicked.connect(self.setRefractionUpdateType)
+        self.ui.checkRefracNoTrack.clicked.connect(self.setRefractionUpdateType)
 
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
@@ -111,6 +114,25 @@ class EnvironGui(object):
 
         return True
 
+    def setRefractionUpdateType(self):
+        """
+
+        :return: success
+        """
+
+        if not self.refractionSource == 'internalSensor':
+            return False
+
+        # otherwise we have to switch it on or off
+        if self.sender() == self.ui.checkRefracNone:
+            suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
+        elif self.sender() == self.ui.checkRefracNoTrack:
+            suc = self.app.mount.setting.setDirectWeatherUpdateType(1)
+        else:
+            suc = self.app.mount.setting.setDirectWeatherUpdateType(2)
+
+        return suc
+
     def setRefractionSourceGui(self):
         """
         setRefractionSourceGui sets the gui elements to a recognizable setting and disables
@@ -144,7 +166,6 @@ class EnvironGui(object):
                 self.refractionSource = source
             else:
                 self.refractionSource = ''
-
         self.setRefractionSourceGui()
 
         return True
@@ -210,6 +231,9 @@ class EnvironGui(object):
 
         :return: success if update happened
         """
+
+        if self.refractionSource == 'internalSensor':
+            return False
 
         temp, press = self.movingAverageRefractionParameters()
 

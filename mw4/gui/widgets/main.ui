@@ -3076,7 +3076,7 @@
          <string>Select internal sensor device which is directly linked to mount (e.g. MBox) as source for refraction updates.</string>
         </property>
         <property name="title">
-         <string>Internal</string>
+         <string>Direct</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

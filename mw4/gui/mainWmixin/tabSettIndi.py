@@ -322,6 +322,8 @@ class SettIndi(object):
                 continue
             self.indiDevices[device]['uiDevice'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[device] = True
+            showMessage = self.indiDevices[device]['uiMessage'].isChecked()
+            self.indiDevices[device]['class'].showMessage = showMessage
         return True
 
     def showDeviceDisconnected(self, deviceName):

@@ -180,8 +180,8 @@ class FlipFlat(indiClass.IndiClass):
 
         cover = self.device.getSwitch('CAP_PARK')
 
-        cover['UNPARK'] = park
-        cover['PARK'] = not park
+        cover['UNPARK'] = not park
+        cover['PARK'] = park
         suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='CAP_PARK',
                                         elements=cover,

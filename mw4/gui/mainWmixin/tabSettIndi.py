@@ -203,11 +203,13 @@ class SettIndi(object):
         self.indiDevices['sensorWeather']['uiName'].addItem('Weather Meta')
         self.indiDevices['sensorWeather']['uiName'].addItem('Weather Simulator')
         self.indiDevices['sensorWeather']['uiName'].addItem('Weather Watcher')
-        self.indiDevices['sensorWeather']['uiName'].addItem('WunderGround')
 
         self.indiDevices['skymeter']['uiName'].addItem('SQM')
+
         self.indiDevices['telescope']['uiName'].addItem('LX200 10micron')
+
         self.indiDevices['power']['uiName'].addItem('Pegasus UPB')
+
         self.indiDevices['cover']['uiName'].addItem('Flip Flat')
 
         return True

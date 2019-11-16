@@ -40,7 +40,6 @@ class IndiClass(object):
 
     __all__ = ['IndiClass']
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
@@ -49,18 +48,20 @@ class IndiClass(object):
     NUMBER_RETRY = 5
 
     def __init__(self,
-                 app=None,
                  host=None,
                  name='',
+                 message=None,
                  ):
         super().__init__()
 
-        self.app = app
+        self.message = message
         self.client = qtIndiBase.Client(host=host)
         self.name = name
         self.data = {}
         self.retryCounter = 0
         self.device = None
+
+        self.showMessages = False
 
         self.timerRetry = PyQt5.QtCore.QTimer()
         self.timerRetry.setSingleShot(True)
@@ -128,9 +129,9 @@ class IndiClass(object):
 
         if deviceName == self.name:
             self.device = self.client.getDevice(deviceName)
-            self.app.message.emit(f'INDI device found:  [{deviceName}]', 0)
+            self.message.emit(f'INDI device found:  [{deviceName}]', 0)
         # else:
-        #    self.app.message.emit(f'INDI device {self.name} snoops: [{deviceName}]', 0)
+        #    self.message.emit(f'INDI device {self.name} snoops: [{deviceName}]', 0)
 
         return True
 
@@ -144,7 +145,7 @@ class IndiClass(object):
         """
 
         if deviceName == self.name:
-            self.app.message.emit(f'INDI removed device: [{deviceName}]', 0)
+            self.message.emit(f'INDI removed device: [{deviceName}]', 0)
             self.device = None
             self.data = {}
             return True
@@ -153,23 +154,27 @@ class IndiClass(object):
 
     def startRetry(self):
         """
-        startRetry tries to connect the server a second time, if that
-        is not the case actually.
+        startRetry tries to connect the server a NUMBER_RETRY times, if necessary with a
+        delay of RETRY_DELAY
 
         :return: True for test purpose
         """
 
         if not self.name:
             return False
+
         self.retryCounter += 1
+
         if not self.data:
             # self.stopCommunication()
             self.startCommunication()
             self.logger.info(f'Indi server {self.name} connection retry')
         else:
             self.retryCounter = 0
+
         if self.retryCounter < self.NUMBER_RETRY:
             self.timerRetry.start(self.RETRY_DELAY)
+
         return True
 
     def startCommunication(self):
@@ -297,21 +302,21 @@ class IndiClass(object):
 
     def updateMessage(self, device, text):
         """
-        message take a message send by indi device and puts them in the user message
+        message take a message send by indi device and emits them in the user message
         window as well.
 
         :param device: device name
         :param text: message received
         :return: success
         """
-        if self.app.mainW.ui.checkMessageINDI.isChecked():
+        if self.showMessages:
             if text.startswith('[WARNING]'):
                 text = self.removePrefix(text, '[WARNING]')
-                self.app.message.emit(device + ' -> ' + text, 0)
+                self.message.emit(device + ' -> ' + text, 0)
             elif text.startswith('[ERROR]'):
                 text = self.removePrefix(text, '[ERROR]')
-                self.app.message.emit(device + ' -> ' + text, 2)
+                self.message.emit(device + ' -> ' + text, 2)
             else:
-                self.app.message.emit(device + ' -> ' + text, 0)
+                self.message.emit(device + ' -> ' + text, 0)
             return True
         return False

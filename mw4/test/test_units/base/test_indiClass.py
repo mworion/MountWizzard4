@@ -21,6 +21,7 @@
 from unittest import mock
 import pytest
 # external packages
+import PyQt5
 from indibase.indiBase import Device
 # local import
 from mw4.base import indiClass
@@ -28,10 +29,15 @@ from mw4.base import indiClass
 host_ip = 'astro-mount.fritz.box'
 
 
+class Signal(PyQt5.QtCore.QObject):
+    message = PyQt5.QtCore.pyqtSignal(str, int)
+
+
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app
-    app = indiClass.IndiClass(host_ip)
+    global app, message
+    m = Signal()
+    app = indiClass.IndiClass(host_ip, message=m.message)
     yield
     app = None
 
@@ -98,6 +104,28 @@ def test_removeDevice_2():
     assert suc
     assert app.data == {}
     assert app.device is None
+
+
+def test_startRetry_1():
+    app.name = ''
+    suc = app.startRetry()
+    assert not suc
+
+
+def test_startRetry_2():
+    app.name = 'test'
+    app.device = Device()
+    app.data = {}
+    suc = app.startRetry()
+    assert suc
+
+
+def test_startRetry_3():
+    app.name = 'test'
+    app.device = Device()
+    app.data = {'test': 1}
+    suc = app.startRetry()
+    assert suc
 
 
 def test_startCommunication_1():
@@ -176,3 +204,43 @@ def test_connectDevice4():
                            return_value=False):
         suc = app.connectDevice('test', 'CONNECTION')
         assert not suc
+
+
+def test_removePrefix_1():
+    value = app.removePrefix('', '')
+    assert value == ''
+
+
+def test_removePrefix_2():
+    value = app.removePrefix('NOT should not be shown', 'NOT')
+    assert value == 'should not be shown'
+
+
+def test_updateMessage_1():
+    app.showMessages = False
+    suc = app.updateMessage('test', 'text')
+    assert not suc
+
+
+def test_updateMessage_2():
+    app.showMessages = True
+    suc = app.updateMessage('test', 'text')
+    assert suc
+
+
+def test_updateMessage_3():
+    app.showMessages = True
+    suc = app.updateMessage('test', '[WARNING] should not be shown')
+    assert suc
+
+
+def test_updateMessage_4():
+    app.showMessages = True
+    suc = app.updateMessage('test', '[ERROR] should not be shown')
+    assert suc
+
+
+def test_updateMessage_5():
+    app.showMessages = True
+    suc = app.updateMessage('test', 'NOT should not be shown')
+    assert suc

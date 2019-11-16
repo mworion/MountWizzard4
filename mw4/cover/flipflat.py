@@ -48,10 +48,12 @@ class FlipFlat(indiClass.IndiClass):
                  host=None,
                  name='',
                  ):
+
         super().__init__(host=host,
                          name=name,
-                         app=app,
+                         message=app.message,
                          )
+        self.app = app
 
     def setUpdateConfig(self, deviceName):
         """

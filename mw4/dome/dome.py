@@ -71,8 +71,9 @@ class Dome(indiClass.IndiClass):
                  ):
         super().__init__(host=host,
                          name=name,
-                         app=app,
+                         message=app.message,
                          )
+        self.app = app
 
         self.signals = DomeSignals()
         self._settlingTime = 0

@@ -227,14 +227,10 @@ class SettDevice(object):
         """
 
         if self.ui.domeDevice.currentText().startswith('INDI'):
-            if self.app.dome.name != self.ui.domeDeviceName.currentText():
-                self.app.dome.stopCommunication()
             self.app.dome.name = self.ui.domeDeviceName.currentText()
-            self.app.dome.startCommunication()
             self.app.message.emit('Dome enabled', 0)
             self.deviceStat['dome'] = False
         else:
-            self.app.dome.stopCommunication()
             self.app.dome.name = ''
             self.app.message.emit('Dome disabled', 0)
             self.deviceStat['dome'] = None
@@ -251,14 +247,10 @@ class SettDevice(object):
         """
 
         if self.ui.imagingDevice.currentText().startswith('INDI'):
-            if self.app.imaging.name != self.ui.imagingDeviceName.currentText():
-                self.app.imaging.stopCommunication()
             self.app.imaging.name = self.ui.imagingDeviceName.currentText()
-            self.app.imaging.startCommunication()
             self.app.message.emit('Imaging enabled', 0)
             self.deviceStat['imaging'] = False
         else:
-            self.app.imaging.stopCommunication()
             self.app.imaging.name = ''
             self.app.message.emit('Imaging disabled', 0)
             self.deviceStat['imaging'] = None

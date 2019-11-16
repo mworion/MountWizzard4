@@ -29,26 +29,26 @@ import skyfield
 from mountcontrol import qtmount
 from importlib_metadata import version
 # local import
-from mw4.gui import mainW
-from mw4.gui import messageW
-from mw4.gui import hemisphereW
-from mw4.gui import measureW
-from mw4.gui import imageW
-from mw4.gui import satelliteW
+from mw4.gui.mainW import MainWindow
+from mw4.gui.messageW import MessageWindow
+from mw4.gui.hemisphereW import HemisphereWindow
+from mw4.gui.measureW import MeasureWindow
+from mw4.gui.imageW import ImageWindow
+from mw4.gui.satelliteW import SatelliteWindow
 from mw4.powerswitch.kmRelay import KMRelay
-from mw4.modeldata import buildpoints
-from mw4.modeldata import hipparcos
+from mw4.modeldata.buildpoints import DataPoint
+from mw4.modeldata.hipparcos import Hipparcos
 from mw4.dome.dome import Dome
-from mw4.imaging import camera
+from mw4.imaging.camera import Camera
 from mw4.environment.sensorWeather import SensorWeather
 from mw4.environment.skymeter import Skymeter
 from mw4.environment.onlineWeather import OnlineWeather
 from mw4.cover.flipflat import FlipFlat
 from mw4.telescope.telescope import Telescope
 from mw4.powerswitch.pegasusUPB import PegasusUPB
-from mw4.base import measuredata
-from mw4.remote import remote
-from mw4.astrometry import astrometry
+from mw4.base.measuredata import MeasureData
+from mw4.remote.remote import Remote
+from mw4.astrometry.astrometry import Astrometry
 
 
 class MountWizzard4(PyQt5.QtCore.QObject):
@@ -123,21 +123,21 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                            threadPool=self.threadPool)
         self.cover = FlipFlat(self, host='localhost')
         self.dome = Dome(self, host='localhost')
-        self.imaging = camera.Camera(self, host='localhost')
+        self.imaging = Camera(self, host='localhost')
         self.telescope = Telescope(self, host='localhost')
         self.skymeter = Skymeter(self, host='localhost')
         self.power = PegasusUPB(self, host='localhost')
-        self.data = buildpoints.DataPoint(self, mwGlob=self.mwGlob)
-        self.hipparcos = hipparcos.Hipparcos(self, mwGlob=self.mwGlob)
-        self.measure = measuredata.MeasureData(self)
-        self.remote = remote.Remote(self)
-        self.astrometry = astrometry.Astrometry(self,
-                                                tempDir=mwGlob['tempDir'],
-                                                threadPool=self.threadPool)
+        self.data = DataPoint(self, mwGlob=self.mwGlob)
+        self.hipparcos = Hipparcos(self, mwGlob=self.mwGlob)
+        self.measure = MeasureData(self)
+        self.remote = Remote(self)
+        self.astrometry = Astrometry(self,
+                                     tempDir=mwGlob['tempDir'],
+                                     threadPool=self.threadPool)
 
         # get the window widgets up
-        self.mainW = mainW.MainWindow(self,
-                                      threadPool=self.threadPool)
+        self.mainW = MainWindow(self,
+                                threadPool=self.threadPool)
         self.showWindows()
 
         # link cross widget gui signals as all ui widgets have to be present
@@ -169,7 +169,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         if not self.hemisphereW:
-            self.hemisphereW = hemisphereW.HemisphereWindow(self)
+            self.hemisphereW = HemisphereWindow(self)
             self.hemisphereW.destroyed.connect(self.deleteHemisphereW)
         else:
             self.hemisphereW.close()
@@ -189,7 +189,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         if not self.messageW:
-            self.messageW = messageW.MessageWindow(self)
+            self.messageW = MessageWindow(self)
             self.messageW.destroyed.connect(self.deleteMessageW)
         else:
             self.messageW.close()
@@ -209,7 +209,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         if not self.imageW:
-            self.imageW = imageW.ImageWindow(self)
+            self.imageW = ImageWindow(self)
             self.imageW.destroyed.connect(self.deleteImageW)
         else:
             self.imageW.close()
@@ -229,7 +229,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         if not self.measureW:
-            self.measureW = measureW.MeasureWindow(self)
+            self.measureW = MeasureWindow(self)
             self.measureW.destroyed.connect(self.deleteMeasureW)
         else:
             self.measureW.close()
@@ -248,8 +248,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return:
         """
         if not self.satelliteW:
-            self.satelliteW = satelliteW.SatelliteWindow(self,
-                                                         threadPool=self.threadPool)
+            self.satelliteW = SatelliteWindow(self,
+                                              threadPool=self.threadPool)
             self.satelliteW.destroyed.connect(self.deleteSatelliteW)
         else:
             self.satelliteW.close()

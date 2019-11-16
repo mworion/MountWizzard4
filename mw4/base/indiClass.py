@@ -309,6 +309,7 @@ class IndiClass(object):
         :param text: message received
         :return: success
         """
+
         if self.showMessages:
             if text.startswith('[WARNING]'):
                 text = self.removePrefix(text, '[WARNING]')

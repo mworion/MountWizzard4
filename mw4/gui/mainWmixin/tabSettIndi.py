@@ -239,14 +239,10 @@ class SettIndi(object):
         for baseClass, host, port in zip(baseClasses, hosts, ports):
 
             if self.ui.shareIndiServer.isChecked():
-                if self.sender() == host:
-                    continue
-                elif self.sender() == port:
-                    continue
-                elif self.sender() in ports:
-                    port.setText(self.sender().text())
-                elif self.sender() in hosts:
+                if self.sender() != host and self.sender() in hosts:
                     host.setText(self.sender().text())
+                if self.sender() != port and self.sender() in ports:
+                    port.setText(self.sender().text())
 
             baseClass.client.host = (host.text(), int(port.text()))
 
@@ -266,14 +262,10 @@ class SettIndi(object):
         for baseClass, message in zip(baseClasses, messages):
 
             if self.ui.shareIndiServer.isChecked():
-                if self.sender() == message:
-                    continue
-                elif self.sender() not in messages:
-                    continue
-                else:
+                if self.sender() != message and self.sender() in messages:
                     message.setChecked(self.sender().isChecked())
 
-            baseClass.showMessage = message.isChecked()
+            baseClass.showMessages = message.isChecked()
 
         return True
 

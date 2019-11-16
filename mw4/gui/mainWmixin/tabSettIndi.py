@@ -37,6 +37,7 @@ class SettIndi(object):
             'dome':
                 {'uiName': self.ui.domeDeviceName,
                  'uiDevice': self.ui.domeDevice,
+                 'uiMessage': self.ui.domeDeviceMessage,
                  'class': self.app.dome,
                  'dispatch': self.domeDispatch,
                  'signals': self.app.dome.client.signals,
@@ -46,6 +47,7 @@ class SettIndi(object):
             'imaging':
                 {'uiName': self.ui.imagingDeviceName,
                  'uiDevice': self.ui.imagingDevice,
+                 'uiMessage': self.ui.imagingDeviceMessage,
                  'class': self.app.imaging,
                  'dispatch': self.imagingDispatch,
                  'signals': self.app.imaging.client.signals,
@@ -55,6 +57,7 @@ class SettIndi(object):
             'sensorWeather':
                 {'uiName': self.ui.sensorWeatherDeviceName,
                  'uiDevice': self.ui.sensorWeatherDevice,
+                 'uiMessage': self.ui.sensorWeatherDeviceMessage,
                  'class': self.app.sensorWeather,
                  'dispatch': self.sensorWeatherDispatch,
                  'signals': self.app.sensorWeather.client.signals,
@@ -64,6 +67,7 @@ class SettIndi(object):
             'cover':
                 {'uiName': self.ui.coverDeviceName,
                  'uiDevice': self.ui.coverDevice,
+                 'uiMessage': self.ui.coverDeviceMessage,
                  'class': self.app.cover,
                  'dispatch': self.coverDispatch,
                  'signals': self.app.cover.client.signals,
@@ -73,6 +77,7 @@ class SettIndi(object):
             'skymeter':
                 {'uiName': self.ui.skymeterDeviceName,
                  'uiDevice': self.ui.skymeterDevice,
+                 'uiMessage': self.ui.skymeterDeviceMessage,
                  'class': self.app.skymeter,
                  'dispatch': self.skymeterDispatch,
                  'signals': self.app.skymeter.client.signals,
@@ -82,6 +87,7 @@ class SettIndi(object):
             'telescope':
                 {'uiName': self.ui.telescopeDeviceName,
                  'uiDevice': self.ui.telescopeDevice,
+                 'uiMessage': self.ui.telescopeDeviceMessage,
                  'class': self.app.telescope,
                  'dispatch': self.telescopeDispatch,
                  'signals': self.app.telescope.client.signals,
@@ -91,6 +97,7 @@ class SettIndi(object):
             'power':
                 {'uiName': self.ui.powerDeviceName,
                  'uiDevice': self.ui.powerDevice,
+                 'uiMessage': self.ui.powerDeviceMessage,
                  'class': self.app.power,
                  'dispatch': self.powerDispatch,
                  'signals': self.app.power.client.signals,
@@ -104,6 +111,7 @@ class SettIndi(object):
             item['uiName'].currentIndexChanged.connect(item['dispatch'])
             item['host'].editingFinished.connect(self.shareServerHost)
             item['port'].editingFinished.connect(self.shareServerPort)
+            item['uiMessage'].clicked.connect(self.shareMessage)
             item['signals'].serverDisconnected.connect(self.showIndiDisconnected)
             item['signals'].deviceConnected.connect(self.showDeviceConnected)
             item['signals'].deviceDisconnected.connect(self.showDeviceDisconnected)
@@ -121,10 +129,10 @@ class SettIndi(object):
         config = self.app.config['mainW']
         for name, item in self.indiDevices.items():
             self.indiDevices[name]['uiName'].setCurrentIndex(config.get(f'{name}Name', 0))
+            self.indiDevices[name]['uiMessage'].setChecked(config.get(f'{name}Message', False))
             self.indiDevices[name]['port'].setText(config.get(f'{name}Port', '7624'))
             self.indiDevices[name]['host'].setText(config.get(f'{name}Host', ''))
 
-        self.ui.checkMessageINDI.setChecked(config.get('checkMessageINDI', False))
         self.ui.shareIndiServer.setChecked(config.get('shareIndiServer', True))
 
         return True
@@ -140,10 +148,10 @@ class SettIndi(object):
         config = self.app.config['mainW']
         for name, item in self.indiDevices.items():
             config[f'{name}Name'] = self.indiDevices[name]['uiName'].currentIndex()
+            config[f'{name}Message'] = self.indiDevices[name]['uiMessage'].isChecked()
             config[f'{name}Port'] = self.indiDevices[name]['port'].text()
             config[f'{name}Host'] = self.indiDevices[name]['host'].text()
 
-        config['checkMessageINDI'] = self.ui.checkMessageINDI.isChecked()
         config['shareIndiServer'] = self.ui.shareIndiServer.isChecked()
 
         return True
@@ -257,6 +265,29 @@ class SettIndi(object):
             if self.sender() == port:
                 continue
             port.setText(self.sender().text())
+
+        return True
+
+    def shareMessage(self):
+        """
+        shareMessage is called whenever a indi message checkbox is edited. if checkbox
+        for sharing is set, the new entry will be copied to all other indi servers
+
+        :return:
+        """
+
+        if not self.ui.shareIndiServer.isChecked():
+            return False
+
+        messages = list(self.indiDevices[device]['uiMessage'] for device in self.indiDevices)
+
+        if self.sender() not in messages:
+            return False
+
+        for message in messages:
+            if self.sender() == message:
+                continue
+            message.setChecked(self.sender().isChecked())
 
         return True
 

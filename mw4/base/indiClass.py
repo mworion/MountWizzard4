@@ -56,11 +56,10 @@ class IndiClass(object):
 
         self.message = message
         self.client = qtIndiBase.Client(host=host)
-        self.name = name
+        self._name = name
         self.data = {}
         self.retryCounter = 0
         self.device = None
-
         self.showMessages = False
 
         self.timerRetry = PyQt5.QtCore.QTimer()
@@ -92,7 +91,19 @@ class IndiClass(object):
 
     @name.setter
     def name(self, value):
+        if value != self._name:
+            self.stopCommunication()
         self._name = value
+        if value:
+            self.startCommunication()
+
+    @property
+    def host(self):
+        return self._host
+
+    @host.setter
+    def host(self, value):
+        self._host = value
 
     def serverConnected(self):
         """

@@ -275,14 +275,10 @@ class SettDevice(object):
         """
 
         if self.ui.sensorWeatherDevice.currentText().startswith('INDI'):
-            if self.app.sensorWeather.name != self.ui.sensorWeatherDeviceName.currentText():
-                self.app.sensorWeather.stopCommunication()
             self.app.sensorWeather.name = self.ui.sensorWeatherDeviceName.currentText()
-            self.app.sensorWeather.startCommunication()
             self.app.message.emit('Sensor Weather enabled', 0)
             self.deviceStat['sensorWeather'] = False
         else:
-            self.app.sensorWeather.stopCommunication()
             self.app.sensorWeather.name = ''
             self.app.message.emit('Sensor Weather disabled', 0)
             self.deviceStat['sensorWeather'] = None
@@ -334,14 +330,10 @@ class SettDevice(object):
         """
 
         if self.ui.skymeterDevice.currentText().startswith('INDI'):
-            if self.app.skymeter.name != self.ui.skymeterDeviceName.currentText():
-                self.app.skymeter.stopCommunication()
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
-            self.app.skymeter.startCommunication()
             self.app.message.emit('Skymeter enabled', 0)
             self.deviceStat['skymeter'] = False
         else:
-            self.app.skymeter.stopCommunication()
             self.app.skymeter.name = ''
             self.app.message.emit('Skymeter disabled', 0)
             self.deviceStat['skymeter'] = None
@@ -357,14 +349,10 @@ class SettDevice(object):
         """
 
         if self.ui.coverDevice.currentText().startswith('INDI'):
-            if self.app.cover.name != self.ui.coverDeviceName.currentText():
-                self.app.cover.stopCommunication()
             self.app.cover.name = self.ui.coverDeviceName.currentText()
-            self.app.cover.startCommunication()
             self.app.message.emit('Cover enabled', 0)
             self.deviceStat['cover'] = False
         else:
-            self.app.cover.stopCommunication()
             self.app.cover.name = ''
             self.app.message.emit('Cover disabled', 0)
             self.deviceStat['cover'] = None
@@ -379,14 +367,10 @@ class SettDevice(object):
         """
 
         if self.ui.telescopeDevice.currentText().startswith('INDI'):
-            if self.app.telescope.name != self.ui.telescopeDeviceName.currentText():
-                self.app.telescope.stopCommunication()
             self.app.telescope.name = self.ui.telescopeDeviceName.currentText()
-            self.app.telescope.startCommunication()
             self.app.message.emit('Telescope enabled', 0)
             self.deviceStat['telescope'] = False
         else:
-            self.app.telescope.stopCommunication()
             self.app.telescope.name = ''
             self.app.message.emit('Telescope disabled', 0)
             self.deviceStat['telescope'] = None
@@ -402,14 +386,10 @@ class SettDevice(object):
         """
 
         if self.ui.powerDevice.currentText().startswith('INDI'):
-            if self.app.power.name != self.ui.powerDeviceName.currentText():
-                self.app.power.stopCommunication()
             self.app.power.name = self.ui.powerDeviceName.currentText()
-            self.app.power.startCommunication()
             self.app.message.emit('Power enabled', 0)
             self.deviceStat['power'] = False
         else:
-            self.app.power.stopCommunication()
             self.app.power.name = ''
             self.app.message.emit('Power disabled', 0)
             self.deviceStat['power'] = None

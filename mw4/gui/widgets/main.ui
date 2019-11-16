@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -3062,7 +3062,7 @@
        </widget>
       </item>
       <item row="0" column="7" rowspan="10">
-       <widget class="QGroupBox" name="internalGroup">
+       <widget class="QGroupBox" name="directWeatherGroup">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -3084,7 +3084,7 @@
         <property name="checked">
          <bool>false</bool>
         </property>
-        <widget class="QLineEdit" name="internalTemp">
+        <widget class="QLineEdit" name="directWeatherTemp">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -3132,7 +3132,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="internalPress">
+        <widget class="QLineEdit" name="directWeatherPress">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -3180,7 +3180,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="internalDewPoint">
+        <widget class="QLineEdit" name="directWeatherDewPoint">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -3228,7 +3228,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="internalHumidity">
+        <widget class="QLineEdit" name="directWeatherHumidity">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -3630,7 +3630,7 @@ to mount</string>
        </widget>
       </item>
       <item row="0" column="6" rowspan="10">
-       <widget class="QGroupBox" name="environGroup">
+       <widget class="QGroupBox" name="sensorWeatherGroup">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -3649,7 +3649,7 @@ to mount</string>
         <property name="checkable">
          <bool>true</bool>
         </property>
-        <widget class="QLineEdit" name="environTemp">
+        <widget class="QLineEdit" name="sensorWeatherTemp">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -3697,7 +3697,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="environPress">
+        <widget class="QLineEdit" name="sensorWeatherPress">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -3745,7 +3745,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="environDewPoint">
+        <widget class="QLineEdit" name="sensorWeatherDewPoint">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -3793,7 +3793,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="environHumidity">
+        <widget class="QLineEdit" name="sensorWeatherHumidity">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -4133,7 +4133,7 @@ to mount</string>
        </spacer>
       </item>
       <item row="0" column="5" rowspan="10">
-       <widget class="QGroupBox" name="weatherGroup">
+       <widget class="QGroupBox" name="onlineWeatherGroup">
         <property name="minimumSize">
          <size>
           <width>75</width>
@@ -4152,7 +4152,7 @@ to mount</string>
         <property name="checked">
          <bool>false</bool>
         </property>
-        <widget class="QLineEdit" name="weatherRainVol">
+        <widget class="QLineEdit" name="onlineWeatherRainVol">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -4200,7 +4200,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="weatherWindSpeed">
+        <widget class="QLineEdit" name="onlineWeatherWindSpeed">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -4248,7 +4248,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="weatherCloudCover">
+        <widget class="QLineEdit" name="onlineWeatherCloudCover">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -4296,7 +4296,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="weatherTemp">
+        <widget class="QLineEdit" name="onlineWeatherTemp">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -4344,7 +4344,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="weatherPress">
+        <widget class="QLineEdit" name="onlineWeatherPress">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -4392,7 +4392,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="weatherHumidity">
+        <widget class="QLineEdit" name="onlineWeatherHumidity">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -4440,7 +4440,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="weatherWindDir">
+        <widget class="QLineEdit" name="onlineWeatherWindDir">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -4488,7 +4488,7 @@ to mount</string>
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="weatherDewPoint">
+        <widget class="QLineEdit" name="onlineWeatherDewPoint">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -12348,7 +12348,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -12739,7 +12739,7 @@ to mount</string>
         </rect>
        </property>
        <property name="title">
-        <string>Obervation conditions</string>
+        <string>Environment conditions</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -12763,7 +12763,7 @@ to mount</string>
          <string>Sky Meter Device</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="environDevice">
+       <widget class="QComboBox" name="sensorWeatherDevice">
         <property name="geometry">
          <rect>
           <x>160</x>
@@ -12795,7 +12795,7 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Environment Device</string>
+         <string>Sensor Waether Device</string>
         </property>
        </widget>
        <widget class="QComboBox" name="skymeterDevice">
@@ -12830,10 +12830,10 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Weather Device</string>
+         <string>Online Weather Device</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="weatherDevice">
+       <widget class="QComboBox" name="onlineWeatherDevice">
         <property name="geometry">
          <rect>
           <x>160</x>
@@ -12865,10 +12865,10 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Mount Device</string>
+         <string>Mount Direct Device</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="internalDevice">
+       <widget class="QComboBox" name="directWeatherDevice">
         <property name="geometry">
          <rect>
           <x>160</x>
@@ -12900,12 +12900,12 @@ to mount</string>
         </rect>
        </property>
        <property name="title">
-        <string>Environment</string>
+        <string>Sensor Weather</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QLineEdit" name="environPort">
+       <widget class="QLineEdit" name="sensorWeatherPort">
         <property name="geometry">
          <rect>
           <x>310</x>
@@ -12933,7 +12933,7 @@ to mount</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
-       <widget class="QComboBox" name="environDeviceName">
+       <widget class="QComboBox" name="sensorWeatherDeviceName">
         <property name="geometry">
          <rect>
           <x>91</x>
@@ -12943,7 +12943,7 @@ to mount</string>
          </rect>
         </property>
        </widget>
-       <widget class="QLineEdit" name="environHost">
+       <widget class="QLineEdit" name="sensorWeatherHost">
         <property name="geometry">
          <rect>
           <x>91</x>
@@ -22175,8 +22175,8 @@ When clicking the button, you could change the value.</string>
   </widget>
  </widget>
  <tabstops>
-  <tabstop>environHost</tabstop>
-  <tabstop>environPort</tabstop>
+  <tabstop>sensorWeatherHost</tabstop>
+  <tabstop>sensorWeatherPort</tabstop>
   <tabstop>imagingHost</tabstop>
   <tabstop>imagingPort</tabstop>
   <tabstop>domeHost</tabstop>
@@ -22302,7 +22302,7 @@ When clicking the button, you could change the value.</string>
   <tabstop>setSiderealTracking</tabstop>
   <tabstop>park</tabstop>
   <tabstop>stop</tabstop>
-  <tabstop>environGroup</tabstop>
+  <tabstop>sensorWeatherGroup</tabstop>
   <tabstop>checkRefracNone</tabstop>
   <tabstop>checkRefracCont</tabstop>
   <tabstop>checkRefracNoTrack</tabstop>
@@ -22472,10 +22472,10 @@ When clicking the button, you could change the value.</string>
   <tabstop>consumptionWattHours</tabstop>
   <tabstop>coverDeviceName</tabstop>
   <tabstop>skymeterDeviceName</tabstop>
-  <tabstop>environDeviceName</tabstop>
+  <tabstop>sensorWeatherDeviceName</tabstop>
   <tabstop>powerCurrent2</tabstop>
   <tabstop>skymeterDevice</tabstop>
-  <tabstop>environDevice</tabstop>
+  <tabstop>sensorWeatherDevice</tabstop>
  </tabstops>
  <resources/>
  <connections/>

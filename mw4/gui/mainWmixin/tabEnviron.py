@@ -42,16 +42,16 @@ class EnvironGui(object):
 
         self.filteredTemperature = None
         self.filteredPressure = None
-        self.refractionSources = {'weather': self.ui.weatherGroup,
-                                  'environ': self.ui.environGroup,
-                                  'internalSensor': self.ui.internalGroup,
+        self.refractionSources = {'onlineWeather': self.ui.onlineWeatherGroup,
+                                  'sensorWeather': self.ui.sensorWeatherGroup,
+                                  'directWeather': self.ui.directWeatherGroup,
                                   }
         self.refractionSource = ''
 
         # environment functions
         signals = self.app.environ.client.signals
-        signals.newNumber.connect(self.updateEnvironGUI)
-        signals.deviceDisconnected.connect(self.clearEnvironGUI)
+        signals.newNumber.connect(self.updateSensorWeatherGui)
+        signals.deviceDisconnected.connect(self.clearSensorWeatherGui)
 
         # skymeter functions
         signals = self.app.skymeter.client.signals
@@ -59,18 +59,18 @@ class EnvironGui(object):
         signals.deviceDisconnected.connect(self.clearSkymeterGUI)
 
         # weather functions
-        self.app.weather.signals.dataReceived.connect(self.updateOpenWeatherMapGui)
+        self.app.weather.signals.dataReceived.connect(self.updateOnlineWeatherGui)
 
         # weather functions
-        self.app.mount.signals.settingDone.connect(self.updateInternalWeatherGui)
+        self.app.mount.signals.settingDone.connect(self.updateDirectWeatherGui)
         self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
 
         # gui connections
         self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
-        self.ui.weatherGroup.clicked.connect(self.selectRefractionSource)
-        self.ui.environGroup.clicked.connect(self.selectRefractionSource)
-        self.ui.internalGroup.clicked.connect(self.selectRefractionSource)
+        self.ui.onlineWeatherGroup.clicked.connect(self.selectRefractionSource)
+        self.ui.sensorWeatherGroup.clicked.connect(self.selectRefractionSource)
+        self.ui.directWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.checkRefracNone.clicked.connect(self.setRefractionUpdateType)
         self.ui.checkRefracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.checkRefracNoTrack.clicked.connect(self.setRefractionUpdateType)
@@ -122,7 +122,7 @@ class EnvironGui(object):
         :return: success
         """
 
-        if not self.refractionSource == 'internalSensor':
+        if not self.refractionSource == 'directWeather':
             return False
 
         if setting.weatherStatus == 0:
@@ -140,7 +140,7 @@ class EnvironGui(object):
         :return: success
         """
 
-        if not self.refractionSource == 'internalSensor':
+        if not self.refractionSource == 'directWeather':
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
             return suc
 
@@ -207,12 +207,12 @@ class EnvironGui(object):
         :return:
         """
 
-        if self.refractionSource == 'weather':
+        if self.refractionSource == 'onlineWeather':
             if not self.app.weather.data:
                 return False
             temp = self.app.weather.data['temperature']
             press = self.app.weather.data['pressure']
-        elif self.refractionSource == 'environ':
+        elif self.refractionSource == 'sensorWeather':
             temp = self.app.environ.data.get('WEATHER_TEMPERATURE', None)
             press = self.app.environ.data.get('WEATHER_PRESSURE', None)
         else:
@@ -261,10 +261,10 @@ class EnvironGui(object):
         :return: success if update happened
         """
 
-        if self.refractionSource == 'internalSensor':
+        if self.refractionSource == 'directWeather':
             return False
 
-        if not self.app.mount.mountUp:
+        if not self.deviceStat['mount']:
             return False
 
         temp, press = self.movingAverageRefractionParameters()
@@ -286,40 +286,40 @@ class EnvironGui(object):
 
         return True
 
-    def clearEnvironGUI(self, deviceName):
+    def clearSensorWeatherGui(self, deviceName):
         """
-        clearEnvironGUI clears the gui data
+        clearSensorWeatherGui clears the gui data
 
         :param deviceName:
         :return: true for test purpose
         """
 
-        self.ui.environTemp.setText('-')
-        self.ui.environPress.setText('-')
-        self.ui.environDewPoint.setText('-')
-        self.ui.environHumidity.setText('-')
+        self.ui.sensorWeatherTemp.setText('-')
+        self.ui.sensorWeatherPress.setText('-')
+        self.ui.sensorWeatherDewPoint.setText('-')
+        self.ui.sensorWeatherHumidity.setText('-')
 
         return True
 
-    def updateEnvironGUI(self, deviceName):
+    def updateSensorWeatherGui(self, deviceName):
         """
-        updateEnvironGUI shows the data which is received through INDI client
+        updateSensorWeatherGui shows the data which is received through INDI client
 
         :return:    True if ok for testing
         """
 
         value = self.app.environ.data.get('WEATHER_TEMPERATURE', 0)
-        self.ui.environTemp.setText('{0:4.1f}'.format(value))
+        self.ui.sensorWeatherTemp.setText(f'{value:4.1f}')
         value = self.app.environ.data.get('WEATHER_PRESSURE', 0)
-        self.ui.environPress.setText('{0:5.1f}'.format(value))
+        self.ui.sensorWeatherPress.setText(f'{value:5.1f}')
         value = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
-        self.ui.environDewPoint.setText('{0:4.1f}'.format(value))
+        self.ui.sensorWeatherDewPoint.setText(f'{value:4.1f}')
         value = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
-        self.ui.environHumidity.setText('{0:3.0f}'.format(value))
+        self.ui.sensorWeatherHumidity.setText(f'{value:3.0f}')
 
     def clearSkymeterGUI(self, deviceName):
         """
-        clearEnvironGUI clears the gui data
+        clearSensorWeatherGui clears the gui data
 
         :param deviceName:
         :return: true for test purpose
@@ -338,9 +338,9 @@ class EnvironGui(object):
         """
 
         value = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
-        self.ui.skymeterSQR.setText('{0:5.2f}'.format(value))
+        self.ui.skymeterSQR.setText(f'{value:5.2f}')
         value = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
-        self.ui.skymeterTemp.setText('{0:4.1f}'.format(value))
+        self.ui.skymeterTemp.setText(f'{value:4.1f}')
 
     def getWebDataWorker(self, url=''):
         """
@@ -483,90 +483,92 @@ class EnvironGui(object):
 
         return True
 
-    def clearOpenWeatherMapGui(self):
+    def clearOnlineWeatherGui(self):
         """
+        clearOnlineWeatherGui removes al entries from gui
 
         :return: true for test purpose
         """
-        self.ui.weatherTemp.setText('-')
-        self.ui.weatherPress.setText('-')
-        self.ui.weatherHumidity.setText('-')
-        self.ui.weatherDewPoint.setText('-')
-        self.ui.weatherCloudCover.setText('-')
-        self.ui.weatherWindSpeed.setText('-')
-        self.ui.weatherWindDir.setText('-')
-        self.ui.weatherRainVol.setText('-')
+        self.ui.onlineWeatherTemp.setText('-')
+        self.ui.onlineWeatherPress.setText('-')
+        self.ui.onlineWeatherHumidity.setText('-')
+        self.ui.onlineWeatherDewPoint.setText('-')
+        self.ui.onlineWeatherCloudCover.setText('-')
+        self.ui.onlineWeatherWindSpeed.setText('-')
+        self.ui.onlineWeatherWindDir.setText('-')
+        self.ui.onlineWeatherRainVol.setText('-')
 
         return True
 
-    def updateOpenWeatherMapGui(self, data):
+    def updateOnlineWeatherGui(self, data):
         """
-        updateOpenWeatherMapGui takes the returned data from the dict to the Gui
+        updateOnlineWeatherGui takes the returned data from the dict to the Gui
 
-        :return: True for test purpose
+        :return: success
         """
 
         if not data:
-            self.clearOpenWeatherMapGui()
+            self.clearOnlineWeatherGui()
             return False
 
         if 'temperature' in data:
-            self.ui.weatherTemp.setText(f'{data["temperature"]:4.1f}')
+            self.ui.onlineWeatherTemp.setText(f'{data["temperature"]:4.1f}')
         if 'pressure' in data:
-            self.ui.weatherPress.setText(f'{data["pressure"]:5.1f}')
+            self.ui.onlineWeatherPress.setText(f'{data["pressure"]:5.1f}')
         if 'humidity' in data:
-            self.ui.weatherHumidity.setText(f'{data["humidity"]:3.0f}')
+            self.ui.onlineWeatherHumidity.setText(f'{data["humidity"]:3.0f}')
         if 'dewPoint' in data:
-            self.ui.weatherDewPoint.setText(f'{data["dewPoint"]:4.1f}')
+            self.ui.onlineWeatherDewPoint.setText(f'{data["dewPoint"]:4.1f}')
         if 'cloudCover' in data:
-            self.ui.weatherCloudCover.setText(f'{data["cloudCover"]:3.0f}')
+            self.ui.onlineWeatherCloudCover.setText(f'{data["cloudCover"]:3.0f}')
         if 'windSpeed' in data:
-            self.ui.weatherWindSpeed.setText(f'{data["windSpeed"]:3.0f}')
+            self.ui.onlineWeatherWindSpeed.setText(f'{data["windSpeed"]:3.0f}')
         if 'windDir' in data:
-            self.ui.weatherWindDir.setText(f'{data["windDir"]:3.0f}')
+            self.ui.onlineWeatherWindDir.setText(f'{data["windDir"]:3.0f}')
         if 'rain' in data:
-            self.ui.weatherRainVol.setText(f'{data["rain"]:5.2f}')
+            self.ui.onlineWeatherRainVol.setText(f'{data["rain"]:5.2f}')
 
         return True
 
-    def clearInternalWeatherMapGui(self):
+    def clearDirectWeatherGui(self):
         """
+        updateOnlineWeatherGui takes the returned data from the dict to the Gui
 
         :return: true for test purpose
         """
-        self.ui.internalTemp.setText('-')
-        self.ui.internalPress.setText('-')
-        self.ui.internalHumidity.setText('-')
-        self.ui.internalDewPoint.setText('-')
+        self.ui.directWeatherTemp.setText('-')
+        self.ui.directWeatherPress.setText('-')
+        self.ui.directWeatherHumidity.setText('-')
+        self.ui.directWeatherDewPoint.setText('-')
 
         return True
 
-    def updateInternalWeatherGui(self, setting):
+    def updateDirectWeatherGui(self, setting):
         """
-        updateOpenWeatherMapGui takes the returned data from the dict to the Gui
+        updateOnlineWeatherGui takes the returned data from the dict to the Gui
 
 
         :param setting:
         :return: success
         """
 
-        if self.deviceStat['internalSensor'] is None:
+        if self.deviceStat['directWeather'] is None:
             return False
 
         if setting is None or not self.app.mount.mountUp:
-            self.deviceStat['internalSensor'] = False
-            self.clearInternalWeatherMapGui()
+            self.deviceStat['directWeather'] = False
+            self.clearDirectWeatherGui()
             return False
 
-        self.deviceStat['internalSensor'] = True
+        self.deviceStat['directWeather'] = True
 
         if setting.weatherTemperature is not None:
-            self.ui.internalTemp.setText(f'{setting.weatherTemperature:4.1f}')
+            self.ui.directWeatherTemp.setText(f'{setting.weatherTemperature:4.1f}')
         if setting.weatherPressure is not None:
-            self.ui.internalPress.setText(f'{setting.weatherPressure:5.1f}')
+            self.ui.directWeatherPress.setText(f'{setting.weatherPressure:5.1f}')
         if setting.weatherHumidity is not None:
-            self.ui.internalHumidity.setText(f'{setting.weatherHumidity:3.0f}')
+            self.ui.directWeatherHumidity.setText(f'{setting.weatherHumidity:3.0f}')
         if setting.weatherDewPoint is not None:
-            self.ui.internalDewPoint.setText(f'{setting.weatherDewPoint:4.1f}')
+            self.ui.directWeatherDewPoint.setText(f'{setting.weatherDewPoint:4.1f}')
 
         return True

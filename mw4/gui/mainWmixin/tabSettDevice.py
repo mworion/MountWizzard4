@@ -43,17 +43,17 @@ class SettDevice(object):
                 'uiDriver': self.ui.imagingDevice,
                 'dispatch': self.imagingDispatch,
             },
-            'environ': {
-                'uiDriver': self.ui.environDevice,
-                'dispatch': self.environDispatch,
+            'sensorWeather': {
+                'uiDriver': self.ui.sensorWeatherDevice,
+                'dispatch': self.sensorWeatherDispatch,
             },
-            'internal': {
-                'uiDriver': self.ui.internalDevice,
-                'dispatch': self.internalDispatch,
+            'directWeather': {
+                'uiDriver': self.ui.directWeatherDevice,
+                'dispatch': self.directWeatherDispatch,
             },
-            'weather': {
-                'uiDriver': self.ui.weatherDevice,
-                'dispatch': self.weatherDispatch,
+            'onlineWeather': {
+                'uiDriver': self.ui.onlineWeatherDevice,
+                'dispatch': self.onlineWeatherDispatch,
             },
             'cover': {
                 'uiDriver': self.ui.coverDevice,
@@ -141,9 +141,9 @@ class SettDevice(object):
         # adding special items
         self.drivers['dome']['uiDriver'].addItem('INDI')
         self.drivers['imaging']['uiDriver'].addItem('INDI')
-        self.drivers['environ']['uiDriver'].addItem('INDI')
-        self.drivers['internal']['uiDriver'].addItem('Built-In')
-        self.drivers['weather']['uiDriver'].addItem('Built-In')
+        self.drivers['sensorWeather']['uiDriver'].addItem('INDI')
+        self.drivers['directWeather']['uiDriver'].addItem('Built-In')
+        self.drivers['onlineWeather']['uiDriver'].addItem('Built-In')
         self.drivers['cover']['uiDriver'].addItem('INDI')
         self.drivers['skymeter']['uiDriver'].addItem('INDI')
         self.drivers['telescope']['uiDriver'].addItem('INDI')
@@ -267,36 +267,35 @@ class SettDevice(object):
 
         return True
 
-    def environDispatch(self):
+    def sensorWeatherDispatch(self):
         """
-        environDispatch selects the type of device for environment measures and start / stop
-        them.
-        in addition this function enables and disables other gui functions, which rely on
-        the presence of a running driver
+        sensorWeatherDispatch selects the type of device for environment measures and
+        start / stop them. in addition this function enables and disables other gui
+        functions, which rely on the presence of a running driver
 
         :return: true for test purpose
         """
 
-        if self.ui.environDevice.currentText().startswith('INDI'):
-            self.app.environ.client.host = self.ui.environHost.text()
-            if self.app.environ.name != self.ui.environDeviceName.currentText():
+        if self.ui.sensorWeatherDevice.currentText().startswith('INDI'):
+            self.app.environ.client.host = self.ui.sesorWeatherHost.text()
+            if self.app.environ.name != self.ui.sensorWeatherDevice.currentText():
                 self.app.environ.stopCommunication()
-            self.app.environ.name = self.ui.environDeviceName.currentText()
+            self.app.environ.name = self.ui.sensorWeatherDevice.currentText()
             self.app.environ.startCommunication()
-            self.app.message.emit('Environment enabled', 0)
-            self.deviceStat['environ'] = False
+            self.app.message.emit('Sensor Weather enabled', 0)
+            self.deviceStat['sensorWeather'] = False
         else:
             self.app.environ.stopCommunication()
             self.app.environ.name = ''
-            self.app.message.emit('Environment disabled', 0)
-            self.deviceStat['environ'] = None
+            self.app.message.emit('Sensor Weather disabled', 0)
+            self.deviceStat['sensorWeather'] = None
 
         return True
 
     def skymeterDispatch(self):
         """
-        skymeterDispatch selects the type of device for environment measures and start / stop
-        them.
+        skymeterDispatch selects the type of device for environment measures and
+        start / stop them.
 
         :return: true for test purpose
         """
@@ -409,38 +408,38 @@ class SettDevice(object):
 
         return True
 
-    def weatherDispatch(self):
+    def onlineWeatherDispatch(self):
         """
 
         :return:
         """
 
-        if self.ui.weatherDevice.currentText().startswith('Built-In'):
+        if self.ui.onlineWeatherDevice.currentText().startswith('Built-In'):
             self.app.weather.startCommunication()
             self.app.message.emit('Weather enabled', 0)
-            self.deviceStat['weather'] = True
-            self.ui.weatherDevice.setStyleSheet(self.BACK_GREEN)
+            self.deviceStat['onlineWeather'] = True
+            self.ui.onlineWeatherDevice.setStyleSheet(self.BACK_GREEN)
         else:
             self.app.weather.stopCommunication()
             self.app.message.emit('Weather disabled', 0)
-            self.deviceStat['weather'] = None
-            self.ui.weatherDevice.setStyleSheet(self.BACK_NORM)
+            self.deviceStat['onlineWeather'] = None
+            self.ui.onlineWeatherDevice.setStyleSheet(self.BACK_NORM)
 
         return True
 
-    def internalDispatch(self):
+    def directWeatherDispatch(self):
         """
 
         :return:
         """
 
-        if self.ui.internalDevice.currentText().startswith('Built-In'):
-            self.app.message.emit('Internal Weather enabled', 0)
-            self.deviceStat['internalSensor'] = True
-            self.ui.internalDevice.setStyleSheet(self.BACK_GREEN)
+        if self.ui.directWeatherDevice.currentText().startswith('Built-In'):
+            self.app.message.emit('Direct Weather enabled', 0)
+            self.deviceStat['directWeather'] = True
+            self.ui.directWeatherDevice.setStyleSheet(self.BACK_GREEN)
         else:
-            self.app.message.emit('Internal Weather disabled', 0)
-            self.deviceStat['internalSensor'] = None
-            self.ui.internalDevice.setStyleSheet(self.BACK_NORM)
+            self.app.message.emit('Direct Weather disabled', 0)
+            self.deviceStat['directWeather'] = None
+            self.ui.directWeatherDevice.setStyleSheet(self.BACK_NORM)
 
         return True

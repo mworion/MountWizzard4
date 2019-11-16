@@ -97,9 +97,9 @@ class MainWindow(MWidget,
             'imaging': None,
             'astrometry': None,
             'environOverall': None,
-            'environ': None,
-            'internalSensor': None,
-            'weather': None,
+            'sensorWeather': None,
+            'directWeather': None,
+            'onlineWeather': None,
             'skymeter': None,
             'cover': None,
             'telescope': None,
@@ -126,7 +126,7 @@ class MainWindow(MWidget,
         self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
         self.app.imaging.signals.message.connect(self.updateImagingStatus)
-        self.app.weather.signals.connected.connect(self.updateWeatherStat)
+        self.app.weather.signals.connected.connect(self.updateOnlineWeatherStat)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
@@ -404,38 +404,38 @@ class MainWindow(MWidget,
         :return: true for test purpose
         """
 
-        stat = self.deviceStat.get('internalSensor', None)
+        stat = self.deviceStat.get('directWeather', None)
         if stat is None:
-            self.ui.internalGroup.setFixedWidth(0)
-            self.ui.internalGroup.setEnabled(False)
+            self.ui.directWeatherGroup.setFixedWidth(0)
+            self.ui.directWeatherGroup.setEnabled(False)
         elif stat:
-            self.ui.internalGroup.setMinimumSize(75, 0)
-            self.ui.internalGroup.setEnabled(True)
+            self.ui.directWeatherGroup.setMinimumSize(75, 0)
+            self.ui.directWeatherGroup.setEnabled(True)
         else:
-            self.ui.internalGroup.setMinimumSize(75, 0)
-            self.ui.internalGroup.setEnabled(False)
+            self.ui.directWeatherGroup.setMinimumSize(75, 0)
+            self.ui.directWeatherGroup.setEnabled(False)
 
-        stat = self.deviceStat.get('environ', None)
+        stat = self.deviceStat.get('sensorWeather', None)
         if stat is None:
-            self.ui.environGroup.setFixedWidth(0)
-            self.ui.environGroup.setEnabled(False)
+            self.ui.sensorWeatherGroup.setFixedWidth(0)
+            self.ui.sensorWeatherGroup.setEnabled(False)
         elif stat:
-            self.ui.environGroup.setMinimumSize(75, 0)
-            self.ui.environGroup.setEnabled(True)
+            self.ui.sensorWeatherGroup.setMinimumSize(75, 0)
+            self.ui.sensorWeatherGroup.setEnabled(True)
         else:
-            self.ui.environGroup.setMinimumSize(75, 0)
-            self.ui.environGroup.setEnabled(False)
+            self.ui.sensorWeatherGroup.setMinimumSize(75, 0)
+            self.ui.sensorWeatherGroup.setEnabled(False)
 
-        stat = self.deviceStat.get('weather', None)
+        stat = self.deviceStat.get('onlineWeather', None)
         if stat is None:
-            self.ui.weatherGroup.setFixedWidth(0)
-            self.ui.weatherGroup.setEnabled(False)
+            self.ui.onlineWeatherGroup.setFixedWidth(0)
+            self.ui.onlineWeatherGroup.setEnabled(False)
         elif stat:
-            self.ui.weatherGroup.setMinimumSize(75, 0)
-            self.ui.weatherGroup.setEnabled(True)
+            self.ui.onlineWeatherGroup.setMinimumSize(75, 0)
+            self.ui.onlineWeatherGroup.setEnabled(True)
         else:
-            self.ui.weatherGroup.setMinimumSize(75, 0)
-            self.ui.weatherGroup.setEnabled(False)
+            self.ui.onlineWeatherGroup.setMinimumSize(75, 0)
+            self.ui.onlineWeatherGroup.setEnabled(False)
 
         stat = self.deviceStat.get('skymeter', None)
         if stat is None:
@@ -521,14 +521,16 @@ class MainWindow(MWidget,
 
         return True
 
-    def updateWeatherStat(self, stat):
+    def updateOnlineWeatherStat(self, stat):
         """
+        updateOnlineWeatherStat receives a signel when online weather changes the status
+        and stores it
 
         :param stat:
         :return: True for test purpose
         """
 
-        self.deviceStat['weather'] = stat
+        self.deviceStat['onlineWeather'] = stat
 
         return True
 

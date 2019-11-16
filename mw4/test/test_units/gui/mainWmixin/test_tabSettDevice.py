@@ -127,13 +127,13 @@ def test_enableMeasure_2(qtbot):
 
 def test_environDispatch_1():
     app.mainW.ui.environDevice.setCurrentIndex(0)
-    suc = app.mainW.environDispatch()
+    suc = app.mainW.sensorWeatherDispatch()
     assert suc
 
 
 def test_environDispatch_2():
     app.mainW.ui.environDevice.setCurrentIndex(1)
-    suc = app.mainW.environDispatch()
+    suc = app.mainW.sensorWeatherDispatch()
     assert suc
 
 

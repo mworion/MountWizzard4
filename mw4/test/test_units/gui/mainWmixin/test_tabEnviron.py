@@ -182,7 +182,7 @@ def test_updateRefractionParameters_8(qtbot):
 
 
 def test_clearEnvironGUI_1():
-    app.mainW.clearEnvironGUI('test')
+    app.mainW.clearSensorWeatherGui('test')
     assert app.mainW.ui.environTemp.text() == '-'
     assert app.mainW.ui.environPress.text() == '-'
     assert app.mainW.ui.environDewPoint.text() == '-'
@@ -192,28 +192,28 @@ def test_clearEnvironGUI_1():
 def test_updateEnvironGUI_1():
     app.environ.name = 'test'
     app.environ.data['WEATHER_TEMPERATURE'] = 10.5
-    app.mainW.updateEnvironGUI('test')
+    app.mainW.updateSensorWeatherGui('test')
     assert app.mainW.ui.environTemp.text() == '10.5'
 
 
 def test_updateEnvironGUI_2():
     app.environ.name = 'test'
     app.environ.data['WEATHER_PRESSURE'] = 10.5
-    app.mainW.updateEnvironGUI('test')
+    app.mainW.updateSensorWeatherGui('test')
     assert app.mainW.ui.environPress.text() == ' 10.5'
 
 
 def test_updateEnvironGUI_3():
     app.environ.name = 'test'
     app.environ.data['WEATHER_DEWPOINT'] = 10.5
-    app.mainW.updateEnvironGUI('test')
+    app.mainW.updateSensorWeatherGui('test')
     assert app.mainW.ui.environDewPoint.text() == '10.5'
 
 
 def test_updateEnvironGUI_4():
     app.environ.name = 'test'
     app.environ.data['WEATHER_HUMIDITY'] = 10
-    app.mainW.updateEnvironGUI('test')
+    app.mainW.updateSensorWeatherGui('test')
     assert app.mainW.ui.environHumidity.text() == ' 10'
 
 
@@ -322,7 +322,7 @@ def test_updateClearOutside_2():
 
 
 def test_clearOpenWeatherMapGui_1():
-    app.mainW.clearOpenWeatherMapGui()
+    app.mainW.clearOnlineWeatherGui()
     assert app.mainW.ui.weatherTemp.text() == '-'
     assert app.mainW.ui.weatherPress.text() == '-'
     assert app.mainW.ui.weatherHumidity.text() == '-'
@@ -333,7 +333,7 @@ def test_clearOpenWeatherMapGui_1():
 
 
 def test_updateOpenWeatherMapGui_1():
-    suc = app.mainW.updateOpenWeatherMapGui()
+    suc = app.mainW.updateOnlineWeatherGui()
     assert not suc
 
 
@@ -343,7 +343,7 @@ def test_updateOpenWeatherMapGui_2():
         def json():
             val = {}
             return val
-    suc = app.mainW.updateOpenWeatherMapGui(Test())
+    suc = app.mainW.updateOnlineWeatherGui(Test())
     assert not suc
 
 
@@ -353,7 +353,7 @@ def test_updateOpenWeatherMapGui_3():
         def json():
             val = {'list': []}
             return val
-    suc = app.mainW.updateOpenWeatherMapGui(Test())
+    suc = app.mainW.updateOnlineWeatherGui(Test())
     assert not suc
 
 
@@ -375,7 +375,7 @@ def test_updateOpenWeatherMapGui_4():
                     }
             val = {'list': [data]}
             return val
-    suc = app.mainW.updateOpenWeatherMapGui(Test())
+    suc = app.mainW.updateOnlineWeatherGui(Test())
     assert suc
 
 

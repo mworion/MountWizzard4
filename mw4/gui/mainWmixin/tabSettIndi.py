@@ -52,14 +52,14 @@ class SettIndi(object):
                  'port': self.ui.imagingPort,
                  'host': self.ui.imagingHost,
                  },
-            'environ':
-                {'uiName': self.ui.environDeviceName,
-                 'uiDevice': self.ui.environDevice,
+            'sensorWeather':
+                {'uiName': self.ui.sensorWeatherDeviceName,
+                 'uiDevice': self.ui.sensorWeatherDevice,
                  'class': self.app.environ,
-                 'dispatch': self.environDispatch,
+                 'dispatch': self.sensorWeatherDispatch,
                  'signals': self.app.environ.client.signals,
-                 'port': self.ui.environPort,
-                 'host': self.ui.environHost,
+                 'port': self.ui.sensorWeatherPort,
+                 'host': self.ui.sensorWeatherHost,
                  },
             'cover':
                 {'uiName': self.ui.coverDeviceName,
@@ -195,15 +195,15 @@ class SettIndi(object):
         self.indiDevices['dome']['uiName'].addItem('RollOff Simulator')
         self.indiDevices['dome']['uiName'].addItem('ScopeDome Dome')
 
-        self.indiDevices['environ']['uiName'].addItem('AAG Cloud Watcher')
-        self.indiDevices['environ']['uiName'].addItem('Arduino MeteoStation')
-        self.indiDevices['environ']['uiName'].addItem('MBox')
-        self.indiDevices['environ']['uiName'].addItem('OpenWeatherMap')
-        self.indiDevices['environ']['uiName'].addItem('Vantage')
-        self.indiDevices['environ']['uiName'].addItem('Weather Meta')
-        self.indiDevices['environ']['uiName'].addItem('Weather Simulator')
-        self.indiDevices['environ']['uiName'].addItem('Weather Watcher')
-        self.indiDevices['environ']['uiName'].addItem('WunderGround')
+        self.indiDevices['sensorWeather']['uiName'].addItem('AAG Cloud Watcher')
+        self.indiDevices['sensorWeather']['uiName'].addItem('Arduino MeteoStation')
+        self.indiDevices['sensorWeather']['uiName'].addItem('MBox')
+        self.indiDevices['sensorWeather']['uiName'].addItem('OpenWeatherMap')
+        self.indiDevices['sensorWeather']['uiName'].addItem('Vantage')
+        self.indiDevices['sensorWeather']['uiName'].addItem('Weather Meta')
+        self.indiDevices['sensorWeather']['uiName'].addItem('Weather Simulator')
+        self.indiDevices['sensorWeather']['uiName'].addItem('Weather Watcher')
+        self.indiDevices['sensorWeather']['uiName'].addItem('WunderGround')
 
         self.indiDevices['skymeter']['uiName'].addItem('SQM')
         self.indiDevices['telescope']['uiName'].addItem('LX200 10micron')

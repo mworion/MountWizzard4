@@ -234,7 +234,7 @@ class SettMisc(object):
             self.app.message.emit(f'MountWizzard4 {versionPackage} installed', 1)
             self.app.message.emit('Please restart to enable new version', 1)
         else:
-            self.app.message.emit(f'Could not install MountWizzard4 {versionPackage}', 2)
+            self.app.message.emit(f'Could not install update installation ', 2)
         self.mutexInstall.unlock()
         self.changeStyleDynamic(self.ui.installVersion, 'running', False)
 

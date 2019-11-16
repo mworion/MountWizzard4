@@ -111,6 +111,6 @@ class SensorWeather(indiClass.IndiClass):
                 key = element
 
             self.data[key] = value
-            print(key, value)
+            # print(key, value)
 
         return True

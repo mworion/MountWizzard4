@@ -278,9 +278,9 @@ class SettDevice(object):
 
         if self.ui.sensorWeatherDevice.currentText().startswith('INDI'):
             self.app.sensorWeather.client.host = self.ui.sensorWeatherHost.text()
-            if self.app.sensorWeather.name != self.ui.sensorWeatherDevice.currentText():
+            if self.app.sensorWeather.name != self.ui.sensorWeatherDeviceName.currentText():
                 self.app.sensorWeather.stopCommunication()
-            self.app.sensorWeather.name = self.ui.sensorWeatherDevice.currentText()
+            self.app.sensorWeather.name = self.ui.sensorWeatherDeviceName.currentText()
             self.app.sensorWeather.startCommunication()
             self.app.message.emit('Sensor Weather enabled', 0)
             self.deviceStat['sensorWeather'] = False

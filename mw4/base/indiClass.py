@@ -179,7 +179,7 @@ class IndiClass(object):
         self.client.startTimers()
         suc = self.client.connectServer()
         if not suc:
-            self.logger.debug(f'Cannot start connection to: {self.name}')
+            self.logger.info(f'Cannot start connection to: {self.name}')
         else:
             # adding a single retry if first connect does not happen
             self.timerRetry.start(self.RETRY_DELAY)

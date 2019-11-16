@@ -12348,7 +12348,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -12782,7 +12782,7 @@ to mount</string>
        <widget class="QLabel" name="env">
         <property name="geometry">
          <rect>
-          <x>11</x>
+          <x>10</x>
           <y>50</y>
           <width>146</width>
           <height>26</height>
@@ -12795,7 +12795,7 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Sensor Waether Device</string>
+         <string>Sensor Weather Device</string>
         </property>
        </widget>
        <widget class="QComboBox" name="skymeterDevice">
@@ -12865,7 +12865,7 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Mount Direct Device</string>
+         <string>Direct Weather Device</string>
         </property>
        </widget>
        <widget class="QComboBox" name="directWeatherDevice">

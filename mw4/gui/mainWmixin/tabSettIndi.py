@@ -55,9 +55,9 @@ class SettIndi(object):
             'sensorWeather':
                 {'uiName': self.ui.sensorWeatherDeviceName,
                  'uiDevice': self.ui.sensorWeatherDevice,
-                 'class': self.app.environ,
+                 'class': self.app.sensorWeather,
                  'dispatch': self.sensorWeatherDispatch,
-                 'signals': self.app.environ.client.signals,
+                 'signals': self.app.sensorWeather.client.signals,
                  'port': self.ui.sensorWeatherPort,
                  'host': self.ui.sensorWeatherHost,
                  },

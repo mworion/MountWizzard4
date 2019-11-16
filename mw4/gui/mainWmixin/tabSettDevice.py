@@ -269,7 +269,7 @@ class SettDevice(object):
 
     def sensorWeatherDispatch(self):
         """
-        sensorWeatherDispatch selects the type of device for environment measures and
+        sensorWeatherDispatch selects the type of device for weather measures and
         start / stop them. in addition this function enables and disables other gui
         functions, which rely on the presence of a running driver
 
@@ -277,16 +277,16 @@ class SettDevice(object):
         """
 
         if self.ui.sensorWeatherDevice.currentText().startswith('INDI'):
-            self.app.environ.client.host = self.ui.sesorWeatherHost.text()
-            if self.app.environ.name != self.ui.sensorWeatherDevice.currentText():
-                self.app.environ.stopCommunication()
-            self.app.environ.name = self.ui.sensorWeatherDevice.currentText()
-            self.app.environ.startCommunication()
+            self.app.sensorWeather.client.host = self.ui.sensorWeatherHost.text()
+            if self.app.sensorWeather.name != self.ui.sensorWeatherDevice.currentText():
+                self.app.sensorWeather.stopCommunication()
+            self.app.sensorWeather.name = self.ui.sensorWeatherDevice.currentText()
+            self.app.sensorWeather.startCommunication()
             self.app.message.emit('Sensor Weather enabled', 0)
             self.deviceStat['sensorWeather'] = False
         else:
-            self.app.environ.stopCommunication()
-            self.app.environ.name = ''
+            self.app.sensorWeather.stopCommunication()
+            self.app.sensorWeather.name = ''
             self.app.message.emit('Sensor Weather disabled', 0)
             self.deviceStat['sensorWeather'] = None
 
@@ -294,7 +294,7 @@ class SettDevice(object):
 
     def skymeterDispatch(self):
         """
-        skymeterDispatch selects the type of device for environment measures and
+        skymeterDispatch selects the type of device for skymeter measures and
         start / stop them.
 
         :return: true for test purpose
@@ -318,7 +318,7 @@ class SettDevice(object):
 
     def coverDispatch(self):
         """
-        coverDispatch selects the type of device for environment measures and start / stop
+        coverDispatch selects the type of device for cover status and start / stop
         them.
 
         :return: true for test purpose
@@ -342,8 +342,7 @@ class SettDevice(object):
 
     def telescopeDispatch(self):
         """
-        telescopeDispatch selects the type of device for environment measures and start / stop
-        them.
+        telescopeDispatch selects the type of device for telescope settings.
 
         :return: true for test purpose
         """
@@ -366,7 +365,7 @@ class SettDevice(object):
 
     def powerDispatch(self):
         """
-        powerDispatch selects the type of device for environment measures and start / stop
+        powerDispatch selects the type of device for power measures and start / stop
         them.
 
         :return: true for test purpose
@@ -390,8 +389,7 @@ class SettDevice(object):
 
     def astrometryDispatch(self):
         """
-        astrometryDispatch selects the type of device for environment measures and start / stop
-        them.
+        astrometryDispatch selects the type of device for astrometry.
 
         :return: true for test purpose
         """
@@ -415,12 +413,12 @@ class SettDevice(object):
         """
 
         if self.ui.onlineWeatherDevice.currentText().startswith('Built-In'):
-            self.app.weather.startCommunication()
+            self.app.onlineWeather.startCommunication()
             self.app.message.emit('Weather enabled', 0)
             self.deviceStat['onlineWeather'] = True
             self.ui.onlineWeatherDevice.setStyleSheet(self.BACK_GREEN)
         else:
-            self.app.weather.stopCommunication()
+            self.app.onlineWeather.stopCommunication()
             self.app.message.emit('Weather disabled', 0)
             self.deviceStat['onlineWeather'] = None
             self.ui.onlineWeatherDevice.setStyleSheet(self.BACK_NORM)

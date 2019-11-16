@@ -26,19 +26,18 @@ import numpy as np
 from mw4.base import indiClass
 
 
-class Environ(indiClass.IndiClass):
+class SensorWeather(indiClass.IndiClass):
     """
     the class Environ inherits all information and handling of the environment device
 
-        >>> Environ(host=None,
+        >>> SensorWeather(host=None,
         >>>         name=''
         >>>         )
     """
 
-    __all__ = ['Environ',
+    __all__ = ['SensorWeather',
                ]
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server

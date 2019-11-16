@@ -49,7 +49,7 @@ class EnvironGui(object):
         self.refractionSource = ''
 
         # environment functions
-        signals = self.app.environ.client.signals
+        signals = self.app.sensorWeather.client.signals
         signals.newNumber.connect(self.updateSensorWeatherGui)
         signals.deviceDisconnected.connect(self.clearSensorWeatherGui)
 
@@ -59,7 +59,7 @@ class EnvironGui(object):
         signals.deviceDisconnected.connect(self.clearSkymeterGUI)
 
         # weather functions
-        self.app.weather.signals.dataReceived.connect(self.updateOnlineWeatherGui)
+        self.app.onlineWeather.signals.dataReceived.connect(self.updateOnlineWeatherGui)
 
         # weather functions
         self.app.mount.signals.settingDone.connect(self.updateDirectWeatherGui)
@@ -208,13 +208,13 @@ class EnvironGui(object):
         """
 
         if self.refractionSource == 'onlineWeather':
-            if not self.app.weather.data:
+            if not self.app.onlineWeather.data:
                 return False
-            temp = self.app.weather.data['temperature']
-            press = self.app.weather.data['pressure']
+            temp = self.app.onlineWeather.data['temperature']
+            press = self.app.onlineWeather.data['pressure']
         elif self.refractionSource == 'sensorWeather':
-            temp = self.app.environ.data.get('WEATHER_TEMPERATURE', None)
-            press = self.app.environ.data.get('WEATHER_PRESSURE', None)
+            temp = self.app.sensorWeather.data.get('WEATHER_TEMPERATURE', None)
+            press = self.app.sensorWeather.data.get('WEATHER_PRESSURE', None)
         else:
             temp = None
             press = None
@@ -308,13 +308,13 @@ class EnvironGui(object):
         :return:    True if ok for testing
         """
 
-        value = self.app.environ.data.get('WEATHER_TEMPERATURE', 0)
+        value = self.app.sensorWeather.data.get('WEATHER_TEMPERATURE', 0)
         self.ui.sensorWeatherTemp.setText(f'{value:4.1f}')
-        value = self.app.environ.data.get('WEATHER_PRESSURE', 0)
+        value = self.app.sensorWeather.data.get('WEATHER_PRESSURE', 0)
         self.ui.sensorWeatherPress.setText(f'{value:5.1f}')
-        value = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
+        value = self.app.sensorWeather.data.get('WEATHER_DEWPOINT', 0)
         self.ui.sensorWeatherDewPoint.setText(f'{value:4.1f}')
-        value = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
+        value = self.app.sensorWeather.data.get('WEATHER_HUMIDITY', 0)
         self.ui.sensorWeatherHumidity.setText(f'{value:3.0f}')
 
     def clearSkymeterGUI(self, deviceName):

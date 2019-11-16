@@ -368,7 +368,7 @@ class MeasureWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
         r1, = axe.plot(data['time'][start:-1:cycle],
-                       data['envTemp'][start:-1:cycle],
+                       data['sensorWeatherTemp'][start:-1:cycle],
                        marker='.',
                        markersize=3,
                        color=self.M_WHITE,
@@ -386,13 +386,13 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_YELLOW,
                        )
         r4, = axe.plot(data['time'][start:-1:cycle],
-                       data['weatherTemp'][start:-1:cycle],
+                       data['onlineWeatherTemp'][start:-1:cycle],
                        marker='.',
                        markersize=3,
                        color=self.M_GREEN,
                        )
         r5, = axe.plot(data['time'][start:-1:cycle],
-                       data['envDew'][start:-1:cycle],
+                       data['sensorWeatherDew'][start:-1:cycle],
                        marker='d',
                        markersize=3,
                        color=self.M_WHITE,
@@ -404,7 +404,7 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_PINK,
                        )
         r7, = axe.plot(data['time'][start:-1:cycle],
-                       data['weatherDew'][start:-1:cycle],
+                       data['onlineWeatherDew'][start:-1:cycle],
                        marker='d',
                        markersize=3,
                        color=self.M_GREEN,
@@ -452,13 +452,13 @@ class MeasureWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
         r1, = axe.plot(data['time'][start:-1:cycle],
-                       data['envPress'][start:-1:cycle],
+                       data['sensorWeatherPress'][start:-1:cycle],
                        marker='o',
                        markersize=3,
                        color=self.M_WHITE,
                        )
         r2, = axe.plot(data['time'][start:-1:cycle],
-                       data['weatherPress'][start:-1:cycle],
+                       data['onlineWeatherPress'][start:-1:cycle],
                        marker='o',
                        markersize=3,
                        color=self.M_WHITE,
@@ -506,7 +506,7 @@ class MeasureWindow(widget.MWidget):
                        fontweight='bold',
                        fontsize=12)
         r1, = axe.plot(data['time'][start:-1:cycle],
-                       data['envHum'][start:-1:cycle],
+                       data['sensorWeatherHum'][start:-1:cycle],
                        marker='o',
                        markersize=3,
                        color=self.M_WHITE,
@@ -518,7 +518,7 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_PINK,
                        )
         r3, = axe.plot(data['time'][start:-1:cycle],
-                       data['weatherHum'][start:-1:cycle],
+                       data['onlineWeatherHum'][start:-1:cycle],
                        marker='o',
                        markersize=3,
                        color=self.M_RED,

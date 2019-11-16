@@ -126,7 +126,7 @@ class MainWindow(MWidget,
         self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
         self.app.imaging.signals.message.connect(self.updateImagingStatus)
-        self.app.weather.signals.connected.connect(self.updateOnlineWeatherStat)
+        self.app.onlineWeather.signals.connected.connect(self.updateOnlineWeatherStat)
 
         # connect gui signals
         self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
@@ -523,7 +523,7 @@ class MainWindow(MWidget,
 
     def updateOnlineWeatherStat(self, stat):
         """
-        updateOnlineWeatherStat receives a signel when online weather changes the status
+        updateOnlineWeatherStat receives a signal when online weather changes the status
         and stores it
 
         :param stat:

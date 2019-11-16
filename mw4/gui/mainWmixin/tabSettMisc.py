@@ -111,7 +111,7 @@ class SettMisc(object):
         :return: success
         """
 
-        weather = self.app.weather
+        weather = self.app.onlineWeather
 
         if not weather:
             return False

@@ -40,9 +40,9 @@ from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
 from mw4.dome import dome
 from mw4.imaging import camera
-from mw4.environment import environ
+from mw4.environment import sensorWeather
 from mw4.environment import skymeter
-from mw4.environment import weather
+from mw4.environment import onlineWeather
 from mw4.cover import flipflat
 from mw4.telescope import telescope
 from mw4.powerswitch import pegasusUPB
@@ -118,9 +118,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # get all planets for calculation
         self.planets = self.mount.obsSite.loader('de421_23.bsp')
         self.relay = kmRelay.KMRelay(host='192.168.2.15')
-        self.environ = environ.Environ(self, host='localhost')
-        self.weather = weather.Weather(self,
-                                       threadPool=self.threadPool)
+        self.sensorWeather = sensorWeather.SensorWeather(self, host='localhost')
+        self.onlineWeather = onlineWeather.OnlineWeather(self,
+                                                         threadPool=self.threadPool)
         self.cover = flipflat.FlipFlat(self, host='localhost')
         self.dome = dome.Dome(self, host='localhost')
         self.imaging = camera.Camera(self, host='localhost')

@@ -43,14 +43,14 @@ class WeatherSignals(PyQt5.QtCore.QObject):
     connected = PyQt5.QtCore.pyqtSignal(bool)
 
 
-class Weather(object):
+class OnlineWeather(object):
     """
     the class Skymeter inherits all information and handling of the Skymeter device
 
-        >>> weather = Weather(app, threadPool)
+        >>> weather = OnlineWeather(app, threadPool)
     """
 
-    __all__ = ['Weather',
+    __all__ = ['OnlineWeather',
                ]
 
     logger = logging.getLogger(__name__)

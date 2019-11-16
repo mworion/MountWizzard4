@@ -57,18 +57,18 @@ class MeasureData(object):
         self.decRef = None
         self.data = {
             'time': np.empty(shape=[0, 1], dtype='datetime64'),
-            'envTemp': np.empty(shape=[0, 1]),
-            'envHum': np.empty(shape=[0, 1]),
-            'envPress': np.empty(shape=[0, 1]),
-            'envDew': np.empty(shape=[0, 1]),
-            'weatherTemp': np.empty(shape=[0, 1]),
-            'weatherHum': np.empty(shape=[0, 1]),
-            'weatherPress': np.empty(shape=[0, 1]),
-            'weatherDew': np.empty(shape=[0, 1]),
-            'internalTemp': np.empty(shape=[0, 1]),
-            'internalHum': np.empty(shape=[0, 1]),
-            'internalPress': np.empty(shape=[0, 1]),
-            'internalDew': np.empty(shape=[0, 1]),
+            'sensorWeatherTemp': np.empty(shape=[0, 1]),
+            'sensorWeatherHum': np.empty(shape=[0, 1]),
+            'sensorWeatherPress': np.empty(shape=[0, 1]),
+            'sensorWeatherDew': np.empty(shape=[0, 1]),
+            'onlineWeatherTemp': np.empty(shape=[0, 1]),
+            'onlineWeatherHum': np.empty(shape=[0, 1]),
+            'onlineWeatherPress': np.empty(shape=[0, 1]),
+            'onlineWeatherDew': np.empty(shape=[0, 1]),
+            'directWeatherTemp': np.empty(shape=[0, 1]),
+            'directWeatherHum': np.empty(shape=[0, 1]),
+            'directWeatherPress': np.empty(shape=[0, 1]),
+            'directWeatherDew': np.empty(shape=[0, 1]),
             'skyTemp': np.empty(shape=[0, 1]),
             'skySQR': np.empty(shape=[0, 1]),
             'raJNow': np.empty(shape=[0, 1]),
@@ -198,19 +198,18 @@ class MeasureData(object):
         obs = self.app.mount.obsSite
 
         # gathering the environment data
-        envTemp = self.app.environ.data.get('WEATHER_TEMPERATURE', 0)
-        envPress = self.app.environ.data.get('WEATHER_PRESSURE', 0)
-        envDew = self.app.environ.data.get('WEATHER_DEWPOINT', 0)
-        envHum = self.app.environ.data.get('WEATHER_HUMIDITY', 0)
-        weatherTemp = self.app.weather.data.get('temperature', 0)
-        weatherPress = self.app.weather.data.get('pressure', 0)
-        weatherDew = self.app.weather.data.get('dewPoint', 0)
-        weatherHum = self.app.weather.data.get('humidity', 0)
-        # gathering the environment data
-        # internalTemp = self.app.internal.data.get('WEATHER_TEMPERATURE', 0)
-        # internalPress = self.app.internal.data.get('WEATHER_PRESSURE', 0)
-        # internalDew = self.app.internal.data.get('WEATHER_DEWPOINT', 0)
-        # internalHum = self.app.internal.data.get('WEATHER_HUMIDITY', 0)
+        sensorWeatherTemp = self.app.sensorWeather.data.get('WEATHER_TEMPERATURE', 0)
+        sensorWeatherPress = self.app.sensorWeather.data.get('WEATHER_PRESSURE', 0)
+        sensorWeatherDew = self.app.sensorWeather.data.get('WEATHER_DEWPOINT', 0)
+        sensorWeatherHum = self.app.sensorWeather.data.get('WEATHER_HUMIDITY', 0)
+        onlineWeatherTemp = self.app.onlineWeather.data.get('temperature', 0)
+        onlineWeatherPress = self.app.onlineWeather.data.get('pressure', 0)
+        onlineWeatherDew = self.app.onlineWeather.data.get('dewPoint', 0)
+        onlineWeatherHum = self.app.onlineWeather.data.get('humidity', 0)
+        directWeatherTemp = self.app.mount.setting.weatherTemperature
+        directWeatherPress = self.app.mount.setting.weatherPressure
+        directWeatherDew = self.app.mount.setting.weatherDewPoint
+        directWeatherHum = self.app.mount.setting.weatherHumidity
         # gathering sqr values
         skySQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
         skyTemp = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
@@ -230,18 +229,18 @@ class MeasureData(object):
         # writing data to dict
         timeStamp = obs.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
-        dat['envTemp'] = np.append(dat['envTemp'], envTemp)
-        dat['envHum'] = np.append(dat['envHum'], envHum)
-        dat['envPress'] = np.append(dat['envPress'], envPress)
-        dat['envDew'] = np.append(dat['envDew'], envDew)
-        dat['weatherTemp'] = np.append(dat['weatherTemp'], weatherTemp)
-        dat['weatherHum'] = np.append(dat['weatherHum'], weatherHum)
-        dat['weatherPress'] = np.append(dat['weatherPress'], weatherPress)
-        dat['weatherDew'] = np.append(dat['weatherDew'], weatherDew)
-        # dat['internalTemp'] = np.append(dat['internalTemp'], internalTemp)
-        # dat['internalHum'] = np.append(dat['internalHum'], internalHum)
-        # dat['internalPress'] = np.append(dat['internalPress'], internalPress)
-        # dat['internalDew'] = np.append(dat['internalDew'], internalDew)
+        dat['sensorWeatherTemp'] = np.append(dat['sensorWeatherTemp'], sensorWeatherTemp)
+        dat['sensorWeatherHum'] = np.append(dat['sensorWeatherHum'], sensorWeatherHum)
+        dat['sensorWeatherPress'] = np.append(dat['sensorWeatherPress'], sensorWeatherPress)
+        dat['sensorWeatherDew'] = np.append(dat['sensorWeatherDew'], sensorWeatherDew)
+        dat['onlineWeatherTemp'] = np.append(dat['onlineWeatherTemp'], onlineWeatherTemp)
+        dat['onlineWeatherHum'] = np.append(dat['onlineWeatherHum'], onlineWeatherHum)
+        dat['onlineWeatherPress'] = np.append(dat['onlineWeatherPress'], onlineWeatherPress)
+        dat['onlineWeatherDew'] = np.append(dat['onlineWeatherDew'], onlineWeatherDew)
+        dat['directWeatherTemp'] = np.append(dat['directWeatherTemp'], directWeatherTemp)
+        dat['directWeatherHum'] = np.append(dat['directWeatherHum'], directWeatherHum)
+        dat['directWeatherPress'] = np.append(dat['directWeatherPress'], directWeatherPress)
+        dat['directWeatherDew'] = np.append(dat['directWeatherDew'], directWeatherDew)
         dat['skySQR'] = np.append(dat['skySQR'], skySQR)
         dat['skyTemp'] = np.append(dat['skyTemp'], skyTemp)
         dat['raJNow'] = np.append(dat['raJNow'], raJNow)

@@ -49,11 +49,13 @@ class IndiClass(object):
     NUMBER_RETRY = 5
 
     def __init__(self,
+                 app=None,
                  host=None,
                  name='',
                  ):
         super().__init__()
 
+        self.app = app
         self.client = qtIndiBase.Client(host=host)
         self.name = name
         self.data = {}
@@ -105,14 +107,15 @@ class IndiClass(object):
             return suc
         return False
 
-    def serverDisconnected(self, devices):
+    @staticmethod
+    def serverDisconnected(devices):
         """
 
         :param devices:
-        :return:
+        :return: true for test purpose
         """
 
-        pass
+        return True
 
     def newDevice(self, deviceName):
         """

@@ -74,10 +74,10 @@ class Camera(indiClass.IndiClass):
                  name='',
                  ):
         super().__init__(host=host,
-                         name=name
+                         name=name,
+                         app=app,
                          )
 
-        self.app = app
         self.signals = CameraSignals()
         self.imagePath = ''
         self.filterNames = dict()

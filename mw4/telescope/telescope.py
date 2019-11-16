@@ -39,7 +39,6 @@ class Telescope(indiClass.IndiClass):
     __all__ = ['Telescope',
                ]
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 10 seconds for setting indi server
@@ -51,9 +50,9 @@ class Telescope(indiClass.IndiClass):
                  name='',
                  ):
         super().__init__(host=host,
-                         name=name
+                         name=name,
+                         app=app,
                          )
-        self.app = app
 
     def setUpdateConfig(self, deviceName):
         """

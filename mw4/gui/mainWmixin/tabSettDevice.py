@@ -292,6 +292,42 @@ class SettDevice(object):
 
         return True
 
+    def onlineWeatherDispatch(self):
+        """
+
+        :return:
+        """
+
+        if self.ui.onlineWeatherDevice.currentText().startswith('Built-In'):
+            self.app.onlineWeather.startCommunication()
+            self.app.message.emit('Weather enabled', 0)
+            self.deviceStat['onlineWeather'] = True
+            self.ui.onlineWeatherDevice.setStyleSheet(self.BACK_GREEN)
+        else:
+            self.app.onlineWeather.stopCommunication()
+            self.app.message.emit('Weather disabled', 0)
+            self.deviceStat['onlineWeather'] = None
+            self.ui.onlineWeatherDevice.setStyleSheet(self.BACK_NORM)
+
+        return True
+
+    def directWeatherDispatch(self):
+        """
+
+        :return:
+        """
+
+        if self.ui.directWeatherDevice.currentText().startswith('Built-In'):
+            self.app.message.emit('Direct Weather enabled', 0)
+            self.deviceStat['directWeather'] = True
+            self.ui.directWeatherDevice.setStyleSheet(self.BACK_GREEN)
+        else:
+            self.app.message.emit('Direct Weather disabled', 0)
+            self.deviceStat['directWeather'] = None
+            self.ui.directWeatherDevice.setStyleSheet(self.BACK_NORM)
+
+        return True
+
     def skymeterDispatch(self):
         """
         skymeterDispatch selects the type of device for skymeter measures and
@@ -403,41 +439,5 @@ class SettDevice(object):
             self.app.message.emit('Astrometry disabled', 0)
             self.deviceStat['astrometry'] = None
             self.ui.astrometryDevice.setStyleSheet(self.BACK_NORM)
-
-        return True
-
-    def onlineWeatherDispatch(self):
-        """
-
-        :return:
-        """
-
-        if self.ui.onlineWeatherDevice.currentText().startswith('Built-In'):
-            self.app.onlineWeather.startCommunication()
-            self.app.message.emit('Weather enabled', 0)
-            self.deviceStat['onlineWeather'] = True
-            self.ui.onlineWeatherDevice.setStyleSheet(self.BACK_GREEN)
-        else:
-            self.app.onlineWeather.stopCommunication()
-            self.app.message.emit('Weather disabled', 0)
-            self.deviceStat['onlineWeather'] = None
-            self.ui.onlineWeatherDevice.setStyleSheet(self.BACK_NORM)
-
-        return True
-
-    def directWeatherDispatch(self):
-        """
-
-        :return:
-        """
-
-        if self.ui.directWeatherDevice.currentText().startswith('Built-In'):
-            self.app.message.emit('Direct Weather enabled', 0)
-            self.deviceStat['directWeather'] = True
-            self.ui.directWeatherDevice.setStyleSheet(self.BACK_GREEN)
-        else:
-            self.app.message.emit('Direct Weather disabled', 0)
-            self.deviceStat['directWeather'] = None
-            self.ui.directWeatherDevice.setStyleSheet(self.BACK_NORM)
 
         return True

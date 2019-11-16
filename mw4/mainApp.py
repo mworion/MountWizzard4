@@ -35,17 +35,17 @@ from mw4.gui import hemisphereW
 from mw4.gui import measureW
 from mw4.gui import imageW
 from mw4.gui import satelliteW
-from mw4.powerswitch import kmRelay
+from mw4.powerswitch.kmRelay import KMRelay
 from mw4.modeldata import buildpoints
 from mw4.modeldata import hipparcos
-from mw4.dome import dome
+from mw4.dome.dome import Dome
 from mw4.imaging import camera
-from mw4.environment import sensorWeather
-from mw4.environment import skymeter
-from mw4.environment import onlineWeather
-from mw4.cover import flipflat
-from mw4.telescope import telescope
-from mw4.powerswitch import pegasusUPB
+from mw4.environment.sensorWeather import SensorWeather
+from mw4.environment.skymeter import Skymeter
+from mw4.environment.onlineWeather import OnlineWeather
+from mw4.cover.flipflat import FlipFlat
+from mw4.telescope.telescope import Telescope
+from mw4.powerswitch.pegasusUPB import PegasusUPB
 from mw4.base import measuredata
 from mw4.remote import remote
 from mw4.astrometry import astrometry
@@ -117,16 +117,16 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # get all planets for calculation
         self.planets = self.mount.obsSite.loader('de421_23.bsp')
-        self.relay = kmRelay.KMRelay(host='192.168.2.15')
-        self.sensorWeather = sensorWeather.SensorWeather(self, host='localhost')
-        self.onlineWeather = onlineWeather.OnlineWeather(self,
-                                                         threadPool=self.threadPool)
-        self.cover = flipflat.FlipFlat(self, host='localhost')
-        self.dome = dome.Dome(self, host='localhost')
+        self.relay = KMRelay(host='192.168.2.15')
+        self.sensorWeather = SensorWeather(self, host='localhost')
+        self.onlineWeather = OnlineWeather(self,
+                                           threadPool=self.threadPool)
+        self.cover = FlipFlat(self, host='localhost')
+        self.dome = Dome(self, host='localhost')
         self.imaging = camera.Camera(self, host='localhost')
-        self.telescope = telescope.Telescope(self, host='localhost')
-        self.skymeter = skymeter.Skymeter(self, host='localhost')
-        self.power = pegasusUPB.PegasusUPB(self, host='localhost')
+        self.telescope = Telescope(self, host='localhost')
+        self.skymeter = Skymeter(self, host='localhost')
+        self.power = PegasusUPB(self, host='localhost')
         self.data = buildpoints.DataPoint(self, mwGlob=self.mwGlob)
         self.hipparcos = hipparcos.Hipparcos(self, mwGlob=self.mwGlob)
         self.measure = measuredata.MeasureData(self)

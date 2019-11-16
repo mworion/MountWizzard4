@@ -227,7 +227,6 @@ class SettDevice(object):
         """
 
         if self.ui.domeDevice.currentText().startswith('INDI'):
-            self.app.dome.client.host = self.ui.domeHost.text()
             if self.app.dome.name != self.ui.domeDeviceName.currentText():
                 self.app.dome.stopCommunication()
             self.app.dome.name = self.ui.domeDeviceName.currentText()
@@ -252,7 +251,6 @@ class SettDevice(object):
         """
 
         if self.ui.imagingDevice.currentText().startswith('INDI'):
-            self.app.imaging.client.host = self.ui.imagingHost.text()
             if self.app.imaging.name != self.ui.imagingDeviceName.currentText():
                 self.app.imaging.stopCommunication()
             self.app.imaging.name = self.ui.imagingDeviceName.currentText()
@@ -277,7 +275,6 @@ class SettDevice(object):
         """
 
         if self.ui.sensorWeatherDevice.currentText().startswith('INDI'):
-            self.app.sensorWeather.client.host = self.ui.sensorWeatherHost.text()
             if self.app.sensorWeather.name != self.ui.sensorWeatherDeviceName.currentText():
                 self.app.sensorWeather.stopCommunication()
             self.app.sensorWeather.name = self.ui.sensorWeatherDeviceName.currentText()
@@ -337,7 +334,6 @@ class SettDevice(object):
         """
 
         if self.ui.skymeterDevice.currentText().startswith('INDI'):
-            self.app.skymeter.client.host = self.ui.skymeterHost.text()
             if self.app.skymeter.name != self.ui.skymeterDeviceName.currentText():
                 self.app.skymeter.stopCommunication()
             self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
@@ -361,7 +357,6 @@ class SettDevice(object):
         """
 
         if self.ui.coverDevice.currentText().startswith('INDI'):
-            self.app.cover.client.host = self.ui.coverHost.text()
             if self.app.cover.name != self.ui.coverDeviceName.currentText():
                 self.app.cover.stopCommunication()
             self.app.cover.name = self.ui.coverDeviceName.currentText()
@@ -384,7 +379,6 @@ class SettDevice(object):
         """
 
         if self.ui.telescopeDevice.currentText().startswith('INDI'):
-            self.app.telescope.client.host = self.ui.telescopeHost.text()
             if self.app.telescope.name != self.ui.telescopeDeviceName.currentText():
                 self.app.telescope.stopCommunication()
             self.app.telescope.name = self.ui.telescopeDeviceName.currentText()
@@ -408,7 +402,6 @@ class SettDevice(object):
         """
 
         if self.ui.powerDevice.currentText().startswith('INDI'):
-            self.app.power.client.host = self.ui.powerHost.text()
             if self.app.power.name != self.ui.powerDeviceName.currentText():
                 self.app.power.stopCommunication()
             self.app.power.name = self.ui.powerDeviceName.currentText()

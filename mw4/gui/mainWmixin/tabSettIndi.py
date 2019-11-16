@@ -109,8 +109,8 @@ class SettIndi(object):
         # signals from functions
         for name, item in self.indiDevices.items():
             item['uiName'].currentIndexChanged.connect(item['dispatch'])
-            item['host'].editingFinished.connect(self.shareServerHost)
-            item['port'].editingFinished.connect(self.shareServerPort)
+            item['host'].editingFinished.connect(self.shareServer)
+            item['port'].editingFinished.connect(self.shareServer)
             item['uiMessage'].clicked.connect(self.shareMessage)
             item['signals'].serverDisconnected.connect(self.showIndiDisconnected)
             item['signals'].deviceConnected.connect(self.showDeviceConnected)
@@ -134,6 +134,8 @@ class SettIndi(object):
             self.indiDevices[name]['host'].setText(config.get(f'{name}Host', ''))
 
         self.ui.shareIndiServer.setChecked(config.get('shareIndiServer', True))
+        self.shareServer()
+        self.shareMessage()
 
         return True
 
@@ -222,49 +224,31 @@ class SettIndi(object):
 
         return True
 
-    def shareServerHost(self):
+    def shareServer(self):
         """
-        shareServerHost is called whenever a indi server host is edited. if checkbox
+        shareServer is called whenever a indi server host is edited. if checkbox
         for sharing is set, the new entry will be copied to all other indi servers
 
         :return:
         """
-
-        if not self.ui.shareIndiServer.isChecked():
-            return False
-
-        hosts = list(self.indiDevices[device]['host'] for device in self.indiDevices)
-
-        if self.sender() not in hosts:
-            return False
-
-        for host in hosts:
-            if self.sender() == host:
-                continue
-            host.setText(self.sender().text())
-
-        return True
-
-    def shareServerPort(self):
-        """
-        shareServerPort is called whenever a indi server port is edited. if checkbox
-        for sharing is set, the new entry will be copied to all other indi servers
-
-        :return:
-        """
-
-        if not self.ui.shareIndiServer.isChecked():
-            return False
 
         ports = list(self.indiDevices[device]['port'] for device in self.indiDevices)
+        hosts = list(self.indiDevices[device]['host'] for device in self.indiDevices)
+        baseClasses = list(self.indiDevices[device]['class'] for device in self.indiDevices)
 
-        if self.sender() not in ports:
-            return False
+        for baseClass, host, port in zip(baseClasses, hosts, ports):
 
-        for port in ports:
-            if self.sender() == port:
-                continue
-            port.setText(self.sender().text())
+            if self.ui.shareIndiServer.isChecked():
+                if self.sender() == host:
+                    continue
+                elif self.sender() == port:
+                    continue
+                elif self.sender() in ports:
+                    port.setText(self.sender().text())
+                elif self.sender() in hosts:
+                    host.setText(self.sender().text())
+
+            baseClass.client.host = (host.text(), int(port.text()))
 
         return True
 
@@ -273,21 +257,23 @@ class SettIndi(object):
         shareMessage is called whenever a indi message checkbox is edited. if checkbox
         for sharing is set, the new entry will be copied to all other indi servers
 
-        :return:
+        :return: true for test purpose
         """
 
-        if not self.ui.shareIndiServer.isChecked():
-            return False
-
         messages = list(self.indiDevices[device]['uiMessage'] for device in self.indiDevices)
+        baseClasses = list(self.indiDevices[device]['class'] for device in self.indiDevices)
 
-        if self.sender() not in messages:
-            return False
+        for baseClass, message in zip(baseClasses, messages):
 
-        for message in messages:
-            if self.sender() == message:
-                continue
-            message.setChecked(self.sender().isChecked())
+            if self.ui.shareIndiServer.isChecked():
+                if self.sender() == message:
+                    continue
+                elif self.sender() not in messages:
+                    continue
+                else:
+                    message.setChecked(self.sender().isChecked())
+
+            baseClass.showMessage = message.isChecked()
 
         return True
 
@@ -322,8 +308,6 @@ class SettIndi(object):
                 continue
             self.indiDevices[device]['uiDevice'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[device] = True
-            showMessage = self.indiDevices[device]['uiMessage'].isChecked()
-            self.indiDevices[device]['class'].showMessage = showMessage
         return True
 
     def showDeviceDisconnected(self, deviceName):

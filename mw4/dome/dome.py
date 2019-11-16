@@ -59,7 +59,6 @@ class Dome(indiClass.IndiClass):
     __all__ = ['Dome',
                ]
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 1000 milli seconds for setting indi server

@@ -38,7 +38,6 @@ class FlipFlat(indiClass.IndiClass):
     __all__ = ['FlipFlat',
                ]
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server

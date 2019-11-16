@@ -48,7 +48,6 @@ class KMRelay(PyQt5.QtCore.QObject):
                'set',
                ]
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # polling cycle for relay box

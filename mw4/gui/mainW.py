@@ -478,12 +478,12 @@ class MainWindow(MWidget,
         updateDeviceStats sets the colors in main window upper bar for getting
         important overview, which functions are available.
 
+        the refraction sources etc are defined in tabEnviron, but it is optimal
+        setting the selected source right at this point as it is synchronous if
+        state is switching
+
         :return: True for test purpose
         """
-
-        # the refraction sources etc are defined in tabEnviron, but it is optimal
-        # setting the selected source right at this point as it is synchronous if
-        # state is switching
 
         if self.refractionSource in self.deviceStat:
             self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]

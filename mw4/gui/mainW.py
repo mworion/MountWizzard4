@@ -386,15 +386,18 @@ class MainWindow(MWidget,
         tabChanged = False
 
         for key, tab in smartTabs.items():
+            # finding the right tab and get the status
             tabWidget = smartTabs[key]['tab'].findChild(PyQt5.QtWidgets.QWidget, key)
             tabIndex = smartTabs[key]['tab'].indexOf(tabWidget)
             tabStatus = smartTabs[key]['tab'].isTabEnabled(tabIndex)
 
+            # determine the new stat, set it and check if changed
             stat = bool(self.deviceStat.get(smartTabs[key]['statID']))
             smartTabs[key]['tab'].setTabEnabled(tabIndex, stat)
             tabChanged = tabChanged or (tabStatus != stat)
 
-        # redraw tabs only when a change occurred
+        # redraw tabs only when a change occurred. this is necessary, because
+        # enable and disable does not remove tabs
         if tabChanged:
             self.ui.mainTabWidget.setStyleSheet(self.getStyle())
             self.ui.settingsTabWidget.setStyleSheet(self.getStyle())

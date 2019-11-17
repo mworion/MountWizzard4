@@ -184,7 +184,7 @@ class OnlineWeather(object):
             return False
 
         if len(val['list']) == 0:
-            self.csignals.onnected.emit(False)
+            self.signals.connected.emit(False)
             self.signals.dataReceived.emit(None)
             return False
 

@@ -552,15 +552,12 @@ class EnvironGui(object):
         :return: success
         """
 
-        if self.deviceStat['directWeather'] is None:
-            return False
-
-        if setting is None or not self.app.mount.mountUp:
-            self.deviceStat['directWeather'] = False
+        if not self.deviceStat['directWeather']:
             self.clearDirectWeatherGui()
             return False
 
-        self.deviceStat['directWeather'] = True
+        if setting is None:
+            return False
 
         if setting.weatherTemperature is not None:
             self.ui.directWeatherTemp.setText(f'{setting.weatherTemperature:4.1f}')

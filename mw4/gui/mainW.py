@@ -122,6 +122,7 @@ class MainWindow(MWidget,
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.mount.signals.mountUp.connect(self.updateMountConnStat)
+        self.app.mount.signals.settingDone.connect(self.updateMountWeatherStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
@@ -300,6 +301,24 @@ class MainWindow(MWidget,
         """
 
         self.deviceStat['mount'] = status
+        return True
+
+    def updateMountWeatherStat(self, setting):
+        """
+        updateMountWeatherStat show the connection status of the mount weather station
+        connected. if the data values are None there is no station attached to the
+        GPS port,
+
+        :return: true for test purpose
+        """
+
+        if setting.weatherTemperature is None and setting.weatherPressure is None:
+            self.deviceStat['directWeather'] = None
+        else:
+            if setting.weatherStatus is None:
+                self.deviceStat['directWeather'] = False
+            else:
+                self.deviceStat['directWeather'] = True
         return True
 
     def smartDeviceGui(self):

@@ -41,7 +41,7 @@ class MessageWindow(widget.MWidget):
 
     __all__ = ['MessageWindow',
                ]
-    version = '0.2'
+
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):

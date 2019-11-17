@@ -591,35 +591,35 @@ class MeasureWindow(widget.MWidget):
             plotList.append(r1)
             labelList.append('Sensor Hum')
 
-        if 'power' in self.app.measure.devices:
-            r2, = axe.plot(data['time'][start:-1:cycle],
-                           data['powHum'][start:-1:cycle],
-                           marker='o',
-                           markersize=3,
-                           color=self.M_PINK,
-                           )
-            plotList.append(r2)
-            labelList.append('Power Hum')
-
         if 'onlineWeather' in self.app.measure.devices:
-            r3, = axe.plot(data['time'][start:-1:cycle],
+            r2, = axe.plot(data['time'][start:-1:cycle],
                            data['onlineWeatherHum'][start:-1:cycle],
                            marker='o',
                            markersize=3,
                            color=self.M_GREEN,
                            )
-            plotList.append(r3)
+            plotList.append(r2)
             labelList.append('Online Hum')
 
         if 'directWeather' in self.app.measure.devices:
-            r4, = axe.plot(data['time'][start:-1:cycle],
+            r3, = axe.plot(data['time'][start:-1:cycle],
                            data['directWeatherHum'][start:-1:cycle],
                            marker='o',
                            markersize=3,
                            color=self.M_RED,
                            )
-            plotList.append(r4)
+            plotList.append(r3)
             labelList.append('Direct Hum')
+
+        if 'power' in self.app.measure.devices:
+            r4, = axe.plot(data['time'][start:-1:cycle],
+                           data['powHum'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_PINK,
+                           )
+            plotList.append(r4)
+            labelList.append('Power Hum')
 
         if not labelList:
             return False

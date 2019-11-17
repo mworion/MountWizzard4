@@ -118,7 +118,6 @@ class MeasureWindow(widget.MWidget):
         self.ui.measureSet2.setCurrentIndex(config.get('measureSet2', 0))
         self.ui.measureSet3.setCurrentIndex(config.get('measureSet3', 0))
         self.ui.timeSet.setCurrentIndex(config.get('timeSet', 0))
-        self.ui.checkSaveCSV.setChecked(config.get('checkSaveCSV', False))
         self.setCycleRefresh()
 
         return True
@@ -140,7 +139,6 @@ class MeasureWindow(widget.MWidget):
         config['measureSet2'] = self.ui.measureSet2.currentIndex()
         config['measureSet3'] = self.ui.measureSet3.currentIndex()
         config['timeSet'] = self.ui.timeSet.currentIndex()
-        config['checkSaveCSV'] = self.ui.checkSaveCSV.isChecked()
 
         return True
 
@@ -356,6 +354,7 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
+
         ylabel = 'Temperature [deg C]'
         start = -self.NUMBER_POINTS * cycle
 
@@ -370,71 +369,98 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        r1, = axe.plot(data['time'][start:-1:cycle],
-                       data['sensorWeatherTemp'][start:-1:cycle],
-                       marker='.',
-                       markersize=3,
-                       color=self.M_WHITE,
-                       )
-        r2, = axe.plot(data['time'][start:-1:cycle],
-                       data['powTemp'][start:-1:cycle],
-                       marker='.',
-                       markersize=3,
-                       color=self.M_PINK,
-                       )
-        r3, = axe.plot(data['time'][start:-1:cycle],
-                       data['skyTemp'][start:-1:cycle],
-                       marker='.',
-                       markersize=3,
-                       color=self.M_YELLOW,
-                       )
-        r4, = axe.plot(data['time'][start:-1:cycle],
-                       data['onlineWeatherTemp'][start:-1:cycle],
-                       marker='.',
-                       markersize=3,
-                       color=self.M_GREEN,
-                       )
-        r5, = axe.plot(data['time'][start:-1:cycle],
-                       data['directWeatherTemp'][start:-1:cycle],
-                       marker='.',
-                       markersize=3,
-                       color=self.M_RED,
-                       )
+        if 'sensorWeather' in self.app.measure.devices:
+            r1, = axe.plot(data['time'][start:-1:cycle],
+                           data['sensorWeatherTemp'][start:-1:cycle],
+                           marker='.',
+                           markersize=3,
+                           color=self.M_WHITE,
+                           )
+            r2, = axe.plot(data['time'][start:-1:cycle],
+                           data['sensorWeatherDew'][start:-1:cycle],
+                           marker='d',
+                           markersize=3,
+                           color=self.M_WHITE,
+                           )
+            plotList.append(r1)
+            plotList.append(r2)
+            labelList.append('Sensor Temp')
+            labelList.append('Sensor Dew')
 
-        r6, = axe.plot(data['time'][start:-1:cycle],
-                       data['sensorWeatherDew'][start:-1:cycle],
-                       marker='d',
-                       markersize=3,
-                       color=self.M_WHITE,
-                       )
-        r7, = axe.plot(data['time'][start:-1:cycle],
-                       data['powDew'][start:-1:cycle],
-                       marker='d',
-                       markersize=3,
-                       color=self.M_PINK,
-                       )
-        r8, = axe.plot(data['time'][start:-1:cycle],
-                       data['onlineWeatherDew'][start:-1:cycle],
-                       marker='d',
-                       markersize=3,
-                       color=self.M_GREEN,
-                       )
-        r9, = axe.plot(data['time'][start:-1:cycle],
-                       data['directWeatherDew'][start:-1:cycle],
-                       marker='d',
-                       markersize=3,
-                       color=self.M_RED,
-                       )
+        if 'onlineWeather' in self.app.measure.devices:
+            r3, = axe.plot(data['time'][start:-1:cycle],
+                           data['onlineWeatherTemp'][start:-1:cycle],
+                           marker='.',
+                           markersize=3,
+                           color=self.M_GREEN,
+                           )
+            r4, = axe.plot(data['time'][start:-1:cycle],
+                           data['onlineWeatherDew'][start:-1:cycle],
+                           marker='d',
+                           markersize=3,
+                           color=self.M_GREEN,
+                           )
+            plotList.append(r3)
+            plotList.append(r4)
+            labelList.append('Online Temp')
+            labelList.append('Online Dew')
 
-        legend = axe.legend([r1, r2, r3, r4, r5, r6, r7, r8, r9],
-                            ['Sensor Temp', 'Power Temp', 'Sky Temp', 'Online Temp',
-                             'Direct Temp',
-                             'Sensor Dew', 'Power Dew', 'Online Dew', 'Direct Dew'],
+        if 'directWeather' in self.app.measure.devices:
+            r5, = axe.plot(data['time'][start:-1:cycle],
+                           data['directWeatherTemp'][start:-1:cycle],
+                           marker='.',
+                           markersize=3,
+                           color=self.M_RED,
+                           )
+            r6, = axe.plot(data['time'][start:-1:cycle],
+                           data['directWeatherDew'][start:-1:cycle],
+                           marker='d',
+                           markersize=3,
+                           color=self.M_RED,
+                           )
+            plotList.append(r5)
+            plotList.append(r6)
+            labelList.append('Direct Temp')
+            labelList.append('Direct Dew')
+
+        if 'power' in self.app.measure.devices:
+            r7, = axe.plot(data['time'][start:-1:cycle],
+                           data['powTemp'][start:-1:cycle],
+                           marker='.',
+                           markersize=3,
+                           color=self.M_PINK,
+                           )
+            r8, = axe.plot(data['time'][start:-1:cycle],
+                           data['powDew'][start:-1:cycle],
+                           marker='d',
+                           markersize=3,
+                           color=self.M_PINK,
+                           )
+            plotList.append(r7)
+            plotList.append(r8)
+            labelList.append('Power Temp')
+            labelList.append('Power Dew')
+
+        if 'skymeter' in self.app.measure.devices:
+            r9, = axe.plot(data['time'][start:-1:cycle],
+                           data['skyTemp'][start:-1:cycle],
+                           marker='.',
+                           markersize=3,
+                           color=self.M_YELLOW,
+                           )
+            plotList.append(r9)
+            labelList.append('Skymeter Temp')
+
+        if not labelList:
+            return False
+
+        legend = axe.legend(plotList, labelList,
                             facecolor=self.M_BLACK,
                             edgecolor=self.M_BLUE,
                             )
         for text in legend.get_texts():
             text.set_color(self.M_BLUE)
+
         axe.grid(True, color=self.M_GREY, alpha=1)
         axe.margins(y=0.2)
         axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
@@ -459,8 +485,13 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
+
         ylabel = 'Pressure [hPas]'
         start = -self.NUMBER_POINTS * cycle
+
+        plotList = []
+        labelList = []
+
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -469,20 +500,41 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        r1, = axe.plot(data['time'][start:-1:cycle],
-                       data['sensorWeatherPress'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_WHITE,
-                       )
-        r2, = axe.plot(data['time'][start:-1:cycle],
-                       data['onlineWeatherPress'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_WHITE,
-                       )
-        legend = axe.legend([r1, r2],
-                            ['Env Press', 'Weather Press'],
+
+        if 'sensorWeather' in self.app.measure.devices:
+            r1, = axe.plot(data['time'][start:-1:cycle],
+                           data['sensorWeatherPress'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_WHITE,
+                           )
+            plotList.append(r1)
+            labelList.append('Sensor Temp')
+
+        if 'onlineWeather' in self.app.measure.devices:
+            r2, = axe.plot(data['time'][start:-1:cycle],
+                           data['onlineWeatherPress'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_GREEN,
+                           )
+            plotList.append(r2)
+            labelList.append('Online Press')
+
+        if 'directWeather' in self.app.measure.devices:
+            r3, = axe.plot(data['time'][start:-1:cycle],
+                           data['directWeatherPress'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_RED,
+                           )
+            plotList.append(r3)
+            labelList.append('Direct Press')
+
+        if not labelList:
+            return False
+
+        legend = axe.legend(plotList, labelList,
                             facecolor=self.M_BLACK,
                             edgecolor=self.M_BLUE,
                             )
@@ -513,8 +565,13 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
+
         ylabel = 'Humidity [%]'
         start = -self.NUMBER_POINTS * cycle
+
+        plotList = []
+        labelList = []
+
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -523,31 +580,57 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        r1, = axe.plot(data['time'][start:-1:cycle],
-                       data['sensorWeatherHum'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_WHITE,
-                       )
-        r2, = axe.plot(data['time'][start:-1:cycle],
-                       data['powHum'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_PINK,
-                       )
-        r3, = axe.plot(data['time'][start:-1:cycle],
-                       data['onlineWeatherHum'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_RED,
-                       )
-        legend = axe.legend([r1, r2, r3],
-                            ['Env Hum', 'Pow Hum', 'Weather Hum'],
+
+        if 'sensorWeather' in self.app.measure.devices:
+            r1, = axe.plot(data['time'][start:-1:cycle],
+                           data['sensorWeatherHum'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_WHITE,
+                           )
+            plotList.append(r1)
+            labelList.append('Sensor Hum')
+
+        if 'power' in self.app.measure.devices:
+            r2, = axe.plot(data['time'][start:-1:cycle],
+                           data['powHum'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_PINK,
+                           )
+            plotList.append(r2)
+            labelList.append('Power Hum')
+
+        if 'onlineWeather' in self.app.measure.devices:
+            r3, = axe.plot(data['time'][start:-1:cycle],
+                           data['onlineWeatherHum'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_GREEN,
+                           )
+            plotList.append(r3)
+            labelList.append('Online Hum')
+
+        if 'directWeather' in self.app.measure.devices:
+            r4, = axe.plot(data['time'][start:-1:cycle],
+                           data['directWeatherHum'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_RED,
+                           )
+            plotList.append(r4)
+            labelList.append('Direct Hum')
+
+        if not labelList:
+            return False
+
+        legend = axe.legend(plotList, labelList,
                             facecolor=self.M_BLACK,
                             edgecolor=self.M_BLUE,
                             )
         for text in legend.get_texts():
             text.set_color(self.M_BLUE)
+
         axe.grid(True, color=self.M_GREY, alpha=1)
         axe.set_ylim(-0, 100)
         axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
@@ -572,8 +655,13 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
+
         ylabel = 'Sky Quality [mpas]'
         start = -self.NUMBER_POINTS * cycle
+
+        plotList = []
+        labelList = []
+
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -582,15 +670,26 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        if data['skySQR'][start] is None:
-            print('error')
-        else:
-            axe.plot(data['time'][start:-1:cycle],
-                     data['skySQR'][start:-1:cycle],
-                     marker='o',
-                     markersize=3,
-                     color=self.M_WHITE,
-                     )
+
+        if 'skymeter' in self.app.measure.devices:
+            r1, = axe.plot(data['time'][start:-1:cycle],
+                           data['skySQR'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_WHITE,
+                           )
+            plotList.append(r1)
+            labelList.append('Skymeter SQR')
+
+        if not labelList:
+            return False
+
+        legend = axe.legend(plotList, labelList,
+                            facecolor=self.M_BLACK,
+                            edgecolor=self.M_BLUE,
+                            )
+        for text in legend.get_texts():
+            text.set_color(self.M_BLUE)
 
         axe.grid(True, color=self.M_GREY, alpha=1)
         axe.margins(y=0.2)
@@ -599,7 +698,7 @@ class MeasureWindow(widget.MWidget):
                                                              min_n_ticks=4,
                                                              prune='both',
                                                              ))
-        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.2‚f',
+        axe.get_yaxis().set_major_formatter(ticker.FormatStrFormatter('%.2f',
                                                                       ))
         return True
 
@@ -616,8 +715,13 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
+
         ylabel = 'Power Voltage [V]'
         start = -self.NUMBER_POINTS * cycle
+
+        plotList = []
+        labelList = []
+
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -626,12 +730,26 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        axe.plot(data['time'][start:-1:cycle],
-                 data['powVolt'][start:-1:cycle],
-                 marker='o',
-                 markersize=3,
-                 color=self.M_WHITE,
-                 )
+        if 'power' in self.app.measure.devices:
+            r1, = axe.plot(data['time'][start:-1:cycle],
+                           data['powVolt'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_WHITE,
+                           )
+            plotList.append(r1)
+            labelList.append('Voltage')
+
+        if not labelList:
+            return False
+
+        legend = axe.legend(plotList, labelList,
+                            facecolor=self.M_BLACK,
+                            edgecolor=self.M_BLUE,
+                            )
+        for text in legend.get_texts():
+            text.set_color(self.M_BLUE)
+
         axe.grid(True, color=self.M_GREY, alpha=1)
         axe.margins(y=0.2)
         axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,
@@ -656,8 +774,13 @@ class MeasureWindow(widget.MWidget):
         :param cycle: cycle time for measurement
         :return: success
         """
+
         ylabel = 'Power Current [A]'
         start = -self.NUMBER_POINTS * cycle
+
+        plotList = []
+        labelList = []
+
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -666,43 +789,59 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        r1, = axe.plot(data['time'][start:-1:cycle],
-                       data['powCurr'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_WHITE,
-                       )
-        r2, = axe.plot(data['time'][start:-1:cycle],
-                       data['powCurr1'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_PINK,
-                       )
-        r3, = axe.plot(data['time'][start:-1:cycle],
-                       data['powCurr2'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_YELLOW,
-                       )
-        r4, = axe.plot(data['time'][start:-1:cycle],
-                       data['powCurr3'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_GREEN,
-                       )
-        r5, = axe.plot(data['time'][start:-1:cycle],
-                       data['powCurr4'][start:-1:cycle],
-                       marker='o',
-                       markersize=3,
-                       color=self.M_RED,
-                       )
-        legend = axe.legend([r1, r2, r3, r4, r5],
-                            ['Curr Sum', 'Curr P1', 'Curr P2', 'Curr P3', 'Curr P4'],
+
+        if 'power' in self.app.measure.devices:
+            r1, = axe.plot(data['time'][start:-1:cycle],
+                           data['powCurr'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_WHITE,
+                           )
+            r2, = axe.plot(data['time'][start:-1:cycle],
+                           data['powCurr1'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_PINK,
+                           )
+            r3, = axe.plot(data['time'][start:-1:cycle],
+                           data['powCurr2'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_YELLOW,
+                           )
+            r4, = axe.plot(data['time'][start:-1:cycle],
+                           data['powCurr3'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_GREEN,
+                           )
+            r5, = axe.plot(data['time'][start:-1:cycle],
+                           data['powCurr4'][start:-1:cycle],
+                           marker='o',
+                           markersize=3,
+                           color=self.M_RED,
+                           )
+            plotList.append(r1)
+            plotList.append(r2)
+            plotList.append(r3)
+            plotList.append(r4)
+            plotList.append(r5)
+            labelList.append('Curr Sum')
+            labelList.append('Curr 1')
+            labelList.append('Curr 2')
+            labelList.append('Curr 3')
+            labelList.append('Curr 4')
+
+        if not labelList:
+            return False
+
+        legend = axe.legend(plotList, labelList,
                             facecolor=self.M_BLACK,
                             edgecolor=self.M_BLUE,
                             )
         for text in legend.get_texts():
             text.set_color(self.M_BLUE)
+
         axe.grid(True, color=self.M_GREY, alpha=1)
         axe.margins(y=0.2)
         axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,

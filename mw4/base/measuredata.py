@@ -58,6 +58,7 @@ class MeasureData(object):
 
         self.data = {}
         self.devices = {}
+        self.deviceStat = None
 
         # time for measurement
         self.timerTask = PyQt5.QtCore.QTimer()
@@ -70,10 +71,7 @@ class MeasureData(object):
         :return: True for test purpose
         """
 
-        print('using in measure', self.app.mainW)
-        #deviceStat = self.app.mainW.deviceStat
-        #self.devices = [key for key, value in deviceStat.items() if deviceStat[key] is not None]
-        #print(self.devices)
+        self.devices = [key for key, value in self.deviceStat.items() if self.deviceStat[key] is not None]
         self.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 

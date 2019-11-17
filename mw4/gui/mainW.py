@@ -108,6 +108,10 @@ class MainWindow(MWidget,
             'relay': None,
             'measure': None,
         }
+
+        # setting device stats in measurement task
+        self.app.measure.deviceStat = self.deviceStat
+
         self.deviceStatGui = {'dome': self.ui.domeConnected,
                               'imaging': self.ui.imagingConnected,
                               'environOverall': self.ui.environConnected,
@@ -136,7 +140,7 @@ class MainWindow(MWidget,
         self.ui.saveConfig.clicked.connect(self.saveProfile)
 
         # initial call for writing the gui
-        self.updateMountConnStat(None)
+        # todo: check if self.updateMountConnStat(None) needed
         self.initConfig()
 
         # cyclic updates

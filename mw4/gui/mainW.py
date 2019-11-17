@@ -414,60 +414,25 @@ class MainWindow(MWidget,
         :return: true for test purpose
         """
 
-        stat = self.deviceStat.get('directWeather', None)
-        if stat is None:
-            self.ui.directWeatherGroup.setFixedWidth(0)
-            self.ui.directWeatherGroup.setEnabled(False)
-        elif stat:
-            self.ui.directWeatherGroup.setMinimumSize(75, 0)
-            self.ui.directWeatherGroup.setEnabled(True)
-        else:
-            self.ui.directWeatherGroup.setMinimumSize(75, 0)
-            self.ui.directWeatherGroup.setEnabled(False)
+        environ = {
+            'directWeather': self.ui.directWeatherGroup,
+            'sensorWeather': self.ui.sensorWeatherGroup,
+            'onlineWeather': self.ui.onlineWeatherGroup,
+            'skymeter': self.ui.skymeterGroup,
+            'power': self.ui.powerGroup,
+        }
 
-        stat = self.deviceStat.get('sensorWeather', None)
-        if stat is None:
-            self.ui.sensorWeatherGroup.setFixedWidth(0)
-            self.ui.sensorWeatherGroup.setEnabled(False)
-        elif stat:
-            self.ui.sensorWeatherGroup.setMinimumSize(75, 0)
-            self.ui.sensorWeatherGroup.setEnabled(True)
-        else:
-            self.ui.sensorWeatherGroup.setMinimumSize(75, 0)
-            self.ui.sensorWeatherGroup.setEnabled(False)
-
-        stat = self.deviceStat.get('onlineWeather', None)
-        if stat is None:
-            self.ui.onlineWeatherGroup.setFixedWidth(0)
-            self.ui.onlineWeatherGroup.setEnabled(False)
-        elif stat:
-            self.ui.onlineWeatherGroup.setMinimumSize(75, 0)
-            self.ui.onlineWeatherGroup.setEnabled(True)
-        else:
-            self.ui.onlineWeatherGroup.setMinimumSize(75, 0)
-            self.ui.onlineWeatherGroup.setEnabled(False)
-
-        stat = self.deviceStat.get('skymeter', None)
-        if stat is None:
-            self.ui.skymeterGroup.setFixedWidth(0)
-            self.ui.skymeterGroup.setEnabled(False)
-        elif stat:
-            self.ui.skymeterGroup.setMinimumSize(75, 0)
-            self.ui.skymeterGroup.setEnabled(True)
-        else:
-            self.ui.skymeterGroup.setMinimumSize(75, 0)
-            self.ui.skymeterGroup.setEnabled(False)
-
-        stat = self.deviceStat.get('power', None)
-        if stat is None:
-            self.ui.powerGroup.setFixedWidth(0)
-            self.ui.powerGroup.setEnabled(False)
-        elif stat:
-            self.ui.powerGroup.setMinimumSize(75, 0)
-            self.ui.powerGroup.setEnabled(True)
-        else:
-            self.ui.powerGroup.setMinimumSize(75, 0)
-            self.ui.powerGroup.setEnabled(False)
+        for key, group in environ.items():
+            stat = self.deviceStat.get(key, None)
+            if stat is None:
+                group.setFixedWidth(0)
+                group.setEnabled(False)
+            elif stat:
+                group.setMinimumSize(75, 0)
+                group.setEnabled(True)
+            else:
+                group.setMinimumSize(75, 0)
+                group.setEnabled(False)
 
         return True
 
@@ -477,30 +442,34 @@ class MainWindow(MWidget,
         :return: True for test purpose
         """
 
-        if self.app.messageW:
-            self.changeStyleDynamic(self.ui.openMessageW, 'running', True)
-        else:
-            self.changeStyleDynamic(self.ui.openMessageW, 'running', False)
+        stats = {
+            'message':
+                {'object': self.app.messageW,
+                 'button': self.ui.openMessageW,
+                 },
+            'hemisphere':
+                {'object': self.app.hemisphereW,
+                 'button': self.ui.openHemisphereW,
+                 },
+            'image':
+                {'object': self.app.imageW,
+                 'button': self.ui.openImageW,
+                 },
+            'measure':
+                {'object': self.app.measureW,
+                 'button': self.ui.openMeasureW,
+                 },
+            'satellite':
+                {'object': self.app.satelliteW,
+                 'button': self.ui.openSatelliteW,
+                 },
+        }
 
-        if self.app.hemisphereW:
-            self.changeStyleDynamic(self.ui.openHemisphereW, 'running', True)
-        else:
-            self.changeStyleDynamic(self.ui.openHemisphereW, 'running', False)
-
-        if self.app.imageW:
-            self.changeStyleDynamic(self.ui.openImageW, 'running', True)
-        else:
-            self.changeStyleDynamic(self.ui.openImageW, 'running', False)
-
-        if self.app.measureW:
-            self.changeStyleDynamic(self.ui.openMeasureW, 'running', True)
-        else:
-            self.changeStyleDynamic(self.ui.openMeasureW, 'running', False)
-
-        if self.app.satelliteW:
-            self.changeStyleDynamic(self.ui.openSatelliteW, 'running', True)
-        else:
-            self.changeStyleDynamic(self.ui.openSatelliteW, 'running', False)
+        for key, value in stats.items():
+            if stats[key]['object']:
+                self.changeStyleDynamic(stats[key]['button'], 'running', True)
+            else:
+                self.changeStyleDynamic(stats[key]['button'], 'running', False)
 
         return True
 

@@ -70,7 +70,7 @@ class MeasureData(object):
         :return: True for test purpose
         """
 
-        print('using in measure')
+        print('using in measure', self.app.mainW)
         #deviceStat = self.app.mainW.deviceStat
         #self.devices = [key for key, value in deviceStat.items() if deviceStat[key] is not None]
         #print(self.devices)

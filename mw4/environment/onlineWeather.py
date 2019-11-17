@@ -40,7 +40,7 @@ class WeatherSignals(PyQt5.QtCore.QObject):
     __all__ = ['WeatherSignals']
 
     dataReceived = PyQt5.QtCore.pyqtSignal(object)
-    connected = PyQt5.QtCore.pyqtSignal(bool)
+    connected = PyQt5.QtCore.pyqtSignal(object)
 
 
 class OnlineWeather(object):
@@ -179,13 +179,13 @@ class OnlineWeather(object):
         val = data.json()
 
         if 'list' not in val:
-            self.signals.connected.emit(False)
             self.signals.dataReceived.emit(None)
+            self.signals.connected.emit(False)
             return False
 
         if len(val['list']) == 0:
-            self.signals.connected.emit(False)
             self.signals.dataReceived.emit(None)
+            self.signals.connected.emit(False)
             return False
 
         val = val['list'][0]
@@ -204,8 +204,8 @@ class OnlineWeather(object):
         if 'rain' in val:
             self.data['rain'] = val['rain']['3h']
 
-        self.signals.connected.emit(True)
         self.signals.dataReceived.emit(self.data)
+        self.signals.connected.emit(True)
         return True
 
     def getOpenWeatherMapData(self, url=''):
@@ -232,7 +232,7 @@ class OnlineWeather(object):
         """
 
         if not self.keyAPI:
-            self.signals.connected.emit(False)
+            self.signals.connected.emit(None)
             return False
 
         if not self.online:

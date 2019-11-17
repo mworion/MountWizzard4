@@ -41,7 +41,7 @@ class HemisphereWindow(widget.MWidget):
 
     __all__ = ['HemisphereWindow',
                ]
-    version = '0.100'
+
     logger = logging.getLogger(__name__)
 
     MODE = dict(
@@ -1099,15 +1099,7 @@ class HemisphereWindow(widget.MWidget):
         celestial = self.app.data.generateCelestialEquator()
         alt, az = zip(*celestial)
 
-        if polar:
-            axes.plot(az,
-                      alt,
-                      '.',
-                      markersize=1,
-                      fillstyle='none',
-                      color='#808080',
-                      visible=visible)
-        else:
+        if not polar:
             self.celestialPath, = axes.plot(az,
                                             alt,
                                             '.',

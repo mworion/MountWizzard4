@@ -359,6 +359,9 @@ class MeasureWindow(widget.MWidget):
         ylabel = 'Temperature [deg C]'
         start = -self.NUMBER_POINTS * cycle
 
+        plotList = []
+        labelList = []
+
         axe.set_title(title,
                       color=self.M_BLUE,
                       fontweight='bold',
@@ -392,26 +395,41 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_GREEN,
                        )
         r5, = axe.plot(data['time'][start:-1:cycle],
+                       data['directWeatherTemp'][start:-1:cycle],
+                       marker='.',
+                       markersize=3,
+                       color=self.M_RED,
+                       )
+
+        r6, = axe.plot(data['time'][start:-1:cycle],
                        data['sensorWeatherDew'][start:-1:cycle],
                        marker='d',
                        markersize=3,
                        color=self.M_WHITE,
                        )
-        r6, = axe.plot(data['time'][start:-1:cycle],
+        r7, = axe.plot(data['time'][start:-1:cycle],
                        data['powDew'][start:-1:cycle],
                        marker='d',
                        markersize=3,
                        color=self.M_PINK,
                        )
-        r7, = axe.plot(data['time'][start:-1:cycle],
+        r8, = axe.plot(data['time'][start:-1:cycle],
                        data['onlineWeatherDew'][start:-1:cycle],
                        marker='d',
                        markersize=3,
                        color=self.M_GREEN,
                        )
-        legend = axe.legend([r1, r2, r3, r4, r5, r6, r7],
-                            ['Env Temp', 'Pow Temp', 'Sky Temp', 'Weather Temp',
-                             'Env Dew', 'Pow Dew', 'Weather Dew'],
+        r9, = axe.plot(data['time'][start:-1:cycle],
+                       data['directWeatherDew'][start:-1:cycle],
+                       marker='d',
+                       markersize=3,
+                       color=self.M_RED,
+                       )
+
+        legend = axe.legend([r1, r2, r3, r4, r5, r6, r7, r8, r9],
+                            ['Sensor Temp', 'Power Temp', 'Sky Temp', 'Online Temp',
+                             'Direct Temp',
+                             'Sensor Dew', 'Power Dew', 'Online Dew', 'Direct Dew'],
                             facecolor=self.M_BLACK,
                             edgecolor=self.M_BLUE,
                             )
@@ -564,12 +582,16 @@ class MeasureWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-        axe.plot(data['time'][start:-1:cycle],
-                 data['skySQR'][start:-1:cycle],
-                 marker='o',
-                 markersize=3,
-                 color=self.M_WHITE,
-                 )
+        if data['skySQR'][start] is None:
+            print('error')
+        else:
+            axe.plot(data['time'][start:-1:cycle],
+                     data['skySQR'][start:-1:cycle],
+                     marker='o',
+                     markersize=3,
+                     color=self.M_WHITE,
+                     )
+
         axe.grid(True, color=self.M_GREY, alpha=1)
         axe.margins(y=0.2)
         axe.get_yaxis().set_major_locator(ticker.MaxNLocator(nbins=8,

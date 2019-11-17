@@ -39,7 +39,6 @@ class MeasureData(object):
                'stopMeasurement',
                ]
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
@@ -47,53 +46,95 @@ class MeasureData(object):
     # maximum size of measurement task
     MAXSIZE = 24 * 60 * 60
 
-    def __init__(self,
-                 app,
-                 ):
+    def __init__(self, app):
+
         self.app = app
         self.mutexMeasure = PyQt5.QtCore.QMutex()
+
+        # internal calculations
         self.shorteningStart = True
         self.raRef = None
         self.decRef = None
-        self.data = {
-            'time': np.empty(shape=[0, 1], dtype='datetime64'),
-            'sensorWeatherTemp': np.empty(shape=[0, 1]),
-            'sensorWeatherHum': np.empty(shape=[0, 1]),
-            'sensorWeatherPress': np.empty(shape=[0, 1]),
-            'sensorWeatherDew': np.empty(shape=[0, 1]),
-            'onlineWeatherTemp': np.empty(shape=[0, 1]),
-            'onlineWeatherHum': np.empty(shape=[0, 1]),
-            'onlineWeatherPress': np.empty(shape=[0, 1]),
-            'onlineWeatherDew': np.empty(shape=[0, 1]),
-            'directWeatherTemp': np.empty(shape=[0, 1]),
-            'directWeatherHum': np.empty(shape=[0, 1]),
-            'directWeatherPress': np.empty(shape=[0, 1]),
-            'directWeatherDew': np.empty(shape=[0, 1]),
-            'skyTemp': np.empty(shape=[0, 1]),
-            'skySQR': np.empty(shape=[0, 1]),
-            'raJNow': np.empty(shape=[0, 1]),
-            'decJNow': np.empty(shape=[0, 1]),
-            'status': np.empty(shape=[0, 1]),
-            'powCurr1': np.empty(shape=[0, 1]),
-            'powCurr2': np.empty(shape=[0, 1]),
-            'powCurr3': np.empty(shape=[0, 1]),
-            'powCurr4': np.empty(shape=[0, 1]),
-            'powVolt': np.empty(shape=[0, 1]),
-            'powCurr': np.empty(shape=[0, 1]),
-            'powHum': np.empty(shape=[0, 1]),
-            'powTemp': np.empty(shape=[0, 1]),
-            'powDew': np.empty(shape=[0, 1]),
-        }
 
+        self.data = {}
+        self.devices = {}
+
+        # time for measurement
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 
     def startMeasurement(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        print('using in measure')
+        #deviceStat = self.app.mainW.deviceStat
+        #self.devices = [key for key, value in deviceStat.items() if deviceStat[key] is not None]
+        #print(self.devices)
+        self.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
+        return True
+
     def stopMeasurement(self):
+        """
+
+        :return: True for test purpose
+        """
+
         self.timerTask.stop()
+        return True
+
+    def setEmptyData(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        self.data = {
+            'time': np.empty(shape=[0, 1], dtype='datetime64'),
+            'raJNow': np.empty(shape=[0, 1]),
+            'decJNow': np.empty(shape=[0, 1]),
+            'status': np.empty(shape=[0, 1]),
+        }
+
+        if 'sensorWeather' in self.devices:
+            self.data['sensorWeatherTemp'] = np.empty(shape=[0, 1])
+            self.data['sensorWeatherHum'] = np.empty(shape=[0, 1])
+            self.data['sensorWeatherPress'] = np.empty(shape=[0, 1])
+            self.data['sensorWeatherDew'] = np.empty(shape=[0, 1])
+
+        if 'onlineWeather' in self.devices:
+            self.data['onlineWeatherTemp'] = np.empty(shape=[0, 1])
+            self.data['onlineWeatherHum'] = np.empty(shape=[0, 1])
+            self.data['onlineWeatherPress'] = np.empty(shape=[0, 1])
+            self.data['onlineWeatherDew'] = np.empty(shape=[0, 1])
+
+        if 'directWeather' in self.devices:
+            self.data['directWeatherTemp'] = np.empty(shape=[0, 1])
+            self.data['directWeatherHum'] = np.empty(shape=[0, 1])
+            self.data['directWeatherPress'] = np.empty(shape=[0, 1])
+            self.data['directWeatherDew'] = np.empty(shape=[0, 1])
+
+        if 'skymeter' in self.devices:
+            self.data['skyTemp'] = np.empty(shape=[0, 1])
+            self.data['skySQR'] = np.empty(shape=[0, 1])
+
+        if 'power' in self.devices:
+            self.data['powCurr1'] = np.empty(shape=[0, 1])
+            self.data['powCurr2'] = np.empty(shape=[0, 1])
+            self.data['powCurr3'] = np.empty(shape=[0, 1])
+            self.data['powCurr4'] = np.empty(shape=[0, 1])
+            self.data['powVolt'] = np.empty(shape=[0, 1])
+            self.data['powCurr'] = np.empty(shape=[0, 1])
+            self.data['powHum'] = np.empty(shape=[0, 1])
+            self.data['powTemp'] = np.empty(shape=[0, 1])
+            self.data['powDew'] = np.empty(shape=[0, 1])
+
+        return True
 
     def calculateReference(self):
         """
@@ -195,66 +236,78 @@ class MeasureData(object):
         self.checkSize(lenData)
 
         dat = self.data
-        obs = self.app.mount.obsSite
 
-        # gathering the environment data
-        sensorWeatherTemp = self.app.sensorWeather.data.get('WEATHER_TEMPERATURE', 0)
-        sensorWeatherPress = self.app.sensorWeather.data.get('WEATHER_PRESSURE', 0)
-        sensorWeatherDew = self.app.sensorWeather.data.get('WEATHER_DEWPOINT', 0)
-        sensorWeatherHum = self.app.sensorWeather.data.get('WEATHER_HUMIDITY', 0)
-        onlineWeatherTemp = self.app.onlineWeather.data.get('temperature', 0)
-        onlineWeatherPress = self.app.onlineWeather.data.get('pressure', 0)
-        onlineWeatherDew = self.app.onlineWeather.data.get('dewPoint', 0)
-        onlineWeatherHum = self.app.onlineWeather.data.get('humidity', 0)
-        directWeatherTemp = self.app.mount.setting.weatherTemperature
-        directWeatherPress = self.app.mount.setting.weatherPressure
-        directWeatherDew = self.app.mount.setting.weatherDewPoint
-        directWeatherHum = self.app.mount.setting.weatherHumidity
-        # gathering sqr values
-        skySQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
-        skyTemp = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
-        # gathering mount data
+        # gathering all the necessary data
         raJNow, decJNow = self.calculateReference()
-        # gathering data from power
-        powCurr1 = self.app.power.data.get('POWER_CURRENT_1', 0)
-        powCurr2 = self.app.power.data.get('POWER_CURRENT_2', 0)
-        powCurr3 = self.app.power.data.get('POWER_CURRENT_3', 0)
-        powCurr4 = self.app.power.data.get('POWER_CURRENT_4', 0)
-        powVolt = self.app.power.data.get('SENSOR_VOLTAGE', 0)
-        powCurr = self.app.power.data.get('SENSOR_CURRENT', 0)
-        powTemp = self.app.power.data.get('WEATHER_TEMPERATURE', 0)
-        powDew = self.app.power.data.get('WEATHER_DEWPOINT', 0)
-        powHum = self.app.power.data.get('WEATHER_HUMIDITY', 0)
-
-        # writing data to dict
-        timeStamp = obs.timeJD.utc_datetime().replace(tzinfo=None)
+        timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         dat['time'] = np.append(dat['time'], np.datetime64(timeStamp))
-        dat['sensorWeatherTemp'] = np.append(dat['sensorWeatherTemp'], sensorWeatherTemp)
-        dat['sensorWeatherHum'] = np.append(dat['sensorWeatherHum'], sensorWeatherHum)
-        dat['sensorWeatherPress'] = np.append(dat['sensorWeatherPress'], sensorWeatherPress)
-        dat['sensorWeatherDew'] = np.append(dat['sensorWeatherDew'], sensorWeatherDew)
-        dat['onlineWeatherTemp'] = np.append(dat['onlineWeatherTemp'], onlineWeatherTemp)
-        dat['onlineWeatherHum'] = np.append(dat['onlineWeatherHum'], onlineWeatherHum)
-        dat['onlineWeatherPress'] = np.append(dat['onlineWeatherPress'], onlineWeatherPress)
-        dat['onlineWeatherDew'] = np.append(dat['onlineWeatherDew'], onlineWeatherDew)
-        dat['directWeatherTemp'] = np.append(dat['directWeatherTemp'], directWeatherTemp)
-        dat['directWeatherHum'] = np.append(dat['directWeatherHum'], directWeatherHum)
-        dat['directWeatherPress'] = np.append(dat['directWeatherPress'], directWeatherPress)
-        dat['directWeatherDew'] = np.append(dat['directWeatherDew'], directWeatherDew)
-        dat['skySQR'] = np.append(dat['skySQR'], skySQR)
-        dat['skyTemp'] = np.append(dat['skyTemp'], skyTemp)
         dat['raJNow'] = np.append(dat['raJNow'], raJNow)
         dat['decJNow'] = np.append(dat['decJNow'], decJNow)
-        dat['status'] = np.append(dat['status'], obs.status)
-        dat['powCurr1'] = np.append(dat['powCurr1'], powCurr1)
-        dat['powCurr2'] = np.append(dat['powCurr2'], powCurr2)
-        dat['powCurr3'] = np.append(dat['powCurr3'], powCurr3)
-        dat['powCurr4'] = np.append(dat['powCurr4'], powCurr4)
-        dat['powCurr'] = np.append(dat['powCurr'], powCurr)
-        dat['powVolt'] = np.append(dat['powVolt'], powVolt)
-        dat['powTemp'] = np.append(dat['powTemp'], powTemp)
-        dat['powDew'] = np.append(dat['powDew'], powDew)
-        dat['powHum'] = np.append(dat['powHum'], powHum)
+        dat['status'] = np.append(dat['status'], self.app.mount.obsSite.status)
+
+        if 'sensorWeather' in self.devices:
+            sensorWeatherTemp = self.app.sensorWeather.data.get('WEATHER_TEMPERATURE', 0)
+            sensorWeatherPress = self.app.sensorWeather.data.get('WEATHER_PRESSURE', 0)
+            sensorWeatherDew = self.app.sensorWeather.data.get('WEATHER_DEWPOINT', 0)
+            sensorWeatherHum = self.app.sensorWeather.data.get('WEATHER_HUMIDITY', 0)
+            dat['sensorWeatherTemp'] = np.append(dat['sensorWeatherTemp'], sensorWeatherTemp)
+            dat['sensorWeatherHum'] = np.append(dat['sensorWeatherHum'], sensorWeatherHum)
+            dat['sensorWeatherPress'] = np.append(dat['sensorWeatherPress'], sensorWeatherPress)
+            dat['sensorWeatherDew'] = np.append(dat['sensorWeatherDew'], sensorWeatherDew)
+
+        if 'onlineWeather' in self.devices:
+            onlineWeatherTemp = self.app.onlineWeather.data.get('temperature', 0)
+            onlineWeatherPress = self.app.onlineWeather.data.get('pressure', 0)
+            onlineWeatherDew = self.app.onlineWeather.data.get('dewPoint', 0)
+            onlineWeatherHum = self.app.onlineWeather.data.get('humidity', 0)
+            dat['onlineWeatherTemp'] = np.append(dat['onlineWeatherTemp'], onlineWeatherTemp)
+            dat['onlineWeatherHum'] = np.append(dat['onlineWeatherHum'], onlineWeatherHum)
+            dat['onlineWeatherPress'] = np.append(dat['onlineWeatherPress'], onlineWeatherPress)
+            dat['onlineWeatherDew'] = np.append(dat['onlineWeatherDew'], onlineWeatherDew)
+
+        if 'directWeather' in self.devices:
+            directWeatherTemp = self.app.mount.setting.weatherTemperature
+            if directWeatherTemp is None:
+                directWeatherTemp = 0
+            directWeatherPress = self.app.mount.setting.weatherPressure
+            if directWeatherPress is None:
+                directWeatherPress = 0
+            directWeatherDew = self.app.mount.setting.weatherDewPoint
+            if directWeatherDew is None:
+                directWeatherDew = 0
+            directWeatherHum = self.app.mount.setting.weatherHumidity
+            if directWeatherHum is None:
+                directWeatherHum = 0
+            dat['directWeatherTemp'] = np.append(dat['directWeatherTemp'], directWeatherTemp)
+            dat['directWeatherHum'] = np.append(dat['directWeatherHum'], directWeatherHum)
+            dat['directWeatherPress'] = np.append(dat['directWeatherPress'], directWeatherPress)
+            dat['directWeatherDew'] = np.append(dat['directWeatherDew'], directWeatherDew)
+
+        if 'skymeter' in self.devices:
+            skySQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
+            skyTemp = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
+            dat['skySQR'] = np.append(dat['skySQR'], skySQR)
+            dat['skyTemp'] = np.append(dat['skyTemp'], skyTemp)
+
+        if 'power' in self.devices:
+            powCurr1 = self.app.power.data.get('POWER_CURRENT_1', 0)
+            powCurr2 = self.app.power.data.get('POWER_CURRENT_2', 0)
+            powCurr3 = self.app.power.data.get('POWER_CURRENT_3', 0)
+            powCurr4 = self.app.power.data.get('POWER_CURRENT_4', 0)
+            powVolt = self.app.power.data.get('SENSOR_VOLTAGE', 0)
+            powCurr = self.app.power.data.get('SENSOR_CURRENT', 0)
+            powTemp = self.app.power.data.get('WEATHER_TEMPERATURE', 0)
+            powDew = self.app.power.data.get('WEATHER_DEWPOINT', 0)
+            powHum = self.app.power.data.get('WEATHER_HUMIDITY', 0)
+            dat['powCurr1'] = np.append(dat['powCurr1'], powCurr1)
+            dat['powCurr2'] = np.append(dat['powCurr2'], powCurr2)
+            dat['powCurr3'] = np.append(dat['powCurr3'], powCurr3)
+            dat['powCurr4'] = np.append(dat['powCurr4'], powCurr4)
+            dat['powCurr'] = np.append(dat['powCurr'], powCurr)
+            dat['powVolt'] = np.append(dat['powVolt'], powVolt)
+            dat['powTemp'] = np.append(dat['powTemp'], powTemp)
+            dat['powDew'] = np.append(dat['powDew'], powDew)
+            dat['powHum'] = np.append(dat['powHum'], powHum)
 
         self.mutexMeasure.unlock()
         return True

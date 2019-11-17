@@ -142,7 +142,8 @@ class MainWindow(MWidget,
         # cyclic updates
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateWindowsStats)
-        self.app.update1s.connect(self.smartDeviceGui)
+        self.app.update1s.connect(self.smartFunctionGui)
+        self.app.update1s.connect(self.smartTabGui)
         self.app.update1s.connect(self.smartEnvironGui)
         self.app.update1s.connect(self.updateWindowsStats)
         self.app.update1s.connect(self.updateDeviceStats)
@@ -189,13 +190,11 @@ class MainWindow(MWidget,
         self.ui.mainTabWidget.setCurrentIndex(config.get('mainTabWidget', 0))
         self.ui.settingsTabWidget.setCurrentIndex(config.get('settingsTabWidget', 0))
 
-        ################################################################################
-        # remove analysis tab while not developed
+        # todo: remove analysis tab while not developed
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Analyse')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
         self.ui.mainTabWidget.setStyleSheet(self.getStyle())
-        ################################################################################
 
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
@@ -321,9 +320,9 @@ class MainWindow(MWidget,
                 self.deviceStat['directWeather'] = True
         return True
 
-    def smartDeviceGui(self):
+    def smartFunctionGui(self):
         """
-        smartGui enables and disables gui actions depending on the actual state of the
+        smartFunctionGui enables and disables gui actions depending on the actual state of the
         different devices. this should be the core of avoiding user misused during running
         operations. smartGui is run every 1 second synchronously, because it can't be
         simpler done with dynamic approach. all different situations in a running
@@ -331,8 +330,6 @@ class MainWindow(MWidget,
 
         :return: true for test purpose
         """
-
-        tabChanged = False
 
         # check if modeling would work (mount + solve + image)
         if all(self.deviceStat[x] for x in ['mount', 'imaging', 'astrometry']):
@@ -346,38 +343,10 @@ class MainWindow(MWidget,
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'ManageModel')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        tabStatus = self.ui.mainTabWidget.isTabEnabled(tabIndex)
-
         if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-            if not tabStatus:
-                tabChanged = True
         else:
             self.ui.batchModel.setEnabled(False)
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-            if tabStatus:
-                tabChanged = True
-
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Power')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        tabStatus = self.ui.mainTabWidget.isTabEnabled(tabIndex)
-
-        stat = self.deviceStat.get('power', None)
-        if stat is None:
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, False)
-            if tabStatus:
-                tabChanged = True
-        elif stat:
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-            if not tabStatus:
-                tabChanged = True
-        else:
-            self.ui.mainTabWidget.setTabEnabled(tabIndex, True)
-            if not tabStatus:
-                tabChanged = True
 
         stat = self.deviceStat.get('environOverall', None)
         if stat is None:
@@ -390,21 +359,40 @@ class MainWindow(MWidget,
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
 
-        # relay
-        tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Relay')
-        tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
-        tabStatus = self.ui.mainTabWidget.isTabEnabled(tabIndex)
-        if tabStatus != self.deviceStat['relay']:
-            tabChanged = True
-        self.ui.mainTabWidget.setTabEnabled(tabIndex, self.deviceStat['relay'])
+        return True
 
-        # and setting
-        tabWidget = self.ui.settingsTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'KMTronic')
-        tabIndex = self.ui.settingsTabWidget.indexOf(tabWidget)
-        tabStatus = self.ui.settingsTabWidget.isTabEnabled(tabIndex)
-        if tabStatus != self.deviceStat['relay']:
-            tabChanged = True
-        self.ui.settingsTabWidget.setTabEnabled(tabIndex, self.deviceStat['relay'])
+    def smartTabGui(self):
+        """
+        smartTabGui enables and disables tab visibility depending on the actual state of the
+        different devices.
+        :return: true for test purpose
+        """
+
+        smartTabs = {
+            'ManageModel': {'statID': 'mount',
+                            'tab': self.ui.mainTabWidget,
+                            },
+            'Power': {'statID': 'power',
+                      'tab': self.ui.mainTabWidget,
+                      },
+            'Relay': {'statID': 'relay',
+                      'tab': self.ui.mainTabWidget,
+                      },
+            'KMTronic': {'statID': 'relay',
+                         'tab': self.ui.settingsTabWidget,
+                         },
+        }
+
+        tabChanged = False
+
+        for key, tab in smartTabs.items():
+            tabWidget = smartTabs[key]['tab'].findChild(PyQt5.QtWidgets.QWidget, key)
+            tabIndex = smartTabs[key]['tab'].indexOf(tabWidget)
+            tabStatus = smartTabs[key]['tab'].isTabEnabled(tabIndex)
+
+            stat = bool(self.deviceStat.get(smartTabs[key]['statID']))
+            smartTabs[key]['tab'].setTabEnabled(tabIndex, stat)
+            tabChanged = tabChanged or (tabStatus != stat)
 
         # redraw tabs only when a change occurred
         if tabChanged:

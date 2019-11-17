@@ -12348,7 +12348,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

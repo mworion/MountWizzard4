@@ -155,7 +155,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s.timeout.connect(self.sendUpdate)
         self.timer1s.start(500)
 
-        # finishing for test
+        # finishing for test: MW4 runs with keyword 'test' for 10 seconds an terminates
         if not hasattr(sys, 'argv'):
             return
         if not len(sys.argv) > 1:

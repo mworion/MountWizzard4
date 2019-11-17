@@ -366,13 +366,15 @@ class HemisphereWindow(widget.MWidget):
 
         if not self.mutexDraw.tryLock():
             return False
+
         axe = self.hemisphereMat.figure.axes[0]
         axe.figure.canvas.draw()
         axe.figure.canvas.flush_events()
-        if self.ui.showPolar.isChecked():
-            axe = self.hemisphere2Mat.figure.axes[0]
-            axe.figure.canvas.draw()
-            axe.figure.canvas.flush_events()
+
+        axe = self.hemisphere2Mat.figure.axes[0]
+        axe.figure.canvas.draw()
+        axe.figure.canvas.flush_events()
+
         self.mutexDraw.unlock()
         return True
 

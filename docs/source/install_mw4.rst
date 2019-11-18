@@ -23,9 +23,19 @@ Please create a working directory of your choice and location. The directory cou
 be renamed later on, it also could be moved to any other location. Copy the scripts for you
 platform into this directory.
 
+the directory should than for OSx look like:
+
+.. image:: _static/install_mw4_mac_1.png
+    :align: center
+
 .. warning::
     Please closely check if your working directory is writable. Otherwise MW4 could
     not work properly!
+
+.. note::
+    In windows there were two parts in the folder. A power shell file with extension .ps1
+    and a command file with extension .cmd. Both are necessary, because without admin
+    permissions to start a power shell files this setup is needed.
 
 Step 2
 ------
@@ -42,6 +52,13 @@ With the script a virtual environment for python is installed in your working di
 name "venv". After that it installs all necessary libraries and MW4 itself into this virtual
 environment. So any other installation of python applications is not influenced by MW4 install.
 
+After running the install script the directory should for OSx look like:
+
+.. image:: _static/install_mw4_mac_2.png
+    :align: center
+
+MW4 is already installed inside the virtual environment venv in your work dir.
+
 .. warning::
     Please check if an online connection is available on your computer during installation
     as the libraries and MW4 is installed from online sources.
@@ -57,11 +74,15 @@ Run one of the scripts
     MW4_Run.sh          # Ubuntu
     MW4_Tun.command     # OSx
 
-
 This script will start MW4 the first time and will create some subdirectories in your
-working folder. When starting a splash screen show the progress of it's initialization. With
-the first run you will see a log file written and you should have a first window from MW4
-open.
+working folder. When starting a splash screen show the progress of it's initialization.
+After first start the directory should for OSx look like:
+
+.. image:: _static/install_mw4_mac_3.png
+    :align: center
+
+With the first run you will see a log file written and you should have a first window from MW4
+open:
 
 .. image:: _static/mount.png
     :align: center
@@ -69,8 +90,8 @@ open.
 If you see the upper window, you succeed and from now on you are able to customize your
 setup of MW4 and it's features.
 
-Step 4
-------
+Upgrade
+-------
 
 If you plan to upgrade MW4 to a newer release, you could use on of the
 
@@ -80,6 +101,6 @@ If you plan to upgrade MW4 to a newer release, you could use on of the
     MW4_Update.sh          # Ubuntu
     MW4_Update.command     # OSx
 
-scripts. In some circumstances this might be necessary though MW4 has it's own internal
-updater.
+scripts. In some circumstances this might be necessary, but for normal use MW4 has it's own
+internal updater and a manual script is not necessary.
 

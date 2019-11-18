@@ -42,7 +42,7 @@ Referring to Ubuntu 18.04 LTS as it comes only with python3.6, you need to upgra
 python3.7. This could be done by adding an appropriate repo, which enables this version.
 
 .. warning::
-    Please update to python3.7 an a way, which fits best to your environment. There are many
+    Please update to python3.7 in a way, which fits best to your environment. There are many
     descriptions out, so please search for it in case you don't know exactly.
 
 An example is from: https://linuxize.com/post/how-to-install-python-3-7-on-ubuntu-18-04/

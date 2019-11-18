@@ -7,6 +7,6 @@ You could have as many instances and configurations as you want in different loc
 could go directly to
 
 .. warning::
-    Please closely check if your choosen working directory is writable. Otherwise MW4 could
+    Please closely check if your working directory is writable. Otherwise MW4 could
     not work properly!
 

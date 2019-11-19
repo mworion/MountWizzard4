@@ -57,6 +57,9 @@ in J2000 Epoch for better compatibility to other programs. The handling of coord
 between MW4 and the mount computer is done in JNow. But this is folly transparent for the
 usage.
 
+.. image:: _static/explain_mount_tab.png
+    :align: center
+
 In addition altitude (ALT) and azimuth (AZ) is shown in degrees.
 
 In the tracking / flip section the tracking could be switch on / off and if possible a flip
@@ -67,3 +70,4 @@ Parking / emergency stop put the mount in park position or stops and movement im
 
 In Status and settings from mount computer many parameters are visible and could be altered.
 Whenever you see a frame around a value, you could click on it and change the parameter.
+Some of the parameters could only be changed if the mount is connected.

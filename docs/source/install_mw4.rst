@@ -47,7 +47,8 @@ In Windows10 it looks like:
 Step 2
 ------
 
-Run one of the scripts
+Run one of the scripts following script. During installation a terminal window might open an
+ show the progress of installation.
 
 .. code-block::
 

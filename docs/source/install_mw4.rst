@@ -28,14 +28,21 @@ the directory should than for OSx look like:
 .. image:: _static/install_mw4_mac_1.png
     :align: center
 
-.. warning::
-    Please closely check if your working directory is writable. Otherwise MW4 could
-    not work properly!
+In Windows10 it looks like:
+
+.. image:: _static/install_mw4_win_1.png
+    :align: center
 
 .. note::
     In windows there were two parts in the folder. A power shell file with extension .ps1
     and a command file with extension .cmd. Both are necessary, because without admin
-    permissions to start a power shell files this setup is needed.
+    permissions to start a power shell files this setup is needed. Please use for the
+    following step the install marked in red.
+
+.. warning::
+    Please closely check if your working directory is writable. Otherwise MW4 could
+    not work properly!
+
 
 Step 2
 ------
@@ -56,6 +63,13 @@ After running the install script the directory should for OSx look like:
 
 .. image:: _static/install_mw4_mac_2.png
     :align: center
+
+In Windows10 it looks like:
+
+.. image:: _static/install_mw4_win_2.png
+    :align: center
+
+Please use for the following step the install marked in red.
 
 MW4 is already installed inside the virtual environment venv in your work dir.
 
@@ -81,10 +95,15 @@ After first start the directory should for OSx look like:
 .. image:: _static/install_mw4_mac_3.png
     :align: center
 
+In Windows10 it looks like:
+
+.. image:: _static/install_mw4_win_3.png
+    :align: center
+
 With the first run you will see a log file written and you should have a first window from MW4
 open:
 
-.. image:: _static/mount.png
+.. image:: _static/install_mw4_first_run.png
     :align: center
 
 If you see the upper window, you succeed and from now on you are able to customize your
@@ -102,5 +121,5 @@ If you plan to upgrade MW4 to a newer release, you could use on of the
     MW4_Update.command     # OSx
 
 scripts. In some circumstances this might be necessary, but for normal use MW4 has it's own
-internal updater and a manual script is not necessary.
+internal updater and using the script is not necessary.
 

@@ -167,10 +167,7 @@ class Mount(object):
 
         if obs.timeJD is not None:
             text = obs.timeJD.utc_strftime('%H:%M:%S')
-            self.ui.timeJD.setText(text)
             self.ui.timeUTC.setText('UTC: ' + text)
-        else:
-            self.ui.timeJD.setText('-')
 
         if obs.timeSidereal is not None:
             siderealFormat = '{0:02.0f}:{1:02.0f}:{2:02.0f}'

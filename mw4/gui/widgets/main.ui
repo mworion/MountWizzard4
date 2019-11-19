@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -958,9 +958,9 @@
      <widget class="QLabel" name="label_148">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>115</y>
-        <width>126</width>
+        <x>275</x>
+        <y>175</y>
+        <width>116</width>
         <height>21</height>
        </rect>
       </property>
@@ -994,7 +994,7 @@
      <widget class="QLabel" name="label_34">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>520</x>
         <y>85</y>
         <width>121</width>
         <height>21</height>
@@ -1016,7 +1016,7 @@
       <property name="geometry">
        <rect>
         <x>155</x>
-        <y>175</y>
+        <y>145</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1061,7 +1061,7 @@
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>85</y>
+        <y>55</y>
         <width>96</width>
         <height>21</height>
        </rect>
@@ -1072,7 +1072,7 @@
        </font>
       </property>
       <property name="text">
-       <string>UTC expires</string>
+       <string>DeltaT expires</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="statusRefraction">
@@ -1082,7 +1082,7 @@
       <property name="geometry">
        <rect>
         <x>155</x>
-        <y>205</y>
+        <y>175</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1130,7 +1130,7 @@
       <property name="geometry">
        <rect>
         <x>275</x>
-        <y>175</y>
+        <y>115</y>
         <width>116</width>
         <height>21</height>
        </rect>
@@ -1147,7 +1147,7 @@
      <widget class="QLabel" name="label_65">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>520</x>
         <y>115</y>
         <width>121</width>
         <height>21</height>
@@ -1168,7 +1168,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>155</x>
         <y>205</y>
         <width>51</width>
         <height>21</height>
@@ -1223,7 +1223,7 @@
       <property name="geometry">
        <rect>
         <x>155</x>
-        <y>115</y>
+        <y>85</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1268,7 +1268,7 @@
       <property name="geometry">
        <rect>
         <x>155</x>
-        <y>145</y>
+        <y>115</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1367,7 +1367,7 @@
       <property name="geometry">
        <rect>
         <x>275</x>
-        <y>145</y>
+        <y>85</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -1405,29 +1405,11 @@
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_63">
-      <property name="geometry">
-       <rect>
-        <x>15</x>
-        <y>55</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Julian Date</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_86">
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>205</y>
+        <y>175</y>
         <width>126</width>
         <height>21</height>
        </rect>
@@ -1448,7 +1430,7 @@
       <property name="geometry">
        <rect>
         <x>125</x>
-        <y>85</y>
+        <y>55</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -1607,7 +1589,7 @@
       <property name="geometry">
        <rect>
         <x>395</x>
-        <y>145</y>
+        <y>85</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1679,7 +1661,7 @@
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>145</y>
+        <y>115</y>
         <width>31</width>
         <height>21</height>
        </rect>
@@ -1784,7 +1766,7 @@
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>145</y>
+        <y>115</y>
         <width>136</width>
         <height>21</height>
        </rect>
@@ -1948,7 +1930,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>665</x>
         <y>115</y>
         <width>51</width>
         <height>21</height>
@@ -2000,7 +1982,7 @@
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>175</y>
+        <y>145</y>
         <width>121</width>
         <height>21</height>
        </rect>
@@ -2021,7 +2003,7 @@
       <property name="geometry">
        <rect>
         <x>395</x>
-        <y>175</y>
+        <y>115</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -2086,59 +2068,14 @@
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLineEdit" name="timeJD">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>135</x>
-        <y>55</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Shows the julian date of the mount computer</string>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="statusGPSSynced">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>665</x>
-        <y>115</y>
+        <x>395</x>
+        <y>175</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -2182,9 +2119,9 @@
      <widget class="QLabel" name="label_151">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>85</y>
-        <width>126</width>
+        <x>275</x>
+        <y>145</y>
+        <width>116</width>
         <height>21</height>
        </rect>
       </property>
@@ -2224,7 +2161,7 @@
      <widget class="QLabel" name="label_133">
       <property name="geometry">
        <rect>
-        <x>450</x>
+        <x>210</x>
         <y>205</y>
         <width>16</width>
         <height>21</height>
@@ -2245,7 +2182,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>395</x>
+        <x>665</x>
         <y>85</y>
         <width>51</width>
         <height>21</height>
@@ -2315,7 +2252,7 @@
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>115</y>
+        <y>85</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -2332,7 +2269,7 @@
      <widget class="QLabel" name="label_88">
       <property name="geometry">
        <rect>
-        <x>445</x>
+        <x>715</x>
         <y>85</y>
         <width>16</width>
         <height>20</height>
@@ -2356,7 +2293,7 @@
      <widget class="QLabel" name="label_28">
       <property name="geometry">
        <rect>
-        <x>275</x>
+        <x>15</x>
         <y>205</y>
         <width>121</width>
         <height>21</height>
@@ -2375,7 +2312,7 @@
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>175</y>
+        <y>145</y>
         <width>31</width>
         <height>21</height>
        </rect>
@@ -2477,24 +2414,6 @@
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>85</y>
-        <width>36</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>YMD</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_139">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
         <y>55</y>
         <width>36</width>
         <height>21</height>
@@ -2506,7 +2425,7 @@
        </font>
       </property>
       <property name="text">
-       <string>HMS</string>
+       <string>YMD</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_90">
@@ -2533,7 +2452,7 @@
      <widget class="QLabel" name="label_89">
       <property name="geometry">
        <rect>
-        <x>445</x>
+        <x>715</x>
         <y>115</y>
         <width>16</width>
         <height>20</height>
@@ -2605,8 +2524,8 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>665</x>
-        <y>85</y>
+        <x>395</x>
+        <y>145</y>
         <width>51</width>
         <height>21</height>
        </rect>

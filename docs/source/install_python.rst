@@ -11,6 +11,10 @@ descriptions coming with the installers. To give a short here are some quick ins
 hints for all platforms. The installers for Windows and OSx could be downloaded from python
 .org.
 
+If you already have python3.7 installed, you could skip this section and go directly to MW4
+installation process. If you have to install python3.7.5 this has to be done only once for
+as many MW4 installations you might want to do.
+
 Windows
 -------
 Depending on your Windows version please download the installer for 3.7.5 from:
@@ -21,6 +25,9 @@ and follow the installation procedure.
 
 .. warning::
     Please take care, that during the installation the checkbox "Add Python Path" is selected.
+
+    .. image:: _static/install_python_win_path.png
+        :align: center
 
 Depending on your preference you could install python 3.7.5 for a single user or for all
 users. MW4 does not need admin rights to run, so please feel free which variant you would

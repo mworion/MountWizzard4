@@ -154,10 +154,10 @@ class AstrometryASTAP(object):
         """
 
         self.process = None
-        self.result = Solution(success=False, solve=Solve, message='default')
+        self.result = {'success': False}
 
         if not os.path.isfile(fitsPath):
-            self.result = Solution(success=False, solve=Solve, message='image missing')
+            self.result['message'] = 'image missing'
             self.logger.info('Image missing for solving')
             return False
 
@@ -196,12 +196,12 @@ class AstrometryASTAP(object):
                             timeout=timeout,
                             )
         if not suc:
-            self.result = Solution(success=False, solve=Solve, message='astap error')
+            self.result = self.result['message'] = 'astap error'
             self.logger.error(f'astap error in [{fitsPath}]')
             return False
 
         if not os.path.isfile(wcsPath):
-            self.result = Solution(success=False, solve=Solve, message='solve failed')
+            self.result = self.result['message'] = 'solve failed'
             self.logger.debug(f'solve files for [{wcsPath}] missing')
             return False
 
@@ -214,14 +214,13 @@ class AstrometryASTAP(object):
                                                     updateFits=updateFits)
             fitsHDU[0].header = header
 
-        solve = Solve(raJ2000=solve.raJ2000,
-                      decJ2000=solve.decJ2000,
-                      angle=solve.angle,
-                      scale=solve.scale,
-                      error=solve.error,
-                      flipped=solve.flipped,
-                      path=fitsPath)
-        self.result = Solution(success=True, solve=solve, message='solved')
+        self.result = {
+            'success': True,
+            'path': fitsPath,
+            'message': 'Solved',
+        }
+        self.result.update(solve)
+
         return True
 
     def abort(self):

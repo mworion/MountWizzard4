@@ -283,13 +283,14 @@ class Astrometry:
         # would like to have the error RMS in arcsec
         error *= 3600
 
-        solve = Solve(raJ2000=raJ2000,
-                      decJ2000=decJ2000,
-                      angle=angle,
-                      scale=scale,
-                      error=error,
-                      flipped=flipped,
-                      path='')
+        solve = {
+            'raJ2000S': raJ2000,
+            'decJ2000S': decJ2000,
+            'angleS': angle,
+            'scaleS': scale,
+            'errorS': error,
+            'flippedS': flipped
+        }
 
         if not updateFits:
             return solve, fitsHeader

@@ -204,10 +204,10 @@ class AstrometryNET(object):
         """
 
         self.process = None
-        self.result = Solution(success=False, solve=Solve, message='default')
+        self.result = {'success': False}
 
         if not os.path.isfile(fitsPath):
-            self.result = Solution(success=False, solve=Solve, message='image missing')
+            self.result['message'] = 'image missing'
             return False
 
         tempPath = self.tempDir + '/temp.xy'
@@ -277,17 +277,17 @@ class AstrometryNET(object):
                                  )
         if not suc:
             self.logger.error(f'solve-field error in [{fitsPath}]')
-            self.result = Solution(success=False, solve=Solve, message='solve-field error')
+            self.result['message'] = 'solve-field error'
             return False
 
         if not os.path.isfile(solvedPath):
             self.logger.debug(f'solve files for [{fitsPath}] missing')
-            self.result = Solution(success=False, solve=Solve, message='solve failed')
+            self.result['message'] = 'solve failed'
             return False
 
         if not os.path.isfile(wcsPath):
             self.logger.debug(f'solve files for [{wcsPath}] missing')
-            self.result = Solution(success=False, solve=Solve, message='solve failed')
+            self.result['message'] = 'solve failed'
             return False
 
         with fits.open(wcsPath) as wcsHDU:
@@ -299,14 +299,13 @@ class AstrometryNET(object):
                                                     updateFits=updateFits)
             fitsHDU[0].header = header
 
-        solve = Solve(raJ2000=solve.raJ2000,
-                      decJ2000=solve.decJ2000,
-                      angle=solve.angle,
-                      scale=solve.scale,
-                      error=solve.error,
-                      flipped=solve.flipped,
-                      path=fitsPath)
-        self.result = Solution(success=True, solve=solve, message='solved')
+        self.result = {
+            'success': True,
+            'path': fitsPath,
+            'message': 'Solved',
+        }
+        self.result.update(solve)
+
         return True
 
     def abort(self):

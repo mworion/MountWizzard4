@@ -41,13 +41,3 @@ RData = namedtuple('RData', 'errorRMS errorRA errorDEC')
 
 # overall structure containing all of the above
 MPoint = namedtuple('MPoint', 'mParam iParam point mData rData')
-
-
-# second cluster is for the astrometry stuff and solving data
-# during solving we extract some data from headers and store them
-
-# solving values
-Solve = namedtuple('Solve', 'raJ2000 decJ2000 angle scale error flipped path')
-
-# overall structure which as well add the solve success part
-Solution = namedtuple('Solution', 'success solve message')

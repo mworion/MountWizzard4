@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Overview &#8212; MW4 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Python Installation" href="install_python.html" />
+    <link rel="prev" title="Welcome to MountWizzard4’s (MW4) documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/mw4.png"><img alt="_images/mw4.png" class="align-right" src="_images/mw4.png" style="width: 100px;" /></a>
+<div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to MountWizzard4! MW4 is a utility for 10micron users for improving the workflow for
+astronomy work and runs on Windows, OSx and Linux (Ubuntu tested). As it is a python
+application, it should run on all environments, which support python3.7 environment including
+Qt as Gui framework.</p>
+<p>For full operation MW4 needs a running INDI Server(s), where the devices are connected. In
+addition a online connection is for some services helpful, but not needed.</p>
+<p>To give you an overview about the functionality:</p>
+<ul class="simple">
+<li><p>Many settings / features of the mount could be show and changed.</p></li>
+<li><p>Control of movements of the mount as well as tracking speeds.</p></li>
+<li><p>Coordinates in J2000 as well as in JNow.</p></li>
+<li><p>Model building with different model setups and model generating capabilities. Sorting points
+for effective slew path or dome situation.</p></li>
+<li><p>Model building is done in parallel threads (imaging, plate solving, slewing) to reduce time.</p></li>
+<li><p>Monitoring model building (estimated time to finish etc.)</p></li>
+<li><p>Show actual model and alignment error. Give hints how to improve polar raw alignment.</p></li>
+<li><p>Model optimisation: deleting point, automatic removing point for target RMS etc.</p></li>
+<li><p>Model errors in polar plot.</p></li>
+<li><p>Manage models stored in the mount (save, load, delete).</p></li>
+<li><p>Dome geometry integration (MW4 knows about target flip side and slews dome correctly as
+well as geometrical constraints).</p></li>
+<li><p>Environment data: MW4 shows data from OpenWeatherMap, ClearOutside, External Sensors like
+MBox, Stickstation, UniHedronSQR as well as direct linked sensors like MGBox.</p></li>
+<li><p>Refraction handling external / interal from the above sources</p></li>
+<li><p>Satellite: searching, displaying, programming, updating tracking.</p></li>
+<li><p>Tools: Renaming fits files according different header entries.</p></li>
+<li><p>Tools: 10 free park positions to be programmed.</p></li>
+<li><p>Remote shutdown of MW4 and Mount via IP commands.</p></li>
+<li><p>Measurement of most environment and mount data. Displaying them over time and different
+diagrams.</p></li>
+<li><p>Measurement: saving data to csv file.</p></li>
+<li><p>INDI framework: setting up different INDI server connections and devices.</p></li>
+<li><p>Imaging: control of connected camera / cooler / filter.</p></li>
+<li><p>Imaging: all parameters about FL and visual KPI’s for quality check.</p></li>
+<li><p>WOL boot for mount. MW4 catches MAC address automatically on first manual start.</p></li>
+<li><p>WOL boot for an additional computer (imaging, etc)</p></li>
+<li><p>Audio signals for different events (end slew, finished modeling, alert, etc.)</p></li>
+<li><p>Managing online connections.</p></li>
+<li><p>Updater for all MW4 functions.</p></li>
+<li><p>Generate / load / save as many profiles as you would like to.</p></li>
+<li><p>Generate / load / save horizon file.</p></li>
+<li><p>Show alignment stars. Choose and automatically center for polar or orthogonal adjustments.</p></li>
+<li><p>Imaging: expose one / N images, auto solve or auto stack these images.</p></li>
+<li><p>Imaging: show distortion grid, zoom, strech, color images, showing FITS headers.</p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MW4</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_python.html">Python Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_mw4.html">MW4 Installation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to MountWizzard4’s (MW4) documentation!</a></li>
+      <li>Next: <a href="install_python.html" title="next chapter">Python Installation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, mworion.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/overview.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

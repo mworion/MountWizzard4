@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>MW4 Installation &#8212; MW4 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Explaining MW4" href="explain_main.html" />
+    <link rel="prev" title="Python Installation" href="install_python.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="mw4-installation">
+<h1>MW4 Installation<a class="headerlink" href="#mw4-installation" title="Permalink to this headline">¶</a></h1>
+<p>When starting with the installation, the installation of python3.7 should be successful
+finished. A good check is to open a terminal (available on all platforms) and run the command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span><span class="o">.</span><span class="mi">7</span> <span class="o">--</span><span class="n">version</span>
+<span class="n">virtualenv</span> <span class="o">--</span><span class="n">version</span>
+</pre></div>
+</div>
+<p>In both cases you should see the version number of the installed and available packages. For
+python it should say at least 3.7.2, better 3.7.5.</p>
+<p>To install MW4 on your computer, there are some support scripts available for Windows, OSx
+and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online
+available from Github</p>
+<div class="section" id="step-1">
+<h2>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h2>
+<p>Please create a working directory of your choice and location. The directory could
+be renamed later on, it also could be moved to any other location. Copy the scripts for you
+platform into this directory.</p>
+<p>the directory should than for OSx look like:</p>
+<img alt="_images/install_mw4_mac_1.png" class="align-center" src="_images/install_mw4_mac_1.png" />
+<p>In Windows10 it looks like:</p>
+<img alt="_images/install_mw4_win_1.png" class="align-center" src="_images/install_mw4_win_1.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In windows there were two parts in the folder. A power shell file with extension .ps1
+and a command file with extension .cmd. Both are necessary, because without admin
+permissions to start a power shell files this setup is needed. Please use for the
+following step the install marked in red.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please closely check if your working directory is writable. Otherwise MW4 could
+not work properly!</p>
+</div>
+</div>
+<div class="section" id="step-2">
+<h2>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Run one of the scripts following script. During installation a terminal window might open an</dt><dd><p>show the progress of installation.</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MW4_Install</span><span class="o">.</span><span class="n">cmd</span>         <span class="c1"># Windows</span>
+<span class="n">MW4_Install</span><span class="o">.</span><span class="n">sh</span>          <span class="c1"># Ubuntu</span>
+<span class="n">MW4_Install</span><span class="o">.</span><span class="n">command</span>     <span class="c1"># OSx</span>
+</pre></div>
+</div>
+<p>With the script a virtual environment for python is installed in your working dir under the
+name “venv”. After that it installs all necessary libraries and MW4 itself into this virtual
+environment. So any other installation of python applications is not influenced by MW4 install.</p>
+<p>After running the install script the directory should for OSx look like:</p>
+<img alt="_images/install_mw4_mac_2.png" class="align-center" src="_images/install_mw4_mac_2.png" />
+<p>In Windows10 it looks like:</p>
+<img alt="_images/install_mw4_win_2.png" class="align-center" src="_images/install_mw4_win_2.png" />
+<p>Please use for the following step the install marked in red.</p>
+<p>MW4 is already installed inside the virtual environment venv in your work dir.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please check if an online connection is available on your computer during installation
+as the libraries and MW4 is installed from online sources.</p>
+</div>
+</div>
+<div class="section" id="step-3">
+<h2>Step 3<a class="headerlink" href="#step-3" title="Permalink to this headline">¶</a></h2>
+<p>Run one of the scripts</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MW4_Run</span><span class="o">.</span><span class="n">cmd</span>         <span class="c1"># Windows</span>
+<span class="n">MW4_Run</span><span class="o">.</span><span class="n">sh</span>          <span class="c1"># Ubuntu</span>
+<span class="n">MW4_Tun</span><span class="o">.</span><span class="n">command</span>     <span class="c1"># OSx</span>
+</pre></div>
+</div>
+<p>This script will start MW4 the first time and will create some subdirectories in your
+working folder. When starting a splash screen show the progress of it’s initialization.
+After first start the directory should for OSx look like:</p>
+<img alt="_images/install_mw4_mac_3.png" class="align-center" src="_images/install_mw4_mac_3.png" />
+<p>In Windows10 it looks like:</p>
+<img alt="_images/install_mw4_win_3.png" class="align-center" src="_images/install_mw4_win_3.png" />
+<p>With the first run you will see a log file written and you should have a first window from MW4
+open:</p>
+<img alt="_images/install_mw4_first_run.png" class="align-center" src="_images/install_mw4_first_run.png" />
+<p>If you see the upper window, you succeed and from now on you are able to customize your
+setup of MW4 and it’s features.</p>
+</div>
+<div class="section" id="upgrade">
+<h2>Upgrade<a class="headerlink" href="#upgrade" title="Permalink to this headline">¶</a></h2>
+<p>If you plan to upgrade MW4 to a newer release, you could use on of the</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MW4_Update</span><span class="o">.</span><span class="n">cmd</span>         <span class="c1"># Windows</span>
+<span class="n">MW4_Update</span><span class="o">.</span><span class="n">sh</span>          <span class="c1"># Ubuntu</span>
+<span class="n">MW4_Update</span><span class="o">.</span><span class="n">command</span>     <span class="c1"># OSx</span>
+</pre></div>
+</div>
+<p>scripts. In some circumstances this might be necessary, but for normal use MW4 has it’s own
+internal updater and using the script is not necessary.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MW4</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_python.html">Python Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MW4 Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-1">Step 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2">Step 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3">Step 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrade">Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="explain_main.html">Explaining MW4</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="install_python.html" title="previous chapter">Python Installation</a></li>
+      <li>Next: <a href="explain_main.html" title="next chapter">Explaining MW4</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, mworion.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/install_mw4.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

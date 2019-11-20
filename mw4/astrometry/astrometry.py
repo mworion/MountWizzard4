@@ -286,6 +286,8 @@ class Astrometry:
         solve = {
             'raJ2000S': raJ2000,
             'decJ2000S': decJ2000,
+            'errorRaS': deltaRA,
+            'errorDecS': deltaDEC,
             'angleS': angle,
             'scaleS': scale,
             'errorS': error,

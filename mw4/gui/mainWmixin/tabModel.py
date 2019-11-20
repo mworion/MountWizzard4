@@ -23,6 +23,7 @@ import os
 import time
 import shutil
 import json
+import copy
 from datetime import datetime, timedelta
 # external packages
 import PyQt5.QtWidgets
@@ -32,7 +33,7 @@ from mountcontrol.modelStar import ModelStar
 from mountcontrol.alignStar import AlignStar
 import numpy as np
 # local import
-from mw4.definitions import Point, MPoint, IParam, MParam, MData, RData, Solve, Solution
+from mw4.definitions import Point
 from mw4.base import transform
 
 
@@ -253,41 +254,6 @@ class Model(object):
 
         return True
 
-    @staticmethod
-    def addResultToModel(mPoint=None, result=None):
-        """
-        addResultToModel takes the result of the solving process and add the data to the
-        actual model point. as the coordinates for programming the model need to be in
-        JNow and the solving process gives J2000 coordinates, it does the transform as
-        well.
-
-        :param mPoint:
-        :param result:
-        :return: model
-        """
-
-        rData = result.solve
-        raJNow, decJNow = transform.J2000ToJNow(rData.raJ2000,
-                                                rData.decJ2000,
-                                                mPoint.mData.julian)
-
-        mData = MData(raMJNow=mPoint.mData.raMJNow,
-                      decMJNow=mPoint.mData.decMJNow,
-                      raSJNow=raJNow,
-                      decSJNow=decJNow,
-                      sidereal=mPoint.mData.sidereal,
-                      julian=mPoint.mData.julian,
-                      pierside=mPoint.mData.pierside,
-                      )
-        mPoint = MPoint(mParam=mPoint.mParam,
-                        iParam=mPoint.iParam,
-                        point=mPoint.point,
-                        mData=mData,
-                        rData=mPoint.rData,
-                        )
-
-        return mPoint
-
     def modelSolveDone(self, result):
         """
         modelSolveDone is called when a point is solved by astrometry. if called it takes
@@ -307,48 +273,46 @@ class Model(object):
             return False
 
         mPoint = self.resultQueue.get()
-        number = mPoint.mParam.number
-        count = mPoint.mParam.count
+        number = mPoint["lenSequence"]
+        count = mPoint["countSequence"]
         modelingDone = (number == count + 1)
 
         if not result:
             self.logger.info('Solving result is missing')
             return False
 
-        if not isinstance(result, Solution):
-            self.logger.info(f'Solving result is malformed: {result}')
-            return False
+        if result['success']:
+            # processing only the model points which are OK
+            mPoint.update(result)
+            raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],
+                                                      mPoint['decJ2000S'],
+                                                      mPoint['julianDate'])
+            mPoint['raJNowS'] = raJNowS
+            mPoint['decJNowS'] = decJNowS
 
-        # processing only the model point which are OK
-        if result.success:
-            mPoint = self.addResultToModel(mPoint=mPoint, result=result)
-
-            deltaRA = mPoint.mData.raMJNow._degrees - mPoint.mData.raSJNow._degrees
-            deltaDEC = mPoint.mData.decMJNow.degrees - mPoint.mData.decSJNow.degrees
-            error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC)) * 3600
-
-            if error < self.MAX_ERROR_MODEL_POINT:
+            if mPoint['errorS'] < self.MAX_ERROR_MODEL_POINT:
                 self.modelQueue.put(mPoint)
             else:
-                text = f'Solving failed for image-{mPoint.mParam.count:03d}'
+                text = f'Solving failed for image-{count:03d}'
                 self.app.message.emit(text, 2)
 
-            text = f'Solved   image-{mPoint.mParam.count:03d}: '
-            text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)} '
-            text += f'({result.solve.raJ2000.hours:4.3f}), '
-            text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)} '
-            text += f'({result.solve.decJ2000.degrees:4.3f}), '
+            text = f'Solved   image-{count:03d}: '
+            text += f'Ra: {transform.convertToHMS(mPoint["raJ2000S"])} '
+            text += f'({mPoint["raJ2000S"].hours:4.3f}), '
+            text += f'Dec: {transform.convertToDMS(mPoint["decJ2000S"])} '
+            text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
-            text = f'                    Error: {error:5.1f}, '
-            text += f'Angle: {result.solve.angle:3.0f}, '
-            text += f'Scale: {result.solve.scale:4.3f}'
+            text = f'                    Error: {mPoint["errorS"]:5.1f}, '
+            text += f'Angle: {mPoint["angleS"]:3.0f}, '
+            text += f'Scale: {mPoint["scaleS"]:4.3f}'
             self.app.message.emit(text, 0)
         else:
-            message = result.message
-            text = f'Solving error for image-{mPoint.mParam.count:03d}: {message}'
+            text = f'Solving error for image-{count:03d}: {mPoint["message"]}'
             self.app.message.emit(text, 2)
 
-        self.updateProgress(number=number, count=count, modelingDone=modelingDone)
+        self.updateProgress(number=number,
+                            count=count,
+                            modelingDone=modelingDone)
 
         if modelingDone:
             self.modelFinished()
@@ -381,19 +345,19 @@ class Model(object):
 
         # showing the expose image in the image window
         if self.app.imageW:
-            self.app.imageW.signals.showImage.emit(mPoint.mParam.path)
+            self.app.imageW.signals.showImage.emit(mPoint["imagePath"])
 
-        self.app.astrometry.solveThreading(fitsPath=mPoint.mParam.path,
-                                           radius=mPoint.mParam.radius,
-                                           timeout=mPoint.mParam.timeout,
+        self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
+                                           radius=mPoint["searchRadius"],
+                                           timeout=mPoint["solveTimeout"],
                                            updateFits=False,
                                            )
         self.resultQueue.put(mPoint)
 
-        text = f'Solving  image-{mPoint.mParam.count:03d}: '
-        text += f'path: {os.path.basename(mPoint.mParam.path)}'
+        text = f'Solving  image-{mPoint["countSequence"]:03d}: '
+        text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
-        self.ui.mSolve.setText(f'{mPoint.mParam.count + 1:2d}')
+        self.ui.mSolve.setText(f'{mPoint["countSequence"] + 1:2d}')
 
         return True
 
@@ -424,33 +388,25 @@ class Model(object):
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
-        self.app.imaging.expose(imagePath=mPoint.mParam.path,
-                                expTime=mPoint.iParam.expTime,
-                                binning=mPoint.iParam.binning,
-                                subFrame=mPoint.iParam.subFrame,
-                                fastReadout=mPoint.iParam.fastReadout,
+        self.app.imaging.expose(imagePath=mPoint['imagePath'],
+                                expTime=mPoint['exposureTime'],
+                                binning=mPoint['binning'],
+                                subFrame=mPoint['subFrame'],
+                                fastReadout=mPoint['fastReadout'],
                                 )
 
-        mPoint = MPoint(mParam=mPoint.mParam,
-                        iParam=mPoint.iParam,
-                        point=mPoint.point,
-                        mData=MData(raMJNow=self.app.mount.obsSite.raJNow,
-                                    decMJNow=self.app.mount.obsSite.decJNow,
-                                    raSJNow=None,
-                                    decSJNow=None,
-                                    sidereal=self.app.mount.obsSite.timeSidereal,
-                                    julian=self.app.mount.obsSite.timeJD,
-                                    pierside=self.app.mount.obsSite.pierside,
-                                    ),
-                        rData=None,
-                        )
+        mPoint['raJNowM'] = self.app.mount.obsSite.raJNow
+        mPoint['decJNowM'] = self.app.mount.obsSite.decJNow
+        mPoint['siderealTime'] = self.app.mount.obsSite.timeSidereal
+        mPoint['julianDate'] = self.app.mount.obsSite.timeJD
+        mPoint['pierside'] = self.app.mount.obsSite.pierside
 
         self.solveQueue.put(mPoint)
 
-        text = f'Exposing image-{mPoint.mParam.count:03d}: '
-        text += f'path: {os.path.basename(mPoint.mParam.path)}'
+        text = f'Exposing image-{mPoint["countSequence"]:03d}: '
+        text += f'path: {os.path.basename(mPoint["imagePath"])}'
         self.app.message.emit(text, 0)
-        self.ui.mImage.setText(f'{mPoint.mParam.count + 1 :2d}')
+        self.ui.mImage.setText(f'{mPoint["countSequence"] + 1 :2d}')
 
         return True
 
@@ -476,18 +432,18 @@ class Model(object):
                                                     )
         if not suc:
             return False
-        self.app.slewDome(altitude=mPoint.point.altitude,
-                          azimuth=mPoint.point.azimuth
+        self.app.slewDome(altitude=mPoint['altitude'],
+                          azimuth=mPoint['azimuth'],
                           )
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
 
-        text = f'Slewing  mount:     point: {mPoint.mParam.count:03d}, '
-        text += f'altitude: {mPoint.point.altitude:3.0f}, '
-        text += f'azimuth: {mPoint.point.azimuth:3.0f}'
+        text = f'Slewing  mount:     point: {mPoint["countSequence"]:03d}, '
+        text += f'altitude: {mPoint["altitude"]:3.0f}, '
+        text += f'azimuth: {mPoint["azimuth"],:3.0f}'
         self.app.message.emit(text, 0)
-        self.ui.mPoints.setText(f'{mPoint.mParam.number:2d}')
-        self.ui.mSlew.setText(f'{mPoint.mParam.count + 1:2d}')
+        self.ui.mPoints.setText(f'{mPoint["lenSequence"]:2d}')
+        self.ui.mSlew.setText(f'{mPoint["countSequence"] + 1:2d}')
 
         return True
 
@@ -628,55 +584,11 @@ class Model(object):
             return list()
 
         for i, mPoint in enumerate(model):
-            rData = RData(errorRMS=starList[i].errorRMS,
-                          errorRA=starList[i].errorRA(),
-                          errorDEC=starList[i].errorDEC(),
-                          )
-            mPoint = MPoint(mParam=mPoint.mParam,
-                            iParam=mPoint.iParam,
-                            point=mPoint.point,
-                            mData=mPoint.mData,
-                            rData=rData,
-                            )
-            model[i] = mPoint
+            mPoint['errorRMS'] = starList[i].errorRMS
+            mPoint['errorRMS'] = starList[i].errorRA()
+            mPoint['errorRMS'] = starList[i].errorDEC()
 
         return model
-
-    @staticmethod
-    def generateSaveModel(model=None):
-        """
-        generateSaveModel builds from the model file a format which could be serialized
-        in json. this format will be used for storing model on file
-
-        :param model:
-        :return: save model format
-        """
-
-        modelDataForSave = list()
-        for mPoint in model:
-            sPoint = {'name': mPoint.mParam.name,
-                      'path': mPoint.mParam.path,
-                      'number': mPoint.mParam.number,
-                      'count': mPoint.mParam.count,
-                      'expTime': mPoint.iParam.expTime,
-                      'binning': mPoint.iParam.binning,
-                      'subFrame': mPoint.iParam.subFrame,
-                      'fastReadout': mPoint.iParam.fastReadout,
-                      'altitude': mPoint.point.altitude,
-                      'azimuth': mPoint.point.azimuth,
-                      'raMJNow': mPoint.mData.raMJNow.hours,
-                      'decMJNow': mPoint.mData.decMJNow.degrees,
-                      'raSJNow': mPoint.mData.raSJNow.hours,
-                      'decSJNow': mPoint.mData.decSJNow.degrees,
-                      'sidereal': mPoint.mData.sidereal.hours,
-                      'julian': mPoint.mData.julian.utc_iso(),
-                      'pierside': mPoint.mData.pierside,
-                      'errorRMS': mPoint.rData.errorRMS,
-                      'errorRa': mPoint.rData.errorRA,
-                      'errorDEC': mPoint.rData.errorDEC,
-                      }
-            modelDataForSave.append(sPoint)
-        return modelDataForSave
 
     def saveModel(self, model=None, name=''):
         """
@@ -698,13 +610,11 @@ class Model(object):
             self.logger.debug(f'only {len(model)} points available')
             return False
 
-        saveData = self.generateSaveModel(model)
-
         self.app.message.emit(f'writing model [{name}]', 0)
 
         modelPath = f'{self.app.mwGlob["modelDir"]}/{name}.model'
         with open(modelPath, 'w') as outfile:
-            json.dump(saveData,
+            json.dump(model,
                       outfile,
                       sort_keys=True,
                       indent=4)
@@ -726,35 +636,6 @@ class Model(object):
         return model
 
     @staticmethod
-    def generateBuildDataFromJSON(loadModel=None):
-        """
-        generateBuildData takes the model data and generates from it a data structure
-        needed for programming the model into the mount computer.
-
-        :param loadModel:
-        :return: build
-        """
-
-        build = list()
-
-        for mPoint in loadModel:
-            # prepare data
-            mCoord = (mPoint['raMJNow'], mPoint['decMJNow'])
-            sCoord = (mPoint['raSJNow'], mPoint['decSJNow'])
-            sidereal = mPoint['sidereal']
-            pierside = mPoint['pierside']
-
-            # combine data into structure
-            programmingPoint = AlignStar(mCoord=mCoord,
-                                         sCoord=sCoord,
-                                         sidereal=sidereal,
-                                         pierside=pierside,
-                                         )
-            build.append(programmingPoint)
-
-        return build
-
-    @staticmethod
     def generateBuildData(model=None):
         """
         generateBuildData takes the model data and generates from it a data structure
@@ -767,19 +648,12 @@ class Model(object):
         build = list()
 
         for mPoint in model:
-            # prepare data
-            mCoord = skyfield.api.Star(ra=mPoint.mData.raMJNow,
-                                       dec=mPoint.mData.decMJNow)
-            sCoord = skyfield.api.Star(ra=mPoint.mData.raSJNow,
-                                       dec=mPoint.mData.decSJNow)
-            sidereal = mPoint.mData.sidereal
-            pierside = mPoint.mData.pierside
 
             # combine data into structure
-            programmingPoint = AlignStar(mCoord=mCoord,
-                                         sCoord=sCoord,
-                                         sidereal=sidereal,
-                                         pierside=pierside,
+            programmingPoint = AlignStar(mCoord=(mPoint['raJNowM'], mPoint['decJNowM']),
+                                         sCoord=(mPoint['raJNowS'], mPoint['decJNowS']),
+                                         sidereal=mPoint['siderealTime'],
+                                         pierside=mPoint['pierside'],
                                          )
             build.append(programmingPoint)
 
@@ -839,14 +713,15 @@ class Model(object):
         if not points:
             return False
 
-        app = self.app.mainW.ui.astrometryDevice.currentText()
-        if app.startswith('No device'):
+        astrometryApp = self.app.mainW.ui.astrometryDevice.currentText()
+        if astrometryApp.startswith('No device'):
             return False
 
         # collection locations for files
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         self.modelName = f'm-{self.lastGenerator}-{nameTime}'
         self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
+
         if not os.path.isdir(self.imageDir):
             os.mkdir(self.imageDir)
         if not os.path.isdir(self.imageDir):
@@ -856,7 +731,7 @@ class Model(object):
         self.app.message.emit(f'Modeling {self.modelName} started', 1)
 
         # collection all necessary information
-        expTime = self.app.mainW.ui.expTime.value()
+        exposureTime = self.app.mainW.ui.expTime.value()
         binning = self.app.mainW.ui.binning.value()
         subFrame = self.app.mainW.ui.subFrame.value()
         fastReadout = self.app.mainW.ui.checkFastDownload.isChecked()
@@ -874,34 +749,30 @@ class Model(object):
         self.startModeling = time.time()
 
         # queuing modeling points
-        number = len(points)
-        for count, point in enumerate(points):
+        lenSequence = len(points)
+        for countSequence, point in enumerate(points):
             # define the path to the image file
-            path = f'{self.imageDir}/image-{count:03d}.fits'
+            imagePath = f'{self.imageDir}/image-{countSequence:03d}.fits'
+            modelSet = dict()
 
-            iParam = IParam(expTime=expTime,
-                            binning=binning,
-                            subFrame=subFrame,
-                            fastReadout=fastReadout,
-                            )
-            mParam = MParam(number=number,
-                            count=count,
-                            path=path,
-                            name=self.modelName,
-                            astrometry=app,
-                            timeout=solveTimeout,
-                            radius=searchRadius,
-                            )
+            # populating the parameters
+            modelSet['path'] = imagePath
+            modelSet['exposureTime'] = exposureTime
+            modelSet['binning'] = binning
+            modelSet['subFrame'] = subFrame
+            modelSet['fastReadout'] = fastReadout
+            modelSet['lenSequence'] = lenSequence
+            modelSet['countSequence'] = countSequence
+            modelSet['modelName'] = self.modelName
+            modelSet['imagePath'] = imagePath
+            modelSet['astrometryApp'] = astrometryApp
+            modelSet['solveTimeout'] = solveTimeout
+            modelSet['searchRadius'] = searchRadius
+            modelSet['altitude'] = point[0]
+            modelSet['azimuth'] = point[1]
 
             # transfer to working in a queue with necessary data
-            self.slewQueue.put(MPoint(iParam=iParam,
-                                      mParam=mParam,
-                                      point=Point(altitude=point[0],
-                                                  azimuth=point[1]),
-                                      mData=None,
-                                      rData=None,
-                                      )
-                               )
+            self.slewQueue.put(copy.copy(modelSet))
         # kick off modeling
         self.modelSlew()
 
@@ -969,7 +840,7 @@ class Model(object):
             self.app.message.emit('Combined models have more than 99 points', 2)
             return False
 
-        build = self.generateBuildDataFromJSON(modelJSON)
+        build = self.generateBuildData(modelJSON)
 
         # finally do it
         self.app.message.emit('Programming model to mount', 0)

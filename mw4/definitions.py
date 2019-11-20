@@ -26,18 +26,3 @@ from collections import namedtuple
 
 # the model point itself
 Point = namedtuple('Point', 'altitude azimuth')
-
-# imaging parameters
-IParam = namedtuple('IParam', 'expTime binning subFrame fastReadout')
-
-# modeling parameters
-MParam = namedtuple('MParam', 'number count path name astrometry timeout radius')
-
-# modeling generated data for programming the model
-MData = namedtuple('MData', 'raMJNow decMJNow raSJNow decSJNow sidereal julian pierside')
-
-# mount retrofit data
-RData = namedtuple('RData', 'errorRMS errorRA errorDEC')
-
-# overall structure containing all of the above
-MPoint = namedtuple('MPoint', 'mParam iParam point mData rData')

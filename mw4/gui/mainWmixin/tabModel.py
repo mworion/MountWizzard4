@@ -302,9 +302,10 @@ class Model(object):
             text += f'Dec: {transform.convertToDMS(mPoint["decJ2000S"])} '
             text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
-            text = f'                    Error: {mPoint["errorS"]:5.1f}, '
+            text = f'         '
             text += f'Angle: {mPoint["angleS"]:3.0f}, '
-            text += f'Scale: {mPoint["scaleS"]:4.3f}'
+            text += f'Scale: {mPoint["scaleS"]:4.3f}, '
+            text += f'Error: {mPoint["errorS"]:4.1f}'
             self.app.message.emit(text, 0)
         else:
             text = f'Solving error for image-{count:03d}: {mPoint.get("message")}'
@@ -428,12 +429,12 @@ class Model(object):
 
         mPoint = self.slewQueue.get()
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
-                                                    az_degrees=mPoint['altitude'],
+                                                    az_degrees=mPoint['azimuth'],
                                                     )
         if not suc:
             return False
         self.app.slewDome(altitude=mPoint['altitude'],
-                          azimuth=mPoint['altitude'],
+                          azimuth=mPoint['azimuth'],
                           )
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)

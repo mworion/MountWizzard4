@@ -290,7 +290,7 @@ class Model(object):
             mPoint['raJNowS'] = raJNowS
             mPoint['decJNowS'] = decJNowS
 
-            if mPoint['errorS'] < self.MAX_ERROR_MODEL_POINT:
+            if mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT:
                 self.modelQueue.put(mPoint)
             else:
                 text = f'Solving failed for image-{count:03d}'
@@ -305,7 +305,7 @@ class Model(object):
             text = f'         '
             text += f'Angle: {mPoint["angleS"]:3.0f}, '
             text += f'Scale: {mPoint["scaleS"]:4.3f}, '
-            text += f'Error: {mPoint["errorS"]:4.1f}'
+            text += f'Error: {mPoint["errorRMS_S"]:4.1f}'
             self.app.message.emit(text, 0)
         else:
             text = f'Solving error for image-{count:03d}: {mPoint.get("message")}'
@@ -586,10 +586,36 @@ class Model(object):
 
         for i, mPoint in enumerate(model):
             mPoint['errorRMS'] = starList[i].errorRMS
-            mPoint['errorRMS'] = starList[i].errorRA()
-            mPoint['errorRMS'] = starList[i].errorDEC()
+            mPoint['errorRA'] = starList[i].errorRA()
+            mPoint['errorDEC'] = starList[i].errorDEC()
 
         return model
+
+    @staticmethod
+    def generateSaveModel(model=None):
+        """
+        generateSaveModel builds from the model file a format which could be serialized
+        in json. this format will be used for storing model on file
+
+        :param model:
+        :return: save model format
+        """
+
+        modelDataForSave = list()
+        for mPoint in model:
+            sPoint = dict()
+            sPoint.update(mPoint)
+            sPoint['raJNowM'] = sPoint['raJNowM'].hours
+            sPoint['decJNowM'] = sPoint['decJNowM'].degrees
+            sPoint['raJNowS'] = sPoint['raJNowS'].hours
+            sPoint['decJNowS'] = sPoint['decJNowS'].degrees
+            sPoint['raJ2000S'] = sPoint['raJ2000S'].hours
+            sPoint['decJ2000S'] = sPoint['decJ2000S'].radians
+            sPoint['siderealTime'] = sPoint['siderealTime'].hours
+            sPoint['julianDate'] = sPoint['julianDate'].utc_iso()
+
+            modelDataForSave.append(sPoint)
+        return modelDataForSave
 
     def saveModel(self, model=None, name=''):
         """
@@ -611,11 +637,13 @@ class Model(object):
             self.logger.debug(f'only {len(model)} points available')
             return False
 
+        saveData = self.generateSaveModel(model)
+
         self.app.message.emit(f'writing model [{name}]', 0)
 
         modelPath = f'{self.app.mwGlob["modelDir"]}/{name}.model'
         with open(modelPath, 'w') as outfile:
-            json.dump(model,
+            json.dump(saveData,
                       outfile,
                       sort_keys=True,
                       indent=4)
@@ -635,6 +663,32 @@ class Model(object):
             model.append(mPoint)
 
         return model
+
+    @staticmethod
+    def generateBuildDataFromJSON(model=None):
+        """
+        generateBuildDataFromJSON takes the model data and generates from it a data structure
+        needed for programming the model into the mount computer.
+
+        :param model:
+        :return: build
+        """
+
+        build = list()
+
+        for mPoint in model:
+
+            # combine data into structure
+            mCoord = (mPoint['raJNowM'], mPoint['decJNowM'])
+            sCoord = (mPoint['raJNowS'], mPoint['decJNowS'])
+            programmingPoint = AlignStar(mCoord=mCoord,
+                                         sCoord=sCoord,
+                                         sidereal=mPoint['siderealTime'],
+                                         pierside=mPoint['pierside'],
+                                         )
+            build.append(programmingPoint)
+
+        return build
 
     @staticmethod
     def generateBuildData(model=None):
@@ -841,7 +895,7 @@ class Model(object):
             self.app.message.emit('Combined models have more than 99 points', 2)
             return False
 
-        build = self.generateBuildData(modelJSON)
+        build = self.generateBuildDataFromJSON(modelJSON)
 
         # finally do it
         self.app.message.emit('Programming model to mount', 0)

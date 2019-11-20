@@ -834,7 +834,7 @@ class ImageWindow(widget.MWidget):
             text = f'         '
             text += f'Angle: {result["angleS"]:3.0f}, '
             text += f'Scale: {result["scaleS"]:4.3f}, '
-            text += f'Error: {result["errorS"]:4.1f}'
+            text += f'Error: {result["errorRMS_S"]:4.1f}'
             self.app.message.emit(text, 0)
         else:
             text = f'Solving error: {result.get("message")}'

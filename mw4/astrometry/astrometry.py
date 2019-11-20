@@ -275,21 +275,18 @@ class Astrometry:
                                             isHours=False)
 
         # todo: it would be nice, if adding, subtracting of angels are part of skyfield
-        deltaRA = raJ2000._degrees - raMount._degrees
-        deltaDEC = decJ2000.degrees - decMount.degrees
+        deltaRA = abs(raJ2000._degrees - raMount._degrees) * 3600
+        deltaDEC = abs(decJ2000.degrees - decMount.degrees) * 3600
         error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
-
-        # would like to have the error RMS in arcsec
-        error *= 3600
 
         solve = {
             'raJ2000S': raJ2000,
             'decJ2000S': decJ2000,
-            'errorRaS': deltaRA,
-            'errorDecS': deltaDEC,
+            'errorRA_S': deltaRA,
+            'errorDEC_S': deltaDEC,
             'angleS': angle,
             'scaleS': scale,
-            'errorS': error,
+            'errorRMS_S': error,
             'flippedS': flipped
         }
 

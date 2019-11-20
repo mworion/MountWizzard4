@@ -427,20 +427,20 @@ class Model(object):
             return False
 
         mPoint = self.slewQueue.get()
-        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint.point.altitude,
-                                                    az_degrees=mPoint.point.azimuth,
+        suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
+                                                    az_degrees=mPoint['altitude'],
                                                     )
         if not suc:
             return False
         self.app.slewDome(altitude=mPoint['altitude'],
-                          azimuth=mPoint['azimuth'],
+                          azimuth=mPoint['altitude'],
                           )
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
 
         text = f'Slewing  mount:     point: {mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '
-        text += f'azimuth: {mPoint["azimuth"],:3.0f}'
+        text += f'azimuth: {mPoint["azimuth"]:3.0f}'
         self.app.message.emit(text, 0)
         self.ui.mPoints.setText(f'{mPoint["lenSequence"]:2d}')
         self.ui.mSlew.setText(f'{mPoint["countSequence"] + 1:2d}')

@@ -53,7 +53,6 @@ class AstrometryNET(object):
                'abortNET',
                ]
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     def __init__(self, parent):
@@ -232,7 +231,7 @@ class AstrometryNET(object):
                                )
         if not suc:
             self.logger.error(f'image2xy error in [{fitsPath}]')
-            self.result = Solution(success=False, solve=Solve, message='image2xy error')
+            self.result = self.result['message'] = 'image2xy error'
             return False
 
         raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)
@@ -300,7 +299,7 @@ class AstrometryNET(object):
 
         self.result = {
             'success': True,
-            'path': fitsPath,
+            'solvedPath': fitsPath,
             'message': 'Solved',
         }
         self.result.update(solve)

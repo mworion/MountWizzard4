@@ -53,7 +53,6 @@ class AstrometryASTAP(object):
                'abortASTAP',
                ]
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     def __init__(self, parent):
@@ -195,12 +194,12 @@ class AstrometryASTAP(object):
                             timeout=timeout,
                             )
         if not suc:
-            self.result = self.result['message'] = 'astap error'
+            self.result['message'] = 'astap error'
             self.logger.error(f'astap error in [{fitsPath}]')
             return False
 
         if not os.path.isfile(wcsPath):
-            self.result = self.result['message'] = 'solve failed'
+            self.result['message'] = 'solve failed'
             self.logger.debug(f'solve files for [{wcsPath}] missing')
             return False
 
@@ -215,7 +214,7 @@ class AstrometryASTAP(object):
 
         self.result = {
             'success': True,
-            'path': fitsPath,
+            'solvedPath': fitsPath,
             'message': 'Solved',
         }
         self.result.update(solve)

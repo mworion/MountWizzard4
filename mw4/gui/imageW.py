@@ -826,24 +826,25 @@ class ImageWindow(widget.MWidget):
 
         if result['success']:
             text = f'Solved : '
-            text += f'Ra: {transform.convertToHMS(mPoint["raJ2000S"])} '
-            text += f'({mPoint["raJ2000S"].hours:4.3f}), '
-            text += f'Dec: {transform.convertToDMS(mPoint["decJ2000S"])} '
-            text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
+            text += f'Ra: {transform.convertToHMS(result["raJ2000S"])} '
+            text += f'({result["raJ2000S"].hours:4.3f}), '
+            text += f'Dec: {transform.convertToDMS(result["decJ2000S"])} '
+            text += f'({result["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
             text = f'         '
-            text += f'Angle: {mPoint["angleS"]:3.0f}, '
-            text += f'Scale: {mPoint["scaleS"]:4.3f}'
+            text += f'Angle: {result["angleS"]:3.0f}, '
+            text += f'Scale: {result["scaleS"]:4.3f}, '
+            text += f'Error: {result["errorS"]:4.1f}'
             self.app.message.emit(text, 0)
         else:
-            text = f'Solving error for image-{count:03d}: {mPoint.get("message")}'
+            text = f'Solving error: {result.get("message")}'
             self.app.message.emit(text, 2)
             return False
 
         isStack = self.ui.checkStackImages.isChecked()
         isAutoSolve = self.ui.checkAutoSolve.isChecked()
         if not isStack or isAutoSolve:
-            self.signals.showImage.emit(result.solve.path)
+            self.signals.showImage.emit(result['solvedPath'])
 
         return True
 

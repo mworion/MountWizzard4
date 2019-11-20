@@ -307,7 +307,7 @@ class Model(object):
             text += f'Scale: {mPoint["scaleS"]:4.3f}'
             self.app.message.emit(text, 0)
         else:
-            text = f'Solving error for image-{count:03d}: {mPoint["message"]}'
+            text = f'Solving error for image-{count:03d}: {mPoint.get("message")}'
             self.app.message.emit(text, 2)
 
         self.updateProgress(number=number,

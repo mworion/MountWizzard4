@@ -371,9 +371,10 @@ class HemisphereWindow(widget.MWidget):
         axe.figure.canvas.draw()
         axe.figure.canvas.flush_events()
 
-        axe = self.hemisphere2Mat.figure.axes[0]
-        axe.figure.canvas.draw()
-        axe.figure.canvas.flush_events()
+        if self.hemisphere2Mat.figure.axes:
+            axe = self.hemisphere2Mat.figure.axes[0]
+            axe.figure.canvas.draw()
+            axe.figure.canvas.flush_events()
 
         self.mutexDraw.unlock()
         return True

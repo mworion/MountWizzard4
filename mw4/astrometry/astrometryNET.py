@@ -29,7 +29,6 @@ from astropy.io import fits
 from forwardable import forwardable, def_delegators
 # local imports
 from mw4.base import transform
-from mw4.definitions import Solution, Solve
 
 
 @forwardable()
@@ -59,7 +58,7 @@ class AstrometryNET(object):
 
     def __init__(self, parent):
         self.parent = parent
-        self.result = Solution(success=False, solve=Solve, message='')
+        self.result = {'success': False}
         self.process = None
 
     def runImage2xy(self, binPath='', tempPath='', fitsPath='', timeout=30):

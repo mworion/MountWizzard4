@@ -33,7 +33,6 @@ import numpy as np
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
 from mw4.base import transform
-from mw4.definitions import Solution
 
 
 class ImageWindowSignals(PyQt5.QtCore.QObject):
@@ -825,24 +824,20 @@ class ImageWindow(widget.MWidget):
             self.app.message.emit('Solving error, result missing', 2)
             return False
 
-        if not isinstance(result, Solution):
-            self.app.message.emit(f'Solving result is malformed: {result}')
-            return False
-
-        if result.success:
+        if result['success']:
             text = f'Solved : '
-            text += f'Ra: {transform.convertToHMS(result.solve.raJ2000)} '
-            text += f'({result.solve.raJ2000.hours:4.3f}), '
-            text += f'Dec: {transform.convertToDMS(result.solve.decJ2000)} '
-            text += f'({result.solve.decJ2000.degrees:4.3f}), '
+            text += f'Ra: {transform.convertToHMS(mPoint["raJ2000S"])} '
+            text += f'({mPoint["raJ2000S"].hours:4.3f}), '
+            text += f'Dec: {transform.convertToDMS(mPoint["decJ2000S"])} '
+            text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
             text = f'         '
-            text += f'Angle: {result.solve.angle:3.0f}, '
-            text += f'Scale: {result.solve.scale:4.3f}'
+            text += f'Angle: {mPoint["angleS"]:3.0f}, '
+            text += f'Scale: {mPoint["scaleS"]:4.3f}'
             self.app.message.emit(text, 0)
         else:
-            message = result.message
-            self.app.message.emit(f'Solving error: {message}', 2)
+            text = f'Solving error for image-{count:03d}: {mPoint.get("message")}'
+            self.app.message.emit(text, 2)
             return False
 
         isStack = self.ui.checkStackImages.isChecked()

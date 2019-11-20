@@ -35,7 +35,6 @@ import numpy as np
 # local imports
 from mw4.base import tpool
 from mw4.base import transform
-from mw4.definitions import Solution, Solve
 from mw4.astrometry.astrometryNET import AstrometryNET
 from mw4.astrometry.astrometryASTAP import AstrometryASTAP
 

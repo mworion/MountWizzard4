@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -996,7 +996,7 @@
        <rect>
         <x>520</x>
         <y>85</y>
-        <width>121</width>
+        <width>131</width>
         <height>21</height>
        </rect>
       </property>
@@ -1006,7 +1006,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Meridian Lim Track</string>
+       <string>Flip Guide Tolerance</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="refractionPress">
@@ -1149,7 +1149,7 @@
        <rect>
         <x>520</x>
         <y>115</y>
-        <width>121</width>
+        <width>131</width>
         <height>21</height>
        </rect>
       </property>
@@ -1159,7 +1159,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Meridian Lim Slew</string>
+       <string>Flip Slew Tolerance</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="slewRate">

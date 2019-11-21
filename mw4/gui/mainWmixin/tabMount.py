@@ -46,6 +46,7 @@ class Mount(object):
         ms.locationDone.connect(self.updateTrackingGui)
 
         self.ui.park.clicked.connect(self.changePark)
+        self.ui.flipMount.clicked.connect(self.flipMount)
         self.ui.tracking.clicked.connect(self.changeTracking)
         self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
         self.ui.setSiderealTracking.clicked.connect(self.setSiderealTracking)
@@ -438,6 +439,22 @@ class Mount(object):
             return False
         else:
             self.app.message.emit('Tracking set to Solar', 0)
+            return True
+
+    def flipMount(self):
+        """
+        flipMount
+
+        :return:
+        """
+
+        obs = self.app.mount.obsSite
+        suc = obs.flip()
+        if not suc:
+            self.app.message.emit('Cannot flip mount', 2)
+            return False
+        else:
+            self.app.message.emit('Mount flipped', 0)
             return True
 
     def stop(self):

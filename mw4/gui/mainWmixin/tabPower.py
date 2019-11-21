@@ -85,6 +85,8 @@ class Power(object):
             button.clicked.connect(self.toggleAutoDew)
         for name, button in self.powerBoot.items():
             button.clicked.connect(self.togglePowerBootPort)
+        for name, button in self.portUSB.items():
+            button.clicked.connect(self.togglePortUSB)
 
         # functional signals
         self.app.power.signals.version.connect(self.setGuiVersion)
@@ -299,6 +301,18 @@ class Power(object):
         :return: true fot test purpose
         """
         suc = self.app.power.toggleHubUSB()
+        return suc
+
+    def togglePortUSB(self):
+        """
+        toggleUSBPort  toggles the state of the power switch
+        :return: success
+        """
+
+        for name, button in self.portUSB.items():
+            if button != self.sender():
+                continue
+            suc = self.app.power.togglePortUSB(port=name)
         return suc
 
     def setAutoDew(self):

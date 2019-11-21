@@ -260,6 +260,33 @@ class PegasusUPB(indiClass.IndiClass):
                                         )
         return suc
 
+    def togglePortUSB(self, port=None):
+        """
+        togglePortUSB
+
+        :param port:
+        :return: true fot test purpose
+        """
+
+        if port is None:
+            return False
+
+        if self.device is None:
+            return False
+
+        usb = self.device.getSwitch('USB_PORT_CONTROL')
+
+        portName = f'PORT_{port}'
+        if portName not in usb:
+            return False
+
+        usb[portName] = not usb[portName]
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='USB_PORT_CONTROL',
+                                        elements=usb,
+                                        )
+        return suc
+
     def sendAutoDew(self, value=False):
         """
         sendAutoDew

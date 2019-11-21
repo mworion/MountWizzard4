@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7599,7 +7599,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>30</y>
+       <y>25</y>
        <width>366</width>
        <height>316</height>
       </rect>
@@ -8653,7 +8653,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>25</y>
        <width>366</width>
        <height>56</height>
       </rect>
@@ -9901,7 +9901,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>275</y>
+       <y>250</y>
        <width>366</width>
        <height>71</height>
       </rect>
@@ -10007,7 +10007,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>200</y>
+       <y>175</y>
        <width>366</width>
        <height>71</height>
       </rect>
@@ -10113,7 +10113,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>125</y>
+       <y>100</y>
        <width>366</width>
        <height>71</height>
       </rect>
@@ -10219,7 +10219,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>50</y>
+       <y>25</y>
        <width>366</width>
        <height>71</height>
       </rect>
@@ -10343,54 +10343,13 @@ to mount</string>
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="label_229">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>20</y>
-       <width>276</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Ports</string>
-     </property>
-    </widget>
-    <widget class="Line" name="line_70">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>40</y>
-       <width>371</width>
-       <height>1</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="groupBox_20">
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>355</y>
+       <y>325</y>
        <width>366</width>
-       <height>51</height>
+       <height>41</height>
       </rect>
      </property>
      <property name="title">
@@ -10402,8 +10361,8 @@ to mount</string>
      <widget class="QPushButton" name="hubUSB">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>20</y>
+        <x>220</x>
+        <y>15</y>
         <width>101</width>
         <height>21</height>
        </rect>
@@ -10416,52 +10375,11 @@ to mount</string>
       </property>
      </widget>
     </widget>
-    <widget class="Line" name="line_72">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>40</y>
-       <width>366</width>
-       <height>1</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_238">
-     <property name="geometry">
-      <rect>
-       <x>15</x>
-       <y>20</y>
-       <width>276</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Overall</string>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="groupBox_21">
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>50</y>
+       <y>25</y>
        <width>366</width>
        <height>96</height>
       </rect>
@@ -10725,11 +10643,11 @@ to mount</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_22">
+    <widget class="QGroupBox" name="groupDewA">
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>160</y>
+       <y>130</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -10863,11 +10781,11 @@ to mount</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_23">
+    <widget class="QGroupBox" name="groupDewB">
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>225</y>
+       <y>190</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -11001,13 +10919,13 @@ to mount</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_24">
+    <widget class="QGroupBox" name="groupAutoDew2">
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>355</y>
+       <y>310</y>
        <width>366</width>
-       <height>46</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="title">
@@ -11016,12 +10934,12 @@ to mount</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QCheckBox" name="autoDew">
+     <widget class="QCheckBox" name="autoDewA">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>20</y>
-        <width>122</width>
+        <width>101</width>
         <height>21</height>
        </rect>
       </property>
@@ -11029,15 +10947,47 @@ to mount</string>
        <string>Switches the automatic dew calculation on. UPB uses dew measure for setting the right power.</string>
       </property>
       <property name="text">
-       <string>Enable Auto Dew</string>
+       <string>Dewheater A</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="autoDewB">
+      <property name="geometry">
+       <rect>
+        <x>135</x>
+        <y>20</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the automatic dew calculation on. UPB uses dew measure for setting the right power.</string>
+      </property>
+      <property name="text">
+       <string>Dewheater B</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="autoDewC">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>20</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the automatic dew calculation on. UPB uses dew measure for setting the right power.</string>
+      </property>
+      <property name="text">
+       <string>Dewheater C</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_61">
+    <widget class="QGroupBox" name="groupDewC">
      <property name="geometry">
       <rect>
        <x>15</x>
-       <y>290</y>
+       <y>250</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -11168,6 +11118,246 @@ to mount</string>
       </property>
       <property name="input" stdset="0">
        <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupAutoDew1">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>250</y>
+       <width>366</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Automatic dew</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QCheckBox" name="autoDew">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>66</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the automatic dew calculation on. UPB uses dew measure for setting the right power.</string>
+      </property>
+      <property name="text">
+       <string>Enable</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupPortUSB">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>370</y>
+       <width>366</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>USB Port</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QPushButton" name="portUSB1">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the USB Hub on and off</string>
+      </property>
+      <property name="text">
+       <string>USB 1</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="portUSB2">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>20</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the USB Hub on and off</string>
+      </property>
+      <property name="text">
+       <string>USB 2</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="portUSB3">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>20</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the USB Hub on and off</string>
+      </property>
+      <property name="text">
+       <string>USB 3</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="portUSB4">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>20</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the USB Hub on and off</string>
+      </property>
+      <property name="text">
+       <string>USB 4</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="portUSB5">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>20</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the USB Hub on and off</string>
+      </property>
+      <property name="text">
+       <string>USB 5</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="portUSB6">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>20</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Switches the USB Hub on and off</string>
+      </property>
+      <property name="text">
+       <string>USB 6</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupAdjustableOutput">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>370</y>
+       <width>366</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Adjustable output</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
+     <widget class="QLineEdit" name="adjustableOutput">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>20</y>
+        <width>36</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Sets the dew heater power from 0 to 100 %</string>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="inputMask">
+       <string/>
+      </property>
+      <property name="text">
+       <string>-</string>
+      </property>
+      <property name="cursorPosition">
+       <number>1</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="input" stdset="0">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_291">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>20</y>
+        <width>79</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Voltage</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_293">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>20</y>
+        <width>16</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>V</string>
       </property>
      </widget>
     </widget>
@@ -22472,7 +22662,6 @@ When clicking the button, you could change the value.</string>
   <tabstop>relayButton5</tabstop>
   <tabstop>relayButton6</tabstop>
   <tabstop>relayButton7</tabstop>
-  <tabstop>autoDew</tabstop>
   <tabstop>powerPort1</tabstop>
   <tabstop>powerBootPort1</tabstop>
   <tabstop>powerPort2</tabstop>

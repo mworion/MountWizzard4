@@ -21,19 +21,35 @@
 import logging
 from datetime import datetime
 # external packages
+import PyQt5
 import numpy as np
 # local imports
 from mw4.base import indiClass
+
+
+class PegasusUPBSignals(PyQt5.QtCore.QObject):
+    """
+    The PegasusUPBSignals class offers a list of signals to be used and instantiated by
+    the PegasusUPB class to get signals for triggers for finished tasks to
+    enable a gui to update their values transferred to the caller back.
+
+    This has to be done in a separate class as the signals have to be subclassed from
+    QObject and the Mount class itself is subclassed from object
+    """
+
+    __all__ = ['PegasusUPBSignals']
+
+    version = PyQt5.QtCore.pyqtSignal(int)
 
 
 class PegasusUPB(indiClass.IndiClass):
     """
     the class PegasusUPB inherits all information and handling of the PegasusUPB device
 
-        >>> fw = PegasusUPB(
-        >>>                  host=host
-        >>>                  name=''
-        >>>                 )
+        >>> power = PegasusUPB(
+        >>>                    host=host
+        >>>                    name=''
+        >>>                    )
     """
 
     __all__ = ['PegasusUPB',
@@ -54,6 +70,9 @@ class PegasusUPB(indiClass.IndiClass):
                          message=app.message,
                          )
         self.app = app
+
+        self.versionUPB = 0
+        self.signals = PegasusUPBSignals()
 
     def setUpdateConfig(self, deviceName):
         """
@@ -105,6 +124,13 @@ class PegasusUPB(indiClass.IndiClass):
 
         for element, value in self.device.getNumber(propertyName).items():
             self.data[element] = value
+
+            # only version 2 has 3 dew heaters
+            if element == 'DEW_C':
+                if self.versionUPB != 2:
+                    self.versionUPB = 2
+                    self.signals.version.emit(2)
+
             # print(propertyName, element, value)
 
         return True
@@ -126,6 +152,13 @@ class PegasusUPB(indiClass.IndiClass):
 
         for element, value in self.device.getSwitch(propertyName).items():
             self.data[element] = value
+
+            # this combination only exists in version 1
+            if propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':
+                if self.versionUPB != 1:
+                    self.versionUPB = 1
+                    self.signals.version.emit(1)
+
             # print(propertyName, element, value)
 
         return True
@@ -247,6 +280,33 @@ class PegasusUPB(indiClass.IndiClass):
                                         )
         return suc
 
+    def toggleAutoDewPort(self, port=None):
+        """
+        toggleAutoDewPort
+
+        :param port:
+        :return: true fot test purpose
+        """
+
+        if port is None:
+            return False
+
+        if self.device is None:
+            return False
+
+        autoDew = self.device.getSwitch('AUTO_DEW')
+        portName = f'DEW_{port}'
+
+        if portName not in autoDew:
+            return False
+
+        autoDew[portName] = not autoDew[portName]
+        suc = self.client.sendNewSwitch(deviceName=self.name,
+                                        propertyName='AUTO_DEW',
+                                        elements=autoDew,
+                                        )
+        return suc
+
     def sendDew(self, port='', value=None):
         """
 
@@ -263,5 +323,23 @@ class PegasusUPB(indiClass.IndiClass):
         suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='DEW_PWM',
                                         elements=dew,
+                                        )
+        return suc
+
+    def sendAdjustableOutput(self, value=None):
+        """
+
+        :param value:
+        :return: success
+        """
+
+        if self.device is None:
+            return False
+
+        output = self.device.getNumber('ADJUSTABLE_VOLTAGE')
+        output['ADJUSTABLE_VOLTAGE_VALUE'] = value
+        suc = self.client.sendNewNumber(deviceName=self.name,
+                                        propertyName='ADJUSTABLE_VOLTAGE',
+                                        elements=output,
                                         )
         return suc

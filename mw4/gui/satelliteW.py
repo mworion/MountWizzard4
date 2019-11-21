@@ -40,8 +40,8 @@ from mw4.base.tpool import Worker
 
 class SatelliteWindowSignals(PyQt5.QtCore.QObject):
     """
-    The CameraSignals class offers a list of signals to be used and instantiated by
-    the Mount class to get signals for triggers for finished tasks to
+    The SatelliteWindowSignals class offers a list of signals to be used and instantiated by
+    the SatelliteWindow class to get signals for triggers for finished tasks to
     enable a gui to update their values transferred to the caller back.
 
     This has to be done in a separate class as the signals have to be subclassed from
@@ -49,7 +49,6 @@ class SatelliteWindowSignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['SatelliteWindowSignals']
-    version = '0.1'
 
     show = PyQt5.QtCore.pyqtSignal(object)
     update = PyQt5.QtCore.pyqtSignal(object, object, object)

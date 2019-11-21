@@ -49,6 +49,10 @@ class Power(object):
                     'B': self.ui.dewB,
                     'C': self.ui.dewC,
                     }
+        self.autoDew = {'A': self.ui.autoDewA,
+                        'B': self.ui.autoDewB,
+                        'C': self.ui.autoDewC,
+                        }
         self.current = {'1': self.ui.powerCurrent1,
                         '2': self.ui.powerCurrent2,
                         '3': self.ui.powerCurrent3,
@@ -59,18 +63,31 @@ class Power(object):
                       '3': self.ui.powerLabel3,
                       '4': self.ui.powerLabel4,
                       }
+        self.portUSB = {'1': self.ui.portUSB1,
+                        '2': self.ui.portUSB2,
+                        '3': self.ui.portUSB3,
+                        '4': self.ui.portUSB4,
+                        '3': self.ui.portUSB5,
+                        '4': self.ui.portUSB6,
+                        }
 
         # gui tasks
         self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
         self.ui.autoDew.clicked.connect(self.setAutoDew)
+        self.clickable(self.ui.adjustableOutput).connect(self.setAdjustableOutput)
 
         # setting gui elements
         for name, button in self.dew.items():
             self.clickable(button).connect(self.setDew)
         for name, button in self.powerOnOFF.items():
             button.clicked.connect(self.togglePowerPort)
+        for name, button in self.autoDew.items():
+            button.clicked.connect(self.toggleAutoDew)
         for name, button in self.powerBoot.items():
             button.clicked.connect(self.togglePowerBootPort)
+
+        # functional signals
+        self.app.power.signals.version.connect(self.setGuiVersion)
 
         # cyclic tasks
         self.app.update1s.connect(self.updatePowerGui)
@@ -108,6 +125,29 @@ class Power(object):
 
         return True
 
+    def setGuiVersion(self, version):
+        """
+        setGuiVersion enables and disables the gui elements according to the recognized
+        version the UPB.
+
+        :param version:
+        :return:
+        """
+
+        if version == 1:
+            self.ui.groupAutoDew1.setVisible(True)
+            self.ui.groupAutoDew2.setVisible(False)
+            self.ui.groupDewC.setVisible(False)
+            self.ui.groupPortUSB.setVisible(False)
+            self.ui.groupAdjustableOutput.setVisible(False)
+
+        elif version == 2:
+            self.ui.groupAutoDew1.setVisible(False)
+            self.ui.groupAutoDew2.setVisible(True)
+            self.ui.groupDewC.setVisible(True)
+            self.ui.groupPortUSB.setVisible(True)
+            self.ui.groupAdjustableOutput.setVisible(True)
+
     def updatePowerGui(self):
         """
         updatePowerGui changes the style of the button related to the state of the Pegasus
@@ -137,6 +177,10 @@ class Power(object):
             value = self.app.power.data.get(f'POWER_CURRENT_{name}', 0)
             button.setText(f'{value:4.2f}')
 
+        for name, button in self.dew.items():
+            value = self.app.power.data.get(f'DEW_{name}', 0)
+            button.setText(f'{value:3.0f}')
+
         for name, button in self.label.items():
             value = self.app.power.data.get(f'POWER_LABEL_{name}', f'Power {name}')
             button.setText(value)
@@ -162,8 +206,25 @@ class Power(object):
         value = self.app.power.data.get('DEW_CURRENT_C', 0)
         self.ui.dewCurrentC.setText('{0:4.2f}'.format(value))
 
-        value = self.app.power.data.get('AUTO_DEW_ENABLED', False)
-        self.ui.autoDew.setChecked(value)
+        if self.app.power.versionUPB == 1:
+            value = self.app.power.data.get('AUTO_DEW_ENABLED', False)
+            self.ui.autoDew.setChecked(value)
+        else:
+            #value = self.app.power.data.get('DEW_A', False)
+            #self.ui.autoDewA.setChecked(value)
+            #value = self.app.power.data.get('DEW_B', False)
+            #self.ui.autoDewB.setChecked(value)
+            #value = self.app.power.data.get('DEW_C', False)
+            #self.ui.autoDewC.setChecked(value)
+            value = self.app.power.data.get('ADJUSTABLE_VOLTAGE_VALUE', 0)
+            self.ui.adjustableOutput.setText(f'{value:4.2f}')
+
+            for name, button in self.portUSB.items():
+                value = self.app.power.data.get(f'PORT_{name}', False)
+                if value:
+                    self.changeStyleDynamic(button, 'running', True)
+                else:
+                    self.changeStyleDynamic(button, 'running', False)
 
         value = self.app.power.data.get('ENABLED', False)
         if value:
@@ -248,4 +309,46 @@ class Power(object):
         """
 
         suc = self.app.power.sendAutoDew(value=self.ui.autoDew.isChecked())
+        return suc
+
+    def toggleAutoDew(self):
+        """
+        toggleAutoDew  toggles the state of the power switch
+        :return: success
+        """
+
+        for name, button in self.autoDew.items():
+            if button != self.sender():
+                continue
+            suc = self.app.power.toggleAutoDewPort(port=name)
+        return suc
+
+    def setAdjustableOutput(self):
+        """
+        setAdjustableOutput
+
+        :return: true fot test purpose
+        """
+
+        actValue = self.app.power.data.get('ADJUSTABLE_VOLTAGE_VALUE', 0)
+
+        if actValue is None:
+            return False
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getDouble(self,
+                                  'Set Voltage Output',
+                                  'Value (0-15):',
+                                  actValue,
+                                  0,
+                                  15,
+                                  1,
+                                  PyQt5.QtCore.Qt.WindowFlags(),
+                                  0.1,
+                                  )
+
+        if not ok:
+            return False
+
+        suc = self.app.power.sendAdjustableOutput(value=value)
         return suc

@@ -157,78 +157,79 @@ class Power(object):
         :return: success for test
         """
 
-        value = self.app.power.data.get('WEATHER_TEMPERATURE', 0)
+        value = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
         self.ui.powerTemp.setText('{0:4.1f}'.format(value))
-        value = self.app.power.data.get('WEATHER_HUMIDITY', 0)
+        value = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
         self.ui.powerHumidity.setText('{0:3.0f}'.format(value))
-        value = self.app.power.data.get('WEATHER_DEWPOINT', 0)
+        value = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
         self.ui.powerDewPoint.setText('{0:4.1f}'.format(value))
 
         for name, button in self.powerOnOFF.items():
-            value = self.app.power.data.get(f'POWER_CONTROL_{name}', False)
+            value = self.app.power.data.get(f'POWER_CONTROL.POWER_CONTROL_{name}', False)
             if value:
                 self.changeStyleDynamic(button, 'running', True)
             else:
                 self.changeStyleDynamic(button, 'running', False)
 
-        for name, button in self.powerOnOFF.items():
-            value = self.app.power.data.get(f'POWER_PORT_{name}', False)
+        for name, button in self.powerBoot.items():
+            value = self.app.power.data.get(f'POWER_ON_BOOT.POWER_PORT_{name}', False)
             button.setChecked(value)
 
         for name, button in self.current.items():
-            value = self.app.power.data.get(f'POWER_CURRENT_{name}', 0)
+            value = self.app.power.data.get(f'POWER_CURRENT.POWER_CURRENT_{name}', 0)
             button.setText(f'{value:4.2f}')
 
         for name, button in self.dew.items():
-            value = self.app.power.data.get(f'DEW_{name}', 0)
+            value = self.app.power.data.get(f'DEW_PWM.DEW_{name}', 0)
             button.setText(f'{value:3.0f}')
 
         for name, button in self.label.items():
-            value = self.app.power.data.get(f'POWER_LABEL_{name}', f'Power {name}')
+            value = self.app.power.data.get(f'POWER_CONTROL_LABEL.POWER_LABEL_{name}',
+                                            f'Power {name}')
             button.setText(value)
 
-        value = self.app.power.data.get('CONSUMPTION_AVG_AMPS', 0)
+        value = self.app.power.data.get('POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS', 0)
         self.ui.consumptionAvgAmps.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('CONSUMPTION_AMP_HOURS', 0)
+        value = self.app.power.data.get('POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS', 0)
         self.ui.consumptionAmpHours.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('CONSUMPTION_WATT_HOURS', 0)
+        value = self.app.power.data.get('POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS', 0)
         self.ui.consumptionWattHours.setText('{0:4.2f}'.format(value))
 
-        value = self.app.power.data.get('SENSOR_VOLTAGE', 0)
+        value = self.app.power.data.get('POWER_SENSORS.SENSOR_VOLTAGE', 0)
         self.ui.sensorVoltage.setText('{0:4.1f}'.format(value))
-        value = self.app.power.data.get('SENSOR_CURRENT', 0)
+        value = self.app.power.data.get('POWER_SENSORS.SENSOR_CURRENT', 0)
         self.ui.sensorCurrent.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('SENSOR_POWER', 0)
+        value = self.app.power.data.get('POWER_SENSORS.SENSOR_POWER', 0)
         self.ui.sensorPower.setText('{0:4.2f}'.format(value))
 
-        value = self.app.power.data.get('DEW_CURRENT_A', 0)
+        value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_A', 0)
         self.ui.dewCurrentA.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('DEW_CURRENT_B', 0)
+        value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_B', 0)
         self.ui.dewCurrentB.setText('{0:4.2f}'.format(value))
-        value = self.app.power.data.get('DEW_CURRENT_C', 0)
+        value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_C', 0)
         self.ui.dewCurrentC.setText('{0:4.2f}'.format(value))
 
         if self.app.power.versionUPB == 1:
-            value = self.app.power.data.get('AUTO_DEW_ENABLED', False)
+            value = self.app.power.data.get('AUTO_DEW.AUTO_DEW_ENABLED', False)
             self.ui.autoDew.setChecked(value)
         else:
-            #value = self.app.power.data.get('DEW_A', False)
-            #self.ui.autoDewA.setChecked(value)
-            #value = self.app.power.data.get('DEW_B', False)
-            #self.ui.autoDewB.setChecked(value)
-            #value = self.app.power.data.get('DEW_C', False)
-            #self.ui.autoDewC.setChecked(value)
-            value = self.app.power.data.get('ADJUSTABLE_VOLTAGE_VALUE', 0)
+            value = self.app.power.data.get('AUTO_DEW.DEW_A', False)
+            self.ui.autoDewA.setChecked(value)
+            value = self.app.power.data.get('AUTO_DEW.DEW_B', False)
+            self.ui.autoDewB.setChecked(value)
+            value = self.app.power.data.get('AUTO_DEW.DEW_C', False)
+            self.ui.autoDewC.setChecked(value)
+            value = self.app.power.data.get('ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE', 0)
             self.ui.adjustableOutput.setText(f'{value:4.2f}')
 
             for name, button in self.portUSB.items():
-                value = self.app.power.data.get(f'PORT_{name}', False)
+                value = self.app.power.data.get(f'USB_PORT_CONTROL.PORT_{name}', False)
                 if value:
                     self.changeStyleDynamic(button, 'running', True)
                 else:
                     self.changeStyleDynamic(button, 'running', False)
 
-        value = self.app.power.data.get('ENABLED', False)
+        value = self.app.power.data.get('USB_HUB_CONTROL.ENABLED', False)
         if value:
             self.changeStyleDynamic(self.ui.hubUSB, 'running', True)
         else:
@@ -344,7 +345,7 @@ class Power(object):
         :return: true fot test purpose
         """
 
-        actValue = self.app.power.data.get('ADJUSTABLE_VOLTAGE_VALUE', 0)
+        actValue = valueToInt(self.ui.adjustableOutput.text())
 
         if actValue is None:
             return False

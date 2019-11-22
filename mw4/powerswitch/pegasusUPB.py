@@ -123,7 +123,8 @@ class PegasusUPB(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
 
             # only version 2 has 3 dew heaters
             if element == 'DEW_C':
@@ -151,7 +152,8 @@ class PegasusUPB(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getSwitch(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
 
             # this combination only exists in version 1
             if propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':
@@ -179,7 +181,8 @@ class PegasusUPB(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getText(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             # print(propertyName, element, value)
 
         return True

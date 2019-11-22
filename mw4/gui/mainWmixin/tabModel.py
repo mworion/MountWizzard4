@@ -281,9 +281,10 @@ class Model(object):
             self.logger.info('Solving result is missing')
             return False
 
+        mPoint.update(result)
+
         if result['success']:
             # processing only the model points which are OK
-            mPoint.update(result)
             raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],
                                                       mPoint['decJ2000S'],
                                                       mPoint['julianDate'])

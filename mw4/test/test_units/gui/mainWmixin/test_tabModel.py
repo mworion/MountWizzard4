@@ -29,7 +29,6 @@ import skyfield.api
 from mountcontrol.modelStar import ModelStar
 # local import
 from mw4.test.test_units.setupQt import setupQt
-from mw4.definitions import Solution, Solve, MPoint, MData, MParam, IParam, Point, RData
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -117,71 +116,27 @@ def test_updateProgress_8():
     assert not suc
 
 
-def test_addResultToModel_1():
-    class Julian:
-        ut1 = 2458635.168
-
-    solve = Solve(raJ2000=skyfield.api.Angle(degrees=0),
-                  decJ2000=skyfield.api.Angle(degrees=0),
-                  angle=0, scale=1, error=1, flipped=False, path='')
-    result = Solution(success=True, solve=solve, message='')
-    mPoint = MPoint(mParam=tuple(),
-                    iParam=tuple(),
-                    point=tuple(),
-                    mData=MData(raMJNow=skyfield.api.Angle(degrees=0),
-                                decMJNow=skyfield.api.Angle(degrees=0),
-                                raSJNow=skyfield.api.Angle(degrees=0),
-                                decSJNow=skyfield.api.Angle(degrees=0),
-                                sidereal=0,
-                                julian=Julian(),
-                                pierside='E'),
-                    rData=tuple())
-
-    mPoint = app.mainW.addResultToModel(mPoint=mPoint, result=result)
-    assert mPoint.mData.raSJNow.hours == 0.016163840047991124
-    assert mPoint.mData.decSJNow.degrees == 0.10534288528388286
-
-
 def test_modelSolveDone_1():
-    suc = app.mainW.modelSolveDone(result=tuple())
-    assert not suc
-
-
-def test_modelSolveDone_2():
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='',
-                                  name='',
-                                  astrometry='',
-                                  timeout=10,
-                                  radius=1,
-                                  ),
-                    iParam=tuple(),
-                    point=tuple(),
-                    mData=tuple(),
-                    rData=tuple())
-    app.mainW.resultQueue.put(mPoint)
-    suc = app.mainW.modelSolveDone(result=Solve)
+    suc = app.mainW.modelSolveDone(result={})
     assert not suc
 
 
 def test_modelSolveDone_3(qtbot):
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='',
-                                  name='',
-                                  astrometry='',
-                                  timeout=10,
-                                  radius=1,
-                                  ),
-                    iParam=tuple(),
-                    point=tuple(),
-                    mData=tuple(),
-                    rData=tuple())
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3}
 
     app.mainW.resultQueue.put(mPoint)
-    solve = Solve(raJ2000=0, decJ2000=0, angle=0, scale=1, error=1, flipped=False, path='')
-    result = Solution(success=False, solve=solve, message='test')
+
+    result = {'raJ2000S': 0,
+              'decJ2000S': 0,
+              'angleS': 0,
+              'scaleS': 1,
+              'errorRMS_S': 1,
+              'flippedS': False,
+              'success': False,
+              'message': 'test',
+              }
+
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.modelSolveDone(result=result)
         assert suc
@@ -189,57 +144,57 @@ def test_modelSolveDone_3(qtbot):
 
 
 def test_modelSolveDone_6():
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3}
+
+    app.mainW.resultQueue.put(mPoint)
+
     class Julian:
         ut1 = 2458635.168
 
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='',
-                                  name='',
-                                  timeout=10,
-                                  radius=1,
-                                  astrometry=''),
-                    iParam=tuple(),
-                    point=tuple(),
-                    mData=MData(raMJNow=skyfield.api.Angle(hours=0),
-                                decMJNow=skyfield.api.Angle(degrees=0),
-                                raSJNow=skyfield.api.Angle(degrees=0),
-                                decSJNow=skyfield.api.Angle(degrees=0),
-                                sidereal=0,
-                                julian=Julian(),
-                                pierside='E'),
-                    rData=RData(errorRA=1,
-                                errorDEC=2,
-                                errorRMS=3))
+    result = {'raJ2000S': skyfield.api.Angle(hours=0),
+              'decJ2000S': skyfield.api.Angle(degrees=0),
+              'angleS': 0,
+              'scaleS': 1,
+              'errorRMS_S': 1,
+              'flippedS': False,
+              'success': True,
+              'message': 'test',
+              'raJNowM': skyfield.api.Angle(hours=0),
+              'decJNowM': skyfield.api.Angle(degrees=0),
+              'raJNowS': skyfield.api.Angle(hours=0),
+              'decJNowS': skyfield.api.Angle(degrees=0),
+              'siderealTime': 0,
+              'julianDate': Julian(),
+              'pierside': 'E',
+              'errorRA': 1,
+              'errorDEC': 2,
+              'errorRMS': 3,
+              }
 
     app.mainW.resultQueue.put(mPoint)
-    solve = Solve(raJ2000=skyfield.api.Angle(hours=0),
-                  decJ2000=skyfield.api.Angle(degrees=0),
-                  angle=0, scale=1, error=1, flipped=False, path='')
-    result = Solution(success=True, solve=solve, message='')
     suc = app.mainW.modelSolveDone(result=result)
     assert suc
 
 
 def test_modelSolveDone_7():
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='',
-                                  name='',
-                                  astrometry='',
-                                  timeout=10,
-                                  radius=1,
-                                  ),
-                    iParam=tuple(),
-                    point=tuple(),
-                    mData=tuple(),
-                    rData=tuple())
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3}
+
+    result = {'raJ2000S': skyfield.api.Angle(hours=0),
+              'decJ2000S': skyfield.api.Angle(degrees=0),
+              'angleS': 0,
+              'scaleS': 1,
+              'errorRMS_S': 1,
+              'flippedS': False,
+              'success': True,
+              'message': 'test',
+              }
 
     app.mainW.resultQueue.put(mPoint)
 
-    result = (True, 'test')
     suc = app.mainW.modelSolveDone(result=result)
-    assert not suc
+    assert suc
 
 
 def test_modelSolve_1():
@@ -248,17 +203,14 @@ def test_modelSolve_1():
 
 
 def test_modelSolve_2():
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='',
-                                  name='',
-                                  timeout=10,
-                                  radius=1,
-                                  astrometry=''),
-                    iParam=tuple(),
-                    point=tuple(),
-                    mData=tuple(),
-                    rData=tuple())
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'searchRadius': 1,
+              'solveTimeout': 10,
+
+              }
+
     app.mainW.solveQueue.put(mPoint)
     with mock.patch.object(app.astrometry,
                            'solveThreading'):
@@ -272,20 +224,15 @@ def test_modelImage_1():
 
 
 def test_modelImage_2():
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='',
-                                  name='',
-                                  timeout=10,
-                                  radius=1,
-                                  astrometry=''),
-                    iParam=IParam(expTime=1,
-                                  binning=1,
-                                  subFrame=100,
-                                  fastReadout=False),
-                    point=tuple(),
-                    mData=tuple(),
-                    rData=tuple())
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              }
+
     app.mainW.imageQueue.put(mPoint)
     with mock.patch.object(app.imaging,
                            'expose'):
@@ -300,18 +247,17 @@ def test_modelSlew_1():
 
 def test_modelSlew_2():
     app.mainW.deviceStat['dome'] = False
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='',
-                                  name='',
-                                  timeout=10,
-                                  radius=1,
-                                  astrometry=''),
-                    iParam=tuple(),
-                    point=Point(azimuth=0,
-                                altitude=0),
-                    mData=tuple(),
-                    rData=tuple())
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              }
+
     app.mainW.slewQueue.put(mPoint)
     with mock.patch.object(app.imaging,
                            'expose'):
@@ -321,18 +267,16 @@ def test_modelSlew_2():
 
 def test_modelSlew_3():
     app.mainW.deviceStat['dome'] = True
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='',
-                                  name='',
-                                  timeout=10,
-                                  radius=1,
-                                  astrometry=''),
-                    iParam=tuple(),
-                    point=Point(azimuth=0,
-                                altitude=0),
-                    mData=tuple(),
-                    rData=tuple())
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              }
     app.mainW.slewQueue.put(mPoint)
     with mock.patch.object(app.imaging,
                            'expose'):
@@ -381,6 +325,7 @@ def test_cancelFull(qtbot):
 
 def test_retrofitModel_1():
     app.mount.model.starList = list()
+
     point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
                       number=1,
                       errorRMS=10,
@@ -390,7 +335,7 @@ def test_retrofitModel_1():
     stars.append(point)
     stars.append(point)
 
-    mPoint = MPoint
+    mPoint = {}
     model = list()
     model.append(mPoint)
     model.append(mPoint)
@@ -410,7 +355,7 @@ def test_retrofitModel_2():
     app.mount.model.addStar(point)
     app.mount.model.addStar(point)
 
-    mPoint = MPoint
+    mPoint = {}
     model = list()
     model.append(mPoint)
     model.append(mPoint)
@@ -429,7 +374,7 @@ def test_retrofitModel_3():
     app.mount.model.addStar(point)
     app.mount.model.addStar(point)
 
-    mPoint = MPoint
+    mPoint = {}
     model = list()
     model.append(mPoint)
     model.append(mPoint)
@@ -449,7 +394,7 @@ def test_retrofitModel_4():
     app.mount.model.addStar(point)
     app.mount.model.addStar(point)
 
-    mPoint = MPoint
+    mPoint = {}
     model = list()
     model.append(mPoint)
     model.append(mPoint)
@@ -464,18 +409,18 @@ def test_saveModel_1():
 
 
 def test_saveModel_2():
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='testPath',
-                                  name='test',
-                                  timeout=10,
-                                  radius=1,
-                                  astrometry='astrometry'),
-                    iParam=tuple(),
-                    point=Point(azimuth=0,
-                                altitude=0),
-                    mData=tuple(),
-                    rData=tuple())
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': 'testPath',
+              'name': 'test',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              }
+
     model = list()
     model.append(mPoint)
     model.append(mPoint)
@@ -485,30 +430,31 @@ def test_saveModel_2():
 
 
 def test_saveModel_3():
+    class Julian:
+        ut1 = 2458635.168
 
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='testPath',
-                                  name='test',
-                                  timeout=10,
-                                  radius=1,
-                                  astrometry='astrometry'),
-                    iParam=IParam(expTime=1,
-                                  binning=1,
-                                  subFrame=100,
-                                  fastReadout=False),
-                    point=Point(azimuth=0,
-                                altitude=0),
-                    mData=MData(raMJNow=skyfield.api.Angle(hours=0),
-                                decMJNow=skyfield.api.Angle(degrees=0),
-                                raSJNow=skyfield.api.Angle(hours=0),
-                                decSJNow=skyfield.api.Angle(degrees=0),
-                                sidereal=skyfield.api.Angle(hours=0),
-                                julian=app.mount.obsSite.timeJD,
-                                pierside='E'),
-                    rData=RData(errorRA=1,
-                                errorDEC=2,
-                                errorRMS=3))
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': 'testPath',
+              'name': 'test',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              'raJNowM': skyfield.api.Angle(hours=0),
+              'decJNowM': skyfield.api.Angle(degrees=0),
+              'raJNowS': skyfield.api.Angle(hours=0),
+              'decJNowS': skyfield.api.Angle(degrees=0),
+              'siderealTime': 0,
+              'julianDate': Julian(),
+              'pierside': 'E',
+              'errorRA': 1,
+              'errorDEC': 2,
+              'errorRMS': 3,
+              }
+
     model = list()
     model.append(mPoint)
     model.append(mPoint)
@@ -519,30 +465,34 @@ def test_saveModel_3():
 
 
 def test_saveModel_4():
+    class Julian:
+        @staticmethod
+        def utc_iso():
+            return 2458635.168
 
-    mPoint = MPoint(mParam=MParam(number=3,
-                                  count=3,
-                                  path='testPath',
-                                  name='test',
-                                  timeout=10,
-                                  radius=1,
-                                  astrometry='astrometry'),
-                    iParam=IParam(expTime=1,
-                                  binning=1,
-                                  subFrame=100,
-                                  fastReadout=False),
-                    point=Point(azimuth=0,
-                                altitude=0),
-                    mData=MData(raMJNow=skyfield.api.Angle(hours=0),
-                                decMJNow=skyfield.api.Angle(degrees=0),
-                                raSJNow=skyfield.api.Angle(hours=0),
-                                decSJNow=skyfield.api.Angle(degrees=0),
-                                sidereal=skyfield.api.Angle(hours=0),
-                                julian=app.mount.obsSite.timeJD,
-                                pierside='E'),
-                    rData=RData(errorRA=1,
-                                errorDEC=2,
-                                errorRMS=3))
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': 'testPath',
+              'name': 'test',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              'raJ2000S': skyfield.api.Angle(hours=0),
+              'decJ2000S': skyfield.api.Angle(degrees=0),
+              'raJNowM': skyfield.api.Angle(hours=0),
+              'decJNowM': skyfield.api.Angle(degrees=0),
+              'raJNowS': skyfield.api.Angle(hours=0),
+              'decJNowS': skyfield.api.Angle(degrees=0),
+              'siderealTime': skyfield.api.Angle(hours=0),
+              'julianDate': Julian(),
+              'pierside': 'E',
+              'errorRA': 1,
+              'errorDEC': 2,
+              'errorRMS': 3,
+              }
     model = list()
     model.append(mPoint)
     model.append(mPoint)
@@ -566,70 +516,86 @@ def test_generateBuildDataFromJSON_1():
             "altitude": 44.556745182012854,
             "azimuth": 37.194805194805184,
             "binning": 1.0,
-            "count": 0,
-            "decMJNow": 64.3246,
-            "decSJNow": 64.32841185357267,
+            "countSequence": 0,
+            "decJNowS": 64.3246,
+            "decJNowM": 64.32841185357267,
             "errorDEC": -229.0210134131381,
             "errorRMS": 237.1,
-            "errorRa": -61.36599559380768,
-            "expTime": 3.0,
+            "errorRA": -61.36599559380768,
+            "exposureTime": 3.0,
             "fastReadout": True,
-            "julian": "2019-06-08T08:57:57Z",
+            "julianDate": "2019-06-08T08:57:57Z",
             "name": "m-file-2019-06-08-08-57-44",
-            "number": 3,
-            "path": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08-57-44/image-000.fits",
+            "lenSequence": 3,
+            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
+                         "-57-44/image-000.fits",
             "pierside": "W",
-            "raMJNow": 8.42882,
-            "raSJNow": 8.427692953132278,
-            "sidereal": 12.5,
+            "raJNowS": 8.42882,
+            "raJNowM": 8.427692953132278,
+            "siderealTime": 12.5,
             "subFrame": 100.0
         },
     ]
 
     build = app.mainW.generateBuildDataFromJSON(inputData)
-    assert build[0].mCoord.dec.degrees == 64.3246
+    assert build[0].sCoord.dec.degrees == 64.3246
 
 
 def test_generateBuildData_1():
     inputData = [
-        MPoint(MParam,
-               MPoint,
-               IParam,
-               MData(raMJNow=skyfield.api.Angle(hours=0),
-                     decMJNow=skyfield.api.Angle(degrees=64.3246),
-                     raSJNow=skyfield.api.Angle(hours=0),
-                     decSJNow=skyfield.api.Angle(degrees=0),
-                     sidereal=0,
-                     julian=0,
-                     pierside='E'),
-               RData)
+        {
+            "altitude": 44.556745182012854,
+            "azimuth": 37.194805194805184,
+            "binning": 1.0,
+            "countSequence": 0,
+            "decJNowS": 64.3246,
+            "decJNowM": 64.32841185357267,
+            "errorDEC": -229.0210134131381,
+            "errorRMS": 237.1,
+            "errorRA": -61.36599559380768,
+            "exposureTime": 3.0,
+            "fastReadout": True,
+            "julianDate": "2019-06-08T08:57:57Z",
+            "name": "m-file-2019-06-08-08-57-44",
+            "lenSequence": 3,
+            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
+                         "-57-44/image-000.fits",
+            "pierside": "W",
+            "raJNowS": 8.42882,
+            "raJNowM": 8.427692953132278,
+            "siderealTime": 12.5,
+            "subFrame": 100.0
+        },
     ]
 
     build = app.mainW.generateBuildData(inputData)
-    assert build[0].mCoord.dec.degrees == 64.3246
+    assert build[0].sCoord.dec.degrees == 64.3246
 
 
 def test_modelFinished_1(qtbot):
-    inputData = MPoint(mParam=MParam(number=3,
-                                     count=3,
-                                     path='',
-                                     name='',
-                                     astrometry='',
-                                     timeout=10,
-                                     radius=1,
-                                     ),
-                       iParam=tuple(),
-                       point=tuple(),
-                       mData=MData(raMJNow=skyfield.api.Angle(hours=0),
-                                   decMJNow=skyfield.api.Angle(degrees=64.3246),
-                                   raSJNow=skyfield.api.Angle(hours=0),
-                                   decSJNow=skyfield.api.Angle(degrees=0),
-                                   sidereal=0,
-                                   julian=0,
-                                   pierside='E'),
-                       rData=RData(errorRA=1,
-                                   errorDEC=2,
-                                   errorRMS=3))
+    class Julian:
+        ut1 = 2458635.168
+
+    inputData = {
+         'raJ2000S': skyfield.api.Angle(hours=0),
+         'decJ2000S': skyfield.api.Angle(degrees=0),
+         'angleS': 0,
+         'scaleS': 1,
+         'errorRMS_S': 1,
+         'flippedS': False,
+         'success': True,
+         'message': 'test',
+         'raJNowM': skyfield.api.Angle(hours=0),
+         'decJNowM': skyfield.api.Angle(degrees=0),
+         'raJNowS': skyfield.api.Angle(hours=0),
+         'decJNowS': skyfield.api.Angle(degrees=0),
+         'siderealTime': 0,
+         'julianDate': Julian(),
+         'pierside': 'E',
+         'errorRA': 1,
+         'errorDEC': 2,
+         'errorRMS': 3,
+         }
 
     app.mainW.modelQueue.put(inputData)
 
@@ -646,26 +612,30 @@ def test_modelFinished_1(qtbot):
 
 
 def test_modelFinished_2(qtbot):
-    inputData = MPoint(mParam=MParam(number=3,
-                                     count=3,
-                                     path='',
-                                     name='',
-                                     astrometry='',
-                                     timeout=10,
-                                     radius=1,
-                                     ),
-                       iParam=tuple(),
-                       point=tuple(),
-                       mData=MData(raMJNow=skyfield.api.Angle(hours=0),
-                                   decMJNow=skyfield.api.Angle(degrees=64.3246),
-                                   raSJNow=skyfield.api.Angle(hours=0),
-                                   decSJNow=skyfield.api.Angle(degrees=0),
-                                   sidereal=0,
-                                   julian=0,
-                                   pierside='E'),
-                       rData=RData(errorRA=1,
-                                   errorDEC=2,
-                                   errorRMS=3))
+    class Julian:
+        ut1 = 2458635.168
+
+    inputData = {
+         'raJ2000S': skyfield.api.Angle(hours=0),
+         'decJ2000S': skyfield.api.Angle(degrees=0),
+         'angleS': 0,
+         'scaleS': 1,
+         'errorRMS_S': 1,
+         'flippedS': False,
+         'success': True,
+         'message': 'test',
+         'raJNowM': skyfield.api.Angle(hours=0),
+         'decJNowM': skyfield.api.Angle(degrees=0),
+         'raJNowS': skyfield.api.Angle(hours=0),
+         'decJNowS': skyfield.api.Angle(degrees=0),
+         'siderealTime': 0,
+         'julianDate': Julian(),
+         'pierside': 'E',
+         'errorRA': 1,
+         'errorDEC': 2,
+         'errorRMS': 3,
+         }
+
 
     app.mainW.modelQueue.put(inputData)
 

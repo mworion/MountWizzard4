@@ -4,7 +4,7 @@ MW4 Installation
 When starting with the installation, the installation of python3.7 should be successful
 finished. A good check is to open a terminal (available on all platforms) and run the command
 
-.. code-block::
+.. code-block:: python
 
     python3.7 --version
     virtualenv --version

@@ -506,7 +506,7 @@ def test_saveModel_4():
 
 def test_collectModelData():
     app.mainW.modelQueue.put('test')
-    model = app.mainW.collectModelData()
+    model = app.mainW.collectModelDataFromQueue()
     assert model[0] == 'test'
 
 

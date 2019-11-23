@@ -97,6 +97,7 @@ class Model(object):
         self.collector = QMultiWait()
         self.startModeling = None
         self.modelName = ''
+        self.model = []
         self.imageDir = ''
 
         # func signals
@@ -283,7 +284,11 @@ class Model(object):
 
         mPoint.update(result)
 
-        if result['success']:
+        # todo test
+        if not (mPoint['countSequence'] % 3):
+            mPoint['success'] = False
+
+        if mPoint['success']:
             # processing only the model points which are OK
             raJNowS, decJNowS = transform.J2000ToJNow(mPoint['raJ2000S'],
                                                       mPoint['decJ2000S'],
@@ -561,7 +566,7 @@ class Model(object):
 
         return True
 
-    def retrofitModel(self, model=None):
+    def retrofitModel(self):
         """
         retrofitModel reads the actual model points and results out of the mount computer
         and adds the optimized (recalculated) error values to the point. that's necessary,
@@ -569,31 +574,26 @@ class Model(object):
         when programming a new model, all point will be recalculated be the mount
         computer an get a new error value which is based on the new model.
 
-        :param model:
         :return: updated model
         """
 
-        if model is None:
-            self.logger.debug('model is None')
-            return list()
-
         starList = self.app.mount.model.starList
 
-        if len(starList) != len(model):
+        if len(starList) != len(self.model):
             text = f'length starList [{len(starList)}] and length '
             text += f'model [{len(model)}] is different'
             self.logger.debug(text)
-            return list()
+            self.model = []
 
         for i, mPoint in enumerate(model):
             mPoint['errorRMS'] = starList[i].errorRMS
             mPoint['errorRA'] = starList[i].errorRA()
             mPoint['errorDEC'] = starList[i].errorDEC()
 
-        return model
+        return true
 
     @staticmethod
-    def generateSaveModel(model=None):
+    def generateSaveModel():
         """
         generateSaveModel builds from the model file a format which could be serialized
         in json. this format will be used for storing model on file
@@ -603,7 +603,7 @@ class Model(object):
         """
 
         modelDataForSave = list()
-        for mPoint in model:
+        for mPoint in self.model:
             sPoint = dict()
             sPoint.update(mPoint)
             sPoint['raJNowM'] = sPoint['raJNowM'].hours
@@ -618,81 +618,55 @@ class Model(object):
             modelDataForSave.append(sPoint)
         return modelDataForSave
 
-    def saveModel(self, model=None, name=''):
+    def saveModel2(self):
+        """
+        saveModel2 is the second part of saving once the alignment model is reloaded.
+
+        :return: True for test purpose
+        """
+
+        # remove signal connection
+        self.app.mount.signals.alignDone.disconnect(self.saveModel2)
+
+        # write model data back from m9utn to model to be saved
+        self.retrofitModel()
+        saveData = self.generateSaveModel()
+
+        self.app.message.emit(f'writing model [{self.modelName}]', 0)
+
+        modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
+        with open(modelPath, 'w') as outfile:
+            json.dump(saveData,
+                      outfile,
+                      sort_keys=True,
+                      indent=4)
+
+        return True
+
+    def saveModel(self):
         """
         saveModel saves the model data for later use. with this data, the model could
         be reprogrammed without doing some imaging, it could be added with other data to
         extend the model to a broader base.
         in addition it should be possible to make som analyses with this data.
 
-        :param model:
-        :param name:
         :return: success
         """
 
-        if model is None:
-            return False
-        if not name:
-            return False
-        if len(model) < 3:
+        if len(self.model) < 3:
             self.logger.debug(f'only {len(model)} points available')
             return False
 
-        saveData = self.generateSaveModel(model)
+        # setting signal for callback when the model in memory is refreshed
+        self.app.mount.signals.alignDone.connect(self.saveModel2)
 
-        self.app.message.emit(f'writing model [{name}]', 0)
+        # starting refreshment thread
+        self.refreshModel()
 
-        modelPath = f'{self.app.mwGlob["modelDir"]}/{name}.model'
-        with open(modelPath, 'w') as outfile:
-            json.dump(saveData,
-                      outfile,
-                      sort_keys=True,
-                      indent=4)
         return True
 
-    def collectModelData(self):
-        """
-        collectModelData writes all model point from the queue to a data structure for
-        later use.
-
-        :return: model
-        """
-
-        model = list()
-        while not self.modelQueue.empty():
-            mPoint = self.modelQueue.get()
-            model.append(mPoint)
-
-        return model
-
     @staticmethod
-    def generateBuildDataFromJSON(model=None):
-        """
-        generateBuildDataFromJSON takes the model data and generates from it a data structure
-        needed for programming the model into the mount computer.
-
-        :param model:
-        :return: build
-        """
-
-        build = list()
-
-        for mPoint in model:
-
-            # combine data into structure
-            mCoord = (mPoint['raJNowM'], mPoint['decJNowM'])
-            sCoord = (mPoint['raJNowS'], mPoint['decJNowS'])
-            programmingPoint = AlignStar(mCoord=mCoord,
-                                         sCoord=sCoord,
-                                         sidereal=mPoint['siderealTime'],
-                                         pierside=mPoint['pierside'],
-                                         )
-            build.append(programmingPoint)
-
-        return build
-
-    @staticmethod
-    def generateBuildData(model=None):
+    def generateBuildData(model=[]):
         """
         generateBuildData takes the model data and generates from it a data structure
         needed for programming the model into the mount computer.
@@ -702,17 +676,13 @@ class Model(object):
         """
 
         build = list()
-
         for mPoint in model:
-
-            # combine data into structure
             programmingPoint = AlignStar(mCoord=(mPoint['raJNowM'], mPoint['decJNowM']),
                                          sCoord=(mPoint['raJNowS'], mPoint['decJNowS']),
                                          sidereal=mPoint['siderealTime'],
                                          pierside=mPoint['pierside'],
                                          )
             build.append(programmingPoint)
-
         return build
 
     def modelFinished(self):
@@ -726,8 +696,12 @@ class Model(object):
         :return: true for test purpose
         """
 
-        model = self.collectModelData()
-        build = self.generateBuildData(model=model)
+        # getting models before deleting queues
+        self.model = list()
+
+        while not self.modelQueue.empty():
+            mPoint = self.modelQueue.get()
+            model.append(mPoint)
 
         # stopping other activities
         self.defaultSignals()
@@ -736,13 +710,12 @@ class Model(object):
 
         # finally do it
         self.app.message.emit('Programming model to mount', 0)
+        build = self.generateBuildData(model=model)
         suc = self.app.mount.model.programAlign(build)
 
         if suc:
             self.app.message.emit('Model programmed with success', 0)
-            self.refreshModel()
-            model = self.retrofitModel(model=model)
-            self.saveModel(model=model, name=self.modelName)
+            self.saveModel()
         else:
             self.app.message.emit('Model programming error', 2)
 
@@ -769,7 +742,9 @@ class Model(object):
         if not points:
             return False
 
+        # looking for solving application
         astrometryApp = self.app.mainW.ui.astrometryDevice.currentText()
+
         if astrometryApp.startswith('No device'):
             return False
 
@@ -783,8 +758,13 @@ class Model(object):
         if not os.path.isdir(self.imageDir):
             return False
 
+        # now everything is prepared and we could start modeling
         self.clearQueues()
         self.app.message.emit(f'Modeling {self.modelName} started', 1)
+
+        # setting overall parameters
+        self.app.mount.settlingTime = self.app.mainW.ui.settleTimeMount.value()
+        self.app.dome.settlingTime = self.app.mainW.ui.settleTimeDome.value()
 
         # collection all necessary information
         exposureTime = self.app.mainW.ui.expTime.value()
@@ -793,23 +773,20 @@ class Model(object):
         fastReadout = self.app.mainW.ui.checkFastDownload.isChecked()
         solveTimeout = self.ui.solveTimeout.value()
         searchRadius = self.ui.searchRadius.value()
+        lenSequence = len(points)
 
-        # setting overall parameters
-        settleMount = self.app.mainW.ui.settleTimeMount.value()
-        settleDome = self.app.mainW.ui.settleTimeDome.value()
-        self.app.mount.settlingTime = settleMount
-        self.app.dome.settlingTime = settleDome
-
+        # preparation of signals and gui
         self.prepareGUI()
         self.prepareSignals()
         self.startModeling = time.time()
 
         # queuing modeling points
-        lenSequence = len(points)
         for countSequence, point in enumerate(points):
+
+            modelSet = dict()
+
             # define the path to the image file
             imagePath = f'{self.imageDir}/image-{countSequence:03d}.fits'
-            modelSet = dict()
 
             # populating the parameters
             modelSet['path'] = imagePath
@@ -827,8 +804,9 @@ class Model(object):
             modelSet['altitude'] = point[0]
             modelSet['azimuth'] = point[1]
 
-            # transfer to working in a queue with necessary data
+            # putting to queue
             self.slewQueue.put(copy.copy(modelSet))
+
         # kick off modeling
         self.modelSlew()
 
@@ -896,7 +874,7 @@ class Model(object):
             self.app.message.emit('Combined models have more than 99 points', 2)
             return False
 
-        build = self.generateBuildDataFromJSON(modelJSON)
+        build = self.generateBuildData(modelJSON)
 
         # finally do it
         self.app.message.emit('Programming model to mount', 0)

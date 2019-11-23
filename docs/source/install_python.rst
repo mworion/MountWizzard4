@@ -54,7 +54,7 @@ python3.7. This could be done by adding an appropriate repo, which enables this 
 
 An example is from: https://linuxize.com/post/how-to-install-python-3-7-on-ubuntu-18-04/
 
-.. code-block::
+.. code-block:: python
 
     sudo add-apt-repository ppa:deadsnakes/ppa
     sudo apt-get update

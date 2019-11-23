@@ -50,7 +50,7 @@ Step 2
 Run one of the scripts following script. During installation a terminal window might open an
  show the progress of installation.
 
-.. code-block::
+.. code-block:: python
 
     MW4_Install.cmd         # Windows
     MW4_Install.sh          # Ubuntu
@@ -83,7 +83,7 @@ Step 3
 
 Run one of the scripts
 
-.. code-block::
+.. code-block:: python
 
     MW4_Run.cmd         # Windows
     MW4_Run.sh          # Ubuntu
@@ -115,7 +115,7 @@ Upgrade
 
 If you plan to upgrade MW4 to a newer release, you could use on of the
 
-.. code-block::
+.. code-block:: python
 
     MW4_Update.cmd         # Windows
     MW4_Update.sh          # Ubuntu

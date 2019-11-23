@@ -5,10 +5,10 @@ Welcome to MountWizzard4's (MW4) documentation!
     :maxdepth: 2
     :caption: Contents:
 
-    overview.rst
-    install_python.rst
-    install_mw4.rst
-    explain_main.rst
+    overview
+    install_python
+    install_mw4
+    explain_main
 
 Indices and tables
 ------------------

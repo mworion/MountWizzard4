@@ -59,3 +59,7 @@ pdf_documents = [('index', u'handbook', u'MountWizzard4', u'mworion'), ]
 # rst2pdf - name of the generated pdf
 # Sample rst2pdf doc - title of the pdf
 # Your Name - author name in the pdf
+
+html_theme_options = {
+    'logo': 'mw4.png',
+}

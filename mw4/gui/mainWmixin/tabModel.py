@@ -452,7 +452,7 @@ class Model(object):
 
     def clearQueues(self):
         """
-        clearQueues ensures that all used queues will be emptied before starting
+        clearQueues ensures that all used queues will be emptied.
 
         :return: true for test purpose
         """

@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -12412,6 +12412,21 @@ to mount</string>
        <string>Slew max</string>
       </property>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Keypad">
+    <attribute name="title">
+     <string>Keypad</string>
+    </attribute>
+    <widget class="QTextBrowser" name="virtualKeypad">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>5</y>
+       <width>291</width>
+       <height>426</height>
+      </rect>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Setting">

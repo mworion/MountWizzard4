@@ -859,26 +859,31 @@ class Model(object):
 
         self.app.message.emit('Programing stored models', 1)
         modelJSON = list()
-        for file in loadFilePath:
-            self.app.message.emit(f'Using model [{file}]', 0)
+        for index, file in enumerate(loadFilePath):
+            self.app.message.emit(f'Using model [{os.path.basename(file)}]', 0)
             with open(file, 'r') as infile:
                 model = json.load(infile)
                 modelJSON += model
 
+        if index:
+            postFix = 's'
+        else:
+            postFix = ''
+
         if len(modelJSON) > 99:
-            self.app.message.emit('Combined models have more than 99 points', 2)
+            self.app.message.emit(f'Model{postFix} has more than 99 points', 2)
             return False
 
         build = self.generateBuildData(modelJSON)
 
         # finally do it
-        self.app.message.emit('Programming model to mount', 0)
+        self.app.message.emit(f'Programming {index + 1} model{postFix} to mount', 0)
         suc = self.app.mount.model.programAlign(build)
 
         if suc:
-            self.app.message.emit('Model programmed with success', 0)
+            self.app.message.emit(f'Model{postFix} programmed with success', 1)
             self.refreshModel()
         else:
-            self.app.message.emit('Model programming error', 2)
+            self.app.message.emit('Programming error', 2)
 
         return suc

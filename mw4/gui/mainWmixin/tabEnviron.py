@@ -500,7 +500,7 @@ class EnvironGui(object):
 
         return True
 
-    def updateOnlineWeatherGui(self, data):
+    def updateOnlineWeatherGui(self, data=None):
         """
         updateOnlineWeatherGui takes the returned data from the dict to the Gui
 

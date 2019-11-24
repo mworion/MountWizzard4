@@ -58,7 +58,7 @@ def test_setupIcons():
 
 
 def test_updateRefractionParameters_1(qtbot):
-    app.mount.mountUp = True
+    app.mainW.deviceStat['mount'] = True
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
@@ -73,7 +73,7 @@ def test_updateRefractionParameters_1(qtbot):
 
 
 def test_updateRefractionParameters_2(qtbot):
-    app.mount.mountUp = False
+    app.mainW.deviceStat['mount'] = False
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
@@ -88,7 +88,7 @@ def test_updateRefractionParameters_2(qtbot):
 
 
 def test_updateRefractionParameters_3(qtbot):
-    app.mount.mountUp = True
+    app.mainW.deviceStat['mount'] = True
     app.mainW.ui.checkRefracNone.setChecked(True)
     app.mainW.ui.checkRefracNoTrack.setChecked(False)
     app.mount.obsSite.status = '0'
@@ -103,10 +103,11 @@ def test_updateRefractionParameters_3(qtbot):
 
 
 def test_updateRefractionParameters_4(qtbot):
-    app.mount.mountUp = True
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '1'
+    app.mainW.deviceStat['mount'] = True
+    app.mainW.refractionSource = 'sensorWeather'
     with mock.patch.object(app.mainW,
                            'movingAverageRefractionParameters',
                            return_value=(10, 10)):
@@ -118,7 +119,7 @@ def test_updateRefractionParameters_4(qtbot):
 
 
 def test_updateRefractionParameters_5(qtbot):
-    app.mount.mountUp = True
+    app.mainW.deviceStat['mount'] = True
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
@@ -133,7 +134,7 @@ def test_updateRefractionParameters_5(qtbot):
 
 
 def test_updateRefractionParameters_6(qtbot):
-    app.mount.mountUp = True
+    app.mainW.deviceStat['mount'] = True
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
@@ -148,7 +149,7 @@ def test_updateRefractionParameters_6(qtbot):
 
 
 def test_updateRefractionParameters_7(qtbot):
-    app.mount.mountUp = True
+    app.mainW.deviceStat['mount'] = True
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '0'
@@ -164,7 +165,7 @@ def test_updateRefractionParameters_7(qtbot):
 
 
 def test_updateRefractionParameters_8(qtbot):
-    app.mount.mountUp = True
+    app.mainW.deviceStat['mount'] = True
     app.mainW.ui.checkRefracNone.setChecked(False)
     app.mainW.ui.checkRefracNoTrack.setChecked(True)
     app.mount.obsSite.status = '1'
@@ -183,38 +184,38 @@ def test_updateRefractionParameters_8(qtbot):
 
 def test_clearEnvironGUI_1():
     app.mainW.clearSensorWeatherGui('test')
-    assert app.mainW.ui.environTemp.text() == '-'
-    assert app.mainW.ui.environPress.text() == '-'
-    assert app.mainW.ui.environDewPoint.text() == '-'
-    assert app.mainW.ui.environHumidity.text() == '-'
+    assert app.mainW.ui.sensorWeatherTemp.text() == '-'
+    assert app.mainW.ui.sensorWeatherPress.text() == '-'
+    assert app.mainW.ui.sensorWeatherDewPoint.text() == '-'
+    assert app.mainW.ui.sensorWeatherHumidity.text() == '-'
 
 
 def test_updateEnvironGUI_1():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_TEMPERATURE'] = 10.5
+    app.sensorWeather.name = 'test'
+    app.sensorWeather.data['WEATHER_TEMPERATURE'] = 10.5
     app.mainW.updateSensorWeatherGui('test')
-    assert app.mainW.ui.environTemp.text() == '10.5'
+    assert app.mainW.ui.sensorWeatherTemp.text() == '10.5'
 
 
 def test_updateEnvironGUI_2():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_PRESSURE'] = 10.5
+    app.sensorWeather.name = 'test'
+    app.sensorWeather.data['WEATHER_PRESSURE'] = 10.5
     app.mainW.updateSensorWeatherGui('test')
-    assert app.mainW.ui.environPress.text() == ' 10.5'
+    assert app.mainW.ui.sensorWeatherPress.text() == ' 10.5'
 
 
 def test_updateEnvironGUI_3():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_DEWPOINT'] = 10.5
+    app.sensorWeather.name = 'test'
+    app.sensorWeather.data['WEATHER_DEWPOINT'] = 10.5
     app.mainW.updateSensorWeatherGui('test')
-    assert app.mainW.ui.environDewPoint.text() == '10.5'
+    assert app.mainW.ui.sensorWeatherDewPoint.text() == '10.5'
 
 
 def test_updateEnvironGUI_4():
-    app.environ.name = 'test'
-    app.environ.data['WEATHER_HUMIDITY'] = 10
+    app.sensorWeather.name = 'test'
+    app.sensorWeather.data['WEATHER_HUMIDITY'] = 10
     app.mainW.updateSensorWeatherGui('test')
-    assert app.mainW.ui.environHumidity.text() == ' 10'
+    assert app.mainW.ui.sensorWeatherHumidity.text() == ' 10'
 
 
 def test_clearSkymeterGUI_1():
@@ -323,88 +324,15 @@ def test_updateClearOutside_2():
 
 def test_clearOpenWeatherMapGui_1():
     app.mainW.clearOnlineWeatherGui()
-    assert app.mainW.ui.weatherTemp.text() == '-'
-    assert app.mainW.ui.weatherPress.text() == '-'
-    assert app.mainW.ui.weatherHumidity.text() == '-'
-    assert app.mainW.ui.weatherCloudCover.text() == '-'
-    assert app.mainW.ui.weatherWindSpeed.text() == '-'
-    assert app.mainW.ui.weatherWindDir.text() == '-'
-    assert app.mainW.ui.weatherRainVol.text() == '-'
+    assert app.mainW.ui.onlineWeatherTemp.text() == '-'
+    assert app.mainW.ui.onlineWeatherPress.text() == '-'
+    assert app.mainW.ui.onlineWeatherHumidity.text() == '-'
+    assert app.mainW.ui.onlineWeatherCloudCover.text() == '-'
+    assert app.mainW.ui.onlineWeatherWindSpeed.text() == '-'
+    assert app.mainW.ui.onlineWeatherWindDir.text() == '-'
+    assert app.mainW.ui.onlineWeatherRainVol.text() == '-'
 
 
 def test_updateOpenWeatherMapGui_1():
     suc = app.mainW.updateOnlineWeatherGui()
     assert not suc
-
-
-def test_updateOpenWeatherMapGui_2():
-    class Test:
-        @staticmethod
-        def json():
-            val = {}
-            return val
-    suc = app.mainW.updateOnlineWeatherGui(Test())
-    assert not suc
-
-
-def test_updateOpenWeatherMapGui_3():
-    class Test:
-        @staticmethod
-        def json():
-            val = {'list': []}
-            return val
-    suc = app.mainW.updateOnlineWeatherGui(Test())
-    assert not suc
-
-
-def test_updateOpenWeatherMapGui_4():
-    class Test:
-        @staticmethod
-        def json():
-            data = {'main': {'temp': 290,
-                             'grnd_level': 1000,
-                             'humidity': 50,
-                             },
-                    'clouds': {'all': 40,
-                               },
-                    'wind': {'speed': 100,
-                             'deg': 300,
-                             },
-                    'rain': {'3h': 10,
-                             }
-                    }
-            val = {'list': [data]}
-            return val
-    suc = app.mainW.updateOnlineWeatherGui(Test())
-    assert suc
-
-
-def test_updateOpenWeatherMap_1():
-    app.mainW.ui.isOnline.setChecked(False)
-    app.mainW.ui.openWeatherMapKey.setText('')
-
-    suc = app.mainW.updateOpenWeatherMapData()
-    assert not suc
-
-
-def test_updateOpenWeatherMap_2():
-    app.mainW.ui.isOnline.setChecked(True)
-    app.mainW.ui.openWeatherMapKey.setText('')
-
-    suc = app.mainW.updateOpenWeatherMapData()
-    assert not suc
-
-
-def test_updateOpenWeatherMap_3():
-    app.mainW.ui.isOnline.setChecked(True)
-    app.mainW.ui.openWeatherMapKey.setText('key')
-
-    suc = app.mainW.updateOpenWeatherMapData()
-    assert suc
-
-
-def test_getDewPoint():
-    temp = 20
-    hum = 50
-    value = app.mainW.getDewPoint(temp, hum)
-    assert value == 9.254294282076941

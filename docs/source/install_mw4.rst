@@ -14,7 +14,7 @@ python it should say at least 3.7.2, better 3.7.5.
 
 To install MW4 on your computer, there are some support scripts available for Windows, OSx
 and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online
-available from Github
+available from Github: https://github.com/mworion/MountWizzard4/tree/master/support
 
 Step 1
 ------

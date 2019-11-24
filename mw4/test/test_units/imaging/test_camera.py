@@ -111,36 +111,6 @@ def test_setUpdateConfig_5():
     assert suc
 
 
-def test_setPixelSize_1():
-    propertyName = ''
-    element = ''
-    value = 0
-    suc = app.imaging.setPixelSize(propertyName=propertyName,
-                                   element=element,
-                                   value=value)
-    assert not suc
-
-
-def test_setPixelSize_2():
-    propertyName = 'CCD_INFO'
-    element = ''
-    value = 0
-    suc = app.imaging.setPixelSize(propertyName=propertyName,
-                                   element=element,
-                                   value=value)
-    assert not suc
-
-
-def test_setPixelSize_3():
-    propertyName = 'CCD_INFO'
-    element = 'CCD_PIXEL_SIZE_X'
-    value = 0
-    suc = app.imaging.setPixelSize(propertyName=propertyName,
-                                   element=element,
-                                   value=value)
-    assert suc
-
-
 def test_setExposureState_1(qtbot):
     propertyName = ''
     value = 0

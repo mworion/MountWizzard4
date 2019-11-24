@@ -70,20 +70,6 @@ def test_setLoggingLevel2(qtbot):
     assert val == 20
 
 
-def test_setLoggingLevel3(qtbot):
-    app.mainW.ui.loglevelWarning.setChecked(True)
-    app.mainW.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
-    assert val == 30
-
-
-def test_setLoggingLevel4(qtbot):
-    app.mainW.ui.loglevelError.setChecked(True)
-    app.mainW.setLoggingLevel()
-    val = logging.getLogger().getEffectiveLevel()
-    assert val == 40
-
-
 def test_updateFwGui_productName():
     value = 'Test1234'
     app.mount.firmware.product = value

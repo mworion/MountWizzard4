@@ -22,80 +22,78 @@ from unittest import mock
 import pytest
 # external packages
 # local import
-from mw4.powerswitch import pegasusUPB
+from mw4.test.test_units.setupQt import setupQt
 
 host_ip = 'astro-mount.fritz.box'
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
-    global app
-    app = pegasusUPB.PegasusUPB(host=host_ip)
-    yield
-    app = None
+    global app, spy, mwGlob, test
+    app, spy, mwGlob, test = setupQt()
 
 
 def test_name():
     name = 'PegasusUPB'
-    app.name = name
-    assert name == app.name
+    app.power.name = name
+    assert name == app.power.name
 
 
 def test_newDevice_1():
-    with mock.patch.object(app.client,
+    with mock.patch.object(app.power.client,
                            'isServerConnected',
                            return_value=True):
-        with mock.patch.object(app.client,
+        with mock.patch.object(app.power.client,
                                'getDevice',
                                return_value=1):
-            suc = app.newDevice('test')
+            suc = app.power.newDevice('test')
             assert suc
-            assert app.device is None
+            assert app.power.device is None
 
 
 def test_newDevice_2():
-    app.name = 'Test'
-    with mock.patch.object(app.client,
+    app.power.name = 'Test'
+    with mock.patch.object(app.power.client,
                            'isServerConnected',
                            return_value=True):
-        with mock.patch.object(app.client,
+        with mock.patch.object(app.power.client,
                                'getDevice',
                                return_value=1):
-            suc = app.newDevice('Test')
+            suc = app.power.newDevice('Test')
             assert suc
-            assert app.device == 1
+            assert app.power.device == 1
 
 
 def test_removeDevice_1():
-    app.name = 'Test'
-    with mock.patch.object(app.client,
+    app.power.name = 'Test'
+    with mock.patch.object(app.power.client,
                            'isServerConnected',
                            return_value=True):
-        suc = app.removeDevice('Test')
+        suc = app.power.removeDevice('Test')
         assert suc
-        assert app.device is None
-        assert app.data == {}
+        assert app.power.device is None
+        assert app.power.data == {}
 
 
 def test_startCommunication_1():
-    app.name = ''
-    with mock.patch.object(app.client,
+    app.power.name = ''
+    with mock.patch.object(app.power.client,
                            'connectServer',
                            return_value=False):
-        suc = app.startCommunication()
+        suc = app.power.startCommunication()
         assert not suc
 
 
 def test_setUpdateConfig_1():
-    app.name = 'test'
-    suc = app.setUpdateConfig('false')
+    app.power.name = 'test'
+    suc = app.power.setUpdateConfig('false')
     assert not suc
 
 
 def test_setUpdateConfig_2():
-    app.name = 'test'
-    app.device = None
-    suc = app.setUpdateConfig('test')
+    app.power.name = 'test'
+    app.power.device = None
+    suc = app.power.setUpdateConfig('test')
     assert not suc
 
 
@@ -104,9 +102,9 @@ def test_setUpdateConfig_3():
         @staticmethod
         def getNumber(test):
             return {}
-    app.name = 'test'
-    app.device = Test()
-    suc = app.setUpdateConfig('test')
+    app.power.name = 'test'
+    app.power.device = Test()
+    suc = app.power.setUpdateConfig('test')
     assert not suc
 
 
@@ -115,9 +113,9 @@ def test_setUpdateConfig_4():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 1}
-    app.name = 'test'
-    app.device = Test()
-    suc = app.setUpdateConfig('test')
+    app.power.name = 'test'
+    app.power.device = Test()
+    suc = app.power.setUpdateConfig('test')
     assert not suc
 
 
@@ -126,12 +124,12 @@ def test_setUpdateConfig_5():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 10}
-    app.name = 'test'
-    app.device = Test()
-    with mock.patch.object(app.client,
+    app.power.name = 'test'
+    app.power.device = Test()
+    with mock.patch.object(app.power.client,
                            'sendNewNumber',
                            return_value=False):
-        suc = app.setUpdateConfig('test')
+        suc = app.power.setUpdateConfig('test')
         assert not suc
 
 
@@ -140,12 +138,12 @@ def test_setUpdateConfig_6():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 10}
-    app.name = 'test'
-    app.device = Test()
-    with mock.patch.object(app.client,
+    app.power.name = 'test'
+    app.power.device = Test()
+    with mock.patch.object(app.power.client,
                            'sendNewNumber',
                            return_value=True):
-        suc = app.setUpdateConfig('test')
+        suc = app.power.setUpdateConfig('test')
         assert suc
 
 

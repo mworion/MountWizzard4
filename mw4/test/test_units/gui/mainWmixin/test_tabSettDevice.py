@@ -125,14 +125,14 @@ def test_enableMeasure_2(qtbot):
         assert ['Measurement disabled', 0] == blocker.args
 
 
-def test_environDispatch_1():
-    app.mainW.ui.environDevice.setCurrentIndex(0)
+def test_sensorWeatherDispatch_1():
+    app.mainW.ui.sensorWeatherDevice.setCurrentIndex(0)
     suc = app.mainW.sensorWeatherDispatch()
     assert suc
 
 
-def test_environDispatch_2():
-    app.mainW.ui.environDevice.setCurrentIndex(1)
+def test_sensorWeatherDispatch_2():
+    app.mainW.ui.sensorWeatherDevice.setCurrentIndex(1)
     suc = app.mainW.sensorWeatherDispatch()
     assert suc
 

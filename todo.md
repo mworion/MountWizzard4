@@ -1,8 +1,10 @@
-
 problems occurred:
 
-‚necessary feature:
-- tooltips
+
+necessary feature:
+- documentation
+-
+
 
 nice to have:
 - astrometry online
@@ -20,9 +22,9 @@ nice to have:
 - mount model 3d simplified
 - tests update
 - check more camera
-- naming from environment sensor and internal sensor
-- architecture: check event based and move away from time triggered
 
 architecture:
 - mainApp refactor to better understandable implementation
-- check performance of mount connection
+- dome from main app to destination
+- remote interpreter
+

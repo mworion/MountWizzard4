@@ -37,7 +37,6 @@ class DomeSignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['DomeSignals']
-    version = '1.0.0'
 
     azimuth = PyQt5.QtCore.pyqtSignal(object)
     slewFinished = PyQt5.QtCore.pyqtSignal()
@@ -80,6 +79,7 @@ class Dome(indiClass.IndiClass):
 
         self.azimuth = -1
         self.slewing = False
+        self.isGeometry = False
 
         self.app.update3s.connect(self.updateStatus)
         self.settlingWait = PyQt5.QtCore.QTimer()
@@ -228,3 +228,35 @@ class Dome(indiClass.IndiClass):
             self.slewing = True
 
         return suc
+
+    def slewDome(self, altitude=0, azimuth=0):
+        """
+
+        :param altitude:
+        :param azimuth:
+        :return: success
+        """
+
+        if not self.data:
+            return False
+
+        if self.isGeometry:
+            ha = self.app.mount.obsSite.haJNowTarget.radians
+            dec = self.app.mount.obsSite.decJNowTarget.radians
+            lat = self.app.mount.obsSite.location.latitude.radians
+            pierside = self.app.mount.obsSite.piersideTarget
+            alt, az = self.app.mount.geometry.calcTransformationMatrices(ha=ha,
+                                                                         dec=dec,
+                                                                         lat=lat,
+                                                                         pierside=pierside)
+            alt = alt.degrees
+            az = az.degrees
+        else:
+            alt = altitude
+            az = azimuth
+        geoStat = 'On' if isGeometry else 'Off'
+        text = f'Slewing  dome:      az correction: {geoStat}, delta: {azimuth-az:3.1f}°'
+        self.message.emit(text, 0)
+        self.slewToAltAz(azimuth=az)
+
+        return True

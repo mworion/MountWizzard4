@@ -439,9 +439,9 @@ class Model(object):
                                                     )
         if not suc:
             return False
-        self.app.slewDome(altitude=mPoint['altitude'],
-                          azimuth=mPoint['azimuth'],
-                          )
+        self.app.dome.slewDome(altitude=mPoint['altitude'],
+                               azimuth=mPoint['azimuth'],
+                               )
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
 

@@ -736,9 +736,9 @@ class HemisphereWindow(widget.MWidget):
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altitude,
                                                     az_degrees=azimuth)
         if suc:
-            self.app.slewDome(altitude=altitude,
-                              azimuth=azimuth
-                              )
+            self.app.dome.slewDome(altitude=altitude,
+                                   azimuth=azimuth
+                                   )
             suc = self.app.mount.obsSite.startSlewing()
         if not suc:
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
@@ -982,9 +982,9 @@ class HemisphereWindow(widget.MWidget):
         alt = self.app.mount.obsSite.Alt.degrees
         az = self.app.mount.obsSite.Az.degrees
         if suc:
-            self.app.slewDome(altitude=alt,
-                              azimuth=az
-                              )
+            self.app.dome.slewDome(altitude=alt,
+                                   azimuth=az
+                                   )
             suc = self.app.mount.obsSite.startSlewing(slewType=f'{alignType}')
         if not suc:
             self.app.message.emit('Cannot slew to: {0}'.format(name), 2)

@@ -54,6 +54,7 @@ class SettParkPos(object):
         self.ui.domeNorthOffset.valueChanged.connect(self.setDomeNorthOffset)
         self.ui.domeEastOffset.valueChanged.connect(self.setDomeEastOffset)
         self.ui.domeVerticalOffset.valueChanged.connect(self.setDomeVerticalOffset)
+        self.ui.checkDomeGeometry.clicked.connect(self.setGeometryOnOff)
 
         # signals from functions
         self.app.mount.signals.firmwareDone.connect(self.adjustOTAOffset)
@@ -68,6 +69,8 @@ class SettParkPos(object):
         """
         config = self.app.config['mainW']
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
+        self.setGeometryOnOff()
+
         self.ui.domeDiameter.setValue(config.get('domeDiameter', 3))
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
@@ -206,6 +209,15 @@ class SettParkPos(object):
             alt.setText(f'{obs.Alt.degrees:3.0f}')
             az.setText(f'{obs.Az.degrees:3.0f}')
 
+        return True
+
+    def setGeometryOnOff(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.app.dome.isGeometry = self.ui.checkDomeGeometry.isChecked()
         return True
 
     def adjustGEMOffset(self):

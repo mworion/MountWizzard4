@@ -533,7 +533,7 @@ class Model(object):
 
     def defaultSignals(self):
         """
-        defaultSignals clears the signal queue and removes the connections
+        defaultSignals clears the signal queue and removes the signal connections
 
         :return: true for test purpose
         """
@@ -548,7 +548,8 @@ class Model(object):
 
     def cancelBuild(self):
         """
-        cancelBuild aborts imaging and stops all modeling queues and actions
+        cancelBuild aborts imaging and stops all modeling queues and actions and restores
+        them to default values.
 
         :return: true for test purpose
         """
@@ -570,7 +571,7 @@ class Model(object):
         when programming a new model, all point will be recalculated be the mount
         computer an get a new error value which is based on the new model.
 
-        :return: updated model
+        :return: True for test purpose
         """
 
         starList = self.app.mount.model.starList
@@ -591,9 +592,8 @@ class Model(object):
     def generateSaveModel(self):
         """
         generateSaveModel builds from the model file a format which could be serialized
-        in json. this format will be used for storing model on file
+        in json. this format will be used for storing model on file.
 
-        :param model:
         :return: save model format
         """
 
@@ -613,22 +613,30 @@ class Model(object):
             modelDataForSave.append(sPoint)
         return modelDataForSave
 
-    def saveModel2(self):
+    def saveModelFinish(self):
         """
-        saveModel2 is the second part of saving once the alignment model is reloaded.
+        saveModelFinish is the callback after the new model data is loaded from the mount
+        computer. first is disables the signals. New we have the original model build data
+        which was programmed to the mount and the retrieved model data after the mount
+        optimized the model. retrofitModel() combines this data to a signal data structure.
+        after that it saves the model data for later use.
+
+        with this data, the model could be reprogrammed without doing some imaging,
+        it could be added with other data to extend the model to a broader base.
 
         :return: True for test purpose
         """
 
         # remove signal connection
-        self.app.mount.signals.alignDone.disconnect(self.saveModel2)
+        self.app.mount.signals.alignDone.disconnect(self.saveModelFinish)
 
         # write model data back from m9utn to model to be saved
         self.retrofitModel()
-        saveData = self.generateSaveModel()
 
+        # now saving the model
         self.app.message.emit(f'Writing model:      {self.modelName} ', 1)
 
+        saveData = self.generateSaveModel()
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
         with open(modelPath, 'w') as outfile:
             json.dump(saveData,
@@ -638,12 +646,13 @@ class Model(object):
 
         return True
 
-    def saveModel(self):
+    def saveModelPrepare(self):
         """
-        saveModel saves the model data for later use. with this data, the model could
-        be reprogrammed without doing some imaging, it could be added with other data to
-        extend the model to a broader base.
-        in addition it should be possible to make som analyses with this data.
+        saveModelPrepare checks boundaries for model save and prepares the signals.
+        the save a model we need the calculated parameters from the mount after the new
+        points are programmed in an earlier step. the new model data is retrieved from
+        the mount by refreshModel() call. this call needs some time and has a callback
+        which is set here. the calculations and the saving is done in the callback.
 
         :return: success
         """
@@ -653,7 +662,7 @@ class Model(object):
             return False
 
         # setting signal for callback when the model in memory is refreshed
-        self.app.mount.signals.alignDone.connect(self.saveModel2)
+        self.app.mount.signals.alignDone.connect(self.saveModelFinish)
 
         # starting refreshment thread
         self.refreshModel()
@@ -682,8 +691,9 @@ class Model(object):
 
     def modelFinished(self):
         """
-        modelFinished is called when tha last point was solved. in addition the saving
-        of the model and the programming is done here.
+        modelFinished is called when tha last point was processed. it empties the solution
+        queue restores the default gui elements an signals. after that it programs the
+        resulting model to the mount and saves it to disk.
 
         is the flag delete images after modeling is set, the entire directory will be
         deleted
@@ -709,7 +719,7 @@ class Model(object):
         suc = self.app.mount.model.programAlign(build)
 
         if suc:
-            self.saveModel()
+            self.saveModelPrepare()
             self.app.message.emit('Model programmed with success', 0)
         else:
             self.app.message.emit('Model programming error', 2)
@@ -728,7 +738,9 @@ class Model(object):
         """
         modelCore is the main method for preparing a model run. in addition it checks
         necessary components and prepares all the parameters.
-        the modeling queue will be filled with point and the queue is started.
+        the modeling queue will be filled with point and the queue is started. the overall
+        modeling process consists of a set of queues which are handled by events running
+        in the gui event queue.
 
         :param points:
         :return: true for test purpose
@@ -743,7 +755,7 @@ class Model(object):
         if astrometryApp.startswith('No device'):
             return False
 
-        # collection locations for files
+        # collection locations for files and generate directories if necessary
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         self.modelName = f'm-{self.lastGenerator}-{nameTime}'
         self.imageDir = f'{self.app.mwGlob["imageDir"]}/{self.modelName}'
@@ -810,15 +822,12 @@ class Model(object):
     def modelBuild(self):
         """
         modelBuild sets the adequate gui elements, selects the model points and calls the
-        core modeling method
+        core modeling method.
 
         :return: true for test purpose
         """
 
-        # checking constraints for modeling
-        points = self.app.data.buildP
-        number = len(points)
-        if not 2 < number < 100:
+        if not 2 < len(self.app.data.buildP) < 100:
             return False
 
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
@@ -829,7 +838,7 @@ class Model(object):
         self.ui.runHysteresis.setEnabled(False)
         self.ui.cancelModel.setEnabled(True)
 
-        suc = self.modelCore(points=points)
+        suc = self.modelCore(points=self.app.data.buildP)
         if not suc:
             self.defaultGUI()
             return False
@@ -857,14 +866,16 @@ class Model(object):
         if isinstance(loadFilePath, str):
             loadFilePath = [loadFilePath]
 
-        self.app.message.emit('Programing stored models', 1)
+        self.app.message.emit('Programing models', 1)
+
         modelJSON = list()
         for index, file in enumerate(loadFilePath):
-            self.app.message.emit(f'Using model [{os.path.basename(file)}]', 0)
+            self.app.message.emit(f'Loading model [{os.path.basename(file)}]', 0)
             with open(file, 'r') as infile:
                 model = json.load(infile)
                 modelJSON += model
 
+        # preparing the text
         if index:
             postFix = 's'
         else:
@@ -874,10 +885,10 @@ class Model(object):
             self.app.message.emit(f'Model{postFix} has more than 99 points', 2)
             return False
 
-        build = self.generateBuildData(modelJSON)
-
         # finally do it
         self.app.message.emit(f'Programming {index + 1} model{postFix} to mount', 0)
+
+        build = self.generateBuildData(modelJSON)
         suc = self.app.mount.model.programAlign(build)
 
         if suc:

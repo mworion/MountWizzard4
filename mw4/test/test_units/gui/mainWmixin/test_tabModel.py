@@ -364,7 +364,7 @@ def test_retrofitModel_3():
 
 
 def test_saveModel_1():
-    suc = app.mainW.saveModel()
+    suc = app.mainW.saveModelPrepare()
     assert not suc
 
 
@@ -385,7 +385,7 @@ def test_saveModel_2():
     app.mainW.model.append(mPoint)
     app.mainW.model.append(mPoint)
 
-    suc = app.mainW.saveModel()
+    suc = app.mainW.saveModelPrepare()
     assert not suc
 
 
@@ -421,7 +421,7 @@ def test_saveModel_3():
     app.mainW.model.append(mPoint)
     app.mainW.model.append(mPoint)
 
-    suc = app.mainW.saveModel()
+    suc = app.mainW.saveModelPrepare()
     assert suc
 
 
@@ -459,7 +459,7 @@ def test_saveModel_4():
     app.mainW.model.append(mPoint)
     app.mainW.model.append(mPoint)
 
-    suc = app.mainW.saveModel()
+    suc = app.mainW.saveModelPrepare()
     assert suc
 
     os.remove(mwGlob['modelDir'] + '/test.model')

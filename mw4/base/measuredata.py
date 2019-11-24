@@ -72,9 +72,7 @@ class MeasureData(object):
         """
 
         dItems = self.deviceStat.items()
-        dKey = self.deviceStat[key]
-
-        self.devices = [key for key, value in dItems if dKey is not None]
+        self.devices = [key for key, value in dItems if self.deviceStat[key] is not None]
         self.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 

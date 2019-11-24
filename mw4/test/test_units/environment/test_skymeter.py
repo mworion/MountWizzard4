@@ -24,80 +24,78 @@ import datetime
 # external packages
 import indibase
 # local import
-from mw4.environment import skymeter
+from mw4.test.test_units.setupQt import setupQt
 
 host_ip = 'astro-mount.fritz.box'
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app
-    app = skymeter.Skymeter(host=host_ip)
-    yield
-    app = None
+    global app, spy, mwGlob, test
+    app, spy, mwGlob, test = setupQt()
 
 
 def test_name():
     name = 'MBox'
-    app.name = name
-    assert name == app.name
+    app.skymeter.name = name
+    assert name == app.skymeter.name
 
 
 def test_newDevice_1():
-    with mock.patch.object(app.client,
+    with mock.patch.object(app.skymeter.client,
                            'isServerConnected',
                            return_value=True):
-        with mock.patch.object(app.client,
+        with mock.patch.object(app.skymeter.client,
                                'getDevice',
                                return_value=1):
-            suc = app.newDevice('test')
+            suc = app.skymeter.newDevice('test')
             assert suc
-            assert app.device is None
+            assert app.skymeter.device is None
 
 
 def test_newDevice_2():
-    app.name = 'Test'
-    with mock.patch.object(app.client,
+    app.skymeter.name = 'Test'
+    with mock.patch.object(app.skymeter.client,
                            'isServerConnected',
                            return_value=True):
-        with mock.patch.object(app.client,
+        with mock.patch.object(app.skymeter.client,
                                'getDevice',
                                return_value=1):
-            suc = app.newDevice('Test')
+            suc = app.skymeter.newDevice('Test')
             assert suc
-            assert app.device == 1
+            assert app.skymeter.device == 1
 
 
 def test_removeDevice_1():
-    app.name = 'Test'
-    with mock.patch.object(app.client,
+    app.skymeter.name = 'Test'
+    with mock.patch.object(app.skymeter.client,
                            'isServerConnected',
                            return_value=True):
-        suc = app.removeDevice('Test')
+        suc = app.skymeter.removeDevice('Test')
         assert suc
-        assert app.device is None
-        assert app.data == {}
+        assert app.skymeter.device is None
+        assert app.skymeter.data == {}
 
 
 def test_startCommunication_1():
-    app.name = ''
-    with mock.patch.object(app.client,
+    app.skymeter.name = ''
+    with mock.patch.object(app.skymeter.client,
                            'connectServer',
                            return_value=False):
-        suc = app.startCommunication()
+        suc = app.skymeter.startCommunication()
         assert not suc
 
 
 def test_setUpdateRate_1():
-    app.name = 'test'
-    suc = app.setUpdateConfig('false')
+    app.skymeter.name = 'test'
+    suc = app.skymeter.setUpdateConfig('false')
     assert not suc
 
 
 def test_setUpdateRate_2():
-    app.name = 'test'
-    app.device = None
-    suc = app.setUpdateConfig('test')
+    app.skymeter.name = 'test'
+    app.skymeter.device = None
+    suc = app.skymeter.setUpdateConfig('test')
     assert not suc
 
 
@@ -106,9 +104,9 @@ def test_setUpdateRate_3():
         @staticmethod
         def getNumber(test):
             return {}
-    app.name = 'test'
-    app.device = Test()
-    suc = app.setUpdateConfig('test')
+    app.skymeter.name = 'test'
+    app.skymeter.device = Test()
+    suc = app.skymeter.setUpdateConfig('test')
     assert not suc
 
 
@@ -117,9 +115,9 @@ def test_setUpdateRate_4():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 1}
-    app.name = 'test'
-    app.device = Test()
-    suc = app.setUpdateConfig('test')
+    app.skymeter.name = 'test'
+    app.skymeter.device = Test()
+    suc = app.skymeter.setUpdateConfig('test')
     assert suc
 
 
@@ -128,12 +126,12 @@ def test_setUpdateRate_5():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 10}
-    app.name = 'test'
-    app.device = Test()
-    with mock.patch.object(app.client,
+    app.skymeter.name = 'test'
+    app.skymeter.device = Test()
+    with mock.patch.object(app.skymeter.client,
                            'sendNewNumber',
                            return_value=False):
-        suc = app.setUpdateConfig('test')
+        suc = app.skymeter.setUpdateConfig('test')
         assert not suc
 
 
@@ -142,107 +140,107 @@ def test_setUpdateRate_6():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 10}
-    app.name = 'test'
-    app.device = Test()
-    with mock.patch.object(app.client,
+    app.skymeter.name = 'test'
+    app.skymeter.device = Test()
+    with mock.patch.object(app.skymeter.client,
                            'sendNewNumber',
                            return_value=True):
-        suc = app.setUpdateConfig('test')
+        suc = app.skymeter.setUpdateConfig('test')
         assert suc
 
 
 def test_updateNumber_1():
-    app.device = None
-    app.name = 'test'
-    suc = app.updateNumber('false', 'WEATHER_HUMIDITY')
+    app.skymeter.device = None
+    app.skymeter.name = 'test'
+    suc = app.skymeter.updateNumber('false', 'WEATHER_HUMIDITY')
     assert not suc
 
 
 def test_updateNumber_2():
-    app.device = 1
-    app.name = 'test'
-    suc = app.updateNumber('false', 'WEATHER_HUMIDITY')
+    app.skymeter.device = 1
+    app.skymeter.name = 'test'
+    suc = app.skymeter.updateNumber('false', 'WEATHER_HUMIDITY')
     assert not suc
 
 
 def test_updateNumber_3():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.skymeter.device = indibase.indiBase.Device()
+    app.skymeter.name = 'test'
     values = {'WEATHER_DEWPOINT': 5,
               'WEATHER_TEMPERATURE': 10,
               'WEATHER_HUMIDITY': 50,
               }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.skymeter.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.skymeter.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
-        assert app.data['WEATHER_DEWPOINT'] == 5
-        assert app.data['WEATHER_TEMPERATURE'] == 10
-        assert app.data['WEATHER_HUMIDITY'] == 50
+        assert app.skymeter.data['WEATHER_DEWPOINT'] == 5
+        assert app.skymeter.data['WEATHER_TEMPERATURE'] == 10
+        assert app.skymeter.data['WEATHER_HUMIDITY'] == 50
 
 
 def test_updateNumber_4():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.skymeter.device = indibase.indiBase.Device()
+    app.skymeter.name = 'test'
     values = {'WEATHER_DEWPOINT': 5,
               }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.skymeter.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.skymeter.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
 
 
 def test_updateNumber_5():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.skymeter.device = indibase.indiBase.Device()
+    app.skymeter.name = 'test'
     values = {'WEATHER_HUMIDITY': 50,
               }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.skymeter.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.skymeter.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
 
 
 def test_updateNumber_6():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.skymeter.device = indibase.indiBase.Device()
+    app.skymeter.name = 'test'
     values = {'WEATHER_TEMPERATURE': 10,
               }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.skymeter.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.skymeter.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
 
 
 def test_updateNumber_7():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.skymeter.device = indibase.indiBase.Device()
+    app.skymeter.name = 'test'
     values = {'WEATHER_TEMPERATURE': 20,
               'WEATHER_HUMIDITY': 50,
               }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.skymeter.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.skymeter.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
 
 
 def test_updateNumber_8():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.skymeter.device = indibase.indiBase.Device()
+    app.skymeter.name = 'test'
     t = datetime.datetime.utcnow()
     values = {'WEATHER_TEMPERATURE': 10,
               'WEATHER_HUMIDITY': 50,
               }
-    app.data = {'WEATHER_TEMPERATURE': 10,
+    app.skymeter.data = {'WEATHER_TEMPERATURE': 10,
                 'WEATHER_HUMIDITY': 50,
                 }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.skymeter.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.skymeter.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc

@@ -50,11 +50,11 @@ class IndiClass(object):
     def __init__(self,
                  host=None,
                  name='',
-                 message=None,
+                 app=None,
                  ):
         super().__init__()
 
-        self.message = message
+        self.app = app
         self.client = qtIndiBase.Client(host=host)
         self._name = name
         self.data = {}
@@ -140,9 +140,9 @@ class IndiClass(object):
 
         if deviceName == self.name:
             self.device = self.client.getDevice(deviceName)
-            self.message.emit(f'INDI device found:  [{deviceName}]', 0)
+            self.app.message.emit(f'INDI device found:  [{deviceName}]', 0)
         # else:
-        #    self.message.emit(f'INDI device {self.name} snoops: [{deviceName}]', 0)
+        #    self.app.message.emit(f'INDI device {self.name} snoops: [{deviceName}]', 0)
 
         return True
 
@@ -156,7 +156,7 @@ class IndiClass(object):
         """
 
         if deviceName == self.name:
-            self.message.emit(f'INDI removed device: [{deviceName}]', 0)
+            self.app.message.emit(f'INDI removed device: [{deviceName}]', 0)
             self.device = None
             self.data = {}
             return True
@@ -324,11 +324,11 @@ class IndiClass(object):
         if self.showMessages:
             if text.startswith('[WARNING]'):
                 text = self.removePrefix(text, '[WARNING]')
-                self.message.emit(device + ' -> ' + text, 0)
+                self.app.message.emit(device + ' -> ' + text, 0)
             elif text.startswith('[ERROR]'):
                 text = self.removePrefix(text, '[ERROR]')
-                self.message.emit(device + ' -> ' + text, 2)
+                self.app.message.emit(device + ' -> ' + text, 2)
             else:
-                self.message.emit(device + ' -> ' + text, 0)
+                self.app.message.emit(device + ' -> ' + text, 0)
             return True
         return False

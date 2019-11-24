@@ -70,7 +70,7 @@ class Dome(indiClass.IndiClass):
                  ):
         super().__init__(host=host,
                          name=name,
-                         message=app.message,
+                         app=app,
                          )
         self.app = app
 

@@ -24,80 +24,78 @@ import datetime
 # external packages
 import indibase
 # local import
-from mw4.environment import environ
+from mw4.test.test_units.setupQt import setupQt
 
 host_ip = 'astro-mount.fritz.box'
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app
-    app = environ.Environ(host=host_ip)
-    yield
-    app = None
+    global app, spy, mwGlob, test
+    app, spy, mwGlob, test = setupQt()
 
 
 def test_name():
     name = 'MBox'
-    app.name = name
-    assert name == app.name
+    app.sensorWeather.name = name
+    assert name == app.sensorWeather.name
 
 
 def test_newDevice_1():
-    with mock.patch.object(app.client,
+    with mock.patch.object(app.sensorWeather.client,
                            'isServerConnected',
                            return_value=True):
-        with mock.patch.object(app.client,
+        with mock.patch.object(app.sensorWeather.client,
                                'getDevice',
                                return_value=1):
-            suc = app.newDevice('test')
+            suc = app.sensorWeather.newDevice('test')
             assert suc
-            assert app.device is None
+            assert app.sensorWeather.device is None
 
 
 def test_newDevice_2():
-    app.name = 'Test'
-    with mock.patch.object(app.client,
+    app.sensorWeather.name = 'Test'
+    with mock.patch.object(app.sensorWeather.client,
                            'isServerConnected',
                            return_value=True):
-        with mock.patch.object(app.client,
+        with mock.patch.object(app.sensorWeather.client,
                                'getDevice',
                                return_value=1):
-            suc = app.newDevice('Test')
+            suc = app.sensorWeather.newDevice('Test')
             assert suc
-            assert app.device == 1
+            assert app.sensorWeather.device == 1
 
 
 def test_removeDevice_1():
-    app.name = 'Test'
-    with mock.patch.object(app.client,
+    app.sensorWeather.name = 'Test'
+    with mock.patch.object(app.sensorWeather.client,
                            'isServerConnected',
                            return_value=True):
-        suc = app.removeDevice('Test')
+        suc = app.sensorWeather.removeDevice('Test')
         assert suc
-        assert app.device is None
-        assert app.data == {}
+        assert app.sensorWeather.device is None
+        assert app.sensorWeather.data == {}
 
 
 def test_startCommunication_1():
-    app.name = ''
-    with mock.patch.object(app.client,
+    app.sensorWeather.name = ''
+    with mock.patch.object(app.sensorWeather.client,
                            'connectServer',
                            return_value=False):
-        suc = app.startCommunication()
+        suc = app.sensorWeather.startCommunication()
         assert not suc
 
 
 def test_setUpdateConfig_1():
-    app.name = 'test'
-    suc = app.setUpdateConfig('false')
+    app.sensorWeather.name = 'test'
+    suc = app.sensorWeather.setUpdateConfig('false')
     assert not suc
 
 
 def test_setUpdateConfig_2():
-    app.name = 'test'
-    app.device = None
-    suc = app.setUpdateConfig('test')
+    app.sensorWeather.name = 'test'
+    app.sensorWeather.device = None
+    suc = app.sensorWeather.setUpdateConfig('test')
     assert not suc
 
 
@@ -106,9 +104,9 @@ def test_setUpdateConfig_3():
         @staticmethod
         def getNumber(test):
             return {}
-    app.name = 'test'
-    app.device = Test()
-    suc = app.setUpdateConfig('test')
+    app.sensorWeather.name = 'test'
+    app.sensorWeather.device = Test()
+    suc = app.sensorWeather.setUpdateConfig('test')
     assert not suc
 
 
@@ -117,9 +115,9 @@ def test_setUpdateConfig_4():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 1}
-    app.name = 'test'
-    app.device = Test()
-    suc = app.setUpdateConfig('test')
+    app.sensorWeather.name = 'test'
+    app.sensorWeather.device = Test()
+    suc = app.sensorWeather.setUpdateConfig('test')
     assert suc
 
 
@@ -128,12 +126,12 @@ def test_setUpdateConfig_5():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 10}
-    app.name = 'test'
-    app.device = Test()
-    with mock.patch.object(app.client,
+    app.sensorWeather.name = 'test'
+    app.sensorWeather.device = Test()
+    with mock.patch.object(app.sensorWeather.client,
                            'sendNewNumber',
                            return_value=False):
-        suc = app.setUpdateConfig('test')
+        suc = app.sensorWeather.setUpdateConfig('test')
         assert not suc
 
 
@@ -142,77 +140,77 @@ def test_setUpdateConfig_6():
         @staticmethod
         def getNumber(test):
             return {'PERIOD': 10}
-    app.name = 'test'
-    app.device = Test()
-    with mock.patch.object(app.client,
+    app.sensorWeather.name = 'test'
+    app.sensorWeather.device = Test()
+    with mock.patch.object(app.sensorWeather.client,
                            'sendNewNumber',
                            return_value=True):
-        suc = app.setUpdateConfig('test')
+        suc = app.sensorWeather.setUpdateConfig('test')
         assert suc
 
 
 def test_updateNumber_1():
-    app.device = None
-    app.name = 'test'
-    suc = app.updateNumber('false', 'WEATHER_HUMIDITY')
+    app.sensorWeather.device = None
+    app.sensorWeather.name = 'test'
+    suc = app.sensorWeather.updateNumber('false', 'WEATHER_HUMIDITY')
     assert not suc
 
 
 def test_updateNumber_2():
-    app.device = 1
-    app.name = 'test'
-    suc = app.updateNumber('false', 'WEATHER_HUMIDITY')
+    app.sensorWeather.device = 1
+    app.sensorWeather.name = 'test'
+    suc = app.sensorWeather.updateNumber('false', 'WEATHER_HUMIDITY')
     assert not suc
 
 
 def test_updateNumber_3():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.sensorWeather.device = indibase.indiBase.Device()
+    app.sensorWeather.name = 'test'
     values = {'WEATHER_DEWPOINT': 5,
               'WEATHER_TEMPERATURE': 10,
               'WEATHER_HUMIDITY': 50,
               }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.sensorWeather.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.sensorWeather.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
-        assert app.data['WEATHER_DEWPOINT'] == 5
-        assert app.data['WEATHER_TEMPERATURE'] == 10
-        assert app.data['WEATHER_HUMIDITY'] == 50
+        assert app.sensorWeather.data['WEATHER_DEWPOINT'] == 5
+        assert app.sensorWeather.data['WEATHER_TEMPERATURE'] == 10
+        assert app.sensorWeather.data['WEATHER_HUMIDITY'] == 50
 
 
 def test_updateNumber_4():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.sensorWeather.device = indibase.indiBase.Device()
+    app.sensorWeather.name = 'test'
     values = {'WEATHER_DEWPOINT': 5,
               }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.sensorWeather.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.sensorWeather.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
 
 
 def test_updateNumber_5():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.sensorWeather.device = indibase.indiBase.Device()
+    app.sensorWeather.name = 'test'
     values = {'WEATHER_HUMIDITY': 50,
               }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.sensorWeather.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.sensorWeather.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
 
 
 def test_updateNumber_6():
-    app.device = indibase.indiBase.Device()
-    app.name = 'test'
+    app.sensorWeather.device = indibase.indiBase.Device()
+    app.sensorWeather.name = 'test'
     values = {'WEATHER_TEMPERATURE': 10,
               }
-    with mock.patch.object(app.device,
+    with mock.patch.object(app.sensorWeather.device,
                            'getNumber',
                            return_value=values):
-        suc = app.updateNumber('test', 'WEATHER_PARAMETERS')
+        suc = app.sensorWeather.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc

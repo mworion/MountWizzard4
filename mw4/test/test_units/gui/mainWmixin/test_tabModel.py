@@ -36,8 +36,6 @@ def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
     app.mainW.lastGenerator = 'test'
-    app.config['showHemisphereW'] = True
-    app.toggleHemisphereWindow()
     yield
     files = glob.glob(mwGlob['modelDir'] + '/m-*.model')
     for f in files:
@@ -336,33 +334,14 @@ def test_retrofitModel_1():
     stars.append(point)
 
     mPoint = {}
-    model = list()
-    model.append(mPoint)
-    model.append(mPoint)
-    model.append(mPoint)
+    app.mainW.model = list()
+    app.mainW.model.append(mPoint)
+    app.mainW.model.append(mPoint)
+    app.mainW.model.append(mPoint)
 
-    val = app.mainW.retrofitModel()
-    assert val == list()
-
-
-def test_retrofitModel_2():
-    app.mount.model.starList = list()
-    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
-                      number=1,
-                      errorRMS=10,
-                      errorAngle=skyfield.api.Angle(degrees=0))
-    app.mount.model.addStar(point)
-    app.mount.model.addStar(point)
-    app.mount.model.addStar(point)
-
-    mPoint = {}
-    model = list()
-    model.append(mPoint)
-    model.append(mPoint)
-    model.append(mPoint)
-
-    val = app.mainW.retrofitModel(model=model)
-    assert len(val) == 3
+    suc = app.mainW.retrofitModel()
+    assert suc
+    assert app.mainW.model == []
 
 
 def test_retrofitModel_3():
@@ -375,32 +354,13 @@ def test_retrofitModel_3():
     app.mount.model.addStar(point)
 
     mPoint = {}
-    model = list()
-    model.append(mPoint)
-    model.append(mPoint)
-    model.append(mPoint)
+    app.mainW.model = list()
+    app.mainW.model.append(mPoint)
+    app.mainW.model.append(mPoint)
+    app.mainW.model.append(mPoint)
 
-    val = app.mainW.retrofitModel(model=model)
-    assert val == list()
-
-
-def test_retrofitModel_4():
-    app.mount.model.starList = list()
-    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
-                      number=1,
-                      errorRMS=10,
-                      errorAngle=skyfield.api.Angle(degrees=0))
-    app.mount.model.addStar(point)
-    app.mount.model.addStar(point)
-    app.mount.model.addStar(point)
-
-    mPoint = {}
-    model = list()
-    model.append(mPoint)
-    model.append(mPoint)
-
-    val = app.mainW.retrofitModel(model=model)
-    assert val == list()
+    suc = app.mainW.retrofitModel()
+    assert suc
 
 
 def test_saveModel_1():
@@ -421,11 +381,11 @@ def test_saveModel_2():
               'altitude': 0,
               }
 
-    model = list()
-    model.append(mPoint)
-    model.append(mPoint)
+    app.mainW.model = list()
+    app.mainW.model.append(mPoint)
+    app.mainW.model.append(mPoint)
 
-    suc = app.mainW.saveModel(model=model)
+    suc = app.mainW.saveModel()
     assert not suc
 
 
@@ -455,13 +415,14 @@ def test_saveModel_3():
               'errorRMS': 3,
               }
 
-    model = list()
-    model.append(mPoint)
-    model.append(mPoint)
-    model.append(mPoint)
+    app.mainW.model = list()
+    app.mainW.modelName = 'test'
+    app.mainW.model.append(mPoint)
+    app.mainW.model.append(mPoint)
+    app.mainW.model.append(mPoint)
 
-    suc = app.mainW.saveModel(model=model)
-    assert not suc
+    suc = app.mainW.saveModel()
+    assert suc
 
 
 def test_saveModel_4():
@@ -493,52 +454,15 @@ def test_saveModel_4():
               'errorDEC': 2,
               'errorRMS': 3,
               }
-    model = list()
-    model.append(mPoint)
-    model.append(mPoint)
-    model.append(mPoint)
+    app.mainW.model = list()
+    app.mainW.model.append(mPoint)
+    app.mainW.model.append(mPoint)
+    app.mainW.model.append(mPoint)
 
-    suc = app.mainW.saveModel(model=model, name='test')
+    suc = app.mainW.saveModel()
     assert suc
 
     os.remove(mwGlob['modelDir'] + '/test.model')
-
-
-def test_collectModelData():
-    app.mainW.modelQueue.put('test')
-    model = app.mainW.collectModelDataFromQueue()
-    assert model[0] == 'test'
-
-
-def test_generateBuildDataFromJSON_1():
-    inputData = [
-        {
-            "altitude": 44.556745182012854,
-            "azimuth": 37.194805194805184,
-            "binning": 1.0,
-            "countSequence": 0,
-            "decJNowS": 64.3246,
-            "decJNowM": 64.32841185357267,
-            "errorDEC": -229.0210134131381,
-            "errorRMS": 237.1,
-            "errorRA": -61.36599559380768,
-            "exposureTime": 3.0,
-            "fastReadout": True,
-            "julianDate": "2019-06-08T08:57:57Z",
-            "name": "m-file-2019-06-08-08-57-44",
-            "lenSequence": 3,
-            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
-                         "-57-44/image-000.fits",
-            "pierside": "W",
-            "raJNowS": 8.42882,
-            "raJNowM": 8.427692953132278,
-            "siderealTime": 12.5,
-            "subFrame": 100.0
-        },
-    ]
-
-    build = app.mainW.generateBuildDataFromJSON(inputData)
-    assert build[0].sCoord.dec.degrees == 64.3246
 
 
 def test_generateBuildData_1():
@@ -563,7 +487,7 @@ def test_generateBuildData_1():
             "pierside": "W",
             "raJNowS": 8.42882,
             "raJNowM": 8.427692953132278,
-            "siderealTime": 12.5,
+            "siderealTime": skyfield.api.Angle(hours=12.5),
             "subFrame": 100.0
         },
     ]
@@ -589,7 +513,7 @@ def test_modelFinished_1(qtbot):
          'decJNowM': skyfield.api.Angle(degrees=0),
          'raJNowS': skyfield.api.Angle(hours=0),
          'decJNowS': skyfield.api.Angle(degrees=0),
-         'siderealTime': 0,
+         'siderealTime': skyfield.api.Angle(hours=0),
          'julianDate': Julian(),
          'pierside': 'E',
          'errorRA': 1,
@@ -628,7 +552,7 @@ def test_modelFinished_2(qtbot):
          'decJNowM': skyfield.api.Angle(degrees=0),
          'raJNowS': skyfield.api.Angle(hours=0),
          'decJNowS': skyfield.api.Angle(degrees=0),
-         'siderealTime': 0,
+         'siderealTime': skyfield.api.Angle(hours=0),
          'julianDate': Julian(),
          'pierside': 'E',
          'errorRA': 1,

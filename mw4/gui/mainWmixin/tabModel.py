@@ -273,7 +273,7 @@ class Model(object):
             self.logger.debug('empty result queue')
             return False
 
-        mPoint = copy.copy(self.resultQueue.get())
+        mPoint = self.resultQueue.get()
         number = mPoint["lenSequence"]
         count = mPoint["countSequence"]
         modelingDone = (number == count + 1)
@@ -344,7 +344,7 @@ class Model(object):
             self.logger.debug('empty solve queue')
             return False
 
-        mPoint = copy.copy(self.solveQueue.get())
+        mPoint = self.solveQueue.get()
 
         # showing the expose image in the image window
         if self.app.imageW:
@@ -388,7 +388,7 @@ class Model(object):
             self.logger.debug('empty image queue')
             return False
 
-        mPoint = copy.copy(self.imageQueue.get())
+        mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
         self.app.imaging.expose(imagePath=mPoint['imagePath'],
@@ -429,7 +429,7 @@ class Model(object):
         if self.slewQueue.empty():
             return False
 
-        mPoint = copy.copy(self.slewQueue.get())
+        mPoint = self.slewQueue.get()
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'],
                                                     )
@@ -695,7 +695,7 @@ class Model(object):
         self.model = list()
 
         while not self.modelQueue.empty():
-            mPoint = copy.copy(self.modelQueue.get())
+            mPoint = self.modelQueue.get()
             self.model.append(mPoint)
 
         # stopping other activities
@@ -704,15 +704,15 @@ class Model(object):
         self.defaultGUI()
 
         # finally do it
-        self.app.message.emit('                Programming model to mount', 0)
+        self.app.message.emit('Programming model to mount', 0)
         build = self.generateBuildData(model=self.model)
         suc = self.app.mount.model.programAlign(build)
 
         if suc:
             self.saveModel()
-            self.app.message.emit('                Model programmed with success', 0)
+            self.app.message.emit('Model programmed with success', 0)
         else:
-            self.app.message.emit('                Model programming error', 2)
+            self.app.message.emit('Model programming error', 2)
 
         # cleaning up the disk space
         if not self.ui.checkKeepImages.isChecked():

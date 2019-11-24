@@ -34,24 +34,27 @@ def module_setup_teardown():
 
 def test_measureTask_1():
     app.mainW.ui.measureDevice.setCurrentIndex(1)
-    app.environ.data = {}
+    app.sensorWeather.data = {}
+    app.measure.devices['sensorWeather'] = ''
+    app.measure.setEmptyData()
     suc = app.measure.measureTask()
     assert suc
-    assert app.measure.data['envTemp'].shape[0]
-    assert app.measure.data['envHum'].shape[0]
-    assert app.measure.data['envPress'].shape[0]
-    assert app.measure.data['envDew'].shape[0]
+    assert app.measure.data['sensorWeatherTemp'].shape[0]
+    assert app.measure.data['sensorWeatherHum'].shape[0]
+    assert app.measure.data['sensorWeatherPress'].shape[0]
+    assert app.measure.data['sensorWeatherDew'].shape[0]
 
 
 def test_measureTask_2():
     app.mainW.ui.measureDevice.setCurrentIndex(0)
-    app.environ.data = {}
+    app.sensorWeather.data = {}
+    app.measure.devices['sensorWeather'] = ''
     app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),
-        'envTemp': np.empty(shape=[0, 1]),
-        'envHum': np.empty(shape=[0, 1]),
-        'envPress': np.empty(shape=[0, 1]),
-        'envDew': np.empty(shape=[0, 1]),
+        'sensorWeatherTemp': np.empty(shape=[0, 1]),
+        'sensorWeatherHum': np.empty(shape=[0, 1]),
+        'sensorWeatherPress': np.empty(shape=[0, 1]),
+        'sensorWeatherDew': np.empty(shape=[0, 1]),
         'skyTemp': np.empty(shape=[0, 1]),
         'skySQR': np.empty(shape=[0, 1]),
         'raJNow': np.empty(shape=[0, 1]),
@@ -69,24 +72,24 @@ def test_measureTask_2():
     }
     suc = app.measure.measureTask()
     assert suc
-    assert app.measure.data['envTemp'].shape[0] == 1
-    assert app.measure.data['envHum'].shape[0] == 1
-    assert app.measure.data['envPress'].shape[0] == 1
-    assert app.measure.data['envDew'].shape[0] == 1
+    assert app.measure.data['sensorWeatherTemp'].shape[0] == 1
+    assert app.measure.data['sensorWeatherHum'].shape[0] == 1
+    assert app.measure.data['sensorWeatherPress'].shape[0] == 1
+    assert app.measure.data['sensorWeatherDew'].shape[0] == 1
 
 
 def test_measureTask_3():
     app.mainW.ui.measureDevice.setCurrentIndex(1)
-    app.environ.data['WEATHER_TEMPERATURE'] = 10
-    app.environ.data['WEATHER_PRESSURE'] = 1000
-    app.environ.data['WEATHER_DEWPOINT'] = 10
-    app.environ.data['WEATHER_HUMIDITY'] = 10
+    app.sensorWeather.data['WEATHER_TEMPERATURE'] = 10
+    app.sensorWeather.data['WEATHER_PRESSURE'] = 1000
+    app.sensorWeather.data['WEATHER_DEWPOINT'] = 10
+    app.sensorWeather.data['WEATHER_HUMIDITY'] = 10
     suc = app.measure.measureTask()
     assert suc
-    assert app.measure.data['envTemp'][1] == 10
-    assert app.measure.data['envHum'][1] == 10
-    assert app.measure.data['envPress'][1] == 1000
-    assert app.measure.data['envDew'][1] == 10
+    assert app.measure.data['sensorWeatherTemp'][1] == 10
+    assert app.measure.data['sensorWeatherHum'][1] == 10
+    assert app.measure.data['sensorWeatherPress'][1] == 1000
+    assert app.measure.data['sensorWeatherDew'][1] == 10
     app.mainW.ui.measureDevice.setCurrentIndex(0)
 
 
@@ -182,7 +185,8 @@ def test_checkSize_1():
     app.measure.data['decJNow'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.MAXSIZE = 20
-    suc = app.measure.checkSize()
+    lenData = len(app.measure.data['time'])
+    suc = app.measure.checkSize(lenData=lenData)
     assert not suc
 
 
@@ -198,5 +202,6 @@ def test_checkSize_2():
     app.measure.data['decJNow'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.data['status'] = np.array([0, 0, 0, 0, 0, 0, 0, 0])
     app.measure.MAXSIZE = 5
-    suc = app.measure.checkSize()
+    lenData = len(app.measure.data['time'])
+    suc = app.measure.checkSize(lenData=lenData)
     assert suc

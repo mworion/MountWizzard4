@@ -101,6 +101,4 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-/todo.md
-/gists/
-/automation/
+

@@ -129,14 +129,13 @@ def test_getSolutionFromWCS_1():
     header.set('CRVAL2', 60.0)
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
-    (ra, dec, angle, scale, error, flipped, path), header \
-        = app.astrometry.getSolutionFromWCS(fitsHeader=header,
-                                            wcsHeader=header)
-    assert ra.hours == 12
-    assert dec.degrees == 60
-    assert angle == 0
-    assert scale == 0
-    assert not flipped
+    solve, header = app.astrometry.getSolutionFromWCS(fitsHeader=header,
+                                                      wcsHeader=header)
+    assert solve['raJ2000S'].hours == 12
+    assert solve['decJ2000S'].degrees == 60
+    assert solve['angleS'] == 0
+    assert solve['scaleS'] == 0
+    assert not solve['flippedS']
 
     assert header['RA'] == header['CRVAL1']
     assert header['DEC'] == header['CRVAL2']
@@ -150,15 +149,14 @@ def test_getSolutionFromWCS_2():
     header.set('CRVAL2', 60.0)
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
-    (ra, dec, angle, scale, error, flipped, path), header \
-        = app.astrometry.getSolutionFromWCS(fitsHeader=header,
-                                            wcsHeader=header,
-                                            updateFits=True)
-    assert ra.hours == 12
-    assert dec.degrees == 60
-    assert angle == 0
-    assert scale == 0
-    assert not flipped
+    solve, header = app.astrometry.getSolutionFromWCS(fitsHeader=header,
+                                                      wcsHeader=header,
+                                                      updateFits=True)
+    assert solve['raJ2000S'].hours == 12
+    assert solve['decJ2000S'].degrees == 60
+    assert solve['angleS'] == 0
+    assert solve['scaleS'] == 0
+    assert not solve['flippedS']
 
     assert header['RA'] == header['CRVAL1']
     assert header['DEC'] == header['CRVAL2']

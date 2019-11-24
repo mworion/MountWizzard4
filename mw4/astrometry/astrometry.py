@@ -293,10 +293,10 @@ class Astrometry:
         if not updateFits:
             return solve, fitsHeader
 
-        fitsHeader.append(('SCALE', solve.scale, 'MountWizzard4'))
-        fitsHeader.append(('PIXSCALE', solve.scale, 'MountWizzard4'))
-        fitsHeader.append(('ANGLE', solve.angle, 'MountWizzard4'))
-        fitsHeader.append(('FLIPPED', solve.flipped, 'MountWizzard4'))
+        fitsHeader.append(('SCALE', solve['scaleS'], 'MountWizzard4'))
+        fitsHeader.append(('PIXSCALE', solve['scaleS'], 'MountWizzard4'))
+        fitsHeader.append(('ANGLE', solve['angleS'], 'MountWizzard4'))
+        fitsHeader.append(('FLIPPED', solve['flippedS'], 'MountWizzard4'))
 
         fitsHeader.extend(wcsHeader,
                           unique=True,

@@ -9,7 +9,7 @@
 #
 # Python-based Tool for interaction with the 10micron mounts
 # GUI with PyQT5 for python
-# Python  v3.7.4
+# Python  v3.7.5
 #
 # Michael Würtenberger
 # (c) 2019
@@ -283,10 +283,6 @@ class Model(object):
             return False
 
         mPoint.update(result)
-
-        # todo test
-        if not (mPoint['countSequence'] % 3):
-            mPoint['success'] = False
 
         if mPoint['success']:
             # processing only the model points which are OK

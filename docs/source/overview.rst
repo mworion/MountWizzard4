@@ -26,7 +26,7 @@ To give you an overview about the functionality:
   well as geometrical constraints).
 - Environment data: MW4 shows data from OpenWeatherMap, ClearOutside, External Sensors like
   MBox, Stickstation, UniHedronSQR as well as direct linked sensors like MGBox.
-- Refraction handling external / interal from the above sources
+- Refraction handling external / internal from the above sources
 - Satellite: searching, displaying, programming, updating tracking.
 - Tools: Renaming fits files according different header entries.
 - Tools: 10 free park positions to be programmed.
@@ -36,7 +36,7 @@ To give you an overview about the functionality:
 - Measurement: saving data to csv file.
 - INDI framework: setting up different INDI server connections and devices.
 - Imaging: control of connected camera / cooler / filter.
-- Imaging: all parameters about FL and visual KPI's for quality check.
+- Imaging: all parameters about FL and visual KPIs for quality check.
 - WOL boot for mount. MW4 catches MAC address automatically on first manual start.
 - WOL boot for an additional computer (imaging, etc)
 - Audio signals for different events (end slew, finished modeling, alert, etc.)
@@ -46,4 +46,4 @@ To give you an overview about the functionality:
 - Generate / load / save horizon file.
 - Show alignment stars. Choose and automatically center for polar or orthogonal adjustments.
 - Imaging: expose one / N images, auto solve or auto stack these images.
-- Imaging: show distortion grid, zoom, strech, color images, showing FITS headers.
+- Imaging: show distortion grid, zoom, stretch, color images, showing FITS headers.

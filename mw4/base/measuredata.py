@@ -71,7 +71,10 @@ class MeasureData(object):
         :return: True for test purpose
         """
 
-        self.devices = [key for key, value in self.deviceStat.items() if self.deviceStat[key] is not None]
+        dItems = self.deviceStat.items()
+        dKey = self.deviceStat[key]
+
+        self.devices = [key for key, value in dItems if dKey is not None]
         self.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 

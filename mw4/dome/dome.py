@@ -254,7 +254,7 @@ class Dome(indiClass.IndiClass):
         else:
             alt = altitude
             az = azimuth
-        geoStat = 'On' if isGeometry else 'Off'
+        geoStat = 'On' if self.isGeometry else 'Off'
         text = f'Slewing  dome:      az correction: {geoStat}, delta: {azimuth-az:3.1f}°'
         self.message.emit(text, 0)
         self.slewToAltAz(azimuth=az)

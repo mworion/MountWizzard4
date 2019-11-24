@@ -581,19 +581,18 @@ class Model(object):
 
         if len(starList) != len(self.model):
             text = f'length starList [{len(starList)}] and length '
-            text += f'model [{len(model)}] is different'
+            text += f'model [{len(self.model)}] is different'
             self.logger.debug(text)
             self.model = []
 
-        for i, mPoint in enumerate(model):
+        for i, mPoint in enumerate(self.model):
             mPoint['errorRMS'] = starList[i].errorRMS
             mPoint['errorRA'] = starList[i].errorRA()
             mPoint['errorDEC'] = starList[i].errorDEC()
 
-        return true
+        return True
 
-    @staticmethod
-    def generateSaveModel():
+    def generateSaveModel(self):
         """
         generateSaveModel builds from the model file a format which could be serialized
         in json. this format will be used for storing model on file
@@ -654,7 +653,7 @@ class Model(object):
         """
 
         if len(self.model) < 3:
-            self.logger.debug(f'only {len(model)} points available')
+            self.logger.debug(f'only {len(self.model)} points available')
             return False
 
         # setting signal for callback when the model in memory is refreshed
@@ -701,7 +700,7 @@ class Model(object):
 
         while not self.modelQueue.empty():
             mPoint = self.modelQueue.get()
-            model.append(mPoint)
+            self.model.append(mPoint)
 
         # stopping other activities
         self.defaultSignals()
@@ -710,7 +709,7 @@ class Model(object):
 
         # finally do it
         self.app.message.emit('Programming model to mount', 0)
-        build = self.generateBuildData(model=model)
+        build = self.generateBuildData(model=self.model)
         suc = self.app.mount.model.programAlign(build)
 
         if suc:

@@ -67,8 +67,8 @@ class Power(object):
                         '2': self.ui.portUSB2,
                         '3': self.ui.portUSB3,
                         '4': self.ui.portUSB4,
-                        '3': self.ui.portUSB5,
-                        '4': self.ui.portUSB6,
+                        '5': self.ui.portUSB5,
+                        '6': self.ui.portUSB6,
                         }
 
         # gui tasks

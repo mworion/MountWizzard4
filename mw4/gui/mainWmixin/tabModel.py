@@ -273,7 +273,7 @@ class Model(object):
             self.logger.debug('empty result queue')
             return False
 
-        mPoint = self.resultQueue.get()
+        mPoint = copy.copy(self.resultQueue.get())
         number = mPoint["lenSequence"]
         count = mPoint["countSequence"]
         modelingDone = (number == count + 1)
@@ -344,7 +344,7 @@ class Model(object):
             self.logger.debug('empty solve queue')
             return False
 
-        mPoint = self.solveQueue.get()
+        mPoint = copy.copy(self.solveQueue.get())
 
         # showing the expose image in the image window
         if self.app.imageW:
@@ -388,7 +388,7 @@ class Model(object):
             self.logger.debug('empty image queue')
             return False
 
-        mPoint = self.imageQueue.get()
+        mPoint = copy.copy(self.imageQueue.get())
         self.collector.resetSignals()
 
         self.app.imaging.expose(imagePath=mPoint['imagePath'],
@@ -429,7 +429,7 @@ class Model(object):
         if self.slewQueue.empty():
             return False
 
-        mPoint = self.slewQueue.get()
+        mPoint = copy.copy(self.slewQueue.get())
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'],
                                                     )
@@ -627,7 +627,7 @@ class Model(object):
         self.retrofitModel()
         saveData = self.generateSaveModel()
 
-        self.app.message.emit(f'Writing model:  {self.modelName} ', 1)
+        self.app.message.emit(f'Writing model:      {self.modelName} ', 1)
 
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
         with open(modelPath, 'w') as outfile:
@@ -695,7 +695,7 @@ class Model(object):
         self.model = list()
 
         while not self.modelQueue.empty():
-            mPoint = self.modelQueue.get()
+            mPoint = copy.copy(self.modelQueue.get())
             self.model.append(mPoint)
 
         # stopping other activities
@@ -784,7 +784,7 @@ class Model(object):
             imagePath = f'{self.imageDir}/image-{countSequence:03d}.fits'
 
             # populating the parameters
-            modelSet['path'] = imagePath
+            modelSet['imagePath'] = imagePath
             modelSet['exposureTime'] = exposureTime
             modelSet['binning'] = binning
             modelSet['subFrame'] = subFrame

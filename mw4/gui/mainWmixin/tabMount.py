@@ -480,7 +480,7 @@ class Mount(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -517,7 +517,7 @@ class Mount(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -554,7 +554,7 @@ class Mount(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -591,7 +591,7 @@ class Mount(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -628,7 +628,7 @@ class Mount(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -668,6 +668,9 @@ class Mount(object):
 
         obs = self.app.mount.obsSite
 
+        if obs.location is None:
+            return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Longitude',
@@ -678,14 +681,12 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = (value,
-                self.app.mount.obsSite.location.latitude,
-                self.app.mount.obsSite.elevation.m)
-        self.app.mount.obsSite.location = topo
+        topo = (stringToAngle(value),
+                obs.location.latitude,
+                obs.location.elevation.m)
+        obs.location = topo
 
-        self.app.mount.obsSite.location.longitude = stringToAngle(value)
-
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             self.updateLocGUI(obs)
             return False
 
@@ -706,6 +707,9 @@ class Mount(object):
 
         obs = self.app.mount.obsSite
 
+        if obs.location is None:
+            return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getText(self,
                                 'Set Site Latitude',
@@ -716,12 +720,12 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = (self.app.mount.obsSite.location.longitude,
-                value,
-                self.app.mount.obsSite.elevation.m)
-        self.app.mount.obsSite.location = topo
+        topo = (obs.location.longitude,
+                stringToAngle(value),
+                obs.location.elevation.m)
+        obs.location = topo
 
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             self.updateLocGUI(obs)
             return False
 
@@ -742,6 +746,9 @@ class Mount(object):
 
         obs = self.app.mount.obsSite
 
+        if obs.location is None:
+            return False
+
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getDouble(self,
                                   'Set Site Elevation',
@@ -754,12 +761,12 @@ class Mount(object):
         if not ok:
             return False
 
-        topo = (self.app.mount.obsSite.location.longitude,
-                self.app.mount.obsSite.location.latitude,
+        topo = (obs.location.longitude,
+                obs.location.latitude,
                 value)
-        self.app.mount.obsSite.location = topo
+        obs.location = topo
 
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             self.updateLocGUI(obs)
             return False
 
@@ -778,7 +785,7 @@ class Mount(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -813,7 +820,7 @@ class Mount(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')
@@ -848,7 +855,7 @@ class Mount(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        if not self.app.mountUp:
+        if not self.deviceStat['mount']:
             msg.critical(self,
                          'Error Message',
                          'Value cannot be set when mount not connected !')

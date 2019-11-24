@@ -34,6 +34,7 @@ from mw4.test.test_units.setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
+    app.mainW.deviceStat['mount'] = True
     yield
 
 
@@ -125,21 +126,6 @@ def test_updatePointGui_ha():
     app.mount.obsSite.raJNow = value
     app.mainW.updatePointGUI(app.mount.obsSite)
     assert '-' == app.mainW.ui.HA.text()
-
-
-def test_updateTimeGui_jd1():
-    value = '2451544.5'
-    app.mount.obsSite.utc_ut1 = '0'
-    app.mount.obsSite.timeJD = value
-    app.mainW.updateTimeGUI(app.mount.obsSite)
-    assert '00:00:00' == app.mainW.ui.timeJD.text()
-
-
-def test_updateTimeGui_jd2():
-    value = None
-    app.mount.obsSite._timeJD = value
-    app.mainW.updateTimeGUI(app.mount.obsSite)
-    assert '-' != app.mainW.ui.timeJD.text()
 
 
 def test_updateTimeGui_sidereal():
@@ -593,6 +579,7 @@ def test_updateSettingExt_location():
 
 
 def test_setMeridianLimitTrack1(qtbot):
+    app.mainW.deviceStat['mount'] = False
     app.mount.setting.meridianLimitTrack = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -602,6 +589,7 @@ def test_setMeridianLimitTrack1(qtbot):
 
 
 def test_setMeridianLimitTrack3(qtbot):
+    app.mainW.deviceStat['mount'] = True
     app.mount.setting.meridianLimitTrack = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
@@ -623,6 +611,7 @@ def test_setMeridianLimitTrack4(qtbot):
 
 
 def test_setMeridianLimitSlew1(qtbot):
+    app.mainW.deviceStat['mount'] = False
     app.mount.setting.meridianLimitSlew = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -632,6 +621,7 @@ def test_setMeridianLimitSlew1(qtbot):
 
 
 def test_setMeridianLimitSlew3(qtbot):
+    app.mainW.deviceStat['mount'] = True
     app.mount.setting.meridianLimitSlew = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
@@ -653,6 +643,7 @@ def test_setMeridianLimitSlew4(qtbot):
 
 
 def test_setHorizonLimitHigh1(qtbot):
+    app.mainW.deviceStat['mount'] = False
     app.mount.setting.horizonLimitHigh = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -662,6 +653,7 @@ def test_setHorizonLimitHigh1(qtbot):
 
 
 def test_setHorizonLimitHigh3(qtbot):
+    app.mainW.deviceStat['mount'] = True
     app.mount.setting.horizonLimitHigh = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
@@ -683,6 +675,7 @@ def test_setHorizonLimitHigh4(qtbot):
 
 
 def test_setHorizonLimitLow1(qtbot):
+    app.mainW.deviceStat['mount'] = False
     app.mount.setting.horizonLimitLow = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -692,6 +685,7 @@ def test_setHorizonLimitLow1(qtbot):
 
 
 def test_setHorizonLimitLow3(qtbot):
+    app.mainW.deviceStat['mount'] = True
     app.mount.setting.horizonLimitLow = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
@@ -713,7 +707,7 @@ def test_setHorizonLimitLow4(qtbot):
 
 
 def test_setSlewRate1(qtbot):
-    app.mount.setting.slewRate = None
+    app.mainW.deviceStat['mount'] = False
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
@@ -722,6 +716,7 @@ def test_setSlewRate1(qtbot):
 
 
 def test_setSlewRate3(qtbot):
+    app.mainW.deviceStat['mount'] = True
     app.mount.setting.slewRate = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getInt',
@@ -752,6 +747,7 @@ def test_setLongitude1(qtbot):
 
 
 def test_setLongitude2(qtbot):
+    app.mainW.deviceStat['mount'] = False
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -764,6 +760,7 @@ def test_setLongitude2(qtbot):
 
 
 def test_setLongitude3(qtbot):
+    app.mainW.deviceStat['mount'] = True
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -800,6 +797,7 @@ def test_setLatitude1(qtbot):
 
 
 def test_setLatitude2(qtbot):
+    app.mainW.deviceStat['mount'] = True
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -875,7 +873,7 @@ def test_setElevation4(qtbot):
 
 
 def test_setUnattendedFlip1(qtbot):
-    app.mount.setting._statusUnattendedFlip = None
+    app.mainW.deviceStat['mount'] = False
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
@@ -884,6 +882,7 @@ def test_setUnattendedFlip1(qtbot):
 
 
 def test_setUnattendedFlip3(qtbot):
+    app.mainW.deviceStat['mount'] = True
     app.mount.setting.statusUnattendedFlip = True
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getItem',
@@ -905,7 +904,7 @@ def test_setUnattendedFlip4(qtbot):
 
 
 def test_setDualAxisTracking1(qtbot):
-    app.mount.setting._statusDualAxisTracking = None
+    app.mainW.deviceStat['mount'] = False
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
@@ -914,6 +913,7 @@ def test_setDualAxisTracking1(qtbot):
 
 
 def test_setDualAxisTracking3(qtbot):
+    app.mainW.deviceStat['mount'] = True
     app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getItem',
@@ -935,7 +935,7 @@ def test_setDualAxisTracking4(qtbot):
 
 
 def test_setRefraction1(qtbot):
-    app.mount.setting._statusRefraction = None
+    app.mainW.deviceStat['mount'] = False
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
                            return_value=True):
@@ -944,6 +944,7 @@ def test_setRefraction1(qtbot):
 
 
 def test_setRefraction3(qtbot):
+    app.mainW.deviceStat['mount'] = True
     app.mount.setting.statusRefraction = True
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
                            'getItem',

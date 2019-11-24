@@ -304,13 +304,13 @@ class Model(object):
             text += f'Dec: {transform.convertToDMS(mPoint["decJ2000S"])} '
             text += f'({mPoint["decJ2000S"].degrees:4.3f}), '
             self.app.message.emit(text, 0)
-            text = f'         '
+            text = f'                    '
             text += f'Angle: {mPoint["angleS"]:3.0f}, '
             text += f'Scale: {mPoint["scaleS"]:4.3f}, '
             text += f'Error: {mPoint["errorRMS_S"]:4.1f}'
             self.app.message.emit(text, 0)
         else:
-            text = f'Solving error for image-{count:03d}: {mPoint.get("message")}'
+            text = f'Solving  image-{count:03d}: solving error: {mPoint.get("message")}'
             self.app.message.emit(text, 2)
 
         self.updateProgress(number=number,
@@ -627,7 +627,7 @@ class Model(object):
         self.retrofitModel()
         saveData = self.generateSaveModel()
 
-        self.app.message.emit(f'writing model [{self.modelName}]', 0)
+        self.app.message.emit(f'Writing model:  {self.modelName} ', 1)
 
         modelPath = f'{self.app.mwGlob["modelDir"]}/{self.modelName}.model'
         with open(modelPath, 'w') as outfile:
@@ -704,22 +704,22 @@ class Model(object):
         self.defaultGUI()
 
         # finally do it
-        self.app.message.emit('Programming model to mount', 0)
+        self.app.message.emit('                Programming model to mount', 0)
         build = self.generateBuildData(model=self.model)
         suc = self.app.mount.model.programAlign(build)
 
         if suc:
-            self.app.message.emit('Model programmed with success', 0)
             self.saveModel()
+            self.app.message.emit('                Model programmed with success', 0)
         else:
-            self.app.message.emit('Model programming error', 2)
+            self.app.message.emit('                Model programming error', 2)
 
         # cleaning up the disk space
         if not self.ui.checkKeepImages.isChecked():
             self.app.message.emit('Deleting model images', 0)
             shutil.rmtree(self.imageDir, ignore_errors=True)
 
-        self.app.message.emit('Modeling finished', 1)
+        self.app.message.emit(f'Modeling finished:  {self.modelName}', 1)
         self.playAudioModelFinished()
 
         return True
@@ -755,7 +755,7 @@ class Model(object):
 
         # now everything is prepared and we could start modeling
         self.clearQueues()
-        self.app.message.emit(f'Modeling {self.modelName} started', 1)
+        self.app.message.emit(f'Modeling start:     {self.modelName}', 1)
 
         # setting overall parameters
         self.app.mount.settlingTime = self.app.mainW.ui.settleTimeMount.value()

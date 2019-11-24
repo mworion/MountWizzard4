@@ -36,7 +36,6 @@ def module_setup_teardown():
     app, spy, mwGlob, test = setupQt()
     host_ip = '192.168.2.250'
     host = (host_ip, 80)
-    yield
 
 
 def test_JNowToJ2000_1():

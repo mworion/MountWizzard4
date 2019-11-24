@@ -37,7 +37,6 @@ def module_setup_teardown():
     app, spy, mwGlob, test = setupQt()
     testGlob = copy.copy(mwGlob)
     workDir = os.getcwd()
-    yield
 
 
 def test_except_hook():

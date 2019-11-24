@@ -365,11 +365,13 @@ class HemisphereWindow(widget.MWidget):
         """
 
         if not self.mutexDraw.tryLock():
+            print('lock failed')
             return False
 
-        axe = self.hemisphereMat.figure.axes[0]
-        axe.figure.canvas.draw()
-        axe.figure.canvas.flush_events()
+        if self.hemisphereMat.figure.axes:
+            axe = self.hemisphereMat.figure.axes[0]
+            axe.figure.canvas.draw()
+            axe.figure.canvas.flush_events()
 
         if self.hemisphere2Mat.figure.axes:
             axe = self.hemisphere2Mat.figure.axes[0]

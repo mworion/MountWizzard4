@@ -38,8 +38,6 @@ def module_setup_teardown():
     global app
     m = Signal()
     app = indiClass.IndiClass(host_ip, app=m)
-    yield
-    app = None
 
 
 def test_name():

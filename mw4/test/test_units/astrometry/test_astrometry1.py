@@ -35,7 +35,6 @@ def module_setup_teardown():
                            'system',
                            return_value='Linux'):
         app, spy, mwGlob, test = setupQt()
-        yield
 
 
 def test_init_1():

@@ -38,6 +38,7 @@ def module_setup_teardown():
     app.config['showHemisphereW'] = True
     app.toggleHemisphereWindow()
     yield
+    del app, spy, mwGlob, test
 
 
 def test_storeConfig_1():

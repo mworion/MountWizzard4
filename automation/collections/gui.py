@@ -20,8 +20,9 @@ from invoke import context
 
 
 def runMW(c, param):
-    # c.run(param, echo=True, hide='out')
     c.run(param)
+    # c.run(param, echo=False, hide='out')
+    # c.run(param)
 
 
 def printMW(param):

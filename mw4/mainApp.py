@@ -116,7 +116,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.signals.mountUp.connect(self.loadMountData)
 
         # get all planets for calculation
-        self.planets = self.mount.obsSite.loader('de421_23.bsp')
+        try:
+            self.planets = self.mount.obsSite.loader('de421_23.bsp')
+        except Exception as e:
+            self.logger.error(f'Failed planets: {e}')
+            self.planets = None
         self.relay = KMRelay(host='192.168.2.15')
         self.sensorWeather = SensorWeather(self, host='localhost')
         self.onlineWeather = OnlineWeather(self,

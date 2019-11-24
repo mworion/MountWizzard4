@@ -29,7 +29,6 @@ from skyfield.api import Angle
 # local import
 from mw4.test.test_units.setupQt import setupQt
 from mw4.gui.widget import MWidget
-from mw4.definitions import Solution, Solve
 
 
 @pytest.fixture(autouse=True, scope='module')
@@ -433,15 +432,17 @@ def test_solveDone_1(qtbot):
 
 
 def test_solveDone_2(qtbot):
-    result = Solution(success=False,
-                      solve=Solve(raJ2000=Angle(hours=10),
-                                  decJ2000=Angle(degrees=20),
-                                  angle=30,
-                                  scale=1,
-                                  error=3,
-                                  flipped=False,
-                                  path='test'),
-                      message='test')
+    result = {
+        'success': False,
+        'raJ2000S': Angle(hours=10),
+        'decJ2000S': Angle(degrees=20),
+        'angleS': 30,
+        'scaleS': 1,
+        'errorRMS_S': 3,
+        'flippedS': False,
+        'imagePath': 'test',
+        'message': 'test',
+    }
 
     app.astrometry.signals.done.connect(app.imageW.solveDone)
     with qtbot.waitSignal(app.message) as blocker:
@@ -453,35 +454,40 @@ def test_solveDone_2(qtbot):
 def test_solveDone_3(qtbot):
     app.imageW.ui.checkAutoSolve.setChecked(False)
     app.imageW.ui.checkStackImages.setChecked(True)
-    result = Solution(success=True,
-                      solve=Solve(raJ2000=Angle(hours=10),
-                                  decJ2000=Angle(degrees=20),
-                                  angle=30,
-                                  scale=1,
-                                  error=3,
-                                  flipped=False,
-                                  path='test'),
-                      message='test')
+    result = {
+        'success': True,
+        'raJ2000S': Angle(hours=10),
+        'decJ2000S': Angle(degrees=20),
+        'angleS': 30,
+        'scaleS': 1,
+        'errorRMS_S': 3,
+        'flippedS': False,
+        'imagePath': 'test',
+        'message': 'test',
+    }
 
     app.astrometry.signals.done.connect(app.imageW.solveDone)
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.imageW.solveDone(result=result)
         assert suc
-    assert ['Solved: [test]', 0] == blocker.args
+    assert ['Solved : Ra: 10:00:00 (10.000), Dec: +20:00:00 (20.000), ', 0] == blocker.args
 
 
 def test_solveDone_4(qtbot):
     app.imageW.ui.checkAutoSolve.setChecked(True)
     app.imageW.ui.checkStackImages.setChecked(False)
-    result = Solution(success=True,
-                      solve=Solve(raJ2000=Angle(hours=10),
-                                  decJ2000=Angle(degrees=20),
-                                  angle=30,
-                                  scale=1,
-                                  error=3,
-                                  flipped=False,
-                                  path='test'),
-                      message='test')
+    result = {
+        'success': True,
+        'raJ2000S': Angle(hours=10),
+        'decJ2000S': Angle(degrees=20),
+        'angleS': 30,
+        'scaleS': 1,
+        'errorRMS_S': 3,
+        'flippedS': False,
+        'imagePath': 'test',
+        'solvedPath': 'test',
+        'message': 'test',
+    }
 
     app.astrometry.signals.done.connect(app.imageW.solveDone)
     with qtbot.waitSignal(app.imageW.signals.showImage):

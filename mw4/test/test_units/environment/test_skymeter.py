@@ -29,7 +29,7 @@ from mw4.test.test_units.setupQt import setupQt
 host_ip = 'astro-mount.fritz.box'
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()

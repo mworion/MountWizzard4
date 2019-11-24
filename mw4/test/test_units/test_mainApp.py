@@ -62,8 +62,7 @@ def test_initConfig_1():
                   indent=4)
     suc = app.loadConfig()
     assert suc
-    exp, topo = app.initConfig()
-    assert exp
+    topo = app.initConfig()
     assert 10 == topo.longitude.degrees
     assert 10 == topo.latitude.degrees
     assert 10 == topo.elevation.m
@@ -85,8 +84,7 @@ def test_initConfig_2():
                   indent=4)
     suc = app.loadConfig()
     assert suc
-    exp, topo = app.initConfig()
-    assert exp
+    topo = app.initConfig()
     assert 0 == topo.longitude.degrees
     assert 50 == topo.latitude.degrees
     assert 46 == topo.elevation.m
@@ -106,8 +104,7 @@ def test_initConfig_3():
                   indent=4)
     suc = app.loadConfig()
     assert suc
-    exp, topo = app.initConfig()
-    assert not exp
+    topo = app.initConfig()
     assert 0 == topo.longitude.degrees
     assert 51.47 == topo.latitude.degrees
     assert 46 == topo.elevation.m

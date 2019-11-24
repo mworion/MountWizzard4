@@ -35,9 +35,9 @@ class Signal(PyQt5.QtCore.QObject):
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app, message
+    global app
     m = Signal()
-    app = indiClass.IndiClass(host_ip, message=m.message)
+    app = indiClass.IndiClass(host_ip, app=m)
     yield
     app = None
 

@@ -30,20 +30,17 @@ from mw4.test.test_units.setupQt import setupQt
 def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
-    app.config['showMeasureW'] = True
-    app.toggleMeasureWindow()
-    yield
 
-
-@pytest.fixture(autouse=True, scope='function')
-def function_setup_teardown():
     value = np.datetime64('2014-12-12 20:20:20')
+    app.measure.devices['sensorWeather'] = ''
+    app.measure.devices['power'] = ''
+    app.measure.devices['skymeter'] = ''
     app.measure.data = {
         'time': np.empty(shape=[0, 1], dtype='datetime64'),
-        'envTemp': np.full([5, 1], 1.0),
-        'envHum': np.full([5, 1], 1.0),
-        'envPress': np.full([5, 1], 1.0),
-        'envDew': np.full([5, 1], 1.0),
+        'sensorWeatherTemp': np.full([5, 1], 1.0),
+        'sensorWeatherHum': np.full([5, 1], 1.0),
+        'sensorWeatherPress': np.full([5, 1], 1.0),
+        'sensorWeatherDew': np.full([5, 1], 1.0),
         'skySQR': np.full([5, 1], 1.0),
         'skyTemp': np.full([5, 1], 1.0),
         'raJNow': np.full([5, 1], 1.0),
@@ -64,6 +61,10 @@ def function_setup_teardown():
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
+
+    app.config['showMeasureW'] = True
+    app.toggleMeasureWindow()
+
     yield
 
 

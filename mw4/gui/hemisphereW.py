@@ -103,8 +103,6 @@ class HemisphereWindow(widget.MWidget):
         self.hemisphere2Mat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.initConfig()
-        self.configOperationMode()
-        self.togglePolar()
         self.showWindow()
 
     def initConfig(self):
@@ -135,6 +133,8 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkShowAlignStar.setChecked(config.get('checkShowAlignStar', False))
         self.ui.checkUseHorizon.setChecked(config.get('checkUseHorizon', False))
         self.ui.showPolar.setChecked(config.get('showPolar', False))
+        self.togglePolar()
+        self.configOperationMode()
 
         return True
 

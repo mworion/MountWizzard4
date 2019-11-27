@@ -31,6 +31,7 @@ from importlib_metadata import version
 # local import
 from mw4.gui.mainW import MainWindow
 from mw4.gui.messageW import MessageWindow
+from mw4.gui.keypadW import KeypadWindow
 from mw4.gui.hemisphereW import HemisphereWindow
 from mw4.gui.measureW import MeasureWindow
 from mw4.gui.imageW import ImageWindow
@@ -88,6 +89,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timerCounter = 0
         self.mainW = None
         self.messageW = None
+        self.keypadW = None
         self.hemisphereW = None
         self.measureW = None
         self.imageW = None
@@ -207,6 +209,26 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.messageW = None
         gc.collect()
 
+    def toggleKeypadWindow(self):
+        """
+
+        :return:
+        """
+        if not self.keypadW:
+            self.keypadW = KeypadWindow(self)
+            self.keypadW.destroyed.connect(self.deleteKeypadW)
+        else:
+            self.keypadW.close()
+
+    def deleteKeypadW(self):
+        """
+
+        :return:
+        """
+
+        self.keypadW = None
+        gc.collect()
+
     def toggleImageWindow(self):
         """
 
@@ -302,12 +324,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.storeConfig()
 
         config['showMessageW'] = bool(self.messageW)
+        config['showKeypadW'] = bool(self.messageW)
         config['showHemisphereW'] = bool(self.hemisphereW)
         config['showImageW'] = bool(self.imageW)
         config['showMeasureW'] = bool(self.measureW)
         config['showSatelliteW'] = bool(self.satelliteW)
         if self.messageW:
             self.messageW.storeConfig()
+        if self.keypadW:
+            self.keypadW.storeConfig()
         if self.imageW:
             self.imageW.storeConfig()
         if self.hemisphereW:
@@ -326,6 +351,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         if self.config.get('showMessageW', False):
             self.toggleMessageWindow()
+        if self.config.get('showKeypadW', False):
+            self.toggleKeypadWindow()
         if self.config.get('showHemisphereW', False):
             self.toggleHemisphereWindow()
         if self.config.get('showImageW', False):

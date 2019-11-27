@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>9</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -11697,7 +11697,7 @@ to mount</string>
        <rect>
         <x>79</x>
         <y>145</y>
-        <width>231</width>
+        <width>226</width>
         <height>21</height>
        </rect>
       </property>
@@ -11738,7 +11738,7 @@ to mount</string>
        <rect>
         <x>80</x>
         <y>80</y>
-        <width>231</width>
+        <width>226</width>
         <height>21</height>
        </rect>
       </property>
@@ -11754,7 +11754,7 @@ to mount</string>
        <rect>
         <x>79</x>
         <y>175</y>
-        <width>231</width>
+        <width>226</width>
         <height>21</height>
        </rect>
       </property>
@@ -11774,9 +11774,9 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>74</x>
+        <x>79</x>
         <y>20</y>
-        <width>236</width>
+        <width>226</width>
         <height>21</height>
        </rect>
       </property>
@@ -11846,7 +11846,7 @@ to mount</string>
        <rect>
         <x>9</x>
         <y>115</y>
-        <width>171</width>
+        <width>186</width>
         <height>16</height>
        </rect>
       </property>
@@ -11894,7 +11894,7 @@ to mount</string>
        <rect>
         <x>80</x>
         <y>265</y>
-        <width>231</width>
+        <width>226</width>
         <height>21</height>
        </rect>
       </property>
@@ -11913,7 +11913,7 @@ to mount</string>
        <rect>
         <x>80</x>
         <y>235</y>
-        <width>231</width>
+        <width>226</width>
         <height>21</height>
        </rect>
       </property>
@@ -12028,7 +12028,7 @@ to mount</string>
        <rect>
         <x>80</x>
         <y>205</y>
-        <width>231</width>
+        <width>226</width>
         <height>21</height>
        </rect>
       </property>
@@ -12412,21 +12412,6 @@ to mount</string>
        <string>Slew max</string>
       </property>
      </widget>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="Keypad">
-    <attribute name="title">
-     <string>Keypad</string>
-    </attribute>
-    <widget class="QTextBrowser" name="virtualKeypad">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>5</y>
-       <width>291</width>
-       <height>426</height>
-      </rect>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="Setting">

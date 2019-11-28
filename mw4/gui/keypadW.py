@@ -159,7 +159,9 @@ class KeypadWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        s = "qt.jQuery(this).find('div.virtkeypad').css('background-color', '#ff00ff');"
+        s = "qt.jQuery('div').find('.virtkeypad').css('background-color','#202020');"
+        self.browser.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
+        s = "qt.jQuery('div').find('.global-main').css('background-color','#202020');"
         self.browser.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
 
         return True

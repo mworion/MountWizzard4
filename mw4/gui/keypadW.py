@@ -22,6 +22,7 @@ import logging
 import time
 import json
 import pkg_resources
+import base64
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -53,6 +54,16 @@ class KeypadWindow(widget.MWidget):
         self.initUI()
         self.browser = PyQt5.QtWebEngineWidgets.QWebEngineView()
         self.ui.keypad.addWidget(self.browser)
+        self.browser.setStyleSheet('background-color: #202020;')
+        self.browser.setVisible(False)
+
+        file = PyQt5.QtCore.QFile()
+        file.setFileName(':/jquery.min.js')
+        file.open(PyQt5.QtCore.QIODevice.ReadOnly)
+        self.jQuery = file.readAll()
+        self.jQuery.append("\nvar qt = {'jQuery': jQuery.noConflict(true) };")
+        self.jQuery = bytes(self.jQuery).decode()
+        file.close()
 
         self.initConfig()
         self.showWindow()
@@ -101,6 +112,12 @@ class KeypadWindow(widget.MWidget):
         return True
 
     def closeEvent(self, closeEvent):
+        """
+
+        :param closeEvent:
+        :return:
+        """
+
         self.storeConfig()
 
         # gui signals
@@ -112,9 +129,8 @@ class KeypadWindow(widget.MWidget):
         :return:
         """
 
-        suc = self.showUrl()
-        if suc:
-            self.show()
+        self.showUrl()
+        self.show()
 
     def clearWindow(self):
         """
@@ -126,100 +142,39 @@ class KeypadWindow(widget.MWidget):
         self.ui.message.clear()
         return True
 
-    @staticmethod
-    def insertStyleSheet(ui=None, name='', source='', immediately=False):
+    def removeMainMenu(self):
         """
 
-        :param ui:
-        :param name:
-        :param source:
-        :param immediately:
         :return: True for test purpose
         """
 
-        script = QWebEngineScript()
-
-        s = "(function() {"
-        s += f"  css = document.getElementById('{name}');"
-        s += "  css.type = 'text/css';"
-        s += "  document.head.appendChild(css);"
-        s += f" css.innerText = '{source}';"
-        s += "})()"
-
-        if immediately:
-            ui.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
-
-        script.setName(name)
-        script.setSourceCode(s)
-        script.setInjectionPoint(QWebEngineScript.DocumentReady)
-        script.setRunsOnSubFrames(True)
-        script.setWorldId(QWebEngineScript.ApplicationWorld)
-        ui.page().scripts().insert(script)
+        s = "qt.jQuery('div').find('.global-header').hide();"
+        self.browser.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
 
         return True
 
-    @staticmethod
-    def removeStyleSheet(ui=None, name='', immediately=False):
+    def setKeypadBackground(self):
         """
 
-        :param ui:
-        :param name:
-        :param immediately:
         :return: True for test purpose
         """
 
-        s = "(function() {"
-        s += f" var element = document.getElementById({name});"
-        s += "  element.outerHTML = '';"
-        s += "  delete element;"
-        s += "})()"
-
-        script = ui.page().scripts().findScript(name)
-
-        if immediately:
-            ui.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
-
-        ui.page().scripts().remove(script)
+        s = "qt.jQuery(this).find('div.virtkeypad').css('background-color', '#ff00ff');"
+        self.browser.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
 
         return True
 
-    @staticmethod
-    def removeClass(ui=None, name='',):
+    def loadFinished(self):
         """
 
-        :param ui:
-        :param name:
-        :return: True for test purpose
+        :return:
         """
 
-        s = f"val el = document.getElements('div').remove('{name}');"
-        ui.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
-
-        return True
-
-    @staticmethod
-    def setStyleKeypad(ui=None, name='', value=''):
-        """
-
-        :param ui:
-        :param name:
-        :param value:
-        :return: True for test purpose
-        """
-
-        script = QWebEngineScript()
-        s = f"document.querySelector('.{name}').style.backgroundColor = 'green';"
-
-        print(s)
-
-        script.setName('test')
-        script.setSourceCode(s)
-        script.setInjectionPoint(QWebEngineScript.DocumentReady)
-        script.setRunsOnSubFrames(True)
-        script.setWorldId(QWebEngineScript.ApplicationWorld)
-        ui.page().scripts().insert(script)
-
-        return True
+        self.browser.page().setBackgroundColor(PyQt5.QtCore.Qt.transparent)
+        self.browser.page().runJavaScript(self.jQuery, QWebEngineScript.ApplicationWorld)
+        self.removeMainMenu()
+        self.setKeypadBackground()
+        self.browser.setVisible(True)
 
     def showUrl(self):
         """
@@ -231,14 +186,9 @@ class KeypadWindow(widget.MWidget):
         if not host:
             return False
 
+        self.browser.loadFinished.connect(self.loadFinished)
+
         url = f'http://{host}/virtkeypad.html'
         self.browser.load(PyQt5.QtCore.QUrl(url))
-
-        # source = 'document.body.style.backgroundColor = "red";'
-        source = 'background-color: #ff00ffff;'
-
-        # self.setStyleKeypad(ui=self.browser, name='virtkp_canvas')
-
-        self.removeClass(ui=self.browser, name='global-header')
 
         return True

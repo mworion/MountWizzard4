@@ -20,5 +20,7 @@
     <file>offset.png</file>
     <file>clearoutside.png</file>
     <file>clearoutsideoff.png</file>
+    <file>jquery.min.js</file>
+    <file>virtkeypad.html</file>
 </qresource>
 </RCC>

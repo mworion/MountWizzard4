@@ -324,7 +324,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.storeConfig()
 
         config['showMessageW'] = bool(self.messageW)
-        config['showKeypadW'] = bool(self.messageW)
+        config['showKeypadW'] = bool(self.keypadW)
         config['showHemisphereW'] = bool(self.hemisphereW)
         config['showImageW'] = bool(self.imageW)
         config['showMeasureW'] = bool(self.measureW)

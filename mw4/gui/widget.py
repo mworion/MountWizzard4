@@ -32,7 +32,6 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 # local imports
 from . import styles
 
-version = '0.100'
 __all__ = [
     'MWidget',
 ]
@@ -53,7 +52,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                'integrateMatplotlib',
                ]
 
-    version = '0.5'
     logger = logging.getLogger(__name__)
 
     def __init__(self):

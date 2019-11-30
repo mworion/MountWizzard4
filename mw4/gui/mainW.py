@@ -441,38 +441,12 @@ class MainWindow(MWidget,
         :return: True for test purpose
         """
 
-        stats = {
-            'message':
-                {'object': self.app.messageW,
-                 'button': self.ui.openMessageW,
-                 },
-            'hemisphere':
-                {'object': self.app.hemisphereW,
-                 'button': self.ui.openHemisphereW,
-                 },
-            'image':
-                {'object': self.app.imageW,
-                 'button': self.ui.openImageW,
-                 },
-            'measure':
-                {'object': self.app.measureW,
-                 'button': self.ui.openMeasureW,
-                 },
-            'satellite':
-                {'object': self.app.satelliteW,
-                 'button': self.ui.openSatelliteW,
-                 },
-            'keypad':
-                {'object': self.app.keypadW,
-                 'button': self.ui.openKeypadW,
-                 },
-        }
-
-        for key, value in stats.items():
-            if stats[key]['object']:
-                self.changeStyleDynamic(stats[key]['button'], 'running', True)
+        for win in self.app.uiWindows:
+            winObj = self.app.uiWindows[win]
+            if winObj['classObj']:
+                self.changeStyleDynamic(winObj['button'], 'running', True)
             else:
-                self.changeStyleDynamic(stats[key]['button'], 'running', False)
+                self.changeStyleDynamic(winObj['button'], 'running', False)
 
         return True
 

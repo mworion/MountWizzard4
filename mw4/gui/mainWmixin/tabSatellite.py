@@ -238,7 +238,7 @@ class Satellite(object):
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         satTabVisible = self.ui.mainTabWidget.currentIndex() == tabIndex
 
-        if not self.app.satelliteW and not satTabVisible:
+        if not self.app.uiWindows['showSatelliteW']['classObj'] and not satTabVisible:
             return False
 
         now = self.app.mount.obsSite.ts.now()
@@ -276,10 +276,10 @@ class Satellite(object):
         self.ui.satAltitude.setText(f'{alt:3.2f}')
         self.ui.satAzimuth.setText(f'{az:3.2f}')
 
-        if not self.app.satelliteW:
+        if not self.app.uiWindows['showSatelliteW']['classObj']:
             return True
 
-        self.app.satelliteW.signals.update.emit(observe, subpoint, altaz)
+        self.app.uiWindows['showSatelliteW']['classObj'].signals.update.emit(observe, subpoint, altaz)
         return True
 
     def programTLEToMount(self):
@@ -387,10 +387,10 @@ class Satellite(object):
         self.programTLEToMount()
         self.calcTLEParams()
 
-        if not self.app.satelliteW:
+        if not self.app.uiWindows['showSatelliteW']['classObj']:
             return False
 
-        self.app.satelliteW.signals.show.emit(self.satellite)
+        self.app.uiWindows['showSatelliteW']['classObj'].signals.show.emit(self.satellite)
         return True
 
     def enableTrack(self, tleParams=None):

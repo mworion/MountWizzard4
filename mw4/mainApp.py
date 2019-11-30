@@ -88,12 +88,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mwGlob = mwGlob
         self.timerCounter = 0
         self.mainW = None
-        self.messageW = None
-        self.keypadW = None
-        self.hemisphereW = None
-        self.measureW = None
-        self.imageW = None
-        self.satelliteW = None
         self.threadPool = PyQt5.QtCore.QThreadPool()
         self.threadPool.setMaxThreadCount(20)
 
@@ -144,15 +138,53 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # get the window widgets up
         self.mainW = MainWindow(self,
                                 threadPool=self.threadPool)
-        self.showWindows()
 
         # link cross widget gui signals as all ui widgets have to be present
-        self.mainW.ui.openMessageW.clicked.connect(self.toggleMessageWindow)
-        self.mainW.ui.openHemisphereW.clicked.connect(self.toggleHemisphereWindow)
-        self.mainW.ui.openImageW.clicked.connect(self.toggleImageWindow)
-        self.mainW.ui.openMeasureW.clicked.connect(self.toggleMeasureWindow)
-        self.mainW.ui.openSatelliteW.clicked.connect(self.toggleSatelliteWindow)
-        self.mainW.ui.openKeypadW.clicked.connect(self.toggleKeypadWindow)
+        self.uiWindows = {
+            'showMessageW': {
+                'button': self.mainW.ui.openMessageW,
+                'classObj': None,
+                'name': 'MessageDialog',
+                'class': MessageWindow,
+            },
+            'showHemisphereW': {
+                'button': self.mainW.ui.openHemisphereW,
+                'classObj': None,
+                'name': 'HemisphereDialog',
+                'class': HemisphereWindow,
+            },
+            'showImageW': {
+                'button': self.mainW.ui.openImageW,
+                'classObj': None,
+                'name': 'ImageDialog',
+                'class': ImageWindow,
+            },
+            'showMeasureW': {
+                'button': self.mainW.ui.openMeasureW,
+                'classObj': None,
+                'name': 'MeasureDialog',
+                'class': MeasureWindow,
+            },
+            'showSatelliteW': {
+                'button': self.mainW.ui.openSatelliteW,
+                'classObj': None,
+                'name': 'SatelliteDialog',
+                'class': SatelliteWindow,
+            },
+            'showKeypadW': {
+                'button': self.mainW.ui.openKeypadW,
+                'classObj': None,
+                'name': 'KeyDialog',
+                'class': KeypadWindow,
+            },
+        }
+
+        self.showWindows()
+
+        # connecting buttons to window open close
+        for win in self.uiWindows:
+            pass
+            self.uiWindows[win]['button'].clicked.connect(self.toggleWindow)
 
         # starting mount communication
         self.mount.startTimers()
@@ -170,124 +202,57 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if sys.argv[1] == 'test':
             self.update10s.connect(self.quitSave)
 
-    def toggleHemisphereWindow(self):
+    def toggleWindow(self, windowTag=''):
+        """
+        togglePowerPort  toggles the state of the power switch
+        :return: true for test purpose
         """
 
-        :return:
-        """
-        if not self.hemisphereW:
-            self.hemisphereW = HemisphereWindow(self)
-            self.hemisphereW.destroyed.connect(self.deleteHemisphereW)
-        else:
-            self.hemisphereW.close()
+        for win in self.uiWindows:
 
-    def deleteHemisphereW(self):
-        """
+            isSender = (self.uiWindows[win]['button'] == self.sender())
+            isWindowTag = (win == windowTag)
 
-        :return:
-        """
+            if not isSender and not isWindowTag:
+                continue
 
-        self.hemisphereW = None
-        gc.collect()
+            winObj = self.uiWindows[win]
 
-    def toggleMessageWindow(self):
-        """
+            if not winObj['classObj']:
 
-        :return:
-        """
-        if not self.messageW:
-            self.messageW = MessageWindow(self)
-            self.messageW.destroyed.connect(self.deleteMessageW)
-        else:
-            self.messageW.close()
+                if win == 'showSatelliteW':
+                    newWindow = winObj['class'](self, threadPool=self.threadPool)
+                else:
+                    newWindow = winObj['class'](self)
 
-    def deleteMessageW(self):
+                # make new object instance from window
+                winObj['classObj'] = newWindow
+                winObj['classObj'].destroyed.connect(self.deleteWindow)
+
+            else:
+                winObj['classObj'].close()
+
+        return True
+
+    def deleteWindow(self, widget):
         """
 
-        :return:
+        :return: success
         """
 
-        self.messageW = None
-        gc.collect()
+        if not widget:
+            return False
 
-    def toggleKeypadWindow(self):
-        """
+        for win in self.uiWindows:
+            winObj = self.uiWindows[win]
 
-        :return:
-        """
-        if not self.keypadW:
-            self.keypadW = KeypadWindow(self)
-            self.keypadW.destroyed.connect(self.deleteKeypadW)
-        else:
-            self.keypadW.close()
+            if winObj['name'] != widget.objectName():
+                continue
 
-    def deleteKeypadW(self):
-        """
+            winObj['classObj'] = None
+            gc.collect()
 
-        :return:
-        """
-
-        self.keypadW = None
-        gc.collect()
-
-    def toggleImageWindow(self):
-        """
-
-        :return:
-        """
-        if not self.imageW:
-            self.imageW = ImageWindow(self)
-            self.imageW.destroyed.connect(self.deleteImageW)
-        else:
-            self.imageW.close()
-
-    def deleteImageW(self):
-        """
-
-        :return:
-        """
-
-        self.imageW = None
-        gc.collect()
-
-    def toggleMeasureWindow(self):
-        """
-
-        :return:
-        """
-        if not self.measureW:
-            self.measureW = MeasureWindow(self)
-            self.measureW.destroyed.connect(self.deleteMeasureW)
-        else:
-            self.measureW.close()
-
-    def deleteMeasureW(self):
-        """
-
-        :return:
-        """
-        self.measureW = None
-        gc.collect()
-
-    def toggleSatelliteWindow(self):
-        """
-
-        :return:
-        """
-        if not self.satelliteW:
-            self.satelliteW = SatelliteWindow(self,
-                                              threadPool=self.threadPool)
-            self.satelliteW.destroyed.connect(self.deleteSatelliteW)
-        else:
-            self.satelliteW.close()
-
-    def deleteSatelliteW(self):
-        """
-
-        :return:
-        """
-        self.satelliteW = None
-        gc.collect()
+        return True
 
     def initConfig(self):
         """
@@ -324,44 +289,21 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             config['topoElev'] = location.elevation.m
         self.mainW.storeConfig()
 
-        config['showMessageW'] = bool(self.messageW)
-        config['showKeypadW'] = bool(self.keypadW)
-        config['showHemisphereW'] = bool(self.hemisphereW)
-        config['showImageW'] = bool(self.imageW)
-        config['showMeasureW'] = bool(self.measureW)
-        config['showSatelliteW'] = bool(self.satelliteW)
-        if self.messageW:
-            self.messageW.storeConfig()
-        if self.keypadW:
-            self.keypadW.storeConfig()
-        if self.imageW:
-            self.imageW.storeConfig()
-        if self.hemisphereW:
-            self.hemisphereW.storeConfig()
-        if self.measureW:
-            self.measureW.storeConfig()
-        if self.satelliteW:
-            self.satelliteW.storeConfig()
+        for win in self.uiWindows:
+            winObj = self.uiWindows[win]
+            config[win] = bool(winObj['classObj'])
+
         return True
 
     def showWindows(self):
         """
 
-        :return: True for test purpose
+        :return: true for test purpose
         """
 
-        if self.config.get('showMessageW', False):
-            self.toggleMessageWindow()
-        if self.config.get('showKeypadW', False):
-            self.toggleKeypadWindow()
-        if self.config.get('showHemisphereW', False):
-            self.toggleHemisphereWindow()
-        if self.config.get('showImageW', False):
-            self.toggleImageWindow()
-        if self.config.get('showMeasureW', False):
-            self.toggleMeasureWindow()
-        if self.config.get('showSatelliteW', False):
-            self.toggleSatelliteWindow()
+        for win in self.uiWindows:
+            if self.config.get(win, False):
+                self.toggleWindow(windowTag=win)
 
         return True
 

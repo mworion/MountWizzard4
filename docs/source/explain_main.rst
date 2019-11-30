@@ -11,22 +11,23 @@ used:
     :align: center
 
 Area 1
+^^^^^^
 
 ...describes the actual status of the important devices for modeling, shows status text
 outputs from devices and open / shows status / closes additional windows for further work.
 
 Area 2
-
+^^^^^^
 ...shows actual computer time, UTC, and the actual profile. In header section there is
 hint if MW4 work actually in online (internet connected) or offline mode.
 
 Area 3
-
+^^^^^^
 ...manages loading / saving profiles, boot and shutdown of the mount (if WOL is enabled
 and the MAC address of the mount is known)
 
 Area 4
-
+^^^^^^
 ...shows different tabs for different use cases.
 
 MW4 comes with tooltips which should help you to understand which button or widget is used
@@ -81,8 +82,8 @@ will see. The example is the maximum MW4 could support.
 .. image:: _static/explain_environ_tab.png
     :align: center
 
-Area 1:
-
+Area 1
+^^^^^^
 Data of all different configured sources are shown here. If a source has no connection or
 receives no data, the frame will turn red.
 
@@ -100,9 +101,8 @@ receives no data, the frame will turn red.
 | Direct   | MGBox          | if connected via GPS connector to mount             |
 +----------+----------------+-----------------------------------------------------+
 
-
-Area2:
-
+Area 2
+^^^^^^
 THis is the data the mount is working with. In the mount box there is the actual refraction
 data the mount knows. You could set the refraction update method in this area or push the
 data manually to the mount. Continuously means at any state, but filtered with a moving
@@ -113,14 +113,14 @@ If no source for updating the refraction data is available, but needed, this par
 red. The update mode is set in mount computer if "Direct" source is selected or done through
 MW4 for all others sources.
 
-Area 3:
-
+Area 3
+^^^^^^
 If you have a online connection enabled, you could see the weather forecast for your
 location from clearoutside. Thanks to these guy to agree on this integration. The location
 is automatically set to the location of your mount.
 
 Area 4:
-
+^^^^^^^
 If a source frame has a checkbox, this source could be chosen for using it's data for
 refraction update. As you might have different ones, you have the choice.
 

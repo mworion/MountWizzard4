@@ -47,8 +47,8 @@ In Windows10 it looks like:
 Step 2
 ------
 
-Run one of the scripts following script. During installation a terminal window might open an
- show the progress of installation.
+Run one of the scripts following script. During installation a terminal window might and
+shows the progress of installation.
 
 .. code-block:: python
 
@@ -102,7 +102,8 @@ In Windows10 it looks like:
     :align: center
 
 With the first run you will see a log file written and you should have a first window from MW4
-open:
+open. Please notice that there will be no visible terminal window, but a minimized power
+shell in the menu. This might take some seconds before MW4 comes up with the splash screen:
 
 .. image:: _static/install_mw4_first_run.png
     :align: center

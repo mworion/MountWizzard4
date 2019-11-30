@@ -38,7 +38,8 @@ function virtual_keypad() {
     }
     function n(t, a, n) {
         // writes the text
-        t >= 1 && t <= 16 && a >= 1 && a <= 5 && e.drawImage(o[n], 8 * (t - 1), 12 * (a - 1))
+        // adding 1px in x and y, because overlapping
+        t >= 1 && t <= 16 && a >= 1 && a <= 5 && e.drawImage(o[n], 8 * (t - 1) + 1, 12 * (a - 1) + 1)
     }
     !function() {
         for (var e = 0; e < 256; ++e) {
@@ -96,7 +97,7 @@ function virtual_keypad() {
                     }
                 e.putImageData(f, 8 * (r - 1), 12 * (u - 1));
                 break;
-            case 2:
+                case 2:
                 for (r = i[1], u = i[2], f = e.createImageData(8, 8), d = 0, _ = 0; _ < 8; ++_)
                     for (p = 0; p < 8; ++p) {
                         y = 0 != (i[3 + p] & 128 >> _);

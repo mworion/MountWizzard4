@@ -36,7 +36,7 @@ def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
     app.config['showHemisphereW'] = True
-    app.toggleHemisphereWindow()
+    app.toggleWindow(windowTag='showHemisphereW')
 
 
 def test_storeConfig_1():

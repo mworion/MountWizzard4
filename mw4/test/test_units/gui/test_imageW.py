@@ -36,7 +36,7 @@ def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
     app.config['showImageWindow'] = True
-    app.toggleImageWindow()
+    app.toggleWindow(windowTag='showImageW')
     yield
     file = mwGlob['imageDir'] + '/test.fit'
     if os.path.isfile(file):

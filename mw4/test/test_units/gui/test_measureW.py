@@ -63,8 +63,7 @@ def module_setup_teardown():
     app.measure.data['time'] = np.append(app.measure.data['time'], value)
 
     app.config['showMeasureW'] = True
-    app.toggleMeasureWindow()
-
+    app.toggleWindow(windowTag='showMeasureW')
     yield
 
 

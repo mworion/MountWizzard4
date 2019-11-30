@@ -179,6 +179,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             },
         }
 
+        # show all sub windows
         self.showWindows()
 
         # connecting buttons to window open close

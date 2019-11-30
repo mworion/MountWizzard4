@@ -29,7 +29,7 @@ def module_setup_teardown():
     global app, spy, mwGlob, test
     app, spy, mwGlob, test = setupQt()
     app.config['showMessageWindow'] = True
-    app.toggleMessageWindow()
+    app.toggleWindow(windowTag='showMessageW')
     yield
 
 

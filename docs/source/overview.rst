@@ -9,11 +9,15 @@ Qt as Gui framework.
 For full operation MW4 needs a running INDI Server(s), where the devices are connected. In
 addition a online connection is for some services helpful, but not needed.
 
+It is recommended to use firmware 2.16 or later as some of the functions don't work with older
+firmware functions.
+
 To give you an overview about the functionality:
 
 - Many settings / features of the mount could be show and changed.
 - Control of movements of the mount as well as tracking speeds.
 - Coordinates in J2000 as well as in JNow.
+- virtual keypad
 - Model building with different model setups and model generating capabilities. Sorting points
   for effective slew path or dome situation.
 - Model building is done in parallel threads (imaging, plate solving, slewing) to reduce time.

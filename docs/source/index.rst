@@ -2,7 +2,7 @@ Welcome to MountWizzard4's (MW4) documentation!
 ===============================================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     :caption: Contents:
 
     overview

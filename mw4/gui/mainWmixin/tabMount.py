@@ -62,6 +62,7 @@ class Mount(object):
         self.clickable(self.ui.siteElevation).connect(self.setElevation)
         self.clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
         self.clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
+        self.clickable(self.ui.statusWOL).connect(self.setWOL)
         self.clickable(self.ui.statusRefraction).connect(self.setRefraction)
 
     def initConfig(self):
@@ -844,6 +845,41 @@ class Mount(object):
             self.app.message.emit(f'Dual axis tracking set to [{value}]', 0)
         else:
             self.app.message.emit('Dual axis tracking cannot be set', 2)
+
+        return suc
+
+    def setWOL(self):
+        """
+        setWOL implements a modal dialog for entering the value
+
+        :return:    success as bool if value could be changed
+        """
+
+        msg = PyQt5.QtWidgets.QMessageBox
+        if not self.deviceStat['mount']:
+            msg.critical(self,
+                         'Error Message',
+                         'Value cannot be set when mount not connected !')
+            return False
+
+        sett = self.app.mount.setting
+
+        dlg = PyQt5.QtWidgets.QInputDialog()
+        value, ok = dlg.getItem(self,
+                                'Set Wake On Lan',
+                                'Value: On / Off',
+                                ['ON', 'OFF'],
+                                0,
+                                False,
+                                )
+        if not ok:
+            return False
+
+        suc = sett.setWOL(value == 'ON')
+        if suc:
+            self.app.message.emit(f'WOL set to [{value}]', 0)
+        else:
+            self.app.message.emit('WOL cannot be set', 2)
 
         return suc
 

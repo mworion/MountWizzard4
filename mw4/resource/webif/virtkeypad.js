@@ -95,7 +95,8 @@ function virtual_keypad() {
                         else
                             f.data[d + 0] = 0, f.data[d + 1] = 0, f.data[d + 2] = 0, f.data[d + 3] = 0, d += 4
                     }
-                e.putImageData(f, 8 * (r - 1), 12 * (u - 1));
+                // one pixel in y
+                e.putImageData(f, 8 * (r - 1), 12 * (u - 1) + 1);
                 break;
                 case 2:
                 for (r = i[1], u = i[2], f = e.createImageData(8, 8), d = 0, _ = 0; _ < 8; ++_)
@@ -108,7 +109,8 @@ function virtual_keypad() {
                         else
                             f.data[d + 0] = 0, f.data[d + 1] = 0, f.data[d + 2] = 0, f.data[d + 3] = 0, d += 4
                     }
-                e.putImageData(f, 8 * (r - 1), 8 * (u - 1));
+                // one pixel in y
+                e.putImageData(f, 8 * (r - 1), 8 * (u - 1) + 1);
                 break;
             case 5:
                 !function(e, o) {

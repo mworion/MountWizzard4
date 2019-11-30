@@ -71,3 +71,90 @@ Parking / emergency stop put the mount in park position or stops and movement im
 In Status and settings from mount computer many parameters are visible and could be altered.
 Whenever you see a frame around a value, you could click on it and change the parameter.
 Some of the parameters could only be changed if the mount is connected.
+
+Environ Tab
+-----------
+If you have environment sensors connected and configured you could see the overview in the
+environment tab. The tab content is dynamically, the more connections you have, the more you
+will see. The example is the maximum MW4 could support.
+
+.. image:: _static/explain_environ_tab.png
+    :align: center
+
+Area 1:
+
+Data of all different configured sources are shown here. If a source has no connection or
+receives no data, the frame will turn red.
+
++----------+----------------+-----------------------------------------------------+
+| source   | device         | remarks                                             |
++----------+----------------+-----------------------------------------------------+
+| SkyMeter | Unihedron SQM  | for compensation it's gathering temperature as well |
++----------+----------------+-----------------------------------------------------+
+| Power    | Pegasus UPB1/2 | both version are supported                          |
++----------+----------------+-----------------------------------------------------+
+| Weather  | OpenWeatherMap | API needed, the pressure is at mount level !        |
++----------+----------------+-----------------------------------------------------+
+| Sensor   | MBox, MGBox    | if connected as INDI external device, compatibles   |
++----------+----------------+-----------------------------------------------------+
+| Direct   | MGBox          | if connected via GPS connector to mount             |
++----------+----------------+-----------------------------------------------------+
+
+
+Area2:
+
+THis is the data the mount is working with. In the mount box there is the actual refraction
+data the mount knows. You could set the refraction update method in this area or push the
+data manually to the mount. Continuously means at any state, but filtered with a moving
+average filter of 60s length. No tracking means updating whenever new data is coming, but
+only when the mount is not in tracking state.
+
+If no source for updating the refraction data is available, but needed, this part will turn
+red. The update mode is set in mount computer if "Direct" source is selected or done through
+MW4 for all others sources.
+
+Area 3:
+
+If you have a online connection enabled, you could see the weather forecast for your
+location from clearoutside. Thanks to these guy to agree on this integration. The location
+is automatically set to the location of your mount.
+
+Area 4:
+
+If a source frame has a checkbox, this source could be chosen for using it's data for
+refraction update. As you might have different ones, you have the choice.
+
+Model Build Tab
+---------------
+
+.. image:: _static/explain_model_build_tab.png
+    :align: center
+
+Manage Model Tab
+----------------
+
+.. image:: _static/explain_manage_model_tab.png
+    :align: center
+
+Satellite Tab
+-------------
+
+.. image:: _static/explain_satellite_tab.png
+    :align: center
+
+Power Tab
+---------
+
+.. image:: _static/explain_power_tab.png
+    :align: center
+
+Relay Tab
+---------
+
+Should be added later.
+
+Tools Tab
+---------
+
+.. image:: _static/explain_tools_tab.png
+    :align: center

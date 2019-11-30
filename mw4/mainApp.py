@@ -152,6 +152,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW.ui.openImageW.clicked.connect(self.toggleImageWindow)
         self.mainW.ui.openMeasureW.clicked.connect(self.toggleMeasureWindow)
         self.mainW.ui.openSatelliteW.clicked.connect(self.toggleSatelliteWindow)
+        self.mainW.ui.openKeypadW.clicked.connect(self.toggleKeypadWindow)
 
         # starting mount communication
         self.mount.startTimers()

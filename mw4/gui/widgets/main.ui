@@ -21473,9 +21473,9 @@ When clicking the button, you could change the value.</string>
    <widget class="QPushButton" name="openImageW">
     <property name="geometry">
      <rect>
-      <x>265</x>
+      <x>220</x>
       <y>75</y>
-      <width>86</width>
+      <width>71</width>
       <height>25</height>
      </rect>
     </property>
@@ -21557,9 +21557,9 @@ When clicking the button, you could change the value.</string>
    <widget class="QPushButton" name="openSatelliteW">
     <property name="geometry">
      <rect>
-      <x>355</x>
+      <x>295</x>
       <y>75</y>
-      <width>86</width>
+      <width>71</width>
       <height>25</height>
      </rect>
     </property>
@@ -21599,9 +21599,9 @@ When clicking the button, you could change the value.</string>
    <widget class="QPushButton" name="openMeasureW">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>75</x>
       <y>75</y>
-      <width>81</width>
+      <width>66</width>
       <height>25</height>
      </rect>
     </property>
@@ -21792,9 +21792,9 @@ When clicking the button, you could change the value.</string>
    <widget class="QPushButton" name="openHemisphereW">
     <property name="geometry">
      <rect>
-      <x>175</x>
+      <x>145</x>
       <y>75</y>
-      <width>86</width>
+      <width>71</width>
       <height>25</height>
      </rect>
     </property>
@@ -21837,7 +21837,7 @@ When clicking the button, you could change the value.</string>
      <rect>
       <x>5</x>
       <y>75</y>
-      <width>81</width>
+      <width>66</width>
       <height>25</height>
      </rect>
     </property>
@@ -21932,6 +21932,48 @@ When clicking the button, you could change the value.</string>
     </property>
     <property name="readOnly">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="openKeypadW">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>75</y>
+      <width>71</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Opens and closes the satellite window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Keypad</string>
     </property>
    </widget>
   </widget>

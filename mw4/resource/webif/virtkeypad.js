@@ -1,34 +1,8 @@
-var iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-audioCtx = new (window.AudioContext || window.webkitAudioContext), oscillator_timeout_id = null, oscillator_queue = [];
-var oscillator = null,
-    gainNode = null;
-function start_oscillator() {
-    null == oscillator && (oscillator = audioCtx.createOscillator(), gainNode = audioCtx.createGain(), oscillator.connect(gainNode), gainNode.connect(audioCtx.destination), gainNode.gain.value = 0, oscillator.frequency.value = 2512.56, oscillator.type = "square", oscillator.start(0))
-}
-function beep(e, t, o) {
-    gainNode.gain.value = e, oscillator.frequency.value = t, oscillator_timeout_id = setTimeout(function() {
-        if (gainNode.gain.value = 0, oscillator_queue.length > 0) {
-            let e = oscillator_queue.shift();
-            beep(e.volume, e.frequency, e.duration)
-        } else
-            oscillator_timeout_id = null
-    }, o)
-}
-function queue_beep(e, t, o) {
-    if (null == oscillator_timeout_id)
-        beep(e, t, o);
-    else {
-        let a = {
-            volume: e,
-            frequency: t,
-            duration: o
-        };
-        oscillator_queue.push(a)
-    }
-}
-function queue_beep_clear() {
-    oscillator_queue = [], null == !oscillator_timeout_id && (oscillator.stop(), clearTimeout(oscillator_timeout_id), oscillator_timeout_id = null)
-}
+// entering the host name
+var parameters = location.search.substring(1).split("&");
+var temp = parameters[0].split("=");
+var host = unescape(temp[1]);
+
 function pack_7bit_into8bit(e, t) {
     for (var o, a = [], n = 0, i = e.length, r = 0; r < i; ++r) {
         if (o = o << 7 | 127 & e[r], (n += 7) >= 8) {
@@ -69,6 +43,8 @@ function virtual_keypad() {
     !function() {
         for (var e = 0; e < 256; ++e) {
             var t = new Image;
+
+            // changing the location of the pictures
             t.src = "pic/vk" + e + ".png", o.push(t)
         }
     }();
@@ -111,10 +87,12 @@ function virtual_keypad() {
                 for (var f = e.createImageData(8, 12), d = 0, _ = 0; _ < 12; ++_)
                     for (var g = i[3 + _], p = 0; p < 8; ++p) {
                         var y = 0 != (g & 1 << p);
+
+                        // changing the drawing color from red to blue
                         if (y)
                             f.data[d + 0] = 32, f.data[d + 1] = 144, f.data[d + 2] = 192, f.data[d + 3] = 255, d += 4
                         else
-                            f.data[d + 0] = 32, f.data[d + 1] = 32, f.data[d + 2] = 32, f.data[d + 3] = 255, d += 4
+                            f.data[d + 0] = 0, f.data[d + 1] = 0, f.data[d + 2] = 0, f.data[d + 3] = 0, d += 4
                     }
                 e.putImageData(f, 8 * (r - 1), 12 * (u - 1));
                 break;
@@ -122,10 +100,12 @@ function virtual_keypad() {
                 for (r = i[1], u = i[2], f = e.createImageData(8, 8), d = 0, _ = 0; _ < 8; ++_)
                     for (p = 0; p < 8; ++p) {
                         y = 0 != (i[3 + p] & 128 >> _);
+
+                        // changing the drawing color from red to blue
                         if (y)
                             f.data[d + 0] = 32, f.data[d + 1] = 144, f.data[d + 2] = 192, f.data[d + 3] = 255, d += 4
                         else
-                            f.data[d + 0] = 32, f.data[d + 1] = 32, f.data[d + 2] = 32, f.data[d + 3] = 255, d += 4
+                            f.data[d + 0] = 0, f.data[d + 1] = 0, f.data[d + 2] = 0, f.data[d + 3] = 0, d += 4
                     }
                 e.putImageData(f, 8 * (r - 1), 8 * (u - 1));
                 break;
@@ -139,11 +119,6 @@ function virtual_keypad() {
             case 6:
                 a();
                 break;
-            case 11:
-                queue_beep((i[1] + 256 * i[2]) / 32767, 1e6 / (i[3] + 256 * i[4]), i[5] + 256 * i[6]);
-                break;
-            case 12:
-                queue_beep_clear()
             }
     }
     function s(e) {
@@ -152,13 +127,11 @@ function virtual_keypad() {
     Object.keys(i).forEach(function(e) {
         $("#" + e).on("touchstart mousedown", function(t) {
             t.preventDefault(), function(e) {
-                start_oscillator();
                 var t = d(e);
                 c.send(t)
             }(i[e])
         }), $("#" + e).on("touchend mouseup", function(t) {
             t.preventDefault(), function(e) {
-                start_oscillator();
                 var t = _(e);
                 c.send(t)
             }(i[e])
@@ -203,13 +176,13 @@ function virtual_keypad() {
             n(1 + (15 & i), 1 + (i >> 4), t.codePointAt(i))
         }
         a(), setTimeout(function() {
-            c.open("ws://192.168.2.15:8000/", "binary")
+            c.open("ws://" + host + ":8000/", "binary")
         }, 3e3)
-    }), c.open("ws://192.168.2.15:8000/", "binary"), $(window).resize(function() {
+    }), c.open("ws://" + host + ":8000/", "binary"), $(window).resize(function() {
         g()
     }), g()
 }
-iOS || start_oscillator(), $(document).ready(function() {
+$(document).ready(function() {
     virtual_keypad()
 });
 

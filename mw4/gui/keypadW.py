@@ -54,16 +54,9 @@ class KeypadWindow(widget.MWidget):
         self.initUI()
         self.browser = PyQt5.QtWebEngineWidgets.QWebEngineView()
         self.ui.keypad.addWidget(self.browser)
-        self.browser.setStyleSheet('background-color: #202020;')
         self.browser.setVisible(False)
-
-        file = PyQt5.QtCore.QFile()
-        file.setFileName(':/jquery.min.js')
-        file.open(PyQt5.QtCore.QIODevice.ReadOnly)
-        self.jQuery = file.readAll()
-        self.jQuery.append("\nvar qt = {'jQuery': jQuery.noConflict(true) };")
-        self.jQuery = bytes(self.jQuery).decode()
-        file.close()
+        # avoid flickering in white
+        self.browser.page().setBackgroundColor(PyQt5.QtCore.Qt.transparent)
 
         self.initConfig()
         self.showWindow()
@@ -142,40 +135,12 @@ class KeypadWindow(widget.MWidget):
         self.ui.message.clear()
         return True
 
-    def removeMainMenu(self):
-        """
-
-        :return: True for test purpose
-        """
-
-        s = "qt.jQuery('div').find('.global-header').hide();"
-        self.browser.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
-
-        return True
-
-    def setKeypadBackground(self):
-        """
-
-        :return: True for test purpose
-        """
-
-        s = "qt.jQuery('div').find('.virtkeypad').css('background-color','#202020');"
-        self.browser.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
-        s = "qt.jQuery('div').find('.global-main').css('background-color','#202020');"
-        self.browser.page().runJavaScript(s, QWebEngineScript.ApplicationWorld)
-
-        return True
-
     def loadFinished(self):
         """
 
         :return:
         """
 
-        self.browser.page().setBackgroundColor(PyQt5.QtCore.Qt.transparent)
-        self.browser.page().runJavaScript(self.jQuery, QWebEngineScript.ApplicationWorld)
-        self.removeMainMenu()
-        self.setKeypadBackground()
         self.browser.setVisible(True)
 
     def showUrl(self):
@@ -185,12 +150,13 @@ class KeypadWindow(widget.MWidget):
         """
 
         host = self.app.mainW.ui.mountHost.text()
+
         if not host:
             return False
 
         self.browser.loadFinished.connect(self.loadFinished)
 
-        url = f'http://{host}/virtkeypad.html'
-        self.browser.load(PyQt5.QtCore.QUrl(url))
+        file = f'qrc:/webif/virtkeypad.html?host={host}'
+        self.browser.load(PyQt5.QtCore.QUrl(file))
 
         return True

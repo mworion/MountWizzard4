@@ -20,7 +20,20 @@
     <file>offset.png</file>
     <file>clearoutside.png</file>
     <file>clearoutsideoff.png</file>
-    <file>jquery.min.js</file>
-    <file>virtkeypad.html</file>
+
+    <file>webif/virtkeypad.html</file>
+    <file>webif/virtkeypad.css</file>
+    <file>webif/virtkeypad.js</file>
+    <file>webif/10micron.css</file>
+    <file>webif/jquery-3.3.1.min.js</file>
+    <file>webif/solid.css</file>
+    <file>webif/util.js</file>
+    <file>webif/w3.css</file>
+    <file>webif/websock.js</file>
+    <file>webif/loading.js</file>
+
+    <file>webif/pic</file>
+
+
 </qresource>
 </RCC>

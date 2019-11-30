@@ -39,9 +39,11 @@ for im_path in glob.glob('key_*.png'):
     # Make mask of black pixels - mask is True where image is black
     mask1 = (RGBA[:, :, 0:3] == [66, 67, 70]).all(2)
     mask2 = (RGBA[:, :, 0:3] == [255, 0, 0]).all(2)
+    mask3 = (RGBA[:, :, 0:3] == [255, 255, 255]).all(2)
 
     RGBA[mask1] = (32, 32, 32, 0)
     RGBA[mask2] = (32, 144, 192, 255)
+    RGBA[mask3] = (192, 192, 192, 255)
 
     # Convert Numnpy array back to PIL Image and save
     Image.fromarray(RGBA).save(im_path)

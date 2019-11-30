@@ -1,6 +1,7 @@
 *, body, html {
     margin: 0;
-    padding:0
+    padding:0;
+    background-color: #202020;
 }
 
 body, html {

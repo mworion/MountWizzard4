@@ -247,11 +247,6 @@ class MainWindow(MWidget,
         :return:    True if success for test
         """
 
-        self.wIcon(self.ui.openMessageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
-        self.wIcon(self.ui.openMeasureW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
-        self.wIcon(self.ui.openImageW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
-        self.wIcon(self.ui.openHemisphereW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
-        self.wIcon(self.ui.openSatelliteW, PyQt5.QtWidgets.QStyle.SP_ComputerIcon)
         self.wIcon(self.ui.saveConfigAs, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.loadFrom, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
         self.wIcon(self.ui.saveConfig, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
@@ -466,6 +461,10 @@ class MainWindow(MWidget,
             'satellite':
                 {'object': self.app.satelliteW,
                  'button': self.ui.openSatelliteW,
+                 },
+            'keypad':
+                {'object': self.app.keypadW,
+                 'button': self.ui.openKeypadW,
                  },
         }
 

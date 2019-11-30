@@ -347,7 +347,7 @@ class Model(object):
         mPoint = self.solveQueue.get()
 
         # showing the expose image in the image window
-        if self.app.imageW:
+        if self.app.uiWindows['showImageW']['classObj']:
             self.app.imageW.signals.showImage.emit(mPoint["imagePath"])
 
         self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
@@ -475,7 +475,7 @@ class Model(object):
 
         self.ui.batchModel.setEnabled(False)
         # disable stacking and auto solve when modeling if imageWindow is present
-        if self.app.imageW:
+        if self.app.uiWindows['showImageW']['classObj']:
             self.app.imageW.ui.checkAutoSolve.setChecked(False)
             self.app.imageW.ui.checkStackImages.setChecked(False)
         return True

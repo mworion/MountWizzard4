@@ -138,7 +138,7 @@ def test_modelSolveDone_3(qtbot):
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.modelSolveDone(result=result)
         assert suc
-    assert ['Solving error for image-003: test', 2] == blocker.args
+    assert ['Solving  image-003: solving error: test', 2] == blocker.args
 
 
 def test_modelSolveDone_6():

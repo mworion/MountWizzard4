@@ -175,7 +175,7 @@ class SettMisc(object):
         hasBase = hasattr(sys, 'base_prefix')
         return hasReal or hasBase and sys.base_prefix != sys.prefix
 
-    def runInstall(self, versionPackage='', timeout=10):
+    def runInstall(self, versionPackage='', timeout=20):
         """
         runInstall enables the virtual environment and install via pip the desired
         package version

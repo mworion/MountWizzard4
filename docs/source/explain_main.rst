@@ -61,14 +61,20 @@ usage.
 .. image:: _static/explain_mount_tab.png
     :align: center
 
+Area 1
+^^^^^^
 In addition altitude (ALT) and azimuth (AZ) is shown in degrees.
 
+Area 2
+^^^^^^
 In the tracking / flip section the tracking could be switch on / off and if possible a flip
 could be forced. The main tracking speed (lunar, solar or sidereal) is highlighted and could
 be changed.
 
 Parking / emergency stop put the mount in park position or stops and movement immediately.
 
+Area 3
+^^^^^^
 In Status and settings from mount computer many parameters are visible and could be altered.
 Whenever you see a frame around a value, you could click on it and change the parameter.
 Some of the parameters could only be changed if the mount is connected.

@@ -40,245 +40,245 @@ def module_setup_teardown():
 
 
 def test_storeConfig_1():
-    app.hemisphereW.storeConfig()
+    app.uiWindows['showHemisphereW']['classObj'].storeConfig()
 
 
 def test_initConfig_1():
-    suc = app.hemisphereW.initConfig()
+    suc = app.uiWindows['showHemisphereW']['classObj'].initConfig()
     assert suc
 
 
 def test_initConfig_3():
     app.config['hemisphereW']['winPosX'] = 10000
     app.config['hemisphereW']['winPosY'] = 10000
-    suc = app.hemisphereW.initConfig()
+    suc = app.uiWindows['showHemisphereW']['classObj'].initConfig()
     assert suc
 
 
 def test_setupAxes1(qtbot):
-    app.hemisphereW.drawHemisphere()
-    suc = app.hemisphereW.setupAxes(app.hemisphereW.hemisphereMat)
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+    suc = app.uiWindows['showHemisphereW']['classObj'].setupAxes(app.uiWindows['showHemisphereW']['classObj'].hemisphereMat)
     assert suc
 
 
 def test_setupAxes2(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.setupAxes(app.hemisphereW.hemisphereMat)
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].setupAxes(app.uiWindows['showHemisphereW']['classObj'].hemisphereMat)
 
 
 def test_drawCanvas(qtbot):
-    app.hemisphereW.drawHemisphere()
-    suc = app.hemisphereW.drawCanvas()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+    suc = app.uiWindows['showHemisphereW']['classObj'].drawCanvas()
     assert suc
 
 
 def test_updateCelestialPath_1(qtbot):
-    app.hemisphereW.drawHemisphere()
-    suc = app.hemisphereW.updateCelestialPath()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateCelestialPath()
     assert suc
 
 
 def test_updateCelestialPath_3(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.celestialPath = None
-    suc = app.hemisphereW.updateCelestialPath()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].celestialPath = None
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateCelestialPath()
     assert not suc
 
 
 def test_updateMeridian_1(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.meridianLimitSlew = 3
     app.mount.setting.meridianLimitTrack = 3
-    suc = app.hemisphereW.updateMeridian()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
     assert suc
 
 
 def test_updateMeridian_3(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.meridianLimitSlew = None
     app.mount.setting.meridianLimitTrack = 3
-    suc = app.hemisphereW.updateMeridian()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
     assert not suc
 
 
 def test_updateMeridian_4(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.meridianLimitSlew = 3
     app.mount.setting.meridianLimitTrack = None
-    suc = app.hemisphereW.updateMeridian()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
     assert not suc
 
 
 def test_updateMeridian_5(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.meridianLimitSlew = 3
     app.mount.setting.meridianLimitTrack = 3
-    app.hemisphereW.meridianTrack = None
-    suc = app.hemisphereW.updateMeridian()
+    app.uiWindows['showHemisphereW']['classObj'].meridianTrack = None
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
     assert not suc
 
 
 def test_updateMeridian_6(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.meridianLimitSlew = 3
     app.mount.setting.meridianLimitTrack = 3
-    app.hemisphereW.meridianSlew = None
-    suc = app.hemisphereW.updateMeridian()
+    app.uiWindows['showHemisphereW']['classObj'].meridianSlew = None
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
     assert not suc
 
 
 def test_updateHorizonLimits_1(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.horizonLimitHigh = 80
     app.mount.setting.horizonLimitLow = 10
-    suc = app.hemisphereW.updateHorizonLimits()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
     assert suc
 
 
 def test_updateHorizonLimits_3(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.horizonLimitHigh = None
     app.mount.setting.horizonLimitLow = 10
-    suc = app.hemisphereW.updateHorizonLimits()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
     assert not suc
 
 
 def test_updateHorizonLimits_4(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.horizonLimitHigh = 80
     app.mount.setting.horizonLimitLow = None
-    suc = app.hemisphereW.updateHorizonLimits()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
     assert not suc
 
 
 def test_updateHorizonLimits_5(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.horizonLimitHigh = 80
     app.mount.setting.horizonLimitLow = 10
-    app.hemisphereW.horizonLimitLow = None
-    suc = app.hemisphereW.updateHorizonLimits()
+    app.uiWindows['showHemisphereW']['classObj'].horizonLimitLow = None
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
     assert not suc
 
 
 def test_updateHorizonLimits_6(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.horizonLimitHigh = 80
     app.mount.setting.horizonLimitLow = 10
-    app.hemisphereW.horizonLimitHigh = None
-    suc = app.hemisphereW.updateHorizonLimits()
+    app.uiWindows['showHemisphereW']['classObj'].horizonLimitHigh = None
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
     assert not suc
 
 
 def test_updatePointerAltAz_1(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.obsSite.Alt = api.Angle(degrees=5)
     app.mount.obsSite.Az = api.Angle(degrees=5)
-    suc = app.hemisphereW.updatePointerAltAz()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updatePointerAltAz()
     assert suc
 
 
 def test_updatePointerAltAz_3(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.obsSite.Az = None
-    suc = app.hemisphereW.updatePointerAltAz()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updatePointerAltAz()
     assert not suc
 
 
 def test_updatePointerAltAz_4(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.obsSite.Alt = None
-    suc = app.hemisphereW.updatePointerAltAz()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updatePointerAltAz()
     assert not suc
 
 
 def test_updatePointerAltAz_5(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.obsSite.Alt = api.Angle(degrees=5)
     app.mount.obsSite.Az = api.Angle(degrees=5)
-    app.hemisphereW.pointerAltAz = None
-    suc = app.hemisphereW.updatePointerAltAz()
+    app.uiWindows['showHemisphereW']['classObj'].pointerAltAz = None
+    suc = app.uiWindows['showHemisphereW']['classObj'].updatePointerAltAz()
     assert not suc
 
 
 def test_updateDome_1(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.dome.data = {}
-    suc = app.hemisphereW.updateDome(45)
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateDome(45)
     assert suc
 
 
 def test_updateDome_3(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.dome.data = {}
-    suc = app.hemisphereW.updateDome(45)
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateDome(45)
     assert suc
 
 
 def test_updateDome_4(qtbot):
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.dome.data['DOME_ABSOLUTE_POSITION'] = 90
-    app.hemisphereW.pointerDome = None
-    suc = app.hemisphereW.updateDome(45)
+    app.uiWindows['showHemisphereW']['classObj'].pointerDome = None
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateDome(45)
     assert not suc
 
 
 def test_updateAlignStar_1(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
-    suc = app.hemisphereW.updateAlignStar()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkShowAlignStar.setChecked(True)
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateAlignStar()
     assert suc
 
 
 def test_updateAlignStar_3(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
-    app.hemisphereW.starsAlign = None
-    suc = app.hemisphereW.updateAlignStar()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkShowAlignStar.setChecked(True)
+    app.uiWindows['showHemisphereW']['classObj'].starsAlign = None
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateAlignStar()
     assert not suc
 
 
 def test_updateAlignStar_4(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.ui.checkShowAlignStar.setChecked(True)
-    app.hemisphereW.starsAlignAnnotate = None
-    suc = app.hemisphereW.updateAlignStar()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkShowAlignStar.setChecked(True)
+    app.uiWindows['showHemisphereW']['classObj'].starsAlignAnnotate = None
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateAlignStar()
     assert not suc
 
 
 def test_updateAlignStar_5(qtbot):
-    app.hemisphereW.drawHemisphere()
-    app.hemisphereW.ui.checkShowAlignStar.setChecked(False)
-    suc = app.hemisphereW.updateAlignStar()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkShowAlignStar.setChecked(False)
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateAlignStar()
     assert not suc
 
 
 def test_markerPoint():
-    val = app.hemisphereW.markerPoint()
+    val = app.uiWindows['showHemisphereW']['classObj'].markerPoint()
     assert isinstance(val, matplotlib.path.Path)
 
 
 def test_markerAltAz():
-    val = app.hemisphereW.markerAltAz()
+    val = app.uiWindows['showHemisphereW']['classObj'].markerAltAz()
     assert isinstance(val, matplotlib.path.Path)
 
 
 def test_markerStar():
-    val = app.hemisphereW.markerStar()
+    val = app.uiWindows['showHemisphereW']['classObj'].markerStar()
     assert isinstance(val, matplotlib.path.Path)
 
 
 def test_clearHemisphere(qtbot):
     app.data.buildP = [(0, 0), (1, 0)]
-    app.hemisphereW.clearHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].clearHemisphere()
     assert app.data.buildP == []
 
 
 def test_setOperationMode_1():
-    assert app.hemisphereW.MODE is not None
-    assert 'normal' in app.hemisphereW.MODE
-    assert 'build' in app.hemisphereW.MODE
-    assert 'horizon' in app.hemisphereW.MODE
-    assert 'star' in app.hemisphereW.MODE
+    assert app.uiWindows['showHemisphereW']['classObj'].MODE is not None
+    assert 'normal' in app.uiWindows['showHemisphereW']['classObj'].MODE
+    assert 'build' in app.uiWindows['showHemisphereW']['classObj'].MODE
+    assert 'horizon' in app.uiWindows['showHemisphereW']['classObj'].MODE
+    assert 'star' in app.uiWindows['showHemisphereW']['classObj'].MODE
 
 
 def test_setOperationMode_2():
@@ -289,10 +289,10 @@ def test_setOperationMode_2():
         def set_color(self, test):
             pass
 
-    app.hemisphereW.ui.checkEditNone.setChecked(True)
-    app.hemisphereW.horizonMarker = Test()
-    app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.setOperationMode()
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditNone.setChecked(True)
+    app.uiWindows['showHemisphereW']['classObj'].horizonMarker = Test()
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuild = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].setOperationMode()
     assert suc
 
 
@@ -304,10 +304,10 @@ def test_setOperationMode_3():
         def set_color(self, test):
             pass
 
-    app.hemisphereW.ui.checkPolarAlignment.setChecked(True)
-    app.hemisphereW.horizonMarker = Test()
-    app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.setOperationMode()
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkPolarAlignment.setChecked(True)
+    app.uiWindows['showHemisphereW']['classObj'].horizonMarker = Test()
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuild = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].setOperationMode()
     assert suc
 
 
@@ -319,10 +319,10 @@ def test_setOperationMode_4():
         def set_color(self, test):
             pass
 
-    app.hemisphereW.ui.checkEditBuildPoints.setChecked(True)
-    app.hemisphereW.horizonMarker = Test()
-    app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.setOperationMode()
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditBuildPoints.setChecked(True)
+    app.uiWindows['showHemisphereW']['classObj'].horizonMarker = Test()
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuild = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].setOperationMode()
     assert suc
 
 
@@ -334,11 +334,11 @@ def test_setOperationMode_5():
         def set_color(self, test):
             pass
 
-    app.hemisphereW.ui.checkEditHorizonMask.setChecked(True)
-    app.hemisphereW.horizonMarker = Test()
-    app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.setOperationMode()
-    app.hemisphereW.ui.checkEditNone.setChecked(True)
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditHorizonMask.setChecked(True)
+    app.uiWindows['showHemisphereW']['classObj'].horizonMarker = Test()
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuild = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].setOperationMode()
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditNone.setChecked(True)
     assert suc
 
 
@@ -350,7 +350,7 @@ def test_getIndexPoint_0():
     event.ydata = 45
     plane = []
     epsilon = 0
-    index = app.hemisphereW.getIndexPoint(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPoint(event=event,
                                           plane=plane,
                                           epsilon=epsilon,
                                           )
@@ -361,7 +361,7 @@ def test_getIndexPoint_1():
     event = None
     plane = None
     epsilon = 0
-    index = app.hemisphereW.getIndexPoint(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPoint(event=event,
                                           plane=plane,
                                           epsilon=epsilon,
                                           )
@@ -376,7 +376,7 @@ def test_getIndexPoint_2():
     event.ydata = 45
     plane = None
     epsilon = 0
-    index = app.hemisphereW.getIndexPoint(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPoint(event=event,
                                           plane=plane,
                                           epsilon=epsilon,
                                           )
@@ -391,7 +391,7 @@ def test_getIndexPoint_3():
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
     epsilon = 0
-    index = app.hemisphereW.getIndexPoint(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPoint(event=event,
                                           plane=plane,
                                           epsilon=epsilon,
                                           )
@@ -406,7 +406,7 @@ def test_getIndexPoint_4():
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
     epsilon = 200
-    index = app.hemisphereW.getIndexPoint(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPoint(event=event,
                                           plane=plane,
                                           epsilon=epsilon,
                                           )
@@ -421,7 +421,7 @@ def test_getIndexPoint_5():
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
     epsilon = 200
-    index = app.hemisphereW.getIndexPoint(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPoint(event=event,
                                           plane=plane,
                                           epsilon=epsilon,
                                           )
@@ -431,7 +431,7 @@ def test_getIndexPoint_5():
 def test_getIndexPointX_1():
     event = None
     plane = None
-    index = app.hemisphereW.getIndexPointX(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPointX(event=event,
                                            plane=plane,
                                            )
     assert not index
@@ -444,7 +444,7 @@ def test_getIndexPointX_2():
     event.xdata = 182
     event.ydata = 45
     plane = None
-    index = app.hemisphereW.getIndexPointX(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPointX(event=event,
                                            plane=plane,
                                            )
     assert not index
@@ -457,7 +457,7 @@ def test_getIndexPointX_3():
     event.xdata = 180
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
-    index = app.hemisphereW.getIndexPointX(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPointX(event=event,
                                            plane=plane,
                                            )
     assert index == 0
@@ -470,7 +470,7 @@ def test_getIndexPointX_4():
     event.xdata = 182
     event.ydata = 45
     plane = [(45, 0), (45, 360)]
-    index = app.hemisphereW.getIndexPointX(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPointX(event=event,
                                            plane=plane,
                                            )
     assert index == 0
@@ -483,7 +483,7 @@ def test_getIndexPointX_5():
     event.xdata = 182
     event.ydata = 45
     plane = [(45, 0), (45, 180), (45, 360)]
-    index = app.hemisphereW.getIndexPointX(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPointX(event=event,
                                            plane=plane,
                                            )
     assert index == 1
@@ -496,7 +496,7 @@ def test_getIndexPointX_6():
     event.xdata = 182
     event.ydata = 45
     plane = [(45, 0)]
-    index = app.hemisphereW.getIndexPointX(event=event,
+    index = app.uiWindows['showHemisphereW']['classObj'].getIndexPointX(event=event,
                                            plane=plane,
                                            )
     assert not index
@@ -507,7 +507,7 @@ def test_onMouseNormal_1():
         pass
     event = Test()
     event.inaxes = False
-    suc = app.hemisphereW.onMouseNormal(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseNormal(event=event)
     assert not suc
 
 
@@ -518,7 +518,7 @@ def test_onMouseNormal_2():
     event.inaxes = True
     event.button = 0
     event.dblclick = False
-    suc = app.hemisphereW.onMouseNormal(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseNormal(event=event)
     assert not suc
 
 
@@ -529,7 +529,7 @@ def test_onMouseNormal_3():
     event.inaxes = True
     event.button = 1
     event.dblclick = False
-    suc = app.hemisphereW.onMouseNormal(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseNormal(event=event)
     assert not suc
 
 
@@ -540,7 +540,7 @@ def test_onMouseNormal_4():
     event.inaxes = True
     event.button = 0
     event.dblclick = True
-    suc = app.hemisphereW.onMouseNormal(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseNormal(event=event)
     assert not suc
 
 
@@ -556,7 +556,7 @@ def test_onMouseNormal_5():
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.hemisphereW.onMouseNormal(event=event)
+        suc = app.uiWindows['showHemisphereW']['classObj'].onMouseNormal(event=event)
         assert not suc
 
 
@@ -578,7 +578,7 @@ def test_onMouseNormal_6():
             with mock.patch.object(app.mount.obsSite,
                                    'setTargetAltAz',
                                    return_value=True):
-                suc = app.hemisphereW.onMouseNormal(event=event)
+                suc = app.uiWindows['showHemisphereW']['classObj'].onMouseNormal(event=event)
                 assert suc
 
 
@@ -589,7 +589,7 @@ def test_addHorizonPoint_1():
     event.xdata = 180
     event.ydata = 45
     app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.hemisphereW.addHorizonPoint(data=app.data, event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].addHorizonPoint(data=app.data, event=event)
     assert suc
 
 
@@ -600,7 +600,7 @@ def test_addHorizonPoint_2():
     event.xdata = 180
     event.ydata = 45
     app.data.horizonP = [(0, 0)]
-    suc = app.hemisphereW.addHorizonPoint(data=app.data, event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].addHorizonPoint(data=app.data, event=event)
     assert suc
 
 
@@ -610,7 +610,7 @@ def test_addHorizonPoint_3():
     event = Test()
     event.xdata = 180
     event.ydata = 45
-    suc = app.hemisphereW.addHorizonPoint(data=app.data, event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].addHorizonPoint(data=app.data, event=event)
     assert suc
 
 
@@ -621,7 +621,7 @@ def test_deleteHorizonPoint_1():
     event.xdata = 10
     event.ydata = 10
     app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.hemisphereW.deleteHorizonPoint(data=app.data, event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].deleteHorizonPoint(data=app.data, event=event)
     assert suc
 
 
@@ -632,7 +632,7 @@ def test_deleteHorizonPoint_2():
     event.xdata = 180
     event.ydata = 45
     app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.hemisphereW.deleteHorizonPoint(data=app.data, event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].deleteHorizonPoint(data=app.data, event=event)
     assert not suc
 
 
@@ -643,7 +643,7 @@ def test_deleteHorizonPoint_3():
     event.xdata = 180
     event.ydata = 45
     app.data.horizonP = [(0, 0)]
-    suc = app.hemisphereW.deleteHorizonPoint(data=app.data, event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].deleteHorizonPoint(data=app.data, event=event)
     assert not suc
 
 
@@ -659,9 +659,9 @@ def test_editHorizonMask_1():
     event.xdata = 180
     event.ydata = 45
     event.button = 1
-    app.hemisphereW.horizonMarker = Test()
-    app.hemisphereW.horizonFill = Test()
-    suc = app.hemisphereW.editHorizonMask(data=app.data, event=event)
+    app.uiWindows['showHemisphereW']['classObj'].horizonMarker = Test()
+    app.uiWindows['showHemisphereW']['classObj'].horizonFill = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].editHorizonMask(data=app.data, event=event)
     assert suc
 
 
@@ -677,9 +677,9 @@ def test_editHorizonMask_2():
     event.xdata = 180
     event.ydata = 45
     event.button = 3
-    app.hemisphereW.horizonMarker = Test()
-    app.hemisphereW.horizonFill = Test()
-    suc = app.hemisphereW.editHorizonMask(data=app.data, event=event)
+    app.uiWindows['showHemisphereW']['classObj'].horizonMarker = Test()
+    app.uiWindows['showHemisphereW']['classObj'].horizonFill = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].editHorizonMask(data=app.data, event=event)
     assert suc
 
 
@@ -695,17 +695,17 @@ def test_editHorizonMask_3():
     event.xdata = 180
     event.ydata = 45
     event.button = 2
-    app.hemisphereW.horizonMarker = Test()
-    app.hemisphereW.horizonFill = Test()
-    suc = app.hemisphereW.editHorizonMask(data=app.data, event=event)
+    app.uiWindows['showHemisphereW']['classObj'].horizonMarker = Test()
+    app.uiWindows['showHemisphereW']['classObj'].horizonFill = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].editHorizonMask(data=app.data, event=event)
     assert not suc
 
 
 def test_deleteBuildPointPoint_1():
-    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    axes = app.uiWindows['showHemisphereW']['classObj'].hemisphereMat.figure.axes[0]
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
 
     class Test:
         pass
@@ -713,7 +713,7 @@ def test_deleteBuildPointPoint_1():
     event.xdata = 10
     event.ydata = 10
     app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.hemisphereW.deleteBuildPoint(data=app.data, event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].deleteBuildPoint(data=app.data, event=event)
     assert suc
 
 
@@ -724,16 +724,16 @@ def test_deleteBuildPointPoint_2():
     event.xdata = 180
     event.ydata = 45
     app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.hemisphereW.deleteBuildPoint(data=app.data, event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].deleteBuildPoint(data=app.data, event=event)
     assert not suc
 
 
 def test_editBuildPoints_1():
     app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    axes = app.uiWindows['showHemisphereW']['classObj'].hemisphereMat.figure.axes[0]
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
 
     class Test:
         def set_data(self, test, test1):
@@ -746,17 +746,17 @@ def test_editBuildPoints_1():
     event.xdata = 180
     event.ydata = 45
     event.button = 1
-    app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.editBuildPoints(data=app.data, event=event, axes=axes)
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuild = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].editBuildPoints(data=app.data, event=event, axes=axes)
     assert suc
 
 """
 def test_editBuildPoints_2():
     app.data.buildP = [(0, 0), (10, 10), (45, 180)]
-    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(180, 45)))
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(45, 180)))
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    axes = app.uiWindows['showHemisphereW']['classObj'].hemisphereMat.figure.axes[0]
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(180, 45)))
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(45, 180)))
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
 
     class Test:
         def set_data(self, test, test1):
@@ -769,18 +769,18 @@ def test_editBuildPoints_2():
     event.xdata = 180
     event.ydata = 45
     event.button = 3
-    app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.editBuildPoints(data=app.data, event=event, axes=axes)
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuild = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].editBuildPoints(data=app.data, event=event, axes=axes)
     assert suc
 """
 
 
 def test_editBuildPoints_3():
     app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    axes = app.hemisphereW.hemisphereMat.figure.axes[0]
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.hemisphereW.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    axes = app.uiWindows['showHemisphereW']['classObj'].hemisphereMat.figure.axes[0]
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
 
     class Test:
         def set_data(self, test, test1):
@@ -793,8 +793,8 @@ def test_editBuildPoints_3():
     event.xdata = 180
     event.ydata = 45
     event.button = 2
-    app.hemisphereW.pointsBuild = Test()
-    suc = app.hemisphereW.editBuildPoints(data=app.data, event=event, axes=axes)
+    app.uiWindows['showHemisphereW']['classObj'].pointsBuild = Test()
+    suc = app.uiWindows['showHemisphereW']['classObj'].editBuildPoints(data=app.data, event=event, axes=axes)
     assert not suc
 
 
@@ -803,7 +803,7 @@ def test_onMouseEdit_1():
         pass
     event = Test()
     event.inaxes = False
-    suc = app.hemisphereW.onMouseEdit(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseEdit(event=event)
     assert not suc
 
 
@@ -813,7 +813,7 @@ def test_onMouseEdit_2():
     event = Test()
     event.inaxes = True
     event.dblclick = False
-    suc = app.hemisphereW.onMouseEdit(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseEdit(event=event)
     assert not suc
 
 
@@ -823,7 +823,7 @@ def test_onMouseEdit_2b():
     event = Test()
     event.inaxes = True
     event.dblclick = True
-    suc = app.hemisphereW.onMouseEdit(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseEdit(event=event)
     assert not suc
 
 
@@ -833,15 +833,15 @@ def test_onMouseEdit_3():
     event = Test()
     event.inaxes = True
     event.dblclick = False
-    app.hemisphereW.ui.checkEditHorizonMask.setChecked(False)
-    app.hemisphereW.ui.checkEditBuildPoints.setChecked(False)
-    with mock.patch.object(app.hemisphereW,
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditHorizonMask.setChecked(False)
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditBuildPoints.setChecked(False)
+    with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                            'editHorizonMask',
                            return_value=True):
-        with mock.patch.object(app.hemisphereW,
+        with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                                'editBuildPoints',
                                return_value=True):
-            suc = app.hemisphereW.onMouseEdit(event=event)
+            suc = app.uiWindows['showHemisphereW']['classObj'].onMouseEdit(event=event)
             assert not suc
 
 
@@ -851,15 +851,15 @@ def test_onMouseEdit_4():
     event = Test()
     event.inaxes = True
     event.dblclick = False
-    app.hemisphereW.ui.checkEditHorizonMask.setChecked(True)
-    app.hemisphereW.ui.checkEditBuildPoints.setChecked(False)
-    with mock.patch.object(app.hemisphereW,
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditHorizonMask.setChecked(True)
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditBuildPoints.setChecked(False)
+    with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                            'editHorizonMask',
                            return_value=True):
-        with mock.patch.object(app.hemisphereW,
+        with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                                'editBuildPoints',
                                return_value=True):
-            suc = app.hemisphereW.onMouseEdit(event=event)
+            suc = app.uiWindows['showHemisphereW']['classObj'].onMouseEdit(event=event)
             assert suc
 
 
@@ -869,15 +869,15 @@ def test_onMouseEdit_5():
     event = Test()
     event.inaxes = True
     event.dblclick = False
-    app.hemisphereW.ui.checkEditHorizonMask.setChecked(False)
-    app.hemisphereW.ui.checkEditBuildPoints.setChecked(True)
-    with mock.patch.object(app.hemisphereW,
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditHorizonMask.setChecked(False)
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditBuildPoints.setChecked(True)
+    with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                            'editHorizonMask',
                            return_value=True):
-        with mock.patch.object(app.hemisphereW,
+        with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                                'editBuildPoints',
                                return_value=True):
-            suc = app.hemisphereW.onMouseEdit(event=event)
+            suc = app.uiWindows['showHemisphereW']['classObj'].onMouseEdit(event=event)
             assert suc
 
 
@@ -887,15 +887,15 @@ def test_onMouseEdit_6():
     event = Test()
     event.inaxes = True
     event.dblclick = False
-    app.hemisphereW.ui.checkEditHorizonMask.setChecked(True)
-    app.hemisphereW.ui.checkEditBuildPoints.setChecked(False)
-    with mock.patch.object(app.hemisphereW,
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditHorizonMask.setChecked(True)
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditBuildPoints.setChecked(False)
+    with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                            'editHorizonMask',
                            return_value=False):
-        with mock.patch.object(app.hemisphereW,
+        with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                                'editBuildPoints',
                                return_value=True):
-            suc = app.hemisphereW.onMouseEdit(event=event)
+            suc = app.uiWindows['showHemisphereW']['classObj'].onMouseEdit(event=event)
             assert not suc
 
 
@@ -905,15 +905,15 @@ def test_onMouseEdit_7():
     event = Test()
     event.inaxes = True
     event.dblclick = False
-    app.hemisphereW.ui.checkEditHorizonMask.setChecked(False)
-    app.hemisphereW.ui.checkEditBuildPoints.setChecked(True)
-    with mock.patch.object(app.hemisphereW,
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditHorizonMask.setChecked(False)
+    app.uiWindows['showHemisphereW']['classObj'].ui.checkEditBuildPoints.setChecked(True)
+    with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                            'editHorizonMask',
                            return_value=True):
-        with mock.patch.object(app.hemisphereW,
+        with mock.patch.object(app.uiWindows['showHemisphereW']['classObj'],
                                'editBuildPoints',
                                return_value=False):
-            suc = app.hemisphereW.onMouseEdit(event=event)
+            suc = app.uiWindows['showHemisphereW']['classObj'].onMouseEdit(event=event)
             assert not suc
 
 
@@ -923,7 +923,7 @@ def test_onMouseStar_1():
     event = Test()
     event.inaxes = False
     event.dblclick = False
-    suc = app.hemisphereW.onMouseStar(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
     assert not suc
 
 
@@ -934,7 +934,7 @@ def test_onMouseStar_2():
     event.inaxes = True
     event.button = 2
     event.dblclick = False
-    suc = app.hemisphereW.onMouseStar(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
     assert not suc
 
 
@@ -945,7 +945,7 @@ def test_onMouseStar_3():
     event.inaxes = True
     event.button = 1
     event.dblclick = True
-    suc = app.hemisphereW.onMouseStar(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
     assert not suc
 
 
@@ -964,7 +964,7 @@ def test_onMouseStar_4():
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.hemisphereW.onMouseStar(event=event)
+        suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
         assert not suc
 
 
@@ -986,7 +986,7 @@ def test_onMouseStar_5():
         with mock.patch.object(mountcontrol.obsSite.Connection,
                                'communicate',
                                return_value=(True, '1', 1)):
-            suc = app.hemisphereW.onMouseStar(event=event)
+            suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
             assert not suc
 
 
@@ -1011,7 +1011,7 @@ def test_onMouseStar_6():
             with mock.patch.object(app.mount.obsSite,
                                    'setTargetRaDec',
                                    return_value=True):
-                suc = app.hemisphereW.onMouseStar(event=event)
+                suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
                 assert suc
 
 
@@ -1027,7 +1027,7 @@ def test_onMouseStar_7():
     app.hipparcos.az = []
     app.hipparcos.alt = []
     app.hipparcos.name = []
-    suc = app.hemisphereW.onMouseStar(event=event)
+    suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
     assert not suc
 
 
@@ -1052,7 +1052,7 @@ def test_onMouseStar_8():
             with mock.patch.object(app.mount.obsSite,
                                    'setTargetRaDec',
                                    return_value=False):
-                suc = app.hemisphereW.onMouseStar(event=event)
+                suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
                 assert not suc
 
 
@@ -1077,7 +1077,7 @@ def test_onMouseStar_9():
             with mock.patch.object(app.mount.obsSite,
                                    'setTargetRaDec',
                                    return_value=True):
-                suc = app.hemisphereW.onMouseStar(event=event)
+                suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
                 assert suc
 
 
@@ -1088,6 +1088,6 @@ def test_drawHemisphere_1():
 
         def set_color(self, test):
             pass
-    app.hemisphereW.horizonMarker = Test()
+    app.uiWindows['showHemisphereW']['classObj'].horizonMarker = Test()
     app.mainW.genBuildMin()
-    app.hemisphereW.drawHemisphere()
+    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()

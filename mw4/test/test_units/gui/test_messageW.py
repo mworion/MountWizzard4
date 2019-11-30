@@ -35,13 +35,13 @@ def module_setup_teardown():
 
 def test_initConfig_1():
     app.config['messageW'] = {}
-    suc = app.messageW.initConfig()
+    suc = app.uiWindows['showMessageW']['classObj'].initConfig()
     assert suc
 
 
 def test_initConfig_2():
     del app.config['messageW']
-    suc = app.messageW.initConfig()
+    suc = app.uiWindows['showMessageW']['classObj'].initConfig()
     assert suc
 
 
@@ -49,45 +49,45 @@ def test_initConfig_3():
     app.config['messageW'] = {}
     app.config['messageW']['winPosX'] = 10000
     app.config['messageW']['winPosY'] = 10000
-    suc = app.messageW.initConfig()
+    suc = app.uiWindows['showMessageW']['classObj'].initConfig()
     assert suc
 
 
 def test_storeConfig():
-    app.messageW.storeConfig()
+    app.uiWindows['showMessageW']['classObj'].storeConfig()
 
 
 def test_resizeEvent(qtbot):
-    app.messageW.resizeEvent(None)
+    app.uiWindows['showMessageW']['classObj'].resizeEvent(None)
 
 
 def test_clearWindow():
-    app.messageW.clearWindow()
+    app.uiWindows['showMessageW']['classObj'].clearWindow()
 
 
 def test_writeMessage1(qtbot):
-    app.messageW.ui.message.setText('')
-    suc = app.messageW.writeMessage('test', 0)
+    app.uiWindows['showMessageW']['classObj'].ui.message.setText('')
+    suc = app.uiWindows['showMessageW']['classObj'].writeMessage('test', 0)
     assert suc
-    val = app.messageW.ui.message.toPlainText()
+    val = app.uiWindows['showMessageW']['classObj'].ui.message.toPlainText()
     assert val.endswith('test\n')
 
 
 def test_writeMessage2(qtbot):
-    app.messageW.ui.message.setText('')
-    suc = app.messageW.writeMessage('test', 6)
+    app.uiWindows['showMessageW']['classObj'].ui.message.setText('')
+    suc = app.uiWindows['showMessageW']['classObj'].writeMessage('test', 6)
     assert not suc
 
 
 def test_writeMessage3(qtbot):
-    app.messageW.ui.message.setText('')
-    suc = app.messageW.writeMessage('', 0)
+    app.uiWindows['showMessageW']['classObj'].ui.message.setText('')
+    suc = app.uiWindows['showMessageW']['classObj'].writeMessage('', 0)
     assert suc
-    val = app.messageW.ui.message.toPlainText()
+    val = app.uiWindows['showMessageW']['classObj'].ui.message.toPlainText()
     assert val.endswith('\n')
 
 
 def test_writeMessage4(qtbot):
-    app.messageW.ui.message.setText('')
-    suc = app.messageW.writeMessage('test', -1)
+    app.uiWindows['showMessageW']['classObj'].ui.message.setText('')
+    suc = app.uiWindows['showMessageW']['classObj'].writeMessage('test', -1)
     assert not suc

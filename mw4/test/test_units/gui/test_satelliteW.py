@@ -42,13 +42,13 @@ def testSignals():
 
 def test_initConfig_1():
     app.config['satelliteW'] = {}
-    suc = app.satelliteW.initConfig()
+    suc = app.uiWindows['showSatelliteW']['classObj'].initConfig()
     assert suc
 
 
 def test_initConfig_2():
     del app.config['satelliteW']
-    suc = app.satelliteW.initConfig()
+    suc = app.uiWindows['showSatelliteW']['classObj'].initConfig()
     assert suc
 
 
@@ -56,40 +56,40 @@ def test_initConfig_3():
     app.config['satelliteW'] = {}
     app.config['satelliteW']['winPosX'] = 10000
     app.config['satelliteW']['winPosY'] = 10000
-    suc = app.satelliteW.initConfig()
+    suc = app.uiWindows['showSatelliteW']['classObj'].initConfig()
     assert suc
 
 
 def test_storeConfig():
-    app.satelliteW.storeConfig()
+    app.uiWindows['showSatelliteW']['classObj'].storeConfig()
 
 
 def test_resizeEvent(qtbot):
-    app.satelliteW.resizeEvent(None)
+    app.uiWindows['showSatelliteW']['classObj'].resizeEvent(None)
 
 
 def test_receiveSatelliteAndShow_1():
-    suc = app.satelliteW.receiveSatelliteAndShow()
+    suc = app.uiWindows['showSatelliteW']['classObj'].receiveSatelliteAndShow()
     assert not suc
 
 
 def test_receiveSatelliteAndShow_2():
-    suc = app.satelliteW.receiveSatelliteAndShow(satellite=app.mainW.satellites['ZARYA'])
+    suc = app.uiWindows['showSatelliteW']['classObj'].receiveSatelliteAndShow(satellite=app.mainW.satellites['ZARYA'])
     assert suc
 
 
 def test_updatePositions_1():
-    suc = app.satelliteW.updatePositions()
+    suc = app.uiWindows['showSatelliteW']['classObj'].updatePositions()
     assert not suc
 
 
 def test_updatePositions_2():
-    suc = app.satelliteW.updatePositions(observe='t')
+    suc = app.uiWindows['showSatelliteW']['classObj'].updatePositions(observe='t')
     assert not suc
 
 
 def test_updatePositions_3():
-    suc = app.satelliteW.updatePositions(observe='t', subpoint='t')
+    suc = app.uiWindows['showSatelliteW']['classObj'].updatePositions(observe='t', subpoint='t')
     assert not suc
 
 
@@ -101,7 +101,7 @@ def test_updatePositions_4():
     difference = app.mainW.satellite - app.mount.obsSite.location
     altaz = difference.at(now).altaz()
 
-    suc = app.satelliteW.updatePositions(observe=observe,
+    suc = app.uiWindows['showSatelliteW']['classObj'].updatePositions(observe=observe,
                                          subpoint=subpoint,
                                          altaz=altaz)
     assert suc

@@ -68,84 +68,84 @@ def module_setup_teardown():
 
 
 def test_initConfig_1():
-    with mock.patch.object(app.measureW,
+    with mock.patch.object(app.uiWindows['showMeasureW']['classObj'],
                            'setupButtons'):
-        suc = app.measureW.initConfig()
+        suc = app.uiWindows['showMeasureW']['classObj'].initConfig()
         assert suc
 
 
 def test_initConfig_1a():
-    with mock.patch.object(app.measureW,
+    with mock.patch.object(app.uiWindows['showMeasureW']['classObj'],
                            'setupButtons'):
-        suc = app.measureW.initConfig()
+        suc = app.uiWindows['showMeasureW']['classObj'].initConfig()
         assert suc
 
 
 def test_initConfig_2():
-    with mock.patch.object(app.measureW,
+    with mock.patch.object(app.uiWindows['showMeasureW']['classObj'],
                            'setupButtons'):
-        suc = app.measureW.initConfig()
+        suc = app.uiWindows['showMeasureW']['classObj'].initConfig()
         assert suc
 
 
 def test_initConfig_3():
     app.config['measureW']['winPosX'] = 10000
     app.config['measureW']['winPosY'] = 10000
-    with mock.patch.object(app.measureW,
+    with mock.patch.object(app.uiWindows['showMeasureW']['classObj'],
                            'setupButtons',
                            return_value=True):
-        suc = app.measureW.initConfig()
+        suc = app.uiWindows['showMeasureW']['classObj'].initConfig()
         assert suc
 
 
 def test_storeConfig_1():
-    app.measureW.storeConfig()
+    app.uiWindows['showMeasureW']['classObj'].storeConfig()
 
 
 def test_setupAxes_1():
-    fig = app.measureW.measureMat.figure
-    suc = app.measureW.setupAxes(figure=fig, numberPlots=0)
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    suc = app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=0)
     assert not suc
 
 
 def test_setupAxes_2():
-    fig = app.measureW.measureMat.figure
-    suc = app.measureW.setupAxes(figure=fig, numberPlots=4)
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    suc = app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=4)
     assert not suc
 
 
 def test_setupAxes_3():
-    fig = app.measureW.measureMat.figure
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
     suc = False
-    # suc = app.measureW.setupAxes()
+    # suc = app.uiWindows['showMeasureW']['classObj'].setupAxes()
     assert not suc
 
 
 def test_setupAxes_4():
-    fig = app.measureW.measureMat.figure
-    suc = app.measureW.setupAxes(figure=fig, numberPlots=1)
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    suc = app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=1)
     assert suc
-    assert len(app.measureW.measureMat.figure.axes) == 1
+    assert len(app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes) == 1
 
 
 def test_setupAxes_5():
-    fig = app.measureW.measureMat.figure
-    suc = app.measureW.setupAxes(figure=fig, numberPlots=4)
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    suc = app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=4)
     assert not suc
 
 
 def test_setupAxes_6():
-    fig = app.measureW.measureMat.figure
-    suc = app.measureW.setupAxes(figure=fig, numberPlots=2)
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    suc = app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=2)
     assert suc
-    assert len(app.measureW.measureMat.figure.axes) == 2
+    assert len(app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes) == 2
 
 
 def test_plotRa_1():
-    fig = app.measureW.measureMat.figure
-    app.measureW.setupAxes(figure=fig, numberPlots=1)
-    axe = app.measureW.measureMat.figure.axes[0]
-    suc = app.measureW.plotRa(axe=axe,
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=1)
+    axe = app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes[0]
+    suc = app.uiWindows['showMeasureW']['classObj'].plotRa(axe=axe,
                               title='test',
                               data=app.measure.data,
                               cycle=1,
@@ -154,10 +154,10 @@ def test_plotRa_1():
 
 
 def test_plotDec_1():
-    fig = app.measureW.measureMat.figure
-    app.measureW.setupAxes(figure=fig, numberPlots=1)
-    axe = app.measureW.measureMat.figure.axes[0]
-    suc = app.measureW.plotDec(axe=axe,
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=1)
+    axe = app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes[0]
+    suc = app.uiWindows['showMeasureW']['classObj'].plotDec(axe=axe,
                                title='test',
                                data=app.measure.data,
                                cycle=1,
@@ -166,10 +166,10 @@ def test_plotDec_1():
 
 
 def test_plotTemperature_1():
-    fig = app.measureW.measureMat.figure
-    app.measureW.setupAxes(figure=fig, numberPlots=1)
-    axe = app.measureW.measureMat.figure.axes[0]
-    suc = app.measureW.plotTemperature(axe=axe,
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=1)
+    axe = app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes[0]
+    suc = app.uiWindows['showMeasureW']['classObj'].plotTemperature(axe=axe,
                                        title='test',
                                        data=app.measure.data,
                                        cycle=1,
@@ -178,10 +178,10 @@ def test_plotTemperature_1():
 
 
 def test_plotPressure_1():
-    fig = app.measureW.measureMat.figure
-    app.measureW.setupAxes(figure=fig, numberPlots=1)
-    axe = app.measureW.measureMat.figure.axes[0]
-    suc = app.measureW.plotPressure(axe=axe,
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=1)
+    axe = app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes[0]
+    suc = app.uiWindows['showMeasureW']['classObj'].plotPressure(axe=axe,
                                     title='test',
                                     data=app.measure.data,
                                     cycle=1,
@@ -190,10 +190,10 @@ def test_plotPressure_1():
 
 
 def test_plotHumidity_1():
-    fig = app.measureW.measureMat.figure
-    app.measureW.setupAxes(figure=fig, numberPlots=1)
-    axe = app.measureW.measureMat.figure.axes[0]
-    suc = app.measureW.plotHumidity(axe=axe,
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=1)
+    axe = app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes[0]
+    suc = app.uiWindows['showMeasureW']['classObj'].plotHumidity(axe=axe,
                                     title='test',
                                     data=app.measure.data,
                                     cycle=1,
@@ -202,10 +202,10 @@ def test_plotHumidity_1():
 
 
 def test_plotSQR_1():
-    fig = app.measureW.measureMat.figure
-    app.measureW.setupAxes(figure=fig, numberPlots=1)
-    axe = app.measureW.measureMat.figure.axes[0]
-    suc = app.measureW.plotSQR(axe=axe,
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=1)
+    axe = app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes[0]
+    suc = app.uiWindows['showMeasureW']['classObj'].plotSQR(axe=axe,
                                title='test',
                                data=app.measure.data,
                                cycle=1,
@@ -214,10 +214,10 @@ def test_plotSQR_1():
 
 
 def test_plotVoltage_1():
-    fig = app.measureW.measureMat.figure
-    app.measureW.setupAxes(figure=fig, numberPlots=1)
-    axe = app.measureW.measureMat.figure.axes[0]
-    suc = app.measureW.plotVoltage(axe=axe,
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=1)
+    axe = app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes[0]
+    suc = app.uiWindows['showMeasureW']['classObj'].plotVoltage(axe=axe,
                                    title='test',
                                    data=app.measure.data,
                                    cycle=1,
@@ -226,10 +226,10 @@ def test_plotVoltage_1():
 
 
 def test_plotCurrent_1():
-    fig = app.measureW.measureMat.figure
-    app.measureW.setupAxes(figure=fig, numberPlots=1)
-    axe = app.measureW.measureMat.figure.axes[0]
-    suc = app.measureW.plotCurrent(axe=axe,
+    fig = app.uiWindows['showMeasureW']['classObj'].measureMat.figure
+    app.uiWindows['showMeasureW']['classObj'].setupAxes(figure=fig, numberPlots=1)
+    axe = app.uiWindows['showMeasureW']['classObj'].measureMat.figure.axes[0]
+    suc = app.uiWindows['showMeasureW']['classObj'].plotCurrent(axe=axe,
                                    title='test',
                                    data=app.measure.data,
                                    cycle=1,
@@ -238,11 +238,11 @@ def test_plotCurrent_1():
 
 
 def test_drawMeasure_1():
-    suc = app.measureW.drawMeasure()
+    suc = app.uiWindows['showMeasureW']['classObj'].drawMeasure()
     assert not suc
 
 
 def test_drawMeasure_2():
-    app.measureW.ui.measureSet1.setCurrentIndex(1)
-    suc = app.measureW.drawMeasure(1)
+    app.uiWindows['showMeasureW']['classObj'].ui.measureSet1.setCurrentIndex(1)
+    suc = app.uiWindows['showMeasureW']['classObj'].drawMeasure(1)
     assert suc

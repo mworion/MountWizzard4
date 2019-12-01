@@ -51,30 +51,28 @@ update.
 Mount tab
 ---------
 
-As soon as the mount is connected, the mount tab shows the telescope pointing in hour angle
+.. image:: _static/explain_mount_tab.png
+    :align: center
+
+Area 1: Pointing
+^^^^^^^^^^^^^^^^
+In addition altitude (ALT) and azimuth (AZ) is shown in degrees.As soon as the mount is connected, the mount tab shows the telescope pointing in hour angle
 (HA), right ascension (RA), declination (DEC) in hours / degrees HMS/DMS as well in decimals
 . You could choose if you want to see the coordinates in JNow, the mount representation or
 in J2000 Epoch for better compatibility to other programs. The handling of coordinates
 between MW4 and the mount computer is done in JNow. But this is folly transparent for the
 usage.
 
-.. image:: _static/explain_mount_tab.png
-    :align: center
-
-Area 1
-^^^^^^
-In addition altitude (ALT) and azimuth (AZ) is shown in degrees.
-
-Area 2
-^^^^^^
+Area 2: Track and Flip
+^^^^^^^^^^^^^^^^^^^^^^
 In the tracking / flip section the tracking could be switch on / off and if possible a flip
 could be forced. The main tracking speed (lunar, solar or sidereal) is highlighted and could
 be changed.
 
 Parking / emergency stop put the mount in park position or stops and movement immediately.
 
-Area 3
-^^^^^^
+Area 3: Mount Status
+^^^^^^^^^^^^^^^^^^^^
 In Status and settings from mount computer many parameters are visible and could be altered.
 Whenever you see a frame around a value, you could click on it and change the parameter.
 Some of the parameters could only be changed if the mount is connected.
@@ -88,8 +86,8 @@ will see. The example is the maximum MW4 could support.
 .. image:: _static/explain_environ_tab.png
     :align: center
 
-Area 1
-^^^^^^
+Area 1: Data Sources
+^^^^^^^^^^^^^^^^^^^^
 Data of all different configured sources are shown here. If a source has no connection or
 receives no data, the frame will turn red.
 
@@ -107,8 +105,8 @@ receives no data, the frame will turn red.
 | Direct   | MGBox          | if connected via GPS connector to mount             |
 +----------+----------------+-----------------------------------------------------+
 
-Area 2
-^^^^^^
+Area 2: Mount Refraction Data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This is the data the mount is working with. In the mount box there is the actual refraction
 data the mount knows. You could set the refraction update method in this area or push the
 data manually to the mount. Continuously means at any state, but filtered with a moving
@@ -119,14 +117,14 @@ If no source for updating the refraction data is available, but needed, this par
 red. The update mode is set in mount computer if "Direct" source is selected or done through
 MW4 for all others sources.
 
-Area 3
-^^^^^^
+Area 3: Online Forecast
+^^^^^^^^^^^^^^^^^^^^^^^
 If you have a online connection enabled, you could see the weather forecast for your
 location from clearoutside. Thanks to these guy to agree on this integration. The location
 is automatically set to the location of your mount.
 
-Area 4
-^^^^^^
+Area 4: Source Selection
+^^^^^^^^^^^^^^^^^^^^^^^^
 If a source frame has a checkbox, this source could be chosen for using it's data for
 refraction update. As you might have different ones, you have the choice.
 
@@ -143,8 +141,8 @@ equally over the sky. MW4 allows multiple choices to automatically select the re
 .. image:: _static/explain_model_points_tab.png
     :align: center
 
-Area 1
-^^^^^^
+Area 1: Reference Types
+^^^^^^^^^^^^^^^^^^^^^^^
 The following type of placing the reference points in the hemisphere are available:
 
 +-------------------+-----------------------------------------------------+
@@ -165,8 +163,8 @@ The following type of placing the reference points in the hemisphere are availab
 
 Sorting should be done automatically in a way to reduce slewing times.
 
-Area 2
-^^^^^^
+Area 2: Horizon Management
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 You might add a horizon mask to avoid placing references in positions where you have
 obstacles in your sky view. When auto delete is checked, MW4 will remove automatically all
 not visible reference points from modeling list. In addition you could choose a sorting of
@@ -181,17 +179,17 @@ give you some help to adjust the alignment easy and right.
 .. image:: _static/explain_model_build_tab.png
     :align: center
 
-Area 1
-^^^^^^
+Area 1: Alignment Status
+^^^^^^^^^^^^^^^^^^^^^^^^
 Actual alignment model of the mount in use. It shows the parameters of the actual model and
 it's errors regarding orthogonal and polar align.
 
-Area 2
-^^^^^^
+Area 2: Model Build Progress
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Show the modeling process and some estimations about timing fo the overall process.
 
-Area 3
-^^^^^^
+Area 3: Alignment Helper
+^^^^^^^^^^^^^^^^^^^^^^^^
 If you are starting polar align, the deviations might be that big, that focusing a reference
 star might be impossible because this star is not in you FOV of the camera. The mount gives
 you some hints how to tweak the mechanical setup to get you alignment. The pictures show you
@@ -201,16 +199,16 @@ the direction of turning based on a GM1000 mount in revolutions of these knows.
              mount model is invalid! You have to do a new model build process to get a valid
              one.
 
-Area 4
-^^^^^^
+Area 4: Fast Align
+^^^^^^^^^^^^^^^^^^
 If you simply want to readjust an existing model for a single reference point, you could
 used Plat solve sync model. Please take into account, that no new model is calculated, but
 the existing model is shifted to match the actual reference point. This might lead in larger
 errors in other areas of the sky. From my point of view it is not recommended to use this
 type of model syncing. It is only useful if you need a quick align on a single point.
 
-Area 5
-^^^^^^
+Area 5: Programming Models
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 For all the models you made with MW4, the necessary data is stored on your computer. With
 this data you could reprogram the model without doing any imaging and plate solving process,
 because it's already captured. MW4 could also combine multiple model setups to a new one.

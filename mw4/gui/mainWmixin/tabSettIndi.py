@@ -191,6 +191,7 @@ class SettIndi(object):
         self.indiDevices['imaging']['uiName'].addItem('Sony DSLR')
         self.indiDevices['imaging']['uiName'].addItem('Starfish CCD')
         self.indiDevices['imaging']['uiName'].addItem('V4L2 CCD')
+        self.indiDevices['imaging']['uiName'].addItem('AST8300B')
         self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI120MC')
         self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI1600MC')
         self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI290MM Mini')

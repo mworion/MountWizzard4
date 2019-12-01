@@ -1,8 +1,8 @@
 MW4 Installation
 ================
 
-When starting with the installation, the installation of python3.7 should be successful
-finished. A good check is to open a terminal (available on all platforms) and run the command
+When starting with the installation of MW4, python3.7 should be successful
+installed. To check, open a terminal (available on all platforms) and run the command
 
 .. code-block:: python
 
@@ -13,14 +13,14 @@ In both cases you should see the version number of the installed and available p
 python it should say at least 3.7.2, better 3.7.5.
 
 To install MW4 on your computer, there are some support scripts available for Windows, OSx
-and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online
+and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and
 available from Github: https://github.com/mworion/MountWizzard4/tree/master/support
 
 Step 1
 ------
 
-Please create a working directory of your choice and location. The directory could
-be renamed later on, it also could be moved to any other location. Copy the scripts for you
+Please create a working directory of your choice and location. The directory can
+be renamed later on, it also can also be moved to any other location. Copy the scripts for your
 platform into this directory.
 
 the directory should than for OSx look like:
@@ -89,8 +89,8 @@ Run one of the scripts
     MW4_Run.sh          # Ubuntu
     MW4_Tun.command     # OSx
 
-This script will start MW4 the first time and will create some subdirectories in your
-working folder. When starting a splash screen show the progress of it's initialization.
+This script will start MW4 for the first time and it will create some subdirectories in your
+working folder. When starting, a splash screen show the progress of it's initialization.
 After first start the directory should for OSx look like:
 
 .. image:: _static/install_mw4_mac_3.png

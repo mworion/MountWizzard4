@@ -56,12 +56,12 @@ Mount tab
 
 Area 1: Pointing
 ^^^^^^^^^^^^^^^^
-In addition altitude (ALT) and azimuth (AZ) is shown in degrees.As soon as the mount is connected, the mount tab shows the telescope pointing in hour angle
-(HA), right ascension (RA), declination (DEC) in hours / degrees HMS/DMS as well in decimals
-. You could choose if you want to see the coordinates in JNow, the mount representation or
-in J2000 Epoch for better compatibility to other programs. The handling of coordinates
-between MW4 and the mount computer is done in JNow. But this is folly transparent for the
-usage.
+In addition altitude (ALT) and azimuth (AZ) is shown in degrees.As soon as the mount is
+connected, the mount tab shows the telescope pointing in hour angle (HA), right ascension
+(RA), declination (DEC) in hours / degrees HMS/DMS as well in decimals. You could choose if
+ you want to see the coordinates in JNow, the mount representation or in J2000 Epoch for
+ better compatibility to other programs. The handling of coordinates between MW4 and the
+ mount computer is done in JNow. But this is folly transparent for the usage.
 
 Area 2: Track and Flip
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -221,21 +221,108 @@ object to improve accuracy by modeling more points in your area of interest duri
 
 Manage Model Tab
 ----------------
+Once you have made a model or you have an actual model in mount, MW4 will download the data
+and the name list of all in the mount stored models. You than could work with this data.
 
 .. image:: _static/explain_manage_model_tab.png
     :align: center
 
+Area 1: Model Errors
+^^^^^^^^^^^^^^^^^^^^
+A polar diagram shows the distribution of the model points and it's errors. The errors are
+absolute numbers.
+
+Area 2: Optimizing Model
+^^^^^^^^^^^^^^^^^^^^^^^^
+Once you have the model downloaded (which does MW4 automatically when starting up),
+optimizations could be done. The might be some really bad point in the model you would like
+to remove. You could also do it automatically until you reached a certain target RMS.
+
+.. note::   It is not recommended to overshoot the optimization and only go for lowest
+            numbers. As the model should reflect all deviations from reproducible errors to
+            ground truth, the model errors are real.
+
+Area 3: Models in Mount
+^^^^^^^^^^^^^^^^^^^^^^^
+The 10micron mount could store a recent number of models internally. The actual active model
+has no name. So loading or saving means loading a stored model to the actual space or saving
+the actual space to a certain name. You can't save a model to disk. All models stored in the
+mount itself will stay there. I do not know the maximum number, but over time it does not
+make sense to keep to much of it. If you would store models to disk, please refer to build
+model: MW4 stored any build model to disk in parallel. So you can access the data even
+without having the model stored in the mount computer.
+
 Satellite Tab
 -------------
+The mount supports satellite tracking. There is a database in the mount (which could be
+updated), from where you could select from.
+
+MW4 goes a different way: As this satellite data out dates within 2 weeks or less and looses
+precision very quickly, it maintains the databases outside the mount and only programs the
+single satellite data from a satellite you have selected. MW4 won't touch the internal
+database.
 
 .. image:: _static/explain_satellite_tab.png
     :align: center
 
+Area 1: Select Satellite Database
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MW4 needs an online connection for updating the database. Still there will be data for
+testing and experiencing the functions there, but this data will be out dated from the
+beginning on.
+
+.. note::   Satellite tracking data should be not older than some days. You will loose
+            precision and might not see the satellite in your FOV. So internet connection is
+             strongly recommended for using satellite tracking.
+
+MW4 provides some recent online databases from where you could select from. The satellites
+in the database is shown in area 2.
+
+Area 2: Select active Satellite
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+All available satellites are shown in this list in order of the satellite number. If there
+is already a satellite selected in your mount, MW4 will retrieve this data and makes
+selection accordingly.
+
+Selecting a new satellite out of this list will immediately program it's data to the mount
+computer an get calculate the necessary data shown in area 3.
+
+Area 3: Calculation and Data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The selected satellite data is shown. Please have a look to the age of the data. MW4 will
+show in colors if that data is too old for good tracking. Some of the calculations (like the
+actual satellite position is calculated by MW4, some of this data like Start / End time is
+retrieved from mount computer. But you should not need to care about it. Once a correct data
+set is calculated and is valid, the tracking commands (area 4) are enabled.
+
+Area 4: Satellite Tracking
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+With start satellite tracking the mount will slew directly to the satellite position in
+orbit. If the satellite is below horizon or your horizon limits, the mount will slew to the
+point where the satellite will rise over horizon the first time and will wait for that moment.
+As soon as the satellite rises, the mount will track the satellite.
+
+Stop satellite track should stop tracking the satellite immediately. for some reasons this
+might happen correctly as there is no dedicated mount commend for this behaviour. You might
+need to "Stop" the mount or try it multiple time. This will be improved with next firmware
+versions.
+
 Power Tab
 ---------
+If you have a Pegasus UPB (version 1 or version 2) configured, this tab will show up. It
+enables you to review some data and uses the functionality of UPB directly from MW4.
 
 .. image:: _static/explain_power_tab.png
     :align: center
+
+Area 1: Data UPB
+^^^^^^^^^^^^^^^^
+Most of the data and functions are available on this part.
+
+Area 2: Changing UPB
+^^^^^^^^^^^^^^^^^^^^
+The functions / data in this area is adapted to the version of UPB and changes depending to
+which version you have in use.
 
 Relay Tab
 ---------
@@ -244,6 +331,26 @@ Should be added later.
 
 Tools Tab
 ---------
+MW4 provides some small tools to make life a little bit easier.
 
 .. image:: _static/explain_tools_tab.png
     :align: center
+
+Area 1: Renaming FITS
+^^^^^^^^^^^^^^^^^^^^^
+MW4 could rename FITS files (extension .fit or .fits) to a filename which is build from a
+set of data out of the FITS header and a text string. This could be done through
+subdirectories in batch mode.
+
+.. warning::    MW4 renames the files directly without making a copy!
+
+Area 2: Park Positions
+^^^^^^^^^^^^^^^^^^^^^^
+In MW4 you could program up to 10 park positions under settings. You could recall them just
+with a button press.
+
+Area 3: Mount Moving
+^^^^^^^^^^^^^^^^^^^^
+As normally with MW4 you don't use the key pad, you could slew the mount in different
+directions at different speeds. A button press starts slewing and the mount moves as long as
+you press stop or it reaches some limit.

@@ -22,7 +22,7 @@ copyright = '2019, mworion'
 author = 'mworion'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '0.138'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------

@@ -28,9 +28,13 @@ was always the first step by using 3 base points for the start. There is no reas
 that but the fact that you need at least 3 stars to build a first model to get some
 information about you polar alignment etc.
 
-I refer to the Blog Filippo Riccio from 10micron wrote: Blog 10micron how modeling works.
-Please read it carefully ! It might be to complex to understand so I will abstract it a
-little bit (please forgive me if it is too simple) and add some personal experiences:
+I refer to the Blog Filippo Riccio from 10micron:
+
+https://www.10micron.eu/forum/viewtopic.php?f=16&t=846
+
+He described how modeling in the mount works . Please read it carefully ! It might be to
+complex to understand so I will abstract it a little bit (please forgive me if it is too
+simple) and add some personal experiences:
 
 Polar Alignment
 ---------------

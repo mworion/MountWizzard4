@@ -36,7 +36,7 @@ from mw4.gui.widgets import keypad_ui
 
 class KeypadWindow(widget.MWidget):
     """
-    the message window class handles
+    the KeypadWindow window class handles
 
     """
 
@@ -52,10 +52,15 @@ class KeypadWindow(widget.MWidget):
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self)
         self.initUI()
+
+        # getting a new browser object
         self.browser = PyQt5.QtWebEngineWidgets.QWebEngineView()
+
+        # adding it to window widget
         self.ui.keypad.addWidget(self.browser)
-        self.browser.setVisible(False)
+
         # avoid flickering in white
+        self.browser.setVisible(False)
         self.browser.page().setBackgroundColor(PyQt5.QtCore.Qt.transparent)
 
         self.initConfig()
@@ -111,9 +116,15 @@ class KeypadWindow(widget.MWidget):
         :return:
         """
 
+        # save config
         self.storeConfig()
 
         # gui signals
+        self.browser.loadFinished.disconnect(self.loadFinished)
+
+        # remove big object
+        self.browser = None
+
         super().closeEvent(closeEvent)
 
     def showWindow(self):
@@ -122,18 +133,9 @@ class KeypadWindow(widget.MWidget):
         :return:
         """
 
+        self.browser.loadFinished.connect(self.loadFinished)
         self.showUrl()
         self.show()
-
-    def clearWindow(self):
-        """
-        clearWindow resets the window and shows empty text.
-
-        :return: true for test purpose
-        """
-
-        self.ui.message.clear()
-        return True
 
     def loadFinished(self):
         """
@@ -153,8 +155,6 @@ class KeypadWindow(widget.MWidget):
 
         if not host:
             return False
-
-        self.browser.loadFinished.connect(self.loadFinished)
 
         file = f'qrc:/webif/virtkeypad.html?host={host}'
         self.browser.load(PyQt5.QtCore.QUrl(file))

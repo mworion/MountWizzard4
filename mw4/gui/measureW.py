@@ -165,14 +165,19 @@ class MeasureWindow(widget.MWidget):
         :return:
         """
 
+        # stop cyclic tasks
         self.app.update1s.disconnect(self.cycleRefresh)
+
+        # save config
         self.storeConfig()
+
         # signals for gui
         self.ui.timeSet.currentIndexChanged.disconnect(self.setCycleRefresh)
         self.ui.measureSet1.currentIndexChanged.disconnect(self.cycleRefresh)
         self.ui.measureSet2.currentIndexChanged.disconnect(self.cycleRefresh)
         self.ui.measureSet3.currentIndexChanged.disconnect(self.cycleRefresh)
 
+        # remove big object
         plt.close(self.measureMat.figure)
 
         super().closeEvent(closeEvent)

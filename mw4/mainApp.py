@@ -174,7 +174,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             'showKeypadW': {
                 'button': self.mainW.ui.openKeypadW,
                 'classObj': None,
-                'name': 'KeyDialog',
+                'name': 'KeypadDialog',
                 'class': KeypadWindow,
             },
         }

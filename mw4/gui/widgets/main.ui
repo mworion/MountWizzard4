@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -12460,7 +12460,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -13048,19 +13048,19 @@ to mount</string>
        <widget class="QComboBox" name="sensorWeatherDeviceName">
         <property name="geometry">
          <rect>
-          <x>91</x>
+          <x>96</x>
           <y>45</y>
-          <width>206</width>
-          <height>22</height>
+          <width>201</width>
+          <height>21</height>
          </rect>
         </property>
        </widget>
        <widget class="QLineEdit" name="sensorWeatherHost">
         <property name="geometry">
          <rect>
-          <x>91</x>
+          <x>96</x>
           <y>20</y>
-          <width>206</width>
+          <width>201</width>
           <height>21</height>
          </rect>
         </property>
@@ -13124,24 +13124,6 @@ to mount</string>
          <string>Host IP/Port</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_13">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>45</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Device Name</string>
-        </property>
-       </widget>
        <widget class="QCheckBox" name="sensorWeatherDeviceMessage">
         <property name="geometry">
          <rect>
@@ -13167,6 +13149,19 @@ to mount</string>
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="searchSensorWeatherDevices">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>45</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Search</string>
         </property>
        </widget>
       </widget>
@@ -13203,24 +13198,6 @@ to mount</string>
          <string>Host IP/Port</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_16">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>45</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Device Name</string>
-        </property>
-       </widget>
        <widget class="QLineEdit" name="imagingPort">
         <property name="geometry">
          <rect>
@@ -13252,9 +13229,9 @@ to mount</string>
        <widget class="QComboBox" name="imagingDeviceName">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>95</x>
           <y>45</y>
-          <width>206</width>
+          <width>201</width>
           <height>22</height>
          </rect>
         </property>
@@ -13262,9 +13239,9 @@ to mount</string>
        <widget class="QLineEdit" name="imagingHost">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>95</x>
           <y>20</y>
-          <width>206</width>
+          <width>201</width>
           <height>22</height>
          </rect>
         </property>
@@ -13337,6 +13314,19 @@ to mount</string>
          <bool>false</bool>
         </property>
        </widget>
+       <widget class="QPushButton" name="searchImagingDevices">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>45</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Search</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_35">
        <property name="geometry">
@@ -13371,24 +13361,6 @@ to mount</string>
          <string>Host IP/Port</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_17">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>50</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Device Name</string>
-        </property>
-       </widget>
        <widget class="QLineEdit" name="domePort">
         <property name="geometry">
          <rect>
@@ -13420,9 +13392,9 @@ to mount</string>
        <widget class="QLineEdit" name="domeHost">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>95</x>
           <y>20</y>
-          <width>206</width>
+          <width>201</width>
           <height>22</height>
          </rect>
         </property>
@@ -13471,9 +13443,9 @@ to mount</string>
        <widget class="QComboBox" name="domeDeviceName">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>95</x>
           <y>50</y>
-          <width>206</width>
+          <width>201</width>
           <height>22</height>
          </rect>
         </property>
@@ -13503,6 +13475,19 @@ to mount</string>
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="searchDomeDevices">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>50</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Search</string>
         </property>
        </widget>
       </widget>
@@ -13560,9 +13545,9 @@ to mount</string>
        <widget class="QLineEdit" name="powerHost">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>95</x>
           <y>20</y>
-          <width>206</width>
+          <width>201</width>
           <height>22</height>
          </rect>
         </property>
@@ -13598,9 +13583,9 @@ to mount</string>
        <widget class="QComboBox" name="powerDeviceName">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>95</x>
           <y>45</y>
-          <width>206</width>
+          <width>201</width>
           <height>22</height>
          </rect>
         </property>
@@ -13815,24 +13800,6 @@ to mount</string>
          <string>Host IP/Port</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_36">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Device Name</string>
-        </property>
-       </widget>
        <widget class="QComboBox" name="coverDeviceName">
         <property name="geometry">
          <rect>
@@ -13906,6 +13873,24 @@ to mount</string>
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_36">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>45</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Device Name</string>
         </property>
        </widget>
       </widget>

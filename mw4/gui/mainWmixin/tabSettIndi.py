@@ -21,6 +21,7 @@
 # external packages
 import PyQt5
 # local import
+from mw4.base.indiClass import IndiClass
 
 
 class SettIndi(object):
@@ -31,12 +32,34 @@ class SettIndi(object):
     processing if needed.
     """
 
+    # INDI device types
+    GENERAL_INTERFACE = 0
+    TELESCOPE_INTERFACE = (1 << 0)
+    CCD_INTERFACE = (1 << 1)
+    GUIDER_INTERFACE = (1 << 2)
+    FOCUSER_INTERFACE = (1 << 3)
+    FILTER_INTERFACE = (1 << 4)
+    DOME_INTERFACE = (1 << 5)
+    GPS_INTERFACE = (1 << 6)
+    WEATHER_INTERFACE = (1 << 7)
+    AO_INTERFACE = (1 << 8)
+    DUSTCAP_INTERFACE = (1 << 9)
+    LIGHTBOX_INTERFACE = (1 << 10)
+    DETECTOR_INTERFACE = (1 << 11)
+    AUX_INTERFACE = (1 << 15)
+
     def __init__(self):
+
+        self.indiClass = None
+        self.indiDeviceList = list()
+        self.indiSearchType = None
 
         self.indiDevices = {
             'dome':
                 {'uiName': self.ui.domeDeviceName,
                  'uiDevice': self.ui.domeDevice,
+                 'uiSearch': self.ui.searchDomeDevices,
+                 'searchType': self.DOME_INTERFACE,
                  'uiMessage': self.ui.domeDeviceMessage,
                  'class': self.app.dome,
                  'dispatch': self.domeDispatch,
@@ -47,6 +70,8 @@ class SettIndi(object):
             'imaging':
                 {'uiName': self.ui.imagingDeviceName,
                  'uiDevice': self.ui.imagingDevice,
+                 'uiSearch': self.ui.searchImagingDevices,
+                 'searchType': self.CCD_INTERFACE,
                  'uiMessage': self.ui.imagingDeviceMessage,
                  'class': self.app.imaging,
                  'dispatch': self.imagingDispatch,
@@ -57,6 +82,8 @@ class SettIndi(object):
             'sensorWeather':
                 {'uiName': self.ui.sensorWeatherDeviceName,
                  'uiDevice': self.ui.sensorWeatherDevice,
+                 'uiSearch': self.ui.searchSensorWeatherDevices,
+                 'searchType': self.WEATHER_INTERFACE,
                  'uiMessage': self.ui.sensorWeatherDeviceMessage,
                  'class': self.app.sensorWeather,
                  'dispatch': self.sensorWeatherDispatch,
@@ -67,6 +94,8 @@ class SettIndi(object):
             'cover':
                 {'uiName': self.ui.coverDeviceName,
                  'uiDevice': self.ui.coverDevice,
+                 'uiSearch': None,
+                 'searchType': None,
                  'uiMessage': self.ui.coverDeviceMessage,
                  'class': self.app.cover,
                  'dispatch': self.coverDispatch,
@@ -77,6 +106,8 @@ class SettIndi(object):
             'skymeter':
                 {'uiName': self.ui.skymeterDeviceName,
                  'uiDevice': self.ui.skymeterDevice,
+                 'uiSearch': None,
+                 'searchType': None,
                  'uiMessage': self.ui.skymeterDeviceMessage,
                  'class': self.app.skymeter,
                  'dispatch': self.skymeterDispatch,
@@ -87,6 +118,8 @@ class SettIndi(object):
             'telescope':
                 {'uiName': self.ui.telescopeDeviceName,
                  'uiDevice': self.ui.telescopeDevice,
+                 'uiSearch': None,
+                 'searchType': None,
                  'uiMessage': self.ui.telescopeDeviceMessage,
                  'class': self.app.telescope,
                  'dispatch': self.telescopeDispatch,
@@ -97,6 +130,8 @@ class SettIndi(object):
             'power':
                 {'uiName': self.ui.powerDeviceName,
                  'uiDevice': self.ui.powerDevice,
+                 'uiSearch': None,
+                 'searchType': None,
                  'uiMessage': self.ui.powerDeviceMessage,
                  'class': self.app.power,
                  'dispatch': self.powerDispatch,
@@ -111,6 +146,8 @@ class SettIndi(object):
             item['uiName'].currentIndexChanged.connect(item['dispatch'])
             item['host'].editingFinished.connect(self.shareServer)
             item['port'].editingFinished.connect(self.shareServer)
+            if item['uiSearch'] is not None:
+                item['uiSearch'].clicked.connect(self.searchDevices)
             item['uiMessage'].clicked.connect(self.shareMessage)
             item['signals'].serverDisconnected.connect(self.showIndiDisconnected)
             item['signals'].deviceConnected.connect(self.showDeviceConnected)
@@ -127,6 +164,15 @@ class SettIndi(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
+
+        for device in ['imaging', 'dome', 'sensorWeather']:
+            uiList = self.indiDevices[device]['uiName']
+            deviceList = config.get(f'{device}Devices', [])
+            for deviceItem in deviceList:
+                if deviceItem == 'No device driver selected':
+                    continue
+                uiList.addItem(deviceItem)
+
         for name, item in self.indiDevices.items():
             self.indiDevices[name]['uiName'].setCurrentIndex(config.get(f'{name}Name', 0))
             self.indiDevices[name]['uiMessage'].setChecked(config.get(f'{name}Message', False))
@@ -148,6 +194,16 @@ class SettIndi(object):
         :return: True for test purpose
         """
         config = self.app.config['mainW']
+
+        for device in ['imaging', 'dome', 'sensorWeather']:
+            model = self.indiDevices[device]['uiName'].model()
+            deviceList = []
+            for index in range(model.rowCount()):
+                if model.item(index).text() == 'No device driver selected':
+                    continue
+                deviceList.append(model.item(index).text())
+            config[f'{device}Devices'] = deviceList
+
         for name, item in self.indiDevices.items():
             config[f'{name}Name'] = self.indiDevices[name]['uiName'].currentIndex()
             config[f'{name}Message'] = self.indiDevices[name]['uiMessage'].isChecked()
@@ -172,55 +228,9 @@ class SettIndi(object):
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('No device driver selected')
 
-        # adding special items
-        self.indiDevices['imaging']['uiName'].addItem('Apogee CCD')
-        self.indiDevices['imaging']['uiName'].addItem('Atik GP')
-        self.indiDevices['imaging']['uiName'].addItem('CCD Simulator')
-        self.indiDevices['imaging']['uiName'].addItem('Canon DSLR')
-        self.indiDevices['imaging']['uiName'].addItem('FLI CCD')
-        self.indiDevices['imaging']['uiName'].addItem('FireFly MV')
-        self.indiDevices['imaging']['uiName'].addItem('GPhoto CCD')
-        self.indiDevices['imaging']['uiName'].addItem('Guide Simulator')
-        self.indiDevices['imaging']['uiName'].addItem('Meade Deep Sky Imager')
-        self.indiDevices['imaging']['uiName'].addItem('Nikon DSLR')
-        self.indiDevices['imaging']['uiName'].addItem('QHY CCD')
-        self.indiDevices['imaging']['uiName'].addItem('QSI CCD')
-        self.indiDevices['imaging']['uiName'].addItem('SBIG CCD')
-        self.indiDevices['imaging']['uiName'].addItem('SBIG ST-I')
-        self.indiDevices['imaging']['uiName'].addItem('SX CCD')
-        self.indiDevices['imaging']['uiName'].addItem('Sony DSLR')
-        self.indiDevices['imaging']['uiName'].addItem('Starfish CCD')
-        self.indiDevices['imaging']['uiName'].addItem('V4L2 CCD')
-        self.indiDevices['imaging']['uiName'].addItem('AST8300B')
-        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI120MC')
-        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI1600MC')
-        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI290MM Mini')
-        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI1600MM Pro')
-        self.indiDevices['imaging']['uiName'].addItem('ZWO CCD ASI1600MM-Cool')
-
-        self.indiDevices['dome']['uiName'].addItem('Baader Dome')
-        self.indiDevices['dome']['uiName'].addItem('Dome Scripting Gateway')
-        self.indiDevices['dome']['uiName'].addItem('Dome Simulator')
-        self.indiDevices['dome']['uiName'].addItem('MaxDome II')
-        self.indiDevices['dome']['uiName'].addItem('NexDome')
-        self.indiDevices['dome']['uiName'].addItem('RollOff Simulator')
-        self.indiDevices['dome']['uiName'].addItem('ScopeDome Dome')
-
-        self.indiDevices['sensorWeather']['uiName'].addItem('AAG Cloud Watcher')
-        self.indiDevices['sensorWeather']['uiName'].addItem('Arduino MeteoStation')
-        self.indiDevices['sensorWeather']['uiName'].addItem('MBox')
-        self.indiDevices['sensorWeather']['uiName'].addItem('OpenWeatherMap')
-        self.indiDevices['sensorWeather']['uiName'].addItem('Vantage')
-        self.indiDevices['sensorWeather']['uiName'].addItem('Weather Meta')
-        self.indiDevices['sensorWeather']['uiName'].addItem('Weather Simulator')
-        self.indiDevices['sensorWeather']['uiName'].addItem('Weather Watcher')
-
         self.indiDevices['skymeter']['uiName'].addItem('SQM')
-
         self.indiDevices['telescope']['uiName'].addItem('LX200 10micron')
-
         self.indiDevices['power']['uiName'].addItem('Pegasus UPB')
-
         self.indiDevices['cover']['uiName'].addItem('Flip Flat')
 
         return True
@@ -316,4 +326,76 @@ class SettIndi(object):
                 continue
             self.indiDevices[device]['uiDevice'].setStyleSheet(self.BACK_NORM)
             self.deviceStat[device] = False
+        return True
+
+    def searchDevices(self):
+        """
+        searchDevices implements a search for devices of a certain device type. it is called
+        from a button press and checks which button it was. after that for the right device
+        it collects all necessary data for host value, instantiates an INDI client and
+        watches for all devices connected to this server. Than it connects a subroutine for
+        collecting the right device names and opens a model dialog. the data collection
+        takes place as long as the model dialog is open. when the user closes this dialog, the
+        collected data is written to the drop down list.
+
+        :return:  true for test purpose
+        """
+
+        self.indiDeviceList = list()
+
+        for device in self.indiDevices:
+            # simplify
+            devObj = self.indiDevices[device]
+
+            if devObj['uiSearch'] != self.sender():
+                continue
+
+            host = (devObj['host'].text(),
+                    int(devObj['port'].text()),
+                    )
+            self.indiClass = IndiClass(host=host)
+            self.indiSearchType = devObj['searchType']
+            self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
+            self.indiClass.client.connectServer()
+            self.indiClass.client.watchDevice()
+            msg = PyQt5.QtWidgets.QMessageBox
+            msg.critical(self,
+                         'Searching Devices',
+                         f'Search for {device} could take some seconds!')
+            self.indiClass.client.disconnectServer()
+            self.indiClass = None
+            self.indiSearchType = None
+
+            devObj['uiName'].clear()
+            devObj['uiName'].setView(PyQt5.QtWidgets.QListView())
+            devObj['uiName'].addItem('No device driver selected')
+            for deviceName in self.indiDeviceList:
+                devObj['uiName'].addItem(deviceName)
+
+        return True
+
+    def addDevicesWithType(self, deviceName, propertyName):
+        """
+        addDevicesWithType gety called whenever a new device send out text messages. than it
+        checks, if the device type fits to the search type desired. if they match, the
+        device name is added to the list.
+
+        :param deviceName:
+        :param propertyName:
+        :return: success
+        """
+
+        device = self.indiClass.client.devices[deviceName]
+        interface = device.getText(propertyName).get('DRIVER_INTERFACE', None)
+
+        if interface is None:
+            return False
+
+        if self.indiSearchType is None:
+            return False
+
+        interface = int(interface)
+        if interface & self.indiSearchType:
+            self.indiDeviceList.append(deviceName)
+
         return True

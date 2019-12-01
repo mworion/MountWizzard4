@@ -1,19 +1,19 @@
 Python Installation
 ===================
 MW4 is a python3 application based on some python libraries and uses Qt as framework for
-GUI. Different to the past there will be no one box solution (MAC bundle, EXE File, etc.)
-available. As MW4 is python3 and comes with an internal updater functionality, it is using a
-standard python3 environment. Ideally and that is recommended in a virtualenv.
+GUI. Different from past versions of MW there will is no one box solution (MAC bundle, EXE File, etc.)
+available. As MW4 is python3 and comes with internal update functionality, it uses a
+standard python3 environment. Ideally it is recommended in a virtualenv.
 
-MW4 uses python 3.7, so as a first step please install if not already present the actual
-python 3.7 package. For all platforms there is an installer available. Please follow the
-descriptions coming with the installers. To give a short here are some quick installation
-hints for all platforms. The installers for Windows and OSx could be downloaded from python
+MW4 uses python 3.7. The first step is to install the python 3.7 package if not already installed. 
+For all platforms there is an installer available. Please follow the
+descriptions that comes with the installers. To give a short overview here are some quick installation
+hints for all platforms. The installers for Windows and OSx can be downloaded from python
 .org.
 
-If you already have python3.7 installed, you could skip this section and go directly to MW4
+If you already have python3.7 installed, you can skip this section and go directly to the MW4
 installation process. If you have to install python3.7.5 this has to be done only once for
-as many MW4 installations you might want to do.
+as many MW4 installations you might want.
 
 Windows
 -------
@@ -30,8 +30,8 @@ and follow the installation procedure.
         :align: center
 
 Depending on your preference you could install python 3.7.5 for a single user or for all
-users. MW4 does not need admin rights to run, so please feel free which variant you would
-like to choose.
+users. MW4 does not need admin rights to run, so please feel free to choose the variant you would
+like to use.
 
 Mac OSx
 -------
@@ -40,8 +40,8 @@ Depending on your OSx version please download the installer for 3.7.5 from:
 https://www.python.org/downloads/mac-osx/
 
 and follow the installation procedure. Depending on your preference you could install python
-3.7.5 for a single user or for all users. MW4 does not need admin rights to run, so please
-feel free which variant you would like to choose.
+3.7.5 for a single user or for all users. MW4 does not need admin rights to run, so please feel 
+free to choose the variant you would like to use.
 
 Ubuntu
 ------

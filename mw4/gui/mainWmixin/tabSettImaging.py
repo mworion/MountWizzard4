@@ -94,19 +94,19 @@ class SettImaging(object):
 
         focalLength = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
         aperture = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0)
-        pixelSizeX = self.app.imaging.data.get('CCD_INFO.CCD_PIXEL_SIZE_X', 0)
-        pixelSizeY = self.app.imaging.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y', 0)
-        pixelX = self.app.imaging.data.get('CCD_INFO.CCD_MAX_X', 0)
-        pixelY = self.app.imaging.data.get('CCD_INFO.CCD_MAX_Y', 0)
-        rotation = self.app.imaging.data.get('CCD_ROTATION.CCD_ROTATION_VALUE', 0)
-        coolerTemp = self.app.imaging.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
-        coolerPower = self.app.imaging.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
-        coolerOn = self.app.imaging.data.get('CCD_COOLER.COOLER_ON', False)
-        downloadFast = self.app.imaging.data.get('READOUT_QUALITY.QUALITY_LOW', False)
+        pixelSizeX = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_X', 0)
+        pixelSizeY = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y', 0)
+        pixelX = self.app.camera.data.get('CCD_INFO.CCD_MAX_X', 0)
+        pixelY = self.app.camera.data.get('CCD_INFO.CCD_MAX_Y', 0)
+        rotation = self.app.camera.data.get('CCD_ROTATION.CCD_ROTATION_VALUE', 0)
+        coolerTemp = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE', 0)
+        coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
+        coolerOn = self.app.camera.data.get('CCD_COOLER.COOLER_ON', False)
+        downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
 
-        filterNumber = self.app.imaging.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+        filterNumber = self.app.camera.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
-        text = self.app.imaging.data.get(key, 'not found')
+        text = self.app.camera.data.get(key, 'not found')
         self.ui.filterName.setText(f'{text}')
 
         self.ui.focalLength.setText(f'{focalLength:4.0f}')
@@ -209,7 +209,7 @@ class SettImaging(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        actValue = self.app.imaging.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+        actValue = self.app.camera.data.get('CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
 
         if actValue is None:
             msg.critical(self,
@@ -229,7 +229,7 @@ class SettImaging(object):
         if not ok:
             return False
 
-        self.app.imaging.sendCoolerTemp(temperature=value)
+        self.app.camera.sendCoolerTemp(temperature=value)
 
         return True
 
@@ -242,7 +242,7 @@ class SettImaging(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        data = self.app.imaging.data
+        data = self.app.camera.data
 
         actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
         if actValue is None:
@@ -267,7 +267,7 @@ class SettImaging(object):
         if not ok:
             return False
 
-        self.app.imaging.sendFilterNumber(filterNumber=value)
+        self.app.camera.sendFilterNumber(filterNumber=value)
 
         return True
 
@@ -280,7 +280,7 @@ class SettImaging(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        data = self.app.imaging.data
+        data = self.app.camera.data
 
         actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
         if actValue is None:
@@ -303,7 +303,7 @@ class SettImaging(object):
             return False
 
         number = availNames.index(value) + 1
-        self.app.imaging.sendFilterNumber(filterNumber=number)
+        self.app.camera.sendFilterNumber(filterNumber=number)
 
         return True
 
@@ -314,7 +314,7 @@ class SettImaging(object):
         :return:
         """
 
-        self.app.imaging.sendDownloadMode(fastReadout=True)
+        self.app.camera.sendDownloadMode(fastReadout=True)
 
         return True
 
@@ -325,7 +325,7 @@ class SettImaging(object):
         :return:
         """
 
-        self.app.imaging.sendDownloadMode(fastReadout=False)
+        self.app.camera.sendDownloadMode(fastReadout=False)
 
         return True
 
@@ -336,7 +336,7 @@ class SettImaging(object):
         :return:
         """
 
-        self.app.imaging.sendCoolerSwitch(coolerOn=True)
+        self.app.camera.sendCoolerSwitch(coolerOn=True)
 
         return True
 
@@ -347,6 +347,6 @@ class SettImaging(object):
         :return:
         """
 
-        self.app.imaging.sendCoolerSwitch(coolerOn=False)
+        self.app.camera.sendCoolerSwitch(coolerOn=False)
 
         return True

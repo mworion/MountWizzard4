@@ -232,7 +232,7 @@ def test_modelImage_2():
               }
 
     app.mainW.imageQueue.put(mPoint)
-    with mock.patch.object(app.imaging,
+    with mock.patch.object(app.camera,
                            'expose'):
         suc = app.mainW.modelImage()
         assert suc
@@ -257,7 +257,7 @@ def test_modelSlew_2():
               }
 
     app.mainW.slewQueue.put(mPoint)
-    with mock.patch.object(app.imaging,
+    with mock.patch.object(app.camera,
                            'expose'):
         suc = app.mainW.modelSlew()
         assert not suc
@@ -276,7 +276,7 @@ def test_modelSlew_3():
               'altitude': 0,
               }
     app.mainW.slewQueue.put(mPoint)
-    with mock.patch.object(app.imaging,
+    with mock.patch.object(app.camera,
                            'expose'):
         with mock.patch.object(app.mount.obsSite,
                                'setTargetAltAz',
@@ -313,7 +313,7 @@ def test_defaultSignals():
 def test_cancelFull(qtbot):
     suc = app.mainW.prepareSignals()
     assert suc
-    with mock.patch.object(app.imaging,
+    with mock.patch.object(app.camera,
                            'abort'):
         with qtbot.waitSignal(app.message) as blocker:
             suc = app.mainW.cancelBuild()
@@ -523,8 +523,8 @@ def test_modelFinished_1(qtbot):
 
     app.mainW.modelQueue.put(inputData)
 
-    app.imaging.signals.saved.connect(app.mainW.modelSolve)
-    app.imaging.signals.integrated.connect(app.mainW.modelSlew)
+    app.camera.signals.saved.connect(app.mainW.modelSolve)
+    app.camera.signals.integrated.connect(app.mainW.modelSlew)
     app.astrometry.signals.done.connect(app.mainW.modelSolveDone)
     app.mainW.collector.ready.connect(app.mainW.modelImage)
 
@@ -563,8 +563,8 @@ def test_modelFinished_2(qtbot):
 
     app.mainW.modelQueue.put(inputData)
 
-    app.imaging.signals.saved.connect(app.mainW.modelSolve)
-    app.imaging.signals.integrated.connect(app.mainW.modelSlew)
+    app.camera.signals.saved.connect(app.mainW.modelSolve)
+    app.camera.signals.integrated.connect(app.mainW.modelSlew)
     app.astrometry.signals.done.connect(app.mainW.modelSolveDone)
     app.mainW.collector.ready.connect(app.mainW.modelImage)
 

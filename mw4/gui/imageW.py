@@ -694,7 +694,7 @@ class ImageWindow(widget.MWidget):
 
         self.imageFileNameOld = self.imageFileName
 
-        self.app.imaging.expose(imagePath=imagePath,
+        self.app.camera.expose(imagePath=imagePath,
                                 expTime=expTime,
                                 binning=binning,
                                 subFrame=subFrame,
@@ -718,7 +718,7 @@ class ImageWindow(widget.MWidget):
         """
 
         self.deviceStat['expose'] = False
-        self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
+        self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         self.app.message.emit(f'Exposed: [{os.path.basename(imagePath)}]', 0)
 
         if self.ui.checkAutoSolve.isChecked():
@@ -740,7 +740,7 @@ class ImageWindow(widget.MWidget):
         self.imageStack = None
         self.deviceStat['expose'] = True
         self.ui.checkStackImages.setChecked(False)
-        self.app.imaging.signals.saved.connect(self.exposeImageDone)
+        self.app.camera.signals.saved.connect(self.exposeImageDone)
         self.exposeRaw()
 
         return True
@@ -777,7 +777,7 @@ class ImageWindow(widget.MWidget):
 
         self.imageStack = None
         self.deviceStat['exposeN'] = True
-        self.app.imaging.signals.saved.connect(self.exposeImageNDone)
+        self.app.camera.signals.saved.connect(self.exposeImageNDone)
         self.exposeRaw()
 
         return True
@@ -790,14 +790,14 @@ class ImageWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        self.app.imaging.abort()
+        self.app.camera.abort()
 
         # for disconnection we have to split which slots were connected to disable the
         # right ones
         if self.deviceStat['expose']:
-            self.app.imaging.signals.saved.disconnect(self.exposeImageDone)
+            self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         if self.deviceStat['exposeN']:
-            self.app.imaging.signals.saved.disconnect(self.exposeImageNDone)
+            self.app.camera.signals.saved.disconnect(self.exposeImageNDone)
 
         # last image file was nor stored, so getting last valid it back
         self.imageFileName = self.imageFileNameOld

@@ -247,11 +247,11 @@ class SettDevice(object):
         """
 
         if self.ui.imagingDevice.currentText().startswith('INDI'):
-            self.app.imaging.name = self.ui.imagingDeviceName.currentText()
+            self.app.camera.name = self.ui.imagingDeviceName.currentText()
             self.app.message.emit('Imaging enabled', 0)
             self.deviceStat['imaging'] = False
         else:
-            self.app.imaging.name = ''
+            self.app.camera.name = ''
             self.app.message.emit('Imaging disabled', 0)
             self.deviceStat['imaging'] = None
 

@@ -391,7 +391,7 @@ class Model(object):
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
-        self.app.imaging.expose(imagePath=mPoint['imagePath'],
+        self.app.camera.expose(imagePath=mPoint['imagePath'],
                                 expTime=mPoint['exposureTime'],
                                 binning=mPoint['binning'],
                                 subFrame=mPoint['subFrame'],
@@ -525,8 +525,8 @@ class Model(object):
             self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
 
         self.collector.ready.connect(self.modelImage)
-        self.app.imaging.signals.integrated.connect(self.modelSlew)
-        self.app.imaging.signals.saved.connect(self.modelSolve)
+        self.app.camera.signals.integrated.connect(self.modelSlew)
+        self.app.camera.signals.saved.connect(self.modelSolve)
         self.app.astrometry.signals.done.connect(self.modelSolveDone)
 
         return True
@@ -538,8 +538,8 @@ class Model(object):
         :return: true for test purpose
         """
 
-        self.app.imaging.signals.saved.disconnect(self.modelSolve)
-        self.app.imaging.signals.integrated.disconnect(self.modelSlew)
+        self.app.camera.signals.saved.disconnect(self.modelSolve)
+        self.app.camera.signals.integrated.disconnect(self.modelSlew)
         self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
         self.collector.ready.disconnect(self.modelImage)
         self.collector.clear()
@@ -554,7 +554,7 @@ class Model(object):
         :return: true for test purpose
         """
 
-        self.app.imaging.abort()
+        self.app.camera.abort()
         self.app.astrometry.abort()
         self.defaultSignals()
         self.clearQueues()

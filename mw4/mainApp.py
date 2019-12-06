@@ -123,7 +123,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                            threadPool=self.threadPool)
         self.cover = FlipFlat(self, host='localhost')
         self.dome = Dome(self, host='localhost')
-        self.imaging = Camera(self, host='localhost')
+        self.camera = Camera(self, host='localhost')
         self.telescope = Telescope(self, host='localhost')
         self.skymeter = Skymeter(self, host='localhost')
         self.power = PegasusUPB(self, host='localhost')

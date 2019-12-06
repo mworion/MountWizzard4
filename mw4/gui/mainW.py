@@ -130,7 +130,7 @@ class MainWindow(MWidget,
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
-        self.app.imaging.signals.message.connect(self.updateImagingStatus)
+        self.app.camera.signals.message.connect(self.updateImagingStatus)
         self.app.onlineWeather.signals.connected.connect(self.updateOnlineWeatherStat)
 
         # connect gui signals

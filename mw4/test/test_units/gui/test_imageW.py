@@ -325,7 +325,7 @@ def test_exposeRaw_1(qtbot):
     app.mainW.ui.expTime.setValue(3)
     app.mainW.ui.binning.setValue(2)
     app.mainW.ui.subFrame.setValue(100)
-    with mock.patch.object(app.imaging,
+    with mock.patch.object(app.camera,
                            'expose',
                            ):
         with qtbot.waitSignal(app.message) as blocker:
@@ -335,7 +335,7 @@ def test_exposeRaw_1(qtbot):
 
 def test_exposeImageDone_1(qtbot):
     app.uiWindows['showImageW']['classObj'].ui.checkAutoSolve.setChecked(False)
-    app.imaging.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
+    app.camera.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
     with qtbot.waitSignal(app.message) as blocker:
         with qtbot.waitSignal(app.uiWindows['showImageW']['classObj'].signals.showImage):
             suc = app.uiWindows['showImageW']['classObj'].exposeImageDone()
@@ -345,7 +345,7 @@ def test_exposeImageDone_1(qtbot):
 
 def test_exposeImageDone_2(qtbot):
     app.uiWindows['showImageW']['classObj'].ui.checkAutoSolve.setChecked(True)
-    app.imaging.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
+    app.camera.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
     with qtbot.waitSignal(app.message) as blocker:
         with qtbot.waitSignal(app.uiWindows['showImageW']['classObj'].signals.solveImage):
             suc = app.uiWindows['showImageW']['classObj'].exposeImageDone()
@@ -354,14 +354,14 @@ def test_exposeImageDone_2(qtbot):
 
 
 def test_exposeImage_1():
-    app.imaging.data = {}
+    app.camera.data = {}
     suc = app.uiWindows['showImageW']['classObj'].exposeImage()
     assert suc
 
 
 def test_exposeImageNDone_1(qtbot):
     app.uiWindows['showImageW']['classObj'].ui.checkAutoSolve.setChecked(False)
-    app.imaging.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
+    app.camera.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
     with qtbot.waitSignal(app.message) as blocker:
         with qtbot.waitSignal(app.uiWindows['showImageW']['classObj'].signals.showImage):
             suc = app.uiWindows['showImageW']['classObj'].exposeImageNDone()
@@ -371,7 +371,7 @@ def test_exposeImageNDone_1(qtbot):
 
 def test_exposeImageNDone_2(qtbot):
     app.uiWindows['showImageW']['classObj'].ui.checkAutoSolve.setChecked(True)
-    app.imaging.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
+    app.camera.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
     with qtbot.waitSignal(app.message) as blocker:
         with qtbot.waitSignal(app.uiWindows['showImageW']['classObj'].signals.solveImage):
             suc = app.uiWindows['showImageW']['classObj'].exposeImageNDone()
@@ -380,13 +380,13 @@ def test_exposeImageNDone_2(qtbot):
 
 
 def test_exposeImageN_1():
-    app.imaging.data = {}
+    app.camera.data = {}
     suc = app.uiWindows['showImageW']['classObj'].exposeImageN()
     assert suc
 
 
 def test_abortImage_1(qtbot):
-    with mock.patch.object(app.imaging,
+    with mock.patch.object(app.camera,
                            'abort',
                            ):
         with qtbot.waitSignal(app.message) as blocker:
@@ -396,11 +396,11 @@ def test_abortImage_1(qtbot):
 
 
 def test_abortImage_2(qtbot):
-    app.imaging.signals.saved.connect(app.uiWindows['showImageW']['classObj'].showImage)
+    app.camera.signals.saved.connect(app.uiWindows['showImageW']['classObj'].showImage)
     app.uiWindows['showImageW']['classObj'].ui.exposeN.setEnabled(True)
     app.uiWindows['showImageW']['classObj'].ui.expose.setEnabled(False)
-    app.imaging.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeRaw)
-    with mock.patch.object(app.imaging,
+    app.camera.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeRaw)
+    with mock.patch.object(app.camera,
                            'abort',
                            ):
         with qtbot.waitSignal(app.message) as blocker:
@@ -410,11 +410,11 @@ def test_abortImage_2(qtbot):
 
 
 def test_abortImage_3(qtbot):
-    app.imaging.signals.saved.connect(app.uiWindows['showImageW']['classObj'].showImage)
+    app.camera.signals.saved.connect(app.uiWindows['showImageW']['classObj'].showImage)
     app.uiWindows['showImageW']['classObj'].ui.exposeN.setEnabled(False)
     app.uiWindows['showImageW']['classObj'].ui.expose.setEnabled(True)
-    app.imaging.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
-    with mock.patch.object(app.imaging,
+    app.camera.signals.saved.connect(app.uiWindows['showImageW']['classObj'].exposeImageDone)
+    with mock.patch.object(app.camera,
                            'abort',
                            ):
         with qtbot.waitSignal(app.message) as blocker:

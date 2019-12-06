@@ -122,6 +122,12 @@ class MeasureData(object):
             self.data['skyTemp'] = np.empty(shape=[0, 1])
             self.data['skySQR'] = np.empty(shape=[0, 1])
 
+        if 'filterwheel' in self.devices:
+            self.data['filterNumber'] = np.empty(shape=[0, 1])
+
+        if 'focuser' in self.devices:
+            self.data['focusPosition'] = np.empty(shape=[0, 1])
+
         if 'power' in self.devices:
             self.data['powCurr1'] = np.empty(shape=[0, 1])
             self.data['powCurr2'] = np.empty(shape=[0, 1])
@@ -287,6 +293,14 @@ class MeasureData(object):
             skyTemp = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
             dat['skySQR'] = np.append(dat['skySQR'], skySQR)
             dat['skyTemp'] = np.append(dat['skyTemp'], skyTemp)
+
+        if 'filterwheel' in self.devices:
+            filterNo = self.app.filterwheel.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 0)
+            dat['filterNumber'] = np.append(dat['filterNumber'], filterNo)
+
+        if 'focuser' in self.devices:
+            focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
+            dat['focusPosition'] = np.append(dat['focusPosition'], focus)
 
         if 'power' in self.devices:
             powCurr1 = self.app.power.data.get('POWER_CURRENT_1', 0)

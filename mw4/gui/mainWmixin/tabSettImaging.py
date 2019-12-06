@@ -104,7 +104,6 @@ class SettImaging(object):
         coolerOn = self.app.camera.data.get('CCD_COOLER.COOLER_ON', False)
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
-
         filterNumber = self.app.camera.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
         text = self.app.camera.data.get(key, 'not found')

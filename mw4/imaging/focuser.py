@@ -102,7 +102,7 @@ class Focuser(indiClass.IndiClass):
         for element, value in self.device.getNumber(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
-            print('number', propertyName, element, value)
+            # print('number', propertyName, element, value)
 
         return True
 

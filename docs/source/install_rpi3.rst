@@ -70,3 +70,6 @@ yourself.
 There are in different packages to be downloaded and installed. They build on each other, so
 keep the order of compiling and install. This procedure take about 2 hours or more,
 depending on the system.
+
+.. warning::
+    So far PyQtWebEngine does not build un Raspi3 !

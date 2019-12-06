@@ -304,7 +304,7 @@ class ImageWindow(widget.MWidget):
         else:
             self.ui.abortSolve.setEnabled(False)
 
-        if not self.app.mainW.deviceStat['imaging']:
+        if not self.app.mainW.deviceStat['camera']:
             self.ui.expose.setEnabled(False)
             self.ui.exposeN.setEnabled(False)
 

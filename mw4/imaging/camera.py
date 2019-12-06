@@ -519,21 +519,3 @@ class Camera(indiClass.IndiClass):
                                         )
 
         return suc
-
-    def sendFilterNumber(self, filterNumber=1):
-        """
-        sendFilterNumber send the desired filter number
-
-        :param filterNumber:
-        :return: success
-        """
-
-        # setting fast mode:
-        filterNo = self.device.getNumber('FILTER_SLOT')
-        filterNo['FILTER_SLOT_VALUE'] = filterNumber
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='FILTER_SLOT',
-                                        elements=filterNo,
-                                        )
-
-        return suc

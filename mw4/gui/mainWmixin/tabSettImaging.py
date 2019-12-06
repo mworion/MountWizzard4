@@ -242,7 +242,7 @@ class SettImaging(object):
         """
 
         msg = PyQt5.QtWidgets.QMessageBox
-        data = self.app.camera.data
+        data = self.app.filterwheel.data
 
         actValue = data.get('FILTER_SLOT.FILTER_SLOT_VALUE')
         if actValue is None:
@@ -267,7 +267,7 @@ class SettImaging(object):
         if not ok:
             return False
 
-        self.app.camera.sendFilterNumber(filterNumber=value)
+        self.app.filterwheel.sendFilterNumber(filterNumber=value)
 
         return True
 

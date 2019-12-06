@@ -100,7 +100,8 @@ class FilterWheel(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             # print('number', element, value)
 
         return True
@@ -121,7 +122,8 @@ class FilterWheel(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getText(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             print('text', propertyName, element, value)
 
         return True
@@ -142,7 +144,8 @@ class FilterWheel(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getSwitch(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             # print('switch', propertyName, element, value)
 
         return True
@@ -163,7 +166,26 @@ class FilterWheel(indiClass.IndiClass):
             return False
 
         for element, value in self.device.getLight(propertyName).items():
-            self.data[element] = value
+            key = propertyName + '.' + element
+            self.data[key] = value
             # print('light', propertyName, element, value)
 
         return True
+
+    def sendFilterNumber(self, filterNumber=1):
+        """
+        sendFilterNumber send the desired filter number
+
+        :param filterNumber:
+        :return: success
+        """
+
+        # setting fast mode:
+        filterNo = self.device.getNumber('FILTER_SLOT')
+        filterNo['FILTER_SLOT_VALUE'] = filterNumber
+        suc = self.client.sendNewNumber(deviceName=self.name,
+                                        propertyName='FILTER_SLOT',
+                                        elements=filterNo,
+                                        )
+
+        return suc

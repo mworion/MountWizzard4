@@ -39,9 +39,13 @@ class SettDevice(object):
                 'uiDriver': self.ui.domeDevice,
                 'dispatch': self.domeDispatch,
             },
-            'imaging': {
-                'uiDriver': self.ui.imagingDevice,
-                'dispatch': self.imagingDispatch,
+            'camera': {
+                'uiDriver': self.ui.cameraDevice,
+                'dispatch': self.cameraDispatch,
+            },
+            'filterwheel': {
+                'uiDriver': self.ui.filterwheelDevice,
+                'dispatch': self.filterwheelDispatch,
             },
             'sensorWeather': {
                 'uiDriver': self.ui.sensorWeatherDevice,
@@ -140,7 +144,7 @@ class SettDevice(object):
 
         # adding special items
         self.drivers['dome']['uiDriver'].addItem('INDI')
-        self.drivers['imaging']['uiDriver'].addItem('INDI')
+        self.drivers['camera']['uiDriver'].addItem('INDI')
         self.drivers['sensorWeather']['uiDriver'].addItem('INDI')
         self.drivers['directWeather']['uiDriver'].addItem('Built-In')
         self.drivers['onlineWeather']['uiDriver'].addItem('Built-In')
@@ -237,25 +241,28 @@ class SettDevice(object):
 
         return True
 
-    def imagingDispatch(self):
+    def cameraDispatch(self):
         """
-        imagingDispatch selects the type of device for imaging and start / stop them.
+        cameraDispatch selects the type of device for camera and start / stop them.
         in addition this function enables and disables other gui functions, which rely on
         the presence of a running driver
 
         :return: true for test purpose
         """
 
-        if self.ui.imagingDevice.currentText().startswith('INDI'):
-            self.app.camera.name = self.ui.imagingDeviceName.currentText()
-            self.app.message.emit('Imaging enabled', 0)
-            self.deviceStat['imaging'] = False
+        if self.ui.cameraDevice.currentText().startswith('INDI'):
+            self.app.camera.name = self.ui.cameraDeviceName.currentText()
+            self.app.message.emit('Camera enabled', 0)
+            self.deviceStat['camera'] = False
         else:
             self.app.camera.name = ''
-            self.app.message.emit('Imaging disabled', 0)
-            self.deviceStat['imaging'] = None
+            self.app.message.emit('Camera disabled', 0)
+            self.deviceStat['camera'] = None
 
         return True
+
+    def filterwheelDispatch(self):
+        pass
 
     def sensorWeatherDispatch(self):
         """

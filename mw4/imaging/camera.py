@@ -41,7 +41,6 @@ class CameraSignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['CameraSignals']
-    version = '0.100.0'
 
     integrated = PyQt5.QtCore.pyqtSignal()
     saved = PyQt5.QtCore.pyqtSignal(object)
@@ -62,7 +61,6 @@ class Camera(indiClass.IndiClass):
     __all__ = ['Camera',
                ]
 
-    version = '0.100.0'
     logger = logging.getLogger(__name__)
 
     # update rate to 1000 milli seconds for setting indi server

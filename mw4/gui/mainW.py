@@ -94,7 +94,7 @@ class MainWindow(MWidget,
         self.deviceStat = {
             'dome': None,
             'mount': None,
-            'imaging': None,
+            'camera': None,
             'astrometry': None,
             'environOverall': None,
             'sensorWeather': None,
@@ -113,7 +113,7 @@ class MainWindow(MWidget,
         self.app.measure.deviceStat = self.deviceStat
 
         self.deviceStatGui = {'dome': self.ui.domeConnected,
-                              'imaging': self.ui.imagingConnected,
+                              'camera': self.ui.cameraConnected,
                               'environOverall': self.ui.environConnected,
                               'astrometry': self.ui.astrometryConnected,
                               'mount': self.ui.mountConnected}
@@ -130,7 +130,7 @@ class MainWindow(MWidget,
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.astrometry.signals.message.connect(self.updateAstrometryStatus)
         self.app.dome.signals.message.connect(self.updateDomeStatus)
-        self.app.camera.signals.message.connect(self.updateImagingStatus)
+        self.app.camera.signals.message.connect(self.updateCameraStatus)
         self.app.onlineWeather.signals.connected.connect(self.updateOnlineWeatherStat)
 
         # connect gui signals
@@ -331,7 +331,7 @@ class MainWindow(MWidget,
         """
 
         # check if modeling would work (mount + solve + image)
-        if all(self.deviceStat[x] for x in ['mount', 'imaging', 'astrometry']):
+        if all(self.deviceStat[x] for x in ['mount', 'camera', 'astrometry']):
             self.ui.runModel.setEnabled(True)
             self.ui.plateSolveSync.setEnabled(True)
             self.ui.runFlexure.setEnabled(True)
@@ -526,14 +526,14 @@ class MainWindow(MWidget,
         self.ui.domeText.setText(text)
         return True
 
-    def updateImagingStatus(self, text):
+    def updateCameraStatus(self, text):
         """
 
         :param text:
         :return: true for test purpose
         """
 
-        self.ui.imagingText.setText(text)
+        self.ui.cameraText.setText(text)
         return True
 
     def updateStatusGUI(self, obs):

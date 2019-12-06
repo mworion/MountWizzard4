@@ -67,17 +67,29 @@ class SettIndi(object):
                  'port': self.ui.domePort,
                  'host': self.ui.domeHost,
                  },
-            'imaging':
-                {'uiName': self.ui.imagingDeviceName,
-                 'uiDevice': self.ui.imagingDevice,
-                 'uiSearch': self.ui.searchImagingDevices,
+            'camera':
+                {'uiName': self.ui.cameraDeviceName,
+                 'uiDevice': self.ui.cameraDevice,
+                 'uiSearch': self.ui.searchCameraDevices,
                  'searchType': self.CCD_INTERFACE,
-                 'uiMessage': self.ui.imagingDeviceMessage,
+                 'uiMessage': self.ui.cameraDeviceMessage,
                  'class': self.app.camera,
-                 'dispatch': self.imagingDispatch,
+                 'dispatch': self.cameraDispatch,
                  'signals': self.app.camera.client.signals,
-                 'port': self.ui.imagingPort,
-                 'host': self.ui.imagingHost,
+                 'port': self.ui.cameraPort,
+                 'host': self.ui.cameraHost,
+                 },
+            'filterwheel':
+                {'uiName': self.ui.filterwheelDeviceName,
+                 'uiDevice': self.ui.filterwheelDevice,
+                 'uiSearch': self.ui.searchFilterwheelDevices,
+                 'searchType': self.FILTER_INTERFACE,
+                 'uiMessage': self.ui.filterwheelDeviceMessage,
+                 'class': self.app.filterwheel,
+                 'dispatch': self.filterwheelDispatch,
+                 'signals': self.app.filterwheel.client.signals,
+                 'port': self.ui.filterwheelPort,
+                 'host': self.ui.filterwheelHost,
                  },
             'sensorWeather':
                 {'uiName': self.ui.sensorWeatherDeviceName,
@@ -165,7 +177,7 @@ class SettIndi(object):
         """
         config = self.app.config['mainW']
 
-        for device in ['imaging', 'dome', 'sensorWeather']:
+        for device in ['camera', 'dome', 'sensorWeather']:
             uiList = self.indiDevices[device]['uiName']
             deviceList = config.get(f'{device}Devices', [])
             for deviceItem in deviceList:
@@ -195,7 +207,7 @@ class SettIndi(object):
         """
         config = self.app.config['mainW']
 
-        for device in ['imaging', 'dome', 'sensorWeather']:
+        for device in ['camera', 'dome', 'sensorWeather']:
             model = self.indiDevices[device]['uiName'].model()
             deviceList = []
             for index in range(model.rowCount()):
@@ -344,6 +356,7 @@ class SettIndi(object):
         self.indiDeviceList = list()
 
         for device in self.indiDevices:
+            # todo: enable check if server is present
             # simplify
             devObj = self.indiDevices[device]
 

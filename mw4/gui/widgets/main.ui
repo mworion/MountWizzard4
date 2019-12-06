@@ -12691,7 +12691,7 @@ to mount</string>
          <x>5</x>
          <y>20</y>
          <width>366</width>
-         <height>146</height>
+         <height>206</height>
         </rect>
        </property>
        <property name="title">
@@ -12704,7 +12704,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>80</y>
+          <y>110</y>
           <width>146</width>
           <height>26</height>
          </rect>
@@ -12735,14 +12735,14 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Imaging Device</string>
+         <string>Camera Device</string>
         </property>
        </widget>
        <widget class="QComboBox" name="domeDevice">
         <property name="geometry">
          <rect>
           <x>160</x>
-          <y>80</y>
+          <y>110</y>
           <width>200</width>
           <height>25</height>
          </rect>
@@ -12754,7 +12754,7 @@ to mount</string>
          </size>
         </property>
        </widget>
-       <widget class="QComboBox" name="imagingDevice">
+       <widget class="QComboBox" name="cameraDevice">
         <property name="geometry">
          <rect>
           <x>160</x>
@@ -12774,7 +12774,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>160</x>
-          <y>110</y>
+          <y>140</y>
           <width>200</width>
           <height>25</height>
          </rect>
@@ -12790,7 +12790,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>110</y>
+          <y>140</y>
           <width>146</width>
           <height>26</height>
          </rect>
@@ -12809,7 +12809,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>11</x>
-          <y>50</y>
+          <y>80</y>
           <width>146</width>
           <height>26</height>
          </rect>
@@ -12828,7 +12828,77 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>160</x>
+          <y>80</y>
+          <width>200</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QLabel" name="ccd_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
           <y>50</y>
+          <width>146</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Filter Wheel Device</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="filterwheelDevice">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>50</y>
+          <width>200</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QLabel" name="dome_4">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>170</y>
+          <width>146</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Focuser Snoop Device</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="focuserDevice">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>170</y>
           <width>200</width>
           <height>25</height>
          </rect>
@@ -12845,7 +12915,7 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>180</y>
+         <y>240</y>
          <width>366</width>
          <height>146</height>
         </rect>
@@ -13169,13 +13239,13 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>100</y>
+         <y>95</y>
          <width>366</width>
          <height>76</height>
         </rect>
        </property>
        <property name="title">
-        <string>Imaging</string>
+        <string>Camera</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -13198,7 +13268,7 @@ to mount</string>
          <string>Host IP/Port</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="imagingPort">
+       <widget class="QLineEdit" name="cameraPort">
         <property name="geometry">
          <rect>
           <x>309</x>
@@ -13226,7 +13296,7 @@ to mount</string>
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
-       <widget class="QComboBox" name="imagingDeviceName">
+       <widget class="QComboBox" name="cameraDeviceName">
         <property name="geometry">
          <rect>
           <x>95</x>
@@ -13236,7 +13306,7 @@ to mount</string>
          </rect>
         </property>
        </widget>
-       <widget class="QLineEdit" name="imagingHost">
+       <widget class="QLineEdit" name="cameraHost">
         <property name="geometry">
          <rect>
           <x>95</x>
@@ -13287,7 +13357,7 @@ to mount</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QCheckBox" name="imagingDeviceMessage">
+       <widget class="QCheckBox" name="cameraDeviceMessage">
         <property name="geometry">
          <rect>
           <x>310</x>
@@ -13314,7 +13384,7 @@ to mount</string>
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QPushButton" name="searchImagingDevices">
+       <widget class="QPushButton" name="searchCameraDevices">
         <property name="geometry">
          <rect>
           <x>5</x>
@@ -13332,7 +13402,7 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>180</y>
+         <y>255</y>
          <width>366</width>
          <height>80</height>
         </rect>
@@ -13494,8 +13564,8 @@ to mount</string>
       <widget class="QGroupBox" name="groupBox_36">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>265</y>
+         <x>400</x>
+         <y>20</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -13622,7 +13692,7 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>20</y>
+         <y>95</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -13771,7 +13841,7 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>100</y>
+         <y>175</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -13898,7 +13968,7 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>180</y>
+         <y>255</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -14065,8 +14135,8 @@ to mount</string>
       <widget class="QCheckBox" name="shareIndiServer">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>360</y>
+         <x>405</x>
+         <y>345</y>
          <width>336</width>
          <height>20</height>
         </rect>
@@ -14088,6 +14158,169 @@ to mount</string>
        <property name="checked">
         <bool>true</bool>
        </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_61">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>175</y>
+         <width>366</width>
+         <height>76</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Filterwheel</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_mountIP_16">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>20</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Host IP/Port</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="filterwheelPort">
+        <property name="geometry">
+         <rect>
+          <x>309</x>
+          <y>20</y>
+          <width>50</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>7624</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="filterwheelDeviceName">
+        <property name="geometry">
+         <rect>
+          <x>95</x>
+          <y>45</y>
+          <width>201</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="filterwheelHost">
+        <property name="geometry">
+         <rect>
+          <x>95</x>
+          <y>20</y>
+          <width>201</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>localhost</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="filterwheelDeviceMessage">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>45</y>
+          <width>51</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Mes.</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="searchFilterwheelDevices">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>45</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Search</string>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="Imaging">
@@ -21500,7 +21733,7 @@ When clicking the button, you could change the value.</string>
      <string>Image</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="imagingConnected">
+   <widget class="QPushButton" name="cameraConnected">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -21669,7 +21902,7 @@ When clicking the button, you could change the value.</string>
      <string>Solver</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="imagingText">
+   <widget class="QLineEdit" name="cameraText">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -22478,8 +22711,8 @@ When clicking the button, you could change the value.</string>
  <tabstops>
   <tabstop>sensorWeatherHost</tabstop>
   <tabstop>sensorWeatherPort</tabstop>
-  <tabstop>imagingHost</tabstop>
-  <tabstop>imagingPort</tabstop>
+  <tabstop>cameraHost</tabstop>
+  <tabstop>cameraPort</tabstop>
   <tabstop>domeHost</tabstop>
   <tabstop>domePort</tabstop>
   <tabstop>powerHost</tabstop>
@@ -22737,7 +22970,7 @@ When clicking the button, you could change the value.</string>
   <tabstop>mountConnected</tabstop>
   <tabstop>environConnected</tabstop>
   <tabstop>domeConnected</tabstop>
-  <tabstop>imagingConnected</tabstop>
+  <tabstop>cameraConnected</tabstop>
   <tabstop>astrometryConnected</tabstop>
   <tabstop>openMessageW</tabstop>
   <tabstop>openMeasureW</tabstop>
@@ -22751,12 +22984,12 @@ When clicking the button, you could change the value.</string>
   <tabstop>mountOn</tabstop>
   <tabstop>mountOff</tabstop>
   <tabstop>settingsTabWidget</tabstop>
-  <tabstop>imagingDeviceName</tabstop>
+  <tabstop>cameraDeviceName</tabstop>
   <tabstop>sensorVoltage</tabstop>
   <tabstop>le_analyseFileName</tabstop>
   <tabstop>powerCurrent4</tabstop>
   <tabstop>buildPFileName</tabstop>
-  <tabstop>imagingDevice</tabstop>
+  <tabstop>cameraDevice</tabstop>
   <tabstop>dewCurrentA</tabstop>
   <tabstop>mainTabWidget</tabstop>
   <tabstop>powerDeviceName</tabstop>

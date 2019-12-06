@@ -47,6 +47,10 @@ class SettDevice(object):
                 'uiDriver': self.ui.filterwheelDevice,
                 'dispatch': self.filterwheelDispatch,
             },
+            'focuser': {
+                'uiDriver': self.ui.focuserDevice,
+                'dispatch': self.focuserDispatch,
+            },
             'sensorWeather': {
                 'uiDriver': self.ui.sensorWeatherDevice,
                 'dispatch': self.sensorWeatherDispatch,
@@ -145,6 +149,8 @@ class SettDevice(object):
         # adding special items
         self.drivers['dome']['uiDriver'].addItem('INDI')
         self.drivers['camera']['uiDriver'].addItem('INDI')
+        self.drivers['filterwheel']['uiDriver'].addItem('INDI')
+        self.drivers['focuser']['uiDriver'].addItem('INDI')
         self.drivers['sensorWeather']['uiDriver'].addItem('INDI')
         self.drivers['directWeather']['uiDriver'].addItem('Built-In')
         self.drivers['onlineWeather']['uiDriver'].addItem('Built-In')
@@ -262,7 +268,36 @@ class SettDevice(object):
         return True
 
     def filterwheelDispatch(self):
-        pass
+        """
+        filterwheelDispatch selects the type of device for filterwheel settings.
+
+        :return: true for test purpose
+        """
+
+        if self.ui.filterwheelDevice.currentText().startswith('INDI'):
+            self.app.filterwheel.name = self.ui.filterwheelDeviceName.currentText()
+            self.app.message.emit('Filterwheel enabled', 0)
+            self.deviceStat['filterwheel'] = False
+        else:
+            self.app.filterwheel.name = ''
+            self.app.message.emit('Filterwheel disabled', 0)
+            self.deviceStat['filterwheel'] = None
+
+    def focuserDispatch(self):
+        """
+        focuserDispatch selects the type of device for focuser settings.
+
+        :return: true for test purpose
+        """
+
+        if self.ui.focuserDevice.currentText().startswith('INDI'):
+            self.app.focuser.name = self.ui.focuserDeviceName.currentText()
+            self.app.message.emit('Focuser enabled', 0)
+            self.deviceStat['focuser'] = False
+        else:
+            self.app.focuser.name = ''
+            self.app.message.emit('Focuser disabled', 0)
+            self.deviceStat['focuser'] = None
 
     def sensorWeatherDispatch(self):
         """

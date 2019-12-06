@@ -72,4 +72,4 @@ keep the order of compiling and install. This procedure take about 2 hours or mo
 depending on the system.
 
 .. warning::
-    So far PyQtWebEngine does not build un Raspi3 !
+    So far PyQtWebEngine does not build un RasPi3 !

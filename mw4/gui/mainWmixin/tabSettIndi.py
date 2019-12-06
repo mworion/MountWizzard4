@@ -91,6 +91,18 @@ class SettIndi(object):
                  'port': self.ui.filterwheelPort,
                  'host': self.ui.filterwheelHost,
                  },
+            'focuser':
+                {'uiName': self.ui.focuserDeviceName,
+                 'uiDevice': self.ui.focuserDevice,
+                 'uiSearch': self.ui.searchFocuserDevices,
+                 'searchType': self.FOCUSER_INTERFACE,
+                 'uiMessage': self.ui.focuserDeviceMessage,
+                 'class': self.app.focuser,
+                 'dispatch': self.focuserDispatch,
+                 'signals': self.app.focuser.client.signals,
+                 'port': self.ui.focuserPort,
+                 'host': self.ui.focuserHost,
+                 },
             'sensorWeather':
                 {'uiName': self.ui.sensorWeatherDeviceName,
                  'uiDevice': self.ui.sensorWeatherDevice,
@@ -177,7 +189,7 @@ class SettIndi(object):
         """
         config = self.app.config['mainW']
 
-        for device in ['camera', 'dome', 'sensorWeather']:
+        for device in ['camera', 'filterwheel', 'focuser', 'dome', 'sensorWeather']:
             uiList = self.indiDevices[device]['uiName']
             deviceList = config.get(f'{device}Devices', [])
             for deviceItem in deviceList:
@@ -207,7 +219,7 @@ class SettIndi(object):
         """
         config = self.app.config['mainW']
 
-        for device in ['camera', 'dome', 'sensorWeather']:
+        for device in ['camera', 'filterwheel', 'focuser', 'dome', 'sensorWeather']:
             model = self.indiDevices[device]['uiName'].model()
             deviceList = []
             for index in range(model.rowCount()):

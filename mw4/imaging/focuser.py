@@ -26,16 +26,16 @@ import numpy as np
 from mw4.base import indiClass
 
 
-class FilterWheel(indiClass.IndiClass):
+class Focuser(indiClass.IndiClass):
     """
-    the class FilterWheel inherits all information and handling of the FilterWheel device
+    the class Focuser inherits all information and handling of the Focuser device
 
-        >>> FilterWheel(host=None,
+        >>> Focuser(host=None,
         >>>          name=''
         >>>          )
     """
 
-    __all__ = ['FilterWheel',
+    __all__ = ['Focuser',
                ]
 
     logger = logging.getLogger(__name__)
@@ -171,21 +171,3 @@ class FilterWheel(indiClass.IndiClass):
             # print('light', propertyName, element, value)
 
         return True
-
-    def sendFilterNumber(self, filterNumber=1):
-        """
-        sendFilterNumber send the desired filter number
-
-        :param filterNumber:
-        :return: success
-        """
-
-        # setting fast mode:
-        filterNo = self.device.getNumber('FILTER_SLOT')
-        filterNo['FILTER_SLOT_VALUE'] = filterNumber
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='FILTER_SLOT',
-                                        elements=filterNo,
-                                        )
-
-        return suc

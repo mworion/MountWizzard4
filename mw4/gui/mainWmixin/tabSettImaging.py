@@ -103,6 +103,7 @@ class SettImaging(object):
         coolerPower = self.app.camera.data.get('CCD_COOLER_POWER.CCD_COOLER_VALUE', 0)
         coolerOn = self.app.camera.data.get('CCD_COOLER.COOLER_ON', False)
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
+        focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
 
         filterNumber = self.app.camera.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
@@ -119,6 +120,7 @@ class SettImaging(object):
         self.ui.filterNumber.setText(f'{filterNumber:1.0f}')
         self.ui.coolerTemp.setText(f'{coolerTemp:3.1f}')
         self.ui.coolerPower.setText(f'{coolerPower:3.1f}')
+        self.ui.focuserPosition.setText(f'{focus:6.0f}')
 
         if coolerOn:
             self.changeStyleDynamic(self.ui.coolerOn, 'running', True)

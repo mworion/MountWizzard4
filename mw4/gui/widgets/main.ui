@@ -12460,7 +12460,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -13078,7 +13078,7 @@ to mount</string>
          <x>5</x>
          <y>5</y>
          <width>366</width>
-         <height>71</height>
+         <height>76</height>
         </rect>
        </property>
        <property name="title">
@@ -13241,7 +13241,7 @@ to mount</string>
          <x>5</x>
          <y>80</y>
          <width>366</width>
-         <height>71</height>
+         <height>76</height>
         </rect>
        </property>
        <property name="title">
@@ -13404,7 +13404,7 @@ to mount</string>
          <x>5</x>
          <y>305</y>
          <width>366</width>
-         <height>76</height>
+         <height>80</height>
         </rect>
        </property>
        <property name="title">
@@ -13841,7 +13841,7 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>155</y>
+         <y>165</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -13968,7 +13968,7 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>230</y>
+         <y>245</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -14136,7 +14136,7 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>350</y>
+         <y>345</y>
          <width>336</width>
          <height>20</height>
         </rect>
@@ -14165,7 +14165,7 @@ to mount</string>
          <x>5</x>
          <y>155</y>
          <width>366</width>
-         <height>71</height>
+         <height>76</height>
         </rect>
        </property>
        <property name="title">
@@ -14328,7 +14328,7 @@ to mount</string>
          <x>5</x>
          <y>230</y>
          <width>366</width>
-         <height>71</height>
+         <height>76</height>
         </rect>
        </property>
        <property name="title">
@@ -14518,7 +14518,7 @@ to mount</string>
          <x>5</x>
          <y>20</y>
          <width>366</width>
-         <height>251</height>
+         <height>266</height>
         </rect>
        </property>
        <property name="title">
@@ -14735,7 +14735,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>205</y>
+          <y>220</y>
           <width>341</width>
           <height>20</height>
          </rect>
@@ -14815,7 +14815,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>225</y>
+          <y>240</y>
           <width>231</width>
           <height>21</height>
          </rect>
@@ -15224,6 +15224,111 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="input" stdset="0">
          <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_409">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>195</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Focuser Position</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="focuserPosition">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>195</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Shows the actual set slew rate for the mount.
+When clicking the button, you could change the value.</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="cursorPosition">
+         <number>1</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="input" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="focuserIn">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>195</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>In</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="focuserOut">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>195</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Out</string>
         </property>
        </widget>
       </widget>
@@ -16093,7 +16198,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>195</x>
-         <y>295</y>
+         <y>300</y>
          <width>176</width>
          <height>76</height>
         </rect>
@@ -16221,7 +16326,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>295</y>
+         <y>300</y>
          <width>176</width>
          <height>76</height>
         </rect>

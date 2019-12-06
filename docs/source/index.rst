@@ -8,6 +8,7 @@ Welcome to MountWizzard4's (MW4) documentation!
     overview
     install_python
     install_mw4
+    install_rpi3
     explain_main
     model_building_remarks
 

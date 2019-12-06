@@ -392,11 +392,11 @@ class Model(object):
         self.collector.resetSignals()
 
         self.app.camera.expose(imagePath=mPoint['imagePath'],
-                                expTime=mPoint['exposureTime'],
-                                binning=mPoint['binning'],
-                                subFrame=mPoint['subFrame'],
-                                fastReadout=mPoint['fastReadout'],
-                                )
+                               expTime=mPoint['exposureTime'],
+                               binning=mPoint['binning'],
+                               subFrame=mPoint['subFrame'],
+                               fastReadout=mPoint['fastReadout'],
+                               )
 
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow
         mPoint['decJNowM'] = self.app.mount.obsSite.decJNow

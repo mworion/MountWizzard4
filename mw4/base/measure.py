@@ -218,6 +218,29 @@ class MeasureData(object):
             self.data[measure] = np.split(self.data[measure], 2)[1]
         return True
 
+    def getDirectWeather(self):
+        """
+        getDirectWeather checks if data is already collected and send 0 in case of missing
+        data.
+
+        :return: values
+        """
+
+        temp = self.app.mount.setting.weatherTemperature
+        if temp is None:
+            temp = 0
+        press = self.app.mount.setting.weatherPressure
+        if press is None:
+            press = 0
+        dew = self.app.mount.setting.weatherDewPoint
+        if dew is None:
+            dew = 0
+        hum = self.app.mount.setting.weatherHumidity
+        if hum is None:
+            hum = 0
+
+        return temp, press, dew, hum
+
     def measureTask(self):
         """
         measureTask runs all necessary pre processing and collecting task to assemble a
@@ -271,22 +294,11 @@ class MeasureData(object):
             dat['onlineWeatherDew'] = np.append(dat['onlineWeatherDew'], onlineWeatherDew)
 
         if 'directWeather' in self.devices:
-            directWeatherTemp = self.app.mount.setting.weatherTemperature
-            if directWeatherTemp is None:
-                directWeatherTemp = 0
-            directWeatherPress = self.app.mount.setting.weatherPressure
-            if directWeatherPress is None:
-                directWeatherPress = 0
-            directWeatherDew = self.app.mount.setting.weatherDewPoint
-            if directWeatherDew is None:
-                directWeatherDew = 0
-            directWeatherHum = self.app.mount.setting.weatherHumidity
-            if directWeatherHum is None:
-                directWeatherHum = 0
-            dat['directWeatherTemp'] = np.append(dat['directWeatherTemp'], directWeatherTemp)
-            dat['directWeatherHum'] = np.append(dat['directWeatherHum'], directWeatherHum)
-            dat['directWeatherPress'] = np.append(dat['directWeatherPress'], directWeatherPress)
-            dat['directWeatherDew'] = np.append(dat['directWeatherDew'], directWeatherDew)
+            temp, press, dew, hum = self.getDirectWeather()
+            dat['directWeatherTemp'] = np.append(dat['directWeatherTemp'], temp)
+            dat['directWeatherHum'] = np.append(dat['directWeatherHum'], hum)
+            dat['directWeatherPress'] = np.append(dat['directWeatherPress'], press)
+            dat['directWeatherDew'] = np.append(dat['directWeatherDew'], dew)
 
         if 'skymeter' in self.devices:
             skySQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)

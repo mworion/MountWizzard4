@@ -695,11 +695,11 @@ class ImageWindow(widget.MWidget):
         self.imageFileNameOld = self.imageFileName
 
         self.app.camera.expose(imagePath=imagePath,
-                                expTime=expTime,
-                                binning=binning,
-                                subFrame=subFrame,
-                                fastReadout=fastReadout,
-                                )
+                               expTime=expTime,
+                               binning=binning,
+                               subFrame=subFrame,
+                               fastReadout=fastReadout,
+                               )
 
         self.app.message.emit(f'Exposing: [{os.path.basename(imagePath)}]', 0)
         text = f'Duration: {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'

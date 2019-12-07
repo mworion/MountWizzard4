@@ -42,7 +42,7 @@ class Skymeter(indiClass.IndiClass):
     logger = logging.getLogger(__name__)
 
     # update rate to 1 seconds for setting indi server
-    UPDATE_RATE = 1
+    UPDATE_RATE = 5
 
     def __init__(self,
                  app=None,
@@ -83,24 +83,3 @@ class Skymeter(indiClass.IndiClass):
                                         propertyName='WEATHER_UPDATE',
                                         elements=update)
         return suc
-
-    def updateNumber(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
-        for element, value in self.device.getNumber(propertyName).items():
-            self.data[element] = value
-            # print(element, value)
-
-        return True

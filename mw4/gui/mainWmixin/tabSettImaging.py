@@ -166,7 +166,7 @@ class SettImaging(object):
         :return: success for test
         """
 
-        value = self.app.cover.data.get('Cover', '-').strip().upper()
+        value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
         if value == 'OPEN':
             self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
         elif value == 'CLOSED':
@@ -175,10 +175,10 @@ class SettImaging(object):
             self.changeStyleDynamic(self.ui.coverPark, 'running', False)
             self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
 
-        value = self.app.cover.data.get('Cover', '-')
+        value = self.app.cover.data.get('Status.Cover', '-')
         self.ui.coverStatusText.setText(value)
 
-        value = self.app.cover.data.get('Motor', '-')
+        value = self.app.cover.data.get('Status.Motor', '-')
         self.ui.coverMotorText.setText(value)
 
     def setCoverPark(self):

@@ -261,6 +261,8 @@ class IndiClass(object):
             key = propertyName + '.' + element
             self.data[key] = value
 
+            # print(self.name, key, value)
+
         return True
 
     def updateSwitch(self, deviceName, propertyName):
@@ -280,6 +282,8 @@ class IndiClass(object):
         for element, value in self.device.getSwitch(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
+
+            # print(self.name, key, value)
 
         return True
 
@@ -301,6 +305,8 @@ class IndiClass(object):
             key = propertyName + '.' + element
             self.data[key] = value
 
+            # print(self.name, key, value)
+
         return True
 
     def updateLight(self, deviceName, propertyName):
@@ -320,6 +326,8 @@ class IndiClass(object):
         for element, value in self.device.getLight(propertyName).items():
             key = propertyName + '.' + element
             self.data[key] = value
+
+            # print(self.name, key, value)
 
         return True
 

@@ -83,30 +83,3 @@ class Telescope(indiClass.IndiClass):
                                         propertyName='PERIOD_MS',
                                         elements=update)
         return suc
-
-    def updateNumber(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
-        for element, value in self.device.getNumber(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-            # print(propertyName, element, value)
-
-        return True

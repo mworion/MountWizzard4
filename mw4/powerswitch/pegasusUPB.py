@@ -117,22 +117,15 @@ class PegasusUPB(indiClass.IndiClass):
         :return:
         """
 
-        if self.device is None:
-            return False
-        if deviceName != self.name:
+        if not super().updateNumber(deviceName, propertyName):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-
             # only version 2 has 3 dew heaters
             if element == 'DEW_C':
                 if self.versionUPB != 2:
                     self.versionUPB = 2
                     self.signals.version.emit(2)
-
-            # print(propertyName, element, value)
 
         return True
 
@@ -146,44 +139,15 @@ class PegasusUPB(indiClass.IndiClass):
         :return:
         """
 
-        if self.device is None:
-            return False
-        if deviceName != self.name:
+        if not super().updateSwitch(deviceName, propertyName):
             return False
 
         for element, value in self.device.getSwitch(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-
             # this combination only exists in version 1
             if propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':
                 if self.versionUPB != 1:
                     self.versionUPB = 1
                     self.signals.version.emit(1)
-
-            # print(propertyName, element, value)
-
-        return True
-
-    def updateText(self, deviceName, propertyName):
-        """
-        updateText is called whenever a new text is received in client. it runs
-        through the device list and writes the text data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
-        for element, value in self.device.getText(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-            # print(propertyName, element, value)
 
         return True
 

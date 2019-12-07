@@ -98,20 +98,14 @@ class SensorWeather(indiClass.IndiClass):
         :return:
         """
 
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
         for element, value in self.device.getNumber(propertyName).items():
-
             # consolidate to WEATHER_PRESSURE
             if element == 'WEATHER_BAROMETER':
-                key = 'WEATHER_PRESSURE'
-            else:
-                key = element
+                element = 'WEATHER_PRESSURE'
 
+            key = propertyName + '.' + element
             self.data[key] = value
-            # print(key, value)
+
+            print(self.name, key, value)
 
         return True

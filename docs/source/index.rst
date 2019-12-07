@@ -10,6 +10,7 @@ Welcome to MountWizzard4's (MW4) documentation!
     install_mw4
     install_rpi3
     explain_main
+    explain_setting
     model_building_remarks
 
 Indices and tables

@@ -12515,13 +12515,13 @@ to mount</string>
           <x>160</x>
           <y>80</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12531,8 +12531,14 @@ to mount</string>
           <x>12</x>
           <y>80</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12550,8 +12556,14 @@ to mount</string>
           <x>12</x>
           <y>110</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12569,13 +12581,13 @@ to mount</string>
           <x>160</x>
           <y>20</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12585,8 +12597,14 @@ to mount</string>
           <x>12</x>
           <y>20</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12604,13 +12622,13 @@ to mount</string>
           <x>160</x>
           <y>50</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12620,8 +12638,14 @@ to mount</string>
           <x>12</x>
           <y>50</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12639,13 +12663,13 @@ to mount</string>
           <x>160</x>
           <y>110</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12655,8 +12679,14 @@ to mount</string>
           <x>12</x>
           <y>140</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12674,13 +12704,13 @@ to mount</string>
           <x>160</x>
           <y>140</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12706,8 +12736,14 @@ to mount</string>
           <x>11</x>
           <y>110</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12725,8 +12761,14 @@ to mount</string>
           <x>11</x>
           <y>20</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12744,13 +12786,13 @@ to mount</string>
           <x>160</x>
           <y>110</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12760,13 +12802,13 @@ to mount</string>
           <x>160</x>
           <y>20</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12776,13 +12818,13 @@ to mount</string>
           <x>160</x>
           <y>140</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12792,8 +12834,14 @@ to mount</string>
           <x>11</x>
           <y>140</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12811,8 +12859,14 @@ to mount</string>
           <x>11</x>
           <y>80</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12830,13 +12884,13 @@ to mount</string>
           <x>160</x>
           <y>80</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12846,8 +12900,14 @@ to mount</string>
           <x>10</x>
           <y>50</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12865,13 +12925,13 @@ to mount</string>
           <x>160</x>
           <y>50</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12881,8 +12941,14 @@ to mount</string>
           <x>11</x>
           <y>170</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12900,13 +12966,13 @@ to mount</string>
           <x>160</x>
           <y>170</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12932,8 +12998,14 @@ to mount</string>
           <x>11</x>
           <y>20</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12951,13 +13023,13 @@ to mount</string>
           <x>160</x>
           <y>50</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -12967,8 +13039,14 @@ to mount</string>
           <x>10</x>
           <y>50</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -12986,13 +13064,13 @@ to mount</string>
           <x>160</x>
           <y>20</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -13002,8 +13080,14 @@ to mount</string>
           <x>10</x>
           <y>80</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -13021,13 +13105,13 @@ to mount</string>
           <x>160</x>
           <y>80</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -13037,8 +13121,14 @@ to mount</string>
           <x>10</x>
           <y>110</y>
           <width>146</width>
-          <height>26</height>
+          <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -13056,13 +13146,13 @@ to mount</string>
           <x>160</x>
           <y>110</y>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
        </widget>
@@ -13076,9 +13166,9 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>5</y>
+         <y>15</y>
          <width>366</width>
-         <height>76</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -13091,7 +13181,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>20</y>
+          <y>15</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -13119,7 +13209,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>96</x>
-          <y>45</y>
+          <y>40</y>
           <width>201</width>
           <height>21</height>
          </rect>
@@ -13129,7 +13219,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>96</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>21</height>
          </rect>
@@ -13180,7 +13270,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>20</y>
+          <y>15</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -13198,7 +13288,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>20</height>
          </rect>
@@ -13225,7 +13315,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>45</y>
+          <y>40</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -13239,9 +13329,9 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>80</y>
+         <y>90</y>
          <width>366</width>
-         <height>76</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -13254,7 +13344,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>20</y>
+          <y>15</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -13272,7 +13362,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>309</x>
-          <y>20</y>
+          <y>15</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -13300,7 +13390,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>45</y>
+          <y>40</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13310,7 +13400,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13361,7 +13451,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>20</height>
          </rect>
@@ -13388,7 +13478,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>45</y>
+          <y>40</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -13402,9 +13492,9 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>305</y>
+         <y>315</y>
          <width>366</width>
-         <height>80</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -13417,7 +13507,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>20</y>
+          <y>15</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -13435,7 +13525,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>309</x>
-          <y>20</y>
+          <y>15</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -13463,7 +13553,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13514,7 +13604,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>50</y>
+          <y>40</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13524,7 +13614,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>50</y>
+          <y>40</y>
           <width>51</width>
           <height>20</height>
          </rect>
@@ -13551,7 +13641,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>50</y>
+          <y>40</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -13565,9 +13655,9 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>5</y>
+         <y>15</y>
          <width>366</width>
-         <height>76</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -13580,7 +13670,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>20</y>
+          <y>15</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -13598,7 +13688,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>45</y>
+          <y>40</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -13616,7 +13706,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13632,7 +13722,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>309</x>
-          <y>20</y>
+          <y>15</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -13654,7 +13744,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>45</y>
+          <y>40</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13664,7 +13754,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>20</height>
          </rect>
@@ -13692,9 +13782,9 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>80</y>
+         <y>90</y>
          <width>366</width>
-         <height>76</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -13707,7 +13797,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>20</y>
+          <y>15</y>
           <width>86</width>
           <height>21</height>
          </rect>
@@ -13725,7 +13815,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>45</y>
+          <y>40</y>
           <width>86</width>
           <height>21</height>
          </rect>
@@ -13743,7 +13833,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>96</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13759,7 +13849,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>96</x>
-          <y>45</y>
+          <y>40</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13769,7 +13859,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>20</y>
+          <y>15</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -13791,7 +13881,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>20</height>
          </rect>
@@ -13843,7 +13933,7 @@ to mount</string>
          <x>400</x>
          <y>165</y>
          <width>366</width>
-         <height>76</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -13856,7 +13946,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>20</y>
+          <y>15</y>
           <width>86</width>
           <height>21</height>
          </rect>
@@ -13874,7 +13964,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>96</x>
-          <y>45</y>
+          <y>40</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13884,7 +13974,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>96</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -13900,7 +13990,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>20</y>
+          <y>15</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -13922,7 +14012,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>20</height>
          </rect>
@@ -13949,7 +14039,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
+          <y>40</y>
           <width>86</width>
           <height>21</height>
          </rect>
@@ -13968,9 +14058,9 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>245</y>
+         <y>240</y>
          <width>366</width>
-         <height>76</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -13983,7 +14073,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>20</y>
+          <y>15</y>
           <width>86</width>
           <height>21</height>
          </rect>
@@ -14001,7 +14091,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
+          <y>40</y>
           <width>86</width>
           <height>21</height>
          </rect>
@@ -14019,7 +14109,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>20</y>
+          <y>15</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -14047,7 +14137,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>45</y>
+          <y>40</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -14057,7 +14147,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -14108,7 +14198,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>20</height>
          </rect>
@@ -14136,7 +14226,7 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>405</x>
-         <y>345</y>
+         <y>360</y>
          <width>336</width>
          <height>20</height>
         </rect>
@@ -14153,7 +14243,7 @@ to mount</string>
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>Use same IP /  Message settings for all devices</string>
+        <string>Share IP /  Port / Message settings for all devices</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -14163,9 +14253,9 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>155</y>
+         <y>165</y>
          <width>366</width>
-         <height>76</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -14178,7 +14268,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>20</y>
+          <y>15</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -14196,7 +14286,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>309</x>
-          <y>20</y>
+          <y>15</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -14224,7 +14314,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>45</y>
+          <y>40</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -14234,7 +14324,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -14285,7 +14375,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>20</height>
          </rect>
@@ -14312,7 +14402,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>45</y>
+          <y>40</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -14326,9 +14416,9 @@ to mount</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>230</y>
+         <y>240</y>
          <width>366</width>
-         <height>76</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -14341,7 +14431,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>9</x>
-          <y>20</y>
+          <y>15</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -14359,7 +14449,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>309</x>
-          <y>20</y>
+          <y>15</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -14387,7 +14477,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>45</y>
+          <y>40</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -14397,7 +14487,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>95</x>
-          <y>20</y>
+          <y>15</y>
           <width>201</width>
           <height>22</height>
          </rect>
@@ -14448,7 +14538,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>45</y>
+          <y>40</y>
           <width>51</width>
           <height>20</height>
          </rect>
@@ -14475,7 +14565,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>45</y>
+          <y>40</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -14518,11 +14608,11 @@ to mount</string>
          <x>5</x>
          <y>20</y>
          <width>366</width>
-         <height>266</height>
+         <height>366</height>
         </rect>
        </property>
        <property name="title">
-        <string>Camera settings</string>
+        <string>Imaging settings</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -14531,7 +14621,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>25</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14549,7 +14639,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>20</y>
+          <y>25</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -14567,7 +14657,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>20</y>
+          <y>25</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14605,7 +14695,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>205</x>
-          <y>20</y>
+          <y>25</y>
           <width>61</width>
           <height>21</height>
          </rect>
@@ -14623,7 +14713,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>20</y>
+          <y>25</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14661,7 +14751,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>45</y>
+          <y>55</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -14679,7 +14769,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>45</y>
+          <y>55</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14717,7 +14807,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
+          <y>55</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14735,9 +14825,9 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>220</y>
+          <y>310</y>
           <width>341</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -14759,7 +14849,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
+          <y>85</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14777,7 +14867,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>70</y>
+          <y>85</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14815,7 +14905,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>240</y>
+          <y>335</y>
           <width>231</width>
           <height>21</height>
          </rect>
@@ -14845,7 +14935,7 @@ to mount</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>95</y>
+          <y>115</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14897,7 +14987,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>95</y>
+          <y>115</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -14915,7 +15005,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>95</y>
+          <y>115</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -14936,7 +15026,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>95</y>
+          <y>115</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14978,7 +15068,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>205</x>
-          <y>95</y>
+          <y>115</y>
           <width>66</width>
           <height>21</height>
          </rect>
@@ -14996,7 +15086,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>170</y>
+          <y>205</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -15009,7 +15099,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>120</y>
+          <y>145</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -15022,7 +15112,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>170</y>
+          <y>205</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -15035,7 +15125,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>120</y>
+          <y>145</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -15048,7 +15138,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>205</x>
-          <y>145</y>
+          <y>175</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -15066,7 +15156,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>145</y>
+          <y>175</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -15087,7 +15177,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>145</y>
+          <y>175</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -15139,7 +15229,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>120</y>
+          <y>145</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -15157,7 +15247,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>170</y>
+          <y>205</y>
           <width>96</width>
           <height>21</height>
          </rect>
@@ -15178,7 +15268,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>145</y>
+          <y>175</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -15230,7 +15320,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>195</y>
+          <y>235</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -15251,7 +15341,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>195</y>
+          <y>235</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -15306,7 +15396,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>200</x>
-          <y>195</y>
+          <y>235</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -15322,7 +15412,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>195</y>
+          <y>235</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -16197,10 +16287,10 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="groupBox_30">
        <property name="geometry">
         <rect>
-         <x>195</x>
-         <y>300</y>
-         <width>176</width>
-         <height>76</height>
+         <x>400</x>
+         <y>315</y>
+         <width>366</width>
+         <height>56</height>
         </rect>
        </property>
        <property name="title">
@@ -16212,10 +16302,10 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_316">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>45</y>
+          <x>195</x>
+          <y>20</y>
           <width>96</width>
-          <height>21</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="font">
@@ -16233,7 +16323,7 @@ When clicking the button, you could change the value.</string>
           <x>10</x>
           <y>20</y>
           <width>91</width>
-          <height>21</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="font">
@@ -16251,7 +16341,7 @@ When clicking the button, you could change the value.</string>
           <x>120</x>
           <y>20</y>
           <width>51</width>
-          <height>21</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="font">
@@ -16286,10 +16376,10 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="solveTimeout">
         <property name="geometry">
          <rect>
-          <x>120</x>
-          <y>45</y>
+          <x>305</x>
+          <y>20</y>
           <width>51</width>
-          <height>21</height>
+          <height>26</height>
          </rect>
         </property>
         <property name="font">
@@ -16319,170 +16409,6 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="value">
          <double>30.000000000000000</double>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_31">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>300</y>
-         <width>176</width>
-         <height>76</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Settling</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_40">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>101</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Mount settle time</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_100">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>96</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Dome settle time</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_314">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>45</y>
-          <width>16</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>s</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_295">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>20</y>
-          <width>16</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>s</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="settleTimeMount">
-        <property name="geometry">
-         <rect>
-          <x>115</x>
-          <y>20</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="settleTimeDome">
-        <property name="geometry">
-         <rect>
-          <x>115</x>
-          <y>45</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>1.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -16727,13 +16653,1198 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_43">
+     </widget>
+     <widget class="QWidget" name="MountRemote">
+      <attribute name="title">
+       <string>Mount / WeatherAPI</string>
+      </attribute>
+      <widget class="Line" name="line_97">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>10</y>
+         <width>11</width>
+         <height>371</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>2</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_62">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>20</y>
+         <width>366</width>
+         <height>111</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Mount connectivity</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLineEdit" name="mountHost">
+        <property name="geometry">
+         <rect>
+          <x>115</x>
+          <y>20</y>
+          <width>241</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of mount, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>127.0.0.1</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_mountIP">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>IP Address</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="mountTypeConnection">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>115</x>
+          <y>80</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;MAC address of the mount&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+        <property name="maxLength">
+         <number>18</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_mountMAC_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>106</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Connection is:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_mountMAC">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>106</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>MAC Address</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="mountMAC">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>115</x>
+          <y>50</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;MAC address of the mount&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>00:00:00:00:00:00</string>
+        </property>
+        <property name="maxLength">
+         <number>18</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_63">
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>325</y>
+         <y>110</y>
          <width>366</width>
          <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Computer on rig</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_259">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>MAC Address</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="bootRackComp">
+        <property name="geometry">
+         <rect>
+          <x>245</x>
+          <y>20</y>
+          <width>116</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Boot / WOL</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="rackCompMAC">
+        <property name="geometry">
+         <rect>
+          <x>115</x>
+          <y>20</y>
+          <width>116</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>00:00:00:00:00:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_64">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>20</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>OpenWeatherMap API key</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLineEdit" name="openWeatherMapKey">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>346</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_31">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>145</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Settle Times</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_40">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Mount settle time</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_295">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>s</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="settleTimeMount">
+        <property name="geometry">
+         <rect>
+          <x>115</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Sets the time to wait after mount stop before imaging</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="Dome">
+      <attribute name="title">
+       <string>Dome / Cover</string>
+      </attribute>
+      <widget class="Line" name="line_86">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>10</y>
+         <width>11</width>
+         <height>371</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>2</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_140">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>360</y>
+         <width>186</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Use either one !</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_44">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>20</y>
+         <width>366</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Dome geometry</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QDoubleSpinBox" name="domeEastOffset">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>80</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_99">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Diameter</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_134">
+        <property name="geometry">
+         <rect>
+          <x>335</x>
+          <y>140</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>m</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_113">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>140</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>GEM offset</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="domeDiameter">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>20</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>3.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_122">
+        <property name="geometry">
+         <rect>
+          <x>335</x>
+          <y>80</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>m</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="domeNorthOffset">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>50</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_108">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>East offset</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_110">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Vertical offset</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_116">
+        <property name="geometry">
+         <rect>
+          <x>335</x>
+          <y>20</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>m</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkDomeGeometry">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>200</y>
+          <width>264</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Enable geometry calculations</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_118">
+        <property name="geometry">
+         <rect>
+          <x>335</x>
+          <y>50</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>m</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_123">
+        <property name="geometry">
+         <rect>
+          <x>335</x>
+          <y>110</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>m</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="domeVerticalOffset">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>110</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_107">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>North offset</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="offGEM">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>140</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_135">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>170</y>
+          <width>121</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>OTA offset</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="offOTA">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>170</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_136">
+        <property name="geometry">
+         <rect>
+          <x>335</x>
+          <y>170</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>m</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="picDome1">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>220</y>
+         <width>176</width>
+         <height>161</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="midLineWidth">
+        <number>0</number>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="iconpicture" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_137">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>310</y>
+         <width>186</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>GEM Offset: distance A to B</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_138">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>335</y>
+         <width>186</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>OTA Offset: distance C to B</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_145">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>225</y>
+         <width>186</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>A: cross point RA / DEC axis</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_147">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>250</y>
+         <width>186</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>B: cross point DEC / OTA axis</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_150">
+       <property name="geometry">
+        <rect>
+         <x>580</x>
+         <y>275</y>
+         <width>186</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>C: cross point DEC axis / plate</string>
+       </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_66">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>260</y>
+         <width>366</width>
+         <height>56</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Settle Times</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QDoubleSpinBox" name="settleTimeDome">
+        <property name="geometry">
+         <rect>
+          <x>125</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Sets the time to wait after mount stop before imaging</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_100">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Dome settle time</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_314">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>20</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>s</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_43">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>325</y>
+         <width>366</width>
+         <height>56</height>
         </rect>
        </property>
        <property name="title">
@@ -16860,367 +17971,9 @@ When clicking the button, you could change the value.</string>
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="MountRemote">
-      <attribute name="title">
-       <string>Mount / WeatherAPI</string>
-      </attribute>
-      <widget class="Line" name="line_97">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>11</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_62">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>20</y>
-         <width>366</width>
-         <height>116</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Mount connectivity</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLineEdit" name="mountHost">
-        <property name="geometry">
-         <rect>
-          <x>115</x>
-          <y>20</y>
-          <width>241</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of mount, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>127.0.0.1</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>101</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>IP Address</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="mountTypeConnection">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>115</x>
-          <y>80</y>
-          <width>116</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;MAC address of the mount&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>18</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountMAC_2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>106</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Connection is:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountMAC">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>106</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>MAC Address</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="mountMAC">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>115</x>
-          <y>50</y>
-          <width>116</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;MAC address of the mount&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>00:00:00:00:00:00</string>
-        </property>
-        <property name="maxLength">
-         <number>18</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_63">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>155</y>
-         <width>366</width>
-         <height>86</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Computer on rig</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_259">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>101</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>MAC Address</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="bootRackComp">
-        <property name="geometry">
-         <rect>
-          <x>115</x>
-          <y>50</y>
-          <width>116</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Boot / WOL</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="rackCompMAC">
-        <property name="geometry">
-         <rect>
-          <x>115</x>
-          <y>20</y>
-          <width>116</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>00:00:00:00:00:00</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_64">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>255</y>
-         <width>366</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>OpenWeatherMap API key</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLineEdit" name="openWeatherMapKey">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>346</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-     </widget>
      <widget class="QWidget" name="ParkPos">
       <attribute name="title">
-       <string>Dome / ParkPositions</string>
+       <string>ParkPositions</string>
       </attribute>
       <widget class="Line" name="line_83">
        <property name="geometry">
@@ -17244,523 +17997,11 @@ When clicking the button, you could change the value.</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
-      <widget class="QLabel" name="picDome1">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>225</y>
-         <width>176</width>
-         <height>161</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="midLineWidth">
-        <number>0</number>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-       <property name="iconpicture" stdset="0">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_44">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>25</y>
-         <width>366</width>
-         <height>196</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Dome geometry</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QDoubleSpinBox" name="domeEastOffset">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>70</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_99">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Dome diameter</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_134">
-        <property name="geometry">
-         <rect>
-          <x>335</x>
-          <y>120</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>m</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_113">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>120</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>GEM offset</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="domeDiameter">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>20</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>3.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_122">
-        <property name="geometry">
-         <rect>
-          <x>335</x>
-          <y>70</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>m</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="domeNorthOffset">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>45</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_108">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>70</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>East offset</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_110">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>95</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Vertical offset</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_116">
-        <property name="geometry">
-         <rect>
-          <x>335</x>
-          <y>20</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>m</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkDomeGeometry">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>170</y>
-          <width>264</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Enable geometry calculations</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_118">
-        <property name="geometry">
-         <rect>
-          <x>335</x>
-          <y>45</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>m</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_123">
-        <property name="geometry">
-         <rect>
-          <x>335</x>
-          <y>95</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>m</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="domeVerticalOffset">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>95</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_107">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>45</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>North offset</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="offGEM">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>120</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_135">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>145</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>OTA offset</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="offOTA">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>145</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_136">
-        <property name="geometry">
-         <rect>
-          <x>335</x>
-          <y>145</y>
-          <width>21</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>m</string>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="groupBox_45">
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>25</y>
+         <y>20</y>
          <width>366</width>
          <height>361</height>
         </rect>
@@ -17775,9 +18016,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>195</y>
+          <y>200</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -17799,9 +18040,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>255</y>
+          <y>260</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -17823,9 +18064,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>75</y>
+          <y>80</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -17847,7 +18088,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>225</y>
+          <y>230</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -17886,9 +18127,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>45</y>
+          <y>50</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -17910,7 +18151,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>165</y>
+          <y>170</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -17949,7 +18190,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>75</y>
+          <y>80</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -17988,7 +18229,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>105</y>
+          <y>110</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -18027,7 +18268,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>225</y>
+          <y>230</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -18048,7 +18289,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>75</y>
+          <y>80</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -18105,7 +18346,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>105</y>
+          <y>110</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -18144,9 +18385,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>45</y>
+          <y>50</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18168,7 +18409,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>45</y>
+          <y>50</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -18204,7 +18445,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>135</y>
+          <y>140</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -18243,9 +18484,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>225</y>
+          <y>230</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18267,9 +18508,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>255</y>
+          <y>260</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18291,7 +18532,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>135</y>
+          <y>140</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -18348,7 +18589,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>195</y>
+          <y>200</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -18387,7 +18628,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>135</y>
+          <y>140</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -18408,9 +18649,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>135</y>
+          <y>140</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18432,7 +18673,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>255</y>
+          <y>260</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -18453,7 +18694,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>45</y>
+          <y>50</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -18492,7 +18733,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>195</y>
+          <y>200</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -18531,7 +18772,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>165</y>
+          <y>170</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -18570,9 +18811,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>165</y>
+          <y>170</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18594,7 +18835,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>255</y>
+          <y>260</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -18633,9 +18874,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>165</y>
+          <y>170</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18657,9 +18898,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>225</y>
+          <y>230</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18681,7 +18922,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>165</y>
+          <y>170</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -18702,9 +18943,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>135</y>
+          <y>140</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18726,7 +18967,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>255</y>
+          <y>260</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -18783,9 +19024,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>105</y>
+          <y>110</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18807,9 +19048,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>195</y>
+          <y>200</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18831,7 +19072,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>255</y>
+          <y>260</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -18870,7 +19111,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>75</y>
+          <y>80</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -18909,7 +19150,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>135</y>
+          <y>140</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -18948,7 +19189,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>75</y>
+          <y>80</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -18969,9 +19210,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>75</y>
+          <y>80</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -18993,7 +19234,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>195</y>
+          <y>200</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -19014,7 +19255,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>105</y>
+          <y>110</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -19053,7 +19294,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>105</y>
+          <y>110</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -19092,7 +19333,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>165</y>
+          <y>170</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -19131,9 +19372,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>105</y>
+          <y>110</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -19155,7 +19396,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>225</y>
+          <y>230</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -19194,7 +19435,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>195</y>
+          <y>200</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -19233,7 +19474,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>225</y>
+          <y>230</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -19272,7 +19513,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>45</y>
+          <y>50</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -19311,7 +19552,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>45</y>
+          <y>50</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -19332,9 +19573,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>45</y>
+          <y>50</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
@@ -19345,9 +19586,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>75</y>
+          <y>80</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
@@ -19358,9 +19599,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>105</y>
+          <y>110</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
@@ -19371,9 +19612,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>135</y>
+          <y>140</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
@@ -19384,9 +19625,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>165</y>
+          <y>170</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
@@ -19397,9 +19638,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>195</y>
+          <y>200</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
@@ -19410,9 +19651,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>225</y>
+          <y>230</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
@@ -19423,9 +19664,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>255</y>
+          <y>260</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
@@ -19436,7 +19677,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>285</y>
+          <y>290</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -19457,7 +19698,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>315</y>
+          <y>320</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -19478,7 +19719,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>285</y>
+          <y>290</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -19517,7 +19758,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>315</y>
+          <y>320</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -19556,9 +19797,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>285</y>
+          <y>290</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -19580,7 +19821,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>285</y>
+          <y>290</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -19619,7 +19860,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>285</y>
+          <y>290</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -19658,9 +19899,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>285</y>
+          <y>290</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -19682,9 +19923,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>285</y>
+          <y>290</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
@@ -19695,9 +19936,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>290</x>
-          <y>315</y>
+          <y>320</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -19719,7 +19960,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>195</x>
-          <y>315</y>
+          <y>320</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -19758,7 +19999,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>250</x>
-          <y>315</y>
+          <y>320</y>
           <width>41</width>
           <height>21</height>
          </rect>
@@ -19797,9 +20038,9 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>230</x>
-          <y>315</y>
+          <y>320</y>
           <width>16</width>
-          <height>20</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -19821,123 +20062,15 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>310</x>
-          <y>315</y>
+          <y>320</y>
           <width>46</width>
-          <height>23</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="text">
          <string>Fill in</string>
         </property>
        </widget>
-      </widget>
-      <widget class="QLabel" name="label_137">
-       <property name="geometry">
-        <rect>
-         <x>580</x>
-         <y>315</y>
-         <width>186</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>GEM Offset: distance A to B</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_138">
-       <property name="geometry">
-        <rect>
-         <x>580</x>
-         <y>340</y>
-         <width>186</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>OTA Offset: distance C to B</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_140">
-       <property name="geometry">
-        <rect>
-         <x>580</x>
-         <y>365</y>
-         <width>186</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Use either one !</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_145">
-       <property name="geometry">
-        <rect>
-         <x>580</x>
-         <y>230</y>
-         <width>186</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>A: cross point RA / DEC axis</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_147">
-       <property name="geometry">
-        <rect>
-         <x>580</x>
-         <y>255</y>
-         <width>186</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>B: cross point DEC / OTA axis</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_150">
-       <property name="geometry">
-        <rect>
-         <x>580</x>
-         <y>280</y>
-         <width>186</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>C: cross point DEC axis / plate</string>
-       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="KMTronic">
@@ -20598,7 +20731,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>215</x>
-         <y>100</y>
+         <y>110</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -20664,7 +20797,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>75</y>
+         <y>80</y>
          <width>161</width>
          <height>21</height>
         </rect>
@@ -20700,7 +20833,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>100</y>
+         <y>110</y>
          <width>161</width>
          <height>21</height>
         </rect>
@@ -20738,7 +20871,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>215</x>
-         <y>75</y>
+         <y>80</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -23011,12 +23144,8 @@ When clicking the button, you could change the value.</string>
   <tabstop>downloadSlow</tabstop>
   <tabstop>checkFastDownload</tabstop>
   <tabstop>checkKeepImages</tabstop>
-  <tabstop>settleTimeMount</tabstop>
   <tabstop>searchRadius</tabstop>
-  <tabstop>settleTimeDome</tabstop>
   <tabstop>solveTimeout</tabstop>
-  <tabstop>coverPark</tabstop>
-  <tabstop>coverUnpark</tabstop>
   <tabstop>posText0</tabstop>
   <tabstop>posAlt0</tabstop>
   <tabstop>posAz0</tabstop>
@@ -23057,13 +23186,6 @@ When clicking the button, you could change the value.</string>
   <tabstop>posSave7</tabstop>
   <tabstop>posSave8</tabstop>
   <tabstop>posSave9</tabstop>
-  <tabstop>domeDiameter</tabstop>
-  <tabstop>domeNorthOffset</tabstop>
-  <tabstop>domeEastOffset</tabstop>
-  <tabstop>domeVerticalOffset</tabstop>
-  <tabstop>offGEM</tabstop>
-  <tabstop>offOTA</tabstop>
-  <tabstop>checkDomeGeometry</tabstop>
   <tabstop>relayHost</tabstop>
   <tabstop>relayUser</tabstop>
   <tabstop>relayPassword</tabstop>

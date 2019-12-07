@@ -41,7 +41,7 @@ setup(
     python_requires='>=3.7.2',
     install_requires=[
         'mountcontrol==0.141',
-        'indibase==0.112',
+        'indibase==0.114',
         'PyQt5==5.13.2',
         'PyQtWebEngine==5.13.2',
         'matplotlib==3.1.1',

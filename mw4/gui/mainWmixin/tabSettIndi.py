@@ -368,11 +368,12 @@ class SettIndi(object):
         self.indiDeviceList = list()
 
         for device in self.indiDevices:
-            # todo: enable check if server is present
             # simplify
             devObj = self.indiDevices[device]
 
             if devObj['uiSearch'] != self.sender():
+                continue
+            if not devObj['class'].client.connected:
                 continue
 
             host = (devObj['host'].text(),

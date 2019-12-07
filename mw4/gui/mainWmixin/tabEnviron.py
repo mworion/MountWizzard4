@@ -339,9 +339,9 @@ class EnvironGui(object):
         :return:    True if ok for testing
         """
 
-        value = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
+        value = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
         self.ui.skymeterSQR.setText(f'{value:5.2f}')
-        value = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
+        value = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE', 0)
         self.ui.skymeterTemp.setText(f'{value:4.1f}')
 
     def getWebDataWorker(self, url=''):

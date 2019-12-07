@@ -222,6 +222,7 @@ class IndiClass(object):
         :param propertyName:
         :return: success if device could connect
         """
+
         if propertyName != 'CONNECTION':
             return False
 

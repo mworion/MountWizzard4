@@ -143,21 +143,12 @@ class Astrometry:
                 },
             }
 
-        elif platform.system() == 'windows':
+        elif platform.system() == 'Windows':
             self.solverEnviron = {
-                '': {
-                    'programPath': '',
-                    'indexPath': '',
-                    'solver': '',
-                },
-            }
-
-        else:
-            self.solverEnviron = {
-                '': {
-                    'programPath': '',
-                    'indexPath': '',
-                    'solver': '',
+                'ASTAP': {
+                    'programPath': 'C:\\Program Files\\astap',
+                    'indexPath': 'C:\\Program Files\\astap',
+                    'solver': self.solverASTAP,
                 },
             }
 
@@ -178,6 +169,9 @@ class Astrometry:
             if solver != 'ASTAP':
                 program = self.solverEnviron[solver]['programPath'] + '/solve-field'
                 index = '/*.fits'
+            elif solver == 'ASTAP' and platform.system() == 'Windows':
+                program = self.solverEnviron[solver]['programPath'] + '/astap.exe'
+                index = '/*.290'
             else:
                 program = self.solverEnviron[solver]['programPath'] + '/astap'
                 index = '/*.290'

@@ -169,83 +169,12 @@ class Camera(indiClass.IndiClass):
         :param propertyName:
         :return:
         """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
+        if not super().updateNumber(deviceName, propertyName):
             return False
 
         for element, value in self.device.getNumber(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-            # print(propertyName, element, value)
-
             self.setExposureState(propertyName=propertyName, value=value)
 
-        return True
-
-    def updateText(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
-        for element, value in self.device.getText(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-            # print(propertyName, element, value)
-
-        return True
-
-    def updateSwitch(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
-        for element, value in self.device.getSwitch(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-            # print(propertyName, element, value)
-        return True
-
-    def updateLight(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
-        for element, value in self.device.getLight(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-            # print(propertyName, element, value)
         return True
 
     def updateBLOB(self, deviceName, propertyName):
@@ -255,12 +184,10 @@ class Camera(indiClass.IndiClass):
 
         :param deviceName:
         :param propertyName:
-        :return:
+        :return: success
         """
 
-        if self.device is None:
-            return False
-        if deviceName != self.name:
+        if not super().updateBLOB(deviceName, propertyName):
             return False
 
         data = self.device.getBlob(propertyName)

@@ -250,9 +250,18 @@ class IndiClass(object):
 
         :param deviceName:
         :param propertyName:
-        :return:
+        :return: success
         """
-        pass
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getNumber(propertyName).items():
+            key = propertyName + '.' + element
+            self.data[key] = value
+
+        return True
 
     def updateSwitch(self, deviceName, propertyName):
         """
@@ -261,9 +270,18 @@ class IndiClass(object):
 
         :param deviceName:
         :param propertyName:
-        :return:
+        :return: success
         """
-        pass
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getSwitch(propertyName).items():
+            key = propertyName + '.' + element
+            self.data[key] = value
+
+        return True
 
     def updateText(self, deviceName, propertyName):
         """
@@ -272,9 +290,18 @@ class IndiClass(object):
 
         :param deviceName:
         :param propertyName:
-        :return:
+        :return: success
         """
-        pass
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getText(propertyName).items():
+            key = propertyName + '.' + element
+            self.data[key] = value
+
+        return True
 
     def updateLight(self, deviceName, propertyName):
         """
@@ -283,9 +310,18 @@ class IndiClass(object):
 
         :param deviceName:
         :param propertyName:
-        :return:
+        :return: success
         """
-        pass
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        for element, value in self.device.getLight(propertyName).items():
+            key = propertyName + '.' + element
+            self.data[key] = value
+
+        return True
 
     def updateBLOB(self, deviceName, propertyName):
         """
@@ -294,9 +330,15 @@ class IndiClass(object):
 
         :param deviceName:
         :param propertyName:
-        :return:
+        :return: success
         """
-        pass
+
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
+        return True
 
     @staticmethod
     def removePrefix(text, prefix):

@@ -260,7 +260,7 @@ class MainWindow(MWidget,
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
         self.ui.picALT.setPixmap(pixmap)
-        pixmap = PyQt5.QtGui.QPixmap(':/offset.png')
+        pixmap = PyQt5.QtGui.QPixmap(':/offset.png').scaled(301, 301)
         self.ui.picDome1.setPixmap(pixmap)
 
         self.wIcon(self.ui.cancelModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)

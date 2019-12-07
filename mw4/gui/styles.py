@@ -80,6 +80,11 @@ class MWStyles(object):
         font-weight: normal;
         font-size: 13pt;
     }
+    QTextEdit {
+        color: #C0C0C0;
+        background-color: #202020;
+        border-radius: 0px;
+    }
     QToolTip {
         font-size: 13pt;
     }
@@ -107,6 +112,11 @@ class MWStyles(object):
         font-size: 9pt;
     }
     QTextBrowser {
+        font-family: courier;
+        font-weight: normal;
+        font-size: 10pt;
+    }
+    QTextEdit {
         font-family: courier;
         font-weight: normal;
         font-size: 10pt;

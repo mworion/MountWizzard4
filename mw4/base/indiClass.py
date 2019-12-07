@@ -42,10 +42,8 @@ class IndiClass(object):
 
     logger = logging.getLogger(__name__)
 
-    # update rate to 1 seconds for setting indi server
-    UPDATE_RATE = 1
-    RETRY_DELAY = 1000
-    NUMBER_RETRY = 5
+    RETRY_DELAY = 1500
+    NUMBER_RETRY = 3
 
     def __init__(self,
                  host=None,
@@ -177,9 +175,8 @@ class IndiClass(object):
         self.retryCounter += 1
 
         if not self.data:
-            # self.stopCommunication()
             self.startCommunication()
-            self.logger.info(f'Indi server {self.name} connection retry')
+            self.logger.info(f'Indi server {self.name} connection retry: {self.retryCounter}')
         else:
             self.retryCounter = 0
 

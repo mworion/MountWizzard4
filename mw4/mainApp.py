@@ -510,7 +510,5 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.mount.obsSite.location = location
             self.mountUp = False
             return False
-        else:
-            pass
 
         return status

@@ -98,6 +98,11 @@ class SensorWeather(indiClass.IndiClass):
         :return:
         """
 
+        if self.device is None:
+            return False
+        if deviceName != self.name:
+            return False
+
         for element, value in self.device.getNumber(propertyName).items():
             # consolidate to WEATHER_PRESSURE
             if element == 'WEATHER_BAROMETER':

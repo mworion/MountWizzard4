@@ -252,6 +252,7 @@ class IndiClass(object):
         :param propertyName:
         :return: success
         """
+
         if self.device is None:
             return False
         if deviceName != self.name:
@@ -274,6 +275,7 @@ class IndiClass(object):
         :param propertyName:
         :return: success
         """
+
         if self.device is None:
             return False
         if deviceName != self.name:
@@ -296,6 +298,7 @@ class IndiClass(object):
         :param propertyName:
         :return: success
         """
+
         if self.device is None:
             return False
         if deviceName != self.name:

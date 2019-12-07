@@ -118,7 +118,7 @@ def test_setUpdateRate_4():
     app.skymeter.name = 'test'
     app.skymeter.device = Test()
     suc = app.skymeter.setUpdateConfig('test')
-    assert suc
+    assert not suc
 
 
 def test_setUpdateRate_5():

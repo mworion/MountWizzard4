@@ -152,38 +152,38 @@ def test_setUpdateConfig_6():
 def test_updateNumber_1():
     app.sensorWeather.device = None
     app.sensorWeather.name = 'test'
-    suc = app.sensorWeather.updateNumber('false', 'WEATHER_HUMIDITY')
+    suc = app.sensorWeather.updateNumber('false', 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
     assert not suc
 
 
 def test_updateNumber_2():
     app.sensorWeather.device = 1
     app.sensorWeather.name = 'test'
-    suc = app.sensorWeather.updateNumber('false', 'WEATHER_HUMIDITY')
+    suc = app.sensorWeather.updateNumber('false', 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
     assert not suc
 
 
 def test_updateNumber_3():
     app.sensorWeather.device = indibase.indiBase.Device()
     app.sensorWeather.name = 'test'
-    values = {'WEATHER_DEWPOINT': 5,
-              'WEATHER_TEMPERATURE': 10,
-              'WEATHER_HUMIDITY': 50,
+    values = {'WEATHER_PARAMETERS.WEATHER_DEWPOINT': 5,
+              'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
+              'WEATHER_PARAMETERS.WEATHER_HUMIDITY': 50,
               }
     with mock.patch.object(app.sensorWeather.device,
                            'getNumber',
                            return_value=values):
         suc = app.sensorWeather.updateNumber('test', 'WEATHER_PARAMETERS')
         assert suc
-        assert app.sensorWeather.data['WEATHER_DEWPOINT'] == 5
-        assert app.sensorWeather.data['WEATHER_TEMPERATURE'] == 10
-        assert app.sensorWeather.data['WEATHER_HUMIDITY'] == 50
+        assert app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] == 5
+        assert app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] == 10
+        assert app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] == 50
 
 
 def test_updateNumber_4():
     app.sensorWeather.device = indibase.indiBase.Device()
     app.sensorWeather.name = 'test'
-    values = {'WEATHER_DEWPOINT': 5,
+    values = {'WEATHER_PARAMETERS.WEATHER_DEWPOINT': 5,
               }
     with mock.patch.object(app.sensorWeather.device,
                            'getNumber',
@@ -195,7 +195,7 @@ def test_updateNumber_4():
 def test_updateNumber_5():
     app.sensorWeather.device = indibase.indiBase.Device()
     app.sensorWeather.name = 'test'
-    values = {'WEATHER_HUMIDITY': 50,
+    values = {'WEATHER_PARAMETERS.WEATHER_HUMIDITY': 50,
               }
     with mock.patch.object(app.sensorWeather.device,
                            'getNumber',
@@ -207,7 +207,7 @@ def test_updateNumber_5():
 def test_updateNumber_6():
     app.sensorWeather.device = indibase.indiBase.Device()
     app.sensorWeather.name = 'test'
-    values = {'WEATHER_TEMPERATURE': 10,
+    values = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
               }
     with mock.patch.object(app.sensorWeather.device,
                            'getNumber',

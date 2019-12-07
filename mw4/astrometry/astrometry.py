@@ -141,6 +141,11 @@ class Astrometry:
                     'indexPath': '/usr/share/astrometry',
                     'solver': self.solverNET,
                 },
+                'ASTAP': {
+                    'programPath': '/opt/astap',
+                    'indexPath': '/opt/astap',
+                    'solver': self.solverASTAP,
+                },
             }
 
         elif platform.system() == 'Windows':

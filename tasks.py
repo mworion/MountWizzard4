@@ -42,7 +42,7 @@ def build_resource(c):
 def build_widgets(c):
     printMW('building widgets')
     widgetDir = './mw4/gui/widgets/'
-    widgets = ['hemisphere', 'image', 'main', 'measure', 'message', 'satellite']
+    widgets = ['hemisphere', 'image', 'main', 'measure', 'message', 'satellite', 'keypad']
     for widget in widgets:
         name = widgetDir + widget
         runMW(c, f'python -m PyQt5.uic.pyuic -x {name}.ui -o {name}_ui.py')

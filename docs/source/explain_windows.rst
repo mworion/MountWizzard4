@@ -36,6 +36,11 @@ Hemisphere Points Edit
 .. image:: _static/window_hemisphere_points_edit.png
     :align: center
 
+Hemisphere Points Polar
+^^^^^^^^^^^^^^^^^^^^^^^
+.. image:: _static/window_hemisphere_polar.png
+    :align: center
+
 Hemisphere Horizon Edit
 ^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_horizon_edit.png

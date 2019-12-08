@@ -11,6 +11,7 @@ Welcome to MountWizzard4's (MW4) documentation!
     install_rpi3
     explain_main
     explain_setting
+    explain_windows
     model_building_remarks
 
 Indices and tables

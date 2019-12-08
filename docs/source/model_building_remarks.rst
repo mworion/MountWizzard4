@@ -100,8 +100,8 @@ As MW4 like the versions before use a direct communication to the mount all topi
 behaviour you don't have to take care yourself. Honestly speaking MW4 uses a different way
 for model build which does not need these settings.
 
-Step 1
-^^^^^^
+Step 1/3
+^^^^^^^^
 With a small model with low number of points you could do the setup, which is basically polar
 alignment. You could extend this for leveling or ortho align etc.) You are not limited to 3
 stars. Beside a average distribution over the sky you could alter stars location according
@@ -111,16 +111,16 @@ each additional iteration step. If you have a setup which is stable and / or has
 align conditions like a fixed pier you could omit the first step and directly start over to
 step 2.
 
-Step 2
-^^^^^^
+Step 2/3
+^^^^^^^^
 There were multiple choices to define the alignment stars for your model. All selections
 take care of visual constraints (horizon mask) or other limitation. MW4 tries to
 optimize the slewing path, order and functions in order to minimize the time for modeling.
 In general it should be possible to to 45 point within 15 minutes. So doing 2-3 points more
 should not cause any big time delay.
 
-Step 3
-^^^^^^
+Step 3/3
+^^^^^^^^
 Another difference you might discover: I do not build the model step by step over all the
 stars, I just make all the slewing work, images and solve in parallel and than process them
 to the mount. As you have all the data for a model collected, you could redo any model

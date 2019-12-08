@@ -57,10 +57,10 @@ Area 1: Pointing
 ^^^^^^^^^^^^^^^^
 Altitude (ALT) and azimuth (AZ) are shown in degrees. As soon as the mount is
 connected, the mount tab shows the telescope pointing in hour angle (HA), right ascension
-(RA), declination (DEC) in hours / degrees HMS/DMS as well in decimals. You can choose to 
-see the coordinates in JNow, the mount representation or in J2000 Epoch for
- better compatibility with other programs. The handling of coordinates between MW4 and the
- mount computer is done in JNow. But this is transparent when in use.
+(RA), declination (DEC) in hours / degrees HMS/DMS as well in decimals. You can choose to
+see the coordinates in JNow, the mount representation or in J2000 Epoch for better
+compatibility with other programs. The handling of coordinates between MW4 and the mount
+computer is done in JNow. But this is transparent when in use.
 
 Area 2: Track and Flip
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -113,7 +113,7 @@ average filter of 60s length. No tracking means updating whenever new data is ac
 only when the mount is not in a tracking state.
 
 If no source for updating the refraction data is available, but needed, this part will turn
-red. The update mode (to accept data at the mount) is set in the mount computer if "Direct" 
+red. The update mode (to accept data at the mount) is set in the mount computer if "Direct"
 source is selected or done through MW4 for all others sources.
 
 Area 3: Online Forecast
@@ -125,7 +125,7 @@ is automatically set to the location of your mount.
 Area 4: Source Selection
 ^^^^^^^^^^^^^^^^^^^^^^^^
 If a source frame has a checkbox, this source can be chosen for using it's data for the
-refraction update. As you may have different options in this window, you have the choice to 
+refraction update. As you may have different options in this window, you have the choice to
 pick a source.
 
 Model Points Tab
@@ -271,9 +271,10 @@ MW4 needs an online connection for updating the database. Still there will be da
 testing and experiencing the functions there, but this data will be out-of-date from the
 beginning.
 
-.. note::   Satellite tracking data should be not older than some days. You will loose
-            precision and might not see the satellite in your FOV. So internet connection is
-             strongly recommended for using satellite tracking.
+.. note::
+    Satellite tracking data should be not older than some days. You will loose precision and
+    might not see the satellite in your FOV. So internet connection is strongly recommended
+    for using satellite tracking.
 
 MW4 provides some recent online databases that you can select from. The satellites
 in the database are shown in area 2.

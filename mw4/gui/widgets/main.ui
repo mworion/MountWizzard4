@@ -16689,7 +16689,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>20</y>
          <width>366</width>
-         <height>111</height>
+         <height>116</height>
         </rect>
        </property>
        <property name="title">
@@ -16702,7 +16702,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>115</x>
-          <y>20</y>
+          <y>25</y>
           <width>241</width>
           <height>21</height>
          </rect>
@@ -16753,7 +16753,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>20</y>
+          <y>25</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -16825,7 +16825,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>80</y>
+          <y>85</y>
           <width>106</width>
           <height>21</height>
          </rect>
@@ -16843,7 +16843,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>55</y>
           <width>106</width>
           <height>21</height>
          </rect>
@@ -16864,7 +16864,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>115</x>
-          <y>50</y>
+          <y>55</y>
           <width>116</width>
           <height>21</height>
          </rect>
@@ -16952,13 +16952,13 @@ When clicking the button, you could change the value.</string>
           <x>245</x>
           <y>20</y>
           <width>116</width>
-          <height>25</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>25</height>
+          <height>21</height>
          </size>
         </property>
         <property name="text">
@@ -20895,7 +20895,7 @@ When clicking the button, you could change the value.</string>
      </widget>
      <widget class="QWidget" name="AudioMisc">
       <attribute name="title">
-       <string>Audio / Misc</string>
+       <string>Misc / Audio</string>
       </attribute>
       <widget class="Line" name="line_84">
        <property name="geometry">

@@ -70,7 +70,7 @@ keep the order of compiling and install. This procedure take about 2 hours or mo
 depending on the system.
 
 .. warning::
-    So far PyQtWebEngine does not build on RPi3! So I removed for the build from 0.138b8 on
+    So far PyQtWebEngine does not build on RPi3! So I removed for the build from 0.138 on
     the capabilities, who need the PyQtWebEngine package. This is basically the Keypad. So
     you will have limited features!
 
@@ -93,3 +93,8 @@ and run MW4 with the command
 .. code-block:: python
 
     python3.7 ~/.local/lib/python3.7/site-packages/mw4/loader.py
+
+If everything went fine, you should see MW4 on RPi3:
+
+    .. image:: _static/install_rpi3_running.png
+        :align: center

@@ -1,7 +1,7 @@
 Installing RaspberryPi 3
 ========================
 
-To get MW4 installed on RBP3 you will follow the instructions of Robert Lancaste (many
+To get MW4 installed on RPi3 you will follow the instructions of Robert Lancaste (many
 thanks to him fore this work!) on https://github.com/rlancaste/AstroPi3 with installing
 AstroPi3 scripts. The installation procedure I describe is based on Raspbian Buster with
 desktop. As this distribution already supports python 3.7 we should check this:
@@ -24,7 +24,11 @@ available on your system:
     .. image:: _static/install_rpi3_python37.png
         :align: center
 
+Next we have to do is to install a virtual environment capability:
 
+.. code-block:: python
+
+    sudo apt-get install virtualenv
 
 If everything went fine, we can proceed to the next step.
 
@@ -50,7 +54,7 @@ yourself.
     sudo wget https://www.riverbankcomputing.com/static/Downloads/PyQtWebEngine/5.13.2/PyQtWebEngine-5.13.2.tar.gz
 
     sudo tar xzf sip-4.19.19.tar.gz
-    sudo tar xzf PyQt5_gpl-5.13.2.tar.gz
+    sudo tar xzf PyQt5-5.13.2.tar.gz
     sudo tar xzf PyQtWebEngine-5.13.2.tar.gz
 
     cd sip-4.19.19
@@ -63,14 +67,12 @@ yourself.
     sudo make -j4
     sudo make install
 
-    cd PyQtWebEngine-5.13.2
-    sudo python3.7 configure.py
-    sudo make -j4
-    sudo make install
-
 There are in different packages to be downloaded and installed. They build on each other, so
 keep the order of compiling and install. This procedure take about 2 hours or more,
 depending on the system.
 
 .. warning::
-    So far PyQtWebEngine does not build un RasPi3 !
+    So far PyQtWebEngine does not build un RPi3 !
+
+So I removed for the build from 0.138b8 on the capabilities, who need the PyQtWebEngine
+package. This is basically the Keypad. So you will have limited features!

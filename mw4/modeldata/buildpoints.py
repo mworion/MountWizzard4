@@ -29,9 +29,8 @@ import skyfield.api
 from mw4.base import transform
 
 __all__ = ['HaDecToAltAz',
+           'DataPoint',
            ]
-
-version = '0.100.0'
 
 
 def HaDecToAltAz(ha, dec, lat):

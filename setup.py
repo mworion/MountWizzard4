@@ -43,7 +43,7 @@ setup(
         'mountcontrol==0.141',
         'indibase==0.115',
         'PyQt5==5.13.2',
-        'PyQtWebEngine==5.13.2',
+        'PyQtWebEngine==5.13.2; platform_machine != "armv7l"',
         'matplotlib==3.1.1',
         'astropy==3.2.3',
         'requests==2.22.0',

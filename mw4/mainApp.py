@@ -23,6 +23,7 @@ import os
 import sys
 import json
 import gc
+import platform
 # external packages
 import PyQt5.QtCore
 import skyfield
@@ -31,11 +32,14 @@ from importlib_metadata import version
 # local import
 from mw4.gui.mainW import MainWindow
 from mw4.gui.messageW import MessageWindow
-from mw4.gui.keypadW import KeypadWindow
 from mw4.gui.hemisphereW import HemisphereWindow
 from mw4.gui.measureW import MeasureWindow
 from mw4.gui.imageW import ImageWindow
 from mw4.gui.satelliteW import SatelliteWindow
+if platform.machine() != 'armv7l':
+    # todo: there is actually to compile version of PyQtWebEngine, so we have to remove it
+    from mw4.gui.keypadW import KeypadWindow
+
 from mw4.powerswitch.kmRelay import KMRelay
 from mw4.modeldata.buildpoints import DataPoint
 from mw4.modeldata.hipparcos import Hipparcos
@@ -175,13 +179,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                 'name': 'SatelliteDialog',
                 'class': SatelliteWindow,
             },
-            'showKeypadW': {
+        }
+        # todo: we can only add keypad on arm when we have compiled version
+        if platform.machine() != 'armv7l':
+            self.uiWindows['showKeypadW'] = {
                 'button': self.mainW.ui.openKeypadW,
                 'classObj': None,
                 'name': 'KeypadDialog',
                 'class': KeypadWindow,
-            },
-        }
+            }
 
         # show all sub windows
         self.showWindows()
@@ -214,7 +220,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         for win in self.uiWindows:
-
             isSender = (self.uiWindows[win]['button'] == self.sender())
             isWindowTag = (win == windowTag)
 
@@ -222,7 +227,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                 continue
 
             winObj = self.uiWindows[win]
-
             if not winObj['classObj']:
 
                 if win == 'showSatelliteW':

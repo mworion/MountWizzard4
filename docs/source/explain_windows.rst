@@ -2,7 +2,7 @@ Explaining Extended Windows
 ===========================
 MW4 has some more windows to show and use. Some of them are necessary for full functionality
 . These windows could be opened on the main window with dedicated button in the upper left
-part described here: :ref:`Area 1: Devices and Windows`.
+part described here: :ref:`Layout of main window`.
 
 Message Window
 --------------
@@ -42,8 +42,8 @@ selecting the time range / update interval of the measures. Sources are:
 | Current            | Output Currents if Pegasus UPB is installed         |
 +--------------------+-----------------------------------------------------+
 
-The time interval rang from 1s ticks (makes 4 minute view) to 128s ticks (makes 9 hour view)
-and the double in between.
+The time interval range varies from 1s ticks (makes 4 minute view) to 128s ticks (makes 9 hour
+view) and they double every step in between. The window is sizable in width and height.
 
 Hemisphere Windows
 ------------------

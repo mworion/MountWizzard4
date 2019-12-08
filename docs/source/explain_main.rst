@@ -10,10 +10,12 @@ used:
 .. image:: _static/explain_main_1.png
     :align: center
 
-Area 1
-^^^^^^
-
-...describes the actual status of the important devices used in modeling (red shows disconnected, green shows connected devices), and shows status text output from devices. Butons below the status indicators can open, show additional status, or close additional windows for advanced features.
+Area 1: Devices and Windows
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...describes the actual status of the important devices used in modeling (red shows
+disconnected, green shows connected devices), and shows status text output from devices.
+Buttons below the status indicators can open, show additional status, or close additional
+windows for advanced features.
 
 Area 2
 ^^^^^^
@@ -22,8 +24,8 @@ hint if MW4 work actually in online (internet connected) or offline mode.
 
 Area 3
 ^^^^^^
-...manages loading / saving profiles, boot and shutdown of the mount (if WOL (Wake on LAN) is enabled
-and the MAC address of the mount is known)
+...manages loading / saving profiles, boot and shutdown of the mount (if WOL (Wake on LAN)
+is enabled and the MAC address of the mount is known)
 
 Area 4
 ^^^^^^

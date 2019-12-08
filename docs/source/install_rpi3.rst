@@ -51,11 +51,9 @@ yourself.
     cd /usr/src
     sudo wget https://www.riverbankcomputing.com/static/Downloads/sip/4.19.19/sip-4.19.19.tar.gz
     sudo wget https://www.riverbankcomputing.com/static/Downloads/PyQt5/5.13.2/PyQt5-5.13.2.tar.gz
-    sudo wget https://www.riverbankcomputing.com/static/Downloads/PyQtWebEngine/5.13.2/PyQtWebEngine-5.13.2.tar.gz
 
     sudo tar xzf sip-4.19.19.tar.gz
     sudo tar xzf PyQt5-5.13.2.tar.gz
-    sudo tar xzf PyQtWebEngine-5.13.2.tar.gz
 
     cd sip-4.19.19
     sudo python3.7 configure.py --sip-module PyQt5.sip
@@ -72,7 +70,6 @@ keep the order of compiling and install. This procedure take about 2 hours or mo
 depending on the system.
 
 .. warning::
-    So far PyQtWebEngine does not build un RPi3 !
-
-So I removed for the build from 0.138b8 on the capabilities, who need the PyQtWebEngine
-package. This is basically the Keypad. So you will have limited features!
+    So far PyQtWebEngine does not build on RPi3! So I removed for the build from 0.138b8 on
+    the capabilities, who need the PyQtWebEngine package. This is basically the Keypad. So
+    you will have limited features!

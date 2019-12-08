@@ -23,8 +23,11 @@ import time
 import subprocess
 import os
 import sys
+import platform
 # external packages
-import PyQt5.QtMultimedia
+import PyQt5
+if platform.machine() != 'armv7l':
+    import PyQt5.QtMultimedia
 import requests
 from importlib_metadata import version
 # local import
@@ -349,6 +352,8 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
+        if platform.machine() == 'armv7l':
+            return False
 
         self.audioSignalsSet['Beep'] = PyQt5.QtMultimedia.QSound(':/beep.wav')
         self.audioSignalsSet['Alert'] = PyQt5.QtMultimedia.QSound(':/alert.wav')

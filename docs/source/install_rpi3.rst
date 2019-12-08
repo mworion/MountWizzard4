@@ -1,5 +1,5 @@
-Installing RaspberryPi 3
-========================
+Installing MW4 on RaspberryPi 3
+===============================
 
 To get MW4 installed on RPi3 you will follow the instructions of Robert Lancaste (many
 thanks to him fore this work!) on https://github.com/rlancaste/AstroPi3 with installing
@@ -73,3 +73,23 @@ depending on the system.
     So far PyQtWebEngine does not build on RPi3! So I removed for the build from 0.138b8 on
     the capabilities, who need the PyQtWebEngine package. This is basically the Keypad. So
     you will have limited features!
+
+So before you could actually run MW4 you need to install some mor libraries:
+
+.. code-block:: python
+
+    sudo apt-get install libgfortran5
+    sudo apt-get install libjpeg-dev zlib1g-dev
+    python3.7 -m pip install -U Pillow
+
+Once you are set, make a work directory, cd to this directory and install MW4 by
+
+.. code-block:: python
+
+    python3.7 -m pip install mountwizzard4
+
+and run MW4 with the command
+
+.. code-block:: python
+
+    python3.7 ~/.local/lib/python3.7/site-packages/mw4/loader.py

@@ -452,7 +452,7 @@ class BuildPoints(object):
         :return: success
         """
 
-        if not self.app.hemisphereW:
+        if not self.app.uiWindows['showHemisphereW']:
             return False
 
         self.app.hemisphereW.clearHemisphere()

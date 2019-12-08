@@ -274,10 +274,10 @@ class MeasureData(object):
         dat['status'] = np.append(dat['status'], self.app.mount.obsSite.status)
 
         if 'sensorWeather' in self.devices:
-            sensorWeatherTemp = self.app.sensorWeather.data.get('WEATHER_TEMPERATURE', 0)
-            sensorWeatherPress = self.app.sensorWeather.data.get('WEATHER_PRESSURE', 0)
-            sensorWeatherDew = self.app.sensorWeather.data.get('WEATHER_DEWPOINT', 0)
-            sensorWeatherHum = self.app.sensorWeather.data.get('WEATHER_HUMIDITY', 0)
+            sensorWeatherTemp = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
+            sensorWeatherPress = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_PRESSURE', 0)
+            sensorWeatherDew = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
+            sensorWeatherHum = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
             dat['sensorWeatherTemp'] = np.append(dat['sensorWeatherTemp'], sensorWeatherTemp)
             dat['sensorWeatherHum'] = np.append(dat['sensorWeatherHum'], sensorWeatherHum)
             dat['sensorWeatherPress'] = np.append(dat['sensorWeatherPress'], sensorWeatherPress)
@@ -301,8 +301,8 @@ class MeasureData(object):
             dat['directWeatherDew'] = np.append(dat['directWeatherDew'], dew)
 
         if 'skymeter' in self.devices:
-            skySQR = self.app.skymeter.data.get('SKY_BRIGHTNESS', 0)
-            skyTemp = self.app.skymeter.data.get('SKY_TEMPERATURE', 0)
+            skySQR = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
+            skyTemp = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE', 0)
             dat['skySQR'] = np.append(dat['skySQR'], skySQR)
             dat['skyTemp'] = np.append(dat['skyTemp'], skyTemp)
 
@@ -315,15 +315,15 @@ class MeasureData(object):
             dat['focusPosition'] = np.append(dat['focusPosition'], focus)
 
         if 'power' in self.devices:
-            powCurr1 = self.app.power.data.get('POWER_CURRENT_1', 0)
-            powCurr2 = self.app.power.data.get('POWER_CURRENT_2', 0)
-            powCurr3 = self.app.power.data.get('POWER_CURRENT_3', 0)
-            powCurr4 = self.app.power.data.get('POWER_CURRENT_4', 0)
-            powVolt = self.app.power.data.get('SENSOR_VOLTAGE', 0)
-            powCurr = self.app.power.data.get('SENSOR_CURRENT', 0)
-            powTemp = self.app.power.data.get('WEATHER_TEMPERATURE', 0)
-            powDew = self.app.power.data.get('WEATHER_DEWPOINT', 0)
-            powHum = self.app.power.data.get('WEATHER_HUMIDITY', 0)
+            powCurr1 = self.app.power.data.get('POWER_CURRENT.POWER_CURRENT_1', 0)
+            powCurr2 = self.app.power.data.get('POWER_CURRENT.POWER_CURRENT_2', 0)
+            powCurr3 = self.app.power.data.get('POWER_CURRENT.POWER_CURRENT_3', 0)
+            powCurr4 = self.app.power.data.get('POWER_CURRENT.POWER_CURRENT_4', 0)
+            powVolt = self.app.power.data.get('POWER_SENSORS.SENSOR_VOLTAGE', 0)
+            powCurr = self.app.power.data.get('POWER_SENSORS.SENSOR_CURRENT', 0)
+            powTemp = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
+            powDew = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
+            powHum = self.app.power.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
             dat['powCurr1'] = np.append(dat['powCurr1'], powCurr1)
             dat['powCurr2'] = np.append(dat['powCurr2'], powCurr2)
             dat['powCurr3'] = np.append(dat['powCurr3'], powCurr3)

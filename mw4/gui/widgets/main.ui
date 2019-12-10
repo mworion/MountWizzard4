@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -2635,62 +2635,6 @@
     <attribute name="title">
      <string>Environ</string>
     </attribute>
-    <widget class="QLabel" name="picClearOutside">
-     <property name="geometry">
-      <rect>
-       <x>145</x>
-       <y>305</y>
-       <width>629</width>
-       <height>116</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>Data from clear outside for the location which is displayed</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="midLineWidth">
-      <number>0</number>
-     </property>
-     <property name="text">
-      <string>Clear Outside panel when connected to internet</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="iconpicture" stdset="0">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="picClearOutsideHeader">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>378</y>
-       <width>83</width>
-       <height>43</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="midLineWidth">
-      <number>0</number>
-     </property>
-     <property name="text">
-      <string>Clear Outside</string>
-     </property>
-     <property name="iconpicture" stdset="0">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="groupBox_51">
      <property name="geometry">
       <rect>
@@ -4461,6 +4405,59 @@ to mount</string>
        </widget>
       </item>
      </layout>
+    </widget>
+    <widget class="QGroupBox" name="refractionGroup_2">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>290</y>
+       <width>566</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>110</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Setting refraction update types from MountWizzard to the mount</string>
+     </property>
+     <property name="title">
+      <string>Clear Outside</string>
+     </property>
+     <widget class="QLabel" name="picClearOutside">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>15</y>
+        <width>553</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Data from clear outside for the location which is displayed</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="midLineWidth">
+       <number>0</number>
+      </property>
+      <property name="text">
+       <string>Clear Outside panel when connected to internet</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="Modelpoints">

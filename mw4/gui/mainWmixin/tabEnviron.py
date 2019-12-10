@@ -399,19 +399,38 @@ class EnvironGui(object):
         imgArr = np.where(check, img_Max, imgArr)
         # transforming back
         imgArr = imgArr.reshape(height, width, 3)
-        # removing some lines
+
+        # Compressing the image as the widget content is a png
+        # removing some rows
         m = np.isin(imgArr, [[32, 32, 32], [255, 0, 0]])
         toDelete = []
-        maxLine = 1
-        line = maxLine
-        for i in range(0, len(m[:])):
-            if not line and m[i][:].all() and i > 15:
+        maxRow = 1
+        line = maxRow
+        for i in range(0, len(m[:, 1])):
+            if not line and m[i, :].all() and i > 15:
                 toDelete.append(i)
             elif line:
                 line -= 1
             elif not m[i][:].all():
-                line = maxLine
+                line = maxRow
         imgArr = np.delete(imgArr, toDelete, axis=0)
+
+        # removing some columns
+        m = np.isin(imgArr, [[32, 32, 32]])
+        toDelete = []
+        maxCol = 1
+        col = maxCol
+        for i in range(0, len(m[1, :])):
+            if not col and m[:, i].all() and i > 15:
+                toDelete.append(i)
+            elif col:
+                col -= 1
+            elif not m[:, i].all():
+                col = maxCol
+        imgArr = np.delete(imgArr, toDelete, axis=1)
+
+        print(imgArr.shape)
+
         # re transfer to QImage from numpy array
         imageBase = qimage2ndarray.array2qimage(dim * imgArr)
 
@@ -465,9 +484,6 @@ class EnvironGui(object):
 
         :return: success
         """
-
-        pixmapHeader = PyQt5.QtGui.QPixmap(':/clearoutside.png')
-        self.ui.picClearOutsideHeader.setPixmap(pixmapHeader)
 
         if not self.ui.isOnline.isChecked():
             pixmap = PyQt5.QtGui.QPixmap(':/clearoutsideoff.png')

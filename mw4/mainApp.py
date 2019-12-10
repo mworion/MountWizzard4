@@ -123,6 +123,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         except Exception as e:
             self.logger.error(f'Failed planets: {e}')
             self.planets = None
+
         self.relay = KMRelay(host='192.168.2.15')
         self.sensorWeather = SensorWeather(self, host='localhost')
         self.onlineWeather = OnlineWeather(self,

@@ -34,19 +34,21 @@ class EnvironGui(object):
     """
     the main window class handles the main menu as well as the show and no show part of
     any other window. all necessary processing for functions of that gui will be linked
-    to this class. therefore window classes will have a threadpool for managing async
+    to this class. therefore window classes will have a threadPool for managing async
     processing if needed.
     """
 
     def __init__(self):
 
-        self.filteredTemperature = None
-        self.filteredPressure = None
         self.refractionSources = {'onlineWeather': self.ui.onlineWeatherGroup,
                                   'sensorWeather': self.ui.sensorWeatherGroup,
                                   'directWeather': self.ui.directWeatherGroup,
                                   }
+
         self.refractionSource = ''
+        self.moonPhasePercent = 0
+        self.filteredTemperature = None
+        self.filteredPressure = None
 
         # environment functions
         signals = self.app.sensorWeather.client.signals
@@ -79,6 +81,8 @@ class EnvironGui(object):
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateRefractionParameters)
         self.app.update30m.connect(self.updateClearOutside)
+        self.app.update30m.connect(self.updateMoonPhase)
+        self.updateMoonPhase()
 
     def initConfig(self):
         """
@@ -429,8 +433,6 @@ class EnvironGui(object):
                 col = maxCol
         imgArr = np.delete(imgArr, toDelete, axis=1)
 
-        print(imgArr.shape)
-
         # re transfer to QImage from numpy array
         imageBase = qimage2ndarray.array2qimage(dim * imgArr)
 
@@ -586,4 +588,38 @@ class EnvironGui(object):
         if setting.weatherDewPoint is not None:
             self.ui.directWeatherDewPoint.setText(f'{setting.weatherDewPoint:4.1f}')
 
+        return True
+
+    def updateMoonPhase(self):
+        """
+
+        :return: true for test purpose
+        """
+        phasesText = {
+            'New moon': (0, 2),
+            'Waxing crescent': (2, 23),
+            'First Quarter': (23, 27),
+            'Waxing Gibbous': (27, 48),
+            'Full moon': (48, 52),
+            'Waning Gibbous': (52, 73),
+            'Third quarter': (73, 77),
+            'Waning crescent': (2, 23),
+            'New moon ': (98, 100),
+        }
+
+        sun = self.app.planets['sun']
+        moon = self.app.planets['moon']
+        earth = self.app.planets['earth']
+
+        e = earth.at(self.app.mount.obsSite.timeJD)
+        _, slon, _ = e.observe(sun).apparent().ecliptic_latlon()
+        _, mlon, _ = e.observe(moon).apparent().ecliptic_latlon()
+        self.moonPhasePercent = int(((mlon.degrees - slon.degrees) % 360.0) / 3.6)
+
+        self.ui.moonPhasePercent.setText(f'{self.moonPhasePercent:3.0f}')
+
+        for phase in phasesText:
+            if self.moonPhasePercent not in range(*phasesText[phase]):
+                continue
+            self.ui.moonPhaseText.setText(phase)
         return True

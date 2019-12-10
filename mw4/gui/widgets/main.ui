@@ -4487,7 +4487,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>100</y>
+        <y>105</y>
         <width>31</width>
         <height>21</height>
        </rect>
@@ -4535,7 +4535,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>100</y>
+        <y>105</y>
         <width>116</width>
         <height>21</height>
        </rect>
@@ -4580,7 +4580,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>45</x>
-        <y>100</y>
+        <y>105</y>
         <width>21</width>
         <height>19</height>
        </rect>
@@ -4599,6 +4599,22 @@ to mount</string>
       </property>
       <property name="wordWrap">
        <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="moonPic">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>30</y>
+        <width>60</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
       </property>
      </widget>
     </widget>

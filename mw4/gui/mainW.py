@@ -263,6 +263,9 @@ class MainWindow(MWidget,
         pixmap = PyQt5.QtGui.QPixmap(':/offset.png').scaled(301, 301)
         self.ui.picDome1.setPixmap(pixmap)
 
+        pixmap = PyQt5.QtGui.QPixmap(':/moonPic.png')
+        self.ui.moonPic.setPixmap(pixmap)
+
         self.wIcon(self.ui.cancelModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.runModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
 

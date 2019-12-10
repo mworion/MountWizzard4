@@ -31,6 +31,8 @@
 
     <file>webif/pic</file>
 
+    <file>moonPic.png</file>
+    <file>moonMask.png</file>
 
 </qresource>
 </RCC>

@@ -385,9 +385,9 @@ class SettIndi(object):
             self.indiClass.client.connectServer()
             self.indiClass.client.watchDevice()
             msg = PyQt5.QtWidgets.QMessageBox
-            msg.critical(self,
-                         'Searching Devices',
-                         f'Search for {device} could take some seconds!')
+            msg.information(self,
+                            'Searching Devices',
+                            f'Search for {device} could take some seconds!')
             self.indiClass.client.disconnectServer()
             self.indiClass = None
             self.indiSearchType = None

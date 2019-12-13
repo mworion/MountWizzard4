@@ -1,24 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file>mw4.ico</file>
-    <file>arrow-up.ico</file>
-    <file>arrow-down.ico</file>
-    <file>checkmark.ico</file>
-    <file>altitude1.png</file>
-    <file>azimuth1.png</file>
-    <file>beep.wav</file>
-    <file>alert.wav</file>
-    <file>alarm.wav</file>
-    <file>beep1.wav</file>
-    <file>horn.wav</file>
     <file>worldmap.dat</file>
-    <file>de421_23.bsp</file>
-    <file>active.txt</file>
-    <file>deltat.data</file>
-    <file>deltat.preds</file>
-    <file>Leap_Second.dat</file>
-    <file>offset.png</file>
-    <file>clearoutsideoff.png</file>
 
     <file>webif/virtkeypad.html</file>
     <file>webif/virtkeypad.css</file>
@@ -30,16 +12,11 @@
     <file>webif/websock.js</file>
 
     <file>webif/pic</file>
-
-    <file>moon_full.png</file>
-    <file>moon_new.png</file>
-    <file>moon_first_quarter.png</file>
-    <file>moon_third_quarter.png</file>
-    <file>moon_waning_crescent.png</file>
-    <file>moon_waning_gibbous.png</file>
-    <file>moon_waxing_crescent.png</file>
-    <file>moon_waxing_gibbous.png</file>
-
+    <file>moon</file>
+    <file>sound</file>
+    <file>data</file>
+    <file>icon</file>
+    <file>pics</file>
 
 </qresource>
 </RCC>

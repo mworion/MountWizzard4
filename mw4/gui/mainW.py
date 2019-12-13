@@ -256,15 +256,12 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.cancelAnalyse, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
 
         self.wIcon(self.ui.plateSolveSync, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        pixmap = PyQt5.QtGui.QPixmap(':/azimuth1.png')
+        pixmap = PyQt5.QtGui.QPixmap(':/pics/azimuth1.png')
         self.ui.picAZ.setPixmap(pixmap)
-        pixmap = PyQt5.QtGui.QPixmap(':/altitude1.png')
+        pixmap = PyQt5.QtGui.QPixmap(':/pics/altitude1.png')
         self.ui.picALT.setPixmap(pixmap)
-        pixmap = PyQt5.QtGui.QPixmap(':/offset.png').scaled(301, 301)
+        pixmap = PyQt5.QtGui.QPixmap(':/pics/offset.png').scaled(301, 301)
         self.ui.picDome1.setPixmap(pixmap)
-
-        pixmap = PyQt5.QtGui.QPixmap(':/moonPic.png')
-        self.ui.moonPic.setPixmap(pixmap)
 
         self.wIcon(self.ui.cancelModel, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.runModel, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)

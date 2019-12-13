@@ -335,7 +335,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
             continue
         # as we cannot access data from Qt resource system, we have to convert it to
         # ByteIO first
-        stream = PyQt5.QtCore.QFile(f':/{file}')
+        stream = PyQt5.QtCore.QFile(f':/data/{file}')
         stream.open(PyQt5.QtCore.QFile.ReadOnly)
         with open(filePath, 'wb') as outFile:
             outFile.write(stream.readAll())
@@ -393,7 +393,7 @@ def main():
     sys.excepthook = except_hook
 
     # adding a icon
-    app.setWindowIcon(PyQt5.QtGui.QIcon(':/mw4.ico'))
+    app.setWindowIcon(PyQt5.QtGui.QIcon(':/icon/mw4.ico'))
 
     # adding event filter for formatting the tooltips nicely
     app.installEventFilter(QAwesomeTooltipEventFilter(app))

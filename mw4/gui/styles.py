@@ -237,7 +237,7 @@ class MWStyles(object):
     }
     QGroupBox::indicator:checked {
         background-color: rgb(32, 144, 192);
-        image: url(:/checkmark.ico);
+        image: url(:/icon/checkmark.ico);
     }
     
     /* Checkboxes */
@@ -257,7 +257,7 @@ class MWStyles(object):
     }
     QCheckBox::indicator:checked {
         background-color: rgb(32, 144, 192);
-        image: url(:/checkmark.ico);
+        image: url(:/icon/checkmark.ico);
     }
     QCheckBox:disabled {
         color: rgb(32, 144, 192);
@@ -281,7 +281,7 @@ class MWStyles(object):
     }
     QRadioButton::indicator:checked {
         background-color: rgb(32, 144, 192);
-        image: url(:/checkmark.ico);
+        image: url(:/icon/checkmark.ico);
     }
     /* Spin Boxes */
     QDoubleSpinBox {
@@ -305,7 +305,7 @@ class MWStyles(object):
         background-color: #181818;
     }
     QDoubleSpinBox::up-arrow {
-        image: url(:/arrow-up.ico);
+        image: url(:/icon/arrow-up.ico);
         width: 12px;
         height: 16px;
     }
@@ -320,7 +320,7 @@ class MWStyles(object):
         background-color: #181818;
     }
     QDoubleSpinBox::down-arrow {
-        image: url(:/arrow-down.ico);
+        image: url(:/icon/arrow-down.ico);
         width: 12px;
         height: 16px;
     }
@@ -347,7 +347,7 @@ class MWStyles(object):
         background-color: #181818;
     }
     QSpinBox::up-arrow {
-        image: url(:/arrow-up.ico);
+        image: url(:/icon/arrow-up.ico);
         width: 16px;
         height: 16px;
     }
@@ -362,7 +362,7 @@ class MWStyles(object):
         background-color: #181818;
     }
     QSpinBox::down-arrow {
-        image: url(:/arrow-down.ico);
+        image: url(:/icon/arrow-down.ico);
         width: 16px;
         height: 16px;
     }
@@ -475,7 +475,7 @@ class MWStyles(object):
         background-color: #202020;
     }
     QComboBox::down-arrow {
-        image: url(:/arrow-down.ico);
+        image: url(:/icon/arrow-down.ico);
         width: 20px;
         height: 31px;
     }
@@ -566,7 +566,7 @@ class MWStyles(object):
     }
     QScrollBar::sub-line:vertical
     {   margin: 3px 0px 3px 0px;
-        border-image: url(:arrow-up.ico);
+        border-image: url(:icon/arrow-up.ico);
         height: 16px;
         width: 16px;
         subcontrol-position: top;
@@ -574,21 +574,21 @@ class MWStyles(object):
     }
     QScrollBar::add-line:vertical
     {   margin: 3px 0px 3px 0px;
-        border-image: url(:arrow-down.ico);
+        border-image: url(:icon/arrow-down.ico);
         height: 16px;
         width: 16px;
         subcontrol-position: bottom;
         subcontrol-origin: margin;
     }
     QScrollBar::sub-line:vertical:on
-    {   border-image: url(:arrow-up.png);
+    {   border-image: url(:icon/arrow-up.ico);
         height: 16px;
         width: 16px;
         subcontrol-position: top;
         subcontrol-origin: margin;
     }
     QScrollBar::add-line:vertical:on
-    {   border-image: url(:arrow-down.png);
+    {   border-image: url(:icon/arrow-down.ico);
         height: 16px;
         width: 16px;
         subcontrol-position: bottom;

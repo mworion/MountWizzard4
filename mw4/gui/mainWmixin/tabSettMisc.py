@@ -355,11 +355,11 @@ class SettMisc(object):
         if platform.machine() == 'armv7l':
             return False
 
-        self.audioSignalsSet['Beep'] = PyQt5.QtMultimedia.QSound(':/beep.wav')
-        self.audioSignalsSet['Alert'] = PyQt5.QtMultimedia.QSound(':/alert.wav')
-        self.audioSignalsSet['Horn'] = PyQt5.QtMultimedia.QSound(':/horn.wav')
-        self.audioSignalsSet['Beep1'] = PyQt5.QtMultimedia.QSound(':/beep1.wav')
-        self.audioSignalsSet['Alarm'] = PyQt5.QtMultimedia.QSound(':/alarm.wav')
+        self.audioSignalsSet['Beep'] = PyQt5.QtMultimedia.QSound(':/sound/beep.wav')
+        self.audioSignalsSet['Alert'] = PyQt5.QtMultimedia.QSound(':/sound/alert.wav')
+        self.audioSignalsSet['Horn'] = PyQt5.QtMultimedia.QSound(':/sound/horn.wav')
+        self.audioSignalsSet['Beep1'] = PyQt5.QtMultimedia.QSound(':/sound/beep1.wav')
+        self.audioSignalsSet['Alarm'] = PyQt5.QtMultimedia.QSound(':/sound/alarm.wav')
         return True
 
     def playAudioMountSlewFinished(self):

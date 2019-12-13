@@ -634,6 +634,7 @@ class EnvironGui(object):
             },
         }
 
+        # todo: is the calculation of the moon phase better separate ?
         sun = self.app.planets['sun']
         moon = self.app.planets['moon']
         earth = self.app.planets['earth']

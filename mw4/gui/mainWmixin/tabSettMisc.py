@@ -316,14 +316,6 @@ class SettMisc(object):
             logging.getLogger().setLevel(logging.INFO)
             logging.getLogger('indibase').setLevel(logging.INFO)
             logging.getLogger('mountcontrol').setLevel(logging.INFO)
-        elif self.ui.loglevelWarning.isChecked():
-            logging.getLogger().setLevel(logging.WARNING)
-            logging.getLogger('indibase').setLevel(logging.WARNING)
-            logging.getLogger('mountcontrol').setLevel(logging.WARNING)
-        elif self.ui.loglevelError.isChecked():
-            logging.getLogger().setLevel(logging.ERROR)
-            logging.getLogger('indibase').setLevel(logging.ERROR)
-            logging.getLogger('mountcontrol').setLevel(logging.ERROR)
 
     def setupAudioGui(self):
         """

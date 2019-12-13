@@ -596,15 +596,42 @@ class EnvironGui(object):
         :return: true for test purpose
         """
         phasesText = {
-            'New moon': (0, 2),
-            'Waxing crescent': (2, 23),
-            'First Quarter': (23, 27),
-            'Waxing Gibbous': (27, 48),
-            'Full moon': (48, 52),
-            'Waning Gibbous': (52, 73),
-            'Third quarter': (73, 77),
-            'Waning crescent': (2, 23),
-            'New moon ': (98, 100),
+            'New moon': {
+                'range': (0, 2),
+                'pic': ':/moon_new.png',
+            },
+            'Waxing crescent': {
+                'range': (2, 23),
+                'pic': ':/moon_waxing_crescent.png',
+            },
+            'First Quarter': {
+                'range': (23, 27),
+                'pic': ':/moon_first_quarter.png',
+            },
+            'Waxing Gibbous': {
+                'range': (27, 48),
+                'pic': ':/moon_waxing_gibbous.png',
+            },
+            'Full moon': {
+                'range': (48, 52),
+                'pic': ':/moon_full.png',
+            },
+            'Waning Gibbous': {
+                'range': (52, 73),
+                'pic': ':/moon_waning_gibbous.png',
+            },
+            'Third quarter': {
+                'range': (73, 77),
+                'pic': ':/moon_third_quarter.png',
+            },
+            'Waning crescent': {
+                'range': (2, 23),
+                'pic': ':/moon_waning_crescent.png',
+            },
+            'New moon ': {
+                'range': (98, 100),
+                'pic': ':/moon_new.png',
+            },
         }
 
         sun = self.app.planets['sun']
@@ -614,12 +641,17 @@ class EnvironGui(object):
         e = earth.at(self.app.mount.obsSite.timeJD)
         _, slon, _ = e.observe(sun).apparent().ecliptic_latlon()
         _, mlon, _ = e.observe(moon).apparent().ecliptic_latlon()
-        self.moonPhasePercent = int(((mlon.degrees - slon.degrees) % 360.0) / 3.6)
+
+        moonPhaseDegree = (mlon.degrees - slon.degrees) % 360.0
+        self.moonPhasePercent = int(moonPhaseDegree / 3.6)
 
         self.ui.moonPhasePercent.setText(f'{self.moonPhasePercent:3.0f}')
+        self.ui.moonPhaseDegree.setText(f'{moonPhaseDegree:3.0f}')
 
         for phase in phasesText:
-            if self.moonPhasePercent not in range(*phasesText[phase]):
+            if self.moonPhasePercent not in range(*phasesText[phase]['range']):
                 continue
             self.ui.moonPhaseText.setText(phase)
+            pixmap = PyQt5.QtGui.QPixmap(phasesText[phase]['pic']).scaled(60, 60)
+            self.ui.moonPic.setPixmap(pixmap)
         return True

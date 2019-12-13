@@ -53,6 +53,7 @@ setup(
         'forwardable==0.4.1',
         'qimage2ndarray==1.8',
         'importlib_metadata==0.23',
+        'alpyca==1.0.0b0',
     ],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

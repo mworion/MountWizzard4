@@ -31,8 +31,15 @@
 
     <file>webif/pic</file>
 
-    <file>moonPic.png</file>
-    <file>moonMask.png</file>
+    <file>moon_full.png</file>
+    <file>moon_new.png</file>
+    <file>moon_first_quarter.png</file>
+    <file>moon_third_quarter.png</file>
+    <file>moon_waning_crescent.png</file>
+    <file>moon_waning_gibbous.png</file>
+    <file>moon_waxing_crescent.png</file>
+    <file>moon_waxing_gibbous.png</file>
+
 
 </qresource>
 </RCC>

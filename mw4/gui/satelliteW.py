@@ -101,7 +101,7 @@ class SatelliteWindow(widget.MWidget):
 
         # as we cannot access data from Qt resource system, we have to convert it to
         # ByteIO first
-        stream = PyQt5.QtCore.QFile(':/worldmap.dat')
+        stream = PyQt5.QtCore.QFile(':/data/worldmap.dat')
         stream.open(PyQt5.QtCore.QFile.ReadOnly)
         pickleData = stream.readAll()
         stream.close()

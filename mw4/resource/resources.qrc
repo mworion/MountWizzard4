@@ -1,7 +1,11 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file>worldmap.dat</file>
-
+    <file>moon</file>
+    <file>sound</file>
+    <file>data</file>
+    <file>icon</file>
+    <file>pics</file>
+    <file>webif/pic</file>
     <file>webif/virtkeypad.html</file>
     <file>webif/virtkeypad.css</file>
     <file>webif/virtkeypad.js</file>
@@ -10,13 +14,6 @@
     <file>webif/util.js</file>
     <file>webif/w3.css</file>
     <file>webif/websock.js</file>
-
-    <file>webif/pic</file>
-    <file>moon</file>
-    <file>sound</file>
-    <file>data</file>
-    <file>icon</file>
-    <file>pics</file>
 
 </qresource>
 </RCC>

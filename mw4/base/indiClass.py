@@ -107,7 +107,7 @@ class IndiClass(object):
 
     def serverConnected(self):
         """
-        serverConnected is called when the server signals the connection. if ao, we would
+        serverConnected is called when the server signals the connection. if so, we would
         like to start watching the defined device. this will be triggered directly
 
         :return: success
@@ -308,7 +308,7 @@ class IndiClass(object):
             key = propertyName + '.' + element
             self.data[key] = value
 
-            # print(self.name, key, value)
+            print(self.name, key, value)
 
         return True
 

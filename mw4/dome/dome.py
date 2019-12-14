@@ -73,7 +73,6 @@ class Dome(indiClass.IndiClass):
                          name=name,
                          app=app,
                          )
-        self.app = app
 
         self.signals = DomeSignals()
         self._settlingTime = 0

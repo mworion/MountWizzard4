@@ -52,7 +52,6 @@ class SensorWeather(indiClass.IndiClass):
                          name=name,
                          app=app,
                          )
-        self.app = app
 
     def setUpdateConfig(self, deviceName):
         """

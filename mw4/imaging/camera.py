@@ -75,7 +75,6 @@ class Camera(indiClass.IndiClass):
                          name=name,
                          app=app,
                          )
-        self.app = app
 
         self.signals = CameraSignals()
         self.imagePath = ''

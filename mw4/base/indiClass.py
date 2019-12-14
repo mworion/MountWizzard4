@@ -33,9 +33,10 @@ class IndiClass(object):
     this class will be only referenced from other classes and not directly used
 
         >>> fw = IndiClass(
-        >>>                  host=host
-        >>>                  name=''
-        >>>                 )
+        >>>                app = None,
+        >>>                host=host
+        >>>                name=''
+        >>>               )
     """
 
     __all__ = ['IndiClass']

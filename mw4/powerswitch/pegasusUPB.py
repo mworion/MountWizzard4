@@ -69,7 +69,6 @@ class PegasusUPB(indiClass.IndiClass):
                          name=name,
                          app=app,
                          )
-        self.app = app
 
         self.versionUPB = 0
         self.signals = PegasusUPBSignals()

@@ -52,12 +52,10 @@ class EnvironGui(object):
 
         # environment functions
         signals = self.app.sensorWeather.client.signals
-        signals.newNumber.connect(self.updateSensorWeatherGui)
         signals.deviceDisconnected.connect(self.clearSensorWeatherGui)
 
         # skymeter functions
         signals = self.app.skymeter.client.signals
-        signals.newNumber.connect(self.updateSkymeterGUI)
         signals.deviceDisconnected.connect(self.clearSkymeterGUI)
 
         # weather functions
@@ -80,6 +78,8 @@ class EnvironGui(object):
         # cyclic functions
         self.app.update1s.connect(self.updateFilterRefractionParameters)
         self.app.update1s.connect(self.updateRefractionParameters)
+        self.app.update1s.connect(self.updateSkymeterGUI)
+        self.app.update1s.connect(self.updateSensorWeatherGui)
         self.app.update30m.connect(self.updateClearOutside)
         self.app.update30m.connect(self.updateMoonPhase)
         self.updateMoonPhase()
@@ -307,7 +307,7 @@ class EnvironGui(object):
 
         return True
 
-    def updateSensorWeatherGui(self, deviceName):
+    def updateSensorWeatherGui(self):
         """
         updateSensorWeatherGui shows the data which is received through INDI client
 
@@ -323,7 +323,7 @@ class EnvironGui(object):
         value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
         self.ui.sensorWeatherHumidity.setText(f'{value:3.0f}')
 
-    def clearSkymeterGUI(self, deviceName):
+    def clearSkymeterGUI(self, deviceName=''):
         """
         clearSensorWeatherGui clears the gui data
 
@@ -336,7 +336,7 @@ class EnvironGui(object):
 
         return True
 
-    def updateSkymeterGUI(self, deviceName):
+    def updateSkymeterGUI(self):
         """
         updateSkymeterGUI shows the data which is received through INDI client
 

@@ -29,14 +29,6 @@ class SettImaging(object):
     """
 
     def __init__(self):
-        # updating gui regular
-        self.app.update1s.connect(self.updateParameters)
-
-        # update when driver changes items
-        self.app.cover.client.signals.newSwitch.connect(self.updateCoverStatGui)
-        self.app.cover.client.signals.newText.connect(self.updateCoverStatGui)
-        self.app.cover.client.signals.newNumber.connect(self.updateCoverStatGui)
-
         # gui actions
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
@@ -47,6 +39,10 @@ class SettImaging(object):
         self.clickable(self.ui.coolerTemp).connect(self.setCoolerTemp)
         self.clickable(self.ui.filterNumber).connect(self.setFilterNumber)
         self.clickable(self.ui.filterName).connect(self.setFilterName)
+
+        # cyclic actions
+        self.app.update1s.connect(self.updateParameters)
+        self.app.update1s.connect(self.updateCoverStatGui)
 
     def initConfig(self):
         """

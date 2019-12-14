@@ -30,9 +30,7 @@ class FlipFlat(indiClass.IndiClass):
     """
     the class FlipFlat inherits all information and handling of the FlipFlat device
 
-        >>> FlipFlat(host=None,
-        >>>          name=''
-        >>>          )
+        >>> f = FlipFlat(app=None)
     """
 
     __all__ = ['FlipFlat',
@@ -43,16 +41,8 @@ class FlipFlat(indiClass.IndiClass):
     # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 1
 
-    def __init__(self,
-                 app=None,
-                 host=None,
-                 name='',
-                 ):
-
-        super().__init__(host=host,
-                         name=name,
-                         app=app,
-                         )
+    def __init__(self, app=None):
+        super().__init__(app=app)
 
     def setUpdateConfig(self, deviceName):
         """

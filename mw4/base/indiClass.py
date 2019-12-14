@@ -32,11 +32,7 @@ class IndiClass(object):
     the class indiClass inherits all information and handling of indi devices
     this class will be only referenced from other classes and not directly used
 
-        >>> fw = IndiClass(
-        >>>                app = None,
-        >>>                host=host
-        >>>                name=''
-        >>>               )
+        >>> indi = IndiClass(app=None)
     """
 
     __all__ = ['IndiClass']
@@ -46,17 +42,13 @@ class IndiClass(object):
     RETRY_DELAY = 1500
     NUMBER_RETRY = 3
 
-    def __init__(self,
-                 host=None,
-                 name='',
-                 app=None,
-                 ):
+    def __init__(self, app=None):
         super().__init__()
 
         self.app = app
-        self.client = qtIndiBase.Client(host=host)
-        self._name = name
-        self.host = host
+        self.client = qtIndiBase.Client(host=None)
+        self._name = ''
+        self.host = None
         self.data = {}
         self.retryCounter = 0
         self.device = None
@@ -104,6 +96,7 @@ class IndiClass(object):
     @host.setter
     def host(self, value):
         self._host = value
+        self.client.host = value
 
     def serverConnected(self):
         """

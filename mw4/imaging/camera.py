@@ -52,10 +52,7 @@ class Camera(indiClass.IndiClass):
     the class Camera inherits all information and handling of the Camera device.
 
 
-        >>> Camera(app=None,
-        >>>        host=host,
-        >>>        name='',
-        >>>       )
+        >>> c = Camera(app=None)
     """
 
     __all__ = ['Camera',
@@ -66,15 +63,9 @@ class Camera(indiClass.IndiClass):
     # update rate to 1000 milli seconds for setting indi server
     UPDATE_RATE = 1000
 
-    def __init__(self,
-                 app=None,
-                 host=None,
-                 name='',
-                 ):
-        super().__init__(host=host,
-                         name=name,
-                         app=app,
-                         )
+    def __init__(self, app=None):
+        super().__init__(app=app)
+
 
         self.signals = CameraSignals()
         self.imagePath = ''

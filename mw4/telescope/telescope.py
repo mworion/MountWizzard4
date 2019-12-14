@@ -30,10 +30,7 @@ class Telescope(indiClass.IndiClass):
     """
     the class SnoopTelescope inherits all information and handling of the Skymeter device
 
-        >>>  Telescope(app=None,
-        >>>            host=host,
-        >>>            name='',
-        >>>            )
+        >>>  t = Telescope(app=None)
     """
 
     __all__ = ['Telescope',
@@ -44,15 +41,8 @@ class Telescope(indiClass.IndiClass):
     # update rate to 10 seconds for setting indi server
     UPDATE_RATE = 10
 
-    def __init__(self,
-                 app=None,
-                 host=None,
-                 name='',
-                 ):
-        super().__init__(host=host,
-                         name=name,
-                         app=app,
-                         )
+    def __init__(self, app=None):
+        super().__init__(app=app)
 
     def setUpdateConfig(self, deviceName):
         """

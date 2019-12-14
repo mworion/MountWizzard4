@@ -30,10 +30,7 @@ class Skymeter(indiClass.IndiClass):
     """
     the class Skymeter inherits all information and handling of the Skymeter device
 
-        >>> fw = Skymeter(
-        >>>                  host=host
-        >>>                  name=''
-        >>>                 )
+        >>> s = Skymeter(app=None)
     """
 
     __all__ = ['Skymeter',
@@ -44,15 +41,8 @@ class Skymeter(indiClass.IndiClass):
     # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 5
 
-    def __init__(self,
-                 app=None,
-                 host=None,
-                 name='',
-                 ):
-        super().__init__(host=host,
-                         name=name,
-                         app=app,
-                         )
+    def __init__(self, app=None):
+        super().__init__(app=app)
 
     def setUpdateConfig(self, deviceName):
         """

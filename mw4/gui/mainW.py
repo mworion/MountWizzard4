@@ -79,9 +79,9 @@ class MainWindow(MWidget,
 
     logger = logging.getLogger(__name__)
 
-    def __init__(self, app, threadPool):
+    def __init__(self, app):
         self.app = app
-        self.threadPool = threadPool
+        self.threadPool = app.threadPool
         super().__init__()
 
         # load and init the gui

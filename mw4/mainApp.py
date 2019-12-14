@@ -125,26 +125,24 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.planets = None
 
         self.relay = KMRelay(host='192.168.2.15')
-        self.sensorWeather = SensorWeather(self, host='localhost')
+        self.sensorWeather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)
-        self.cover = FlipFlat(self, host='localhost')
+        self.cover = FlipFlat(self)
         self.dome = Dome(self)
-        self.camera = Camera(self, host='localhost')
-        self.filterwheel = FilterWheel(self, host='localhost')
-        self.focuser = Focuser(self, host='localhost')
-        self.telescope = Telescope(self, host='localhost')
-        self.skymeter = Skymeter(self, host='localhost')
-        self.power = PegasusUPB(self, host='localhost')
+        self.camera = Camera(self)
+        self.filterwheel = FilterWheel(self)
+        self.focuser = Focuser(self)
+        self.telescope = Telescope(self)
+        self.skymeter = Skymeter(self)
+        self.power = PegasusUPB(self)
         self.data = DataPoint(self, mwGlob=self.mwGlob)
         self.hipparcos = Hipparcos(self, mwGlob=self.mwGlob)
         self.measure = MeasureData(self)
         self.remote = Remote(self)
-        self.astrometry = Astrometry(self,
-                                     tempDir=mwGlob['tempDir'])
+        self.astrometry = Astrometry(self, tempDir=mwGlob['tempDir'])
 
         # get the window widgets up
-        self.mainW = MainWindow(self,
-                                threadPool=self.threadPool)
+        self.mainW = MainWindow(self)
 
         # link cross widget gui signals as all ui widgets have to be present
         self.uiWindows = {

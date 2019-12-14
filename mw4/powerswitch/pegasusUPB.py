@@ -46,10 +46,7 @@ class PegasusUPB(indiClass.IndiClass):
     """
     the class PegasusUPB inherits all information and handling of the PegasusUPB device
 
-        >>> power = PegasusUPB(
-        >>>                    host=host
-        >>>                    name=''
-        >>>                    )
+        >>> power = PegasusUPB(app=None)
     """
 
     __all__ = ['PegasusUPB',
@@ -60,15 +57,8 @@ class PegasusUPB(indiClass.IndiClass):
     # update rate to 1000 milli seconds for setting indi server
     UPDATE_RATE = 1000
 
-    def __init__(self,
-                 app=None,
-                 host=None,
-                 name='',
-                 ):
-        super().__init__(host=host,
-                         name=name,
-                         app=app,
-                         )
+    def __init__(self, app=None):
+        super().__init__(app=app)
 
         self.versionUPB = 0
         self.signals = PegasusUPBSignals()

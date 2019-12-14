@@ -279,10 +279,7 @@ class SettIndi(object):
                 if self.sender() != port and self.sender() in ports:
                     port.setText(self.sender().text())
 
-            if baseClass == self.app.dome:
-                baseClass.host = (host.text(), int(port.text()))
-            else:
-                baseClass.client.host = (host.text(), int(port.text()))
+            baseClass.host = (host.text(), int(port.text()))
 
         return True
 

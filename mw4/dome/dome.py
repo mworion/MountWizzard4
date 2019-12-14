@@ -60,7 +60,7 @@ class Dome:
         self.threadPool = app.threadPool
         self.signals = DomeSignals()
 
-        self._framework = 'indi'
+        self.framework = 'None'
         self._host = None
 
         self.run = {
@@ -75,14 +75,6 @@ class Dome:
         self.run['indi'].client.signals.serverDisconnected.connect(self.serverDisconnected)
         self.run['indi'].client.signals.deviceConnected.connect(self.deviceConnected)
         self.run['indi'].client.signals.deviceDisconnected.connect(self.deviceDisconnected)
-
-    @property
-    def framework(self):
-        return self._framework
-
-    @framework.setter
-    def framework(self, value):
-        self._framework = value
 
     @property
     def host(self):

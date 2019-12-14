@@ -75,15 +75,15 @@ class Astrometry:
 
     logger = logging.getLogger(__name__)
 
-    def __init__(self, app, tempDir='', threadPool=None):
-        super().__init__()
+    def __init__(self, app, tempDir=''):
 
         self.app = app
+        self.threadPool = app.threadPool
+
         self.tempDir = tempDir
         self.solverASTAP = AstrometryASTAP(self)
         self.solverNET = AstrometryNET(self)
 
-        self.threadPool = threadPool
         self.signals = AstrometrySignals()
         self.mutexSolve = PyQt5.QtCore.QMutex()
 

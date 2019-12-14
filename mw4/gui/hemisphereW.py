@@ -218,7 +218,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.settingDone.connect(self.updateHorizonLimits)
         self.app.mount.signals.settingDone.connect(self.updateCelestialPath)
         self.app.dome.signals.azimuth.connect(self.updateDome)
-        self.app.dome.client.signals.deviceDisconnected.connect(self.updateDome)
+        self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
         self.app.update1s.connect(self.drawCanvas)
         self.app.update10s.connect(self.updateAlignStar)
 

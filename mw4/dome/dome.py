@@ -19,12 +19,10 @@
 ###########################################################
 # standard libraries
 import logging
-from datetime import datetime
 # external packages
 import PyQt5
-import numpy as np
 # local imports
-from mw4.base import indiClass
+from mw4.dome.domeIndi import DomeIndi
 
 
 class DomeSignals(PyQt5.QtCore.QObject):
@@ -43,191 +41,70 @@ class DomeSignals(PyQt5.QtCore.QObject):
     slewFinished = PyQt5.QtCore.pyqtSignal()
     message = PyQt5.QtCore.pyqtSignal(object)
 
+    serverConnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal()
+    deviceConnected = PyQt5.QtCore.pyqtSignal()
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal()
 
-class Dome(indiClass.IndiClass):
-    """
-    the class Dome inherits all information and handling of the Dome device. there will be
-    some parameters who will define the slewing position of the dome relating to the mount.
 
-        >>> fw = Dome(
-        >>>           app=app
-        >>>           host=host
-        >>>           name=''
-        >>>          )
-    """
+class Dome:
 
     __all__ = ['Dome',
                ]
 
     logger = logging.getLogger(__name__)
 
-    # update rate to 1000 milli seconds for setting indi server
-    UPDATE_RATE = 1000
+    def __init__(self, app):
 
-    def __init__(self,
-                 app=None,
-                 host=None,
-                 name='',
-                 ):
-        super().__init__(host=host,
-                         name=name,
-                         app=app,
-                         )
-
+        self.app = app
+        self.threadPool = app.threadPool
         self.signals = DomeSignals()
-        self._settlingTime = 0
 
-        self.azimuth = -1
-        self.slewing = False
+        self._framework = 'indi'
+        self._host = None
+
+        self.run = {
+            'indi': DomeIndi(self.app, self.signals),
+            'alpaca': None,
+        }
+
         self.isGeometry = False
 
-        self.app.update3s.connect(self.updateStatus)
-        self.settlingWait = PyQt5.QtCore.QTimer()
-        self.settlingWait.setSingleShot(True)
-        self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
+        # collecting signals from frameworks
+        self.run['indi'].client.signals.serverConnected.connect(self.serverConnected)
+        self.run['indi'].client.signals.serverDisconnected.connect(self.serverDisconnected)
+        self.run['indi'].client.signals.deviceConnected.connect(self.deviceConnected)
+        self.run['indi'].client.signals.deviceDisconnected.connect(self.deviceDisconnected)
 
     @property
-    def settlingTime(self):
-        return self._settlingTime * 1000
+    def framework(self):
+        return self._framework
 
-    @settlingTime.setter
-    def settlingTime(self, value):
-        self._settlingTime = value
+    @framework.setter
+    def framework(self, value):
+        self._framework = value
 
-    def setUpdateConfig(self, deviceName):
-        """
-        _setUpdateRate corrects the update rate of dome devices to get an defined
-        setting regardless, what is setup in server side.
+    @property
+    def host(self):
+        return self._host
 
-        :param deviceName:
-        :return: success
-        """
+    @host.setter
+    def host(self, value):
+        self._host = value
+        self.run['indi'].client.host = value
 
-        if deviceName != self.name:
-            return False
+    # wee need to collect dispatch all signals from the different frameworks
+    def deviceConnected(self):
+        self.signals.deviceConnected.emit()
 
-        if self.device is None:
-            return False
+    def deviceDisconnected(self):
+        self.signals.deviceDisconnected.emit()
 
-        # setting polling updates in driver
-        update = self.device.getNumber('POLLING_PERIOD')
+    def serverConnected(self):
+        self.signals.serverConnected.emit()
 
-        if 'PERIOD_MS' not in update:
-            return False
-
-        if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
-            return True
-
-        update['PERIOD_MS'] = self.UPDATE_RATE
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='POLLING_PERIOD',
-                                        elements=update,
-                                        )
-
-        return suc
-
-    def updateStatus(self):
-        """
-        updateStatus emits the actual azimuth status every 3 second in case of opening a
-        window and get the signals late connected as INDI does nt repeat any signal of it's
-        own
-
-        :return: true for test purpose
-        """
-
-        self.signals.azimuth.emit(self.azimuth)
-
-        return True
-
-    def waitSettlingAndEmit(self):
-        """
-        waitSettlingAndEmit emit the signal for slew finished
-
-        :return: true for test purpose
-        """
-
-        self.signals.message.emit('')
-        self.signals.slewFinished.emit()
-
-        return True
-
-    def updateNumber(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-
-        if self.device is None:
-            return False
-        if deviceName != self.name:
-            return False
-
-        for element, value in self.device.getNumber(propertyName).items():
-            key = propertyName + '.' + element
-            self.data[key] = value
-            # print(propertyName, element, value)
-
-            if element != 'DOME_ABSOLUTE_POSITION':
-                continue
-
-            # starting condition: don't do anything
-            if self.azimuth == -1:
-                self.azimuth = value
-                continue
-
-            # send trigger for new data
-            self.signals.azimuth.emit(self.azimuth)
-
-            # calculate the stop slewing condition
-            isSlewing = (self.device.ABS_DOME_POSITION['state'] == 'Busy')
-            if isSlewing:
-                self.signals.message.emit('slewing')
-            if self.slewing and not isSlewing:
-                # start timer for settling time and emit signal afterwards
-                self.settlingWait.start(self.settlingTime)
-
-            # store for the next cycle
-            self.azimuth = value
-            self.slewing = isSlewing
-
-        return True
-
-    def slewToAltAz(self, altitude=0, azimuth=0):
-        """
-        slewToAltAz sends a command to the dome to move to azimuth / altitude. if a dome
-        does support this
-
-        :param altitude:
-        :param azimuth:
-        :return: success
-        """
-
-        if self.device is None:
-            return False
-
-        if self.name is None or not self.name:
-            return False
-
-        position = self.device.getNumber('ABS_DOME_POSITION')
-
-        if 'DOME_ABSOLUTE_POSITION' not in position:
-            return False
-
-        position['DOME_ABSOLUTE_POSITION'] = azimuth
-
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='ABS_DOME_POSITION',
-                                        elements=position,
-                                        )
-
-        if suc:
-            self.slewing = True
-
-        return suc
+    def serverDisconnected(self):
+        self.signals.serverDisconnected.emit()
 
     def slewDome(self, altitude=0, azimuth=0):
         """
@@ -257,6 +134,12 @@ class Dome(indiClass.IndiClass):
         geoStat = 'On' if self.isGeometry else 'Off'
         text = f'Slewing  dome:      az correction: {geoStat}, delta: {azimuth-az:3.1f}°'
         self.app.message.emit(text, 0)
-        self.slewToAltAz(azimuth=az)
+
+        if self.framework == 'indi':
+            self.run['indi'].slewToAltAz(azimuth=az)
+        elif self.framework == 'alpaca':
+            pass
+        else:
+            return False
 
         return True

@@ -47,7 +47,7 @@ class OnlineWeather(object):
     """
     the class Skymeter inherits all information and handling of the Skymeter device
 
-        >>> weather = OnlineWeather(app, threadPool)
+        >>> weather = OnlineWeather(app)
     """
 
     __all__ = ['OnlineWeather',
@@ -57,10 +57,9 @@ class OnlineWeather(object):
 
     def __init__(self,
                  app=None,
-                 threadPool=None,
                  ):
         self.app = app
-        self.threadPool = threadPool
+        self.threadPool = app.threadPool
 
         self.data = {}
         self.running = False

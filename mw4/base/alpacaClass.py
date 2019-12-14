@@ -57,7 +57,6 @@ class AlpacaClass(object):
         >>>         deviceType='',
         >>>         apiVersion=1,
         >>>         app=None,
-        >>>         threadPool=None,
         >>>                 )
     """
 
@@ -74,7 +73,6 @@ class AlpacaClass(object):
                  deviceType='',
                  apiVersion=1,
                  app=None,
-                 threadPool=None,
                  ):
         super().__init__()
 

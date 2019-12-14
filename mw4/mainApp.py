@@ -126,10 +126,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         self.relay = KMRelay(host='192.168.2.15')
         self.sensorWeather = SensorWeather(self, host='localhost')
-        self.onlineWeather = OnlineWeather(self,
-                                           threadPool=self.threadPool)
+        self.onlineWeather = OnlineWeather(self)
         self.cover = FlipFlat(self, host='localhost')
-        self.dome = Dome(self, host='localhost')
+        self.dome = Dome(self)
         self.camera = Camera(self, host='localhost')
         self.filterwheel = FilterWheel(self, host='localhost')
         self.focuser = Focuser(self, host='localhost')
@@ -141,8 +140,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.measure = MeasureData(self)
         self.remote = Remote(self)
         self.astrometry = Astrometry(self,
-                                     tempDir=mwGlob['tempDir'],
-                                     threadPool=self.threadPool)
+                                     tempDir=mwGlob['tempDir'])
 
         # get the window widgets up
         self.mainW = MainWindow(self,

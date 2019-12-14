@@ -63,7 +63,7 @@ class SettIndi(object):
                  'uiMessage': self.ui.domeDeviceMessage,
                  'class': self.app.dome,
                  'dispatch': self.domeDispatch,
-                 'signals': self.app.dome.client.signals,
+                 'signals': self.app.dome.signals,
                  'port': self.ui.domePort,
                  'host': self.ui.domeHost,
                  },
@@ -279,7 +279,10 @@ class SettIndi(object):
                 if self.sender() != port and self.sender() in ports:
                     port.setText(self.sender().text())
 
-            baseClass.client.host = (host.text(), int(port.text()))
+            if baseClass == self.app.dome:
+                baseClass.host = (host.text(), int(port.text()))
+            else:
+                baseClass.client.host = (host.text(), int(port.text()))
 
         return True
 

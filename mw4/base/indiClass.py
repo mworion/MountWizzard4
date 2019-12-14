@@ -308,7 +308,7 @@ class IndiClass(object):
             key = propertyName + '.' + element
             self.data[key] = value
 
-            print(self.name, key, value)
+            # print(self.name, key, value)
 
         return True
 

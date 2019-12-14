@@ -186,7 +186,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.settingDone.disconnect(self.updateHorizonLimits)
         self.app.mount.signals.settingDone.disconnect(self.updateCelestialPath)
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
-        self.app.dome.client.signals.deviceDisconnected.disconnect(self.updateDome)
+        self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
 
         plt.close(self.hemisphereMat.figure)
         plt.close(self.hemisphere2Mat.figure)

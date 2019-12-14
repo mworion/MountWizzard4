@@ -66,25 +66,19 @@ class AlpacaClass(object):
 
     CYCLE = 1000
 
-    def __init__(self,
-                 protocol='http',
-                 host=('localhost', 11111),
-                 deviceNumber=0,
-                 deviceType='',
-                 apiVersion=1,
-                 app=None,
-                 ):
+    def __init__(self, app=None):
         super().__init__()
 
         self.app = app
-        self.threadPool = threadPool
-        self.baseUrl = 'localhost'
-        self.protocol = protocol
-        self.deviceNumber = deviceNumber
-        self.apiVersion = apiVersion
-        self.deviceType = deviceType
-        self.host = host
+        # self.threadPool = app.threadPool
         self.signals = AlpacaSignals()
+
+        self.baseUrl = 'localhost'
+        self._protocol = 'http'
+        self._deviceNumber = 0
+        self._apiVersion = 1
+        self._deviceType = ''
+        self._host = ('localhost', 11111)
 
         self.data = {}
         self.deviceConnected = False
@@ -101,6 +95,42 @@ class AlpacaClass(object):
     @host.setter
     def host(self, value):
         self._host = value
+        self.baseUrl = self.generateBaseUrl()
+
+    @property
+    def deviceNumber(self):
+        return self._deviceNumber
+
+    @deviceNumber.setter
+    def deviceNumber(self, value):
+        self._deviceNumber = value
+        self.baseUrl = self.generateBaseUrl()
+
+    @property
+    def deviceType(self):
+        return self._deviceType
+
+    @deviceType.setter
+    def deviceType(self, value):
+        self._deviceType = value
+        self.baseUrl = self.generateBaseUrl()
+
+    @property
+    def apiVersion(self):
+        return self._apiVersion
+
+    @apiVersion.setter
+    def apiVersion(self, value):
+        self._apiVersion = value
+        self.baseUrl = self.generateBaseUrl()
+
+    @property
+    def protocol(self):
+        return self._protocol
+
+    @protocol.setter
+    def protocol(self, value):
+        self._protocol = value
         self.baseUrl = self.generateBaseUrl()
 
     def generateBaseUrl(self):
@@ -126,7 +156,15 @@ class AlpacaClass(object):
             **data: Data to send with request.
 
         """
-        response = requests.get(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
+        try:
+            response = requests.get(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
+        except requests.exceptions.Timeout:
+            return {}
+        except requests.exceptions.ConnectionError:
+            return {}
+        except Exception as e:
+            self.logger.error(f'Error in request: {e}')
+            return {}
 
         if response.status_code == 400 or response.status_code == 500:
             self.logger.error(f'{response.text}')
@@ -148,7 +186,15 @@ class AlpacaClass(object):
             **data: Data to send with request.
 
         """
-        response = requests.put(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
+        try:
+            response = requests.put(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
+        except requests.exceptions.Timeout:
+            return {}
+        except requests.exceptions.ConnectionError:
+            return {}
+        except Exception as e:
+            self.logger.error(f'Error in request: {e}')
+            return {}
 
         if response.status_code == 400 or response.status_code == 500:
             self.logger.error(f'{response.text}')
@@ -326,14 +372,10 @@ class AlpacaClass(object):
 if __name__ == '__main__':
     import time
 
-    a = AlpacaClass(
-                    protocol='http',
-                    host=('mw-develop.fritz.box', 11111),
-                    apiVersion=1,
-                    deviceType='dome',
-                    deviceNumber=0,
-    )
+    a = AlpacaClass()
 
+    a.host = ('mw-develop.fritz.box', 11111)
+    a.deviceType = 'dome'
     start = time.time()
 
     print('start', a.startCommunication())

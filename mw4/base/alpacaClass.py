@@ -88,6 +88,23 @@ class AlpacaClass(object):
         self.timeCycle.setSingleShot(False)
         self.timeCycle.timeout.connect(self.cycleAlpaca)
 
+        self.baseUrl = self.generateBaseUrl()
+
+    def generateBaseUrl(self):
+        """
+        :return: value for base url
+        """
+
+        val = '{0}://{1}:{2}/api/v{3}/{4}/{5}'.format(
+            self.protocol,
+            self.host[0],
+            self.host[1],
+            self.apiVersion,
+            self.deviceType,
+            self.deviceNumber,
+        )
+        return val
+
     @property
     def host(self):
         return self._host
@@ -131,22 +148,6 @@ class AlpacaClass(object):
     @protocol.setter
     def protocol(self, value):
         self._protocol = value
-        self.baseUrl = self.generateBaseUrl()
-
-    def generateBaseUrl(self):
-        """
-        :return: value for base url
-        """
-
-        val = '{0}://{1}:{2}/api/v{3}/{4}/{5}'.format(
-            self.protocol,
-            self.host[0],
-            self.host[1],
-            self.apiVersion,
-            self.deviceType,
-            self.deviceNumber,
-        )
-        return val
 
     def get(self, attribute: str, **data):
         """

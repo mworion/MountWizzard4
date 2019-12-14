@@ -42,9 +42,9 @@ class DomeSignals(PyQt5.QtCore.QObject):
     message = PyQt5.QtCore.pyqtSignal(object)
 
     serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal()
-    deviceConnected = PyQt5.QtCore.pyqtSignal()
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
 
 
 class Dome:
@@ -94,17 +94,17 @@ class Dome:
         self.run['indi'].client.host = value
 
     # wee need to collect dispatch all signals from the different frameworks
-    def deviceConnected(self):
-        self.signals.deviceConnected.emit()
+    def deviceConnected(self, deviceName):
+        self.signals.deviceConnected.emit(deviceName)
 
-    def deviceDisconnected(self):
-        self.signals.deviceDisconnected.emit()
+    def deviceDisconnected(self, value):
+        self.signals.deviceDisconnected.emit(value)
 
     def serverConnected(self):
         self.signals.serverConnected.emit()
 
-    def serverDisconnected(self):
-        self.signals.serverDisconnected.emit()
+    def serverDisconnected(self, deviceList):
+        self.signals.serverDisconnected.emit(deviceList)
 
     def slewDome(self, altitude=0, azimuth=0):
         """

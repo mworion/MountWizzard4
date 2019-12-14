@@ -237,11 +237,11 @@ class SettDevice(object):
         """
 
         if self.ui.domeDevice.currentText().startswith('INDI'):
-            self.app.dome.name = self.ui.domeDeviceName.currentText()
+            self.app.dome.run['indi'].name = self.ui.domeDeviceName.currentText()
             self.app.message.emit('Dome enabled', 0)
             self.deviceStat['dome'] = False
         else:
-            self.app.dome.name = ''
+            self.app.dome.run['indi'].name = ''
             self.app.message.emit('Dome disabled', 0)
             self.deviceStat['dome'] = None
 

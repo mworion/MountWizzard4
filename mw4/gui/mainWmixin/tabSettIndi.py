@@ -334,7 +334,11 @@ class SettIndi(object):
         """
 
         for device in self.indiDevices:
-            if self.indiDevices[device]['class'].name != deviceName:
+            if device == 'dome':
+                ref = self.indiDevices[device]['class'].run['indi'].name
+            else:
+                ref = self.indiDevices[device]['class'].name
+            if  ref != deviceName:
                 continue
             self.indiDevices[device]['uiDevice'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[device] = True

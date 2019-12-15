@@ -40,103 +40,83 @@ class SettDevice(object):
         self.drivers = {
             'dome': {
                 'uiDropDown': self.ui.domeDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': self.ui.domeSetup,
                 'dispatch': self.domeDispatch,
             },
             'camera': {
                 'uiDropDown': self.ui.cameraDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': self.ui.cameraSetup,
                 'dispatch': self.cameraDispatch,
             },
             'filter': {
                 'uiDropDown': self.ui.filterDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': self.ui.filterSetup,
                 'dispatch': self.filterDispatch,
             },
             'focuser': {
                 'uiDropDown': self.ui.focuserDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': self.ui.focuserSetup,
                 'dispatch': self.focuserDispatch,
             },
             'sensorWeather': {
                 'uiDropDown': self.ui.sensorWeatherDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': self.ui.sensorWeatherSetup,
                 'dispatch': self.sensorWeatherDispatch,
             },
             'directWeather': {
                 'uiDropDown': self.ui.directWeatherDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': None,
                 'dispatch': self.directWeatherDispatch,
             },
             'onlineWeather': {
                 'uiDropDown': self.ui.onlineWeatherDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': None,
                 'dispatch': self.onlineWeatherDispatch,
             },
             'cover': {
                 'uiDropDown': self.ui.coverDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': self.ui.coverSetup,
                 'dispatch': self.coverDispatch,
             },
             'skymeter': {
                 'uiDropDown': self.ui.skymeterDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': self.ui.skymeterSetup,
                 'dispatch': self.skymeterDispatch,
             },
             'telescope': {
                 'uiDropDown': self.ui.telescopeDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': self.ui.telescopeSetup,
                 'dispatch': self.telescopeDispatch,
             },
             'power': {
                 'uiDropDown': self.ui.powerDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': self.ui.powerSetup,
                 'dispatch': self.powerDispatch,
             },
             'relay': {
                 'uiDropDown': self.ui.relayDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': None,
                 'dispatch': self.relayDispatch,
             },
             'astrometry': {
                 'uiDropDown': self.ui.astrometryDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': None,
                 'dispatch': self.astrometryDispatch,
             },
             'remote': {
                 'uiDropDown': self.ui.remoteDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': None,
                 'dispatch': self.remoteDispatch,
             },
             'measure': {
                 'uiDropDown': self.ui.measureDevice,
-                'uiSetup': self.ui.domeDevice,
+                'uiSetup': None,
                 'dispatch': self.measureDispatch,
             },
         }
 
-        self.data = {}
-
-        self.setupDeviceGui()
-
-        for driver in self.drivers:
-            self.drivers[driver]['uiDropDown'].activated.connect(self.drivers[driver]['dispatch'])
-
-        self.ui.pushButton.clicked.connect(self.popup)
-
-    def popup(self):
-        """
-
-        """
-        # calculate geometry
-        posX = self.pos().x()
-        posY = self.pos().y()
-        height = self.height()
-        width = self.width()
-        geo = posX, posY, width, height
-
-        data = {
-            'weather': {
+        self.driversData = {
+            'sensorWeather': {
                 'indiHost': 'astro-comp.fritz.box',
                 'indiPort': '7624',
                 'indiName': '-',
@@ -144,9 +124,30 @@ class SettDevice(object):
             }
         }
 
-        self.popupUi = DevicePopup(geo=geo, device='weather', data=data)
+        self.setupDeviceGui()
 
-        print(data)
+        for driver in self.drivers:
+            self.drivers[driver]['uiDropDown'].activated.connect(self.drivers[driver]['dispatch'])
+            if self.drivers[driver]['uiSetup'] is not None:
+                self.drivers[driver]['uiSetup'].clicked.connect(self.setupPopUp)
+
+    def setupPopUp(self):
+        """
+
+        """
+
+        for driver in self.drivers:
+            if self.sender() != self.drivers[driver]['uiSetup']:
+                continue
+            # calculate geometry
+            posX = self.pos().x()
+            posY = self.pos().y()
+            height = self.height()
+            width = self.width()
+            geo = posX, posY, width, height
+            self.driversData[driver]['driverType'] = self.drivers[driver]['type']
+
+            self.popupUi = DevicePopup(geo=geo, device=driver, data=self.driversData)
 
     def initConfig(self):
         """
@@ -162,6 +163,9 @@ class SettDevice(object):
             self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
             self.drivers[driver]['dispatch']()
 
+        for driver in self.driverData:
+            self.driverData[driver] = config.get(driver, {})
+
         return True
 
     def storeConfig(self):
@@ -175,6 +179,8 @@ class SettDevice(object):
         config = self.app.config['mainW']
         for driver in self.drivers:
             config[driver] = self.drivers[driver]['uiDropDown'].currentIndex()
+        for driver in self.driverData:
+            config[driver] = self.driverData[driver]
 
         return True
 
@@ -195,7 +201,7 @@ class SettDevice(object):
         # adding special items
         self.drivers['dome']['uiDropDown'].addItem('INDI')
         self.drivers['camera']['uiDropDown'].addItem('INDI')
-        self.drivers['filterwheel']['uiDropDown'].addItem('INDI')
+        self.drivers['filter']['uiDropDown'].addItem('INDI')
         self.drivers['focuser']['uiDropDown'].addItem('INDI')
         self.drivers['sensorWeather']['uiDropDown'].addItem('INDI')
         self.drivers['directWeather']['uiDropDown'].addItem('Built-In')
@@ -283,7 +289,8 @@ class SettDevice(object):
         """
 
         if self.ui.domeDevice.currentText().startswith('INDI'):
-            self.app.dome.run['indi'].name = self.ui.domeDeviceName.currentText()
+            driverData = self.driversData.get('dome', {})
+            self.app.dome.run['indi'].name = driverData.get('name', '')
             self.app.message.emit('Dome enabled', 0)
             self.deviceStat['dome'] = False
         else:
@@ -303,7 +310,8 @@ class SettDevice(object):
         """
 
         if self.ui.cameraDevice.currentText().startswith('INDI'):
-            self.app.camera.name = self.ui.cameraDeviceName.currentText()
+            driverData = self.driversData.get('camera', {})
+            self.app.camera.name = driverData.get('name', '')
             self.app.message.emit('Camera enabled', 0)
             self.deviceStat['camera'] = False
         else:
@@ -321,7 +329,8 @@ class SettDevice(object):
         """
 
         if self.ui.filterDevice.currentText().startswith('INDI'):
-            self.app.filter.name = self.ui.filterDeviceName.currentText()
+            driverData = self.driversData.get('filter', {})
+            self.app.filter.name = driverData.get('name', '')
             self.app.message.emit('Filter enabled', 0)
             self.deviceStat['filter'] = False
         else:
@@ -337,7 +346,8 @@ class SettDevice(object):
         """
 
         if self.ui.focuserDevice.currentText().startswith('INDI'):
-            self.app.focuser.name = self.ui.focuserDeviceName.currentText()
+            driverData = self.driversData.get('focuser', {})
+            self.app.focuser.name = driverData.get('name', '')
             self.app.message.emit('Focuser enabled', 0)
             self.deviceStat['focuser'] = False
         else:
@@ -355,7 +365,8 @@ class SettDevice(object):
         """
 
         if self.ui.sensorWeatherDevice.currentText().startswith('INDI'):
-            self.app.sensorWeather.name = self.ui.sensorWeatherDeviceName.currentText()
+            driverData = self.driversData.get('sensorWeather', {})
+            self.app.sensorWeather.name = driverData.get('name', '')
             self.app.message.emit('Sensor Weather enabled', 0)
             self.deviceStat['sensorWeather'] = False
         else:
@@ -410,7 +421,8 @@ class SettDevice(object):
         """
 
         if self.ui.skymeterDevice.currentText().startswith('INDI'):
-            self.app.skymeter.name = self.ui.skymeterDeviceName.currentText()
+            driverData = self.driversData.get('skymeter', {})
+            self.app.skymeter.name = driverData.get('name', '')
             self.app.message.emit('Skymeter enabled', 0)
             self.deviceStat['skymeter'] = False
         else:
@@ -429,7 +441,8 @@ class SettDevice(object):
         """
 
         if self.ui.coverDevice.currentText().startswith('INDI'):
-            self.app.cover.name = self.ui.coverDeviceName.currentText()
+            driverData = self.driversData.get('cover', {})
+            self.app.cover.name = driverData.get('name', '')
             self.app.message.emit('Cover enabled', 0)
             self.deviceStat['cover'] = False
         else:
@@ -447,7 +460,8 @@ class SettDevice(object):
         """
 
         if self.ui.telescopeDevice.currentText().startswith('INDI'):
-            self.app.telescope.name = self.ui.telescopeDeviceName.currentText()
+            driverData = self.driversData.get('telescope', {})
+            self.app.telescope.name = driverData.get('name', '')
             self.app.message.emit('Telescope enabled', 0)
             self.deviceStat['telescope'] = False
         else:
@@ -466,7 +480,8 @@ class SettDevice(object):
         """
 
         if self.ui.powerDevice.currentText().startswith('INDI'):
-            self.app.power.name = self.ui.powerDeviceName.currentText()
+            driverData = self.driversData.get('power', {})
+            self.app.power.name = driverData.get('name', '')
             self.app.message.emit('Power enabled', 0)
             self.deviceStat['power'] = False
         else:

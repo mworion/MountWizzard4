@@ -80,6 +80,8 @@ class DevicePopup(widget.MWidget):
         # populate data
         deviceData = self.data.get(self.device, {})
         framework = deviceData.get('framework', 'indi')
+        driverType = deviceData.get('driverType', '')
+        self.indiSearchType = self.indiTypes[driverType]
         self.setWindowTitle(f'Setup for: {self.device}')
 
         # populating indi data
@@ -194,7 +196,6 @@ class DevicePopup(widget.MWidget):
 
         self.indiSearchNameList = list()
         host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
-        self.indiSearchType = self.indiTypes[self.device]
         self.indiClass = IndiClass()
         self.indiClass.host = host
 

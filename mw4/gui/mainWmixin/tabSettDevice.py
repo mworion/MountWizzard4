@@ -189,7 +189,7 @@ class SettDevice(object):
         for dropDown in dropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
-            dropDown.addItem('No device selected')
+            dropDown.addItem('device disabled')
 
         # adding special items
         # todo: search for implemented classes

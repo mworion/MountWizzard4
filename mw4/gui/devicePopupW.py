@@ -99,7 +99,7 @@ class DevicePopup(widget.MWidget):
         for i, name in enumerate(nameList):
             self.ui.indiNameList.addItem(name)
             if indiName == name:
-                self.ui.indiNameList.setCurrentIndex(i + 1)
+                self.ui.indiNameList.setCurrentIndex(i)
 
         self.ui.indiMessages.setChecked(deviceData.get('indiMessages', False))
         self.ui.indiLoadConfig.setChecked(deviceData.get('indiLoadConfig', False))

@@ -23,6 +23,7 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
+from mw4.gui.devicePopupW import DevicePopup
 
 
 class SettDevice(object):
@@ -34,73 +35,118 @@ class SettDevice(object):
     """
 
     def __init__(self):
+
+        self.popupUi = None
         self.drivers = {
             'dome': {
-                'uiDriver': self.ui.domeDevice,
+                'uiDropDown': self.ui.domeDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.domeDispatch,
             },
             'camera': {
-                'uiDriver': self.ui.cameraDevice,
+                'uiDropDown': self.ui.cameraDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.cameraDispatch,
             },
-            'filterwheel': {
-                'uiDriver': self.ui.filterwheelDevice,
-                'dispatch': self.filterwheelDispatch,
+            'filter': {
+                'uiDropDown': self.ui.filterDevice,
+                'uiSetup': self.ui.domeDevice,
+                'dispatch': self.filterDispatch,
             },
             'focuser': {
-                'uiDriver': self.ui.focuserDevice,
+                'uiDropDown': self.ui.focuserDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.focuserDispatch,
             },
             'sensorWeather': {
-                'uiDriver': self.ui.sensorWeatherDevice,
+                'uiDropDown': self.ui.sensorWeatherDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.sensorWeatherDispatch,
             },
             'directWeather': {
-                'uiDriver': self.ui.directWeatherDevice,
+                'uiDropDown': self.ui.directWeatherDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.directWeatherDispatch,
             },
             'onlineWeather': {
-                'uiDriver': self.ui.onlineWeatherDevice,
+                'uiDropDown': self.ui.onlineWeatherDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.onlineWeatherDispatch,
             },
             'cover': {
-                'uiDriver': self.ui.coverDevice,
+                'uiDropDown': self.ui.coverDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.coverDispatch,
             },
             'skymeter': {
-                'uiDriver': self.ui.skymeterDevice,
+                'uiDropDown': self.ui.skymeterDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.skymeterDispatch,
             },
             'telescope': {
-                'uiDriver': self.ui.telescopeDevice,
+                'uiDropDown': self.ui.telescopeDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.telescopeDispatch,
             },
             'power': {
-                'uiDriver': self.ui.powerDevice,
+                'uiDropDown': self.ui.powerDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.powerDispatch,
             },
             'relay': {
-                'uiDriver': self.ui.relayDevice,
+                'uiDropDown': self.ui.relayDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.relayDispatch,
             },
             'astrometry': {
-                'uiDriver': self.ui.astrometryDevice,
+                'uiDropDown': self.ui.astrometryDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.astrometryDispatch,
             },
             'remote': {
-                'uiDriver': self.ui.remoteDevice,
+                'uiDropDown': self.ui.remoteDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.remoteDispatch,
             },
             'measure': {
-                'uiDriver': self.ui.measureDevice,
+                'uiDropDown': self.ui.measureDevice,
+                'uiSetup': self.ui.domeDevice,
                 'dispatch': self.measureDispatch,
             },
         }
 
+        self.data = {}
+
         self.setupDeviceGui()
 
         for driver in self.drivers:
-            self.drivers[driver]['uiDriver'].activated.connect(self.drivers[driver]['dispatch'])
+            self.drivers[driver]['uiDropDown'].activated.connect(self.drivers[driver]['dispatch'])
+
+        self.ui.pushButton.clicked.connect(self.popup)
+
+    def popup(self):
+        """
+
+        """
+        # calculate geometry
+        posX = self.pos().x()
+        posY = self.pos().y()
+        height = self.height()
+        width = self.width()
+        geo = posX, posY, width, height
+
+        data = {
+            'weather': {
+                'indiHost': 'astro-comp.fritz.box',
+                'indiPort': '7624',
+                'indiName': '-',
+                'indiNameList': ['indi 1', 'indi 2'],
+            }
+        }
+
+        self.popupUi = DevicePopup(geo=geo, device='weather', data=data)
+
+        print(data)
 
     def initConfig(self):
         """
@@ -113,7 +159,7 @@ class SettDevice(object):
         config = self.app.config['mainW']
 
         for driver in self.drivers:
-            self.drivers[driver]['uiDriver'].setCurrentIndex(config.get(driver, 0))
+            self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
             self.drivers[driver]['dispatch']()
 
         return True
@@ -128,7 +174,7 @@ class SettDevice(object):
         """
         config = self.app.config['mainW']
         for driver in self.drivers:
-            config[driver] = self.drivers[driver]['uiDriver'].currentIndex()
+            config[driver] = self.drivers[driver]['uiDropDown'].currentIndex()
 
         return True
 
@@ -140,29 +186,29 @@ class SettDevice(object):
         :return: success for test
         """
 
-        dropDowns = list(self.drivers[driver]['uiDriver'] for driver in self.drivers)
+        dropDowns = list(self.drivers[driver]['uiDropDown'] for driver in self.drivers)
         for dropDown in dropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('No device selected')
 
         # adding special items
-        self.drivers['dome']['uiDriver'].addItem('INDI')
-        self.drivers['camera']['uiDriver'].addItem('INDI')
-        self.drivers['filterwheel']['uiDriver'].addItem('INDI')
-        self.drivers['focuser']['uiDriver'].addItem('INDI')
-        self.drivers['sensorWeather']['uiDriver'].addItem('INDI')
-        self.drivers['directWeather']['uiDriver'].addItem('Built-In')
-        self.drivers['onlineWeather']['uiDriver'].addItem('Built-In')
-        self.drivers['cover']['uiDriver'].addItem('INDI')
-        self.drivers['skymeter']['uiDriver'].addItem('INDI')
-        self.drivers['telescope']['uiDriver'].addItem('INDI')
-        self.drivers['power']['uiDriver'].addItem('INDI')
-        self.drivers['relay']['uiDriver'].addItem('Built-In')
+        self.drivers['dome']['uiDropDown'].addItem('INDI')
+        self.drivers['camera']['uiDropDown'].addItem('INDI')
+        self.drivers['filterwheel']['uiDropDown'].addItem('INDI')
+        self.drivers['focuser']['uiDropDown'].addItem('INDI')
+        self.drivers['sensorWeather']['uiDropDown'].addItem('INDI')
+        self.drivers['directWeather']['uiDropDown'].addItem('Built-In')
+        self.drivers['onlineWeather']['uiDropDown'].addItem('Built-In')
+        self.drivers['cover']['uiDropDown'].addItem('INDI')
+        self.drivers['skymeter']['uiDropDown'].addItem('INDI')
+        self.drivers['telescope']['uiDropDown'].addItem('INDI')
+        self.drivers['power']['uiDropDown'].addItem('INDI')
+        self.drivers['relay']['uiDropDown'].addItem('Built-In')
         for app in self.app.astrometry.solverAvailable:
-            self.drivers['astrometry']['uiDriver'].addItem(app)
-        self.drivers['remote']['uiDriver'].addItem('Built-In')
-        self.drivers['measure']['uiDriver'].addItem('Built-In')
+            self.drivers['astrometry']['uiDropDown'].addItem(app)
+        self.drivers['remote']['uiDropDown'].addItem('Built-In')
+        self.drivers['measure']['uiDropDown'].addItem('Built-In')
 
         return True
 
@@ -267,21 +313,21 @@ class SettDevice(object):
 
         return True
 
-    def filterwheelDispatch(self):
+    def filterDispatch(self):
         """
-        filterwheelDispatch selects the type of device for filterwheel settings.
+        filterDispatch selects the type of device for filterwheel settings.
 
         :return: true for test purpose
         """
 
-        if self.ui.filterwheelDevice.currentText().startswith('INDI'):
-            self.app.filterwheel.name = self.ui.filterwheelDeviceName.currentText()
-            self.app.message.emit('Filterwheel enabled', 0)
-            self.deviceStat['filterwheel'] = False
+        if self.ui.filterDevice.currentText().startswith('INDI'):
+            self.app.filter.name = self.ui.filterDeviceName.currentText()
+            self.app.message.emit('Filter enabled', 0)
+            self.deviceStat['filter'] = False
         else:
-            self.app.filterwheel.name = ''
-            self.app.message.emit('Filterwheel disabled', 0)
-            self.deviceStat['filterwheel'] = None
+            self.app.filter.name = ''
+            self.app.message.emit('Filter disabled', 0)
+            self.deviceStat['filter'] = None
 
     def focuserDispatch(self):
         """

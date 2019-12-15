@@ -61,7 +61,7 @@ class Dome:
         self.signals = DomeSignals()
 
         self.framework = 'None'
-        self._host = None
+        self._host = ('localhost', 7624)
 
         self.run = {
             'indi': DomeIndi(self.app, self.signals),

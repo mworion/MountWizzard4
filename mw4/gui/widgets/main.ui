@@ -12689,7 +12689,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>8</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -12741,16 +12741,16 @@ to mount</string>
        <widget class="QComboBox" name="powerDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>80</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -12759,7 +12759,7 @@ to mount</string>
          <rect>
           <x>12</x>
           <y>80</y>
-          <width>146</width>
+          <width>91</width>
           <height>21</height>
          </rect>
         </property>
@@ -12776,7 +12776,7 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>PowerBox Device</string>
+         <string>PowerBox</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_46">
@@ -12784,7 +12784,7 @@ to mount</string>
          <rect>
           <x>12</x>
           <y>110</y>
-          <width>146</width>
+          <width>91</width>
           <height>21</height>
          </rect>
         </property>
@@ -12801,22 +12801,22 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Relay Device</string>
+         <string>Relay</string>
         </property>
        </widget>
        <widget class="QComboBox" name="measureDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>20</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -12825,7 +12825,7 @@ to mount</string>
          <rect>
           <x>12</x>
           <y>20</y>
-          <width>146</width>
+          <width>96</width>
           <height>21</height>
          </rect>
         </property>
@@ -12842,22 +12842,22 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Measure Device</string>
+         <string>Measure</string>
         </property>
        </widget>
        <widget class="QComboBox" name="remoteDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>50</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -12866,7 +12866,7 @@ to mount</string>
          <rect>
           <x>12</x>
           <y>50</y>
-          <width>146</width>
+          <width>91</width>
           <height>21</height>
          </rect>
         </property>
@@ -12883,22 +12883,22 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Remote Device</string>
+         <string>Remote</string>
         </property>
        </widget>
        <widget class="QComboBox" name="relayDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>110</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -12907,7 +12907,7 @@ to mount</string>
          <rect>
           <x>12</x>
           <y>140</y>
-          <width>146</width>
+          <width>91</width>
           <height>21</height>
          </rect>
         </property>
@@ -12924,23 +12924,49 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Cover Device</string>
+         <string>Cover</string>
         </property>
        </widget>
        <widget class="QComboBox" name="coverDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>140</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="powerSetup">
+        <property name="geometry">
+         <rect>
+          <x>295</x>
+          <y>80</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Setup</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="coverSetup">
+        <property name="geometry">
+         <rect>
+          <x>295</x>
+          <y>140</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Setup</string>
         </property>
        </widget>
       </widget>
@@ -12964,7 +12990,7 @@ to mount</string>
          <rect>
           <x>11</x>
           <y>110</y>
-          <width>146</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -12981,7 +13007,7 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Dome Device</string>
+         <string>Dome</string>
         </property>
        </widget>
        <widget class="QLabel" name="ccd">
@@ -12989,7 +13015,7 @@ to mount</string>
          <rect>
           <x>11</x>
           <y>20</y>
-          <width>146</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -13006,54 +13032,54 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Camera Device</string>
+         <string>Camera</string>
         </property>
        </widget>
        <widget class="QComboBox" name="domeDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>110</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
        <widget class="QComboBox" name="cameraDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>20</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
        <widget class="QComboBox" name="telescopeDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>140</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -13062,7 +13088,7 @@ to mount</string>
          <rect>
           <x>11</x>
           <y>140</y>
-          <width>146</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -13079,7 +13105,7 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Telescope Snoop Device</string>
+         <string>Telescope</string>
         </property>
        </widget>
        <widget class="QLabel" name="ast">
@@ -13087,7 +13113,7 @@ to mount</string>
          <rect>
           <x>11</x>
           <y>80</y>
-          <width>146</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -13104,22 +13130,22 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Astrometry Device</string>
+         <string>Astrometry</string>
         </property>
        </widget>
        <widget class="QComboBox" name="astrometryDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>80</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -13128,7 +13154,7 @@ to mount</string>
          <rect>
           <x>10</x>
           <y>50</y>
-          <width>146</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -13145,22 +13171,22 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Filter Wheel Device</string>
+         <string>Filter</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="filterwheelDevice">
+       <widget class="QComboBox" name="filterDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>50</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -13169,7 +13195,7 @@ to mount</string>
          <rect>
           <x>11</x>
           <y>170</y>
-          <width>146</width>
+          <width>76</width>
           <height>21</height>
          </rect>
         </property>
@@ -13186,23 +13212,88 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Focuser Snoop Device</string>
+         <string>Focuser</string>
         </property>
        </widget>
        <widget class="QComboBox" name="focuserDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>109</x>
           <y>170</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="domeSetup">
+        <property name="geometry">
+         <rect>
+          <x>295</x>
+          <y>110</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Setup</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="telescopeSetup">
+        <property name="geometry">
+         <rect>
+          <x>295</x>
+          <y>140</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Setup</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="focuserSetup">
+        <property name="geometry">
+         <rect>
+          <x>295</x>
+          <y>170</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Setup</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="filterSetup">
+        <property name="geometry">
+         <rect>
+          <x>295</x>
+          <y>50</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Setup</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="cameraSetup">
+        <property name="geometry">
+         <rect>
+          <x>295</x>
+          <y>20</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Setup</string>
         </property>
        </widget>
       </widget>
@@ -13226,7 +13317,7 @@ to mount</string>
          <rect>
           <x>11</x>
           <y>20</y>
-          <width>146</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -13243,22 +13334,22 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Sky Meter Device</string>
+         <string>Skymeter</string>
         </property>
        </widget>
        <widget class="QComboBox" name="sensorWeatherDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>110</x>
           <y>50</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -13267,7 +13358,7 @@ to mount</string>
          <rect>
           <x>10</x>
           <y>50</y>
-          <width>146</width>
+          <width>101</width>
           <height>21</height>
          </rect>
         </property>
@@ -13284,22 +13375,22 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Sensor Weather Device</string>
+         <string>Sensor Weather</string>
         </property>
        </widget>
        <widget class="QComboBox" name="skymeterDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>110</x>
           <y>20</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -13308,7 +13399,7 @@ to mount</string>
          <rect>
           <x>10</x>
           <y>80</y>
-          <width>146</width>
+          <width>96</width>
           <height>21</height>
          </rect>
         </property>
@@ -13325,22 +13416,22 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Online Weather Device</string>
+         <string>Online Weather</string>
         </property>
        </widget>
        <widget class="QComboBox" name="onlineWeatherDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>110</x>
           <y>80</y>
-          <width>200</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>21</height>
+          <width>0</width>
+          <height>0</height>
          </size>
         </property>
        </widget>
@@ -13349,7 +13440,7 @@ to mount</string>
          <rect>
           <x>10</x>
           <y>110</y>
-          <width>146</width>
+          <width>101</width>
           <height>21</height>
          </rect>
         </property>
@@ -13366,90 +13457,15 @@ to mount</string>
          </font>
         </property>
         <property name="text">
-         <string>Direct Weather Device</string>
+         <string>Direct Weather</string>
         </property>
        </widget>
        <widget class="QComboBox" name="directWeatherDevice">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>110</x>
           <y>110</y>
-          <width>200</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>21</height>
-         </size>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="INDI">
-      <attribute name="title">
-       <string>INDI</string>
-      </attribute>
-      <widget class="QGroupBox" name="groupBox_33">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>15</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Sensor Weather</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLineEdit" name="sensorWeatherPort">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>7624</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="sensorWeatherDeviceName">
-        <property name="geometry">
-         <rect>
-          <x>96</x>
-          <y>40</y>
-          <width>201</width>
-          <height>21</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="sensorWeatherHost">
-        <property name="geometry">
-         <rect>
-          <x>96</x>
-          <y>15</y>
-          <width>201</width>
+          <width>181</width>
           <height>21</height>
          </rect>
         </property>
@@ -13459,4204 +13475,31 @@ to mount</string>
           <height>0</height>
          </size>
         </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_3">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host IP/Port</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="sensorWeatherDeviceMessage">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Mes.</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="searchSensorWeatherDevices">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Search</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_34">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>90</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Camera</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_12">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host IP/Port</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="cameraPort">
-        <property name="geometry">
-         <rect>
-          <x>309</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>7624</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="cameraDeviceName">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>40</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="cameraHost">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>15</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="cameraDeviceMessage">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Mes.</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="searchCameraDevices">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Search</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_35">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>315</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Dome</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_13">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host IP/Port</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="domePort">
-        <property name="geometry">
-         <rect>
-          <x>309</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>7624</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="domeHost">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>15</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="domeDeviceName">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>40</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="domeDeviceMessage">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Mes.</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="searchDomeDevices">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Search</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_36">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>15</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Power / Dewheater</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_14">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host IP/Port</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_19">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Device Name</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="powerHost">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>15</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="powerPort">
-        <property name="geometry">
-         <rect>
-          <x>309</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>7624</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="powerDeviceName">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>40</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="powerDeviceMessage">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Mes.</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_37">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>90</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Skymeter</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_15">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host IP/Port</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_21">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>40</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Device Name</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="skymeterHost">
-        <property name="geometry">
-         <rect>
-          <x>96</x>
-          <y>15</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="skymeterDeviceName">
-        <property name="geometry">
-         <rect>
-          <x>96</x>
-          <y>40</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="skymeterPort">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>7624</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="skymeterDeviceMessage">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Mes.</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
-      <widget class="Line" name="line_93">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>11</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_38">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>165</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Cover / Flat</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_18">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host IP/Port</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="coverDeviceName">
-        <property name="geometry">
-         <rect>
-          <x>96</x>
-          <y>40</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="coverHost">
-        <property name="geometry">
-         <rect>
-          <x>96</x>
-          <y>15</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="coverPort">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>7624</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="coverDeviceMessage">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Mes.</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_36">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Device Name</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_39">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>240</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Telescope snooping</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_19">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host IP/Port</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_51">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Device Name</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="telescopePort">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>7624</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="telescopeDeviceName">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>40</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="telescopeHost">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>15</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="telescopeDeviceMessage">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Mes.</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QCheckBox" name="shareIndiServer">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>360</y>
-         <width>336</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>Share IP /  Port / Message settings for all devices</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_61">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>165</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Filterwheel</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_16">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host IP/Port</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="filterwheelPort">
-        <property name="geometry">
-         <rect>
-          <x>309</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>7624</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="filterwheelDeviceName">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>40</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="filterwheelHost">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>15</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="filterwheelDeviceMessage">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Mes.</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="searchFilterwheelDevices">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Search</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_65">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>240</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Focuser</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_17">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host IP/Port</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="focuserPort">
-        <property name="geometry">
-         <rect>
-          <x>309</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>7624</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="focuserDeviceName">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>40</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="focuserHost">
-        <property name="geometry">
-         <rect>
-          <x>95</x>
-          <y>15</y>
-          <width>201</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="focuserDeviceMessage">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="text">
-         <string>Mes.</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="searchFocuserDevices">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Search</string>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="Alpaca">
-      <attribute name="title">
-       <string>Alpaca</string>
-      </attribute>
-      <widget class="QGroupBox" name="groupBox_99">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>315</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Dome</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_28">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="domePortAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>11111</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="domeHostAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>15</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="domeAlpacaNumber">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_45">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>40</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DevNo</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_46">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>User</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="domeUser">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_47">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>40</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pass</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="domePassword">
-        <property name="geometry">
-         <rect>
-          <x>175</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_64">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>26</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_100">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>15</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Power / Dewheater</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_29">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="powerHostAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>15</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="powerPortAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>11111</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="powerAlpacaNumber">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_48">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>40</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DevNo</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_49">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>User</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="powerUser">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_50">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>40</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pass</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="powerPassword">
-        <property name="geometry">
-         <rect>
-          <x>175</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_68">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>26</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_101">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>165</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Cover / Flat</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_30">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="coverHostAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>15</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="coverPortAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>11111</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="coverAlpacaNumber">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_54">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>40</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DevNo</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_55">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>User</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="coverUser">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_56">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>40</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pass</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="coverPassword">
-        <property name="geometry">
-         <rect>
-          <x>175</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_66">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>26</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_102">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>240</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Focuser</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_31">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="focuserPortAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>11111</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="focuserHostAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>15</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="focuserAlpacaNumber">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_42">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>40</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DevNo</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_43">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>User</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="focuserUser">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_44">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>40</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pass</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="focuserPassword">
-        <property name="geometry">
-         <rect>
-          <x>175</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_63">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>26</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="Line" name="line_96">
-       <property name="geometry">
-        <rect>
-         <x>380</x>
-         <y>10</y>
-         <width>11</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>2</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="shareAlpacaServer">
-       <property name="geometry">
-        <rect>
-         <x>405</x>
-         <y>360</y>
-         <width>356</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>Share IP /  Port / User / Password settings for all devices</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_103">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>15</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Sensor Weather</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLineEdit" name="sensorWeatherPortAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>11111</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="sensorWeatherHostAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>15</y>
-          <width>211</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_7">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="sensorWeatherAlpacaNumber">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="sensorWeatherUser">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="sensorWeatherPassword">
-        <property name="geometry">
-         <rect>
-          <x>175</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_8">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>User</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_9">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>40</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pass</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_10">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>40</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DevNo</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_60">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>26</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_104">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>240</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Telescope snooping</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_32">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="telescopePortAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>11111</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="telescopeHostAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>15</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="telescopeAlpacaNumber">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_57">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>40</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DevNo</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_58">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>User</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="telescopeUser">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_59">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>40</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pass</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="telescopePassword">
-        <property name="geometry">
-         <rect>
-          <x>175</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_65">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>26</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_105">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>90</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Skymeter</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_33">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="skymeterHostAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>15</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="skymeterPortAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>11111</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="skymeterAlpacaNumber">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_51">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>40</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DevNo</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_52">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>User</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="skymeterUser">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_53">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>40</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pass</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="skymeterPassword">
-        <property name="geometry">
-         <rect>
-          <x>175</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_67">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>26</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_106">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>165</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Filterwheel</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_34">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="filterwheelPortAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>11111</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="filterwheelHostAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>15</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="filterwheelAlpacaNumber">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_39">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>40</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DevNo</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_40">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>User</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="filterwheelUser">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_41">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>40</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pass</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="filterwheelPassword">
-        <property name="geometry">
-         <rect>
-          <x>175</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_62">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>26</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_107">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>90</y>
-         <width>366</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Camera</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_mountIP_35">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>15</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="cameraPortAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>15</y>
-          <width>50</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>11111</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="cameraHostAlpaca">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>15</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>localhost</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="cameraAlpacaNumber">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>40</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>10.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_11">
-        <property name="geometry">
-         <rect>
-          <x>135</x>
-          <y>40</y>
-          <width>36</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pass</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_37">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>31</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>User</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="cameraUser">
-        <property name="geometry">
-         <rect>
-          <x>45</x>
-          <y>40</y>
-          <width>81</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_mountIP_38">
-        <property name="geometry">
-         <rect>
-          <x>265</x>
-          <y>40</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DevNo</string>
-        </property>
        </widget>
-       <widget class="QLineEdit" name="cameraPassword">
+       <widget class="QPushButton" name="skymeterSetup">
         <property name="geometry">
          <rect>
-          <x>175</x>
-          <y>40</y>
-          <width>81</width>
+          <x>295</x>
+          <y>20</y>
+          <width>66</width>
           <height>21</height>
          </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
         </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
         <property name="text">
-         <string>-</string>
+         <string>Setup</string>
         </property>
-        <property name="maxLength">
-         <number>50</number>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
        </widget>
-       <widget class="QLabel" name="label_mountIP_61">
+       <widget class="QPushButton" name="sensorWeatherSetup">
         <property name="geometry">
          <rect>
-          <x>275</x>
-          <y>15</y>
-          <width>26</width>
+          <x>295</x>
+          <y>50</y>
+          <width>66</width>
           <height>21</height>
          </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
         </property>
         <property name="text">
-         <string>Port</string>
+         <string>Setup</string>
         </property>
        </widget>
       </widget>
@@ -26090,21 +21933,6 @@ p, li { white-space: pre-wrap; }
   </widget>
  </widget>
  <tabstops>
-  <tabstop>sensorWeatherHost</tabstop>
-  <tabstop>sensorWeatherPort</tabstop>
-  <tabstop>cameraHost</tabstop>
-  <tabstop>cameraPort</tabstop>
-  <tabstop>domeHost</tabstop>
-  <tabstop>domePort</tabstop>
-  <tabstop>powerHost</tabstop>
-  <tabstop>powerPort</tabstop>
-  <tabstop>skymeterHost</tabstop>
-  <tabstop>skymeterPort</tabstop>
-  <tabstop>coverHost</tabstop>
-  <tabstop>coverPort</tabstop>
-  <tabstop>telescopeHost</tabstop>
-  <tabstop>telescopePort</tabstop>
-  <tabstop>shareIndiServer</tabstop>
   <tabstop>powerCurrent3</tabstop>
   <tabstop>consumptionAvgAmps</tabstop>
   <tabstop>sensorPower</tabstop>
@@ -26335,7 +22163,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>mountOn</tabstop>
   <tabstop>mountOff</tabstop>
   <tabstop>settingsTabWidget</tabstop>
-  <tabstop>cameraDeviceName</tabstop>
   <tabstop>sensorVoltage</tabstop>
   <tabstop>le_analyseFileName</tabstop>
   <tabstop>powerCurrent4</tabstop>
@@ -26343,19 +22170,13 @@ p, li { white-space: pre-wrap; }
   <tabstop>cameraDevice</tabstop>
   <tabstop>dewCurrentA</tabstop>
   <tabstop>mainTabWidget</tabstop>
-  <tabstop>powerDeviceName</tabstop>
   <tabstop>telescopeDevice</tabstop>
   <tabstop>consumptionAmpHours</tabstop>
   <tabstop>astrometryDevice</tabstop>
   <tabstop>dewCurrentB</tabstop>
   <tabstop>domeDevice</tabstop>
-  <tabstop>domeDeviceName</tabstop>
   <tabstop>powerCurrent1</tabstop>
-  <tabstop>telescopeDeviceName</tabstop>
   <tabstop>consumptionWattHours</tabstop>
-  <tabstop>coverDeviceName</tabstop>
-  <tabstop>skymeterDeviceName</tabstop>
-  <tabstop>sensorWeatherDeviceName</tabstop>
   <tabstop>powerCurrent2</tabstop>
   <tabstop>skymeterDevice</tabstop>
   <tabstop>sensorWeatherDevice</tabstop>

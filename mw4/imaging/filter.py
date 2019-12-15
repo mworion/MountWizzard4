@@ -26,14 +26,14 @@ import numpy as np
 from mw4.base import indiClass
 
 
-class FilterWheel(indiClass.IndiClass):
+class Filter(indiClass.IndiClass):
     """
-    the class FilterWheel inherits all information and handling of the FilterWheel device
+    the class Filter inherits all information and handling of the FilterWheel device
 
-        >>> f = FilterWheel(app=None)
+        >>> f = Filter(app=None)
     """
 
-    __all__ = ['FilterWheel',
+    __all__ = ['Filter',
                ]
 
     logger = logging.getLogger(__name__)

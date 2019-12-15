@@ -45,7 +45,7 @@ from mw4.modeldata.buildpoints import DataPoint
 from mw4.modeldata.hipparcos import Hipparcos
 from mw4.dome.dome import Dome
 from mw4.imaging.camera import Camera
-from mw4.imaging.filterwheel import FilterWheel
+from mw4.imaging.filter import Filter
 from mw4.imaging.focuser import Focuser
 from mw4.environment.sensorWeather import SensorWeather
 from mw4.environment.skymeter import Skymeter
@@ -130,7 +130,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.cover = FlipFlat(self)
         self.dome = Dome(self)
         self.camera = Camera(self)
-        self.filterwheel = FilterWheel(self)
+        self.filter = Filter(self)
         self.focuser = Focuser(self)
         self.telescope = Telescope(self)
         self.skymeter = Skymeter(self)

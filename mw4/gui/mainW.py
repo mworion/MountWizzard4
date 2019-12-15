@@ -50,15 +50,15 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 
 class MainWindow(MWidget,
                  Mount,
-                 EnvironGui,
+#                 EnvironGui,
                  Model,
                  BuildPoints,
                  ManageModel,
                  Satellite,
                  Relay,
-                 Power,
+#                 Power,
                  Tools,
-                 SettIndi,
+#                 SettIndi,
                  SettDevice,
                  SettMount,
                  SettHorizon,
@@ -462,10 +462,11 @@ class MainWindow(MWidget,
         :return: True for test purpose
         """
 
-        if self.refractionSource in self.deviceStat:
-            self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
-        else:
-            self.deviceStat['environOverall'] = None
+        # todo cover setting refraction source
+        # if self.refractionSource in self.deviceStat:
+        #     self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
+        # else:
+        #     self.deviceStat['environOverall'] = None
 
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device, None) is None:

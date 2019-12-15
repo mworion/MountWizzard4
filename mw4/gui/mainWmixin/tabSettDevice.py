@@ -250,6 +250,8 @@ class SettDevice(object):
                 self.deviceStat[driver] = None
                 self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
                 if self.drivers[driver]['class'] is not None:
+                    if hasattr(self.drivers[driver]['class'], 'name'):
+                        self.drivers[driver]['class'].name = ''
                     self.drivers[driver]['class'].stopCommunication()
                 continue
 
@@ -271,10 +273,8 @@ class SettDevice(object):
 
             if self.drivers[driver]['class'] is not None:
                 suc = self.drivers[driver]['class'].startCommunication()
-                if suc:
-                    self.app.message(f'{driver} started')
-                else:
-                    self.app.message(f'{driver} could not be started')
+                if not suc:
+                    self.app.message.emit(f'{driver} could not be started', 2)
 
             return True
 
@@ -297,6 +297,7 @@ class SettDevice(object):
             if self.drivers[driver]['class'].name != deviceName:
                 continue
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
+            self.app.message.emit(f'server {driver} disconnected', 0)
         return True
 
     def deviceConnected(self, deviceName):
@@ -315,6 +316,7 @@ class SettDevice(object):
                 continue
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
+            self.app.message.emit(f'{driver} connected', 0)
         return True
 
     def deviceDisconnected(self, deviceName):
@@ -333,4 +335,5 @@ class SettDevice(object):
                 continue
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
             self.deviceStat[driver] = False
+            self.app.message.emit(f'{driver} disconnected', 0)
         return True

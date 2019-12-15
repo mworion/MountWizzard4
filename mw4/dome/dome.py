@@ -93,7 +93,6 @@ class Dome:
     @name.setter
     def name(self, value):
         self._name = value
-        print('dome name', value)
         self.run['indi'].name = value
 
     @property

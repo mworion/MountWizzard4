@@ -235,12 +235,11 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
-            if not driverName and (self.sender() != self.drivers[driver]['uiDropDown']):
-                continue
-            elif driverName != driver:
-                continue
 
-            print('dispatch', driver)
+            if isinstance(driverName, str) and (driverName != driver):
+                continue
+            elif self.sender() != self.drivers[driver]['uiDropDown']:
+                continue
 
             impl = ['indi', 'buil', 'alpa']
 

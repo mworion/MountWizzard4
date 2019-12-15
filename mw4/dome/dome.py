@@ -109,8 +109,8 @@ class Dome:
     def deviceConnected(self, deviceName):
         self.signals.deviceConnected.emit(deviceName)
 
-    def deviceDisconnected(self, value):
-        self.signals.deviceDisconnected.emit(value)
+    def deviceDisconnected(self, deviceName):
+        self.signals.deviceDisconnected.emit(deviceName)
 
     def serverConnected(self):
         self.signals.serverConnected.emit()
@@ -158,10 +158,10 @@ class Dome:
 
     def startCommunication(self):
         if self.framework in self.run.keys():
-            print('dome start', self.framework)
-            self.run[self.framework].startCommunication()
+            suc = self.run[self.framework].startCommunication()
+            return suc
 
     def stopCommunication(self):
         if self.framework in self.run.keys():
-            print('dome stop', self.framework)
-            self.run[self.framework].stopCommunication()
+            suc = self.run[self.framework].stopCommunication()
+            return suc

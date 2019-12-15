@@ -274,10 +274,11 @@ class MeasureData(object):
         dat['status'] = np.append(dat['status'], self.app.mount.obsSite.status)
 
         if 'sensorWeather' in self.devices:
-            sensorWeatherTemp = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
-            sensorWeatherPress = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_PRESSURE', 0)
-            sensorWeatherDew = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
-            sensorWeatherHum = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
+            sens = self.app.sensorWeather
+            sensorWeatherTemp = sens.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
+            sensorWeatherPress = sens.data.get('WEATHER_PARAMETERS.WEATHER_PRESSURE', 0)
+            sensorWeatherDew = sens.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
+            sensorWeatherHum = sens.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
             dat['sensorWeatherTemp'] = np.append(dat['sensorWeatherTemp'], sensorWeatherTemp)
             dat['sensorWeatherHum'] = np.append(dat['sensorWeatherHum'], sensorWeatherHum)
             dat['sensorWeatherPress'] = np.append(dat['sensorWeatherPress'], sensorWeatherPress)

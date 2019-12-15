@@ -66,7 +66,6 @@ class Camera(indiClass.IndiClass):
     def __init__(self, app=None):
         super().__init__(app=app)
 
-
         self.signals = CameraSignals()
         self.imagePath = ''
         self.filterNames = dict()

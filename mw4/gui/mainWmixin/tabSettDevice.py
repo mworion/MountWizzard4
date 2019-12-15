@@ -246,7 +246,6 @@ class SettDevice(object):
             impl = ['indi', 'buil', 'alpa']
 
             if self.drivers[driver]['uiDropDown'].currentText()[:4] not in impl:
-                print('stop driver')
                 self.app.message.emit(f'{driver} disabled', 0)
                 self.deviceStat[driver] = None
                 self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
@@ -259,10 +258,11 @@ class SettDevice(object):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
             if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
-                print('start indi')
                 driverData = self.driversData.get(driver, {})
                 self.drivers[driver]['class'].framework = 'indi'
                 self.drivers[driver]['class'].name = driverData.get('indiName', '')
+                host = (driverData.get('indiHost'), int(driverData.get('indiPort')))
+                self.drivers[driver]['class'].host = host
 
             elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
                 self.drivers[driver]['class'].framework = 'alpaca'
@@ -270,7 +270,11 @@ class SettDevice(object):
                 self.drivers[driver]['class'].number = driverData.get('alpacaNumber', 0)
 
             if self.drivers[driver]['class'] is not None:
-                self.drivers[driver]['class'].startCommunication()
+                suc = self.drivers[driver]['class'].startCommunication()
+                if suc:
+                    self.app.message(f'{driver} started')
+                else:
+                    self.app.message(f'{driver} could not be started')
 
             return True
 
@@ -287,6 +291,9 @@ class SettDevice(object):
         deviceName = list(deviceList.keys())[0]
 
         for driver in self.drivers:
+            # todo remove check attribute
+            if not hasattr(self.drivers[driver]['class'], 'name'):
+                continue
             if self.drivers[driver]['class'].name != deviceName:
                 continue
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
@@ -301,10 +308,13 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
+            # todo remove check attribute
+            if not hasattr(self.drivers[driver]['class'], 'name'):
+                continue
             if self.drivers[driver]['class'].name != deviceName:
                 continue
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-            self.deviceStat[device] = True
+            self.deviceStat[driver] = True
         return True
 
     def deviceDisconnected(self, deviceName):
@@ -316,8 +326,11 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
+            # todo remove check attribute
+            if not hasattr(self.drivers[driver]['class'], 'name'):
+                continue
             if self.drivers[driver]['class'].name != deviceName:
                 continue
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
-            self.deviceStat[device] = False
+            self.deviceStat[driver] = False
         return True

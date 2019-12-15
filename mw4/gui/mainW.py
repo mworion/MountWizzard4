@@ -20,26 +20,21 @@
 # standard libraries
 import logging
 import datetime
-import os
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
-import wakeonlan
 # local import
 from mw4.gui.widget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
-from mw4.gui.mainWmixin.tabEnviron import EnvironGui
 from mw4.gui.mainWmixin.tabModel import Model
 from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
 from mw4.gui.mainWmixin.tabManageModel import ManageModel
 from mw4.gui.mainWmixin.tabSatellite import Satellite
 from mw4.gui.mainWmixin.tabRelay import Relay
-from mw4.gui.mainWmixin.tabPower import Power
 from mw4.gui.mainWmixin.tabTools import Tools
 from mw4.gui.mainWmixin.tabSettDevice import SettDevice
-from mw4.gui.mainWmixin.tabSettIndi import SettIndi
 from mw4.gui.mainWmixin.tabSettMount import SettMount
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
 from mw4.gui.mainWmixin.tabSettImaging import SettImaging
@@ -50,15 +45,14 @@ from mw4.gui.mainWmixin.tabSettMisc import SettMisc
 
 class MainWindow(MWidget,
                  Mount,
-#                 EnvironGui,
+                 # EnvironGui,
                  Model,
                  BuildPoints,
                  ManageModel,
                  Satellite,
                  Relay,
-#                 Power,
+                 # Power,
                  Tools,
-#                 SettIndi,
                  SettDevice,
                  SettMount,
                  SettHorizon,

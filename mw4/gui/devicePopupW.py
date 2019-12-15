@@ -212,5 +212,3 @@ class DevicePopup(widget.MWidget):
             self.ui.indiNameList.addItem(deviceName)
 
         return True
-
-

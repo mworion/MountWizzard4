@@ -236,14 +236,17 @@ class SettDevice(object):
 
         for driver in self.drivers:
 
-            if isinstance(driverName, str) and (driverName != driver):
+            isGui = not isinstance(driverName, str)
+
+            if not isGui and (driverName != driver):
                 continue
-            elif self.sender() != self.drivers[driver]['uiDropDown']:
+            if isGui and (self.sender() != self.drivers[driver]['uiDropDown']):
                 continue
 
             impl = ['indi', 'buil', 'alpa']
 
             if self.drivers[driver]['uiDropDown'].currentText()[:4] not in impl:
+                print('stop driver')
                 self.app.message.emit(f'{driver} disabled', 0)
                 self.deviceStat[driver] = None
                 self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
@@ -256,14 +259,15 @@ class SettDevice(object):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
             if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
+                print('start indi')
                 driverData = self.driversData.get(driver, {})
                 self.drivers[driver]['class'].framework = 'indi'
-                self.drivers[driver]['class'].name = driverData.get('name', '')
+                self.drivers[driver]['class'].name = driverData.get('indiName', '')
 
             elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
                 self.drivers[driver]['class'].framework = 'alpaca'
                 driverData = self.driversData.get(driver, {})
-                self.drivers[driver]['class'].number = driverData.get('number', 0)
+                self.drivers[driver]['class'].number = driverData.get('alpacaNumber', 0)
 
             if self.drivers[driver]['class'] is not None:
                 self.drivers[driver]['class'].startCommunication()
@@ -283,7 +287,7 @@ class SettDevice(object):
         deviceName = list(deviceList.keys())[0]
 
         for driver in self.drivers:
-            if self.drivers[driver].name != deviceName:
+            if self.drivers[driver]['class'].name != deviceName:
                 continue
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
         return True

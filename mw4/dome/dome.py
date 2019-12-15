@@ -93,6 +93,7 @@ class Dome:
     @name.setter
     def name(self, value):
         self._name = value
+        print('dome name', value)
         self.run['indi'].name = value
 
     @property
@@ -156,11 +157,11 @@ class Dome:
         return True
 
     def startCommunication(self):
-        print('dome start', self.framework)
         if self.framework in self.run.keys():
+            print('dome start', self.framework)
             self.run[self.framework].startCommunication()
 
     def stopCommunication(self):
-        print('dome stop', self.framework)
         if self.framework in self.run.keys():
+            print('dome stop', self.framework)
             self.run[self.framework].stopCommunication()

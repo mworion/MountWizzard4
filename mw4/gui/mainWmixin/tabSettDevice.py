@@ -151,7 +151,7 @@ class SettDevice(object):
 
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
-            self.dispatch(driverName={driver: ''})
+            self.dispatch(driverName=driver)
 
         return True
 
@@ -228,21 +228,23 @@ class SettDevice(object):
             self.popupUi = DevicePopup(geo=geo, device=driver, data=self.driversData)
             # todo: signal when Popup is finished
 
-    def dispatch(self, driverName={}):
+    def dispatch(self, driverName=''):
         """
 
         :return: true for test purpose
         """
 
         for driver in self.drivers:
-            if not driverName and self.sender() != self.drivers[driver]['uiDropDown']:
+            if not driverName and (self.sender() != self.drivers[driver]['uiDropDown']):
                 continue
             elif driverName != driver:
                 continue
 
+            print('dispatch', driver)
+
             impl = ['indi', 'buil', 'alpa']
 
-            if self.drivers[driver]['uiDropDown'].currentText()[:4] in impl:
+            if self.drivers[driver]['uiDropDown'].currentText()[:4] not in impl:
                 self.app.message.emit(f'{driver} disabled', 0)
                 self.deviceStat[driver] = None
                 self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)

@@ -185,30 +185,28 @@ class SettDevice(object):
         :return: success for test
         """
 
+        # all dropdown have disabled as capability
         dropDowns = list(self.drivers[driver]['uiDropDown'] for driver in self.drivers)
         for dropDown in dropDowns:
             dropDown.clear()
             dropDown.setView(PyQt5.QtWidgets.QListView())
             dropDown.addItem('device disabled')
 
-        # adding special items
-        # todo: search for implemented classes
-        self.drivers['dome']['uiDropDown'].addItem('indi')
-        self.drivers['camera']['uiDropDown'].addItem('indi')
-        self.drivers['filter']['uiDropDown'].addItem('indi')
-        self.drivers['focuser']['uiDropDown'].addItem('indi')
-        self.drivers['sensorWeather']['uiDropDown'].addItem('indi')
+        # adding driver items with applicable framework
+        for driver in self.drivers:
+            if not hasattr(self.drivers[driver]['class'], 'run'):
+                continue
+            for framework in self.drivers[driver]['class'].run.keys():
+                self.drivers[driver]['uiDropDown'].addItem(framework)
+
+        # build-in drivers
         self.drivers['directWeather']['uiDropDown'].addItem('built-in')
         self.drivers['onlineWeather']['uiDropDown'].addItem('built-in')
-        self.drivers['cover']['uiDropDown'].addItem('indi')
-        self.drivers['skymeter']['uiDropDown'].addItem('indi')
-        self.drivers['telescope']['uiDropDown'].addItem('indi')
-        self.drivers['power']['uiDropDown'].addItem('indi')
         self.drivers['relay']['uiDropDown'].addItem('built-in')
-        for app in self.app.astrometry.solverAvailable:
-            self.drivers['astrometry']['uiDropDown'].addItem(app)
         self.drivers['remote']['uiDropDown'].addItem('built-in')
         self.drivers['measure']['uiDropDown'].addItem('built-in')
+        for app in self.app.astrometry.solverAvailable:
+            self.drivers['astrometry']['uiDropDown'].addItem(app)
 
         return True
 

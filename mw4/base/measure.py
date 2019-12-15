@@ -65,7 +65,7 @@ class MeasureData(object):
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 
-    def startMeasurement(self):
+    def startCommunication(self):
         """
 
         :return: True for test purpose
@@ -78,7 +78,7 @@ class MeasureData(object):
 
         return True
 
-    def stopMeasurement(self):
+    def stopCommunication(self):
         """
 
         :return: True for test purpose

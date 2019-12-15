@@ -84,11 +84,7 @@ class IndiClass(object):
 
     @name.setter
     def name(self, value):
-        if value != self._name:
-            self.stopCommunication()
         self._name = value
-        if value:
-            self.startCommunication()
 
     @property
     def host(self):

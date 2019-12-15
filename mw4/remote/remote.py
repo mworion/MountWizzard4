@@ -49,9 +49,9 @@ class Remote(PyQt5.QtCore.QObject):
         self.clientConnection = None
         self.tcpServer = None
 
-    def startRemote(self):
+    def startCommunication(self):
         """
-        startRemote prepares the remote listening by starting a tcp server listening
+        startCommunication prepares the remote listening by starting a tcp server listening
         on localhost and port 3490.
 
         :return: success
@@ -72,9 +72,9 @@ class Remote(PyQt5.QtCore.QObject):
             self.tcpServer.newConnection.connect(self.addConnection)
             return True
 
-    def stopRemote(self):
+    def stopCommunication(self):
         """
-        stopRemote kills all connections and stops the tcpServer
+        stopCommunication kills all connections and stops the tcpServer
 
         :return: true for test purpose
         """

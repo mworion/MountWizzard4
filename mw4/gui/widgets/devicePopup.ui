@@ -51,9 +51,9 @@
   <widget class="QTabWidget" name="tab">
    <property name="geometry">
     <rect>
-     <x>4</x>
+     <x>14</x>
      <y>5</y>
-     <width>391</width>
+     <width>371</width>
      <height>256</height>
     </rect>
    </property>
@@ -90,7 +90,7 @@
     <widget class="QLineEdit" name="indiHost">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>40</y>
        <width>201</width>
        <height>21</height>
@@ -159,9 +159,9 @@
     <widget class="QPushButton" name="indiSearch">
      <property name="geometry">
       <rect>
-       <x>315</x>
+       <x>305</x>
        <y>100</y>
-       <width>61</width>
+       <width>51</width>
        <height>21</height>
       </rect>
      </property>
@@ -177,7 +177,7 @@
     <widget class="QComboBox" name="indiNameList">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>100</y>
        <width>201</width>
        <height>21</height>
@@ -205,7 +205,7 @@
     <widget class="QCheckBox" name="indiMessages">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>135</y>
        <width>201</width>
        <height>20</height>
@@ -232,7 +232,7 @@
     <widget class="QLineEdit" name="indiPort">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>70</y>
        <width>50</width>
        <height>21</height>
@@ -265,7 +265,7 @@
     <widget class="QPushButton" name="indiCopy">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>190</y>
        <width>201</width>
        <height>21</height>
@@ -286,7 +286,7 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>160</y>
        <width>201</width>
        <height>20</height>
@@ -339,7 +339,7 @@
     <widget class="QLineEdit" name="alpacaPort">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>70</y>
        <width>50</width>
        <height>21</height>
@@ -426,7 +426,7 @@
     <widget class="QLineEdit" name="alpacaHost">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>40</y>
        <width>201</width>
        <height>21</height>
@@ -477,7 +477,7 @@
     <widget class="QPushButton" name="pushButton_4">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>190</y>
        <width>201</width>
        <height>21</height>
@@ -495,7 +495,7 @@
     <widget class="QComboBox" name="alpacaProtocol">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>10</y>
        <width>201</width>
        <height>21</height>
@@ -551,7 +551,7 @@
     <widget class="QLineEdit" name="alpacaUser">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>130</y>
        <width>201</width>
        <height>21</height>
@@ -602,7 +602,7 @@
     <widget class="QLineEdit" name="alpacaPassword">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>160</y>
        <width>201</width>
        <height>21</height>
@@ -653,7 +653,7 @@
     <widget class="QDoubleSpinBox" name="alpacaNumber">
      <property name="geometry">
       <rect>
-       <x>105</x>
+       <x>100</x>
        <y>100</y>
        <width>51</width>
        <height>21</height>

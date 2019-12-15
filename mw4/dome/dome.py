@@ -62,6 +62,8 @@ class Dome:
 
         self.framework = 'None'
         self._host = ('localhost', 7624)
+        self._name = ''
+        self._number = 0
 
         self.run = {
             'indi': DomeIndi(self.app, self.signals),
@@ -84,6 +86,24 @@ class Dome:
     def host(self, value):
         self._host = value
         self.run['indi'].client.host = value
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+        self.run['indi'].name = value
+
+    @property
+    def number(self):
+        return self._number
+
+    @number.setter
+    def number(self, value):
+        self._number = value
+        self.run['alpaca'].number = value
 
     # wee need to collect dispatch all signals from the different frameworks
     def deviceConnected(self, deviceName):

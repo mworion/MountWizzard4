@@ -68,11 +68,13 @@ class DevicePopup(widget.MWidget):
         self.move(x, y)
 
         self.ui.cancel.clicked.connect(self.close)
-        self.ui.ok.clicked.connect(self.saveData)
+        self.ui.ok.clicked.connect(self.storeConfig)
         self.ui.indiSearch.clicked.connect(self.searchDevices)
-        self.showWindow()
+        self.initConfig()
 
-    def showWindow(self):
+        self.show()
+
+    def initConfig(self):
         """
 
         """
@@ -81,7 +83,7 @@ class DevicePopup(widget.MWidget):
         deviceData = self.data.get(self.device, {})
         framework = deviceData.get('framework', 'indi')
         driverType = deviceData.get('driverType', '')
-        self.indiSearchType = self.indiTypes[driverType]
+        self.indiSearchType = self.indiTypes.get(driverType, 0xff)
         self.setWindowTitle(f'Setup for: {self.device}')
 
         # populating indi data
@@ -115,10 +117,7 @@ class DevicePopup(widget.MWidget):
         elif framework == 'alpaca':
             self.ui.tab.setCurrentIndex(1)
 
-        # finally showing the window
-        self.show()
-
-    def saveData(self):
+    def storeConfig(self):
         """
 
         """

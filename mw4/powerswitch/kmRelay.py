@@ -116,9 +116,9 @@ class KMRelay(PyQt5.QtCore.QObject):
     def password(self, value):
         self._password = value
 
-    def startTimers(self):
+    def startCommunication(self):
         """
-        startTimers enables the cyclic timers for polling necessary relay data.
+        startCommunication enables the cyclic timers for polling necessary relay data.
 
         :return: success
         """
@@ -134,9 +134,9 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         return True
 
-    def stopTimers(self):
+    def stopCommunication(self):
         """
-        stopTimers disables the cyclic timers for polling necessary relay data.
+        stopCommunication disables the cyclic timers for polling necessary relay data.
 
         :return: True for test purpose
         """

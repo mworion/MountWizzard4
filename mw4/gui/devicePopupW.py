@@ -92,9 +92,10 @@ class DevicePopup(widget.MWidget):
 
         self.ui.indiNameList.clear()
         self.ui.indiNameList.setView(PyQt5.QtWidgets.QListView())
-        indiName = deviceData.get('indiName', 'test2')
-        nameList = deviceData.get('indiNameList', ['test1', 'test2'])
-        self.ui.indiNameList.addItem('-')
+        indiName = deviceData.get('indiName', '')
+        nameList = deviceData.get('indiNameList', [])
+        if not nameList:
+            self.ui.indiNameList.addItem('-')
         for i, name in enumerate(nameList):
             self.ui.indiNameList.addItem(name)
             if indiName == name:
@@ -129,8 +130,6 @@ class DevicePopup(widget.MWidget):
         model = self.ui.indiNameList.model()
         nameList = []
         for index in range(model.rowCount()):
-            if model.item(index).text() == '-':
-                continue
             nameList.append(model.item(index).text())
         self.data[self.device]['indiNameList'] = nameList
 
@@ -209,7 +208,6 @@ class DevicePopup(widget.MWidget):
 
         self.ui.indiNameList.clear()
         self.ui.indiNameList.setView(PyQt5.QtWidgets.QListView())
-        self.ui.indiNameList.addItem('-')
         for deviceName in self.indiSearchNameList:
             self.ui.indiNameList.addItem(deviceName)
 

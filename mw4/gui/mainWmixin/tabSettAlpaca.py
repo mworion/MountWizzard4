@@ -290,7 +290,7 @@ class SettAlpaca(object):
 
     def showIndiDisconnected(self, deviceList):
         """
-        showIndiDisconnected writes info to message window and recolors the status
+        deviceDisconnected writes info to message window and recolors the status
 
         :return: true for test purpose
         """

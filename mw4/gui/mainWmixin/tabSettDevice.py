@@ -123,6 +123,17 @@ class SettDevice(object):
             if self.drivers[driver]['uiSetup'] is not None:
                 self.drivers[driver]['uiSetup'].clicked.connect(self.setupPopUp)
 
+            if not hasattr(self.drivers[driver]['class'], 'signals'):
+                continue
+
+            signals = self.drivers[driver]['class'].signals
+            if hasattr(signals, 'serverDisconnected'):
+                signals.serverDisconnected.connect(self.serverDisconnected)
+            if hasattr(signals, 'deviceConnected'):
+                signals.deviceConnected.connect(self.deviceConnected)
+            if hasattr(signals, 'deviceDisconnected'):
+                signals.deviceDisconnected.connect(self.deviceDisconnected)
+
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -140,7 +151,7 @@ class SettDevice(object):
 
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
-            self.dispatch(driverName=driver)
+            self.dispatch(driverName={driver: ''})
 
         return True
 
@@ -153,8 +164,10 @@ class SettDevice(object):
         :return: True for test purpose
         """
 
-        config = self.app.config.get('mainW', {})
-        configData = self.app.config.get('driversData', {})
+        config = self.app.config['mainW']
+        if 'driversData' not in self.app.config:
+            self.app.config['driversData'] = {}
+        configData = self.app.config['driversData']
 
         for driver in self.drivers:
             config[driver] = self.drivers[driver]['uiDropDown'].currentIndex()
@@ -179,22 +192,23 @@ class SettDevice(object):
             dropDown.addItem('No device selected')
 
         # adding special items
-        self.drivers['dome']['uiDropDown'].addItem('INDI')
-        self.drivers['camera']['uiDropDown'].addItem('INDI')
-        self.drivers['filter']['uiDropDown'].addItem('INDI')
-        self.drivers['focuser']['uiDropDown'].addItem('INDI')
-        self.drivers['sensorWeather']['uiDropDown'].addItem('INDI')
-        self.drivers['directWeather']['uiDropDown'].addItem('Built-In')
-        self.drivers['onlineWeather']['uiDropDown'].addItem('Built-In')
-        self.drivers['cover']['uiDropDown'].addItem('INDI')
-        self.drivers['skymeter']['uiDropDown'].addItem('INDI')
-        self.drivers['telescope']['uiDropDown'].addItem('INDI')
-        self.drivers['power']['uiDropDown'].addItem('INDI')
-        self.drivers['relay']['uiDropDown'].addItem('Built-In')
+        # todo: search for implemented classes
+        self.drivers['dome']['uiDropDown'].addItem('indi')
+        self.drivers['camera']['uiDropDown'].addItem('indi')
+        self.drivers['filter']['uiDropDown'].addItem('indi')
+        self.drivers['focuser']['uiDropDown'].addItem('indi')
+        self.drivers['sensorWeather']['uiDropDown'].addItem('indi')
+        self.drivers['directWeather']['uiDropDown'].addItem('built-in')
+        self.drivers['onlineWeather']['uiDropDown'].addItem('built-in')
+        self.drivers['cover']['uiDropDown'].addItem('indi')
+        self.drivers['skymeter']['uiDropDown'].addItem('indi')
+        self.drivers['telescope']['uiDropDown'].addItem('indi')
+        self.drivers['power']['uiDropDown'].addItem('indi')
+        self.drivers['relay']['uiDropDown'].addItem('built-in')
         for app in self.app.astrometry.solverAvailable:
             self.drivers['astrometry']['uiDropDown'].addItem(app)
-        self.drivers['remote']['uiDropDown'].addItem('Built-In')
-        self.drivers['measure']['uiDropDown'].addItem('Built-In')
+        self.drivers['remote']['uiDropDown'].addItem('built-in')
+        self.drivers['measure']['uiDropDown'].addItem('built-in')
 
         return True
 
@@ -228,7 +242,9 @@ class SettDevice(object):
             elif driverName != driver:
                 continue
 
-            if self.drivers[driver]['uiDropDown'].currentText()[:4] in ['INDI', 'Buil', 'ALPA']:
+            impl = ['indi', 'buil', 'alpa']
+
+            if self.drivers[driver]['uiDropDown'].currentText()[:4] in impl:
                 self.app.message.emit(f'{driver} disabled', 0)
                 self.deviceStat[driver] = None
                 self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
@@ -240,12 +256,12 @@ class SettDevice(object):
             self.deviceStat[driver] = False
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
-            if self.drivers[driver]['uiDropDown'].currentText().startswith('INDI'):
+            if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
                 driverData = self.driversData.get(driver, {})
                 self.drivers[driver]['class'].framework = 'indi'
                 self.drivers[driver]['class'].name = driverData.get('name', '')
 
-            elif self.drivers[driver]['uiDropDown'].currentText().startswith('ALPACA'):
+            elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
                 self.drivers[driver]['class'].framework = 'alpaca'
                 driverData = self.driversData.get(driver, {})
                 self.drivers[driver]['class'].number = driverData.get('number', 0)
@@ -255,9 +271,9 @@ class SettDevice(object):
 
             return True
 
-    def showIndiDisconnected(self, deviceList):
+    def serverDisconnected(self, deviceList):
         """
-        showIndiDisconnected writes info to message window and recolors the status
+        serverDisconnected writes info to message window and recolors the status
 
         :return: true for test purpose
         """
@@ -273,7 +289,7 @@ class SettDevice(object):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
         return True
 
-    def showDeviceConnected(self, deviceName):
+    def deviceConnected(self, deviceName):
         """
         showCoverDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
@@ -288,7 +304,7 @@ class SettDevice(object):
             self.deviceStat[device] = True
         return True
 
-    def showDeviceDisconnected(self, deviceName):
+    def deviceDisconnected(self, deviceName):
         """
         showCoverDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available

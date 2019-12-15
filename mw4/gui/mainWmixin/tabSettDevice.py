@@ -66,7 +66,7 @@ class SettDevice(object):
             'directWeather': {
                 'uiDropDown': self.ui.directWeatherDevice,
                 'uiSetup': None,
-                'class': self.app.directWeather,
+                'class': None,
             },
             'onlineWeather': {
                 'uiDropDown': self.ui.onlineWeatherDevice,
@@ -119,7 +119,7 @@ class SettDevice(object):
         self.setupDeviceGui()
 
         for driver in self.drivers:
-            self.drivers[driver]['uiDropDown'].activated.connect(self.drivers[driver]['class'])
+            self.drivers[driver]['uiDropDown'].activated.connect(self.dispatch)
             if self.drivers[driver]['uiSetup'] is not None:
                 self.drivers[driver]['uiSetup'].clicked.connect(self.setupPopUp)
 
@@ -136,11 +136,11 @@ class SettDevice(object):
         configData = self.app.config.get('driversData', {})
 
         for driver in self.drivers:
-            self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
-            self.drivers[driver]['class']()
+            self.driversData[driver] = configData.get(driver, {})
 
         for driver in self.drivers:
-            self.driversData[driver] = configData.get(driver, {})
+            self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
+            self.dispatch(driverName=driver)
 
         return True
 
@@ -216,35 +216,44 @@ class SettDevice(object):
             self.popupUi = DevicePopup(geo=geo, device=driver, data=self.driversData)
             # todo: signal when Popup is finished
 
-    def dispatch(self):
+    def dispatch(self, driverName={}):
         """
 
         :return: true for test purpose
         """
+
         for driver in self.drivers:
-            if self.sender() != self.drivers[driver]['uiDropDown']:
+            if not driverName and self.sender() != self.drivers[driver]['uiDropDown']:
+                continue
+            elif driverName != driver:
                 continue
 
-            if dropDown.currentText().startswith('Built-In'):
-                self.app.message.emit(f'{driver} enabled', 0)
-                self.deviceStat[driver] = False
-                self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-                self.drivers['class'].startCommunication()
-
-            elif dropDown.currentText().startswith('INDI'):
-                self.app.message.emit(f'{driver} enabled', 0)
-                self.deviceStat[driver] = False
-                self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-                driverData = self.driversData.get('dome', {})
-                self.app.dome.run['indi'].name = driverData.get('name', '')
-                self.drivers['class'].startCommunication()
-
-            else:
+            if self.drivers[driver]['uiDropDown'].currentText()[:4] in ['INDI', 'Buil', 'ALPA']:
                 self.app.message.emit(f'{driver} disabled', 0)
                 self.deviceStat[driver] = None
-                self.drivers['class'].stopCommunication()
                 self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
-            return true
+                if self.drivers[driver]['class'] is not None:
+                    self.drivers[driver]['class'].stopCommunication()
+                continue
+
+            self.app.message.emit(f'{driver} enabled', 0)
+            self.deviceStat[driver] = False
+            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+
+            if self.drivers[driver]['uiDropDown'].currentText().startswith('INDI'):
+                driverData = self.driversData.get(driver, {})
+                self.drivers[driver]['class'].framework = 'indi'
+                self.drivers[driver]['class'].name = driverData.get('name', '')
+
+            elif self.drivers[driver]['uiDropDown'].currentText().startswith('ALPACA'):
+                self.drivers[driver]['class'].framework = 'alpaca'
+                driverData = self.driversData.get(driver, {})
+                self.drivers[driver]['class'].number = driverData.get('number', 0)
+
+            if self.drivers[driver]['class'] is not None:
+                self.drivers[driver]['class'].startCommunication()
+
+            return True
 
     def showIndiDisconnected(self, deviceList):
         """

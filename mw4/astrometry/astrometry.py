@@ -409,3 +409,9 @@ class Astrometry:
         solver = solverEnviron['solver']
         suc = solver.abort()
         return suc
+
+    def startCommunication(self):
+        pass
+
+    def stopCommunication(self):
+        pass

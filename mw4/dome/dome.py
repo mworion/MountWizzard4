@@ -155,3 +155,11 @@ class Dome:
             return False
 
         return True
+
+    def startCommunication(self):
+        if self.framework in self.run.keys():
+            self.run[self.framework].startCommunication()
+
+    def stopCommunication(self):
+        if self.framework in self.run.keys():
+            self.run[self.framework].stopCommunication()

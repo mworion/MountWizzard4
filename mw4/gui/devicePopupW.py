@@ -46,8 +46,15 @@ class DevicePopup(widget.MWidget):
         'focuser': (1 << 3),
         'filter': (1 << 4),
         'dome': (1 << 5),
-        'weather': (1 << 7),
-        'cover': (1 << 9),
+        'sensorWeather': (1 << 7),
+        'skymeter': 0,
+        'cover': (1 << 9) | (1 << 10),
+        'power': (1 << 7) | (1 << 3)
+    }
+
+    indiDefaults = {
+        'telescope': 'LX200 10micron',
+        'skymeter': 'SQM'
     }
 
     def __init__(self,
@@ -89,8 +96,7 @@ class DevicePopup(widget.MWidget):
         # populate data
         deviceData = self.data.get(self.driver, {})
         selectedFramework = deviceData.get('framework', 'indi')
-        driverType = deviceData.get('driverType', '')
-        self.indiSearchType = self.indiTypes.get(driverType, 0xff)
+        self.indiSearchType = self.indiTypes.get('test', 0xff)
         self.setWindowTitle(f'Setup for: {self.driver}')
 
         # populating indi data
@@ -122,10 +128,12 @@ class DevicePopup(widget.MWidget):
         tabIndex = self.ui.tab.indexOf(tabWidget)
         self.ui.tab.setCurrentIndex(tabIndex)
 
-        for index in range(0, self.ui.tab.count()):
-            if self.ui.tab.tabText(index).lower() in self.framework:
-                continue
-            self.ui.tab.setTabEnabled(index, False)
+        # remove unnecessary tabs
+        # todo: should I keep this ?
+        # for index in range(0, self.ui.tab.count()):
+        #     if self.ui.tab.tabText(index).lower() in self.framework:
+        #         continue
+        #     self.ui.tab.setTabEnabled(index, False)
 
     def storeConfig(self):
         """
@@ -209,6 +217,7 @@ class DevicePopup(widget.MWidget):
             return False
 
         interface = int(interface)
+
         if interface & self.indiSearchType:
             self.indiSearchNameList.append(deviceName)
 
@@ -228,18 +237,23 @@ class DevicePopup(widget.MWidget):
         """
 
         self.indiSearchNameList = list()
-        host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
-        self.indiClass = IndiClass()
-        self.indiClass.host = host
 
-        self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
-        self.indiClass.client.connectServer()
-        self.indiClass.client.watchDevice()
-        msg = PyQt5.QtWidgets.QMessageBox
-        msg.information(self,
-                        'Searching Devices',
-                        f'Search for {self.driver} could take some seconds!')
-        self.indiClass.client.disconnectServer()
+        if self.driver in self.indiDefaults:
+            self.indiSearchNameList.append(self.indiDefaults[self.driver])
+
+        else:
+            host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))
+            self.indiClass = IndiClass()
+            self.indiClass.host = host
+
+            self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
+            self.indiClass.client.connectServer()
+            self.indiClass.client.watchDevice()
+            msg = PyQt5.QtWidgets.QMessageBox
+            msg.information(self,
+                            'Searching Devices',
+                            f'Search for {self.driver} could take some seconds!')
+            self.indiClass.client.disconnectServer()
 
         self.ui.indiNameList.clear()
         self.ui.indiNameList.setView(PyQt5.QtWidgets.QListView())

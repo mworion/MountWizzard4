@@ -250,46 +250,48 @@ class SettDevice(object):
 
         for driver in self.drivers:
 
+            driverObj = self.drivers[driver]
             isGui = not isinstance(driverName, str)
 
             if not isGui and (driverName != driver):
                 continue
-            if isGui and (self.sender() != self.drivers[driver]['uiDropDown']):
+            if isGui and (self.sender() != driverObj['uiDropDown']):
                 continue
 
             # if not driver is selected, we stop all running processes and stop
             impl = ['indi', 'buil', 'alpa']
-            if self.drivers[driver]['uiDropDown'].currentText()[:4] not in impl:
+            if driverObj['uiDropDown'].currentText()[:4] not in impl:
                 self.app.message.emit(f'{driver} disabled', 0)
                 self.deviceStat[driver] = None
-                self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
-                if self.drivers[driver]['class'] is not None:
-                    if hasattr(self.drivers[driver]['class'], 'name'):
-                        self.drivers[driver]['class'].name = ''
-                    self.drivers[driver]['class'].stopCommunication()
+                driverObj['uiDropDown'].setStyleSheet(self.BACK_NORM)
+                if driverObj['class'] is not None:
+                    if hasattr(driverObj['class'], 'name'):
+                        driverObj['class'].name = ''
+                    driverObj['class'].stopCommunication()
                 continue
 
             # setting processes to run
             self.app.message.emit(f'{driver} enabled', 0)
             self.deviceStat[driver] = False
-            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+            driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
             # depending on the type different setups have to be made
-            if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
+            if driverObj['uiDropDown'].currentText().startswith('indi'):
                 driverData = self.driversData.get(driver, {})
-                self.drivers[driver]['class'].framework = 'indi'
-                self.drivers[driver]['class'].name = driverData.get('indiName', '')
+                driverObj['class'].framework = 'indi'
+                driverObj['class'].name = driverData.get('indiName', '')
+                driverObj['class'].showMessages = driverData.get('indiMessages', False)
                 host = (driverData.get('indiHost'), int(driverData.get('indiPort')))
-                self.drivers[driver]['class'].host = host
+                driverObj['class'].host = host
 
-            elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
-                self.drivers[driver]['class'].framework = 'alpaca'
+            elif driverObj['uiDropDown'].currentText().startswith('alpaca'):
+                driverObj['class'].framework = 'alpaca'
                 driverData = self.driversData.get(driver, {})
-                self.drivers[driver]['class'].number = driverData.get('alpacaNumber', 0)
+                driverObj['class'].number = driverData.get('alpacaNumber', 0)
 
             # and finally start it
-            if self.drivers[driver]['class'] is not None:
-                suc = self.drivers[driver]['class'].startCommunication()
+            if driverObj['class'] is not None:
+                suc = driverObj['class'].startCommunication()
                 if not suc:
                     self.app.message.emit(f'{driver} could not be started', 2)
 

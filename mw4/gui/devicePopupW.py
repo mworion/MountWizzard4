@@ -50,21 +50,26 @@ class DevicePopup(widget.MWidget):
         'cover': (1 << 9),
     }
 
-    def __init__(self, geo=None, device='', data=None):
+    def __init__(self,
+                 geometry=None,
+                 driver='',
+                 framework={},
+                 data=None):
         super().__init__()
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
         self.initUI()
         self.setWindowModality(PyQt5.QtCore.Qt.ApplicationModal)
         self.data = data
-        self.device = device
+        self.driver = driver
+        self.framework = framework
         self.indiClass = None
         self.indiSearchNameList = ()
         self.indiSearchType = None
 
         # setting to center of parent image
-        x = geo[0] + (geo[2] - self.width()) / 2
-        y = geo[1] + (geo[3] - self.height()) / 2
+        x = geometry[0] + (geometry[2] - self.width()) / 2
+        y = geometry[1] + (geometry[3] - self.height()) / 2
         self.move(x, y)
 
         self.ui.cancel.clicked.connect(self.close)
@@ -80,16 +85,15 @@ class DevicePopup(widget.MWidget):
         """
 
         # populate data
-        deviceData = self.data.get(self.device, {})
+        deviceData = self.data.get(self.driver, {})
         framework = deviceData.get('framework', 'indi')
         driverType = deviceData.get('driverType', '')
         self.indiSearchType = self.indiTypes.get(driverType, 0xff)
-        self.setWindowTitle(f'Setup for: {self.device}')
+        self.setWindowTitle(f'Setup for: {self.driver}')
 
         # populating indi data
         self.ui.indiHost.setText(deviceData.get('indiHost', 'localhost'))
         self.ui.indiPort.setText(deviceData.get('indiPort', '7624'))
-
         self.ui.indiNameList.clear()
         self.ui.indiNameList.setView(PyQt5.QtWidgets.QListView())
         indiName = deviceData.get('indiName', '')
@@ -100,7 +104,6 @@ class DevicePopup(widget.MWidget):
             self.ui.indiNameList.addItem(name)
             if indiName == name:
                 self.ui.indiNameList.setCurrentIndex(i)
-
         self.ui.indiMessages.setChecked(deviceData.get('indiMessages', False))
         self.ui.indiLoadConfig.setChecked(deviceData.get('indiLoadConfig', False))
 
@@ -112,29 +115,33 @@ class DevicePopup(widget.MWidget):
         self.ui.alpacaUser.setText(deviceData.get('alpacaUser', 'user'))
         self.ui.alpacaPassword.setText(deviceData.get('alpacaPassword', 'password'))
 
-        # selecting the right tab
-        if framework == 'indi':
-            self.ui.tab.setCurrentIndex(0)
-        elif framework == 'alpaca':
-            self.ui.tab.setCurrentIndex(1)
+        # for fw in self.framework:
+        tabWidget = self.ui.tab.findChild(PyQt5.QtWidgets.QWidget, framework)
+        tabIndex = self.ui.tab.indexOf(tabWidget)
+        self.ui.tab.setCurrentIndex(tabIndex)
+
+        for index in range(0, self.ui.tab.count()):
+            if self.ui.tab.tabText(index).lower() in self.framework:
+                continue
+            self.ui.tab.setTabEnabled(index, False)
 
     def storeConfig(self):
         """
 
         """
         # collecting indi data
-        self.data[self.device]['indiHost'] = self.ui.indiHost.text()
-        self.data[self.device]['indiPort'] = self.ui.indiPort.text()
-        self.data[self.device]['indiName'] = self.ui.indiNameList.currentText()
+        self.data[self.driver]['indiHost'] = self.ui.indiHost.text()
+        self.data[self.driver]['indiPort'] = self.ui.indiPort.text()
+        self.data[self.driver]['indiName'] = self.ui.indiNameList.currentText()
 
         model = self.ui.indiNameList.model()
         nameList = []
         for index in range(model.rowCount()):
             nameList.append(model.item(index).text())
-        self.data[self.device]['indiNameList'] = nameList
+        self.data[self.driver]['indiNameList'] = nameList
 
-        self.data[self.device]['indiMessages'] = self.ui.indiMessages.isChecked()
-        self.data[self.device]['indiLoadConfig'] = self.ui.indiLoadConfig.isChecked()
+        self.data[self.driver]['indiMessages'] = self.ui.indiMessages.isChecked()
+        self.data[self.driver]['indiLoadConfig'] = self.ui.indiLoadConfig.isChecked()
 
         # collecting alpaca data
 
@@ -203,7 +210,7 @@ class DevicePopup(widget.MWidget):
         msg = PyQt5.QtWidgets.QMessageBox
         msg.information(self,
                         'Searching Devices',
-                        f'Search for {self.device} could take some seconds!')
+                        f'Search for {self.driver} could take some seconds!')
         self.indiClass.client.disconnectServer()
 
         self.ui.indiNameList.clear()

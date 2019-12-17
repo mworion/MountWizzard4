@@ -93,7 +93,8 @@ class Dome:
     @name.setter
     def name(self, value):
         self._name = value
-        self.run['indi'].name = value
+        if 'indi' in self.run:
+            self.run['indi'].name = value
 
     @property
     def number(self):
@@ -102,7 +103,8 @@ class Dome:
     @number.setter
     def number(self, value):
         self._number = value
-        self.run['alpaca'].number = value
+        if 'alpaca' in self.run:
+            self.run['alpaca'].number = value
 
     # wee need to collect dispatch all signals from the different frameworks
     def deviceConnected(self, deviceName):

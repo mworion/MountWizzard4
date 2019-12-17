@@ -63,9 +63,9 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
-   <widget class="QWidget" name="INDI">
+   <widget class="QWidget" name="indi">
     <attribute name="title">
      <string>INDI</string>
     </attribute>
@@ -314,7 +314,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="ALPACA">
+   <widget class="QWidget" name="alpaca">
     <attribute name="title">
      <string>ALPACA</string>
     </attribute>

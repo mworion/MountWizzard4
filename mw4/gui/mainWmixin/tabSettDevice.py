@@ -212,20 +212,36 @@ class SettDevice(object):
 
     def setupPopUp(self):
         """
+        setupPopUp calculates the geometry data to place the popup centered on top of the
+        parent window and call it with all necessary data, n
 
         """
 
         for driver in self.drivers:
             if self.sender() != self.drivers[driver]['uiSetup']:
                 continue
+
             # calculate geometry
             posX = self.pos().x()
             posY = self.pos().y()
             height = self.height()
             width = self.width()
-            geo = posX, posY, width, height
+            geometry = posX, posY, width, height
 
-            self.popupUi = DevicePopup(geo=geo, device=driver, data=self.driversData)
+            # get framework
+            # todo check if attribute checking is necessary
+            classObj = self.drivers[driver]['class']
+            if hasattr(classObj, 'run'):
+                framework = classObj.run.keys()
+            else:
+                framework = {}
+
+            print(framework)
+
+            self.popupUi = DevicePopup(geometry=geometry,
+                                       driver=driver,
+                                       framework=framework,
+                                       data=self.driversData)
             # todo: signal when Popup is finished
 
     def dispatch(self, driverName=''):
@@ -243,8 +259,8 @@ class SettDevice(object):
             if isGui and (self.sender() != self.drivers[driver]['uiDropDown']):
                 continue
 
+            # if not driver is selected, we stop all running processes and stop
             impl = ['indi', 'buil', 'alpa']
-
             if self.drivers[driver]['uiDropDown'].currentText()[:4] not in impl:
                 self.app.message.emit(f'{driver} disabled', 0)
                 self.deviceStat[driver] = None
@@ -255,10 +271,12 @@ class SettDevice(object):
                     self.drivers[driver]['class'].stopCommunication()
                 continue
 
+            # setting processes to run
             self.app.message.emit(f'{driver} enabled', 0)
             self.deviceStat[driver] = False
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
+            # depending on the type different setups have to be made
             if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
                 driverData = self.driversData.get(driver, {})
                 self.drivers[driver]['class'].framework = 'indi'
@@ -271,6 +289,7 @@ class SettDevice(object):
                 driverData = self.driversData.get(driver, {})
                 self.drivers[driver]['class'].number = driverData.get('alpacaNumber', 0)
 
+            # and finally start it
             if self.drivers[driver]['class'] is not None:
                 suc = self.drivers[driver]['class'].startCommunication()
                 if not suc:

@@ -67,6 +67,7 @@ class Dome:
 
         self.run = {
             'indi': DomeIndi(self.app, self.signals),
+            'alpaca': None,
         }
 
         self.isGeometry = False

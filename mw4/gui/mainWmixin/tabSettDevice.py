@@ -236,8 +236,6 @@ class SettDevice(object):
             else:
                 framework = {}
 
-            print(framework)
-
             self.popupUi = DevicePopup(geometry=geometry,
                                        driver=driver,
                                        framework=framework,

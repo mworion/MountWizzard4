@@ -262,7 +262,7 @@
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QPushButton" name="indiCopy">
+    <widget class="QPushButton" name="copyIndi">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -474,7 +474,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_4">
+    <widget class="QPushButton" name="copyAlpaca">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -650,7 +650,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="alpacaNumber">
+    <widget class="QSpinBox" name="alpacaNumber">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -671,21 +671,6 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="decimals">
-      <number>0</number>
-     </property>
-     <property name="minimum">
-      <double>0.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>10.000000000000000</double>
-     </property>
-     <property name="singleStep">
-      <double>1.000000000000000</double>
-     </property>
-     <property name="value">
-      <double>0.000000000000000</double>
      </property>
     </widget>
    </widget>

@@ -75,6 +75,8 @@ class DevicePopup(widget.MWidget):
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
         self.ui.indiSearch.clicked.connect(self.searchDevices)
+        self.ui.copyAlpaca.clicked.connect(self.copyAllAlpacaSettings)
+        self.ui.copyIndi.clicked.connect(self.copyAllIndiSettings)
         self.initConfig()
 
         self.show()
@@ -86,7 +88,7 @@ class DevicePopup(widget.MWidget):
 
         # populate data
         deviceData = self.data.get(self.driver, {})
-        framework = deviceData.get('framework', 'indi')
+        selectedFramework = deviceData.get('framework', 'indi')
         driverType = deviceData.get('driverType', '')
         self.indiSearchType = self.indiTypes.get(driverType, 0xff)
         self.setWindowTitle(f'Setup for: {self.driver}')
@@ -116,7 +118,7 @@ class DevicePopup(widget.MWidget):
         self.ui.alpacaPassword.setText(deviceData.get('alpacaPassword', 'password'))
 
         # for fw in self.framework:
-        tabWidget = self.ui.tab.findChild(PyQt5.QtWidgets.QWidget, framework)
+        tabWidget = self.ui.tab.findChild(PyQt5.QtWidgets.QWidget, selectedFramework)
         tabIndex = self.ui.tab.indexOf(tabWidget)
         self.ui.tab.setCurrentIndex(tabIndex)
 
@@ -128,6 +130,7 @@ class DevicePopup(widget.MWidget):
     def storeConfig(self):
         """
 
+        :return: true for test purpose
         """
         # collecting indi data
         self.data[self.driver]['indiHost'] = self.ui.indiHost.text()
@@ -139,25 +142,50 @@ class DevicePopup(widget.MWidget):
         for index in range(model.rowCount()):
             nameList.append(model.item(index).text())
         self.data[self.driver]['indiNameList'] = nameList
-
         self.data[self.driver]['indiMessages'] = self.ui.indiMessages.isChecked()
         self.data[self.driver]['indiLoadConfig'] = self.ui.indiLoadConfig.isChecked()
 
         # collecting alpaca data
+        self.data[self.driver]['alpacaProtocol'] = self.ui.alpacaProtocol.currentIndex()
+        self.data[self.driver]['alpacaHost'] = self.ui.alpacaHost.text()
+        self.data[self.driver]['alpacaPort'] = self.ui.alpacaPort.text()
+        self.data[self.driver]['alpacaNumber'] = self.ui.alpacaNumber.value()
+        self.data[self.driver]['alpacaUser'] = self.ui.alpacaUser.text()
+        self.data[self.driver]['alpacaPassword'] = self.ui.alpacaPassword.text()
 
         # finally closing window
         self.close()
 
+        return True
+
     def copyAllIndiSettings(self):
         """
+        copyAllIndiSettings transfers all data from host, port, messages to all other
+        driver settings
 
+        :return: true for test purpose
         """
+        for driver in self.data:
+            self.data[driver]['indiHost'] = self.ui.indiHost.text()
+            self.data[driver]['indiPort'] = self.ui.indiPort.text()
+            self.data[driver]['indiMessages'] = self.ui.indiLoadConfig.isChecked()
+            self.data[driver]['indiLoadConfig'] = self.ui.indiLoadConfig.isChecked()
         return True
 
     def copyAllAlpacaSettings(self):
         """
+        copyAllAlpacaSettings transfers all data from protocol, host, port, user, password to
+        all other driver settings
 
+        :return: true for test purpose
         """
+        for driver in self.data:
+            self.data[driver]['alpacaProtocol'] = self.ui.alpacaProtocol.currentIndex()
+            self.data[driver]['alpacaHost'] = self.ui.alpacaHost.text()
+            self.data[driver]['alpacaPort'] = self.ui.alpacaPort.text()
+            self.data[driver]['alpacaNumber'] = self.ui.alpacaNumber.value()
+            self.data[driver]['alpacaUser'] = self.ui.alpacaUser.text()
+            self.data[driver]['alpacaPassword'] = self.ui.alpacaPassword.text()
         return True
 
     def addDevicesWithType(self, deviceName, propertyName):

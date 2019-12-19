@@ -46,7 +46,7 @@ class DevicePopup(widget.MWidget):
         'focuser': (1 << 3),
         'filter': (1 << 4),
         'dome': (1 << 5),
-        'sensorWeather': (1 << 7),
+        'weather': (1 << 7),
         'skymeter': 0,
         'cover': (1 << 9) | (1 << 10),
         'power': (1 << 7) | (1 << 3)
@@ -60,6 +60,7 @@ class DevicePopup(widget.MWidget):
     def __init__(self,
                  geometry=None,
                  driver='',
+                 deviceType='',
                  framework={},
                  data=None):
         super().__init__()
@@ -69,6 +70,7 @@ class DevicePopup(widget.MWidget):
         self.setWindowModality(PyQt5.QtCore.Qt.ApplicationModal)
         self.data = data
         self.driver = driver
+        self.deviceType = deviceType
         self.framework = framework
         self.indiClass = None
         self.indiSearchNameList = ()
@@ -96,7 +98,7 @@ class DevicePopup(widget.MWidget):
         # populate data
         deviceData = self.data.get(self.driver, {})
         selectedFramework = deviceData.get('framework', 'indi')
-        self.indiSearchType = self.indiTypes.get(self.driver, 0xff)
+        self.indiSearchType = self.indiTypes.get(self.deviceType, 0xff)
         self.setWindowTitle(f'Setup for: {self.driver}')
 
         # populating indi data

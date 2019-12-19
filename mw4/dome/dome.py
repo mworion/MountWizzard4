@@ -64,6 +64,7 @@ class Dome:
         self.framework = 'None'
         self._host = ('localhost', 7624)
         self._name = ''
+        self._deviceType = ''
         self._number = 0
 
         self.run = {
@@ -101,6 +102,15 @@ class Dome:
     def name(self, value):
         self._name = value
         self.run['indi'].name = value
+        self.run['alpaca'].deviceType = value
+
+    @property
+    def deviceType(self):
+        return self._deviceType
+
+    @deviceType.setter
+    def deviceType(self, value):
+        self._deviceType = value
         self.run['alpaca'].deviceType = value
 
     @property

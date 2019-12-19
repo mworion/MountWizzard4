@@ -42,76 +42,91 @@ class SettDevice(object):
                 'uiDropDown': self.ui.domeDevice,
                 'uiSetup': self.ui.domeSetup,
                 'class': self.app.dome,
+                'deviceType': 'dome',
             },
             'camera': {
                 'uiDropDown': self.ui.cameraDevice,
                 'uiSetup': self.ui.cameraSetup,
                 'class': self.app.camera,
+                'deviceType': 'camera',
             },
             'filter': {
                 'uiDropDown': self.ui.filterDevice,
                 'uiSetup': self.ui.filterSetup,
                 'class': self.app.filter,
+                'deviceType': 'filter',
             },
             'focuser': {
                 'uiDropDown': self.ui.focuserDevice,
                 'uiSetup': self.ui.focuserSetup,
                 'class': self.app.focuser,
+                'deviceType': 'focuser',
             },
             'sensorWeather': {
                 'uiDropDown': self.ui.sensorWeatherDevice,
                 'uiSetup': self.ui.sensorWeatherSetup,
                 'class': self.app.sensorWeather,
+                'deviceType': 'weather',
             },
             'directWeather': {
                 'uiDropDown': self.ui.directWeatherDevice,
                 'uiSetup': None,
                 'class': None,
+                'deviceType': None,
             },
             'onlineWeather': {
                 'uiDropDown': self.ui.onlineWeatherDevice,
                 'uiSetup': None,
                 'class': self.app.onlineWeather,
+                'deviceType': None,
             },
             'cover': {
                 'uiDropDown': self.ui.coverDevice,
                 'uiSetup': self.ui.coverSetup,
                 'class': self.app.cover,
+                'deviceType': 'cover',
             },
             'skymeter': {
                 'uiDropDown': self.ui.skymeterDevice,
                 'uiSetup': self.ui.skymeterSetup,
                 'class': self.app.skymeter,
+                'deviceType': 'weather',
             },
             'telescope': {
                 'uiDropDown': self.ui.telescopeDevice,
                 'uiSetup': self.ui.telescopeSetup,
                 'class': self.app.telescope,
+                'deviceType': 'telescope',
             },
             'power': {
                 'uiDropDown': self.ui.powerDevice,
                 'uiSetup': self.ui.powerSetup,
                 'class': self.app.power,
+                'deviceType': None,
             },
             'relay': {
                 'uiDropDown': self.ui.relayDevice,
                 'uiSetup': None,
                 'class': self.app.relay,
+                'deviceType': None,
             },
             'astrometry': {
                 'uiDropDown': self.ui.astrometryDevice,
                 'uiSetup': None,
                 'class': self.app.astrometry,
+                'deviceType': None,
             },
             'remote': {
                 'uiDropDown': self.ui.remoteDevice,
                 'uiSetup': None,
                 'class': self.app.remote,
+                'deviceType': None,
             },
             'measure': {
                 'uiDropDown': self.ui.measureDevice,
                 'uiSetup': None,
                 'class': self.app.measure,
+                'deviceType': None,
             },
         }
 
@@ -230,14 +245,15 @@ class SettDevice(object):
 
             # get framework
             # todo check if attribute checking is necessary
-            classObj = self.drivers[driver]['class']
-            if hasattr(classObj, 'run'):
-                framework = classObj.run.keys()
+            if hasattr(self.drivers[driver]['class'], 'run'):
+                framework = self.drivers[driver]['class'].run.keys()
             else:
                 framework = {}
+            deviceType = self.drivers[driver]['deviceType']
 
             self.popupUi = DevicePopup(geometry=geometry,
                                        driver=driver,
+                                       deviceType=deviceType,
                                        framework=framework,
                                        data=self.driversData)
             # todo: signal when Popup is finished
@@ -288,7 +304,7 @@ class SettDevice(object):
                 driverData = self.driversData.get(driver, {})
                 driverObj['class'].framework = 'alpaca'
                 driverObj['class'].number = driverData.get('alpacaNumber', 0)
-                driverObj['class'].name = driver
+                driverObj['class'].deviceType = driverObj['deviceType']
                 host = (driverData.get('alpacaHost'), int(driverData.get('alpacaPort')))
                 driverObj['class'].host = host
 

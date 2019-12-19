@@ -345,7 +345,6 @@ class AlpacaClass(object):
 
         :return: success of reconnecting to server
         """
-        print(self.baseUrl)
         suc = self.getInitialConfig()
         if not suc:
             self.app.message.emit(f'Cannot start connection to: {self.deviceType}', 2)

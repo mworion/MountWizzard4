@@ -23,6 +23,7 @@ import logging
 import PyQt5
 # local imports
 from mw4.dome.domeIndi import DomeIndi
+from mw4.dome.domeAlpaca import DomeAlpaca
 
 
 class DomeSignals(PyQt5.QtCore.QObject):
@@ -67,7 +68,7 @@ class Dome:
 
         self.run = {
             'indi': DomeIndi(self.app, self.signals),
-            'alpaca': None,
+            'alpaca': DomeAlpaca(self.app, self.signals),
         }
 
         self.isGeometry = False
@@ -77,6 +78,10 @@ class Dome:
         self.run['indi'].client.signals.serverDisconnected.connect(self.serverDisconnected)
         self.run['indi'].client.signals.deviceConnected.connect(self.deviceConnected)
         self.run['indi'].client.signals.deviceDisconnected.connect(self.deviceDisconnected)
+        #self.run['alpaca'].signals.serverConnected.connect(self.serverConnected)
+        #self.run['alpaca'].signals.serverDisconnected.connect(self.serverDisconnected)
+        #self.run['alpaca'].signals.deviceConnected.connect(self.deviceConnected)
+        #self.run['alpaca'].signals.deviceDisconnected.connect(self.deviceDisconnected)
 
     @property
     def host(self):
@@ -86,6 +91,7 @@ class Dome:
     def host(self, value):
         self._host = value
         self.run['indi'].client.host = value
+        self.run['alpaca'].host = value
 
     @property
     def name(self):
@@ -94,8 +100,8 @@ class Dome:
     @name.setter
     def name(self, value):
         self._name = value
-        if 'indi' in self.run:
-            self.run['indi'].name = value
+        self.run['indi'].name = value
+        self.run['alpaca'].deviceType = value
 
     @property
     def number(self):
@@ -104,8 +110,7 @@ class Dome:
     @number.setter
     def number(self, value):
         self._number = value
-        if 'alpaca' in self.run:
-            self.run['alpaca'].number = value
+        self.run['alpaca'].number = value
 
     # wee need to collect dispatch all signals from the different frameworks
     def deviceConnected(self, deviceName):
@@ -149,21 +154,28 @@ class Dome:
         text = f'Slewing  dome:      az correction: {geoStat}, delta: {azimuth-az:3.1f}°'
         self.app.message.emit(text, 0)
 
-        if self.framework == 'indi':
-            self.run['indi'].slewToAltAz(azimuth=az)
-        elif self.framework == 'alpaca':
-            pass
-        else:
-            return False
+        self.run[self.framework].slewToAltAz(azimuth=az)
 
         return True
 
     def startCommunication(self):
+        """
+
+        """
+
         if self.framework in self.run.keys():
             suc = self.run[self.framework].startCommunication()
             return suc
+        else:
+            return False
 
     def stopCommunication(self):
+        """
+
+        """
+
         if self.framework in self.run.keys():
             suc = self.run[self.framework].stopCommunication()
             return suc
+        else:
+            return False

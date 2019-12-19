@@ -96,7 +96,7 @@ class DevicePopup(widget.MWidget):
         # populate data
         deviceData = self.data.get(self.driver, {})
         selectedFramework = deviceData.get('framework', 'indi')
-        self.indiSearchType = self.indiTypes.get('test', 0xff)
+        self.indiSearchType = self.indiTypes.get(self.driver, 0xff)
         self.setWindowTitle(f'Setup for: {self.driver}')
 
         # populating indi data
@@ -233,13 +233,14 @@ class DevicePopup(widget.MWidget):
         takes place as long as the model dialog is open. when the user closes this dialog, the
         collected data is written to the drop down list.
 
-        :return:  true for test purpose
+        :return:  success finding
         """
 
         self.indiSearchNameList = list()
 
         if self.driver in self.indiDefaults:
             self.indiSearchNameList.append(self.indiDefaults[self.driver])
+            return False
 
         else:
             host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))

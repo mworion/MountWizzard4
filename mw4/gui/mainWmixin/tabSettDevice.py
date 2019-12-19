@@ -285,9 +285,12 @@ class SettDevice(object):
                 driverObj['class'].host = host
 
             elif driverObj['uiDropDown'].currentText().startswith('alpaca'):
-                driverObj['class'].framework = 'alpaca'
                 driverData = self.driversData.get(driver, {})
+                driverObj['class'].framework = 'alpaca'
                 driverObj['class'].number = driverData.get('alpacaNumber', 0)
+                driverObj['class'].name = driver
+                host = (driverData.get('alpacaHost'), int(driverData.get('alpacaPort')))
+                driverObj['class'].host = host
 
             # and finally start it
             if driverObj['class'] is not None:

@@ -23,7 +23,6 @@ import logging
 import PyQt5.QtCore
 import requests
 # local imports
-from mw4.base import tpool
 
 
 class AlpacaSignals(PyQt5.QtCore.QObject):
@@ -70,7 +69,7 @@ class AlpacaClass(object):
         super().__init__()
 
         self.app = app
-        # self.threadPool = app.threadPool
+        self.threadPool = app.threadPool
         self.signals = AlpacaSignals()
 
         self.baseUrl = 'localhost'
@@ -86,7 +85,7 @@ class AlpacaClass(object):
 
         self.timeCycle = PyQt5.QtCore.QTimer()
         self.timeCycle.setSingleShot(False)
-        self.timeCycle.timeout.connect(self.cycleAlpaca)
+        self.timeCycle.timeout.connect(self.updateStatus)
 
         self.baseUrl = self.generateBaseUrl()
 
@@ -307,7 +306,7 @@ class AlpacaClass(object):
         """
         return self.get('supportedactions')
 
-    def cycleAlpaca(self):
+    def updateStatus(self):
         """
 
         :return: true for test purpose
@@ -332,7 +331,7 @@ class AlpacaClass(object):
 
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.signals.deviceConnected.emit()
+            self.signals.deviceConnected.emit(f'{self.name}: {self.deviceNumber}')
 
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.name()
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.driverVersion()
@@ -346,10 +345,10 @@ class AlpacaClass(object):
 
         :return: success of reconnecting to server
         """
-
+        print(self.baseUrl)
         suc = self.getInitialConfig()
         if not suc:
-            self.logger.info(f'Cannot start connection to: {self.deviceType}')
+            self.app.message.emit(f'Cannot start connection to: {self.deviceType}', 2)
         else:
             self.timeCycle.start(self.CYCLE)
 
@@ -364,7 +363,7 @@ class AlpacaClass(object):
 
         self.connected(Connected=False)
         self.deviceConnected = False
-        self.signals.deviceDisconnected.emit()
+        self.signals.deviceDisconnected.emit(f'{self.name}: {self.deviceNumber}')
         self.timeCycle.stop()
 
         return True

@@ -24,17 +24,15 @@ from datetime import datetime
 import PyQt5
 import numpy as np
 # local imports
-from mw4.base import indiClass
+from mw4.base.indiClass import IndiClass
 
 
-class DomeIndi(indiClass.IndiClass):
+class DomeIndi(IndiClass):
     """
     the class Dome inherits all information and handling of the Dome device. there will be
     some parameters who will define the slewing position of the dome relating to the mount.
 
-        >>> fw = DomeIndi(
-        >>>           app=None
-        >>>          )
+        >>> dome = DomeIndi(app=None)
     """
 
     __all__ = ['DomeIndi',
@@ -54,7 +52,7 @@ class DomeIndi(indiClass.IndiClass):
         self.azimuth = -1
         self.slewing = False
 
-        self.app.update3s.connect(self.updateStatus)
+        self.app.update1s.connect(self.updateStatus)
 
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)

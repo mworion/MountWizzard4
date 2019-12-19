@@ -68,12 +68,12 @@ class SettDevice(object):
                 'class': self.app.sensorWeather,
                 'deviceType': 'weather',
             },
-            'directWeather': {
-                'uiDropDown': self.ui.directWeatherDevice,
-                'uiSetup': None,
-                'class': None,
-                'deviceType': None,
-            },
+            #'directWeather': {
+            #    'uiDropDown': self.ui.directWeatherDevice,
+            #    'uiSetup': None,
+            #    'class': None,
+            #    'deviceType': None,
+            #},
             'onlineWeather': {
                 'uiDropDown': self.ui.onlineWeatherDevice,
                 'uiSetup': None,
@@ -215,7 +215,7 @@ class SettDevice(object):
                 self.drivers[driver]['uiDropDown'].addItem(framework)
 
         # build-in drivers
-        self.drivers['directWeather']['uiDropDown'].addItem('built-in')
+        # self.drivers['directWeather']['uiDropDown'].addItem('built-in')
         self.drivers['onlineWeather']['uiDropDown'].addItem('built-in')
         self.drivers['relay']['uiDropDown'].addItem('built-in')
         self.drivers['remote']['uiDropDown'].addItem('built-in')
@@ -267,8 +267,9 @@ class SettDevice(object):
         for driver in self.drivers:
 
             driverObj = self.drivers[driver]
-            isGui = not isinstance(driverName, str)
 
+            # check if the call comes from gui or direct call
+            isGui = not isinstance(driverName, str)
             if not isGui and (driverName != driver):
                 continue
             if isGui and (self.sender() != driverObj['uiDropDown']):
@@ -281,15 +282,14 @@ class SettDevice(object):
                 self.deviceStat[driver] = None
                 driverObj['uiDropDown'].setStyleSheet(self.BACK_NORM)
                 if driverObj['class'] is not None:
-                    if hasattr(driverObj['class'], 'name'):
-                        driverObj['class'].name = ''
                     driverObj['class'].stopCommunication()
                 continue
 
             # setting processes to run
             self.app.message.emit(f'{driver} enabled', 0)
+            # without connection it is first red
             self.deviceStat[driver] = False
-            driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+            # driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
             # depending on the type different setups have to be made
             if driverObj['uiDropDown'].currentText().startswith('indi'):
@@ -329,11 +329,17 @@ class SettDevice(object):
         deviceName = list(deviceList.keys())[0]
 
         for driver in self.drivers:
-            # todo remove check attribute
-            if not hasattr(self.drivers[driver]['class'], 'name'):
+            if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
+                if self.drivers[driver]['class'].name != deviceName:
+                    continue
+            elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
+                deviceType = self.drivers[driver]['class'].deviceType
+                number = self.drivers[driver]['class'].number
+                if f'{deviceType}:{number}' != deviceName:
+                    continue
+            else:
                 continue
-            if self.drivers[driver]['class'].name != deviceName:
-                continue
+
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
             self.app.message.emit(f'server {driver} disconnected', 0)
         return True
@@ -347,11 +353,17 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
-            # todo remove check attribute
-            if not hasattr(self.drivers[driver]['class'], 'name'):
+            if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
+                if self.drivers[driver]['class'].name != deviceName:
+                    continue
+            elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
+                deviceType = self.drivers[driver]['class'].deviceType
+                number = self.drivers[driver]['class'].number
+                if f'{deviceType}:{number}' != deviceName:
+                    continue
+            else:
                 continue
-            if self.drivers[driver]['class'].name != deviceName:
-                continue
+
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
             self.app.message.emit(f'{driver} connected', 0)
@@ -366,11 +378,17 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
-            # todo remove check attribute
-            if not hasattr(self.drivers[driver]['class'], 'name'):
+            if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
+                if self.drivers[driver]['class'].name != deviceName:
+                    continue
+            elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
+                deviceType = self.drivers[driver]["class"].deviceType
+                number = self.drivers[driver]["class"].number
+                if f'{deviceType}:{number}' != deviceName:
+                    continue
+            else:
                 continue
-            if self.drivers[driver]['class'].name != deviceName:
-                continue
+
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
             self.deviceStat[driver] = False
             self.app.message.emit(f'{driver} disconnected', 0)

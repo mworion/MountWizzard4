@@ -130,7 +130,7 @@ class IndiClass(object):
 
         if deviceName == self.name:
             self.device = self.client.getDevice(deviceName)
-            self.app.message.emit(f'INDI device found:  [{deviceName}]', 0)
+            self.app.message.emit(f'INDI device found:      [{deviceName}]', 0)
         # else:
         #    self.app.message.emit(f'INDI device {self.name} snoops: [{deviceName}]', 0)
 
@@ -146,7 +146,7 @@ class IndiClass(object):
         """
 
         if deviceName == self.name:
-            self.app.message.emit(f'INDI removed device: [{deviceName}]', 0)
+            self.app.message.emit(f'INDI removed device:    [{deviceName}]', 0)
             self.device = None
             self.data = {}
             return True
@@ -202,6 +202,7 @@ class IndiClass(object):
 
         self.client.stopTimers()
         suc = self.client.disconnectServer(self.name)
+        self.name = ''
         return suc
 
     def connectDevice(self, deviceName, propertyName):

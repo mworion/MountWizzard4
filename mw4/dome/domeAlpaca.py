@@ -53,6 +53,8 @@ class DomeAlpaca(AlpacaClass):
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
 
+        self.app.update1s.connect(self.startPollData)
+
     @property
     def settlingTime(self):
         return self._settlingTime * 1000
@@ -61,46 +63,36 @@ class DomeAlpaca(AlpacaClass):
     def settlingTime(self, value):
         self._settlingTime = value
 
-    def storeStatus(self):
+    def emitData(self):
         """
 
         :return: true for test purpose
         """
-        print(self.data)
+
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
         self.signals.azimuth.emit(azimuth)
+
         return True
 
-    def pollStatus(self):
+    def pollData(self):
         """
-        pollStatus is the thread method to be called for collecting data
+
+        :return: true for test purpose
+        """
+        self.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = self.get('azimuth')
+        return True
+
+    def startPollData(self):
+        """
 
         :return: success
         """
-        suc = self.connected()
-        if not suc:
-            self.deviceConnected = False
-            self.signals.deviceDisconnected.emit(f'{self.name}: {self.deviceNumber}')
+
+        if not self.deviceConnected:
             return False
-
-        self.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = self.get('azimuth')
-
-        return True
-
-    def updateStatus(self):
-        """
-        updateStatus starts a thread every 1 second (defined in Superclass) for polling
-        some data.
-
-        :return: true for test purpose
-        """
-
-        print('update called')
-
-        worker = Worker(self.pollStatus)
-        worker.signals.finished.connect(self.storeStatus)
+        worker = Worker(self.pollData)
+        worker.signals.finished.connect(self.emitData)
         self.threadPool.start(worker)
-
         return True
 
     def waitSettlingAndEmit(self):

@@ -23,6 +23,7 @@ import logging
 import PyQt5.QtCore
 import requests
 # local imports
+from mw4.base.tpool import Worker
 
 
 class AlpacaSignals(PyQt5.QtCore.QObject):
@@ -39,9 +40,9 @@ class AlpacaSignals(PyQt5.QtCore.QObject):
     __all__ = ['AlpacaSignals']
 
     serverConnected = PyQt5.QtCore.pyqtSignal()
-    serverDisconnected = PyQt5.QtCore.pyqtSignal()
-    deviceConnected = PyQt5.QtCore.pyqtSignal()
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
 
 
 class AlpacaClass(object):
@@ -52,7 +53,7 @@ class AlpacaClass(object):
         >>> a = AlpacaClass(
         >>>         protocol='http',
         >>>         host=('localhost', 11111),
-        >>>         deviceNumber=0,
+        >>>         number=0,
         >>>         deviceType='',
         >>>         apiVersion=1,
         >>>         app=None,
@@ -70,11 +71,11 @@ class AlpacaClass(object):
 
         self.app = app
         self.threadPool = app.threadPool
-        self.signals = AlpacaSignals()
+        self.clientSignals = AlpacaSignals()
 
         self.baseUrl = 'localhost'
         self._protocol = 'http'
-        self._deviceNumber = 0
+        self._number = 0
         self._apiVersion = 1
         self._deviceType = ''
         self._host = ('localhost', 11111)
@@ -100,7 +101,7 @@ class AlpacaClass(object):
             self.host[1],
             self.apiVersion,
             self.deviceType,
-            self.deviceNumber,
+            self.number,
         )
         return val
 
@@ -114,12 +115,12 @@ class AlpacaClass(object):
         self.baseUrl = self.generateBaseUrl()
 
     @property
-    def deviceNumber(self):
-        return self._deviceNumber
+    def number(self):
+        return self._number
 
-    @deviceNumber.setter
-    def deviceNumber(self, value):
-        self._deviceNumber = value
+    @number.setter
+    def number(self, value):
+        self._number = value
         self.baseUrl = self.generateBaseUrl()
 
     @property
@@ -261,6 +262,7 @@ class AlpacaClass(object):
                 Set None to get connected state (default).
 
         """
+
         if Connected is None:
             return self.get('connected')
         self.put('connected', Connected=Connected)
@@ -306,14 +308,6 @@ class AlpacaClass(object):
         """
         return self.get('supportedactions')
 
-    def updateStatus(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        return True
-
     def getInitialConfig(self):
         """
 
@@ -321,17 +315,17 @@ class AlpacaClass(object):
         """
         self.connected(Connected=True)
         suc = self.connected()
-
         if not suc:
             return False
 
         if not self.serverConnected:
             self.serverConnected = True
-            self.signals.serverConnected.emit()
+            self.clientSignals.serverConnected.emit()
 
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.signals.deviceConnected.emit(f'{self.name}: {self.deviceNumber}')
+            self.clientSignals.deviceConnected.emit(f'{self.deviceType}:{self.number}')
+            self.app.message.emit(f'Alpaca device found:   [{self.deviceType}:{self.number}]', 0)
 
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.name()
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.driverVersion()
@@ -339,31 +333,82 @@ class AlpacaClass(object):
 
         return True
 
-    def startCommunication(self):
+    def startTimer(self, result):
         """
-        startCommunication adds a device on the watch list of the server.
 
-        :return: success of reconnecting to server
         """
-        suc = self.getInitialConfig()
-        if not suc:
-            self.app.message.emit(f'Cannot start connection to: {self.deviceType}', 2)
-        else:
+        if result:
             self.timeCycle.start(self.CYCLE)
+
+    def stopTimer(self):
+        """
+
+        """
+        self.timeCycle.stop()
+
+    def pollStatus(self):
+        """
+        pollStatus is the thread method to be called for collecting data
+
+        :return: success
+        """
+        suc = self.connected()
+        if self.deviceConnected and not suc:
+            self.deviceConnected = False
+            self.clientSignals.deviceDisconnected.emit(f'{self.deviceType}:{self.number}')
+            self.app.message.emit(f'Alpaca device removed: [{self.deviceType}:{self.number}]', 0)
+
+        elif not self.deviceConnected and suc:
+            self.deviceConnected = True
+            self.clientSignals.deviceConnected.emit(f'{self.deviceType}:{self.number}')
+            self.app.message.emit(f'Alpaca device found:   [{self.deviceType}:{self.number}]', 0)
+
+        else:
+            pass
 
         return suc
 
+    def updateStatus(self):
+        """
+        updateStatus starts a thread every 1 second (defined in Superclass) for polling
+        some data.
+
+        :return: success
+        """
+        worker = Worker(self.pollStatus)
+        self.threadPool.start(worker)
+
+        return True
+
+    def startCommunication(self):
+        """
+        startCommunication starts cycling of the polling.
+
+        :return: True for connecting to server
+        """
+
+        worker = Worker(self.getInitialConfig)
+        worker.signals.result.connect(self.startTimer)
+        self.threadPool.start(worker)
+
+        return True
+
     def stopCommunication(self):
         """
-        stopCommunication adds a device on the watch list of the server.
+        stopCommunication stops cycling of the server.
 
         :return: true for test purpose
         """
-
-        self.connected(Connected=False)
-        self.deviceConnected = False
-        self.signals.deviceDisconnected.emit(f'{self.name}: {self.deviceNumber}')
         self.timeCycle.stop()
+        self.deviceConnected = False
+        self.serverConnected = False
+        self.clientSignals.deviceDisconnected.emit(f'{self.name}:{self.number}')
+        self.clientSignals.serverDisconnected.emit({f'{self.name}:{self.number}': 0})
+        self.app.message.emit(f'Alpaca device removed: [{self.deviceType}:{self.number}]', 0)
+
+        worker = Worker(self.connected, Connected=False)
+        worker.signals.result.connect(self.stopTimer)
+        self.threadPool.start(worker)
 
         return True
 

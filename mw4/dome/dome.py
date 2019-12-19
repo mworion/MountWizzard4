@@ -74,15 +74,14 @@ class Dome:
 
         self.isGeometry = False
 
-        # collecting signals from frameworks
+        self.run['alpaca'].clientSignals.serverConnected.connect(self.serverConnected)
+        self.run['alpaca'].clientSignals.serverDisconnected.connect(self.serverDisconnected)
+        self.run['alpaca'].clientSignals.deviceConnected.connect(self.deviceConnected)
+        self.run['alpaca'].clientSignals.deviceDisconnected.connect(self.deviceDisconnected)
         self.run['indi'].client.signals.serverConnected.connect(self.serverConnected)
         self.run['indi'].client.signals.serverDisconnected.connect(self.serverDisconnected)
         self.run['indi'].client.signals.deviceConnected.connect(self.deviceConnected)
         self.run['indi'].client.signals.deviceDisconnected.connect(self.deviceDisconnected)
-        #self.run['alpaca'].signals.serverConnected.connect(self.serverConnected)
-        #self.run['alpaca'].signals.serverDisconnected.connect(self.serverDisconnected)
-        #self.run['alpaca'].signals.deviceConnected.connect(self.deviceConnected)
-        #self.run['alpaca'].signals.deviceDisconnected.connect(self.deviceDisconnected)
 
     @property
     def host(self):

@@ -625,7 +625,7 @@ class EnvironGui(object):
                 'pic': ':/moon/third_quarter.png',
             },
             'Waning crescent': {
-                'range': (2, 23),
+                'range': (77, 98),
                 'pic': ':/moon/waning_crescent.png',
             },
             'New moon ': {
@@ -640,10 +640,10 @@ class EnvironGui(object):
         earth = self.app.planets['earth']
 
         e = earth.at(self.app.mount.obsSite.timeJD)
-        _, slon, _ = e.observe(sun).apparent().ecliptic_latlon()
-        _, mlon, _ = e.observe(moon).apparent().ecliptic_latlon()
+        _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
+        _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
-        moonPhaseDegree = (mlon.degrees - slon.degrees) % 360.0
+        moonPhaseDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         self.moonPhasePercent = int(moonPhaseDegree / 3.6)
 
         self.ui.moonPhasePercent.setText(f'{self.moonPhasePercent:3.0f}')

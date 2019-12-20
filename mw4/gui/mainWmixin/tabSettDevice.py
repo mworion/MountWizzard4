@@ -315,7 +315,6 @@ class SettDevice(object):
                 self.app.message.emit(f'[{driver}] could not be started', 2)
 
             # for built-in i actually not check their presence as the should function
-            # todo: make it with signals like th external drivers ?
             if dropDownText == 'built-in':
                 driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 

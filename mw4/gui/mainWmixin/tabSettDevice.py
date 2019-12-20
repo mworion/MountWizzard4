@@ -277,10 +277,6 @@ class SettDevice(object):
 
             # if new driver is disabled, we are finished
             dropDownText = driverObj['uiDropDown'].currentText()
-
-            if driver == 'dome':
-                print(self.deviceStat['dome'], dropDownText)
-
             if dropDownText == 'device disabled':
                 continue
 

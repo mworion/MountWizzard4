@@ -54,7 +54,8 @@ class DevicePopup(widget.MWidget):
 
     indiDefaults = {
         'telescope': 'LX200 10micron',
-        'skymeter': 'SQM'
+        'skymeter': 'SQM',
+        'power': 'Pegasus UPB',
     }
 
     def __init__(self,

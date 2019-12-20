@@ -51,6 +51,7 @@ from mw4.imaging.focuser import Focuser
 from mw4.environment.sensorWeather import SensorWeather
 from mw4.environment.skymeter import Skymeter
 from mw4.environment.onlineWeather import OnlineWeather
+from mw4.environment.directWeather import DirectWeather
 from mw4.cover.flipflat import FlipFlat
 from mw4.telescope.telescope import Telescope
 from mw4.powerswitch.pegasusUPB import PegasusUPB
@@ -135,6 +136,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.relay = KMRelay(host='192.168.2.15')
         self.sensorWeather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)
+        self.directWeather = DirectWeather(self)
         self.cover = FlipFlat(self)
         self.dome = Dome(self)
         self.camera = Camera(self)

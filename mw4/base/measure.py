@@ -64,7 +64,7 @@ class MeasureData(object):
         self.name = ''
         self.framework = 'local'
         self.run = {
-            'local': self
+            'built-in': self
         }
 
         # time for measurement

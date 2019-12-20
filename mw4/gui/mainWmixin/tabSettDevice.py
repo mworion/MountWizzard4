@@ -68,12 +68,12 @@ class SettDevice(object):
                 'class': self.app.sensorWeather,
                 'deviceType': 'weather',
             },
-            #'directWeather': {
-            #    'uiDropDown': self.ui.directWeatherDevice,
-            #    'uiSetup': None,
-            #    'class': None,
-            #    'deviceType': None,
-            #},
+            'directWeather': {
+                'uiDropDown': self.ui.directWeatherDevice,
+                'uiSetup': None,
+                'class': self.app.directWeather,
+                'deviceType': None,
+            },
             'onlineWeather': {
                 'uiDropDown': self.ui.onlineWeatherDevice,
                 'uiSetup': None,
@@ -215,11 +215,6 @@ class SettDevice(object):
                 self.drivers[driver]['uiDropDown'].addItem(framework)
 
         # build-in drivers
-        # self.drivers['directWeather']['uiDropDown'].addItem('built-in')
-        self.drivers['onlineWeather']['uiDropDown'].addItem('built-in')
-        self.drivers['relay']['uiDropDown'].addItem('built-in')
-        self.drivers['remote']['uiDropDown'].addItem('built-in')
-        self.drivers['measure']['uiDropDown'].addItem('built-in')
         for app in self.app.astrometry.solverAvailable:
             self.drivers['astrometry']['uiDropDown'].addItem(app)
 
@@ -318,6 +313,8 @@ class SettDevice(object):
             suc = driverObj['class'].startCommunication()
             if not suc:
                 self.app.message.emit(f'[{driver}] could not be started', 2)
+            if dropDownText == 'built-in':
+                driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
             return True
 

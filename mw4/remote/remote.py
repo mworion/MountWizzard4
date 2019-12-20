@@ -50,7 +50,7 @@ class Remote(PyQt5.QtCore.QObject):
         # minimum set for driver package built in
         self.framework = None
         self.run = {
-            'local': self
+            'built-in': self
         }
         self.name = 'local'
 

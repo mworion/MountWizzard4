@@ -28,7 +28,7 @@ from mw4.base import indiClass
 
 class SensorWeather(indiClass.IndiClass):
     """
-    the class Environ inherits all information and handling of the environment device
+    the class SensorWeather inherits all information and handling of the SensorWeather device
 
         >>> SensorWeather(host=None,
         >>>         name=''

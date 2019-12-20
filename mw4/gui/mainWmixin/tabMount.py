@@ -37,6 +37,12 @@ class Mount(object):
     """
 
     def __init__(self):
+        self.typeConnectionTexts = ['RS-232',
+                                    'GPS/RS-232',
+                                    'LAN',
+                                    'WiFi',
+                                    ]
+
         ms = self.app.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
@@ -300,6 +306,16 @@ class Mount(object):
             self.ui.horizonLimitHigh.setText(str(sett.horizonLimitHigh))
         else:
             self.ui.horizonLimitHigh.setText('-')
+
+        if sett.typeConnection is None:
+            return False
+        if sett.typeConnection < 0:
+            return False
+        if sett.typeConnection > len(self.typeConnectionTexts):
+            return False
+
+        text = self.typeConnectionTexts[sett.typeConnection]
+        self.ui.mountTypeConnection.setText(text)
 
         return True
 

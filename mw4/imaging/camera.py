@@ -19,20 +19,15 @@
 ###########################################################
 # standard libraries
 import logging
-import zlib
-import os
-from datetime import datetime
 # external packages
 import PyQt5
-import numpy as np
-import astropy.io.fits as fits
 # local imports
-from mw4.base import indiClass
+from mw4.imaging.cameraIndi import CameraIndi
 
 
 class CameraSignals(PyQt5.QtCore.QObject):
     """
-    The CameraSignals class offers a list of signals to be used and instantiated by
+    The DomeSignals class offers a list of signals to be used and instantiated by
     the Mount class to get signals for triggers for finished tasks to
     enable a gui to update their values transferred to the caller back.
 
@@ -46,170 +41,95 @@ class CameraSignals(PyQt5.QtCore.QObject):
     saved = PyQt5.QtCore.pyqtSignal(object)
     message = PyQt5.QtCore.pyqtSignal(object)
 
+    serverConnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
 
-class Camera(indiClass.IndiClass):
-    """
-    the class Camera inherits all information and handling of the Camera device.
 
-
-        >>> c = Camera(app=None)
-    """
+class Camera:
 
     __all__ = ['Camera',
                ]
 
     logger = logging.getLogger(__name__)
 
-    # update rate to 1000 milli seconds for setting indi server
-    UPDATE_RATE = 1000
+    def __init__(self, app):
 
-    def __init__(self, app=None):
-        super().__init__(app=app)
-
+        self.app = app
+        self.threadPool = app.threadPool
         self.signals = CameraSignals()
-        self.imagePath = ''
-        self.filterNames = dict()
-        self.filterNumber = 0
 
-    def setUpdateConfig(self, deviceName):
-        """
-        _setUpdateRate corrects the update rate of camera devices to get an defined
-        setting regardless, what is setup in server side.
+        self.data = {}
+        self.framework = None
+        self.run = {
+            'indi': CameraIndi(self.app, self.signals, self.data),
+        }
+        self.name = ''
 
-        :param deviceName:
-        :return: success
-        """
+        self.host = ('localhost', 7624)
+        self.isGeometry = False
 
-        if deviceName != self.name:
-            return False
+        # signalling from subclasses to main
+        self.run['indi'].client.signals.serverConnected.connect(self.serverConnected)
+        self.run['indi'].client.signals.serverDisconnected.connect(self.serverDisconnected)
+        self.run['indi'].client.signals.deviceConnected.connect(self.deviceConnected)
+        self.run['indi'].client.signals.deviceDisconnected.connect(self.deviceDisconnected)
 
-        if self.device is None:
-            return False
+    @property
+    def host(self):
+        return self._host
 
-        # set BLOB mode also
-        self.client.setBlobMode(blobHandling='Also',
-                                deviceName=deviceName)
-        # setting a object name
-        objectName = self.device.getText('FITS_HEADER')
-        objectName['FITS_OBJECT'] = 'skyview'
-        self.client.sendNewText(deviceName=deviceName,
-                                propertyName='FITS_HEADER',
-                                elements=objectName,
-                                )
-        # setting WCS Control off
-        wcs = self.device.getSwitch('WCS_CONTROL')
-        wcs['WCS_DISABLE'] = True
-        self.client.sendNewSwitch(deviceName=deviceName,
-                                  propertyName='WCS_CONTROL',
-                                  elements=wcs,
-                                  )
-        # setting active device for telescope
-        telescope = self.device.getText('ACTIVE_DEVICES')
-        telescope['ACTIVE_TELESCOPE'] = 'LX200 10micron'
-        self.client.sendNewText(deviceName=deviceName,
-                                propertyName='ACTIVE_DEVICES',
-                                elements=telescope,
-                                )
-        # setting polling updates in driver
-        update = self.device.getNumber('POLLING_PERIOD')
-        if 'PERIOD_MS' not in update:
-            return False
-        if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
-            return True
-        update['PERIOD_MS'] = self.UPDATE_RATE
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='POLLING_PERIOD',
-                                        elements=update,
-                                        )
+    @host.setter
+    def host(self, value):
+        self._host = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].host = value
 
-        return suc
+    @property
+    def name(self):
+        return self._name
 
-    def setExposureState(self, propertyName='', value=0):
+    @name.setter
+    def name(self, value):
+        self._name = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].name = value
+
+    # wee need to collect dispatch all signals from the different frameworks
+    def deviceConnected(self, deviceName):
+        self.signals.deviceConnected.emit(deviceName)
+
+    def deviceDisconnected(self, deviceName):
+        self.signals.deviceDisconnected.emit(deviceName)
+
+    def serverConnected(self):
+        self.signals.serverConnected.emit()
+
+    def serverDisconnected(self, deviceList):
+        self.signals.serverDisconnected.emit(deviceList)
+
+    def startCommunication(self):
         """
 
-        :param propertyName:
-        :param value:
-        :return: success
         """
 
-        if propertyName == 'CCD_EXPOSURE':
-            if not hasattr(self.device, 'CCD_EXPOSURE'):
-                return False
-            if self.device.CCD_EXPOSURE['state'] == 'Idle':
-                self.signals.message.emit('')
-            elif self.device.CCD_EXPOSURE['state'] == 'Busy':
-                if value == 0:
-                    self.signals.integrated.emit()
-                    self.signals.message.emit('download')
-                else:
-                    self.signals.message.emit(f'expose {value:2.0f} s')
-            elif self.device.CCD_EXPOSURE['state'] == 'Ok':
-                self.signals.message.emit('')
-            return True
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].startCommunication()
+            return suc
         else:
             return False
 
-    def updateNumber(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
-        """
-        if not super().updateNumber(deviceName, propertyName):
-            return False
-
-        for element, value in self.device.getNumber(propertyName).items():
-            self.setExposureState(propertyName=propertyName, value=value)
-
-        return True
-
-    def updateBLOB(self, deviceName, propertyName):
-        """
-        updateBLOB is called whenever a new BLOB is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return: success
+    def stopCommunication(self):
         """
 
-        if not super().updateBLOB(deviceName, propertyName):
-            return False
+        """
 
-        data = self.device.getBlob(propertyName)
-
-        if 'value' not in data:
-            return False
-        if data['name'] != 'CCD1':
-            return False
-        if not self.imagePath:
-            return False
-        if not os.path.isdir(os.path.dirname(self.imagePath)):
-            return False
-
-        if data['format'] == '.fits.fz':
-            HDU = fits.HDUList.fromstring(data['value'])
-            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-            self.logger.debug('Image BLOB is in FPacked format')
-
-        elif data['format'] == '.fits.z':
-            HDU = fits.HDUList.fromstring(zlib.decompress(data['value']))
-            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-            self.logger.debug('Image BLOB is compressed fits format')
-
-        elif data['format'] == '.fits':
-            HDU = fits.HDUList.fromstring(data['value'])
-            fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-            self.logger.debug('Image BLOB is uncompressed fits format')
-
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].stopCommunication()
+            return suc
         else:
-            self.logger.debug('Image BLOB is not supported')
-
-        self.signals.saved.emit(self.imagePath)
-        return True
+            return False
 
     def canSubFrame(self, subFrame=100):
         """
@@ -264,36 +184,6 @@ class Camera(indiClass.IndiClass):
 
         return posX, posY, width, height
 
-    def setupFrameCompress(self):
-        """
-        setupFrameCompress prepares the overall INDI setup data for imaging
-
-        :return: success
-        """
-
-        # setting compression to on as default
-        indiCmd = self.device.getSwitch('CCD_COMPRESSION')
-        if 'CCD_COMPRESS' not in indiCmd:
-            return False
-        indiCmd['CCD_COMPRESS'] = True
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='CCD_COMPRESSION',
-                                        elements=indiCmd,
-                                        )
-        if not suc:
-            return False
-
-        # setting frame type to light
-        indiCmd = self.device.getSwitch('CCD_FRAME_TYPE')
-        if 'FRAME_LIGHT' not in indiCmd:
-            return False
-        indiCmd['FRAME_LIGHT'] = True
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='CCD_FRAME_TYPE',
-                                        elements=indiCmd,
-                                        )
-        return suc
-
     def sendDownloadMode(self, fastReadout=False):
         """
         setDownloadMode sets the readout speed of the camera
@@ -301,20 +191,15 @@ class Camera(indiClass.IndiClass):
         :return: success
         """
 
-        # setting fast mode:
-        quality = self.device.getSwitch('READOUT_QUALITY')
-        self.logger.debug(f'camera has readout quality entry: {quality}')
-        quality['QUALITY_LOW'] = fastReadout
-        quality['QUALITY_HIGH'] = not fastReadout
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='READOUT_QUALITY',
-                                        elements=quality,
-                                        )
-
+        suc = self.run[self.framework].sendDownloadMode(fastReadout=fastReadout)
         return suc
 
-    def expose(self, imagePath='', expTime=3, binning=1,
-               subFrame=100, fastReadout=True):
+    def expose(self,
+               imagePath='',
+               expTime=3,
+               binning=1,
+               subFrame=100,
+               fastReadout=True):
         """
 
         :param imagePath:
@@ -332,50 +217,17 @@ class Camera(indiClass.IndiClass):
         if not self.canBinning(binning=binning):
             return False
 
-        self.imagePath = imagePath
-
-        suc = self.setupFrameCompress()
-        if not suc:
-            if not suc:
-                self.logger.info('Camera has no compression settings')
-
-        suc = self.sendDownloadMode(fastReadout=fastReadout)
-        if not suc:
-            self.logger.info('Camera has no download quality settings')
-
-        # setting binning value for x and y equally
-        indiCmd = self.device.getNumber('CCD_BINNING')
-        indiCmd['HOR_BIN'] = binning
-        indiCmd['VER_BIN'] = binning
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='CCD_BINNING',
-                                        elements=indiCmd,
-                                        )
-        if not suc:
-            return False
-
-        # setting subFrame
         posX, posY, width, height = self.calcSubFrame(subFrame)
 
-        indiCmd = self.device.getNumber('CCD_FRAME')
-        indiCmd['X'] = posX
-        indiCmd['Y'] = posY
-        indiCmd['WIDTH'] = width
-        indiCmd['HEIGHT'] = height
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='CCD_FRAME',
-                                        elements=indiCmd,
-                                        )
-        if not suc:
-            return False
-
-        # setting and starting exposure
-        indiCmd = self.device.getNumber('CCD_EXPOSURE')
-        indiCmd['CCD_EXPOSURE_VALUE'] = expTime
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='CCD_EXPOSURE',
-                                        elements=indiCmd,
-                                        )
+        suc = self.run[self.framework].expose(imagePath=imagePath,
+                                              expTime=expTime,
+                                              binning=binning,
+                                              subFrame=subFrame,
+                                              fastReadout=fastReadout,
+                                              posX=posX,
+                                              posY=posY,
+                                              width=width,
+                                              height=height)
         return suc
 
     def abort(self):
@@ -385,18 +237,7 @@ class Camera(indiClass.IndiClass):
         :return: success
         """
 
-        if not self.device:
-            return False
-
-        indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
-        if 'ABORT' not in indiCmd:
-            return False
-        indiCmd['ABORT'] = True
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='CCD_ABORT_EXPOSURE',
-                                        elements=indiCmd,
-                                        )
-
+        suc = self.run[self.framework].abort()
         return suc
 
     def sendCoolerSwitch(self, coolerOn=False):
@@ -407,15 +248,7 @@ class Camera(indiClass.IndiClass):
         :return: success
         """
 
-        # setting fast mode:
-        cooler = self.device.getSwitch('CCD_COOLER')
-        cooler['COOLER_ON'] = coolerOn
-        cooler['COOLER_OFF'] = not coolerOn
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='CCD_COOLER',
-                                        elements=cooler,
-                                        )
-
+        suc = self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)
         return suc
 
     def sendCoolerTemp(self, temperature=0):
@@ -426,12 +259,5 @@ class Camera(indiClass.IndiClass):
         :return: success
         """
 
-        # setting fast mode:
-        temp = self.device.getNumber('CCD_TEMPERATURE')
-        temp['CCD_TEMPERATURE_VALUE'] = temperature
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='CCD_TEMPERATURE',
-                                        elements=temp,
-                                        )
-
+        suc = self.run[self.framework].sendCoolerTemp(temperature=temperature)
         return suc

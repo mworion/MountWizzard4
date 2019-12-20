@@ -43,10 +43,11 @@ class DomeIndi(IndiClass):
     # update rate to 1000 milli seconds for setting indi server
     UPDATE_RATE = 1000
 
-    def __init__(self, app=None, signals=None):
+    def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app)
 
         self.signals = signals
+        self.data = data
         self.settlingTime = 0
 
         self.azimuth = -1

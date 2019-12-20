@@ -61,10 +61,11 @@ class Dome:
         self.threadPool = app.threadPool
         self.signals = DomeSignals()
 
+        self.data = {}
         self.framework = None
         self.run = {
-            'indi': DomeIndi(self.app, self.signals),
-            'alpaca': DomeAlpaca(self.app, self.signals),
+            'indi': DomeIndi(self.app, self.signals, self.data),
+            'alpaca': DomeAlpaca(self.app, self.signals, self.data),
         }
         self.name = ''
 

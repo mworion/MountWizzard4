@@ -329,12 +329,11 @@ class AlpacaClass(object):
 
         return True
 
-    def startTimer(self, result):
+    def startTimer(self):
         """
 
         """
-        if result:
-            self.timeCycle.start(self.CYCLE)
+        self.timeCycle.start(self.CYCLE)
 
     def stopTimer(self):
         """
@@ -348,6 +347,7 @@ class AlpacaClass(object):
 
         :return: success
         """
+
         suc = self.connected()
         if self.deviceConnected and not suc:
             self.deviceConnected = False
@@ -384,7 +384,7 @@ class AlpacaClass(object):
         """
 
         worker = Worker(self.getInitialConfig)
-        worker.signals.result.connect(self.startTimer)
+        worker.signals.finished.connect(self.startTimer)
         self.threadPool.start(worker)
 
         return True

@@ -106,6 +106,9 @@ class DomeIndi(IndiClass):
         :return: true for test purpose
         """
 
+        if not self.client.connected:
+            return False
+
         self.signals.azimuth.emit(self.azimuth)
 
         return True

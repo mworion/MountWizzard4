@@ -90,8 +90,9 @@ class DomeAlpaca(AlpacaClass):
 
         if not self.deviceConnected:
             return False
+
         worker = Worker(self.pollData)
-        worker.signals.finished.connect(self.emitData)
+        worker.signals.result.connect(self.emitData)
         self.threadPool.start(worker)
         return True
 

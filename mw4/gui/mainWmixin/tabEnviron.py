@@ -51,7 +51,7 @@ class EnvironGui(object):
         self.filteredPressure = None
 
         # environment functions
-        signals = self.app.sensorWeather.client.signals
+        signals = self.app.sensorWeather.signals
         signals.deviceDisconnected.connect(self.clearSensorWeatherGui)
 
         # skymeter functions

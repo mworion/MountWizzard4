@@ -347,8 +347,9 @@ class Model(object):
         mPoint = self.solveQueue.get()
 
         # showing the expose image in the image window
-        if self.app.uiWindows['showImageW']['classObj']:
-            self.app.imageW.signals.showImage.emit(mPoint["imagePath"])
+        imageWObj = self.app.uiWindows['showImageW']['classObj']
+        if imageWObj:
+            imageWObj.signals.showImage.emit(mPoint["imagePath"])
 
         self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
                                            radius=mPoint["searchRadius"],
@@ -521,7 +522,7 @@ class Model(object):
         """
 
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
-        if self.app.dome.device is not None:
+        if self.app.mainW.deviceStat['dome']:
             self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
 
         self.collector.ready.connect(self.modelImage)

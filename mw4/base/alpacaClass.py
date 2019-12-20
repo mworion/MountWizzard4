@@ -125,6 +125,7 @@ class AlpacaClass(object):
             self.logger.info(f'malformed name: {value}')
             return False
         self.deviceType, self.number = valueSplit
+        self.number = int(self.number)
         self.baseUrl = self.generateBaseUrl()
 
     @property

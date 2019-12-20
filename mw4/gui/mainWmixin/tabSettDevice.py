@@ -275,26 +275,22 @@ class SettDevice(object):
             if isGui and (self.sender() != driverObj['uiDropDown']):
                 continue
 
-            # if not driver is selected, we stop all running processes and stop
-            impl = ['indi', 'buil', 'alpa']
-            if driverObj['uiDropDown'].currentText()[:4] not in impl:
-                self.app.message.emit(f'{driver} disabled', 0)
-                self.deviceStat[driver] = None
-                driverObj['uiDropDown'].setStyleSheet(self.BACK_NORM)
-                if driverObj['class'] is not None:
-                    driverObj['class'].stopCommunication()
+            # if there is a change we first have to stop running drivers and reset gui
+            driverObj['class'].stopCommunication()
+            driverObj['uiDropDown'].setStyleSheet(self.BACK_NORM)
+            self.app.message.emit(f'{driver} disabled', 0)
+            self.deviceStat[driver] = None
+
+            # if new driver is disabled, we are finished
+            dropDownText = driverObj['uiDropDown'].currentText()
+            if dropDownText == 'device disabled':
                 continue
 
-            # setting processes to run
-            self.app.message.emit(f'{driver} enabled', 0)
-            # without connection it is first red
-            self.deviceStat[driver] = False
-            # driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-
+            # now we start a new driver setup
             # depending on the type different setups have to be made
-
+            # without connection it is first red, connected will turn the color
+            self.deviceStat[driver] = False
             driverData = self.driversData.get(driver, {})
-            dropDownText = driverObj['uiDropDown'].currentText()
 
             if dropDownText.startswith('indi'):
                 framework = 'indi'
@@ -310,17 +306,16 @@ class SettDevice(object):
             else:
                 name = driver
 
+            # setting the new selected framework type and name
             driverObj['class'].framework = framework
-
-            if framework in ['alpaca', 'indi']:
-                driverObj['class'].name = name
-                driverObj['class'].host = host
+            driverObj['class'].host = host
+            driverObj['class'].name = name
 
             # and finally start it
-            if driverObj['class'] is not None:
-                suc = driverObj['class'].startCommunication()
-                if not suc:
-                    self.app.message.emit(f'{driver} could not be started', 2)
+            self.app.message.emit(f'Enabling: [{driver}]', 0)
+            suc = driverObj['class'].startCommunication()
+            if not suc:
+                self.app.message.emit(f'[{driver}] could not be started', 2)
 
             return True
 

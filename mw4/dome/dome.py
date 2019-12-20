@@ -88,8 +88,8 @@ class Dome:
     @host.setter
     def host(self, value):
         self._host = value
-        self.run['indi'].client.host = value
-        self.run['alpaca'].host = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].host = value
 
     @property
     def name(self):
@@ -98,8 +98,8 @@ class Dome:
     @name.setter
     def name(self, value):
         self._name = value
-        self.run['indi'].name = value
-        self.run['alpaca'].name = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].name = value
 
     # wee need to collect dispatch all signals from the different frameworks
     def deviceConnected(self, deviceName):

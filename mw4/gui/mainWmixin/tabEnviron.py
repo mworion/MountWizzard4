@@ -55,7 +55,7 @@ class EnvironGui(object):
         signals.deviceDisconnected.connect(self.clearSensorWeatherGui)
 
         # skymeter functions
-        signals = self.app.skymeter.client.signals
+        signals = self.app.skymeter.signals
         signals.deviceDisconnected.connect(self.clearSkymeterGUI)
 
         # weather functions

@@ -234,12 +234,7 @@ class SettDevice(object):
             width = self.width()
             geometry = posX, posY, width, height
 
-            # get framework
-            # todo check if attribute checking is necessary
-            if hasattr(self.drivers[driver]['class'], 'run'):
-                framework = self.drivers[driver]['class'].run.keys()
-            else:
-                framework = {}
+            framework = self.drivers[driver]['class'].run.keys()
             deviceType = self.drivers[driver]['deviceType']
 
             self.popupUi = DevicePopup(geometry=geometry,
@@ -247,7 +242,10 @@ class SettDevice(object):
                                        deviceType=deviceType,
                                        framework=framework,
                                        data=self.driversData)
-            # todo: signal when Popup is finished
+
+            # setting callback when the modal window is closed to update the configuration
+            driverCall = driver
+            self.popupUi.destroyed.connect(lambda: self.dispatch(driverName=driverCall))
 
     def dispatch(self, driverName=''):
         """

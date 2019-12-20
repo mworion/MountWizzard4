@@ -62,7 +62,7 @@ class MeasureData(object):
 
         # minimum set for driver package built in
         self.name = ''
-        self.framework = 'local'
+        self.framework = None
         self.run = {
             'built-in': self
         }

@@ -265,7 +265,9 @@ class SettDevice(object):
                 continue
 
             # if there is a change we first have to stop running drivers and reset gui
-            driverObj['class'].stopCommunication()
+            # if it's the startup (which has no name set, we don't need to stop
+            if driverObj['class'].name:
+                driverObj['class'].stopCommunication()
             driverObj['uiDropDown'].setStyleSheet(self.BACK_NORM)
 
             # in the first run, I don't want to show the disconnection
@@ -275,6 +277,10 @@ class SettDevice(object):
 
             # if new driver is disabled, we are finished
             dropDownText = driverObj['uiDropDown'].currentText()
+
+            if driver == 'dome':
+                print(self.deviceStat['dome'], dropDownText)
+
             if dropDownText == 'device disabled':
                 continue
 

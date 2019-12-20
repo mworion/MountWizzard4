@@ -153,6 +153,7 @@ class Dome:
         """
 
         if self.framework in self.run.keys():
+            self.signals.message.emit('')
             suc = self.run[self.framework].stopCommunication()
             return suc
         else:

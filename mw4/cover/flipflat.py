@@ -139,4 +139,3 @@ class FlipFlat:
             return suc
         else:
             return False
-

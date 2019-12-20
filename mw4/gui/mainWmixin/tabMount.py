@@ -49,6 +49,7 @@ class Mount(object):
         ms.pointDone.connect(self.updateTimeGUI)
         ms.settingDone.connect(self.updateSettingGUI)
         ms.settingDone.connect(self.updateSetStatGUI)
+        ms.settingDone.connect(self.updateSetSyncGUI)
         ms.locationDone.connect(self.updateTrackingGui)
 
         self.ui.park.clicked.connect(self.changePark)
@@ -219,7 +220,8 @@ class Mount(object):
             self.ui.statusUnattendedFlip.setText('-')
 
         if sett.statusDualAxisTracking is not None:
-            self.ui.statusDualAxisTracking.setText('ON' if sett.statusDualAxisTracking else 'OFF')
+            self.ui.statusDualAxisTracking.setText(
+                'ON' if sett.statusDualAxisTracking else 'OFF')
         else:
             self.ui.statusDualAxisTracking.setText('-')
 
@@ -237,6 +239,18 @@ class Mount(object):
             self.changeStyleDynamic(self.ui.refractionTemp1, 'color', '')
             self.changeStyleDynamic(self.ui.refractionPress1, 'color', '')
 
+        return True
+
+    def updateSetSyncGUI(self, sett):
+        """
+        updateSetSyncGUI update the gui upon events triggered be the reception of new
+        settings from the mount. the mount data is polled, so we use this signal as well
+        for the update process.
+
+        :param sett:
+        :return:    True if ok for testing
+        """
+
         if sett.gpsSynced is not None:
             self.ui.statusGPSSynced.setText('YES' if sett.gpsSynced else 'NO')
         else:
@@ -246,6 +260,16 @@ class Mount(object):
             self.ui.statusWOL.setText(sett.wakeOnLan)
         else:
             self.ui.statusWOL.setText('-')
+
+        if sett.typeConnection is None:
+            return False
+        if sett.typeConnection < 0:
+            return False
+        if sett.typeConnection > len(self.typeConnectionTexts):
+            return False
+
+        text = self.typeConnectionTexts[sett.typeConnection]
+        self.ui.mountTypeConnection.setText(text)
 
         return True
 
@@ -306,16 +330,6 @@ class Mount(object):
             self.ui.horizonLimitHigh.setText(str(sett.horizonLimitHigh))
         else:
             self.ui.horizonLimitHigh.setText('-')
-
-        if sett.typeConnection is None:
-            return False
-        if sett.typeConnection < 0:
-            return False
-        if sett.typeConnection > len(self.typeConnectionTexts):
-            return False
-
-        text = self.typeConnectionTexts[sett.typeConnection]
-        self.ui.mountTypeConnection.setText(text)
 
         return True
 

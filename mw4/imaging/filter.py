@@ -141,4 +141,3 @@ class Filter:
             return suc
         else:
             return False
-

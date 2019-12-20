@@ -114,7 +114,7 @@ class SettDevice(object):
                 'uiDropDown': self.ui.astrometryDevice,
                 'uiSetup': None,
                 'class': self.app.astrometry,
-                'deviceType': None,
+                'deviceType': 'astrometry',
             },
             'remote': {
                 'uiDropDown': self.ui.remoteDevice,
@@ -214,10 +214,6 @@ class SettDevice(object):
             for framework in self.drivers[driver]['class'].run.keys():
                 self.drivers[driver]['uiDropDown'].addItem(framework)
 
-        # build-in drivers
-        for app in self.app.astrometry.solverAvailable:
-            self.drivers['astrometry']['uiDropDown'].addItem(app)
-
         return True
 
     def setupPopUp(self):
@@ -273,7 +269,7 @@ class SettDevice(object):
             # if there is a change we first have to stop running drivers and reset gui
             driverObj['class'].stopCommunication()
             driverObj['uiDropDown'].setStyleSheet(self.BACK_NORM)
-            self.app.message.emit(f'{driver} disabled', 0)
+            self.app.message.emit(f'Disabled: [{driver}]', 0)
             self.deviceStat[driver] = None
 
             # if new driver is disabled, we are finished
@@ -318,6 +314,11 @@ class SettDevice(object):
             # todo: make it with signals like th external drivers ?
             if dropDownText == 'built-in':
                 driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+
+            if driverObj['deviceType'] == 'astrometry':
+                driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+                driverObj['class'].framework = dropDownText
+                self.deviceStat['astrometry'] = True
 
             return True
 

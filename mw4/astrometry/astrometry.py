@@ -87,28 +87,13 @@ class Astrometry:
         self.signals = AstrometrySignals()
         self.mutexSolve = PyQt5.QtCore.QMutex()
 
-        self._solverSelected = ''
         self.solverEnviron = {}
         self.setSolverEnviron()
-        self.solverAvailable = self.checkAvailability()
 
         # minimum set for driver package built in
         self.name = ''
-        self.framework = 'local'
-        self.run = {
-            'local': self
-        }
-
-    @property
-    def solverSelected(self):
-        return self._solverSelected
-
-    @solverSelected.setter
-    def solverSelected(self, value):
-        if value in self.solverAvailable:
-            self._solverSelected = value
-        else:
-            self._solverSelected = ''
+        self.framework = None
+        self.run = self.checkAvailability()
 
     def setSolverEnviron(self):
         """
@@ -337,12 +322,10 @@ class Astrometry:
         :return: true for test purpose
         """
 
-        if not self.solverSelected:
-            return False
-        if self.solverSelected not in self.solverEnviron:
+        if self.framework not in self.solverEnviron:
             return False
 
-        solverEnviron = self.solverEnviron[self.solverSelected]
+        solverEnviron = self.solverEnviron[self.framework]
         solver = solverEnviron['solver']
 
         self.mutexSolve.unlock()
@@ -369,12 +352,10 @@ class Astrometry:
         :return: success
         """
 
-        if not self.solverSelected:
-            return False
-        if self.solverSelected not in self.solverEnviron:
+        if self.framework not in self.solverEnviron:
             return False
 
-        solverEnviron = self.solverEnviron[self.solverSelected]
+        solverEnviron = self.solverEnviron[self.framework]
         solver = solverEnviron['solver']
 
         if not os.path.isfile(fitsPath):
@@ -407,18 +388,18 @@ class Astrometry:
         :return:
         """
 
-        if not self.solverSelected:
-            return False
-        if self.solverSelected not in self.solverEnviron:
+        if self.framework not in self.solverEnviron:
             return False
 
-        solverEnviron = self.solverEnviron[self.solverSelected]
+        solverEnviron = self.solverEnviron[self.framework]
         solver = solverEnviron['solver']
         suc = solver.abort()
         return suc
 
-    def startCommunication(self):
-        pass
+    @staticmethod
+    def startCommunication():
+        return True
 
-    def stopCommunication(self):
-        pass
+    @staticmethod
+    def stopCommunication():
+        return True

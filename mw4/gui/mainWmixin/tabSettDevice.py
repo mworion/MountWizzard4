@@ -287,28 +287,30 @@ class SettDevice(object):
                 continue
 
             # now we start a new driver setup
-            # depending on the type different setups have to be made
             # without connection it is first red, connected will turn the color
             self.deviceStat[driver] = False
             driverData = self.driversData.get(driver, {})
 
+            # now driver specific parameters will be set
             if dropDownText.startswith('indi'):
                 framework = 'indi'
                 name = driverData.get('indiName', '')
                 driverObj['class'].showMessages = driverData.get('indiMessages', False)
                 host = (driverData.get('indiHost'), int(driverData.get('indiPort')))
+                driverObj['class'].framework = framework
+                driverObj['class'].host = host
 
             elif dropDownText.startswith('alpaca'):
                 framework = 'alpaca'
                 name = driverData.get('alpacaName', 0)
                 host = (driverData.get('alpacaHost'), int(driverData.get('alpacaPort')))
+                driverObj['class'].framework = framework
+                driverObj['class'].host = host
 
             else:
                 name = driver
 
-            # setting the new selected framework type and name
-            driverObj['class'].framework = framework
-            driverObj['class'].host = host
+            # setting the new selected framework type and name, host
             driverObj['class'].name = name
 
             # and finally start it

@@ -64,7 +64,7 @@ class AlpacaClass(object):
 
     logger = logging.getLogger(__name__)
 
-    CYCLE = 1000
+    CYCLE = 2000
 
     def __init__(self, app=None):
         super().__init__()

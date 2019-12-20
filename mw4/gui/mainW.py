@@ -136,7 +136,6 @@ class MainWindow(MWidget,
         self.ui.saveConfig.clicked.connect(self.saveProfile)
 
         # initial call for writing the gui
-        # todo: check if self.updateMountConnStat(None) needed
         self.initConfig()
 
         # cyclic updates
@@ -458,11 +457,10 @@ class MainWindow(MWidget,
         :return: True for test purpose
         """
 
-        # todo cover setting refraction source
-        # if self.refractionSource in self.deviceStat:
-        #     self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
-        # else:
-        #     self.deviceStat['environOverall'] = None
+        if self.refractionSource in self.deviceStat:
+            self.deviceStat['environOverall'] = self.deviceStat[self.refractionSource]
+        else:
+            self.deviceStat['environOverall'] = None
 
         for device, ui in self.deviceStatGui.items():
             if self.deviceStat.get(device, None) is None:

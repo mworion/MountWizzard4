@@ -41,8 +41,8 @@ class AlpacaSignals(PyQt5.QtCore.QObject):
 
     serverConnected = PyQt5.QtCore.pyqtSignal()
     serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
 class AlpacaClass(object):

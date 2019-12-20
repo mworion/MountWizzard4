@@ -39,8 +39,8 @@ class SensorWeatherSignals(PyQt5.QtCore.QObject):
 
     serverConnected = PyQt5.QtCore.pyqtSignal()
     serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceConnected = PyQt5.QtCore.pyqtSignal(object)
-    deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
 
 
 class SensorWeather:
@@ -66,10 +66,10 @@ class SensorWeather:
         self.host = ('localhost', 7624)
 
         # signalling from subclasses to main
-        self.run['indi'].client.signals.serverConnected.connect(self.serverConnected)
-        self.run['indi'].client.signals.serverDisconnected.connect(self.serverDisconnected)
-        self.run['indi'].client.signals.deviceConnected.connect(self.deviceConnected)
-        self.run['indi'].client.signals.deviceDisconnected.connect(self.deviceDisconnected)
+        self.run['indi'].client.signals.serverConnected.connect(self.signals.serverConnected)
+        self.run['indi'].client.signals.serverDisconnected.connect(self.signals.serverDisconnected)
+        self.run['indi'].client.signals.deviceConnected.connect(self.signals.deviceConnected)
+        self.run['indi'].client.signals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
     @property
     def host(self):
@@ -90,19 +90,6 @@ class SensorWeather:
         self._name = value
         if self.framework in self.run.keys():
             self.run[self.framework].name = value
-
-    # wee need to collect dispatch all signals from the different frameworks
-    def deviceConnected(self, deviceName):
-        self.signals.deviceConnected.emit(deviceName)
-
-    def deviceDisconnected(self, deviceName):
-        self.signals.deviceDisconnected.emit(deviceName)
-
-    def serverConnected(self):
-        self.signals.serverConnected.emit()
-
-    def serverDisconnected(self, deviceList):
-        self.signals.serverDisconnected.emit(deviceList)
 
     def startCommunication(self):
         """

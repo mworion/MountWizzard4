@@ -68,7 +68,6 @@ class Filter:
         self.name = ''
 
         self.host = ('localhost', 7624)
-        self.isGeometry = False
 
         # signalling from subclasses to main
         self.run['indi'].client.signals.serverConnected.connect(self.serverConnected)

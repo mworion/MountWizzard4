@@ -244,7 +244,6 @@ class DevicePopup(widget.MWidget):
 
         if self.driver in self.indiDefaults:
             self.indiSearchNameList.append(self.indiDefaults[self.driver])
-            return False
 
         else:
             host = (self.ui.indiHost.text(), int(self.ui.indiPort.text()))

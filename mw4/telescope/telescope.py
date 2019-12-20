@@ -19,56 +19,109 @@
 ###########################################################
 # standard libraries
 import logging
-from datetime import datetime
 # external packages
-import numpy as np
+import PyQt5
 # local imports
-from mw4.base import indiClass
+from mw4.telescope.telescopeIndi import TelescopeIndi
 
 
-class Telescope(indiClass.IndiClass):
+class TelescopeSignals(PyQt5.QtCore.QObject):
     """
-    the class SnoopTelescope inherits all information and handling of the Skymeter device
+    The TelescopeSignals class offers a list of signals to be used and instantiated by
+    the Mount class to get signals for triggers for finished tasks to
+    enable a gui to update their values transferred to the caller back.
 
-        >>>  t = Telescope(app=None)
+    This has to be done in a separate class as the signals have to be subclassed from
+    QObject and the Mount class itself is subclassed from object
     """
+
+    __all__ = ['TelescopeSignals']
+
+    serverConnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
+
+
+class Telescope:
 
     __all__ = ['Telescope',
                ]
 
     logger = logging.getLogger(__name__)
 
-    # update rate to 10 seconds for setting indi server
-    UPDATE_RATE = 10
+    def __init__(self, app):
 
-    def __init__(self, app=None):
-        super().__init__(app=app)
+        self.app = app
+        self.threadPool = app.threadPool
+        self.signals = TelescopeSignals()
 
-    def setUpdateConfig(self, deviceName):
+        self.data = {}
+        self.framework = None
+        self.run = {
+            'indi': TelescopeIndi(self.app, self.signals, self.data),
+        }
+        self.name = ''
+
+        self.host = ('localhost', 7624)
+
+        # signalling from subclasses to main
+        self.run['indi'].client.signals.serverConnected.connect(self.serverConnected)
+        self.run['indi'].client.signals.serverDisconnected.connect(self.serverDisconnected)
+        self.run['indi'].client.signals.deviceConnected.connect(self.deviceConnected)
+        self.run['indi'].client.signals.deviceDisconnected.connect(self.deviceDisconnected)
+
+    @property
+    def host(self):
+        return self._host
+
+    @host.setter
+    def host(self, value):
+        self._host = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].host = value
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].name = value
+
+    # wee need to collect dispatch all signals from the different frameworks
+    def deviceConnected(self, deviceName):
+        self.signals.deviceConnected.emit(deviceName)
+
+    def deviceDisconnected(self, deviceName):
+        self.signals.deviceDisconnected.emit(deviceName)
+
+    def serverConnected(self):
+        self.signals.serverConnected.emit()
+
+    def serverDisconnected(self, deviceList):
+        self.signals.serverDisconnected.emit(deviceList)
+
+    def startCommunication(self):
         """
-        _setUpdateRate corrects the update rate of weather devices to get an defined
-        setting regardless, what is setup in server side.
 
-        :param deviceName:
-        :return: success
         """
 
-        if deviceName != self.name:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].startCommunication()
+            return suc
+        else:
             return False
 
-        if self.device is None:
+    def stopCommunication(self):
+        """
+
+        """
+
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].stopCommunication()
+            return suc
+        else:
             return False
-
-        update = self.device.getNumber('PERIOD_MS')
-
-        if 'PERIOD' not in update:
-            return False
-
-        if update.get('PERIOD', 0) == self.UPDATE_RATE:
-            return True
-
-        update['PERIOD'] = self.UPDATE_RATE
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='PERIOD_MS',
-                                        elements=update)
-        return suc

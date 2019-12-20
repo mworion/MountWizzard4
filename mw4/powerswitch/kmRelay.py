@@ -25,24 +25,20 @@ import time
 import PyQt5
 import requests
 # local imports
-from mw4.base.driverClass import DriverClass
 
 
-class KMRelay(DriverClass):
+class KMRelay(PyQt5.QtCore.QObject):
     """
     The class KMRelay inherits all information and handling of KMtronic relay board
     attributes of the connected board and provides the abstracted interface.
 
-        >>> fw = KMRelay(
-        >>>                 host=host
-        >>>                 user=user
-        >>>                 password=password
-        >>>              )
+        >>> relay = KMRelay(host=None, user='', password='')
+
     """
 
     __all__ = ['KMRelay',
-               'startTimers',
-               'stopTimers',
+               'startCommunication',
+               'stopCommunication',
                'cyclePolling',
                'pulse',
                'switch',
@@ -68,6 +64,13 @@ class KMRelay(DriverClass):
                  password=None,
                  ):
         super().__init__()
+
+        # minimum set for driver package built in
+        self.framework = None
+        self.run = {
+            'local': self
+        }
+        self.name = 'local'
 
         self.host = host
         self.mutexPoll = PyQt5.QtCore.QMutex()

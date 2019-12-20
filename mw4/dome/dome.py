@@ -61,19 +61,17 @@ class Dome:
         self.threadPool = app.threadPool
         self.signals = DomeSignals()
 
-        self.framework = 'None'
-        self._host = ('localhost', 7624)
-        self._name = ''
-        self._deviceType = ''
-        self._number = 0
-
+        self.framework = None
         self.run = {
             'indi': DomeIndi(self.app, self.signals),
             'alpaca': DomeAlpaca(self.app, self.signals),
         }
+        self.name = ''
 
+        self.host = ('localhost', 7624)
         self.isGeometry = False
 
+        # signalling from subclasses to main
         self.run['alpaca'].clientSignals.serverConnected.connect(self.serverConnected)
         self.run['alpaca'].clientSignals.serverDisconnected.connect(self.serverDisconnected)
         self.run['alpaca'].clientSignals.deviceConnected.connect(self.deviceConnected)
@@ -100,9 +98,8 @@ class Dome:
     @name.setter
     def name(self, value):
         self._name = value
-        self.run['alpaca'].name = value
         self.run['indi'].name = value
-        pass
+        self.run['alpaca'].name = value
 
     # wee need to collect dispatch all signals from the different frameworks
     def deviceConnected(self, deviceName):

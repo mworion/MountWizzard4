@@ -25,6 +25,7 @@ import numpy as np
 import requests
 # local imports
 from mw4.base.tpool import Worker
+from mw4.base.driverClass import DriverClass
 
 
 class WeatherSignals(PyQt5.QtCore.QObject):
@@ -43,7 +44,7 @@ class WeatherSignals(PyQt5.QtCore.QObject):
     connected = PyQt5.QtCore.pyqtSignal(object)
 
 
-class OnlineWeather(object):
+class OnlineWeather(DriverClass):
     """
     the class Skymeter inherits all information and handling of the Skymeter device
 
@@ -58,18 +59,13 @@ class OnlineWeather(object):
     def __init__(self,
                  app=None,
                  ):
+        super().__init__()
+
         self.app = app
         self.threadPool = app.threadPool
         self.signals = WeatherSignals()
         self.data = {}
         self.running = False
-
-        # minimum set for driver package built in
-        self.name = ''
-        self.framework = 'local'
-        self.run = {
-            'local': self
-        }
 
         self._keyAPI = ''
         self._online = False

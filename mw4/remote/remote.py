@@ -22,9 +22,10 @@ import logging
 # external packages
 import PyQt5
 # local imports
+from mw4.base.driverClass import DriverClass
 
 
-class Remote(PyQt5.QtCore.QObject):
+class Remote(DriverClass):
     """
     The class Remote inherits all information and handling of remotely controlling
     mountwizzard 4.
@@ -48,13 +49,6 @@ class Remote(PyQt5.QtCore.QObject):
         self.app = app
         self.clientConnection = None
         self.tcpServer = None
-
-        # minimum set for driver package built in
-        self.name = ''
-        self.framework = 'local'
-        self.run = {
-            'local': self
-        }
 
     def startCommunication(self):
         """

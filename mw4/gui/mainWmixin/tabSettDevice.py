@@ -269,7 +269,10 @@ class SettDevice(object):
             # if there is a change we first have to stop running drivers and reset gui
             driverObj['class'].stopCommunication()
             driverObj['uiDropDown'].setStyleSheet(self.BACK_NORM)
-            self.app.message.emit(f'Disabled: [{driver}]', 0)
+
+            # in the first run, I don't want to show the disconnection
+            if isGui:
+                self.app.message.emit(f'Disabled: [{driver}]', 0)
             self.deviceStat[driver] = None
 
             # if new driver is disabled, we are finished
@@ -337,7 +340,7 @@ class SettDevice(object):
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
-            self.app.message.emit(f'server {driver} disconnected', 0)
+            #self.app.message.emit(f'server {driver} disconnected', 0)
         return True
 
     def deviceConnected(self, deviceName):
@@ -354,7 +357,7 @@ class SettDevice(object):
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
-            self.app.message.emit(f'{driver} connected', 0)
+            #self.app.message.emit(f'{driver} connected', 0)
         return True
 
     def deviceDisconnected(self, deviceName):
@@ -371,5 +374,5 @@ class SettDevice(object):
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
             self.deviceStat[driver] = False
-            self.app.message.emit(f'{driver} disconnected', 0)
+            #self.app.message.emit(f'{driver} disconnected', 0)
         return True

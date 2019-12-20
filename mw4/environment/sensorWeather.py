@@ -19,90 +19,109 @@
 ###########################################################
 # standard libraries
 import logging
-from datetime import datetime
 # external packages
-import numpy as np
+import PyQt5
 # local imports
-from mw4.base import indiClass
+from mw4.environment.sensorWeatherIndi import SensorWeatherIndi
 
 
-class SensorWeather(indiClass.IndiClass):
+class SensorWeatherSignals(PyQt5.QtCore.QObject):
     """
-    the class SensorWeather inherits all information and handling of the SensorWeather device
+    The SensorWeatherSignals class offers a list of signals to be used and instantiated by
+    the Mount class to get signals for triggers for finished tasks to
+    enable a gui to update their values transferred to the caller back.
 
-        >>> SensorWeather(host=None,
-        >>>         name=''
-        >>>         )
+    This has to be done in a separate class as the signals have to be subclassed from
+    QObject and the Mount class itself is subclassed from object
     """
+
+    __all__ = ['SensorWeatherSignals']
+
+    serverConnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
+
+
+class SensorWeather:
 
     __all__ = ['SensorWeather',
                ]
 
     logger = logging.getLogger(__name__)
 
-    # update rate to 1 seconds for setting indi server
-    UPDATE_RATE = 1
+    def __init__(self, app):
 
-    def __init__(self, app=None):
-        super().__init__(app=app)
+        self.app = app
+        self.threadPool = app.threadPool
+        self.signals = SensorWeatherSignals()
 
-    def setUpdateConfig(self, deviceName):
+        self.data = {}
+        self.framework = None
+        self.run = {
+            'indi': SensorWeatherIndi(self.app, self.signals, self.data),
+        }
+        self.name = ''
+
+        self.host = ('localhost', 7624)
+
+        # signalling from subclasses to main
+        self.run['indi'].client.signals.serverConnected.connect(self.serverConnected)
+        self.run['indi'].client.signals.serverDisconnected.connect(self.serverDisconnected)
+        self.run['indi'].client.signals.deviceConnected.connect(self.deviceConnected)
+        self.run['indi'].client.signals.deviceDisconnected.connect(self.deviceDisconnected)
+
+    @property
+    def host(self):
+        return self._host
+
+    @host.setter
+    def host(self, value):
+        self._host = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].host = value
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].name = value
+
+    # wee need to collect dispatch all signals from the different frameworks
+    def deviceConnected(self, deviceName):
+        self.signals.deviceConnected.emit(deviceName)
+
+    def deviceDisconnected(self, deviceName):
+        self.signals.deviceDisconnected.emit(deviceName)
+
+    def serverConnected(self):
+        self.signals.serverConnected.emit()
+
+    def serverDisconnected(self, deviceList):
+        self.signals.serverDisconnected.emit(deviceList)
+
+    def startCommunication(self):
         """
-        setUpdateRate corrects the update rate of weather devices to get an defined
-        setting regardless, what is setup in server side.
 
-        :param deviceName:
-        :return: success
         """
 
-        if deviceName != self.name:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].startCommunication()
+            return suc
+        else:
             return False
 
-        if self.device is None:
-            return False
-
-        update = self.device.getNumber('WEATHER_UPDATE')
-
-        if 'PERIOD' not in update:
-            return False
-
-        if update.get('PERIOD', 0) == self.UPDATE_RATE:
-            return True
-
-        update['PERIOD'] = self.UPDATE_RATE
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='WEATHER_UPDATE',
-                                        elements=update)
-        return suc
-
-    def updateNumber(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-        for global weather data as there is no dew point value available, it calculates
-        it and stores it as value as well.
-
-        if no dew point is available in data, it will calculate this value from
-        temperature and humidity.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
+    def stopCommunication(self):
         """
 
-        if self.device is None:
+        """
+
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].stopCommunication()
+            return suc
+        else:
             return False
-        if deviceName != self.name:
-            return False
-
-        for element, value in self.device.getNumber(propertyName).items():
-            # consolidate to WEATHER_PRESSURE
-            if element == 'WEATHER_BAROMETER':
-                element = 'WEATHER_PRESSURE'
-
-            key = propertyName + '.' + element
-            self.data[key] = value
-
-            # print(self.name, key, value)
-
-        return True

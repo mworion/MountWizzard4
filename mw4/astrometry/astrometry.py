@@ -52,6 +52,11 @@ class AstrometrySignals(PyQt5.QtCore.QObject):
     result = PyQt5.QtCore.pyqtSignal(object)
     message = PyQt5.QtCore.pyqtSignal(object)
 
+    serverConnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
+
 
 class Astrometry:
     """
@@ -396,10 +401,12 @@ class Astrometry:
         suc = solver.abort()
         return suc
 
-    @staticmethod
-    def startCommunication():
+    def startCommunication(self):
+        self.signals.serverConnected.emit()
+        self.signals.deviceConnected.emit(self.name)
         return True
 
-    @staticmethod
-    def stopCommunication():
+    def stopCommunication(self):
+        self.signals.serverDisconnected.emit({self.name: 0})
+        self.signals.deviceDisconnected.emit(self.name)
         return True

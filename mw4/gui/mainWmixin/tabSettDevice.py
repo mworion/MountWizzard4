@@ -293,10 +293,14 @@ class SettDevice(object):
 
             elif dropDownText.startswith('alpaca'):
                 framework = 'alpaca'
-                name = driverData.get('alpacaName', 0)
+                name = driverData.get('alpacaName', '')
                 host = (driverData.get('alpacaHost'), int(driverData.get('alpacaPort')))
                 driverObj['class'].framework = framework
                 driverObj['class'].host = host
+
+            elif driverObj['deviceType'] == 'astrometry':
+                name = driver
+                driverObj['class'].framework = dropDownText
 
             else:
                 name = driver
@@ -314,11 +318,6 @@ class SettDevice(object):
             # todo: make it with signals like th external drivers ?
             if dropDownText == 'built-in':
                 driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-
-            if driverObj['deviceType'] == 'astrometry':
-                driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-                driverObj['class'].framework = dropDownText
-                self.deviceStat['astrometry'] = True
 
             return True
 

@@ -144,9 +144,9 @@ class Dome:
         text = f'Slewing  dome:      az correction: {geoStat}, delta: {azimuth-az:3.1f}°'
         self.app.message.emit(text, 0)
 
-        self.run[self.framework].slewToAltAz(azimuth=az)
+        suc = self.run[self.framework].slewToAltAz(azimuth=az)
 
-        return True
+        return suc
 
     def startCommunication(self):
         """

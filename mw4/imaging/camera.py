@@ -191,8 +191,11 @@ class Camera:
         :return: success
         """
 
-        suc = self.run[self.framework].sendDownloadMode(fastReadout=fastReadout)
-        return suc
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].sendDownloadMode(fastReadout=fastReadout)
+            return suc
+        else:
+            return False
 
     def expose(self,
                imagePath='',
@@ -219,16 +222,19 @@ class Camera:
 
         posX, posY, width, height = self.calcSubFrame(subFrame)
 
-        suc = self.run[self.framework].expose(imagePath=imagePath,
-                                              expTime=expTime,
-                                              binning=binning,
-                                              subFrame=subFrame,
-                                              fastReadout=fastReadout,
-                                              posX=posX,
-                                              posY=posY,
-                                              width=width,
-                                              height=height)
-        return suc
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].expose(imagePath=imagePath,
+                                                  expTime=expTime,
+                                                  binning=binning,
+                                                  subFrame=subFrame,
+                                                  fastReadout=fastReadout,
+                                                  posX=posX,
+                                                  posY=posY,
+                                                  width=width,
+                                                  height=height)
+            return suc
+        else:
+            return False
 
     def abort(self):
         """
@@ -236,9 +242,11 @@ class Camera:
 
         :return: success
         """
-
-        suc = self.run[self.framework].abort()
-        return suc
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].abort()
+            return suc
+        else:
+            return False
 
     def sendCoolerSwitch(self, coolerOn=False):
         """
@@ -248,8 +256,11 @@ class Camera:
         :return: success
         """
 
-        suc = self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)
-        return suc
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)
+            return suc
+        else:
+            return False
 
     def sendCoolerTemp(self, temperature=0):
         """
@@ -258,6 +269,8 @@ class Camera:
         :param temperature:
         :return: success
         """
-
-        suc = self.run[self.framework].sendCoolerTemp(temperature=temperature)
-        return suc
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].sendCoolerTemp(temperature=temperature)
+            return suc
+        else:
+            return False

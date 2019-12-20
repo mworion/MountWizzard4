@@ -157,6 +157,7 @@ class ImageWindow(widget.MWidget):
         self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
+        self.showCurrent()
 
         return True
 

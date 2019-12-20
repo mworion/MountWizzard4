@@ -308,6 +308,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         for win in self.uiWindows:
             winObj = self.uiWindows[win]
             config[win] = bool(winObj['classObj'])
+            if config[win]:
+                winObj['classObj'].storeConfig()
 
         return True
 

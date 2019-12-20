@@ -20,7 +20,6 @@
 # standard libraries
 import logging
 # external packages
-
 # local imports
 from mw4.base.indiClass import IndiClass
 

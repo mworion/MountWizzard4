@@ -19,10 +19,8 @@
 ###########################################################
 # standard libraries
 import logging
-from datetime import datetime
 # external packages
 import PyQt5
-import numpy as np
 # local imports
 from mw4.base.indiClass import IndiClass
 

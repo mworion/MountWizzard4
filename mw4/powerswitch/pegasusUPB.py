@@ -19,18 +19,16 @@
 ###########################################################
 # standard libraries
 import logging
-from datetime import datetime
 # external packages
 import PyQt5
-import numpy as np
 # local imports
-from mw4.base import indiClass
+from mw4.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 
 
 class PegasusUPBSignals(PyQt5.QtCore.QObject):
     """
     The PegasusUPBSignals class offers a list of signals to be used and instantiated by
-    the PegasusUPB class to get signals for triggers for finished tasks to
+    the Mount class to get signals for triggers for finished tasks to
     enable a gui to update their values transferred to the caller back.
 
     This has to be done in a separate class as the signals have to be subclassed from
@@ -38,107 +36,97 @@ class PegasusUPBSignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['PegasusUPBSignals']
-
     version = PyQt5.QtCore.pyqtSignal(int)
 
+    serverConnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(object)
 
-class PegasusUPB(indiClass.IndiClass):
-    """
-    the class PegasusUPB inherits all information and handling of the PegasusUPB device
 
-        >>> power = PegasusUPB(app=None)
-    """
+class PegasusUPB:
 
     __all__ = ['PegasusUPB',
                ]
 
     logger = logging.getLogger(__name__)
 
-    # update rate to 1000 milli seconds for setting indi server
-    UPDATE_RATE = 1000
+    def __init__(self, app):
 
-    def __init__(self, app=None):
-        super().__init__(app=app)
-
-        self.versionUPB = 0
+        self.app = app
+        self.threadPool = app.threadPool
         self.signals = PegasusUPBSignals()
 
-    def setUpdateConfig(self, deviceName):
-        """
-        _setUpdateRate corrects the update rate of weather devices to get an defined
-        setting regardless, what is setup in server side.
+        self.data = {}
+        self.framework = None
+        self.run = {
+            'indi': PegasusUPBIndi(self.app, self.signals, self.data),
+        }
+        self.name = ''
 
-        :param deviceName:
-        :return: success
+        self.host = ('localhost', 7624)
+        self.isGeometry = False
+
+        # signalling from subclasses to main
+        self.run['indi'].client.signals.serverConnected.connect(self.serverConnected)
+        self.run['indi'].client.signals.serverDisconnected.connect(self.serverDisconnected)
+        self.run['indi'].client.signals.deviceConnected.connect(self.deviceConnected)
+        self.run['indi'].client.signals.deviceDisconnected.connect(self.deviceDisconnected)
+
+    @property
+    def host(self):
+        return self._host
+
+    @host.setter
+    def host(self, value):
+        self._host = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].host = value
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].name = value
+
+    # wee need to collect dispatch all signals from the different frameworks
+    def deviceConnected(self, deviceName):
+        self.signals.deviceConnected.emit(deviceName)
+
+    def deviceDisconnected(self, deviceName):
+        self.signals.deviceDisconnected.emit(deviceName)
+
+    def serverConnected(self):
+        self.signals.serverConnected.emit()
+
+    def serverDisconnected(self, deviceList):
+        self.signals.serverDisconnected.emit(deviceList)
+
+    def startCommunication(self):
         """
 
-        if deviceName != self.name:
+        """
+
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].startCommunication()
+            return suc
+        else:
             return False
 
-        if self.device is None:
-            return False
-
-        # setting polling updates in driver
-
-        update = self.device.getNumber('POLLING')
-
-        if 'PERIOD' not in update:
-            return False
-
-        if update.get('PERIOD', 0) == self.UPDATE_RATE:
-            return True
-
-        update['PERIOD'] = self.UPDATE_RATE
-        suc = self.client.sendNewNumber(deviceName=deviceName,
-                                        propertyName='POLLING',
-                                        elements=update,
-                                        )
-
-        return suc
-
-    def updateNumber(self, deviceName, propertyName):
-        """
-        updateNumber is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
+    def stopCommunication(self):
         """
 
-        if not super().updateNumber(deviceName, propertyName):
-            return False
-
-        for element, value in self.device.getNumber(propertyName).items():
-            # only version 2 has 3 dew heaters
-            if element == 'DEW_C':
-                if self.versionUPB != 2:
-                    self.versionUPB = 2
-                    self.signals.version.emit(2)
-
-        return True
-
-    def updateSwitch(self, deviceName, propertyName):
-        """
-        updateSwitch is called whenever a new number is received in client. it runs
-        through the device list and writes the number data to the according locations.
-
-        :param deviceName:
-        :param propertyName:
-        :return:
         """
 
-        if not super().updateSwitch(deviceName, propertyName):
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].stopCommunication()
+            return suc
+        else:
             return False
-
-        for element, value in self.device.getSwitch(propertyName).items():
-            # this combination only exists in version 1
-            if propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':
-                if self.versionUPB != 1:
-                    self.versionUPB = 1
-                    self.signals.version.emit(1)
-
-        return True
 
     def togglePowerPort(self, port=None):
         """
@@ -148,23 +136,11 @@ class PegasusUPB(indiClass.IndiClass):
         :return: true fot test purpose
         """
 
-        if port is None:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].togglePowerPort(port=port)
+            return suc
+        else:
             return False
-
-        if self.device is None:
-            return False
-
-        power = self.device.getSwitch('POWER_CONTROL')
-        portName = f'POWER_CONTROL_{port}'
-        if portName not in power:
-            return False
-
-        power[portName] = not power[portName]
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='POWER_CONTROL',
-                                        elements=power,
-                                        )
-        return suc
 
     def togglePowerPortBoot(self, port=None):
         """
@@ -174,23 +150,11 @@ class PegasusUPB(indiClass.IndiClass):
         :return: true fot test purpose
         """
 
-        if port is None:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].togglePowerPortBoot(port=port)
+            return suc
+        else:
             return False
-
-        if self.device is None:
-            return False
-
-        power = self.device.getSwitch('POWER_ON_BOOT')
-        portName = f'POWER_PORT_{port}'
-        if portName not in power:
-            return False
-
-        power[portName] = not power[portName]
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='POWER_ON_BOOT',
-                                        elements=power,
-                                        )
-        return suc
 
     def toggleHubUSB(self):
         """
@@ -198,23 +162,11 @@ class PegasusUPB(indiClass.IndiClass):
 
         :return: true fot test purpose
         """
-
-        if self.device is None:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].toggleHubUSB()
+            return suc
+        else:
             return False
-
-        usb = self.device.getSwitch('USB_HUB_CONTROL')
-        if 'ENABLED' not in usb:
-            return False
-        if 'DISABLED' not in usb:
-            return False
-
-        usb['ENABLED'] = not usb['ENABLED']
-        usb['DISABLED'] = not usb['DISABLED']
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='USB_HUB_CONTROL',
-                                        elements=usb,
-                                        )
-        return suc
 
     def togglePortUSB(self, port=None):
         """
@@ -224,24 +176,11 @@ class PegasusUPB(indiClass.IndiClass):
         :return: true fot test purpose
         """
 
-        if port is None:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].togglePortUSB(port=port)
+            return suc
+        else:
             return False
-
-        if self.device is None:
-            return False
-
-        usb = self.device.getSwitch('USB_PORT_CONTROL')
-
-        portName = f'PORT_{port}'
-        if portName not in usb:
-            return False
-
-        usb[portName] = not usb[portName]
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='USB_PORT_CONTROL',
-                                        elements=usb,
-                                        )
-        return suc
 
     def sendAutoDew(self, value=False):
         """
@@ -250,17 +189,11 @@ class PegasusUPB(indiClass.IndiClass):
         :param value:
         :return: true fot test purpose
         """
-
-        if self.device is None:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].sendAutoDew(value=value)
+            return suc
+        else:
             return False
-
-        autoDew = self.device.getSwitch('AUTO_DEW')
-        autoDew['AUTO_DEW_ENABLED'] = value
-        autoDew['AUTO_DEW_DISABLED'] = not value
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='AUTO_DEW',
-                                        elements=autoDew,
-                                        )
         return suc
 
     def toggleAutoDewPort(self, port=None):
@@ -270,24 +203,11 @@ class PegasusUPB(indiClass.IndiClass):
         :param port:
         :return: true fot test purpose
         """
-
-        if port is None:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].stopCommunication()
+            return suc
+        else:
             return False
-
-        if self.device is None:
-            return False
-
-        autoDew = self.device.getSwitch('AUTO_DEW')
-        portName = f'DEW_{port}'
-
-        if portName not in autoDew:
-            return False
-
-        autoDew[portName] = not autoDew[portName]
-        suc = self.client.sendNewSwitch(deviceName=self.name,
-                                        propertyName='AUTO_DEW',
-                                        elements=autoDew,
-                                        )
         return suc
 
     def sendDew(self, port='', value=None):
@@ -298,16 +218,11 @@ class PegasusUPB(indiClass.IndiClass):
         :return: success
         """
 
-        if self.device is None:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].sendDew(port=port, value=value)
+            return suc
+        else:
             return False
-
-        dew = self.device.getNumber('DEW_PWM')
-        dew[f'DEW_{port}'] = value
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='DEW_PWM',
-                                        elements=dew,
-                                        )
-        return suc
 
     def sendAdjustableOutput(self, value=None):
         """
@@ -316,13 +231,8 @@ class PegasusUPB(indiClass.IndiClass):
         :return: success
         """
 
-        if self.device is None:
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].sendAdjustableOutput(value=value)
+            return suc
+        else:
             return False
-
-        output = self.device.getNumber('ADJUSTABLE_VOLTAGE')
-        output['ADJUSTABLE_VOLTAGE_VALUE'] = value
-        suc = self.client.sendNewNumber(deviceName=self.name,
-                                        propertyName='ADJUSTABLE_VOLTAGE',
-                                        elements=output,
-                                        )
-        return suc

@@ -21,10 +21,7 @@
 import logging
 import zlib
 import os
-from datetime import datetime
 # external packages
-import PyQt5
-import numpy as np
 import astropy.io.fits as fits
 # local imports
 from mw4.base.indiClass import IndiClass

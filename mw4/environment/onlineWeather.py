@@ -60,10 +60,16 @@ class OnlineWeather(object):
                  ):
         self.app = app
         self.threadPool = app.threadPool
-
+        self.signals = WeatherSignals()
         self.data = {}
         self.running = False
-        self.signals = WeatherSignals()
+
+        # minimum set for driver package built in
+        self.name = ''
+        self.framework = 'local'
+        self.run = {
+            'local': self
+        }
 
         self._keyAPI = ''
         self._online = False

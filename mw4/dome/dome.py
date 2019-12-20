@@ -100,26 +100,9 @@ class Dome:
     @name.setter
     def name(self, value):
         self._name = value
+        self.run['alpaca'].name = value
         self.run['indi'].name = value
-        self.run['alpaca'].deviceType = value
-
-    @property
-    def deviceType(self):
-        return self._deviceType
-
-    @deviceType.setter
-    def deviceType(self, value):
-        self._deviceType = value
-        self.run['alpaca'].deviceType = value
-
-    @property
-    def number(self):
-        return self._number
-
-    @number.setter
-    def number(self, value):
-        self._number = value
-        self.run['alpaca'].number = value
+        pass
 
     # wee need to collect dispatch all signals from the different frameworks
     def deviceConnected(self, deviceName):

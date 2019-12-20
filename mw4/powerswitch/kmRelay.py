@@ -74,6 +74,13 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.password = password
         self.status = [0] * 8
 
+        # minimum set for driver package built in
+        self.name = ''
+        self.framework = 'local'
+        self.run = {
+            'local': self
+        }
+
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.cyclePolling)

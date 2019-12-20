@@ -60,6 +60,13 @@ class MeasureData(object):
         self.devices = {}
         self.deviceStat = None
 
+        # minimum set for driver package built in
+        self.name = ''
+        self.framework = 'local'
+        self.run = {
+            'local': self
+        }
+
         # time for measurement
         self.timerTask = PyQt5.QtCore.QTimer()
         self.timerTask.setSingleShot(False)

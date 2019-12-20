@@ -92,6 +92,13 @@ class Astrometry:
         self.setSolverEnviron()
         self.solverAvailable = self.checkAvailability()
 
+        # minimum set for driver package built in
+        self.name = ''
+        self.framework = 'local'
+        self.run = {
+            'local': self
+        }
+
     @property
     def solverSelected(self):
         return self._solverSelected

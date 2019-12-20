@@ -73,12 +73,13 @@ class AlpacaClass(object):
         self.threadPool = app.threadPool
         self.clientSignals = AlpacaSignals()
 
-        self.baseUrl = 'localhost'
+        self.baseUrl = ''
+        self.number = 0
+        self.deviceType = ''
         self._protocol = 'http'
-        self._number = 0
-        self._apiVersion = 1
-        self._deviceType = ''
         self._host = ('localhost', 11111)
+        self._apiVersion = 1
+        self._name = ':0'
 
         self.data = {}
         self.deviceConnected = False
@@ -87,8 +88,6 @@ class AlpacaClass(object):
         self.timeCycle = PyQt5.QtCore.QTimer()
         self.timeCycle.setSingleShot(False)
         self.timeCycle.timeout.connect(self.updateStatus)
-
-        self.baseUrl = self.generateBaseUrl()
 
     def generateBaseUrl(self):
         """
@@ -115,21 +114,17 @@ class AlpacaClass(object):
         self.baseUrl = self.generateBaseUrl()
 
     @property
-    def number(self):
-        return self._number
+    def name(self):
+        return self._name
 
-    @number.setter
-    def number(self, value):
-        self._number = value
-        self.baseUrl = self.generateBaseUrl()
-
-    @property
-    def deviceType(self):
-        return self._deviceType
-
-    @deviceType.setter
-    def deviceType(self, value):
-        self._deviceType = value
+    @name.setter
+    def name(self, value):
+        self._name = value
+        valueSplit = value.split(':')
+        if len(valueSplit) != 2:
+            self.logger.info(f'malformed name: {value}')
+            return False
+        self.deviceType, self.number = valueSplit
         self.baseUrl = self.generateBaseUrl()
 
     @property
@@ -296,7 +291,7 @@ class AlpacaClass(object):
         """
         return self.get('interfaceversion')
 
-    def name(self):
+    def nameDevice(self):
         """
         Get name of the device.
         """
@@ -324,10 +319,10 @@ class AlpacaClass(object):
 
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.clientSignals.deviceConnected.emit(f'{self.deviceType}:{self.number}')
-            self.app.message.emit(f'Alpaca device found:   [{self.deviceType}:{self.number}]', 0)
+            self.clientSignals.deviceConnected.emit(f'{self.name}')
+            self.app.message.emit(f'Alpaca device found:   [{self.name}]', 0)
 
-        self.data['DRIVER_INFO.DRIVER_NAME'] = self.name()
+        self.data['DRIVER_INFO.DRIVER_NAME'] = self.nameDevice()
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.driverVersion()
         self.data['DRIVER_INFO.DRIVER_EXEC'] = self.driverInfo()
 
@@ -355,13 +350,13 @@ class AlpacaClass(object):
         suc = self.connected()
         if self.deviceConnected and not suc:
             self.deviceConnected = False
-            self.clientSignals.deviceDisconnected.emit(f'{self.deviceType}:{self.number}')
-            self.app.message.emit(f'Alpaca device removed: [{self.deviceType}:{self.number}]', 0)
+            self.clientSignals.deviceDisconnected.emit(f'{self.name}')
+            self.app.message.emit(f'Alpaca device removed: [{self.name}]', 0)
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
-            self.clientSignals.deviceConnected.emit(f'{self.deviceType}:{self.number}')
-            self.app.message.emit(f'Alpaca device found:   [{self.deviceType}:{self.number}]', 0)
+            self.clientSignals.deviceConnected.emit(f'{self.name}')
+            self.app.message.emit(f'Alpaca device found:   [{self.name}]', 0)
 
         else:
             pass
@@ -402,9 +397,9 @@ class AlpacaClass(object):
         self.timeCycle.stop()
         self.deviceConnected = False
         self.serverConnected = False
-        self.clientSignals.deviceDisconnected.emit(f'{self.name}:{self.number}')
-        self.clientSignals.serverDisconnected.emit({f'{self.name}:{self.number}': 0})
-        self.app.message.emit(f'Alpaca device removed: [{self.deviceType}:{self.number}]', 0)
+        self.clientSignals.deviceDisconnected.emit(f'{self.name}')
+        self.clientSignals.serverDisconnected.emit({f'{self.name}': 0})
+        self.app.message.emit(f'Alpaca device removed: [{self.name}]', 0)
 
         worker = Worker(self.connected, Connected=False)
         worker.signals.result.connect(self.stopTimer)

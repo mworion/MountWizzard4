@@ -49,6 +49,13 @@ class Remote(PyQt5.QtCore.QObject):
         self.clientConnection = None
         self.tcpServer = None
 
+        # minimum set for driver package built in
+        self.name = ''
+        self.framework = 'local'
+        self.run = {
+            'local': self
+        }
+
     def startCommunication(self):
         """
         startCommunication prepares the remote listening by starting a tcp server listening

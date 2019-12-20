@@ -121,7 +121,8 @@ class DevicePopup(widget.MWidget):
         self.ui.alpacaProtocol.setCurrentIndex(deviceData.get('alpacaProtocol', 0))
         self.ui.alpacaHost.setText(deviceData.get('alpacaHost', 'localhost'))
         self.ui.alpacaPort.setText(deviceData.get('alpacaPort', '11111'))
-        self.ui.alpacaNumber.setValue(deviceData.get('alpacaNumber', 0))
+        number = int(deviceData.get('alpacaName', '"":0').split(':')[1])
+        self.ui.alpacaNumber.setValue(number)
         self.ui.alpacaUser.setText(deviceData.get('alpacaUser', 'user'))
         self.ui.alpacaPassword.setText(deviceData.get('alpacaPassword', 'password'))
 
@@ -159,7 +160,8 @@ class DevicePopup(widget.MWidget):
         self.data[self.driver]['alpacaProtocol'] = self.ui.alpacaProtocol.currentIndex()
         self.data[self.driver]['alpacaHost'] = self.ui.alpacaHost.text()
         self.data[self.driver]['alpacaPort'] = self.ui.alpacaPort.text()
-        self.data[self.driver]['alpacaNumber'] = self.ui.alpacaNumber.value()
+        name = f'{self.deviceType}:{self.ui.alpacaNumber.value()}'
+        self.data[self.driver]['alpacaName'] = name
         self.data[self.driver]['alpacaUser'] = self.ui.alpacaUser.text()
         self.data[self.driver]['alpacaPassword'] = self.ui.alpacaPassword.text()
 

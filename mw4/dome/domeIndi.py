@@ -47,7 +47,7 @@ class DomeIndi(IndiClass):
         super().__init__(app=app)
 
         self.signals = signals
-        self._settlingTime = 0
+        self.settlingTime = 0
 
         self.azimuth = -1
         self.slewing = False

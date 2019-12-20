@@ -292,20 +292,28 @@ class SettDevice(object):
             # driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
             # depending on the type different setups have to be made
-            if driverObj['uiDropDown'].currentText().startswith('indi'):
-                driverData = self.driversData.get(driver, {})
-                driverObj['class'].framework = 'indi'
-                driverObj['class'].name = driverData.get('indiName', '')
+
+            driverData = self.driversData.get(driver, {})
+            dropDownText = driverObj['uiDropDown'].currentText()
+
+            if dropDownText.startswith('indi'):
+                framework = 'indi'
+                name = driverData.get('indiName', '')
                 driverObj['class'].showMessages = driverData.get('indiMessages', False)
                 host = (driverData.get('indiHost'), int(driverData.get('indiPort')))
-                driverObj['class'].host = host
 
-            elif driverObj['uiDropDown'].currentText().startswith('alpaca'):
-                driverData = self.driversData.get(driver, {})
-                driverObj['class'].framework = 'alpaca'
-                driverObj['class'].number = driverData.get('alpacaNumber', 0)
-                driverObj['class'].deviceType = driverObj['deviceType']
+            elif dropDownText.startswith('alpaca'):
+                framework = 'alpaca'
+                name = driverData.get('alpacaName', 0)
                 host = (driverData.get('alpacaHost'), int(driverData.get('alpacaPort')))
+
+            else:
+                name = driver
+
+            driverObj['class'].framework = framework
+
+            if framework in ['alpaca', 'indi']:
+                driverObj['class'].name = name
                 driverObj['class'].host = host
 
             # and finally start it
@@ -329,15 +337,7 @@ class SettDevice(object):
         deviceName = list(deviceList.keys())[0]
 
         for driver in self.drivers:
-            if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
-                if self.drivers[driver]['class'].name != deviceName:
-                    continue
-            elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
-                deviceType = self.drivers[driver]['class'].deviceType
-                number = self.drivers[driver]['class'].number
-                if f'{deviceType}:{number}' != deviceName:
-                    continue
-            else:
+            if self.drivers[driver]['class'].name != deviceName:
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
@@ -353,15 +353,7 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
-            if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
-                if self.drivers[driver]['class'].name != deviceName:
-                    continue
-            elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
-                deviceType = self.drivers[driver]['class'].deviceType
-                number = self.drivers[driver]['class'].number
-                if f'{deviceType}:{number}' != deviceName:
-                    continue
-            else:
+            if self.drivers[driver]['class'].name != deviceName:
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
@@ -378,15 +370,7 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
-            if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
-                if self.drivers[driver]['class'].name != deviceName:
-                    continue
-            elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
-                deviceType = self.drivers[driver]["class"].deviceType
-                number = self.drivers[driver]["class"].number
-                if f'{deviceType}:{number}' != deviceName:
-                    continue
-            else:
+            if self.drivers[driver]['class'].name != deviceName:
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)

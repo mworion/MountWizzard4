@@ -35,6 +35,7 @@ from mw4.gui.mainWmixin.tabManageModel import ManageModel
 from mw4.gui.mainWmixin.tabSatellite import Satellite
 from mw4.gui.mainWmixin.tabRelay import Relay
 from mw4.gui.mainWmixin.tabTools import Tools
+from mw4.gui.mainWmixin.tabPower import Power
 from mw4.gui.mainWmixin.tabSettDevice import SettDevice
 from mw4.gui.mainWmixin.tabSettMount import SettMount
 from mw4.gui.mainWmixin.tabSettHorizon import SettHorizon
@@ -52,7 +53,7 @@ class MainWindow(MWidget,
                  ManageModel,
                  Satellite,
                  Relay,
-                 # Power,
+                 Power,
                  Tools,
                  SettDevice,
                  SettMount,

@@ -44,6 +44,7 @@ class PegasusUPBIndi(IndiClass):
 
         self.signals = signals
         self.data = data
+        self.data['VERSION.UPB'] = 0
 
     def setUpdateConfig(self, deviceName):
         """
@@ -94,8 +95,8 @@ class PegasusUPBIndi(IndiClass):
         for element, value in self.device.getNumber(propertyName).items():
             # only version 2 has 3 dew heaters
             if element == 'DEW_C':
-                if self.versionUPB != 2:
-                    self.versionUPB = 2
+                if self.data.get('VERSION.UPB', 1) != 2:
+                    self.data['VERSION.UPB'] = 2
                     self.signals.version.emit(2)
 
         return True
@@ -116,8 +117,8 @@ class PegasusUPBIndi(IndiClass):
         for element, value in self.device.getSwitch(propertyName).items():
             # this combination only exists in version 1
             if propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':
-                if self.versionUPB != 1:
-                    self.versionUPB = 1
+                if self.data.get('VERSION.UPB', 1) != 1:
+                    self.data['VERSION.UPB'] = 1
                     self.signals.version.emit(1)
 
         return True

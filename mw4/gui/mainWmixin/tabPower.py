@@ -209,7 +209,7 @@ class Power(object):
         value = self.app.power.data.get('DEW_CURRENT.DEW_CURRENT_C', 0)
         self.ui.dewCurrentC.setText('{0:4.2f}'.format(value))
 
-        if self.app.power.versionUPB == 1:
+        if self.app.power.data.get('VERSION.UPB', 1) == 1:
             value = self.app.power.data.get('AUTO_DEW.AUTO_DEW_ENABLED', False)
             self.ui.autoDew.setChecked(value)
         else:

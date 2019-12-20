@@ -110,22 +110,18 @@ class MessageWindow(widget.MWidget):
 
         # gui signals
         self.ui.clear.clicked.disconnect(self.clearWindow)
-        self.app.message.disconnect(self.writeMessage)
+        # self.app.message.disconnect(self.writeMessage)
+        self.app.update1s.disconnect(self.writeMessage)
 
         super().closeEvent(closeEvent)
 
     def showWindow(self):
         self.show()
 
-        # write basic data to message window
-        profile = self.app.config.get('profileName', '-')
-        self.writeMessage('MountWizzard4 started', 1)
-        self.writeMessage(f'Workdir is: [{self.app.mwGlob["workDir"]}]', 1)
-        self.writeMessage(f'Profile [{profile}] loaded', 0)
-
         # gui signals
         self.ui.clear.clicked.connect(self.clearWindow)
-        self.app.message.connect(self.writeMessage)
+        # self.app.message.connect(self.writeMessage)
+        self.app.update1s.connect(self.writeMessage)
 
     def clearWindow(self):
         """
@@ -137,7 +133,7 @@ class MessageWindow(widget.MWidget):
         self.ui.message.clear()
         return True
 
-    def writeMessage(self, message, mType=0):
+    def writeMessage(self):
         """
         writeMessage takes singles with message and writes them to the text browser window.
         types:
@@ -146,20 +142,21 @@ class MessageWindow(widget.MWidget):
             2: warning text
             3: error text
 
-        :param message: message text
-        :param mType: message type
         :return: true for test purpose
         """
 
-        if mType < 0:
-            return False
-        if mType > len(self.messColor):
-            return False
-        prefix = time.strftime('%H:%M:%S ', time.localtime())
-        message = prefix + message
-        self.logger.info('Message window: [{0}]'.format(message))
-        self.ui.message.setTextColor(self.messColor[mType])
-        self.ui.message.setFontWeight(self.messFont[mType])
-        self.ui.message.insertPlainText(message + '\n')
-        self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
+        while not self.app.messageQueue.empty():
+            message, mType = self.app.messageQueue.get()
+
+            if mType < 0:
+                continue
+            if mType > len(self.messColor):
+                continue
+            prefix = time.strftime('%H:%M:%S ', time.localtime())
+            message = prefix + message
+            self.logger.info('Message window: [{0}]'.format(message))
+            self.ui.message.setTextColor(self.messColor[mType])
+            self.ui.message.setFontWeight(self.messFont[mType])
+            self.ui.message.insertPlainText(message + '\n')
+            self.ui.message.moveCursor(PyQt5.QtGui.QTextCursor.End)
         return True

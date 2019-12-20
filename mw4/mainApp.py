@@ -24,6 +24,7 @@ import sys
 import json
 import gc
 import platform
+from queue import Queue
 # external packages
 import PyQt5.QtCore
 import skyfield
@@ -73,6 +74,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     # central message and logging dispatching
     message = PyQt5.QtCore.pyqtSignal(str, int)
+    messageQueue = Queue()
     redrawHemisphere = PyQt5.QtCore.pyqtSignal()
     remoteCommand = PyQt5.QtCore.pyqtSignal(str)
     update1s = PyQt5.QtCore.pyqtSignal()
@@ -96,6 +98,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mainW = None
         self.threadPool = PyQt5.QtCore.QThreadPool()
         self.threadPool.setMaxThreadCount(20)
+        self.message.connect(self.writeMessageQueue)
 
         pathToData = self.mwGlob['dataDir']
 
@@ -103,6 +106,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config = {}
         self.loadConfig()
         topo = self.initConfig()
+        # write basic data to message window
+        profile = self.config.get('profileName', '-')
+        self.messageQueue.put(('MountWizzard4 started', 1))
+        self.messageQueue.put((f'Workdir is: [{self.mwGlob["workDir"]}]', 1))
+        self.messageQueue.put((f'Profile [{profile}] loaded', 1))
 
         # initialize commands to mount
         self.mount = qtmount.Mount(host='192.168.2.15',
@@ -513,3 +521,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             return False
 
         return status
+
+    def writeMessageQueue(self, message, mType):
+        """
+
+        """
+        self.messageQueue.put((message, mType))

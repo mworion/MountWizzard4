@@ -280,30 +280,33 @@ class SettDevice(object):
         """
 
         driverData = self.driversData.get(driver, {})
-        dropDownText = self.drivers[driver]['uiDropDown'].currentText()
 
         # without connection it is false, which leads to a red in gui
         self.deviceStat[driver] = False
 
         # now driver specific parameters will be set
         if dropDownText.startswith('indi'):
-            framework = 'indi'
             name = driverData.get('indiName', '')
-            self.drivers[driver]['class'].showMessages = driverData.get('indiMessages', False)
-            host = (driverData.get('indiHost'), int(driverData.get('indiPort')))
-            self.drivers[driver]['class'].framework = framework
+            host = (driverData.get('indiHost'),
+                    int(driverData.get('indiPort')))
+            showMessages = driverData.get('indiMessages', False)
+
+            self.drivers[driver]['class'].showMessages = showMessages
             self.drivers[driver]['class'].host = host
+            self.drivers[driver]['class'].framework = 'indi'
 
         elif dropDownText.startswith('alpaca'):
-            framework = 'alpaca'
             name = driverData.get('alpacaName', '')
-            host = (driverData.get('alpacaHost'), int(driverData.get('alpacaPort')))
-            self.drivers[driver]['class'].framework = framework
+            host = (driverData.get('alpacaHost'),
+                    int(driverData.get('alpacaPort')))
+
             self.drivers[driver]['class'].host = host
+            self.drivers[driver]['class'].framework = 'alpaca'
 
         elif self.drivers[driver]['deviceType'] == 'astrometry':
             name = driver
-            self.drivers[driver]['class'].framework = dropDownText
+            astrometryFramework = self.drivers[driver]['uiDropDown'].currentText()
+            self.drivers[driver]['class'].framework = astrometryFramework
 
         else:
             name = driver

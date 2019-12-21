@@ -292,16 +292,16 @@ class SettDevice(object):
             showMessages = driverData.get('indiMessages', False)
 
             self.drivers[driver]['class'].showMessages = showMessages
-            self.drivers[driver]['class'].host = host
             self.drivers[driver]['class'].framework = 'indi'
+            self.drivers[driver]['class'].host = host
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
             name = driverData.get('alpacaName', '')
             host = (driverData.get('alpacaHost'),
                     int(driverData.get('alpacaPort')))
 
-            self.drivers[driver]['class'].host = host
             self.drivers[driver]['class'].framework = 'alpaca'
+            self.drivers[driver]['class'].host = host
 
         elif self.drivers[driver]['deviceType'] == 'astrometry':
             name = driver

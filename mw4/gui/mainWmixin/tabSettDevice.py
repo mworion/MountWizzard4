@@ -18,6 +18,7 @@
 #
 ###########################################################
 # standard libraries
+import copy
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
@@ -142,12 +143,9 @@ class SettDevice(object):
                 continue
 
             signals = self.drivers[driver]['class'].signals
-            if hasattr(signals, 'serverDisconnected'):
-                signals.serverDisconnected.connect(self.serverDisconnected)
-            if hasattr(signals, 'deviceConnected'):
-                signals.deviceConnected.connect(self.deviceConnected)
-            if hasattr(signals, 'deviceDisconnected'):
-                signals.deviceDisconnected.connect(self.deviceDisconnected)
+            signals.serverDisconnected.connect(self.serverDisconnected)
+            signals.deviceConnected.connect(self.deviceConnected)
+            signals.deviceDisconnected.connect(self.deviceDisconnected)
 
     def initConfig(self):
         """
@@ -258,7 +256,7 @@ class SettDevice(object):
         # if it's the startup (which has no name set, we don't need to stop)
         if self.drivers[driver]['class'].name:
             self.drivers[driver]['class'].stopCommunication()
-            self.app.message.emit(f'Disabled: [{driver}]', 0)
+            self.app.message.emit(f'Disabled:            [{driver}]', 0)
 
         # stopped driver get gets neutral color
         self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
@@ -268,6 +266,7 @@ class SettDevice(object):
 
         # if new driver is disabled, we are finished
         if self.drivers[driver]['uiDropDown'].currentText() == 'device disabled':
+            self.drivers[driver]['class'].name = ''
             return False
 
         return True
@@ -314,7 +313,7 @@ class SettDevice(object):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
         # and finally start it
-        self.app.message.emit(f'Enabling: [{driver}]', 0)
+        self.app.message.emit(f'Enabled:             [{driver}]', 0)
         suc = self.drivers[driver]['class'].startCommunication()
         return suc
 
@@ -355,6 +354,22 @@ class SettDevice(object):
 
             return True
 
+    def scanValid(self, driver=None, deviceName=''):
+        """
+
+        :param deviceName:
+        :param driver:
+        :return:
+        """
+
+        if hasattr(self.drivers[driver]['class'], 'signals'):
+            if self.sender() != self.drivers[driver]['class'].signals:
+                return False
+        else:
+            if self.drivers[driver]['class'].name != deviceName:
+                return False
+        return True
+
     def serverDisconnected(self, deviceList):
         """
         serverDisconnected writes info to message window and recolors the status
@@ -368,11 +383,11 @@ class SettDevice(object):
         deviceName = list(deviceList.keys())[0]
 
         for driver in self.drivers:
-            if self.drivers[driver]['class'].name != deviceName:
+            if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
-            # self.app.message.emit(f'server {driver} disconnected', 0)
+            # self.app.message.emit(f'Disconnected server: [{driver}] ', 0)
         return True
 
     def deviceConnected(self, deviceName):
@@ -384,12 +399,12 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
-            if self.drivers[driver]['class'].name != deviceName:
+            if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
-            self.app.message.emit(f'{driver} connected', 0)
+            # self.app.message.emit(f'{driver} connected', 0)
         return True
 
     def deviceDisconnected(self, deviceName):
@@ -401,10 +416,10 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
-            if self.drivers[driver]['class'].name != deviceName:
+            if not self.scanValid(driver=driver, deviceName=deviceName):
                 continue
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
             self.deviceStat[driver] = False
-            self.app.message.emit(f'{driver} disconnected', 0)
+            # self.app.message.emit(f'{driver} disconnected', 0)
         return True

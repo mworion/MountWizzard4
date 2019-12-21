@@ -42,6 +42,11 @@ class WeatherSignals(PyQt5.QtCore.QObject):
     dataReceived = PyQt5.QtCore.pyqtSignal(object)
     connected = PyQt5.QtCore.pyqtSignal(object)
 
+    serverConnected = PyQt5.QtCore.pyqtSignal()
+    serverDisconnected = PyQt5.QtCore.pyqtSignal(object)
+    deviceConnected = PyQt5.QtCore.pyqtSignal(str)
+    deviceDisconnected = PyQt5.QtCore.pyqtSignal(str)
+
 
 class OnlineWeather(PyQt5.QtCore.QObject):
     """

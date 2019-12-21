@@ -47,7 +47,7 @@ class IndiClass(object):
 
         self.app = app
         self.client = qtIndiBase.Client(host=None)
-        self._name = ''
+        self.name = ''
         self._host = ('localhost', 7624)
 
         self.data = {}
@@ -77,14 +77,6 @@ class IndiClass(object):
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)
         self.client.signals.newMessage.connect(self.updateMessage)
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value
 
     @property
     def host(self):
@@ -130,9 +122,9 @@ class IndiClass(object):
 
         if deviceName == self.name:
             self.device = self.client.getDevice(deviceName)
-            self.app.message.emit(f'INDI device found:      [{deviceName}]', 0)
+            self.app.message.emit(f'INDI device found:   [{deviceName}]', 0)
         # else:
-        #    self.app.message.emit(f'INDI device {self.name} snoops: [{deviceName}]', 0)
+        #     self.app.message.emit(f'INDI device snoops:     [{deviceName}]', 0)
 
         return True
 
@@ -146,7 +138,7 @@ class IndiClass(object):
         """
 
         if deviceName == self.name:
-            self.app.message.emit(f'INDI removed device:    [{deviceName}]', 0)
+            self.app.message.emit(f'INDI removed device: [{deviceName}]', 0)
             self.device = None
             self.data = {}
             return True

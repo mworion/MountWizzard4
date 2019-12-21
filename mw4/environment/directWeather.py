@@ -49,7 +49,7 @@ class DirectWeather:
         self.run = {
             'built-in': self
         }
-        self.name = 'local'
+        self.name = ''
 
     @staticmethod
     def startCommunication():

@@ -219,7 +219,9 @@ class SettDevice(object):
     def setupPopUp(self):
         """
         setupPopUp calculates the geometry data to place the popup centered on top of the
-        parent window and call it with all necessary data, n
+        parent window and call it with all necessary data. The popup is modal and we connect
+        the signal of the destroyed window to update the dispatching value for all changes
+        drivers
 
         """
 
@@ -228,13 +230,10 @@ class SettDevice(object):
                 continue
 
             # calculate geometry
-            posX = self.pos().x()
-            posY = self.pos().y()
-            height = self.height()
-            width = self.width()
-            geometry = posX, posY, width, height
-
+            geometry = self.pos().x(), self.pos().y(), self.height(), self.width()
+            # get all available frameworks
             framework = self.drivers[driver]['class'].run.keys()
+            # selecting the device type
             deviceType = self.drivers[driver]['deviceType']
 
             self.popupUi = DevicePopup(geometry=geometry,
@@ -242,84 +241,117 @@ class SettDevice(object):
                                        deviceType=deviceType,
                                        framework=framework,
                                        data=self.driversData)
-
-            # setting callback when the modal window is closed to update the configuration
+            # memorizing the driver we have to update
             driverCall = driver
-            self.popupUi.destroyed.connect(lambda: self.dispatch(driverName=driverCall))
+
+        # setting callback when the modal window is closed to update the configuration
+        self.popupUi.destroyed.connect(lambda: self.dispatch(driverName=driverCall))
+
+    def dispatchStopDriver(self, driver=None):
+        """
+        dispatchStopDriver stops the named driver.
+
+        :return: returns status if we are finished
+        """
+
+        # if there is a change we first have to stop running drivers and reset gui
+        # if it's the startup (which has no name set, we don't need to stop)
+        if self.drivers[driver]['class'].name:
+            self.drivers[driver]['class'].stopCommunication()
+            self.app.message.emit(f'Disabled: [{driver}]', 0)
+
+        # stopped driver get gets neutral color
+        self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
+
+        # disabling the driver for the overall app
+        self.deviceStat[driver] = None
+
+        # if new driver is disabled, we are finished
+        if self.drivers[driver]['uiDropDown'].currentText() == 'device disabled':
+            return False
+
+        return True
+
+    def dispatchStartDriver(self, driver=None):
+        """
+
+        """
+
+        driverData = self.driversData.get(driver, {})
+        dropDownText = self.drivers[driver]['uiDropDown'].currentText()
+
+        # without connection it is false, which leads to a red in gui
+        self.deviceStat[driver] = False
+
+        # now driver specific parameters will be set
+        if dropDownText.startswith('indi'):
+            framework = 'indi'
+            name = driverData.get('indiName', '')
+            self.drivers[driver]['class'].showMessages = driverData.get('indiMessages', False)
+            host = (driverData.get('indiHost'), int(driverData.get('indiPort')))
+            self.drivers[driver]['class'].framework = framework
+            self.drivers[driver]['class'].host = host
+
+        elif dropDownText.startswith('alpaca'):
+            framework = 'alpaca'
+            name = driverData.get('alpacaName', '')
+            host = (driverData.get('alpacaHost'), int(driverData.get('alpacaPort')))
+            self.drivers[driver]['class'].framework = framework
+            self.drivers[driver]['class'].host = host
+
+        elif self.drivers[driver]['deviceType'] == 'astrometry':
+            name = driver
+            self.drivers[driver]['class'].framework = dropDownText
+
+        else:
+            name = driver
+
+        # setting the new selected framework type and name, host
+        self.drivers[driver]['class'].name = name
+
+        # for built-in i actually not check their presence as the should function
+        if dropDownText == 'built-in':
+            self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+
+        # and finally start it
+        self.app.message.emit(f'Enabling: [{driver}]', 0)
+        suc = self.drivers[driver]['class'].startCommunication()
+        return suc
 
     def dispatch(self, driverName=''):
         """
+        dispatch is the central method to start / stop the drivers, setting the parameters
+        and managing the boot / shutdown.
+
+        dispatch is called by signals if the user uses the dropdown to change a driver setting
+        or could be called directly with a driverName to manually change the setting. this
+        happens at the startup to initialize the drivers and after a popup is closed to update
+        the settings for a driver.
+
+        first dispatch will stop running drivers
+        then changing the settings
+        then starting the new ones
 
         :return: true for test purpose
         """
 
         for driver in self.drivers:
 
-            driverObj = self.drivers[driver]
-
             # check if the call comes from gui or direct call
             isGui = not isinstance(driverName, str)
+
             if not isGui and (driverName != driver):
                 continue
-            if isGui and (self.sender() != driverObj['uiDropDown']):
+            if isGui and (self.sender() != self.drivers[driver]['uiDropDown']):
                 continue
 
-            # if there is a change we first have to stop running drivers and reset gui
-            # if it's the startup (which has no name set, we don't need to stop
-            if driverObj['class'].name:
-                driverObj['class'].stopCommunication()
-            driverObj['uiDropDown'].setStyleSheet(self.BACK_NORM)
-
-            # in the first run, I don't want to show the disconnection
-            if isGui:
-                self.app.message.emit(f'Disabled: [{driver}]', 0)
-            self.deviceStat[driver] = None
-
-            # if new driver is disabled, we are finished
-            dropDownText = driverObj['uiDropDown'].currentText()
-            if dropDownText == 'device disabled':
+            if not self.dispatchStopDriver(driver=driver):
                 continue
 
-            # now we start a new driver setup
-            # without connection it is first red, connected will turn the color
-            self.deviceStat[driver] = False
-            driverData = self.driversData.get(driver, {})
+            suc = self.dispatchStartDriver(driver=driver)
 
-            # now driver specific parameters will be set
-            if dropDownText.startswith('indi'):
-                framework = 'indi'
-                name = driverData.get('indiName', '')
-                driverObj['class'].showMessages = driverData.get('indiMessages', False)
-                host = (driverData.get('indiHost'), int(driverData.get('indiPort')))
-                driverObj['class'].framework = framework
-                driverObj['class'].host = host
-
-            elif dropDownText.startswith('alpaca'):
-                framework = 'alpaca'
-                name = driverData.get('alpacaName', '')
-                host = (driverData.get('alpacaHost'), int(driverData.get('alpacaPort')))
-                driverObj['class'].framework = framework
-                driverObj['class'].host = host
-
-            elif driverObj['deviceType'] == 'astrometry':
-                name = driver
-                driverObj['class'].framework = dropDownText
-
-            else:
-                name = driver
-
-            # setting the new selected framework type and name, host
-            driverObj['class'].name = name
-
-            # and finally start it
-            self.app.message.emit(f'Enabling: [{driver}]', 0)
-            suc = driverObj['class'].startCommunication()
             if not suc:
                 self.app.message.emit(f'[{driver}] could not be started', 2)
-
-            # for built-in i actually not check their presence as the should function
-            if dropDownText == 'built-in':
-                driverObj['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
             return True
 

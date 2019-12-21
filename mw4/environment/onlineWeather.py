@@ -69,7 +69,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         self.run = {
             'built-in': self
         }
-        self.name = 'local'
+        self.name = ''
 
         self.data = {}
         self.running = False

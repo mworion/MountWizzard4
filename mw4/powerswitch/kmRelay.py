@@ -70,7 +70,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.run = {
             'built-in': self
         }
-        self.name = 'local'
+        self.name = ''
 
         self.host = host
         self.mutexPoll = PyQt5.QtCore.QMutex()

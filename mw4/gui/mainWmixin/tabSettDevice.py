@@ -285,7 +285,7 @@ class SettDevice(object):
         self.deviceStat[driver] = False
 
         # now driver specific parameters will be set
-        if dropDownText.startswith('indi'):
+        if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
             name = driverData.get('indiName', '')
             host = (driverData.get('indiHost'),
                     int(driverData.get('indiPort')))
@@ -295,7 +295,7 @@ class SettDevice(object):
             self.drivers[driver]['class'].host = host
             self.drivers[driver]['class'].framework = 'indi'
 
-        elif dropDownText.startswith('alpaca'):
+        elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
             name = driverData.get('alpacaName', '')
             host = (driverData.get('alpacaHost'),
                     int(driverData.get('alpacaPort')))

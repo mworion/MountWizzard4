@@ -63,7 +63,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="indi">
     <attribute name="title">
@@ -117,7 +117,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>IP address of INDI server, ip address and host names!</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -170,6 +170,9 @@
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Search does list name of INDI devices of this certain type</string>
+     </property>
      <property name="text">
       <string>Search</string>
      </property>
@@ -217,7 +220,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>When checked, the indi messages received will be shown inthe central message window</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
@@ -255,6 +258,9 @@
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Port of INDI server</string>
+     </property>
      <property name="text">
       <string>7624</string>
      </property>
@@ -275,6 +281,9 @@
       <font>
        <pointsize>10</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Copy the host address, port and Show message settings to all INDI devices</string>
      </property>
      <property name="text">
       <string>Copy to all INDI devices</string>
@@ -361,6 +370,9 @@
       <font>
        <pointsize>10</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Port of ALPACA server</string>
      </property>
      <property name="text">
       <string>11111</string>
@@ -488,6 +500,9 @@
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Copy the protocol, host address, port, user and password settings to all ALPACA devices</string>
+     </property>
      <property name="text">
       <string>Copy to all ALPACA devices</string>
      </property>
@@ -500,6 +515,9 @@
        <width>201</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Choose the protocol type for ALPACA device</string>
      </property>
      <item>
       <property name="text">
@@ -578,7 +596,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>User for alpaca device</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -629,7 +647,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Passwor for alpaca device</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -667,7 +685,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Sets the time to wait after mount stop before imaging</string>
+      <string>Device number configured on alpaca device</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

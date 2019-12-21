@@ -26,14 +26,9 @@ import json
 import copy
 from datetime import datetime, timedelta
 # external packages
-import PyQt5.QtWidgets
 import PyQt5.uic
-import skyfield.api
-from mountcontrol.modelStar import ModelStar
 from mountcontrol.alignStar import AlignStar
-import numpy as np
 # local import
-from mw4.definitions import Point
 from mw4.base import transform
 
 

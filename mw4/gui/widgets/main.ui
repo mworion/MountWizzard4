@@ -12843,6 +12843,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -12868,6 +12870,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -12909,6 +12913,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -12950,6 +12956,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -12991,6 +12999,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13024,6 +13034,9 @@ to mount</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Configure the pegasus UPB device. A popup will open and ask for the parameters.</string>
+        </property>
         <property name="text">
          <string>Setup</string>
         </property>
@@ -13036,6 +13049,9 @@ to mount</string>
           <width>66</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Configure the cover device. A popup will open and ask for the parameters.</string>
         </property>
         <property name="text">
          <string>Setup</string>
@@ -13074,6 +13090,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13099,6 +13117,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13172,6 +13192,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13197,6 +13219,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13238,6 +13262,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13279,6 +13305,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13312,6 +13340,9 @@ to mount</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Configure the dome device. A popup will open and ask for the parameters.</string>
+        </property>
         <property name="text">
          <string>Setup</string>
         </property>
@@ -13324,6 +13355,9 @@ to mount</string>
           <width>66</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Configure the telescope device. A popup will open and ask for the parameters.</string>
         </property>
         <property name="text">
          <string>Setup</string>
@@ -13338,6 +13372,9 @@ to mount</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Configure the focuser device. A popup will open and ask for the parameters.</string>
+        </property>
         <property name="text">
          <string>Setup</string>
         </property>
@@ -13351,6 +13388,9 @@ to mount</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Configure the filter device. A popup will open and ask for the parameters.</string>
+        </property>
         <property name="text">
          <string>Setup</string>
         </property>
@@ -13363,6 +13403,9 @@ to mount</string>
           <width>66</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Configure the camera device. A popup will open and ask for the parameters.</string>
         </property>
         <property name="text">
          <string>Setup</string>
@@ -13401,6 +13444,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13442,6 +13487,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13483,6 +13530,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13524,6 +13573,8 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13557,6 +13608,9 @@ to mount</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Configure the skymeter device. A popup will open and ask for the parameters.</string>
+        </property>
         <property name="text">
          <string>Setup</string>
         </property>
@@ -13569,6 +13623,9 @@ to mount</string>
           <width>66</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Configure the external sensor device. A popup will open and ask for the parameters.</string>
         </property>
         <property name="text">
          <string>Setup</string>
@@ -13628,7 +13685,10 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -13646,7 +13706,10 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -13665,6 +13728,7 @@ to mount</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13702,7 +13766,10 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -13721,6 +13788,7 @@ to mount</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13758,7 +13826,10 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -13777,6 +13848,7 @@ to mount</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13814,7 +13886,10 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -13832,7 +13907,10 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
@@ -13856,7 +13934,10 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -13875,6 +13956,7 @@ to mount</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -13912,7 +13994,10 @@ to mount</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
@@ -13958,8 +14043,7 @@ to mount</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual set slew rate for the mount.
-When clicking the button, you could change the value.</string>
+         <string>Shows the actual cooler temp for the camera. When clicking you could change the value.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -13994,7 +14078,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14012,7 +14099,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14049,7 +14139,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the actual coller power.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14075,7 +14165,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14091,6 +14184,9 @@ When clicking the button, you could change the value.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Set readout speed for the camera to high quality if available.</string>
+        </property>
         <property name="text">
          <string>High Qual</string>
         </property>
@@ -14103,6 +14199,9 @@ When clicking the button, you could change the value.</string>
           <width>71</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the camera cooler on.</string>
         </property>
         <property name="text">
          <string>Cooler On</string>
@@ -14117,6 +14216,9 @@ When clicking the button, you could change the value.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Set readout speed for the camera to fast if available.</string>
+        </property>
         <property name="text">
          <string>Fast</string>
         </property>
@@ -14129,6 +14231,9 @@ When clicking the button, you could change the value.</string>
           <width>76</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Switches the camera cooler off.</string>
         </property>
         <property name="text">
          <string>Cooler Off</string>
@@ -14145,7 +14250,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14163,7 +14271,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14200,7 +14311,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual set slew rate for the mount.
+         <string>Shows the actual filter number.
 When clicking the button, you could change the value.</string>
         </property>
         <property name="layoutDirection">
@@ -14236,7 +14347,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14254,7 +14368,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14291,7 +14408,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual set slew rate for the mount.
+         <string>Shows the actual filter name text.
 When clicking the button, you could change the value.</string>
         </property>
         <property name="layoutDirection">
@@ -14327,7 +14444,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14364,8 +14484,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual set slew rate for the mount.
-When clicking the button, you could change the value.</string>
+         <string>Shows the actual focuser position.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14448,7 +14567,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14485,7 +14607,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the pixel size set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14511,7 +14633,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14529,7 +14654,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14566,7 +14694,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the pixel size set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14611,7 +14739,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string/>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14656,7 +14784,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string/>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14682,7 +14810,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14700,7 +14831,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14718,7 +14852,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14736,7 +14873,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14773,7 +14913,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string/>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14818,7 +14958,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string/>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14844,7 +14984,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14862,7 +15005,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14880,7 +15026,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -14917,7 +15066,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the pixel number set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14962,7 +15111,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the pixel number set in the camera driver.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -14988,7 +15137,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15025,7 +15177,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the focal length set in the telescope driver.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -15051,7 +15203,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15088,7 +15243,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the rotation of the camera image set in driver.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -15114,7 +15269,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15132,7 +15290,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15169,7 +15330,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the aperture set in the telecope driver.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -15195,7 +15356,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15213,7 +15377,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15250,7 +15417,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the speed of your imaging setup.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -15276,7 +15443,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15310,7 +15480,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15328,7 +15501,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15347,12 +15523,13 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the exposure time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Set the search radius for the plate solver. </string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -15385,12 +15562,13 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the exposure time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Set the timeout for the plate solver.</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -15438,7 +15616,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15475,7 +15656,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -15501,7 +15682,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15519,7 +15703,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15556,7 +15743,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the actual magnitude limit for your current imaging setup and parameters.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -15601,7 +15788,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the actual Dawes' limit for your current imaging setup and parameters</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -15627,7 +15814,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15645,7 +15835,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15757,7 +15950,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15775,7 +15971,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15865,6 +16064,8 @@ When clicking the button, you could change the value.</string>
          <font>
           <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15965,7 +16166,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -15983,7 +16187,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16002,6 +16209,7 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -16083,6 +16291,7 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -16120,7 +16329,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16138,7 +16350,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16156,7 +16371,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16175,6 +16393,7 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -16212,7 +16431,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16231,6 +16453,7 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -16268,7 +16491,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16286,7 +16512,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16304,7 +16533,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16322,7 +16554,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
@@ -16349,7 +16584,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16367,7 +16605,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16386,6 +16627,7 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -16423,7 +16665,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16442,6 +16687,7 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -16479,7 +16725,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16498,6 +16747,7 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -16535,7 +16785,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16579,7 +16832,10 @@ When clicking the button, you could change the value.</string>
        </property>
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -16597,7 +16853,10 @@ When clicking the button, you could change the value.</string>
        </property>
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -16615,7 +16874,10 @@ When clicking the button, you could change the value.</string>
        </property>
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -16633,7 +16895,10 @@ When clicking the button, you could change the value.</string>
        </property>
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -16651,7 +16916,10 @@ When clicking the button, you could change the value.</string>
        </property>
        <property name="font">
         <font>
+         <family>Arial</family>
          <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -16685,6 +16953,7 @@ When clicking the button, you could change the value.</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>10</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -16722,7 +16991,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16740,7 +17012,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16933,7 +17208,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16957,7 +17235,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -16981,7 +17262,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17044,7 +17328,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17185,7 +17472,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17245,7 +17535,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17302,7 +17595,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17401,7 +17697,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17425,7 +17724,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17488,7 +17790,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17545,7 +17850,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17566,7 +17874,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17590,7 +17901,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17728,7 +18042,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17791,7 +18108,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17815,7 +18135,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17839,7 +18162,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17860,7 +18186,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17923,7 +18252,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17941,7 +18273,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -17965,7 +18300,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18106,7 +18444,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18127,7 +18468,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18151,7 +18495,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18211,7 +18558,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18232,7 +18582,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18289,7 +18642,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18469,7 +18825,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18594,7 +18953,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18615,7 +18977,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18714,7 +19079,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18816,7 +19184,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18853,7 +19224,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -18955,7 +19329,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19035,7 +19412,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19143,7 +19523,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19206,7 +19589,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19240,7 +19626,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19405,7 +19794,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19423,7 +19815,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19441,7 +19836,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19576,7 +19974,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19594,7 +19995,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19612,7 +20016,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19650,7 +20057,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19678,7 +20088,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19696,7 +20109,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19799,7 +20215,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -19867,7 +20286,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
@@ -19891,7 +20313,10 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
@@ -19933,7 +20358,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;pyqt5, matplotlib, wakeonlan, numpy, requests, astropy, skyfield, forwardable, qimage2ndarray, importlib_metadata, alpyca&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
@@ -20012,7 +20437,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -20030,7 +20458,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -20048,7 +20479,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -20162,7 +20596,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -20228,7 +20665,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -20323,7 +20763,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -20354,7 +20797,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -20372,7 +20818,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -20403,7 +20852,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="text">
@@ -20450,7 +20902,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
@@ -20529,7 +20984,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
@@ -20553,7 +21011,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">
@@ -20577,7 +21038,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="font">
          <font>
+          <family>Arial</family>
           <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="toolTip">

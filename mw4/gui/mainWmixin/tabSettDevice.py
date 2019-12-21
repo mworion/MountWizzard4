@@ -271,9 +271,12 @@ class SettDevice(object):
 
         return True
 
-    def dispatchStartDriver(self, driver=None):
+    def dispatchConfigDriver(self, driver=None):
         """
+        dispatchConfigDriver
 
+        :param driver:
+        :return: success of start
         """
 
         driverData = self.driversData.get(driver, {})
@@ -308,8 +311,16 @@ class SettDevice(object):
         # setting the new selected framework type and name, host
         self.drivers[driver]['class'].name = name
 
+    def dispatchStartDriver(self, driver=None):
+        """
+        dispatchStartDriver
+
+        :param driver:
+        :return: success of start
+        """
+
         # for built-in i actually not check their presence as the should function
-        if dropDownText == 'built-in':
+        if self.drivers[driver]['uiDropDown'].currentText() == 'built-in':
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
 
         # and finally start it
@@ -335,8 +346,8 @@ class SettDevice(object):
         """
 
         for driver in self.drivers:
-
-            # check if the call comes from gui or direct call
+            # check if the call comes from gui or direct call. a call from gui has a list of
+            # objects
             isGui = not isinstance(driverName, str)
 
             if not isGui and (driverName != driver):
@@ -347,15 +358,18 @@ class SettDevice(object):
             if not self.dispatchStopDriver(driver=driver):
                 continue
 
-            suc = self.dispatchStartDriver(driver=driver)
+            self.dispatchConfigDriver(driver=driver)
 
+            suc = self.dispatchStartDriver(driver=driver)
             if not suc:
                 self.app.message.emit(f'[{driver}] could not be started', 2)
 
-            return True
+        return True
 
     def scanValid(self, driver=None, deviceName=''):
         """
+        scanValid checks if the calling device fits to the summary of all devices and gives
+        back if it should be skipped
 
         :param deviceName:
         :param driver:
@@ -374,6 +388,7 @@ class SettDevice(object):
         """
         serverDisconnected writes info to message window and recolors the status
 
+        :param deviceList:
         :return: true for test purpose
         """
 
@@ -395,6 +410,7 @@ class SettDevice(object):
         showCoverDeviceConnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
+        :param deviceName:
         :return: true for test purpose
         """
 
@@ -412,6 +428,7 @@ class SettDevice(object):
         showCoverDeviceDisconnected changes the style of related ui groups to make it clear
         to the user, which function is actually available
 
+        :param deviceName:
         :return: true for test purpose
         """
 

@@ -389,7 +389,7 @@ class SettDevice(object):
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
-            # self.app.message.emit(f'{driver} connected', 0)
+            self.app.message.emit(f'{driver} connected', 0)
         return True
 
     def deviceDisconnected(self, deviceName):
@@ -406,5 +406,5 @@ class SettDevice(object):
 
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
             self.deviceStat[driver] = False
-            # self.app.message.emit(f'{driver} disconnected', 0)
+            self.app.message.emit(f'{driver} disconnected', 0)
         return True

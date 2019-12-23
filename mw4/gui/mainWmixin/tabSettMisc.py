@@ -170,13 +170,42 @@ class SettMisc(object):
         else:
             self.ui.versionAvailable.setText('not online')
             self.ui.installVersion.setEnabled(False)
-            return False
+            return Falsepip
 
     @staticmethod
     def isVenv():
         hasReal = hasattr(sys, 'real_prefix')
         hasBase = hasattr(sys, 'base_prefix')
         return hasReal or hasBase and sys.base_prefix != sys.prefix
+
+    @staticmethod
+    def formatPIP(line=''):
+        """
+
+        :param line:
+        :return: formatted line
+        """
+        # lines with additional information are deleted
+        if line.startswith(' '):
+            return ''
+
+        # shorten the string for packages
+        elif line.startswith('Requirement'):
+            val = line.split(':')
+            prefix = val[0]
+            packageName = val[1].split('<')[0].split('>')[0].split('=')[0].split(' ')[1]
+            line = f'{prefix} : {packageName}'
+
+        elif line.startswith('Collecting'):
+            line = line.split('<')[0].split('>')[0].split('=')[0]
+
+        elif line.startswith('Installing') or line.startswith('Building'):
+            line = line.split(':')[0]
+
+        elif line.startswith('Successfully'):
+            line = line.split('\n')[0]
+
+        return line
 
     def runInstall(self, versionPackage='', timeout=20):
         """
@@ -191,17 +220,25 @@ class SettMisc(object):
         runnable = ['pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
-                    '--upgrade',
                     '--no-cache-dir',
+                    '--disable-pip-version-check',
                     ]
 
         timeStart = time.time()
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE
+                                            stderr=subprocess.PIPE,
+                                            text=True,
                                             )
-            stdout, stderr = self.process.communicate(timeout=timeout)
+            for stdout_line in iter(self.process.stdout.readline, ""):
+                # nicely format text
+                line = self.formatPIP(line=stdout_line)
+                if line:
+                    self.app.message.emit(line, 0)
+
+            _, stderr = self.process.communicate(timeout=timeout)
+
         except subprocess.TimeoutExpired as e:
             self.logger.debug(e)
             return False
@@ -213,9 +250,7 @@ class SettMisc(object):
             self.logger.debug(f'pip install took {delta}s return code: '
                               + str(self.process.returncode)
                               + ' stderr: '
-                              + stderr.decode().replace('\n', ' ')
-                              + ' stdout: '
-                              + stdout.decode().replace('\n', ' ')
+                              + stderr.replace('\n', ' ')
                               )
 
         success = (self.process.returncode == 0)

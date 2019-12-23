@@ -24,18 +24,18 @@ from datetime import datetime
 import PyQt5
 import numpy as np
 # local imports
-from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.alpacaClass import Dome
 from mw4.base.tpool import Worker
 
 
-class DomeAlpaca(AlpacaClass):
+class DomeAlpaca(Dome):
     """
     the class Dome inherits all information and handling of the Dome device. there will be
     some parameters who will define the slewing position of the dome relating to the
     mount.dome = DomeAlpaca(app=None)
     """
 
-    __all__ = ['DomeIndi',
+    __all__ = ['DomeAlpaca',
                ]
 
     logger = logging.getLogger(__name__)
@@ -79,7 +79,7 @@ class DomeAlpaca(AlpacaClass):
 
         :return: true for test purpose
         """
-        self.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = self.get('azimuth')
+        self.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = self.azimuth()
         return True
 
     def startPollData(self):

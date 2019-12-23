@@ -92,12 +92,11 @@ class PegasusUPBIndi(IndiClass):
         if not super().updateNumber(deviceName, propertyName):
             return False
 
-        for element, value in self.device.getNumber(propertyName).items():
-            # only version 2 has 3 dew heaters
-            if element == 'DEW_C':
-                if self.data.get('VERSION.UPB', 1) != 2:
-                    self.data['VERSION.UPB'] = 2
-                    self.signals.version.emit(2)
+        # only version 2 has 3 dew heaters
+        if 'AUTO_DEW.DEW_C' in self.data:
+            if self.data.get('VERSION.UPB', 1) != 2:
+                self.data['VERSION.UPB'] = 2
+                self.signals.version.emit(2)
 
         return True
 
@@ -114,12 +113,11 @@ class PegasusUPBIndi(IndiClass):
         if not super().updateSwitch(deviceName, propertyName):
             return False
 
-        for element, value in self.device.getSwitch(propertyName).items():
-            # this combination only exists in version 1
-            if propertyName == 'AUTO_DEW' and element == 'AUTO_DEW_ENABLED':
-                if self.data.get('VERSION.UPB', 1) != 1:
-                    self.data['VERSION.UPB'] = 1
-                    self.signals.version.emit(1)
+        # this combination only exists in version 1
+        if 'AUTO_DEW.AUTO_DEW_ENABLED' in self.data:
+            if self.data.get('VERSION.UPB', 1) != 1:
+                self.data['VERSION.UPB'] = 1
+                self.signals.version.emit(1)
 
         return True
 

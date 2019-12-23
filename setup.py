@@ -41,7 +41,7 @@ setup(
     ],
     python_requires='>=3.7.2',
     install_requires=[
-        'mountcontrol==0.142',
+        'mountcontrol==0.143',
         'indibase==0.118',
         'PyQt5==5.13.2; platform_machine != "armv7l"',
         'PyQtWebEngine==5.13.2; platform_machine != "armv7l"',

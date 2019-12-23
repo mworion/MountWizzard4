@@ -26,6 +26,7 @@ import PyQt5.uic
 import requests
 import numpy as np
 import qimage2ndarray
+from skyfield import almanac
 # local import
 from mw4.base.tpool import Worker
 
@@ -597,11 +598,11 @@ class EnvironGui(object):
         """
         phasesText = {
             'New moon': {
-                'range': (0, 2),
+                'range': (0, 1),
                 'pic': ':/moon/new.png',
             },
             'Waxing crescent': {
-                'range': (2, 23),
+                'range': (1, 23),
                 'pic': ':/moon/waxing_crescent.png',
             },
             'First Quarter': {
@@ -625,11 +626,11 @@ class EnvironGui(object):
                 'pic': ':/moon/third_quarter.png',
             },
             'Waning crescent': {
-                'range': (77, 98),
+                'range': (77, 99),
                 'pic': ':/moon/waning_crescent.png',
             },
             'New moon ': {
-                'range': (98, 100),
+                'range': (99, 100),
                 'pic': ':/moon/new.png',
             },
         }
@@ -644,15 +645,29 @@ class EnvironGui(object):
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
         moonPhaseDegree = (moonLon.degrees - sunLon.degrees) % 360.0
-        self.moonPhasePercent = int(moonPhaseDegree / 3.6)
+        moonPhasePercent = int(moonPhaseDegree / 3.6)
+        moonPhaseIllumination = 100 - abs((moonPhaseDegree - 180) / 1.8)
 
-        self.ui.moonPhasePercent.setText(f'{self.moonPhasePercent:3.0f}')
+        self.ui.moonPhasePercent.setText(f'{moonPhaseIllumination:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{moonPhaseDegree:3.0f}')
 
         for phase in phasesText:
-            if self.moonPhasePercent not in range(*phasesText[phase]['range']):
+            if moonPhasePercent not in range(*phasesText[phase]['range']):
                 continue
             self.ui.moonPhaseText.setText(phase)
             pixmap = PyQt5.QtGui.QPixmap(phasesText[phase]['pic']).scaled(60, 60)
             self.ui.moonPic.setPixmap(pixmap)
+
+        """
+        # forecast 48 hours
+        ts = self.app.mount.obsSite.ts
+        t0 = ts.utc(2019, 12, 1, 5)
+        t1 = ts.utc(2019, 12, 31, 5)
+        e = self.app.planets
+        loc = self.app.mount.obsSite.location
+        t, y = almanac.find_discrete(t0, t1, almanac.dark_twilight_day(e, loc))
+        for ti, yi in zip(t, y):
+            print(yi, ti.utc_iso())
+        """
+
         return True

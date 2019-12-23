@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -4499,6 +4499,9 @@ to mount</string>
      <property name="title">
       <string>Clear Outside</string>
      </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
+     </property>
      <widget class="QLabel" name="picClearOutside">
       <property name="geometry">
        <rect>
@@ -4551,6 +4554,9 @@ to mount</string>
      </property>
      <property name="title">
       <string>Moon phase</string>
+     </property>
+     <property name="large" stdset="0">
+      <bool>true</bool>
      </property>
      <widget class="QLineEdit" name="moonPhasePercent">
       <property name="enabled">
@@ -12348,7 +12354,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>405</x>
-       <y>225</y>
+       <y>240</y>
        <width>366</width>
        <height>146</height>
       </rect>
@@ -12761,7 +12767,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

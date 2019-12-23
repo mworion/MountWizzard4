@@ -262,6 +262,10 @@ class DevicePopup(widget.MWidget):
 
         self.ui.indiNameList.clear()
         self.ui.indiNameList.setView(PyQt5.QtWidgets.QListView())
+
+        for name in self.indiSearchNameList:
+            self.logger.info(f'Indi search found: {name}')
+
         for deviceName in self.indiSearchNameList:
             self.ui.indiNameList.addItem(deviceName)
 

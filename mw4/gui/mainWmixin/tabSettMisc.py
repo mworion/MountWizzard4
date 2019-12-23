@@ -170,7 +170,7 @@ class SettMisc(object):
         else:
             self.ui.versionAvailable.setText('not online')
             self.ui.installVersion.setEnabled(False)
-            return Falsepip
+            return False
 
     @staticmethod
     def isVenv():

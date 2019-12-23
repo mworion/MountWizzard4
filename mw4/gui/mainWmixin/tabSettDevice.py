@@ -319,7 +319,7 @@ class SettDevice(object):
         dispatchStartDriver
 
         :param driver:
-        :return: success of start
+        :return success of start
         """
 
         # for built-in i actually not check their presence as the should function

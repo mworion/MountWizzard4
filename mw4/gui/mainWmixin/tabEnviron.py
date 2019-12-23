@@ -644,10 +644,10 @@ class EnvironGui(object):
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
+        now = self.app.mount.obsSite.ts.now()
+        moonPhaseIllumination = almanac.fraction_illuminated(self.app.planets, 'moon', now)
         moonPhaseDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         moonPhasePercent = moonPhaseDegree / 360
-        acost = np.arccos(moonPhasePercent)
-        moonPhaseIllumination = (2 * acost - np.sin(2 * acost)) / np.pi
 
         self.ui.moonPhaseIllumination.setText(f'{moonPhaseIllumination * 100:3.2f}')
         self.ui.moonPhasePercent.setText(f'{100* moonPhasePercent:3.0f}')

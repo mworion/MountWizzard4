@@ -29,6 +29,7 @@ import traceback
 import locale
 import html
 from io import BytesIO
+from importlib_metadata import version
 # external packages
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -299,6 +300,9 @@ def writeSystemInfo(mwGlob=None):
     logging.info(f' Environment is   : {"frozen" if mwGlob["frozen"] else "live"}')
     logging.info(f' Actual workdir   : {mwGlob["workDir"]}')
     logging.info(f' Bundle dir       : {mwGlob["bundleDir"]}')
+    logging.info(f' mountwizzard4    : {version("mountwizzard4")}')
+    logging.info(f' indibase         : {version("indibase")}')
+    logging.info(f' mountcontrol     : {version("mountcontrol")}')
     logging.info(f' sys.argv[0]      : {sys.argv[0]}')
     logging.info(f' os.path.basename : {os.path.basename(sys.argv[0])}')
     logging.info(f' sys.executable   : {sys.executable}')

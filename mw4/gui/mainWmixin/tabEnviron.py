@@ -82,7 +82,7 @@ class EnvironGui(object):
         self.app.update1s.connect(self.updateSkymeterGUI)
         self.app.update1s.connect(self.updateSensorWeatherGui)
         self.app.update30m.connect(self.updateClearOutside)
-        self.app.update30m.connect(self.updateMoonPhase)
+        self.app.update1s.connect(self.updateMoonPhase)
         self.updateMoonPhase()
 
     def initConfig(self):
@@ -645,14 +645,16 @@ class EnvironGui(object):
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
         moonPhaseDegree = (moonLon.degrees - sunLon.degrees) % 360.0
-        moonPhasePercent = int(moonPhaseDegree / 3.6)
-        moonPhaseIllumination = 100 - abs((moonPhaseDegree - 180) / 1.8)
+        moonPhasePercent = moonPhaseDegree / 360
+        acost = np.arccos(moonPhasePercent)
+        moonPhaseIllumination = (2 * acost - np.sin(2 * acost)) / np.pi
 
-        self.ui.moonPhasePercent.setText(f'{moonPhaseIllumination:3.0f}')
+        self.ui.moonPhaseIllumination.setText(f'{moonPhaseIllumination * 100:3.2f}')
+        self.ui.moonPhasePercent.setText(f'{100* moonPhasePercent:3.0f}')
         self.ui.moonPhaseDegree.setText(f'{moonPhaseDegree:3.0f}')
 
         for phase in phasesText:
-            if moonPhasePercent not in range(*phasesText[phase]['range']):
+            if int(moonPhasePercent * 100) not in range(*phasesText[phase]['range']):
                 continue
             self.ui.moonPhaseText.setText(phase)
             pixmap = PyQt5.QtGui.QPixmap(phasesText[phase]['pic']).scaled(60, 60)

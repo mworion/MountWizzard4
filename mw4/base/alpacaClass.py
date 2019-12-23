@@ -1221,7 +1221,7 @@ class FilterWheel(AlpacaClass):
         self.put("position", Position=Position)
 
 
-class Telescope(Device):
+class Telescope(AlpacaClass):
     """Telescope specific methods."""
     __all__ = []
 

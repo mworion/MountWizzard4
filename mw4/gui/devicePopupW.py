@@ -215,8 +215,6 @@ class DevicePopup(widget.MWidget):
         device = self.indiClass.client.devices[deviceName]
         interface = device.getText(propertyName).get('DRIVER_INTERFACE', None)
 
-        print(deviceName, interface)
-
         if interface is None:
             return False
 

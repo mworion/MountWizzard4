@@ -254,11 +254,10 @@ class DevicePopup(widget.MWidget):
             self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
             self.indiClass.client.connectServer()
             self.indiClass.client.watchDevice()
-            self.indiClass.client.watchDevice('Atik CCD')
             msg = PyQt5.QtWidgets.QMessageBox
             msg.information(self,
                             'Searching Devices',
-                            f'Search for {self.driver} could take some seconds!')
+                            f'Search for [{self.driver}] could take some seconds!')
             self.indiClass.client.disconnectServer()
 
         self.ui.indiNameList.clear()

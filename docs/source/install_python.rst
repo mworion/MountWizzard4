@@ -52,6 +52,11 @@ python3.7. This could be done by adding an appropriate repo, which enables this 
     Please update to python3.7 in a way, which fits best to your environment. There are many
     descriptions out, so please search for it in case you don't know exactly.
 
+.. warning::
+    Please do not use a newer version of python! Some libraries bring precompiled binaries
+    with them and they might not be available for a newer python version. I tested it with
+    python3.7! Python3.8 does not work right now as matplotlib does not support this.
+
 An example is from: https://linuxize.com/post/how-to-install-python-3-7-on-ubuntu-18-04/
 
 .. code-block:: python

@@ -105,30 +105,28 @@ class CameraIndi(IndiClass):
 
         return suc
 
-    def setExposureState(self, propertyName='', value=0):
+    def setExposureState(self,):
         """
 
-        :param propertyName:
-        :param value:
         :return: success
         """
 
-        if propertyName == 'CCD_EXPOSURE':
-            if not hasattr(self.device, 'CCD_EXPOSURE'):
-                return False
-            if self.device.CCD_EXPOSURE['state'] == 'Idle':
-                self.signals.message.emit('')
-            elif self.device.CCD_EXPOSURE['state'] == 'Busy':
-                if value == 0:
-                    self.signals.integrated.emit()
-                    self.signals.message.emit('download')
-                else:
-                    self.signals.message.emit(f'expose {value:2.0f} s')
-            elif self.device.CCD_EXPOSURE['state'] == 'Ok':
-                self.signals.message.emit('')
-            return True
-        else:
+        if not hasattr(self.device, 'CCD_EXPOSURE'):
             return False
+
+        value = self.data['CCD_EXPOSURE.CCD_EXPOSURE_VALUE']
+
+        if self.device.CCD_EXPOSURE['state'] == 'Idle':
+            self.signals.message.emit('')
+        elif self.device.CCD_EXPOSURE['state'] == 'Busy':
+            if value == 0:
+                self.signals.integrated.emit()
+                self.signals.message.emit('download')
+            else:
+                self.signals.message.emit(f'expose {value:2.0f} s')
+        elif self.device.CCD_EXPOSURE['state'] == 'Ok':
+            self.signals.message.emit('')
+        return True
 
     def updateNumber(self, deviceName, propertyName):
         """
@@ -142,8 +140,8 @@ class CameraIndi(IndiClass):
         if not super().updateNumber(deviceName, propertyName):
             return False
 
-        for element, value in self.device.getNumber(propertyName).items():
-            self.setExposureState(propertyName=propertyName, value=value)
+        if propertyName == 'CCD_EXPOSURE':
+            self.setExposureState()
 
         return True
 

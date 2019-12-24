@@ -215,6 +215,8 @@ class DevicePopup(widget.MWidget):
         device = self.indiClass.client.devices[deviceName]
         interface = device.getText(propertyName).get('DRIVER_INTERFACE', None)
 
+        print(deviceName, interface)
+
         if interface is None:
             return False
 
@@ -254,6 +256,7 @@ class DevicePopup(widget.MWidget):
             self.indiClass.client.signals.defText.connect(self.addDevicesWithType)
             self.indiClass.client.connectServer()
             self.indiClass.client.watchDevice()
+            self.indiClass.client.watchDevice('Atik CCD')
             msg = PyQt5.QtWidgets.QMessageBox
             msg.information(self,
                             'Searching Devices',

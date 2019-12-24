@@ -294,6 +294,8 @@ class SettDevice(object):
             self.drivers[driver]['class'].showMessages = showMessages
             self.drivers[driver]['class'].framework = 'indi'
             self.drivers[driver]['class'].host = host
+            index = self.drivers[driver]['uiDropDown'].currentIndex()
+            self.drivers[driver]['uiDropDown'].setItemText(index, f'indi - {name}')
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
             name = driverData.get('alpacaName', '')
@@ -302,6 +304,8 @@ class SettDevice(object):
 
             self.drivers[driver]['class'].framework = 'alpaca'
             self.drivers[driver]['class'].host = host
+            index = self.drivers[driver]['uiDropDown'].currentIndex()
+            self.drivers[driver]['uiDropDown'].setItemText(index, f'alpaca - {name}')
 
         elif self.drivers[driver]['deviceType'] == 'astrometry':
             name = driver

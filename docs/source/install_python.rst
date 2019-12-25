@@ -14,15 +14,16 @@ from python.org.
 .. warning::
     Please do not use a newer version of python! Some libraries bring precompiled binaries
     with them and they might not be available for a newer python version. I tested it with
-    python3.7! Python3.8 does not work right now as matplotlib does not support this.
+    python3.7! Python3.8 does not work right now as matplotlib does not support this. The
+    actual python3.7 version is python3.7.6!
 
 If you already have python3.7 installed, you can skip this section and go directly to the MW4
-installation process. If you have to install python3.7.5 this has to be done only once for
+installation process. If you have to install python3.7 this has to be done only once for
 as many MW4 installations you might want.
 
 Windows
 -------
-Depending on your Windows version please download the installer for 3.7.5 from:
+Depending on your Windows version please download the installer for 3.7 from:
 
 https://www.python.org/downloads/windows/
 
@@ -34,13 +35,13 @@ and follow the installation procedure.
     .. image:: _static/install_python_win_path.png
         :align: center
 
-Depending on your preference you could install python 3.7.5 for a single user or for all
+Depending on your preference you could install python 3.7 for a single user or for all
 users. MW4 does not need admin rights to run, so please feel free to choose the variant you would
 like to use.
 
 Mac OSx
 -------
-Depending on your OSx version please download the installer for 3.7.5 from:
+Depending on your OSx version please download the installer for 3.7 from:
 
 https://www.python.org/downloads/mac-osx/
 

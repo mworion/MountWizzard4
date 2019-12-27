@@ -1,14 +1,19 @@
-name: PythonPackage
+name: PythonBuild3.7
 
 on: [push]
+  paths:
+  - 'mw4/**'
+  - '!docs/**'
+  - '!support/**'
 
 jobs:
   build:
-    name: build_MAC
-    runs-on: macos-latest
+    name: build
+    runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
       matrix:
+        os: [ubuntu-16.04, ubuntu-18.04, windows-lastest, macos-latest]
         python-version: [3.7]
     steps:
     - uses: actions/checkout@v1
@@ -34,3 +39,13 @@ jobs:
         pip install qimage2ndarray==1.8
         pip install importlib_metadata==0.23
       if: always()
+
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 .
+
+    - name: Run with test
+      run: |
+        python ./mw4.loader. test

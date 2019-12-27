@@ -1,7 +1,6 @@
 name: PythonBuild3.7
 
-on:
-  push:
+on: [push]
 
 jobs:
   build:
@@ -44,4 +43,13 @@ jobs:
       run: |
         pip install flake8
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 .
+        flake8
+
+    - name: Upload pytest test results
+      uses: actions/upload-artifact@master
+      with:
+        name: pytest-results-${{ matrix.python-version }}
+        path: junit/test-results-${{ matrix.python-version }}.xml
+
+      # Use always() to always run this step to publish test results when there are test failures
+      if: always()

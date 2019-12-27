@@ -44,7 +44,7 @@ jobs:
         flake8
 
     - name: Upload pytest test results
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v1
       with:
         name: flake-results-${{ matrix.os }}
         path: output/flake-results-${{ matrix.os }}.xml

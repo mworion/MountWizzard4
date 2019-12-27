@@ -2,10 +2,6 @@ name: PythonBuild3.7
 
 on:
   push:
-    paths:
-    - 'mw4/**'
-    - '!docs/**'
-    - '!support/**'
 
 jobs:
   build:

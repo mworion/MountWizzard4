@@ -37,13 +37,16 @@ jobs:
         pip install forwardable==0.4.1
         pip install qimage2ndarray==1.8
         pip install importlib_metadata==0.23
-      if: always()
 
     - name: Lint with flake8
       run: |
         pip install flake8
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8
 
+    - name: Upload pytest test results
+      uses: actions/upload-artifact@master
+      with:
+        name: flake-results-${{ matrix.os }}
+        path: output/flake-results-${{ matrix.os }}.xml
       # Use always() to always run this step to publish test results when there are test failures
       if: always()

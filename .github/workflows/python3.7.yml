@@ -48,5 +48,13 @@ jobs:
         pip install pytest
         pip install pytest-qt
         pip install pytest-cov
+        python -m PyQt5.uic.pyuic -x devicePopup.ui -o devicePopup_ui.py
+        python -m PyQt5.uic.pyuic -x hemisphere.ui -o hemisphere_ui.py
+        python -m PyQt5.uic.pyuic -x image.ui -o image_ui.py
+        python -m PyQt5.uic.pyuic -x keypad.ui -o keypad_ui.py
+        python -m PyQt5.uic.pyuic -x main.ui -o main_ui.py
+        python -m PyQt5.uic.pyuic -x measure.ui -o measure_ui.py
+        python -m PyQt5.uic.pyuic -x message.ui -o message_ui.py
+        python -m PyQt5.uic.pyuic -x satellite.ui -o satellite_ui.py
         pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/
 

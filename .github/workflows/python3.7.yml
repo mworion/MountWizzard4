@@ -43,10 +43,10 @@ jobs:
         pip install flake8
         flake8
 
-    - name: Upload pytest test results
-      uses: actions/upload-artifact@v1
-      with:
-        name: flake-results-${{ matrix.os }}
-        path: output/flake-results-${{ matrix.os }}.xml
-      # Use always() to always run this step to publish test results when there are test failures
-      if: always()
+    - name: Test with pytest
+      run: |
+        pip install pytest
+        pip install pytest-qt
+        pip install pytest-cov
+        pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/
+

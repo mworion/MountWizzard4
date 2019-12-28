@@ -43,6 +43,8 @@ jobs:
       run: |
         pip install flake8
         flake8
+        python -c 'import sys; print(sys.prefix)'
+        python -c 'import sys; print(sys.path)'
 
     - name: Test with pytest
       run: |
@@ -57,5 +59,4 @@ jobs:
         python -m PyQt5.uic.pyuic -x mw4/gui/widgets/measure.ui -o mw4/gui/widgets/measure_ui.py
         python -m PyQt5.uic.pyuic -x mw4/gui/widgets/message.ui -o mw4/gui/widgets/message_ui.py
         python -m PyQt5.uic.pyuic -x mw4/gui/widgets/satellite.ui -o mw4/gui/widgets/satellite_ui.py
-        pytest ./mw4/test/test_units --cov-config .coveragerc --cov ./mw4/
-
+        pytest mw4/test/test_units --cov-config .coveragerc --cov ./mw4/

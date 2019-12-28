@@ -43,6 +43,7 @@ jobs:
       run: |
         pip install flake8
         flake8
+        export PYTHONPATH="${PYTHONPATH}:."
         python -c 'import sys; print(sys.prefix)'
         python -c 'import sys; print(sys.path)'
 
@@ -51,6 +52,7 @@ jobs:
         pip install pytest
         pip install pytest-qt
         pip install pytest-cov
+        export PYTHONPATH="${PYTHONPATH}:."
         python -m PyQt5.uic.pyuic -x mw4/gui/widgets/devicePopup.ui -o mw4/gui/widgets/devicePopup_ui.py
         python -m PyQt5.uic.pyuic -x mw4/gui/widgets/hemisphere.ui -o mw4/gui/widgets/hemisphere_ui.py
         python -m PyQt5.uic.pyuic -x mw4/gui/widgets/image.ui -o mw4/gui/widgets/image_ui.py

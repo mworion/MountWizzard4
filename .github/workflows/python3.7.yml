@@ -28,8 +28,8 @@ jobs:
         pip install wakeonlan==1.1.6
         pip install skyfield==1.16
         pip install numpy==1.17.3
-        pip install mountcontrol
-        pip install indibase
+        pip install mountcontrol==0.144
+        pip install indibase==0.120
         pip install matplotlib==3.1.1
         pip install astropy==3.2.3
         pip install requests==2.22.0

@@ -53,6 +53,7 @@ jobs:
         pip install pytest-qt
         pip install pytest-cov
         export PYTHONPATH="${PYTHONPATH}:."
+        apt-get install python3-pyqt5.qtmultimedia
         python -m PyQt5.uic.pyuic -x mw4/gui/widgets/devicePopup.ui -o mw4/gui/widgets/devicePopup_ui.py
         python -m PyQt5.uic.pyuic -x mw4/gui/widgets/hemisphere.ui -o mw4/gui/widgets/hemisphere_ui.py
         python -m PyQt5.uic.pyuic -x mw4/gui/widgets/image.ui -o mw4/gui/widgets/image_ui.py

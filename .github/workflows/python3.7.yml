@@ -9,8 +9,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        os: [ubuntu-16.04]
-        # , ubuntu-18.04, windows-latest, macos-latest
+        os: [ubuntu-16.04, ubuntu-18.04, windows-latest, macos-latest]
         python-version: [3.7]
 
     steps:
@@ -44,22 +43,3 @@ jobs:
         pip install flake8
         flake8
         export PYTHONPATH="${PYTHONPATH}:."
-        python -c 'import sys; print(sys.prefix)'
-        python -c 'import sys; print(sys.path)'
-
-    - name: Test with pytest
-      run: |
-        pip install pytest
-        pip install pytest-qt
-        pip install pytest-cov
-        export PYTHONPATH="${PYTHONPATH}:."
-        sudo apt-get install python3-pyqt5.qtmultimedia
-        python -m PyQt5.uic.pyuic -x mw4/gui/widgets/devicePopup.ui -o mw4/gui/widgets/devicePopup_ui.py
-        python -m PyQt5.uic.pyuic -x mw4/gui/widgets/hemisphere.ui -o mw4/gui/widgets/hemisphere_ui.py
-        python -m PyQt5.uic.pyuic -x mw4/gui/widgets/image.ui -o mw4/gui/widgets/image_ui.py
-        python -m PyQt5.uic.pyuic -x mw4/gui/widgets/keypad.ui -o mw4/gui/widgets/keypad_ui.py
-        python -m PyQt5.uic.pyuic -x mw4/gui/widgets/main.ui -o mw4/gui/widgets/main_ui.py
-        python -m PyQt5.uic.pyuic -x mw4/gui/widgets/measure.ui -o mw4/gui/widgets/measure_ui.py
-        python -m PyQt5.uic.pyuic -x mw4/gui/widgets/message.ui -o mw4/gui/widgets/message_ui.py
-        python -m PyQt5.uic.pyuic -x mw4/gui/widgets/satellite.ui -o mw4/gui/widgets/satellite_ui.py
-        pytest mw4/test/test_units --cov-config .coveragerc --cov ./mw4/

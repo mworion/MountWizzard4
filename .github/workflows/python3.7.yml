@@ -42,4 +42,3 @@ jobs:
       run: |
         pip install flake8
         flake8
-        export PYTHONPATH="${PYTHONPATH}:."

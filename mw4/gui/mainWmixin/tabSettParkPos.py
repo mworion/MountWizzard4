@@ -48,6 +48,9 @@ class SettParkPos(object):
             button.clicked.connect(self.saveActualPosition)
 
         # signals on gui
+        self.ui.coverPark.clicked.connect(self.setCoverPark)
+        self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
+
         self.ui.offOTA.valueChanged.connect(self.adjustGEMOffset)
         self.ui.offGEM.valueChanged.connect(self.adjustOTAOffset)
         self.ui.domeDiameter.valueChanged.connect(self.setDomeDiameter)
@@ -58,6 +61,7 @@ class SettParkPos(object):
 
         # signals from functions
         self.app.mount.signals.firmwareDone.connect(self.adjustOTAOffset)
+        self.app.update1s.connect(self.updateCoverStatGui)
 
     def initConfig(self):
         """
@@ -277,4 +281,46 @@ class SettParkPos(object):
         """
 
         self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
+        return True
+
+    def updateCoverStatGui(self):
+        """
+        updateCoverStatGui changes the style of the button related to the state of the FliFlat
+
+        :return: success for test
+        """
+
+        value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
+        if value == 'OPEN':
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
+        elif value == 'CLOSED':
+            self.changeStyleDynamic(self.ui.coverPark, 'running', True)
+        else:
+            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
+            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
+
+        value = self.app.cover.data.get('Status.Cover', '-')
+        self.ui.coverStatusText.setText(value)
+
+        value = self.app.cover.data.get('Status.Motor', '-')
+        self.ui.coverMotorText.setText(value)
+
+    def setCoverPark(self):
+        """
+        setCoverPark closes the cover
+
+        :return: success
+        """
+
+        self.app.cover.sendCoverPark(park=True)
+        return True
+
+    def setCoverUnpark(self):
+        """
+        setCoverPark opens the cover
+
+        :return: success
+        """
+
+        self.app.cover.sendCoverPark(park=False)
         return True

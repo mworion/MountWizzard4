@@ -30,8 +30,6 @@ class SettImaging(object):
 
     def __init__(self):
         # gui actions
-        self.ui.coverPark.clicked.connect(self.setCoverPark)
-        self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
         self.ui.downloadFast.clicked.connect(self.setDownloadModeFast)
         self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)
         self.ui.coolerOn.clicked.connect(self.setCoolerOn)
@@ -42,7 +40,6 @@ class SettImaging(object):
 
         # cyclic actions
         self.app.update1s.connect(self.updateParameters)
-        self.app.update1s.connect(self.updateCoverStatGui)
 
     def initConfig(self):
         """
@@ -154,48 +151,6 @@ class SettImaging(object):
             FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
             self.app.mainW.ui.FOVX.setText(f'{FOVX:2.2f}')
             self.app.mainW.ui.FOVY.setText(f'{FOVY:2.2f}')
-
-    def updateCoverStatGui(self):
-        """
-        updateCoverStatGui changes the style of the button related to the state of the FliFlat
-
-        :return: success for test
-        """
-
-        value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
-        if value == 'OPEN':
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', True)
-        elif value == 'CLOSED':
-            self.changeStyleDynamic(self.ui.coverPark, 'running', True)
-        else:
-            self.changeStyleDynamic(self.ui.coverPark, 'running', False)
-            self.changeStyleDynamic(self.ui.coverUnpark, 'running', False)
-
-        value = self.app.cover.data.get('Status.Cover', '-')
-        self.ui.coverStatusText.setText(value)
-
-        value = self.app.cover.data.get('Status.Motor', '-')
-        self.ui.coverMotorText.setText(value)
-
-    def setCoverPark(self):
-        """
-        setCoverPark closes the cover
-
-        :return: success
-        """
-
-        self.app.cover.sendCoverPark(park=True)
-        return True
-
-    def setCoverUnpark(self):
-        """
-        setCoverPark opens the cover
-
-        :return: success
-        """
-
-        self.app.cover.sendCoverPark(park=False)
-        return True
 
     def setCoolerTemp(self):
         """

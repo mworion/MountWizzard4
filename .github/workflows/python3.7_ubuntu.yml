@@ -1,4 +1,4 @@
-name: Python3.7 UBuntu
+name: Python3.7 Ubuntu
 
 on: [push]
 

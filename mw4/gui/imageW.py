@@ -644,7 +644,7 @@ class ImageWindow(widget.MWidget):
         if header.get('CTYPE2', '').endswith('DEF'):
             header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
 
-        if self.ui.checkStackImages.isChecked() and not hasBayer:
+        if self.ui.checkStackImages.isChecked():
             imageData = self.stackImages(imageData=imageData, header=header)
             self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
         else:

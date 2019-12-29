@@ -634,7 +634,7 @@ class ImageWindow(widget.MWidget):
             header = fitsHandle[0].header
 
         # check the bayer options, i normally us only RGGB pattern
-        # todo: if it's an exposure directly, I get a bayered mosaic ??
+        # todo: if it's an exposure directly, I get a bayer mosaic ??
         if 'BAYERPAT' in header and len(imageData.shape) > 2:
             imageData = cv2.cvtColor(imageData, cv2.COLOR_BAYER_BG2GRAY)
 
@@ -661,7 +661,6 @@ class ImageWindow(widget.MWidget):
         # normalization
         norm, iMin, iMax = self.stretchImage(image=imageData)
 
-        # todo: if might be ok, setting mode to grey also for colored pictures
         # we process a colormap if we have a greyscale image
         colorMap = self.colorImage()
 

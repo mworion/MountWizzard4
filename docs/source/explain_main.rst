@@ -9,6 +9,7 @@ used:
 
 .. image:: _static/explain_main_1.png
     :align: center
+    :width: 80%
 
 Area 1: Devices and Windows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -54,6 +55,7 @@ Mount tab
 
 .. image:: _static/explain_mount_tab.png
     :align: center
+    :width: 80%
 
 Area 1: Pointing
 ^^^^^^^^^^^^^^^^
@@ -86,6 +88,7 @@ will see. The example below is the maximum MW4 can support.
 
 .. image:: _static/explain_environ_tab.png
     :align: center
+    :width: 80%
 
 Area 1: Data Sources
 ^^^^^^^^^^^^^^^^^^^^
@@ -142,6 +145,7 @@ equally over the sky. MW4 allows multiple choices to automatically select the re
 
 .. image:: _static/explain_model_points_tab.png
     :align: center
+    :width: 80%
 
 Area 1: Reference Types
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -180,6 +184,7 @@ gives you some help to adjust the alignment easily, and the correct way.
 
 .. image:: _static/explain_model_build_tab.png
     :align: center
+    :width: 80%
 
 Area 1: Alignment Status
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -228,6 +233,7 @@ and the name list of all in the stored mount models. You then can work with this
 
 .. image:: _static/explain_manage_model_tab.png
     :align: center
+    :width: 80%
 
 Area 1: Model Errors
 ^^^^^^^^^^^^^^^^^^^^
@@ -266,6 +272,7 @@ database.
 
 .. image:: _static/explain_satellite_tab.png
     :align: center
+    :width: 80%
 
 Area 1: Select Satellite Database
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -317,6 +324,7 @@ enables you to review some data and uses the functionality of UPB directly from 
 
 .. image:: _static/explain_power_tab.png
     :align: center
+    :width: 80%
 
 Area 1: Data UPB
 ^^^^^^^^^^^^^^^^
@@ -338,6 +346,7 @@ MW4 provides some small tools to make life a little bit easier.
 
 .. image:: _static/explain_tools_tab.png
     :align: center
+    :width: 80%
 
 Area 1: Renaming FITS
 ^^^^^^^^^^^^^^^^^^^^^

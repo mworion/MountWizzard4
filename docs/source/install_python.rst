@@ -32,8 +32,9 @@ and follow the installation procedure.
 .. warning::
     Please take care, that during the installation the checkbox "Add Python Path" is selected.
 
-    .. image:: _static/install_python_win_path.png
-        :align: center
+.. image:: _static/install_python_win_path.png
+    :align: center
+    :width: 80%
 
 Depending on your preference you could install python 3.7 for a single user or for all
 users. MW4 does not need admin rights to run, so please feel free to choose the variant you would

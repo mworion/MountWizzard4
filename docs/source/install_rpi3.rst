@@ -12,8 +12,9 @@ desktop. As this distribution already supports python 3.7 we should check this:
 
 should give you the following result:
 
-    .. image:: _static/install_rpi3_rlancaste.png
-        :align: center
+.. image:: _static/install_rpi3_rlancaste.png
+    :align: center
+    :width: 80%
 
 In addition you have to take care, that python 3.7 is installed. The
 actual Ubuntu mate 18.04.2 distribution comes with python 3.6, so we need to update this.
@@ -21,8 +22,9 @@ Please follow the description: :ref:`Ubuntu`. After that you should get an
 python3.7
 available on your system:
 
-    .. image:: _static/install_rpi3_python37.png
-        :align: center
+.. image:: _static/install_rpi3_python37.png
+    :align: center
+    :width: 80%
 
 Next we have to do is to install a virtual environment capability:
 
@@ -96,5 +98,6 @@ and run MW4 with the command
 
 If everything went fine, you should see MW4 on RPi3:
 
-    .. image:: _static/install_rpi3_running.png
-        :align: center
+.. image:: _static/install_rpi3_running.png
+    :align: center
+    :width: 80%

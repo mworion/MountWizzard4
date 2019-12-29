@@ -8,6 +8,7 @@ Message Window
 --------------
 .. image:: _static/window_message.png
     :align: center
+    :width: 80%
 
 the message window shows all messages during the work of MW4. You could scroll through
 the content and clear the window. All messages are logged in the logfile for later analyse
@@ -17,6 +18,7 @@ Measure Window
 --------------
 .. image:: _static/window_measure.png
     :align: center
+    :width: 80%
 
 The measure windows supports displaying many different values if the measure device is used
 (see :ref:`Devices Tab`). You could display up to 3 different charts in this window and
@@ -49,63 +51,76 @@ Hemisphere Windows
 ------------------
 .. image:: _static/window_hemisphere_raw.png
     :align: center
+    :width: 80%
 
 Hemisphere Full
 ^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_full.png
     :align: center
+    :width: 80%
 
 Hemisphere Slew
 ^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_slew.png
     :align: center
+    :width: 80%
 
 Hemisphere Points
 ^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_points.png
     :align: center
+    :width: 80%
 
 Hemisphere Points Edit
 ^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_points_edit.png
     :align: center
+    :width: 80%
 
 Hemisphere Points Polar
 ^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_polar.png
     :align: center
+    :width: 80%
 
 Hemisphere Horizon Edit
 ^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_horizon_edit.png
     :align: center
+    :width: 80%
 
 Image Windows
 -------------
 .. image:: _static/window_image.png
     :align: center
+    :width: 80%
 
 Image Distortion Coordinates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_image_distortion.png
     :align: center
+    :width: 80%
 
 Satellite Windows
 -----------------
 .. image:: _static/window_satellite_empty.png
     :align: center
+    :width: 80%
 
 Satellite Visible
 ^^^^^^^^^^^^^^^^^
 .. image:: _static/window_satellite_noaa.png
     :align: center
+    :width: 80%
 
 Satellite Visible Turned
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_satellite_noaa_turned.png
     :align: center
+    :width: 80%
 
 Keypad Window
 -------------
 .. image:: _static/window_keypad.png
     :align: center
+    :width: 80%

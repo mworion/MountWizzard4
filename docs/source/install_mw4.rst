@@ -27,11 +27,13 @@ the directory should than for OSx look like:
 
 .. image:: _static/install_mw4_mac_1.png
     :align: center
+    :width: 80%
 
 In Windows10 it looks like:
 
 .. image:: _static/install_mw4_win_1.png
     :align: center
+    :width: 80%
 
 .. note::
     In windows there were two parts in the folder. A power shell file with extension .ps1
@@ -64,11 +66,13 @@ After running the install script the directory should for OSx look like:
 
 .. image:: _static/install_mw4_mac_2.png
     :align: center
+    :width: 80%
 
 In Windows10 it looks like:
 
 .. image:: _static/install_mw4_win_2.png
     :align: center
+    :width: 80%
 
 Please use for the following step the install marked in red.
 
@@ -95,11 +99,13 @@ After first start the directory should for OSx look like:
 
 .. image:: _static/install_mw4_mac_3.png
     :align: center
+    :width: 80%
 
 In Windows10 it looks like:
 
 .. image:: _static/install_mw4_win_3.png
     :align: center
+    :width: 80%
 
 With the first run you will see a log file written and you should have a first window from MW4
 open. Please notice that there will be no visible terminal window, but a minimized power
@@ -107,6 +113,7 @@ shell in the menu. This might take some seconds before MW4 comes up with the spl
 
 .. image:: _static/install_mw4_first_run.png
     :align: center
+    :width: 80%
 
 If you see the upper window, you succeed and from now on you are able to customize your
 setup of MW4 and it's features.

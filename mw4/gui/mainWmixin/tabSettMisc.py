@@ -397,6 +397,8 @@ class SettMisc(object):
         self.audioSignalsSet['Alarm'] = PyQt5.QtMultimedia.QSound(':/sound/alarm.wav')
         return True
 
+    # todo: replace repeating audio play with list and self.sender()
+
     def playAudioMountSlewFinished(self):
         """
         playAudioMountSlewFinished plays a defined sound if this events happens

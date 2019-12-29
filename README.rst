@@ -22,7 +22,8 @@ https://mountwizzard4.readthedocs.io . There is also a PDF version available for
 
 Bug reports
 -----------
-Please report bugs only under issues! Any feedback welcome.
+Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
+Any feedback welcome!
 
 Python build:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/PythonBuild3.6/badge.svg
@@ -31,3 +32,11 @@ Python build:
         :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/PythonBuild3.8/badge.svg
         :align: center
+
+Finally
+-------
+MountWizzard4 is still for the next release in alpha / beta development.
+The use this software is at your own risk! No responsibility for damages to your mount or
+other equipment or your environment. Please take care yourself!
+
+Hope this makes fun and helps for your hobby, CS Michel

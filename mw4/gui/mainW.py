@@ -337,10 +337,17 @@ class MainWindow(MWidget,
             self.ui.runFlexure.setEnabled(False)
             self.ui.runHysteresis.setEnabled(False)
 
+        # if mount is not up, you cannot program a model
         if self.deviceStat.get('mount', False):
             self.ui.batchModel.setEnabled(True)
         else:
             self.ui.batchModel.setEnabled(False)
+
+        # if there were no selected modeling points, you cannot run a model buil
+        if not self.app.data.buildP:
+            self.ui.runModel.setEnabled(False)
+        else:
+            self.ui.runModel.setEnabled(True)
 
         stat = self.deviceStat.get('environOverall', None)
         if stat is None:

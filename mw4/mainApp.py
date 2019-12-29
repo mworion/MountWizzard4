@@ -418,7 +418,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if not os.path.isfile(fileName):
             self.config = self.defaultConfig()
             if name == 'config':
-                self.logger.error('Config file {0} not existing'.format(fileName))
+                self.logger.warning('Config file {0} not existing'.format(fileName))
                 return True
             else:
                 return False

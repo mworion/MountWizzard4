@@ -870,6 +870,9 @@ class MeasureWindow(widget.MWidget):
 
         data = self.app.measure.data
 
+        if 'time' not in data:
+            return False
+
         if len(data['time']) < 4:
             return False
 

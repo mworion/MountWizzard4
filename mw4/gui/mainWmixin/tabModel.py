@@ -472,8 +472,8 @@ class Model(object):
         self.ui.batchModel.setEnabled(False)
         # disable stacking and auto solve when modeling if imageWindow is present
         if self.app.uiWindows['showImageW']['classObj']:
-            self.app.imageW.ui.checkAutoSolve.setChecked(False)
-            self.app.imageW.ui.checkStackImages.setChecked(False)
+            self.app.uiWindows['showImageW']['classObj'].ui.checkAutoSolve.setChecked(False)
+            self.app.uiWindows['showImageW']['classObj'].ui.checkStackImages.setChecked(False)
         return True
 
     def defaultGUI(self):

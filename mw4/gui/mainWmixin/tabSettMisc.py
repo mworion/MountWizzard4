@@ -55,7 +55,7 @@ class SettMisc(object):
         self.app.dome.signals.slewFinished.connect(self.playAudioDomeSlewFinished)
         self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)
         self.app.camera.signals.saved.connect(self.playAudioImageSaved)
-        self.app.astrometry.signals.result.connect(self.playAudioImageSolved)
+        self.app.astrometry.signals.done.connect(self.playAudioImageSolved)
 
         # setting ui signals
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
@@ -397,8 +397,6 @@ class SettMisc(object):
         self.audioSignalsSet['Alarm'] = PyQt5.QtMultimedia.QSound(':/sound/alarm.wav')
         return True
 
-    # todo: replace repeating audio play with list and self.sender()
-
     def playAudioMountSlewFinished(self):
         """
         playAudioMountSlewFinished plays a defined sound if this events happens
@@ -411,8 +409,7 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            worker = tpool.Worker(self.audioSignalsSet[sound].play)
-            self.threadPool.start(worker)
+            self.audioSignalsSet[sound].play()
         return True
 
     def playAudioDomeSlewFinished(self):
@@ -427,8 +424,7 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            worker = tpool.Worker(self.audioSignalsSet[sound].play)
-            self.threadPool.start(worker)
+            self.audioSignalsSet[sound].play()
         return True
 
     def playAudioMountAlert(self):
@@ -443,8 +439,7 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            worker = tpool.Worker(self.audioSignalsSet[sound].play)
-            self.threadPool.start(worker)
+            self.audioSignalsSet[sound].play()
         return True
 
     def playAudioModelFinished(self):
@@ -459,8 +454,7 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            worker = tpool.Worker(self.audioSignalsSet[sound].play)
-            self.threadPool.start(worker)
+            self.audioSignalsSet[sound].play()
         return True
 
     def playAudioImageSaved(self):
@@ -475,8 +469,7 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            worker = tpool.Worker(self.audioSignalsSet[sound].play)
-            self.threadPool.start(worker)
+            self.audioSignalsSet[sound].play()
         return True
 
     def playAudioImageSolved(self):
@@ -491,6 +484,5 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            worker = tpool.Worker(self.audioSignalsSet[sound].play)
-            self.threadPool.start(worker)
+            self.audioSignalsSet[sound].play()
         return True

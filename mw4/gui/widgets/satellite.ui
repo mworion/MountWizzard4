@@ -102,6 +102,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Shows the satellite path vertical over ground.</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -145,6 +148,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Shows the visible track of the satellite when being observed from the position of the mount. </string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -187,6 +193,9 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Show the satellite path in orbit. The observer is moving with the earth turning. We get normally a classical path for the satellite.</string>
         </property>
        </widget>
       </item>
@@ -236,6 +245,9 @@
           <width>0</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Show the satellite path in orbit. The observer is a fixed place with the coordinates of the mount. The earth is not turning. therefore we get normally a spiral path for the satellite.</string>
         </property>
        </widget>
       </item>

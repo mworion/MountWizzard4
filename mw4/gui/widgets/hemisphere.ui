@@ -83,6 +83,9 @@
      </property>
      <item>
       <widget class="QGroupBox" name="groupBox_3">
+       <property name="toolTip">
+        <string>Showing different elements on the hemisphere diagram.</string>
+       </property>
        <property name="title">
         <string>Show Elements</string>
        </property>
@@ -212,6 +215,9 @@
             <pointsize>10</pointsize>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Switching the hemisphere window to normal working mode.</string>
+          </property>
           <property name="text">
            <string>Normal mode</string>
           </property>
@@ -227,6 +233,9 @@
             <pointsize>10</pointsize>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Enabling the edit mode for model build points.</string>
+          </property>
           <property name="text">
            <string>Edit Build Points</string>
           </property>
@@ -238,6 +247,9 @@
            <font>
             <pointsize>10</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>Enabling the edit of the horizon points.</string>
           </property>
           <property name="text">
            <string>Edit Horizon Mask </string>
@@ -253,6 +265,9 @@
            <font>
             <pointsize>10</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>Enabling the polar or ortho align procedure. For starting the procedure, enable align stars and choose a polar align star with left mouse click and a ortho align star with right mouse click.</string>
           </property>
           <property name="text">
            <string>Polar/Ortho Align </string>
@@ -314,6 +329,9 @@
            <font>
             <pointsize>10</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string>The hemisphere view could be extended by a polar diagram if necessary.  </string>
           </property>
           <property name="text">
            <string>Polar Diagram </string>

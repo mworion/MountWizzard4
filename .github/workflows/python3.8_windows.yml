@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'mw4/**'
+      - 'README.rst'
 
 jobs:
   build:

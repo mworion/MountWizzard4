@@ -213,7 +213,6 @@ class CameraIndi(IndiClass):
                imagePath='',
                expTime=3,
                binning=1,
-               subFrame=100,
                fastReadout=True,
                posX=0,
                posY=0,
@@ -225,7 +224,6 @@ class CameraIndi(IndiClass):
         :param imagePath:
         :param expTime:
         :param binning:
-        :param subFrame:
         :param fastReadout:
         :param posX:
         :param posY:

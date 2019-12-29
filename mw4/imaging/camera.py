@@ -213,7 +213,6 @@ class Camera:
             suc = self.run[self.framework].expose(imagePath=imagePath,
                                                   expTime=expTime,
                                                   binning=binning,
-                                                  subFrame=subFrame,
                                                   fastReadout=fastReadout,
                                                   posX=posX,
                                                   posY=posY,

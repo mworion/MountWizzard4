@@ -30,6 +30,7 @@ from astropy.visualization import SqrtStretch
 from astropy.visualization import ImageNormalize
 import matplotlib.pyplot as plt
 import numpy as np
+import cv2
 # local import
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
@@ -632,16 +633,9 @@ class ImageWindow(widget.MWidget):
             imageData = fitsHandle[0].data
             header = fitsHandle[0].header
 
-        # check de bayer options
-        # ('XBAYROFF', 0, 'X offset of Bayer array')
-        # ('YBAYROFF', 0, 'Y offset of Bayer array')
-        # ('BAYERPAT', 'RGGB', 'Bayer color pattern')
+        # check the bayer options, i normally us only RGGB pattern
         if 'BAYERPAT' in header:
-            hasBayer = True
-            import cv2
-            imageData = cv2.cvtColor(imageData, cv2.COLOR_BAYER_BG2RGB)
-        else:
-            hasBayer = False
+            imageData = cv2.cvtColor(imageData, cv2.COLOR_BAYER_BG2GRAY)
 
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)
@@ -661,16 +655,14 @@ class ImageWindow(widget.MWidget):
         hasDistortion, wcsObject = self.writeHeaderToGUI(header=header)
 
         # process the image for viewing: stretching
-        if not hasBayer:
-            imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
+        imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
 
         # normalization
         norm, iMin, iMax = self.stretchImage(image=imageData)
 
         # todo: if might be ok, setting mode to grey also for colored pictures
         # we process a colormap if we have a greyscale image
-        if not hasBayer:
-            colorMap = self.colorImage()
+        colorMap = self.colorImage()
 
         # check the data content and capabilities
         useWCS = self.ui.checkUseWCS.isChecked()
@@ -681,11 +673,8 @@ class ImageWindow(widget.MWidget):
         else:
             fig, axe = self.setupNormal(figure=self.imageMat.figure, header=header)
 
-        # finally show it, if hasBayer, than showing colored picture only
-        if hasBayer:
-            axe.imshow(imageData, norm=norm, origin='lower')
-        else:
-            axe.imshow(imageData, norm=norm, cmap=colorMap, origin='lower')
+        # finally show it
+        axe.imshow(imageData, norm=norm, cmap=colorMap, origin='lower')
         axe.figure.canvas.draw()
 
         return True

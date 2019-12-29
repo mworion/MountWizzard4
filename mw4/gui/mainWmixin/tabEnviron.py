@@ -67,7 +67,7 @@ class EnvironGui(object):
         self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
 
         # gui connections
-        self.ui.setRefractionManual.clicked.connect(self.updateRefractionParametersManually)
+        self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
         self.ui.onlineWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.sensorWeatherGroup.clicked.connect(self.selectRefractionSource)
@@ -259,32 +259,6 @@ class EnvironGui(object):
         else:
             return None, None
 
-    def updateRefractionParametersManually(self):
-        """
-        updateRefractionParametersManually takes the actual conditions for update into
-
-        :return: success if update happened
-        """
-
-        if self.refractionSource == 'directWeather':
-            return False
-
-        if not self.deviceStat['mount']:
-            return False
-
-        temp, press = self.movingAverageRefractionParameters()
-        if temp is None or press is None:
-            return False
-
-        suc = self.app.mount.setting.setRefractionParam(temperature=temp,
-                                                        pressure=press)
-
-        if not suc:
-            self.app.message.emit('Cannot perform refraction update', 2)
-            return False
-
-        return True
-
     def updateRefractionParameters(self):
         """
         updateRefractionParameters takes the actual conditions for update into account and
@@ -304,11 +278,12 @@ class EnvironGui(object):
         if temp is None or press is None:
             return False
 
-        if self.ui.checkRefracNone.isChecked():
-            return False
-        if self.ui.checkRefracNoTrack.isChecked():
-            if self.app.mount.obsSite.status == 0:
+        if self.sender() != self.ui.setRefractionManual:
+            if self.ui.checkRefracNone.isChecked():
                 return False
+            if self.ui.checkRefracNoTrack.isChecked():
+                if self.app.mount.obsSite.status == 0:
+                    return False
 
         suc = self.app.mount.setting.setRefractionParam(temperature=temp,
                                                         pressure=press)

@@ -458,8 +458,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         convertDate tries to convert data from an older or newer version of the config
         file to the actual needed one.
 
-        :param      data:   config data as dict
-        :return:    data:   config data as dict
+        :param      data: config data as dict
+        :return:    data: config data as dict
         """
 
         return data

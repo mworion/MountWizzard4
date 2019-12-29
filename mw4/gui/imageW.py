@@ -47,7 +47,6 @@ class ImageWindowSignals(PyQt5.QtCore.QObject):
     """
 
     __all__ = ['ImageWindowSignals']
-    version = '0.101'
 
     showCurrent = PyQt5.QtCore.pyqtSignal()
     showImage = PyQt5.QtCore.pyqtSignal(object)
@@ -63,7 +62,7 @@ class ImageWindow(widget.MWidget):
 
     __all__ = ['ImageWindow',
                ]
-    version = '0.101'
+
     logger = logging.getLogger(__name__)
 
     def __init__(self, app):
@@ -113,9 +112,11 @@ class ImageWindow(widget.MWidget):
         self.imageMat = self.embedMatplot(self.ui.image)
         self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
 
+        # cyclic updates
+        self.app.update1s.connect(self.updateWindowsStats)
+
         self.initConfig()
         self.showWindow()
-        self.app.update1s.connect(self.updateWindowsStats)
 
     def initConfig(self):
         """
@@ -157,7 +158,6 @@ class ImageWindow(widget.MWidget):
         self.ui.checkShowGrid.setChecked(config.get('checkShowGrid', True))
         self.ui.checkAutoSolve.setChecked(config.get('checkAutoSolve', False))
         self.ui.checkEmbedData.setChecked(config.get('checkEmbedData', False))
-        self.showCurrent()
 
         return True
 
@@ -196,7 +196,7 @@ class ImageWindow(widget.MWidget):
         :return: true for test purpose
         """
 
-        self.showImage(self.imageFileName)
+        self.showCurrent()
         self.show()
 
         # gui signals
@@ -632,6 +632,17 @@ class ImageWindow(widget.MWidget):
             imageData = fitsHandle[0].data
             header = fitsHandle[0].header
 
+        # check de bayer options
+        # ('XBAYROFF', 0, 'X offset of Bayer array')
+        # ('YBAYROFF', 0, 'Y offset of Bayer array')
+        # ('BAYERPAT', 'RGGB', 'Bayer color pattern')
+        if 'BAYERPAT' in header:
+            hasBayer = True
+            import cv2
+            imageData = cv2.cvtColor(imageData, cv2.COLOR_BAYER_BG2RGB)
+        else:
+            hasBayer = False
+
         # correct faulty headers, because some imaging programs did not
         # interpret the Keywords in the right manner (SGPro)
         if header.get('CTYPE1', '').endswith('DEF'):
@@ -639,7 +650,7 @@ class ImageWindow(widget.MWidget):
         if header.get('CTYPE2', '').endswith('DEF'):
             header['CTYPE2'] = header['CTYPE2'].replace('DEF', 'TAN')
 
-        if self.ui.checkStackImages.isChecked():
+        if self.ui.checkStackImages.isChecked() and not hasBayer:
             imageData = self.stackImages(imageData=imageData, header=header)
             self.ui.numberStacks.setText(f'mean of: {self.numberStack:4.0f}')
         else:
@@ -649,10 +660,17 @@ class ImageWindow(widget.MWidget):
         # check the data content and capabilities
         hasDistortion, wcsObject = self.writeHeaderToGUI(header=header)
 
-        # process the image for viewing
-        imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
+        # process the image for viewing: stretching
+        if not hasBayer:
+            imageData = self.zoomImage(image=imageData, wcsObject=wcsObject)
+
+        # normalization
         norm, iMin, iMax = self.stretchImage(image=imageData)
-        colorMap = self.colorImage()
+
+        # todo: if might be ok, setting mode to grey also for colored pictures
+        # we process a colormap if we have a greyscale image
+        if not hasBayer:
+            colorMap = self.colorImage()
 
         # check the data content and capabilities
         useWCS = self.ui.checkUseWCS.isChecked()
@@ -663,8 +681,11 @@ class ImageWindow(widget.MWidget):
         else:
             fig, axe = self.setupNormal(figure=self.imageMat.figure, header=header)
 
-        # finally show it
-        axe.imshow(imageData, norm=norm, cmap=colorMap, origin='lower')
+        # finally show it, if hasBayer, than showing colored picture only
+        if hasBayer:
+            axe.imshow(imageData, norm=norm, origin='lower')
+        else:
+            axe.imshow(imageData, norm=norm, cmap=colorMap, origin='lower')
         axe.figure.canvas.draw()
 
         return True

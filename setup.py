@@ -20,7 +20,7 @@ from setuptools import setup
 
 setup(
     name='mountwizzard4',
-    version='0.142b8',
+    version='0.142b9',
     packages=[
         'mw4',
         'mw4.astrometry',
@@ -41,19 +41,19 @@ setup(
     ],
     python_requires='>=3.6.0, <3.8',
     install_requires=[
-        'mountcontrol==0.146',
-        'indibase==0.121',
+        'mountcontrol==0.147',
+        'indibase==0.122',
         'PyQt5==5.13.2; platform_machine != "armv7l"',
         'PyQtWebEngine==5.13.2; platform_machine != "armv7l"',
-        'matplotlib==3.1.1',
-        'astropy==3.2.3',
+        'matplotlib==3.1.2',
+        'astropy==4.0',
         'requests==2.22.0',
         'requests_toolbelt==0.9.1',
-        'numpy==1.17.3',
+        'numpy==1.18.0',
         'skyfield==1.16',
         'forwardable==0.4.1',
-        'qimage2ndarray==1.8',
-        'importlib_metadata==0.23',
+        'qimage2ndarray==1.8.2',
+        'importlib_metadata==1.3.0',
         'opencv-python-headless==4.1.2.30'
     ],
     url='https://github.com/mworion/MountWizzard4',

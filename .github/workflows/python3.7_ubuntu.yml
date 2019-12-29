@@ -1,6 +1,9 @@
 name: Python3.7 Ubuntu
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'mw4/**'
 
 jobs:
   build:

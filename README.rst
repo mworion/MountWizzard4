@@ -25,6 +25,9 @@ Bug reports
 Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
 Any feedback welcome!
 
+Build status
+------------
+
 Python build for version 3.6.x:
 
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg

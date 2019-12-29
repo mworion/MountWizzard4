@@ -36,6 +36,8 @@ matplotlib.use('Qt5Agg')
 import PyQt5.QtCore
 import PyQt5.QtGui
 import PyQt5.QtWidgets
+from astropy.utils import iers
+iers.conf.auto_download = False
 # local import
 from mw4 import mainApp
 from mw4.gui import splash

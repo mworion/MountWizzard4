@@ -55,7 +55,7 @@ from mw4.environment.directWeather import DirectWeather
 from mw4.cover.flipflat import FlipFlat
 from mw4.telescope.telescope import Telescope
 from mw4.powerswitch.pegasusUPB import PegasusUPB
-from measure.measure import MeasureData
+from mw4.measure.measure import MeasureData
 from mw4.remote.remote import Remote
 from mw4.astrometry.astrometry import Astrometry
 

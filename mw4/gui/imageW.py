@@ -634,7 +634,8 @@ class ImageWindow(widget.MWidget):
             header = fitsHandle[0].header
 
         # check the bayer options, i normally us only RGGB pattern
-        if 'BAYERPAT' in header:
+        # todo: if it's an exposure directly, I get a bayered mosaic ??
+        if 'BAYERPAT' in header and len(imageData.shape) > 2:
             imageData = cv2.cvtColor(imageData, cv2.COLOR_BAYER_BG2GRAY)
 
         # correct faulty headers, because some imaging programs did not

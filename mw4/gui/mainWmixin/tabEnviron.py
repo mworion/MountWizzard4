@@ -67,7 +67,7 @@ class EnvironGui(object):
         self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
 
         # gui connections
-        self.ui.setRefractionManual.clicked.connect(self.updateRefractionParameters)
+        self.ui.setRefractionManual.clicked.connect(self.updateRefractionParametersManually)
         self.ui.isOnline.stateChanged.connect(self.updateClearOutside)
         self.ui.onlineWeatherGroup.clicked.connect(self.selectRefractionSource)
         self.ui.sensorWeatherGroup.clicked.connect(self.selectRefractionSource)
@@ -258,6 +258,32 @@ class EnvironGui(object):
             return temp, press
         else:
             return None, None
+
+    def updateRefractionParametersManually(self):
+        """
+        updateRefractionParametersManually takes the actual conditions for update into
+
+        :return: success if update happened
+        """
+
+        if self.refractionSource == 'directWeather':
+            return False
+
+        if not self.deviceStat['mount']:
+            return False
+
+        temp, press = self.movingAverageRefractionParameters()
+        if temp is None or press is None:
+            return False
+
+        suc = self.app.mount.setting.setRefractionParam(temperature=temp,
+                                                        pressure=press)
+
+        if not suc:
+            self.app.message.emit('Cannot perform refraction update', 2)
+            return False
+
+        return True
 
     def updateRefractionParameters(self):
         """

@@ -1,4 +1,4 @@
-name: PythonBuild3.7
+name: Python3.6 MacOS
 
 on: [push]
 
@@ -9,8 +9,8 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        os: [ubuntu-16.04, ubuntu-18.04, windows-latest, macos-latest]
-        python-version: [3.7]
+        os: [macos-latest]
+        python-version: [3.6]
 
     steps:
     - uses: actions/checkout@v1

@@ -25,12 +25,31 @@ Bug reports
 Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
 Any feedback welcome!
 
-Python build:
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/PythonBuild3.6/badge.svg
+Python build for version 3.6.x:
+
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
         :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/PythonBuild3.7/badge.svg
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
         :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/PythonBuild3.8/badge.svg
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS/badge.svg
+        :align: center
+
+Python build for version 3.7.x:
+
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
+        :align: center
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows/badge.svg
+        :align: center
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS/badge.svg
+        :align: center
+
+Python build for version 3.8.x:
+
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
+        :align: center
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
+        :align: center
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
         :align: center
 
 Finally

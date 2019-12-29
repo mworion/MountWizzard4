@@ -291,9 +291,9 @@ class SettDevice(object):
             port = int(driverData.get('indiPort', 7624))
             host = (address, port)
             showMessages = driverData.get('indiMessages', False)
-
-            self.drivers[driver]['class'].showMessages = showMessages
-            self.drivers[driver]['class'].framework = 'indi'
+            framework = 'indi'
+            self.drivers[driver]['class'].framework = framework
+            self.drivers[driver]['class'].run[framework].showMessages = showMessages
             self.drivers[driver]['class'].host = host
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'indi - {name}')

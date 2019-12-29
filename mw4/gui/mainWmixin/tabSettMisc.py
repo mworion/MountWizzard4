@@ -54,6 +54,7 @@ class SettMisc(object):
         self.app.mount.signals.alert.connect(self.playAudioMountAlert)
         self.app.dome.signals.slewFinished.connect(self.playAudioDomeSlewFinished)
         self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)
+        self.app.camera.signals.saved.connect(self.playAudioImageSaved)
 
         # setting ui signals
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
@@ -84,6 +85,7 @@ class SettMisc(object):
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
         self.ui.soundModelingFinished.setCurrentIndex(config.get('soundModelingFinished', 0))
+        self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
 
         self.showUpdates()
 
@@ -105,6 +107,7 @@ class SettMisc(object):
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
         config['soundMountAlert'] = self.ui.soundMountAlert.currentIndex()
         config['soundModelingFinished'] = self.ui.soundModelingFinished.currentIndex()
+        config['soundImageSaved'] = self.ui.soundImageSaved.currentIndex()
 
         return True
 
@@ -363,6 +366,7 @@ class SettMisc(object):
         self.guiAudioList['DomeSlew'] = self.ui.soundDomeSlewFinished
         self.guiAudioList['MountAlert'] = self.ui.soundMountAlert
         self.guiAudioList['ModelingFinished'] = self.ui.soundModelingFinished
+        self.guiAudioList['ImageSaved'] = self.ui.soundImageSaved
 
         for itemKey, itemValue in self.guiAudioList.items():
             self.guiAudioList[itemKey].addItem('None')
@@ -442,6 +446,21 @@ class SettMisc(object):
         """
 
         listEntry = self.guiAudioList.get('ModelingFinished', None)
+        if listEntry is None:
+            return False
+        sound = listEntry.currentText()
+        if sound in self.audioSignalsSet:
+            self.audioSignalsSet[sound].play()
+        return True
+
+    def playAudioImageSaved(self):
+        """
+        playAudioImageSaved plays a defined sound if this events happens
+
+        :return: success of playing sound
+        """
+
+        listEntry = self.guiAudioList.get('ImageSaved', None)
         if listEntry is None:
             return False
         sound = listEntry.currentText()

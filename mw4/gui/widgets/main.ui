@@ -20812,7 +20812,7 @@ p, li { white-space: pre-wrap; }
          <x>400</x>
          <y>15</y>
          <width>366</width>
-         <height>171</height>
+         <height>176</height>
         </rect>
        </property>
        <property name="title">
@@ -20983,6 +20983,40 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>175</x>
           <y>120</y>
+          <width>181</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when mount stopped in emergency case&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_223">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>145</y>
+          <width>136</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Image solved</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="soundImageSolved">
+        <property name="geometry">
+         <rect>
+          <x>175</x>
+          <y>145</y>
           <width>181</width>
           <height>21</height>
          </rect>

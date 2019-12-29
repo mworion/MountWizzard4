@@ -55,6 +55,7 @@ class SettMisc(object):
         self.app.dome.signals.slewFinished.connect(self.playAudioDomeSlewFinished)
         self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)
         self.app.camera.signals.saved.connect(self.playAudioImageSaved)
+        self.app.astrometry.signals.result.connect(self.playAudioImageSolved)
 
         # setting ui signals
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
@@ -86,6 +87,7 @@ class SettMisc(object):
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
         self.ui.soundModelingFinished.setCurrentIndex(config.get('soundModelingFinished', 0))
         self.ui.soundImageSaved.setCurrentIndex(config.get('soundImageSaved', 0))
+        self.ui.soundImageSolved.setCurrentIndex(config.get('soundImageSolved', 0))
 
         self.showUpdates()
 
@@ -108,6 +110,7 @@ class SettMisc(object):
         config['soundMountAlert'] = self.ui.soundMountAlert.currentIndex()
         config['soundModelingFinished'] = self.ui.soundModelingFinished.currentIndex()
         config['soundImageSaved'] = self.ui.soundImageSaved.currentIndex()
+        config['soundImageSolved'] = self.ui.soundImageSolved.currentIndex()
 
         return True
 
@@ -367,6 +370,7 @@ class SettMisc(object):
         self.guiAudioList['MountAlert'] = self.ui.soundMountAlert
         self.guiAudioList['ModelingFinished'] = self.ui.soundModelingFinished
         self.guiAudioList['ImageSaved'] = self.ui.soundImageSaved
+        self.guiAudioList['ImageSolved'] = self.ui.soundImageSolved
 
         for itemKey, itemValue in self.guiAudioList.items():
             self.guiAudioList[itemKey].addItem('None')
@@ -405,7 +409,8 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
+            worker = tpool.Worker(self.audioSignalsSet[sound].play)
+            self.threadPool.start(worker)
         return True
 
     def playAudioDomeSlewFinished(self):
@@ -420,7 +425,8 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
+            worker = tpool.Worker(self.audioSignalsSet[sound].play)
+            self.threadPool.start(worker)
         return True
 
     def playAudioMountAlert(self):
@@ -435,7 +441,8 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
+            worker = tpool.Worker(self.audioSignalsSet[sound].play)
+            self.threadPool.start(worker)
         return True
 
     def playAudioModelFinished(self):
@@ -450,7 +457,8 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
+            worker = tpool.Worker(self.audioSignalsSet[sound].play)
+            self.threadPool.start(worker)
         return True
 
     def playAudioImageSaved(self):
@@ -465,5 +473,22 @@ class SettMisc(object):
             return False
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
+            worker = tpool.Worker(self.audioSignalsSet[sound].play)
+            self.threadPool.start(worker)
+        return True
+
+    def playAudioImageSolved(self):
+        """
+        playAudioImageSolved plays a defined sound if this events happens
+
+        :return: success of playing sound
+        """
+
+        listEntry = self.guiAudioList.get('ImageSolved', None)
+        if listEntry is None:
+            return False
+        sound = listEntry.currentText()
+        if sound in self.audioSignalsSet:
+            worker = tpool.Worker(self.audioSignalsSet[sound].play)
+            self.threadPool.start(worker)
         return True

@@ -11,8 +11,7 @@ Qt as a Gui framework.
 For full operation MW4 needs actually running INDI Server(s) (see: https://indilib.org)
 connected to your devices. MW4 will support ASCOM Alpaca
 (see: https://ascom-standards.org/Developer/Alpaca.htm) in the next step as well. In
-addition an online connection is used for some services which
-are helpful, but not necessary.
+addition an online connection is used for some services which might be very helpful.
 
 It is recommended to use mount firmware 2.16 or later as some of the functions don't work
 with older firmware versions.

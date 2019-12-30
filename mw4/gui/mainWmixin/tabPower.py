@@ -208,7 +208,7 @@ class Power(object):
 
         if self.app.power.data.get('VERSION.UPB', 1) == 1:
             value = self.app.power.data.get('AUTO_DEW.AUTO_DEW_ENABLED', False)
-           b
+            self.changeStyleDynamic(self.ui.autoDew, 'running', value)
         else:
             value = self.app.power.data.get('AUTO_DEW.DEW_A', False)
             self.changeStyleDynamic(self.ui.autoDewA, 'running', value)

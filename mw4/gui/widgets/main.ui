@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>9</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -11317,7 +11317,7 @@ to mount</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QCheckBox" name="autoDewA">
+     <widget class="QPushButton" name="autoDewA">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -11327,13 +11327,13 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Switches the automatic dew calculation on. UPB uses dew measure for setting the right power.</string>
+       <string>Toggles the auto dew setting.</string>
       </property>
       <property name="text">
-       <string>Dewheater A</string>
+       <string>Auto Dew A</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="autoDewB">
+     <widget class="QPushButton" name="autoDewB">
       <property name="geometry">
        <rect>
         <x>135</x>
@@ -11343,26 +11343,26 @@ to mount</string>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Switches the automatic dew calculation on. UPB uses dew measure for setting the right power.</string>
+       <string>Toggles the auto dew setting.</string>
       </property>
       <property name="text">
-       <string>Dewheater B</string>
+       <string>Auto Dew B</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="autoDewC">
+     <widget class="QPushButton" name="autoDewC">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>255</x>
         <y>20</y>
         <width>101</width>
         <height>21</height>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Switches the automatic dew calculation on. UPB uses dew measure for setting the right power.</string>
+       <string>Toggles the auto dew setting.</string>
       </property>
       <property name="text">
-       <string>Dewheater C</string>
+       <string>Auto Dew C</string>
       </property>
      </widget>
     </widget>
@@ -11519,20 +11519,20 @@ to mount</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QCheckBox" name="autoDew">
+     <widget class="QPushButton" name="autoDew">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>20</y>
-        <width>66</width>
+        <width>101</width>
         <height>21</height>
        </rect>
       </property>
       <property name="toolTip">
-       <string>Switches the automatic dew calculation on. UPB uses dew measure for setting the right power.</string>
+       <string>Toggles the auto dew setting.</string>
       </property>
       <property name="text">
-       <string>Enable</string>
+       <string>Auto Dew</string>
       </property>
      </widget>
     </widget>

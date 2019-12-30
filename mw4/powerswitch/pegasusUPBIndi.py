@@ -126,7 +126,7 @@ class PegasusUPBIndi(IndiClass):
         togglePowerPort
 
         :param port:
-        :return: true fot test purpose
+        :return: true for test purpose
         """
 
         if port is None:
@@ -152,7 +152,7 @@ class PegasusUPBIndi(IndiClass):
         togglePowerPortBoot
 
         :param port:
-        :return: true fot test purpose
+        :return: true for test purpose
         """
 
         if port is None:
@@ -177,7 +177,7 @@ class PegasusUPBIndi(IndiClass):
         """
         toggleHubUSB
 
-        :return: true fot test purpose
+        :return: true for test purpose
         """
 
         if self.device is None:
@@ -202,7 +202,7 @@ class PegasusUPBIndi(IndiClass):
         togglePortUSB
 
         :param port:
-        :return: true fot test purpose
+        :return: true for test purpose
         """
 
         if port is None:
@@ -224,20 +224,19 @@ class PegasusUPBIndi(IndiClass):
                                         )
         return suc
 
-    def sendAutoDew(self, value=False):
+    def toggleAutoDew(self):
         """
-        sendAutoDew
+        toggleAutoDew
 
-        :param value:
-        :return: true fot test purpose
+        :return: true for test purpose
         """
 
         if self.device is None:
             return False
 
         autoDew = self.device.getSwitch('AUTO_DEW')
-        autoDew['AUTO_DEW_ENABLED'] = value
-        autoDew['AUTO_DEW_DISABLED'] = not value
+        autoDew['AUTO_DEW_ENABLED'] = not autoDew['AUTO_DEW_ENABLED']
+        autoDew['AUTO_DEW_DISABLED'] = not autoDew['AUTO_DEW_DISABLED']
         suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='AUTO_DEW',
                                         elements=autoDew,
@@ -249,7 +248,7 @@ class PegasusUPBIndi(IndiClass):
         toggleAutoDewPort
 
         :param port:
-        :return: true fot test purpose
+        :return: true for test purpose
         """
 
         if port is None:

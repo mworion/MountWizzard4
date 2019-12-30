@@ -20,7 +20,7 @@ from setuptools import setup
 
 setup(
     name='mountwizzard4',
-    version='0.143b2',
+    version='0.143b4',
     packages=[
         'mw4',
         'mw4.astrometry',
@@ -41,7 +41,7 @@ setup(
     ],
     python_requires='>=3.6.0, <3.8',
     install_requires=[
-        'mountcontrol==0.147',
+        'mountcontrol==0.148',
         'indibase==0.122',
         'PyQt5==5.13.2; platform_machine != "armv7l"',
         'PyQtWebEngine==5.13.2; platform_machine != "armv7l"',
@@ -63,10 +63,17 @@ setup(
     description='tooling for a 10micron mount',
     zip_safe=True,
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
+        'Environment :: MacOS X',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: Implementation',
         'Operating System :: OS Independent',
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
         'Topic :: Utilities',
+        'Topic :: Scientific/Engineering :: Astronomy',
         'License :: OSI Approved :: Apache Software License',
+        'Natural Language :: English',
+        'Natural Language :: German',
     ]
 )

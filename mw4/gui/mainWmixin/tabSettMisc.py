@@ -391,10 +391,16 @@ class SettMisc(object):
             return False
 
         self.audioSignalsSet['Beep'] = PyQt5.QtMultimedia.QSound(':/sound/beep.wav')
-        self.audioSignalsSet['Alert'] = PyQt5.QtMultimedia.QSound(':/sound/alert.wav')
-        self.audioSignalsSet['Horn'] = PyQt5.QtMultimedia.QSound(':/sound/horn.wav')
         self.audioSignalsSet['Beep1'] = PyQt5.QtMultimedia.QSound(':/sound/beep1.wav')
+        self.audioSignalsSet['Horn'] = PyQt5.QtMultimedia.QSound(':/sound/horn.wav')
+        self.audioSignalsSet['Beep2'] = PyQt5.QtMultimedia.QSound(':/sound/Beep2.wav')
+        self.audioSignalsSet['Bleep'] = PyQt5.QtMultimedia.QSound(':/sound/Bleep.wav')
+        self.audioSignalsSet['Pan1'] = PyQt5.QtMultimedia.QSound(':/sound/Pan1.wav')
+        self.audioSignalsSet['Pan2'] = PyQt5.QtMultimedia.QSound(':/sound/Pan2.wav')
+        self.audioSignalsSet['Scanner'] = PyQt5.QtMultimedia.QSound(':/sound/scanner.wav')
+        self.audioSignalsSet['Alert'] = PyQt5.QtMultimedia.QSound(':/sound/alert.wav')
         self.audioSignalsSet['Alarm'] = PyQt5.QtMultimedia.QSound(':/sound/alarm.wav')
+
         return True
 
     def playAudioMountSlewFinished(self):

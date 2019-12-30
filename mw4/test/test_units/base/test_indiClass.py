@@ -37,7 +37,7 @@ class Signal(PyQt5.QtCore.QObject):
 def module_setup_teardown():
     global app
     m = Signal()
-    app = indiClass.IndiClass(host_ip, app=m)
+    app = indiClass.IndiClass(host_ip, app)
 
 
 def test_name():

@@ -40,7 +40,7 @@ class AstrometryASTAP(object):
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
 
-        >>> astrometry = AstrometryASTAP()
+        >>> a = AstrometryASTAP()
 
     """
 

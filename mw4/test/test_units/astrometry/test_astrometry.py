@@ -186,7 +186,7 @@ def test_solveThreading_2():
             'solver': app.astrometry.solverNET,
         }
     }
-    app.astrometry.solverSelected = 'KStars'
+    app.astrometry.framework = 'KStars'
     suc = app.astrometry.solveThreading()
     assert not suc
 
@@ -200,7 +200,7 @@ def test_solveThreading_3():
             'solver': app.astrometry.solverNET,
         }
     }
-    app.astrometry.solverSelected = 'KStars'
+    app.astrometry.framework = 'KStars'
     file = mwGlob['imageDir'] + '/m51.fits'
     suc = app.astrometry.solveThreading(fitsPath=file)
     assert suc
@@ -214,7 +214,7 @@ def test_solveThreading_5():
             'solver': app.astrometry.solverNET,
         }
     }
-    app.astrometry.solverSelected = 'KStars'
+    app.astrometry.framework = 'KStars'
     file = mwGlob['imageDir'] + '/m51.fits'
     suc = app.astrometry.solveThreading(fitsPath=file)
     assert not suc
@@ -229,7 +229,7 @@ def test_abort_1():
             'solver': app.astrometry.solverNET,
         }
     }
-    app.astrometry.solverSelected = 'KStars'
+    app.astrometry.framework = 'KStars'
     with mock.patch.object(app.astrometry.solverNET,
                            'abort',
                            return_value=True):

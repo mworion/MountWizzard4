@@ -122,6 +122,7 @@ def test_abort_2():
         @staticmethod
         def kill():
             return True
-    app.astrometry.solverASTAP.process = Test()
+    app.astrometry.framework = 'ASTAP'
+    app.astrometry.solverEnviron['ASTAP']['solver'].process = Test()
     suc = app.astrometry.abort()
     assert suc

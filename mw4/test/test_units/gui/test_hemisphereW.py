@@ -553,6 +553,7 @@ def test_onMouseNormal_5():
     event.dblclick = True
     event.xdata = 180
     event.ydata = 45
+    app.dome.framework = 'indi'
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.No):
@@ -569,6 +570,7 @@ def test_onMouseNormal_6():
     event.dblclick = True
     event.xdata = 180
     event.ydata = 45
+    app.dome.framework = 'indi'
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'question',
                            return_value=PyQt5.QtWidgets.QMessageBox.Yes):
@@ -1065,6 +1067,7 @@ def test_onMouseStar_9():
     event.dblclick = False
     event.xdata = 180
     event.ydata = 45
+    app.dome.framework = 'indi'
     app.hipparcos.az = [180]
     app.hipparcos.alt = [45]
     app.hipparcos.name = ['test']

@@ -79,10 +79,10 @@ def test_measureTask_2():
 
 def test_measureTask_3():
     app.mainW.ui.measureDevice.setCurrentIndex(1)
-    app.sensorWeather.data['WEATHER_TEMPERATURE'] = 10
-    app.sensorWeather.data['WEATHER_PRESSURE'] = 1000
-    app.sensorWeather.data['WEATHER_DEWPOINT'] = 10
-    app.sensorWeather.data['WEATHER_HUMIDITY'] = 10
+    app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10
+    app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 1000
+    app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = 10
+    app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = 10
     suc = app.measure.measureTask()
     assert suc
     assert app.measure.data['sensorWeatherTemp'][1] == 10

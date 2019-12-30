@@ -36,181 +36,77 @@ def module_setup_teardown():
 
 
 def test_name():
+    app.sensorWeather.framework = 'indi'
     name = 'MBox'
     app.sensorWeather.name = name
     assert name == app.sensorWeather.name
+    assert app.sensorWeather.run['indi'].name == name
 
 
-def test_newDevice_1():
-    with mock.patch.object(app.sensorWeather.client,
-                           'isServerConnected',
-                           return_value=True):
-        with mock.patch.object(app.sensorWeather.client,
-                               'getDevice',
-                               return_value=1):
-            suc = app.sensorWeather.newDevice('test')
-            assert suc
-            assert app.sensorWeather.device is None
-
-
-def test_newDevice_2():
-    app.sensorWeather.name = 'Test'
-    with mock.patch.object(app.sensorWeather.client,
-                           'isServerConnected',
-                           return_value=True):
-        with mock.patch.object(app.sensorWeather.client,
-                               'getDevice',
-                               return_value=1):
-            suc = app.sensorWeather.newDevice('Test')
-            assert suc
-            assert app.sensorWeather.device == 1
-
-
-def test_removeDevice_1():
-    app.sensorWeather.name = 'Test'
-    with mock.patch.object(app.sensorWeather.client,
-                           'isServerConnected',
-                           return_value=True):
-        suc = app.sensorWeather.removeDevice('Test')
-        assert suc
-        assert app.sensorWeather.device is None
-        assert app.sensorWeather.data == {}
+def test_host():
+    app.sensorWeather.framework = 'indi'
+    host = ('localhost', 7624)
+    app.sensorWeather.host = host
+    assert app.sensorWeather.host == host
+    assert app.sensorWeather.run['indi'].host == host
+    assert app.sensorWeather.run['indi'].client.host == host
 
 
 def test_startCommunication_1():
+    app.sensorWeather.framework = 'indi'
     app.sensorWeather.name = ''
-    with mock.patch.object(app.sensorWeather.client,
+    with mock.patch.object(app.sensorWeather.run['indi'].client,
                            'connectServer',
                            return_value=False):
-        suc = app.sensorWeather.startCommunication()
+        suc = app.sensorWeather.run['indi'].startCommunication()
         assert not suc
 
 
-def test_setUpdateConfig_1():
-    app.sensorWeather.name = 'test'
-    suc = app.sensorWeather.setUpdateConfig('false')
-    assert not suc
-
-
-def test_setUpdateConfig_2():
-    app.sensorWeather.name = 'test'
-    app.sensorWeather.device = None
-    suc = app.sensorWeather.setUpdateConfig('test')
-    assert not suc
-
-
-def test_setUpdateConfig_3():
-    class Test:
-        @staticmethod
-        def getNumber(test):
-            return {}
-    app.sensorWeather.name = 'test'
-    app.sensorWeather.device = Test()
-    suc = app.sensorWeather.setUpdateConfig('test')
-    assert not suc
-
-
-def test_setUpdateConfig_4():
-    class Test:
-        @staticmethod
-        def getNumber(test):
-            return {'PERIOD': 1}
-    app.sensorWeather.name = 'test'
-    app.sensorWeather.device = Test()
-    suc = app.sensorWeather.setUpdateConfig('test')
-    assert suc
-
-
-def test_setUpdateConfig_5():
-    class Test:
-        @staticmethod
-        def getNumber(test):
-            return {'PERIOD': 10}
-    app.sensorWeather.name = 'test'
-    app.sensorWeather.device = Test()
-    with mock.patch.object(app.sensorWeather.client,
-                           'sendNewNumber',
+def test_startCommunication_2():
+    app.sensorWeather.framework = ''
+    app.sensorWeather.name = ''
+    with mock.patch.object(app.sensorWeather.run['indi'].client,
+                           'connectServer',
                            return_value=False):
-        suc = app.sensorWeather.setUpdateConfig('test')
+        suc = app.sensorWeather.run['indi'].startCommunication()
         assert not suc
 
 
-def test_setUpdateConfig_6():
-    class Test:
-        @staticmethod
-        def getNumber(test):
-            return {'PERIOD': 10}
-    app.sensorWeather.name = 'test'
-    app.sensorWeather.device = Test()
-    with mock.patch.object(app.sensorWeather.client,
-                           'sendNewNumber',
-                           return_value=True):
-        suc = app.sensorWeather.setUpdateConfig('test')
-        assert suc
+def test_startCommunication_3():
+    app.sensorWeather.framework = 'indi'
+    app.sensorWeather.name = 'MBox'
+    with mock.patch.object(app.sensorWeather.run['indi'].client,
+                           'connectServer',
+                           return_value=False):
+        suc = app.sensorWeather.run['indi'].startCommunication()
+        assert not suc
 
 
-def test_updateNumber_1():
-    app.sensorWeather.device = None
-    app.sensorWeather.name = 'test'
-    suc = app.sensorWeather.updateNumber('false', 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
-    assert not suc
+def test_stopCommunication_1():
+    app.sensorWeather.framework = 'indi'
+    app.sensorWeather.name = ''
+    with mock.patch.object(app.sensorWeather.run['indi'].client,
+                           'disconnectServer',
+                           return_value=False):
+        suc = app.sensorWeather.run['indi'].stopCommunication()
+        assert not suc
 
 
-def test_updateNumber_2():
-    app.sensorWeather.device = 1
-    app.sensorWeather.name = 'test'
-    suc = app.sensorWeather.updateNumber('false', 'WEATHER_PARAMETERS.WEATHER_HUMIDITY')
-    assert not suc
+def test_stopCommunication_2():
+    app.sensorWeather.framework = ''
+    app.sensorWeather.name = ''
+    with mock.patch.object(app.sensorWeather.run['indi'].client,
+                           'disconnectServer',
+                           return_value=False):
+        suc = app.sensorWeather.run['indi'].stopCommunication()
+        assert not suc
 
 
-def test_updateNumber_3():
-    app.sensorWeather.device = indibase.indiBase.Device()
-    app.sensorWeather.name = 'test'
-    values = {'WEATHER_DEWPOINT': 5,
-              'WEATHER_TEMPERATURE': 10,
-              'WEATHER_HUMIDITY': 50,
-              }
-    with mock.patch.object(app.sensorWeather.device,
-                           'getNumber',
-                           return_value=values):
-        suc = app.sensorWeather.updateNumber('test', 'WEATHER_PARAMETERS')
-        assert suc
-        assert app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] == 5
-        assert app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] == 10
-        assert app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] == 50
-
-
-def test_updateNumber_4():
-    app.sensorWeather.device = indibase.indiBase.Device()
-    app.sensorWeather.name = 'test'
-    values = {'WEATHER_DEWPOINT': 5,
-              }
-    with mock.patch.object(app.sensorWeather.device,
-                           'getNumber',
-                           return_value=values):
-        suc = app.sensorWeather.updateNumber('test', 'WEATHER_PARAMETERS')
-        assert suc
-
-
-def test_updateNumber_5():
-    app.sensorWeather.device = indibase.indiBase.Device()
-    app.sensorWeather.name = 'test'
-    values = {'WEATHER_PARAMETERS.WEATHER_HUMIDITY': 50,
-              }
-    with mock.patch.object(app.sensorWeather.device,
-                           'getNumber',
-                           return_value=values):
-        suc = app.sensorWeather.updateNumber('test', 'WEATHER_PARAMETERS')
-        assert suc
-
-
-def test_updateNumber_6():
-    app.sensorWeather.device = indibase.indiBase.Device()
-    app.sensorWeather.name = 'test'
-    values = {'WEATHER_PARAMETERS.WEATHER_TEMPERATURE': 10,
-              }
-    with mock.patch.object(app.sensorWeather.device,
-                           'getNumber',
-                           return_value=values):
-        suc = app.sensorWeather.updateNumber('test', 'WEATHER_PARAMETERS')
-        assert suc
+def test_stopCommunication_3():
+    app.sensorWeather.framework = 'indi'
+    app.sensorWeather.name = 'MBox'
+    with mock.patch.object(app.sensorWeather.run['indi'].client,
+                           'disconnectServer',
+                           return_value=False):
+        suc = app.sensorWeather.run['indi'].stopCommunication()
+        assert not suc

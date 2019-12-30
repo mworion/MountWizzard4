@@ -1,21 +1,21 @@
 Python Installation
 ===================
 MW4 is a python3 application based on some python libraries and uses Qt as framework for
-GUI. Different from past versions of MW there will is no one box solution (MAC bundle, EXE
+GUI. Different to past versions of MW there will be no one box solution (MAC bundle, EXE
 File, etc.) available. As MW4 is python3 and comes with internal update functionality, it
 uses a standard python3 environment. Ideally it is recommended in a virtualenv.
 
-MW4 uses python 3.7. The first step is to install the python 3.7 package if not already
-installed. For all platforms there is an installer available. Please follow the
+MW4 is tested on python3.7. The first step is to install the python3.7 package if not
+already installed. For all platforms there is an installer available. Please follow the
 descriptions that comes with the installers. To give a short overview here are some quick
 installation hints for all platforms. The installers for Windows and OSx can be downloaded
 from python.org.
 
 .. warning::
     Please do not use a newer version of python! Some libraries bring precompiled binaries
-    with them and they might not be available for a newer python version. I tested it with
-    python3.7! Python3.8 does not work right now as matplotlib does not support this. The
-    actual python3.7 version is python3.7.6!
+    with them and they might not be available for a newer python version. The actual
+    python3.7 version is python3.7.6! A good overview what could run is in the readme on
+    github.
 
 If you already have python3.7 installed, you can skip this section and go directly to the MW4
 installation process. If you have to install python3.7 this has to be done only once for

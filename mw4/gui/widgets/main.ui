@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -12843,7 +12843,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -16352,7 +16352,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>231</height>
+         <height>201</height>
         </rect>
        </property>
        <property name="title">
@@ -16361,49 +16361,10 @@ When clicking the button, you could change the value.</string>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QDoubleSpinBox" name="domeEastOffset">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>80</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_99">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>15</x>
           <y>20</y>
           <width>121</width>
           <height>21</height>
@@ -16418,7 +16379,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>Diameter</string>
+         <string>Radius</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_134">
@@ -16442,66 +16403,6 @@ When clicking the button, you could change the value.</string>
          <string>m</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_113">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>140</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>GEM offset</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="domeDiameter">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>20</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>3.000000000000000</double>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_122">
         <property name="geometry">
          <rect>
@@ -16523,49 +16424,10 @@ When clicking the button, you could change the value.</string>
          <string>m</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="domeNorthOffset">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>50</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_108">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>15</x>
           <y>80</y>
           <width>121</width>
           <height>21</height>
@@ -16586,7 +16448,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_110">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>15</x>
           <y>110</y>
           <width>121</width>
           <height>21</height>
@@ -16628,8 +16490,8 @@ When clicking the button, you could change the value.</string>
        <widget class="QCheckBox" name="checkDomeGeometry">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>200</y>
+          <x>15</x>
+          <y>170</y>
           <width>264</width>
           <height>21</height>
          </rect>
@@ -16643,7 +16505,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
@@ -16697,49 +16559,10 @@ When clicking the button, you could change the value.</string>
          <string>m</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="domeVerticalOffset">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>110</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_107">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>15</x>
           <y>50</y>
           <width>121</width>
           <height>21</height>
@@ -16757,50 +16580,11 @@ When clicking the button, you could change the value.</string>
          <string>North offset</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="offGEM">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>140</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_135">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>170</y>
+          <x>15</x>
+          <y>140</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -16817,15 +16601,24 @@ When clicking the button, you could change the value.</string>
          <string>OTA offset</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="offOTA">
+       <widget class="QLineEdit" name="domeRadius">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>170</y>
+          <y>20</y>
           <width>86</width>
           <height>21</height>
          </rect>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Arial</family>
@@ -16834,36 +16627,51 @@ When clicking the button, you could change the value.</string>
           <bold>false</bold>
          </font>
         </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sets the percentage of frame size for subframe &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="decimals">
-         <number>2</number>
+        <property name="dragEnabled">
+         <bool>true</bool>
         </property>
-        <property name="minimum">
-         <double>0.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-         <double>0.000000000000000</double>
+        <property name="readOnly">
+         <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="label_136">
+       <widget class="QLineEdit" name="domeNorthOffset">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
-          <x>335</x>
-          <y>170</y>
-          <width>21</width>
+          <x>240</x>
+          <y>50</y>
+          <width>86</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -16873,8 +16681,194 @@ When clicking the button, you could change the value.</string>
           <bold>false</bold>
          </font>
         </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
         <property name="text">
-         <string>m</string>
+         <string>0</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="domeEastOffset">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>80</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="domeVerticalOffset">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>110</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="offOTA">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>140</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="maxLength">
+         <number>50</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>
@@ -16903,7 +16897,7 @@ When clicking the button, you could change the value.</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QLabel" name="label_137">
+      <widget class="QLabel" name="label_138">
        <property name="geometry">
         <rect>
          <x>590</x>
@@ -16921,28 +16915,7 @@ When clicking the button, you could change the value.</string>
         </font>
        </property>
        <property name="text">
-        <string>GEM Offset: distance A to B</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_138">
-       <property name="geometry">
-        <rect>
-         <x>590</x>
-         <y>350</y>
-         <width>171</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>OTA Offset: distance C to B</string>
+        <string>OTA Offset: distance C to A</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_145">
@@ -17012,7 +16985,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>260</y>
+         <y>235</y>
          <width>366</width>
          <height>56</height>
         </rect>
@@ -17109,7 +17082,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>325</y>
+         <y>310</y>
          <width>366</width>
          <height>56</height>
         </rect>
@@ -17150,7 +17123,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the status of the cover.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -17195,7 +17168,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the time until meridian is reached</string>
+         <string>Shows the movement status of the cover.</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>

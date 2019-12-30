@@ -50,18 +50,11 @@ class SettParkPos(object):
         # signals on gui
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
-
-        self.ui.offOTA.valueChanged.connect(self.adjustGEMOffset)
-        self.ui.offGEM.valueChanged.connect(self.adjustOTAOffset)
-        self.ui.domeDiameter.valueChanged.connect(self.setDomeDiameter)
-        self.ui.domeNorthOffset.valueChanged.connect(self.setDomeNorthOffset)
-        self.ui.domeEastOffset.valueChanged.connect(self.setDomeEastOffset)
-        self.ui.domeVerticalOffset.valueChanged.connect(self.setDomeVerticalOffset)
         self.ui.checkDomeGeometry.clicked.connect(self.setGeometryOnOff)
 
         # signals from functions
-        self.app.mount.signals.firmwareDone.connect(self.adjustOTAOffset)
         self.app.update1s.connect(self.updateCoverStatGui)
+        self.app.update1s.connect(self.updateDomeGeometry)
 
     def initConfig(self):
         """
@@ -74,13 +67,6 @@ class SettParkPos(object):
         config = self.app.config['mainW']
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
         self.setGeometryOnOff()
-
-        self.ui.domeDiameter.setValue(config.get('domeDiameter', 3))
-        self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
-        self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
-        self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
-        self.ui.offOTA.setValue(config.get('offOTA', 0))
-        self.ui.offGEM.setValue(config.get('offGEM', 0))
 
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
@@ -104,12 +90,6 @@ class SettParkPos(object):
         """
         config = self.app.config['mainW']
         config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
-        config['domeDiameter'] = self.ui.domeDiameter.value()
-        config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
-        config['domeEastOffset'] = self.ui.domeEastOffset.value()
-        config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
-        config['offOTA'] = self.ui.offOTA.value()
-        config['offGEM'] = self.ui.offGEM.value()
 
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
@@ -224,63 +204,32 @@ class SettParkPos(object):
         self.app.dome.isGeometry = self.ui.checkDomeGeometry.isChecked()
         return True
 
-    def adjustGEMOffset(self):
+    def updateDomeGeometry(self):
         """
 
         :return: true for test purpose
         """
 
-        self.app.mount.geometry.offPlateOTA = self.ui.offOTA.value()
-        self.ui.offGEM.setValue(self.app.mount.geometry.offGEM)
-        return True
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_OTA_OFFSET', 0))
+        self.app.mount.geometry.offPlateOTA = value
+        self.ui.offOTA.setText(f'{value:3.2f}')
 
-    def adjustOTAOffset(self):
-        """
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_DOME_RADIUS', 0))
+        self.app.mount.geometry.domeRadius = value
+        self.ui.domeRadius.setText(f'{value:3.2f}')
 
-        :return: true for test purpose
-        """
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT', 0))
+        self.app.mount.geometry.offNorth = value
+        self.ui.domeNorthOffset.setText(f'{value:3.2f}')
 
-        value = self.ui.offGEM.value()
-        value = max(value, self.app.mount.geometry.offGemPlate)
-        self.ui.offGEM.setValue(value)
-        self.app.mount.geometry.offGEM = value
-        self.ui.offOTA.setValue(self.app.mount.geometry.offPlateOTA)
-        return True
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT', 0))
+        self.app.mount.geometry.offEast = value
+        self.ui.domeEastOffset.setText(f'{value:3.2f}')
 
-    def setDomeDiameter(self):
-        """
+        value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
+        self.app.mount.geometry.offVert = value
+        self.ui.domeVerticalOffset.setText(f'{value:3.2f}')
 
-        :return: true for test purpose
-        """
-
-        self.app.mount.geometry.domeRadius = self.ui.domeDiameter.value() / 2
-        return True
-
-    def setDomeNorthOffset(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
-        return True
-
-    def setDomeEastOffset(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
-        return True
-
-    def setDomeVerticalOffset(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
         return True
 
     def updateCoverStatGui(self):

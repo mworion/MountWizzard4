@@ -971,7 +971,7 @@ class HemisphereWindow(widget.MWidget):
         question = textFormat.format(alignType, name)
         msg = PyQt5.QtWidgets.QMessageBox
         reply = msg.question(self,
-                             f'Hemisphere {alignType} align',
+                             f'Hemisphere [{alignType.capitalize()}] align',
                              question,
                              msg.Yes | msg.No,
                              msg.No,

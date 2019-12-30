@@ -12,6 +12,7 @@ Welcome to MountWizzard4's (MW4) documentation!
     explain_main
     explain_setting
     explain_windows
+    config_mw4
     model_building_remarks
 
 Indices and tables

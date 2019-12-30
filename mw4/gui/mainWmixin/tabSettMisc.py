@@ -51,11 +51,11 @@ class SettMisc(object):
 
         # setting functional signals
         self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
-        self.app.mount.signals.alert.connect(self.playAudioMountAlert)
-        self.app.dome.signals.slewFinished.connect(self.playAudioDomeSlewFinished)
-        self.app.mount.signals.slewFinished.connect(self.playAudioMountSlewFinished)
-        self.app.camera.signals.saved.connect(self.playAudioImageSaved)
-        self.app.astrometry.signals.done.connect(self.playAudioImageSolved)
+        self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
+        self.app.dome.signals.slewFinished.connect(lambda: self.playSound('DomeSlew'))
+        self.app.mount.signals.slewFinished.connect(lambda: self.playSound('MountSlew'))
+        self.app.camera.signals.saved.connect(lambda: self.playSound('ImageSaved'))
+        self.app.astrometry.signals.done.connect(lambda: self.playSound('ImageSolved'))
 
         # setting ui signals
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
@@ -375,8 +375,12 @@ class SettMisc(object):
         for itemKey, itemValue in self.guiAudioList.items():
             self.guiAudioList[itemKey].addItem('None')
             self.guiAudioList[itemKey].addItem('Beep')
-            self.guiAudioList[itemKey].addItem('Horn')
             self.guiAudioList[itemKey].addItem('Beep1')
+            self.guiAudioList[itemKey].addItem('Beep2')
+            self.guiAudioList[itemKey].addItem('Bleep')
+            self.guiAudioList[itemKey].addItem('Pan1')
+            self.guiAudioList[itemKey].addItem('Pan2')
+            self.guiAudioList[itemKey].addItem('Horn')
             self.guiAudioList[itemKey].addItem('Alarm')
             self.guiAudioList[itemKey].addItem('Alert')
         return True
@@ -390,105 +394,33 @@ class SettMisc(object):
         if platform.machine() == 'armv7l':
             return False
 
-        self.audioSignalsSet['Beep'] = PyQt5.QtMultimedia.QSound(':/sound/beep.wav')
-        self.audioSignalsSet['Beep1'] = PyQt5.QtMultimedia.QSound(':/sound/beep1.wav')
-        self.audioSignalsSet['Horn'] = PyQt5.QtMultimedia.QSound(':/sound/horn.wav')
-        self.audioSignalsSet['Beep2'] = PyQt5.QtMultimedia.QSound(':/sound/Beep2.wav')
-        self.audioSignalsSet['Bleep'] = PyQt5.QtMultimedia.QSound(':/sound/Bleep.wav')
-        self.audioSignalsSet['Pan1'] = PyQt5.QtMultimedia.QSound(':/sound/Pan1.wav')
-        self.audioSignalsSet['Pan2'] = PyQt5.QtMultimedia.QSound(':/sound/Pan2.wav')
-        self.audioSignalsSet['Scanner'] = PyQt5.QtMultimedia.QSound(':/sound/scanner.wav')
-        self.audioSignalsSet['Alert'] = PyQt5.QtMultimedia.QSound(':/sound/alert.wav')
-        self.audioSignalsSet['Alarm'] = PyQt5.QtMultimedia.QSound(':/sound/alarm.wav')
+        self.audioSignalsSet['Beep'] = ':/sound/beep.wav'
+        self.audioSignalsSet['Beep1'] = ':/sound/beep1.wav'
+        self.audioSignalsSet['Horn'] = ':/sound/horn.wav'
+        self.audioSignalsSet['Beep2'] = ':/sound/Beep2.wav'
+        self.audioSignalsSet['Bleep'] = ':/sound/Bleep.wav'
+        self.audioSignalsSet['Pan1'] = ':/sound/Pan1.wav'
+        self.audioSignalsSet['Pan2'] = ':/sound/Pan2.wav'
+        self.audioSignalsSet['Alert'] = ':/sound/alert.wav'
+        self.audioSignalsSet['Alarm'] = ':/sound/alarm.wav'
 
         return True
 
-    def playAudioMountSlewFinished(self):
-        """
-        playAudioMountSlewFinished plays a defined sound if this events happens
-
-        :return: success of playing sound
+    def playSound(self, value=''):
         """
 
-        listEntry = self.guiAudioList.get('MountSlew', None)
+        :param value:
+        :return: success
+        """
+
+        listEntry = self.guiAudioList.get(value, None)
         if listEntry is None:
             return False
+
         sound = listEntry.currentText()
         if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
-        return True
-
-    def playAudioDomeSlewFinished(self):
-        """
-        playAudioDomeSlewFinished plays a defined sound if this events happens
-
-        :return: success of playing sound
-        """
-
-        listEntry = self.guiAudioList.get('DomeSlew', None)
-        if listEntry is None:
+            PyQt5.QtMultimedia.QSound.play(self.audioSignalsSet[sound])
+        else:
             return False
-        sound = listEntry.currentText()
-        if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
-        return True
 
-    def playAudioMountAlert(self):
-        """
-        playAudioMountAlert plays a defined sound if this events happens
-
-        :return: success of playing sound
-        """
-
-        listEntry = self.guiAudioList.get('MountAlert', None)
-        if listEntry is None:
-            return False
-        sound = listEntry.currentText()
-        if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
-        return True
-
-    def playAudioModelFinished(self):
-        """
-        playAudioModelFinished plays a defined sound if this events happens
-
-        :return: success of playing sound
-        """
-
-        listEntry = self.guiAudioList.get('ModelingFinished', None)
-        if listEntry is None:
-            return False
-        sound = listEntry.currentText()
-        if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
-        return True
-
-    def playAudioImageSaved(self):
-        """
-        playAudioImageSaved plays a defined sound if this events happens
-
-        :return: success of playing sound
-        """
-
-        listEntry = self.guiAudioList.get('ImageSaved', None)
-        if listEntry is None:
-            return False
-        sound = listEntry.currentText()
-        if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
-        return True
-
-    def playAudioImageSolved(self):
-        """
-        playAudioImageSolved plays a defined sound if this events happens
-
-        :return: success of playing sound
-        """
-
-        listEntry = self.guiAudioList.get('ImageSolved', None)
-        if listEntry is None:
-            return False
-        sound = listEntry.currentText()
-        if sound in self.audioSignalsSet:
-            self.audioSignalsSet[sound].play()
         return True

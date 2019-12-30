@@ -726,7 +726,7 @@ class Model(object):
             shutil.rmtree(self.imageDir, ignore_errors=True)
 
         self.app.message.emit(f'Modeling finished:  {self.modelName}', 1)
-        self.playAudioModelFinished()
+        self.playSound('ModelingFinished')
 
         return True
 

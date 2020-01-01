@@ -290,7 +290,7 @@ class MeasureWindow(widget.MWidget):
                        fontsize=12)
         axe.plot(data['time'][start:-1:cycle],
                  data['raJNow'][start:-1:cycle],
-                 marker='o',
+                 marker=None,
                  markersize=3,
                  color=self.M_WHITE,
                  )
@@ -330,7 +330,7 @@ class MeasureWindow(widget.MWidget):
                        fontsize=12)
         axe.plot(data['time'][start:-1:cycle],
                  data['decJNow'][start:-1:cycle],
-                 marker='o',
+                 marker=None,
                  markersize=3,
                  color=self.M_WHITE,
                  )
@@ -376,13 +376,13 @@ class MeasureWindow(widget.MWidget):
         if 'sensorWeather' in self.app.measure.devices:
             r1, = axe.plot(data['time'][start:-1:cycle],
                            data['sensorWeatherTemp'][start:-1:cycle],
-                           marker='.',
+                           marker=None,
                            markersize=3,
                            color=self.M_WHITE,
                            )
             r2, = axe.plot(data['time'][start:-1:cycle],
                            data['sensorWeatherDew'][start:-1:cycle],
-                           marker='d',
+                           marker=None,
                            markersize=3,
                            color=self.M_WHITE,
                            )
@@ -394,13 +394,13 @@ class MeasureWindow(widget.MWidget):
         if 'onlineWeather' in self.app.measure.devices:
             r3, = axe.plot(data['time'][start:-1:cycle],
                            data['onlineWeatherTemp'][start:-1:cycle],
-                           marker='.',
+                           marker=None,
                            markersize=3,
                            color=self.M_GREEN,
                            )
             r4, = axe.plot(data['time'][start:-1:cycle],
                            data['onlineWeatherDew'][start:-1:cycle],
-                           marker='d',
+                           marker=None,
                            markersize=3,
                            color=self.M_GREEN,
                            )
@@ -412,13 +412,13 @@ class MeasureWindow(widget.MWidget):
         if 'directWeather' in self.app.measure.devices:
             r5, = axe.plot(data['time'][start:-1:cycle],
                            data['directWeatherTemp'][start:-1:cycle],
-                           marker='.',
+                           marker=None,
                            markersize=3,
                            color=self.M_RED,
                            )
             r6, = axe.plot(data['time'][start:-1:cycle],
                            data['directWeatherDew'][start:-1:cycle],
-                           marker='d',
+                           marker=None,
                            markersize=3,
                            color=self.M_RED,
                            )
@@ -430,13 +430,13 @@ class MeasureWindow(widget.MWidget):
         if 'power' in self.app.measure.devices:
             r7, = axe.plot(data['time'][start:-1:cycle],
                            data['powTemp'][start:-1:cycle],
-                           marker='.',
+                           marker=None,
                            markersize=3,
                            color=self.M_PINK,
                            )
             r8, = axe.plot(data['time'][start:-1:cycle],
                            data['powDew'][start:-1:cycle],
-                           marker='d',
+                           marker=None,
                            markersize=3,
                            color=self.M_PINK,
                            )
@@ -448,7 +448,7 @@ class MeasureWindow(widget.MWidget):
         if 'skymeter' in self.app.measure.devices:
             r9, = axe.plot(data['time'][start:-1:cycle],
                            data['skyTemp'][start:-1:cycle],
-                           marker='.',
+                           marker=None,
                            markersize=3,
                            color=self.M_YELLOW,
                            )
@@ -508,7 +508,7 @@ class MeasureWindow(widget.MWidget):
         if 'sensorWeather' in self.app.measure.devices:
             r1, = axe.plot(data['time'][start:-1:cycle],
                            data['sensorWeatherPress'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_WHITE,
                            )
@@ -518,7 +518,7 @@ class MeasureWindow(widget.MWidget):
         if 'onlineWeather' in self.app.measure.devices:
             r2, = axe.plot(data['time'][start:-1:cycle],
                            data['onlineWeatherPress'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_GREEN,
                            )
@@ -528,7 +528,7 @@ class MeasureWindow(widget.MWidget):
         if 'directWeather' in self.app.measure.devices:
             r3, = axe.plot(data['time'][start:-1:cycle],
                            data['directWeatherPress'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_RED,
                            )
@@ -588,7 +588,7 @@ class MeasureWindow(widget.MWidget):
         if 'sensorWeather' in self.app.measure.devices:
             r1, = axe.plot(data['time'][start:-1:cycle],
                            data['sensorWeatherHum'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_WHITE,
                            )
@@ -598,7 +598,7 @@ class MeasureWindow(widget.MWidget):
         if 'onlineWeather' in self.app.measure.devices:
             r2, = axe.plot(data['time'][start:-1:cycle],
                            data['onlineWeatherHum'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_GREEN,
                            )
@@ -608,7 +608,7 @@ class MeasureWindow(widget.MWidget):
         if 'directWeather' in self.app.measure.devices:
             r3, = axe.plot(data['time'][start:-1:cycle],
                            data['directWeatherHum'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_RED,
                            )
@@ -618,7 +618,7 @@ class MeasureWindow(widget.MWidget):
         if 'power' in self.app.measure.devices:
             r4, = axe.plot(data['time'][start:-1:cycle],
                            data['powHum'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_PINK,
                            )
@@ -678,7 +678,7 @@ class MeasureWindow(widget.MWidget):
         if 'skymeter' in self.app.measure.devices:
             r1, = axe.plot(data['time'][start:-1:cycle],
                            data['skySQR'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_WHITE,
                            )
@@ -737,7 +737,7 @@ class MeasureWindow(widget.MWidget):
         if 'power' in self.app.measure.devices:
             r1, = axe.plot(data['time'][start:-1:cycle],
                            data['powVolt'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_WHITE,
                            )
@@ -797,31 +797,31 @@ class MeasureWindow(widget.MWidget):
         if 'power' in self.app.measure.devices:
             r1, = axe.plot(data['time'][start:-1:cycle],
                            data['powCurr'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_WHITE,
                            )
             r2, = axe.plot(data['time'][start:-1:cycle],
                            data['powCurr1'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_PINK,
                            )
             r3, = axe.plot(data['time'][start:-1:cycle],
                            data['powCurr2'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_YELLOW,
                            )
             r4, = axe.plot(data['time'][start:-1:cycle],
                            data['powCurr3'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_GREEN,
                            )
             r5, = axe.plot(data['time'][start:-1:cycle],
                            data['powCurr4'][start:-1:cycle],
-                           marker='o',
+                           marker=None,
                            markersize=3,
                            color=self.M_RED,
                            )

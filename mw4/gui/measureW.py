@@ -89,7 +89,6 @@ class MeasureWindow(widget.MWidget):
         self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.initConfig()
-        self.showWindow()
 
     def initConfig(self):
         """
@@ -119,6 +118,7 @@ class MeasureWindow(widget.MWidget):
         self.ui.measureSet3.setCurrentIndex(config.get('measureSet3', 0))
         self.ui.timeSet.setCurrentIndex(config.get('timeSet', 0))
         self.setCycleRefresh()
+        self.showWindow()
 
         return True
 
@@ -147,7 +147,6 @@ class MeasureWindow(widget.MWidget):
 
         :return:
         """
-        self.drawMeasure()
         self.show()
 
         # signals for gui

@@ -147,6 +147,24 @@ class SettDevice(object):
             signals.deviceConnected.connect(self.deviceConnected)
             signals.deviceDisconnected.connect(self.deviceDisconnected)
 
+    @staticmethod
+    def findIndexValue(ui, searchString):
+        """
+
+        :param ui:
+        :param searchString:
+        :return:
+        """
+
+        for index in range(ui.model().rowCount()):
+            modelIndex = ui.model().index(index, 0)
+            indexValue = ui.model().data(modelIndex)
+            if indexValue is None:
+                continue
+            if indexValue.startswith(searchString):
+                return index
+        return 0
+
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -240,10 +258,31 @@ class SettDevice(object):
                                        framework=framework,
                                        data=self.driversData)
             # memorizing the driver we have to update
-            driverCall = driver
+            self.popupUi.exec_()
+            if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
+                # when cancel nothing happens
+                return
+            else:
+                # when ok, we have to further work
+                break
 
-        # setting callback when the modal window is closed to update the configuration
-        self.popupUi.destroyed.connect(lambda: self.dispatch(driverName=driverCall))
+        # check if copy are made. if so, than restart all drivers related
+        if self.popupUi.returnValues.get('copyIndi', False):
+            for driver in self.drivers:
+                if not self.drivers[driver]['class'].framework == 'indi':
+                    continue
+                self.dispatch(driverName=driver)
+        elif self.popupUi.returnValues.get('copyAlpaca', False):
+            for driver in self.drivers:
+                if not self.drivers[driver]['class'].framework == 'alpaca':
+                    continue
+                self.dispatch(driverName=driver)
+        else:
+            # if we choose a driver and it's available, we select it from drop down
+            if self.popupUi.returnValues.get('framework', '') == 'indi':
+                index = self.findIndexValue(self.drivers[driver]['uiDropDown'], 'indi')
+                self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
+            self.dispatch(driverName=driver)
 
     def dispatchStopDriver(self, driver=None):
         """

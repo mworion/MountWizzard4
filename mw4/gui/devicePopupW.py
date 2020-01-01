@@ -27,9 +27,9 @@ from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 from mw4.base.indiClass import IndiClass
 
 
-class DevicePopup(widget.MWidget):
+class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
     """
-    the message window class handles
+    the DevicePopup window class handles
 
     """
 
@@ -76,6 +76,7 @@ class DevicePopup(widget.MWidget):
         self.indiClass = None
         self.indiSearchNameList = ()
         self.indiSearchType = None
+        self.returnValues = {'close': 'cancel'}
 
         # setting to center of parent image
         x = geometry[0] + (geometry[2] - self.width()) / 2
@@ -166,10 +167,26 @@ class DevicePopup(widget.MWidget):
         self.data[self.driver]['alpacaUser'] = self.ui.alpacaUser.text()
         self.data[self.driver]['alpacaPassword'] = self.ui.alpacaPassword.text()
 
+        # storing ok as closing
+        self.returnValues['close'] = 'ok'
+
         # finally closing window
         self.close()
 
         return True
+
+    def closeEvent(self, event):
+        """
+        closeEvent collects all data necessary for the following process
+
+        :param event:
+        :return:
+        """
+        # getting last setting:
+        self.returnValues['framework'] = self.ui.tab.tabText(self.ui.tab.currentIndex()).lower()
+        super().closeEvent(event)
+
+        return
 
     def copyAllIndiSettings(self):
         """
@@ -183,6 +200,10 @@ class DevicePopup(widget.MWidget):
             self.data[driver]['indiPort'] = self.ui.indiPort.text()
             self.data[driver]['indiMessages'] = self.ui.indiLoadConfig.isChecked()
             self.data[driver]['indiLoadConfig'] = self.ui.indiLoadConfig.isChecked()
+
+        # memorizing that copy was done:
+        self.returnValues['copyIndi'] = True
+
         return True
 
     def copyAllAlpacaSettings(self):
@@ -199,6 +220,10 @@ class DevicePopup(widget.MWidget):
             self.data[driver]['alpacaNumber'] = self.ui.alpacaNumber.value()
             self.data[driver]['alpacaUser'] = self.ui.alpacaUser.text()
             self.data[driver]['alpacaPassword'] = self.ui.alpacaPassword.text()
+
+        # memorizing that copy was done:
+        self.returnValues['copyAlpaca'] = True
+
         return True
 
     def addDevicesWithType(self, deviceName, propertyName):

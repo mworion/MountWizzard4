@@ -187,6 +187,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.settingDone.disconnect(self.updateCelestialPath)
         self.app.dome.signals.azimuth.disconnect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.disconnect(self.updateDome)
+        self.app.dome.signals.serverDisconnected.disconnect(self.updateDome)
 
         plt.close(self.hemisphereMat.figure)
         plt.close(self.hemisphere2Mat.figure)
@@ -219,6 +220,7 @@ class HemisphereWindow(widget.MWidget):
         self.app.mount.signals.settingDone.connect(self.updateCelestialPath)
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
+        self.app.dome.signals.serverDisconnected.connect(self.updateDome)
         self.app.update1s.connect(self.drawCanvas)
         self.app.update10s.connect(self.updateAlignStar)
 
@@ -492,7 +494,7 @@ class HemisphereWindow(widget.MWidget):
             self.pointerDome.set_visible(False)
             return False
 
-        visible = self.app.mainW.deviceStat['dome'] is not None
+        visible = self.app.mainW.deviceStat['dome']
 
         self.pointerDome.set_xy((azimuth - 15, 0))
         self.pointerDome.set_visible(visible)

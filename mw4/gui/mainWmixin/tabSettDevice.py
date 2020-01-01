@@ -295,6 +295,7 @@ class SettDevice(object):
         # if it's the startup (which has no name set, we don't need to stop)
         if self.drivers[driver]['class'].name:
             self.drivers[driver]['class'].stopCommunication()
+            self.drivers[driver]['class'].data = {}
             self.app.message.emit(f'Disabled:            [{driver}]', 0)
 
         # stopped driver get gets neutral color

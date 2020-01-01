@@ -128,29 +128,40 @@ class SettImaging(object):
             self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)
 
-        if focalLength and pixelSizeX and pixelSizeY:
+        if focalLength:
             resolutionX = pixelSizeX / focalLength * 206.265
             resolutionY = pixelSizeY / focalLength * 206.265
-            self.app.mainW.ui.resolutionX.setText(f'{resolutionX:2.2f}')
-            self.app.mainW.ui.resolutionY.setText(f'{resolutionY:2.2f}')
+        else:
+            resolutionX = 0
+            resolutionY = 0
+        self.app.mainW.ui.resolutionX.setText(f'{resolutionX:2.2f}')
+        self.app.mainW.ui.resolutionY.setText(f'{resolutionY:2.2f}')
 
-        if focalLength and aperture:
+        if aperture:
             speed = focalLength / aperture
-            self.app.mainW.ui.speed.setText(f'{speed:2.1f}')
+        else:
+            speed = 0
+        self.app.mainW.ui.speed.setText(f'{speed:2.1f}')
 
         if aperture:
             dawes = 116 / aperture
             rayleigh = 138 / aperture
-            magLimit = 7.7 + (5 * np.log10(aperture / 10))
-            self.app.mainW.ui.dawes.setText(f'{dawes:2.2f}')
-            self.app.mainW.ui.rayleigh.setText(f'{rayleigh:2.2f}')
-            self.app.mainW.ui.magLimit.setText(f'{magLimit:2.2f}')
+        else:
+            dawes = 0
+            rayleigh = 0
+        magLimit = 7.7 + (5 * np.log10(aperture / 10))
+        self.app.mainW.ui.dawes.setText(f'{dawes:2.2f}')
+        self.app.mainW.ui.rayleigh.setText(f'{rayleigh:2.2f}')
+        self.app.mainW.ui.magLimit.setText(f'{magLimit:2.2f}')
 
-        if pixelSizeX and pixelSizeY and pixelX and pixelY and focalLength:
+        if focalLength:
             FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
             FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
-            self.app.mainW.ui.FOVX.setText(f'{FOVX:2.2f}')
-            self.app.mainW.ui.FOVY.setText(f'{FOVY:2.2f}')
+        else:
+            FOVX = 0
+            FOVY = 0
+        self.app.mainW.ui.FOVX.setText(f'{FOVX:2.2f}')
+        self.app.mainW.ui.FOVY.setText(f'{FOVY:2.2f}')
 
     def setCoolerTemp(self):
         """

@@ -50,7 +50,6 @@ class IndiClass(object):
         self.name = ''
         self._host = ('localhost', 7624)
 
-        self.data = {}
         self.retryCounter = 0
         self.device = None
         self.showMessages = False

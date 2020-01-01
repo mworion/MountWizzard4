@@ -29,6 +29,7 @@ import PyQt5.uic
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib.pyplot as plt
+import matplotlib.path as mpath
 import numpy as np
 from skyfield.api import EarthSatellite
 # local import
@@ -155,14 +156,54 @@ class SatelliteWindow(widget.MWidget):
         return True
 
     def closeEvent(self, closeEvent):
+        """
+        closeEvent is overloaded to be able to store the data before the windows is close
+        and all it's data is garbage collected
+
+        :param closeEvent:
+        :return:
+        """
         self.storeConfig()
 
         # gui signals
         super().closeEvent(closeEvent)
 
     def showWindow(self):
+        """
+        showWindow starts constructing the main window for satellite view and shows the
+        window content
+
+        :return: True for test purpose
+        """
         self.receiveSatelliteAndShow(self.app.mainW.satellite)
         self.show()
+
+        return True
+
+    @staticmethod
+    def markerSatellite():
+        """
+        markerSatellite constructs a custom marker for presentation of satellite view
+
+        :return: marker
+        """
+
+        circle = mpath.Path.unit_circle()
+
+        rect1p = [[0, 0], [1, 2], [0, 3], [4, 7], [7, 4], [3, 0], [2, 1], [6, 5], [5, 6],
+                  [1, 2], [2, 1], [0, 0]]
+        rect1p = np.array(rect1p)
+        rect1c = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 79]
+        rect1c = np.array(rect1c)
+        # concatenate the circle with an internal cutout of the star
+        verts = np.concatenate([rect1p,
+                                rect1p * -1,
+                                circle.vertices])
+        codes = np.concatenate([rect1c,
+                                rect1c,
+                                circle.codes])
+        marker = mpath.Path(verts, codes)
+        return marker
 
     def receiveSatelliteAndShow(self, satellite=None):
         """
@@ -359,8 +400,10 @@ class SatelliteWindow(widget.MWidget):
         axe.plot(x, y, z, color=self.M_YELLOW)
 
         self.plotSatPosSphere1, = axe.plot([x[0]], [y[0]], [z[0]],
-                                           marker='o',
-                                           markersize=10,
+                                           marker=self.markerSatellite(),
+                                           markersize=16,
+                                           linewidth=2,
+                                           fillstyle='none',
                                            color=self.M_PINK)
         self.makeCubeLimits(axe)
         axe.figure.canvas.draw()
@@ -478,8 +521,10 @@ class SatelliteWindow(widget.MWidget):
 
         # draw satellite position
         self.plotSatPosSphere2, = axe.plot([x[0]], [y[0]], [z[0]],
-                                           marker='o',
-                                           markersize=10,
+                                           marker=self.markerSatellite(),
+                                           markersize=16,
+                                           linewidth=2,
+                                           fillstyle='none',
                                            color=self.M_PINK)
 
         # finalizing
@@ -563,8 +608,10 @@ class SatelliteWindow(widget.MWidget):
         # show the actual position
         self.plotSatPosEarth, = axe.plot(lon[0],
                                          lat[0],
-                                         marker='o',
-                                         markersize=10,
+                                         marker=self.markerSatellite(),
+                                         markersize=16,
+                                         linewidth=2,
+                                         fillstyle='none',
                                          linestyle='none',
                                          color=self.M_PINK)
         axe.figure.canvas.draw()
@@ -672,8 +719,10 @@ class SatelliteWindow(widget.MWidget):
         # draw actual position
         self.plotSatPosHorizon, = axe.plot(az[0],
                                            alt[0],
-                                           marker='o',
-                                           markersize=10,
+                                           marker=self.markerSatellite(),
+                                           markersize=16,
+                                           linewidth=2,
+                                           fillstyle=None,
                                            linestyle='none',
                                            color=self.M_PINK)
 

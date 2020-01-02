@@ -11,7 +11,7 @@ Disabled devices might occur gray in the menu or are even removed (like Relay or
 
 .. image:: _static/explain_sett_devices_tab.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 The drop down lists are colored in green, whenever a device could be connected. A status
 change could take some seconds to connect to a server or to start runtime. There is no need
@@ -40,7 +40,7 @@ have to make selections for an INDI server:
 
 .. image:: _static/explain_sett_devices_popup_indi.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 For the INDI configuration you could search for devices of the given type and select them
 via drop down menu. In addition you could copy the settings for host address, host port,
@@ -50,7 +50,7 @@ MW4 supports ASCOM ALPACA as well:
 
 .. image:: _static/explain_sett_devices_popup_alpaca.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 For ALPACA you setup the parameter accordingly. Like in INDI you could copy the protocol,
 host address, host port, user and password to all other alpaca device.
@@ -62,7 +62,7 @@ The imaging tab is central setup for all things related to gather images.
 
 .. image:: _static/explain_sett_imaging_tab.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Area 1: Imaging Settings
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -96,7 +96,7 @@ Mount / Weather Tab
 -------------------
 .. image:: _static/explain_sett_mount_tab.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Area 1: Mount Connectivity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -139,7 +139,7 @@ MW4 could handle a dome which is connected via INDI.
 
 .. image:: _static/explain_sett_dome_tab.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Area 1: Dome geometry
 ^^^^^^^^^^^^^^^^^^^^^
@@ -174,7 +174,7 @@ position.
 
 .. image:: _static/explain_sett_dome_tab.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 The fill in button in each line allows to directly set altitude and azimuth of the actual
 position in the according fields.
@@ -183,7 +183,7 @@ Audio / Misc Tab
 ----------------
 .. image:: _static/explain_sett_misc_tab.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Area 1: Internet Connection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

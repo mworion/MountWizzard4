@@ -36,7 +36,7 @@ and follow the installation procedure.
 
 .. image:: _static/install_python_win_path.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Depending on your preference you could install python 3.7 for a single user or for all
 users. MW4 does not need admin rights to run, so please feel free to choose the variant you would

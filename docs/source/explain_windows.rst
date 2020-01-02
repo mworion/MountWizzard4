@@ -8,7 +8,7 @@ Message Window
 --------------
 .. image:: _static/window_message.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 the message window shows all messages during the work of MW4. You could scroll through
 the content and clear the window. All messages are logged in the logfile for later analyse
@@ -20,7 +20,7 @@ Measure Window
 --------------
 .. image:: _static/window_measure.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 The measure windows supports displaying many different values if the measure device is used
 (see :ref:`Devices Tab`). You could display up to 3 different charts in this window and
@@ -57,31 +57,31 @@ Hemisphere Windows
 ------------------
 .. image:: _static/window_hemisphere_raw.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Hemisphere Full
 ^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_full.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Hemisphere Slew
 ^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_slew.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Hemisphere Points
 ^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_points.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Hemisphere Points Edit
 ^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_points_edit.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 There is a video on youtube with sme explanations about edit modes:
 https://youtu.be/PPG-aCEZZxE
@@ -90,13 +90,13 @@ Hemisphere Points Polar
 ^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_polar.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Hemisphere Horizon Edit
 ^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_horizon_edit.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 There is a video on youtube with sme explanations about edit modes:
 https://youtu.be/PPG-aCEZZxE
@@ -105,7 +105,7 @@ Image Windows
 -------------
 .. image:: _static/window_image.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 There is a video on youtube with some explanations about image stacking:
 https://youtu.be/I5i8ihvtbgY
@@ -114,19 +114,19 @@ Image Distortion Coordinates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_image_distortion.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Satellite Windows
 -----------------
 .. image:: _static/window_satellite_empty.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Satellite Visible
 ^^^^^^^^^^^^^^^^^
 .. image:: _static/window_satellite_noaa.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 There is a video on youtube with some explanations about working with satellites:
 https://youtu.be/3QCJRAfSaaY
@@ -136,12 +136,12 @@ Satellite Visible Turned
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_satellite_noaa_turned.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 Keypad Window
 -------------
 .. image:: _static/window_keypad.png
     :align: center
-    :width: 80%
+    :scale: 71%
 
 There is a video on youtube with some explanations: https://youtu.be/6jiCOqKgzZY

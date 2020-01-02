@@ -6,12 +6,18 @@ astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu tested). As a 
 application, it should run in all environments which support python3.7 including
 Qt as a Gui framework.
 
+There are some video about modeling: https://youtu.be/8YWLLo3siUY
+
+and Polar alignment as well: https://youtu.be/Hc49N12fjVo
+
+Some more video's are linked from the documentation.
+
 For full operation MW4 needs actually running INDI Server(s), connected to your devices. In
 addition an online connection is used for some services which are helpful, but not necessary.
 MW4 will support ASCOM Alpaca in the next step as well.
 
-It is recommended to use mount firmware 2.16 or later as some of the functions don't work with older
-firmware versions.
+It is recommended to use mount firmware 2.16 or later as some of the functions don't work
+with older firmware versions.
 
 Here is an overview of the functionality available in MW4:
 

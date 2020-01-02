@@ -42,7 +42,6 @@ class Tools(object):
                                    'rename5': self.ui.rename5,
                                    }
         self.fitsHeaderKeywords = {'None': [''],
-                                   'Text': ['RenameText'],
                                    'Datetime': ['DATE-OBS'],
                                    'Frame': ['FRAME', 'IMAGETYP'],
                                    'Filter': ['FILTER'],
@@ -185,8 +184,10 @@ class Tools(object):
             chunk = f'{entry}'
         elif fitsKey == 'FILTER':
             chunk = f'{entry}'
+        elif fitsKey == 'EXPTIME':
+            chunk = f'{entry}'
         elif fitsKey == 'RenameText':
-            chunk = self.ui.renameText.upper()
+            chunk = self.ui.renameText.text().upper()
         else:
             chunk = ''
 
@@ -234,11 +235,15 @@ class Tools(object):
         with fits.open(name=fileName) as fd:
             fitsHeader = fd[0].header
 
-            # object should bi in in any case. if not, it will be set
-            if 'OBJECT' in fitsHeader:
-                newFilename = fitsHeader['OBJECT'].lower()
+            # object should be in lower case. if not, it will be set
+            newObjectName = self.ui.newObjectName.text().upper()
+            if newObjectName:
+                newFilename = newObjectName
             else:
-                newFilename = 'unknown'
+                if 'OBJECT' in fitsHeader:
+                    newFilename = fitsHeader['OBJECT'].upper()
+                else:
+                    newFilename = 'UNKNOWN'
 
             for _, selector in self.selectorsDropDowns.items():
                 selection = selector.currentText()
@@ -246,7 +251,7 @@ class Tools(object):
                                               selection=selection
                                               )
                 if chunk:
-                    newFilename += f'-{chunk}'
+                    newFilename += f'_{chunk}'
 
             newFilename += '.fits'
 

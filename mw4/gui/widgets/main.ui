@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>9</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -12078,8 +12078,8 @@ to mount</string>
      <widget class="QComboBox" name="rename1">
       <property name="geometry">
        <rect>
-        <x>79</x>
-        <y>145</y>
+        <x>130</x>
+        <y>165</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -12097,8 +12097,8 @@ to mount</string>
      <widget class="QLabel" name="label_306">
       <property name="geometry">
        <rect>
-        <x>14</x>
-        <y>80</y>
+        <x>10</x>
+        <y>105</y>
         <width>56</width>
         <height>21</height>
        </rect>
@@ -12119,8 +12119,8 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>80</y>
+        <x>130</x>
+        <y>105</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -12135,8 +12135,8 @@ to mount</string>
      <widget class="QComboBox" name="rename2">
       <property name="geometry">
        <rect>
-        <x>79</x>
-        <y>175</y>
+        <x>130</x>
+        <y>190</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -12215,7 +12215,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>9</x>
-        <y>145</y>
+        <y>165</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -12228,7 +12228,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>9</x>
-        <y>115</y>
+        <y>140</y>
         <width>186</width>
         <height>16</height>
        </rect>
@@ -12241,7 +12241,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>9</x>
-        <y>175</y>
+        <y>190</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -12254,7 +12254,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>15</x>
-        <y>45</y>
+        <y>40</y>
         <width>171</width>
         <height>25</height>
        </rect>
@@ -12275,7 +12275,7 @@ to mount</string>
      <widget class="QComboBox" name="rename5">
       <property name="geometry">
        <rect>
-        <x>80</x>
+        <x>131</x>
         <y>265</y>
         <width>226</width>
         <height>21</height>
@@ -12294,8 +12294,8 @@ to mount</string>
      <widget class="QComboBox" name="rename4">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>235</y>
+        <x>131</x>
+        <y>240</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -12327,7 +12327,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>205</y>
+        <y>215</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -12340,7 +12340,7 @@ to mount</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>235</y>
+        <y>240</y>
         <width>66</width>
         <height>21</height>
        </rect>
@@ -12409,8 +12409,8 @@ to mount</string>
      <widget class="QComboBox" name="rename3">
       <property name="geometry">
        <rect>
-        <x>80</x>
-        <y>205</y>
+        <x>131</x>
+        <y>215</y>
         <width>226</width>
         <height>21</height>
        </rect>
@@ -12423,6 +12423,44 @@ to mount</string>
       </property>
       <property name="toolTip">
        <string>Chooses the FITS header Entry for renaming.</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_308">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>116</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>New Object Name</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="newObjectName">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>80</y>
+        <width>226</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
       </property>
      </widget>
     </widget>

@@ -14,6 +14,8 @@ the message window shows all messages during the work of MW4. You could scroll t
 the content and clear the window. All messages are logged in the logfile for later analyse
 if needed. The window is sizable in height.
 
+There is a video on youtube with some explanations: https://youtu.be/6jiCOqKgzZY
+
 Measure Window
 --------------
 .. image:: _static/window_measure.png
@@ -47,6 +49,10 @@ selecting the time range / update interval of the measures. Sources are:
 The time interval range varies from 1s ticks (makes 4 minute view) to 128s ticks (makes 9 hour
 view) and they double every step in between. The window is sizable in width and height.
 
+There is a video on youtube with some explanations about working with measurements:
+https://youtu.be/ZWQBa714DjE
+
+
 Hemisphere Windows
 ------------------
 .. image:: _static/window_hemisphere_raw.png
@@ -77,6 +83,9 @@ Hemisphere Points Edit
     :align: center
     :width: 80%
 
+There is a video on youtube with sme explanations about edit modes:
+https://youtu.be/PPG-aCEZZxE
+
 Hemisphere Points Polar
 ^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_hemisphere_polar.png
@@ -89,11 +98,17 @@ Hemisphere Horizon Edit
     :align: center
     :width: 80%
 
+There is a video on youtube with sme explanations about edit modes:
+https://youtu.be/PPG-aCEZZxE
+
 Image Windows
 -------------
 .. image:: _static/window_image.png
     :align: center
     :width: 80%
+
+There is a video on youtube with some explanations about image stacking:
+https://youtu.be/I5i8ihvtbgY
 
 Image Distortion Coordinates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -113,6 +128,10 @@ Satellite Visible
     :align: center
     :width: 80%
 
+There is a video on youtube with some explanations about working with satellites:
+https://youtu.be/3QCJRAfSaaY
+
+
 Satellite Visible Turned
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. image:: _static/window_satellite_noaa_turned.png
@@ -124,3 +143,5 @@ Keypad Window
 .. image:: _static/window_keypad.png
     :align: center
     :width: 80%
+
+There is a video on youtube with some explanations: https://youtu.be/6jiCOqKgzZY

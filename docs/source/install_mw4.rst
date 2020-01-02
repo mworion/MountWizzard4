@@ -16,6 +16,8 @@ To install MW4 on your computer, there are some support scripts available for Wi
 and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and
 available from Github: https://github.com/mworion/MountWizzard4/tree/master/support
 
+There is a video on youtube with the install process for Mac: https://youtu.be/xJxpx_SmrVc.
+
 Step 1
 ------
 

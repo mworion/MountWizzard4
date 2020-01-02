@@ -21,6 +21,8 @@ If you already have python3.7 installed, you can skip this section and go direct
 installation process. If you have to install python3.7 this has to be done only once for
 as many MW4 installations you might want.
 
+There is a video on youtube with the install process python: https://youtu.be/xJxpx_SmrVc.
+
 Windows
 -------
 Depending on your Windows version please download the installer for 3.7 from:

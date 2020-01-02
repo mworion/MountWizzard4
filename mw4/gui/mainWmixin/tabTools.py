@@ -92,6 +92,7 @@ class Tools(object):
         defaultDir = self.app.mwGlob['imageDir']
         self.ui.renameDir.setText(config.get('renameDir', defaultDir))
         self.ui.renameText.setText(config.get('renameText', ''))
+        self.ui.newObjectName.setText(config.get('newObjectName', ''))
         self.ui.checkIncludeSubdirs.setChecked(config.get('checkIncludeSubdirs', False))
         for name, ui in self.selectorsDropDowns.items():
             ui.setCurrentIndex(config.get(name, 0))
@@ -115,6 +116,7 @@ class Tools(object):
         config = self.app.config['mainW']
         config['renameDir'] = self.ui.renameDir.text()
         config['renameText'] = self.ui.renameText.text()
+        config['newObjectName'] = self.ui.newObjectName.text()
         config['checkIncludeSubdirs'] = self.ui.checkIncludeSubdirs.isChecked()
         for name, ui in self.selectorsDropDowns.items():
             config[name] = ui.currentIndex()
@@ -174,18 +176,18 @@ class Tools(object):
 
         if fitsKey == 'DATE-OBS':
             chunk = entry.replace(':', '-')
-            chunk = chunk.replace('T', '-')
+            chunk = chunk.replace('T', '_')
             chunk = chunk.split('.')[0]
         elif fitsKey == 'XBINNING':
-            chunk = f'Bin{entry}'
+            chunk = f'Bin-{entry}'
         elif fitsKey == 'CCD-TEMP':
             chunk = f'Temp{entry:03.0f}'
         elif fitsKey == 'FRAME':
-            chunk = f'{entry}'
+            chunk = f'Frame-{entry}'
         elif fitsKey == 'FILTER':
-            chunk = f'{entry}'
+            chunk = f'Filter-{entry}'
         elif fitsKey == 'EXPTIME':
-            chunk = f'{entry}'
+            chunk = f'Exp-{entry:04.0f}s'
         elif fitsKey == 'RenameText':
             chunk = self.ui.renameText.text().upper()
         else:

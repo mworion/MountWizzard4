@@ -26,25 +26,28 @@ The measure windows supports displaying many different values if the measure dev
 (see :ref:`Devices Tab`). You could display up to 3 different charts in this window and
 selecting the time range / update interval of the measures. Sources are:
 
-+--------------------+-----------------------------------------------------+
-| source             | remarks                                             |
-+--------------------+-----------------------------------------------------+
-| temperature        | temperatures from sensors as well as dew temps      |
-+--------------------+-----------------------------------------------------+
-| pressure           | pressure from sensors                               |
-+--------------------+-----------------------------------------------------+
-| humidity           | humidity from sensors                               |
-+--------------------+-----------------------------------------------------+
-| RA stability       | shows deviations RA increments during tracking      |
-+--------------------+-----------------------------------------------------+
-| DEC stability      | shows deviations DEC increments during tracking     |
-+--------------------+-----------------------------------------------------+
-| Sky Quality        | SQM Value if a sensor is attached                   |
-+--------------------+-----------------------------------------------------+
-| Voltage            | Output Voltages if Pegasus UPB is installed         |
-+--------------------+-----------------------------------------------------+
-| Current            | Output Currents if Pegasus UPB is installed         |
-+--------------------+-----------------------------------------------------+
+.. list-table:: Measurement Values
+    :widths: 25, 75
+    :header-rows: 1
+
+    *   - source
+        - remarks
+    *   - temperature
+        - temperatures from sensors as well as dew temps
+    *   - pressure
+        - pressure from sensors
+    *   - humidity
+        - humidity from sensors
+    *   - RA stability
+        - shows deviations RA increments during tracking
+    *   - DEC stability
+        - shows deviations DEC increments during tracking
+    *   - Sky Quality
+        - SQM Value if a sensor is attached
+    *   - Voltage
+        - Output Voltages if Pegasus UPB is installed
+    *   - Current
+        - Output Currents if Pegasus UPB is installed
 
 The time interval range varies from 1s ticks (makes 4 minute view) to 128s ticks (makes 9 hour
 view) and they double every step in between. The window is sizable in width and height.

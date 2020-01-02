@@ -19,19 +19,23 @@ to get all devices populated if not needed.
 
 The following different device types are present:
 
-+--------------------+-----------------------------------------------------+
-| type of device     | remarks                                             |
-+--------------------+-----------------------------------------------------+
-| device disabled    | disabling device usage                              |
-+--------------------+-----------------------------------------------------+
-| Built-In           | functionality is built in MW4                       |
-+--------------------+-----------------------------------------------------+
-| indi               | device is connected to an INDI server               |
-+--------------------+-----------------------------------------------------+
-| alpaca             | device is connected to an ASCOM ALPACA server       |
-+--------------------+-----------------------------------------------------+
-| Astrometry         | shows local programs like ASTAP, astrometry.net     |
-+--------------------+-----------------------------------------------------+
+.. list-table:: Device Types
+    :widths: 25, 75
+    :header-rows: 1
+
+    *   - type of device
+        - remarks
+    *   - device disabled
+        - disabling device usage
+    *   - Built-In
+        - functionality is built in MW4
+    *   - indi
+        - device is connected to an INDI server
+    *   - alpaca
+        - device is connected to an ASCOM ALPACA server
+    *   - Astrometry
+        - shows local programs like ASTAP, astrometry.net
+
 
 A snoop device is only read for information, but not needed for active functions.
 
@@ -190,17 +194,21 @@ Area 1: Internet Connection
 You could tell MW4 to get online and update data or stay in unconnected mode. There are some
 functions, which need an online connection to work properly:
 
-+--------------------+-----------------------------------------------------+
-| function           | remarks                                             |
-+--------------------+-----------------------------------------------------+
-| open weather map   | downloading weather data                            |
-+--------------------+-----------------------------------------------------+
-| satellite          | update satellite TLE elements                       |
-+--------------------+-----------------------------------------------------+
-| deltaT updates     | update time base for calculations                   |
-+--------------------+-----------------------------------------------------+
-| MW4 updater        | accessing pypi.org for updates                      |
-+--------------------+-----------------------------------------------------+
+.. list-table:: Online related Services
+    :widths: 25, 75
+    :header-rows: 1
+
+    *   - function
+        - remarks
+    *   - open weather map
+        - downloading weather data
+    *   - satellite
+        - update satellite TLE elements
+    *   - deltaT updates
+        - update time base for calculations
+    *   - MW4 updater
+        - accessing pypi.org for updates
+
 
 Area 2: Updater
 ^^^^^^^^^^^^^^^

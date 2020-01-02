@@ -1,5 +1,5 @@
-MW4 Installation
-================
+Installing MW4
+==============
 
 When starting with the installation of MW4, python3.7 should be successful
 installed. To check, open a terminal (available on all platforms) and run the command

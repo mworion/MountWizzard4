@@ -29,12 +29,14 @@ the directory should than for OSx look like:
 
 .. image:: _static/install_mw4_mac_1.png
     :align: center
+    :scale: 50%
     :width: 80%
 
 In Windows10 it looks like:
 
 .. image:: _static/install_mw4_win_1.png
     :align: center
+    :scale: 50%
     :width: 80%
 
 .. note::
@@ -68,12 +70,14 @@ After running the install script the directory should for OSx look like:
 
 .. image:: _static/install_mw4_mac_2.png
     :align: center
+    :scale: 50%
     :width: 80%
 
 In Windows10 it looks like:
 
 .. image:: _static/install_mw4_win_2.png
     :align: center
+    :scale: 50%
     :width: 80%
 
 Please use for the following step the install marked in red.
@@ -101,12 +105,14 @@ After first start the directory should for OSx look like:
 
 .. image:: _static/install_mw4_mac_3.png
     :align: center
+    :scale: 50%
     :width: 80%
 
 In Windows10 it looks like:
 
 .. image:: _static/install_mw4_win_3.png
     :align: center
+    :scale: 50%
     :width: 80%
 
 With the first run you will see a log file written and you should have a first window from MW4

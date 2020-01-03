@@ -38,11 +38,18 @@ class BuildPoints(object):
     any other window. all necessary processing for functions of that gui will be linked
     to this class. therefore window classes will have a threadpool for managing async
     processing if needed.
+
+    as the mainW class is very big i have chosen to use mixins to extend the readability
+    of the code and extend the mainW class by additional parent classes.
+
+    BuildPoints handles all topics around generating the build point and horizon settings
     """
 
     def __init__(self):
+        # persistence for the type of generator used
         self.lastGenerator = 'none'
 
+        # gui interaction signals
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.genBuildAlign3.clicked.connect(self.genBuildAlign3)
         self.ui.genBuildAlign6.clicked.connect(self.genBuildAlign6)
@@ -78,6 +85,7 @@ class BuildPoints(object):
 
         :return: True for test purpose
         """
+
         config = self.app.config['mainW']
 
         self.ui.numberGridPointsCol.valueChanged.disconnect(self.genBuildGrid)
@@ -118,6 +126,7 @@ class BuildPoints(object):
 
         :return: True for test purpose
         """
+
         config = self.app.config['mainW']
         config['buildPFileName'] = self.ui.buildPFileName.text()
         config['numberGridPointsRow'] = self.ui.numberGridPointsRow.value()
@@ -443,6 +452,7 @@ class BuildPoints(object):
             return False
 
         self.autoDeletePoints()
+        self.autoSortPoints()
 
         return True
 
@@ -470,7 +480,9 @@ class BuildPoints(object):
         if self.ui.checkAutoDeletePoints.isChecked():
             self.app.data.deleteBelowHorizon()
             self.app.data.deleteCloseMeridian()
+
         self.app.redrawHemisphere.emit()
+
         return True
 
     def autoSortPoints(self):

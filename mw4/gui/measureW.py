@@ -151,9 +151,9 @@ class MeasureWindow(widget.MWidget):
 
         # signals for gui
         self.ui.timeSet.currentIndexChanged.connect(self.setCycleRefresh)
-        self.ui.measureSet1.currentIndexChanged.connect(self.cycleRefresh)
-        self.ui.measureSet2.currentIndexChanged.connect(self.cycleRefresh)
-        self.ui.measureSet3.currentIndexChanged.connect(self.cycleRefresh)
+        self.ui.measureSet1.currentIndexChanged.connect(self.setCycleRefresh)
+        self.ui.measureSet2.currentIndexChanged.connect(self.setCycleRefresh)
+        self.ui.measureSet3.currentIndexChanged.connect(self.setCycleRefresh)
         self.app.update1s.connect(self.cycleRefresh)
         return True
 
@@ -172,9 +172,9 @@ class MeasureWindow(widget.MWidget):
 
         # signals for gui
         self.ui.timeSet.currentIndexChanged.disconnect(self.setCycleRefresh)
-        self.ui.measureSet1.currentIndexChanged.disconnect(self.cycleRefresh)
-        self.ui.measureSet2.currentIndexChanged.disconnect(self.cycleRefresh)
-        self.ui.measureSet3.currentIndexChanged.disconnect(self.cycleRefresh)
+        self.ui.measureSet1.currentIndexChanged.disconnect(self.setCycleRefresh)
+        self.ui.measureSet2.currentIndexChanged.disconnect(self.setCycleRefresh)
+        self.ui.measureSet3.currentIndexChanged.disconnect(self.setCycleRefresh)
 
         # remove big object
         plt.close(self.measureMat.figure)

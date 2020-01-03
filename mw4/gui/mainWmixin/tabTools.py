@@ -179,7 +179,7 @@ class Tools(object):
             chunk = chunk.replace('T', '_')
             chunk = chunk.split('.')[0]
         elif fitsKey == 'XBINNING':
-            chunk = f'Bin-{entry}'
+            chunk = f'Bin-{entry:1.0f}'
         elif fitsKey == 'CCD-TEMP':
             chunk = f'Temp{entry:03.0f}'
         elif fitsKey == 'FRAME':

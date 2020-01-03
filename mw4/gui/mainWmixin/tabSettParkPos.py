@@ -28,10 +28,16 @@ class SettParkPos(object):
     any other window. all necessary processing for functions of that gui will be linked
     to this class. therefore window classes will have a threadpool for managing async
     processing if needed.
+
+    as the mainW class is very big i have chosen to use mixins to extend the readability
+    of the code and extend the mainW class by additional parent classes.
+
+    SettParkPos handles all topics around setting und handling park positions for the mount
+    and cover.
     """
 
     def __init__(self):
-        # define lists for the entries
+        # define lists for the gui entries
         self.posButtons = list()
         self.posTexts = list()
         self.posAlt = list()
@@ -50,7 +56,7 @@ class SettParkPos(object):
         # signals on gui
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
-        self.ui.checkDomeGeometry.clicked.connect(self.setGeometryOnOff)
+        self.ui.checkDomeGeometry.clicked.connect(self.toggleUseGeometry)
 
         # signals from functions
         self.app.update1s.connect(self.updateCoverStatGui)
@@ -64,9 +70,10 @@ class SettParkPos(object):
 
         :return: True for test purpose
         """
+
         config = self.app.config['mainW']
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
-        self.setGeometryOnOff()
+        self.toggleUseGeometry()
 
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
@@ -78,6 +85,7 @@ class SettParkPos(object):
             keyConfig = 'posAz{0:1d}'.format(i)
             textField.setText(config.get(keyConfig, '-'))
         self.updateParkPosButtonText()
+
         return True
 
     def storeConfig(self):
@@ -88,6 +96,7 @@ class SettParkPos(object):
 
         :return: True for test purpose
         """
+
         config = self.app.config['mainW']
         config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
 
@@ -100,6 +109,7 @@ class SettParkPos(object):
         for i, textField in enumerate(self.posAz):
             keyConfig = 'posAz{0:1d}'.format(i)
             config[keyConfig] = textField.text()
+
         return True
 
     def setupParkPosGui(self):
@@ -107,9 +117,8 @@ class SettParkPos(object):
         setupRelayGui handles the modeldata of list for relay handling. to keep many relay in
         order i collect them in the list for list handling afterwards.
 
-        :return: success for test
+        :return: True for test purpose
         """
-
         # generate the button list and text entry for later use
         for i in range(0, 10):
             self.posButtons.append(eval('self.ui.posButton{0:1d}'.format(i)))
@@ -117,11 +126,13 @@ class SettParkPos(object):
             self.posAlt.append(eval('self.ui.posAlt{0:1d}'.format(i)))
             self.posAz.append(eval('self.ui.posAz{0:1d}'.format(i)))
             self.posSaveButtons.append(eval('self.ui.posSave{0:1d}'.format(i)))
+
         return True
 
     def updateParkPosButtonText(self):
         """
-        updateParkPosButtonText updates the text in the gui button
+        updateParkPosButtonText updates the text in the gui button if we change texts in
+        the gui.
 
         :return: true for test purpose
         """
@@ -133,8 +144,9 @@ class SettParkPos(object):
 
     def slewToParkPos(self):
         """
-        slewToParkPos takes the configured data from menu and slews the mount to the
-        targeted alt az coordinates.
+        slewToParkPos takes the configured data from park positions menu and slews the mount
+        to the targeted alt az coordinates and stops tracking. actually there is no chance to
+        park the mount directly.
 
         :return: success
         """
@@ -159,7 +171,7 @@ class SettParkPos(object):
                 suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
                                                             az_degrees=azValue)
                 if suc:
-                    suc = self.app.mount.obsSite.startSlewing()
+                    suc = self.app.mount.obsSite.startSlewing(slewType='notrack')
                 if suc:
                     self.app.message.emit(f'Slew to [{posTextValue}]', 0)
                 else:
@@ -170,7 +182,8 @@ class SettParkPos(object):
 
     def saveActualPosition(self):
         """
-        saveActualPosition takes the actual mount position and stores it in the alt az fields
+        saveActualPosition takes the actual mount position alt/az and stores it in the alt az
+        fields in the gui for persistence.
 
         :return: success
         """
@@ -195,8 +208,10 @@ class SettParkPos(object):
 
         return True
 
-    def setGeometryOnOff(self):
+    def toggleUseGeometry(self):
         """
+        toggleUseGeometry updates the mount class with the new setting if use geometry for
+        dome calculation should be used or not.
 
         :return: true for test purpose
         """
@@ -206,6 +221,8 @@ class SettParkPos(object):
 
     def updateDomeGeometry(self):
         """
+        updateDomeGeometry takes the information gathered from the driver and programs them
+        into the mount class and gui for later use.
 
         :return: true for test purpose
         """
@@ -234,9 +251,10 @@ class SettParkPos(object):
 
     def updateCoverStatGui(self):
         """
-        updateCoverStatGui changes the style of the button related to the state of the FliFlat
+        updateCoverStatGui changes the style of the button related to the state of the
+        FlipFlat cover
 
-        :return: success for test
+        :return: True for test purpose
         """
 
         value = self.app.cover.data.get('Status.Cover', '-').strip().upper()
@@ -253,6 +271,8 @@ class SettParkPos(object):
 
         value = self.app.cover.data.get('Status.Motor', '-')
         self.ui.coverMotorText.setText(value)
+
+        return True
 
     def setCoverPark(self):
         """

@@ -428,6 +428,8 @@ class Tools(object):
 
     def setSlewSpeed(self):
         """
+        setSlewSpeed reads the gui elements and calls the method in mount class to set the
+        slew speed accordingly.
 
         :return: success
         """

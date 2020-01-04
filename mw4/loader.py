@@ -145,10 +145,21 @@ class MyApp(PyQt5.QtWidgets.QApplication):
             logging.error('Exception error in event loop: {0}'.format(e))
             logging.error('----------------------------------------------------')
             returnValue = False
-        finally:
-            if isinstance(event, PyQt5.QtGui.QMouseEvent):
-                if event.button():
-                    logging.debug(f'Mouse: {obj.objectName()}, {event.button()}')
+
+        if not isinstance(event, PyQt5.QtGui.QMouseEvent):
+            return returnValue
+
+        if not event.button():
+            return returnValue
+
+        if obj.objectName() == 'MainWindowWindow':
+            return returnValue
+
+        if isinstance(obj, PyQt5.QtWidgets.QTabBar):
+            logging.debug(f'{event.button()} mouse Tab: [{obj.tabText(obj.currentIndex())}]')
+        else:
+            logging.debug(f'{event.button()} mouse Obj: [{obj.objectName()}]')
+
         return returnValue
 
 

@@ -47,8 +47,6 @@ class SettMisc(object):
         self.process = None
         self.mutexInstall = PyQt5.QtCore.QMutex()
 
-        self.setupAudioSignals()
-
         # setting functional signals
         self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
         self.app.mount.signals.alert.connect(lambda: self.playSound('MountAlert'))
@@ -67,6 +65,9 @@ class SettMisc(object):
         self.ui.versionRelease.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
 
+        # defining and loading all necessary audio files
+        self.setupAudioSignals()
+
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -75,9 +76,11 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
+
         config = self.app.config['mainW']
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
+        self.ui.loglevelEverything.setChecked(config.get('loglevelEverything', False))
         self.setLoggingLevel()
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.setWeatherOnline()
@@ -101,9 +104,11 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
+
         config = self.app.config['mainW']
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
+        config['loglevelEverything'] = self.ui.loglevelEverything.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
@@ -116,6 +121,7 @@ class SettMisc(object):
 
     def setWeatherOnline(self):
         """
+        setWeatherOnline set the flag inside the online weather class to the gui accordingly
 
         :return: success
         """
@@ -131,6 +137,9 @@ class SettMisc(object):
 
     def versionPackage(self, packageName):
         """
+        versionPackage will look the package up in pypi.org website and parses the
+        resulting versions. if you have an alpa or beta release found it returns the correct
+        version for download an install.
 
         :param packageName:
         :return:
@@ -156,6 +165,8 @@ class SettMisc(object):
 
     def showUpdates(self):
         """
+        showUpdates compares the actual installed and running package with the one on the
+        server. if you have a newer version available, mw4 will inform the user about it.
 
         :return: success
         """
@@ -163,30 +174,44 @@ class SettMisc(object):
         packageName = 'mountwizzard4'
         actPackage = version(packageName)
         self.ui.versionActual.setText(actPackage)
-        if self.ui.isOnline.isChecked():
-            availPackage = self.versionPackage(packageName)
-            if availPackage is None:
-                self.app.message.emit('Failed get package', 2)
-                return False
-            self.ui.versionAvailable.setText(availPackage)
-            self.ui.installVersion.setEnabled(True)
-            if availPackage > actPackage:
-                self.app.message.emit('A new version of MountWizzard is available', 1)
-            return True
-        else:
-            self.ui.versionAvailable.setText('not online')
+
+        if not self.ui.isOnline.isChecked():
+            self.ui.versionAvailable.setText('Online connections are disabled!')
             self.ui.installVersion.setEnabled(False)
             return False
 
+        availPackage = self.versionPackage(packageName)
+
+        if availPackage is None:
+            self.app.message.emit('Failed get actual package from server', 2)
+            return False
+
+        self.ui.versionAvailable.setText(availPackage)
+        self.ui.installVersion.setEnabled(True)
+
+        if availPackage > actPackage:
+            self.app.message.emit('A new version of MountWizzard is available', 1)
+
+        return True
+
     @staticmethod
     def isVenv():
+        """
+        detects if the actual package is running in a virtual environment
+
+        :return: status
+        """
+
         hasReal = hasattr(sys, 'real_prefix')
         hasBase = hasattr(sys, 'base_prefix')
+
         return hasReal or hasBase and sys.base_prefix != sys.prefix
 
     @staticmethod
     def formatPIP(line=''):
         """
+        formatPIP shortens the stdout line for presenting it to the user. as the lines are
+        really long, mw4 concentrates on package names and action.
 
         :param line:
         :return: formatted line
@@ -248,9 +273,11 @@ class SettMisc(object):
         except subprocess.TimeoutExpired as e:
             self.logger.debug(e)
             return False
+
         except Exception as e:
             self.logger.error(f'error: {e} happened')
             return False
+
         else:
             delta = time.time() - timeStart
             self.logger.debug(f'pip install took {delta}s return code: '
@@ -264,9 +291,11 @@ class SettMisc(object):
 
     def installFinished(self, result):
         """
+        installFinished is called when the installation thread is finished. It writes the
+        final messages to the user and resets the gui to default.
 
         :param result:
-        :return:
+        :return: success
         """
 
         if isinstance(result, tuple):
@@ -286,8 +315,12 @@ class SettMisc(object):
 
     def installVersion(self):
         """
+        installVersion updates mw4 with the standard pip package installer. this is
+        actually only tested and ok for running in a virtual environment. updates have to run
+        only once at a time, so a mutex ensures this. If everything is ok, a thread it
+        started doing the install work and a callback is defined when finished.
 
-        :return: success
+        :return: True for test purpose
         """
 
         if not self.isVenv():
@@ -307,6 +340,8 @@ class SettMisc(object):
 
         worker.signals.result.connect(self.installFinished)
         self.threadPool.start(worker)
+
+        return True
 
     def updateFwGui(self, fw):
         """
@@ -351,12 +386,18 @@ class SettMisc(object):
 
         if self.ui.loglevelDebug.isChecked():
             logging.getLogger().setLevel(logging.DEBUG)
-            logging.getLogger('indibase').setLevel(logging.DEBUG)
-            logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
+            logging.getLogger('indibase').setLevel(logging.INFO)
+            logging.getLogger('mountcontrol').setLevel(logging.INFO)
+
         elif self.ui.loglevelInfo.isChecked():
             logging.getLogger().setLevel(logging.INFO)
             logging.getLogger('indibase').setLevel(logging.INFO)
             logging.getLogger('mountcontrol').setLevel(logging.INFO)
+
+        elif self.ui.loglevelEverything.isChecked():
+            logging.getLogger().setLevel(logging.DEBUG)
+            logging.getLogger('indibase').setLevel(logging.DEBUG)
+            logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
 
     def setupAudioGui(self):
         """

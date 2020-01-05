@@ -80,5 +80,3 @@ class CustomLogger(logging.LoggerAdapter):
         print('log adapter:', msg)
 
         return f'{msg}', kwargs
-
-

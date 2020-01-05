@@ -279,10 +279,10 @@ class SettMisc(object):
         else:
             delta = time.time() - timeStart
             self.log.debug(f'pip install took {delta}s return code: '
-                              + str(self.process.returncode)
-                              + ' stderr: '
-                              + stderr.replace('\n', ' ')
-                              )
+                           + str(self.process.returncode)
+                           + ' stderr: '
+                           + stderr.replace('\n', ' ')
+                           )
 
         success = (self.process.returncode == 0)
         return success, versionPackage

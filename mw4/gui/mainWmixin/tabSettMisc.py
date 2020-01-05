@@ -80,7 +80,6 @@ class SettMisc(object):
         config = self.app.config['mainW']
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
-        self.ui.loglevelEverything.setChecked(config.get('loglevelEverything', False))
         self.setLoggingLevel()
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.setWeatherOnline()
@@ -108,7 +107,6 @@ class SettMisc(object):
         config = self.app.config['mainW']
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
-        config['loglevelEverything'] = self.ui.loglevelEverything.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
         config['soundMountSlewFinished'] = self.ui.soundMountSlewFinished.currentIndex()
         config['soundDomeSlewFinished'] = self.ui.soundDomeSlewFinished.currentIndex()
@@ -386,18 +384,13 @@ class SettMisc(object):
 
         if self.ui.loglevelDebug.isChecked():
             logging.getLogger().setLevel(logging.DEBUG)
-            logging.getLogger('indibase').setLevel(logging.INFO)
-            logging.getLogger('mountcontrol').setLevel(logging.INFO)
+            logging.getLogger('indibase').setLevel(logging.DEBUG)
+            logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
 
         elif self.ui.loglevelInfo.isChecked():
             logging.getLogger().setLevel(logging.INFO)
             logging.getLogger('indibase').setLevel(logging.INFO)
             logging.getLogger('mountcontrol').setLevel(logging.INFO)
-
-        elif self.ui.loglevelEverything.isChecked():
-            logging.getLogger().setLevel(logging.DEBUG)
-            logging.getLogger('indibase').setLevel(logging.DEBUG)
-            logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
 
     def setupAudioGui(self):
         """

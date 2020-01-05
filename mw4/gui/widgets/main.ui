@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -20366,7 +20366,7 @@ When clicking the button, you could change the value.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Logging levels</string>
+        <string>Logging</string>
        </property>
        <widget class="QRadioButton" name="loglevelDebug">
         <property name="geometry">
@@ -20417,33 +20417,6 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="text">
          <string>Information</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="loglevelEverything">
-        <property name="geometry">
-         <rect>
-          <x>225</x>
-          <y>20</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Everything</string>
         </property>
         <property name="checked">
          <bool>false</bool>

@@ -37,6 +37,7 @@ def setupLogging():
                         format='[%(asctime)s]'
                                '[%(levelname)1.1s]'
                                # '[%(threadName)-.2s]'
+                               '[%(funcName)4.4s]'
                                '[%(filename)20s]'
                                '[%(lineno)4s]'
                                ' %(message)s',

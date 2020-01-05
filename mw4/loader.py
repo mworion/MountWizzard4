@@ -148,11 +148,11 @@ class MyApp(PyQt5.QtWidgets.QApplication):
         try:
             returnValue = PyQt5.QtWidgets.QApplication.notify(self, obj, event)
         except Exception as e:
-            self.log.error('----------------------------------------------------')
-            self.log.error('Event: {0}'.format(event))
-            self.log.error('EventType: {0}'.format(event.type()))
-            self.log.error('Exception error in event loop: {0}'.format(e))
-            self.log.error('----------------------------------------------------')
+            self.log.critical('----------------------------------------------------')
+            self.log.critical('Event: {0}'.format(event))
+            self.log.critical('EventType: {0}'.format(event.type()))
+            self.log.critical('Exception error in event loop: {0}'.format(e))
+            self.log.critical('----------------------------------------------------')
             returnValue = False
 
         if not isinstance(event, PyQt5.QtGui.QMouseEvent):
@@ -165,9 +165,9 @@ class MyApp(PyQt5.QtWidgets.QApplication):
             return returnValue
 
         if isinstance(obj, PyQt5.QtWidgets.QTabBar):
-            self.log.debug(f'{event.button()} mouse Tab: [{obj.tabText(obj.currentIndex())}]')
+            self.log.info(f'{event.button()} mouse Tab: [{obj.tabText(obj.currentIndex())}]')
         else:
-            self.log.debug(f'{event.button()} mouse Obj: [{obj.objectName()}]')
+            self.log.info(f'{event.button()} mouse Obj: [{obj.objectName()}]')
 
         return returnValue
 
@@ -184,12 +184,12 @@ def except_hook(typeException, valueException, tbackException):
     """
 
     result = traceback.format_exception(typeException, valueException, tbackException)
-    log.error('----------------------------------------------------')
-    log.error('Logging an uncatched Exception')
-    log.error('----------------------------------------------------')
+    log.warning('----------------------------------------------------')
+    log.warning('Logging an uncatched Exception')
+    log.warning('----------------------------------------------------')
     for i in range(0, len(result)):
-        log.error(result[i].replace('\n', ''))
-    log.error('----------------------------------------------------')
+        log.warning(result[i].replace('\n', ''))
+    log.warning('----------------------------------------------------')
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
@@ -293,8 +293,6 @@ def writeSystemInfo(mwGlob=None):
     log.critical(f' mountwizzard4    : {version("mountwizzard4")}')
     log.critical(f' indibase         : {version("indibase")}')
     log.critical(f' mountcontrol     : {version("mountcontrol")}')
-    log.critical(f' sys.argv[0]      : {sys.argv[0]}')
-    log.critical(f' os.path.basename : {os.path.basename(sys.argv[0])}')
     log.critical(f' sys.executable   : {sys.executable}')
 
     log.critical('----------------------------------------------------')

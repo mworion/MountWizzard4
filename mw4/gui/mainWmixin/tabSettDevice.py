@@ -371,6 +371,7 @@ class SettDevice(object):
         # for built-in i actually not check their presence as the should function
         if self.drivers[driver]['uiDropDown'].currentText() == 'built-in':
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+            self.deviceStat[driver] = True
 
         # and finally start it
         self.app.message.emit(f'Enabled:             [{driver}]', 0)

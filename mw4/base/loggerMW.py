@@ -38,7 +38,7 @@ def setupLogging():
                                '[%(levelname)1.1s]'
                                # '[%(threadName)-.2s]'
                                '[%(funcName)4.4s]'
-                               '[%(filename)20s]'
+                               '[%(filename)15.15s]'
                                '[%(lineno)4s]'
                                ' %(message)s',
                         handlers=[logging.FileHandler(name)],
@@ -77,7 +77,7 @@ class CustomLogger(logging.LoggerAdapter):
         :param kwargs:
         :return:
         """
-        # print('log adapter:', msg)
+        print('log adapter:', msg)
 
         return f'{msg}', kwargs
 

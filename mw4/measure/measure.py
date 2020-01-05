@@ -265,7 +265,7 @@ class MeasureData(object):
         """
 
         if not self.mutexMeasure.tryLock():
-            self.logger.info('overrun in measure')
+            self.log.info('overrun in measure')
             return False
 
         lenData = len(self.data['time'])

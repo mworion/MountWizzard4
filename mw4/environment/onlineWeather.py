@@ -130,32 +130,6 @@ class OnlineWeather(PyQt5.QtCore.QObject):
 
         return True
 
-    def getWebDataWorker(self, url=''):
-        """
-        getWebDataWorker fetches a given url and does the error handling.
-
-        :param url:
-        :return: data
-        """
-
-        if not url:
-            return None
-
-        try:
-            data = requests.get(url, timeout=30)
-        except TimeoutError:
-            self.logger.error(f'{url} not reachable')
-            return None
-        except Exception as e:
-            self.logger.error(f'{url} general exception: {e}')
-            return None
-
-        if data.status_code != 200:
-            self.logger.error(f'{url}: status nok')
-            return None
-        self.logger.debug(f'{url}: {data.status_code}')
-        return data
-
     @staticmethod
     def getDewPoint(tempAir, relativeHumidity):
         """
@@ -177,9 +151,10 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         dewPoint = (B * alpha) / (A - alpha)
         return dewPoint
 
-    def updateData(self, data=None):
+    def updateOpenWeatherMapDataWorker(self, data=None):
         """
-        updateDate takes the returned data from a web fetch and puts the data in a dict
+        updateOpenWeatherMapDataWorker takes the returned data from a web fetch and puts
+        the data in a dict
 
         :param data:
 
@@ -223,6 +198,32 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         self.signals.connected.emit(True)
         return True
 
+    def getOpenWeatherMapDataWorker(self, url=''):
+        """
+        getOpenWeatherMapDataWorker fetches a given url and does the error handling.
+
+        :param url:
+        :return: data
+        """
+
+        if not url:
+            return None
+
+        try:
+            data = requests.get(url, timeout=30)
+        except TimeoutError:
+            self.log.error(f'{url} not reachable')
+            return None
+        except Exception as e:
+            self.log.error(f'{url} general exception: {e}')
+            return None
+
+        if data.status_code != 200:
+            self.log.error(f'{url}: status nok')
+            return None
+        self.log.debug(f'{url}: {data.status_code}')
+        return data
+
     def getOpenWeatherMapData(self, url=''):
         """
         getOpenWeatherMapData initiates the worker thread to get the web data fetched
@@ -231,8 +232,8 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         :return: true for test purpose
         """
 
-        worker = Worker(self.getWebDataWorker, url)
-        worker.signals.result.connect(self.updateData)
+        worker = Worker(self.getOpenWeatherMapDataWorker, url)
+        worker.signals.result.connect(self.updateOpenWeatherMapDataWorker)
         self.threadPool.start(worker)
 
         return True

@@ -352,7 +352,7 @@ class EnvironGui(object):
 
     def getWebDataWorker(self, url=''):
         """
-        getWebDataWorker fetches a given url and does the error handling.
+        getOpenWeatherMapDataWorker fetches a given url and does the error handling.
 
         :param url:
         :return: data
@@ -364,16 +364,16 @@ class EnvironGui(object):
         try:
             data = requests.get(url, timeout=30)
         except TimeoutError:
-            self.logger.error(f'{url} not reachable')
+            self.log.error(f'{url} not reachable')
             return None
         except Exception as e:
-            self.logger.error(f'{url} general exception: {e}')
+            self.log.error(f'{url} general exception: {e}')
             return None
 
         if data.status_code != 200:
-            self.logger.error(f'{url}: status nok')
+            self.log.error(f'{url}: status nok')
             return None
-        self.logger.debug(f'{url}: {data.status_code}')
+        self.log.debug(f'{url}: {data.status_code}')
         return data
 
     def updateClearOutsideImages(self, image=None):

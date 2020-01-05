@@ -98,7 +98,7 @@ class IndiClass(object):
 
         if self.name:
             suc = self.client.watchDevice(self.name)
-            self.logger.info(f'Indi watch: {self.name}, watch: result:{suc}')
+            self.log.info(f'Indi watch: {self.name}, watch: result:{suc}')
             return suc
         return False
 
@@ -161,7 +161,7 @@ class IndiClass(object):
 
         if not self.data:
             self.startCommunication()
-            self.logger.info(f'Indi server {self.name} connection retry: {self.retryCounter}')
+            self.log.info(f'Indi server {self.name} connection retry: {self.retryCounter}')
         else:
             self.retryCounter = 0
 
@@ -180,7 +180,7 @@ class IndiClass(object):
         self.client.startTimers()
         suc = self.client.connectServer()
         if not suc:
-            self.logger.info(f'Cannot start connection to: {self.name}')
+            self.log.info(f'Cannot start connection to: {self.name}')
         else:
             # adding a single retry if first connect does not happen
             self.timerRetry.start(self.RETRY_DELAY)

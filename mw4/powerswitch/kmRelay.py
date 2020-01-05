@@ -91,10 +91,10 @@ class KMRelay(PyQt5.QtCore.QObject):
     def checkFormat(self, value):
         # checking format
         if not value:
-            self.logger.info('Host value not configured')
+            self.log.info('Host value not configured')
             return None
         if not isinstance(value, (tuple, str)):
-            self.logger.error(f'Wrong host value: {value}')
+            self.log.error(f'Wrong host value: {value}')
             return None
         # now we got the right format
         if isinstance(value, str):
@@ -158,7 +158,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
 
         if result is None:
-            self.logger.debug('No valid result')
+            self.log.debug('No valid result')
             return False
 
         text = result.text.replace('\r\n', ', ')
@@ -167,7 +167,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         url = result.url
         elapsed = result.elapsed
 
-        self.logger.debug(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
+        self.log.debug(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
 
         return True
 
@@ -200,7 +200,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         except requests.exceptions.ConnectionError:
             pass
         except Exception as e:
-            self.logger.error(f'Error in request: {e}')
+            self.log.error(f'Error in request: {e}')
 
         if debug:
             self.debugOutput(result=result)
@@ -221,7 +221,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         if value is None:
             return False
         if value.reason != 'OK':
-            self.logger.error('Polling error')
+            self.log.error('Polling error')
             return False
 
         lines = value.text.splitlines()
@@ -265,7 +265,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
-        self.logger.info(f'Pulse relay:{relayNumber}')
+        self.log.info(f'Pulse relay:{relayNumber}')
         byteOn = self.getByte(relayNumber=relayNumber, state=True)
         byteOff = self.getByte(relayNumber=relayNumber, state=False)
         value1 = self.getRelay(f'/FFE0{byteOn:02X}')
@@ -273,10 +273,10 @@ class KMRelay(PyQt5.QtCore.QObject):
         value2 = self.getRelay(f'/FFE0{byteOff:02X}')
 
         if value1 is None or value2 is None:
-            self.logger.error(f'Relay:{relayNumber}')
+            self.log.error(f'Relay:{relayNumber}')
             return False
         elif value1.reason != 'OK' or value2.reason != 'OK':
-            self.logger.error(f'Relay:{relayNumber}')
+            self.log.error(f'Relay:{relayNumber}')
             return False
 
         return True
@@ -289,14 +289,14 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
-        self.logger.info(f'Switch relay:{relayNumber}')
+        self.log.info(f'Switch relay:{relayNumber}')
         value = self.getRelay('/relays.cgi?relay={0:1d}'.format(relayNumber + 1))
 
         if value is None:
-            self.logger.error(f'Relay:{relayNumber}')
+            self.log.error(f'Relay:{relayNumber}')
             return False
         elif value.reason != 'OK':
-            self.logger.error(f'Relay:{relayNumber}')
+            self.log.error(f'Relay:{relayNumber}')
             return False
 
         return True
@@ -310,15 +310,15 @@ class KMRelay(PyQt5.QtCore.QObject):
         :return: success
         """
 
-        self.logger.info(f'Set relay:{relayNumber}')
+        self.log.info(f'Set relay:{relayNumber}')
         byteOn = self.getByte(relayNumber=relayNumber, state=value)
         value = self.getRelay(f'/FFE0{byteOn:02X}')
 
         if value is None:
-            self.logger.error(f'Relay:{relayNumber}')
+            self.log.error(f'Relay:{relayNumber}')
             return False
         elif value.reason != 'OK':
-            self.logger.error(f'Relay:{relayNumber}')
+            self.log.error(f'Relay:{relayNumber}')
             return False
 
         return True

@@ -144,7 +144,7 @@ class DataPoint(object):
             self._buildP = list()
             return
         if not all([isinstance(x, tuple) for x in value]):
-            self.logger.error('malformed value: {0}'.format(value))
+            self.log.error('malformed value: {0}'.format(value))
             self._buildP = list()
             return
         self._buildP = value
@@ -162,15 +162,15 @@ class DataPoint(object):
         if value is None:
             return False
         if not isinstance(value, tuple):
-            self.logger.error('malformed value: {0}'.format(value))
+            self.log.error('malformed value: {0}'.format(value))
             return False
         if len(value) != 2:
-            self.logger.error('malformed value: {0}'.format(value))
+            self.log.error('malformed value: {0}'.format(value))
             return False
         if position is None:
             position = len(self._buildP)
         if not isinstance(position, (int, float)):
-            self.logger.error('malformed position: {0}'.format(position))
+            self.log.error('malformed position: {0}'.format(position))
             return False
         if self.app.mount.setting.horizonLimitHigh is not None:
             high = self.app.mount.setting.horizonLimitHigh
@@ -199,11 +199,11 @@ class DataPoint(object):
         """
 
         if not isinstance(position, (int, float)):
-            self.logger.error('malformed position: {0}'.format(position))
+            self.log.error('malformed position: {0}'.format(position))
             return False
         position = int(position)
         if position < 0 or position > len(self._buildP) - 1:
-            self.logger.error('invalid position: {0}'.format(position))
+            self.log.error('invalid position: {0}'.format(position))
             return False
         self._buildP.pop(position)
         return True
@@ -230,7 +230,7 @@ class DataPoint(object):
             self.clearHorizonP()
             return
         if not all([isinstance(x, tuple) for x in value]):
-            self.logger.error('malformed value: {0}'.format(value))
+            self.log.error('malformed value: {0}'.format(value))
             self.clearHorizonP()
             return
         self._horizonP = value
@@ -259,15 +259,15 @@ class DataPoint(object):
         if value is None:
             return False
         if not isinstance(value, tuple):
-            self.logger.error('malformed value: {0}'.format(value))
+            self.log.error('malformed value: {0}'.format(value))
             return False
         if len(value) != 2:
-            self.logger.error('malformed value: {0}'.format(value))
+            self.log.error('malformed value: {0}'.format(value))
             return False
         if position is None:
             position = len(self._horizonP)
         if not isinstance(position, (int, float)):
-            self.logger.error('malformed position: {0}'.format(position))
+            self.log.error('malformed position: {0}'.format(position))
             return False
         position = int(position)
         position = min(len(self._horizonP), position)
@@ -284,11 +284,11 @@ class DataPoint(object):
         """
 
         if not isinstance(position, (int, float)):
-            self.logger.error('malformed position: {0}'.format(position))
+            self.log.error('malformed position: {0}'.format(position))
             return False
         position = int(position)
         if position < 0 or position > len(self._horizonP) - 1:
-            self.logger.error('invalid position: {0}'.format(position))
+            self.log.error('invalid position: {0}'.format(position))
             return False
         if self._horizonP[position] == (0, 0):
             return False
@@ -412,7 +412,7 @@ class DataPoint(object):
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
         except Exception as e:
-            self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
+            self.log.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
 
         suc = self.checkFormat(value)
@@ -460,7 +460,7 @@ class DataPoint(object):
             with open(fileName, 'r') as handle:
                 value = json.load(handle)
         except Exception as e:
-            self.logger.error('Cannot load: {0}, error: {1}'.format(fileName, e))
+            self.log.error('Cannot load: {0}, error: {1}'.format(fileName, e))
             return False
 
         suc = self.checkFormat(value)

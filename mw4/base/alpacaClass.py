@@ -126,7 +126,7 @@ class AlpacaClass(object):
         self._name = value
         valueSplit = value.split(':')
         if len(valueSplit) != 2:
-            self.logger.info(f'malformed name: {value}')
+            self.log.info(f'malformed name: {value}')
         self.deviceType, self.number = valueSplit
         self.number = int(self.number)
         self.baseUrl = self.generateBaseUrl()
@@ -163,17 +163,17 @@ class AlpacaClass(object):
         except requests.exceptions.ConnectionError:
             return {}
         except Exception as e:
-            self.logger.error(f'Error in request: {e}')
+            self.log.error(f'Error in request: {e}')
             return {}
 
         if response.status_code == 400 or response.status_code == 500:
-            self.logger.error(f'{response.text}')
+            self.log.error(f'{response.text}')
             return None
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.logger.error(f'{response["ErrorNumber"]}, {response["ErrorMessage"]}')
+            self.log.error(f'{response["ErrorNumber"]}, {response["ErrorMessage"]}')
             return None
 
         return response['Value']
@@ -193,17 +193,17 @@ class AlpacaClass(object):
         except requests.exceptions.ConnectionError:
             return {}
         except Exception as e:
-            self.logger.error(f'Error in request: {e}')
+            self.log.error(f'Error in request: {e}')
             return {}
 
         if response.status_code == 400 or response.status_code == 500:
-            self.logger.error(f'{response.text}')
+            self.log.error(f'{response.text}')
             return {}
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.logger.error(f'{response["ErrorNumber"]}, {response["ErrorMessage"]}')
+            self.log.error(f'{response["ErrorNumber"]}, {response["ErrorMessage"]}')
             return {}
 
         return response

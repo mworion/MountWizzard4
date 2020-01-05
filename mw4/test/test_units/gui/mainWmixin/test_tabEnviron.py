@@ -239,12 +239,12 @@ def test_updateSkymeterGUI_2():
 
 
 def test_getWebDataRunner_1():
-    suc = app.mainW.getWebDataWorker()
+    suc = app.mainW.getOpenWeatherMapDataWorker()
     assert not suc
 
 
 def test_getWebDataRunner_2():
-    suc = app.mainW.getWebDataWorker(url='http://test')
+    suc = app.mainW.getOpenWeatherMapDataWorker(url='http://test')
     assert not suc
 
 
@@ -254,7 +254,7 @@ def test_getWebDataRunner_3():
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = app.mainW.getWebDataWorker(url='http://test')
+        suc = app.mainW.getOpenWeatherMapDataWorker(url='http://test')
         assert not suc
 
 
@@ -264,7 +264,7 @@ def test_getWebDataRunner_4():
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = app.mainW.getWebDataWorker(url='http://test')
+        suc = app.mainW.getOpenWeatherMapDataWorker(url='http://test')
         assert suc
 
 

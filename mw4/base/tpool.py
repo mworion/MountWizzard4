@@ -88,7 +88,7 @@ class Worker(PyQt5.QtCore.QRunnable):
             line = tb.tb_frame.f_lineno
 
             errorString = f'{file}, line {line} {exc_value}'
-            self.logger.error(errorString)
+            self.log.error(errorString)
             self.signals.error.emit(errorString)
         else:
             self.signals.result.emit(result)

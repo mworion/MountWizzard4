@@ -174,20 +174,20 @@ class CameraIndi(IndiClass):
         if data['format'] == '.fits.fz':
             HDU = fits.HDUList.fromstring(data['value'])
             fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-            self.logger.debug('Image BLOB is in FPacked format')
+            self.log.debug('Image BLOB is in FPacked format')
 
         elif data['format'] == '.fits.z':
             HDU = fits.HDUList.fromstring(zlib.decompress(data['value']))
             fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-            self.logger.debug('Image BLOB is compressed fits format')
+            self.log.debug('Image BLOB is compressed fits format')
 
         elif data['format'] == '.fits':
             HDU = fits.HDUList.fromstring(data['value'])
             fits.writeto(self.imagePath, HDU[0].data, HDU[0].header, overwrite=True)
-            self.logger.debug('Image BLOB is uncompressed fits format')
+            self.log.debug('Image BLOB is uncompressed fits format')
 
         else:
-            self.logger.debug('Image BLOB is not supported')
+            self.log.debug('Image BLOB is not supported')
 
         self.signals.saved.emit(self.imagePath)
         return True
@@ -201,7 +201,7 @@ class CameraIndi(IndiClass):
 
         # setting fast mode:
         quality = self.device.getSwitch('READOUT_QUALITY')
-        self.logger.debug(f'camera has readout quality entry: {quality}')
+        self.log.debug(f'camera has readout quality entry: {quality}')
         quality['QUALITY_LOW'] = fastReadout
         quality['QUALITY_HIGH'] = not fastReadout
         suc = self.client.sendNewSwitch(deviceName=self.name,
@@ -238,7 +238,7 @@ class CameraIndi(IndiClass):
 
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:
-            self.logger.info('Camera has no download quality settings')
+            self.log.info('Camera has no download quality settings')
 
         # setting binning value for x and y equally
         indiCmd = self.device.getNumber('CCD_BINNING')

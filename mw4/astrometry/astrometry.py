@@ -182,17 +182,17 @@ class Astrometry:
 
             # checking binaries
             if not os.path.isfile(program):
-                self.logger.info(f'{program} not found')
+                self.log.info(f'{program} not found')
                 suc = False
 
             # checking indexes
             if not glob.glob(self.solverEnviron[solver]['indexPath'] + index):
-                self.logger.info('no index files found')
+                self.log.info('no index files found')
                 suc = False
 
             if suc:
                 available[solver] = solver
-                self.logger.info(f'binary and index files available for {solver}')
+                self.log.info(f'binary and index files available for {solver}')
 
         return available
 
@@ -217,7 +217,7 @@ class Astrometry:
             raHint = transform.convertToAngle(ra, isHours=True)
             decHint = transform.convertToAngle(dec, isHours=False)
 
-        self.logger.info(f'RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale: {scaleHint}')
+        self.log.info(f'RA: {raHint} ({ra}), DEC: {decHint} ({dec}), Scale: {scaleHint}')
 
         return raHint, decHint, scaleHint, ra, dec
 
@@ -369,7 +369,7 @@ class Astrometry:
             self.signals.done.emit(solver.result)
             return False
         if not self.mutexSolve.tryLock():
-            self.logger.info('overrun in solve threading')
+            self.log.info('overrun in solve threading')
             self.signals.done.emit(solver.result)
             return False
 

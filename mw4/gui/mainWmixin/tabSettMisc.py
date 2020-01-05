@@ -147,7 +147,7 @@ class SettMisc(object):
         try:
             response = requests.get(url).json()
         except Exception as e:
-            self.logger.error(f'Cannot determine package version: {e}')
+            self.log.error(f'Cannot determine package version: {e}')
             return None
         else:
             vPackage = reversed(list(response['releases'].keys()))
@@ -269,16 +269,16 @@ class SettMisc(object):
             _, stderr = self.process.communicate(timeout=timeout)
 
         except subprocess.TimeoutExpired as e:
-            self.logger.debug(e)
+            self.log.debug(e)
             return False
 
         except Exception as e:
-            self.logger.error(f'error: {e} happened')
+            self.log.error(f'error: {e} happened')
             return False
 
         else:
             delta = time.time() - timeStart
-            self.logger.debug(f'pip install took {delta}s return code: '
+            self.log.debug(f'pip install took {delta}s return code: '
                               + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.replace('\n', ' ')

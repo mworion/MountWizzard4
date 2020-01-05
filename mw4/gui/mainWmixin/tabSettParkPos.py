@@ -165,7 +165,7 @@ class SettParkPos(object):
                 azValue = float(az.text())
                 posTextValue = posText.text()
             except Exception as e:
-                self.logger.error(f'no usable values in data: error {e}')
+                self.log.error(f'no usable values in data: error {e}')
                 self.app.message.emit('Missing correct entries in settings', 2)
             else:
                 suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,

@@ -88,14 +88,14 @@ class AstrometryNET(object):
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
-            self.logger.debug(e)
+            self.log.debug(e)
             return False
         except Exception as e:
-            self.logger.error(f'error: {e} happened')
+            self.log.error(f'error: {e} happened')
             return False
         else:
             delta = time.time() - timeStart
-            self.logger.debug(f'image2xy took {delta}s return code: '
+            self.log.debug(f'image2xy took {delta}s return code: '
                               + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
@@ -144,14 +144,14 @@ class AstrometryNET(object):
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
-            self.logger.debug(e)
+            self.log.debug(e)
             return False
         except Exception as e:
-            self.logger.error(f'error: {e} happened')
+            self.log.error(f'error: {e} happened')
             return False
         else:
             delta = time.time() - timeStart
-            self.logger.debug(f'solve-field took {delta}s return code: '
+            self.log.debug(f'solve-field took {delta}s return code: '
                               + str(self.process.returncode)
                               + ' stderr: '
                               + stderr.decode().replace('\n', ' ')
@@ -232,7 +232,7 @@ class AstrometryNET(object):
                                timeout=timeout,
                                )
         if not suc:
-            self.logger.error(f'image2xy error in [{fitsPath}]')
+            self.log.error(f'image2xy error in [{fitsPath}]')
             self.result = self.result['message'] = 'image2xy error'
             return False
 
@@ -276,17 +276,17 @@ class AstrometryNET(object):
                                  timeout=timeout,
                                  )
         if not suc:
-            self.logger.error(f'solve-field error in [{fitsPath}]')
+            self.log.error(f'solve-field error in [{fitsPath}]')
             self.result['message'] = 'solve-field error'
             return False
 
         if not os.path.isfile(solvedPath):
-            self.logger.debug(f'solve files for [{fitsPath}] missing')
+            self.log.debug(f'solve files for [{fitsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 
         if not os.path.isfile(wcsPath):
-            self.logger.debug(f'solve files for [{wcsPath}] missing')
+            self.log.debug(f'solve files for [{wcsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 

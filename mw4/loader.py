@@ -24,7 +24,6 @@ import sys
 import platform
 import socket
 import datetime
-import warnings
 import traceback
 import locale
 import html
@@ -39,9 +38,15 @@ import PyQt5.QtWidgets
 from astropy.utils import iers
 iers.conf.auto_download = False
 # local import
+from mw4.base.loggerMW import CustomLogger
+from mw4.base.loggerMW import setupLogging
 from mw4 import mainApp
 from mw4.gui import splash
 import mw4.resource
+
+global log
+logger = logging.getLogger()
+log = CustomLogger(logger, {})
 
 
 class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
@@ -88,6 +93,7 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
     """
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def eventFilter(self, widget, event):
         """
@@ -135,15 +141,18 @@ class MyApp(PyQt5.QtWidgets.QApplication):
     including event and object name to be analyse the input methods.
     """
 
+    logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
+
     def notify(self, obj, event):
         try:
             returnValue = PyQt5.QtWidgets.QApplication.notify(self, obj, event)
         except Exception as e:
-            logging.error('----------------------------------------------------')
-            logging.error('Event: {0}'.format(event))
-            logging.error('EventType: {0}'.format(event.type()))
-            logging.error('Exception error in event loop: {0}'.format(e))
-            logging.error('----------------------------------------------------')
+            self.log.error('----------------------------------------------------')
+            self.log.error('Event: {0}'.format(event))
+            self.log.error('EventType: {0}'.format(event.type()))
+            self.log.error('Exception error in event loop: {0}'.format(e))
+            self.log.error('----------------------------------------------------')
             returnValue = False
 
         if not isinstance(event, PyQt5.QtGui.QMouseEvent):
@@ -156,9 +165,9 @@ class MyApp(PyQt5.QtWidgets.QApplication):
             return returnValue
 
         if isinstance(obj, PyQt5.QtWidgets.QTabBar):
-            logging.debug(f'{event.button()} mouse Tab: [{obj.tabText(obj.currentIndex())}]')
+            self.log.debug(f'{event.button()} mouse Tab: [{obj.tabText(obj.currentIndex())}]')
         else:
-            logging.debug(f'{event.button()} mouse Obj: [{obj.objectName()}]')
+            self.log.debug(f'{event.button()} mouse Obj: [{obj.objectName()}]')
 
         return returnValue
 
@@ -175,12 +184,12 @@ def except_hook(typeException, valueException, tbackException):
     """
 
     result = traceback.format_exception(typeException, valueException, tbackException)
-    logging.error('----------------------------------------------------')
-    logging.error('Logging an uncatched Exception')
-    logging.error('----------------------------------------------------')
+    log.error('----------------------------------------------------')
+    log.error('Logging an uncatched Exception')
+    log.error('----------------------------------------------------')
     for i in range(0, len(result)):
-        logging.error(result[i].replace('\n', ''))
-    logging.error('----------------------------------------------------')
+        log.error(result[i].replace('\n', ''))
+    log.error('----------------------------------------------------')
     sys.__excepthook__(typeException, valueException, tbackException)
 
 
@@ -206,7 +215,7 @@ def setupWorkDirs(mwGlob):
         if not os.path.isdir(mwGlob[dirPath]):
             os.makedirs(mwGlob[dirPath])
         if not os.access(mwGlob[dirPath], os.W_OK):
-            logging.error('no write access to {0}'.format(dirPath))
+            log.error('no write access to {0}'.format(dirPath))
 
     for file in os.scandir(mwGlob['tempDir']):
         os.remove(file)
@@ -243,38 +252,6 @@ def checkFrozen():
     return mwGlob
 
 
-def setupLogging():
-    """
-    setupLogging defines the logger and formats and disables unnecessary library logging
-
-    :return: true for test purpose
-    """
-    warnings.filterwarnings('ignore')
-    name = 'mw4-{0}.log'.format(datetime.datetime.now().strftime("%Y-%m-%d"))
-    logging.basicConfig(level=logging.DEBUG,
-                        format='[%(asctime)s.%(msecs)03d]'
-                               '[%(levelname)8s]'
-                               '[%(filename)20s]'
-                               '[%(lineno)5s]'
-                               '[%(funcName)20s]'
-                               '[%(threadName)10s]'
-                               ' > %(message)s',
-                        handlers=[logging.FileHandler(name)],
-                        datefmt='%Y-%m-%d %H:%M:%S',
-                        )
-
-    # setting different log level for imported packages to avoid unnecessary data
-    logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
-    logging.getLogger('indibase').setLevel(logging.WARNING)
-    logging.getLogger('PyQt5').setLevel(logging.ERROR)
-    logging.getLogger('requests').setLevel(logging.ERROR)
-    # urllib3 is used by requests, so we have to add this as well
-    logging.getLogger('urllib3').setLevel(logging.ERROR)
-    logging.getLogger('matplotlib').setLevel(logging.ERROR)
-    logging.getLogger('astropy').setLevel(logging.ERROR)
-    return True
-
-
 def writeSystemInfo(mwGlob=None):
     """
     writeSystemInfo print overview data to the log file at the beginning of the start
@@ -282,46 +259,46 @@ def writeSystemInfo(mwGlob=None):
     :return: true for test purpose
     """
 
-    logging.info('----------------------------------------------------')
-    logging.info('')
-    logging.info(f' MountWizzard {mwGlob["modeldata"]} started !')
-    logging.info('')
-    logging.info('----------------------------------------------------')
-    logging.info(f' Platform         : {platform.system()}')
-    logging.info(f' Release          : {platform.release()}')
-    logging.info(f' Machine          : {platform.machine()}')
-    logging.info(f' CPU              : {platform.processor()}')
-    logging.info(f' Python           : {platform.python_version()}')
-    logging.info(f' PyQt5            : {PyQt5.QtCore.PYQT_VERSION_STR}')
-    logging.info(f' Qt               : {PyQt5.QtCore.QT_VERSION_STR}')
-    logging.info(f' Node             : {platform.node()}')
+    log.critical('----------------------------------------------------')
+    log.critical('')
+    log.critical(f' MountWizzard {mwGlob["modeldata"]} started !')
+    log.critical('')
+    log.critical('----------------------------------------------------')
+    log.critical(f' Platform         : {platform.system()}')
+    log.critical(f' Release          : {platform.release()}')
+    log.critical(f' Machine          : {platform.machine()}')
+    log.critical(f' CPU              : {platform.processor()}')
+    log.critical(f' Python           : {platform.python_version()}')
+    log.critical(f' PyQt5            : {PyQt5.QtCore.PYQT_VERSION_STR}')
+    log.critical(f' Qt               : {PyQt5.QtCore.QT_VERSION_STR}')
+    log.critical(f' Node             : {platform.node()}')
 
     # in some environments I don't get a fully qualified host name
     try:
         hostSummary = socket.gethostbyname_ex(socket.gethostname())
     except socket.herror:
-        logging.warning('Could not read properly host configuration')
+        log.warning('Could not read properly host configuration')
     except socket.gaierror:
-        logging.warning('Could not read properly host configuration')
+        log.warning('Could not read properly host configuration')
     else:
         hostsList = hostSummary[2]
         host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
         for hostname in host:
-            logging.info(f' IP addr.         : {hostname}')
-        logging.info(f' Hosts            : {hostSummary}')
+            log.critical(f' IP addr.         : {hostname}')
+        log.critical(f' Hosts            : {hostSummary}')
 
-    logging.info(f' Environment is   : {"frozen" if mwGlob["frozen"] else "live"}')
-    logging.info(f' Actual workdir   : {mwGlob["workDir"]}')
-    logging.info(f' Bundle dir       : {mwGlob["bundleDir"]}')
-    logging.info(f' mountwizzard4    : {version("mountwizzard4")}')
-    logging.info(f' indibase         : {version("indibase")}')
-    logging.info(f' mountcontrol     : {version("mountcontrol")}')
-    logging.info(f' sys.argv[0]      : {sys.argv[0]}')
-    logging.info(f' os.path.basename : {os.path.basename(sys.argv[0])}')
-    logging.info(f' sys.executable   : {sys.executable}')
+    log.critical(f' Environment is   : {"frozen" if mwGlob["frozen"] else "live"}')
+    log.critical(f' Actual workdir   : {mwGlob["workDir"]}')
+    log.critical(f' Bundle dir       : {mwGlob["bundleDir"]}')
+    log.critical(f' mountwizzard4    : {version("mountwizzard4")}')
+    log.critical(f' indibase         : {version("indibase")}')
+    log.critical(f' mountcontrol     : {version("mountcontrol")}')
+    log.critical(f' sys.argv[0]      : {sys.argv[0]}')
+    log.critical(f' os.path.basename : {os.path.basename(sys.argv[0])}')
+    log.critical(f' sys.executable   : {sys.executable}')
 
-    logging.info('----------------------------------------------------')
-    logging.info('')
+    log.critical('----------------------------------------------------')
+    log.critical('')
     return True
 
 

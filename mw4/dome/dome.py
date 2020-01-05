@@ -22,6 +22,7 @@ import logging
 # external packages
 import PyQt5
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.dome.domeIndi import DomeIndi
 from mw4.dome.domeAlpaca import DomeAlpaca
 
@@ -54,6 +55,7 @@ class Dome:
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, app):
 

@@ -33,6 +33,7 @@ from astropy.wcs import WCS
 import astropy.wcs
 import numpy as np
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.base import tpool
 from mw4.base import transform
 from mw4.astrometry.astrometryNET import AstrometryNET
@@ -79,6 +80,7 @@ class Astrometry:
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, app, tempDir=''):
 

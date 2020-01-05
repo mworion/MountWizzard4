@@ -32,6 +32,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 # local import
+from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
 from mw4.base import transform
@@ -65,6 +66,7 @@ class ImageWindow(widget.MWidget):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, app):
         super().__init__()

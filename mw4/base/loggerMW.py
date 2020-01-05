@@ -77,7 +77,7 @@ class CustomLogger(logging.LoggerAdapter):
         :param kwargs:
         :return:
         """
-        print('log adapter:', msg)
+        # print('log adapter:', msg)
 
         return f'{msg}', kwargs
 

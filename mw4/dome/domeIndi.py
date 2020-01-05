@@ -22,6 +22,7 @@ import logging
 # external packages
 import PyQt5
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.base.indiClass import IndiClass
 
 
@@ -37,6 +38,7 @@ class DomeIndi(IndiClass):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     # update rate to 1000 milli seconds for setting indi server
     UPDATE_RATE = 1000

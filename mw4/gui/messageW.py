@@ -27,7 +27,7 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
-import mw4
+from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets import message_ui
 from indibase import qtIndiBase
@@ -43,6 +43,7 @@ class MessageWindow(widget.MWidget):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, app):
         super().__init__()

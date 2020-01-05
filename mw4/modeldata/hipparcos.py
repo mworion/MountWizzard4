@@ -23,6 +23,7 @@ import logging
 import numpy as np
 import astropy._erfa as erfa
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.modeldata.alignstars import generateAlignStars
 
 
@@ -45,6 +46,7 @@ class Hipparcos(object):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self,
                  app=None,

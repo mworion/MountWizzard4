@@ -22,6 +22,7 @@ import logging
 # external packages
 import PyQt5
 # local imports
+from mw4.base.loggerMW import CustomLogger
 
 
 class Remote(PyQt5.QtCore.QObject):
@@ -39,6 +40,7 @@ class Remote(PyQt5.QtCore.QObject):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self,
                  app=None,

@@ -31,6 +31,7 @@ import skyfield
 from mountcontrol import qtmount
 from importlib_metadata import version
 # local import
+from mw4.base.loggerMW import CustomLogger
 from mw4.gui.mainW import MainWindow
 from mw4.gui.messageW import MessageWindow
 from mw4.gui.hemisphereW import HemisphereWindow
@@ -71,7 +72,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     __all__ = ['MountWizzard4',
                ]
     __version__ = version('mountwizzard4')
+
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     # central message and logging dispatching
     message = PyQt5.QtCore.pyqtSignal(str, int)

@@ -25,6 +25,7 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 # local import
+from mw4.base.loggerMW import CustomLogger
 from mw4.gui.widget import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
@@ -74,6 +75,7 @@ class MainWindow(MWidget,
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, app):
         self.app = app

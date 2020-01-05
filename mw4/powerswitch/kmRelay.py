@@ -25,6 +25,7 @@ import time
 import PyQt5
 import requests
 # local imports
+from mw4.base.loggerMW import CustomLogger
 
 
 class KMRelay(PyQt5.QtCore.QObject):
@@ -46,6 +47,7 @@ class KMRelay(PyQt5.QtCore.QObject):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     # polling cycle for relay box
     CYCLE_POLLING = 1000

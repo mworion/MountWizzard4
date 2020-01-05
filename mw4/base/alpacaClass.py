@@ -25,6 +25,7 @@ import datetime
 import PyQt5.QtCore
 import requests
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.base.tpool import Worker
 
 
@@ -65,6 +66,7 @@ class AlpacaClass(object):
     __all__ = ['AlpacaClass']
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     CYCLE = 2000
 

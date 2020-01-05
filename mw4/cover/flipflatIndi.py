@@ -23,6 +23,7 @@ from datetime import datetime
 # external packages
 import numpy as np
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.base.indiClass import IndiClass
 
 
@@ -37,6 +38,7 @@ class FlipFlatIndi(IndiClass):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 1

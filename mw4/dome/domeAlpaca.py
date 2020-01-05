@@ -24,6 +24,7 @@ from datetime import datetime
 import PyQt5
 import numpy as np
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.base.alpacaClass import Dome
 from mw4.base.tpool import Worker
 
@@ -39,6 +40,7 @@ class DomeAlpaca(Dome):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app)

@@ -24,6 +24,7 @@ import PyQt5.QtCore
 import numpy as np
 import requests
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.base.tpool import Worker
 
 
@@ -59,6 +60,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self,
                  app=None,

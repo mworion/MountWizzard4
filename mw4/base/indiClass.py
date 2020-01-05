@@ -25,6 +25,7 @@ import PyQt5
 import numpy as np
 from indibase import qtIndiBase
 # local imports
+from mw4.base.loggerMW import CustomLogger
 
 
 class IndiClass(object):
@@ -38,6 +39,7 @@ class IndiClass(object):
     __all__ = ['IndiClass']
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     RETRY_DELAY = 1500
     NUMBER_RETRY = 3

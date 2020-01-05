@@ -24,6 +24,7 @@ from PyQt5.QtCore import Qt
 import PyQt5.QtWidgets
 import numpy as np
 # local import
+from mw4.base.loggerMW import CustomLogger
 from mw4.resource import resources
 
 

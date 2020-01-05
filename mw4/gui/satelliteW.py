@@ -33,6 +33,7 @@ import matplotlib.path as mpath
 import numpy as np
 from skyfield.api import EarthSatellite
 # local import
+from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets import satellite_ui
 from mw4.base import transform
@@ -65,8 +66,9 @@ class SatelliteWindow(widget.MWidget):
                'receiveSatelliteAndShow',
                'updatePositions',
                ]
-    version = '0.100.0'
+
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     # length of forecast time in hours
     FORECAST_TIME = 3

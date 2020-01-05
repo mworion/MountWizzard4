@@ -21,6 +21,7 @@
 import logging
 # external packages
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.base.indiClass import IndiClass
 
 
@@ -37,6 +38,7 @@ class SensorWeatherIndi(IndiClass):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     # update rate to 1 seconds for setting indi server
     UPDATE_RATE = 1

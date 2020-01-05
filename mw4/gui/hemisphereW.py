@@ -29,6 +29,7 @@ from matplotlib.artist import Artist
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 # local import
+from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets import hemisphere_ui
 
@@ -43,6 +44,7 @@ class HemisphereWindow(widget.MWidget):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     MODE = dict(
         normal=dict(horMarker='None',

@@ -22,6 +22,7 @@ import logging
 # external packages
 import PyQt5.QtCore
 # local import
+from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 from mw4.base.indiClass import IndiClass
@@ -37,6 +38,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     # INDI device types
     indiTypes = {

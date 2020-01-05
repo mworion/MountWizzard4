@@ -26,6 +26,7 @@ import random
 import numpy as np
 import skyfield.api
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.base import transform
 
 __all__ = ['HaDecToAltAz',
@@ -91,6 +92,7 @@ class DataPoint(object):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     # data for generating greater circles, dec and step only for east, west is reversed
     DEC = {'min': [-15, 0, 15, 30, 45, 60, 75],

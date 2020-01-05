@@ -27,6 +27,7 @@ import numpy as np
 from matplotlib import ticker
 import matplotlib.pyplot as plt
 # local import
+from mw4.base.loggerMW import CustomLogger
 from mw4.base import tpool
 from mw4.gui import widget
 from mw4.gui.widgets import measure_ui
@@ -42,6 +43,7 @@ class MeasureWindow(widget.MWidget):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     NUMBER_POINTS = 250
     NUMBER_XTICKS = 5

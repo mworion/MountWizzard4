@@ -22,6 +22,7 @@ import logging
 # external packages
 import PyQt5
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.imaging.filterIndi import FilterIndi
 
 
@@ -53,6 +54,7 @@ class Filter:
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, app):
 

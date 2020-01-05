@@ -23,6 +23,7 @@ import logging
 import PyQt5
 import numpy as np
 # local imports
+from mw4.base.loggerMW import CustomLogger
 
 
 class MeasureData(object):
@@ -40,6 +41,7 @@ class MeasureData(object):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     # update rate to 1 seconds for setting indi server
     CYCLE_UPDATE_TASK = 1000

@@ -28,6 +28,7 @@ import numpy as np
 from astropy.io import fits
 from forwardable import forwardable, def_delegators
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from mw4.base import transform
 
 
@@ -54,6 +55,7 @@ class AstrometryNET(object):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, parent):
         self.parent = parent

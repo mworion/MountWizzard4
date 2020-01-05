@@ -29,8 +29,6 @@
 __all__ = ['generateAlignStars',
            ]
 
-version = '0.100.0'
-
 
 def generateAlignStars():
     """

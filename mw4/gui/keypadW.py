@@ -29,7 +29,7 @@ import PyQt5.QtWidgets
 import PyQt5.uic
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineScript
 # local import
-import mw4
+from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets import keypad_ui
 
@@ -44,6 +44,7 @@ class KeypadWindow(widget.MWidget):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, app):
         super().__init__()

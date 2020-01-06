@@ -143,8 +143,51 @@ class MyApp(PyQt5.QtWidgets.QApplication):
 
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
+    last = None
+
+    def handleButtons(self, obj, returnValue):
+        """
+
+        :param obj:
+        :param returnValue:
+        :return:
+        """
+
+        if obj.objectName() == 'MainWindowWindow':
+            return returnValue
+
+        if obj == self.last:
+            return returnValue
+        else:
+            self.last = obj
+
+        if isinstance(obj, PyQt5.QtWidgets.QTabBar):
+            self.log.warning(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
+        elif isinstance(obj, PyQt5.QtWidgets.QComboBox):
+            self.log.warning(f'Click DropDown: [{obj.objectName()}]')
+        elif isinstance(obj, PyQt5.QtWidgets.QPushButton):
+            self.log.warning(f'Click Button  : [{obj.objectName()}]')
+        elif isinstance(obj, PyQt5.QtWidgets.QRadioButton):
+            self.log.warning(f'Click Radio   : [{obj.objectName()}]:{obj.isChecked()}')
+        elif isinstance(obj, PyQt5.QtWidgets.QGroupBox):
+            self.log.warning(f'Click Group   : [{obj.objectName()}]:{obj.isChekced()}')
+        elif isinstance(obj, PyQt5.QtWidgets.QCheckBox):
+            self.log.warning(f'Click Checkbox: [{obj.objectName()}]:{obj.isChecked()}')
+        elif isinstance(obj, PyQt5.QtWidgets.QLineEdit):
+            self.log.warning(f'Click EditLine: [{obj.objectName()}]:{obj.text()}')
+        else:
+            self.log.warning(f'Click Object  : [{obj.objectName()}]')
+
+        return returnValue
 
     def notify(self, obj, event):
+        """
+
+        :param obj:
+        :param event:
+        :return:
+        """
+
         try:
             returnValue = PyQt5.QtWidgets.QApplication.notify(self, obj, event)
         except Exception as e:
@@ -161,19 +204,7 @@ class MyApp(PyQt5.QtWidgets.QApplication):
         if not event.button():
             return returnValue
 
-        if obj.objectName() == 'MainWindowWindow':
-            return returnValue
-
-        if isinstance(obj, PyQt5.QtWidgets.QTabBar):
-            self.log.warning(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
-        elif isinstance(obj, PyQt5.QtWidgets.QComboBox):
-            self.log.warning(f'Click DropDown: [{obj.objectName()}]')
-        elif isinstance(obj, PyQt5.QtWidgets.QPushButton):
-            self.log.warning(f'Click Button  : [{obj.objectName()}]')
-        elif isinstance(obj, PyQt5.QtWidgets.QCheckBox):
-            self.log.warning(f'Click Checkbox: [{obj.objectName()}]')
-        else:
-            self.log.warning(f'Click Object  : [{obj.objectName()}]')
+        returnValue = self.handleButtons(obj, returnValue)
 
         return returnValue
 

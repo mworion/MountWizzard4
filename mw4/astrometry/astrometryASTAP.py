@@ -100,12 +100,12 @@ class AstrometryASTAP(object):
         else:
             delta = time.time() - timeStart
             self.log.info(f'astap took {delta}s return code: '
-                           + str(self.process.returncode)
-                           + ' stderr: '
-                           + stderr.decode().replace('\n', ' ')
-                           + ' stdout: '
-                           + stdout.decode().replace('\n', ' ')
-                           )
+                          + str(self.process.returncode)
+                          + ' stderr: '
+                          + stderr.decode().replace('\n', ' ')
+                          + ' stdout: '
+                          + stdout.decode().replace('\n', ' ')
+                          )
 
         success = (self.process.returncode == 0)
 

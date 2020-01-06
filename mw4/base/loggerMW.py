@@ -65,6 +65,17 @@ def setupLogging():
     return True
 
 
+def setCustomLoggingLevel(level='WARN'):
+    """
+    Setting the log level according to the setting in the gui.
+
+    :return: nothing
+    """
+    logging.getLogger().setLevel(level)
+    logging.getLogger('indibase').setLevel(level)
+    logging.getLogger('mountcontrol').setLevel(level)
+
+
 class CustomLogger(logging.LoggerAdapter):
     """
     The MWLog class offers an adapter interface interface to allow a more customized
@@ -85,6 +96,5 @@ class CustomLogger(logging.LoggerAdapter):
         :param kwargs:
         :return:
         """
-        print('log adapter:', msg)
 
         return f'{msg}', kwargs

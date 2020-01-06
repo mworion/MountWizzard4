@@ -31,6 +31,7 @@ if platform.machine() != 'armv7l':
 import requests
 from importlib_metadata import version
 # local import
+from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.base import tpool
 
 
@@ -281,10 +282,10 @@ class SettMisc(object):
         else:
             delta = time.time() - timeStart
             self.log.info(f'pip install took {delta}s return code: '
-                           + str(self.process.returncode)
-                           + ' stderr: '
-                           + stderr.replace('\n', ' ')
-                           )
+                          + str(self.process.returncode)
+                          + ' stderr: '
+                          + stderr.replace('\n', ' ')
+                          )
 
         success = (self.process.returncode == 0)
         return success, versionPackage
@@ -383,21 +384,14 @@ class SettMisc(object):
 
         :return: nothing
         """
-
         if self.ui.loglevelDeepDebug.isChecked():
-            logging.getLogger().setLevel(logging.DEBUG)
-            logging.getLogger('indibase').setLevel(logging.DEBUG)
-            logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
+            setCustomLoggingLevel('DEBUG')
+
+        elif self.ui.loglevelDebug.isChecked():
+            setCustomLoggingLevel('INFO')
 
         elif self.ui.loglevelInfo.isChecked():
-            logging.getLogger().setLevel(logging.INFO)
-            logging.getLogger('indibase').setLevel(logging.INFO)
-            logging.getLogger('mountcontrol').setLevel(logging.INFO)
-
-        elif self.ui.loglevelInfo.isChecked():
-            logging.getLogger().setLevel(logging.WARN)
-            logging.getLogger('indibase').setLevel(logging.WARN)
-            logging.getLogger('mountcontrol').setLevel(logging.WARN)
+            setCustomLoggingLevel('WARN')
 
     def setupAudioGui(self):
         """

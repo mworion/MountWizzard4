@@ -165,10 +165,15 @@ class MyApp(PyQt5.QtWidgets.QApplication):
             return returnValue
 
         if isinstance(obj, PyQt5.QtWidgets.QTabBar):
-            self.log.warning(f'{event.button()} mouse Tab: '
-                             f'[{obj.tabText(obj.currentIndex())}]')
+            self.log.warning(f'Click Tab     : [{obj.tabText(obj.currentIndex())}]')
+        elif isinstance(obj, PyQt5.QtWidgets.QComboBox):
+            self.log.warning(f'Click DropDown: [{obj.objectName()}]')
+        elif isinstance(obj, PyQt5.QtWidgets.QPushButton):
+            self.log.warning(f'Click Button  : [{obj.objectName()}]')
+        elif isinstance(obj, PyQt5.QtWidgets.QCheckBox):
+            self.log.warning(f'Click Checkbox: [{obj.objectName()}]')
         else:
-            self.log.warning(f'{event.button()} mouse Obj: [{obj.objectName()}]')
+            self.log.warning(f'Click Object  : [{obj.objectName()}]')
 
         return returnValue
 

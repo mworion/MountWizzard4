@@ -20371,9 +20371,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QRadioButton" name="loglevelDebug">
         <property name="geometry">
          <rect>
-          <x>115</x>
+          <x>70</x>
           <y>20</y>
-          <width>86</width>
+          <width>66</width>
           <height>21</height>
          </rect>
         </property>
@@ -20389,7 +20389,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Debugging</string>
+         <string>Debug</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -20400,7 +20400,7 @@ When clicking the button, you could change the value.</string>
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>96</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -20416,7 +20416,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Information</string>
+         <string>Info</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -20425,9 +20425,9 @@ When clicking the button, you could change the value.</string>
        <widget class="QRadioButton" name="loglevelDeepDebug">
         <property name="geometry">
          <rect>
-          <x>220</x>
+          <x>145</x>
           <y>20</y>
-          <width>131</width>
+          <width>101</width>
           <height>21</height>
          </rect>
         </property>
@@ -20443,7 +20443,7 @@ When clicking the button, you could change the value.</string>
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Deep Debugging</string>
+         <string>Deep Debug</string>
         </property>
         <property name="checked">
          <bool>false</bool>

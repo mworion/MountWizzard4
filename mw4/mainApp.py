@@ -133,7 +133,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         try:
             self.planets = self.mount.obsSite.loader('de421_23.bsp')
         except Exception as e:
-            self.log.error(f'Failed planets: {e}')
+            self.log.critical(f'Failed planets: {e}')
             self.planets = None
 
         self.relay = KMRelay(host='192.168.2.15')
@@ -431,7 +431,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             with open(fileName, 'r') as configFile:
                 configData = json.load(configFile)
         except Exception as e:
-            self.log.error('Cannot parse: {0}, error: {1}'.format(fileName, e))
+            self.log.critical('Cannot parse: {0}, error: {1}'.format(fileName, e))
             self.config = self.defaultConfig()
             return False
 

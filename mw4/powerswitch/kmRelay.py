@@ -94,7 +94,7 @@ class KMRelay(PyQt5.QtCore.QObject):
             self.log.info('Host value not configured')
             return None
         if not isinstance(value, (tuple, str)):
-            self.log.error(f'Wrong host value: {value}')
+            self.log.warning(f'Wrong host value: {value}')
             return None
         # now we got the right format
         if isinstance(value, str):
@@ -158,7 +158,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         """
 
         if result is None:
-            self.log.debug('No valid result')
+            self.log.warning('No valid result')
             return False
 
         text = result.text.replace('\r\n', ', ')
@@ -167,7 +167,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         url = result.url
         elapsed = result.elapsed
 
-        self.log.debug(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
+        self.log.info(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
 
         return True
 
@@ -200,7 +200,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         except requests.exceptions.ConnectionError:
             pass
         except Exception as e:
-            self.log.error(f'Error in request: {e}')
+            self.log.critical(f'Error in request: {e}')
 
         if debug:
             self.debugOutput(result=result)

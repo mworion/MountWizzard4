@@ -78,6 +78,7 @@ class SettMisc(object):
         """
 
         config = self.app.config['mainW']
+        self.ui.loglevelDeepDebug.setChecked(config.get('loglevelDeepDebug', True))
         self.ui.loglevelDebug.setChecked(config.get('loglevelDebug', True))
         self.ui.loglevelInfo.setChecked(config.get('loglevelInfo', False))
         self.setLoggingLevel()
@@ -105,6 +106,7 @@ class SettMisc(object):
         """
 
         config = self.app.config['mainW']
+        config['loglevelDeepDebug'] = self.ui.loglevelDeepDebug.isChecked()
         config['loglevelDebug'] = self.ui.loglevelDebug.isChecked()
         config['loglevelInfo'] = self.ui.loglevelInfo.isChecked()
         config['isOnline'] = self.ui.isOnline.isChecked()
@@ -147,7 +149,7 @@ class SettMisc(object):
         try:
             response = requests.get(url).json()
         except Exception as e:
-            self.log.error(f'Cannot determine package version: {e}')
+            self.log.critical(f'Cannot determine package version: {e}')
             return None
         else:
             vPackage = reversed(list(response['releases'].keys()))
@@ -269,16 +271,16 @@ class SettMisc(object):
             _, stderr = self.process.communicate(timeout=timeout)
 
         except subprocess.TimeoutExpired as e:
-            self.log.debug(e)
+            self.log.critical(e)
             return False
 
         except Exception as e:
-            self.log.error(f'error: {e} happened')
+            self.log.critical(f'error: {e} happened')
             return False
 
         else:
             delta = time.time() - timeStart
-            self.log.debug(f'pip install took {delta}s return code: '
+            self.log.info(f'pip install took {delta}s return code: '
                            + str(self.process.returncode)
                            + ' stderr: '
                            + stderr.replace('\n', ' ')
@@ -382,7 +384,7 @@ class SettMisc(object):
         :return: nothing
         """
 
-        if self.ui.loglevelDebug.isChecked():
+        if self.ui.loglevelDeepDebug.isChecked():
             logging.getLogger().setLevel(logging.DEBUG)
             logging.getLogger('indibase').setLevel(logging.DEBUG)
             logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
@@ -391,6 +393,11 @@ class SettMisc(object):
             logging.getLogger().setLevel(logging.INFO)
             logging.getLogger('indibase').setLevel(logging.INFO)
             logging.getLogger('mountcontrol').setLevel(logging.INFO)
+
+        elif self.ui.loglevelInfo.isChecked():
+            logging.getLogger().setLevel(logging.WARN)
+            logging.getLogger('indibase').setLevel(logging.WARN)
+            logging.getLogger('mountcontrol').setLevel(logging.WARN)
 
     def setupAudioGui(self):
         """

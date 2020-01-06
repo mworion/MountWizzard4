@@ -165,9 +165,10 @@ class MyApp(PyQt5.QtWidgets.QApplication):
             return returnValue
 
         if isinstance(obj, PyQt5.QtWidgets.QTabBar):
-            self.log.info(f'{event.button()} mouse Tab: [{obj.tabText(obj.currentIndex())}]')
+            self.log.warning(f'{event.button()} mouse Tab: '
+                             f'[{obj.tabText(obj.currentIndex())}]')
         else:
-            self.log.info(f'{event.button()} mouse Obj: [{obj.objectName()}]')
+            self.log.warning(f'{event.button()} mouse Obj: [{obj.objectName()}]')
 
         return returnValue
 

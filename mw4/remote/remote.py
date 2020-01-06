@@ -174,6 +174,6 @@ class Remote(PyQt5.QtCore.QObject):
         """
 
         connection = self.clientConnection.peerAddress().toString()
-        self.log.error(f'Connection from {connection} failed, error: {socketError}')
+        self.log.critical(f'Connection from {connection} failed, error: {socketError}')
 
         return True

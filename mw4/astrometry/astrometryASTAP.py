@@ -92,14 +92,14 @@ class AstrometryASTAP(object):
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
-            self.log.debug(e)
+            self.log.critical(e)
             return False
         except Exception as e:
-            self.log.error(f'error: {e} happened')
+            self.log.critical(f'error: {e} happened')
             return False
         else:
             delta = time.time() - timeStart
-            self.log.debug(f'astap took {delta}s return code: '
+            self.log.info(f'astap took {delta}s return code: '
                            + str(self.process.returncode)
                            + ' stderr: '
                            + stderr.decode().replace('\n', ' ')
@@ -202,7 +202,7 @@ class AstrometryASTAP(object):
 
         if not os.path.isfile(wcsPath):
             self.result['message'] = 'solve failed'
-            self.log.debug(f'solve files for [{wcsPath}] missing')
+            self.log.info(f'solve files for [{wcsPath}] missing')
             return False
 
         with open(wcsPath) as wcsTextFile:

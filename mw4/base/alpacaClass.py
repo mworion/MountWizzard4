@@ -163,11 +163,11 @@ class AlpacaClass(object):
         except requests.exceptions.ConnectionError:
             return {}
         except Exception as e:
-            self.log.error(f'Error in request: {e}')
+            self.log.critical(f'Error in request: {e}')
             return {}
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.error(f'{response.text}')
+            self.log.info(f'{response.text}')
             return None
 
         response = response.json()
@@ -193,11 +193,11 @@ class AlpacaClass(object):
         except requests.exceptions.ConnectionError:
             return {}
         except Exception as e:
-            self.log.error(f'Error in request: {e}')
+            self.log.critical(f'Error in request: {e}')
             return {}
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.error(f'{response.text}')
+            self.log.info(f'{response.text}')
             return {}
 
         response = response.json()

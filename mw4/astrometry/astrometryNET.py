@@ -88,14 +88,14 @@ class AstrometryNET(object):
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
-            self.log.debug(e)
+            self.log.critical(e)
             return False
         except Exception as e:
-            self.log.error(f'error: {e} happened')
+            self.log.critical(f'error: {e} happened')
             return False
         else:
             delta = time.time() - timeStart
-            self.log.debug(f'image2xy took {delta}s return code: '
+            self.log.info(f'image2xy took {delta}s return code: '
                            + str(self.process.returncode)
                            + ' stderr: '
                            + stderr.decode().replace('\n', ' ')
@@ -144,14 +144,14 @@ class AstrometryNET(object):
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
-            self.log.debug(e)
+            self.log.critical(e)
             return False
         except Exception as e:
-            self.log.error(f'error: {e} happened')
+            self.log.critical(f'error: {e} happened')
             return False
         else:
             delta = time.time() - timeStart
-            self.log.debug(f'solve-field took {delta}s return code: '
+            self.log.info(f'solve-field took {delta}s return code: '
                            + str(self.process.returncode)
                            + ' stderr: '
                            + stderr.decode().replace('\n', ' ')
@@ -281,12 +281,12 @@ class AstrometryNET(object):
             return False
 
         if not os.path.isfile(solvedPath):
-            self.log.debug(f'solve files for [{fitsPath}] missing')
+            self.log.info(f'solve files for [{fitsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 
         if not os.path.isfile(wcsPath):
-            self.log.debug(f'solve files for [{wcsPath}] missing')
+            self.log.info(f'solve files for [{wcsPath}] missing')
             self.result['message'] = 'solve failed'
             return False
 

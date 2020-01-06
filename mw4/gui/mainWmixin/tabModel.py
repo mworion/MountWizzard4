@@ -265,7 +265,7 @@ class Model(object):
         """
 
         if self.resultQueue.empty():
-            self.log.debug('empty result queue')
+            self.log.warning('empty result queue')
             return False
 
         mPoint = self.resultQueue.get()
@@ -336,7 +336,7 @@ class Model(object):
         """
 
         if self.solveQueue.empty():
-            self.log.debug('empty solve queue')
+            self.log.warning('empty solve queue')
             return False
 
         mPoint = self.solveQueue.get()
@@ -381,7 +381,7 @@ class Model(object):
         """
 
         if self.imageQueue.empty():
-            self.log.debug('empty image queue')
+            self.log.warning('empty image queue')
             return False
 
         mPoint = self.imageQueue.get()
@@ -575,7 +575,7 @@ class Model(object):
         if len(starList) != len(self.model):
             text = f'length starList [{len(starList)}] and length '
             text += f'model [{len(self.model)}] is different'
-            self.log.debug(text)
+            self.log.info(text)
             self.model = []
 
         for i, mPoint in enumerate(self.model):
@@ -654,7 +654,7 @@ class Model(object):
         """
 
         if len(self.model) < 3:
-            self.log.debug(f'only {len(self.model)} points available')
+            self.log.info(f'only {len(self.model)} points available')
             return False
 
         # setting signal for callback when the model in memory is refreshed

@@ -37,20 +37,28 @@ def setupLogging():
                         format='[%(asctime)s]'
                                '[%(levelname)1.1s]'
                                # '[%(threadName)-.2s]'
-                               '[%(funcName)4.4s]'
+                               # '[%(funcName)4.4s]'
                                '[%(filename)15.15s]'
                                '[%(lineno)4s]'
                                ' %(message)s',
                         handlers=[logging.FileHandler(name)],
                         datefmt='%Y-%m-%d %H:%M:%S',
                         )
+    #
+    # setting different log level for the internal libraries we shift one step up
+    # standard ERROR    will be CRITICAL    logging hard error statements without solution
+    # standard WARNING  will be ERROR       classical warnings which still enables work
+    # standard INFO     will be WARNING     all GUI interaction stuff with user
+    # standard DEBUG    will be INFO        all functional interface parameters
+    # missing TRACE     will be debug       all low level communications (IP, SPI, etc)
+    #
+    logging.getLogger('mountcontrol').setLevel(logging.INFO)
+    logging.getLogger('indibase').setLevel(logging.INFO)
 
     # setting different log level for imported packages to avoid unnecessary data
-    logging.getLogger('mountcontrol').setLevel(logging.DEBUG)
-    logging.getLogger('indibase').setLevel(logging.WARNING)
+    # urllib3 is used by requests, so we have to add this as well
     logging.getLogger('PyQt5').setLevel(logging.ERROR)
     logging.getLogger('requests').setLevel(logging.ERROR)
-    # urllib3 is used by requests, so we have to add this as well
     logging.getLogger('urllib3').setLevel(logging.ERROR)
     logging.getLogger('matplotlib').setLevel(logging.ERROR)
     logging.getLogger('astropy').setLevel(logging.ERROR)

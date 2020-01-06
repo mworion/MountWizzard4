@@ -367,7 +367,7 @@ class EnvironGui(object):
             self.log.error(f'{url} not reachable')
             return None
         except Exception as e:
-            self.log.error(f'{url} general exception: {e}')
+            self.log.critical(f'{url} general exception: {e}')
             return None
 
         if data.status_code != 200:

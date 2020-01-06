@@ -167,7 +167,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         url = result.url
         elapsed = result.elapsed
 
-        self.log.info(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
+        self.log.debug(f'Result: {url}, {reason}, {status}, {elapsed}, {text}')
 
         return True
 
@@ -196,9 +196,9 @@ class KMRelay(PyQt5.QtCore.QObject):
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
         except requests.exceptions.Timeout:
-            pass
+            self.log.info(f'Connection timeout: [{url}]')
         except requests.exceptions.ConnectionError:
-            pass
+            self.log.info(f'Connection error: [{url}]')
         except Exception as e:
             self.log.critical(f'Error in request: {e}')
 
@@ -221,7 +221,6 @@ class KMRelay(PyQt5.QtCore.QObject):
         if value is None:
             return False
         if value.reason != 'OK':
-            self.log.error('Polling error')
             return False
 
         lines = value.text.splitlines()

@@ -170,7 +170,7 @@ class MyApp(PyQt5.QtWidgets.QApplication):
         elif isinstance(obj, PyQt5.QtWidgets.QRadioButton):
             self.log.warning(f'Click Radio   : [{obj.objectName()}]:{obj.isChecked()}')
         elif isinstance(obj, PyQt5.QtWidgets.QGroupBox):
-            self.log.warning(f'Click Group   : [{obj.objectName()}]:{obj.isChekced()}')
+            self.log.warning(f'Click Group   : [{obj.objectName()}]:{obj.isChecked()}')
         elif isinstance(obj, PyQt5.QtWidgets.QCheckBox):
             self.log.warning(f'Click Checkbox: [{obj.objectName()}]:{obj.isChecked()}')
         elif isinstance(obj, PyQt5.QtWidgets.QLineEdit):

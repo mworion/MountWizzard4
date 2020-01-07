@@ -51,6 +51,7 @@ class IndiClass(object):
         self.client = qtIndiBase.Client(host=None)
         self.name = ''
         self._host = ('localhost', 7624)
+        self.data = {}
 
         self.retryCounter = 0
         self.device = None

@@ -20,7 +20,7 @@ from setuptools import setup
 
 setup(
     name='mountwizzard4',
-    version='0.145b1',
+    version='0.145',
     packages=[
         'mw4',
         'mw4.astrometry',
@@ -41,7 +41,7 @@ setup(
     ],
     python_requires='>=3.6.0, <3.8',
     install_requires=[
-        'mountcontrol==0.150',
+        'mountcontrol==0.151',
         'indibase==0.123',
         'PyQt5==5.13.2; platform_machine != "armv7l"',
         'PyQtWebEngine==5.13.2; platform_machine != "armv7l"',

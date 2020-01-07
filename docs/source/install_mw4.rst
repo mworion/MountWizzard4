@@ -30,7 +30,13 @@ packages. For python it should say 3.7.x.
 
 To install MW4 on your computer, there are some support scripts available for Windows, OSx
 and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and
-available from Github: https://github.com/mworion/MountWizzard4/tree/master/support
+available from Github:
+
+For Windows10: https://github.com/mworion/MountWizzard4/blob/master/support/Windows%20Scripts.zip
+
+For MacOs: https://github.com/mworion/MountWizzard4/blob/master/support/MAC%20Scripts.zip
+
+For Ubuntu: https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu%20Scripts.zip
 
 There is a video on youtube with the install process for Mac: https://youtu.be/xJxpx_SmrVc.
 

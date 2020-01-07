@@ -25,7 +25,8 @@ There is a video on youtube with the install process python: https://youtu.be/xJ
 
 Windows
 -------
-Depending on your Windows version please download the installer for 3.7.6 from:
+Depending on your Windows version please download or directly run the web installer for 3.7.6
+from:
 
 https://www.python.org/ftp/python/3.7.6/python-3.7.6-amd64-webinstall.exe
 

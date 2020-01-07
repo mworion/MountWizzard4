@@ -12,8 +12,8 @@ installation hints for all platforms. The installers for Windows and OSx can be 
 from python.org.
 
 .. warning::
-    Please do not use a newer version of python! Some libraries bring precompiled binaries
-    with them and they might not be available for a newer python version. The actual
+    Please do not use a newer version of python than 3.7.x! Some libraries bring precompiled
+    binaries with them and they might not be available for a newer python version. The actual
     python3.7 version is python3.7.6! A good overview what could run is in the readme on
     github.
 

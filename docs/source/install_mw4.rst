@@ -1,16 +1,32 @@
 Installing MW4
 ==============
 
-When starting with the installation of MW4, python3.7 should be successful
+When starting with the installation of MW4, python3.7.x should be successful
 installed. To check, open a terminal (available on all platforms) and run the command
+
+.. code-block:: python
+
+    python --version
+    virtualenv --version
+
+if you are on Ubuntu or Mac, you might have python 2 and python3 versions installed, please
+refer to the following command:
+
+.. code-block:: python
+
+    python3 --version
+    virtualenv --version
+
+If you have on Ubuntu and Mac mor than one python3 version installed, please refer to the
+following command:
 
 .. code-block:: python
 
     python3.7 --version
     virtualenv --version
 
-In both cases you should see the version number of the installed and available packages. For
-python it should say at least 3.7.2, better 3.7.5.
+In one of the choices you should see the version number of the installed and available
+packages. For python it should say 3.7.x.
 
 To install MW4 on your computer, there are some support scripts available for Windows, OSx
 and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and

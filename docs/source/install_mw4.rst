@@ -32,11 +32,11 @@ To install MW4 on your computer, there are some support scripts available for Wi
 and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and
 available from Github:
 
-For Windows10: https://github.com/mworion/MountWizzard4/blob/master/support/Windows%20Scripts.zip
+For Windows10: https://github.com/mworion/MountWizzard4/blob/master/support/Windows_Scripts.zip
 
-For MacOs: https://github.com/mworion/MountWizzard4/blob/master/support/MAC%20Scripts.zip
+For MacOs: https://github.com/mworion/MountWizzard4/blob/master/support/MAC_Scripts.zip
 
-For Ubuntu: https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu%20Scripts.zip
+For Ubuntu: https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip
 
 There is a video on youtube with the install process for Mac: https://youtu.be/xJxpx_SmrVc.
 
@@ -58,12 +58,6 @@ In Windows10 it looks like:
 .. image:: _static/install_mw4_win_1.png
     :align: center
     :scale: 71%
-
-.. note::
-    In windows there were two parts in the folder. A power shell file with extension .ps1
-    and a command file with extension .cmd. Both are necessary, because without admin
-    permissions to start a power shell files this setup is needed. Please use for the
-    following step the install marked in red.
 
 .. warning::
     Please closely check if your working directory is writable. Otherwise MW4 could

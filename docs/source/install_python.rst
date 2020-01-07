@@ -27,7 +27,7 @@ Windows
 -------
 Depending on your Windows version please download the installer for 3.7.6 from:
 
-https://www.python.org/ftp/python/3.7.6/python-3.7.6-webinstall.exe
+https://www.python.org/ftp/python/3.7.6/python-3.7.6-amd64-webinstall.exe
 
 and follow the installation procedure.
 

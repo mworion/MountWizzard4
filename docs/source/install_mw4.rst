@@ -38,6 +38,12 @@ For MacOs: https://github.com/mworion/MountWizzard4/blob/master/support/MAC_Scri
 
 For Ubuntu: https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip
 
+Please click the link and press download from the page:
+
+.. image:: _static/install_mw4_scripts.png
+    :align: center
+    :scale: 71%
+
 There is a video on youtube with the install process for Mac: https://youtu.be/xJxpx_SmrVc.
 
 Step 1

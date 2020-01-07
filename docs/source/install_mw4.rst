@@ -69,6 +69,21 @@ In Windows10 it looks like:
     Please closely check if your working directory is writable. Otherwise MW4 could
     not work properly!
 
+.. image:: _static/install_mw4_win_1.png
+    :align: center
+    :scale: 71%
+
+Windows10 might as you the first time of execution the following question:
+
+.. image:: _static/install_mw4_win_a.png
+    :align: center
+    :scale: 71%
+
+and you could accept that by clicking "addition information" and than execute:
+
+.. image:: _static/install_mw4_win_b.png
+    :align: center
+    :scale: 71%
 
 Step 2
 ------
@@ -97,6 +112,8 @@ In Windows10 it looks like:
 .. image:: _static/install_mw4_win_2.png
     :align: center
     :scale: 71%
+
+In Windows10 for the first time you might be asked again for permission (see above).
 
 Please use for the following step the install marked in red.
 
@@ -130,6 +147,8 @@ In Windows10 it looks like:
 .. image:: _static/install_mw4_win_3.png
     :align: center
     :scale: 71%
+
+In Windows10 for the first time you might be asked again for permission (see above).
 
 With the first run you will see a log file written and you should have a first window from MW4
 open. Please notice that there will be no visible terminal window, but a minimized power

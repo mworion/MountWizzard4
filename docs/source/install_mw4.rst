@@ -93,7 +93,7 @@ shows the progress of installation.
 
 .. code-block:: python
 
-    MW4_Install.cmd         # Windows
+    MW4_Install.bat         # Windows
     MW4_Install.sh          # Ubuntu
     MW4_Install.command     # OSx
 
@@ -130,7 +130,7 @@ Run one of the scripts
 
 .. code-block:: python
 
-    MW4_Run.cmd         # Windows
+    MW4_Run.bat         # Windows
     MW4_Run.sh          # Ubuntu
     MW4_Tun.command     # OSx
 
@@ -168,7 +168,7 @@ If you plan to upgrade MW4 to a newer release, you could use on of the
 
 .. code-block:: python
 
-    MW4_Update.cmd         # Windows
+    MW4_Update.bat         # Windows
     MW4_Update.sh          # Ubuntu
     MW4_Update.command     # OSx
 

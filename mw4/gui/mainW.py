@@ -355,7 +355,7 @@ class MainWindow(MWidget,
         if stat is None:
             self.ui.refractionGroup.setEnabled(False)
             self.ui.setRefractionManual.setEnabled(False)
-        elif stat:
+        elif stat and self.deviceStat.get('mount', None):
             self.ui.refractionGroup.setEnabled(True)
             self.ui.setRefractionManual.setEnabled(True)
         else:

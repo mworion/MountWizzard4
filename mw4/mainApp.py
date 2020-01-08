@@ -541,6 +541,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     def writeMessageQueue(self, message, mType):
         """
+        writeMessageQueue receives all signals handling the message sending and puts them in
+        a queue. the queue enables the print of messages event when the message window is not
+        open.
 
+        :param message:
+        :param mType:
+        :return: True for test purpose
         """
+
         self.messageQueue.put((message, mType))
+
+        return True

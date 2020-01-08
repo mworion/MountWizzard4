@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -12881,7 +12881,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -17605,7 +17605,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
          <string>89</string>
@@ -17767,7 +17767,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
          <string>1</string>
@@ -18034,10 +18034,10 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
-         <string>89</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -18073,7 +18073,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
          <string>1</string>
@@ -18112,7 +18112,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
          <string>1</string>
@@ -18178,7 +18178,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
          <string>1</string>
@@ -18628,7 +18628,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
          <string>1</string>
@@ -18856,7 +18856,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
          <string>1</string>
@@ -19215,7 +19215,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
          <string>1</string>
@@ -19360,7 +19360,7 @@ When clicking the button, you could change the value.</string>
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="inputMask">
-         <string>99</string>
+         <string>#99</string>
         </property>
         <property name="text">
          <string>1</string>

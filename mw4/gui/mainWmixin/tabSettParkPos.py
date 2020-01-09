@@ -163,11 +163,19 @@ class SettParkPos(object):
             try:
                 altValue = float(alt.text())
                 azValue = float(az.text())
-                posTextValue = posText.text()
+
             except Exception as e:
                 self.log.critical(f'no usable values in data: error {e}')
                 self.app.message.emit('Missing correct entries in settings', 2)
             else:
+                posTextValue = posText.text()
+
+                if altValue < -5:
+                    altValue = -5
+                elif altValue > 90:
+                    altValue = 90
+                azValue = azValue % 360
+
                 suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=altValue,
                                                             az_degrees=azValue)
                 if suc:

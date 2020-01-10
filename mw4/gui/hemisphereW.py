@@ -1361,6 +1361,11 @@ class HemisphereWindow(widget.MWidget):
         else:
             axesP = None
 
+        # drawing the canvas first
+        axes.figure.canvas.draw()
+        if axesP:
+            axesP.figure.canvas.draw()
+
         # calling renderer
         self.drawHemisphereStatic(axes=axes)
         self.drawHemisphereMoving(axes=axes)
@@ -1369,8 +1374,3 @@ class HemisphereWindow(widget.MWidget):
             self.drawHemisphereStatic(axes=axesP, polar=True)
             self.drawHemisphereMoving(axes=axesP, polar=True)
             self.drawHemisphereStars(axes=axesP, polar=True)
-
-        # drawing the canvas
-        axes.figure.canvas.draw()
-        if axesP:
-            axesP.figure.canvas.draw()

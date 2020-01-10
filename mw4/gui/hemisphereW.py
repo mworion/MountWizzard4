@@ -369,7 +369,6 @@ class HemisphereWindow(widget.MWidget):
         """
 
         if not self.mutexDraw.tryLock():
-            print('lock failed')
             return False
 
         if self.hemisphereMat.figure.axes:

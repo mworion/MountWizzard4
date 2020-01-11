@@ -289,10 +289,6 @@ class HemisphereWindow(widget.MWidget):
         """
         drawCanvas retrieves the static content axe from widget and redraws the canvas
 
-        There were some optimizations in with regard to drawing speed derived from:
-        https://stackoverflow.com/questions/8955869/why-is-plotting-with-matplotlib-so-slow
-        so whenever a draw canvas is made, I store the background and painting the
-        pointers is done via blit.
 
 
         :return: success for test
@@ -307,18 +303,22 @@ class HemisphereWindow(widget.MWidget):
             axe = self.hemisphereMat.figure.axes[0]
             axe.figure.canvas.draw()
             axe.figure.canvas.flush_events()
-            self.hemisphereBack = axe.figure.canvas.copy_from_bbox(axe.bbox)
 
         self.mutexDraw.unlock()
         return True
 
     def drawBlit(self):
         """
+        There were some optimizations in with regard to drawing speed derived from:
+        https://stackoverflow.com/questions/8955869/why-is-plotting-with-matplotlib-so-slow
+        so whenever a draw canvas is made, I store the background and painting the
+        pointers is done via blit.
 
         :return: success
         """
 
         if not self.mutexDraw.tryLock():
+            print('lock problem blit ')
             return False
 
         print('draw blit')
@@ -336,11 +336,18 @@ class HemisphereWindow(widget.MWidget):
 
     def drawBlitStars(self):
         """
+        The alignment stars were the second layer to be draw.
+
+        There were some optimizations in with regard to drawing speed derived from:
+        https://stackoverflow.com/questions/8955869/why-is-plotting-with-matplotlib-so-slow
+        so whenever a draw canvas is made, I store the background and painting the
+        pointers is done via blit.
 
         :return: success
         """
 
         if not self.mutexDraw.tryLock():
+            print('lock problem blit stars')
             return False
 
         print('draw blit stars')
@@ -1192,10 +1199,11 @@ class HemisphereWindow(widget.MWidget):
         with all their styles an coloring
 
         :param axes: matplotlib axes object
-        :return:
+        :return: success
         """
 
         if not self.mutexDraw.tryLock():
+            print('lock problem static')
             return False
 
         self.staticHorizon(axes=axes)
@@ -1203,6 +1211,7 @@ class HemisphereWindow(widget.MWidget):
         self.staticMeridianLimits(axes=axes)
         self.staticHorizonLimits(axes=axes)
         self.staticModelData(axes=axes)
+
         axes.figure.canvas.draw()
         axes.figure.canvas.flush_events()
         self.hemisphereBack = axes.figure.canvas.copy_from_bbox(axes.bbox)
@@ -1247,9 +1256,9 @@ class HemisphereWindow(widget.MWidget):
         axes.add_patch(self.pointerDome)
         return True
 
-    def drawHemisphereStars(self, axes=None):
+    def drawAlignmentStars(self, axes=None):
         """
-        drawHemisphereStars is rendering the alignment star map. this moves over time with
+        drawAlignmentStars is rendering the alignment star map. this moves over time with
         the speed of earth turning. so we have to update the rendering, but on low speed
         without having any user interaction.
 
@@ -1338,5 +1347,5 @@ class HemisphereWindow(widget.MWidget):
         axes = self.setupAxes(widget=self.hemisphereMat)
         # calling renderer
         self.drawHemisphereStatic(axes=axes)
-        self.drawHemisphereStars(axes=axes)
         self.drawHemisphereMoving(axes=axes)
+        self.drawAlignmentStars(axes=axes)

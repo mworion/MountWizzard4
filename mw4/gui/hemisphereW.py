@@ -100,6 +100,7 @@ class HemisphereWindow(widget.MWidget):
         self.hemisphereMat = self.embedMatplot(self.ui.hemisphere)
         self.hemisphereMat.parentWidget().setStyleSheet(self.BACK_BG)
         self.hemisphereBack = None
+        self.hemisphereBackStars = None
 
         self.initConfig()
         self.showWindow()
@@ -162,7 +163,6 @@ class HemisphereWindow(widget.MWidget):
         :param closeEvent:
         :return:
         """
-        self.app.update1s.disconnect(self.drawBlit)
         self.app.update10s.disconnect(self.updateAlignStar)
         self.storeConfig()
 
@@ -200,25 +200,18 @@ class HemisphereWindow(widget.MWidget):
         self.ui.checkUseHorizon.clicked.connect(self.drawHemisphere)
         self.ui.checkShowAlignStar.clicked.connect(self.drawHemisphere)
         self.app.redrawHemisphere.connect(self.drawHemisphere)
-
         self.ui.checkShowMeridian.clicked.connect(self.updateSettings)
         self.ui.checkShowCelestial.clicked.connect(self.updateSettings)
         self.app.mount.signals.settingDone.connect(self.updateSettings)
-
         self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
-
         self.app.dome.signals.azimuth.connect(self.updateDome)
         self.app.dome.signals.deviceDisconnected.connect(self.updateDome)
         self.app.dome.signals.serverDisconnected.connect(self.updateDome)
-
-        self.app.update1s.connect(self.drawBlit)
-
         self.ui.checkEditNone.clicked.connect(self.setOperationMode)
         self.ui.checkEditHorizonMask.clicked.connect(self.setOperationMode)
         self.ui.checkEditBuildPoints.clicked.connect(self.setOperationMode)
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
-
         self.app.update10s.connect(self.updateAlignStar)
 
         # finally setting the mouse handler
@@ -308,6 +301,8 @@ class HemisphereWindow(widget.MWidget):
         if not self.mutexDraw.tryLock():
             return False
 
+        print('draw canvas')
+
         if self.hemisphereMat.figure.axes:
             axe = self.hemisphereMat.figure.axes[0]
             axe.figure.canvas.draw()
@@ -323,14 +318,43 @@ class HemisphereWindow(widget.MWidget):
         :return: success
         """
 
-        if self.hemisphereMat.figure.axes and self.hemisphereBack:
+        if not self.mutexDraw.tryLock():
+            return False
+
+        print('draw blit')
+
+        if self.hemisphereMat.figure.axes and self.hemisphereBackStars:
             axe = self.hemisphereMat.figure.axes[0]
-            axe.figure.canvas.restore_region(self.hemisphereBack)
+            axe.figure.canvas.restore_region(self.hemisphereBackStars)
             self.pointerAltAz.set_visible(True)
             axe.draw_artist(self.pointerAltAz)
             axe.draw_artist(self.pointerDome)
             axe.figure.canvas.blit(axe.bbox)
 
+        self.mutexDraw.unlock()
+        return True
+
+    def drawBlitStars(self):
+        """
+
+        :return: success
+        """
+
+        if not self.mutexDraw.tryLock():
+            return False
+
+        print('draw blit stars')
+
+        if self.hemisphereMat.figure.axes and self.hemisphereBack:
+            axe = self.hemisphereMat.figure.axes[0]
+            axe.figure.canvas.restore_region(self.hemisphereBack)
+            axe.draw_artist(self.starsAlign)
+            for annotation in self.starsAlignAnnotate:
+                axe.draw_artist(annotation)
+            axe.figure.canvas.blit(axe.bbox)
+            self.hemisphereBackStars = axe.figure.canvas.copy_from_bbox(axe.bbox)
+
+        self.mutexDraw.unlock()
         return True
 
     def updateCelestialPath(self):
@@ -348,9 +372,7 @@ class HemisphereWindow(widget.MWidget):
 
         isVisible = self.celestialPath.get_visible()
         newVisible = self.ui.checkShowCelestial.isChecked()
-
         needDraw = isVisible != newVisible
-
         self.celestialPath.set_visible(newVisible)
 
         return needDraw
@@ -418,14 +440,14 @@ class HemisphereWindow(widget.MWidget):
         aktHigh = self.horizonLimitHigh.get_xy()[1]
         aktLow = self.horizonLimitLow.get_height()
 
-        if aktHigh == high and aktLow == low:
-            return False
+        needDraw = aktHigh != high or aktLow != low
 
         self.horizonLimitHigh.set_xy((0, high))
         self.horizonLimitHigh.set_height(90 - high)
         self.horizonLimitLow.set_xy((0, 0))
         self.horizonLimitLow.set_height(low)
-        return True
+
+        return needDraw
 
     def updateSettings(self):
         """
@@ -444,8 +466,7 @@ class HemisphereWindow(widget.MWidget):
         suc = self.updateMeridian(sett) or suc
 
         if suc:
-            self.drawCanvas()
-
+            self.drawHemisphere()
         return suc
 
     def updatePointerAltAz(self):
@@ -474,6 +495,8 @@ class HemisphereWindow(widget.MWidget):
         az = obsSite.Az.degrees
         self.pointerAltAz.set_data((az, alt))
 
+        self.drawBlit()
+
         return True
 
     def updateDome(self, azimuth):
@@ -497,6 +520,8 @@ class HemisphereWindow(widget.MWidget):
 
         self.pointerDome.set_xy((azimuth - 15, 0))
         self.pointerDome.set_visible(visible)
+
+        self.drawBlit()
 
         return True
 
@@ -542,6 +567,7 @@ class HemisphereWindow(widget.MWidget):
                                        visible=visible,
                                        )
             self.starsAlignAnnotate.append(annotation)
+        self.drawBlitStars()
         return True
 
     @staticmethod
@@ -802,7 +828,7 @@ class HemisphereWindow(widget.MWidget):
         self.horizonMarker.set_data(x, y)
         self.horizonFill.set_xy(np.column_stack((x, y)))
 
-        self.drawCanvas()
+        self.drawHemisphere()
         return suc
 
     def addBuildPoint(self, data=None, event=None, axes=None):
@@ -1124,7 +1150,7 @@ class HemisphereWindow(widget.MWidget):
         axes.add_patch(self.meridianTrack)
         return True
 
-    def staticAltitudeLimits(self, axes=None):
+    def staticHorizonLimits(self, axes=None):
         """
 
         :param axes: matplotlib axes object
@@ -1169,11 +1195,19 @@ class HemisphereWindow(widget.MWidget):
         :return:
         """
 
+        if not self.mutexDraw.tryLock():
+            return False
+
         self.staticHorizon(axes=axes)
-        self.staticModelData(axes=axes)
         self.staticCelestialEquator(axes=axes)
         self.staticMeridianLimits(axes=axes)
-        self.staticAltitudeLimits(axes=axes)
+        self.staticHorizonLimits(axes=axes)
+        self.staticModelData(axes=axes)
+        axes.figure.canvas.draw()
+        axes.figure.canvas.flush_events()
+        self.hemisphereBack = axes.figure.canvas.copy_from_bbox(axes.bbox)
+
+        self.mutexDraw.unlock()
 
         return True
 
@@ -1220,7 +1254,7 @@ class HemisphereWindow(widget.MWidget):
         without having any user interaction.
 
         :param axes: matplotlib axes object
-        :return:
+        :return: true for test purpose
         """
 
         visible = self.ui.checkShowAlignStar.isChecked()
@@ -1248,6 +1282,8 @@ class HemisphereWindow(widget.MWidget):
                                        visible=visible,
                                        )
             self.starsAlignAnnotate.append(annotation)
+        self.drawBlitStars()
+        return True
 
     def showMouseCoordinates(self, event):
         """
@@ -1300,10 +1336,7 @@ class HemisphereWindow(widget.MWidget):
         # clearing axes before drawing, only static visible, dynamic only when content
         # is available. visibility is handled with their update method
         axes = self.setupAxes(widget=self.hemisphereMat)
-        # drawing the canvas
-        axes.figure.canvas.draw()
         # calling renderer
         self.drawHemisphereStatic(axes=axes)
-        self.drawCanvas()
         self.drawHemisphereStars(axes=axes)
         self.drawHemisphereMoving(axes=axes)

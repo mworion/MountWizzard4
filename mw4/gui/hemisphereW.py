@@ -935,7 +935,7 @@ class HemisphereWindow(widget.MWidget):
         self.pointsBuild.set_data(x, y)
         for i, _ in enumerate(data.buildP):
             self.pointsBuildAnnotate[i].set_text('{0:2d}'.format(i))
-        self.drawCanvas()
+        self.drawHemisphere()
         return suc
 
     def onMouseEdit(self, event):

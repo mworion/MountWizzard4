@@ -192,6 +192,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :param resizeEvent:
         :return: true for test purpose
         """
+        # todo resizing does not work quite fast !
 
         super().resizeEvent(resizeEvent)
         if self.startup:

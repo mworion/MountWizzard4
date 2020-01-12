@@ -82,6 +82,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     messageQueue = Queue()
     redrawHemisphere = PyQt5.QtCore.pyqtSignal()
     remoteCommand = PyQt5.QtCore.pyqtSignal(str)
+    update0_1s = PyQt5.QtCore.pyqtSignal()
     update1s = PyQt5.QtCore.pyqtSignal()
     update3s = PyQt5.QtCore.pyqtSignal()
     update10s = PyQt5.QtCore.pyqtSignal()
@@ -214,7 +215,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.timer1s = PyQt5.QtCore.QTimer()
         self.timer1s.setSingleShot(False)
         self.timer1s.timeout.connect(self.sendUpdate)
-        self.timer1s.start(500)
+        self.timer1s.start(100)
 
         # finishing for test: MW4 runs with keyword 'test' for 10 seconds an terminates
         if not hasattr(sys, 'argv'):
@@ -346,22 +347,24 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return: true for test purpose
         """
 
-        self.timerCounter += 0.5
-        if (self.timerCounter + 0.5) % 1 == 0:
+        self.timerCounter += 1
+        if self.timerCounter % 1 == 0:
+            self.update0_1s.emit()
+        if (self.timerCounter + 5) % 10 == 0:
             self.update1s.emit()
-        if (self.timerCounter + 1) % 3 == 0:
+        if (self.timerCounter + 10) % 30 == 0:
             self.update3s.emit()
-        if (self.timerCounter + 2) % 10 == 0:
+        if (self.timerCounter + 20) % 100 == 0:
             self.update10s.emit()
-        if (self.timerCounter + 2.5) % 60 == 0:
+        if (self.timerCounter + 25) % 600 == 0:
             self.update60s.emit()
-        if (self.timerCounter + 1.5) % 180 == 0:
+        if (self.timerCounter + 12) % 1800 == 0:
             self.update3m.emit()
-        if (self.timerCounter + 1.5) % 600 == 0:
+        if (self.timerCounter + 13) % 6000 == 0:
             self.update10m.emit()
-        if (self.timerCounter + 1.5) % 1800 == 0:
+        if (self.timerCounter + 14) % 18000 == 0:
             self.update30m.emit()
-        if (self.timerCounter + 1.5) % 3600 == 0:
+        if (self.timerCounter + 15) % 36000 == 0:
             self.update1h.emit()
         return True
 

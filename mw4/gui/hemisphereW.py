@@ -80,6 +80,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.initUI()
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.startup = True
+        self.resizeTimerValue = -1
 
         # attributes to be stored in class
         self.pointerAltAz = None
@@ -163,6 +164,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         :return:
         """
         self.app.update10s.disconnect(self.updateAlignStar)
+        self.app.update0_1s.disconnect(self.resizeTimer)
         self.storeConfig()
 
         # signals for gui
@@ -186,18 +188,28 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         plt.close(self.hemisphereMat.figure)
         super().closeEvent(closeEvent)
 
-    def resizeEvent(self, resizeEvent):
+    def resizeEvent(self, event):
         """
 
-        :param resizeEvent:
+        :param event:
         :return: true for test purpose
         """
-        # todo resizing does not work quite fast !
 
-        super().resizeEvent(resizeEvent)
+        # todo: better than the timer is to implement an event filter
+
+        super().resizeEvent(event)
         if self.startup:
             self.startup = False
         else:
+            self.resizeTimerValue = 3
+
+    def resizeTimer(self):
+        """
+
+        :return:
+        """
+        self.resizeTimerValue -= 1
+        if self.resizeTimerValue == 0:
             self.drawHemisphere()
 
     def showWindow(self):
@@ -223,6 +235,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.checkPolarAlignment.clicked.connect(self.setOperationMode)
         self.ui.checkShowAlignStar.clicked.connect(self.configOperationMode)
         self.app.update10s.connect(self.updateAlignStar)
+        self.app.update0_1s.connect(self.resizeTimer)
 
         # finally setting the mouse handler
         self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',

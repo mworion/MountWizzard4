@@ -1826,6 +1826,65 @@ class Telescope(AlpacaClass):
         self.put("unpark")
 
 
+class ObservingConditions(AlpacaClass):
+    """ObservingConditions  specific methods."""
+
+    logger = logging.getLogger(__name__)
+
+    def averageperiod(self, AveragePeriod=None):
+        if Position is None:
+            return self.get("position")
+        self.put("position", AveragePeriod=AveragePeriod)
+
+    def cloudcover(self):
+        return self.get("cloudcover")
+
+    def dewpoint(self):
+        return self.get("dewpoint")
+
+    def humidity(self):
+        return self.get("humidity")
+
+    def pressure(self):
+        return self.get("pressure")
+
+    def rainrate(self):
+        return self.get("rainrate")
+
+    def skybrightness(self):
+        return self.get("skybrightness")
+
+    def skyquality(self):
+        return self.get("skyquality")
+
+    def skytemperature(self):
+        return self.get("skytemperature")
+
+    def starfwhm(self):
+        return self.get("starfwhm")
+
+    def temperature(self):
+        return self.get("temperature")
+
+    def winddirection(self):
+        return self.get("winddirection")
+
+    def windgust(self):
+        return self.get("windgust")
+
+    def windspeed(self):
+        return self.get("windspeed")
+
+    def refresh(self):
+        self.put("refresh")
+
+    def sensordescription(self):
+        return self.get("sensordescription")
+
+    def timesincelastupdate(self):
+        return self.get("timesincelastupdate")
+
+
 if __name__ == '__main__':
     import time
 

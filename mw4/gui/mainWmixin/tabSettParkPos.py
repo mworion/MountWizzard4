@@ -72,6 +72,13 @@ class SettParkPos(object):
         """
 
         config = self.app.config['mainW']
+
+        self.ui.domeRadius.setValue(config.get('domeRadius', 3))
+        self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
+        self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
+        self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
+        self.ui.offOTA.setValue(config.get('offOTA', 0))
+
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
         self.toggleUseGeometry()
 
@@ -98,6 +105,11 @@ class SettParkPos(object):
         """
 
         config = self.app.config['mainW']
+        config['domeRadius'] = self.ui.domeRadius.value()
+        config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
+        config['domeEastOffset'] = self.ui.domeEastOffset.value()
+        config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
+        config['offOTA'] = self.ui.offOTA.value()
         config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
 
         for i, textField in enumerate(self.posTexts):

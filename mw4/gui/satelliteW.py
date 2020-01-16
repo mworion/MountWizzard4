@@ -664,6 +664,21 @@ class SatelliteWindow(widget.MWidget):
         axe.tick_params(axis='x',
                         colors=self.M_BLUE,
                         labelsize=12)
+        axeTop = axe.twiny()
+        axeTop.set_facecolor((0, 0, 0, 0))
+        axeTop.set_xlim(0, 360)
+        axeTop.tick_params(axis='x',
+                           top=True,
+                           colors='#2090C0',
+                           labelsize=12)
+        axeTop.set_xticks(np.arange(0, 361, 45))
+        axeTop.grid(axis='both', visible=False)
+        axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
+        axeTop.spines['bottom'].set_color('#2090C0')
+        axeTop.spines['top'].set_color('#2090C0')
+        axeTop.spines['left'].set_color('#2090C0')
+        axeTop.spines['right'].set_color('#2090C0')
+
         axe.set_xticks(np.arange(0, 361, 45))
         axe.tick_params(axis='y',
                         colors=self.M_BLUE,
@@ -679,26 +694,6 @@ class SatelliteWindow(widget.MWidget):
                        color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
-
-        axe.text(0, 1, 'N',
-                 fontsize=14,
-                 color=self.M_BLUE)
-
-        axe.text(85, 1, 'E',
-                 fontsize=14,
-                 color=self.M_BLUE)
-
-        axe.text(175, 1, 'S',
-                 fontsize=14,
-                 color=self.M_BLUE)
-
-        axe.text(265, 1, 'W',
-                 fontsize=14,
-                 color=self.M_BLUE)
-
-        axe.text(345, 1, 'N',
-                 fontsize=14,
-                 color=self.M_BLUE)
 
         # empty chart if no satellite is chosen
         if difference is None:

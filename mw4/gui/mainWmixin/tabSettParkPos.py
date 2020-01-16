@@ -237,23 +237,23 @@ class SettParkPos(object):
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_OTA_OFFSET', 0))
         self.app.mount.geometry.offPlateOTA = value
-        self.ui.offOTA.setText(f'{value:3.2f}')
+        self.ui.offOTA.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_DOME_RADIUS', 0))
         self.app.mount.geometry.domeRadius = value
-        self.ui.domeRadius.setText(f'{value:3.2f}')
+        self.ui.domeRadius.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT', 0))
         self.app.mount.geometry.offNorth = value
-        self.ui.domeNorthOffset.setText(f'{value:3.2f}')
+        self.ui.domeNorthOffset.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT', 0))
         self.app.mount.geometry.offEast = value
-        self.ui.domeEastOffset.setText(f'{value:3.2f}')
+        self.ui.domeEastOffset.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
         self.app.mount.geometry.offVert = value
-        self.ui.domeVerticalOffset.setText(f'{value:3.2f}')
+        self.ui.domeVerticalOffset.setValue(value)
 
         return True
 

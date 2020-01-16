@@ -132,6 +132,8 @@ class MeasureWindow(widget.MWidget):
 
         :return: True for test purpose
         """
+        if 'measureW' not in self.app.config:
+            self.app.config['measureW'] = {}
         config = self.app.config['measureW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()

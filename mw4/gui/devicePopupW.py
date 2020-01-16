@@ -135,12 +135,10 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         tabIndex = self.ui.tab.indexOf(tabWidget)
         self.ui.tab.setCurrentIndex(tabIndex)
 
-        # remove unnecessary tabs
-        # todo: should I keep this ?
-        # for index in range(0, self.ui.tab.count()):
-        #     if self.ui.tab.tabText(index).lower() in self.framework:
-        #         continue
-        #     self.ui.tab.setTabEnabled(index, False)
+        for index in range(0, self.ui.tab.count()):
+            if self.ui.tab.tabText(index).lower() in self.framework:
+                continue
+            self.ui.tab.setTabEnabled(index, False)
 
     def storeConfig(self):
         """

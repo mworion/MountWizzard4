@@ -311,7 +311,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return: success for test purpose
         """
 
-        config = self.config
+        config = self.config = {}
         location = self.mount.obsSite.location
         if location is not None:
             config['topoLat'] = location.latitude.degrees

@@ -145,6 +145,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         :return: True for test purpose
         """
+        if 'hemisphereW' not in self.app.config:
+            self.app.config['hemisphereW'] = {}
         config = self.app.config['hemisphereW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()

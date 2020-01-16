@@ -12881,7 +12881,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -16639,274 +16639,69 @@ When clicking the button, you could change the value.</string>
          <string>OTA offset</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="domeRadius">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QDoubleSpinBox" name="domeRadius">
         <property name="geometry">
          <rect>
           <x>240</x>
           <y>20</y>
           <width>86</width>
-          <height>21</height>
+          <height>22</height>
          </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
        </widget>
-       <widget class="QLineEdit" name="domeNorthOffset">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QDoubleSpinBox" name="domeNorthOffset">
         <property name="geometry">
          <rect>
           <x>240</x>
           <y>50</y>
           <width>86</width>
-          <height>21</height>
+          <height>22</height>
          </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
        </widget>
-       <widget class="QLineEdit" name="domeEastOffset">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QDoubleSpinBox" name="domeEastOffset">
         <property name="geometry">
          <rect>
           <x>240</x>
           <y>80</y>
           <width>86</width>
-          <height>21</height>
+          <height>22</height>
          </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
        </widget>
-       <widget class="QLineEdit" name="domeVerticalOffset">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QDoubleSpinBox" name="domeVerticalOffset">
         <property name="geometry">
          <rect>
           <x>240</x>
           <y>110</y>
           <width>86</width>
-          <height>21</height>
+          <height>22</height>
          </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
-        </property>
        </widget>
-       <widget class="QLineEdit" name="offOTA">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QDoubleSpinBox" name="offOTA">
         <property name="geometry">
          <rect>
           <x>240</x>
           <y>140</y>
           <width>86</width>
-          <height>21</height>
+          <height>22</height>
          </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>25</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="maxLength">
-         <number>50</number>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="dragEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>false</bool>
         </property>
        </widget>
       </widget>
@@ -22870,11 +22665,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>consumptionWattHours</tabstop>
   <tabstop>astrometryConnected</tabstop>
   <tabstop>checkDomeGeometry</tabstop>
-  <tabstop>domeRadius</tabstop>
-  <tabstop>domeNorthOffset</tabstop>
-  <tabstop>domeEastOffset</tabstop>
-  <tabstop>domeVerticalOffset</tabstop>
-  <tabstop>offOTA</tabstop>
   <tabstop>checkJNow</tabstop>
   <tabstop>tracking</tabstop>
   <tabstop>flipMount</tabstop>

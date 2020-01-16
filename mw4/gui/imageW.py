@@ -172,7 +172,8 @@ class ImageWindow(widget.MWidget):
 
         :return: True for test purpose
         """
-
+        if 'imageW' not in self.app.config:
+            self.app.config['imageW'] = {}
         config = self.app.config['imageW']
         config['winPosX'] = self.pos().x()
         config['winPosY'] = self.pos().y()

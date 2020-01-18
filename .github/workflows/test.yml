@@ -17,7 +17,7 @@ jobs:
         python-version: [3.8]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
@@ -27,8 +27,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python setup sdist
-        python -m pip install mw4.tar
+        python $GITHUB_WORKSPACE/setup.py sdist
+        python -m pip install $GITHUB_WORKSPACE/dist/mountwizzard*.tar.gz
 
     - name: Lint with flake8
       run: |

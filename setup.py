@@ -49,7 +49,7 @@ setup(
         'astropy==4.0',
         'requests==2.22.0',
         'requests_toolbelt==0.9.1',
-        'numpy==1.18.0',
+        'numpy==1.18.1',
         'skyfield==1.16',
         'forwardable==0.4.1',
         'qimage2ndarray==1.8.2',

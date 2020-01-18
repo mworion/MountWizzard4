@@ -18,8 +18,6 @@
 ###########################################################
 from setuptools import setup
 
-#
-
 setup(
     name='mountwizzard4',
     version='0.146b4',

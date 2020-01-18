@@ -67,7 +67,7 @@ class Camera:
         self.framework = None
         self.run = {
             'indi': CameraIndi(self.app, self.signals, self.data),
-            'alpaca': CameraIndi(self.app, self.signals, self.data),
+            'alpaca': CameraAlpaca(self.app, self.signals, self.data),
         }
         self.name = ''
 

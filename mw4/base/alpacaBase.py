@@ -142,12 +142,12 @@ class AlpacaBase(object):
         try:
             response = requests.get(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
         except requests.exceptions.Timeout:
-            return {}
+            return None
         except requests.exceptions.ConnectionError:
-            return {}
+            return None
         except Exception as e:
             self.log.critical(f'Error in request: {e}')
-            return {}
+            return None
 
         if response.status_code == 400 or response.status_code == 500:
             self.log.info(f'{response.text}')

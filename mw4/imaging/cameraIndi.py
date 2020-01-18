@@ -51,8 +51,6 @@ class CameraIndi(IndiClass):
         self.signals = signals
         self.data = data
         self.imagePath = ''
-        self.filterNames = dict()
-        self.filterNumber = 0
 
     def setUpdateConfig(self, deviceName):
         """

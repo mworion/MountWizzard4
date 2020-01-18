@@ -52,8 +52,6 @@ class CameraAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
         self.imagePath = ''
-        self.filterNames = dict()
-        self.filterNumber = 0
 
         self.app.update1s.connect(self.startPollStatus)
 
@@ -64,13 +62,24 @@ class CameraAlpaca(AlpacaClass):
         """
         super().getInitialConfig()
 
-        self.data['CCD_INFO.CCD_MAX_X'] = self.client.cameraxsize()
-        self.data['CCD_INFO.CCD_MAX_Y'] = self.client.cameraysize()
-        self.data['CAN_FAST'] = self.client.canfastreadout()
-        self.data['CAN_TEMP'] = self.client.cansetccdtemperature()
-        self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = self.client.pixelsizex()
-        self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = self.client.pixelsizey()
-
+        value = self.client.cameraxsize()
+        if value is not None:
+            self.data['CCD_INFO.CCD_MAX_X'] = value
+        value = self.client.cameraysize()
+        if value is not None:
+            self.data['CCD_INFO.CCD_MAX_Y'] = value
+        value = self.client.canfastreadout()
+        if value is not None:
+            self.data['CAN_FAST'] = value
+        value = self.client.cansetccdtemperature()
+        if value is not None:
+            self.data['CAN_TEMP'] = value
+        value = self.client.pixelsizex()
+        if value is not None:
+            self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = value
+        value = self.client.pixelsizey()
+        if value is not None:
+            self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = value
         return True
 
     def emitStatus(self):
@@ -82,7 +91,6 @@ class CameraAlpaca(AlpacaClass):
 
         state = self.data['CAMERA.STATE']
         self.signals.message.emit(states[state])
-        print(data)
 
         return True
 
@@ -96,9 +104,16 @@ class CameraAlpaca(AlpacaClass):
         # expose
         # download
         # state
-        self.data['CAMERA.STATE'] = self.client.camerastate()
-        self.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = self.client.ccdtemperature()
-        self.data['IMAGEREADY'] = self.client.imageready()
+
+        value = self.client.camerastate()
+        if value is not None:
+            self.data['CAMERA.STATE'] = value
+        value = self.client.ccdtemperature()
+        if value is not None:
+            self.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = value
+        value = self.client.imageready()
+        if value is not None:
+            self.data['IMAGEREADY'] = value
 
         return True
 

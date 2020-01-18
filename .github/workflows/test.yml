@@ -3,7 +3,7 @@ name: test
 on:
   push:
     paths:
-      - 'mw4/**'
+      - '.github/workflows/test.yml'
       - 'README.rst'
 
 jobs:
@@ -27,8 +27,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python $GITHUB_WORKSPACE/setup.py sdist
-        python -m pip install $GITHUB_WORKSPACE/dist/mountwizzard*.tar.gz
+        python setup.py sdist
+        python -m pip install dist/mountwizzard*.tar.gz
 
     - name: Lint with flake8
       run: |

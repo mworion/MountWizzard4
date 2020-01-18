@@ -53,7 +53,7 @@ class CameraAlpaca(AlpacaClass):
         self.data = data
         self.imagePath = ''
 
-        self.app.update1s.connect(self.startPollStatus)
+        self.app.update1s.connect(self.pollStatus)
 
     def getInitialConfig(self):
         """
@@ -80,6 +80,25 @@ class CameraAlpaca(AlpacaClass):
         value = self.client.pixelsizey()
         if value is not None:
             self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = value
+        value = self.client.maxbinx()
+        if value is not None:
+            self.data['CCD_BINNING.HOR_BIN_MAX'] = value
+        value = self.client.maxbiny()
+        if value is not None:
+            self.data['CCD_BINNING.VERT_BIN_MAX'] = value
+        value = self.client.binx()
+        if value is not None:
+            self.data['CCD_BINNING.HOR_BIN'] = value
+        value = self.client.biny()
+        if value is not None:
+            self.data['CCD_BINNING.VERT_BIN'] = value
+        value = self.client.startx()
+        if value is not None:
+            self.data['CCD_FRAME.X'] = value
+        value = self.client.starty()
+        if value is not None:
+            self.data['CCD_FRAME.Y'] = value
+
         return True
 
     def emitStatus(self):
@@ -94,7 +113,7 @@ class CameraAlpaca(AlpacaClass):
 
         return True
 
-    def pollStatus(self):
+    def workerStatus(self):
         """
 
         :return: true for test purpose
@@ -114,10 +133,17 @@ class CameraAlpaca(AlpacaClass):
         value = self.client.imageready()
         if value is not None:
             self.data['IMAGEREADY'] = value
+        value = self.client.lastexposureduration()
+        if value is not None:
+            self.data['CCD_EXPOSURE.CCD_EXPOSURE_VALUE'] = value
+        value = self.client.fastreadout()
+        if value is not None:
+            self.data['READOUT_QUALITY.QUALITY_LOW'] = value
+            self.data['READOUT_QUALITY.QUALITY_HIGH'] = not value
 
         return True
 
-    def startPollStatus(self):
+    def status(self):
         """
 
         :return: success
@@ -126,7 +152,7 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        worker = Worker(self.pollStatus)
+        worker = Worker(self.workerStatus)
         worker.signals.result.connect(self.emitStatus)
         self.threadPool.start(worker)
         return True
@@ -139,21 +165,24 @@ class CameraAlpaca(AlpacaClass):
         """
 
         # setting fast mode:
-        quality = self.device.getSwitch('READOUT_QUALITY')
+        suc = self.data['CAN_FAST']
+        if suc:
+            self.client.fastreadout(FastReadout=True)
+        quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
         self.log.info(f'camera has readout quality entry: {quality}')
 
         return suc
 
-    def expose(self,
-               imagePath='',
-               expTime=3,
-               binning=1,
-               fastReadout=True,
-               posX=0,
-               posY=0,
-               width=1,
-               height=1,
-               ):
+    def workerExpose(self,
+                     imagePath='',
+                     expTime=3,
+                     binning=1,
+                     fastReadout=True,
+                     posX=0,
+                     posY=0,
+                     width=1,
+                     height=1,
+                     ):
         """
 
         :param imagePath:
@@ -176,8 +205,41 @@ class CameraAlpaca(AlpacaClass):
         # bin
         # frame
         # expose
+        print('exposing')
+        self.signals.saved.emit(self.imagePath)
 
         return suc
+
+    def expose(self,
+               imagePath='',
+               expTime=3,
+               binning=1,
+               fastReadout=True,
+               posX=0,
+               posY=0,
+               width=1,
+               height=1,
+               ):
+        """
+
+        :return: success
+        """
+
+        if not self.deviceConnected:
+            return False
+
+        worker = Worker(self.workerExpose,
+                        imagePath=imagePath,
+                        expTime=expTime,
+                        binning=binning,
+                        fastReadout=fastReadout,
+                        posX=posX,
+                        posY=posY,
+                        width=width,
+                        height=height)
+        # worker.signals.result.connect(self.emitStatus)
+        self.threadPool.start(worker)
+        return True
 
     def abort(self):
         """
@@ -186,9 +248,9 @@ class CameraAlpaca(AlpacaClass):
         :return: success
         """
 
-        if not self.device:
+        if not self.deviceConnected:
             return False
 
         # abort
 
-        return suc
+        return True

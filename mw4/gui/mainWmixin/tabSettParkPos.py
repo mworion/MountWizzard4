@@ -60,7 +60,7 @@ class SettParkPos(object):
 
         # signals from functions
         self.app.update1s.connect(self.updateCoverStatGui)
-        self.app.update1s.connect(self.updateDomeGeometry)
+        self.ui.copyFromDriver.clicked.connect(self.updateDomeGeometry)
 
     def initConfig(self):
         """

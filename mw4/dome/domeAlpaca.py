@@ -97,7 +97,6 @@ class DomeAlpaca(AlpacaClass):
         if self.slewing and not isSlewing:
             # start timer for settling time and emit signal afterwards
             self.settlingWait.start(self.settlingTime)
-            print(azimuth, isSlewing)
 
         return True
 

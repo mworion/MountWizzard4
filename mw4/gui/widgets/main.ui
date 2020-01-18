@@ -16651,6 +16651,9 @@ When clicking the button, you could change the value.</string>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
        </widget>
        <widget class="QDoubleSpinBox" name="domeNorthOffset">
         <property name="geometry">
@@ -16663,6 +16666,9 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="domeEastOffset">
@@ -16677,6 +16683,9 @@ When clicking the button, you could change the value.</string>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
        </widget>
        <widget class="QDoubleSpinBox" name="domeVerticalOffset">
         <property name="geometry">
@@ -16690,6 +16699,9 @@ When clicking the button, you could change the value.</string>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
        </widget>
        <widget class="QDoubleSpinBox" name="offOTA">
         <property name="geometry">
@@ -16702,6 +16714,22 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="copyFromDriver">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>170</y>
+          <width>111</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Data from Driver</string>
         </property>
        </widget>
       </widget>

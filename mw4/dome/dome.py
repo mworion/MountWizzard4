@@ -21,6 +21,7 @@
 import logging
 # external packages
 import PyQt5
+import numpy as np
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.dome.domeIndi import DomeIndi
@@ -127,6 +128,12 @@ class Dome:
                                                                          pierside=pierside)
             alt = alt.degrees
             az = az.degrees
+            # todo: correct calculation that this is not necessary
+            if alt is np.nan:
+                alt = altitude
+            if az is np.nan:
+                az = azimuth
+
         else:
             alt = altitude
             az = azimuth
@@ -134,7 +141,7 @@ class Dome:
         text = f'Slewing  dome:      az correction: {geoStat}, delta: {azimuth-az:3.1f}°'
         self.app.message.emit(text, 0)
 
-        suc = self.run[self.framework].slewToAltAz(azimuth=az)
+        suc = self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
 
         return suc
 

@@ -49,7 +49,6 @@ class DomeIndi(IndiClass):
         self.signals = signals
         self.data = data
         self.settlingTime = 0
-
         self.azimuth = -1
         self.slewing = False
 

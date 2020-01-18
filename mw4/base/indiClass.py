@@ -48,6 +48,7 @@ class IndiClass(object):
         super().__init__()
 
         self.app = app
+
         self.client = qtIndiBase.Client(host=None)
         self.name = ''
         self._host = ('localhost', 7624)

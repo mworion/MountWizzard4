@@ -25,11 +25,12 @@ import PyQt5
 import numpy as np
 # local imports
 from mw4.base.loggerMW import CustomLogger
-from mw4.base.alpacaClass import Dome
+from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.alpacaBase import Dome
 from mw4.base.tpool import Worker
 
 
-class DomeAlpaca(Dome):
+class DomeAlpaca(AlpacaClass):
     """
     the class Dome inherits all information and handling of the Dome device. there will be
     some parameters who will define the slewing position of the dome relating to the
@@ -45,17 +46,20 @@ class DomeAlpaca(Dome):
     def __init__(self, app=None, signals=None, data=None):
         super().__init__(app=app)
 
+        # as we have in the base class only the base client there, we will get more
+        # specialized with Dome (which is derived from the base class)
+        self.client = Dome()
         self.signals = signals
         self.data = data
         self.settlingTime = 0
         self.azimuth = -1
         self.slewing = False
 
+        self.app.update1s.connect(self.startPollData)
+
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
-
-        self.app.update1s.connect(self.startPollData)
 
     @property
     def settlingTime(self):
@@ -81,7 +85,7 @@ class DomeAlpaca(Dome):
 
         :return: true for test purpose
         """
-        self.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = self.azimuth()
+        self.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = self.client.azimuth()
         return True
 
     def startPollData(self):

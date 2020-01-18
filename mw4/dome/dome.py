@@ -76,10 +76,10 @@ class Dome:
 
         # signalling from subclasses to main
 
-        self.run['alpaca'].clientSignals.serverConnected.connect(self.signals.serverConnected)
-        self.run['alpaca'].clientSignals.serverDisconnected.connect(self.signals.serverDisconnected)
-        self.run['alpaca'].clientSignals.deviceConnected.connect(self.signals.deviceConnected)
-        self.run['alpaca'].clientSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+        self.run['alpaca'].client.signals.serverConnected.connect(self.signals.serverConnected)
+        self.run['alpaca'].client.signals.serverDisconnected.connect(self.signals.serverDisconnected)
+        self.run['alpaca'].client.signals.deviceConnected.connect(self.signals.deviceConnected)
+        self.run['alpaca'].client.signals.deviceDisconnected.connect(self.signals.deviceDisconnected)
         self.run['indi'].client.signals.serverConnected.connect(self.signals.serverConnected)
         self.run['indi'].client.signals.serverDisconnected.connect(self.signals.serverDisconnected)
         self.run['indi'].client.signals.deviceConnected.connect(self.signals.deviceConnected)

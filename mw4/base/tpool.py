@@ -23,6 +23,7 @@ import sys
 # external packages
 import PyQt5
 # local imports
+from mw4.base.loggerMW import CustomLogger
 
 
 __all__ = ['Worker',
@@ -51,8 +52,9 @@ class Worker(PyQt5.QtCore.QRunnable):
 
     __all__ = ['Worker',
                'run']
-    version = '1.0.0'
+
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self, fn, *args, **kwargs):
         super(Worker, self).__init__()

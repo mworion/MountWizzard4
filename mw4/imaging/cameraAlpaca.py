@@ -62,42 +62,17 @@ class CameraAlpaca(AlpacaClass):
         """
         super().getInitialConfig()
 
-        value = self.client.cameraxsize()
-        if value is not None:
-            self.data['CCD_INFO.CCD_MAX_X'] = value
-        value = self.client.cameraysize()
-        if value is not None:
-            self.data['CCD_INFO.CCD_MAX_Y'] = value
-        value = self.client.canfastreadout()
-        if value is not None:
-            self.data['CAN_FAST'] = value
-        value = self.client.cansetccdtemperature()
-        if value is not None:
-            self.data['CAN_TEMP'] = value
-        value = self.client.pixelsizex()
-        if value is not None:
-            self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = value
-        value = self.client.pixelsizey()
-        if value is not None:
-            self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = value
-        value = self.client.maxbinx()
-        if value is not None:
-            self.data['CCD_BINNING.HOR_BIN_MAX'] = value
-        value = self.client.maxbiny()
-        if value is not None:
-            self.data['CCD_BINNING.VERT_BIN_MAX'] = value
-        value = self.client.binx()
-        if value is not None:
-            self.data['CCD_BINNING.HOR_BIN'] = value
-        value = self.client.biny()
-        if value is not None:
-            self.data['CCD_BINNING.VERT_BIN'] = value
-        value = self.client.startx()
-        if value is not None:
-            self.data['CCD_FRAME.X'] = value
-        value = self.client.starty()
-        if value is not None:
-            self.data['CCD_FRAME.Y'] = value
+        self.data['CCD_INFO.CCD_MAX_X'] = self.client.cameraxsize()
+        self.data['CCD_INFO.CCD_MAX_Y'] = self.client.cameraysize()
+        self.data['CAN_FAST'] = self.client.canfastreadout()
+        self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = self.client.pixelsizex()
+        self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = self.client.pixelsizey()
+        self.data['CCD_BINNING.HOR_BIN_MAX'] = self.client.maxbinx()
+        self.data['CCD_BINNING.VERT_BIN_MAX'] = self.client.maxbiny()
+        self.data['CCD_BINNING.HOR_BIN'] = self.client.binx()
+        self.data['CCD_BINNING.VERT_BIN'] = self.client.biny()
+        self.data['CCD_FRAME.X'] = self.client.startx()
+        self.data['CCD_FRAME.Y'] = self.client.starty()
 
         return True
 
@@ -124,22 +99,13 @@ class CameraAlpaca(AlpacaClass):
         # download
         # state
 
-        value = self.client.camerastate()
-        if value is not None:
-            self.data['CAMERA.STATE'] = value
-        value = self.client.ccdtemperature()
-        if value is not None:
-            self.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = value
-        value = self.client.imageready()
-        if value is not None:
-            self.data['IMAGEREADY'] = value
-        value = self.client.lastexposureduration()
-        if value is not None:
-            self.data['CCD_EXPOSURE.CCD_EXPOSURE_VALUE'] = value
+        self.data['CAMERA.STATE'] = self.client.camerastate()
+        self.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = self.client.ccdtemperature()
+        self.data['IMAGEREADY'] = self.client.imageready()
+        self.data['CCD_EXPOSURE.CCD_EXPOSURE_VALUE'] = self.client.lastexposureduration()
         value = self.client.fastreadout()
-        if value is not None:
-            self.data['READOUT_QUALITY.QUALITY_LOW'] = value
-            self.data['READOUT_QUALITY.QUALITY_HIGH'] = not value
+        self.data['READOUT_QUALITY.QUALITY_LOW'] = value
+        self.data['READOUT_QUALITY.QUALITY_HIGH'] = not value
 
         return True
 

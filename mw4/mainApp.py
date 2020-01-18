@@ -17,7 +17,6 @@
 # Licence APL2.0
 #
 ###########################################################
-#
 # standard libraries
 import logging
 import os

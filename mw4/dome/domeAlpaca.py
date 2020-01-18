@@ -125,17 +125,6 @@ class DomeAlpaca(AlpacaClass):
         self.threadPool.start(worker)
         return True
 
-    def waitSettlingAndEmit(self):
-        """
-        waitSettlingAndEmit emit the signal for slew finished
-
-        :return: true for test purpose
-        """
-
-        self.signals.slewFinished.emit()
-
-        return True
-
     def slewToAltAz(self, altitude=0, azimuth=0):
         """
         slewToAltAz sends a command to the dome to move to azimuth / altitude. if a dome

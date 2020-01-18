@@ -1,4 +1,4 @@
-name: Python3.8 Windows
+name: test
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        os: [windows-latest]
+        os: [macos-latest]
         python-version: [3.8]
 
     steps:
@@ -27,20 +27,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install PyQt5==5.13.2
-        pip install PyQtWebEngine==5.13.2
-        pip install wakeonlan==1.1.6
-        pip install skyfield==1.16
-        pip install numpy==1.17.3
-        pip install mountcontrol
-        pip install indibase
-        pip install matplotlib==3.2.0rc1
-        pip install astropy==4.0
-        pip install requests==2.22.0
-        pip install requests_toolbelt==0.9.1
-        pip install forwardable==0.4.1
-        pip install qimage2ndarray==1.8
-        pip install importlib_metadata==0.23
+        python setup sdist
+        python -m pip install mw4.tar
 
     - name: Lint with flake8
       run: |

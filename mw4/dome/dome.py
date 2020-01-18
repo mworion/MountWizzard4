@@ -76,7 +76,6 @@ class Dome:
         self.isGeometry = False
 
         # signalling from subclasses to main
-
         alpacaSignals = self.run['alpaca'].client.signals
         alpacaSignals.serverConnected.connect(self.signals.serverConnected)
         alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
@@ -120,6 +119,29 @@ class Dome:
     def settlingTime(self, value):
         if self.framework in self.run.keys():
             self.run[self.framework].settlingTime = value
+
+    def startCommunication(self):
+        """
+
+        """
+
+        if self.framework in self.run.keys():
+            suc = self.run[self.framework].startCommunication()
+            return suc
+        else:
+            return False
+
+    def stopCommunication(self):
+        """
+
+        """
+
+        if self.framework in self.run.keys():
+            self.signals.message.emit('')
+            suc = self.run[self.framework].stopCommunication()
+            return suc
+        else:
+            return False
 
     def slewDome(self, altitude=0, azimuth=0):
         """
@@ -165,26 +187,3 @@ class Dome:
         suc = self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
 
         return suc
-
-    def startCommunication(self):
-        """
-
-        """
-
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].startCommunication()
-            return suc
-        else:
-            return False
-
-    def stopCommunication(self):
-        """
-
-        """
-
-        if self.framework in self.run.keys():
-            self.signals.message.emit('')
-            suc = self.run[self.framework].stopCommunication()
-            return suc
-        else:
-            return False

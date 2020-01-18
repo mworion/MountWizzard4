@@ -24,6 +24,7 @@ import PyQt5
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.imaging.cameraIndi import CameraIndi
+from mw4.imaging.cameraAlpaca import CameraAlpaca
 
 
 class CameraSignals(PyQt5.QtCore.QObject):
@@ -66,6 +67,7 @@ class Camera:
         self.framework = None
         self.run = {
             'indi': CameraIndi(self.app, self.signals, self.data),
+            'alpaca': CameraIndi(self.app, self.signals, self.data),
         }
         self.name = ''
 
@@ -73,10 +75,17 @@ class Camera:
         self.isGeometry = False
 
         # signalling from subclasses to main
-        self.run['indi'].client.signals.serverConnected.connect(self.signals.serverConnected)
-        self.run['indi'].client.signals.serverDisconnected.connect(self.signals.serverDisconnected)
-        self.run['indi'].client.signals.deviceConnected.connect(self.signals.deviceConnected)
-        self.run['indi'].client.signals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+        alpacaSignals = self.run['alpaca'].client.signals
+        alpacaSignals.serverConnected.connect(self.signals.serverConnected)
+        alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+        alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)
+        alpacaSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
+        indiSignals = self.run['indi'].client.signals
+        indiSignals.serverConnected.connect(self.signals.serverConnected)
+        indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+        indiSignals.deviceConnected.connect(self.signals.deviceConnected)
+        indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
     @property
     def host(self):

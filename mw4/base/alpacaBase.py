@@ -109,6 +109,7 @@ class AlpacaBase(object):
         valueSplit = value.split(':')
         if len(valueSplit) != 2:
             self.log.info(f'malformed name: {value}')
+            return
         self.deviceType, self.number = valueSplit
         self.number = int(self.number)
         self.baseUrl = self.generateBaseUrl()

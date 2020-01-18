@@ -201,7 +201,7 @@ class AlpacaClass(object):
         self.client.signals.serverDisconnected.emit({f'{self.name}': 0})
         self.app.message.emit(f'Alpaca device removed:  [{self.name}]', 0)
 
-        worker = Worker(self.connected, Connected=False)
+        worker = Worker(self.client.connected, Connected=False)
         worker.signals.result.connect(self.stopTimer)
         self.threadPool.start(worker)
 

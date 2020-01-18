@@ -52,7 +52,7 @@ class DomeAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
         self.settlingTime = 0
-        self.azimuth = -1
+        self.azimuth = 0
         self.slewing = False
 
         self.app.update1s.connect(self.startPollData)
@@ -69,6 +69,15 @@ class DomeAlpaca(AlpacaClass):
     def settlingTime(self, value):
         self._settlingTime = value
 
+    def waitSettlingAndEmit(self):
+        """
+        waitSettlingAndEmit emit the signal for slew finished
+
+        :return: true for test purpose
+        """
+        self.signals.slewFinished.emit()
+        return True
+
     def emitData(self):
         """
 
@@ -76,7 +85,19 @@ class DomeAlpaca(AlpacaClass):
         """
 
         azimuth = self.data.get('ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION', 0)
+        isSlewing = self.data.get('slewing', False)
+
         self.signals.azimuth.emit(azimuth)
+
+        if isSlewing:
+            self.signals.message.emit('slewing')
+        else:
+            self.signals.message.emit('')
+
+        if self.slewing and not isSlewing:
+            # start timer for settling time and emit signal afterwards
+            self.settlingWait.start(self.settlingTime)
+            print(azimuth, isSlewing)
 
         return True
 
@@ -86,6 +107,7 @@ class DomeAlpaca(AlpacaClass):
         :return: true for test purpose
         """
         self.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = self.client.azimuth()
+        self.data['slewing'] = self.client.slewing()
         return True
 
     def startPollData(self):
@@ -123,5 +145,8 @@ class DomeAlpaca(AlpacaClass):
         :param azimuth:
         :return: success
         """
+
+        self.client.slewtoazimuth(Azimuth=azimuth)
+        self.slewing = True
 
         return True

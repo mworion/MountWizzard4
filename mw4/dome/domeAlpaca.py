@@ -98,6 +98,8 @@ class DomeAlpaca(AlpacaClass):
             # start timer for settling time and emit signal afterwards
             self.settlingWait.start(self.settlingTime)
 
+        self.slewing = isSlewing
+
         return True
 
     def pollData(self):
@@ -130,7 +132,6 @@ class DomeAlpaca(AlpacaClass):
         :return: true for test purpose
         """
 
-        self.signals.message.emit('')
         self.signals.slewFinished.emit()
 
         return True

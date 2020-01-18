@@ -523,7 +523,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         visible = self.app.mainW.deviceStat['dome']
 
-        self.pointerDome.set_xy((azimuth - 15, 0))
+        self.pointerDome.set_xy((azimuth - 15, 1))
         self.pointerDome.set_visible(visible)
 
         self.drawBlit()
@@ -803,9 +803,9 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         # adding pointer of dome if dome is present
         # visible = self.app.mainW.deviceStat['dome'] is not None
-        self.pointerDome = mpatches.Rectangle((165, 0),
+        self.pointerDome = mpatches.Rectangle((165, 1),
                                               30,
-                                              90,
+                                              88,
                                               zorder=-30,
                                               color='#40404080',
                                               lw=3,

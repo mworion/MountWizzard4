@@ -106,6 +106,18 @@ class Dome:
         if self.framework in self.run.keys():
             self.run[self.framework].name = value
 
+    @property
+    def settlingTime(self):
+        if self.framework in self.run.keys():
+            return self.run[self.framework].settlingTime
+        else:
+            return None
+
+    @settlingTime.setter
+    def settlingTime(self, value):
+        if self.framework in self.run.keys():
+            self.run[self.framework].settlingTime = value
+
     def slewDome(self, altitude=0, azimuth=0):
         """
 

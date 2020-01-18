@@ -57,6 +57,11 @@ class SettParkPos(object):
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
         self.ui.checkDomeGeometry.clicked.connect(self.toggleUseGeometry)
+        self.ui.domeRadius.valueChanged.connect(self.toggleUseGeometry)
+        self.ui.offOTA.valueChanged.connect(self.toggleUseGeometry)
+        self.ui.domeEastOffset.valueChanged.connect(self.toggleUseGeometry)
+        self.ui.domeNorthOffset.valueChanged.connect(self.toggleUseGeometry)
+        self.ui.domeVerticalOffset.valueChanged.connect(self.toggleUseGeometry)
 
         # signals from functions
         self.app.update1s.connect(self.updateCoverStatGui)
@@ -235,8 +240,18 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
-
         self.app.dome.isGeometry = self.ui.checkDomeGeometry.isChecked()
+
+        value = self.ui.domeRadius.value()
+        self.app.mount.geometry.domeRadius = value
+        if value < 0.5:
+            self.app.message.emit('Critical dome radius, please check', 2)
+
+        self.app.mount.geometry.offPlateOTA = self.ui.offOTA.value()
+        self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
+        self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
+        self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
+
         return True
 
     def updateDomeGeometry(self):
@@ -248,24 +263,21 @@ class SettParkPos(object):
         """
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_OTA_OFFSET', 0))
-        self.app.mount.geometry.offPlateOTA = value
         self.ui.offOTA.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_DOME_RADIUS', 0))
-        self.app.mount.geometry.domeRadius = value
         self.ui.domeRadius.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT', 0))
-        self.app.mount.geometry.offNorth = value
         self.ui.domeNorthOffset.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT', 0))
-        self.app.mount.geometry.offEast = value
         self.ui.domeEastOffset.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
-        self.app.mount.geometry.offVert = value
         self.ui.domeVerticalOffset.setValue(value)
+
+        self.toggleUseGeometry()
 
         return True
 

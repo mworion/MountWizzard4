@@ -128,7 +128,11 @@ class Dome:
                                                                          pierside=pierside)
             alt = alt.degrees
             az = az.degrees
+
             # todo: correct calculation that this is not necessary
+            if alt is np.nan or az is np.nan:
+                self.log.warning(f'alt:{altitude}, az:{azimuth}, pier:{pierside}')
+
             if alt is np.nan:
                 alt = altitude
             if az is np.nan:
@@ -137,8 +141,10 @@ class Dome:
         else:
             alt = altitude
             az = azimuth
-        geoStat = 'On' if self.isGeometry else 'Off'
-        text = f'Slewing  dome:       correction: {geoStat}, delta: {azimuth-az:3.1f}°'
+
+        geoStat = 'Geometry corrected' if self.isGeometry else 'Equal mount'
+        delta = azimuth - az
+        text = f'Slewing  dome:       {geoStat}, az: {az:3.1f} delta: {delta:3.1f}°'
         self.app.message.emit(text, 0)
 
         suc = self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)

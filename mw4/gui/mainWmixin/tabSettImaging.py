@@ -74,8 +74,6 @@ class SettImaging(object):
         config['solveTimeout'] = self.ui.solveTimeout.value()
         config['checkFastDownload'] = self.ui.checkFastDownload.isChecked()
         config['checkKeepImages'] = self.ui.checkKeepImages.isChecked()
-        config['settleTimeMount'] = self.ui.settleTimeMount.value()
-        config['settleTimeDome'] = self.ui.settleTimeDome.value()
 
         return True
 

@@ -98,6 +98,10 @@ class SettParkPos(object):
             textField.setText(config.get(keyConfig, '-'))
         self.updateParkPosButtonText()
 
+        self.ui.settleTimeMount.setValue(config.get('settleTimeMount', 0))
+        self.ui.settleTimeDome.setValue(config.get('settleTimeDome', 0))
+        self.setSettlingTimes()
+
         return True
 
     def storeConfig(self):
@@ -126,6 +130,9 @@ class SettParkPos(object):
         for i, textField in enumerate(self.posAz):
             keyConfig = 'posAz{0:1d}'.format(i)
             config[keyConfig] = textField.text()
+
+        config['settleTimeMount'] = self.ui.settleTimeMount.value()
+        config['settleTimeDome'] = self.ui.settleTimeDome.value()
 
         return True
 
@@ -324,4 +331,16 @@ class SettParkPos(object):
         """
 
         self.app.cover.sendCoverPark(park=False)
+        return True
+
+    def setSettlingTimes(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        # setting overall parameters
+        self.app.mount.settlingTime = self.ui.settleTimeMount.value()
+        self.app.dome.settlingTime = self.ui.settleTimeDome.value()
+
         return True

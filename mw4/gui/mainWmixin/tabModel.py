@@ -765,10 +765,6 @@ class Model(object):
         self.clearQueues()
         self.app.message.emit(f'Modeling start:     {self.modelName}', 1)
 
-        # setting overall parameters
-        self.app.mount.settlingTime = self.app.mainW.ui.settleTimeMount.value()
-        self.app.dome.settlingTime = self.app.mainW.ui.settleTimeDome.value()
-
         # collection all necessary information
         exposureTime = self.app.mainW.ui.expTime.value()
         binning = self.app.mainW.ui.binning.value()

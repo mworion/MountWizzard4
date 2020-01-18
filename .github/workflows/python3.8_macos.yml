@@ -5,6 +5,7 @@ on:
     paths:
       - 'mw4/**'
       - 'README.rst'
+      - 'setup.py'
 
 jobs:
   build:
@@ -17,30 +18,22 @@ jobs:
         python-version: [3.8]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2- 'setup.py'
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies
+    - name: Build package
       run: |
         python -m pip install --upgrade pip
-        pip install PyQt5==5.13.2
-        pip install PyQtWebEngine==5.13.2
-        pip install wakeonlan==1.1.6
-        pip install skyfield==1.16
-        pip install numpy==1.17.3
-        pip install mountcontrol
-        pip install indibase
-        pip install matplotlib==3.2.0rc1
-        pip install astropy==4.0
-        pip install requests==2.22.0
-        pip install requests_toolbelt==0.9.1
-        pip install forwardable==0.4.1
-        pip install qimage2ndarray==1.8
-        pip install importlib_metadata==0.23
+        pip install setuptools wheel
+        python setup.py sdist
+
+    - name: Install package
+      run: |
+        python -m pip install dist/mountwizzard*.tar.gz
 
     - name: Lint with flake8
       run: |

@@ -138,7 +138,7 @@ class Dome:
             alt = altitude
             az = azimuth
         geoStat = 'On' if self.isGeometry else 'Off'
-        text = f'Slewing  dome:      az correction: {geoStat}, delta: {azimuth-az:3.1f}°'
+        text = f'Slewing  dome:       correction: {geoStat}, delta: {azimuth-az:3.1f}°'
         self.app.message.emit(text, 0)
 
         suc = self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)

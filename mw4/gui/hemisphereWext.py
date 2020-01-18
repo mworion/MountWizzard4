@@ -242,7 +242,7 @@ class HemisphereWindowExt(object):
         if not suc:
             self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
         else:
-            self.app.message.emit('Slewing to: {0}, {1}'.format(azimuth, altitude), 0)
+            self.app.message.emit('Starting slew', 0)
         return suc
 
     def addHorizonPoint(self, data=None, event=None):
@@ -486,9 +486,9 @@ class HemisphereWindowExt(object):
                                    )
             suc = self.app.mount.obsSite.startSlewing(slewType=f'{alignType}')
         if not suc:
-            self.app.message.emit('Cannot slew to: {0}'.format(name), 2)
+            self.app.message.emit(f'Cannot slew to: {name}', 2)
         else:
-            self.app.message.emit('Slewing to: {0}'.format(name), 0)
+            self.app.message.emit('Starting slew', 0)
         return suc
 
     def onMouseDispatcher(self, event):

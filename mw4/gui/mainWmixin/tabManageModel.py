@@ -350,7 +350,7 @@ class ManageModel(object):
         if mount.model.errorRMS < self.ui.targetRMS.value():
             self.runningTargetRMS = False
 
-        if self.runningTargetRMS:
+        if self.runningTargetRMS and mount.model.numverStars > 1:
             wIndex = mount.model.starList.index(max(mount.model.starList))
             wStar = mount.model.starList[wIndex]
             suc = mount.model.deletePoint(wStar.number)

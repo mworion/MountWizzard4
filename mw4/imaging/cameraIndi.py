@@ -232,6 +232,9 @@ class CameraIndi(IndiClass):
         :return: success
         """
 
+        if not self.device:
+            return False
+
         self.imagePath = imagePath
 
         suc = self.sendDownloadMode(fastReadout=fastReadout)

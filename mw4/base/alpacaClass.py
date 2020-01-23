@@ -156,7 +156,7 @@ class AlpacaClass(object):
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
             self.client.signals.deviceConnected.emit(f'{self.name}')
-            self.app.message.emit(f'Alpaca device found:  {self.name}]', 0)
+            self.app.message.emit(f'Alpaca device found:  [{self.name}]', 0)
 
         else:
             pass
@@ -199,7 +199,7 @@ class AlpacaClass(object):
         self.serverConnected = False
         self.client.signals.deviceDisconnected.emit(f'{self.name}')
         self.client.signals.serverDisconnected.emit({f'{self.name}': 0})
-        self.app.message.emit(f'Alpaca device removed:  [{self.name}]', 0)
+        self.app.message.emit(f'Alpaca device removed:[{self.name}]', 0)
 
         worker = Worker(self.client.connected, Connected=False)
         worker.signals.result.connect(self.stopTimer)

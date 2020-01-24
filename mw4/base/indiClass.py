@@ -42,7 +42,7 @@ class IndiClass(object):
     log = CustomLogger(logger, {})
 
     RETRY_DELAY = 1500
-    NUMBER_RETRY = 3
+    NUMBER_RETRY = 5
 
     def __init__(self, app=None):
         super().__init__()

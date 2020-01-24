@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './mw4/gui/widgets/main.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.2
 #
@@ -5552,11 +5552,11 @@ class Ui_MainWindow(object):
         self.domeVerticalOffset.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.domeVerticalOffset.setSingleStep(0.1)
         self.domeVerticalOffset.setObjectName("domeVerticalOffset")
-        self.offOTA = QtWidgets.QDoubleSpinBox(self.groupBox_44)
-        self.offOTA.setGeometry(QtCore.QRect(240, 140, 86, 22))
-        self.offOTA.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.offOTA.setSingleStep(0.1)
-        self.offOTA.setObjectName("offOTA")
+        self.offGEM = QtWidgets.QDoubleSpinBox(self.groupBox_44)
+        self.offGEM.setGeometry(QtCore.QRect(240, 140, 86, 22))
+        self.offGEM.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.offGEM.setSingleStep(0.1)
+        self.offGEM.setObjectName("offGEM")
         self.copyFromDriver = QtWidgets.QPushButton(self.groupBox_44)
         self.copyFromDriver.setGeometry(QtCore.QRect(240, 170, 111, 21))
         self.copyFromDriver.setObjectName("copyFromDriver")
@@ -8771,10 +8771,10 @@ class Ui_MainWindow(object):
         self.label_118.setText(_translate("MainWindow", "m"))
         self.label_123.setText(_translate("MainWindow", "m"))
         self.label_107.setText(_translate("MainWindow", "North offset"))
-        self.label_135.setText(_translate("MainWindow", "OTA offset"))
+        self.label_135.setText(_translate("MainWindow", "GEM offset"))
         self.copyFromDriver.setText(_translate("MainWindow", "Data from Driver"))
         self.picDome1.setText(_translate("MainWindow", "TextLabel"))
-        self.label_138.setText(_translate("MainWindow", "OTA Offset: distance C to A"))
+        self.label_138.setText(_translate("MainWindow", " Offset: distance C to A"))
         self.label_145.setText(_translate("MainWindow", "A: crosspoint RA/DEC axis"))
         self.label_147.setText(_translate("MainWindow", "B: crosspoint DEC/OTA axis"))
         self.label_150.setText(_translate("MainWindow", "C: crosspoint DEC/plate"))

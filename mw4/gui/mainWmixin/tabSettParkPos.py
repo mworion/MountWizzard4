@@ -58,7 +58,7 @@ class SettParkPos(object):
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
         self.ui.checkDomeGeometry.clicked.connect(self.toggleUseGeometry)
         self.ui.domeRadius.valueChanged.connect(self.toggleUseGeometry)
-        self.ui.offOTA.valueChanged.connect(self.toggleUseGeometry)
+        self.ui.offGEM.valueChanged.connect(self.toggleUseGeometry)
         self.ui.domeEastOffset.valueChanged.connect(self.toggleUseGeometry)
         self.ui.domeNorthOffset.valueChanged.connect(self.toggleUseGeometry)
         self.ui.domeVerticalOffset.valueChanged.connect(self.toggleUseGeometry)
@@ -82,7 +82,7 @@ class SettParkPos(object):
         self.ui.domeNorthOffset.setValue(config.get('domeNorthOffset', 0))
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
-        self.ui.offOTA.setValue(config.get('offOTA', 0))
+        self.ui.offGEM.setValue(config.get('offGEM', 0))
 
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
         self.toggleUseGeometry()
@@ -118,7 +118,7 @@ class SettParkPos(object):
         config['domeNorthOffset'] = self.ui.domeNorthOffset.value()
         config['domeEastOffset'] = self.ui.domeEastOffset.value()
         config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
-        config['offOTA'] = self.ui.offOTA.value()
+        config['offGEM'] = self.ui.offGEM.value()
         config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
 
         for i, textField in enumerate(self.posTexts):
@@ -254,7 +254,7 @@ class SettParkPos(object):
         if value < 0.5:
             self.app.message.emit('Critical dome radius, please check', 2)
 
-        self.app.mount.geometry.offPlateOTA = self.ui.offOTA.value()
+        self.app.mount.geometry.offGEM = self.ui.offGEM.value()
         self.app.mount.geometry.offNorth = self.ui.domeNorthOffset.value()
         self.app.mount.geometry.offEast = self.ui.domeEastOffset.value()
         self.app.mount.geometry.offVert = self.ui.domeVerticalOffset.value()
@@ -270,7 +270,7 @@ class SettParkPos(object):
         """
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_OTA_OFFSET', 0))
-        self.ui.offOTA.setValue(value)
+        self.ui.offGEM.setValue(value)
 
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_DOME_RADIUS', 0))
         self.ui.domeRadius.setValue(value)

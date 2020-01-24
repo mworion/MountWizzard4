@@ -16636,7 +16636,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="text">
-         <string>OTA offset</string>
+         <string>GEM offset</string>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="domeRadius">
@@ -16703,7 +16703,7 @@ When clicking the button, you could change the value.</string>
          <double>0.100000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="offOTA">
+       <widget class="QDoubleSpinBox" name="offGEM">
         <property name="geometry">
          <rect>
           <x>240</x>
@@ -16776,7 +16776,7 @@ When clicking the button, you could change the value.</string>
         </font>
        </property>
        <property name="text">
-        <string>OTA Offset: distance C to A</string>
+        <string> Offset: distance C to A</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_145">

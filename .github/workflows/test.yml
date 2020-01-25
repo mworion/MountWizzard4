@@ -29,7 +29,7 @@ jobs:
         wd = 'mw4/gui/widgets/'
         # python -m PyQt5.uic.pyrcc5 -o mw4/resource/resources.py mw4/resource/resources.qrc
         w = 'devicePopup'
-        python -m PyQt5.uic.pyuic -x ${{wd + w + '.ui'}} -o ${{wd + w + '_ui.py'}}
+        python -m PyQt5.uic.pyuic -x format('{0}{1}.ui',wd,w) -o format('{0}{1}_ui.py',wd,w)
 
     - name: Build package
       run: |

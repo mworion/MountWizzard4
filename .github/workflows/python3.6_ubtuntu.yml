@@ -6,6 +6,7 @@ on:
       - 'mw4/**'
       - 'README.rst'
       - 'setup.py'
+      - '.github/workflows/python3.6_ubuntu.yml'
 
 jobs:
   build:

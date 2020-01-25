@@ -67,13 +67,13 @@ class AlpacaBase(object):
 
         self.signals = AlpacaSignals()
 
-        self.baseUrl = ''
+        self._baseUrl = ''
         self.number = 0
         self.deviceType = ''
         self._protocol = 'http'
         self._host = ('localhost', 11111)
         self._apiVersion = 1
-        self._name = ':0'
+        self._name = ''
 
     def generateBaseUrl(self):
         """
@@ -88,6 +88,7 @@ class AlpacaBase(object):
             self.deviceType,
             self.number,
         )
+        self.log.debug(f'url: {val}')
         return val
 
     @property
@@ -97,7 +98,10 @@ class AlpacaBase(object):
     @host.setter
     def host(self, value):
         self._host = value
-        self.baseUrl = self.generateBaseUrl()
+
+    @property
+    def baseUrl(self):
+        return self.generateBaseUrl()
 
     @property
     def name(self):
@@ -112,7 +116,6 @@ class AlpacaBase(object):
             return
         self.deviceType, self.number = valueSplit
         self.number = int(self.number)
-        self.baseUrl = self.generateBaseUrl()
 
     @property
     def apiVersion(self):
@@ -121,7 +124,6 @@ class AlpacaBase(object):
     @apiVersion.setter
     def apiVersion(self, value):
         self._apiVersion = value
-        self.baseUrl = self.generateBaseUrl()
 
     @property
     def protocol(self):
@@ -139,6 +141,11 @@ class AlpacaBase(object):
             **data: Data to send with request.
 
         """
+        if not self.name:
+            return None
+
+        self.log.debug(f'url:{self.baseUrl}, attribute: {attribute}, data:{data}')
+
         try:
             response = requests.get(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
         except requests.exceptions.Timeout:
@@ -159,6 +166,7 @@ class AlpacaBase(object):
             self.log.error(f'{response["ErrorNumber"]}, {response["ErrorMessage"]}')
             return None
 
+        self.log.debug(f'response:{response}')
         return response['Value']
 
     def put(self, attribute: str, **data):
@@ -169,6 +177,11 @@ class AlpacaBase(object):
             **data: Data to send with request.
 
         """
+        if not self.name:
+            return None
+
+        self.log.debug(f'url:{self.baseUrl}, attribute: {attribute}, data:{data}')
+
         try:
             response = requests.put(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
         except requests.exceptions.Timeout:
@@ -188,6 +201,8 @@ class AlpacaBase(object):
         if response['ErrorNumber'] != 0:
             self.log.error(f'{response["ErrorNumber"]}, {response["ErrorMessage"]}')
             return {}
+
+        self.log.debug(f'response:{response}')
 
         return response
 

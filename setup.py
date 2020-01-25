@@ -41,8 +41,8 @@ setup(
     ],
     python_requires='>=3.6.0, <3.9',
     install_requires=[
-        'mountcontrol==0.152',
-        'indibase==0.125',
+        'mountcontrol==0.154',
+        'indibase==0.126',
         'PyQt5==5.13.2; platform_machine != "armv7l"',
         'PyQtWebEngine==5.13.2; platform_machine != "armv7l"',
         'matplotlib==3.2.0rc1',

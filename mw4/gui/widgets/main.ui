@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -1453,7 +1453,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Shows the expiration date of UTC timetable in the moutn computer. If it's happening within 1 month, the frame turns to yellow. If expired, the frame will turn to red. </string>
+       <string>Shows the expiration date of UTC timetable in the mount computer. If it's happening within 1 month, the frame turns to yellow. If expired, the frame will turn to red. </string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1612,7 +1612,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of unattended Flip.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Status of unattended Flip.When clicking the field, you could change the value</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -2026,7 +2026,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of dual tracking.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Status of dual tracking. When clicking the field, you could change the value.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -2608,7 +2608,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of dual tracking.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Status of Wake On Lan WOL feature. When clicking the field, you could change the value.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -2680,7 +2680,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;MAC address of the mount&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Type of the connection to the mount.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -4798,7 +4798,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Showing the moon phse in percent</string>
+       <string>Showing the moon phase in percent</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -5174,7 +5174,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of coloms in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Model point stop at maximum altitude.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5308,7 +5308,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of rows in the grid build&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Model point start at minimum altitude.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5461,7 +5461,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points in the DSO track for the given time in hours&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Number of points.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5537,7 +5537,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the DSO track in hours.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Shift the DSO track for given number of hours.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5695,7 +5695,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points in the DSO track for the given time in hours&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Number of points.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5807,7 +5807,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sorts the modeling points EAST / WEST side of pier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>No sorting of the model points </string>
       </property>
       <property name="text">
        <string>No Sorting</string>
@@ -6224,7 +6224,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual RMS Error in arc sec&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Actual position angle of the Error vector in deg.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -6419,7 +6419,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual Polar Error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Actual position angle of the Error vector in azimuth deg.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -6447,6 +6447,9 @@ to mount</string>
        <font>
         <pointsize>10</pointsize>
        </font>
+      </property>
+      <property name="toolTip">
+       <string>Number of stars</string>
       </property>
       <property name="text">
        <string>Stars</string>
@@ -6536,7 +6539,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual Ortho Error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Actual position angle of the Error vector in altitude deg.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -7835,7 +7838,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>Use Highspeed download of CCD camera if availabe</string>
+       <string>Show error values close to point in polar diagram.</string>
       </property>
       <property name="text">
        <string>Show error values in polar plot</string>
@@ -8074,7 +8077,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Actual longitude where the satellite could be seen in zenith.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8116,7 +8119,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Actual declination of the satelite from observers position.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8158,7 +8161,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Next point in time when satellite settles.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8236,7 +8239,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Actual right ascention of the satelite from observers position.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8350,7 +8353,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Actual azimuth of the satelite from observers position.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8434,7 +8437,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Epoch of ephermeris</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8500,7 +8503,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Hint if mount will need a flip when following satellite.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8614,7 +8617,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Age of the TLE data</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8704,7 +8707,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Actual altitude of the satelite from observers position.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8746,7 +8749,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Next point in time when satellite rises over horizon.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8788,7 +8791,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Number of the satellite.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8830,7 +8833,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Actual latitude where the satellite could be seen in zenith.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -8896,7 +8899,7 @@ to mount</string>
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Horizon Mask file, where the data is stored.&lt;/p&gt;&lt;p&gt;Please Double Click to Select.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Name of the satellite.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -9063,7 +9066,7 @@ to mount</string>
        </size>
       </property>
       <property name="toolTip">
-       <string>Selects the TLE database from where the satellite list shoufl be loaded.</string>
+       <string>Selects the TLE database from where the satellite list should be loaded.</string>
       </property>
      </widget>
     </widget>
@@ -12866,7 +12869,7 @@ to mount</string>
       </font>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configuration of settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string/>
      </property>
      <property name="autoFillBackground">
       <bool>true</bool>
@@ -17263,7 +17266,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 3</string>
+         <string>Button text park menu 4</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -17464,7 +17467,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 3</string>
+         <string>Button text park menu 2</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -17530,7 +17533,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 1</string>
+         <string>Button text park menu 0</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -17659,7 +17662,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 4</string>
+         <string>Button text park menu 3</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -17719,7 +17722,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 4</string>
+         <string>Button text park menu 5</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -18121,7 +18124,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 4</string>
+         <string>Button text park menu 7</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -18274,7 +18277,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 2</string>
+         <string>Button text park menu 1</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -18577,7 +18580,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 4</string>
+         <string>Button text park menu 6</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -18742,6 +18745,9 @@ When clicking the button, you could change the value.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+        </property>
         <property name="text">
          <string>Fill in</string>
         </property>
@@ -18754,6 +18760,9 @@ When clicking the button, you could change the value.</string>
           <width>46</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
         </property>
         <property name="text">
          <string>Fill in</string>
@@ -18768,6 +18777,9 @@ When clicking the button, you could change the value.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+        </property>
         <property name="text">
          <string>Fill in</string>
         </property>
@@ -18780,6 +18792,9 @@ When clicking the button, you could change the value.</string>
           <width>46</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
         </property>
         <property name="text">
          <string>Fill in</string>
@@ -18794,6 +18809,9 @@ When clicking the button, you could change the value.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+        </property>
         <property name="text">
          <string>Fill in</string>
         </property>
@@ -18806,6 +18824,9 @@ When clicking the button, you could change the value.</string>
           <width>46</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
         </property>
         <property name="text">
          <string>Fill in</string>
@@ -18820,6 +18841,9 @@ When clicking the button, you could change the value.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+        </property>
         <property name="text">
          <string>Fill in</string>
         </property>
@@ -18832,6 +18856,9 @@ When clicking the button, you could change the value.</string>
           <width>46</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
         </property>
         <property name="text">
          <string>Fill in</string>
@@ -18909,7 +18936,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 4</string>
+         <string>Button text park menu 8</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -18948,7 +18975,7 @@ When clicking the button, you could change the value.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 4</string>
+         <string>Button text park menu 9</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -19104,6 +19131,9 @@ When clicking the button, you could change the value.</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+        </property>
         <property name="text">
          <string>Fill in</string>
         </property>
@@ -19248,6 +19278,9 @@ When clicking the button, you could change the value.</string>
           <width>46</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="toolTip">
+         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
         </property>
         <property name="text">
          <string>Fill in</string>
@@ -20188,7 +20221,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Debug logging will be stored in log file.</string>
         </property>
         <property name="text">
          <string>Debug</string>
@@ -20215,7 +20248,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Minimum logging will be stored in log file.</string>
         </property>
         <property name="text">
          <string>Info</string>
@@ -20242,7 +20275,7 @@ When clicking the button, you could change the value.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Debug logging and communication will be stored in log file.</string>
         </property>
         <property name="text">
          <string>Deep Debug</string>
@@ -20760,7 +20793,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when mount stopped in emergency case&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Sets the audio signal to be played when model build is finished</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_215">
@@ -20828,7 +20861,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when mount stopped in emergency case&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Sets the audio signal to be played when image is saved</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_223">
@@ -20862,7 +20895,7 @@ p, li { white-space: pre-wrap; }
          </rect>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when mount stopped in emergency case&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Sets the audio signal to be played when image is plate solved</string>
         </property>
        </widget>
       </widget>
@@ -20899,7 +20932,7 @@ p, li { white-space: pre-wrap; }
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
         </property>
         <property name="text">
          <string>online and update data files if necessary</string>
@@ -20981,7 +21014,7 @@ p, li { white-space: pre-wrap; }
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Show only beta versions of MountWizzard4</string>
         </property>
         <property name="text">
          <string>Show beta releases</string>
@@ -21008,7 +21041,7 @@ p, li { white-space: pre-wrap; }
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Show only release versions of MountWizzard4</string>
         </property>
         <property name="text">
          <string>Show releases</string>

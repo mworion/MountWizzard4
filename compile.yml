@@ -1,0 +1,10 @@
+ioPaths:
+  -
+    - "mw4/gui/widgets/*.ui"
+    - "mw4/gui/widgets/%%FILENAME%%_ui.py"
+  -
+    - "mw4/resource/*.qrc"
+    - "mw4/resource/%%FILENAME%%.py"
+
+uic_options: --from-imports
+force: False

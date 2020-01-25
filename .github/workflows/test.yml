@@ -31,7 +31,7 @@ jobs:
     - name: Build widgets and resource
       run: |
         w = 'mw4/gui/widgets/'
-        python -m PyQt5.uic.pyrcc5.py -o mw4/resource/resources.py mw4/resource/resources.qrc
+        # python -m PyQt5.uic.pyrcc5 -o mw4/resource/resources.py mw4/resource/resources.qrc
         python -m PyQt5.uic.pyuic -x {{w+'devicePopup.ui'}} -o {{w+'devicePopup_ui.py'}}
 
     - name: Install package

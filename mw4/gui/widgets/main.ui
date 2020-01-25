@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -295,7 +295,7 @@
        </font>
       </property>
       <property name="toolTip">
-       <string>Switches the parkings state on and on. Blue button means mount parked. It is the position, which is in the mount computer defined as park position. If the mount is not parked, it slews to the park position. If parked, the button press just unparks and starts tracking.</string>
+       <string>Switches the parking state on and off. Blue button means mount parked. It is the position, which is in the mount computer defined as park position. If the mount is not parked, it slews to the park position. If parked, the button press just unparks and starts tracking.</string>
       </property>
       <property name="text">
        <string>Mount Park</string>

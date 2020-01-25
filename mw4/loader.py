@@ -112,7 +112,10 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
             tooltip = widget.toolTip()
 
             # If this tooltip is both non-empty and not already rich text...
-            if tooltip and not PyQt5.QtCore.Qt.mightBeRichText(tooltip):
+            if tooltip == '<html><head/><body><p><br/></p></body></html>':
+                widget.setToolTip(None)
+                return True
+            elif tooltip and not PyQt5.QtCore.Qt.mightBeRichText(tooltip):
                 # Convert this plaintext tooltip into a rich text tooltip by:
                 #
                 # * Escaping all HTML syntax in this tooltip.
@@ -124,6 +127,15 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
                 widget.setToolTip(tooltip)
 
                 # Notify the parent event handler this event has been handled.
+                return True
+        elif event.type() == PyQt5.QtCore.QEvent.ToolTip:
+            if not isinstance(widget, PyQt5.QtWidgets.QWidget):
+                self.log.error('QObject "{}" not a widget.'.format(widget))
+
+            # Tooltip for this widget if any *OR* the empty string otherwise.
+            tooltip = widget.toolTip()
+            if tooltip == '<html><head/><body><p><br/></p></body></html>':
+                widget.setToolTip(None)
                 return True
 
         # Else, defer to the default superclass handling of this event.

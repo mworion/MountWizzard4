@@ -317,7 +317,7 @@
         <item>
          <widget class="QCheckBox" name="showPolar">
           <property name="enabled">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="maximumSize">
            <size>

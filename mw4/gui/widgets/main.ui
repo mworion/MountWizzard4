@@ -12881,7 +12881,7 @@ to mount</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -20281,7 +20281,7 @@ When clicking the button, you could change the value.</string>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial','Arial'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;pyqt5, matplotlib, wakeonlan, numpy, requests, astropy, skyfield, forwardable, qimage2ndarray, importlib_metadata, alpyca, opencv&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial';&quot;&gt;pyqt5, matplotlib, wakeonlan, numpy, requests, astropy, skyfield, forwardable, qimage2ndarray, importlib_metadata, opencv&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -20963,39 +20963,12 @@ p, li { white-space: pre-wrap; }
          <string>Available version</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="versionAlpha">
-        <property name="geometry">
-         <rect>
-          <x>155</x>
-          <y>70</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Alpha</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QRadioButton" name="versionBeta">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>140</x>
           <y>70</y>
-          <width>66</width>
+          <width>141</width>
           <height>21</height>
          </rect>
         </property>
@@ -21011,7 +20984,7 @@ p, li { white-space: pre-wrap; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose online solver nova.astrometry.net as solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Beta</string>
+         <string>Show beta releases</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -21022,7 +20995,7 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>10</x>
           <y>70</y>
-          <width>76</width>
+          <width>106</width>
           <height>21</height>
          </rect>
         </property>
@@ -21038,7 +21011,7 @@ p, li { white-space: pre-wrap; }
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose local solver&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Release</string>
+         <string>Show releases</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -22494,7 +22467,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>isOnline</tabstop>
   <tabstop>versionRelease</tabstop>
   <tabstop>versionBeta</tabstop>
-  <tabstop>versionAlpha</tabstop>
   <tabstop>installVersion</tabstop>
   <tabstop>loglevelInfo</tabstop>
   <tabstop>loglevelDebug</tabstop>

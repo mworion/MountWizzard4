@@ -212,7 +212,7 @@ earth by clicking in the window, holding the left mouse button and shifting tilt
 Keypad Window
 -------------
 The keypad window is just a copy of the original virtual keypad or the web based keypad on
-newer firmware version.
+newer firmware version (starting with firmware 2.16.11).
 
 .. image:: _static/window_keypad.png
     :align: center

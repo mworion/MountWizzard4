@@ -61,7 +61,6 @@ class SettMisc(object):
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
-        self.ui.versionAlpha.clicked.connect(self.showUpdates)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
@@ -157,10 +156,8 @@ class SettMisc(object):
 
             if self.ui.versionBeta.isChecked():
                 vPackage = [x for x in vPackage if 'b' in x]
-            elif self.ui.versionAlpha.isChecked():
-                vPackage = [x for x in vPackage if 'a' in x]
             else:
-                vPackage = [x for x in vPackage if 'a' not in x and 'b' not in x]
+                vPackage = [x for x in vPackage if 'b' not in x]
 
             return vPackage[0]
 

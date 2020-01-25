@@ -28,6 +28,10 @@ following command:
 In one of the choices you should see the version number of the installed and available
 packages. For python it should say 3.7.x.
 
+.. hint:: MW4 does not need admin rights to install or run. To avoid problems with accessing
+          directories or file please ensure, that you run install and MW4 itself as normal
+          user!
+
 To install MW4 on your computer, there are some support scripts available for Windows, OSx
 and Ubuntu to make it a little bit easier to install and run MW4. The scripts are online, and
 available from Github:

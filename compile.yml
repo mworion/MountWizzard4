@@ -1,7 +1,0 @@
-ioPaths:
-  -
-    - "mw4/gui/widgets/*.ui"
-    - "mw4/gui/widgets/%%FILENAME%%_ui.py"
-
-uic_options: --from-imports
-force: False

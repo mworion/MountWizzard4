@@ -48,7 +48,7 @@ jobs:
 
     - name: Install package
       run: |
-        python -m pip install dist/mountwizzard*.tar.gz
+        python -m pip install mountwizzard*.tar.gz
 
     - name: Lint with flake8
       run: |

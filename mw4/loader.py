@@ -221,12 +221,12 @@ def except_hook(typeException, valueException, tbackException):
     """
 
     result = traceback.format_exception(typeException, valueException, tbackException)
-    log.warning('----------------------------------------------------')
-    log.warning('Logging an uncatched Exception')
-    log.warning('----------------------------------------------------')
+    log.critical('----------------------------------------------------')
+    log.critical('Logging an uncatched Exception')
+    log.critical('----------------------------------------------------')
     for i in range(0, len(result)):
-        log.warning(result[i].replace('\n', ''))
-    log.warning('----------------------------------------------------')
+        log.critical(result[i].replace('\n', ''))
+    log.critical('----------------------------------------------------')
     sys.__excepthook__(typeException, valueException, tbackException)
 
 

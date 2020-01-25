@@ -30,8 +30,22 @@ def printMW(param):
 
 @task
 def build_resource(c):
-    printMW('building resources and widgets')
-    runMW(c, f'python -m pyqt5ac --config compile.yml')
+    printMW('building resources')
+    # runMW(c, 'cp ./data/deltat.data ./mw4/resource/deltat.data')
+    # runMW(c, 'cp ./data/deltat.preds ./mw4/resource/deltat.preds')
+    # runMW(c, 'cp ./data/Leap_Second.dat ./mw4/resource/Leap_Second.dat')
+    resourceDir = './mw4/resource/'
+    runMW(c, f'pyrcc5 -o {resourceDir}resources.py {resourceDir}resources.qrc')
+
+
+@task
+def build_widgets(c):
+    printMW('building widgets')
+    widgetDir = './mw4/gui/widgets/'
+    widgets = ['hemisphere', 'image', 'main', 'measure', 'message', 'satellite', 'keypad']
+    for widget in widgets:
+        name = widgetDir + widget
+        runMW(c, f'python -m PyQt5.uic.pyuic -x {name}.ui -o {name}_ui.py')
 
 
 @task()
@@ -76,7 +90,7 @@ def build_ib(c):
         runMW(c, 'cp dist/indibase*.tar.gz ../MountWizzard4/dist/indibase.tar.gz')
 
 
-@task(pre=[build_resource, build_mc, build_ib])
+@task(pre=[build_resource, build_widgets, build_mc, build_ib])
 def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):
@@ -111,7 +125,7 @@ def upload_all(c):
     printMW('uploading dist complete')
 
 
-@task(pre=[build_resource, build_mc, build_ib])
+@task(pre=[build_resource, build_widgets, build_mc, build_ib])
 def install_all(c):
     printMW('installing in work dir')
     with c.cd('./dist'):

@@ -22,7 +22,6 @@ import logging
 import dateutil
 import datetime
 import uuid
-import uuid
 # external packages
 import PyQt5.QtCore
 import requests

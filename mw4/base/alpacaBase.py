@@ -21,6 +21,8 @@
 import logging
 import dateutil
 import datetime
+import uuid
+import uuid
 # external packages
 import PyQt5.QtCore
 import requests
@@ -88,7 +90,6 @@ class AlpacaBase(object):
             self.deviceType,
             self.number,
         )
-        self.log.debug(f'url: {val}')
         return val
 
     @property
@@ -144,16 +145,20 @@ class AlpacaBase(object):
         if not self.name:
             return None
 
-        self.log.debug(f'url:{self.baseUrl}, attribute: {attribute}, data:{data}')
+        uid = str(uuid.uuid4())[:8]
+
+        self.log.debug(f'[{uid}] url: {self.baseUrl}, attribute: {attribute}, data:{data}')
 
         try:
             response = requests.get(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
         except requests.exceptions.Timeout:
+            self.log.critical(f'[{uid}] timeout')
             return None
         except requests.exceptions.ConnectionError:
+            self.log.critical(f'[{uid}] connection error')
             return None
         except Exception as e:
-            self.log.critical(f'Error in request: {e}')
+            self.log.critical(f'[{uid}] error in request: {e}')
             return None
 
         if response.status_code == 400 or response.status_code == 500:
@@ -163,10 +168,10 @@ class AlpacaBase(object):
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.log.error(f'{response["ErrorNumber"]}, {response["ErrorMessage"]}')
+            self.log.error(f'[{uid}] {response["ErrorNumber"]}, {response["ErrorMessage"]}')
             return None
 
-        self.log.debug(f'response:{response}')
+        self.log.debug(f'[{uid}] response:{response}')
         return response['Value']
 
     def put(self, attribute: str, **data):
@@ -180,29 +185,33 @@ class AlpacaBase(object):
         if not self.name:
             return None
 
-        self.log.debug(f'url:{self.baseUrl}, attribute: {attribute}, data:{data}')
+        uid = str(uuid.uuid4())[:8]
+
+        self.log.debug(f'[{uid}] url:{self.baseUrl}, attribute: {attribute}, data:{data}')
 
         try:
             response = requests.put(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
         except requests.exceptions.Timeout:
+            self.log.critical(f'[{uid}] timeout')
             return {}
         except requests.exceptions.ConnectionError:
+            self.log.critical(f'[{uid}] connection error')
             return {}
         except Exception as e:
-            self.log.critical(f'Error in request: {e}')
+            self.log.critical(f'[{uid}] Error in request: {e}')
             return {}
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.info(f'{response.text}')
+            self.log.info(f'[{uid}] {response.text}')
             return {}
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.log.error(f'{response["ErrorNumber"]}, {response["ErrorMessage"]}')
+            self.log.error(f'[{uid}] {response["ErrorNumber"]}, {response["ErrorMessage"]}')
             return {}
 
-        self.log.debug(f'response:{response}')
+        self.log.debug(f'[{uid}] response:{response}')
 
         return response
 

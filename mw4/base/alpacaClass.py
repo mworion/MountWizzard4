@@ -65,7 +65,7 @@ class AlpacaClass(object):
 
         self.timeCycle = PyQt5.QtCore.QTimer()
         self.timeCycle.setSingleShot(False)
-        self.timeCycle.timeout.connect(self.updateStatus)
+        self.timeCycle.timeout.connect(self.startPollStatus)
 
     @property
     def host(self):
@@ -163,10 +163,9 @@ class AlpacaClass(object):
 
         return suc
 
-    def updateStatus(self):
+    def startPollStatus(self):
         """
-        updateStatus starts a thread every 1 second (defined in Superclass) for polling
-        some data.
+        startPollStatus starts a thread every 1 second for polling.
 
         :return: success
         """

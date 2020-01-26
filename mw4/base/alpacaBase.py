@@ -134,31 +134,32 @@ class AlpacaBase(object):
     def protocol(self, value):
         self._protocol = value
 
-    def get(self, attribute: str, **data):
+    def get(self, attr: str, **data):
         """
         Send an HTTP GET request to an Alpaca server and check response for errors.
         :param
-            attribute (str): Attribute to get from server.
+            attr (str): attr to get from server.
             **data: Data to send with request.
 
         """
         if not self.name:
             return None
 
-        uid = str(uuid.uuid4())[:8]
+        uid = uuid.uuid4().int % 2**32
+        data['ClientTransactionID'] = uid
 
-        self.log.debug(f'[{uid}] url: {self.baseUrl}, attribute: {attribute}, data:{data}')
+        self.log.debug(f'[{uid:10d}] {self.baseUrl}, attr:[{attr}]')
 
         try:
-            response = requests.get(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
+            response = requests.get(f'{self.baseUrl}/{attr}', data=data, timeout=5)
         except requests.exceptions.Timeout:
-            self.log.critical(f'[{uid}] timeout')
+            self.log.critical(f'[{uid:10d}] timeout')
             return None
         except requests.exceptions.ConnectionError:
-            self.log.critical(f'[{uid}] connection error')
+            self.log.critical(f'[{uid:10d}] connection error')
             return None
         except Exception as e:
-            self.log.critical(f'[{uid}] error in request: {e}')
+            self.log.critical(f'[{uid:10d}] error in request: {e}')
             return None
 
         if response.status_code == 400 or response.status_code == 500:
@@ -168,50 +169,52 @@ class AlpacaBase(object):
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.log.error(f'[{uid}] {response["ErrorNumber"]}, {response["ErrorMessage"]}')
+            self.log.error(f'{response} err:{response["ErrorNumber"]}'
+                           f',{response["ErrorMessage"]}')
             return None
 
-        self.log.debug(f'[{uid}] response:{response}')
+        self.log.debug(f'[{uid:10d}] response:{response}')
         return response['Value']
 
-    def put(self, attribute: str, **data):
+    def put(self, attr: str, **data):
         """
         Send an HTTP PUT request to an Alpaca server and check response for errors.
         :param
-            attribute (str): Attribute to put to server.
+            attr (str): attr to put to server.
             **data: Data to send with request.
 
         """
         if not self.name:
             return None
 
-        uid = str(uuid.uuid4())[:8]
+        uid = uuid.uuid4().int % 2**32
+        data['ClientTransactionID'] = uid
 
-        self.log.debug(f'[{uid}] url:{self.baseUrl}, attribute: {attribute}, data:{data}')
+        self.log.debug(f'[{uid:08d}] {self.baseUrl}, attr:[{attr}]')
 
         try:
-            response = requests.put(f'{self.baseUrl}/{attribute}', data=data, timeout=3)
+            response = requests.put(f'{self.baseUrl}/{attr}', data=data, timeout=5)
         except requests.exceptions.Timeout:
-            self.log.critical(f'[{uid}] timeout')
+            self.log.critical(f'[{uid:10d}] timeout')
             return {}
         except requests.exceptions.ConnectionError:
-            self.log.critical(f'[{uid}] connection error')
+            self.log.critical(f'[{uid:10d}] connection error')
             return {}
         except Exception as e:
-            self.log.critical(f'[{uid}] Error in request: {e}')
+            self.log.critical(f'[{uid:10d}] Error in request: {e}')
             return {}
 
         if response.status_code == 400 or response.status_code == 500:
-            self.log.info(f'[{uid}] {response.text}')
+            self.log.info(f'[{uid:10d}] {response.text}')
             return {}
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
-            self.log.error(f'[{uid}] {response["ErrorNumber"]}, {response["ErrorMessage"]}')
+            self.log.error(f'err:{response["ErrorNumber"]},{response["ErrorMessage"]}')
             return {}
 
-        self.log.debug(f'[{uid}] response:{response}')
+        self.log.debug(f'[{uid:10d}] response:{response}')
 
         return response
 

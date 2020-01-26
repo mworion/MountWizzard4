@@ -20966,6 +20966,9 @@ p, li { white-space: pre-wrap; }
           <height>66</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>Starting process for updating MountWizzard4 to selected version. The button remeins blue as long as the installations is running.</string>
+        </property>
         <property name="text">
          <string>Install</string>
         </property>
@@ -21872,7 +21875,8 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="toolTip">
-     <string>Opens and closes the satellite window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
+     <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
     </property>
     <property name="styleSheet">
      <string notr="true"/>

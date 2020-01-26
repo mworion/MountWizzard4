@@ -343,21 +343,28 @@ class BuildPoints(object):
     def genBuildGoldenSpiral(self):
         """
         genBuildGoldenSpiral generates points along the actual tracking path
+        as the processing might take to long (at least on ubuntu), we have to find a
+        workaround to this behavior:
+        https://stackoverflow.com/questions/41568990/
+        how-do-i-prevent-double-valuechanged-events-when-i-press-the-arrows-in-a-qspinbo
 
         :return: success
         """
 
+        self.ui.numberSpiralPoints.setEnabled(False)
         self.lastGenerator = 'spiral'
         numberPoints = self.ui.numberSpiralPoints.value()
 
         suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
+            self.ui.numberSpiralPoints.setEnabled(True)
             return False
 
         self.autoDeletePoints()
         self.autoSortPoints()
 
+        self.ui.numberSpiralPoints.setEnabled(True)
         return True
 
     def loadBuildFile(self):

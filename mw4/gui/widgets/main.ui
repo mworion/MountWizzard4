@@ -5657,7 +5657,7 @@ to mount</string>
       </rect>
      </property>
      <property name="title">
-      <string>Generate model points equally distributed</string>
+      <string>Generate model points equally distributed (Golden Spiral)</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -5694,7 +5694,7 @@ to mount</string>
        <string>Norm</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="genBuildSpiralMedium">
+     <widget class="QPushButton" name="genBuildSpiralMed">
       <property name="geometry">
        <rect>
         <x>95</x>

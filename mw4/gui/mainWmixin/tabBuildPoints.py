@@ -71,7 +71,7 @@ class BuildPoints(object):
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
         self.ui.genBuildSpiralMax.clicked.connect(self.genBuildSpiralMax)
-        self.ui.genBuildSpiralMedium.clicked.connect(self.genBuildSpiralMedium)
+        self.ui.genBuildSpiralMed.clicked.connect(self.genBuildSpiralMed)
         self.ui.genBuildSpiralNorm.clicked.connect(self.genBuildSpiralNorm)
         self.ui.genBuildSpiralMin.clicked.connect(self.genBuildSpiralMin)
         self.ui.clearBuildP.clicked.connect(self.clearBuildP)
@@ -365,13 +365,13 @@ class BuildPoints(object):
         self.autoSortPoints()
         return True
 
-    def genBuildSpiralMedium(self):
+    def genBuildSpiralMed(self):
         """
 
         :return: success
         """
 
-        self.lastGenerator = 'spiralMedium'
+        self.lastGenerator = 'spiralMed'
 
         suc = self.app.data.generateGoldenSpiral(numberPoints=250)
         if not suc:

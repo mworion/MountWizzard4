@@ -70,8 +70,10 @@ class BuildPoints(object):
         self.ui.saveBuildPoints.clicked.connect(self.saveBuildFile)
         self.ui.saveBuildPointsAs.clicked.connect(self.saveBuildFileAs)
         self.ui.loadBuildPoints.clicked.connect(self.loadBuildFile)
-        self.ui.numberSpiralPoints.valueChanged.connect(self.genBuildGoldenSpiral)
-        self.ui.genBuildGoldenSpiral.clicked.connect(self.genBuildGoldenSpiral)
+        self.ui.genBuildSpiralMax.clicked.connect(self.genBuildSpiralMax)
+        self.ui.genBuildSpiralMedium.clicked.connect(self.genBuildSpiralMedium)
+        self.ui.genBuildSpiralNorm.clicked.connect(self.genBuildSpiralNorm)
+        self.ui.genBuildSpiralMin.clicked.connect(self.genBuildSpiralMin)
         self.ui.clearBuildP.clicked.connect(self.clearBuildP)
         self.ui.checkSortNothing.clicked.connect(self.updateSorting)
         self.ui.checkSortEW.clicked.connect(self.updateSorting)
@@ -340,7 +342,7 @@ class BuildPoints(object):
 
         return True
 
-    def genBuildGoldenSpiral(self):
+    def genBuildSpiralMax(self):
         """
         genBuildGoldenSpiral generates points along the actual tracking path
         as the processing might take to long (at least on ubuntu), we have to find a
@@ -351,11 +353,9 @@ class BuildPoints(object):
         :return: success
         """
 
-        self.ui.numberSpiralPoints.setEnabled(False)
-        self.lastGenerator = 'spiral'
-        numberPoints = self.ui.numberSpiralPoints.value()
+        self.lastGenerator = 'spiralMax'
 
-        suc = self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
+        suc = self.app.data.generateGoldenSpiral(numberPoints=350)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
             self.ui.numberSpiralPoints.setEnabled(True)
@@ -363,8 +363,60 @@ class BuildPoints(object):
 
         self.autoDeletePoints()
         self.autoSortPoints()
+        return True
 
-        self.ui.numberSpiralPoints.setEnabled(True)
+    def genBuildSpiralMedium(self):
+        """
+
+        :return: success
+        """
+
+        self.lastGenerator = 'spiralMedium'
+
+        suc = self.app.data.generateGoldenSpiral(numberPoints=250)
+        if not suc:
+            self.app.message.emit('Golden spiral cannot be generated', 2)
+            self.ui.numberSpiralPoints.setEnabled(True)
+            return False
+
+        self.autoDeletePoints()
+        self.autoSortPoints()
+        return True
+
+    def genBuildSpiralNorm(self):
+        """
+
+        :return: success
+        """
+
+        self.lastGenerator = 'spiralNorm'
+
+        suc = self.app.data.generateGoldenSpiral(numberPoints=150)
+        if not suc:
+            self.app.message.emit('Golden spiral cannot be generated', 2)
+            self.ui.numberSpiralPoints.setEnabled(True)
+            return False
+
+        self.autoDeletePoints()
+        self.autoSortPoints()
+        return True
+
+    def genBuildSpiralMin(self):
+        """
+
+        :return: success
+        """
+
+        self.lastGenerator = 'spiralMin'
+
+        suc = self.app.data.generateGoldenSpiral(numberPoints=75)
+        if not suc:
+            self.app.message.emit('Golden spiral cannot be generated', 2)
+            self.ui.numberSpiralPoints.setEnabled(True)
+            return False
+
+        self.autoDeletePoints()
+        self.autoSortPoints()
         return True
 
     def loadBuildFile(self):

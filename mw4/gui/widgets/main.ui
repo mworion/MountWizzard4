@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5662,12 +5662,12 @@ to mount</string>
      <property name="large" stdset="0">
       <bool>true</bool>
      </property>
-     <widget class="QPushButton" name="genBuildGoldenSpiral">
+     <widget class="QPushButton" name="genBuildSpiralMin">
       <property name="geometry">
        <rect>
-        <x>130</x>
+        <x>275</x>
         <y>20</y>
-        <width>231</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
@@ -5675,63 +5675,55 @@ to mount</string>
        <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
       </property>
       <property name="text">
-       <string>Generate Golden Spiral</string>
+       <string>Minimal</string>
       </property>
      </widget>
-     <widget class="QDoubleSpinBox" name="numberSpiralPoints">
+     <widget class="QPushButton" name="genBuildSpiralNorm">
       <property name="geometry">
        <rect>
-        <x>45</x>
+        <x>185</x>
         <y>20</y>
-        <width>51</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
       <property name="toolTip">
-       <string>Number of points.</string>
+       <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="decimals">
-       <number>0</number>
-      </property>
-      <property name="minimum">
-       <double>50.000000000000000</double>
-      </property>
-      <property name="maximum">
-       <double>500.000000000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>25.000000000000000</double>
-      </property>
-      <property name="value">
-       <double>50.000000000000000</double>
+      <property name="text">
+       <string>Norm</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_309">
+     <widget class="QPushButton" name="genBuildSpiralMedium">
+      <property name="geometry">
+       <rect>
+        <x>95</x>
+        <y>20</y>
+        <width>86</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
+      </property>
+      <property name="text">
+       <string>Medium</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="genBuildSpiralMax">
       <property name="geometry">
        <rect>
         <x>5</x>
         <y>20</y>
-        <width>41</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
+      <property name="toolTip">
+       <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
       </property>
       <property name="text">
-       <string>Points</string>
+       <string>Maximal</string>
       </property>
      </widget>
     </widget>
@@ -5954,7 +5946,7 @@ to mount</string>
        <rect>
         <x>10</x>
         <y>75</y>
-        <width>211</width>
+        <width>351</width>
         <height>20</height>
        </rect>
       </property>
@@ -5967,7 +5959,7 @@ to mount</string>
        <string>If checked, all model points are deleted, which are below the horizon mask, out from horizon limits or other parameters.</string>
       </property>
       <property name="text">
-       <string>Auto delete points below horizon</string>
+       <string>Auto delete points below horizon and constrained areas</string>
       </property>
      </widget>
     </widget>
@@ -22539,8 +22531,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>genBuildNorm</tabstop>
   <tabstop>genBuildMin</tabstop>
   <tabstop>clearBuildP</tabstop>
-  <tabstop>numberSpiralPoints</tabstop>
-  <tabstop>genBuildGoldenSpiral</tabstop>
+  <tabstop>genBuildSpiralMin</tabstop>
   <tabstop>numberDSOPoints</tabstop>
   <tabstop>durationDSO</tabstop>
   <tabstop>timeShiftDSO</tabstop>

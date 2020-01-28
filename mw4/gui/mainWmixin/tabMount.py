@@ -523,10 +523,10 @@ class Mount(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Meridian Limit Track',
-                               'Value (-20-20):',
+                               'Value (2-30):',
                                actValue,
-                               -20,
-                               20,
+                               2,
+                               30,
                                1,
                                )
 
@@ -560,10 +560,10 @@ class Mount(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Meridian Limit Slew',
-                               'Value (-20-20):',
+                               'Value (1-30):',
                                actValue,
-                               -20,
-                               20,
+                               1,
+                               30,
                                1,
                                )
 

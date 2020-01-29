@@ -531,13 +531,15 @@ class BuildPoints(object):
     def autoDeletePoints(self):
         """
         autoDeletePoints removes all generated or visible build points below the horizon line
-        and redraws the hemisphere window.
+        or within the limits of the meridian flip and redraws the hemisphere window.
 
         :return: True for test purpose
         """
 
-        if self.ui.checkAutoDeletePoints.isChecked():
+        if self.ui.checkAutoDeleteHorizon.isChecked():
             self.app.data.deleteBelowHorizon()
+
+        if self.ui.checkAutoDeleteMeridian.isChecked():
             self.app.data.deleteCloseMeridian()
 
         self.app.redrawHemisphere.emit()

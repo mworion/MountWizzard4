@@ -5810,9 +5810,9 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>225</y>
+       <y>205</y>
        <width>366</width>
-       <height>101</height>
+       <height>126</height>
       </rect>
      </property>
      <property name="title">
@@ -5941,7 +5941,7 @@ to mount</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkAutoDeletePoints">
+     <widget class="QCheckBox" name="checkAutoDeleteHorizon">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -5956,10 +5956,31 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>If checked, all model points are deleted, which are below the horizon mask, out from horizon limits or other parameters.</string>
+       <string>If checked, all model points are deleted, which are below the horizon mask.</string>
       </property>
       <property name="text">
-       <string>Auto delete points below horizon and constrained areas</string>
+       <string>Auto delete points below horizon</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkAutoDeleteMeridian">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>95</y>
+        <width>351</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>If checked, all model points are deleted, which are within the meridian limits.</string>
+      </property>
+      <property name="text">
+       <string>Auto delete points within meridian limits</string>
       </property>
      </widget>
     </widget>
@@ -22539,7 +22560,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>loadHorizonMask</tabstop>
   <tabstop>saveHorizonMask</tabstop>
   <tabstop>saveHorizonMaskAs</tabstop>
-  <tabstop>checkAutoDeletePoints</tabstop>
+  <tabstop>checkAutoDeleteHorizon</tabstop>
   <tabstop>checkSortNothing</tabstop>
   <tabstop>checkSortEW</tabstop>
   <tabstop>checkSortHL</tabstop>

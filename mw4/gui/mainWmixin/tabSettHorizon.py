@@ -35,7 +35,8 @@ class SettHorizon(object):
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
-        self.ui.checkAutoDeletePoints.clicked.connect(self.autoDeletePoints)
+        self.ui.checkAutoDeleteMeridian.clicked.connect(self.autoDeletePoints)
+        self.ui.checkAutoDeleteHorizon.clicked.connect(self.autoDeletePoints)
 
     def initConfig(self):
         """
@@ -47,7 +48,8 @@ class SettHorizon(object):
         """
         config = self.app.config['mainW']
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
-        self.ui.checkAutoDeletePoints.setChecked(config.get('checkAutoDeletePoints', False))
+        self.ui.checkAutoDeleteMeridian.setChecked(config.get('checkAutoDeleteMeridian', False))
+        self.ui.checkAutoDeleteHorizon.setChecked(config.get('checkAutoDeleteHorizon', False))
         self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
@@ -67,7 +69,8 @@ class SettHorizon(object):
         """
         config = self.app.config['mainW']
         config['horizonFileName'] = self.ui.horizonFileName.text()
-        config['checkAutoDeletePoints'] = self.ui.checkAutoDeletePoints.isChecked()
+        config['checkAutoDeleteMeridian'] = self.ui.checkAutoDeleteMeridian.isChecked()
+        config['checkAutoDeleteHorizon'] = self.ui.checkAutoDeleteHorizon.isChecked()
         config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()

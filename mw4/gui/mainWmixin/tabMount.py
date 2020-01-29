@@ -634,9 +634,9 @@ class Mount(object):
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set Horizon Limit Low',
-                               'Value (0-90):',
+                               'Value (-5 - 90):',
                                actValue,
-                               0,
+                               -5,
                                90,
                                1,
                                )

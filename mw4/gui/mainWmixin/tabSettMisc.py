@@ -174,7 +174,7 @@ class SettMisc(object):
         self.ui.versionActual.setText(actPackage)
 
         if not self.ui.isOnline.isChecked():
-            self.ui.versionAvailable.setText('Online connections are disabled!')
+            self.ui.versionAvailable.setText('disabled')
             self.ui.installVersion.setEnabled(False)
             return False
 

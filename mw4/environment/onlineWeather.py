@@ -267,5 +267,6 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         webSite = 'http://api.openweathermap.org/data/2.5/forecast'
         url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={self.keyAPI}'
         self.getOpenWeatherMapData(url=url)
+        self.log.info(f'{url}')
 
         return True

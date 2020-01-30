@@ -179,6 +179,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             return False
 
         val = val['list'][0]
+        self.log.debug(f'onlineWeatherData:[{val}]')
 
         if 'main' in val:
             self.data['temperature'] = val['main']['temp'] - 273.15
@@ -221,7 +222,6 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         if data.status_code != 200:
             self.log.error(f'{url}: status nok')
             return None
-        self.log.debug(f'{url}: {data.status_code}')
         return data
 
     def getOpenWeatherMapData(self, url=''):
@@ -265,7 +265,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         lon = loc.longitude.degrees
 
         webSite = 'http://api.openweathermap.org/data/2.5/forecast'
-        url = f'{webSite}?lat={lat:1.0f}&lon={lon:1.0f}&APPID={self.keyAPI}'
+        url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&APPID={self.keyAPI}'
         self.getOpenWeatherMapData(url=url)
         self.log.info(f'{url}')
 

@@ -30,6 +30,7 @@ if platform.machine() != 'armv7l':
     import PyQt5.QtMultimedia
 import requests
 from importlib_metadata import version
+from astropy.utils import iers
 # local import
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.base import tpool
@@ -61,6 +62,7 @@ class SettMisc(object):
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
+        self.ui.isOnline.clicked.connect(self.setupIERS)
         self.ui.versionBeta.clicked.connect(self.showUpdates)
         self.ui.versionRelease.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
@@ -85,6 +87,7 @@ class SettMisc(object):
         self.ui.isOnline.setChecked(config.get('isOnline', False))
         self.setWeatherOnline()
         self.setupAudioGui()
+        self.setupIERS()
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get('soundMountSlewFinished', 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get('soundDomeSlewFinished', 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get('soundMountAlert', 0))
@@ -132,6 +135,22 @@ class SettMisc(object):
             return False
 
         weather.online = self.ui.isOnline.isChecked()
+
+        return True
+
+    def setupIERS(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        isOnline = self.ui.isOnline.isChecked()
+        if isOnline:
+            iers.conf.auto_download = True
+            iers.conf.auto_max_age = 30
+        else:
+            iers.conf.auto_download = False
+            iers.conf.auto_max_age = 99999
 
         return True
 

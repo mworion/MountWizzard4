@@ -35,7 +35,9 @@ matplotlib.use('Qt5Agg')
 import PyQt5.QtCore
 import PyQt5.QtGui
 import PyQt5.QtWidgets
+import astropy
 from astropy.utils import iers
+astropy.log.setLevel('ERROR')
 iers.conf.auto_download = False
 # local import
 from mw4.base.loggerMW import CustomLogger

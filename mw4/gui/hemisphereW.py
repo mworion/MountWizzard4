@@ -797,7 +797,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        markersize=25,
                                        linestyle='none',
                                        fillstyle='none',
-                                       clip_on=False,
+                                       clip_on=True,
                                        visible=False,
                                        )
 
@@ -809,6 +809,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                               zorder=-30,
                                               color='#40404080',
                                               lw=3,
+                                              clip_on=True,
                                               fill=True,
                                               visible=False)
         axes.add_patch(self.pointerDome)

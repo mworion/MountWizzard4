@@ -10,6 +10,7 @@ instructions. ASTAP is available for all platforms (Mac, Ubuntu and Windows)
 Astrometry.net local install is available on Ubuntu you could install it with
 
 .. code-block:: python
+
     sudo apt-get install astrometry.net
 
 Pleas keep in mind that for both programs you need to install the index files as well.

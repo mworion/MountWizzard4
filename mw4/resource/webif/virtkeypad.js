@@ -93,7 +93,7 @@ function virtual_keypad() {
                         if (y)
                             f.data[d + 0] = 32, f.data[d + 1] = 144, f.data[d + 2] = 192, f.data[d + 3] = 255, d += 4
                         else
-                            f.data[d + 0] = 0, f.data[d + 1] = 0, f.data[d + 2] = 0, f.data[d + 3] = 0, d += 4
+                            f.data[d + 0] = 0, f.data[d + 1] = 0, f.data[d + 2] = 0, f.data[d + 3] = 128, d += 4
                     }
                 // one pixel in y
                 e.putImageData(f, 8 * (r - 1) + 1 , 12 * (u - 1) + 1);
@@ -105,7 +105,7 @@ function virtual_keypad() {
 
                         // changing the drawing color from red to blue
                         if (y)
-                            f.data[d + 0] = 32, f.data[d + 1] = 144, f.data[d + 2] = 192, f.data[d + 3] = 255, d += 4
+                            f.data[d + 0] = 32 * y, f.data[d + 1] = 144*y, f.data[d + 2] = 192*y, f.data[d + 3] = 255, d += 4
                         else
                             f.data[d + 0] = 0, f.data[d + 1] = 0, f.data[d + 2] = 0, f.data[d + 3] = 0, d += 4
                     }

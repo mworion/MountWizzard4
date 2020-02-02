@@ -819,7 +819,12 @@ class Model(object):
         :return: true for test purpose
         """
 
-        if not 2 < len(self.app.data.buildP) < 100:
+        if len(self.app.data.buildP) < 2:
+            self.app.message.emit('No modeling start because less than 3 points', 2)
+            return False
+
+        if len(self.app.data.buildP) > 99:
+            self.app.message.emit('No modeling start because more than 99 points', 2)
             return False
 
         self.changeStyleDynamic(self.ui.runModel, 'running', True)

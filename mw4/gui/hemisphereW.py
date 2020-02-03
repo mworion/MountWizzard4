@@ -44,6 +44,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
+    
+    RESIZE_FINISHED_TIMEOUT = 0.3
 
     MODE = dict(
         normal=dict(horMarker='None',
@@ -192,27 +194,38 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
     def resizeEvent(self, event):
         """
+        we are using the resize event to reset the timer, which means waitung for RESIZE_FINISHED_TIMEOUT in 
+        total before redrawing the complete hemisphere. as we are using a 0.1s cyclic timer.
 
         :param event:
         :return: true for test purpose
         """
 
-        # todo: better than the timer is to implement an event filter
-
         super().resizeEvent(event)
         if self.startup:
             self.startup = False
         else:
-            self.resizeTimerValue = 3
+            self.resizeTimerValue = int(self.RESIZE_FINISHED_TIMEOUT / 0.1)
+            
+        return True
 
     def resizeTimer(self):
         """
+        the resize timer is a workaround because when resizing the window, the blit function needs a new scaled background
+        picture to retrieve. otherwise you will get odd picture. unfortunately there is no resize finished event from qt
+        framwork itself. problem is you never know, when resizing is finished. 
+        it might be the best way to implement a event filter with mouse and resize events to build a resize finished event.
+        so the only quick solution is to wait for some time after we got the last resize event and than draw the widgets 
+        from scratch on.
 
-        :return:
+        :return: True for test purpose
         """
+        
         self.resizeTimerValue -= 1
         if self.resizeTimerValue == 0:
             self.drawHemisphere()
+            
+        return True
 
     def showWindow(self):
         """
@@ -240,10 +253,8 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.app.update0_1s.connect(self.resizeTimer)
 
         # finally setting the mouse handler
-        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event',
-                                                     self.onMouseDispatcher)
-        self.hemisphereMat.figure.canvas.mpl_connect('motion_notify_event',
-                                                     self.showMouseCoordinates)
+        self.hemisphereMat.figure.canvas.mpl_connect('button_press_event', self.onMouseDispatcher)
+        self.hemisphereMat.figure.canvas.mpl_connect('motion_notify_event', self.showMouseCoordinates)
         self.show()
         self.drawHemisphere()
         return True

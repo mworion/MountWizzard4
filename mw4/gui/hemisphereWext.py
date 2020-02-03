@@ -132,7 +132,8 @@ class HemisphereWindowExt(object):
             # self.starsAlignAnnotate.set_color(self.MODE[mode]['horMarker'])
             self.starsAlign.set_color(self.MODE[mode]['starColor'])
 
-        self.drawHemisphere()
+        # todo drawing color does not change due to blit !
+
         return True
 
     @staticmethod

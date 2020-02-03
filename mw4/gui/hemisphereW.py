@@ -47,33 +47,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
     RESIZE_FINISHED_TIMEOUT = 0.3
 
-    MODE = dict(
-        normal=dict(horMarker='None',
-                    horColor='#006000',
-                    buildPColor='#00A000',
-                    starSize=6,
-                    starColor='#808000',
-                    starAnnColor='#808080'),
-        build=dict(horMarker='None',
-                   horColor='#006000',
-                   buildPColor='#FF00FF',
-                   starSize=6,
-                   starColor='#808000',
-                   starAnnColor='#808080'),
-        horizon=dict(horMarker='o',
-                     horColor='#FF00FF',
-                     buildPColor='#004000',
-                     starSize=6,
-                     starColor='#808000',
-                     starAnnColor='#808080'),
-        star=dict(horMarker='None',
-                  horColor='#003000',
-                  buildPColor='#004000',
-                  starSize=12,
-                  starColor='#FFFF00',
-                  starAnnColor='#F0F0F0')
-    )
-
     def __init__(self, app):
         super().__init__()
         self.app = app
@@ -81,6 +54,34 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.setupUi(self)
         self.initUI()
         self.mutexDraw = PyQt5.QtCore.QMutex()
+
+        self.MODE = dict(
+            normal=dict(horMarker='None',
+                        horColor=self.M_GREEN,
+                        buildPColor=self.M_GREEN_H,
+                        starSize=6,
+                        starColor=self.M_YELLOW_L,
+                        starAnnColor=self.M_WHITE_L),
+            build=dict(horMarker='None',
+                       horColor=self.M_GREEN,
+                       buildPColor=self.M_PINK_H,
+                       starSize=6,
+                       starColor=self.M_YELLOW_L,
+                       starAnnColor=self.M_WHITE_L),
+            horizon=dict(horMarker='o',
+                         horColor=self.M_PINK_H,
+                         buildPColor=self.M_GREEN_L,
+                         starSize=6,
+                         starColor=self.M_YELLOW_L,
+                         starAnnColor=self.M_WHITE_L),
+            star=dict(horMarker='None',
+                      horColor=self.M_GREEN_LL,
+                      buildPColor=self.M_GREEN_L,
+                      starSize=12,
+                      starColor=self.M_YELLOW_H,
+                      starAnnColor=self.M_WHITE_H)
+        )
+
         self.startup = True
         self.resizeTimerValue = -1
 
@@ -199,7 +200,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         as we are using a 0.1s cyclic timer.
 
         :param event:
-        :return: true for test purpose
+        :return:
         """
 
         super().resizeEvent(event)
@@ -207,8 +208,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             self.startup = False
         else:
             self.resizeTimerValue = int(self.RESIZE_FINISHED_TIMEOUT / 0.1)
-
-        return True
 
     def resizeTimer(self):
         """
@@ -264,8 +263,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.drawHemisphere()
         return True
 
-    @staticmethod
-    def setupAxes(widget=None):
+    def setupAxes(self, widget=None):
         """
         setupAxes cleans up the axes object in figure an setup a new plotting. it draws
         grid, ticks etc.
@@ -290,39 +288,39 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         axe.set_facecolor((0, 0, 0, 0))
         axe.set_xlim(0, 360)
         axe.set_ylim(0, 90)
-        axe.grid(True, color='#404040')
+        axe.grid(True, color=self.M_GREY)
         axe.tick_params(axis='x',
                         bottom=True,
-                        colors='#2090C0',
+                        colors=self.M_BLUE,
                         labelsize=12)
         axeTop = axe.twiny()
         axeTop.set_facecolor((0, 0, 0, 0))
         axeTop.set_xlim(0, 360)
         axeTop.tick_params(axis='x',
                            top=True,
-                           colors='#2090C0',
+                           colors=self.M_BLUE,
                            labelsize=12)
         axeTop.set_xticks(np.arange(0, 361, 45))
         axeTop.grid(axis='both', visible=False)
         axeTop.set_xticklabels(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'])
-        axeTop.spines['bottom'].set_color('#2090C0')
-        axeTop.spines['top'].set_color('#2090C0')
-        axeTop.spines['left'].set_color('#2090C0')
-        axeTop.spines['right'].set_color('#2090C0')
+        axeTop.spines['bottom'].set_color(self.M_BLUE)
+        axeTop.spines['top'].set_color(self.M_BLUE)
+        axeTop.spines['left'].set_color(self.M_BLUE)
+        axeTop.spines['right'].set_color(self.M_BLUE)
         axe.set_xticks(np.arange(0, 361, 45))
         axe.set_xticklabels(['0', '45', '90', '135', '180', '225', '270', '315', '360'])
         axe.tick_params(axis='y',
-                        colors='#2090C0',
+                        colors=self.M_BLUE,
                         which='both',
                         labelleft=True,
                         labelright=True,
                         labelsize=12)
         axe.set_xlabel('Azimuth in degrees',
-                       color='#2090C0',
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
         axe.set_ylabel('Altitude in degrees',
-                       color='#2090C0',
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
         return axe

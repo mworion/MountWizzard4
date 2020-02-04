@@ -35,7 +35,7 @@ Downloadable from pypi.org:
 
 .. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4
-    :alt: Astropy's PyPI Status
+    :alt: MountWizzard4's PyPI Status
 
 Build status
 ------------

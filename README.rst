@@ -31,27 +31,44 @@ Any feedback welcome!
 
 Actual version PyPi
 -------------------
+Downloadable from pypi.org:
     .. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
         :target: https://pypi.python.org/pypi/mountwizzard4
         :alt: MountWizzard4's PyPI Status
 
 Build status
 ------------
+Python build for version 3.5.x:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Ubuntu/badge.svg
+        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Windows/badge.svg
+        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20MacOS/badge.svg
-|
+        :align: center
+
+Python build for version 3.6.x:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
+        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
+        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS/badge.svg
-|
+        :align: center
+
+Python build for version 3.7.x:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
+        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows/badge.svg
+        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS/badge.svg
-|
+        :align: center
+
+Python build for version 3.8.x:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
+        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
+        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
+        :align: center
 
 Finally
 -------

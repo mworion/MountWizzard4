@@ -43,14 +43,19 @@ Build status
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Windows/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20MacOS/badge.svg
 
+.
 
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS/badge.svg
 
+.
+
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS/badge.svg
+
+.
 
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg

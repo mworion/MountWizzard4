@@ -152,6 +152,9 @@ class BuildPoints(object):
         self.lastGenerator = 'grid'
         row = self.ui.numberGridPointsRow.value()
         col = self.ui.numberGridPointsCol.value()
+        # we only have equal cols
+        col = 2 * int(col / 2)
+        self.ui.numberGridPointsCol.setValue(col)
         minAlt = self.ui.altitudeMin.value()
         maxAlt = self.ui.altitudeMax.value()
         suc = self.app.data.genGrid(minAlt=minAlt,
@@ -159,6 +162,7 @@ class BuildPoints(object):
                                     numbRows=row,
                                     numbCols=col)
         if not suc:
+            self.app.message.emit('Could not generate grid', 2)
             return False
 
         self.autoDeletePoints()
@@ -178,6 +182,7 @@ class BuildPoints(object):
                                      azBase=10,
                                      numberBase=3)
         if not suc:
+            self.app.message.emit('Could not generate 3 align stars', 2)
             return False
 
         self.autoDeletePoints()
@@ -197,6 +202,7 @@ class BuildPoints(object):
                                      azBase=10,
                                      numberBase=6)
         if not suc:
+            self.app.message.emit('Could not generate 6 align stars', 2)
             return False
 
         self.autoDeletePoints()
@@ -216,6 +222,7 @@ class BuildPoints(object):
                                      azBase=10,
                                      numberBase=9)
         if not suc:
+            self.app.message.emit('Could not generate 9 align stars', 2)
             return False
 
         self.autoDeletePoints()
@@ -358,7 +365,6 @@ class BuildPoints(object):
         suc = self.app.data.generateGoldenSpiral(numberPoints=350)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
-            self.ui.numberSpiralPoints.setEnabled(True)
             return False
 
         self.autoDeletePoints()
@@ -376,7 +382,6 @@ class BuildPoints(object):
         suc = self.app.data.generateGoldenSpiral(numberPoints=250)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
-            self.ui.numberSpiralPoints.setEnabled(True)
             return False
 
         self.autoDeletePoints()
@@ -394,7 +399,6 @@ class BuildPoints(object):
         suc = self.app.data.generateGoldenSpiral(numberPoints=150)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
-            self.ui.numberSpiralPoints.setEnabled(True)
             return False
 
         self.autoDeletePoints()
@@ -412,7 +416,6 @@ class BuildPoints(object):
         suc = self.app.data.generateGoldenSpiral(numberPoints=75)
         if not suc:
             self.app.message.emit('Golden spiral cannot be generated', 2)
-            self.ui.numberSpiralPoints.setEnabled(True)
             return False
 
         self.autoDeletePoints()

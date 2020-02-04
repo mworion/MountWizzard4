@@ -40,7 +40,7 @@ from mw4.gui.measureW import MeasureWindow
 from mw4.gui.imageW import ImageWindow
 from mw4.gui.satelliteW import SatelliteWindow
 if platform.machine() != 'armv7l':
-    # todo: there is actually to compile version of PyQtWebEngine, so we have to remove it
+    # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
     from mw4.gui.keypadW import KeypadWindow
 
 from mw4.powerswitch.kmRelay import KMRelay
@@ -82,6 +82,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
     messageQueue = Queue()
     redrawHemisphere = PyQt5.QtCore.pyqtSignal()
     remoteCommand = PyQt5.QtCore.pyqtSignal(str)
+
+    # all cyclic tasks
     update0_1s = PyQt5.QtCore.pyqtSignal()
     update1s = PyQt5.QtCore.pyqtSignal()
     update3s = PyQt5.QtCore.pyqtSignal()
@@ -96,7 +98,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                  mwGlob=None,
                  ):
         super().__init__()
-        # getting global app data
         self.expireData = False
         self.mountUp = False
         self.mwGlob = mwGlob
@@ -106,12 +107,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.threadPool.setMaxThreadCount(20)
         self.message.connect(self.writeMessageQueue)
 
-        pathToData = self.mwGlob['dataDir']
-
         # persistence management through dict
         self.config = {}
         self.loadConfig()
-        topo = self.initConfig()
+
         # write basic data to message window
         profile = self.config.get('profileName', '-')
         self.messageQueue.put(('MountWizzard4 started', 1))
@@ -119,7 +118,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.messageQueue.put((f'Profile [{profile}] loaded', 1))
 
         # initialize commands to mount
-        self.mount = qtmount.Mount(host='192.168.2.15',
+        pathToData = self.mwGlob['dataDir']
+        self.mount = qtmount.Mount(host='localhost',
                                    MAC='00.c0.08.87.35.db',
                                    threadPool=self.threadPool,
                                    pathToData=pathToData,
@@ -128,6 +128,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                    )
 
         # setting location to last know config
+        topo = self.initConfig()
         self.mount.obsSite.location = topo
         self.mount.signals.mountUp.connect(self.loadMountData)
 
@@ -135,10 +136,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         try:
             self.planets = self.mount.obsSite.loader('de421_23.bsp')
         except Exception as e:
-            self.log.critical(f'Failed planets: {e}')
+            self.log.critical(f'Failed loading planets: {e}')
             self.planets = None
 
-        self.relay = KMRelay(host='192.168.2.15')
+        self.relay = KMRelay(host='localhost')
         self.sensorWeather = SensorWeather(self)
         self.onlineWeather = OnlineWeather(self)
         self.directWeather = DirectWeather(self)
@@ -206,16 +207,15 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         # connecting buttons to window open close
         for win in self.uiWindows:
-            pass
             self.uiWindows[win]['button'].clicked.connect(self.toggleWindow)
 
         # starting mount communication
         self.mount.startTimers()
 
-        self.timer1s = PyQt5.QtCore.QTimer()
-        self.timer1s.setSingleShot(False)
-        self.timer1s.timeout.connect(self.sendUpdate)
-        self.timer1s.start(100)
+        self.timer0_1s = PyQt5.QtCore.QTimer()
+        self.timer0_1s.setSingleShot(False)
+        self.timer0_1s.timeout.connect(self.sendUpdate)
+        self.timer0_1s.start(100)
 
         # finishing for test: MW4 runs with keyword 'test' for 10 seconds an terminates
         if not hasattr(sys, 'argv'):
@@ -378,7 +378,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.mount.stopTimers()
         self.measure.timerTask.stop()
         self.relay.timerTask.stop()
-        self.timer1s.stop()
+        self.timer0_1s.stop()
         self.message.emit('MountWizzard4 manual stopped with quit', 1)
         PyQt5.QtCore.QCoreApplication.quit()
         return True
@@ -395,7 +395,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.relay.timerTask.stop()
         self.storeConfig()
         self.saveConfig()
-        self.timer1s.stop()
+        self.timer0_1s.stop()
         self.message.emit('MountWizzard4 manual stopped with quit/save', 1)
         PyQt5.QtCore.QCoreApplication.quit()
         return True

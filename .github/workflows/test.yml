@@ -38,7 +38,6 @@ jobs:
       run: |
         python -m pip install dist/mountwizzard*.tar.gz
 
-    - name: Lint with flake8
+    - name: run mw4
       run: |
-        pip install flake8
-        flake8
+        python mw4/loader.py test

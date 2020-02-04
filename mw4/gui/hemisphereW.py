@@ -54,6 +54,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.ui.setupUi(self)
         self.initUI()
         self.mutexDraw = PyQt5.QtCore.QMutex()
+        self.operationMode = 'normal'
 
         self.MODE = dict(
             normal=dict(horMarker='None',
@@ -620,11 +621,16 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         alt = np.array(alt)
         az = np.array(az)
 
-        self.horizonFill, = axes.fill(az, alt, color='#002000', zorder=-20)
-        self.horizonMarker, = axes.plot(az, alt, color='#006000', zorder=-20, lw=3)
-        if self.ui.checkEditHorizonMask.isChecked():
-            self.horizonMarker.set_marker('o')
-            self.horizonMarker.set_color('#FF00FF')
+        self.horizonFill, = axes.fill(az,
+                                      alt,
+                                      color='#002000',
+                                      zorder=-20)
+        self.horizonMarker, = axes.plot(az,
+                                        alt,
+                                        color=self.MODE[self.operationMode]['horColor'],
+                                        marker=self.MODE[self.operationMode]['horMarker'],
+                                        zorder=-20,
+                                        lw=3)
 
         return True
 
@@ -650,10 +656,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         else:
             ls = ''
             lw = 0
-        if self.ui.checkEditBuildPoints.isChecked():
-            color = '#FF00FF'
-        else:
-            color = '#00A000'
 
         self.pointsBuild, = axes.plot(az, alt,
                                       marker=self.markerPoint(),
@@ -661,7 +663,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                       linestyle=ls,
                                       lw=lw,
                                       fillstyle='none',
-                                      color=color,
+                                      color=self.MODE[self.operationMode]['buildPColor'],
                                       zorder=20,
                                       )
         self.pointsBuildAnnotate = list()
@@ -847,7 +849,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                      marker=self.markerStar(),
                                      markersize=7,
                                      linestyle='',
-                                     color='#808000',
+                                     color=self.MODE[self.operationMode]['starColor'],
                                      zorder=-20,
                                      visible=visible,
                                      )

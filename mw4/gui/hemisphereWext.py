@@ -112,27 +112,16 @@ class HemisphereWindowExt(object):
         :return: success
         """
 
-        mode = ''
         if self.ui.checkEditNone.isChecked():
-            mode = 'normal'
+            self.operationMode = 'normal'
         elif self.ui.checkEditBuildPoints.isChecked():
-            mode = 'build'
+            self.operationMode = 'build'
         elif self.ui.checkEditHorizonMask.isChecked():
-            mode = 'horizon'
+            self.operationMode = 'horizon'
         elif self.ui.checkPolarAlignment.isChecked():
-            mode = 'star'
+            self.operationMode = 'star'
 
-        # styles
-        if self.horizonMarker is not None:
-            self.horizonMarker.set_marker(self.MODE[mode]['horMarker'])
-            self.horizonMarker.set_color(self.MODE[mode]['horColor'])
-        if self.pointsBuild is not None:
-            self.pointsBuild.set_color(self.MODE[mode]['buildPColor'])
-        if self.starsAlign is not None:
-            # self.starsAlignAnnotate.set_color(self.MODE[mode]['horMarker'])
-            self.starsAlign.set_color(self.MODE[mode]['starColor'])
-
-        # todo drawing color does not change due to blit !
+        self.drawHemisphere()
 
         return True
 

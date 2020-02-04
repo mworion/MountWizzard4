@@ -31,24 +31,25 @@ Any feedback welcome!
 
 Actual version PyPi
 -------------------
-
-.. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
-    :target: https://pypi.python.org/pypi/mountwizzard4
-    :alt: MountWizzard4's PyPI Status
+    .. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
+        :target: https://pypi.python.org/pypi/mountwizzard4
+        :alt: MountWizzard4's PyPI Status
 
 Build status
 ------------
-
-|    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Ubuntu/badge.svg
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Ubuntu/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Windows/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20MacOS/badge.svg
-|    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
+|
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS/badge.svg
-|    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
+|
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS/badge.svg
-|    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
+|
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
 

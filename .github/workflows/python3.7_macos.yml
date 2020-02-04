@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'mw4/**'
-      - 'README.rst'
       - 'setup.py'
       - '.github/workflows/python3.7_macos.yml'
 

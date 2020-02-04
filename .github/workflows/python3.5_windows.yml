@@ -1,11 +1,11 @@
-name: Python3.8 MacOS
+name: Python3.5 Windows
 
 on:
   push:
     paths:
       - 'mw4/**'
       - 'setup.py'
-      - '.github/workflows/python3.8_macos.yml'
+      - '.github/workflows/python3.6_windows.yml'
 
 jobs:
   build:
@@ -14,8 +14,8 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        os: [macos-latest]
-        python-version: [3.8]
+        os: [windows-latest]
+        python-version: [3.5]
 
     steps:
     - uses: actions/checkout@v2
@@ -45,6 +45,7 @@ jobs:
         python setup.py sdist
 
     - name: Install package
+      shell: bash
       run: |
         python -m pip install dist/mountwizzard*.tar.gz
 

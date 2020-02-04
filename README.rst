@@ -40,6 +40,15 @@ Downloadable from pypi.org:
 Build status
 ------------
 
+Python build for version 3.5.x:
+
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Ubuntu/badge.svg
+        :align: center
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Windows/badge.svg
+        :align: center
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20MacOS/badge.svg
+        :align: center
+
 Python build for version 3.6.x:
 
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg

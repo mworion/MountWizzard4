@@ -1,11 +1,11 @@
-name: Python3.8 MacOS
+name: Python3.6 MacOS
 
 on:
   push:
     paths:
       - 'mw4/**'
       - 'setup.py'
-      - '.github/workflows/python3.8_macos.yml'
+      - '.github/workflows/python3.5_macos.yml'
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
       max-parallel: 4
       matrix:
         os: [macos-latest]
-        python-version: [3.8]
+        python-version: [3.5]
 
     steps:
     - uses: actions/checkout@v2

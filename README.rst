@@ -29,11 +29,16 @@ Bug reports
 Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
 Any feedback welcome!
 
-Build status
-------------
+Actual version
+--------------
+Downloadable from pypi.org:
+
 .. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4
     :alt: Astropy's PyPI Status
+
+Build status
+------------
 
 Python build for version 3.6.x:
 

@@ -39,7 +39,7 @@ setup(
         'mw4.resource',
         'mw4.telescope',
     ],
-    python_requires='>=3.6.0, <3.9',
+    python_requires='>=3.5.0, <3.9',
     install_requires=[
         'mountcontrol==0.155',
         'indibase==0.126',

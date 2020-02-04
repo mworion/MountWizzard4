@@ -45,7 +45,7 @@ setup(
         'indibase==0.126',
         'PyQt5==5.13.2; platform_machine != "armv7l"',
         'PyQtWebEngine==5.13.2; platform_machine != "armv7l"',
-        'matplotlib==3.2.0rc1',
+        'matplotlib==3.2.0rc3',
         'astropy==4.0',
         'requests==2.22.0',
         'requests_toolbelt==0.9.1',

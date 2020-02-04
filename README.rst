@@ -31,6 +31,9 @@ Any feedback welcome!
 
 Build status
 ------------
+.. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
+    :target: https://pypi.python.org/pypi/mountwizzard4
+    :alt: Astropy's PyPI Status
 
 Python build for version 3.6.x:
 

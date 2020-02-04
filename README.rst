@@ -40,11 +40,9 @@ Build status
 ------------
 
 .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Ubuntu/badge.svg
-    :align: center
 .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Windows/badge.svg
-    :align: center
 .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20MacOS/badge.svg
-    :align: center
+
 
 .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
     :align: center

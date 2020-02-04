@@ -5,7 +5,7 @@ on:
     paths:
       - 'mw4/**'
       - 'setup.py'
-      - '.github/workflows/python3.6_ubuntu.yml'
+      - '.github/workflows/python3.5_ubuntu.yml'
 
 jobs:
   build:

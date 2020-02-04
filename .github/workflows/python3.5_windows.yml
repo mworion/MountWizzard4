@@ -5,7 +5,7 @@ on:
     paths:
       - 'mw4/**'
       - 'setup.py'
-      - '.github/workflows/python3.6_windows.yml'
+      - '.github/workflows/python3.5_windows.yml'
 
 jobs:
   build:

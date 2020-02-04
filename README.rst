@@ -39,9 +39,9 @@ Actual version PyPi
 Build status
 ------------
 
-.. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Ubuntu/badge.svg
-.. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Windows/badge.svg
-.. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20MacOS/badge.svg
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Ubuntu/badge.svg
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20Windows/badge.svg
+    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.5%20MacOS/badge.svg
 
 
 .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg

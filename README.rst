@@ -38,9 +38,9 @@ Downloadable from pypi.org:
 
 Build status
 ------------
-Python build for version 3.6.x: |p36ubuntu|_ |p36windows|_ |p36macos|_
-Python build for version 3.7.x: |p37ubuntu|_ |p37windows|_ |p37macos|_
-Python build for version 3.8.x: |p38ubuntu|_ |p38windows|_ |p38macos|_
+|p36ubuntu|_ |p36windows|_ |p36macos|_ |p36macos|_
+|p37ubuntu|_ |p37windows|_ |p37macos|_
+|p38ubuntu|_ |p38windows|_ |p38macos|_
 
 Finally
 -------

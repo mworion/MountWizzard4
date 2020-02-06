@@ -335,18 +335,23 @@ class Satellite(object):
         :return: True for test purpose
         """
 
-        minAlt = 10
+        minAlt = 0
 
         loc = self.app.mount.obsSite.location
         obs = self.app.mount.obsSite
         t0 = obs.timeJD
-        t1 = obs.ts.tt_jd(obs.timeJD.tt + 5)
+        t1 = obs.ts.tt_jd(obs.timeJD.tt + 3)
         t, events = self.satellite.find_events(loc, t0, t1, altitude_degrees=minAlt)
-        for ti, event in zip(t, events):
-            name = (f'rise above {minAlt}deg',
-                    'culminate',
-                    f'set below {minAlt}deg')[event]
-            print(ti.utc_jpl(), name)
+
+        if len(t) > 0:
+            self.ui.satTransitStartUTC_1.setText(f'{t[0].utc_strftime("%H:%M:%S")}')
+            self.ui.satTransitEndUTC_1.setText(f'{t[1].utc_strftime("%H:%M:%S")}')
+        if len(t) > 1:
+            self.ui.satTransitStartUTC_2.setText(f'{t[2].utc_strftime("%H:%M:%S")}')
+            self.ui.satTransitEndUTC_2.setText(f'{t[3].utc_strftime("%H:%M:%S")}')
+        if len(t) > 2:
+            self.ui.satTransitStartUTC_3.setText(f'{t[4].utc_strftime("%H:%M:%S")}')
+            self.ui.satTransitEndUTC_3.setText(f'{t[5].utc_strftime("%H:%M:%S")}')
 
     def extractSatelliteData(self, widget, satName=''):
         """

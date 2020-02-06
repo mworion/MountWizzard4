@@ -66,6 +66,8 @@ Hope this makes fun and helps for your hobby, CS Michel
 
 .. |p38ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
     :align: center
+.. _|p38ubuntu|:
+
 .. |p38windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
     :align: center
 .. |p38macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg

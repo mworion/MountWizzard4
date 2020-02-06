@@ -327,7 +327,26 @@ class Satellite(object):
         # starting thread for calculation of parameters
         self.app.mount.calcTLE()
 
-        return True
+        return
+
+    def showRises(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        minAlt = 10
+
+        loc = self.app.mount.obsSite.location
+        obs = self.app.mount.obsSite
+        t0 = obs.timeJD
+        t1 = obs.ts.tt_jd(obs.timeJD.tt + 5)
+        t, events = self.satellite.find_events(loc, t0, t1, altitude_degrees=minAlt)
+        for ti, event in zip(t, events):
+            name = (f'rise above {minAlt}deg',
+                    'culminate',
+                    f'set below {minAlt}deg')[event]
+            print(ti.utc_jpl(), name)
 
     def extractSatelliteData(self, widget, satName=''):
         """
@@ -388,6 +407,7 @@ class Satellite(object):
         self.updateSatelliteData()
         self.programTLEToMount()
         self.calcTLEParams()
+        self.showRises()
 
         winObj = self.app.uiWindows['showSatelliteW']
 

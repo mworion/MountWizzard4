@@ -38,29 +38,9 @@ Downloadable from pypi.org:
 
 Build status
 ------------
-Python build for version 3.6.x:
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS/badge.svg
-        :align: center
-
-Python build for version 3.7.x:
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS/badge.svg
-        :align: center
-
-Python build for version 3.8.x:
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
-        :align: center
+Python build for version 3.6.x: |p36ubuntu| |p36windows| |p36macos|
+Python build for version 3.7.x: |p37ubuntu| |p37windows| |p37macos|
+Python build for version 3.8.x: |p38ubuntu| |p38windows| |p38macos|
 
 Finally
 -------
@@ -69,3 +49,33 @@ The use this software is at your own risk! No responsibility for damages to your
 other equipment or your environment. Please take care yourself!
 
 Hope this makes fun and helps for your hobby, CS Michel
+
+.. |p36ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
+.6%20Ubuntu/badge.svg
+    :align: center
+.. |p36windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
+.6%20Windows/badge.svg
+    :align: center
+.. |p36macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
+.6%20MacOS/badge.svg
+    :align: center
+
+.. |p37ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
+.7%20Ubuntu/badge.svg
+    :align: center
+.. |p37windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
+.7%20Windows/badge.svg
+    :align: center
+.. |p37macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
+.7%20MacOS/badge.svg
+    :align: center
+
+.. |p38ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
+.8%20Ubuntu/badge.svg
+    :align: center
+.. |p38windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
+.8%20Windows/badge.svg
+    :align: center
+.. |p38macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
+.8%20MacOS/badge.svg
+    :align: center

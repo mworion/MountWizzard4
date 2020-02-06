@@ -50,7 +50,7 @@ setup(
         'requests==2.22.0',
         'requests_toolbelt==0.9.1',
         'numpy==1.18.1',
-        'skyfield==1.16',
+        'skyfield==1.17',
         'forwardable==0.4.1',
         'qimage2ndarray==1.8.2',
         'importlib_metadata==1.3.0',

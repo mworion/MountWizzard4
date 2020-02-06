@@ -219,7 +219,7 @@
            <string>Switching the hemisphere window to normal working mode.</string>
           </property>
           <property name="text">
-           <string>Normal mode</string>
+           <string>Normal</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -270,7 +270,7 @@
            <string>Enabling the polar or ortho align procedure. For starting the procedure, enable align stars and choose a polar align star with left mouse click and a ortho align star with right mouse click.</string>
           </property>
           <property name="text">
-           <string>Polar/Ortho Align </string>
+           <string>Align Polar/Ortho </string>
           </property>
          </widget>
         </item>
@@ -331,10 +331,13 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>The hemisphere view could be extended by a polar diagram if necessary.  </string>
+           <string>Not implemented</string>
           </property>
           <property name="text">
            <string>Polar Diagram </string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
           </property>
          </widget>
         </item>

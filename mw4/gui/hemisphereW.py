@@ -572,7 +572,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         # due to the fact that all annotation are only shown if in axes when coordinate
         # are in data, after some time, no annotation will be shown, because just moved.
-        # therefor we add each time the annotation again.
+        # therefore we add each time the annotation again.
 
         visible = self.ui.checkShowAlignStar.isChecked()
         for alt, az, name in zip(hip.alt, hip.az, hip.name):
@@ -817,8 +817,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
                                        visible=False,
                                        )
 
-        # adding pointer of dome if dome is present
-        # visible = self.app.mainW.deviceStat['dome'] is not None
         self.pointerDome = mpatches.Rectangle((165, 1),
                                               30,
                                               88,

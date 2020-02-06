@@ -50,32 +50,23 @@ other equipment or your environment. Please take care yourself!
 
 Hope this makes fun and helps for your hobby, CS Michel
 
-.. |p36ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
-.6%20Ubuntu/badge.svg
+.. |p36ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
     :align: center
-.. |p36windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
-.6%20Windows/badge.svg
+.. |p36windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
     :align: center
-.. |p36macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
-.6%20MacOS/badge.svg
+.. |p36macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS/badge.svg
     :align: center
 
-.. |p37ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
-.7%20Ubuntu/badge.svg
+.. |p37ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
     :align: center
-.. |p37windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
-.7%20Windows/badge.svg
+.. |p37windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows/badge.svg
     :align: center
-.. |p37macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
-.7%20MacOS/badge.svg
+.. |p37macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS/badge.svg
     :align: center
 
-.. |p38ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
-.8%20Ubuntu/badge.svg
+.. |p38ubuntu| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
     :align: center
-.. |p38windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
-.8%20Windows/badge.svg
+.. |p38windows| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
     :align: center
-.. |p38macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3
-.8%20MacOS/badge.svg
+.. |p38macos| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
     :align: center

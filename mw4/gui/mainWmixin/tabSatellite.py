@@ -335,7 +335,7 @@ class Satellite(object):
         :return: True for test purpose
         """
 
-        minAlt = 0
+        minAlt = 10
 
         loc = self.app.mount.obsSite.location
         obs = self.app.mount.obsSite
@@ -343,15 +343,38 @@ class Satellite(object):
         t1 = obs.ts.tt_jd(obs.timeJD.tt + 3)
         t, events = self.satellite.find_events(loc, t0, t1, altitude_degrees=minAlt)
 
-        if len(t) > 0:
-            self.ui.satTransitStartUTC_1.setText(f'{t[0].utc_strftime("%H:%M:%S")}')
-            self.ui.satTransitEndUTC_1.setText(f'{t[1].utc_strftime("%H:%M:%S")}')
-        if len(t) > 1:
-            self.ui.satTransitStartUTC_2.setText(f'{t[2].utc_strftime("%H:%M:%S")}')
-            self.ui.satTransitEndUTC_2.setText(f'{t[3].utc_strftime("%H:%M:%S")}')
-        if len(t) > 2:
-            self.ui.satTransitStartUTC_3.setText(f'{t[4].utc_strftime("%H:%M:%S")}')
-            self.ui.satTransitEndUTC_3.setText(f'{t[5].utc_strftime("%H:%M:%S")}')
+        passUI = {
+            0:
+                {'rise': self.ui.satTransitStartUTC_1,
+                 'settle': self.ui.satTransitEndUTC_1,
+                 },
+            1:
+                {'rise': self.ui.satTransitStartUTC_2,
+                 'settle': self.ui.satTransitEndUTC_2,
+                 },
+            2:
+                {'rise': self.ui.satTransitStartUTC_3,
+                 'settle': self.ui.satTransitEndUTC_3,
+                 },
+        }
+
+        fString = "%Y-%m-%d  %H:%M:%S"
+
+        index = 0
+        for ti, event in zip(t, events):
+            if index > 2:
+                break
+            if event == 0:
+                passUI[index]['rise'].setText(f'{ti.utc_strftime(fString)}')
+            elif event == 1:
+                continue
+            elif event == 2:
+                passUI[index]['settle'].setText(f'{ti.utc_strftime(fString)}')
+                index += 1
+
+        while index < 3:
+            passUI[index]['rise'].setText('-')
+            passUI[index]['settle'].setText('-')
 
     def extractSatelliteData(self, widget, satName=''):
         """

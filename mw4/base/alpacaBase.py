@@ -1074,7 +1074,7 @@ class Camera(AlpacaBase):
         """
         self.put("pulseguide", Direction=Direction, Duration=Duration)
 
-    def startexposure(self, Duration, Light: bool):
+    def startexposure(self, Duration=0, Light=True):
         """Start an exposure.
 
         Notes:

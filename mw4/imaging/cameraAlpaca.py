@@ -19,10 +19,12 @@
 ###########################################################
 # standard libraries
 import logging
+import time
 from datetime import datetime
 # external packages
 import PyQt5
 import numpy as np
+from astropy.io import fits
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.alpacaClass import AlpacaClass
@@ -167,10 +169,39 @@ class CameraAlpaca(AlpacaClass):
         if not suc:
             self.log.info('Camera has no download quality settings')
 
-        # bin
-        # frame
-        # expose
-        print('exposing')
+        # set binning
+        self.client.binx(BinX=binning)
+        self.client.biny(BinY=binning)
+
+        # set frame sizes
+        self.client.startx(StartX=posX)
+        self.client.starty(StartY=posY)
+        self.client.numx(NumX=width)
+        self.client.numy(NumY=height)
+
+        # start exposure
+        self.client.startexposure(Duration=expTime, Light=True)
+
+        # wait for finishing
+        while not self.client.imageready():
+            duration = expTime * (1 - self.client.percentcompleted() / 100)
+            text = f'{duration:3.1f}'
+            time.sleep(0.1)
+            self.signals.message.emit(text)
+        self.signals.integrated.emit()
+
+        # download image
+        self.signals.message.emit('download')
+        data = np.array(self.client.imagearray())
+        data = np.transpose(data)
+
+        # creating a fits file and saving the image
+        hdu = fits.PrimaryHDU(data=data)
+        header = hdu.header
+        header.append()
+        hdu.writeto(self.imagePath, overwrite=True)
+
+        self.signals.message.emit('')
         self.signals.saved.emit(self.imagePath)
 
         return suc

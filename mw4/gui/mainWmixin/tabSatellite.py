@@ -335,7 +335,7 @@ class Satellite(object):
         :return: True for test purpose
         """
 
-        minAlt = 10
+        minAlt = 5
 
         loc = self.app.mount.obsSite.location
         obs = self.app.mount.obsSite
@@ -358,7 +358,7 @@ class Satellite(object):
                  },
         }
 
-        fString = "%Y-%m-%d  %H:%M:%S"
+        fString = "%Y-%m-%d  %H:%M"
 
         index = 0
         for ti, event in zip(t, events):

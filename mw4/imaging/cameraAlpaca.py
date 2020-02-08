@@ -130,9 +130,8 @@ class CameraAlpaca(AlpacaClass):
         :return: success
         """
 
-        # setting fast mode:
         suc = self.data['CAN_FAST']
-        if suc:
+        if suc and fastReadout:
             self.client.fastreadout(FastReadout=True)
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
         self.log.info(f'camera has readout quality entry: {quality}')

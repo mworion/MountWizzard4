@@ -33,7 +33,7 @@ class IndiClass(object):
     the class indiClass inherits all information and handling of indi devices
     this class will be only referenced from other classes and not directly used
 
-        >>> indi = IndiClass(app=None)
+        >>> indi = IndiClass(app=None, data={})
     """
 
     __all__ = ['IndiClass']
@@ -44,7 +44,7 @@ class IndiClass(object):
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
 
-    def __init__(self, app=None):
+    def __init__(self, app=None, data={}):
         super().__init__()
 
         self.app = app
@@ -52,7 +52,7 @@ class IndiClass(object):
         self.client = qtIndiBase.Client(host=None)
         self.name = ''
         self._host = ('localhost', 7624)
-        self.data = {}
+        self.data = data
 
         self.retryCounter = 0
         self.device = None
@@ -143,7 +143,7 @@ class IndiClass(object):
         if deviceName == self.name:
             self.app.message.emit(f'INDI removed device: [{deviceName}]', 0)
             self.device = None
-            self.data = {}
+            self.data.clear()
             return True
         else:
             return False

@@ -126,7 +126,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         """
 
         self.running = False
-        self.data = {}
+        self.data.clear()
 
         return True
 

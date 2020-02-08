@@ -70,7 +70,6 @@ class Camera:
             'alpaca': CameraAlpaca(self.app, self.signals, self.data),
         }
         self.name = ''
-
         self.host = ('localhost', 7624)
         self.isGeometry = False
 

@@ -44,7 +44,7 @@ class DomeAlpaca(AlpacaClass):
     log = CustomLogger(logger, {})
 
     def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app)
+        super().__init__(app=app, data=data)
 
         # as we have in the base class only the base client there, we will get more
         # specialized with Dome (which is derived from the base class)

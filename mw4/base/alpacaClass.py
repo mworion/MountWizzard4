@@ -35,7 +35,7 @@ class AlpacaClass(object):
     the class AlpacaClass inherits all information and handling of alpaca devices
     this class will be only referenced from other classes and not directly used
 
-        >>> a = AlpacaClass(app=None)
+        >>> a = AlpacaClass(app=None, data={})
     """
 
     __all__ = ['AlpacaClass']
@@ -45,7 +45,7 @@ class AlpacaClass(object):
 
     CYCLE = 2000
 
-    def __init__(self, app=None):
+    def __init__(self, app=None, data={}):
         super().__init__()
 
         self.app = app
@@ -58,7 +58,7 @@ class AlpacaClass(object):
         self.protocol = 'http'
         self.host = ('localhost', 11111)
         self.apiVersion = 1
-        self.data = {}
+        self.data = data
 
         self.deviceConnected = False
         self.serverConnected = False

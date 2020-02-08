@@ -130,15 +130,21 @@ class AlpacaClass(object):
 
     def startTimer(self):
         """
+        startTimer enables the cyclic timer for polling information
 
+        :return: true for test purpose
         """
         self.timeCycle.start(self.CYCLE)
+        return True
 
     def stopTimer(self):
         """
+        stopTimer disables the cyclic timer for polling information
 
+        :return: true for test purpose
         """
         self.timeCycle.stop()
+        return True
 
     def pollStatus(self):
         """

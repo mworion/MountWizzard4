@@ -109,7 +109,9 @@ class Camera:
 
     def startCommunication(self):
         """
+        startCommunication enables the cyclic polling in framework driver
 
+        :return: success
         """
 
         if self.framework in self.run.keys():
@@ -120,6 +122,9 @@ class Camera:
 
     def stopCommunication(self):
         """
+        stopCommunication disables the cyclic polling in framework driver
+
+        :return: success
 
         """
 

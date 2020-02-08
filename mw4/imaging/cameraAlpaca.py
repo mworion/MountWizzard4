@@ -184,9 +184,9 @@ class CameraAlpaca(AlpacaClass):
 
         # wait for finishing
         while not self.client.imageready():
-            duration = expTime * (1 - self.client.percentcompleted() / 100)
-            text = f'{duration:3.1f}'
-            time.sleep(0.1)
+            duration = expTime * (1 - min(self.client.percentcompleted(), 100) / 100)
+            text = f'expose {duration:3.0f} s'
+            time.sleep(0.2)
             self.signals.message.emit(text)
         self.signals.integrated.emit()
 
@@ -196,6 +196,7 @@ class CameraAlpaca(AlpacaClass):
         data = np.transpose(data)
 
         # creating a fits file and saving the image
+        self.signals.message.emit('saving')
         hdu = fits.PrimaryHDU(data=data)
         header = hdu.header
         header.append()

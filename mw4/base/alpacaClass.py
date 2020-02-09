@@ -38,13 +38,12 @@ class AlpacaClass(object):
         >>> a = AlpacaClass(app=None, data={})
     """
 
-    __all__ = ['AlpacaClass']
-
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
-    CYCLE_DEVICE = 2000
-    CYCLE_DATA = 1000
+    # relaxed generic timing
+    CYCLE_DEVICE = 3000
+    CYCLE_DATA = 3000
 
     def __init__(self, app=None, data={}):
         super().__init__()

@@ -5,7 +5,7 @@ Overview
 --------
 Welcome to MountWizzard4! MW4 is a utility for 10micron users for improving the workflow for
 astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu tested). As a python
-application, it should run in all environments which support python3.7 including
+application, it should run in all environments which support python 3.6-3.8 including
 Qt as a Gui framework.
 
 For full operation MW4 needs actually running INDI Server(s) (see: https://indilib.org)
@@ -13,8 +13,8 @@ connected to your devices. MW4 will support ASCOM Alpaca
 (see: https://ascom-standards.org/Developer/Alpaca.htm) in the next step as well. In
 addition an online connection is used for some services which might be very helpful.
 
-It is recommended to use mount firmware 2.16 or later as some of the functions don't work
-with older firmware versions.
+It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some of the
+functions don't work with older firmware versions.
 
 Documentation
 -------------
@@ -64,8 +64,10 @@ Python build for version 3.8.x:
 
 Finally
 -------
-MountWizzard4 is still for the next release in alpha / beta development.
-The use this software is at your own risk! No responsibility for damages to your mount or
-other equipment or your environment. Please take care yourself!
+MountWizzard4 is still in beta development. The use this software is at your own risk! No
+responsibility for damages to your mount or other equipment or your environment. Please take
+care yourself!
 
-Hope this makes fun and helps for your hobby, CS Michel
+Hope this tool makes fun and helps for your hobby,
+
+CS Michel

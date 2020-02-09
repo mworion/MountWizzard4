@@ -96,21 +96,33 @@ class SettImaging(object):
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         filterNumber = self.app.camera.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
         text = self.app.camera.data.get(key, 'not found')
-        self.ui.filterName.setText(f'{text}')
-
-        self.ui.focalLength.setText(f'{focalLength:4.0f}')
-        self.ui.aperture.setText(f'{aperture:3.0f}')
-        self.ui.pixelSizeX.setText(f'{pixelSizeX:2.2f}')
-        self.ui.pixelSizeY.setText(f'{pixelSizeY:2.2f}')
-        self.ui.pixelX.setText(f'{pixelX:5.0f}')
-        self.ui.pixelY.setText(f'{pixelY:5.0f}')
-        self.ui.rotation.setText(f'{rotation:3.1f}')
-        self.ui.filterNumber.setText(f'{filterNumber:1.0f}')
-        self.ui.coolerTemp.setText(f'{coolerTemp:3.1f}')
-        self.ui.coolerPower.setText(f'{coolerPower:3.1f}')
-        self.ui.focuserPosition.setText(f'{focus:6.0f}')
+        if text is not None:
+            self.ui.filterName.setText(f'{text}')
+        if focalLength is not None:
+            self.ui.focalLength.setText(f'{focalLength:4.0f}')
+        if aperture is not None:
+            self.ui.aperture.setText(f'{aperture:3.0f}')
+        if pixelSizeX is not None:
+            self.ui.pixelSizeX.setText(f'{pixelSizeX:2.2f}')
+        if pixelSizeY is not None:
+            self.ui.pixelSizeY.setText(f'{pixelSizeY:2.2f}')
+        if pixelX is not None:
+            self.ui.pixelX.setText(f'{pixelX:5.0f}')
+        if pixelY is not None:
+            self.ui.pixelY.setText(f'{pixelY:5.0f}')
+        if rotation is not None:
+            self.ui.rotation.setText(f'{rotation:3.1f}')
+        if filterNumber is not None:
+            self.ui.filterNumber.setText(f'{filterNumber:1.0f}')
+        if coolerTemp is not None:
+            self.ui.coolerTemp.setText(f'{coolerTemp:3.1f}')
+        if coolerPower is not None:
+            self.ui.coolerPower.setText(f'{coolerPower:3.1f}')
+        if focus is not None:
+            self.ui.focuserPosition.setText(f'{focus:6.0f}')
 
         if coolerOn:
             self.changeStyleDynamic(self.ui.coolerOn, 'running', True)

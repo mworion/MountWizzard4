@@ -77,21 +77,6 @@ class CameraAlpaca(AlpacaClass):
 
         return True
 
-    def emitData(self):
-        """
-
-        :return: success
-        """
-
-        if 'CAMERA.STATE' not in self.data:
-            return False
-
-        states = ['Idle', 'Wait', 'Expose', 'Read', 'Download', 'Error']
-        state = self.data['CAMERA.STATE']
-        self.signals.message.emit(states[state])
-
-        return True
-
     def workerPollData(self):
         """
 
@@ -117,7 +102,6 @@ class CameraAlpaca(AlpacaClass):
             return False
 
         worker = Worker(self.workerPollData)
-        worker.signals.result.connect(self.emitData)
         self.threadPool.start(worker)
         return True
 
@@ -188,14 +172,33 @@ class CameraAlpaca(AlpacaClass):
 
         # download image
         self.signals.message.emit('download')
-        data = np.array(self.client.imagearray())
+        data = np.array(self.client.imagearray(), dtype=np.uint16)
         data = np.transpose(data)
 
         # creating a fits file and saving the image
         self.signals.message.emit('saving')
         hdu = fits.PrimaryHDU(data=data)
         header = hdu.header
-        header.append()
+        header['OBJECT'] = 'skymodel'
+        header['FRAME'] = 'Light'
+        header['OBJCTRA'] = self.app.mount.obsSite.raJNow.hstr()
+        dec = self.app.mount.obsSite.decJNow.dstr()
+        dec = dec.replace('deg', '').replace("'", '').replace('"', '')
+        header['OBJCTDEC'] = dec
+        header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
+        header['EQUINOX'] = 2000
+        header['RA'] = self.app.mount.obsSite.raJNow.hours
+        header['DEC'] = self.app.mount.obsSite.decJNow.degrees
+        header['XBINNING'] = binning
+        header['YBINNING'] = binning
+        header['EXPTIME'] = expTime
+        header['OBSERVER'] = 'MW4'
+        header['TELESCOP'] = self.app.mount.firmware.product
+        header['PIXSIZE1'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
+        header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
+        header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
+        header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
+
         hdu.writeto(self.imagePath, overwrite=True)
 
         self.signals.message.emit('')

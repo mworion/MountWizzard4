@@ -91,6 +91,9 @@
        </property>
        <item row="2" column="0">
         <widget class="QPushButton" name="solve">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -162,6 +165,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="exposeN">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -182,6 +188,9 @@
        </item>
        <item row="0" column="0">
         <widget class="QPushButton" name="expose">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -587,7 +596,7 @@
         <item>
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>DEC [°]</string>
+           <string>DEC [deg]</string>
           </property>
          </widget>
         </item>
@@ -597,7 +606,7 @@
         <item>
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Rotation [°]</string>
+           <string>Rotation [deg]</string>
           </property>
          </widget>
         </item>
@@ -657,7 +666,7 @@
         <item>
          <widget class="QLabel" name="label_9">
           <property name="text">
-           <string>CCD Temp [°]</string>
+           <string>CCD Temp [deg]</string>
           </property>
          </widget>
         </item>

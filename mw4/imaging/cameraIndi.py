@@ -72,7 +72,7 @@ class CameraIndi(IndiClass):
                                 deviceName=deviceName)
         # setting a object name
         objectName = self.device.getText('FITS_HEADER')
-        objectName['FITS_OBJECT'] = 'skyview'
+        objectName['FITS_OBJECT'] = 'skymodel'
         self.client.sendNewText(deviceName=deviceName,
                                 propertyName='FITS_HEADER',
                                 elements=objectName,

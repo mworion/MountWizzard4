@@ -145,6 +145,11 @@ class CameraAlpaca(AlpacaClass):
         """
 
         self.imagePath = imagePath
+        binning = int(binning)
+        posX = int(posX)
+        posY = int(posY)
+        width = int(width)
+        height = int(height)
 
         suc = self.sendDownloadMode(fastReadout=fastReadout)
         if not suc:

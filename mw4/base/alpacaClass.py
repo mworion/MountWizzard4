@@ -153,6 +153,32 @@ class AlpacaClass(object):
         self.cycleDevice.stop()
         return True
 
+    def dataEntry(self, value, element, elementInv=None):
+        """
+
+        :param value:
+        :param element:
+        :param elementInv:
+        :return: reset entry
+        """
+
+        resetValue = value is None and element in self.data
+        if resetValue:
+            del self.data[element]
+        else:
+            self.data[element] = value
+
+        if elementInv is None:
+            return resetValue
+
+        resetValue = value is None and elementInv in self.data
+        if resetValue:
+            del self.data[elementInv]
+        else:
+            self.data[elementInv] = value
+
+        return resetValue
+
     def pollStatus(self):
         """
         pollStatus is the thread method to be called for collecting data

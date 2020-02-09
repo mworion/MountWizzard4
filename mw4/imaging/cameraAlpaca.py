@@ -62,27 +62,30 @@ class CameraAlpaca(AlpacaClass):
         """
         super().getInitialConfig()
 
-        self.data['CCD_INFO.CCD_MAX_X'] = self.client.cameraxsize()
-        self.data['CCD_INFO.CCD_MAX_Y'] = self.client.cameraysize()
-        self.data['CAN_FAST'] = self.client.canfastreadout()
-        self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = self.client.pixelsizex()
-        self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = self.client.pixelsizey()
-        self.data['CCD_BINNING.HOR_BIN_MAX'] = self.client.maxbinx()
-        self.data['CCD_BINNING.VERT_BIN_MAX'] = self.client.maxbiny()
-        self.data['CCD_BINNING.HOR_BIN'] = self.client.binx()
-        self.data['CCD_BINNING.VERT_BIN'] = self.client.biny()
-        self.data['CCD_FRAME.X'] = self.client.startx()
-        self.data['CCD_FRAME.Y'] = self.client.starty()
+        self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
+        self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
+        self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
+        self.dataEntry(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
+        self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
+        self.dataEntry(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
+        self.dataEntry(self.client.maxbiny(), 'CCD_BINNING.VERT_BIN_MAX')
+        self.dataEntry(self.client.binx(), 'CCD_BINNING.HOR_BIN')
+        self.dataEntry(self.client.biny(), 'CCD_BINNING.VERT_BIN')
+        self.dataEntry(self.client.startx(), 'CCD_FRAME.X')
+        self.dataEntry(self.client.starty(), 'CCD_FRAME.Y')
 
         return True
 
     def emitData(self):
         """
 
-        :return: true for test purpose
+        :return: success
         """
-        states = ['Idle', 'Wait', 'Expose', 'Read', 'Download', 'Error']
 
+        if 'CAMERA.STATE' not in self.data:
+            return False
+
+        states = ['Idle', 'Wait', 'Expose', 'Read', 'Download', 'Error']
         state = self.data['CAMERA.STATE']
         self.signals.message.emit(states[state])
 
@@ -94,14 +97,13 @@ class CameraAlpaca(AlpacaClass):
         :return: true for test purpose
         """
 
-        self.data['CAMERA.STATE'] = self.client.camerastate()
-        self.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = self.client.ccdtemperature()
-        self.data['IMAGEREADY'] = self.client.imageready()
-        self.data['CCD_EXPOSURE.CCD_EXPOSURE_VALUE'] = self.client.lastexposureduration()
-        value = self.client.fastreadout()
-        self.data['READOUT_QUALITY.QUALITY_LOW'] = value
-        self.data['READOUT_QUALITY.QUALITY_HIGH'] = not value
-
+        self.dataEntry(self.client.camerastate(),
+                       'CAMERA.STATE')
+        self.dataEntry(self.client.ccdtemperature(),
+                       'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
+        self.dataEntry(self.client.fastreadout(),
+                       'READOUT_QUALITY.QUALITY_LOW',
+                       'READOUT_QUALITY.QUALITY_HIGH')
         return True
 
     def pollData(self):

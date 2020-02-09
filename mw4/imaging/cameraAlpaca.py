@@ -66,6 +66,7 @@ class CameraAlpaca(AlpacaClass):
         self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
         self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
+        # self.dataEntry(self.client.canstopexposure(), 'CAN_ABORT')
         self.dataEntry(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.dataEntry(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
@@ -198,6 +199,7 @@ class CameraAlpaca(AlpacaClass):
         header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
         header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
         header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
+        header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] / 570 * 206.265
 
         hdu.writeto(self.imagePath, overwrite=True)
 
@@ -247,6 +249,8 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        # abort
+        canAbort = self.data.get('CAN_ABORT', False)
+        if canAbort:
+            self.client.stopexposure()
 
         return True

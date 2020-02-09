@@ -57,8 +57,9 @@ class AstrometryASTAP(object):
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
-    def __init__(self, parent):
+    def __init__(self, parent, data):
         self.parent = parent
+        self.data = data
         self.result = {'success': False}
         self.process = None
 

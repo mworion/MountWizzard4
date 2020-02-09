@@ -86,10 +86,11 @@ class Astrometry:
 
         self.app = app
         self.threadPool = app.threadPool
+        self.data = {}
 
         self.tempDir = tempDir
-        self.solverASTAP = AstrometryASTAP(self)
-        self.solverNET = AstrometryNET(self)
+        self.solverASTAP = AstrometryASTAP(self, data=self.data)
+        self.solverNET = AstrometryNET(self, data=self.data)
 
         self.signals = AstrometrySignals()
         self.mutexSolve = PyQt5.QtCore.QMutex()

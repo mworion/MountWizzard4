@@ -29,6 +29,7 @@ from astropy.visualization import AsymmetricPercentileInterval
 from astropy.visualization import SqrtStretch
 from astropy.visualization import ImageNormalize
 import matplotlib.pyplot as plt
+from skyfield.api import Angle
 import numpy as np
 import cv2
 # local import
@@ -373,9 +374,9 @@ class ImageWindow(widget.MWidget):
         self.ui.object.setText(f'{name}')
 
         ra = header.get('RA', 0)
-        ra = transform.convertToAngle(ra, isHours=True)
+        ra = Angle(hours=ra)
         dec = header.get('DEC', 0)
-        dec = transform.convertToAngle(dec, isHours=False)
+        dec = Angle(degrees=dec)
         self.ui.ra.setText(f'{transform.convertToHMS(ra)}')
         self.ui.dec.setText(f'{transform.convertToDMS(dec)}')
 

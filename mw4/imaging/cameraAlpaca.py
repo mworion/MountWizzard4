@@ -164,10 +164,12 @@ class CameraAlpaca(AlpacaClass):
         self.client.startexposure(Duration=expTime, Light=True)
 
         # wait for finishing
+        timeLeft = expTime
         while not self.client.imageready():
-            duration = expTime * (1 - min(self.client.percentcompleted(), 100) / 100)
-            text = f'expose {duration:3.0f} s'
-            time.sleep(0.2)
+            text = f'expose {timeLeft:3.0f} s'
+            time.sleep(1)
+            if timeLeft > 0:
+                timeLeft -= 1
             self.signals.message.emit(text)
         self.signals.integrated.emit()
 
@@ -182,24 +184,26 @@ class CameraAlpaca(AlpacaClass):
         header = hdu.header
         header['OBJECT'] = 'skymodel'
         header['FRAME'] = 'Light'
-        header['OBJCTRA'] = self.app.mount.obsSite.raJNow.hstr()
-        dec = self.app.mount.obsSite.decJNow.dstr()
-        dec = dec.replace('deg', '').replace("'", '').replace('"', '')
-        header['OBJCTDEC'] = dec
-        header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
         header['EQUINOX'] = 2000
-        header['RA'] = self.app.mount.obsSite.raJNow.hours
-        header['DEC'] = self.app.mount.obsSite.decJNow.degrees
-        header['XBINNING'] = binning
-        header['YBINNING'] = binning
-        header['EXPTIME'] = expTime
-        header['OBSERVER'] = 'MW4'
-        header['TELESCOP'] = self.app.mount.firmware.product
         header['PIXSIZE1'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
         header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
         header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
         header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
         header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] / 570 * 206.265
+        header['XBINNING'] = binning
+        header['YBINNING'] = binning
+        header['EXPTIME'] = expTime
+        header['OBSERVER'] = 'MW4'
+        header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
+
+        if self.app.mainW.deviceStat['mount']:
+            header['OBJCTRA'] = self.app.mount.obsSite.raJNow.hstr()
+            dec = self.app.mount.obsSite.decJNow.dstr()
+            dec = dec.replace('deg', '').replace("'", '').replace('"', '')
+            header['OBJCTDEC'] = dec
+            header['RA'] = self.app.mount.obsSite.raJNow.hours
+            header['DEC'] = self.app.mount.obsSite.decJNow.degrees
+            header['TELESCOP'] = self.app.mount.firmware.product
 
         hdu.writeto(self.imagePath, overwrite=True)
 

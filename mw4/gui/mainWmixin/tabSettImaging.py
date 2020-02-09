@@ -101,28 +101,52 @@ class SettImaging(object):
         text = self.app.camera.data.get(key, 'not found')
         if text is not None:
             self.ui.filterName.setText(f'{text}')
+        else:
+            self.ui.filterName.setText('-')
         if focalLength is not None:
             self.ui.focalLength.setText(f'{focalLength:4.0f}')
+        else:
+            self.ui.focalLength.setText('-')
         if aperture is not None:
             self.ui.aperture.setText(f'{aperture:3.0f}')
+        else:
+            self.ui.aperture.setText('-')
         if pixelSizeX is not None:
             self.ui.pixelSizeX.setText(f'{pixelSizeX:2.2f}')
+        else:
+            self.ui.pixelSizeX.setText('-')
         if pixelSizeY is not None:
             self.ui.pixelSizeY.setText(f'{pixelSizeY:2.2f}')
+        else:
+            self.ui.pixelSizeY.setText('-')
         if pixelX is not None:
             self.ui.pixelX.setText(f'{pixelX:5.0f}')
+        else:
+            self.ui.pixelX.setText('-')
         if pixelY is not None:
             self.ui.pixelY.setText(f'{pixelY:5.0f}')
+        else:
+            self.ui.pixelY.setText('-')
         if rotation is not None:
             self.ui.rotation.setText(f'{rotation:3.1f}')
+        else:
+            self.ui.rotation.setText('-')
         if filterNumber is not None:
             self.ui.filterNumber.setText(f'{filterNumber:1.0f}')
+        else:
+            self.ui.filterNumber.setText('-')
         if coolerTemp is not None:
             self.ui.coolerTemp.setText(f'{coolerTemp:3.1f}')
+        else:
+            self.ui.coolerTemp.setText('-')
         if coolerPower is not None:
             self.ui.coolerPower.setText(f'{coolerPower:3.1f}')
+        else:
+            self.ui.coolerPower.setText('-')
         if focus is not None:
             self.ui.focuserPosition.setText(f'{focus:6.0f}')
+        else:
+            self.ui.focuserPosition.setText('-')
 
         if coolerOn:
             self.changeStyleDynamic(self.ui.coolerOn, 'running', True)

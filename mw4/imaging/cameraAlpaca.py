@@ -76,7 +76,7 @@ class CameraAlpaca(AlpacaClass):
 
         return True
 
-    def emitStatus(self):
+    def emitData(self):
         """
 
         :return: true for test purpose
@@ -88,16 +88,11 @@ class CameraAlpaca(AlpacaClass):
 
         return True
 
-    def workerStatus(self):
+    def workerPollData(self):
         """
 
         :return: true for test purpose
         """
-        # bin
-        # frame
-        # expose
-        # download
-        # state
 
         self.data['CAMERA.STATE'] = self.client.camerastate()
         self.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = self.client.ccdtemperature()
@@ -109,7 +104,7 @@ class CameraAlpaca(AlpacaClass):
 
         return True
 
-    def status(self):
+    def pollData(self):
         """
 
         :return: success
@@ -118,8 +113,8 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
-        worker = Worker(self.workerStatus)
-        worker.signals.result.connect(self.emitStatus)
+        worker = Worker(self.workerPollData)
+        worker.signals.result.connect(self.emitData)
         self.threadPool.start(worker)
         return True
 

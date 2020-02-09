@@ -43,7 +43,8 @@ class AlpacaClass(object):
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
-    CYCLE = 2000
+    CYCLE_DEVICE = 2000
+    CYCLE_DATA = 1000
 
     def __init__(self, app=None, data={}):
         super().__init__()
@@ -63,9 +64,13 @@ class AlpacaClass(object):
         self.deviceConnected = False
         self.serverConnected = False
 
-        self.timeCycle = PyQt5.QtCore.QTimer()
-        self.timeCycle.setSingleShot(False)
-        self.timeCycle.timeout.connect(self.startPollStatus)
+        self.cycleDevice = PyQt5.QtCore.QTimer()
+        self.cycleDevice.setSingleShot(False)
+        self.cycleDevice.timeout.connect(self.startPollStatus)
+
+        self.cycleData = PyQt5.QtCore.QTimer()
+        self.cycleData.setSingleShot(False)
+        self.cycleData.timeout.connect(self.pollData)
 
     @property
     def host(self):
@@ -134,7 +139,8 @@ class AlpacaClass(object):
 
         :return: true for test purpose
         """
-        self.timeCycle.start(self.CYCLE)
+        self.cycleData.start(self.CYCLE_DATA)
+        self.cycleDevice.start(self.CYCLE_DEVICE)
         return True
 
     def stopTimer(self):
@@ -143,7 +149,8 @@ class AlpacaClass(object):
 
         :return: true for test purpose
         """
-        self.timeCycle.stop()
+        self.cycleData.stop()
+        self.cycleDevice.stop()
         return True
 
     def pollStatus(self):
@@ -168,6 +175,26 @@ class AlpacaClass(object):
             pass
 
         return suc
+
+    def emitData(self):
+        pass
+
+    def workerPollData(self):
+        pass
+
+    def pollData(self):
+        """
+
+        :return: success
+        """
+
+        if not self.deviceConnected:
+            return False
+
+        worker = Worker(self.workerPollData)
+        worker.signals.result.connect(self.emitData)
+        self.threadPool.start(worker)
+        return True
 
     def startPollStatus(self):
         """

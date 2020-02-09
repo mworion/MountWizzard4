@@ -55,8 +55,6 @@ class DomeAlpaca(AlpacaClass):
         self.azimuth = 0
         self.slewing = False
 
-        self.app.update1s.connect(self.startPollData)
-
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
@@ -102,27 +100,13 @@ class DomeAlpaca(AlpacaClass):
 
         return True
 
-    def pollData(self):
+    def workerPollData(self):
         """
 
         :return: true for test purpose
         """
         self.data['ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION'] = self.client.azimuth()
         self.data['slewing'] = self.client.slewing()
-        return True
-
-    def startPollData(self):
-        """
-
-        :return: success
-        """
-
-        if not self.deviceConnected:
-            return False
-
-        worker = Worker(self.pollData)
-        worker.signals.result.connect(self.emitData)
-        self.threadPool.start(worker)
         return True
 
     def slewToAltAz(self, altitude=0, azimuth=0):

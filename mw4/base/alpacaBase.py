@@ -22,6 +22,7 @@ import logging
 import dateutil
 import datetime
 import uuid
+import time
 # external packages
 import PyQt5.QtCore
 import requests
@@ -60,8 +61,6 @@ class AlpacaBase(object):
 
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
-
-    CYCLE = 2000
 
     def __init__(self):
         super().__init__()
@@ -270,6 +269,8 @@ class AlpacaBase(object):
                 Set None to get connected state (default).
 
         """
+
+        print(time.time())
 
         if Connected is None:
             return self.get('connected')

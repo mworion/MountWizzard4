@@ -55,8 +55,6 @@ class CameraAlpaca(AlpacaClass):
         self.data = data
         self.imagePath = ''
 
-        self.app.update1s.connect(self.pollStatus)
-
     def getInitialConfig(self):
         """
 

@@ -173,8 +173,10 @@ class CameraAlpaca(AlpacaClass):
         while not self.client.imageready():
             text = f'expose {timeLeft:3.0f} s'
             time.sleep(1)
-            if timeLeft > 0:
+            if timeLeft >= 1:
                 timeLeft -= 1
+            else:
+                timeLeft = 0
             self.signals.message.emit(text)
         self.signals.integrated.emit()
 

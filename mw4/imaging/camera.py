@@ -171,8 +171,14 @@ class Camera:
         the reduction. the subFrame will be centered on the image area.
 
         :param subFrame: percentage 0-100 of
-        :return:
+        :return: success
         """
+
+        if 'CCD_INFO.CCD_MAX_X' not in self.data:
+            return False
+        if 'CCD_INFO.CCD_MAX_Y' not in self.data:
+            return False
+
         if subFrame < 10 or subFrame > 100:
             width = self.data['CCD_INFO.CCD_MAX_X']
             height = self.data['CCD_INFO.CCD_MAX_Y']
@@ -222,7 +228,12 @@ class Camera:
         if not self.canBinning(binning=binning):
             return False
 
-        posX, posY, width, height = self.calcSubFrame(subFrame)
+        subFrame = self.calcSubFrame(subFrame)
+
+        if not subFrame:
+            return False
+
+        posX, posY, width, height = subFrame
 
         if self.framework in self.run.keys():
             suc = self.run[self.framework].expose(imagePath=imagePath,

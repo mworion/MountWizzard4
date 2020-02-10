@@ -147,6 +147,8 @@ class Camera:
         if 'CCD_FRAME.X' not in self.data or 'CCD_FRAME.Y' not in self.data:
             return False
 
+        # todo: what is the right setting for alpaca as we can ask explicit for subframe
+
         return True
 
     def canBinning(self, binning=1):

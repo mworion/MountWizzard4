@@ -256,6 +256,7 @@ class Camera:
 
         :return: success
         """
+
         if self.framework in self.run.keys():
             suc = self.run[self.framework].abort()
             return suc
@@ -283,6 +284,7 @@ class Camera:
         :param temperature:
         :return: success
         """
+
         if self.framework in self.run.keys():
             suc = self.run[self.framework].sendCoolerTemp(temperature=temperature)
             return suc

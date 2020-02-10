@@ -65,9 +65,15 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: MacOS X',
+        'Environment :: Other Environment',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation',
-        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3 :: Only',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Microsoft :: Windows :: Windows 10',
+        'Operating System :: POSIX :: Linux',
         'Intended Audience :: Education',
         'Intended Audience :: Science/Research',
         'Topic :: Utilities',
@@ -75,5 +81,6 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Natural Language :: German',
+        'Topic :: Documentation :: Sphinx',
     ]
 )

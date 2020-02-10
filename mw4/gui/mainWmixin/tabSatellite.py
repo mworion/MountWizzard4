@@ -19,10 +19,8 @@
 ###########################################################
 # standard libraries
 import os
-from pathlib import Path
 # external packages
 import PyQt5
-from astropy.io import fits
 # local import
 from mw4.base.tpool import Worker
 

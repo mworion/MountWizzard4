@@ -59,8 +59,8 @@ class Satellite(object):
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
 
-        self.app.mount.signals.calcTLEdone.connect(self.enableTrack)
-        self.app.mount.signals.getTLEdone.connect(self.prepare)
+        self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
+        self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
         self.ui.isOnline.stateChanged.connect(self.loadSatelliteSource)
 
         self.app.update3s.connect(self.updateSatelliteData)
@@ -103,19 +103,6 @@ class Satellite(object):
         for name in self.satelliteSourceDropDown.keys():
             self.ui.satelliteSource.addItem(name)
 
-        return True
-
-    def prepare(self, tleParams=None):
-        """
-
-        :param tleParams:
-        :return: True for test purpose
-        """
-
-        if not tleParams:
-            return False
-
-        self.extractSatelliteData(None, satName=tleParams.name)
         return True
 
     def setupSatelliteGui(self):
@@ -218,7 +205,7 @@ class Satellite(object):
 
     def updateSatelliteData(self):
         """
-        updateSatelliteData calculates the actual satellite orbits, subpoint etc. and
+        updateSatelliteData calculates the actual satellite orbits, sub point etc. and
         updates the data in the gui. in addition when satellite window is open it signals
         this update data as well for matplotlib drawings in satellite window.
         this method is called cyclic every 3 seconds for updates
@@ -231,7 +218,7 @@ class Satellite(object):
             return False
 
         # check if calculation is necessary to optimize cpu time
-        # get index for satellite tab
+        # get index for satellite tab and check if it's visible. if not, no calculation
         tabWidget = self.ui.mainTabWidget.findChild(PyQt5.QtWidgets.QWidget, 'Satellite')
         tabIndex = self.ui.mainTabWidget.indexOf(tabWidget)
         satTabVisible = self.ui.mainTabWidget.currentIndex() == tabIndex
@@ -241,6 +228,7 @@ class Satellite(object):
         if not winObj['classObj'] and not satTabVisible:
             return False
 
+        # now calculating the satellite data
         now = self.app.mount.obsSite.ts.now()
         observe = self.satellite.at(now)
         sett = self.app.mount.setting
@@ -276,6 +264,7 @@ class Satellite(object):
         self.ui.satAltitude.setText(f'{alt:3.2f}')
         self.ui.satAzimuth.setText(f'{az:3.2f}')
 
+        # if the satellite window is not visible, there is no need for sending the data
         if not winObj['classObj']:
             return True
 
@@ -329,6 +318,9 @@ class Satellite(object):
 
     def showRises(self):
         """
+        showRises calculated the next three satellite passes for the presentation in the gui.
+        the times shown might differ from the calculation of the mount as we dont know, how
+        the mount calculates is timings.
 
         :return: True for test purpose
         """
@@ -374,6 +366,8 @@ class Satellite(object):
             passUI[index]['rise'].setText('-')
             passUI[index]['settle'].setText('-')
 
+        return True
+
     def extractSatelliteData(self, widget, satName=''):
         """
         extractSatelliteData is called when a satellite is selected via mouse click in the
@@ -382,20 +376,19 @@ class Satellite(object):
         pushed to the gui and not waiting for the cyclic task.
         depending on the age of the satellite data is colors the frame
 
-        :param widget:
-        :param satName:
+        :param widget: widget from where the signal is send
+        :param satName: additional parameter for calling this method
         :return: success
         """
 
-        if not isinstance(satName, str):
-            return False
-
-        if not satName:
+        # method is called from signal from widget
+        if not satName and widget:
             satName = self.ui.listSatelliteNames.currentItem().text()[8:]
 
         if satName not in self.satellites:
             return False
 
+        # selecting the entry in the list box
         for index in range(self.ui.listSatelliteNames.model().rowCount()):
             if not self.ui.listSatelliteNames.item(index).text()[8:] == satName:
                 continue
@@ -403,14 +396,17 @@ class Satellite(object):
             item.setSelected(True)
             break
 
+        # making the entry visible (and scroll the list if necessary)
         position = PyQt5.QtWidgets.QAbstractItemView.EnsureVisible
         self.ui.listSatelliteNames.scrollToItem(item, position)
         self.satellite = self.satellites[satName]
 
+        # now we prepare the selection of the data in the gui
         self.ui.satelliteName.setText(self.satellite.name)
         epochText = self.satellite.epoch.utc_strftime('%Y-%m-%d, %H:%M:%S')
         self.ui.satelliteEpoch.setText(epochText)
 
+        # the epoch should be not too old
         now = self.app.mount.obsSite.ts.now()
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f'{days:2.2f}')
@@ -422,14 +418,15 @@ class Satellite(object):
         else:
             self.changeStyleDynamic(self.ui.satelliteDataAge, 'color', '')
 
+        # filling up the satellite data
         self.ui.satelliteNumber.setText(f'{self.satellite.model.satnum:5d}')
-
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
         self.ui.satTransitStartUTC.setText('-')
         self.ui.satTransitEndUTC.setText('-')
         self.ui.satNeedFlip.setText('-')
 
+        #
         self.updateSatelliteData()
         self.programTLEToMount()
         self.calcTLEParams()
@@ -443,8 +440,28 @@ class Satellite(object):
         winObj['classObj'].signals.show.emit(self.satellite)
         return True
 
-    def enableTrack(self, tleParams=None):
+    def getSatelliteDataFromDatabase(self, tleParams=None):
         """
+        getSatelliteDataFromDatabase get's called, when the TLE setup is read from the mount.
+        we use the name to retrieve the data from the "active.txt" database to be able to
+        work with external database. it calls extraction method for getting the specific
+        satellite data read and stored.
+
+        :param tleParams:
+        :return: True for test purpose
+        """
+
+        if not tleParams:
+            return False
+
+        self.extractSatelliteData(None, satName=tleParams.name)
+        return True
+
+    def updateSatelliteTrackGui(self, tleParams=None):
+        """
+        updateSatelliteTrackGui is called, when the mount has finished its calculations
+        based on programmed TLE data. It writes the data to the gui and enables the start
+        track button.
 
         :return: success for test purpose
         """
@@ -516,6 +533,8 @@ class Satellite(object):
 
         :return: success
         """
+
+        # todo: what is the right stop command for satellite tracking as it fails sometimes
 
         if not self.app.mount.mountUp:
             self.app.message.emit('Mount is not online', 2)

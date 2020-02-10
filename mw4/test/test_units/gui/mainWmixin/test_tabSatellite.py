@@ -66,7 +66,7 @@ def test_setupSatelliteSourceGui():
 
 
 def test_prepare_1():
-    suc = app.mainW.prepare()
+    suc = app.mainW.getSatelliteDataFromDatabase()
     assert not suc
 
 
@@ -74,7 +74,7 @@ def test_prepare_2():
     class Test:
         name = 'test'
 
-    suc = app.mainW.prepare(Test())
+    suc = app.mainW.getSatelliteDataFromDatabase(Test())
     assert suc
 
 
@@ -206,7 +206,7 @@ def test_extractSatelliteData_4():
 
 
 def test_enableTrack_1():
-    suc = app.mainW.enableTrack()
+    suc = app.mainW.updateSatelliteTrackGui()
     assert not suc
 
 
@@ -218,7 +218,7 @@ def test_enableTrack_2():
         message = None
         altitude = None
 
-    suc = app.mainW.enableTrack(Test())
+    suc = app.mainW.updateSatelliteTrackGui(Test())
     assert suc
 
 
@@ -230,7 +230,7 @@ def test_enableTrack_3():
         message = 'test'
         altitude = Angle(degrees=50)
 
-    suc = app.mainW.enableTrack(Test())
+    suc = app.mainW.updateSatelliteTrackGui(Test())
     assert suc
 
 

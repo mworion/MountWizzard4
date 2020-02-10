@@ -251,7 +251,8 @@ class AlpacaClass(object):
 
         :return: true for test purpose
         """
-        self.timeCycle.stop()
+
+        self.stopTimer()
         self.deviceConnected = False
         self.serverConnected = False
         self.client.signals.deviceDisconnected.emit(f'{self.name}')
@@ -259,7 +260,6 @@ class AlpacaClass(object):
         self.app.message.emit(f'Alpaca device remove:[{self.name}]', 0)
 
         worker = Worker(self.client.connected, Connected=False)
-        worker.signals.result.connect(self.stopTimer)
         self.threadPool.start(worker)
 
         return True

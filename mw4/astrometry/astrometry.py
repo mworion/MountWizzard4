@@ -261,6 +261,7 @@ class Astrometry:
                  error in arcsec and flag if image is flipped
         """
 
+        self.log.info(f'wcs header: [{}]')
         raJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL1'),
                                            isHours=True)
         decJ2000 = transform.convertToAngle(wcsHeader.get('CRVAL2'),

@@ -332,7 +332,8 @@ class MainWindow(MWidget,
         """
 
         # check if modeling would work (mount + solve + image)
-        if all(self.deviceStat[x] for x in ['mount', 'camera', 'astrometry']):
+        isReady = all(self.deviceStat[x] for x in ['mount', 'camera', 'astrometry'])
+        if isReady and self.app.data.buildP:
             self.ui.runModel.setEnabled(True)
             self.ui.plateSolveSync.setEnabled(True)
             self.ui.runFlexure.setEnabled(True)
@@ -348,12 +349,6 @@ class MainWindow(MWidget,
             self.ui.batchModel.setEnabled(True)
         else:
             self.ui.batchModel.setEnabled(False)
-
-        # if there were no selected modeling points, you cannot run a model buil
-        if not self.app.data.buildP:
-            self.ui.runModel.setEnabled(False)
-        else:
-            self.ui.runModel.setEnabled(True)
 
         stat = self.deviceStat.get('environOverall', None)
         if stat is None:

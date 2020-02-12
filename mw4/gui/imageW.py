@@ -373,12 +373,12 @@ class ImageWindow(widget.MWidget):
         name = header.get('OBJECT', '').upper()
         self.ui.object.setText(f'{name}')
 
-        ra = header.get('RA', 0)
-        ra = Angle(hours=ra)
-        dec = header.get('DEC', 0)
-        dec = Angle(degrees=dec)
-        self.ui.ra.setText(f'{transform.convertToHMS(ra)}')
-        self.ui.dec.setText(f'{transform.convertToDMS(dec)}')
+        ra = Angle(degrees=header.get('RA', 0))
+        dec = Angle(degrees=header.get('DEC', 0))
+
+        # ra will be in hours
+        self.ui.ra.setText(f'{ra.hstr(warn=False)}')
+        self.ui.dec.setText(f'{dec.dstr()}')
 
         scale = header.get('SCALE', 0)
         rotation = header.get('ANGLE', 0)

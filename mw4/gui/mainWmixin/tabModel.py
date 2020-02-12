@@ -264,6 +264,8 @@ class Model(object):
         :return: success
         """
 
+        self.log.info('Processing astrometry result')
+
         if self.resultQueue.empty():
             self.log.warning('empty result queue')
             return False
@@ -288,6 +290,7 @@ class Model(object):
             mPoint['decJNowS'] = decJNowS
 
             if mPoint['errorRMS_S'] < self.MAX_ERROR_MODEL_POINT:
+                self.log.info(f'put to final model [{mPoint}]')
                 self.modelQueue.put(mPoint)
             else:
                 text = f'Solving failed for image-{count:03d}'
@@ -335,6 +338,8 @@ class Model(object):
         :return: success
         """
 
+        self.log.info('Solving started')
+
         if self.solveQueue.empty():
             self.log.warning('empty solve queue')
             return False
@@ -352,6 +357,7 @@ class Model(object):
                                            updateFits=False,
                                            )
         self.resultQueue.put(mPoint)
+        self.log.info(f'put to result [{mPoint}]')
 
         text = f'Solving  image-{mPoint["countSequence"]:03d}: '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
@@ -380,6 +386,8 @@ class Model(object):
         :return: success
         """
 
+        self.log.info('Imaging started')
+
         if self.imageQueue.empty():
             self.log.warning('empty image queue')
             return False
@@ -401,6 +409,7 @@ class Model(object):
         mPoint['pierside'] = self.app.mount.obsSite.pierside
 
         self.solveQueue.put(mPoint)
+        self.log.info(f'put to solve [{mPoint}]')
 
         text = f'Exposing image-{mPoint["countSequence"]:03d}: '
         text += f'path: {os.path.basename(mPoint["imagePath"])}'
@@ -422,7 +431,10 @@ class Model(object):
 
         """
 
+        self.log.info('Slew started')
+
         if self.slewQueue.empty():
+            self.log.warning('empty slew queue')
             return False
 
         mPoint = self.slewQueue.get()
@@ -436,6 +448,7 @@ class Model(object):
                                )
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)
+        self.log.info(f'put to image [{mPoint}]')
 
         text = f'Slewing  mount:     point: {mPoint["countSequence"]:03d}, '
         text += f'altitude: {mPoint["altitude"]:3.0f}, '

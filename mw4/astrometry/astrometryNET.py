@@ -234,7 +234,7 @@ class AstrometryNET(object):
                                )
         if not suc:
             self.log.error(f'image2xy error in [{fitsPath}]')
-            self.result = self.result['message'] = 'image2xy error'
+            self.result['message'] = 'image2xy failed'
             return False
 
         raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)

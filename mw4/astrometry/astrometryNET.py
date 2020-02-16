@@ -141,7 +141,7 @@ class AstrometryNET(object):
         try:
             self.process = subprocess.Popen(args=runnable,
                                             stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE
+                                            stderr=subprocess.PIPE,
                                             )
             stdout, stderr = self.process.communicate(timeout=timeout)
         except subprocess.TimeoutExpired as e:
@@ -227,6 +227,19 @@ class AstrometryNET(object):
             outFile.write(f'add_path {solver["indexPath"]}\n')
             outFile.write('autoindex\n')
 
+        # using sextractor in astrometry.net and KStars
+        """
+        with open('default.param', 'w+') as outFile:
+            outFile.write('MAG_AUTO  Kron-like elliptical aperture magnitude    [mag]\n')
+            outFile.write('X_IMAGE   Object position along x                    [pixel]\n')
+            outFile.write('Y_IMAGE   Object position along y                    [pixel]\n')
+
+        with open('default.conv', 'w+') as outFile:
+            outFile.write('CONV NORM\n')
+            outFile.write('1 2 1\n')
+            outFile.write('2 4 2\n')
+            outFile.write('1 2 1\nn')
+        """
         suc = self.runImage2xy(binPath=binPathImage2xy,
                                tempPath=tempPath,
                                fitsPath=fitsPath,

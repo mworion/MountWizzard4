@@ -150,6 +150,12 @@ class BuildPoints(object):
         """
 
         self.lastGenerator = 'grid'
+
+        self.ui.numberGridPointsRow.setEnabled(False)
+        self.ui.numberGridPointsCol.setEnabled(False)
+        self.ui.altitudeMin.setEnabled(False)
+        self.ui.altitudeMax.setEnabled(False)
+
         row = self.ui.numberGridPointsRow.value()
         col = self.ui.numberGridPointsCol.value()
         # we only have equal cols
@@ -162,11 +168,20 @@ class BuildPoints(object):
                                     numbRows=row,
                                     numbCols=col)
         if not suc:
+            self.ui.numberGridPointsRow.setEnabled(True)
+            self.ui.numberGridPointsCol.setEnabled(True)
+            self.ui.altitudeMin.setEnabled(True)
+            self.ui.altitudeMax.setEnabled(True)
             self.app.message.emit('Could not generate grid', 2)
             return False
 
         self.autoDeletePoints()
         self.autoSortPoints()
+
+        self.ui.numberGridPointsRow.setEnabled(True)
+        self.ui.numberGridPointsCol.setEnabled(True)
+        self.ui.altitudeMin.setEnabled(True)
+        self.ui.altitudeMax.setEnabled(True)
 
         return True
 
@@ -327,6 +342,10 @@ class BuildPoints(object):
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False
 
+        self.ui.numberDSOPoints.setEnabled(False)
+        self.ui.durationDSO.setEnabled(False)
+        self.ui.timeShiftDSO.setEnabled(False)
+
         numberPoints = self.ui.numberDSOPoints.value()
         duration = self.ui.durationDSO.value()
         timeShift = self.ui.timeShiftDSO.value()
@@ -341,11 +360,18 @@ class BuildPoints(object):
                                             )
 
         if not suc:
+            self.ui.numberDSOPoints.setEnabled(True)
+            self.ui.durationDSO.setEnabled(True)
+            self.ui.timeShiftDSO.setEnabled(True)
             self.app.message.emit('DSO Path cannot be generated', 2)
             return False
 
         self.autoDeletePoints()
         self.autoSortPoints()
+
+        self.ui.numberDSOPoints.setEnabled(True)
+        self.ui.durationDSO.setEnabled(True)
+        self.ui.timeShiftDSO.setEnabled(True)
 
         return True
 

@@ -530,8 +530,14 @@ class Model(object):
         """
 
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
-        if self.app.mainW.deviceStat['dome']:
+
+        hasDome = self.app.mainW.deviceStat['dome']
+        hasAzimuth = 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' in self.app.dome.data
+
+        if hasDome and hasAzimuth:
             self.collector.addWaitableSignal(self.app.dome.signals.slewFinished)
+        elif hasDome and not hasAzimuth:
+            self.app.message.emit('Dome without azimuth value used', 2)
 
         self.collector.ready.connect(self.modelImage)
         self.app.camera.signals.integrated.connect(self.modelSlew)

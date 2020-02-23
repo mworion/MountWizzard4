@@ -144,15 +144,6 @@ def test_setMountMAC_4():
     assert not suc
 
 
-def test_setMountMAC_5():
-    class Test:
-        addressLanMAC = '00:00:00:00:00:00'
-        typeConnection = 7
-    app.mount.MAC = '00:00:00:00:00:00'
-    suc = app.mainW.setMountMAC(Test())
-    assert not suc
-
-
 def test_setMountMAC_6():
     class Test:
         addressLanMAC = '00:00:00:00:00:00'

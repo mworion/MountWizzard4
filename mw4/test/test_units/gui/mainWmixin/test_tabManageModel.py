@@ -336,6 +336,7 @@ def test_clearRunTargetRMS_2():
     app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
     app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
     app.mount.model.errorRMS = 100
+    app.mount.model.numberStars = 2
     app.mainW.runningTargetRMS = True
     app.mount.signals.alignDone.connect(app.mainW.clearRunTargetRMS)
     with mock.patch.object(app.mount.model,
@@ -351,6 +352,7 @@ def test_clearRunTargetRMS_3():
     app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
     app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
     app.mount.model.errorRMS = 100
+    app.mount.model.numberStars = 2
     app.mainW.runningTargetRMS = True
     app.mount.signals.alignDone.connect(app.mainW.clearRunTargetRMS)
     with mock.patch.object(app.mount.model,

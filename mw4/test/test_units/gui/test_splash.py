@@ -35,7 +35,7 @@ def module_setup_teardown():
 
 
 def test_splash_icon():
-    value = PyQt5.QtGui.QPixmap(':/mw4.ico')
+    value = PyQt5.QtGui.QPixmap(':/icon/mw4.ico')
 
     assert not PyQt5.QtGui.QPixmap.isNull(value)
 

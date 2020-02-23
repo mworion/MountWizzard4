@@ -62,13 +62,13 @@ def test_password():
 
 def test_startTimers_1():
     app.relay.host = None
-    suc = app.relay.startTimers()
+    suc = app.relay.startCommunication()
     assert not suc
 
 
 def test_startTimers_2():
     app.relay.host = host
-    suc = app.relay.startTimers()
+    suc = app.relay.startCommunication()
     assert suc
 
 
@@ -76,14 +76,14 @@ def test_startTimers_3():
     app.relay.host = host
     with mock.patch.object(app.relay.timerTask,
                            'start',):
-        suc = app.relay.startTimers()
+        suc = app.relay.startCommunication()
         assert suc
 
 
 def test_stopTimers_1():
     with mock.patch.object(app.relay.timerTask,
                            'stop',):
-        suc = app.relay.stopTimers()
+        suc = app.relay.stopCommunication()
         assert suc
 
 

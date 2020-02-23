@@ -189,7 +189,9 @@ def test_extractSatelliteData_1():
 
 def test_extractSatelliteData_2():
 
-    suc = app.mainW.extractSatelliteData('test', satName=0)
+    widget = app.mainW.ui.listSatelliteNames
+    widget.addItem('test12345')
+    suc = app.mainW.extractSatelliteData(widget=widget, satName=0)
     assert not suc
 
 

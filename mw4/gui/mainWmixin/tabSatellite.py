@@ -314,7 +314,7 @@ class Satellite(object):
         # starting thread for calculation of parameters
         self.app.mount.calcTLE()
 
-        return
+        return True
 
     def showRises(self):
         """
@@ -383,6 +383,9 @@ class Satellite(object):
 
         # method is called from signal from widget
         if not satName and widget:
+            # todo: split gui and function for better testing
+            if self.ui.listSatelliteNames.currentItem() is None:
+                return False
             satName = self.ui.listSatelliteNames.currentItem().text()[8:]
 
         if satName not in self.satellites:

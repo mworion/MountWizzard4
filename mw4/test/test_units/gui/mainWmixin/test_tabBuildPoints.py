@@ -71,18 +71,18 @@ def test_genBuildGrid_2():
     app.mainW.ui.altitudeMin.setValue(10)
     app.mainW.ui.altitudeMax.setValue(60)
     suc = app.mainW.genBuildGrid()
-    assert not suc
+    assert suc
 
 
 def test_genBuildMax_1(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(False)
     with qtbot.assertNotEmitted(app.message):
         suc = app.mainW.genBuildMax()
         assert suc
 
 
 def test_genBuildMax_1b(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(True)
     with qtbot.assertNotEmitted(app.message):
         suc = app.mainW.genBuildMax()
         assert suc
@@ -99,14 +99,14 @@ def test_genBuildMax_2(qtbot):
 
 
 def test_genBuildMed_1(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(True)
     with qtbot.assertNotEmitted(app.message):
         suc = app.mainW.genBuildMed()
         assert suc
 
 
 def test_genBuildMed_1b(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(False)
     with qtbot.assertNotEmitted(app.message):
         suc = app.mainW.genBuildMed()
         assert suc
@@ -123,14 +123,14 @@ def test_genBuildMed_2(qtbot):
 
 
 def test_genBuildNorm_1(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(True)
     with qtbot.assertNotEmitted(app.message):
         suc = app.mainW.genBuildNorm()
         assert suc
 
 
 def test_genBuildNorm_1b(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(False)
     with qtbot.assertNotEmitted(app.message):
         suc = app.mainW.genBuildNorm()
         assert suc
@@ -147,14 +147,14 @@ def test_genBuildNorm_2(qtbot):
 
 
 def test_genBuildMin_1(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(True)
     with qtbot.assertNotEmitted(app.message):
         suc = app.mainW.genBuildMin()
         assert suc
 
 
 def test_genBuildMin_1b(qtbot):
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(False)
     with qtbot.assertNotEmitted(app.message):
         suc = app.mainW.genBuildMin()
         assert suc
@@ -199,7 +199,25 @@ def test_genBuildDSO_3(qtbot):
 
 def test_genBuildGoldenSpiral_1(qtbot):
     with qtbot.assertNotEmitted(app.message):
-        suc = app.mainW.genBuildGoldenSpiral()
+        suc = app.mainW.genBuildSpiralMax()
+        assert suc
+
+
+def test_genBuildGoldenSpiral_1a(qtbot):
+    with qtbot.assertNotEmitted(app.message):
+        suc = app.mainW.genBuildSpiralMed()
+        assert suc
+
+
+def test_genBuildGoldenSpiral_1b(qtbot):
+    with qtbot.assertNotEmitted(app.message):
+        suc = app.mainW.genBuildSpiralNorm()
+        assert suc
+
+
+def test_genBuildGoldenSpiral_1c(qtbot):
+    with qtbot.assertNotEmitted(app.message):
+        suc = app.mainW.genBuildSpiralMin()
         assert suc
 
 
@@ -208,7 +226,37 @@ def test_genBuildGoldenSpiral_2(qtbot):
                            'generateGoldenSpiral',
                            return_value=False):
         with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.genBuildGoldenSpiral()
+            suc = app.mainW.genBuildSpiralMax()
+            assert not suc
+        assert ['Golden spiral cannot be generated', 2] == blocker.args
+
+
+def test_genBuildGoldenSpiral_2a(qtbot):
+    with mock.patch.object(app.data,
+                           'generateGoldenSpiral',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.genBuildSpiralMed()
+            assert not suc
+        assert ['Golden spiral cannot be generated', 2] == blocker.args
+
+
+def test_genBuildGoldenSpiral_2b(qtbot):
+    with mock.patch.object(app.data,
+                           'generateGoldenSpiral',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.genBuildSpiralNorm()
+            assert not suc
+        assert ['Golden spiral cannot be generated', 2] == blocker.args
+
+
+def test_genBuildGoldenSpiral_2c(qtbot):
+    with mock.patch.object(app.data,
+                           'generateGoldenSpiral',
+                           return_value=False):
+        with qtbot.waitSignal(app.message) as blocker:
+            suc = app.mainW.genBuildSpiralMin()
             assert not suc
         assert ['Golden spiral cannot be generated', 2] == blocker.args
 
@@ -319,7 +367,7 @@ def test_saveBuildFileAs_3(qtbot):
 
 def test_genBuildFile_1(qtbot):
     app.mainW.ui.buildPFileName.setText('')
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(True)
     with qtbot.waitSignal(app.message) as blocker:
         suc = app.mainW.genBuildFile()
         assert not suc
@@ -328,7 +376,7 @@ def test_genBuildFile_1(qtbot):
 
 def test_genBuildFile_2(qtbot):
     app.mainW.ui.buildPFileName.setText('test')
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(True)
     with mock.patch.object(app.data,
                            'loadBuildP',
                            return_value=False):
@@ -340,7 +388,7 @@ def test_genBuildFile_2(qtbot):
 
 def test_genBuildFile_3(qtbot):
     app.mainW.ui.buildPFileName.setText('test')
-    app.mainW.ui.checkAutoDeletePoints.setChecked(True)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(True)
     with mock.patch.object(app.data,
                            'loadBuildP',
                            return_value=True):
@@ -350,7 +398,7 @@ def test_genBuildFile_3(qtbot):
 
 def test_genBuildFile_4(qtbot):
     app.mainW.ui.buildPFileName.setText('test')
-    app.mainW.ui.checkAutoDeletePoints.setChecked(False)
+    app.mainW.ui.checkAutoDeleteHorizon.setChecked(False)
     with mock.patch.object(app.data,
                            'loadBuildP',
                            return_value=True):

@@ -31,12 +31,14 @@ def module_setup_teardown():
 
 
 def test_startRemote_1():
-    suc = app.remote.startRemote()
+    suc = app.remote.startCommunication()
+    assert suc
 
 
 def test_stopRemote_1():
     app.remote.tcpServer = '1'
-    suc = app.remote.startRemote()
+    suc = app.remote.stopCommunication()
+    assert suc
 
 
 def test_addConnection_1():

@@ -193,33 +193,33 @@ def test_clearEnvironGUI_1():
 def test_updateEnvironGUI_1():
     app.sensorWeather.name = 'test'
     app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_TEMPERATURE'] = 10.5
-    app.mainW.updateSensorWeatherGui('test')
+    app.mainW.updateSensorWeatherGui()
     assert app.mainW.ui.sensorWeatherTemp.text() == '10.5'
 
 
 def test_updateEnvironGUI_2():
     app.sensorWeather.name = 'test'
     app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 10.5
-    app.mainW.updateSensorWeatherGui('test')
+    app.mainW.updateSensorWeatherGui()
     assert app.mainW.ui.sensorWeatherPress.text() == ' 10.5'
 
 
 def test_updateEnvironGUI_3():
     app.sensorWeather.name = 'test'
     app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_DEWPOINT'] = 10.5
-    app.mainW.updateSensorWeatherGui('test')
+    app.mainW.updateSensorWeatherGui()
     assert app.mainW.ui.sensorWeatherDewPoint.text() == '10.5'
 
 
 def test_updateEnvironGUI_4():
     app.sensorWeather.name = 'test'
     app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_HUMIDITY'] = 10
-    app.mainW.updateSensorWeatherGui('test')
+    app.mainW.updateSensorWeatherGui()
     assert app.mainW.ui.sensorWeatherHumidity.text() == ' 10'
 
 
 def test_clearSkymeterGUI_1():
-    app.mainW.clearSkymeterGUI('test')
+    app.mainW.clearSkymeterGUI()
     assert app.mainW.ui.skymeterSQR.text() == '-'
     assert app.mainW.ui.skymeterTemp.text() == '-'
 
@@ -227,24 +227,24 @@ def test_clearSkymeterGUI_1():
 def test_updateSkymeterGUI_1():
     app.skymeter.name = 'test'
     app.skymeter.data['SKY_QUALITY.SKY_BRIGHTNESS'] = 10.5
-    app.mainW.updateSkymeterGUI('test')
+    app.mainW.updateSkymeterGUI()
     assert app.mainW.ui.skymeterSQR.text() == '10.50'
 
 
 def test_updateSkymeterGUI_2():
     app.skymeter.name = 'test'
     app.skymeter.data['SKY_QUALITY.SKY_TEMPERATURE'] = 10.5
-    app.mainW.updateSkymeterGUI('test')
+    app.mainW.updateSkymeterGUI()
     assert app.mainW.ui.skymeterTemp.text() == '10.5'
 
 
 def test_getWebDataRunner_1():
-    suc = app.mainW.getOpenWeatherMapDataWorker()
+    suc = app.mainW.getWebDataWorker()
     assert not suc
 
 
 def test_getWebDataRunner_2():
-    suc = app.mainW.getOpenWeatherMapDataWorker(url='http://test')
+    suc = app.mainW.getWebDataWorker(url='http://test')
     assert not suc
 
 
@@ -254,7 +254,7 @@ def test_getWebDataRunner_3():
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = app.mainW.getOpenWeatherMapDataWorker(url='http://test')
+        suc = app.mainW.getWebDataWorker(url='http://test')
         assert not suc
 
 
@@ -264,7 +264,7 @@ def test_getWebDataRunner_4():
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
-        suc = app.mainW.getOpenWeatherMapDataWorker(url='http://test')
+        suc = app.mainW.getWebDataWorker(url='http://test')
         assert suc
 
 

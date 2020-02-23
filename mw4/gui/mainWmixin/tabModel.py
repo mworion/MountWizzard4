@@ -763,6 +763,8 @@ class Model(object):
 
         if not points:
             return False
+        if len(points) < 3:
+            return False
 
         # looking for solving application
         astrometryApp = self.app.mainW.ui.astrometryDevice.currentText()

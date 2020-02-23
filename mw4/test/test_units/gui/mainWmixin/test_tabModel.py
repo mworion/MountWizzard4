@@ -596,6 +596,14 @@ def test_modelCore_3():
     with mock.patch.object(app.mainW,
                            'modelSlew'):
         suc = app.mainW.modelCore(points=[(0, 0)])
+        assert not suc
+
+
+def test_modelCore_4():
+    app.mainW.ui.astrometryDevice.setCurrentIndex(1)
+    with mock.patch.object(app.mainW,
+                           'modelSlew'):
+        suc = app.mainW.modelCore(points=[(0, 0), (0, 0), (0, 0)])
         assert suc
 
 

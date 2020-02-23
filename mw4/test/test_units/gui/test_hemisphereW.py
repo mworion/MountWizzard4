@@ -66,16 +66,10 @@ def test_setupAxes2(qtbot):
     app.uiWindows['showHemisphereW']['classObj'].setupAxes(app.uiWindows['showHemisphereW']['classObj'].hemisphereMat)
 
 
-def test_drawCanvas(qtbot):
-    app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
-    suc = app.uiWindows['showHemisphereW']['classObj'].drawCanvas()
-    assert suc
-
-
 def test_updateCelestialPath_1(qtbot):
     app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     suc = app.uiWindows['showHemisphereW']['classObj'].updateCelestialPath()
-    assert suc
+    assert not suc
 
 
 def test_updateCelestialPath_3(qtbot):
@@ -89,7 +83,7 @@ def test_updateMeridian_1(qtbot):
     app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.meridianLimitSlew = 3
     app.mount.setting.meridianLimitTrack = 3
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian(app.mount.setting)
     assert suc
 
 
@@ -97,7 +91,7 @@ def test_updateMeridian_3(qtbot):
     app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.meridianLimitSlew = None
     app.mount.setting.meridianLimitTrack = 3
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian(app.mount.setting)
     assert not suc
 
 
@@ -105,7 +99,7 @@ def test_updateMeridian_4(qtbot):
     app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.meridianLimitSlew = 3
     app.mount.setting.meridianLimitTrack = None
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian(app.mount.setting)
     assert not suc
 
 
@@ -114,7 +108,7 @@ def test_updateMeridian_5(qtbot):
     app.mount.setting.meridianLimitSlew = 3
     app.mount.setting.meridianLimitTrack = 3
     app.uiWindows['showHemisphereW']['classObj'].meridianTrack = None
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian(app.mount.setting)
     assert not suc
 
 
@@ -123,7 +117,7 @@ def test_updateMeridian_6(qtbot):
     app.mount.setting.meridianLimitSlew = 3
     app.mount.setting.meridianLimitTrack = 3
     app.uiWindows['showHemisphereW']['classObj'].meridianSlew = None
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateMeridian(app.mount.setting)
     assert not suc
 
 
@@ -131,7 +125,7 @@ def test_updateHorizonLimits_1(qtbot):
     app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.horizonLimitHigh = 80
     app.mount.setting.horizonLimitLow = 10
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits(app.mount.setting)
     assert suc
 
 
@@ -139,7 +133,7 @@ def test_updateHorizonLimits_3(qtbot):
     app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.horizonLimitHigh = None
     app.mount.setting.horizonLimitLow = 10
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits(app.mount.setting)
     assert not suc
 
 
@@ -147,7 +141,7 @@ def test_updateHorizonLimits_4(qtbot):
     app.uiWindows['showHemisphereW']['classObj'].drawHemisphere()
     app.mount.setting.horizonLimitHigh = 80
     app.mount.setting.horizonLimitLow = None
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits(app.mount.setting)
     assert not suc
 
 
@@ -156,7 +150,7 @@ def test_updateHorizonLimits_5(qtbot):
     app.mount.setting.horizonLimitHigh = 80
     app.mount.setting.horizonLimitLow = 10
     app.uiWindows['showHemisphereW']['classObj'].horizonLimitLow = None
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits(app.mount.setting)
     assert not suc
 
 
@@ -165,7 +159,7 @@ def test_updateHorizonLimits_6(qtbot):
     app.mount.setting.horizonLimitHigh = 80
     app.mount.setting.horizonLimitLow = 10
     app.uiWindows['showHemisphereW']['classObj'].horizonLimitHigh = None
-    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits()
+    suc = app.uiWindows['showHemisphereW']['classObj'].updateHorizonLimits(app.mount.setting)
     assert not suc
 
 
@@ -581,7 +575,7 @@ def test_onMouseNormal_6():
                                    'setTargetAltAz',
                                    return_value=True):
                 suc = app.uiWindows['showHemisphereW']['classObj'].onMouseNormal(event=event)
-                assert suc
+                assert not suc
 
 
 def test_addHorizonPoint_1():
@@ -1014,7 +1008,7 @@ def test_onMouseStar_6():
                                    'setTargetRaDec',
                                    return_value=True):
                 suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
-                assert suc
+                assert not suc
 
 
 def test_onMouseStar_7():
@@ -1081,7 +1075,7 @@ def test_onMouseStar_9():
                                    'setTargetRaDec',
                                    return_value=True):
                 suc = app.uiWindows['showHemisphereW']['classObj'].onMouseStar(event=event)
-                assert suc
+                assert not suc
 
 
 def test_drawHemisphere_1():

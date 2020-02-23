@@ -239,21 +239,21 @@ def test_updateSetting_statusRefraction():
 def test_updateSetting_statusGPSSynced_1():
     value = True
     app.mount.setting.gpsSynced = value
-    app.mainW.updateSetStatGUI(app.mount.setting)
+    app.mainW.updateSetSyncGUI(app.mount.setting)
     assert app.mainW.ui.statusGPSSynced.text() == 'YES'
 
 
 def test_updateSetting_statusGPSSynced_2():
     value = None
     app.mount.setting.gpsSynced = value
-    app.mainW.updateSetStatGUI(app.mount.setting)
+    app.mainW.updateSetSyncGUI(app.mount.setting)
     assert app.mainW.ui.statusGPSSynced.text() == 'NO'
 
 
 def test_updateSetting_statusGPSSynced_3():
     value = False
     app.mount.setting.gpsSynced = value
-    app.mainW.updateSetStatGUI(app.mount.setting)
+    app.mainW.updateSetSyncGUI(app.mount.setting)
     assert app.mainW.ui.statusGPSSynced.text() == 'NO'
 
 

@@ -105,7 +105,7 @@ class CameraIndi(IndiClass):
 
         return suc
 
-    def setExposureState(self,):
+    def setExposureState(self):
         """
 
         :return: success

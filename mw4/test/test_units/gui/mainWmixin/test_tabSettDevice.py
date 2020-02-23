@@ -62,112 +62,100 @@ def test_setupDeviceGui_1():
 def test_enableRelay_1(qtbot):
     app.mainW.ui.relayDevice.setCurrentIndex(0)
     with mock.patch.object(app.relay,
-                           'stopTimers',
+                           'stopCommunication',
                            return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.relayDispatch()
-            assert suc
-        assert ['Relay disabled', 0] == blocker.args
+        suc = app.mainW.dispatch()
+        assert suc
 
 
 def test_enableRelay_2(qtbot):
     app.mainW.ui.relayDevice.setCurrentIndex(1)
     with mock.patch.object(app.relay,
-                           'startTimers',
+                           'startCommunication',
                            return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.relayDispatch()
-            assert suc
-        assert ['Relay enabled', 0] == blocker.args
+        suc = app.mainW.dispatch()
+        assert suc
 
 
 def test_enableRemote_1(qtbot):
     app.mainW.ui.remoteDevice.setCurrentIndex(0)
     with mock.patch.object(app.remote,
-                           'startRemote',
+                           'startCommunication',
                            return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.remoteDispatch()
-            assert suc
-        assert ['Remote disabled', 0] == blocker.args
+        suc = app.mainW.dispatch()
+        assert suc
 
 
 def test_enableRemote_2(qtbot):
     app.mainW.ui.remoteDevice.setCurrentIndex(1)
     with mock.patch.object(app.remote,
-                           'stopRemote',
+                           'stopCommunication',
                            return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.remoteDispatch()
-            assert suc
-        assert ['Remote enabled', 0] == blocker.args
+        suc = app.mainW.dispatch()
+        assert suc
 
 
 def test_enableMeasure_1(qtbot):
     app.mainW.ui.measureDevice.setCurrentIndex(1)
     with mock.patch.object(app.measure,
-                           'startMeasurement',
+                           'startCommunication',
                            return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.measureDispatch()
-            assert suc
-        assert ['Measurement enabled', 0] == blocker.args
+        suc = app.mainW.dispatch()
+        assert suc
 
 
 def test_enableMeasure_2(qtbot):
     app.mainW.ui.measureDevice.setCurrentIndex(0)
     with mock.patch.object(app.measure,
-                           'stopMeasurement',
+                           'stopCommunication',
                            return_value=None):
-        with qtbot.waitSignal(app.message) as blocker:
-            suc = app.mainW.measureDispatch()
-            assert suc
-        assert ['Measurement disabled', 0] == blocker.args
+        suc = app.mainW.dispatch()
+        assert suc
 
 
 def test_sensorWeatherDispatch_1():
     app.mainW.ui.sensorWeatherDevice.setCurrentIndex(0)
-    suc = app.mainW.sensorWeatherDispatch()
+    suc = app.mainW.dispatch()
     assert suc
 
 
 def test_sensorWeatherDispatch_2():
     app.mainW.ui.sensorWeatherDevice.setCurrentIndex(1)
-    suc = app.mainW.sensorWeatherDispatch()
+    suc = app.mainW.dispatch()
     assert suc
 
 
 def test_skymeterDispatch_1():
     app.mainW.ui.skymeterDevice.setCurrentIndex(0)
-    suc = app.mainW.skymeterDispatch()
+    suc = app.mainW.dispatch()
     assert suc
 
 
 def test_skymeterDispatch_2():
     app.mainW.ui.skymeterDevice.setCurrentIndex(1)
-    suc = app.mainW.skymeterDispatch()
+    suc = app.mainW.dispatch()
     assert suc
 
 
 def test_powerDispatch_1():
     app.mainW.ui.powerDevice.setCurrentIndex(0)
-    suc = app.mainW.powerDispatch()
+    suc = app.mainW.dispatch()
     assert suc
 
 
 def test_powerDispatch_2():
     app.mainW.ui.powerDevice.setCurrentIndex(1)
-    suc = app.mainW.powerDispatch()
+    suc = app.mainW.dispatch()
     assert suc
 
 
 def test_astrometryDispatch_1():
     app.mainW.ui.astrometryDevice.setCurrentIndex(0)
-    suc = app.mainW.astrometryDispatch()
+    suc = app.mainW.dispatch()
     assert suc
 
 
 def test_astrometryDispatch_2():
     app.mainW.ui.astrometryDevice.setCurrentIndex(1)
-    suc = app.mainW.astrometryDispatch()
+    suc = app.mainW.dispatch()
     assert suc

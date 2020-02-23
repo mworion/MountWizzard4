@@ -63,7 +63,7 @@ def test_selectorGui():
     suc = app.mainW.setupSelectorGui()
     assert suc
     for _, ui in app.mainW.selectorsDropDowns.items():
-        assert ui.count() == 8
+        assert ui.count() == 7
 
 
 def test_getNumberFiles_1():
@@ -108,12 +108,12 @@ def test_convertHeaderEntry_2():
 
 def test_convertHeaderEntry_3():
     chunk = app.mainW.convertHeaderEntry(entry='2019-05-26T17:02:18.843', fitsKey='DATE-OBS')
-    assert chunk == '2019-05-26-17-02-18'
+    assert chunk == '2019-05-26_17-02-18'
 
 
 def test_convertHeaderEntry_4():
     chunk = app.mainW.convertHeaderEntry(entry='2019-05-26T17:02:18', fitsKey='DATE-OBS')
-    assert chunk == '2019-05-26-17-02-18'
+    assert chunk == '2019-05-26_17-02-18'
 
 
 def test_convertHeaderEntry_5():
@@ -150,7 +150,7 @@ def test_processSelectors_3():
     header = hdu[0].header
     header.set('DATE-OBS', '2019-05-26T17:02:18.843')
     name = app.mainW.processSelectors(fitsHeader=header, selection='Datetime')
-    assert name == '2019-05-26-17-02-18'
+    assert name == '2019-05-26_17-02-18'
 
 
 def test_processSelectors_4():

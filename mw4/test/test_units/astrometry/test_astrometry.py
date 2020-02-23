@@ -75,14 +75,14 @@ def test_checkAvailability_3():
 
 def test_checkAvailability_4():
     app.astrometry.solverEnviron = {
-        'KStars': {
+        'CloudMakers': {
             'programPath': '/Applications/Astrometry.app/Contents/MacOS',
             'indexPath': '/Users/mw/Library/Application Support/Astrometry',
             'solver': app.astrometry.solverNET,
         }
     }
     val = app.astrometry.checkAvailability()
-    assert 'KStars' in val
+    assert 'CloudMakers' in val
 
 
 def test_readFitsData_1():

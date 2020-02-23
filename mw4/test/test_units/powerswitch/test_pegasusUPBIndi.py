@@ -37,12 +37,3 @@ def test_name():
     name = 'PegasusUPB'
     app.power.name = name
     assert name == app.power.name
-
-
-def test_startCommunication_1():
-    app.power.name = ''
-    with mock.patch.object(app.power.run['indi'].client,
-                           'connectServer',
-                           return_value=False):
-        suc = app.power.startCommunication()
-        assert not suc

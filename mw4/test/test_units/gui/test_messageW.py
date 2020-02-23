@@ -67,7 +67,8 @@ def test_clearWindow():
 
 def test_writeMessage1(qtbot):
     app.uiWindows['showMessageW']['classObj'].ui.message.setText('')
-    suc = app.uiWindows['showMessageW']['classObj'].writeMessage('test', 0)
+    app.messageQueue.put(('test', 0))
+    suc = app.uiWindows['showMessageW']['classObj'].writeMessage()
     assert suc
     val = app.uiWindows['showMessageW']['classObj'].ui.message.toPlainText()
     assert val.endswith('test\n')
@@ -75,13 +76,15 @@ def test_writeMessage1(qtbot):
 
 def test_writeMessage2(qtbot):
     app.uiWindows['showMessageW']['classObj'].ui.message.setText('')
-    suc = app.uiWindows['showMessageW']['classObj'].writeMessage('test', 6)
-    assert not suc
+    app.messageQueue.put(('test', 6))
+    suc = app.uiWindows['showMessageW']['classObj'].writeMessage()
+    assert suc
 
 
 def test_writeMessage3(qtbot):
     app.uiWindows['showMessageW']['classObj'].ui.message.setText('')
-    suc = app.uiWindows['showMessageW']['classObj'].writeMessage('', 0)
+    app.messageQueue.put(('', 0))
+    suc = app.uiWindows['showMessageW']['classObj'].writeMessage()
     assert suc
     val = app.uiWindows['showMessageW']['classObj'].ui.message.toPlainText()
     assert val.endswith('\n')
@@ -89,5 +92,6 @@ def test_writeMessage3(qtbot):
 
 def test_writeMessage4(qtbot):
     app.uiWindows['showMessageW']['classObj'].ui.message.setText('')
-    suc = app.uiWindows['showMessageW']['classObj'].writeMessage('test', -1)
-    assert not suc
+    app.messageQueue.put(('test', -1))
+    suc = app.uiWindows['showMessageW']['classObj'].writeMessage()
+    assert suc

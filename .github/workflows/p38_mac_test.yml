@@ -55,8 +55,6 @@ jobs:
         python -m pip install pytest-qt
         python -m pip install pytest-cov
         python -m pytest --cov=./ --cov-report=xml
-      with:
-        fail_ci_if_error: false
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1

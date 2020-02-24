@@ -31,6 +31,7 @@ Any feedback welcome!
 
 Actual version on PyPi
 ----------------------
+Downloadable:
     .. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
         :target: https://pypi.python.org/pypi/mountwizzard4
         :alt: MountWizzard4's PyPI Status

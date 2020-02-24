@@ -54,7 +54,7 @@ jobs:
         python -m pip install pytest
         python -m pip install pytest-qt
         python -m pip install pytest-cov
-        python -m pytest --cov=./ --cov-report=xml
+        pytest --cov=./ --cov-report=xml
 
     - name: Upload coverage to Codecov
       if: always()
@@ -64,5 +64,5 @@ jobs:
         file: ./coverage.xml
         flags: unittests
         name: codecov-umbrella
-        yml: ./codecov.yml
-        fail_ci_if_error: false
+        # yml: ./codecov.yml      # optional
+        # fail_ci_if_error: True  # optional default is false

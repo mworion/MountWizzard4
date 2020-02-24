@@ -41,6 +41,8 @@ def module_setup_teardown_func():
     config = mwGlob['configDir']
     testdir = os.listdir(config)
     for item in testdir:
+        if item == 'config.cfg':
+            continue
         if item.endswith('.cfg'):
             os.remove(os.path.join(config, item))
 

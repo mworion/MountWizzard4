@@ -36,6 +36,9 @@ Downloadable:
         :target: https://pypi.python.org/pypi/mountwizzard4
         :alt: MountWizzard4's PyPI Status
 
+Code coverage status
+--------------------
+Actual master:
 .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/mworion/MountWizzard4
 

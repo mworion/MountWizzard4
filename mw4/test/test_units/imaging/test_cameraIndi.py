@@ -440,7 +440,7 @@ def test_updateBLOB_5():
     app.camera.run['indi'].device = Test()
     deviceName = 'test'
     app.camera.run['indi'].name = 'test'
-    app.camera.run['indi'].imagePath = './mw4/test/test_units/image/test.fit'
+    app.camera.run['indi'].imagePath = mwGlob['imageDir'] + '/test.fit'
 
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
@@ -466,7 +466,7 @@ def test_updateBLOB_6():
     app.camera.run['indi'].device = Test()
     deviceName = 'test'
     app.camera.run['indi'].name = 'test'
-    app.camera.run['indi'].imagePath = './mw4/test/test_units/image/test.fit'
+    app.camera.run['indi'].imagePath = mwGlob['imageDir'] + '/test.fit'
 
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
@@ -492,7 +492,7 @@ def test_updateBLOB_7():
     app.camera.run['indi'].device = Test()
     deviceName = 'test'
     app.camera.run['indi'].name = 'test'
-    app.camera.run['indi'].imagePath = './mw4/test/test_units/image/test.fit'
+    app.camera.run['indi'].imagePath = mwGlob['imageDir'] + '/test.fit'
 
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())

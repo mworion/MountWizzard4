@@ -270,9 +270,6 @@ def setupWorkDirs(mwGlob):
         if not os.access(mwGlob[dirPath], os.W_OK):
             log.error('no write access to {0}'.format(dirPath))
 
-    for file in os.scandir(mwGlob['tempDir']):
-        os.remove(file)
-
     return mwGlob
 
 

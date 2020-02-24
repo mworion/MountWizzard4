@@ -36,6 +36,9 @@ Downloadable:
         :target: https://pypi.python.org/pypi/mountwizzard4
         :alt: MountWizzard4's PyPI Status
 
+    .. image:: https://codecov.io/github/mworion/mountwizzard4?branch=master
+        :alt: MountWizzard4's CodeCoverage Status
+
 Build status
 ------------
 Python build for version 3.6.x:

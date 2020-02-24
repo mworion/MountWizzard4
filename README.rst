@@ -42,6 +42,10 @@ Actual master:
     .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
       :target: https://codecov.io/gh/mworion/MountWizzard4
 
+Actual chart:
+    .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
+      :target: https://codecov.io/gh/mworion/MountWizzard4
+
 Build status
 ------------
 Python build for version 3.6.x:

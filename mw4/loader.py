@@ -29,6 +29,7 @@ import locale
 import html
 from io import BytesIO
 from importlib_metadata import version
+
 # external packages
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -39,6 +40,7 @@ import astropy
 from astropy.utils import iers
 astropy.log.setLevel('ERROR')
 iers.conf.auto_download = False
+
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.loggerMW import setupLogging

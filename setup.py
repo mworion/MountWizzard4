@@ -54,7 +54,7 @@ setup(
         'forwardable==0.4.1',
         'qimage2ndarray==1.8.2',
         'importlib_metadata==1.3.0',
-        'opencv-python-headless==4.1.2.30', 'base'
+        'opencv-python-headless==4.1.2.30',
     ],
     url='https://github.com/mworion/MountWizzard4',
     license='APL 2.0',

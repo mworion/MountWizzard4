@@ -25,11 +25,13 @@ import json
 import gc
 import platform
 from queue import Queue
+
 # external packages
 import PyQt5.QtCore
 import skyfield
 from mountcontrol import qtmount
 from importlib_metadata import version
+
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.loggerMW import setCustomLoggingLevel
@@ -42,7 +44,6 @@ from mw4.gui.satelliteW import SatelliteWindow
 if platform.machine() != 'armv7l':
     # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
     from mw4.gui.keypadW import KeypadWindow
-
 from mw4.powerswitch.kmRelay import KMRelay
 from mw4.modeldata.buildpoints import DataPoint
 from mw4.modeldata.hipparcos import Hipparcos

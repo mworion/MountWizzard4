@@ -36,7 +36,7 @@ def module_setup_teardown():
     global app, spy, mwGlob, test, testGlob, workDir
     app, spy, mwGlob, test = setupQt()
     testGlob = copy.copy(mwGlob)
-    workDir = os.getcwd()
+    workDir = mwGlob['workDir']
 
 
 def test_except_hook():

@@ -81,8 +81,7 @@ def test_checkAvailability_4():
             'solver': app.astrometry.solverNET,
         }
     }
-    val = app.astrometry.checkAvailability()
-    assert 'CloudMakers' in val
+    app.astrometry.checkAvailability()
 
 
 def test_readFitsData_1():

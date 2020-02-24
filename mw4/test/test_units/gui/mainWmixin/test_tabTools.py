@@ -77,7 +77,7 @@ def test_getNumberFiles_2():
 
 
 def test_getNumberFiles_3():
-    number = app.mainW.getNumberFiles(pathDir='/Users/mw/PycharmProjects', search='**/*.fit*')
+    number = app.mainW.getNumberFiles(pathDir='.', search='**/*.fit*')
     assert number > 0
 
 

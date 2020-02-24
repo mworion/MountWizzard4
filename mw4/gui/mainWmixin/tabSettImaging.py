@@ -160,10 +160,12 @@ class SettImaging(object):
         if aperture:
             dawes = 116 / aperture
             rayleigh = 138 / aperture
+            magLimit = 7.7 + (5 * np.log10(aperture / 10))
         else:
             dawes = 0
             rayleigh = 0
-        magLimit = 7.7 + (5 * np.log10(aperture / 10))
+            magLimit = 0
+
         self.app.mainW.ui.dawes.setText(f'{dawes:2.2f}')
         self.app.mainW.ui.rayleigh.setText(f'{rayleigh:2.2f}')
         self.app.mainW.ui.magLimit.setText(f'{magLimit:2.2f}')

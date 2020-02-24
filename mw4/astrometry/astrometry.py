@@ -25,6 +25,7 @@ import glob
 import platform
 import time
 from collections import namedtuple
+
 # external packages
 import PyQt5
 from skyfield.api import Angle
@@ -32,6 +33,7 @@ from astropy.io import fits
 from astropy.wcs import WCS
 import astropy.wcs
 import numpy as np
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.base import tpool

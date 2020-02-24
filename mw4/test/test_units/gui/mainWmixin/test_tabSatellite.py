@@ -195,18 +195,6 @@ def test_extractSatelliteData_2():
     assert not suc
 
 
-def test_extractSatelliteData_3():
-
-    suc = app.mainW.extractSatelliteData('test', satName='ZARYA')
-    assert not suc
-
-
-def test_extractSatelliteData_4():
-
-    suc = app.mainW.extractSatelliteData('test', satName='ZARYA')
-    assert not suc
-
-
 def test_enableTrack_1():
     suc = app.mainW.updateSatelliteTrackGui()
     assert not suc

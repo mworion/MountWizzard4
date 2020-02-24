@@ -24,10 +24,12 @@ import os
 import shutil
 import time
 from collections import namedtuple
+
 # external packages
 from astropy.io import fits
 import numpy as np
 from forwardable import forwardable, def_delegators
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.base import transform

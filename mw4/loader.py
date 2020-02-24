@@ -44,7 +44,7 @@ from mw4.base.loggerMW import CustomLogger
 from mw4.base.loggerMW import setupLogging
 from mw4 import mainApp
 from mw4.gui import splash
-import mw4.resource
+from mw4.resource import resources
 
 global log
 logger = logging.getLogger()

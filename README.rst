@@ -39,8 +39,8 @@ Downloadable:
 Code coverage status
 --------------------
 Actual master:
-.. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/mworion/MountWizzard4
+    .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
+      :target: https://codecov.io/gh/mworion/MountWizzard4
 
 Build status
 ------------

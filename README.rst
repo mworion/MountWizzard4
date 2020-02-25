@@ -39,9 +39,9 @@ Downloadable:
 Code coverage status
 --------------------
 Actual master:
-    .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
-        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8_MacOS_PyTest/badge.svg
+        :align: center
+    .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
         :align: center
 
 Actual coverage chart:

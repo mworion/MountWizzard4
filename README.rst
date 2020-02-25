@@ -59,7 +59,7 @@ Python build for version 3.8.x:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
         :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
-        :align: centerDownloadable:
+        :align: center
 
 Downloadable version from pypi.org:
     .. image:: https://img.shields.io/pypi/v/mountwizzard4.svg

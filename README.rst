@@ -44,7 +44,7 @@ Actual master:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8_MacOS_PyTest/badge.svg
         :align: center
 
-Actual chart:
+Actual coverage chart:
     .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
         :target: https://codecov.io/gh/mworion/MountWizzard4
         :align: center

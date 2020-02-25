@@ -1,4 +1,4 @@
-# test script on python 3.8 and ubuntu
+# test script on python 3.8 and macos
 name: PyTest
 
 on:
@@ -6,7 +6,7 @@ on:
     paths:
       - 'mw4/**'
       - 'setup.py'
-      - '.github/workflows/p38_ubuntu_test.yml'
+      - '.github/workflows/p38_mac_pytest.yml'
 
 jobs:
   build:

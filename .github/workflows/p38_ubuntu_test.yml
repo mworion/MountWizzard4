@@ -1,4 +1,4 @@
-# test script
+# test script on python 3.8 and ubuntu
 name: PyTest
 
 on:

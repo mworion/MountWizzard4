@@ -19,7 +19,7 @@
 ###########################################################
 # standard libraries
 import logging
-import dateutil
+from dateutil.parser import parser
 import datetime
 import uuid
 # external packages
@@ -1571,14 +1571,15 @@ class Telescope(AlpacaBase):
 
         """
         if UTCDate is None:
-            return dateutil.parser.parse(self.get("utcdate"))
+            return parser.parse(self.get("utcdate"))
 
         if type(UTCDate) is str:
             data = UTCDate
         elif type(UTCDate) is datetime:
             data = UTCDate.isoformat()
         else:
-            raise TypeError()
+            self.log.error(f'type error in: [{UTCDate}]')
+            return None
 
         self.put("utcdate", UTCDate=data)
 
@@ -1586,7 +1587,7 @@ class Telescope(AlpacaBase):
         """Immediately stops a slew in progress."""
         self.put("abortslew")
 
-    def axisrates(self, Axis: int):
+    def axisrates(self, Axis):
         """Return rates at which the telescope may be moved about the specified axis.
         :return:
             The rates at which the telescope may be moved about the specified axis by
@@ -1595,7 +1596,7 @@ class Telescope(AlpacaBase):
         """
         return self.get("axisrates", Axis=Axis)
 
-    def canmoveaxis(self, Axis: int):
+    def canmoveaxis(self, Axis):
         """Indicate whether the telescope can move the requested axis.
         :return:
             True if this telescope can move the requested axis.
@@ -1623,7 +1624,7 @@ class Telescope(AlpacaBase):
         """Move the mount to the "home" position."""
         self.put("findhome")
 
-    def moveaxis(self, Axis: int, Rate):
+    def moveaxis(self, Axis, Rate):
         """Move a telescope axis at the given rate.
         :param
             Axis (int): The axis about which rate information is desired.
@@ -1636,7 +1637,7 @@ class Telescope(AlpacaBase):
         """Park the mount."""
         self.put("park")
 
-    def pulseguide(self, Direction: int, Duration: int):
+    def pulseguide(self, Direction, Duration):
         """Move the scope in the given direction for the given time.
         Notes:
             0 = guideNorth, 1 = guideSouth, 2 = guideEast, 3 = guideWest.

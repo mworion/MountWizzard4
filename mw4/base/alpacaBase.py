@@ -193,23 +193,23 @@ class AlpacaBase(object):
             response = requests.put(f'{self.baseUrl}/{attr}', data=data, timeout=5)
         except requests.exceptions.Timeout:
             self.log.critical(f'[{uid:10d}] timeout')
-            return {}
+            return None
         except requests.exceptions.ConnectionError:
             self.log.critical(f'[{uid:10d}] connection error')
-            return {}
+            return None
         except Exception as e:
             self.log.critical(f'[{uid:10d}] Error in request: {e}')
-            return {}
+            return None
 
         if response.status_code == 400 or response.status_code == 500:
             self.log.info(f'[{uid:10d}] {response.text}')
-            return {}
+            return None
 
         response = response.json()
 
         if response['ErrorNumber'] != 0:
             self.log.error(f'err:{response["ErrorNumber"]},{response["ErrorMessage"]}')
-            return {}
+            return None
 
         self.log.debug(f'[{uid:10d}] response:{response}')
 

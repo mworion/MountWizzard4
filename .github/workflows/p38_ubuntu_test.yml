@@ -1,12 +1,12 @@
 # test script
-name: Python3.8_MacOS_PyTest
+name: PyTest
 
 on:
   push:
     paths:
       - 'mw4/**'
       - 'setup.py'
-      - '.github/workflows/p38_mac_test.yml'
+      - '.github/workflows/p38_ubuntu_pytest.yml'
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest]
         python-version: [3.8]
 
     steps:

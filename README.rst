@@ -29,13 +29,6 @@ Bug reports
 Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
 Any feedback welcome!
 
-PyPi status
------------
-Downloadable:
-    .. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
-        :target: https://pypi.python.org/pypi/mountwizzard4
-        :alt: MountWizzard4's PyPI Status
-
 Build and code coverage status
 ------------------------------
 Actual master:
@@ -71,7 +64,15 @@ Python build for version 3.8.x:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
         :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
-        :align: center
+        :align: centerDownloadable:
+
+Downloadable version from pypi.org:
+    .. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
+        :target: https://pypi.python.org/pypi/mountwizzard4
+        :alt: MountWizzard4's PyPI Status
+
+
+
 
 Finally
 -------

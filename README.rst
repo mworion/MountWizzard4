@@ -46,6 +46,7 @@ Actual master:
 
 Actual chart:
     .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
+        :target: https://codecov.io/gh/mworion/MountWizzard4
         :align: center
 
 Build status

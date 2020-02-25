@@ -24,11 +24,6 @@ There are some videos (more to come) on youtube in the channel:
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/, but they are also linked in the
 online documentation
 
-Bug reports
------------
-Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
-Any feedback welcome!
-
 Build and code coverage status
 ------------------------------
 Actual master:
@@ -71,8 +66,10 @@ Downloadable version from pypi.org:
         :target: https://pypi.python.org/pypi/mountwizzard4
         :alt: MountWizzard4's PyPI Status
 
-
-
+Bug reports
+-----------
+Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
+Any feedback welcome!
 
 Finally
 -------

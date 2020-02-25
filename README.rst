@@ -36,8 +36,8 @@ Downloadable:
         :target: https://pypi.python.org/pypi/mountwizzard4
         :alt: MountWizzard4's PyPI Status
 
-Code coverage status
---------------------
+Build and code coverage status
+------------------------------
 Actual master:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8_MacOS_PyTest/badge.svg
         :align: center
@@ -49,8 +49,6 @@ Actual coverage chart:
         :target: https://codecov.io/gh/mworion/MountWizzard4
         :align: center
 
-Build status
-------------
 Python build for version 3.6.x:
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
         :align: center

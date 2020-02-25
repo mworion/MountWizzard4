@@ -40,14 +40,13 @@ Code coverage status
 --------------------
 Actual master:
     .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
-      :target: https://codecov.io/gh/mworion/MountWizzard4
-
+        :align: center
     .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8_MacOS_PyTest/badge.svg
         :align: center
 
 Actual chart:
     .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
-      :target: https://codecov.io/gh/mworion/MountWizzard4
+        :align: center
 
 Build status
 ------------

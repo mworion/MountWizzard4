@@ -54,7 +54,7 @@ jobs:
         python -m pip install pytest
         python -m pip install pytest-qt
         python -m pip install pytest-cov
-        pytest mw4/* --cov=./ --cov-report=xml
+        pytest --cov=mw4/ --cov-report=xml
 
     - name: Upload coverage to Codecov
       if: always()

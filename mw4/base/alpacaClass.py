@@ -52,12 +52,6 @@ class AlpacaClass(object):
         self.threadPool = app.threadPool
 
         self.client = AlpacaBase()
-        self.name = ':0'
-        self.number = 0
-        self.deviceType = ''
-        self.protocol = 'http'
-        self.host = ('localhost', 11111)
-        self.apiVersion = 1
         self.data = data
 
         self.deviceConnected = False
@@ -73,38 +67,34 @@ class AlpacaClass(object):
 
     @property
     def host(self):
-        return self._host
+        return self.client.host
 
     @host.setter
     def host(self, value):
-        self._host = value
         self.client.host = value
 
     @property
     def name(self):
-        return self._name
+        return self.client.name
 
     @name.setter
     def name(self, value):
-        self._name = value
         self.client.name = value
 
     @property
     def apiVersion(self):
-        return self._apiVersion
+        return self.client.apiVersion
 
     @apiVersion.setter
     def apiVersion(self, value):
-        self._apiVersion = value
         self.client.apiVersion = value
 
     @property
     def protocol(self):
-        return self._protocol
+        return self.client.protocol
 
     @protocol.setter
     def protocol(self, value):
-        self._protocol = value
         self.client.protocol = value
 
     def getInitialConfig(self):
@@ -263,19 +253,3 @@ class AlpacaClass(object):
         self.threadPool.start(worker)
 
         return True
-
-
-if __name__ == '__main__':
-    import time
-
-    a = AlpacaClass()
-
-    a.host = ('mw-develop.fritz.box', 11111)
-    a.deviceType = 'dome'
-    start = time.time()
-
-    print('start', a.startCommunication())
-    print(a.data)
-    print('stop', a.stopCommunication())
-
-    print(time.time() - start)

@@ -6,6 +6,7 @@ on:
       - 'mw4/**'
       - '!mw4/test/**'
       - 'setup.py'
+      - 'tox.ini'
       - '.github/workflows/python3.8_macos.yml'
 
 jobs:

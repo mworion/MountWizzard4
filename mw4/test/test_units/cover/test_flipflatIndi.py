@@ -150,6 +150,22 @@ def test_sendCoverPark_4():
     with mock.patch.object(app.device,
                            'getSwitch',
                            return_value={'PARK': True,
+                                         '': False}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = app.sendCoverPark()
+            assert not suc
+
+
+def test_sendCoverPark_5():
+    app.name = 'test'
+    app.device = Device()
+    app.client = Client()
+    app.UPDATE_RATE = 0
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'PARK': True,
                                          'UNPARK': False}):
         with mock.patch.object(app.client,
                                'sendNewSwitch',

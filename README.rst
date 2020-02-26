@@ -32,7 +32,7 @@ Actual master:
     .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
         :align: center
 
-Actual coverage chart:
+Actual code coverage chart:
     .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
         :target: https://codecov.io/gh/mworion/MountWizzard4
         :align: center

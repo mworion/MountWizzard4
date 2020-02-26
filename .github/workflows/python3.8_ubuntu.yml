@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'mw4/**'
+      - '!mw4/test/**'
       - 'setup.py'
       - '.github/workflows/python3.8_ubuntu.yml'
 

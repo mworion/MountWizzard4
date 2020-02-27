@@ -70,7 +70,7 @@ def test_mw(c):
     printMW('testing mountwizzard')
     with c.cd('.'):
         runMW(c, 'flake8')
-        runMW(c, 'pytest mw4/test/test_units --cov-config .coveragerc --cov mw4/')
+        runMW(c, 'pytest mw4/test/* --cov-config .coveragerc --cov mw4/')
 
 
 @task(pre=[])

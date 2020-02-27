@@ -23,7 +23,6 @@ from unittest import mock
 # external packages
 import pytest
 import requests
-import requests.exceptions as req
 
 # local import
 from mw4.base.alpacaBase import AlpacaBase

@@ -21,6 +21,7 @@
 import logging
 # external packages
 import PyQt5
+from PyQt5 import QtNetwork
 # local imports
 from mw4.base.loggerMW import CustomLogger
 
@@ -70,8 +71,8 @@ class Remote(PyQt5.QtCore.QObject):
         if self.tcpServer is not None:
             return False
 
-        self.tcpServer = PyQt5.QtNetwork.QTcpServer(self)
-        hostAddress = PyQt5.QtNetwork.QHostAddress('127.0.0.1')
+        self.tcpServer = QtNetwork.QTcpServer(self)
+        hostAddress = QtNetwork.QHostAddress('127.0.0.1')
 
         if not self.tcpServer.listen(hostAddress, 3490):
             self.log.warning('Port already in use')

@@ -54,7 +54,7 @@ def test_mc(c):
     printMW('testing mountcontrol')
     with c.cd('../mountcontrol'):
         runMW(c, 'flake8')
-        runMW(c, 'pytest mountcontrol/test/test_units --cov-config tox.ini --cov mountcontrol/')
+        runMW(c, 'pytest mountcontrol/test/* --cov-config tox.ini --cov mountcontrol/')
 
 
 @task()

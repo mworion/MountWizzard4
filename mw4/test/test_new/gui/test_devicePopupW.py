@@ -33,14 +33,15 @@ from indibase.indiBase import Device
 from mw4.gui.devicePopupW import DevicePopup
 from mw4.base.indiClass import IndiClass
 
-test = PyQt5.QtWidgets.QApplication(sys.argv)
-
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-    data = {'telescope':
-                {'indiNameList': ['test1', 'test2']}
+    data = {
+        'telescope':
+            {
+                'indiNameList': ['test1', 'test2']
+                }
             }
     geometry = [100, 100, 100, 100]
     framework = {'indi'}
@@ -52,6 +53,8 @@ def module_setup_teardown():
                           framework=framework,
                           driver='telescope',
                           deviceType='telescope')
+    yield
+    del app
 
 
 def test_storeConfig_1():
@@ -60,6 +63,7 @@ def test_storeConfig_1():
                            return_value=True):
         suc = app.storeConfig()
         assert suc
+
 
 def test_closeEvent_1():
     app.closeEvent(QCloseEvent())

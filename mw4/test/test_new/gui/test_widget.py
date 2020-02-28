@@ -32,13 +32,13 @@ import PyQt5.QtCore
 # local import
 from mw4.gui.widget import MWidget
 
-test = PyQt5.QtWidgets.QApplication(sys.argv)
-
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
     app = MWidget()
+    yield
+    del app
 
 
 def test_wIcon_1():

@@ -22,27 +22,30 @@ import os
 import json
 import pytest
 import unittest.mock as mock
+
 # external packages
 import PyQt5.QtCore
 import skyfield.api
+
 # local import
-from mw4.test.test_old.setupQt import setupQt
-
-
-@pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown():
-    global app, spy, mwGlob, test
-    app, spy, mwGlob, test = setupQt()
+from mw4.mainApp import MountWizzard4
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown_func():
-    global config
-    config = mwGlob['configDir']
-    testdir = os.listdir(config)
+def module_setup_teardown():
+    global app
+    with mock.patch.object(MountWizzard4,
+                           'showWindows'):
+        app = MountWizzard4(mwGlob={'configDir': 'mw4/test/config',
+                                    'workDir': 'mw4/test',
+                                    'dataDir': 'mw4/test/data',
+                                    'tempDir': 'mw4/test/temp',
+                                    })
+    yield
+    del app
     for item in testdir:
         if item.endswith('.cfg'):
-            os.remove(os.path.join(config, item))
+            os.remove(os.path.join('mw4/test/config/', item))
 
 
 def test_initConfig_1():
@@ -55,7 +58,7 @@ def test_initConfig_1():
         'topoLon': 10,
         'topoElev': 10,
     }
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
@@ -77,7 +80,7 @@ def test_initConfig_2():
         'topoLon': 0,
         'topoElev': 46,
     }
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
@@ -97,7 +100,7 @@ def test_initConfig_3():
         'version': '4.0',
         'mainW': {'expiresYes': False},
     }
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
@@ -147,7 +150,7 @@ def test_loadConfig_2():
         'profileName': 'config',
         'version': '4.0',
     }
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
@@ -162,7 +165,7 @@ def test_loadConfig_2():
 def test_loadConfig_3():
     # load existing basic config with defect file
     app.config = {}
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         outfile.writelines('dummy test')
     suc = app.loadConfig()
     assert not suc
@@ -180,7 +183,7 @@ def test_loadConfig_4():
         'profileName': 'config',
         'version': '4.0',
     }
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
@@ -201,7 +204,7 @@ def test_loadConfig_5():
         'version': '4.0',
         'reference': 'ext_file'
     }
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
@@ -211,7 +214,7 @@ def test_loadConfig_5():
         'version': '4.0',
         'reference': 'ext_file'
     }
-    with open(config + '/ext_file.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(reference,
                   outfile,
                   sort_keys=True,
@@ -231,7 +234,7 @@ def test_loadConfig_6():
         'version': '4.0',
         'reference': 'ext_file'
     }
-    with open(config + '/ext_file.cfg', 'w') as outfile:
+    with open('mw4/test/config/ext_file.cfg', 'w') as outfile:
         json.dump(reference,
                   outfile,
                   sort_keys=True,
@@ -251,7 +254,7 @@ def test_loadConfig_7():
         'version': '4.0',
         'reference': 'test',
     }
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
@@ -272,12 +275,12 @@ def test_loadConfig_8():
         'version': '4.0',
         'reference': 'ext_file'
     }
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
                   indent=4)
-    with open(config + '/ext_file.cfg', 'w') as outfile:
+    with open('mw4/test/config/ext_file.cfg', 'w') as outfile:
         outfile.write('test')
     suc = app.loadConfig()
     assert not suc
@@ -293,7 +296,7 @@ def test_loadConfig_9():
         'profileName': 'test',
         'version': '4.0',
     }
-    with open(config + '/config.cfg', 'w') as outfile:
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(basic,
                   outfile,
                   sort_keys=True,
@@ -320,7 +323,7 @@ def test_saveConfig_1():
         'version': '4.0',
     }
     suc = app.saveConfig()
-    with open(config + '/config.cfg', 'r') as infile:
+    with open('mw4/test/config/config.cfg', 'r') as infile:
         res = json.load(infile)
     assert suc
     assert res['profileName'] == 'config'
@@ -336,13 +339,13 @@ def test_saveConfig_2():
         'reference': 'ext_file'
     }
     suc = app.saveConfig()
-    with open(config + '/config.cfg', 'r') as infile:
+    with open('mw4/test/config/config.cfg', 'r') as infile:
         res = json.load(infile)
     assert suc
     assert res['profileName'] == 'ext_file'
     assert res['version'] == '4.0'
     assert res['reference'] == 'ext_file'
-    with open(config + '/ext_file.cfg', 'r') as infile:
+    with open('mw4/test/config/ext_file.cfg', 'r') as infile:
         res = json.load(infile)
     assert suc
     assert res['profileName'] == 'ext_file'
@@ -359,12 +362,12 @@ def test_saveConfig_3():
     }
     suc = app.saveConfig('ext_file')
     assert suc
-    with open(config + '/config.cfg', 'r') as inFile:
+    with open('mw4/test/config/config.cfg', 'r') as inFile:
         a = json.load(inFile)
     assert a['profileName'] == 'reference'
     assert a['version'] == '4.0'
     assert a['reference'] == 'ext_file'
-    with open(config + '/ext_file.cfg', 'r') as infile:
+    with open('mw4/test/config/ext_file.cfg', 'r') as infile:
         res = json.load(infile)
     assert suc
     assert res['profileName'] == 'reference'
@@ -381,12 +384,12 @@ def test_saveConfig_4():
     }
     suc = app.saveConfig('ext_file')
     assert suc
-    with open(config + '/config.cfg', 'r') as inFile:
+    with open('mw4/test/config/config.cfg', 'r') as inFile:
         a = json.load(inFile)
     assert a['profileName'] == 'ext_file'
     assert a['version'] == '4.0'
     assert a['reference'] == 'ext_file'
-    with open(config + '/ext_file.cfg', 'r') as infile:
+    with open('mw4/test/config/ext_file.cfg', 'r') as infile:
         res = json.load(infile)
     assert suc
     assert res['profileName'] == 'ext_file'
@@ -404,7 +407,7 @@ def test_saveConfig_5():
     }
     suc = app.saveConfig()
     assert suc
-    with open(config + '/config.cfg', 'r') as inFile:
+    with open('mw4/test/config/config.cfg', 'r') as inFile:
         a = json.load(inFile)
     assert a['profileName'] == 'config'
     assert a['version'] == '4.0'

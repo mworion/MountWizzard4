@@ -33,8 +33,6 @@ from indibase.indiBase import Device
 from mw4.gui.keypadW import KeypadWindow
 from mw4.base.indiClass import IndiClass
 
-test = PyQt5.QtWidgets.QApplication(sys.argv)
-
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
@@ -46,6 +44,8 @@ def module_setup_teardown():
                            'show',
                            return_value=True):
         app = KeypadWindow(app=Test())
+    yield
+    del app
 
 
 def test_storeConfig_1():

@@ -30,13 +30,15 @@ from PyQt5.QtWidgets import QWidget
 # local import
 from mw4.loader import QAwesomeTooltipEventFilter
 
-test = PyQt5.QtWidgets.QApplication(sys.argv)
-
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
+    test = PyQt5.QtWidgets.QApplication(sys.argv)
     app = QAwesomeTooltipEventFilter()
+    yield
+    del app
+    del test
 
 
 def test_eventFilter_1():

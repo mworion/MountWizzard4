@@ -23,25 +23,28 @@ import pytest
 import platform
 
 # external packages
+from PyQt5.QtCore import QThreadPool
+
 # local import
-from mw4.astrometry import astrometry
-from mw4.test.test_old.setupQt import setupQt
+from mw4.astrometry.astrometry import Astrometry
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app, spy, mwGlob, test
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Linux'):
-        app, spy, mwGlob, test = setupQt()
+    class Test:
+        threadPool = QThreadPool()
+
+    global app
+    app = Astrometry(app=Test(), tempDir='mw4/test/temp')
+    yield
+    del app
 
 
 def test_init_1():
-    app.astrometry.solverEnviron = {
+    app.solverEnviron = {
         'astrometry-glob': {
             'programPath': '/usr/bin',
             'indexPath': '/usr/share/astrometry',
-            'solver': app.astrometry.solverNET,
+            'solver': app.solverNET,
         }
     }

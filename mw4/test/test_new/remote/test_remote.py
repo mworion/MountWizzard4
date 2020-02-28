@@ -37,6 +37,8 @@ def module_setup_teardown():
         remoteCommand = pyqtSignal(object)
     global app
     app = Remote(app=Test())
+    yield
+    del app
 
 
 def test_startCommunication_1():

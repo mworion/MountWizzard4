@@ -38,6 +38,8 @@ def module_setup_teardown():
     global app
     m = Signal()
     app = indiClass.IndiClass(m)
+    yield
+    del app
 
 
 def test_name():

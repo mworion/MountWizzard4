@@ -31,6 +31,8 @@ from mw4.base.alpacaBase import Dome
 def module_setup_teardown():
     global app
     app = Dome()
+    yield
+    del app
 
 
 def test_altitude():

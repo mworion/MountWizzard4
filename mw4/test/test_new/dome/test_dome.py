@@ -40,6 +40,8 @@ def module_setup_teardown():
         mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
     global app
     app = Dome(app=Test())
+    yield
+    del app
 
 
 def test_properties_1():

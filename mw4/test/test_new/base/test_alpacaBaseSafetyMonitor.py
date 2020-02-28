@@ -31,6 +31,8 @@ from mw4.base.alpacaBase import SafetyMonitor
 def module_setup_teardown():
     global app
     app = SafetyMonitor()
+    yield
+    del app
 
 
 def test_issafe():

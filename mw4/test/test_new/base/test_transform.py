@@ -30,12 +30,9 @@ from mw4.test.test_old.setupQt import setupQt
 from mw4.base import transform
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app, spy, mwGlob, test, host
-    app, spy, mwGlob, test = setupQt()
-    host_ip = '192.168.2.250'
-    host = (host_ip, 80)
+    pass
 
 
 def test_JNowToJ2000_1():

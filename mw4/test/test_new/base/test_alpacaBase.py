@@ -32,6 +32,8 @@ from mw4.base.alpacaBase import AlpacaBase
 def module_setup_teardown():
     global app
     app = AlpacaBase()
+    yield
+    del app
 
 
 def test_properties_1():

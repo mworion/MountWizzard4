@@ -26,67 +26,73 @@ import numpy as np
 import subprocess
 # external packages
 from astropy.io import fits
+from PyQt5.QtCore import QThreadPool
+
 # local import
-from mw4.astrometry import astrometry
-from mw4.test.test_old.setupQt import setupQt
+from mw4.astrometry.astrometry import Astrometry
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app, spy, mwGlob, test
-    app, spy, mwGlob, test = setupQt()
+    class Test:
+        threadPool = QThreadPool()
+
+    global app
+    app = Astrometry(app=Test(), tempDir='mw4/test/temp')
+    yield
+    del app
 
 
 def test_init_1():
     home = os.environ.get('HOME')
-    app.astrometry.solverEnviron = {
+    app.solverEnviron = {
         'KStars': {
             'programPath': '/Applications/Astrometry.app/Contents/MacOS',
             'indexPath': home + '/Library/Application Support/Astrometry',
-            'solver': app.astrometry.solverNET,
+            'solver': app.solverNET,
         }
     }
-    assert os.path.isfile(app.mwGlob['tempDir'] + '/astrometry.cfg')
+    assert os.path.isfile('mw4/test/temp/astrometry.cfg')
 
 
 def test_checkAvailability_1():
-    app.astrometry.solverEnviron = {
+    app.solverEnviron = {
         'CloudMakers': {
             'programPath': '',
             'indexPath': '',
-            'solver': app.astrometry.solverNET,
+            'solver': app.solverNET,
         }
     }
-    val = app.astrometry.checkAvailability()
+    val = app.checkAvailability()
     assert val == {}
 
 
 def test_checkAvailability_3():
-    app.astrometry.solverEnviron = {
+    app.solverEnviron = {
         'KStars': {
             'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
             'indexPath': '/usr/share/astrometry',
-            'solver': app.astrometry.solverNET,
+            'solver': app.solverNET,
         }
     }
-    val = app.astrometry.checkAvailability()
+    val = app.checkAvailability()
     assert val == {}
 
 
 def test_checkAvailability_4():
-    app.astrometry.solverEnviron = {
+    app.solverEnviron = {
         'CloudMakers': {
             'programPath': '/Applications/Astrometry.app/Contents/MacOS',
             'indexPath': '/Users/mw/Library/Application Support/Astrometry',
-            'solver': app.astrometry.solverNET,
+            'solver': app.solverNET,
         }
     }
-    app.astrometry.checkAvailability()
+    app.checkAvailability()
 
 
 def test_readFitsData_1():
-    file = mwGlob['imageDir'] + '/m51.fits'
-    ra, dec, sc, ra1, dec1 = app.astrometry.readFitsData(file)
+    file = 'mw4/test/image/m51.fits'
+    ra, dec, sc, ra1, dec1 = app.readFitsData(file)
     assert ra
     assert dec
     assert sc
@@ -105,7 +111,7 @@ def test_calcAngleScaleFromWCS_1():
         CD12 = scaleX * np.sin(phi)
         header.set('CD1_1', CD11)
         header.set('CD1_2', CD12)
-        angle, scale, flip = app.astrometry.calcAngleScaleFromWCS(wcsHeader=header)
+        angle, scale, flip = app.calcAngleScaleFromWCS(wcsHeader=header)
         assert np.round(scale, 0) == scaleX * 3600
         assert np.round(angle, 3) == np.round(angleX, 3)
 
@@ -114,7 +120,7 @@ def test_calcAngleScaleFromWCS_2():
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
-    angle, scale, flip = app.astrometry.calcAngleScaleFromWCS(wcsHeader=header)
+    angle, scale, flip = app.calcAngleScaleFromWCS(wcsHeader=header)
     assert angle == 0
     assert scale == 0
 
@@ -127,8 +133,8 @@ def test_getSolutionFromWCS_1():
     header.set('CRVAL2', 60.0)
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
-    solve, header = app.astrometry.getSolutionFromWCS(fitsHeader=header,
-                                                      wcsHeader=header)
+    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+                                           wcsHeader=header)
     assert solve['raJ2000S'].hours == 12
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
@@ -147,9 +153,9 @@ def test_getSolutionFromWCS_2():
     header.set('CRVAL2', 60.0)
     header.set('RA', 180.0)
     header.set('DEC', 60.0)
-    solve, header = app.astrometry.getSolutionFromWCS(fitsHeader=header,
-                                                      wcsHeader=header,
-                                                      updateFits=True)
+    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+                                           wcsHeader=header,
+                                           updateFits=True)
     assert solve['raJ2000S'].hours == 12
     assert solve['decJ2000S'].degrees == 60
     assert solve['angleS'] == 0
@@ -161,76 +167,84 @@ def test_getSolutionFromWCS_2():
 
 
 def test_abort_1():
-    suc = app.astrometry.abort()
+    suc = app.abort()
     assert not suc
 
 
-def test_solveClear():
-    app.astrometry.mutexSolve.lock()
-    app.astrometry.solveClear()
+def test_solveClear_1():
+    app.framework = 'Test'
+    suc = app.solveClear()
+    assert not suc
+
+
+def test_solveClear_2():
+    app.framework = 'CloudMakers'
+    app.mutexSolve.lock()
+    suc = app.solveClear()
+    assert suc
 
 
 def test_solveThreading_1():
-    suc = app.astrometry.solveThreading()
-    app.astrometry.mutexSolve.unlock()
+    app.framework = 'Test'
+    suc = app.solveThreading()
     assert not suc
 
 
 def test_solveThreading_2():
     home = os.environ.get('HOME')
-    app.astrometry.solverEnviron = {
+    app.solverEnviron = {
         'KStars': {
             'programPath': '/Applications/Astrometry.app/Contents/MacOS',
             'indexPath': home + '/Library/Application Support/Astrometry',
-            'solver': app.astrometry.solverNET,
+            'solver': app.solverNET,
         }
     }
-    app.astrometry.framework = 'KStars'
-    suc = app.astrometry.solveThreading()
+    app.framework = 'KStars'
+    suc = app.solveThreading()
     assert not suc
 
 
 def test_solveThreading_3():
     home = os.environ.get('HOME')
-    app.astrometry.solverEnviron = {
+    app.solverEnviron = {
         'KStars': {
             'programPath': '/Applications/Astrometry.app/Contents/MacOS',
             'indexPath': home + '/Library/Application Support/Astrometry',
-            'solver': app.astrometry.solverNET,
+            'solver': app.solverNET,
         }
     }
-    app.astrometry.framework = 'KStars'
-    file = mwGlob['imageDir'] + '/m51.fits'
-    suc = app.astrometry.solveThreading(fitsPath=file)
+    app.framework = 'KStars'
+    file = 'mw4/test/image/m51.fits'
+    suc = app.solveThreading(fitsPath=file)
     assert suc
 
 
 def test_solveThreading_5():
-    app.astrometry.solverEnviron = {
+    app.solverEnviron = {
         'CloudMakers': {
             'programPath': '',
             'indexPath': '',
-            'solver': app.astrometry.solverNET,
+            'solver': app.solverNET,
         }
     }
-    app.astrometry.framework = 'KStars'
-    file = mwGlob['imageDir'] + '/m51.fits'
-    suc = app.astrometry.solveThreading(fitsPath=file)
+    app.framework = 'KStars'
+    file = 'mw4/test/image/m51.fits'
+    suc = app.solveThreading(fitsPath=file)
     assert not suc
 
 
 def test_abort_1():
     home = os.environ.get('HOME')
-    app.astrometry.solverEnviron = {
+    app.solverEnviron = {
         'KStars': {
             'programPath': '/Applications/Astrometry.app/Contents/MacOS',
             'indexPath': home + '/Library/Application Support/Astrometry',
-            'solver': app.astrometry.solverNET,
+            'solver': app.solverNET,
         }
     }
-    app.astrometry.framework = 'KStars'
-    with mock.patch.object(app.astrometry.solverNET,
+    app.framework = 'KStars'
+    with mock.patch.object(app.solverNET,
                            'abort',
                            return_value=True):
-        suc = app.astrometry.abort()
+        suc = app.abort()
         assert suc

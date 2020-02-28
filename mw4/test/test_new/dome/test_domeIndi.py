@@ -42,6 +42,8 @@ def module_setup_teardown():
         update1s = pyqtSignal()
     global app
     app = DomeIndi(app=Test(), signals=DomeSignals(), data={})
+    yield
+    del app
 
 
 def test_setUpdateConfig_1():

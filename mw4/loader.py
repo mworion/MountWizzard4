@@ -111,6 +111,7 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
             # case, edge cases are edge cases because they sometimes happen.
             if not isinstance(widget, PyQt5.QtWidgets.QWidget):
                 self.log.error('QObject "{}" not a widget.'.format(widget))
+                return False
 
             # Tooltip for this widget if any *OR* the empty string otherwise.
             tooltip = widget.toolTip()
@@ -135,6 +136,7 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
         elif event.type() == PyQt5.QtCore.QEvent.ToolTip:
             if not isinstance(widget, PyQt5.QtWidgets.QWidget):
                 self.log.error('QObject "{}" not a widget.'.format(widget))
+                return False
 
             # Tooltip for this widget if any *OR* the empty string otherwise.
             tooltip = widget.toolTip()

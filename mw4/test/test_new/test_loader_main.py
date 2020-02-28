@@ -24,19 +24,19 @@ import os
 import glob
 import copy
 import unittest.mock as mock
+
 # external packages
 import pytest
+import PyQt5
+
 # local import
 from mw4 import loader
-from mw4.test.test_old.setupQt import setupQt
+from mw4 import mainApp
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app, spy, mwGlob, test, testGlob, workDir
-    app, spy, mwGlob, test = setupQt()
-    testGlob = copy.copy(mwGlob)
-    workDir = mwGlob['workDir']
+    pass
 
 
 def test_except_hook():
@@ -52,27 +52,29 @@ def test_except_hook():
 def test_setupWorkDirs_1():
     with mock.patch.object(os,
                            'getcwd',
-                           return_value=workDir):
+                           return_value='.'):
         with mock.patch.object(os,
                                'makedirs',
                                return_value=True):
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=True):
-                loader.setupWorkDirs(mwGlob=testGlob)
+                val = loader.setupWorkDirs(mwGlob={})
+                assert not val['frozen']
 
 
 def test_setupWorkDirs_2():
     with mock.patch.object(os,
                            'getcwd',
-                           return_value=workDir):
+                           return_value='.'):
         with mock.patch.object(os,
                                'makedirs',
                                return_value=True):
             with mock.patch.object(os.path,
                                    'isdir',
                                    return_value=False):
-                loader.setupWorkDirs(mwGlob=testGlob)
+                val = loader.setupWorkDirs(mwGlob={})
+                assert not val['frozen']
 
 
 def test_checkFrozen_1():
@@ -80,16 +82,13 @@ def test_checkFrozen_1():
     assert not mwGlob['frozen']
 
 
-def test_setup_logging():
-    suc = loader.setupLogging()
-    assert suc
-
-
 def test_writeSystemInfo():
+    mwGlob = dict()
     mwGlob['modeldata'] = ''
     mwGlob['frozen'] = ''
     mwGlob['bundleDir'] = ''
-    suc = loader.writeSystemInfo(mwGlob=testGlob)
+    mwGlob['workDir'] = ''
+    suc = loader.writeSystemInfo(mwGlob=mwGlob)
     assert suc
 
 
@@ -99,14 +98,17 @@ def test_extractDataFiles_1():
 
 
 def test_extractDataFiles_2():
+    mwGlob = dict()
+    mwGlob['dataDir'] = 'mw4/test/data'
     suc = loader.extractDataFiles(mwGlob=mwGlob)
     assert suc
 
 
 def test_extractDataFiles_3():
-    files = glob.glob(mwGlob['dataDir'] + '/*')
-    for f in files:
-        os.remove(f)
-    suc = loader.extractDataFiles(mwGlob=mwGlob)
-    assert suc
-
+    mwGlob = dict()
+    mwGlob['dataDir'] = 'mw4/test/data'
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=False):
+        suc = loader.extractDataFiles(mwGlob=mwGlob)
+        assert suc

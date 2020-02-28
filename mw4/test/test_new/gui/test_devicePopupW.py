@@ -38,12 +38,16 @@ test = PyQt5.QtWidgets.QApplication(sys.argv)
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
-    app = DevicePopup()
-
-
-def test_initConfig_1():
     data = {}
     geometry = [100, 100, 100, 100]
     framework = {'indi'}
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+
+
+def test_initConfig_1():
     suc = app.initConfig()
     assert suc

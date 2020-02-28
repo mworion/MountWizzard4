@@ -92,8 +92,6 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.copyIndi.clicked.connect(self.copyAllIndiSettings)
         self.initConfig()
 
-        self.show()
-
     def initConfig(self):
         """
 
@@ -140,6 +138,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             if self.ui.tab.tabText(index).lower() in self.framework:
                 continue
             self.ui.tab.setTabEnabled(index, False)
+        self.show()
 
         return True
 
@@ -240,7 +239,10 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         :return: success
         """
 
-        device = self.indiClass.client.devices[deviceName]
+        device = self.indiClass.client.devices.get(deviceName)
+        if not device:
+            return False
+
         interface = device.getText(propertyName).get('DRIVER_INTERFACE', None)
 
         if interface is None:

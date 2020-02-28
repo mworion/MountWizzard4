@@ -26,6 +26,7 @@ import sys
 import PyQt5.QtWidgets
 import PyQt5.QtTest
 import PyQt5.QtCore
+from PyQt5.QtGui import QCloseEvent
 from indibase.indiBase import Device
 
 # local import
@@ -59,6 +60,9 @@ def test_storeConfig_1():
                            return_value=True):
         suc = app.storeConfig()
         assert suc
+
+def test_closeEvent_1():
+    app.closeEvent(QCloseEvent())
 
 
 def test_copyAllIndiSettings_1():

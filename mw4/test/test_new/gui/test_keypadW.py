@@ -25,6 +25,7 @@ import sys
 # external packages
 import PyQt5.QtWidgets
 from PyQt5.QtCore import QObject
+from PyQt5.QtGui import QCloseEvent
 import PyQt5.QtCore
 from indibase.indiBase import Device
 
@@ -48,8 +49,22 @@ def module_setup_teardown():
 
 
 def test_storeConfig_1():
-    with mock.patch.object(app,
-                           'close',
-                           return_value=True):
-        suc = app.storeConfig()
-        assert suc
+    suc = app.storeConfig()
+    assert suc
+
+
+def test_closeEvent_1():
+    app.closeEvent(QCloseEvent())
+
+
+def test_loadFinished_1():
+    app.loadFinished()
+
+
+def test_showUrl_1():
+    app.showUrl()
+
+
+def test_showUrl_2():
+    app.host = 'localhost'
+    app.showUrl()

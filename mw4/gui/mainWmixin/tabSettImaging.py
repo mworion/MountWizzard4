@@ -142,7 +142,7 @@ class SettImaging(object):
             self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)
 
-        if focalLength:
+        if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
             resolutionY = pixelSizeY / focalLength * 206.265
         else:
@@ -170,7 +170,7 @@ class SettImaging(object):
         self.app.mainW.ui.rayleigh.setText(f'{rayleigh:2.2f}')
         self.app.mainW.ui.magLimit.setText(f'{magLimit:2.2f}')
 
-        if focalLength:
+        if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
             FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
             FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
         else:

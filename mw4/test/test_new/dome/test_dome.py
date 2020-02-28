@@ -128,3 +128,15 @@ def test_slewDome_4():
                            return_value=(np.nan, 10)):
         suc = app.slewDome()
         assert not suc
+
+
+def test_slewDome_5():
+    app.data = {'AZ': 1}
+    app.isGeometry = True
+    app.framework = 'indi'
+
+    with mock.patch.object(app,
+                           'calcGeometry',
+                           return_value=(10, np.nan)):
+        suc = app.slewDome()
+        assert not suc

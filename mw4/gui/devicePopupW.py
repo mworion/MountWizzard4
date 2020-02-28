@@ -97,6 +97,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
     def initConfig(self):
         """
 
+        :return: True for test purpose
         """
 
         # populate data
@@ -139,6 +140,8 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             if self.ui.tab.tabText(index).lower() in self.framework:
                 continue
             self.ui.tab.setTabEnabled(index, False)
+
+        return True
 
     def storeConfig(self):
         """

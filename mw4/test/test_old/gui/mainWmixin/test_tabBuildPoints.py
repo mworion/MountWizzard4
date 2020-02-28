@@ -524,7 +524,7 @@ def test_updateTurnKnobsGUI_altitudeTurns_1():
     value = 1.5
     app.mount.model.altitudeTurns = value
     app.mainW.updateTurnKnobsGUI(app.mount.model)
-    assert '1.5 revs down' == app.mainW.ui.altitudeTurns.text()
+    assert '1.50 revs down' == app.mainW.ui.altitudeTurns.text()
     value = None
     app.mount.model.altitudeTurns = value
     app.mainW.updateTurnKnobsGUI(app.mount.model)
@@ -535,7 +535,7 @@ def test_updateTurnKnobsGUI_altitudeTurns_2():
     value = -1.5
     app.mount.model.altitudeTurns = value
     app.mainW.updateTurnKnobsGUI(app.mount.model)
-    assert '1.5 revs up' == app.mainW.ui.altitudeTurns.text()
+    assert '1.50 revs up' == app.mainW.ui.altitudeTurns.text()
     value = None
     app.mount.model.altitudeTurns = value
     app.mainW.updateTurnKnobsGUI(app.mount.model)
@@ -546,7 +546,7 @@ def test_updateTurnKnobsGUI_azimuthTurns_1():
     value = 1.5
     app.mount.model.azimuthTurns = value
     app.mainW.updateTurnKnobsGUI(app.mount.model)
-    assert '1.5 revs left' == app.mainW.ui.azimuthTurns.text()
+    assert '1.50 revs left' == app.mainW.ui.azimuthTurns.text()
     value = None
     app.mount.model.azimuthTurns = value
     app.mainW.updateTurnKnobsGUI(app.mount.model)
@@ -557,7 +557,7 @@ def test_updateTurnKnobsGUI_azimuthTurns_2():
     value = -1.5
     app.mount.model.azimuthTurns = value
     app.mainW.updateTurnKnobsGUI(app.mount.model)
-    assert '1.5 revs right' == app.mainW.ui.azimuthTurns.text()
+    assert '1.50 revs right' == app.mainW.ui.azimuthTurns.text()
     value = None
     app.mount.model.azimuthTurns = value
     app.mainW.updateTurnKnobsGUI(app.mount.model)

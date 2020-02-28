@@ -55,6 +55,7 @@ class KeypadWindow(widget.MWidget):
         self.initUI()
 
         # getting a new browser object
+        self.host = None
         self.browser = PyQt5.QtWebEngineWidgets.QWebEngineView()
 
         # adding it to window widget
@@ -65,7 +66,6 @@ class KeypadWindow(widget.MWidget):
         self.browser.page().setBackgroundColor(PyQt5.QtCore.Qt.transparent)
 
         self.initConfig()
-        self.showWindow()
 
     def initConfig(self):
         """
@@ -90,6 +90,10 @@ class KeypadWindow(widget.MWidget):
         height = config.get('height', 500)
         width = config.get('width', 260)
         self.resize(width, height)
+        self.host = self.app.config['mainW'].get('mountHost', '')
+
+        self.showWindow()
+
         return True
 
     def storeConfig(self):
@@ -152,12 +156,10 @@ class KeypadWindow(widget.MWidget):
         :return: success
         """
 
-        host = self.app.mainW.ui.mountHost.text()
-
-        if not host:
+        if not self.host:
             return False
 
-        file = f'qrc:/webif/virtkeypad.html?host={host}'
+        file = f'qrc:/webif/virtkeypad.html?host={self.host}'
         self.browser.load(PyQt5.QtCore.QUrl(file))
 
         return True

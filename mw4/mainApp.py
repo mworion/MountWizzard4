@@ -203,8 +203,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                 'class': KeypadWindow,
             }
 
-        return
-
         # show all sub windows
         self.showWindows()
 

@@ -143,6 +143,13 @@ class Dome:
         else:
             return False
 
+    def calcGeometry(self):
+        """
+
+        :return:
+        """
+        return self.app.mount.calcTransformationMatrices()
+
     def slewDome(self, altitude=0, azimuth=0):
         """
 
@@ -155,7 +162,7 @@ class Dome:
             return False
 
         if self.isGeometry:
-            alt, az = self.app.mount.calcTransformationMatrices()
+            alt, az = self.calcGeometry()
 
             # todo: correct calculation that this is not necessary
             if alt is np.nan or az is np.nan:

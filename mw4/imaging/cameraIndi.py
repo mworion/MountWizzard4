@@ -114,7 +114,7 @@ class CameraIndi(IndiClass):
         if not hasattr(self.device, 'CCD_EXPOSURE'):
             return False
 
-        value = self.data['CCD_EXPOSURE.CCD_EXPOSURE_VALUE']
+        value = self.data.get('CCD_EXPOSURE.CCD_EXPOSURE_VALUE', 0)
 
         if self.device.CCD_EXPOSURE['state'] == 'Idle':
             self.signals.message.emit('')
@@ -162,6 +162,10 @@ class CameraIndi(IndiClass):
 
         if 'value' not in data:
             return False
+        if 'name' not in data:
+            return False
+        if 'format' not in data:
+            return False
         if data['name'] != 'CCD1':
             return False
         if not self.imagePath:
@@ -196,6 +200,9 @@ class CameraIndi(IndiClass):
 
         :return: success
         """
+
+        if not self.device:
+            return False
 
         # setting fast mode:
         quality = self.device.getSwitch('READOUT_QUALITY')
@@ -284,8 +291,10 @@ class CameraIndi(IndiClass):
             return False
 
         indiCmd = self.device.getSwitch('CCD_ABORT_EXPOSURE')
+
         if 'ABORT' not in indiCmd:
             return False
+
         indiCmd['ABORT'] = True
         suc = self.client.sendNewSwitch(deviceName=self.name,
                                         propertyName='CCD_ABORT_EXPOSURE',
@@ -302,8 +311,15 @@ class CameraIndi(IndiClass):
         :return: success
         """
 
+        if not self.device:
+            return False
+
         # setting fast mode:
         cooler = self.device.getSwitch('CCD_COOLER')
+
+        if 'COOLER_ON' not in cooler:
+            return False
+
         cooler['COOLER_ON'] = coolerOn
         cooler['COOLER_OFF'] = not coolerOn
         suc = self.client.sendNewSwitch(deviceName=self.name,
@@ -321,8 +337,15 @@ class CameraIndi(IndiClass):
         :return: success
         """
 
+        if not self.device:
+            return False
+
         # setting fast mode:
         temp = self.device.getNumber('CCD_TEMPERATURE')
+
+        if 'CCD_TEMPERATURE_VALUE' not in temp:
+            return False
+
         temp['CCD_TEMPERATURE_VALUE'] = temperature
         suc = self.client.sendNewNumber(deviceName=self.name,
                                         propertyName='CCD_TEMPERATURE',

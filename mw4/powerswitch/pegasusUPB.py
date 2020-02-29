@@ -100,22 +100,22 @@ class PegasusUPB:
 
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].startCommunication()
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].startCommunication()
+        return suc
 
     def stopCommunication(self):
         """
 
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].stopCommunication()
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].stopCommunication()
+        return suc
 
     def togglePowerPort(self, port=None):
         """
@@ -125,11 +125,11 @@ class PegasusUPB:
         :return: true fot test purpose
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].togglePowerPort(port=port)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].togglePowerPort(port=port)
+        return suc
 
     def togglePowerPortBoot(self, port=None):
         """
@@ -139,11 +139,11 @@ class PegasusUPB:
         :return: true fot test purpose
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].togglePowerPortBoot(port=port)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].togglePowerPortBoot(port=port)
+        return suc
 
     def toggleHubUSB(self):
         """
@@ -151,11 +151,11 @@ class PegasusUPB:
 
         :return: true fot test purpose
         """
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].toggleHubUSB()
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].toggleHubUSB()
+        return suc
 
     def togglePortUSB(self, port=None):
         """
@@ -165,11 +165,11 @@ class PegasusUPB:
         :return: true fot test purpose
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].togglePortUSB(port=port)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].togglePortUSB(port=port)
+        return suc
 
     def toggleAutoDew(self):
         """
@@ -177,11 +177,11 @@ class PegasusUPB:
 
         :return: true fot test purpose
         """
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].toggleAutoDew()
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].toggleAutoDew()
+        return suc
 
     def toggleAutoDewPort(self, port=None):
         """
@@ -190,11 +190,11 @@ class PegasusUPB:
         :param port:
         :return: true fot test purpose
         """
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].toggleAutoDewPort(port=port)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].toggleAutoDewPort(port=port)
+        return suc
 
     def sendDew(self, port='', value=None):
         """
@@ -204,11 +204,11 @@ class PegasusUPB:
         :return: success
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].sendDew(port=port, value=value)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].sendDew(port=port, value=value)
+        return suc
 
     def sendAdjustableOutput(self, value=None):
         """
@@ -217,8 +217,8 @@ class PegasusUPB:
         :return: success
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].sendAdjustableOutput(value=value)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].sendAdjustableOutput(value=value)
+        return suc

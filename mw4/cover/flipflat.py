@@ -99,22 +99,21 @@ class FlipFlat:
 
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].startCommunication()
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+        suc = self.run[self.framework].startCommunication()
+        return suc
 
     def stopCommunication(self):
         """
 
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].stopCommunication()
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].stopCommunication()
+        return suc
 
     def sendCoverPark(self, park=True):
         """
@@ -123,8 +122,8 @@ class FlipFlat:
         :return: success
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].sendCoverPark(park=park)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].sendCoverPark(park=park)
+        return suc

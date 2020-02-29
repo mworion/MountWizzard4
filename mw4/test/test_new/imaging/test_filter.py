@@ -74,13 +74,13 @@ def test_stopCommunication_2():
     assert suc
 
 
-def test_sendFilterNumber._1():
+def test_sendFilterNumber_1():
     app.framework = ''
-    suc = app.sendFilterNumber.()
+    suc = app.sendFilterNumber()
     assert not suc
 
 
-def test_sendFilterNumber._2():
+def test_sendFilterNumber_2():
     app.framework = 'indi'
-    suc = app.sendFilterNumber.()
+    suc = app.sendFilterNumber()
     assert suc

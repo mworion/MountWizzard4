@@ -102,30 +102,30 @@ class Filter:
 
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].startCommunication()
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].startCommunication()
+        return suc
 
     def stopCommunication(self):
         """
 
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].stopCommunication()
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].stopCommunication()
+        return suc
 
     def sendFilterNumber(self, filterNumber=1):
         """
 
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].sendFilterNumber(filterNumber=filterNumber)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].sendFilterNumber(filterNumber=filterNumber)
+        return suc

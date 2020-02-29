@@ -223,6 +223,8 @@ class Camera:
         :return: success
         """
 
+        if self.framework not in self.run.keys():
+            return False
         if not imagePath:
             return False
         if not self.canSubFrame(subFrame=subFrame):
@@ -237,18 +239,15 @@ class Camera:
 
         posX, posY, width, height = subFrame
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].expose(imagePath=imagePath,
-                                                  expTime=expTime,
-                                                  binning=binning,
-                                                  fastReadout=fastReadout,
-                                                  posX=posX,
-                                                  posY=posY,
-                                                  width=width,
-                                                  height=height)
-            return suc
-        else:
-            return False
+        suc = self.run[self.framework].expose(imagePath=imagePath,
+                                              expTime=expTime,
+                                              binning=binning,
+                                              fastReadout=fastReadout,
+                                              posX=posX,
+                                              posY=posY,
+                                              width=width,
+                                              height=height)
+        return suc
 
     def abort(self):
         """
@@ -257,11 +256,11 @@ class Camera:
         :return: success
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].abort()
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].abort()
+        return suc
 
     def sendCoolerSwitch(self, coolerOn=False):
         """
@@ -271,11 +270,10 @@ class Camera:
         :return: success
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+        suc = self.run[self.framework].sendCoolerSwitch(coolerOn=coolerOn)
+        return suc
 
     def sendCoolerTemp(self, temperature=0):
         """
@@ -285,8 +283,8 @@ class Camera:
         :return: success
         """
 
-        if self.framework in self.run.keys():
-            suc = self.run[self.framework].sendCoolerTemp(temperature=temperature)
-            return suc
-        else:
+        if self.framework not in self.run.keys():
             return False
+
+        suc = self.run[self.framework].sendCoolerTemp(temperature=temperature)
+        return suc

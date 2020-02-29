@@ -244,7 +244,7 @@ def test_abort_1():
     }
     app.framework = 'test'
     suc = app.abort()
-    assert suc
+    assert not suc
 
 
 def test_abort_2():

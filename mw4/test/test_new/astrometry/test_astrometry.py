@@ -23,6 +23,7 @@ import pytest
 import os
 import platform
 import numpy as np
+import shutil
 import subprocess
 
 # external packages
@@ -39,6 +40,7 @@ def module_setup_teardown():
         threadPool = QThreadPool()
 
     global app
+    shutil.copy('mw4/test/testData/astrometry.cfg', 'mw4/test/temp/astrometry.cfg')
     app = Astrometry(app=Test(), tempDir='mw4/test/temp')
     yield
     del app

@@ -24,6 +24,7 @@ import os
 import platform
 import numpy as np
 import subprocess
+
 # external packages
 from astropy.io import fits
 from PyQt5.QtCore import QThreadPool
@@ -234,11 +235,24 @@ def test_solveThreading_5():
 
 
 def test_abort_1():
-    home = os.environ.get('HOME')
     app.solverEnviron = {
         'KStars': {
             'programPath': '/Applications/Astrometry.app/Contents/MacOS',
-            'indexPath': home + '/Library/Application Support/Astrometry',
+            'indexPath': '/Library/Application Support/Astrometry',
+            'solver': app.solverNET,
+        }
+    }
+    app.framework = 'test'
+    suc = app.abort()
+    assert suc
+
+
+def test_abort_2():
+
+    app.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+            'indexPath': '/Library/Application Support/Astrometry',
             'solver': app.solverNET,
         }
     }
@@ -248,3 +262,13 @@ def test_abort_1():
                            return_value=True):
         suc = app.abort()
         assert suc
+
+
+def test_startCommunication():
+    suc = app.startCommunication()
+    assert suc
+
+
+def test_stopCommunication():
+    suc = app.stopCommunication()
+    assert suc

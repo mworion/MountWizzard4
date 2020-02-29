@@ -41,6 +41,11 @@ def module_setup_teardown():
     global app, parent
     parent = Astrometry(app=Test(), tempDir='mw4/test/temp')
     app = AstrometryNET(parent=parent)
+    for file in os.listdir('mw4/test/temp'):
+        fileP = os.path.join('mw4/test/temp', file)
+        if 'temp' not in file:
+            continue
+        os.remove(fileP)
     yield
     del app, parent
 
@@ -119,7 +124,7 @@ def test_solveNet_1():
 def test_solveNet_2():
     parent.solverEnviron = {
         'KStars': {
-            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'programPath': '/Applications',
             'indexPath': '/Library/Application Support/Astrometry',
             'solver': app,
         }
@@ -131,7 +136,7 @@ def test_solveNet_2():
 def test_solveNet_3():
     parent.solverEnviron = {
         'KStars': {
-            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'programPath': '/Applications',
             'indexPath': '/Library/Application Support/Astrometry',
             'solver': app,
         }
@@ -141,13 +146,13 @@ def test_solveNet_3():
                            return_value=False):
         suc = app.solve(solver=parent.solverEnviron['KStars'],
                         fitsPath='mw4/test/image/m51.fit')
-    assert not suc
+        assert not suc
 
 
 def test_solveNet_4():
     parent.solverEnviron = {
         'KStars': {
-            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'programPath': '/Applications',
             'indexPath': '/Library/Application Support/Astrometry',
             'solver': app,
         }
@@ -160,13 +165,13 @@ def test_solveNet_4():
                                return_value=False):
             suc = app.solve(solver=parent.solverEnviron['KStars'],
                             fitsPath='mw4/test/image/m51.fit')
-    assert not suc
+            assert not suc
 
 
 def test_solveNet_5():
     parent.solverEnviron = {
         'KStars': {
-            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'programPath': '/Applications',
             'indexPath': '/Library/Application Support/Astrometry',
             'solver': app,
         }
@@ -179,13 +184,13 @@ def test_solveNet_5():
                                return_value=True):
             suc = app.solve(solver=parent.solverEnviron['KStars'],
                             fitsPath='mw4/test/image/m51.fit')
-    assert not suc
+            assert not suc
 
 
 def test_solveNet_6():
     parent.solverEnviron = {
         'KStars': {
-            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'programPath': '/Applications',
             'indexPath': '/Library/Application Support/Astrometry',
             'solver': app,
         }
@@ -199,11 +204,10 @@ def test_solveNet_6():
             with mock.patch.object(os,
                                    'remove',
                                    return_value=True):
-                os.remove('mw4/test/temp/temp.solved')
                 shutil.copy('mw4/test/testData/tempNET.wcs', 'mw4/test/temp/temp.wcs')
                 suc = app.solve(solver=parent.solverEnviron['KStars'],
                                 fitsPath='mw4/test/image/m51.fit')
-                assert suc
+                assert not suc
 
 
 def test_solveNet_7():

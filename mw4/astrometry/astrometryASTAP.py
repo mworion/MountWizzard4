@@ -122,6 +122,9 @@ class AstrometryASTAP(object):
         :return: wcsHeader
         """
 
+        if not wcsTextFile:
+            return None
+
         tempString = ''
         for line in wcsTextFile:
             if line.startswith('END'):

@@ -70,3 +70,99 @@ def test_stopCommunication_2():
     app.framework = 'indi'
     suc = app.stopCommunication()
     assert suc
+
+
+def test_toggleAutoDewPort_1():
+    app.framework = ''
+    suc = app.togglePowerPort()
+    assert not suc
+
+
+def test_togglePowerPort_2():
+    app.framework = 'indi'
+    suc = app.togglePowerPort()
+    assert not suc
+
+
+def test_togglePowerPortBoot_1():
+    app.framework = ''
+    suc = app.togglePowerPortBoot()
+    assert not suc
+
+
+def test_togglePowerPortBoot_2():
+    app.framework = 'indi'
+    suc = app.togglePowerPortBoot()
+    assert not suc
+
+
+def test_toggleHubUSB_1():
+    app.framework = ''
+    suc = app.toggleHubUSB()
+    assert not suc
+
+
+def test_toggleHubUSB_2():
+    app.framework = 'indi'
+    suc = app.toggleHubUSB()
+    assert not suc
+
+
+def test_togglePortUSB_1():
+    app.framework = ''
+    suc = app.togglePortUSB()
+    assert not suc
+
+
+def test_togglePortUSB_2():
+    app.framework = 'indi'
+    suc = app.togglePortUSB()
+    assert not suc
+
+
+def test_toggleAutoDew_1():
+    app.framework = ''
+    suc = app.toggleAutoDew()
+    assert not suc
+
+
+def test_toggleAutoDew_2():
+    app.framework = 'indi'
+    suc = app.toggleAutoDew()
+    assert not suc
+
+
+def test_toggleAutoDewPort_1():
+    app.framework = ''
+    suc = app.toggleAutoDewPort()
+    assert not suc
+
+
+def test_toggleAutoDewPort_2():
+    app.framework = 'indi'
+    suc = app.toggleAutoDewPort()
+    assert not suc
+
+
+def test_sendDew_1():
+    app.framework = ''
+    suc = app.sendDew()
+    assert not suc
+
+
+def test_sendDew_2():
+    app.framework = 'indi'
+    suc = app.sendDew()
+    assert not suc
+
+
+def test_sendAdjustableOutput_1():
+    app.framework = ''
+    suc = app.sendAdjustableOutput()
+    assert not suc
+
+
+def test_sendAdjustableOutput_2():
+    app.framework = 'indi'
+    suc = app.sendAdjustableOutput()
+    assert not suc

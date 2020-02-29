@@ -182,7 +182,6 @@ class PegasusUPB:
             return suc
         else:
             return False
-        return suc
 
     def toggleAutoDewPort(self, port=None):
         """
@@ -196,7 +195,6 @@ class PegasusUPB:
             return suc
         else:
             return False
-        return suc
 
     def sendDew(self, port='', value=None):
         """

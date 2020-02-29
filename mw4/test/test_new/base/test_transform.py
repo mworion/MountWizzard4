@@ -78,8 +78,8 @@ def test_J2000T0JNow_2():
 
 def test_J2000T0AltAz_1():
     class Test:
-        tt = 2458687
-        ut1 = 1
+        tt = 2458849.50000
+        ut1 = 0.5
 
     loc = Topos('42.3583 N', '71.0636 W')
     alt, az = transform.J2000ToAltAz(180, 180, Test(), loc)
@@ -89,11 +89,11 @@ def test_J2000T0AltAz_1():
 
 def test_J2000T0AltAz_2():
     class Test:
-        tt = 2458687
-        ut1 = 1
+        tt = 2458849.50000
+        ut1 = 0.5
 
     loc = Topos('42.3583 N', '71.0636 W')
-    alt, az = transform.J2000ToAltAz(Angle(hours=12), Angle(degrees=180), Test(), loc)
+    alt, az = transform.J2000ToAltAz(Angle(hours=12), Angle(degrees=45), Test(), loc)
     assert alt.degrees != 0
     assert az.degrees != 0
 

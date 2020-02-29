@@ -19,12 +19,10 @@
 ###########################################################
 # standard libraries
 import pytest
-import numpy as np
+import unittest.mock as mock
 
 # external packages
-from PyQt5.QtCore import QThreadPool
-from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+import numpy as np
 from mountcontrol.mount import Mount
 
 # local import
@@ -33,9 +31,18 @@ from mw4.measure.measure import MeasureData
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test(QObject):
-        message = pyqtSignal(str, int)
+    class Test1:
+        data = {}
+
+    class Test:
         mount = Mount()
+        sensorWeather = Test1()
+        onlineWeather = Test1()
+        skymeter = Test1()
+        filterwheel = Test1()
+        focuser = Test1()
+        power = Test1()
+
     global app
     app = MeasureData(app=Test())
     app.deviceStat = {
@@ -202,3 +209,52 @@ def test_measureTask_1():
     app.mutexMeasure.lock()
     suc = app.measureTask()
     assert not suc
+
+
+def test_measureTask_2():
+    app.devices = ['sensorWeather']
+    app.setEmptyData()
+    suc = app.measureTask()
+    assert suc
+
+
+def test_measureTask_3():
+    app.devices = ['onlineWeather']
+    app.setEmptyData()
+    suc = app.measureTask()
+    assert suc
+
+
+def test_measureTask_4():
+    app.devices = ['directWeather']
+    app.setEmptyData()
+    suc = app.measureTask()
+    assert suc
+
+
+def test_measureTask_5():
+    app.devices = ['skymeter']
+    app.setEmptyData()
+    suc = app.measureTask()
+    assert suc
+
+
+def test_measureTask_6():
+    app.devices = ['filterwheel']
+    app.setEmptyData()
+    suc = app.measureTask()
+    assert suc
+
+
+def test_measureTask_7():
+    app.devices = ['focuser']
+    app.setEmptyData()
+    suc = app.measureTask()
+    assert suc
+
+
+def test_measureTask_8():
+    app.devices = ['power']
+    app.setEmptyData()
+    suc = app.measureTask()
+    assert suc

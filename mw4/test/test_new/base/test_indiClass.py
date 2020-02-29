@@ -206,6 +206,105 @@ def test_connectDevice4():
         assert not suc
 
 
+def test_setUpdateConfig():
+    app.setUpdateConfig('test')
+
+
+def test_updateNumber_1():
+    suc = app.updateNumber('telescope', 'test')
+    assert not suc
+
+
+def test_updateNumber_2():
+    app.device = Device()
+    suc = app.updateNumber('telescope', 'test')
+    assert not suc
+
+
+def test_updateNumber_3():
+    app.device = Device()
+    app.name = 'telescope'
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'test': 1}):
+        suc = app.updateNumber('telescope', 'test')
+        assert suc
+
+
+def test_updateText_1():
+    suc = app.updateText('telescope', 'test')
+    assert not suc
+
+
+def test_updateText_2():
+    app.device = Device()
+    suc = app.updateText('telescope', 'test')
+    assert not suc
+
+
+def test_updateText_3():
+    app.device = Device()
+    app.name = 'telescope'
+    with mock.patch.object(app.device,
+                           'getText',
+                           return_value={'test': 1}):
+        suc = app.updateText('telescope', 'test')
+        assert suc
+
+
+def test_updateSwitch_1():
+    suc = app.updateSwitch('telescope', 'test')
+    assert not suc
+
+
+def test_updateSwitch_2():
+    app.device = Device()
+    suc = app.updateSwitch('telescope', 'test')
+    assert not suc
+
+
+def test_updateSwitch_3():
+    app.device = Device()
+    app.name = 'telescope'
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'test': 1}):
+        suc = app.updateSwitch('telescope', 'test')
+        assert suc
+
+
+def test_updateLight_1():
+    suc = app.updateLight('telescope', 'test')
+    assert not suc
+
+
+def test_updateLight_2():
+    app.device = Device()
+    suc = app.updateLight('telescope', 'test')
+    assert not suc
+
+
+def test_updateLight_3():
+    app.device = Device()
+    app.name = 'telescope'
+    with mock.patch.object(app.device,
+                           'getLight',
+                           return_value={'test': 1}):
+        suc = app.updateLight('telescope', 'test')
+        assert suc
+
+
+def test_updateBLOB_1():
+    suc = app.updateBLOB('telescope', 'test')
+    assert not suc
+
+
+def test_updateBLOB_2():
+    app.device = Device()
+    suc = app.updateBLOB('telescope', 'test')
+    assert not suc
+
+
 def test_removePrefix_1():
     value = app.removePrefix('', '')
     assert value == ''

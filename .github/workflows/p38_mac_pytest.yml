@@ -1,4 +1,4 @@
-# test script on python 3.8 and MacOSX
+# test script on python 3.8   and MacOSX
 name: PyTest
 
 on:

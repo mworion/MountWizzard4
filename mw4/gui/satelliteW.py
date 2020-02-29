@@ -75,10 +75,10 @@ class SatelliteWindow(widget.MWidget):
     # earth radius
     EARTH_RADIUS = 6378.0
 
-    def __init__(self, app, threadPool):
+    def __init__(self, app):
         super().__init__()
         self.app = app
-        self.threadPool = threadPool
+        self.threadPool = app.threadPool
 
         self.ui = satellite_ui.Ui_SatelliteDialog()
         self.ui.setupUi(self)

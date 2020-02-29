@@ -22,7 +22,6 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal

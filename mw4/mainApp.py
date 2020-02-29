@@ -241,12 +241,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
             winObj = self.uiWindows[win]
             if not winObj['classObj']:
-
-                if win == 'showSatelliteW':
-                    newWindow = winObj['class'](self, threadPool=self.threadPool)
-                else:
-                    newWindow = winObj['class'](self)
-
+                newWindow = winObj['class'](self)
                 # make new object instance from window
                 winObj['classObj'] = newWindow
                 winObj['classObj'].destroyed.connect(self.deleteWindow)

@@ -18,20 +18,22 @@
 #
 ###########################################################
 # standard libraries
+
 # external packages
 import PyQt5.QtGui
-import PyQt5.QtWidgets
+from PyQt5.QtWidgets import QWidget
 import pytest
+
 # local import
-from mw4.gui import splash
-from mw4.test.test_old.setupQt import setupQt
+from mw4.gui.splash import SplashScreen
 
 
 @pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown():
-    global app, spy, mwGlob, test
-    app, spy, mwGlob, test = setupQt()
+    global app
+    app = SplashScreen(QWidget())
     yield
+    del app
 
 
 def test_splash_icon():
@@ -41,9 +43,8 @@ def test_splash_icon():
 
 
 def test_splash_upcoming():
-    splashW = splash.SplashScreen(test)
-    splashW.showMessage('test')
-    splashW.setValue(10)
-    splashW.setValue(50)
-    splashW.setValue(90)
-    splashW.setValue(100)
+    app.showMessage('test')
+    app.setValue(10)
+    app.setValue(50)
+    app.setValue(90)
+    app.setValue(100)

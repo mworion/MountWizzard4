@@ -83,4 +83,4 @@ def test_sendFilterNumber_1():
 def test_sendFilterNumber_2():
     app.framework = 'indi'
     suc = app.sendFilterNumber()
-    assert suc
+    assert not suc

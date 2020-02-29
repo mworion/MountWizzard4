@@ -21,9 +21,10 @@
 from unittest import mock
 import time
 import pytest
+
 # external packages
+
 # local import
-from mw4.test.test_old.setupQt import setupQt
 from mw4.base import tpool
 
 

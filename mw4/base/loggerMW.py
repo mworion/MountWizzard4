@@ -69,11 +69,12 @@ def setCustomLoggingLevel(level='WARN'):
     """
     Setting the log level according to the setting in the gui.
 
-    :return: nothing
+    :return: true for test purpose
     """
     logging.getLogger().setLevel(level)
     logging.getLogger('indibase').setLevel(level)
     logging.getLogger('mountcontrol').setLevel(level)
+    return True
 
 
 class CustomLogger(logging.LoggerAdapter):

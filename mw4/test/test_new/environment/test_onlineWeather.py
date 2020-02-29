@@ -28,6 +28,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 import requests
 from skyfield.toposlib import Topos
+from mountcontrol.mount import Mount
 
 # local import
 from mw4.environment.onlineWeather import OnlineWeather
@@ -35,19 +36,14 @@ from mw4.environment.onlineWeather import OnlineWeather
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test2:
-        location = Topos(latitude_degrees=20,
-                         longitude_degrees=10,
-                         elevation_m=500)
-
-    class Test1:
-        obsSite = Test2()
-
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
         update10s = pyqtSignal()
-        mount = Test1()
+        mount = Mount()
+        mount.obsSite.location = Topos(latitude_degrees=20,
+                                       longitude_degrees=10,
+                                       elevation_m=500)
     global app
     app = OnlineWeather(app=Test())
     yield

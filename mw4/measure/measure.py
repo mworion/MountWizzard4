@@ -19,9 +19,11 @@
 ###########################################################
 # standard libraries
 import logging
+
 # external packages
 import PyQt5
 import numpy as np
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 
@@ -60,6 +62,8 @@ class MeasureData(object):
 
         self.data = {}
         self.devices = {}
+
+        # this property will be set from main
         self.deviceStat = None
 
         # minimum set for driver package built in
@@ -201,13 +205,15 @@ class MeasureData(object):
         checkStart throws the first N measurements away, because they or not valid
 
         :param lenData:
-        :return: True if splitting happens
+        :return: True for test purpose
         """
 
         if self.shorteningStart and lenData > 2:
             self.shorteningStart = False
             for measure in self.data:
                 self.data[measure] = np.delete(self.data[measure], range(0, 2))
+
+        return True
 
     def checkSize(self, lenData):
         """

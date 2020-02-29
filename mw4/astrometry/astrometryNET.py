@@ -232,7 +232,7 @@ class AstrometryNET(object):
             outFile.write(f'add_path {solver["indexPath"]}\n')
             outFile.write('autoindex\n')
 
-        # using sextractor in astrometry.net and KStars
+        # using sextractor in astrometry.net and  KStars
         """
         with open('default.param', 'w+') as outFile:
             outFile.write('MAG_AUTO  Kron-like elliptical aperture magnitude    [mag]\n')

@@ -84,6 +84,9 @@ class FilterIndi(IndiClass):
         :return: success
         """
 
+        if self.device is None:
+            return False
+
         # setting fast mode:
         filterNo = self.device.getNumber('FILTER_SLOT')
         filterNo['FILTER_SLOT_VALUE'] = filterNumber

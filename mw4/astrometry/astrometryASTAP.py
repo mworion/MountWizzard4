@@ -28,14 +28,12 @@ from collections import namedtuple
 # external packages
 from astropy.io import fits
 import numpy as np
-from forwardable import forwardable, def_delegators
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.base import transform
 
 
-@forwardable()
 class AstrometryASTAP(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
@@ -47,10 +45,6 @@ class AstrometryASTAP(object):
 
     """
 
-    def_delegators('parent',
-                   'tempDir, readFitsData, getSolutionFromWCS',
-                   )
-
     __all__ = ['AstrometryASTAP',
                'solveASTAP',
                'abortASTAP',
@@ -59,9 +53,13 @@ class AstrometryASTAP(object):
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
-    def __init__(self, parent, data):
+    def __init__(self, parent):
         self.parent = parent
-        self.data = data
+        self.data = parent.data
+        self.tempDir = parent.tempDir
+        self.readFitsData = parent.readFitsData
+        self.getSolutionFromWCS = parent.getSolutionFromWCS
+
         self.result = {'success': False}
         self.process = None
 

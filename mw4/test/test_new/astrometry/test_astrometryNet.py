@@ -22,12 +22,15 @@ from unittest import mock
 import pytest
 import os
 import subprocess
+import shutil
 
 # external packages
 from PyQt5.QtCore import QThreadPool
+from astropy.io import fits
+import numpy as np
 
 # local import
-from mw4.astrometry.astrometry import Astrometry
+from mw4.astrometry.astrometry import AstrometryNET, Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -35,14 +38,15 @@ def module_setup_teardown():
     class Test:
         threadPool = QThreadPool()
 
-    global app
-    app = Astrometry(app=Test(), tempDir='mw4/test/temp')
+    global app, parent
+    parent = Astrometry(app=Test(), tempDir='mw4/test/temp')
+    app = AstrometryNET(parent=parent)
     yield
-    del app
+    del app, parent
 
 
 def test_runImage2xy_1():
-    suc = app.solverNET.runImage2xy()
+    suc = app.runImage2xy()
     assert not suc
 
 
@@ -64,12 +68,12 @@ def test_runImage2xy_2():
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        suc = app.solverNET.runImage2xy()
+        suc = app.runImage2xy()
     assert not suc
 
 
 def test_runSolveField_1():
-    suc = app.solverNET.runSolveField()
+    suc = app.runSolveField()
     assert not suc
 
 
@@ -91,18 +95,144 @@ def test_runSolveField_2():
     with mock.patch.object(subprocess,
                            'Popen',
                            return_value=Test()):
-        suc = app.solverNET.runSolveField()
+        suc = app.runSolveField()
     assert not suc
+
+
+def test_getWCSHeader_1():
+    val = app.getWCSHeader()
+    assert val is None
+
+
+def test_getWCSHeader_2():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    val = app.getWCSHeader(wcsHDU=hdu)
+    assert val
 
 
 def test_solveNet_1():
-    suc = app.solverNET.solve()
+    suc = app.solve()
     assert not suc
+
+
+def test_solveNet_2():
+    parent.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'indexPath': '/Library/Application Support/Astrometry',
+            'solver': app,
+        }
+    }
+    suc = app.solve(solver=parent.solverEnviron['KStars'])
+    assert not suc
+
+
+def test_solveNet_3():
+    parent.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'indexPath': '/Library/Application Support/Astrometry',
+            'solver': app,
+        }
+    }
+    with mock.patch.object(app,
+                           'runImage2xy',
+                           return_value=False):
+        suc = app.solve(solver=parent.solverEnviron['KStars'],
+                        fitsPath='mw4/test/image/m51.fit')
+    assert not suc
+
+
+def test_solveNet_4():
+    parent.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'indexPath': '/Library/Application Support/Astrometry',
+            'solver': app,
+        }
+    }
+    with mock.patch.object(app,
+                           'runImage2xy',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'runSolveField',
+                               return_value=False):
+            suc = app.solve(solver=parent.solverEnviron['KStars'],
+                            fitsPath='mw4/test/image/m51.fit')
+    assert not suc
+
+
+def test_solveNet_5():
+    parent.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'indexPath': '/Library/Application Support/Astrometry',
+            'solver': app,
+        }
+    }
+    with mock.patch.object(app,
+                           'runImage2xy',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'runSolveField',
+                               return_value=True):
+            suc = app.solve(solver=parent.solverEnviron['KStars'],
+                            fitsPath='mw4/test/image/m51.fit')
+    assert not suc
+
+
+def test_solveNet_6():
+    parent.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'indexPath': '/Library/Application Support/Astrometry',
+            'solver': app,
+        }
+    }
+    with mock.patch.object(app,
+                           'runImage2xy',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'runSolveField',
+                               return_value=True):
+            with mock.patch.object(os,
+                                   'remove',
+                                   return_value=True):
+                os.remove('mw4/test/temp/temp.solved')
+                shutil.copy('mw4/test/testData/tempNET.wcs', 'mw4/test/temp/temp.wcs')
+                suc = app.solve(solver=parent.solverEnviron['KStars'],
+                                fitsPath='mw4/test/image/m51.fit')
+                assert suc
+
+
+def test_solveNet_7():
+    parent.solverEnviron = {
+        'KStars': {
+            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+            'indexPath': '/Library/Application Support/Astrometry',
+            'solver': app,
+        }
+    }
+    with mock.patch.object(app,
+                           'runImage2xy',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'runSolveField',
+                               return_value=True):
+            with mock.patch.object(os,
+                                   'remove',
+                                   return_value=True):
+                shutil.copy('mw4/test/testData/tempNET.wcs', 'mw4/test/temp/temp.wcs')
+                shutil.copy('mw4/test/testData/tempNET.solved', 'mw4/test/temp/temp.solved')
+                suc = app.solve(solver=parent.solverEnviron['KStars'],
+                                fitsPath='mw4/test/image/m51.fit')
+                assert suc
 
 
 def test_abortNet_1():
     app.process = None
-    suc = app.solverNET.abort()
+    suc = app.abort()
     assert not suc
 
 
@@ -111,6 +241,6 @@ def test_abortNet_2():
         @staticmethod
         def kill():
             return True
-    app.solverNET.process = Test()
-    suc = app.solverNET.abort()
+    app.process = Test()
+    suc = app.abort()
     assert suc

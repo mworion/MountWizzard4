@@ -27,14 +27,12 @@ from collections import namedtuple
 # external packages
 import numpy as np
 from astropy.io import fits
-from forwardable import forwardable, def_delegators
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.base import transform
 
 
-@forwardable()
 class AstrometryNET(object):
     """
     the class Astrometry inherits all information and handling of astrometry.net handling
@@ -47,10 +45,6 @@ class AstrometryNET(object):
 
     """
 
-    def_delegators('parent',
-                   'tempDir, readFitsData, getSolutionFromWCS',
-                   )
-
     __all__ = ['AstrometryNET',
                'solveNET',
                'abortNET',
@@ -59,9 +53,13 @@ class AstrometryNET(object):
     logger = logging.getLogger(__name__)
     log = CustomLogger(logger, {})
 
-    def __init__(self, parent, data):
+    def __init__(self, parent=None):
         self.parent = parent
-        self.data = data
+        self.data = parent.data
+        self.tempDir = parent.tempDir
+        self.readFitsData = parent.readFitsData
+        self.getSolutionFromWCS = parent.getSolutionFromWCS
+
         self.result = {'success': False}
         self.process = None
 
@@ -174,6 +172,9 @@ class AstrometryNET(object):
         :param wcsHDU: fits file with wcs data
         :return: wcsHeader
         """
+        if wcsHDU is None:
+            return None
+
         wcsHeader = wcsHDU[0].header
         return wcsHeader
 
@@ -209,6 +210,8 @@ class AstrometryNET(object):
         self.process = None
         self.result = {'success': False}
 
+        if not solver:
+            return False
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'image missing'
             return False

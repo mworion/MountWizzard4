@@ -39,8 +39,10 @@ def module_setup_teardown():
         location = Topos(latitude_degrees=20,
                          longitude_degrees=10,
                          elevation_m=500)
+
     class Test1:
         obsSite = Test2()
+
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)

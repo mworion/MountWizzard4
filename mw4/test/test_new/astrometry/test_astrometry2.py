@@ -40,11 +40,10 @@ def module_setup_teardown():
     del app
 
 
-def test_init_1():
-    app.solverEnviron = {
-        'astrometry-glob': {
-            'programPath': '/usr/bin',
-            'indexPath': '/usr/share/astrometry',
-            'solver': app.solverNET,
-        }
-    }
+
+
+def test_setSolverEnviron_1():
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Linux'):
+    app.setSolverEnviron()

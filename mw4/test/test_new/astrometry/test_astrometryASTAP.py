@@ -46,6 +46,7 @@ def module_setup_teardown():
         if 'temp' not in file:
             continue
         os.remove(fileP)
+    shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
     yield
     del app, parent
 

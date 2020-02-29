@@ -127,12 +127,16 @@ def getRelay_3():
 
 def test_cyclePolling_1():
     app.host = None
+    app.user = 'test'
+    app.password = 'test'
     suc = app.cyclePolling()
     assert not suc
 
 
 def test_cyclePolling_2():
     app.host = ('localhost', 80)
+    app.user = 'test'
+    app.password = 'test'
     suc = app.cyclePolling()
     assert not suc
 
@@ -142,6 +146,8 @@ def test_cyclePolling_3():
         reason = 'OK'
         text = 'test'
 
+    app.user = 'test'
+    app.password = 'test'
     app.host = ('localhost', 80)
     with mock.patch.object(app,
                            'getRelay',

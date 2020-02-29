@@ -187,8 +187,8 @@ class KMRelay(PyQt5.QtCore.QObject):
         if not self.mutexPoll.tryLock():
             return None
 
-        auth = requests.auth.HTTPBasicAuth(self._user,
-                                           self._password,
+        auth = requests.auth.HTTPBasicAuth(self.user,
+                                           self.password,
                                            )
         url = f'http://{self._host[0]}:{self._host[1]}{url}'
         result = None

@@ -28,7 +28,7 @@ import pytest
 from mw4.gui.splash import SplashScreen
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     global app
     app = SplashScreen(QWidget())

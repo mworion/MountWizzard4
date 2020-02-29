@@ -18,8 +18,8 @@
 #
 ###########################################################
 # standard libraries
-import unittest.mock as mock
 import pytest
+import unittest.mock as mock
 from queue import Queue
 
 # external packages
@@ -27,9 +27,9 @@ from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 
-
 # local import
 from mw4.gui.messageW import MessageWindow
+from mw4.gui.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -56,7 +56,10 @@ def test_storeConfig_1():
 
 
 def test_closeEvent_1():
-    app.closeEvent(QCloseEvent())
+    with mock.patch.object(MWidget,
+                           'closeEvent',
+                           return_value=True):
+        app.closeEvent(QCloseEvent())
 
 
 def test_clearWindow_1():

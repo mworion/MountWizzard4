@@ -31,7 +31,6 @@ from indibase.indiBase import Device, Client
 # local import
 from mw4.dome.domeIndi import DomeIndi
 from mw4.dome.dome import DomeSignals
-from mw4.base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')

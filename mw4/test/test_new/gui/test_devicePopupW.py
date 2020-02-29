@@ -31,6 +31,7 @@ from indibase.indiBase import Device
 # local import
 from mw4.gui.devicePopupW import DevicePopup
 from mw4.base.indiClass import IndiClass
+from mw4.gui.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -62,7 +63,10 @@ def test_storeConfig_1():
 
 
 def test_closeEvent_1():
-    app.closeEvent(QCloseEvent())
+    with mock.patch.object(MWidget,
+                           'closeEvent',
+                           return_value=True):
+        app.closeEvent(QCloseEvent())
 
 
 def test_copyAllIndiSettings_1():

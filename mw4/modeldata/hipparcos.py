@@ -36,7 +36,6 @@ class Hipparcos(object):
 
         >>> hip = Hipparcos(
         >>>                 app=app
-        >>>                 mwGlob=mwglob
         >>>                 )
     """
 
@@ -50,11 +49,9 @@ class Hipparcos(object):
 
     def __init__(self,
                  app=None,
-                 mwGlob=None,
                  ):
 
         self.app = app
-        self.mwGlob = mwGlob
         self.lat = app.mount.obsSite.location.latitude.degrees
         self.name = list()
         self.alt = list()

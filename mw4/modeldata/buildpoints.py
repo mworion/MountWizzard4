@@ -68,7 +68,7 @@ class DataPoint(object):
 
         >>> data = DataPoint(
         >>>                  app=None,
-        >>>                  mwGlob=mwglob,
+        >>>                  configDir=None,
         >>>                  )
     """
 
@@ -126,11 +126,11 @@ class DataPoint(object):
 
     def __init__(self,
                  app=None,
-                 mwGlob=None,
+                 configDir=None,
                  ):
 
-        self.mwGlob = mwGlob
         self.app = app
+        self.configDir = configDir
         self._horizonP = [(0, 0), (0, 360)]
         self._buildP = list()
 
@@ -404,7 +404,7 @@ class DataPoint(object):
 
         if fileName is None:
             return False
-        fileName = self.mwGlob['configDir'] + '/' + fileName + '.bpts'
+        fileName = self.configDir + '/' + fileName + '.bpts'
         if not os.path.isfile(fileName):
             return False
 
@@ -434,7 +434,7 @@ class DataPoint(object):
 
         if fileName is None:
             return False
-        fileName = self.mwGlob['configDir'] + '/' + fileName + '.bpts'
+        fileName = self.configDir + '/' + fileName + '.bpts'
         with open(fileName, 'w') as handle:
             json.dump(self.buildP,
                       handle,
@@ -452,7 +452,7 @@ class DataPoint(object):
 
         if fileName is None:
             return False
-        fileName = self.mwGlob['configDir'] + '/' + fileName + '.hpts'
+        fileName = self.configDir + '/' + fileName + '.hpts'
         if not os.path.isfile(fileName):
             return False
 
@@ -497,7 +497,7 @@ class DataPoint(object):
 
         if fileName is None:
             return False
-        fileName = self.mwGlob['configDir'] + '/' + fileName + '.hpts'
+        fileName = self.configDir + '/' + fileName + '.hpts'
         points = self.checkBoundaries(self.horizonP)
         with open(fileName, 'w') as handle:
             json.dump(points,
@@ -738,14 +738,15 @@ class DataPoint(object):
         :return: true for test purpose
         """
 
+        if numberPoints < 50:
+            return False
+
         self.clearBuildP()
 
         indices = np.arange(0, numberPoints, dtype=float) + 0.5
         phi = np.arccos(1 - 2 * indices / numberPoints)
         theta = np.pi * (1 + 5 ** 0.5) * indices
 
-        # do not transfer to xyz coordinates
-        # x, y, z = np.cos(theta) * np.sin(phi), np.sin(theta) * np.sin(phi), np.cos(phi)
         altitude = 90 - np.degrees(phi)
         azimuth = np.degrees(theta) % 360
 

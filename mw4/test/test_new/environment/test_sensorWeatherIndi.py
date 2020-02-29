@@ -105,3 +105,26 @@ def test_setUpdateConfig_6():
                                return_value=True):
             suc = app.setUpdateConfig('test')
             assert suc
+
+
+def test_updateNumber_1():
+    app.name = ''
+    suc = app.updateNumber('test', 'test')
+    assert not suc
+
+
+def test_updateNumber_2():
+    app.name = ''
+    app.device = Device()
+    suc = app.updateNumber('test', 'test')
+    assert not suc
+
+
+def test_updateNumber_3():
+    app.name = 'test'
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getNumber',
+                           return_value={'WEATHER_BAROMETER': 1}):
+        suc = app.updateNumber('test', 'WEATHER_BAROMETER')
+        assert suc

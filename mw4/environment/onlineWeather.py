@@ -70,6 +70,7 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         self.app = app
         self.threadPool = app.threadPool
         self.signals = WeatherSignals()
+        self.location = app.mount.obsSite.location
 
         # minimum set for driver package built in
         self.framework = None
@@ -166,19 +167,17 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             self.signals.connected.emit(False)
             return False
 
-        val = data.json()
-
-        if 'list' not in val:
+        if 'list' not in data:
             self.signals.dataReceived.emit(None)
             self.signals.connected.emit(False)
             return False
 
-        if len(val['list']) == 0:
+        if len(data['list']) == 0:
             self.signals.dataReceived.emit(None)
             self.signals.connected.emit(False)
             return False
 
-        val = val['list'][0]
+        val = data['list'][0]
         self.log.debug(f'onlineWeatherData:[{val}]')
 
         if 'main' in val:
@@ -222,7 +221,8 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         if data.status_code != 200:
             self.log.error(f'{url}: status nok')
             return None
-        return data
+
+        return data.json()
 
     def getOpenWeatherMapData(self, url=''):
         """
@@ -260,9 +260,8 @@ class OnlineWeather(PyQt5.QtCore.QObject):
             return False
 
         # prepare coordinates for website
-        loc = self.app.mount.obsSite.location
-        lat = loc.latitude.degrees
-        lon = loc.longitude.degrees
+        lat = self.location.latitude.degrees
+        lon = self.location.longitude.degrees
 
         webSite = 'http://api.openweathermap.org/data/2.5/forecast'
         url = f'{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&APPID={self.keyAPI}'

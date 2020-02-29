@@ -44,4 +44,4 @@ def test_setSolverEnviron_1():
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
-    app.setSolverEnviron()
+        app.setSolverEnviron()

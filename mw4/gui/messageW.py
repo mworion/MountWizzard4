@@ -64,7 +64,6 @@ class MessageWindow(widget.MWidget):
                          ]
 
         self.initConfig()
-        self.showWindow()
 
     def initConfig(self):
         """
@@ -87,6 +86,8 @@ class MessageWindow(widget.MWidget):
         self.move(x, y)
         height = config.get('height', 600)
         self.resize(800, height)
+        self.showWindow()
+
         return True
 
     def storeConfig(self):

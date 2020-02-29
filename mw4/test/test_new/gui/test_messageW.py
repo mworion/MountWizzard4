@@ -20,16 +20,13 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import sys
 from queue import Queue
 
 # external packages
-import PyQt5.QtWidgets
-from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent
+from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
-import PyQt5.QtCore
-from indibase.indiBase import Device
+
 
 # local import
 from mw4.gui.messageW import MessageWindow
@@ -43,17 +40,23 @@ def module_setup_teardown():
         messageQueue = Queue()
 
     global app
-    with mock.patch.object(MessageWindow,
-                           'show',
-                           return_value=True):
-        app = MessageWindow(app=Test())
+    app = MessageWindow(app=Test())
     yield
     del app
+
+
+def test_initConfig_1():
+    suc = app.initConfig()
+    assert suc
 
 
 def test_storeConfig_1():
     suc = app.storeConfig()
     assert suc
+
+
+def test_closeEvent_1():
+    app.closeEvent(QCloseEvent())
 
 
 def test_clearWindow_1():

@@ -20,7 +20,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import sys
 import platform
 import os
 

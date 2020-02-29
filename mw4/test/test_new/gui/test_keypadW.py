@@ -20,18 +20,14 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import sys
 
 # external packages
-import PyQt5.QtWidgets
+from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QCloseEvent
-import PyQt5.QtCore
-from indibase.indiBase import Device
 
 # local import
 from mw4.gui.keypadW import KeypadWindow
-from mw4.base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -40,10 +36,7 @@ def module_setup_teardown():
         config = {'mainW': {}}
 
     global app
-    with mock.patch.object(KeypadWindow,
-                           'show',
-                           return_value=True):
-        app = KeypadWindow(app=Test())
+    app = KeypadWindow(app=Test())
     yield
     del app
 

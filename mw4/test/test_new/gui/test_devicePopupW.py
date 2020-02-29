@@ -20,7 +20,6 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
-import sys
 
 # external packages
 import PyQt5.QtWidgets
@@ -45,14 +44,11 @@ def module_setup_teardown():
             }
     geometry = [100, 100, 100, 100]
     framework = {'indi'}
-    with mock.patch.object(DevicePopup,
-                           'show',
-                           return_value=True):
-        app = DevicePopup(geometry=geometry,
-                          data=data,
-                          framework=framework,
-                          driver='telescope',
-                          deviceType='telescope')
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
     yield
     del app
 

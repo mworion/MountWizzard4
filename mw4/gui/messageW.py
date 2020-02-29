@@ -111,7 +111,6 @@ class MessageWindow(widget.MWidget):
 
         # gui signals
         self.ui.clear.clicked.disconnect(self.clearWindow)
-        # self.app.message.disconnect(self.writeMessage)
         self.app.update1s.disconnect(self.writeMessage)
 
         super().closeEvent(closeEvent)
@@ -121,7 +120,6 @@ class MessageWindow(widget.MWidget):
 
         # gui signals
         self.ui.clear.clicked.connect(self.clearWindow)
-        # self.app.message.connect(self.writeMessage)
         self.app.update1s.connect(self.writeMessage)
 
     def clearWindow(self):

@@ -59,6 +59,27 @@ def test_init_1():
     assert os.path.isfile('mw4/test/temp/astrometry.cfg')
 
 
+def test_setSolverEnviron_1():
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        app.setSolverEnviron()
+
+
+def test_setSolverEnviron_2():
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Linux'):
+        app.setSolverEnviron()
+
+
+def test_setSolverEnviron_3():
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        app.setSolverEnviron()
+
+
 def test_checkAvailability_1():
     app.solverEnviron = {
         'CloudMakers': {
@@ -170,9 +191,50 @@ def test_getSolutionFromWCS_2():
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_abort_1():
-    suc = app.abort()
-    assert not suc
+def test_getSolutionFromWCS_3():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('CRVAL1', 180.0)
+    header.set('CRVAL2', 60.0)
+    header.set('RA', 180.0)
+    header.set('DEC', 60.0)
+    header.set('CTYPE1', 'TAN')
+    header.set('CTYPE2', 'TAN')
+    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+                                           wcsHeader=header,
+                                           updateFits=True)
+    assert solve['raJ2000S'].hours == 12
+    assert solve['decJ2000S'].degrees == 60
+    assert solve['angleS'] == 0
+    assert solve['scaleS'] == 0
+    assert not solve['flippedS']
+
+    assert header['RA'] == header['CRVAL1']
+    assert header['DEC'] == header['CRVAL2']
+
+
+def test_getSolutionFromWCS_4():
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('CRVAL1', 180.0)
+    header.set('CRVAL2', 60.0)
+    header.set('RA', 180.0)
+    header.set('DEC', 60.0)
+    header.set('CTYPE1', 'TAN-SIP')
+    header.set('CTYPE2', 'TAN-SIP')
+    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+                                           wcsHeader=header,
+                                           updateFits=True)
+    assert solve['raJ2000S'].hours == 12
+    assert solve['decJ2000S'].degrees == 60
+    assert solve['angleS'] == 0
+    assert solve['scaleS'] == 0
+    assert not solve['flippedS']
+
+    assert header['RA'] == header['CRVAL1']
+    assert header['DEC'] == header['CRVAL2']
 
 
 def test_solveClear_1():

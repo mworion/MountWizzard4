@@ -31,7 +31,6 @@ from indibase.indiBase import Device, Client
 # local import
 from mw4.environment.sensorWeather import SensorWeatherIndi
 from mw4.environment.sensorWeather import SensorWeatherSignals
-from mw4.base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -36,7 +36,7 @@ from mw4.gui.widget import MWidget
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app
+    global data, geometry, framework
     data = {
         'telescope':
             {
@@ -44,17 +44,19 @@ def module_setup_teardown():
                 }
             }
     geometry = [100, 100, 100, 100]
-    framework = {'indi'}
+    framework = {'indi': 'test'}
+
+    yield
+
+
+def test_storeConfig_1(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
                       framework=framework,
                       driver='telescope',
                       deviceType='telescope')
-    yield
-    del app
+    qtbot.addWidget(app)
 
-
-def test_storeConfig_1():
     with mock.patch.object(app,
                            'close',
                            return_value=True):
@@ -62,24 +64,52 @@ def test_storeConfig_1():
         assert suc
 
 
-def test_closeEvent_1():
+def test_closeEvent_1(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
     with mock.patch.object(MWidget,
                            'closeEvent',
                            return_value=True):
         app.closeEvent(QCloseEvent())
 
 
-def test_copyAllIndiSettings_1():
+def test_copyAllIndiSettings_1(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
     suc = app.copyAllIndiSettings()
     assert suc
 
 
-def test_copyAllAlpacaSettings_1():
+def test_copyAllAlpacaSettings_1(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
     suc = app.copyAllAlpacaSettings()
     assert suc
 
 
-def test_AddDevicesWithType_1():
+def test_AddDevicesWithType_1(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
     device = Device()
     app.indiClass = IndiClass()
     with mock.patch.object(device,
@@ -89,7 +119,14 @@ def test_AddDevicesWithType_1():
         assert not suc
 
 
-def test_AddDevicesWithType_2():
+def test_AddDevicesWithType_2(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
     device = Device()
     app.indiClass = IndiClass()
     app.indiClass.client.devices['telescope'] = device
@@ -100,7 +137,14 @@ def test_AddDevicesWithType_2():
         assert not suc
 
 
-def test_AddDevicesWithType_3():
+def test_AddDevicesWithType_3(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
     device = Device()
     app.indiClass = IndiClass()
     app.indiClass.client.devices['telescope'] = device
@@ -112,7 +156,14 @@ def test_AddDevicesWithType_3():
         assert not suc
 
 
-def test_AddDevicesWithType_4():
+def test_AddDevicesWithType_4(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
     device = Device()
     app.indiClass = IndiClass()
     app.indiClass.client.devices['telescope'] = device
@@ -125,12 +176,26 @@ def test_AddDevicesWithType_4():
         assert suc
 
 
-def test_searchDevices_1():
+def test_searchDevices_1(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
     suc = app.searchDevices()
     assert suc
 
 
-def test_searchDevices_2():
+def test_searchDevices_2(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      framework=framework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
     app.driver = 'test'
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'information',

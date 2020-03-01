@@ -30,21 +30,31 @@ from mw4.gui.splash import SplashScreen
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app
-    app = SplashScreen(QWidget())
+
     yield
-    del app
 
 
-def test_splash_icon():
+def test_icon(qtbot):
+    app = SplashScreen(QWidget())
+    qtbot.addWidget(app)
+
     value = PyQt5.QtGui.QPixmap(':/icon/mw4.ico')
-
     assert not PyQt5.QtGui.QPixmap.isNull(value)
 
 
-def test_splash_upcoming():
+def test_upcoming(qtbot):
+    app = SplashScreen(QWidget())
+    qtbot.addWidget(app)
+
     app.showMessage('test')
     app.setValue(10)
     app.setValue(50)
     app.setValue(90)
     app.setValue(100)
+
+
+def test_finish(qtbot):
+    app = SplashScreen(QWidget())
+    qtbot.addWidget(app)
+
+    app.finish(QWidget())

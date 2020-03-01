@@ -21,6 +21,7 @@
 import logging
 import platform
 import os
+
 # external packages
 import PyQt5.QtWidgets
 import PyQt5.QtGui
@@ -29,6 +30,7 @@ import PyQt5.uic
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+
 # local imports
 from . import styles
 

@@ -18,14 +18,15 @@
 #
 ###########################################################
 # standard libraries
+
 # external packages
+
 import PyQt5.QtCore
 from PyQt5.QtCore import Qt
 import PyQt5.QtWidgets
 import numpy as np
+
 # local import
-from mw4.base.loggerMW import CustomLogger
-from mw4.resource import resources
 
 
 class SplashScreen(PyQt5.QtCore.QObject):

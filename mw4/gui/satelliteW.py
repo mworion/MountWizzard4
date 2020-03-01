@@ -26,18 +26,14 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 # This import registers the 3D projection, but is otherwise unused.
-from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-import matplotlib.pyplot as plt
 import matplotlib.path as mpath
 import numpy as np
-from skyfield.api import EarthSatellite
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets import satellite_ui
 from mw4.base import transform
-from mw4.base.tpool import Worker
 
 
 class SatelliteWindowSignals(PyQt5.QtCore.QObject):
@@ -110,9 +106,7 @@ class SatelliteWindow(widget.MWidget):
         stream.close()
         # loading the world image from nasa as PNG as matplotlib only loads png.
         self.world = pickle.load(BytesIO(pickleData))
-
         self.initConfig()
-        self.showWindow()
 
     def initConfig(self):
         """
@@ -136,6 +130,7 @@ class SatelliteWindow(widget.MWidget):
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
+        self.showWindow()
 
         return True
 
@@ -177,7 +172,6 @@ class SatelliteWindow(widget.MWidget):
 
         :return: True for test purpose
         """
-        self.receiveSatelliteAndShow(self.app.mainW.satellite)
         self.show()
 
         return True

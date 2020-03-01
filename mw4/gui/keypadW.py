@@ -19,15 +19,13 @@
 ###########################################################
 # standard libraries
 import logging
-import time
-import json
-import pkg_resources
-import base64
+
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineScript
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget

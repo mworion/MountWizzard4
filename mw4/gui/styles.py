@@ -18,8 +18,11 @@
 #
 ###########################################################
 # standard libraries
+
 # external packages
 import PyQt5.QtGui
+
+# local imports
 
 
 class MWStyles(object):

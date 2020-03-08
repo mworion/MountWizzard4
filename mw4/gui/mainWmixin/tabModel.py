@@ -451,8 +451,8 @@ class Model(object):
         # target could not be set and will be omitted
         # todo: what happens when this occurs ? The signal to move on will be missing (no
         #  download)
-        # if not suc:
-        #     return False
+        if not suc:
+            return False
 
         self.app.dome.slewDome(altitude=mPoint['altitude'],
                                azimuth=mPoint['azimuth'],

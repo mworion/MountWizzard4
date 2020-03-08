@@ -399,8 +399,7 @@ class Model(object):
 
         # todo: here might be the right position to introduce the pause function
         while self.ui.pauseModel.property('pause'):
-            # now the user want to pause
-            QTest.qWait(500)
+            QTest.qWait(100)
 
         self.app.camera.expose(imagePath=mPoint['imagePath'],
                                expTime=mPoint['exposureTime'],

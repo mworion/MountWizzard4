@@ -132,7 +132,7 @@ class MainWindow(MWidget,
         self.app.onlineWeather.signals.connected.connect(self.updateOnlineWeatherStat)
 
         # connect gui signals
-        self.ui.saveConfigQuit.clicked.connect(self.app.quitSave)
+        self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfile)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
@@ -232,9 +232,23 @@ class MainWindow(MWidget,
 
         :return:    nothing
         """
+        # remove waiting todo: better place ?
+        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+
         super().closeEvent(closeEvent)
         self.close()
         self.app.quit()
+
+    def quitSave(self):
+        """
+        quitSave finished up and calls the quit save function in main for saving the parameters
+
+
+        :return:    nothing
+        """
+        # remove waiting todo: better place ?
+        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+        self.app.quitSave()
 
     def setupIcons(self):
         """

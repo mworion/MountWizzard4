@@ -27,6 +27,7 @@ import copy
 from datetime import datetime, timedelta
 # external packages
 import PyQt5.uic
+from PyQt5.QtTest import QTest
 from mountcontrol.alignStar import AlignStar
 # local import
 from mw4.base import transform
@@ -103,6 +104,7 @@ class Model(object):
         # ui signals
         self.ui.runModel.clicked.connect(self.modelBuild)
         self.ui.cancelModel.clicked.connect(self.cancelBuild)
+        self.ui.pauseModel.clicked.connect(self.pauseBuild)
         self.ui.batchModel.clicked.connect(self.loadProgramModel)
 
     def initConfig(self):
@@ -395,6 +397,11 @@ class Model(object):
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
+        # todo: here might be the right position to introduce the pause function
+        while self.ui.pauseModel.property('pause'):
+            # now the user want to pause
+            QTest.qWait(500)
+
         self.app.camera.expose(imagePath=mPoint['imagePath'],
                                expTime=mPoint['exposureTime'],
                                binning=mPoint['binning'],
@@ -503,7 +510,7 @@ class Model(object):
 
         self.changeStyleDynamic(self.ui.runModel, 'running', False)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', False)
-        self.changeStyleDynamic(self.ui.pauseModel, 'running', False)
+        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.ui.runModel.setEnabled(True)
         self.ui.cancelModel.setEnabled(False)
         self.ui.pauseModel.setEnabled(False)
@@ -564,6 +571,18 @@ class Model(object):
         self.app.astrometry.signals.done.disconnect(self.modelSolveDone)
         self.collector.ready.disconnect(self.modelImage)
         self.collector.clear()
+
+        return True
+
+    def pauseBuild(self):
+        """
+
+        :return: True for test purpose
+        """
+        if self.ui.pauseModel.property('pause'):
+            self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+        else:
+            self.changeStyleDynamic(self.ui.pauseModel, 'pause', True)
 
         return True
 
@@ -856,6 +875,7 @@ class Model(object):
 
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)
+        self.changeStyleDynamic(self.ui.cancelModel, 'pause', False)
         self.ui.cancelModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(False)

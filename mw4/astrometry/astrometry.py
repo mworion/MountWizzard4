@@ -126,7 +126,7 @@ class Astrometry:
                 },
                 'ASTAP': {
                     'programPath': '/Applications/ASTAP.app/Contents/MacOS',
-                    'indexPath': '/Applications/ASTAP.app/Contents/MacOS',
+                    'indexPath': '/usr/local/opt/astap',
                     'solver': self.solverASTAP,
                 }
             }

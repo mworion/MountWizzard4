@@ -6842,9 +6842,9 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>240</x>
+        <x>250</x>
         <y>20</y>
-        <width>121</width>
+        <width>111</width>
         <height>26</height>
        </rect>
       </property>
@@ -6929,7 +6929,7 @@ to mount</string>
        <rect>
         <x>5</x>
         <y>20</y>
-        <width>121</width>
+        <width>111</width>
         <height>26</height>
        </rect>
       </property>
@@ -7373,9 +7373,9 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>125</x>
         <y>20</y>
-        <width>126</width>
+        <width>116</width>
         <height>26</height>
        </rect>
       </property>

@@ -424,6 +424,14 @@ class MWStyles(object):
         background-color: rgb(32, 144, 192);
         color: #000000;
     } 
+    QPushButton[pause='false'] {
+        background-color: #202020;
+        color: #C0C0C0;
+    }     
+    QPushButton[pause='true'] {
+        background-color: #00C000;
+        color: #000000;
+    } 
     QPushButton[cancel='true'] {
         background-color: rgb(192,0, 0);
         color: #C0C0C0;

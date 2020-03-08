@@ -441,8 +441,12 @@ class Model(object):
         suc = self.app.mount.obsSite.setTargetAltAz(alt_degrees=mPoint['altitude'],
                                                     az_degrees=mPoint['azimuth'],
                                                     )
-        if not suc:
-            return False
+        # target could not be set and will be omitted
+        # todo: what happens when this occurs ? The signal to move on will be missing (no
+        #  download)
+        # if not suc:
+        #     return False
+
         self.app.dome.slewDome(altitude=mPoint['altitude'],
                                azimuth=mPoint['azimuth'],
                                )
@@ -499,8 +503,10 @@ class Model(object):
 
         self.changeStyleDynamic(self.ui.runModel, 'running', False)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', False)
+        self.changeStyleDynamic(self.ui.pauseModel, 'running', False)
         self.ui.runModel.setEnabled(True)
         self.ui.cancelModel.setEnabled(False)
+        self.ui.pauseModel.setEnabled(False)
         self.ui.batchModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(True)
         self.ui.runFlexure.setEnabled(True)
@@ -851,6 +857,7 @@ class Model(object):
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)
         self.ui.cancelModel.setEnabled(True)
+        self.ui.pauseModel.setEnabled(True)
         self.ui.plateSolveSync.setEnabled(False)
         self.ui.runFlexure.setEnabled(False)
         self.ui.runHysteresis.setEnabled(False)

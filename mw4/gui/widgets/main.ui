@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -6842,9 +6842,9 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>240</x>
         <y>20</y>
-        <width>171</width>
+        <width>121</width>
         <height>26</height>
        </rect>
       </property>
@@ -6855,7 +6855,7 @@ to mount</string>
        <string notr="true"/>
       </property>
       <property name="text">
-       <string>Cancel Model Build</string>
+       <string>Cancel</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="mSlew">
@@ -6929,7 +6929,7 @@ to mount</string>
        <rect>
         <x>5</x>
         <y>20</y>
-        <width>171</width>
+        <width>121</width>
         <height>26</height>
        </rect>
       </property>
@@ -6937,7 +6937,7 @@ to mount</string>
        <string>Run a model build.</string>
       </property>
       <property name="text">
-       <string>Run Model Build</string>
+       <string>Run</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="mPoints">
@@ -7365,6 +7365,25 @@ to mount</string>
       </property>
       <property name="text">
        <string>Finishing Time:</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pauseModel">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>20</y>
+        <width>126</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pause a model build after actual point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Pause</string>
       </property>
      </widget>
     </widget>

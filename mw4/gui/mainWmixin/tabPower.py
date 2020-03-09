@@ -21,6 +21,7 @@
 
 # external packages
 import PyQt5
+from PyQt5.QtWidgets import QWidget
 from mountcontrol.convert import valueToInt
 
 # local import

@@ -581,7 +581,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="object"/>
+         <widget class="QLineEdit" name="object">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_2">
@@ -591,7 +595,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="ra"/>
+         <widget class="QLineEdit" name="ra">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_3">
@@ -601,7 +609,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="dec"/>
+         <widget class="QLineEdit" name="dec">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_6">
@@ -611,7 +623,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="rotation"/>
+         <widget class="QLineEdit" name="rotation">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_7">
@@ -621,7 +637,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="scale"/>
+         <widget class="QLineEdit" name="scale">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_8">
@@ -631,7 +651,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="expTime"/>
+         <widget class="QLineEdit" name="expTime">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_10">
@@ -641,7 +665,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="filter"/>
+         <widget class="QLineEdit" name="filter">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_11">
@@ -651,7 +679,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="binX"/>
+         <widget class="QLineEdit" name="binX">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_12">
@@ -661,7 +693,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="binY"/>
+         <widget class="QLineEdit" name="binY">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_9">
@@ -671,7 +707,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="ccdTemp"/>
+         <widget class="QLineEdit" name="ccdTemp">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_4">
@@ -681,7 +721,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="sqm"/>
+         <widget class="QLineEdit" name="sqm">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <spacer name="verticalSpacer_2">

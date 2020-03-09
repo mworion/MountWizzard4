@@ -20,10 +20,12 @@
 # standard libraries
 import logging
 import datetime
+
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.gui.widget import MWidget
@@ -108,6 +110,7 @@ class MainWindow(MWidget,
         }
 
         # setting device stats in measurement task
+        # todo: better place and decision if position is good
         self.app.measure.deviceStat = self.deviceStat
 
         self.deviceStatGui = {'dome': self.ui.domeConnected,

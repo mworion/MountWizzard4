@@ -18,10 +18,11 @@
 #
 ###########################################################
 # standard libraries
-import copy
+
 # external packages
 import PyQt5
 from mountcontrol.convert import valueToInt
+
 # local import
 
 
@@ -33,7 +34,12 @@ class Power(object):
     processing if needed.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None, change=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+            self.changeStyleDynamic = change
 
         self.powerOnOFF = {'1': self.ui.powerPort1,
                            '2': self.ui.powerPort2,
@@ -94,14 +100,6 @@ class Power(object):
         # cyclic tasks
         self.app.update1s.connect(self.updatePowerGui)
 
-    def initConfig(self):
-        # config = self.app.config['mainW']
-        return True
-
-    def storeConfig(self):
-        # config = self.app.config['mainW']
-        return True
-
     def clearPowerGui(self):
         """
         clearPowerGui changes the state of the Pegasus values to '-'
@@ -127,7 +125,7 @@ class Power(object):
 
         return True
 
-    def setGuiVersion(self, version):
+    def setGuiVersion(self, version=1):
         """
         setGuiVersion enables and disables the gui elements according to the recognized
         version the UPB.
@@ -273,7 +271,7 @@ class Power(object):
             if button != self.sender():
                 continue
             suc = self.app.power.togglePowerPort(port=name)
-        return suc
+            return suc
 
     def togglePowerBootPort(self):
         """
@@ -285,7 +283,7 @@ class Power(object):
             if button != self.sender():
                 continue
             suc = self.app.power.togglePowerPortBoot(port=name)
-        return suc
+            return suc
 
     def toggleHubUSB(self):
         """
@@ -306,7 +304,7 @@ class Power(object):
             if button != self.sender():
                 continue
             suc = self.app.power.togglePortUSB(port=name)
-        return suc
+            return suc
 
     def toggleAutoDew(self):
         """
@@ -328,7 +326,7 @@ class Power(object):
             if button != self.sender():
                 continue
             suc = self.app.power.toggleAutoDewPort(port=name)
-        return suc
+            return suc
 
     def setAdjustableOutput(self):
         """

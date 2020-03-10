@@ -39,7 +39,12 @@ class EnvironGui(object):
     processing if needed.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None, change=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+            self.changeStyleDynamic = change
 
         self.refractionSources = {'onlineWeather': self.ui.onlineWeatherGroup,
                                   'sensorWeather': self.ui.sensorWeatherGroup,
@@ -83,7 +88,6 @@ class EnvironGui(object):
         self.app.update1s.connect(self.updateSensorWeatherGui)
         self.app.update30m.connect(self.updateClearOutside)
         self.app.update1s.connect(self.updateMoonPhase)
-        self.updateMoonPhase()
 
     def initConfig(self):
         """
@@ -101,6 +105,7 @@ class EnvironGui(object):
         self.refractionSource = config.get('refractionSource', '')
         self.setRefractionSourceGui()
         self.updateClearOutside()
+        # self.updateMoonPhase()
 
         return True
 
@@ -127,7 +132,7 @@ class EnvironGui(object):
         :return: success
         """
 
-        if not self.refractionSource == 'directWeather':
+        if self.refractionSource != 'directWeather':
             return False
 
         if setting.weatherStatus == 0:
@@ -136,6 +141,8 @@ class EnvironGui(object):
             self.ui.checkRefracNoTrack.setChecked(True)
         elif setting.weatherStatus == 2:
             self.ui.checkRefracCont.setChecked(True)
+        else:
+            return False
 
         return True
 
@@ -145,7 +152,7 @@ class EnvironGui(object):
         :return: success
         """
 
-        if not self.refractionSource == 'directWeather':
+        if self.refractionSource != 'directWeather':
             suc = self.app.mount.setting.setDirectWeatherUpdateType(0)
             return suc
 
@@ -565,7 +572,7 @@ class EnvironGui(object):
 
         return True
 
-    def updateDirectWeatherGui(self, setting):
+    def updateDirectWeatherGui(self, setting=None):
         """
         updateOnlineWeatherGui takes the returned data from the dict to the Gui
 

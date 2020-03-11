@@ -18,11 +18,12 @@
 #
 ###########################################################
 # standard libraries
-import copy
+
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+
 # local import
 from mw4.gui.devicePopupW import DevicePopup
 
@@ -35,7 +36,12 @@ class SettDevice(object):
     processing if needed.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None, change=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+            self.changeStyleDynamic = change
 
         self.popupUi = None
         self.drivers = {
@@ -204,6 +210,8 @@ class SettDevice(object):
             config[driver] = self.drivers[driver]['uiDropDown'].currentIndex()
 
         for driver in self.drivers:
+            if driver not in self.driversData:
+                continue
             configData[driver] = self.driversData[driver]
 
         return True
@@ -239,6 +247,7 @@ class SettDevice(object):
         the signal of the destroyed window to update the dispatching value for all changes
         drivers
 
+        :return: True for test purpose
         """
 
         for driver in self.drivers:
@@ -261,7 +270,7 @@ class SettDevice(object):
             self.popupUi.exec_()
             if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
                 # when cancel nothing happens
-                return
+                return False
             else:
                 # when ok, we have to further work
                 break
@@ -283,6 +292,8 @@ class SettDevice(object):
                 index = self.findIndexValue(self.drivers[driver]['uiDropDown'], 'indi')
                 self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
             self.dispatch(driverName=driver)
+
+        return True
 
     def dispatchStopDriver(self, driver=None):
         """
@@ -316,8 +327,11 @@ class SettDevice(object):
         dispatchConfigDriver
 
         :param driver:
-        :return: success of start
+        :return: True for test purpose
         """
+
+        if not driver:
+            return False
 
         driverData = self.driversData.get(driver, {})
 
@@ -360,6 +374,8 @@ class SettDevice(object):
         # setting the new selected framework type and name, host
         self.drivers[driver]['class'].name = name
 
+        return True
+
     def dispatchStartDriver(self, driver=None):
         """
         dispatchStartDriver
@@ -367,6 +383,9 @@ class SettDevice(object):
         :param driver:
         :return success of start
         """
+
+        if not driver:
+            return False
 
         # for built-in i actually not check their presence as the should function
         if self.drivers[driver]['uiDropDown'].currentText() == 'built-in':

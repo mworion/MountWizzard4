@@ -3,7 +3,7 @@ MountWizzard4
 
 Overview
 --------
-Welcome to MountWizzard4! MW4 is a utility for 10micron users for improving the workflow for
+Welcome to MountWizzard4 is a utility for 10micron users for improving the workflow for
 astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu tested). As a python
 application, it should run in all environments which support python 3.6-3.8 including
 Qt as a Gui framework.

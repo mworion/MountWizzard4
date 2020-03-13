@@ -101,7 +101,7 @@ def test_setDew_1(qtbot):
 def test_setDew_2(qtbot):
     class Sender:
         def parent(self):
-            return ui.pauseModel
+            return ui.autoDewA
 
     with mock.patch.object(QInputDialog,
                            'getInt',

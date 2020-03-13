@@ -28,7 +28,13 @@ class SettImaging(object):
     """
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None, change=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+            self.changeStyleDynamic = change
+
         # gui actions
         self.ui.downloadFast.clicked.connect(self.setDownloadModeFast)
         self.ui.downloadSlow.clicked.connect(self.setDownloadModeSlow)

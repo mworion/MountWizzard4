@@ -445,6 +445,11 @@ class SettDevice(object):
         :return:
         """
 
+        if not driver:
+            return False
+        if not deviceName:
+            return False
+
         if hasattr(self.drivers[driver]['class'], 'signals'):
             if self.sender() != self.drivers[driver]['class'].signals:
                 return False
@@ -482,6 +487,8 @@ class SettDevice(object):
         :param deviceName:
         :return: true for test purpose
         """
+        if not deviceName:
+            return False
 
         for driver in self.drivers:
             if not self.scanValid(driver=driver, deviceName=deviceName):

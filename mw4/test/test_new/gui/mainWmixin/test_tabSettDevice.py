@@ -117,6 +117,12 @@ def test_findIndexValue_1():
     assert val == 0
 
 
+def test_findIndexValue_2():
+    val = app.findIndexValue(ui=app.ui.domeDevice,
+                             searchString='indi')
+    assert val == 1
+
+
 def test_initConfig_1():
     app.config['mainW'] = {}
     suc = app.initConfig()
@@ -207,17 +213,43 @@ def test_dispatchConfigDriver_2():
     assert suc
 
 
+def test_dispatchConfigDriver_3():
+    app.drivers['dome']['uiDropDown'].setItemText(0, 'indi')
+    suc = app.dispatchConfigDriver(driver='dome')
+    assert suc
+
+
+def test_dispatchConfigDriver_4():
+    app.drivers['dome']['uiDropDown'].setItemText(0, 'alpaca')
+    suc = app.dispatchConfigDriver(driver='dome')
+    assert suc
+
+
+def test_dispatchConfigDriver_5():
+    app.drivers['dome']['deviceType'] = 'astrometry'
+    suc = app.dispatchConfigDriver(driver='dome')
+    assert suc
+
+
+def test_dispatchConfigDriver_6():
+    app.drivers['dome']['uiDropDown'].setItemText(0, 'test')
+    suc = app.dispatchConfigDriver(driver='dome')
+    assert suc
+
+
 def test_dispatchStartDriver_1():
     suc = app.dispatchStartDriver(driver=None)
     assert not suc
 
 
 def test_dispatchStartDriver_2():
+    app.drivers['dome']['uiDropDown'].setItemText(0, 'built-in')
+    app.BACK_GREEN = '#000000'
     suc = app.dispatchStartDriver(driver='dome')
     assert not suc
 
 
-def test_enableRelay_1(qtbot):
+def test_dispatch_1(qtbot):
     app.ui.relayDevice.setCurrentIndex(0)
     with mock.patch.object(app.app.relay,
                            'stopCommunication',
@@ -226,7 +258,7 @@ def test_enableRelay_1(qtbot):
         assert suc
 
 
-def test_enableRelay_2(qtbot):
+def test_dispatch_2(qtbot):
     app.ui.relayDevice.setCurrentIndex(1)
     with mock.patch.object(app.app.relay,
                            'startCommunication',
@@ -235,7 +267,7 @@ def test_enableRelay_2(qtbot):
         assert suc
 
 
-def test_enableRemote_1(qtbot):
+def test_dispatch_3(qtbot):
     app.ui.remoteDevice.setCurrentIndex(0)
     with mock.patch.object(app.app.remote,
                            'startCommunication',
@@ -244,7 +276,7 @@ def test_enableRemote_1(qtbot):
         assert suc
 
 
-def test_enableRemote_2(qtbot):
+def test_dispatch_4(qtbot):
     app.ui.remoteDevice.setCurrentIndex(1)
     with mock.patch.object(app.app.remote,
                            'stopCommunication',
@@ -253,7 +285,7 @@ def test_enableRemote_2(qtbot):
         assert suc
 
 
-def test_enableMeasure_1(qtbot):
+def test_dispatch_5(qtbot):
     app.ui.measureDevice.setCurrentIndex(1)
     with mock.patch.object(app.app.measure,
                            'startCommunication',
@@ -262,7 +294,7 @@ def test_enableMeasure_1(qtbot):
         assert suc
 
 
-def test_enableMeasure_2(qtbot):
+def test_dispatch_6(qtbot):
     app.ui.measureDevice.setCurrentIndex(0)
     with mock.patch.object(app.app.measure,
                            'stopCommunication',
@@ -271,49 +303,154 @@ def test_enableMeasure_2(qtbot):
         assert suc
 
 
-def test_sensorWeatherDispatch_1():
+def test_dispatch_7():
     app.ui.sensorWeatherDevice.setCurrentIndex(0)
     suc = app.dispatch()
     assert suc
 
 
-def test_sensorWeatherDispatch_2():
+def test_dispatch_8():
     app.ui.sensorWeatherDevice.setCurrentIndex(1)
     suc = app.dispatch()
     assert suc
 
 
-def test_skymeterDispatch_1():
+def test_dispatch_9():
     app.ui.skymeterDevice.setCurrentIndex(0)
     suc = app.dispatch()
     assert suc
 
 
-def test_skymeterDispatch_2():
+def test_dispatch_10():
     app.ui.skymeterDevice.setCurrentIndex(1)
     suc = app.dispatch()
     assert suc
 
 
-def test_powerDispatch_1():
+def test_dispatch_11():
     app.ui.powerDevice.setCurrentIndex(0)
     suc = app.dispatch()
     assert suc
 
 
-def test_powerDispatch_2():
+def test_dispatch_12():
     app.ui.powerDevice.setCurrentIndex(1)
     suc = app.dispatch()
     assert suc
 
 
-def test_astrometryDispatch_1():
+def test_dispatch_13():
     app.ui.astrometryDevice.setCurrentIndex(0)
     suc = app.dispatch()
     assert suc
 
 
-def test_astrometryDispatch_2():
+def test_dispatch_14():
     app.ui.astrometryDevice.setCurrentIndex(1)
     suc = app.dispatch()
+    assert suc
+
+
+def test_dispatch_15():
+    def Sender():
+        return ui.cameraSetup
+    app.sender = Sender
+
+    suc = app.dispatch(driverName='dome')
+    assert suc
+
+
+def test_dispatch_16():
+    def Sender():
+        return ui.domeDevice
+    app.sender = Sender
+
+    with mock.patch.object(app,
+                           'dispatchStopDriver',
+                           return_value=True):
+        suc = app.dispatch(driverName=1)
+        assert suc
+
+
+def test_scanValid_1():
+    suc = app.scanValid()
+    assert not suc
+
+
+def test_scanValid_2():
+    suc = app.scanValid('dome')
+    assert not suc
+
+
+def test_scanValid_3():
+    def Sender():
+        return app.drivers['filter']['class'].signals
+    app.sender = Sender
+
+    suc = app.scanValid(driver='dome', deviceName='dome')
+    assert not suc
+
+
+def test_scanValid_4():
+    app.drivers['filter']['class'].name = 'test'
+    suc = app.scanValid(driver='measure', deviceName='dome')
+    assert not suc
+
+
+def test_scanValid_5():
+    def Sender():
+        return app.drivers['dome']['class'].signals
+    app.sender = Sender
+
+    app.drivers['dome']['class'].name = 'dome'
+    suc = app.scanValid(driver='dome', deviceName='dome')
+    assert suc
+
+
+def test_serverDisconnected_1():
+    def Sender():
+        return app.drivers['filter']['class'].signals
+    app.sender = Sender
+
+    suc = app.serverDisconnected({})
+    assert not suc
+
+
+def test_serverDisconnected_2():
+    def Sender():
+        return app.drivers['filter']['class'].signals
+    app.sender = Sender
+    app.BACK_NORM = '#000000'
+
+    suc = app.serverDisconnected({'dome': 1})
+    assert suc
+
+
+def test_deviceConnected_1():
+    app.BACK_GREEN = '#000000'
+    suc = app.deviceConnected('')
+    assert not suc
+
+
+def test_deviceConnected_2():
+    def Sender():
+        return app.drivers['filter']['class'].signals
+    app.sender = Sender
+
+    app.BACK_GREEN = '#000000'
+    suc = app.deviceConnected('dome')
+    assert suc
+
+
+def test_deviceDisconnected_1():
+    suc = app.deviceDisconnected('')
+    assert suc
+
+
+def test_deviceDisconnected_2():
+    def Sender():
+        return app.drivers['filter']['class'].signals
+    app.sender = Sender
+
+    suc = app.deviceDisconnected('dome')
     assert suc

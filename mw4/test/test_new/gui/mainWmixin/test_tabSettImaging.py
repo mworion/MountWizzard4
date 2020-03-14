@@ -23,6 +23,8 @@ from unittest import mock
 import logging
 
 # external packages
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QInputDialog
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
@@ -35,6 +37,7 @@ from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.widget import MWidget
 from mw4.imaging.camera import Camera
 from mw4.imaging.focuser import Focuser
+from mw4.imaging.filter import Filter
 from mw4.telescope.telescope import Telescope
 from mw4.base.loggerMW import CustomLogger
 
@@ -55,6 +58,7 @@ def module_setup_teardown(qtbot):
         message = pyqtSignal(str, int)
         camera = Camera(app=Test1())
         focuser = Focuser(app=Test1())
+        filter = Filter(app=Test1())
         telescope = Telescope(app=Test1())
 
     widget = QWidget()
@@ -89,6 +93,108 @@ def test_storeConfig_1():
 def test_updateParameters_1():
     suc = app.updateParameters()
     assert suc
+
+
+def test_updateParameters_2():
+    app.app.telescope.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] = 1
+    app.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
+    app.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
+    app.app.telescope.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] = 1
+    app.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
+    app.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
+    app.app.camera.data['CCD_COOLER.COOLER_ON'] = True
+    app.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
+    suc = app.updateParameters()
+    assert suc
+
+
+def test_setCoolerTemp_1():
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        suc = app.setCoolerTemp()
+        assert not suc
+
+
+def test_setCoolerTemp_2():
+    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = app.setCoolerTemp()
+            assert not suc
+
+
+def test_setCoolerTemp_3():
+    app.app.camera.data['CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            suc = app.setCoolerTemp()
+            assert suc
+
+
+def test_setFilterNumber_1():
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        suc = app.setFilterNumber()
+        assert not suc
+
+
+def test_setFilterNumber_2():
+    app.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, False)):
+            suc = app.setFilterNumber()
+            assert not suc
+
+
+def test_setFilterNumber_3():
+    app.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getInt',
+                               return_value=(10, True)):
+            suc = app.setFilterNumber()
+            assert suc
+
+
+def test_setFilterName_1():
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        suc = app.setFilterName()
+        assert not suc
+
+
+def test_setFilterName_2():
+    app.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 10
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getItem',
+                               return_value=(10, False)):
+            suc = app.setFilterName()
+            assert not suc
+
+
+def test_setFilterName_3():
+    app.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 1
+    app.app.filter.data['FILTER_SLOT_NAME_1'] = 'test1'
+    app.app.filter.data['FILTER_SLOT_NAME_2'] = 'test2'
+    with mock.patch.object(QMessageBox,
+                           'critical'):
+        with mock.patch.object(QInputDialog,
+                               'getItem',
+                               return_value=('test1', True)):
+            suc = app.setFilterName()
+            assert suc
 
 
 def test_setDownloadModeFast():

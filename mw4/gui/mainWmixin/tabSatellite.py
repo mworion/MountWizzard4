@@ -33,7 +33,12 @@ class Satellite(object):
     processing if needed.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+
         self.satellites = dict()
         self.satellite = None
         self.satelliteTLE = {}
@@ -74,20 +79,8 @@ class Satellite(object):
         :return: True for test purpose
         """
 
-        # config = self.app.config['mainW']
         self.setupSatelliteSourceGui()
         self.loadSatelliteSource()
-        return True
-
-    def storeConfig(self):
-        """
-        storeConfig writes the keys to the configuration dict and stores. if some
-        saving has to be proceeded to persistent data, they will be launched as
-        well in this method.
-
-        :return: True for test purpose
-        """
-        # config = self.app.config['mainW']
         return True
 
     def setupSatelliteSourceGui(self):
@@ -225,13 +218,15 @@ class Satellite(object):
 
         winObj = self.app.uiWindows['showSatelliteW']
 
-        if not winObj['classObj'] and not satTabVisible:
+        if not winObj:
+            return False
+        # if nothing is visible, nothing to update !
+        if not winObj.get('classObj') and not satTabVisible:
             return False
 
         # now calculating the satellite data
         now = self.app.mount.obsSite.ts.now()
         observe = self.satellite.at(now)
-        sett = self.app.mount.setting
 
         subpoint = observe.subpoint()
         difference = self.satellite - self.app.mount.obsSite.location
@@ -248,14 +243,7 @@ class Satellite(object):
         self.ui.satLatitude.setText(f'{lat:3.2f}')
         self.ui.satLongitude.setText(f'{lon:3.2f}')
 
-        hasPressure = (sett.refractionPress is not None)
-        hasTemperature = (sett.refractionTemp is not None)
-
-        if hasPressure and hasTemperature:
-            altaz = difference.at(now).altaz(temperature_C=sett.refractionPress,
-                                             pressure_mbar=sett.refractionTemp)
-        else:
-            altaz = difference.at(now).altaz()
+        altaz = difference.at(now).altaz()
 
         alt, az, _ = altaz
         alt = alt.degrees
@@ -265,7 +253,7 @@ class Satellite(object):
         self.ui.satAzimuth.setText(f'{az:3.2f}')
 
         # if the satellite window is not visible, there is no need for sending the data
-        if not winObj['classObj']:
+        if not winObj.get('classObj'):
             return True
 
         winObj['classObj'].signals.update.emit(observe, subpoint, altaz)
@@ -365,6 +353,7 @@ class Satellite(object):
         while index < 3:
             passUI[index]['rise'].setText('-')
             passUI[index]['settle'].setText('-')
+            index += 1
 
         return True
 

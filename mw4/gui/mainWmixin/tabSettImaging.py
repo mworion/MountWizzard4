@@ -83,22 +83,6 @@ class SettImaging(object):
 
         return True
 
-    @staticmethod
-    def guiSetText(ui, formatElement, value):
-        """
-
-        :param ui:
-        :param formatElement:
-        :param value:
-        :return:
-        """
-        if value is None:
-            text = '-'
-        else:
-            formatStr = '{0:' + formatElement + '}'
-            text = formatStr.format(value)
-        ui.setText(text)
-
     def updateParameters(self):
         """
 

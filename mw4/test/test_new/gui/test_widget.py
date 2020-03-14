@@ -33,9 +33,10 @@ from mw4.gui.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def module_setup_teardown(qtbot):
     global app
     app = MWidget()
+    qtbot.add_widget(app)
     yield
     del app
 
@@ -357,3 +358,28 @@ def test_clickable_2():
     widget = PyQt5.QtWidgets.QPushButton()
     suc = app.clickable(widget=widget)
     assert suc
+
+
+def test_guiSetText_1():
+    suc = app.guiSetText(None, None)
+    assert not suc
+
+
+def test_guiSetText_2():
+    pb = PyQt5.QtWidgets.QPushButton()
+    suc = app.guiSetText(pb, None)
+    assert not suc
+
+
+def test_guiSetText_3():
+    pb = PyQt5.QtWidgets.QPushButton()
+    suc = app.guiSetText(pb, '3.5f')
+    assert suc
+    assert pb.text() == '-'
+
+
+def test_guiSetText_4():
+    pb = PyQt5.QtWidgets.QPushButton()
+    suc = app.guiSetText(pb, '3.0f', 100)
+    assert suc
+    assert pb.text() == '100'

@@ -82,8 +82,8 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.returnValues = {'close': 'cancel'}
 
         # setting to center of parent image
-        x = geometry[0] + (geometry[2] - self.width()) / 2
-        y = geometry[1] + (geometry[3] - self.height()) / 2
+        x = geometry[0] + int((geometry[2] - self.width()) / 2)
+        y = geometry[1] + int((geometry[3] - self.height()) / 2)
         self.move(x, y)
 
         self.ui.cancel.clicked.connect(self.close)

@@ -304,7 +304,9 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         pw = window.geometry().width()
         px = window.geometry().x()
         py = window.geometry().y()
-        dlg.setGeometry(px + 0.5 * (pw - width), py + 0.5 * (ph - height), 400, 400)
+        dlg.setGeometry(px + int(0.5 * (pw - width)),
+                        py + int(0.5 * (ph - height)),
+                        400, 400)
         return dlg
 
     @staticmethod

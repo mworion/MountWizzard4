@@ -55,8 +55,8 @@ def module_setup_teardown(qtbot):
     ui.setupUi(widget)
 
     app = Power(app=Test(), ui=ui,
-                clickable=MWidget().clickable,
-                change=MWidget().changeStyleDynamic)
+                clickable=MWidget().clickable)
+    app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
     qtbot.addWidget(app)

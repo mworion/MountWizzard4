@@ -35,12 +35,11 @@ class Power(object):
     processing if needed.
     """
 
-    def __init__(self, app=None, ui=None, clickable=None, change=None):
+    def __init__(self, app=None, ui=None, clickable=None):
         if app:
             self.app = app
             self.ui = ui
             self.clickable = clickable
-            self.changeStyleDynamic = change
 
         self.powerOnOFF = {'1': self.ui.powerPort1,
                            '2': self.ui.powerPort2,

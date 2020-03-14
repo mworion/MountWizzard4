@@ -18,6 +18,7 @@
 #
 ###########################################################
 # standard libraries
+
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtGui
@@ -27,6 +28,7 @@ import requests
 import numpy as np
 import qimage2ndarray
 from skyfield import almanac
+
 # local import
 from mw4.base.tpool import Worker
 
@@ -39,12 +41,11 @@ class EnvironGui(object):
     processing if needed.
     """
 
-    def __init__(self, app=None, ui=None, clickable=None, change=None):
+    def __init__(self, app=None, ui=None, clickable=None):
         if app:
             self.app = app
             self.ui = ui
             self.clickable = clickable
-            self.changeStyleDynamic = change
 
         self.refractionSources = {'onlineWeather': self.ui.onlineWeatherGroup,
                                   'sensorWeather': self.ui.sensorWeatherGroup,

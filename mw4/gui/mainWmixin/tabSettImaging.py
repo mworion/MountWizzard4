@@ -18,9 +18,11 @@
 #
 ###########################################################
 # standard libraries
+
 # external packages
 import PyQt5
 import numpy as np
+
 # local import
 
 
@@ -28,12 +30,11 @@ class SettImaging(object):
     """
     """
 
-    def __init__(self, app=None, ui=None, clickable=None, change=None):
+    def __init__(self, app=None, ui=None, clickable=None):
         if app:
             self.app = app
             self.ui = ui
             self.clickable = clickable
-            self.changeStyleDynamic = change
 
         # gui actions
         self.ui.downloadFast.clicked.connect(self.setDownloadModeFast)
@@ -111,31 +112,31 @@ class SettImaging(object):
             resolutionX = pixelSizeX / focalLength * 206.265
             resolutionY = pixelSizeY / focalLength * 206.265
         else:
-            resolutionX = 0
-            resolutionY = 0
+            resolutionX = None
+            resolutionY = None
 
         if aperture:
             speed = focalLength / aperture
         else:
-            speed = 0
-        self.app.mainW.ui.speed.setText(f'{speed:2.1f}')
+            speed = None
 
         if aperture:
             dawes = 116 / aperture
             rayleigh = 138 / aperture
             magLimit = 7.7 + (5 * np.log10(aperture / 10))
         else:
-            dawes = 0
-            rayleigh = 0
-            magLimit = 0
+            dawes = None
+            rayleigh = None
+            magLimit = None
 
         if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
             FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
             FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
         else:
-            FOVX = 0
-            FOVY = 0
+            FOVX = None
+            FOVY = None
 
+        self.guiSetText(self.ui.speed, '2.1f', speed)
         self.guiSetText(self.ui.filterName, 's', text)
         self.guiSetText(self.ui.focalLength, '4.0f', focalLength)
         self.guiSetText(self.ui.aperture, '3.0f', aperture)
@@ -148,6 +149,13 @@ class SettImaging(object):
         self.guiSetText(self.ui.coolerTemp, '3.1f', coolerTemp)
         self.guiSetText(self.ui.coolerPower, '3.1f', coolerPower)
         self.guiSetText(self.ui.focuserPosition, '6.0f', focus)
+        self.guiSetText(self.ui.resolutionX, '2.2f', resolutionX)
+        self.guiSetText(self.ui.resolutionY, '2.2f', resolutionY)
+        self.guiSetText(self.ui.dawes, '2.2f', dawes)
+        self.guiSetText(self.ui.rayleigh, '2.2f', rayleigh)
+        self.guiSetText(self.ui.magLimit, '2.2f', magLimit)
+        self.guiSetText(self.ui.FOVX, '2.2f', FOVX)
+        self.guiSetText(self.ui.FOVY, '2.2f', FOVY)
 
         if coolerOn:
             self.changeStyleDynamic(self.ui.coolerOn, 'running', True)
@@ -162,14 +170,6 @@ class SettImaging(object):
         else:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)
-
-        self.app.mainW.ui.resolutionX.setText(f'{resolutionX:2.2f}')
-        self.app.mainW.ui.resolutionY.setText(f'{resolutionY:2.2f}')
-        self.app.mainW.ui.dawes.setText(f'{dawes:2.2f}')
-        self.app.mainW.ui.rayleigh.setText(f'{rayleigh:2.2f}')
-        self.app.mainW.ui.magLimit.setText(f'{magLimit:2.2f}')
-        self.app.mainW.ui.FOVX.setText(f'{FOVX:2.2f}')
-        self.app.mainW.ui.FOVY.setText(f'{FOVY:2.2f}')
 
         return True
 

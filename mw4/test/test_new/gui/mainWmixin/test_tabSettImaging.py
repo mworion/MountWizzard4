@@ -34,6 +34,8 @@ from mw4.gui.mainWmixin.tabSettImaging import SettImaging
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.widget import MWidget
 from mw4.imaging.camera import Camera
+from mw4.imaging.focuser import Focuser
+from mw4.telescope.telescope import Telescope
 from mw4.base.loggerMW import CustomLogger
 
 
@@ -52,19 +54,20 @@ def module_setup_teardown(qtbot):
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
         camera = Camera(app=Test1())
+        focuser = Focuser(app=Test1())
+        telescope = Telescope(app=Test1())
 
     widget = QWidget()
     ui = Ui_MainWindow()
     ui.setupUi(widget)
 
     app = SettImaging(app=Test(), ui=ui,
-                      clickable=MWidget().clickable,
-                      change=MWidget().changeStyleDynamic)
+                      clickable=MWidget().clickable)
+    app.changeStyleDynamic = MWidget().changeStyleDynamic
+    app.guiSetText = MWidget().guiSetText
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
-    app.deviceStat = dict()
     app.log = CustomLogger(logging.getLogger(__name__), {})
-    app.threadPool = QThreadPool()
 
     qtbot.addWidget(app)
 
@@ -82,8 +85,11 @@ def test_storeConfig_1():
     suc = app.storeConfig()
     assert suc
 
-def test_updateParameters():
-    suc
+
+def test_updateParameters_1():
+    suc = app.updateParameters()
+    assert suc
+
 
 def test_setDownloadModeFast():
     suc = app.setDownloadModeFast()

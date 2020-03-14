@@ -36,7 +36,12 @@ class SettParkPos(object):
     and cover.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+
         # define lists for the gui entries
         self.posButtons = list()
         self.posTexts = list()
@@ -247,6 +252,7 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
+        # todo: should we really set attributes in classes from external ?
         self.app.dome.isGeometry = self.ui.checkDomeGeometry.isChecked()
 
         value = self.ui.domeRadius.value()

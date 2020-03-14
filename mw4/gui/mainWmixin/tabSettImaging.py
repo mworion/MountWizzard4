@@ -85,8 +85,10 @@ class SettImaging(object):
 
     def updateParameters(self):
         """
+        updateParameters reads the data from the classes and writes them to the gui.
+        if a parameter is not set (no key entry) or None, the gui will show a '-'
 
-        :return: success
+        :return: true for test purpose
         """
 
         focalLength = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
@@ -102,9 +104,38 @@ class SettImaging(object):
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
         filterNumber = self.app.camera.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
-
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
         text = self.app.camera.data.get(key, 'not found')
+
+        if focalLength and pixelSizeX and pixelSizeY:
+            resolutionX = pixelSizeX / focalLength * 206.265
+            resolutionY = pixelSizeY / focalLength * 206.265
+        else:
+            resolutionX = 0
+            resolutionY = 0
+
+        if aperture:
+            speed = focalLength / aperture
+        else:
+            speed = 0
+        self.app.mainW.ui.speed.setText(f'{speed:2.1f}')
+
+        if aperture:
+            dawes = 116 / aperture
+            rayleigh = 138 / aperture
+            magLimit = 7.7 + (5 * np.log10(aperture / 10))
+        else:
+            dawes = 0
+            rayleigh = 0
+            magLimit = 0
+
+        if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
+            FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
+            FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
+        else:
+            FOVX = 0
+            FOVY = 0
+
         self.guiSetText(self.ui.filterName, 's', text)
         self.guiSetText(self.ui.focalLength, '4.0f', focalLength)
         self.guiSetText(self.ui.aperture, '3.0f', aperture)
@@ -132,42 +163,15 @@ class SettImaging(object):
             self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)
 
-        if focalLength and pixelSizeX and pixelSizeY:
-            resolutionX = pixelSizeX / focalLength * 206.265
-            resolutionY = pixelSizeY / focalLength * 206.265
-        else:
-            resolutionX = 0
-            resolutionY = 0
         self.app.mainW.ui.resolutionX.setText(f'{resolutionX:2.2f}')
         self.app.mainW.ui.resolutionY.setText(f'{resolutionY:2.2f}')
-
-        if aperture:
-            speed = focalLength / aperture
-        else:
-            speed = 0
-        self.app.mainW.ui.speed.setText(f'{speed:2.1f}')
-
-        if aperture:
-            dawes = 116 / aperture
-            rayleigh = 138 / aperture
-            magLimit = 7.7 + (5 * np.log10(aperture / 10))
-        else:
-            dawes = 0
-            rayleigh = 0
-            magLimit = 0
-
         self.app.mainW.ui.dawes.setText(f'{dawes:2.2f}')
         self.app.mainW.ui.rayleigh.setText(f'{rayleigh:2.2f}')
         self.app.mainW.ui.magLimit.setText(f'{magLimit:2.2f}')
-
-        if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
-            FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
-            FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
-        else:
-            FOVX = 0
-            FOVY = 0
         self.app.mainW.ui.FOVX.setText(f'{FOVX:2.2f}')
         self.app.mainW.ui.FOVY.setText(f'{FOVY:2.2f}')
+
+        return True
 
     def setCoolerTemp(self):
         """

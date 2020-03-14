@@ -82,6 +82,8 @@ def test_storeConfig_1():
     suc = app.storeConfig()
     assert suc
 
+def test_updateParameters():
+    suc
 
 def test_setDownloadModeFast():
     suc = app.setDownloadModeFast()

@@ -11,7 +11,7 @@
 # GUI with PyQT5 for python
 #
 # Michael Würtenberger
-# (c) 2019
+# (c) 2019, 2020
 #
 # Licence APL2.0
 #

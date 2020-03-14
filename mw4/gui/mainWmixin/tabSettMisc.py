@@ -18,12 +18,11 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import time
 import subprocess
-import os
 import sys
 import platform
+
 # external packages
 import PyQt5
 if platform.machine() != 'armv7l':
@@ -31,6 +30,7 @@ if platform.machine() != 'armv7l':
 import requests
 from importlib_metadata import version
 from astropy.utils import iers
+
 # local import
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.base import tpool
@@ -42,7 +42,11 @@ class SettMisc(object):
     for functions of that gui will be linked to this class.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
 
         self.audioSignalsSet = dict()
         self.guiAudioList = dict()
@@ -289,11 +293,11 @@ class SettMisc(object):
 
         except subprocess.TimeoutExpired as e:
             self.log.critical(e)
-            return False
+            return False, None
 
         except Exception as e:
             self.log.critical(f'error: {e} happened')
-            return False
+            return False, None
 
         else:
             delta = time.time() - timeStart

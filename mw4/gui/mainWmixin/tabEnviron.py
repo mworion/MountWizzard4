@@ -401,6 +401,7 @@ class EnvironGui(object):
         dim = 0.85
         image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
         imageBase = image.copy(0, 84, 624, 141)
+
         # transformation are done in numpy, because it's much faster
         width = imageBase.width()
         height = imageBase.height()
@@ -409,8 +410,10 @@ class EnvironGui(object):
         img_Max = np.maximum(255 - imgArr, [32, 32, 32])
         temp = imgArr[:, 0] == imgArr[:, 1]
         check = np.array([temp, temp, temp]).transpose()
+
         # do the transform light to dark theme
         imgArr = np.where(check, img_Max, imgArr)
+
         # transforming back
         imgArr = imgArr.reshape(height, width, 3)
 

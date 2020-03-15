@@ -88,7 +88,8 @@ def test_updatePowerGui_1(qtbot):
 
 def test_setDew_1(qtbot):
     class Sender:
-        def parent(self):
+        @staticmethod
+        def parent():
             return ui.dewA
 
     with mock.patch.object(QInputDialog,
@@ -100,7 +101,8 @@ def test_setDew_1(qtbot):
 
 def test_setDew_2(qtbot):
     class Sender:
-        def parent(self):
+        @staticmethod
+        def parent():
             return ui.autoDewA
 
     with mock.patch.object(QInputDialog,
@@ -112,7 +114,8 @@ def test_setDew_2(qtbot):
 
 def test_setDew_3(qtbot):
     class Sender:
-        def parent(self):
+        @staticmethod
+        def parent():
             return ui.dewA
 
     with mock.patch.object(QInputDialog,
@@ -125,7 +128,8 @@ def test_setDew_3(qtbot):
 
 def test_setDew_4(qtbot):
     class Sender:
-        def parent(self):
+        @staticmethod
+        def parent():
             return ui.dewA
 
     with mock.patch.object(QInputDialog,

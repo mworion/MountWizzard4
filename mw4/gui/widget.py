@@ -196,7 +196,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return fig, axes
 
     @staticmethod
-    def embedMatplot(widget=None):
+    def embedMatplot(widget=None, constrainedLayout=True):
         """
         IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5
         application gui. you call it with the parent widget, which is linked to matplotlib
@@ -204,6 +204,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         multiple figures on top.
 
         :param      widget:             parent ui element, which is the reference for embedding
+        :param      constrainedLayout:
         :return:    staticCanvas:   matplotlib reference as parent for figures
         """
 
@@ -217,7 +218,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         staticCanvas = FigureCanvas(Figure(dpi=75,
                                            facecolor='none',
                                            frameon=False,
-                                           constrained_layout=True,
+                                           constrained_layout=constrainedLayout,
                                            )
                                     )
         FigureCanvasQTAgg.updateGeometry(staticCanvas)

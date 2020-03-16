@@ -87,13 +87,13 @@ class SatelliteWindow(widget.MWidget):
         self.plotSatPosHorizon = None
         self.plotSatPosEarth = None
 
-        self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1)
+        self.satSphereMat1 = self.embedMatplot(self.ui.satSphere1, constrainedLayout=False)
         self.satSphereMat1.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2)
+        self.satSphereMat2 = self.embedMatplot(self.ui.satSphere2, constrainedLayout=False)
         self.satSphereMat2.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satHorizonMat = self.embedMatplot(self.ui.satHorizon)
+        self.satHorizonMat = self.embedMatplot(self.ui.satHorizon, constrainedLayout=False)
         self.satHorizonMat.parentWidget().setStyleSheet(self.BACK_BG)
-        self.satEarthMat = self.embedMatplot(self.ui.satEarth)
+        self.satEarthMat = self.embedMatplot(self.ui.satEarth, constrainedLayout=False)
         self.satEarthMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.signals.show.connect(self.receiveSatelliteAndShow)
@@ -334,7 +334,6 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat1.figure
         figure.clf()
-        plt.figure(constrained_layout=False)
         figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
         axe = figure.add_subplot(111, projection='3d')
 
@@ -428,7 +427,6 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat2.figure
         figure.clf()
-        plt.figure(constrained_layout=False)
         figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
         axe = figure.add_subplot(111, projection='3d')
 
@@ -543,7 +541,6 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satEarthMat.figure
         figure.clf()
-        plt.figure(constrained_layout=False)
         figure.subplots_adjust(left=0.2, right=0.85, bottom=0.2, top=0.9)
         axe = self.satEarthMat.figure.add_subplot(1, 1, 1, facecolor=None)
 
@@ -645,7 +642,6 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satHorizonMat.figure
         figure.clf()
-        plt.figure(constrained_layout=False)
         figure.subplots_adjust(left=0.2, right=0.85, bottom=0.2, top=0.9)
         axe = self.satHorizonMat.figure.add_subplot(1, 1, 1, facecolor=None)
 

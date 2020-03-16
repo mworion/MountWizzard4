@@ -35,7 +35,7 @@ def module_setup_teardown():
         data = {}
 
     class Test:
-        mount = Mount()
+        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
         sensorWeather = Test1()
         onlineWeather = Test1()
         skymeter = Test1()

@@ -113,7 +113,7 @@ class ImageWindow(widget.MWidget):
                           '16x Zoom': 16,
                           }
 
-        self.imageMat = self.embedMatplot(self.ui.image)
+        self.imageMat = self.embedMatplot(self.ui.image, constrainedLayout=False)
         self.imageMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         # cyclic updates

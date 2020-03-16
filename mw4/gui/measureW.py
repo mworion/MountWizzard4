@@ -87,7 +87,7 @@ class MeasureWindow(widget.MWidget):
                           }
 
         # doing the matplotlib embedding
-        self.measureMat = self.embedMatplot(self.ui.measure)
+        self.measureMat = self.embedMatplot(self.ui.measure, constrainedLayout=False)
         self.measureMat.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.initConfig()

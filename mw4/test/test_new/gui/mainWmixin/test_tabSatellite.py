@@ -28,6 +28,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import Qt
 from mountcontrol.qtmount import Mount
 from skyfield.toposlib import Topos
 import numpy as np
@@ -47,7 +48,7 @@ def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
 
     class Test1(QObject):
-        mount = Mount()
+        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
         update10s = pyqtSignal()
         threadPool = QThreadPool()
 
@@ -57,7 +58,7 @@ def module_setup_teardown(qtbot):
         update1s = pyqtSignal()
         update3s = pyqtSignal()
         message = pyqtSignal(str, int)
-        mount = Mount()
+        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
         mwGlob = {'dataDir': 'mw4/test/data'}
         uiWindows = {'showSatelliteW': None}
         mount.obsSite.location = Topos(latitude_degrees=20,

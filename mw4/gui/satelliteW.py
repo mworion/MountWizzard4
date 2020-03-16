@@ -28,6 +28,7 @@ import PyQt5.uic
 # This import registers the 3D projection, but is otherwise unused.
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib.path as mpath
+import matplotlib.pyplot as plt
 import numpy as np
 # local import
 from mw4.base.loggerMW import CustomLogger
@@ -333,6 +334,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat1.figure
         figure.clf()
+        plt.figure(constrained_layout=False)
         figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
         axe = figure.add_subplot(111, projection='3d')
 
@@ -426,6 +428,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satSphereMat2.figure
         figure.clf()
+        plt.figure(constrained_layout=False)
         figure.subplots_adjust(left=-0.1, right=1.1, bottom=-0.3, top=1.2)
         axe = figure.add_subplot(111, projection='3d')
 
@@ -540,6 +543,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satEarthMat.figure
         figure.clf()
+        plt.figure(constrained_layout=False)
         figure.subplots_adjust(left=0.2, right=0.85, bottom=0.2, top=0.9)
         axe = self.satEarthMat.figure.add_subplot(1, 1, 1, facecolor=None)
 
@@ -641,6 +645,7 @@ class SatelliteWindow(widget.MWidget):
 
         figure = self.satHorizonMat.figure
         figure.clf()
+        plt.figure(constrained_layout=False)
         figure.subplots_adjust(left=0.2, right=0.85, bottom=0.2, top=0.9)
         axe = self.satHorizonMat.figure.add_subplot(1, 1, 1, facecolor=None)
 

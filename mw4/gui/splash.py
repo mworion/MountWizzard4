@@ -100,7 +100,10 @@ class SplashScreen(PyQt5.QtCore.QObject):
 
         painter.setPen(PyQt5.QtCore.Qt.NoPen)
         painter.setBrush(redlg)
-        painter.drawRect(13, h - 61, (w - 24) * self._cval / self._maxv, 14)
+        painter.drawRect(13,
+                         h - 61,
+                         int((w - 24) * self._cval / self._maxv),
+                         14)
 
         painter.setPen(PyQt5.QtCore.Qt.white)
 

@@ -46,7 +46,10 @@ def module_setup_teardown():
                                        elevation_m=500)
     global app
     app = OnlineWeather(app=Test())
+
     yield
+
+    app.threadPool.waitForDone()
     del app
 
 

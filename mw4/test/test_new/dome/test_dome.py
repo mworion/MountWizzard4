@@ -40,7 +40,10 @@ def module_setup_teardown():
         mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
     global app
     app = Dome(app=Test())
+
     yield
+
+    app.threadPool.waitForDone()
     del app
 
 

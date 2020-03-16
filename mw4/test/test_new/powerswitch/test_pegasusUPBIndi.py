@@ -41,6 +41,10 @@ def module_setup_teardown():
     global app
     app = PegasusUPBIndi(app=Test(), signals=PegasusUPBSignals(), data={})
 
+    yield
+
+    del app
+
 
 def test_setUpdateConfig_1():
     app.name = ''

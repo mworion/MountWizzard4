@@ -42,7 +42,9 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
     global app
     app = CameraIndi(app=Test(), signals=CameraSignals(), data={})
+
     yield
+
     del app
 
 

@@ -25,7 +25,6 @@ import unittest.mock as mock
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
-from indibase.indiBase import Device
 
 # local import
 from mw4.imaging.camera import Camera
@@ -38,7 +37,10 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
     global app
     app = Camera(app=Test())
+
     yield
+
+    app.threadPool.waitForDone()
     del app
 
 

@@ -31,7 +31,6 @@ from indibase.indiBase import Device, Client
 # local import
 from mw4.telescope.telescope import TelescopeIndi
 from mw4.telescope.telescope import TelescopeSignals
-from mw4.base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -41,6 +40,10 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
     global app
     app = TelescopeIndi(app=Test(), signals=TelescopeSignals(), data={})
+
+    yield
+
+    del app
 
 
 def test_setUpdateConfig_1():

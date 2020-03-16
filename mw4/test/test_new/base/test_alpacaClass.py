@@ -39,7 +39,10 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
     global app
     app = AlpacaClass(app=Test())
+
     yield
+
+    app.threadPool.waitForDone()
     del app
 
 
@@ -85,6 +88,8 @@ def test_getInitialConfig_2():
 def test_startTimer():
     suc = app.startTimer()
     assert suc
+    app.cycleData.stop()
+    app.cycleDevice.stop()
 
 
 def test_stopTimer():

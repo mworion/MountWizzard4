@@ -59,6 +59,7 @@ def module_setup_teardown():
                                        elevation_m=500)
 
     yield
+
     del Test
 
 

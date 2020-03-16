@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import unittest.mock as mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -38,6 +37,10 @@ def module_setup_teardown():
     global app
     app = PegasusUPB(app=Test())
 
+    yield
+
+    app.threadPool.waitForDone()
+    del app
 
 def test_properties():
     app.framework = 'indi'

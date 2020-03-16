@@ -71,6 +71,7 @@ def test_startTimers_2():
     app.host = ('localhost', 80)
     suc = app.startCommunication()
     assert suc
+    app.timerTask.stop()
 
 
 def test_startTimers_3():
@@ -79,6 +80,7 @@ def test_startTimers_3():
                            'start',):
         suc = app.startCommunication()
         assert suc
+        app.timerTask.stop()
 
 
 def test_stopTimers_1():

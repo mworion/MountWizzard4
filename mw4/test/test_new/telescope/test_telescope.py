@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import unittest.mock as mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -37,6 +36,11 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
     global app
     app = Telescope(app=Test())
+
+    yield
+
+    app.threadPool.waitForDone()
+    del app
 
 
 def test_properties():

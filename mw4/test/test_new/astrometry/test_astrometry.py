@@ -43,7 +43,10 @@ def module_setup_teardown():
     shutil.copy('mw4/test/testData/astrometry.cfg', 'mw4/test/temp/astrometry.cfg')
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
     app = Astrometry(app=Test(), tempDir='mw4/test/temp')
+
     yield
+
+    app.threadPool.waitForDone()
     del app
 
 

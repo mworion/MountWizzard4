@@ -41,7 +41,9 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
     global app
     app = FlipFlatIndi(app=Test(), signals=FlipFlatSignals(), data={})
+
     yield
+
     del app
 
 

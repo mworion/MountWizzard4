@@ -38,6 +38,10 @@ def module_setup_teardown():
     global app
     app = DirectWeather(app=Test())
 
+    yield
+
+    del app
+
 
 def test_startCommunication_1():
     suc = app.startCommunication()

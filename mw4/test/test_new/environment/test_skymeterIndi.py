@@ -42,6 +42,10 @@ def module_setup_teardown():
     global app
     app = SkymeterIndi(app=Test(), signals=SkymeterSignals(), data={})
 
+    yield
+
+    del app
+
 
 def test_setUpdateConfig_1():
     app.name = ''

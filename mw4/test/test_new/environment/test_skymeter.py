@@ -38,6 +38,11 @@ def module_setup_teardown():
     global app
     app = Skymeter(app=Test())
 
+    yield
+
+    app.threadPool.waitForDone()
+    del app
+
 
 def test_properties():
     app.framework = 'indi'

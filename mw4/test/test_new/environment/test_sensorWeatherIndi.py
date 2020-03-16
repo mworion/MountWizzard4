@@ -41,6 +41,10 @@ def module_setup_teardown():
     global app
     app = SensorWeatherIndi(app=Test(), signals=SensorWeatherSignals(), data={})
 
+    yield
+
+    del app
+
 
 def test_setUpdateConfig_1():
     app.name = ''

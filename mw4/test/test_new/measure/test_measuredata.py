@@ -69,6 +69,7 @@ def module_setup_teardown():
 def test_startCommunication():
     suc = app.startCommunication()
     assert suc
+    app.timerTask.stop()
 
 
 def test_stopCommunication():

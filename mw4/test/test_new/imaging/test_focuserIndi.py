@@ -31,7 +31,6 @@ from indibase.indiBase import Device, Client
 # local import
 from mw4.imaging.focuserIndi import FocuserIndi
 from mw4.imaging.focuser import FocuserSignals
-from mw4.base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -41,7 +40,9 @@ def module_setup_teardown():
         message = pyqtSignal(str, int)
     global app
     app = FocuserIndi(app=Test(), signals=FocuserSignals(), data={})
+
     yield
+
     del app
 
 

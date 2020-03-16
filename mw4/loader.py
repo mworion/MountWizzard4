@@ -20,14 +20,13 @@
 # standard libraries
 import logging
 import os
+os.environ['no_proxy'] = '*'
 import sys
 import platform
 import socket
-import datetime
 import traceback
 import locale
 import html
-from io import BytesIO
 from importlib_metadata import version
 
 # external packages

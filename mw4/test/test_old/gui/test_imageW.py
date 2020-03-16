@@ -132,7 +132,6 @@ def test_writeHeaderToGUI_1():
 def test_writeHeaderToGUI_2():
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
-    header['CTYPE1'] = None
     suc = app.uiWindows['showImageW']['classObj'].writeHeaderToGUI(header=header)
     assert not suc[0]
 

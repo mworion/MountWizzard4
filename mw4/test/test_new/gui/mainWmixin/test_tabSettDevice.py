@@ -108,6 +108,7 @@ def module_setup_teardown(qtbot):
 
     yield
 
+    app.threadPool.waitForDone()
     del widget, ui, Test, Test1, app
 
 

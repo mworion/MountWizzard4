@@ -23,7 +23,6 @@ from unittest import mock
 import logging
 
 # external packages
-from PyQt5.QtGui import QImage
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
@@ -103,6 +102,18 @@ def test_setupSatelliteSourceGui():
 
 
 def test_setupSatelliteGui_1():
+    suc = app.setupSatelliteGui()
+    assert suc
+
+
+def test_setupSatelliteGui_2():
+    class Test1:
+        satnum = 12345
+
+    class Test:
+        model = Test1()
+
+    app.satellites = {'sat1': Test()}
     suc = app.setupSatelliteGui()
     assert suc
 
@@ -187,12 +198,6 @@ def test_updateSatelliteData_4():
 
 
 def test_updateSatelliteData_5():
-    class Test1(QObject):
-        update = pyqtSignal(object, object, object)
-
-    class Test(QObject):
-        signals = Test1()
-
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
@@ -294,18 +299,103 @@ def test_showRises_1():
         assert suc
 
 
-def test_extractSatelliteData_1():
+def test_showRises_2():
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    with mock.patch.object(EarthSatellite,
+                           'find_events',
+                           return_value=([app.app.mount.obsSite.timeJD,
+                                          app.app.mount.obsSite.timeJD,
+                                          app.app.mount.obsSite.timeJD,
+                                          ],
+                                         [0, 2, 1])):
+        suc = app.showRises()
+        assert suc
 
-    suc = app.extractSatelliteData('test', satName='test')
+
+def test_showRises_3():
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
+    with mock.patch.object(EarthSatellite,
+                           'find_events',
+                           return_value=([app.app.mount.obsSite.timeJD,
+                                          app.app.mount.obsSite.timeJD,
+                                          app.app.mount.obsSite.timeJD,
+                                          app.app.mount.obsSite.timeJD,
+                                          ],
+                                         [2, 2, 2, 2])):
+        suc = app.showRises()
+        assert suc
+
+
+def test_signalExtractSatelliteData_1():
+    pass
+    widget = app.ui.listSatelliteNames
+    widget.addItem('test12345')
+
+
+def test_extractSatelliteData_1():
+    suc = app.extractSatelliteData(satName='')
     assert not suc
 
 
 def test_extractSatelliteData_2():
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    sat = EarthSatellite(*tle[1:3], name=tle[0])
 
-    widget = app.ui.listSatelliteNames
-    widget.addItem('test12345')
-    suc = app.extractSatelliteData(widget=widget, satName=0)
+    app.satellites = {'TIANGONG 1': sat,
+                      'Test1': sat}
+
+    suc = app.extractSatelliteData(satName='TIANGONG 1')
     assert not suc
+
+
+def test_extractSatelliteData_3():
+    app.ui.listSatelliteNames.clear()
+    app.ui.listSatelliteNames.addItem('TIANGONG 1')
+    app.ui.listSatelliteNames.addItem('Test1')
+
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    sat = EarthSatellite(*tle[1:3], name=tle[0])
+
+    app.satellites = {'TIANGONG 1': sat,
+                      'Test1': sat}
+
+    suc = app.extractSatelliteData(satName='TIANGONG 1')
+    assert not suc
+
+
+def test_extractSatelliteData_4():
+    class Test1(QObject):
+        update = pyqtSignal(object, object, object)
+        show = pyqtSignal(object)
+
+    class Test(QObject):
+        signals = Test1()
+
+    app.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
+    app.ui.listSatelliteNames.clear()
+    app.ui.listSatelliteNames.addItem('        TIANGONG 1')
+    app.ui.listSatelliteNames.addItem('        Test1')
+
+    tle = ["TIANGONG 1",
+           "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
+           "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
+    sat = EarthSatellite(*tle[1:3], name=tle[0])
+
+    app.satellites = {'TIANGONG 1': sat,
+                      'Test1': sat}
+
+    suc = app.extractSatelliteData(satName='TIANGONG 1')
+    assert suc
 
 
 def test_getSatelliteDataFromDatabase_1():
@@ -392,6 +482,19 @@ def test_startTrack_5():
                            return_value=(True, 'test')):
         suc = app.startTrack()
         assert suc
+
+
+def test_startTrack_6():
+    app.app.mount.mountUp = True
+    app.app.mount.obsSite.status = 5
+    with mock.patch.object(app.app.mount.satellite,
+                           'slewTLE',
+                           return_value=(True, 'test')):
+        with mock.patch.object(app.app.mount.obsSite,
+                               'unpark',
+                               return_value=True):
+            suc = app.startTrack()
+            assert suc
 
 
 def test_stopTrack_1():

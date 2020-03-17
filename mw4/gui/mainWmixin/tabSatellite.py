@@ -59,7 +59,7 @@ class Satellite(object):
             'Last 30 days launch': 'http://www.celestrak.com/NORAD/elements/tle-new.txt',
         }
 
-        self.ui.listSatelliteNames.itemPressed.connect(self.extractSatelliteData)
+        self.ui.listSatelliteNames.itemPressed.connect(self.signalExtractSatelliteData)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
@@ -357,7 +357,23 @@ class Satellite(object):
 
         return True
 
-    def extractSatelliteData(self, widget, satName=''):
+    def signalExtractSatelliteData(self, widget):
+        """
+
+        :param widget: widget from where the signal is send
+        :return: True for test purpose
+        """
+        if not widget:
+            return False
+
+        if self.ui.listSatelliteNames.currentItem() is None:
+            return False
+        satName = self.ui.listSatelliteNames.currentItem().text()[8:]
+        self.extractSatelliteData(satName=satName)
+
+        return True
+
+    def extractSatelliteData(self, satName=''):
         """
         extractSatelliteData is called when a satellite is selected via mouse click in the
         list menu. it collects the data and writes basic stuff to the gui.
@@ -365,28 +381,24 @@ class Satellite(object):
         pushed to the gui and not waiting for the cyclic task.
         depending on the age of the satellite data is colors the frame
 
-        :param widget: widget from where the signal is send
         :param satName: additional parameter for calling this method
         :return: success
         """
-
-        # method is called from signal from widget
-        if not satName and widget:
-            # todo: split gui and function for better testing
-            if self.ui.listSatelliteNames.currentItem() is None:
-                return False
-            satName = self.ui.listSatelliteNames.currentItem().text()[8:]
 
         if satName not in self.satellites:
             return False
 
         # selecting the entry in the list box
+        item = None
         for index in range(self.ui.listSatelliteNames.model().rowCount()):
             if not self.ui.listSatelliteNames.item(index).text()[8:] == satName:
                 continue
             item = self.ui.listSatelliteNames.item(index)
             item.setSelected(True)
             break
+
+        if not item:
+            return False
 
         # making the entry visible (and scroll the list if necessary)
         position = PyQt5.QtWidgets.QAbstractItemView.EnsureVisible
@@ -446,7 +458,7 @@ class Satellite(object):
         if not tleParams:
             return False
 
-        self.extractSatelliteData(None, satName=tleParams.name)
+        self.extractSatelliteData(satName=tleParams.name)
         return True
 
     def updateSatelliteTrackGui(self, tleParams=None):
@@ -505,10 +517,10 @@ class Satellite(object):
         # if mount is currently parked, we unpark it
         if self.app.mount.obsSite.status == 5:
             suc = self.app.mount.obsSite.unpark()
-            if not suc:
-                self.app.message.emit('Cannot unpark mount', 2)
-            else:
+            if suc:
                 self.app.message.emit('Mount unparked', 0)
+            else:
+                self.app.message.emit('Cannot unpark mount', 2)
 
         suc, message = self.app.mount.satellite.slewTLE()
         if not suc:

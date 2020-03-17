@@ -46,7 +46,6 @@ def module_setup_teardown():
 
     yield
 
-    app.threadPool.waitForDone()
     del app
 
 

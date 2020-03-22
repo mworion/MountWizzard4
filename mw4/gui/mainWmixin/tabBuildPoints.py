@@ -18,17 +18,9 @@
 #
 ###########################################################
 # standard libraries
-import queue
-import os
-import time
-import shutil
-import json
-from datetime import datetime, timedelta
+
 # external packages
-import PyQt5.QtWidgets
-import PyQt5.uic
-import skyfield.api
-import numpy as np
+
 # local import
 
 
@@ -45,7 +37,11 @@ class BuildPoints(object):
     BuildPoints handles all topics around generating the build point and horizon settings
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
         # persistence for the type of generator used
         self.lastGenerator = 'none'
 

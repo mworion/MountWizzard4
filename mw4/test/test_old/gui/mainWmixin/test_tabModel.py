@@ -560,7 +560,6 @@ def test_modelFinished_2(qtbot):
          'errorRMS': 3,
          }
 
-
     app.mainW.modelQueue.put(inputData)
 
     app.camera.signals.saved.connect(app.mainW.modelSolve)
@@ -645,3 +644,161 @@ def test_loadProgramModel_2():
                                return_value=True):
             suc = app.mainW.loadProgramModel()
             assert suc
+def test_updateAlignGui_numberStars():
+    with mock.patch.object(app, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.app.mount.model.numberStars = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '50' == app.ui.numberStars.text()
+        assert '50' == app.ui.numberStars1.text()
+        value = None
+        app.app.mount.model.numberStars = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '-' == app.ui.numberStars.text()
+        assert '-' == app.ui.numberStars1.text()
+
+
+def test_updateAlignGui_altitudeError():
+    with mock.patch.object(app, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.app.mount.model.altitudeError = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert ' 50.0' == app.ui.altitudeError.text()
+        value = None
+        app.app.mount.model.altitudeError = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '-' == app.ui.altitudeError.text()
+
+
+def test_updateAlignGui_errorRMS():
+    with mock.patch.object(app, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.app.mount.model.errorRMS = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '50.0' == app.ui.errorRMS.text()
+        assert '50.0' == app.ui.errorRMS1.text()
+        value = None
+        app.app.mount.model.errorRMS = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '-' == app.ui.errorRMS.text()
+        assert '-' == app.ui.errorRMS1.text()
+
+
+def test_updateAlignGui_azimuthError():
+    with mock.patch.object(app, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.app.mount.model.azimuthError = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert ' 50.0' == app.ui.azimuthError.text()
+        value = None
+        app.app.mount.model.azimuthError = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '-' == app.ui.azimuthError.text()
+
+
+def test_updateAlignGui_terms():
+    with mock.patch.object(app, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.app.mount.model.terms = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '50.0' == app.ui.terms.text()
+        value = None
+        app.app.mount.model.terms = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '-' == app.ui.terms.text()
+
+
+def test_updateAlignGui_orthoError():
+    with mock.patch.object(app, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.app.mount.model.orthoError = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '3000.00' == app.ui.orthoError.text()
+        value = None
+        app.app.mount.model.orthoError = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '-' == app.ui.orthoError.text()
+
+
+def test_updateAlignGui_positionAngle():
+    with mock.patch.object(app, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.app.mount.model.positionAngle = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert ' 50.0' == app.ui.positionAngle.text()
+        value = None
+        app.app.mount.model.positionAngle = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '-' == app.ui.positionAngle.text()
+
+
+def test_updateAlignGui_polarError():
+    with mock.patch.object(app, 'showModelPolar') as mMock:
+        mMock.return_value.showModelPolar.return_value = None
+
+        value = '50'
+        app.app.mount.model.polarError = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '3000.00' == app.ui.polarError.text()
+        value = None
+        app.app.mount.model.polarError = value
+        app.updateAlignGUI(app.app.mount.model)
+        assert '-' == app.ui.polarError.text()
+
+
+def test_updateTurnKnobsGUI_altitudeTurns_1():
+    value = 1.5
+    app.app.mount.model.altitudeTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '1.50 revs down' == app.ui.altitudeTurns.text()
+    value = None
+    app.app.mount.model.altitudeTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '-' == app.ui.altitudeTurns.text()
+
+
+def test_updateTurnKnobsGUI_altitudeTurns_2():
+    value = -1.5
+    app.app.mount.model.altitudeTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '1.50 revs up' == app.ui.altitudeTurns.text()
+    value = None
+    app.app.mount.model.altitudeTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '-' == app.ui.altitudeTurns.text()
+
+
+def test_updateTurnKnobsGUI_azimuthTurns_1():
+    value = 1.5
+    app.app.mount.model.azimuthTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '1.50 revs left' == app.ui.azimuthTurns.text()
+    value = None
+    app.app.mount.model.azimuthTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '-' == app.ui.azimuthTurns.text()
+
+
+def test_updateTurnKnobsGUI_azimuthTurns_2():
+    value = -1.5
+    app.app.mount.model.azimuthTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '1.50 revs right' == app.ui.azimuthTurns.text()
+    value = None
+    app.app.mount.model.azimuthTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '-' == app.ui.azimuthTurns.text()

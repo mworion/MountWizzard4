@@ -872,6 +872,10 @@ class Model(object):
             self.app.message.emit('No modeling start because more than 99 points', 2)
             return False
 
+        # check if imaging in window is running and abort it if necessary
+        if self.app.uiWindows['showImageW']['class']:
+            self.app.uiWindows['showImageW']['class'].abortImage()
+
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'pause', False)

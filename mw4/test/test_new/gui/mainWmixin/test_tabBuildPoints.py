@@ -47,6 +47,7 @@ def module_setup_teardown(qtbot):
         config = {'mainW': {}}
         redrawHemisphere = pyqtSignal()
         message = pyqtSignal(str, int)
+        mwGlob = {'configDir': 'mw4/test/config'}
         mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
         data = DataPoint(app=Test1(), configDir='mw4/test/config')
 
@@ -58,6 +59,8 @@ def module_setup_teardown(qtbot):
 
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
+    app.openFile = MWidget().openFile
+    app.saveFile = MWidget().saveFile
     app.deleteLater = MWidget().deleteLater
     app.deviceStat = dict()
     app.log = CustomLogger(logging.getLogger(__name__), {})
@@ -145,16 +148,18 @@ def test_genBuildNorm_2(qtbot):
 
 def test_genBuildMin_1(qtbot):
     app.ui.checkAutoDeleteHorizon.setChecked(True)
-    with qtbot.assertNotEmitted(app.app.message):
+    with qtbot.waitSignal(app.app.message) as blocker:
         suc = app.genBuildMin()
-        assert suc
+        assert not suc
+        assert ['Build points [min] cannot be generated', 2] == blocker.args
 
 
 def test_genBuildMin_1b(qtbot):
     app.ui.checkAutoDeleteHorizon.setChecked(False)
-    with qtbot.assertNotEmitted(app.app.message):
+    with qtbot.waitSignal(app.app.message) as blocker:
         suc = app.genBuildMin()
-        assert suc
+        assert not suc
+        assert ['Build points [min] cannot be generated', 2] == blocker.args
 
 
 def test_genBuildMin_2(qtbot):

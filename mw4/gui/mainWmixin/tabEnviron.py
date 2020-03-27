@@ -384,9 +384,10 @@ class EnvironGui(object):
         self.log.debug(f'{url}: {data.status_code}')
         return data
 
-    def updateClearOutsideImages(self, image=None):
+    @staticmethod
+    def processClearOutsideImage(image=None):
         """
-        updateClearOutsideImages takes the image, split it and puts the image
+        processClearOutsideImage takes the image, split it and puts the image
         to the Gui. for the transformation qimage2ndarray is used because of the speed
         for the calculations. dim is a factor which reduces the lightness of the overall
         image
@@ -394,9 +395,6 @@ class EnvironGui(object):
         :param image:
         :return: success
         """
-
-        if image is None:
-            return False
 
         dim = 0.85
         image.convertToFormat(PyQt5.QtGui.QImage.Format_RGB32)
@@ -448,15 +446,13 @@ class EnvironGui(object):
 
         # re transfer to QImage from numpy array
         imageBase = qimage2ndarray.array2qimage(dim * imgArr)
-
         pixmapBase = PyQt5.QtGui.QPixmap().fromImage(imageBase)
-        self.ui.picClearOutside.setPixmap(pixmapBase)
 
-        return True
+        return pixmapBase
 
-    def updateClearOutsideGui(self, data=None):
+    def updateClearOutsideImage(self, data=None):
         """
-        updateClearOutsideGui takes the returned data from a web fetch and makes an image
+        updateClearOutsideImage takes the returned data from a web fetch and makes an image
         out of it
 
         :param data:
@@ -467,9 +463,18 @@ class EnvironGui(object):
             return False
 
         image = PyQt5.QtGui.QImage()
+
+        if not hasattr(data, 'content'):
+            return False
+        if not isinstance(data.content, bytearray):
+            return False
+
         image.loadFromData(data.content)
-        suc = self.updateClearOutsideImages(image=image)
-        return suc
+
+        pixmapBase = self.processClearOutsideImage(image=image)
+        self.ui.picClearOutside.setPixmap(pixmapBase)
+
+        return True
 
     def getClearOutside(self, url=''):
         """
@@ -479,7 +484,7 @@ class EnvironGui(object):
         :return:
         """
         worker = Worker(self.getWebDataWorker, url)
-        worker.signals.result.connect(self.updateClearOutsideGui)
+        worker.signals.result.connect(self.updateClearOutsideImage)
         self.threadPool.start(worker)
 
     def updateClearOutside(self):

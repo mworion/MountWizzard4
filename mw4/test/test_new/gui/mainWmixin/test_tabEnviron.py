@@ -24,6 +24,7 @@ import logging
 
 # external packages
 from PyQt5.QtGui import QImage
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
@@ -470,46 +471,44 @@ def test_getWebDataRunner_4():
         assert suc
 
 
-def test_updateClearOutsideImages_1():
-    suc = app.updateClearOutsideImages()
-    assert not suc
-
-
-def test_updateClearOutsideImages_2():
+def test_processClearOutsideImage_1():
     image = QImage('mw4/test/testData/forecast.png')
-    suc = app.updateClearOutsideImages(image=image)
+    suc = app.processClearOutsideImage(image=image)
     assert suc
 
 
-def test_updateClearOutsideGui_1():
-    suc = app.updateClearOutsideGui()
+def test_updateClearOutsideImage_1():
+    suc = app.updateClearOutsideImage()
     assert not suc
 
 
-def test_updateClearOutsideGui_2():
+def test_updateClearOutsideImage_2():
+    image = QImage('mw4/test/testData/forecast.png')
+    pixmapBase = QPixmap().fromImage(image)
+
     class Test:
         content = 'test'
-    with mock.patch.object(QImage,
-                           'loadFromData',
-                           return_value='test'):
-        with mock.patch.object(app,
-                               'updateClearOutsideImages',
-                               return_value=False):
-            suc = app.updateClearOutsideGui(Test())
-            assert not suc
+
+    suc = app.updateClearOutsideImage(Test())
+    assert not suc
 
 
-def test_updateClearOutsideGui_3():
+def test_updateClearOutsideImage_3():
+    image = QImage('mw4/test/testData/forecast.png')
+    pixmapBase = QPixmap().fromImage(image)
+
+    with open('mw4/test/testData/forecast.png', 'rb') as image:
+        f = image.read()
+        b = bytearray(f)
+
     class Test:
-        content = 'test'
-    with mock.patch.object(QImage,
-                           'loadFromData',
-                           return_value='test'):
-        with mock.patch.object(app,
-                               'updateClearOutsideImages',
-                               return_value=True):
-            suc = app.updateClearOutsideGui(Test())
-            assert suc
+        content = b
+
+    with mock.patch.object(app,
+                           'processClearOutsideImage',
+                           return_value=pixmapBase):
+        suc = app.updateClearOutsideImage(Test())
+        assert suc
 
 
 def test_updateClearOutside_1():

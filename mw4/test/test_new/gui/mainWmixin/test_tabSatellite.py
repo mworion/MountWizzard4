@@ -27,10 +27,8 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import Qt
 from mountcontrol.qtmount import Mount
 from skyfield.toposlib import Topos
-import numpy as np
 from skyfield.api import EarthSatellite
 from skyfield.api import Angle
 
@@ -119,17 +117,7 @@ def test_setupSatelliteGui_2():
 
 
 def test_loadTLEData_1():
-    suc = app.loadRawTLEData()
-    assert not suc
-
-
-def test_loadTLEData_2():
-    suc = app.loadRawTLEData('mw4/test/testData/act.txt')
-    assert not suc
-
-
-def test_loadTLEData_3():
-    suc = app.loadRawTLEData('mw4/test/testData/active.txt')
+    suc = app.loadRawTLEData(filePath='mw4/test/data/active.txt')
     assert suc
 
 
@@ -148,31 +136,34 @@ def test_loadSatelliteSourceWorker_2():
 
 
 def test_loadSatelliteSourceWorker_3():
+    source = 'http://www.celestrak.com/NORAD/elements/visual.txt'
+    suc = app.loadTLEDataFromSourceURLsWorker(source=source, reload=False)
+    assert suc
+
+
+def test_loadTLEDataFromSourceURLs_1():
+    suc = app.loadTLEDataFromSourceURLs()
+    assert not suc
+
+
+def test_loadTLEDataFromSourceURLs_2():
     app.ui.satelliteSource.addItem('Active')
-    with mock.patch.object(app,
-                           'loadRawTLEData',
-                           return_value=True):
-        suc = app.loadTLEDataFromSourceURLsWorker()
-        assert suc
-
-
-def test_loadSatelliteSource_1():
     suc = app.loadTLEDataFromSourceURLs()
     assert suc
 
 
-def test_updateSatelliteData_1():
+def test_updateOrbit_1():
     suc = app.updateOrbit()
     assert not suc
 
 
-def test_updateSatelliteData_2():
+def test_updateOrbit_2():
     app.satellite = 'test'
     suc = app.updateOrbit()
     assert not suc
 
 
-def test_updateSatelliteData_3():
+def test_updateOrbit_3():
     app.satellite = 'test'
     app.ui.mainTabWidget.setCurrentIndex(1)
     app.app.uiWindows = {'showSatelliteW': {'test': 1}}
@@ -180,7 +171,7 @@ def test_updateSatelliteData_3():
     assert not suc
 
 
-def test_updateSatelliteData_4():
+def test_updateOrbit_4():
     class Test1(QObject):
         update = pyqtSignal(object, object, object)
 
@@ -197,7 +188,7 @@ def test_updateSatelliteData_4():
     assert suc
 
 
-def test_updateSatelliteData_5():
+def test_updateOrbit_5():
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]

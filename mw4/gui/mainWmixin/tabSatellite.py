@@ -117,38 +117,33 @@ class Satellite(object):
 
         return True
 
-    def loadRawTLEData(self, source=''):
+    @staticmethod
+    def loadRawTLEData(filePath=''):
         """
         loadRawTLEData load the two line elements from the source file and stores is separately
         in a dictionary, because we need that data later for transfer it to the mount
         computer. unfortunately the loader from skyfield does not store the original TLE
         data, but only parses it and throws the original away.
 
-        :param source:
-        :return: success
+        :param filePath:
+        :return: satellitesRawTLE
         """
 
-        fileName = os.path.basename(source)
-        dirPath = self.app.mwGlob['dataDir']
-        filePath = f'{dirPath}/{fileName}'
-
-        if not os.path.isfile(filePath):
-            return {}
-
-        satellitesRawTLE = {}
+        data = dict()
         with open(filePath, mode='r') as tleFile:
             while True:
                 l0 = tleFile.readline()
                 l1 = tleFile.readline()
                 l2 = tleFile.readline()
 
-                if not l0:
+                if l0 == '':
                     break
-                satellitesRawTLE[l0.strip()] = {'line0': l0.strip('\n'),
-                                                'line1': l1.strip('\n'),
-                                                'line2': l2.strip('\n'),
-                                                }
-        return satellitesRawTLE
+                data[l0.strip()] = {'line0': l0.strip('\n'),
+                                    'line1': l1.strip('\n'),
+                                    'line2': l2.strip('\n'),
+                                    }
+
+        return data
 
     def loadTLEDataFromSourceURLsWorker(self, source='', reload=False):
         """
@@ -164,8 +159,17 @@ class Satellite(object):
         if not source:
             return False
 
-        self.satellites = self.app.mount.obsSite.loader.tle(source, reload=reload)
-        self.satellitesRawTLE = self.loadRawTLEData(source)
+        satellites = self.app.mount.obsSite.loader.tle_file(source, reload=reload)
+        self.satellites = {sat.name: sat for sat in satellites}
+
+        fileName = os.path.basename(source)
+        dirPath = self.app.mwGlob['dataDir']
+        filePath = f'{dirPath}/{fileName}'
+
+        if not os.path.isfile(filePath):
+            return False
+
+        self.satellitesRawTLE = self.loadRawTLEData(filePath=filePath)
 
         if len(self.satellites) != len(self.satellitesRawTLE):
             return False

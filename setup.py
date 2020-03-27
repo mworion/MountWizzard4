@@ -50,7 +50,7 @@ setup(
         'requests==2.22.0',
         'requests_toolbelt==0.9.1',
         'numpy==1.18.1',
-        'skyfield==1.17',
+        'skyfield==1.18',
         'qimage2ndarray==1.8.2',
         'importlib_metadata==1.3.0',
         'opencv-python-headless==4.1.2.30',

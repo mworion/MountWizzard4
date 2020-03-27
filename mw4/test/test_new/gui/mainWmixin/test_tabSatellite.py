@@ -87,7 +87,7 @@ def module_setup_teardown(qtbot):
 
 
 def test_sources():
-    assert len(app.satelliteSourceDropDown) == 13
+    assert len(app.satelliteSourceURLs) == 13
 
 
 def test_initConfig_1():
@@ -96,13 +96,13 @@ def test_initConfig_1():
 
 
 def test_setupSatelliteSourceGui():
-    suc = app.setupSatelliteSourceGui()
+    suc = app.setupSatelliteSourceURLsDropDown()
     assert suc
-    assert len(app.ui.satelliteSource) == len(app.satelliteSourceDropDown)
+    assert len(app.ui.satelliteSource) == len(app.satelliteSourceURLs)
 
 
 def test_setupSatelliteGui_1():
-    suc = app.setupSatelliteGui()
+    suc = app.setupSatelliteNameList()
     assert suc
 
 
@@ -114,61 +114,61 @@ def test_setupSatelliteGui_2():
         model = Test1()
 
     app.satellites = {'sat1': Test()}
-    suc = app.setupSatelliteGui()
+    suc = app.setupSatelliteNameList()
     assert suc
 
 
 def test_loadTLEData_1():
-    suc = app.loadTLEData()
+    suc = app.loadRawTLEData()
     assert not suc
 
 
 def test_loadTLEData_2():
-    suc = app.loadTLEData('mw4/test/testData/act.txt')
+    suc = app.loadRawTLEData('mw4/test/testData/act.txt')
     assert not suc
 
 
 def test_loadTLEData_3():
-    suc = app.loadTLEData('mw4/test/testData/active.txt')
+    suc = app.loadRawTLEData('mw4/test/testData/active.txt')
     assert suc
 
 
 def test_loadSatelliteSourceWorker_1():
-    suc = app.loadSatelliteSourceWorker()
+    suc = app.loadTLEDataFromSourceURLsWorker()
     assert not suc
 
 
 def test_loadSatelliteSourceWorker_2():
     app.ui.satelliteSource.addItem('Active')
     with mock.patch.object(app,
-                           'loadTLEData',
+                           'loadRawTLEData',
                            return_value=False):
-        suc = app.loadSatelliteSourceWorker()
+        suc = app.loadTLEDataFromSourceURLsWorker()
         assert not suc
 
 
 def test_loadSatelliteSourceWorker_3():
     app.ui.satelliteSource.addItem('Active')
     with mock.patch.object(app,
-                           'loadTLEData',
+                           'loadRawTLEData',
                            return_value=True):
-        suc = app.loadSatelliteSourceWorker()
+        suc = app.loadTLEDataFromSourceURLsWorker()
         assert suc
 
 
 def test_loadSatelliteSource_1():
-    suc = app.loadSatelliteSource()
+    suc = app.loadTLEDataFromSourceURLs()
     assert suc
 
 
 def test_updateSatelliteData_1():
-    suc = app.updateSatelliteData()
+    suc = app.updateOrbit()
     assert not suc
 
 
 def test_updateSatelliteData_2():
     app.satellite = 'test'
-    suc = app.updateSatelliteData()
+    suc = app.updateOrbit()
     assert not suc
 
 
@@ -176,7 +176,7 @@ def test_updateSatelliteData_3():
     app.satellite = 'test'
     app.ui.mainTabWidget.setCurrentIndex(1)
     app.app.uiWindows = {'showSatelliteW': {'test': 1}}
-    suc = app.updateSatelliteData()
+    suc = app.updateOrbit()
     assert not suc
 
 
@@ -193,7 +193,7 @@ def test_updateSatelliteData_4():
     app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
     app.ui.mainTabWidget.setCurrentIndex(1)
     app.app.uiWindows = {'showSatelliteW': {'classObj': Test()}}
-    suc = app.updateSatelliteData()
+    suc = app.updateOrbit()
     assert suc
 
 
@@ -204,13 +204,13 @@ def test_updateSatelliteData_5():
     app.satellite = EarthSatellite(*tle[1:3], name=tle[0])
     app.ui.mainTabWidget.setCurrentIndex(5)
     app.app.uiWindows = {'showSatelliteW': {'test': 1}}
-    suc = app.updateSatelliteData()
+    suc = app.updateOrbit()
     assert suc
 
 
 def test_programTLEToMount_1():
     app.app.mount.mountUp = False
-    suc = app.programTLEToMount()
+    suc = app.programTLEDataToMount()
     assert not suc
 
 
@@ -221,7 +221,7 @@ def test_programTLEToMount_2():
     app.satellite = Test()
     app.app.mount.mountUp = True
     app.app.mount.satellite.tleParams.name = 'TIANGONG 1'
-    suc = app.programTLEToMount()
+    suc = app.programTLEDataToMount()
     assert suc
 
 
@@ -233,19 +233,19 @@ def test_programTLEToMount_3():
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satelliteTLE = {tle[0].strip('\n'):
+    app.satellitesRawTLE = {tle[0].strip('\n'):
                             {'line0': tle[0].strip('\n'),
                              'line1': tle[1].strip('\n'),
                              'line2': tle[2].strip('\n'),
                              }
-                        }
+                            }
 
     app.app.mount.mountUp = True
     app.app.mount.satellite.tleParams.name = 'TIANGONG 2'
     with mock.patch.object(app.app.mount.satellite,
                            'setTLE',
                            return_value=False):
-        suc = app.programTLEToMount()
+        suc = app.programTLEDataToMount()
         assert not suc
 
 
@@ -257,25 +257,25 @@ def test_programTLEToMount_4():
     tle = ["TIANGONG 1",
            "1 37820U 11053A   14314.79851609  .00064249  00000-0  44961-3 0  5637",
            "2 37820  42.7687 147.7173 0010686 283.6368 148.1694 15.73279710179072"]
-    app.satelliteTLE = {tle[0].strip('\n'):
+    app.satellitesRawTLE = {tle[0].strip('\n'):
                             {'line0': tle[0].strip('\n'),
                              'line1': tle[1].strip('\n'),
                              'line2': tle[2].strip('\n'),
                              }
-                        }
+                            }
     app.app.mount.mountUp = True
     app.app.mount.satellite.tleParams.name = 'TIANGONG 2'
     with mock.patch.object(app.app.mount.satellite,
                            'setTLE',
                            return_value=True):
-        suc = app.programTLEToMount()
+        suc = app.programTLEDataToMount()
         assert suc
 
 
 def test_calcTLEParams_1():
     with mock.patch.object(app.app.mount,
                            'calcTLE'):
-        suc = app.calcTLEParams()
+        suc = app.calcOrbitFromTLEInMount()
         assert not suc
 
 
@@ -283,7 +283,7 @@ def test_calcTLEParams_2():
     app.satellite = 'test'
     with mock.patch.object(app.app.mount,
                            'calcTLE'):
-        suc = app.calcTLEParams()
+        suc = app.calcOrbitFromTLEInMount()
         assert suc
 
 

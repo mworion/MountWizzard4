@@ -41,9 +41,9 @@ class Satellite(object):
 
         self.satellites = dict()
         self.satellite = None
-        self.satelliteTLE = {}
+        self.satellitesRawTLE = {}
 
-        self.satelliteSourceDropDown = {
+        self.satelliteSourceURLs = {
             'Active': 'http://www.celestrak.com/NORAD/elements/active.txt',
             'Space Stations': 'http://www.celestrak.com/NORAD/elements/stations.txt',
             '100 brightest': 'http://www.celestrak.com/NORAD/elements/visual.txt',
@@ -62,13 +62,13 @@ class Satellite(object):
         self.ui.listSatelliteNames.itemPressed.connect(self.signalExtractSatelliteData)
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
-        self.ui.satelliteSource.currentIndexChanged.connect(self.loadSatelliteSource)
+        self.ui.satelliteSource.currentIndexChanged.connect(self.loadTLEDataFromSourceURLs)
 
         self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
         self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
-        self.ui.isOnline.stateChanged.connect(self.loadSatelliteSource)
+        self.ui.isOnline.stateChanged.connect(self.loadTLEDataFromSourceURLs)
 
-        self.app.update3s.connect(self.updateSatelliteData)
+        self.app.update3s.connect(self.updateOrbit)
 
     def initConfig(self):
         """
@@ -79,29 +79,29 @@ class Satellite(object):
         :return: True for test purpose
         """
 
-        self.setupSatelliteSourceGui()
-        self.loadSatelliteSource()
+        self.setupSatelliteSourceURLsDropDown()
+        self.loadTLEDataFromSourceURLs()
         return True
 
-    def setupSatelliteSourceGui(self):
+    def setupSatelliteSourceURLsDropDown(self):
         """
-        setupSatelliteSourceGui handles the dropdown list for the satellite data online
-        sources. therefore we add the necessary entries to populate the list.
+        setupSatelliteSourceURLsDropDown handles the dropdown list for the satellite data
+        online sources. therefore we add the necessary entries to populate the list.
 
         :return: success for test
         """
 
         self.ui.satelliteSource.clear()
         self.ui.satelliteSource.setView(PyQt5.QtWidgets.QListView())
-        for name in self.satelliteSourceDropDown.keys():
+        for name in self.satelliteSourceURLs.keys():
             self.ui.satelliteSource.addItem(name)
 
         return True
 
-    def setupSatelliteGui(self):
+    def setupSatelliteNameList(self):
         """
-        setupSatelliteGui clears the list view of satellite names deriving from the selected
-        source file on disk. after that it populated the list with actual data.
+        setupSatelliteNameList clears the list view of satellite names deriving from the
+        selected source file on disk. after that it populated the list with actual data.
 
         :return: success for test
         """
@@ -117,9 +117,9 @@ class Satellite(object):
 
         return True
 
-    def loadTLEData(self, source=''):
+    def loadRawTLEData(self, source=''):
         """
-        loadTLEData load the two line elements from the source file and stores is separately
+        loadRawTLEData load the two line elements from the source file and stores is separately
         in a dictionary, because we need that data later for transfer it to the mount
         computer. unfortunately the loader from skyfield does not store the original TLE
         data, but only parses it and throws the original away.
@@ -128,17 +128,14 @@ class Satellite(object):
         :return: success
         """
 
-        if not source:
-            return False
-
         fileName = os.path.basename(source)
         dirPath = self.app.mwGlob['dataDir']
         filePath = f'{dirPath}/{fileName}'
 
         if not os.path.isfile(filePath):
-            return False
+            return {}
 
-        self.satelliteTLE = {}
+        satellitesRawTLE = {}
         with open(filePath, mode='r') as tleFile:
             while True:
                 l0 = tleFile.readline()
@@ -147,15 +144,37 @@ class Satellite(object):
 
                 if not l0:
                     break
-                self.satelliteTLE[l0.strip()] = {'line0': l0.strip('\n'),
-                                                 'line1': l1.strip('\n'),
-                                                 'line2': l2.strip('\n'),
-                                                 }
+                satellitesRawTLE[l0.strip()] = {'line0': l0.strip('\n'),
+                                                'line1': l1.strip('\n'),
+                                                'line2': l2.strip('\n'),
+                                                }
+        return satellitesRawTLE
+
+    def loadTLEDataFromSourceURLsWorker(self, source='', reload=False):
+        """
+        loadTLEDataFromSourceURLsWorker selects from a drop down list of possible satellite
+        data sources on the web and once selected downloads the data. depending of the
+        setting of reload is true setting, it takes an already loaded file from local disk.
+        after loading or opening the source file, it updates the satellite list in the list
+        view widget for the selection of satellites.
+
+        :return: success
+        """
+
+        if not source:
+            return False
+
+        self.satellites = self.app.mount.obsSite.loader.tle(source, reload=reload)
+        self.satellitesRawTLE = self.loadRawTLEData(source)
+
+        if len(self.satellites) != len(self.satellitesRawTLE):
+            return False
+
         return True
 
-    def loadSatelliteSourceWorker(self):
+    def loadTLEDataFromSourceURLs(self):
         """
-        loadSatelliteSourceWorker selects from a drop down list of possible satellite
+        loadTLEDataFromSourceURLs selects from a drop down list of possible satellite
         data sources on the web and once selected downloads the data. depending of the
         setting of reload is true setting, it takes an already loaded file from local disk.
         after loading or opening the source file, it updates the satellite list in the list
@@ -166,39 +185,23 @@ class Satellite(object):
 
         key = self.ui.satelliteSource.currentText()
 
-        if key not in self.satelliteSourceDropDown:
+        if key not in self.satelliteSourceURLs:
             return False
 
-        source = self.satelliteSourceDropDown[key]
+        source = self.satelliteSourceURLs[key]
         reload = self.ui.isOnline.isChecked()
-        self.satellites = self.app.mount.obsSite.loader.tle(source, reload=reload)
 
-        suc = self.loadTLEData(source)
-        if not suc:
-            return False
-
-        return True
-
-    def loadSatelliteSource(self):
-        """
-        loadSatelliteSource selects from a drop down list of possible satellite data sources
-        on the web and once selected downloads the data. depending of the setting of reload
-        is true setting, it takes an already loaded file from local disk.
-        after loading or opening the source file, it updates the satellite list in the list
-        view widget for the selection of satellites.
-
-        :return: success
-        """
-
-        worker = Worker(self.loadSatelliteSourceWorker)
-        worker.signals.result.connect(self.setupSatelliteGui)
+        worker = Worker(self.loadTLEDataFromSourceURLsWorker,
+                        source=source,
+                        reload=reload)
+        worker.signals.result.connect(self.setupSatelliteNameList)
         self.threadPool.start(worker)
 
         return True
 
-    def updateSatelliteData(self):
+    def updateOrbit(self):
         """
-        updateSatelliteData calculates the actual satellite orbits, sub point etc. and
+        updateOrbit calculates the actual satellite orbits, sub point etc. and
         updates the data in the gui. in addition when satellite window is open it signals
         this update data as well for matplotlib drawings in satellite window.
         this method is called cyclic every 3 seconds for updates
@@ -220,6 +223,7 @@ class Satellite(object):
 
         if not winObj:
             return False
+
         # if nothing is visible, nothing to update !
         if not winObj.get('classObj') and not satTabVisible:
             return False
@@ -259,9 +263,9 @@ class Satellite(object):
         winObj['classObj'].signals.update.emit(observe, subpoint, altaz)
         return True
 
-    def programTLEToMount(self):
+    def programTLEDataToMount(self):
         """
-        programTLEToMount get the satellite data and programs this TLE data into the mount.
+        programTLEDataToMount get the satellite data and programs this TLE data into the mount.
         after programming the parameters it forces the mount to calculate the satellite
         orbits immediately
 
@@ -277,7 +281,7 @@ class Satellite(object):
             self.app.message.emit(f'Actual satellite is  [{self.satellite.name}]', 0)
         else:
             self.app.message.emit(f'Programming [{self.satellite.name}] to mount', 0)
-            data = self.satelliteTLE[self.satellite.name]
+            data = self.satellitesRawTLE[self.satellite.name]
             suc = satellite.setTLE(line0=data['line0'],
                                    line1=data['line1'],
                                    line2=data['line2'])
@@ -287,9 +291,10 @@ class Satellite(object):
 
         return True
 
-    def calcTLEParams(self):
+    def calcOrbitFromTLEInMount(self):
         """
-        calcTLEParams is called cyclic to update the orbit parameters in the mount computer
+        calcOrbitFromTLEInMount is called cyclic to update the orbit parameters in the
+        mount computer
 
         :return: success
         """
@@ -357,29 +362,11 @@ class Satellite(object):
 
         return True
 
-    def signalExtractSatelliteData(self, widget):
-        """
-
-        :param widget: widget from where the signal is send
-        :return: True for test purpose
-        """
-        if not widget:
-            return False
-
-        if self.ui.listSatelliteNames.currentItem() is None:
-            return False
-        satName = self.ui.listSatelliteNames.currentItem().text()[8:]
-        self.extractSatelliteData(satName=satName)
-
-        return True
-
     def extractSatelliteData(self, satName=''):
         """
         extractSatelliteData is called when a satellite is selected via mouse click in the
-        list menu. it collects the data and writes basic stuff to the gui.
-        for speeding up, is calls updateSatelliteData immediately to get the actual data
-        pushed to the gui and not waiting for the cyclic task.
-        depending on the age of the satellite data is colors the frame
+        list menu. it collects the data and writes basic stuff to the gui. depending on the
+        age of the satellite data is colors the frame
 
         :param satName: additional parameter for calling this method
         :return: success
@@ -431,9 +418,9 @@ class Satellite(object):
         self.ui.satNeedFlip.setText('-')
 
         #
-        self.updateSatelliteData()
-        self.programTLEToMount()
-        self.calcTLEParams()
+        self.updateOrbit()
+        self.programTLEDataToMount()
+        self.calcOrbitFromTLEInMount()
         self.showRises()
 
         winObj = self.app.uiWindows['showSatelliteW']
@@ -442,6 +429,23 @@ class Satellite(object):
             return False
 
         winObj['classObj'].signals.show.emit(self.satellite)
+        return True
+
+    def signalExtractSatelliteData(self, widget):
+        """
+
+        :param widget: widget from where the signal is send
+        :return: True for test purpose
+        """
+        if not widget:
+            return False
+
+        if self.ui.listSatelliteNames.currentItem() is None:
+            return False
+
+        satName = self.ui.listSatelliteNames.currentItem().text()[8:]
+        self.extractSatelliteData(satName=satName)
+
         return True
 
     def getSatelliteDataFromDatabase(self, tleParams=None):

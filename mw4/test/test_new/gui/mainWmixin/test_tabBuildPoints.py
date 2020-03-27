@@ -27,6 +27,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
 from mountcontrol.qtmount import Mount
+from skyfield.toposlib import Topos
 
 # local import
 from mw4.gui.mainWmixin.tabBuildPoints import BuildPoints
@@ -49,6 +50,9 @@ def module_setup_teardown(qtbot):
         message = pyqtSignal(str, int)
         mwGlob = {'configDir': 'mw4/test/config'}
         mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount.obsSite.location = Topos(latitude_degrees=20,
+                                       longitude_degrees=10,
+                                       elevation_m=500)
         data = DataPoint(app=Test1(), configDir='mw4/test/config')
 
     widget = QWidget()

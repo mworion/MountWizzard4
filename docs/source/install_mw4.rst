@@ -111,14 +111,11 @@ shows the progress of installation.
 
     MW4_Install.bat         # Windows
     MW4_Install.sh          # Ubuntu
-    MW4_Install_3x.command     # OSx
+    MW4_Install.command     # OSx
 
 With the script a virtual environment for python is installed in your working dir under the
 name "venv". After that it installs all necessary libraries and MW4 itself into this virtual
 environment. So any other installation of python applications is not influenced by MW4 install.
-
-For MacOSx please choose the script according the installed Python version for the
-installer (3.6, 3.7 or 3.8).
 
 After running the install script the directory should for OSx look like:
 

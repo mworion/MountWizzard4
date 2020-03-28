@@ -18,6 +18,8 @@
 #
 ###########################################################
 # standard libraries
+import os
+import json
 import unittest.mock as mock
 
 # external packages
@@ -40,6 +42,11 @@ def module_setup_teardown(qtbot):
               'modelDir': 'mw4/test/model',
               'workDir': 'mw4/test',
               }
+
+    if os.path.isfile('mw4/test/config/config.cfg'):
+        os.remove('mw4/test/config/config.cfg')
+    if os.path.isfile('mw4/test/config/new.cfg'):
+        os.remove('mw4/test/config/new.cfg')
 
     app = MountWizzard4(mwGlob=mwGlob)
     app.close = MWidget().close
@@ -164,7 +171,6 @@ def test_showWindows_1():
 
 
 def test_quit_1():
-
     with mock.patch.object(PyQt5.QtCore.QCoreApplication,
                            'quit'):
         suc = app.quit()
@@ -172,7 +178,6 @@ def test_quit_1():
 
 
 def test_quitSave_1():
-
     with mock.patch.object(PyQt5.QtCore.QCoreApplication,
                            'quit'):
         suc = app.quitSave()
@@ -180,7 +185,6 @@ def test_quitSave_1():
 
 
 def test_defaultConfig():
-
     val = app.defaultConfig()
     assert val
 
@@ -191,5 +195,141 @@ def test_loadConfig_1():
 
 
 def test_loadConfig_2():
-    suc = app.loadConfig()
+    suc = app.loadConfig('config')
+    assert suc
+
+
+def test_loadConfig_3():
+    suc = app.loadConfig('test')
+    assert not suc
+
+
+def test_loadConfig_4():
+    config = {'test': 'test'}
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+
+    with mock.patch.object(json,
+                           'load',
+                           side_effect=Exception()):
+        suc = app.loadConfig('config')
+        assert not suc
+
+
+def test_loadConfig_5():
+    config = {'reference': 'test'}
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+
+    suc = app.loadConfig('config')
+    assert not suc
+
+
+def test_loadConfig_6():
+    config = {'reference': 'new',
+              'profileName': 'new'}
+
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+
+    suc = app.loadConfig('config')
+    assert not suc
+
+
+def test_loadConfig_7():
+    config = {'reference': 'new',
+              'profileName': 'new'}
+
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+    with open('mw4/test/config/new.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+
+    suc = app.loadConfig('config')
+    assert suc
+
+
+def test_loadConfig_8():
+    config = {'profileName': 'new'}
+
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+    with open('mw4/test/config/new.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+
+    suc = app.loadConfig('config')
+    assert suc
+
+
+def test_loadConfig_9():
+    config = {'reference': 'config',
+              'profileName': 'config'}
+
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+
+    suc = app.loadConfig('config')
+    assert suc
+
+
+def test_saveConfig_1():
+    app.config = {'profileName': 'config'}
+
+    suc = app.saveConfig()
+    assert suc
+    assert os.path.isfile('mw4/test/config/config.cfg')
+
+
+def test_saveConfig_2():
+    app.config = {'profileName': 'config'}
+
+    suc = app.saveConfig('config')
+    assert suc
+    assert os.path.isfile('mw4/test/config/config.cfg')
+
+
+def test_saveConfig_3():
+    app.config = {'reference': 'config',
+                  'profileName': 'config'}
+
+    suc = app.saveConfig('config')
+    assert suc
+    assert os.path.isfile('mw4/test/config/config.cfg')
+
+
+def test_saveConfig_4():
+    app.config = {'profileName': 'new'}
+
+    suc = app.saveConfig('new')
+    assert suc
+    assert os.path.isfile('mw4/test/config/config.cfg')
+    assert os.path.isfile('mw4/test/config/new.cfg')
+
+
+def test_loadMountData_1():
+    app.mountUp = False
+    suc = app.loadMountData(True)
+    assert suc
+
+
+def test_loadMountData_2():
+    app.mountUp = False
+    suc = app.loadMountData(False)
+    assert not suc
+
+
+def test_loadMountData_3():
+    app.mountUp = True
+    suc = app.loadMountData(False)
+    assert not suc
+
+
+def test_loadMountData_4():
+    app.mountUp = True
+    suc = app.loadMountData(True)
+    assert suc
+
+
+def test_writeMessageQueue():
+    suc = app.writeMessageQueue('test', 1)
     assert suc

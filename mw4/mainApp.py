@@ -421,8 +421,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         configDir = self.mwGlob['configDir']
-        # looking for file existence and creating new if necessary
 
+        # looking for file existence and creating new if necessary
         if name is None:
             name = 'config'
         fileName = configDir + '/' + name + '.cfg'
@@ -451,7 +451,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             configData['profileName'] = 'config'
 
         # loading default and finishing up
-        if configData['profileName'] == 'config':
+        if configData.get('profileName', '') == 'config':
             self.config = self.convertData(configData)
             return True
 

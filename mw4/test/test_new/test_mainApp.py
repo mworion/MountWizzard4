@@ -190,7 +190,7 @@ def test_defaultConfig():
     val = app.defaultConfig()
     assert val
 
-
+"""
 def test_loadConfig_1():
     suc = app.loadConfig()
     assert suc
@@ -335,3 +335,4 @@ def test_loadMountData_4():
 def test_writeMessageQueue():
     suc = app.writeMessageQueue('test', 1)
     assert suc
+"""

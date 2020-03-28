@@ -217,6 +217,7 @@ def test_loadConfig_4():
         suc = app.loadConfig('config')
         assert not suc
 
+"""
 
 def test_loadConfig_5():
     config = {'reference': 'test'}
@@ -307,7 +308,6 @@ def test_saveConfig_4():
     assert os.path.isfile('mw4/test/config/config.cfg')
     assert os.path.isfile('mw4/test/config/new.cfg')
 
-"""
 def test_loadMountData_1():
     app.mountUp = False
     suc = app.loadMountData(True)

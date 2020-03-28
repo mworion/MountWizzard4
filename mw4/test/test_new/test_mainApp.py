@@ -218,15 +218,7 @@ def test_loadConfig_4():
         assert not suc
 
 
-def test_loadConfig_5():
-    config = {'reference': 'test'}
-    with open('mw4/test/config/config.cfg', 'w') as outfile:
-        json.dump(config, outfile)
-
-    suc = app.loadConfig('config')
-    assert not suc
-
-
+"""
 def test_loadConfig_6():
     config = {'reference': 'new',
               'profileName': 'new'}
@@ -251,7 +243,6 @@ def test_loadConfig_7():
     assert suc
 
 
-"""
 def test_loadConfig_8():
     config = {'profileName': 'new'}
 
@@ -262,6 +253,7 @@ def test_loadConfig_8():
 
     suc = app.loadConfig('config')
     assert suc
+"""
 
 
 def test_loadConfig_9():
@@ -308,6 +300,7 @@ def test_saveConfig_4():
     assert os.path.isfile('mw4/test/config/config.cfg')
     assert os.path.isfile('mw4/test/config/new.cfg')
 
+
 def test_loadMountData_1():
     app.mountUp = False
     suc = app.loadMountData(True)
@@ -335,4 +328,3 @@ def test_loadMountData_4():
 def test_writeMessageQueue():
     suc = app.writeMessageQueue('test', 1)
     assert suc
-"""

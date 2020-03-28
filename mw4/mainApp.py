@@ -251,7 +251,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         return True
 
-    def deleteWindow(self, widget):
+    def deleteWindow(self, widget=None):
         """
 
         :return: success
@@ -289,9 +289,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                                   elevation_m=elev)
 
         config = self.config.get('mainW', {})
-        if config.get('loglevelDeepDebug', True):
+        if config.get('loglevelDeepDebug', False):
             level = 'DEBUG'
-        elif config.get('loglevelDebug', True):
+        elif config.get('loglevelDebug', False):
             level = 'INFO'
         else:
             level = 'WARN'

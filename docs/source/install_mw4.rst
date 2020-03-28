@@ -22,11 +22,16 @@ following command:
 
 .. code-block:: python
 
+    python3.6 --version
+    -- or --
     python3.7 --version
+    -- or --
+    python3.8 --version
+
     virtualenv --version
 
 In one of the choices you should see the version number of the installed and available
-packages. For python it should say 3.7.x or 3.8.x.
+packages. For python it should say 3.6.x, 3.7.x or 3.8.x.
 
 .. hint:: MW4 does not need admin rights to install or run. To avoid problems with accessing
           directories or file please ensure, that you run install and MW4 itself as normal

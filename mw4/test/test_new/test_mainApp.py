@@ -217,7 +217,6 @@ def test_loadConfig_4():
         suc = app.loadConfig('config')
         assert not suc
 
-"""
 
 def test_loadConfig_5():
     config = {'reference': 'test'}
@@ -252,6 +251,7 @@ def test_loadConfig_7():
     assert suc
 
 
+"""
 def test_loadConfig_8():
     config = {'profileName': 'new'}
 

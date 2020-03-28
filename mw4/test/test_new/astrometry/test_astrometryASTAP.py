@@ -99,8 +99,8 @@ def test_solveASTAP_1():
 def test_solveASTAP_2():
     parent.solverEnviron = {
         'ASTAP': {
-            'programPath': '/Applications',
-            'indexPath': '/Library/Application Support/Astrometry',
+            'programPath': '/Applications/ASTAP.app/Contents/MacOS',
+            'indexPath': '/usr/local/opt/astap',
             'solver': app,
         }
     }
@@ -108,11 +108,11 @@ def test_solveASTAP_2():
     assert not suc
 
 
-def test_solveASTAP_4():
+def test_solveASTAP_3():
     parent.solverEnviron = {
         'ASTAP': {
-            'programPath': '/Applications',
-            'indexPath': '/Library/Application Support/Astrometry',
+            'programPath': '/Applications/ASTAP.app/Contents/MacOS',
+            'indexPath': '/usr/local/opt/astap',
             'solver': app,
         }
     }
@@ -124,11 +124,11 @@ def test_solveASTAP_4():
         assert not suc
 
 
-def test_solveASTAP_5():
+def test_solveASTAP_4():
     parent.solverEnviron = {
         'ASTAP': {
-            'programPath': '/Applications',
-            'indexPath': '/Library/Application Support/Astrometry',
+            'programPath': '/Applications/ASTAP.app/Contents/MacOS',
+            'indexPath': '/usr/local/opt/astap',
             'solver': app,
         }
     }
@@ -140,11 +140,11 @@ def test_solveASTAP_5():
         assert not suc
 
 
-def test_solveASTAP_6():
+def test_solveASTAP_5():
     parent.solverEnviron = {
         'ASTAP': {
-            'programPath': '/Applications',
-            'indexPath': '/Library/Application Support/Astrometry',
+            'programPath': '/Applications/ASTAP.app/Contents/MacOS',
+            'indexPath': '/usr/local/opt/astap',
             'solver': app,
         }
     }

@@ -70,9 +70,10 @@ Ubuntu 18.04: https://youtu.be/kNfLrtJtkq8
 Step 1
 ------
 
-Please create a working directory of your choice and location. The directory can
-be renamed later on, it also can also be moved to any other location. Copy the scripts for your
-platform into this directory.
+Please create a working directory of your choice and location. For MacOSx I would recommend
+not using a location on the desktop as it might cause troubles with execution right in newer
+OSx installations. The directory can be renamed later on, it also can also be moved to any
+other location. Copy the scripts for your platform into this directory.
 
 the directory should than for OSx look like:
 

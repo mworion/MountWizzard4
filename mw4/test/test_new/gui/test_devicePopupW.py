@@ -36,7 +36,7 @@ from mw4.gui.widget import MWidget
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global data, geometry, framework
+    global app, data, geometry, framework
     data = {
         'telescope':
             {
@@ -55,13 +55,13 @@ def test_storeConfig_1(qtbot):
                       framework=framework,
                       driver='telescope',
                       deviceType='telescope')
+
+    app.close = MWidget().close
+    app.deleteLater = MWidget().deleteLater
     qtbot.addWidget(app)
 
-    with mock.patch.object(app,
-                           'close',
-                           return_value=True):
-        suc = app.storeConfig()
-        assert suc
+    suc = app.storeConfig()
+    assert suc
 
 
 def test_closeEvent_1(qtbot):
@@ -70,12 +70,10 @@ def test_closeEvent_1(qtbot):
                       framework=framework,
                       driver='telescope',
                       deviceType='telescope')
+    app.close = MWidget().close
+    app.deleteLater = MWidget().deleteLater
     qtbot.addWidget(app)
-
-    with mock.patch.object(MWidget,
-                           'closeEvent',
-                           return_value=True):
-        app.closeEvent(QCloseEvent())
+    app.closeEvent(QCloseEvent())
 
 
 def test_copyAllIndiSettings_1(qtbot):

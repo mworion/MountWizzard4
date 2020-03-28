@@ -24,15 +24,18 @@ import unittest.mock as mock
 
 # external packages
 import pytest
+from PyQt5.QtWidgets import QWidget
 
 # local import
 from mw4.mainApp import MountWizzard4
 from mw4.gui.widget import MWidget
+from mw4.gui.mainW import Ui_MainWindow
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
-    global app
+    global app, ui
+
     mwGlob = {'configDir': 'mw4/test/config',
               'dataDir': 'mw4/test/data',
               'tempDir': 'mw4/test/temp',
@@ -40,6 +43,10 @@ def module_setup_teardown(qtbot):
               'modelDir': 'mw4/test/model',
               'workDir': 'mw4/test',
               }
+
+    widget = QWidget()
+    ui = Ui_MainWindow()
+    ui.setupUi(widget)
 
     app = MountWizzard4(mwGlob=mwGlob)
     app.close = MWidget().close
@@ -52,6 +59,29 @@ def module_setup_teardown(qtbot):
     del app
 
 
-def test_1():
-    pass
+def test_toggleWindow_1():
+    def Sender():
+        return ui.cameraSetup
+
+    app.sender = Sender
+
+    app.toggleWindow()
+
+
+def test_toggleWindow_2():
+    def Sender():
+        return ui.openMessageW
+
+    app.sender = Sender
+
+    app.toggleWindow()
+
+
+def test_toggleWindow_3():
+    def Sender():
+        return None
+
+    app.sender = Sender
+
+    app.toggleWindow('showMessageW')
 

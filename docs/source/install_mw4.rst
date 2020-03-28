@@ -1,7 +1,7 @@
 Installing MW4
 ==============
 
-When starting with the installation of MW4, python3.7.x should be successful
+When starting with the installation of MW4, python3.7.x or 3.8.x should be successful
 installed. To check, open a terminal (available on all platforms) and run the command
 
 .. code-block:: python
@@ -26,7 +26,7 @@ following command:
     virtualenv --version
 
 In one of the choices you should see the version number of the installed and available
-packages. For python it should say 3.7.x.
+packages. For python it should say 3.7.x or 3.8.x.
 
 .. hint:: MW4 does not need admin rights to install or run. To avoid problems with accessing
           directories or file please ensure, that you run install and MW4 itself as normal
@@ -38,7 +38,7 @@ available from Github:
 
 For Windows10: https://github.com/mworion/MountWizzard4/blob/master/support/Windows_Scripts.zip
 
-For MacOs: https://github.com/mworion/MountWizzard4/blob/master/support/MAC_Scripts.zip
+For MacOs: https://github.com/mworion/MountWizzard4/blob/master/support/MacOSx_Scripts.zip
 
 For Ubuntu: https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_Scripts.zip
 
@@ -111,11 +111,14 @@ shows the progress of installation.
 
     MW4_Install.bat         # Windows
     MW4_Install.sh          # Ubuntu
-    MW4_Install.command     # OSx
+    MW4_Install_3x.command     # OSx
 
 With the script a virtual environment for python is installed in your working dir under the
 name "venv". After that it installs all necessary libraries and MW4 itself into this virtual
 environment. So any other installation of python applications is not influenced by MW4 install.
+
+For MacOSx please choose the script according the installed Python version for the
+installer (3.6, 3.7 or 3.8).
 
 After running the install script the directory should for OSx look like:
 

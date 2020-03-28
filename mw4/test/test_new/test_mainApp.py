@@ -190,7 +190,7 @@ def test_defaultConfig():
     val = app.defaultConfig()
     assert val
 
-"""
+
 def test_loadConfig_1():
     suc = app.loadConfig()
     assert suc
@@ -307,7 +307,7 @@ def test_saveConfig_4():
     assert os.path.isfile('mw4/test/config/config.cfg')
     assert os.path.isfile('mw4/test/config/new.cfg')
 
-
+"""
 def test_loadMountData_1():
     app.mountUp = False
     suc = app.loadMountData(True)

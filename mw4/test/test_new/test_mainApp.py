@@ -44,10 +44,6 @@ def module_setup_teardown(qtbot):
               'workDir': 'mw4/test',
               }
 
-    widget = QWidget()
-    ui = Ui_MainWindow()
-    ui.setupUi(widget)
-
     app = MountWizzard4(mwGlob=mwGlob)
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
@@ -61,7 +57,7 @@ def module_setup_teardown(qtbot):
 
 def test_toggleWindow_1():
     def Sender():
-        return ui.cameraSetup
+        return app.mainW.ui.cameraSetup
 
     app.sender = Sender
 
@@ -70,11 +66,14 @@ def test_toggleWindow_1():
 
 def test_toggleWindow_2():
     def Sender():
-        return ui.openMessageW
+        return app.mainW.ui.openMessageW
 
     app.sender = Sender
-
     app.toggleWindow()
+    assert app.uiWindows['showMessageW']['class'] is not None
+
+    if app.uiWindows['showMessageW']['class']:
+        del app.uiWindows['showMessageW']['class']
 
 
 def test_toggleWindow_3():
@@ -82,6 +81,8 @@ def test_toggleWindow_3():
         return None
 
     app.sender = Sender
-
     app.toggleWindow('showMessageW')
+    assert app.uiWindows['showMessageW']['class'] is not None
 
+    if app.uiWindows['showMessageW']['class']:
+        del app.uiWindows['showMessageW']['class']

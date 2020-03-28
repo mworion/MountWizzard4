@@ -48,14 +48,16 @@ def module_setup_teardown(qtbot):
     if os.path.isfile('mw4/test/config/new.cfg'):
         os.remove('mw4/test/config/new.cfg')
 
-    app = MountWizzard4(mwGlob=mwGlob)
+    with mock.patch.object(PyQt5.QtWidgets.QWidget,
+                           'show'):
+        app = MountWizzard4(mwGlob=mwGlob)
+
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
     qtbot.addWidget(app)
 
     yield
 
-    app.close()
     del app
 
 

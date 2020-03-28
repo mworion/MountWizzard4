@@ -47,6 +47,8 @@ def module_setup_teardown(qtbot):
         os.remove('mw4/test/config/config.cfg')
     if os.path.isfile('mw4/test/config/new.cfg'):
         os.remove('mw4/test/config/new.cfg')
+    if os.path.isfile('mw4/test/config/profile'):
+        os.remove('mw4/test/config/profile')
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
@@ -193,78 +195,49 @@ def test_defaultConfig():
 
 def test_loadConfig_1():
     suc = app.loadConfig()
-    assert suc
+    assert not suc
+    assert app.config['profileName'] == 'config'
 
 
 def test_loadConfig_2():
-    suc = app.loadConfig('config')
-    assert suc
+    with open('mw4/test/config/profile', 'w') as outfile:
+        outfile.write('config')
+
+    suc = app.loadConfig()
+    assert not suc
+    assert app.config['profileName'] == 'config'
 
 
 def test_loadConfig_3():
-    suc = app.loadConfig('test')
-    assert not suc
+    with open('mw4/test/config/profile', 'w') as outfile:
+        outfile.write('config')
+    config = app.defaultConfig()
+
+    with open('mw4/test/config/config.cfg', 'w') as outfile:
+        json.dump(config, outfile)
+
+    suc = app.loadConfig()
+    assert suc
+    assert app.config['profileName'] == 'config'
+    assert app.config['version'] == '4.0'
 
 
 def test_loadConfig_4():
-    config = {'test': 'test'}
+    with open('mw4/test/config/profile', 'w') as outfile:
+        outfile.write('config')
+    config = app.defaultConfig()
+    config['version'] = '5.0'
+
     with open('mw4/test/config/config.cfg', 'w') as outfile:
         json.dump(config, outfile)
 
     with mock.patch.object(json,
                            'load',
                            side_effect=Exception()):
-        suc = app.loadConfig('config')
-        assert not suc
-
-
-"""
-def test_loadConfig_6():
-    config = {'reference': 'new',
-              'profileName': 'new'}
-
-    with open('mw4/test/config/config.cfg', 'w') as outfile:
-        json.dump(config, outfile)
-
-    suc = app.loadConfig('config')
+        suc = app.loadConfig()
     assert not suc
-
-
-def test_loadConfig_7():
-    config = {'reference': 'new',
-              'profileName': 'new'}
-
-    with open('mw4/test/config/config.cfg', 'w') as outfile:
-        json.dump(config, outfile)
-    with open('mw4/test/config/new.cfg', 'w') as outfile:
-        json.dump(config, outfile)
-
-    suc = app.loadConfig('config')
-    assert suc
-
-
-def test_loadConfig_8():
-    config = {'profileName': 'new'}
-
-    with open('mw4/test/config/config.cfg', 'w') as outfile:
-        json.dump(config, outfile)
-    with open('mw4/test/config/new.cfg', 'w') as outfile:
-        json.dump(config, outfile)
-
-    suc = app.loadConfig('config')
-    assert suc
-"""
-
-
-def test_loadConfig_9():
-    config = {'reference': 'config',
-              'profileName': 'config'}
-
-    with open('mw4/test/config/config.cfg', 'w') as outfile:
-        json.dump(config, outfile)
-
-    suc = app.loadConfig('config')
-    assert suc
+    assert app.config['profileName'] == 'config'
+    assert app.config['version'] == '4.0'
 
 
 def test_saveConfig_1():
@@ -273,6 +246,10 @@ def test_saveConfig_1():
     suc = app.saveConfig()
     assert suc
     assert os.path.isfile('mw4/test/config/config.cfg')
+    assert os.path.isfile('mw4/test/config/profile')
+    with open('mw4/test/config/profile', 'r') as infile:
+        name = infile.readline().strip()
+    assert name == 'config'
 
 
 def test_saveConfig_2():
@@ -281,24 +258,34 @@ def test_saveConfig_2():
     suc = app.saveConfig('config')
     assert suc
     assert os.path.isfile('mw4/test/config/config.cfg')
+    assert os.path.isfile('mw4/test/config/profile')
+    with open('mw4/test/config/profile', 'r') as infile:
+        name = infile.readline().strip()
+    assert name == 'config'
 
 
 def test_saveConfig_3():
-    app.config = {'reference': 'config',
-                  'profileName': 'config'}
+    app.config = {'profileName': 'new'}
 
-    suc = app.saveConfig('config')
+    suc = app.saveConfig('new')
     assert suc
-    assert os.path.isfile('mw4/test/config/config.cfg')
+    assert os.path.isfile('mw4/test/config/new.cfg')
+    assert os.path.isfile('mw4/test/config/profile')
+    with open('mw4/test/config/profile', 'r') as infile:
+        name = infile.readline().strip()
+    assert name == 'new'
 
 
 def test_saveConfig_4():
     app.config = {'profileName': 'new'}
 
-    suc = app.saveConfig('new')
+    suc = app.saveConfig()
     assert suc
-    assert os.path.isfile('mw4/test/config/config.cfg')
     assert os.path.isfile('mw4/test/config/new.cfg')
+    assert os.path.isfile('mw4/test/config/profile')
+    with open('mw4/test/config/profile', 'r') as infile:
+        name = infile.readline().strip()
+    assert name == 'new'
 
 
 def test_loadMountData_1():

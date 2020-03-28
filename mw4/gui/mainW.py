@@ -241,7 +241,6 @@ class MainWindow(MWidget,
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
 
         super().closeEvent(closeEvent)
-        self.close()
         self.app.quit()
 
     def quitSave(self):
@@ -252,6 +251,7 @@ class MainWindow(MWidget,
         :return:    nothing
         """
         # remove waiting todo: better place ?
+        self.saveProfile()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.app.quitSave()
 
@@ -620,6 +620,7 @@ class MainWindow(MWidget,
             return False
         suc = self.app.loadConfig(name=name)
         if suc:
+            self.app.config['profileName'] = name
             self.ui.profile.setText(name)
             self.app.message.emit('Profile: [{0}] loaded'.format(name), 0)
         else:
@@ -641,8 +642,8 @@ class MainWindow(MWidget,
                                                 )
         if not name:
             return False
+
         self.app.storeConfig()
-        self.app.config['profileName'] = name
         suc = self.app.saveConfig(name=name)
         if suc:
             self.ui.profile.setText(name)
@@ -660,7 +661,7 @@ class MainWindow(MWidget,
         """
 
         self.app.storeConfig()
-        suc = self.app.saveConfig()
+        suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:
             self.app.message.emit('Actual profile saved', 0)
         else:

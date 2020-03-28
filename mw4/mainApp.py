@@ -406,8 +406,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         if config is None:
             config = dict()
+
         config['profileName'] = 'config'
         config['version'] = '4.0'
+
         return config
 
     def loadConfig(self, name=None):
@@ -422,47 +424,35 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         configDir = self.mwGlob['configDir']
 
-        # looking for file existence and creating new if necessary
+        # looking for file existence and creating new config if necessary
         if name is None:
-            name = 'config'
-        fileName = configDir + '/' + name + '.cfg'
+            profileFile = f'{configDir}/profile'
+            if os.path.isfile(profileFile):
+                with open(profileFile, 'r') as profile:
+                    name = profile.readline().strip()
+            else:
+                name = 'config'
+
+        self.config['profileName'] = name
+
+        fileName = f'{configDir}/{name}.cfg'
 
         if not os.path.isfile(fileName):
             self.config = self.defaultConfig()
-            if name == 'config':
-                self.log.warning('Config file {0} not existing'.format(fileName))
-                return True
-            else:
-                return False
+            self.log.warning(f'Config file {fileName} not existing')
+            return False
 
-        # parsing the default file
         try:
             with open(fileName, 'r') as configFile:
                 configData = json.load(configFile)
         except Exception as e:
-            self.log.critical('Cannot parse: {0}, error: {1}'.format(fileName, e))
+            self.log.critical(f'Cannot parse: {fileName}, error: {e}')
             self.config = self.defaultConfig()
             return False
-
-        # check if reference ist still to default -> correcting
-        if configData.get('reference', '') == 'config':
-            del configData['reference']
-        elif not configData.get('reference', ''):
-            configData['profileName'] = 'config'
-
-        # loading default and finishing up
-        if configData.get('profileName', '') == 'config':
-            self.config = self.convertData(configData)
-            return True
-
-        # checking if reference to another file is available
-        refName = configData.get('reference', 'config')
-        if refName != name:
-            suc = self.loadConfig(refName)
         else:
             self.config = configData
-            return True
-        return suc
+
+        return True
 
     @staticmethod
     def convertData(data):
@@ -487,13 +477,12 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         configDir = self.mwGlob['configDir']
 
-        if self.config.get('profileName', '') == 'config':
-            if 'reference' in self.config:
-                del self.config['reference']
-
-        # default saving for reference
         if name is None:
-            name = self.config.get('reference', 'config')
+            name = self.config['profileName']
+
+        profileFile = f'{configDir}/profile'
+        with open(profileFile, 'w') as profile:
+            profile.writelines(f'{name}')
 
         fileName = configDir + '/' + name + '.cfg'
         with open(fileName, 'w') as outfile:
@@ -501,14 +490,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                       outfile,
                       sort_keys=True,
                       indent=4)
-        # if we save a reference first, we have to save the config as well
-        if name != 'config':
-            fileName = configDir + '/config.cfg'
-            with open(fileName, 'w') as outfile:
-                json.dump(self.config,
-                          outfile,
-                          sort_keys=True,
-                          indent=4)
+
         return True
 
     def loadMountData(self, status):

@@ -203,6 +203,8 @@ class MainWindow(MWidget,
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
 
+        self.show()
+
         return True
 
     def storeConfig(self):

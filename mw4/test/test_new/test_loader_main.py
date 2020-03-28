@@ -21,13 +21,12 @@
 import traceback
 import sys
 import os
-import glob
-import copy
 import unittest.mock as mock
+import socket
 
 # external packages
-import pytest
 import PyQt5
+import pytest
 
 # local import
 from mw4 import loader
@@ -77,12 +76,7 @@ def test_setupWorkDirs_2():
                 assert not val['frozen']
 
 
-def test_checkFrozen_1():
-    mwGlob = loader.checkFrozen()
-    assert not mwGlob['frozen']
-
-
-def test_writeSystemInfo():
+def test_writeSystemInfo_1():
     mwGlob = dict()
     mwGlob['modeldata'] = ''
     mwGlob['frozen'] = ''
@@ -90,6 +84,19 @@ def test_writeSystemInfo():
     mwGlob['workDir'] = ''
     suc = loader.writeSystemInfo(mwGlob=mwGlob)
     assert suc
+
+
+def test_writeSystemInfo_2():
+    mwGlob = dict()
+    mwGlob['modeldata'] = ''
+    mwGlob['frozen'] = ''
+    mwGlob['bundleDir'] = ''
+    mwGlob['workDir'] = ''
+    with mock.patch.object(socket,
+                           'gethostbyname_ex',
+                           side_effect=Exception()):
+        suc = loader.writeSystemInfo(mwGlob=mwGlob)
+        assert suc
 
 
 def test_extractDataFiles_1():
@@ -107,8 +114,26 @@ def test_extractDataFiles_2():
 def test_extractDataFiles_3():
     mwGlob = dict()
     mwGlob['dataDir'] = 'mw4/test/data'
+    suc = loader.extractDataFiles(mwGlob=mwGlob)
+    assert suc
+
+
+def test_extractDataFiles_3():
+    mwGlob = dict()
+    mwGlob['dataDir'] = 'mw4/test/data'
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=False):
         suc = loader.extractDataFiles(mwGlob=mwGlob)
         assert suc
+
+
+def test_main_1():
+    with mock.patch.object(PyQt5.QtWidgets.QApplication,
+                           'exec_',
+                           return_value=True):
+        with mock.patch.object(mainApp,
+                               'MountWizzard4'):
+            with mock.patch.object(sys,
+                                   'exit'):
+                loader.main()

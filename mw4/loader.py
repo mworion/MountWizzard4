@@ -274,35 +274,6 @@ def setupWorkDirs(mwGlob):
     return mwGlob
 
 
-def checkFrozen():
-    """
-    checkFrozen extracts data needed to distinguish between real python running setup and
-    bundled version of pyinstaller
-
-    :return:
-    """
-
-    mwGlob = dict()
-
-    if getattr(sys, 'frozen', False):
-        # we are running in a bundle
-        # noinspection PyProtectedMember
-        mwGlob['bundleDir'] = sys._MEIPASS
-        # on mac we have to change path of working directory
-        if platform.system() == 'Darwin':
-            os.chdir(os.path.dirname(sys.executable))
-            os.chdir('..')
-            os.chdir('..')
-            os.chdir('..')
-            mwGlob['frozen'] = True
-    else:
-        # we are running in a normal Python environment
-        mwGlob['bundleDir'] = os.path.dirname(os.path.abspath(__file__))
-        mwGlob['frozen'] = False
-
-    return mwGlob
-
-
 def writeSystemInfo(mwGlob=None):
     """
     writeSystemInfo print overview data to the log file at the beginning of the start
@@ -331,6 +302,8 @@ def writeSystemInfo(mwGlob=None):
         log.warning('Could not read properly host configuration')
     except socket.gaierror:
         log.warning('Could not read properly host configuration')
+    except Exception as e:
+        log.warning(f'Could not read properly host configuration: {e}')
     else:
         hostsList = hostSummary[2]
         host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
@@ -376,6 +349,7 @@ def extractDataFiles(mwGlob=None, splashW=None):
         filePath = mwGlob['dataDir'] + '/' + file
         if os.path.isfile(filePath):
             continue
+        print(os.getcwd())
         # as we cannot access data from Qt resource system, we have to convert it to
         # ByteIO first
         stream = PyQt5.QtCore.QFile(f':/data/{file}')
@@ -410,7 +384,8 @@ def main():
     splashW.setValue(0)
 
     # checking workdir and if the system is started from frozen app
-    mwGlob = checkFrozen()
+    mwGlob = dict()
+    mwGlob['bundleDir'] = os.path.dirname(os.path.abspath(__file__))
     mwGlob = setupWorkDirs(mwGlob)
 
     # now setup the logging environment
@@ -441,8 +416,7 @@ def main():
     # adding event filter for formatting the tooltips nicely
     app.installEventFilter(QAwesomeTooltipEventFilter(app))
 
-    mountApp = mainApp.MountWizzard4(mwGlob)
-    mountApp.mainW.show()
+    mainApp.MountWizzard4(mwGlob)
 
     # end of splash screen
     splashW.showMessage('Finishing loading')

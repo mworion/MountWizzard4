@@ -46,8 +46,8 @@ class AstrometryASTAP(object):
     """
 
     __all__ = ['AstrometryASTAP',
-               'solveASTAP',
-               'abortASTAP',
+               'solve',
+               'abort',
                ]
 
     logger = logging.getLogger(__name__)

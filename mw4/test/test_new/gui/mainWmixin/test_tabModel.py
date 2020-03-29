@@ -1,0 +1,993 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+# Python  v3.7.5
+#
+# Michael Würtenberger
+# (c) 2019
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+import unittest.mock as mock
+import logging
+import pytest
+import time
+import os
+import shutil
+import glob
+
+# external packages
+from PyQt5.QtCore import QObject
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import QThreadPool
+from PyQt5.QtCore import pyqtSignal
+from mountcontrol.qtmount import Mount
+import skyfield.api
+from skyfield.api import Angle
+from mountcontrol.modelStar import ModelStar
+
+# local import
+from mw4.gui.mainWmixin.tabModel import Model
+from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.gui.widget import MWidget
+from mw4.imaging.camera import Camera
+from mw4.dome.dome import Dome
+from mw4.astrometry.astrometry import Astrometry
+from mw4.base.loggerMW import CustomLogger
+
+
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown(qtbot):
+    global ui, widget, Test, Test1, app
+    
+    class Test1(QObject):
+        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        update1s = pyqtSignal()
+        update10s = pyqtSignal()
+        threadPool = QThreadPool()
+        
+    class Test(QObject):
+        config = {'mainW': {}}
+        threadPool = QThreadPool()
+        update1s = pyqtSignal()
+        message = pyqtSignal(str, int)
+        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        camera = Camera(app=Test1())
+        astrometry = Astrometry(app=Test1())
+        dome = Dome(app=Test1())
+        mwGlob = {'modelDir': 'mw4/test/model',
+                  'imageDir': 'mw4/test/image',}
+        uiWindows = {'showImageW': {'classObj': None}}
+
+    widget = QWidget()
+    ui = Ui_MainWindow()
+    ui.setupUi(widget)
+
+    app = Model(app=Test(), ui=ui,
+                clickable=MWidget().clickable)
+    app.changeStyleDynamic = MWidget().changeStyleDynamic
+    app.close = MWidget().close
+    app.deleteLater = MWidget().deleteLater
+    app.deviceStat = dict()
+    app.lastGenerator = 'test'
+    app.log = CustomLogger(logging.getLogger(__name__), {})
+    app.threadPool = QThreadPool()
+
+    qtbot.addWidget(app)
+
+    yield
+
+    app.threadPool.waitForDone(1000)
+    del widget, ui, Test, Test1, app
+
+    files = glob.glob('mw4/test/model/m-*.model')
+    for f in files:
+        os.remove(f)
+    for path in glob.glob('mw4/test/image/m-*'):
+        shutil.rmtree(path)
+
+
+def test_initConfig_1():
+    app.app.config['mainW'] = {}
+    suc = app.initConfig()
+    assert suc
+
+
+def test_initConfig_2():
+    del app.app.config['mainW']
+    suc = app.initConfig()
+    assert suc
+
+
+def test_storeConfig_1():
+    suc = app.storeConfig()
+    assert suc
+
+
+def test_updateProgress_1():
+    app.startModeling = time.time()
+    suc = app.updateProgress()
+    assert not suc
+
+
+def test_updateProgress_2():
+    app.startModeling = time.time()
+    suc = app.updateProgress(number=3, count=2)
+    assert suc
+
+
+def test_updateProgress_3():
+    app.startModeling = time.time()
+    suc = app.updateProgress(number=2, count=3)
+    assert not suc
+
+
+def test_updateProgress_4():
+    suc = app.updateProgress(number=0, count=2)
+    app.startModeling = time.time()
+    assert not suc
+
+
+def test_updateProgress_5():
+    app.startModeling = time.time()
+    suc = app.updateProgress(number=3, count=0)
+    assert suc
+
+
+def test_updateProgress_6():
+    app.startModeling = time.time()
+    suc = app.updateProgress(number=3, count=-1)
+    assert not suc
+
+
+def test_updateProgress_7():
+    app.startModeling = time.time()
+    suc = app.updateProgress(number=3, count=2)
+    assert suc
+
+
+def test_updateProgress_8():
+    app.startModeling = time.time()
+    suc = app.updateProgress(count=-1)
+    assert not suc
+
+
+def test_modelSolveDone_0(qtbot):
+    result = {'raJ2000S': 0,
+              'decJ2000S': 0,
+              'angleS': 0,
+              'scaleS': 1,
+              'errorRMS_S': 1,
+              'flippedS': False,
+              'success': False,
+              'message': 'test',
+              }
+
+    suc = app.modelSolveDone(result)
+    assert not suc
+
+
+def test_modelSolveDone_1(qtbot):
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3}
+
+    app.resultQueue.put(mPoint)
+
+    result = {'raJ2000S': 0,
+              'decJ2000S': 0,
+              'angleS': 0,
+              'scaleS': 1,
+              'errorRMS_S': 1,
+              'flippedS': False,
+              'success': False,
+              'message': 'test',
+              }
+
+    with qtbot.waitSignal(app.app.message) as blocker:
+        suc = app.modelSolveDone(result)
+        assert suc
+    assert ['Solving  image-003: solving error: test', 2] == blocker.args
+
+
+def test_modelSolveDone_2():
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3}
+
+    app.resultQueue.put(mPoint)
+
+    suc = app.modelSolveDone({})
+    assert not suc
+
+
+def test_modelSolveDone_3():
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3}
+
+    app.resultQueue.put(mPoint)
+
+    class Julian:
+        ut1 = 2458635.168
+
+    result = {'raJ2000S': skyfield.api.Angle(hours=0),
+              'decJ2000S': skyfield.api.Angle(degrees=0),
+              'angleS': 0,
+              'scaleS': 1,
+              'errorRMS_S': 1,
+              'flippedS': False,
+              'success': True,
+              'message': 'test',
+              'raJNowM': skyfield.api.Angle(hours=0),
+              'decJNowM': skyfield.api.Angle(degrees=0),
+              'raJNowS': skyfield.api.Angle(hours=0),
+              'decJNowS': skyfield.api.Angle(degrees=0),
+              'siderealTime': 0,
+              'julianDate': Julian(),
+              'pierside': 'E',
+              'errorRA': 1,
+              'errorDEC': 2,
+              'errorRMS': 3,
+              }
+
+    app.resultQueue.put(mPoint)
+    suc = app.modelSolveDone(result)
+    assert suc
+
+
+def test_modelSolveDone_4():
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3}
+
+    result = {'raJ2000S': skyfield.api.Angle(hours=0),
+              'decJ2000S': skyfield.api.Angle(degrees=0),
+              'angleS': 0,
+              'scaleS': 1,
+              'errorRMS_S': 1,
+              'flippedS': False,
+              'success': True,
+              'message': 'test',
+              'julianDate': app.app.mount.obsSite.timeJD,
+              }
+
+    app.resultQueue.put(mPoint)
+
+    suc = app.modelSolveDone(result)
+    assert suc
+
+
+def test_modelSolveDone_5():
+    mPoint = {'lenSequence': 3,
+              'countSequence': 2}
+
+    result = {'raJ2000S': skyfield.api.Angle(hours=0),
+              'decJ2000S': skyfield.api.Angle(degrees=0),
+              'angleS': 0,
+              'scaleS': 1,
+              'errorRMS_S': 999999999,
+              'flippedS': False,
+              'success': True,
+              'message': 'test',
+              'julianDate': app.app.mount.obsSite.timeJD,
+              }
+
+    app.startModeling = 0
+    app.resultQueue.put(mPoint)
+
+    with mock.patch.object(app,
+                           'modelFinished'):
+        suc = app.modelSolveDone(result)
+        assert suc
+
+
+def test_modelSolve_1():
+    suc = app.modelSolve()
+    assert not suc
+
+
+def test_modelSolve_2():
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'searchRadius': 1,
+              'solveTimeout': 10,
+
+              }
+
+    app.solveQueue.put(mPoint)
+    with mock.patch.object(app.app.astrometry,
+                           'solveThreading'):
+        suc = app.modelSolve()
+        assert suc
+
+
+def test_modelImage_1():
+    suc = app.modelImage()
+    assert not suc
+
+
+def test_modelImage_2():
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              }
+
+    app.imageQueue.put(mPoint)
+    with mock.patch.object(app.app.camera,
+                           'expose'):
+        suc = app.modelImage()
+        assert suc
+
+
+def test_modelSlew_1():
+    suc = app.modelSlew()
+    assert not suc
+
+
+def test_modelSlew_2():
+    app.deviceStat['dome'] = False
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              }
+
+    app.slewQueue.put(mPoint)
+    with mock.patch.object(app.app.camera,
+                           'expose'):
+        suc = app.modelSlew()
+        assert not suc
+
+
+def test_modelSlew_3():
+    app.deviceStat['dome'] = True
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': '',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              }
+    app.slewQueue.put(mPoint)
+    with mock.patch.object(app.app.camera,
+                           'expose'):
+        with mock.patch.object(app.app.mount.obsSite,
+                               'setTargetAltAz',
+                               return_value=True):
+            suc = app.modelSlew()
+            assert suc
+
+
+def test_clearQueues():
+    suc = app.clearQueues()
+    assert suc
+
+
+def test_prepareGUI():
+    suc = app.prepareGUI()
+    assert suc
+
+
+def test_defaultGUI():
+    suc = app.defaultGUI()
+    assert suc
+
+
+def test_prepareSignals_1():
+    suc = app.prepareSignals()
+    assert suc
+
+
+def test_prepareSignals_2():
+    app.deviceStat['dome'] = True
+    app.app.dome.data = {'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION': 1}
+
+    suc = app.prepareSignals()
+    assert suc
+
+
+def test_prepareSignals_3():
+    app.deviceStat['dome'] = True
+
+    suc = app.prepareSignals()
+    assert suc
+
+
+def test_defaultSignals():
+    app.app.camera.signals.saved.connect(app.modelSolve)
+    app.app.camera.signals.integrated.connect(app.modelSlew)
+    app.app.astrometry.signals.done.connect(app.modelSolveDone)
+    app.collector.ready.connect(app.modelImage)
+
+    suc = app.defaultSignals()
+    assert suc
+
+
+def test_pauseBuild_1():
+    app.ui.pauseModel.setProperty('pause', True)
+    suc = app.pauseBuild()
+    assert suc
+    assert not app.ui.pauseModel.property('pause')
+
+
+def test_pauseBuild_2():
+    app.ui.pauseModel.setProperty('pause', False)
+    suc = app.pauseBuild()
+    assert suc
+    assert app.ui.pauseModel.property('pause')
+
+
+def test_cancelFull(qtbot):
+    suc = app.prepareSignals()
+    assert suc
+    with mock.patch.object(app.app.camera,
+                           'abort'):
+        with qtbot.waitSignal(app.app.message) as blocker:
+            suc = app.cancelBuild()
+            assert suc
+        assert blocker.args == ['Modeling cancelled', 2]
+
+
+def test_retrofitModel_1():
+    app.app.mount.model.starList = list()
+
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+                      number=1,
+                      errorRMS=10,
+                      errorAngle=skyfield.api.Angle(degrees=0))
+    stars = list()
+    stars.append(point)
+    stars.append(point)
+    stars.append(point)
+
+    mPoint = {}
+    app.model = list()
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+
+    suc = app.retrofitModel()
+    assert suc
+    assert app.model == []
+
+
+def test_retrofitModel_2():
+    app.app.mount.model.starList = list()
+    point = ModelStar(coord=skyfield.api.Star(ra_hours=0, dec_degrees=0),
+                      number=1,
+                      errorRMS=10,
+                      errorAngle=skyfield.api.Angle(degrees=0))
+    app.app.mount.model.addStar(point)
+    app.app.mount.model.addStar(point)
+    app.app.mount.model.addStar(point)
+
+    mPoint = {'test': 1}
+    app.model = list()
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+
+    suc = app.retrofitModel()
+    assert suc
+
+
+def test_generateSaveModel_1():
+    mPoint = {'raJNowM': Angle(hours=0),
+              'decJNowM': Angle(degrees=0),
+              'raJNowS': Angle(hours=0),
+              'decJNowS': Angle(degrees=0),
+              'raJ2000S': Angle(hours=0),
+              'decJ2000S': Angle(degrees=0),
+              'siderealTime': Angle(hours=0),
+              'julianDate': app.app.mount.obsSite.timeJD,
+              }
+    app.model = list()
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+
+    val = app.generateSaveModel()
+    assert len(val) == 3
+
+
+def test_saveModelFinish_1():
+    app.modelName = 'test'
+    app.app.mount.signals.alignDone.connect(app.saveModelFinish)
+    suc = app.saveModelFinish()
+    assert suc
+
+
+def test_saveModel_1():
+    suc = app.saveModelPrepare()
+    assert not suc
+
+
+def test_saveModel_2():
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': 'testPath',
+              'name': 'test',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              }
+
+    app.model = list()
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+
+    suc = app.saveModelPrepare()
+    assert not suc
+
+
+def test_saveModel_3():
+    class Julian:
+        ut1 = 2458635.168
+
+    def refreshModel():
+            return
+    app.refreshModel = refreshModel
+
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': 'testPath',
+              'name': 'test',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              'raJNowM': skyfield.api.Angle(hours=0),
+              'decJNowM': skyfield.api.Angle(degrees=0),
+              'raJNowS': skyfield.api.Angle(hours=0),
+              'decJNowS': skyfield.api.Angle(degrees=0),
+              'siderealTime': 0,
+              'julianDate': Julian(),
+              'pierside': 'E',
+              'errorRA': 1,
+              'errorDEC': 2,
+              'errorRMS': 3,
+              }
+
+    app.model = list()
+    app.modelName = 'test'
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+
+    suc = app.saveModelPrepare()
+    assert suc
+
+
+def test_saveModel_4():
+    class Julian:
+        @staticmethod
+        def utc_iso():
+            return 2458635.168
+
+    def refreshModel():
+        return
+    app.refreshModel = refreshModel
+
+    mPoint = {'lenSequence': 3,
+              'countSequence': 3,
+              'imagePath': 'testPath',
+              'name': 'test',
+              'exposureTime': 1,
+              'binning': 1,
+              'subFrame': 100,
+              'fastReadout': False,
+              'azimuth': 0,
+              'altitude': 0,
+              'raJ2000S': skyfield.api.Angle(hours=0),
+              'decJ2000S': skyfield.api.Angle(degrees=0),
+              'raJNowM': skyfield.api.Angle(hours=0),
+              'decJNowM': skyfield.api.Angle(degrees=0),
+              'raJNowS': skyfield.api.Angle(hours=0),
+              'decJNowS': skyfield.api.Angle(degrees=0),
+              'siderealTime': skyfield.api.Angle(hours=0),
+              'julianDate': Julian(),
+              'pierside': 'E',
+              'errorRA': 1,
+              'errorDEC': 2,
+              'errorRMS': 3,
+              }
+    app.model = list()
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+    app.model.append(mPoint)
+
+    suc = app.saveModelPrepare()
+    assert suc
+
+
+def test_generateBuildData_1():
+    inputData = [
+        {
+            "altitude": 44.556745182012854,
+            "azimuth": 37.194805194805184,
+            "binning": 1.0,
+            "countSequence": 0,
+            "decJNowS": 64.3246,
+            "decJNowM": 64.32841185357267,
+            "errorDEC": -229.0210134131381,
+            "errorRMS": 237.1,
+            "errorRA": -61.36599559380768,
+            "exposureTime": 3.0,
+            "fastReadout": True,
+            "julianDate": "2019-06-08T08:57:57Z",
+            "name": "m-file-2019-06-08-08-57-44",
+            "lenSequence": 3,
+            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
+                         "-57-44/image-000.fits",
+            "pierside": "W",
+            "raJNowS": 8.42882,
+            "raJNowM": 8.427692953132278,
+            "siderealTime": skyfield.api.Angle(hours=12.5),
+            "subFrame": 100.0
+        },
+    ]
+
+    build = app.generateBuildData(inputData)
+    assert build[0].sCoord.dec.degrees == 64.3246
+
+
+def test_modelFinished_1(qtbot):
+    class Julian:
+        ut1 = 2458635.168
+
+    def playSound(a):
+        return
+    app.playSound = playSound
+
+    inputData = {
+         'raJ2000S': skyfield.api.Angle(hours=0),
+         'decJ2000S': skyfield.api.Angle(degrees=0),
+         'angleS': 0,
+         'scaleS': 1,
+         'errorRMS_S': 1,
+         'flippedS': False,
+         'success': True,
+         'message': 'test',
+         'raJNowM': skyfield.api.Angle(hours=0),
+         'decJNowM': skyfield.api.Angle(degrees=0),
+         'raJNowS': skyfield.api.Angle(hours=0),
+         'decJNowS': skyfield.api.Angle(degrees=0),
+         'siderealTime': skyfield.api.Angle(hours=0),
+         'julianDate': Julian(),
+         'pierside': 'E',
+         'errorRA': 1,
+         'errorDEC': 2,
+         'errorRMS': 3,
+         }
+
+    app.modelQueue.put(inputData)
+
+    app.app.camera.signals.saved.connect(app.modelSolve)
+    app.app.camera.signals.integrated.connect(app.modelSlew)
+    app.app.astrometry.signals.done.connect(app.modelSolveDone)
+    app.collector.ready.connect(app.modelImage)
+
+    with mock.patch.object(app.app.mount.model,
+                           'programAlign',
+                           return_value=False):
+        suc = app.modelFinished()
+        assert suc
+
+
+def test_modelFinished_2(qtbot):
+    class Julian:
+        ut1 = 2458635.168
+
+    def playSound(a):
+        return
+    app.playSound = playSound
+
+    inputData = {
+         'raJ2000S': skyfield.api.Angle(hours=0),
+         'decJ2000S': skyfield.api.Angle(degrees=0),
+         'angleS': 0,
+         'scaleS': 1,
+         'errorRMS_S': 1,
+         'flippedS': False,
+         'success': True,
+         'message': 'test',
+         'raJNowM': skyfield.api.Angle(hours=0),
+         'decJNowM': skyfield.api.Angle(degrees=0),
+         'raJNowS': skyfield.api.Angle(hours=0),
+         'decJNowS': skyfield.api.Angle(degrees=0),
+         'siderealTime': skyfield.api.Angle(hours=0),
+         'julianDate': Julian(),
+         'pierside': 'E',
+         'errorRA': 1,
+         'errorDEC': 2,
+         'errorRMS': 3,
+         }
+
+    app.modelQueue.put(inputData)
+
+    app.app.camera.signals.saved.connect(app.modelSolve)
+    app.app.camera.signals.integrated.connect(app.modelSlew)
+    app.app.astrometry.signals.done.connect(app.modelSolveDone)
+    app.collector.ready.connect(app.modelImage)
+
+    with mock.patch.object(app.app.mount.model,
+                           'programAlign',
+                           return_value=True):
+        suc = app.modelFinished()
+        assert suc
+
+
+def test_modelCore_1():
+    app.ui.astrometryDevice.setCurrentIndex(0)
+    with mock.patch.object(app,
+                           'modelSlew'):
+        suc = app.modelCore(points=[(0, 0)])
+        assert not suc
+
+
+def test_modelCore_2():
+    app.ui.astrometryDevice.setCurrentIndex(1)
+    with mock.patch.object(app,
+                           'modelSlew'):
+        suc = app.modelCore()
+        assert not suc
+
+
+def test_modelCore_3():
+    app.ui.astrometryDevice.setCurrentIndex(1)
+    with mock.patch.object(app,
+                           'modelSlew'):
+        suc = app.modelCore(points=[(0, 0)])
+        assert not suc
+
+
+def test_modelCore_4():
+    app.ui.astrometryDevice.setCurrentIndex(1)
+    with mock.patch.object(app,
+                           'modelSlew'):
+        suc = app.modelCore(points=[(0, 0), (0, 0), (0, 0)])
+        assert suc
+
+
+def test_modelBuild_1():
+    class Test:
+        buildP = {}
+
+    app.app.data = Test()
+
+    with mock.patch.object(app,
+                           'modelCore',
+                           return_value=True):
+        suc = app.modelBuild()
+        assert not suc
+
+
+def test_modelBuild_2():
+    class Test:
+        buildP = [(90, 90), (90, 90), (90, 90)]
+
+    app.app.data = Test()
+
+    with mock.patch.object(app,
+                           'modelCore',
+                           return_value=True):
+        suc = app.modelBuild()
+        assert suc
+
+
+def test_modelBuild_3():
+    class Test:
+        buildP = [(1, 1)] * 100
+
+    app.app.data = Test()
+
+    with mock.patch.object(app,
+                           'modelCore',
+                           return_value=True):
+        suc = app.modelBuild()
+        assert not suc
+
+
+def test_modelBuild_4():
+    class Test:
+        buildP = [(1, 1)] * 10
+
+    app.app.data = Test()
+
+    with mock.patch.object(app,
+                           'modelCore',
+                           return_value=False):
+        suc = app.modelBuild()
+        assert not suc
+
+
+def test_loadProgramModel_1():
+    def openFile(a, b, c, d, multiple=False):
+        return ('', '', '')
+
+    app.openFile = openFile
+
+    with mock.patch.object(app.app.mount.model,
+                           'programAlign',
+                           return_value=True):
+        suc = app.loadProgramModel()
+        assert not suc
+
+
+def test_loadProgramModel_2():
+    shutil.copy('mw4/test/testData/m-test.model', 'mw4/test/model/m-test.model')
+
+    def openFile(a, b, c, d, multiple=False):
+        return ('mw4/test/model/m-test.model', 'm-test', '.model')
+    app.openFile = openFile
+
+    def refreshModel():
+        return
+    app.refreshModel = refreshModel
+
+    with mock.patch.object(app.app.mount.model,
+                           'programAlign',
+                           return_value=True):
+        suc = app.loadProgramModel()
+        assert suc
+
+
+def test_updateAlignGui_numberStars():
+    value = '50'
+    app.app.mount.model.numberStars = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '50' == app.ui.numberStars.text()
+    assert '50' == app.ui.numberStars1.text()
+    value = None
+    app.app.mount.model.numberStars = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '-' == app.ui.numberStars.text()
+    assert '-' == app.ui.numberStars1.text()
+
+
+def test_updateAlignGui_altitudeError():
+    value = '50'
+    app.app.mount.model.altitudeError = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert ' 50.0' == app.ui.altitudeError.text()
+    value = None
+    app.app.mount.model.altitudeError = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '-' == app.ui.altitudeError.text()
+
+
+def test_updateAlignGui_errorRMS():
+    value = '50'
+    app.app.mount.model.errorRMS = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '50.0' == app.ui.errorRMS.text()
+    assert '50.0' == app.ui.errorRMS1.text()
+    value = None
+    app.app.mount.model.errorRMS = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '-' == app.ui.errorRMS.text()
+    assert '-' == app.ui.errorRMS1.text()
+
+
+def test_updateAlignGui_azimuthError():
+    value = '50'
+    app.app.mount.model.azimuthError = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert ' 50.0' == app.ui.azimuthError.text()
+    value = None
+    app.app.mount.model.azimuthError = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '-' == app.ui.azimuthError.text()
+
+
+def test_updateAlignGui_terms():
+    value = '50'
+    app.app.mount.model.terms = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '50.0' == app.ui.terms.text()
+    value = None
+    app.app.mount.model.terms = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '-' == app.ui.terms.text()
+
+
+def test_updateAlignGui_orthoError():
+    value = '50'
+    app.app.mount.model.orthoError = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '3000.00' == app.ui.orthoError.text()
+    value = None
+    app.app.mount.model.orthoError = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '-' == app.ui.orthoError.text()
+
+
+def test_updateAlignGui_positionAngle():
+    value = '50'
+    app.app.mount.model.positionAngle = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert ' 50.0' == app.ui.positionAngle.text()
+    value = None
+    app.app.mount.model.positionAngle = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '-' == app.ui.positionAngle.text()
+
+
+def test_updateAlignGui_polarError():
+    value = '50'
+    app.app.mount.model.polarError = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '3000.00' == app.ui.polarError.text()
+    value = None
+    app.app.mount.model.polarError = value
+    app.updateAlignGUI(app.app.mount.model)
+    assert '-' == app.ui.polarError.text()
+
+
+def test_updateTurnKnobsGUI_altitudeTurns_1():
+    value = 1.5
+    app.app.mount.model.altitudeTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '1.50 revs down' == app.ui.altitudeTurns.text()
+    value = None
+    app.app.mount.model.altitudeTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '-' == app.ui.altitudeTurns.text()
+
+
+def test_updateTurnKnobsGUI_altitudeTurns_2():
+    value = -1.5
+    app.app.mount.model.altitudeTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '1.50 revs up' == app.ui.altitudeTurns.text()
+    value = None
+    app.app.mount.model.altitudeTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '-' == app.ui.altitudeTurns.text()
+
+
+def test_updateTurnKnobsGUI_azimuthTurns_1():
+    value = 1.5
+    app.app.mount.model.azimuthTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '1.50 revs left' == app.ui.azimuthTurns.text()
+    value = None
+    app.app.mount.model.azimuthTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '-' == app.ui.azimuthTurns.text()
+
+
+def test_updateTurnKnobsGUI_azimuthTurns_2():
+    value = -1.5
+    app.app.mount.model.azimuthTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '1.50 revs right' == app.ui.azimuthTurns.text()
+    value = None
+    app.app.mount.model.azimuthTurns = value
+    app.updateTurnKnobsGUI(app.app.mount.model)
+    assert '-' == app.ui.azimuthTurns.text()

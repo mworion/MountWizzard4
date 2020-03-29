@@ -83,7 +83,11 @@ class Model(object):
     # define a max error which throws point out of queue in arcsec
     MAX_ERROR_MODEL_POINT = 99999
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
 
         self.slewQueue = queue.Queue()
         self.imageQueue = queue.Queue()
@@ -219,7 +223,7 @@ class Model(object):
 
         return True
 
-    def updateProgress(self, number=0, count=0, modelingDone=False):
+    def updateProgress(self, number=0, count=0):
         """
         updateProgress calculated from the elapsed time and number of point with taking
         actual processing time into account a estimation of duration and finishing time
@@ -227,22 +231,16 @@ class Model(object):
 
         :param number: total number of model points
         :param count: index of the actual processed point
-        :param modelingDone: state for the last point
         :return: success
         """
 
         if not 0 <= count < number:
             return False
-        if not number:
-            return False
 
         modelPercent = (count + 1) / number
         timeElapsed = time.time() - self.startModeling
 
-        if modelingDone:
-            timeEstimation = 0
-        else:
-            timeEstimation = (1 / modelPercent * timeElapsed) * (1 - modelPercent)
+        timeEstimation = (1 / modelPercent * timeElapsed) * (1 - modelPercent)
         finished = timedelta(seconds=timeEstimation) + datetime.now()
 
         self.ui.timeToFinish.setText(time.strftime('%M:%S', time.gmtime(timeEstimation)))
@@ -275,7 +273,6 @@ class Model(object):
         mPoint = self.resultQueue.get()
         number = mPoint["lenSequence"]
         count = mPoint["countSequence"]
-        modelingDone = (number == count + 1)
 
         if not result:
             self.log.info('Solving result is missing')
@@ -314,10 +311,9 @@ class Model(object):
             self.app.message.emit(text, 2)
 
         self.updateProgress(number=number,
-                            count=count,
-                            modelingDone=modelingDone)
+                            count=count)
 
-        if modelingDone:
+        if number == count + 1:
             self.modelFinished()
 
         return True
@@ -543,7 +539,7 @@ class Model(object):
 
         self.collector.addWaitableSignal(self.app.mount.signals.slewFinished)
 
-        hasDome = self.app.mainW.deviceStat['dome']
+        hasDome = self.deviceStat.get('dome', False)
         hasAzimuth = 'ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION' in self.app.dome.data
 
         if hasDome and hasAzimuth:
@@ -791,7 +787,7 @@ class Model(object):
             return False
 
         # looking for solving application
-        astrometryApp = self.app.mainW.ui.astrometryDevice.currentText()
+        astrometryApp = self.ui.astrometryDevice.currentText()
 
         if astrometryApp.startswith('No device'):
             return False
@@ -811,10 +807,10 @@ class Model(object):
         self.app.message.emit(f'Modeling start:     {self.modelName}', 1)
 
         # collection all necessary information
-        exposureTime = self.app.mainW.ui.expTime.value()
-        binning = self.app.mainW.ui.binning.value()
-        subFrame = self.app.mainW.ui.subFrame.value()
-        fastReadout = self.app.mainW.ui.checkFastDownload.isChecked()
+        exposureTime = self.ui.expTime.value()
+        binning = self.ui.binning.value()
+        subFrame = self.ui.subFrame.value()
+        fastReadout = self.ui.checkFastDownload.isChecked()
         solveTimeout = self.ui.solveTimeout.value()
         searchRadius = self.ui.searchRadius.value()
         lenSequence = len(points)
@@ -873,8 +869,8 @@ class Model(object):
             return False
 
         # check if imaging in window is running and abort it if necessary
-        if self.app.uiWindows['showImageW']['class']:
-            self.app.uiWindows['showImageW']['class'].abortImage()
+        if self.app.uiWindows['showImageW']['classObj']:
+            self.app.uiWindows['showImageW']['classObj'].abortImage()
 
         self.changeStyleDynamic(self.ui.runModel, 'running', True)
         self.changeStyleDynamic(self.ui.cancelModel, 'cancel', True)

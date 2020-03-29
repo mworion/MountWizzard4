@@ -162,6 +162,9 @@ class MyApp(PyQt5.QtWidgets.QApplication):
     log = CustomLogger(logger, {})
     last = None
 
+    def __init__(self, *argv):
+        super().__init__(*argv)
+
     def handleButtons(self, obj, returnValue):
         """
 

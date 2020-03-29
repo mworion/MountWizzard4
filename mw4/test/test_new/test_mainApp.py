@@ -60,12 +60,37 @@ def module_setup_teardown(qtbot):
 
     yield
 
+    app.close()
     del app
+
+
+def test_1():
+    pass
+
+
+def test_2():
+    pass
+
+
+def test_3():
+    pass
+
+
+def test_4():
+    pass
+
+
+def test_5():
+    pass
+
+
+def test_6():
+    pass
 
 
 def test_toggleWindow_1():
     def Sender():
-        return app.mainW.ui.cameraSetup
+        return app.mainW.ui.loadFrom
 
     app.sender = Sender
 

@@ -154,6 +154,7 @@ class BuildPoints(object):
 
         row = self.ui.numberGridPointsRow.value()
         col = self.ui.numberGridPointsCol.value()
+
         # we only have equal cols
         col = 2 * int(col / 2)
         self.ui.numberGridPointsCol.setValue(col)
@@ -593,7 +594,9 @@ class BuildPoints(object):
     def updateSorting(self):
         """
 
-        :return:
+        :return: True for test purpose
         """
         self.autoSortPoints()
         self.app.redrawHemisphere.emit()
+
+        return True

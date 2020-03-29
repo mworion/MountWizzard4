@@ -54,6 +54,7 @@ def module_setup_teardown(qtbot):
                                        longitude_degrees=10,
                                        elevation_m=500)
         data = DataPoint(app=Test1(), configDir='mw4/test/config')
+        uiWindows = {'showHemisphereW': {'classObj': None}}
 
     widget = QWidget()
     ui = Ui_MainWindow()
@@ -104,6 +105,67 @@ def test_genBuildGrid_2():
     assert suc
 
 
+def test_genBuildGrid_3():
+    app.ui.numberGridPointsRow.setValue(10)
+    app.ui.numberGridPointsCol.setValue(9)
+    app.ui.altitudeMin.setValue(10)
+    app.ui.altitudeMax.setValue(60)
+
+    with mock.patch.object(app.app.data,
+                           'genGrid',
+                           return_value=False):
+        suc = app.genBuildGrid()
+        assert not suc
+
+
+def test_genBuildAlign3_1():
+    with mock.patch.object(app.app.data,
+                           'genAlign',
+                           return_value=False):
+        suc = app.genBuildAlign3()
+        assert not suc
+
+
+def test_genBuildAlign3_2():
+    with mock.patch.object(app.app.data,
+                           'genAlign',
+                           return_value=True):
+        suc = app.genBuildAlign3()
+        assert suc
+
+
+def test_genBuildAlign6_1():
+    with mock.patch.object(app.app.data,
+                           'genAlign',
+                           return_value=False):
+        suc = app.genBuildAlign6()
+        assert not suc
+
+
+def test_genBuildAlign6_2():
+    with mock.patch.object(app.app.data,
+                           'genAlign',
+                           return_value=True):
+        suc = app.genBuildAlign6()
+        assert suc
+
+
+def test_genBuildAlign9_1():
+    with mock.patch.object(app.app.data,
+                           'genAlign',
+                           return_value=False):
+        suc = app.genBuildAlign9()
+        assert not suc
+
+
+def test_genBuildAlign9_2():
+    with mock.patch.object(app.app.data,
+                           'genAlign',
+                           return_value=True):
+        suc = app.genBuildAlign9()
+        assert suc
+
+
 def test_genBuildMax_1(qtbot):
     app.ui.checkAutoDeleteHorizon.setChecked(False)
     suc = app.genBuildMax()
@@ -118,6 +180,14 @@ def test_genBuildMax_2(qtbot):
             suc = app.genBuildMax()
             assert not suc
         assert ['Build points [max] cannot be generated', 2] == blocker.args
+
+
+def test_genBuildMax_3(qtbot):
+    with mock.patch.object(app.app.data,
+                           'genGreaterCircle',
+                           return_value=True):
+        suc = app.genBuildMax()
+        assert suc
 
 
 def test_genBuildMed_1(qtbot):
@@ -135,6 +205,14 @@ def test_genBuildMed_2(qtbot):
         assert ['Build points [med] cannot be generated', 2] == blocker.args
 
 
+def test_genBuildMed_3(qtbot):
+    with mock.patch.object(app.app.data,
+                           'genGreaterCircle',
+                           return_value=True):
+        suc = app.genBuildMed()
+        assert suc
+
+
 def test_genBuildNorm_1(qtbot):
     suc = app.genBuildNorm()
     assert not suc
@@ -148,6 +226,14 @@ def test_genBuildNorm_2(qtbot):
             suc = app.genBuildNorm()
             assert not suc
         assert ['Build points [norm] cannot be generated', 2] == blocker.args
+
+
+def test_genBuildNorm_3(qtbot):
+    with mock.patch.object(app.app.data,
+                           'genGreaterCircle',
+                           return_value=True):
+        suc = app.genBuildNorm()
+        assert suc
 
 
 def test_genBuildMin_1(qtbot):
@@ -176,6 +262,14 @@ def test_genBuildMin_2(qtbot):
         assert ['Build points [min] cannot be generated', 2] == blocker.args
 
 
+def test_genBuildMin_3(qtbot):
+    with mock.patch.object(app.app.data,
+                           'genGreaterCircle',
+                           return_value=True):
+        suc = app.genBuildMin()
+        assert suc
+
+
 def test_genBuildDSO_1(qtbot):
     with qtbot.waitSignal(app.app.message) as blocker:
         suc = app.genBuildDSO()
@@ -201,6 +295,16 @@ def test_genBuildDSO_3(qtbot):
                            return_value=True):
         suc = app.genBuildDSO()
         assert suc
+
+
+def test_genBuildDSO_4(qtbot):
+    app.app.mount.obsSite.raJNow = 0
+    app.app.mount.obsSite.decJNow = 0
+    with mock.patch.object(app.app.data,
+                           'generateDSOPath',
+                           return_value=False):
+        suc = app.genBuildDSO()
+        assert not suc
 
 
 def test_genBuildGoldenSpiral_1(qtbot):
@@ -410,3 +514,36 @@ def test_genBuildFile_4(qtbot):
                            return_value=True):
         suc = app.genBuildFile()
         assert suc
+
+
+def test_clearBuildP_1():
+    suc = app.clearBuildP()
+    assert not suc
+
+
+def test_clearBuildP_2():
+    class Test:
+        @staticmethod
+        def clearHemisphere():
+            return
+
+    app.app.uiWindows['showHemisphereW']['classObj'] = Test()
+    suc = app.clearBuildP()
+    assert suc
+
+
+def test_autoSortPoints_1():
+    suc = app.autoSortPoints()
+    assert not suc
+
+
+def test_autoSortPoints_2():
+    app.ui.checkSortEW.setChecked(True)
+    app.ui.checkSortHL.setChecked(True)
+    suc = app.autoSortPoints()
+    assert suc
+
+
+def test_updateSorting():
+    suc = app.updateSorting()
+    assert suc

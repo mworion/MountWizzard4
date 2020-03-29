@@ -28,11 +28,10 @@ import PyQt5
 
 # local import
 from mw4.mainApp import MountWizzard4
-from mw4.gui.widget import MWidget
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot):
+def module_setup_teardown(qtbot, qapp):
     global app
 
     mwGlob = {'configDir': 'mw4/test/config',
@@ -54,38 +53,9 @@ def module_setup_teardown(qtbot):
                            'show'):
         app = MountWizzard4(mwGlob=mwGlob)
 
-    app.close = MWidget().close
-    app.deleteLater = MWidget().deleteLater
-    qtbot.addWidget(app)
-
     yield
 
-    app.close()
     del app
-
-
-def test_1():
-    pass
-
-
-def test_2():
-    pass
-
-
-def test_3():
-    pass
-
-
-def test_4():
-    pass
-
-
-def test_5():
-    pass
-
-
-def test_6():
-    pass
 
 
 def test_toggleWindow_1():

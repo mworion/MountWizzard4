@@ -19,11 +19,8 @@
 ###########################################################
 # standard libraries
 import pytest
-import sys
-import unittest.mock as mock
 
 # external packages
-import PyQt5
 from PyQt5.QtCore import QEvent
 from PyQt5.QtWidgets import QWidget
 
@@ -32,13 +29,12 @@ from mw4.loader import QAwesomeTooltipEventFilter
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def module_setup_teardown(qapp):
     global app
-    test = PyQt5.QtWidgets.QApplication(sys.argv)
+
     app = QAwesomeTooltipEventFilter()
     yield
     del app
-    del test
 
 
 def test_eventFilter_1():

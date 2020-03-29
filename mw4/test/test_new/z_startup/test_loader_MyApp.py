@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-import sys
 import unittest.mock as mock
 
 # external packages
@@ -29,7 +28,6 @@ from PyQt5 import QtWidgets
 
 # local import
 from mw4.loader import MyApp
-from mw4.gui.widget import MWidget
 
 
 @pytest.fixture(scope="session")

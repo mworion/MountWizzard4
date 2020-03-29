@@ -31,7 +31,7 @@ from mw4.mainApp import MountWizzard4
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown(qtbot, qapp):
+def module_setup_teardown(qapp):
     global app
 
     mwGlob = {'configDir': 'mw4/test/config',

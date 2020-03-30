@@ -27,7 +27,6 @@ import socket
 import traceback
 import locale
 import html
-from importlib_metadata import version
 
 # external packages
 import matplotlib
@@ -39,6 +38,7 @@ import astropy
 from astropy.utils import iers
 astropy.log.setLevel('ERROR')
 iers.conf.auto_download = False
+from importlib_metadata import version
 
 # local import
 from mw4.base.loggerMW import CustomLogger
@@ -417,7 +417,7 @@ def main():
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/icon/mw4.ico'))
 
     # adding event filter for formatting the tooltips nicely
-    app.installEventFilter(QAwesomeTooltipEventFilter(app))
+    app.installEventFilter(QAwesomeTooltipEventFilter())
 
     mainApp.MountWizzard4(mwGlob)
 

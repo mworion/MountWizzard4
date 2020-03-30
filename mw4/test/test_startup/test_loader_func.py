@@ -25,26 +25,18 @@ import unittest.mock as mock
 import socket
 
 # external packages
-import PyQt5
 import pytest
 
 # local import
 from mw4 import loader
-from mw4 import mainApp
-from mw4.loader import MyApp
 
 
-@pytest.fixture(autouse=True, scope="session")
-def qapp():
-    yield MyApp([])
-
-
-@pytest.fixture(autouse=True, scope='module')
-def module_setup_teardown(qapp):
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown(qtbot):
     pass
 
 
-def test_except_hook():
+def test_except_hook(qtbot):
     with mock.patch.object(traceback,
                            'format_exception',
                            return_value=('1', '2', '3')):
@@ -54,7 +46,7 @@ def test_except_hook():
             loader.except_hook(1, 2, 3)
 
 
-def test_setupWorkDirs_1():
+def test_setupWorkDirs_1(qtbot):
     with mock.patch.object(os,
                            'getcwd',
                            return_value='.'):
@@ -68,7 +60,7 @@ def test_setupWorkDirs_1():
                 assert not val['frozen']
 
 
-def test_setupWorkDirs_2():
+def test_setupWorkDirs_2(qtbot):
     with mock.patch.object(os,
                            'getcwd',
                            return_value='.'):
@@ -82,7 +74,7 @@ def test_setupWorkDirs_2():
                 assert not val['frozen']
 
 
-def test_writeSystemInfo_1():
+def test_writeSystemInfo_1(qtbot):
     mwGlob = dict()
     mwGlob['modeldata'] = ''
     mwGlob['frozen'] = ''
@@ -92,7 +84,7 @@ def test_writeSystemInfo_1():
     assert suc
 
 
-def test_writeSystemInfo_2():
+def test_writeSystemInfo_2(qtbot):
     mwGlob = dict()
     mwGlob['modeldata'] = ''
     mwGlob['frozen'] = ''
@@ -105,26 +97,26 @@ def test_writeSystemInfo_2():
         assert suc
 
 
-def test_extractDataFiles_1():
+def test_extractDataFiles_1(qtbot):
     suc = loader.extractDataFiles()
     assert not suc
 
 
-def test_extractDataFiles_2():
+def test_extractDataFiles_2(qtbot):
     mwGlob = dict()
     mwGlob['dataDir'] = 'mw4/test/data'
     suc = loader.extractDataFiles(mwGlob=mwGlob)
     assert suc
 
 
-def test_extractDataFiles_3():
+def test_extractDataFiles_3(qtbot):
     mwGlob = dict()
     mwGlob['dataDir'] = 'mw4/test/data'
     suc = loader.extractDataFiles(mwGlob=mwGlob)
     assert suc
 
 
-def test_extractDataFiles_3():
+def test_extractDataFiles_3(qtbot):
     mwGlob = dict()
     mwGlob['dataDir'] = 'mw4/test/data'
     with mock.patch.object(os.path,
@@ -132,14 +124,3 @@ def test_extractDataFiles_3():
                            return_value=False):
         suc = loader.extractDataFiles(mwGlob=mwGlob)
         assert suc
-
-
-def test_main_1():
-    with mock.patch.object(PyQt5.QtWidgets.QApplication,
-                           'exec_',
-                           return_value=True):
-        with mock.patch.object(mainApp,
-                               'MountWizzard4'):
-            with mock.patch.object(sys,
-                                   'exit'):
-                loader.main()

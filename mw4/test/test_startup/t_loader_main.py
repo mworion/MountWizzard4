@@ -19,44 +19,28 @@
 ###########################################################
 # standard libraries
 import sys
+import unittest.mock as mock
 
 # external packages
 import pytest
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication
 
 # local import
+from mw4 import loader
 from mw4.loader import MyApp
-
-global test
-app = MyApp(sys.argv)
+from mw4 import mainApp
 
 
-@pytest.fixture(autouse=True, scope="function")
-def setup_teardown():
-
-    yield
-
-
-
-def test_handleButtons_1():
-    ui = QtWidgets.QTabBar()
-
-    val = app.handleButtons(obj=ui, returnValue=10)
-    assert val == 10
-
-
-def test1():
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown(qtbot):
     pass
 
 
-def test2():
-    pass
-
-
-def test3():
-    pass
-
-
-def test4():
-    pass
+def test_main_1(qtbot):
+    with mock.patch.object(mainApp,
+                           'MountWizzard4'):
+        with mock.patch.object(MyApp,
+                               'exec_',
+                               return_value=True):
+            with mock.patch.object(sys,
+                                   'exit'):
+                loader.main()

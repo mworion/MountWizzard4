@@ -66,7 +66,7 @@ def module_setup_teardown(qtbot):
         astrometry = Astrometry(app=Test1())
         dome = Dome(app=Test1())
         mwGlob = {'modelDir': 'mw4/test/model',
-                  'imageDir': 'mw4/test/image',}
+                  'imageDir': 'mw4/test/image'}
         uiWindows = {'showImageW': {'classObj': None}}
 
     widget = QWidget()

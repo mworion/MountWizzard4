@@ -116,7 +116,7 @@ def test_extractDataFiles_3(qtbot):
     assert suc
 
 
-def test_extractDataFiles_3(qtbot):
+def test_extractDataFiles_4(qtbot):
     mwGlob = dict()
     mwGlob['dataDir'] = 'mw4/test/data'
     with mock.patch.object(os.path,

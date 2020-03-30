@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -21313,7 +21313,7 @@ p, li { white-space: pre-wrap; }
           <x>280</x>
           <y>20</y>
           <width>75</width>
-          <height>66</height>
+          <height>21</height>
          </rect>
         </property>
         <property name="toolTip">
@@ -21451,10 +21451,26 @@ p, li { white-space: pre-wrap; }
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="versionAvailable">
+       <widget class="QPushButton" name="getVersion">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>45</y>
+          <width>75</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Starting process for updating MountWizzard4 to selected version. The button remeins blue as long as the installations is running.</string>
+        </property>
+        <property name="text">
+         <string>Search</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="versionAvailable">
         <property name="geometry">
          <rect>
           <x>135</x>
@@ -21474,20 +21490,17 @@ p, li { white-space: pre-wrap; }
         <property name="mouseTracking">
          <bool>false</bool>
         </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
         <property name="acceptDrops">
          <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
+        <property name="inputMask">
+         <string/>
+        </property>
         <property name="text">
-         <string>-</string>
+         <string/>
         </property>
         <property name="maxLength">
          <number>20</number>
@@ -21496,7 +21509,7 @@ p, li { white-space: pre-wrap; }
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="readOnly">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </widget>

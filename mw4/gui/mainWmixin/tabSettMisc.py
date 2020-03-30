@@ -22,6 +22,7 @@ import time
 import subprocess
 import sys
 import platform
+from pkg_resources import parse_version
 
 # external packages
 import PyQt5
@@ -64,11 +65,11 @@ class SettMisc(object):
         # setting ui signals
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
-        self.ui.isOnline.clicked.connect(self.showUpdates)
+        self.ui.getVersion.clicked.connect(self.showUpdates)
         self.ui.isOnline.clicked.connect(self.setWeatherOnline)
         self.ui.isOnline.clicked.connect(self.setupIERS)
-        self.ui.versionBeta.clicked.connect(self.showUpdates)
-        self.ui.versionRelease.clicked.connect(self.showUpdates)
+        # self.ui.versionBeta.clicked.connect(self.showUpdates)
+        # self.ui.versionRelease.clicked.connect(self.showUpdates)
         self.ui.installVersion.clicked.connect(self.installVersion)
 
         # defining and loading all necessary audio files
@@ -210,7 +211,7 @@ class SettMisc(object):
         self.ui.versionAvailable.setText(availPackage)
         self.ui.installVersion.setEnabled(True)
 
-        if availPackage > actPackage:
+        if parse_version(availPackage) > parse_version(actPackage):
             self.app.message.emit('A new version of MountWizzard is available', 1)
 
         return True

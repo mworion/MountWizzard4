@@ -31,10 +31,16 @@ import pytest
 # local import
 from mw4 import loader
 from mw4 import mainApp
+from mw4.loader import MyApp
 
 
-@pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+@pytest.fixture(autouse=True, scope="session")
+def qapp():
+    yield MyApp([])
+
+
+@pytest.fixture(autouse=True, scope='module')
+def module_setup_teardown(qapp):
     pass
 
 

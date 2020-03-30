@@ -35,71 +35,79 @@ def qapp():
     yield MyApp([])
 
 
-def test_handleButtons_1(qapp):
+@pytest.fixture(autouse=True, scope="function")
+def setup_teardown(qapp):
+    global app
+
+    app = qapp
+    yield
+
+
+def test_handleButtons_1():
     ui = QtWidgets.QTabBar()
-    val = qapp.handleButtons(obj=ui, returnValue=10)
+    val = app.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_2(qapp):
+def test_handleButtons_2():
     ui = QtWidgets.QComboBox()
-    val = qapp.handleButtons(obj=ui, returnValue=10)
+    val = app.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_3(qapp):
+def test_handleButtons_3():
     ui = QtWidgets.QPushButton()
-    val = qapp.handleButtons(obj=ui, returnValue=10)
+    val = app.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_4(qapp):
+def test_handleButtons_4():
     ui = QtWidgets.QRadioButton()
-    val = qapp.handleButtons(obj=ui, returnValue=10)
+    val = app.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_5(qapp):
+def test_handleButtons_5():
     ui = QtWidgets.QGroupBox()
-    val = qapp.handleButtons(obj=ui, returnValue=10)
+    val = app.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_6(qapp):
+def test_handleButtons_6():
     ui = QtWidgets.QCheckBox()
-    val = qapp.handleButtons(obj=ui, returnValue=10)
+    val = app.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_handleButtons_7(qapp):
+def test_handleButtons_7():
     ui = QtWidgets.QLineEdit()
-    val = qapp.handleButtons(obj=ui, returnValue=10)
+    val = app.handleButtons(obj=ui, returnValue=10)
     assert val == 10
 
 
-def test_notify_1(qapp):
+def test_notify_1():
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.ToolTipChange)
-    suc = qapp.notify(obj=ui, event=event)
+    suc = app.notify(obj=ui, event=event)
     assert not suc
 
 
-def test_notify_2(qapp):
+def test_notify_2():
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.MouseButtonPress)
     with mock.patch.object(PyQt5.QtWidgets.QApplication,
                            'beep',
                            return_value=False):
-        suc = qapp.notify(obj=ui, event=event)
+        suc = app.notify(obj=ui, event=event)
         assert suc
 
 
-def test_notify_3(qapp):
+def test_notify_3():
     ui = QtWidgets.QLineEdit()
     event = QEvent(QEvent.MouseMove)
     with mock.patch.object(PyQt5.QtWidgets.QApplication,
                            'notify',
                            return_value=False,
                            side_effect=Exception()):
-        suc = qapp.notify(obj=ui, event=event)
+        suc = app.notify(obj=ui, event=event)
         assert not suc

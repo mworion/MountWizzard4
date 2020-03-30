@@ -30,7 +30,7 @@ import PyQt5
 from mw4.mainApp import MountWizzard4
 
 
-@pytest.fixture(autouse=True, scope='function')
+@pytest.fixture(autouse=True, scope='module')
 def module_setup_teardown(qapp):
     global app
 
@@ -42,6 +42,16 @@ def module_setup_teardown(qapp):
               'workDir': 'mw4/test',
               }
 
+    with mock.patch.object(PyQt5.QtWidgets.QWidget,
+                           'show'):
+        app = MountWizzard4(mwGlob=mwGlob)
+
+    yield
+
+
+@pytest.fixture(autouse=True, scope='function')
+def module_setup_teardown_func(qapp):
+
     if os.path.isfile('mw4/test/config/config.cfg'):
         os.remove('mw4/test/config/config.cfg')
     if os.path.isfile('mw4/test/config/new.cfg'):
@@ -49,13 +59,7 @@ def module_setup_teardown(qapp):
     if os.path.isfile('mw4/test/config/profile'):
         os.remove('mw4/test/config/profile')
 
-    with mock.patch.object(PyQt5.QtWidgets.QWidget,
-                           'show'):
-        app = MountWizzard4(mwGlob=mwGlob)
-
     yield
-
-    del app
 
 
 def test_toggleWindow_1():

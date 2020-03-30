@@ -49,12 +49,11 @@ jobs:
       run: |
         python -m pip install dist/mountwizzard*.tar.gz
 
-    - name: Install pytest
+    - name: Install PyTest
       run: |
         python -m pip install pytest
         python -m pip install pytest-qt
         python -m pip install pytest-cov
-        pytest mw4/test --cov=mw4/ --cov-report=xml
 
     - name: PyTest1
       run: |

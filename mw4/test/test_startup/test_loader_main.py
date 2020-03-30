@@ -26,7 +26,6 @@ import pytest
 
 # local import
 from mw4 import loader
-from mw4.loader import MyApp
 from mw4 import mainApp
 
 
@@ -36,11 +35,24 @@ def module_setup_teardown(qtbot):
 
 
 def test_main_1(qtbot):
+    class Test:
+        @staticmethod
+        def installEventFilter(a):
+            return
+
+        @staticmethod
+        def exec_():
+            return 0
+
+        @staticmethod
+        def setWindowIcon(a):
+            return 0
+
     with mock.patch.object(mainApp,
                            'MountWizzard4'):
-        with mock.patch.object(MyApp,
-                               'exec_',
-                               return_value=True):
+        with mock.patch.object(loader,
+                               'MyApp',
+                               return_value=Test()):
             with mock.patch.object(sys,
                                    'exit'):
                 loader.main()

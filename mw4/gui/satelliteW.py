@@ -342,9 +342,9 @@ class SatelliteWindow(widget.MWidget):
         axe.tick_params(colors=self.M_GREY,
                         labelsize=12)
         axe.set_axis_off()
-        axe.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        axe.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        axe.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        axe.xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        axe.yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        axe.zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
 
         # calculating sphere
         theta = np.linspace(0, 2 * np.pi, 51)
@@ -435,9 +435,9 @@ class SatelliteWindow(widget.MWidget):
         axe.tick_params(colors=self.M_GREY,
                         labelsize=12)
         axe.set_axis_off()
-        axe.w_xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        axe.w_yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
-        axe.w_zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        axe.xaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        axe.yaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
+        axe.zaxis.set_pane_color((0.0, 0.0, 0.0, 0.0))
 
         # calculating sphere
         theta = np.linspace(0, 2 * np.pi, 51)

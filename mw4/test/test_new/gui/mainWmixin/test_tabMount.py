@@ -674,7 +674,7 @@ def test_changePark_ok4(qtbot):
         assert ['Mount parked', 0] == blocker.args
 
 
-def test_setMeridianLimitTrack1(qtbot):
+def test_setMeridianLimitTrack_1(qtbot):
     app.deviceStat['mount'] = False
     app.app.mount.setting.meridianLimitTrack = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -684,7 +684,7 @@ def test_setMeridianLimitTrack1(qtbot):
         assert not suc
 
 
-def test_setMeridianLimitTrack3(qtbot):
+def test_setMeridianLimitTrack_2(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.meridianLimitTrack = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -694,7 +694,20 @@ def test_setMeridianLimitTrack3(qtbot):
         assert not suc
 
 
-def test_setMeridianLimitTrack4(qtbot):
+def test_setMeridianLimitTrack_3(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.meridianLimitTrack = 10
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setMeridianLimitTrack',
+                               return_value=False):
+            suc = app.setMeridianLimitTrack()
+            assert not suc
+
+
+def test_setMeridianLimitTrack_4(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.meridianLimitTrack = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -707,7 +720,7 @@ def test_setMeridianLimitTrack4(qtbot):
             assert suc
 
 
-def test_setMeridianLimitSlew1(qtbot):
+def test_setMeridianLimitSlew_1(qtbot):
     app.deviceStat['mount'] = False
     app.app.mount.setting.meridianLimitSlew = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -717,7 +730,7 @@ def test_setMeridianLimitSlew1(qtbot):
         assert not suc
 
 
-def test_setMeridianLimitSlew3(qtbot):
+def test_setMeridianLimitSlew_2(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.meridianLimitSlew = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -727,7 +740,20 @@ def test_setMeridianLimitSlew3(qtbot):
         assert not suc
 
 
-def test_setMeridianLimitSlew4(qtbot):
+def test_setMeridianLimitSlew_3(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.meridianLimitSlew = 10
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setMeridianLimitSlew',
+                               return_value=False):
+            suc = app.setMeridianLimitSlew()
+            assert not suc
+
+
+def test_setMeridianLimitSlew_4(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.meridianLimitSlew = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -740,7 +766,7 @@ def test_setMeridianLimitSlew4(qtbot):
             assert suc
 
 
-def test_setHorizonLimitHigh1(qtbot):
+def test_setHorizonLimitHigh_1(qtbot):
     app.deviceStat['mount'] = False
     app.app.mount.setting.horizonLimitHigh = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -750,7 +776,7 @@ def test_setHorizonLimitHigh1(qtbot):
         assert not suc
 
 
-def test_setHorizonLimitHigh3(qtbot):
+def test_setHorizonLimitHigh_2(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.horizonLimitHigh = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -760,7 +786,20 @@ def test_setHorizonLimitHigh3(qtbot):
         assert not suc
 
 
-def test_setHorizonLimitHigh4(qtbot):
+def test_setHorizonLimitHigh_3(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.horizonLimitHigh = 10
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setHorizonLimitHigh',
+                               return_value=False):
+            suc = app.setHorizonLimitHigh()
+            assert not suc
+
+
+def test_setHorizonLimitHigh_4(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.horizonLimitHigh = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -773,7 +812,7 @@ def test_setHorizonLimitHigh4(qtbot):
             assert suc
 
 
-def test_setHorizonLimitLow1(qtbot):
+def test_setHorizonLimitLow_1(qtbot):
     app.deviceStat['mount'] = False
     app.app.mount.setting.horizonLimitLow = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
@@ -783,7 +822,7 @@ def test_setHorizonLimitLow1(qtbot):
         assert not suc
 
 
-def test_setHorizonLimitLow3(qtbot):
+def test_setHorizonLimitLow_2(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.horizonLimitLow = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -793,7 +832,20 @@ def test_setHorizonLimitLow3(qtbot):
         assert not suc
 
 
-def test_setHorizonLimitLow4(qtbot):
+def test_setHorizonLimitLow_3(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.horizonLimitLow = 10
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setHorizonLimitLow',
+                               return_value=False):
+            suc = app.setHorizonLimitLow()
+            assert not suc
+
+
+def test_setHorizonLimitLow_4(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.horizonLimitLow = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -806,7 +858,7 @@ def test_setHorizonLimitLow4(qtbot):
             assert suc
 
 
-def test_setSlewRate1(qtbot):
+def test_setSlewRate_1(qtbot):
     app.deviceStat['mount'] = False
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -815,7 +867,7 @@ def test_setSlewRate1(qtbot):
         assert not suc
 
 
-def test_setSlewRate3(qtbot):
+def test_setSlewRate_2(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.slewRate = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -825,7 +877,20 @@ def test_setSlewRate3(qtbot):
         assert not suc
 
 
-def test_setSlewRate4(qtbot):
+def test_setSlewRate_3(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.slewRate = 10
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getInt',
+                           return_value=(10, True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setSlewRate',
+                               return_value=False):
+            suc = app.setSlewRate()
+            assert not suc
+
+
+def test_setSlewRate_4(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.slewRate = 10
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -838,7 +903,7 @@ def test_setSlewRate4(qtbot):
             assert suc
 
 
-def test_setLongitude1(qtbot):
+def test_setLongitude_1(qtbot):
     app.app.mount.obsSite.location = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -847,7 +912,7 @@ def test_setLongitude1(qtbot):
         assert not suc
 
 
-def test_setLongitude2(qtbot):
+def test_setLongitude_2(qtbot):
     app.deviceStat['mount'] = False
     elev = '999.9'
     lon = '+160*30:45.5'
@@ -860,7 +925,7 @@ def test_setLongitude2(qtbot):
         assert not suc
 
 
-def test_setLongitude3(qtbot):
+def test_setLongitude_3(qtbot):
     app.deviceStat['mount'] = True
     elev = '999.9'
     lon = '+160*30:45.5'
@@ -873,7 +938,23 @@ def test_setLongitude3(qtbot):
         assert not suc
 
 
-def test_setLongitude4(qtbot):
+def test_setLongitude_4(qtbot):
+    app.deviceStat['mount'] = True
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.app.mount.obsSite.location = lat, lon, elev
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=(10, True)):
+        with mock.patch.object(app.app.mount.obsSite,
+                               'setLongitude',
+                               return_value=False):
+            suc = app.setLongitude()
+            assert not suc
+
+
+def test_setLongitude_5(qtbot):
     app.deviceStat['mount'] = True
     elev = '999.9'
     lon = '+160*30:45.5'
@@ -889,7 +970,7 @@ def test_setLongitude4(qtbot):
             assert suc
 
 
-def test_setLatitude1(qtbot):
+def test_setLatitude_1(qtbot):
     app.app.mount.obsSite.location = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -898,7 +979,7 @@ def test_setLatitude1(qtbot):
         assert not suc
 
 
-def test_setLatitude2(qtbot):
+def test_setLatitude_2(qtbot):
     app.deviceStat['mount'] = True
     elev = '999.9'
     lon = '+160*30:45.5'
@@ -911,7 +992,7 @@ def test_setLatitude2(qtbot):
         assert not suc
 
 
-def test_setLatitude3(qtbot):
+def test_setLatitude_3(qtbot):
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -923,7 +1004,23 @@ def test_setLatitude3(qtbot):
         assert not suc
 
 
-def test_setLatitude4(qtbot):
+def test_setLatitude_4(qtbot):
+    app.deviceStat['mount'] = True
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.app.mount.obsSite.location = lat, lon, elev
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getText',
+                           return_value=(10, True)):
+        with mock.patch.object(app.app.mount.obsSite,
+                               'setLatitude',
+                               return_value=False):
+            suc = app.setLatitude()
+            assert not suc
+
+
+def test_setLatitude_5(qtbot):
     app.deviceStat['mount'] = True
     elev = '999.9'
     lon = '+160*30:45.5'
@@ -939,7 +1036,7 @@ def test_setLatitude4(qtbot):
             assert suc
 
 
-def test_setElevation1(qtbot):
+def test_setElevation_1(qtbot):
     app.app.mount.obsSite.location = None
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -948,7 +1045,7 @@ def test_setElevation1(qtbot):
         assert not suc
 
 
-def test_setElevation3(qtbot):
+def test_setElevation_2(qtbot):
     elev = '999.9'
     lon = '+160*30:45.5'
     lat = '+45*30:45.5'
@@ -960,7 +1057,23 @@ def test_setElevation3(qtbot):
         assert not suc
 
 
-def test_setElevation4(qtbot):
+def test_setElevation_3(qtbot):
+    app.deviceStat['mount'] = True
+    elev = '999.9'
+    lon = '+160*30:45.5'
+    lat = '+45*30:45.5'
+    app.app.mount.obsSite.location = lat, lon, elev
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getDouble',
+                           return_value=(10, True)):
+        with mock.patch.object(app.app.mount.obsSite,
+                               'setElevation',
+                               return_value=False):
+            suc = app.setElevation()
+            assert not suc
+
+
+def test_setElevation_4(qtbot):
     app.deviceStat['mount'] = True
     elev = '999.9'
     lon = '+160*30:45.5'
@@ -976,7 +1089,7 @@ def test_setElevation4(qtbot):
             assert suc
 
 
-def test_setUnattendedFlip1(qtbot):
+def test_setUnattendedFlip_1(qtbot):
     app.deviceStat['mount'] = False
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -985,7 +1098,7 @@ def test_setUnattendedFlip1(qtbot):
         assert not suc
 
 
-def test_setUnattendedFlip3(qtbot):
+def test_setUnattendedFlip_2(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.statusUnattendedFlip = True
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -995,7 +1108,20 @@ def test_setUnattendedFlip3(qtbot):
         assert not suc
 
 
-def test_setUnattendedFlip4(qtbot):
+def test_setUnattendedFlip_3(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.statusUnattendedFlip = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setUnattendedFlip',
+                               return_value=False):
+            suc = app.setUnattendedFlip()
+            assert not suc
+
+
+def test_setUnattendedFlip_4(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.statusUnattendedFlip = True
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -1008,7 +1134,7 @@ def test_setUnattendedFlip4(qtbot):
             assert suc
 
 
-def test_setDualAxisTracking1(qtbot):
+def test_setDualAxisTracking_1(qtbot):
     app.deviceStat['mount'] = False
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -1017,7 +1143,7 @@ def test_setDualAxisTracking1(qtbot):
         assert not suc
 
 
-def test_setDualAxisTracking3(qtbot):
+def test_setDualAxisTracking_2(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -1027,7 +1153,20 @@ def test_setDualAxisTracking3(qtbot):
         assert not suc
 
 
-def test_setDualAxisTracking4(qtbot):
+def test_setDualAxisTracking_3(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.statusDualAxisTracking = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setDualAxisTracking',
+                               return_value=False):
+            suc = app.setDualAxisTracking()
+            assert not suc
+
+
+def test_setDualAxisTracking_4(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.statusDualAxisTracking = True
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -1040,7 +1179,7 @@ def test_setDualAxisTracking4(qtbot):
             assert suc
 
 
-def test_setRefraction1(qtbot):
+def test_setRefraction_1(qtbot):
     app.deviceStat['mount'] = False
     with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
                            'critical',
@@ -1049,7 +1188,7 @@ def test_setRefraction1(qtbot):
         assert not suc
 
 
-def test_setRefraction3(qtbot):
+def test_setRefraction_2(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.statusRefraction = True
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -1059,7 +1198,20 @@ def test_setRefraction3(qtbot):
         assert not suc
 
 
-def test_setRefraction4(qtbot):
+def test_setRefraction_3(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.statusRefraction = True
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setRefraction',
+                               return_value=False):
+            suc = app.setRefraction()
+            assert not suc
+
+
+def test_setRefraction_4(qtbot):
     app.deviceStat['mount'] = True
     app.app.mount.setting.statusRefraction = True
     with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
@@ -1069,4 +1221,49 @@ def test_setRefraction4(qtbot):
                                'setRefraction',
                                return_value=True):
             suc = app.setRefraction()
+            assert suc
+
+
+def test_setWOL_1(qtbot):
+    app.deviceStat['mount'] = False
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'critical',
+                           return_value=True):
+        suc = app.setWOL()
+        assert not suc
+
+
+def test_setWOL_2(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.statusWOL = '0'
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', False)):
+        suc = app.setWOL()
+        assert not suc
+
+
+def test_setWOL_3(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.statusWOL = '0'
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setWOL',
+                               return_value=False):
+            suc = app.setWOL()
+            assert not suc
+
+
+def test_setWOL_4(qtbot):
+    app.deviceStat['mount'] = True
+    app.app.mount.setting.statusWOL = '0'
+    with mock.patch.object(PyQt5.QtWidgets.QInputDialog,
+                           'getItem',
+                           return_value=('ON', True)):
+        with mock.patch.object(app.app.mount.setting,
+                               'setWOL',
+                               return_value=True):
+            suc = app.setWOL()
             assert suc

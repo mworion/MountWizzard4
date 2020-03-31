@@ -173,13 +173,13 @@ class AstrometryASTAP(object):
 
         binPathASTAP = solver['programPath'] + '/astap'
 
-        _, _, scaleFITS, raFITS, decFITS = self.readFitsData(fitsPath=fitsPath)
+        raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)
 
         # if parameters are passed, they have priority
         if raHint is None:
-            raHint = raFITS
+            raHint = raFITS.hours
         if decHint is None:
-            decHint = decFITS
+            decHint = decFITS.degrees
 
         options = ['-ra',
                    f'{raHint}',

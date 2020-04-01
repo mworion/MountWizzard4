@@ -466,7 +466,7 @@ class EnvironGui(object):
 
         if not hasattr(data, 'content'):
             return False
-        if not isinstance(data.content, bytearray):
+        if not isinstance(data.content, bytes):
             return False
 
         image.loadFromData(data.content)

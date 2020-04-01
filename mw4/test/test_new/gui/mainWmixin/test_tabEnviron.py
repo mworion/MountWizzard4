@@ -499,7 +499,7 @@ def test_updateClearOutsideImage_3():
 
     with open('mw4/test/testData/forecast.png', 'rb') as image:
         f = image.read()
-        b = bytearray(f)
+        b = bytes(f)
 
     class Test:
         content = b

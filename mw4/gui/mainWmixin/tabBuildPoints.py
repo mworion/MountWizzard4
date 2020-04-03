@@ -77,7 +77,6 @@ class BuildPoints(object):
         self.ui.checkAutoDeleteMeridian.clicked.connect(self.autoDeletePoints)
         self.ui.checkAutoDeleteHorizon.clicked.connect(self.autoDeletePoints)
 
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui

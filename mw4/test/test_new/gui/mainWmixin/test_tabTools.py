@@ -367,3 +367,28 @@ def test_stopMoveAll():
                            return_value=True):
         suc = app.stopMoveAll()
         assert suc
+
+
+def test_setSlewSpeed_1():
+    def Sender():
+        return ui.powerPort1
+
+    app.sender = Sender
+
+    suc = app.setSlewSpeed()
+    assert suc
+
+
+def test_setSlewSpeed_2():
+    def Sender():
+        return ui.slewSpeedMax
+    app.sender = Sender
+
+    def test():
+        return
+
+    app.slewSpeeds = {'max': app.ui.slewSpeedMax}
+    app.slewSpeedFuncs = {'max': test}
+
+    suc = app.setSlewSpeed()
+    assert suc

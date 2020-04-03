@@ -30,13 +30,15 @@ class SettHorizon(object):
     processing if needed.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
 
         self.ui.saveHorizonMask.clicked.connect(self.saveHorizonMask)
         self.ui.saveHorizonMaskAs.clicked.connect(self.saveHorizonMaskAs)
         self.ui.loadHorizonMask.clicked.connect(self.loadHorizonMask)
-        self.ui.checkAutoDeleteMeridian.clicked.connect(self.autoDeletePoints)
-        self.ui.checkAutoDeleteHorizon.clicked.connect(self.autoDeletePoints)
 
     def initConfig(self):
         """

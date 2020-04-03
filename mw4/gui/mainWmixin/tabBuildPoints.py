@@ -74,6 +74,9 @@ class BuildPoints(object):
         self.ui.checkSortNothing.clicked.connect(self.updateSorting)
         self.ui.checkSortEW.clicked.connect(self.updateSorting)
         self.ui.checkSortHL.clicked.connect(self.updateSorting)
+        self.ui.checkAutoDeleteMeridian.clicked.connect(self.autoDeletePoints)
+        self.ui.checkAutoDeleteHorizon.clicked.connect(self.autoDeletePoints)
+
 
     def initConfig(self):
         """

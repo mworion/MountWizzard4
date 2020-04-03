@@ -24,7 +24,7 @@ import os
 import platform
 import numpy as np
 import shutil
-import subprocess
+import glob
 
 # external packages
 from astropy.io import fits
@@ -42,11 +42,15 @@ def module_setup_teardown():
     global app
     shutil.copy('mw4/test/testData/astrometry.cfg', 'mw4/test/temp/astrometry.cfg')
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
+
     app = Astrometry(app=Test(), tempDir='mw4/test/temp')
 
     yield
 
     del app
+    files = glob.glob('mw4/test/image/*.fit*')
+    for f in files:
+        os.remove(f)
 
 
 def test_init_1():
@@ -118,7 +122,8 @@ def test_checkAvailability_4():
 
 
 def test_readFitsData_1():
-    file = 'mw4/test/image/m51.fits'
+    os.scandir('mw4/test/image')
+    file = 'mw4/test/image/m51.fit'
     ra, dec, sc, ra1, dec1 = app.readFitsData(file)
     assert ra
     assert dec
@@ -273,6 +278,7 @@ def test_solveThreading_2():
 
 
 def test_solveThreading_3():
+    os.scandir('mw4/test/image')
     home = os.environ.get('HOME')
     app.solverEnviron = {
         'KStars': {
@@ -282,7 +288,7 @@ def test_solveThreading_3():
         }
     }
     app.framework = 'KStars'
-    file = 'mw4/test/image/m51.fits'
+    file = 'mw4/test/image/m51.fit'
     suc = app.solveThreading(fitsPath=file)
     assert suc
 

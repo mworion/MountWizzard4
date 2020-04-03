@@ -33,7 +33,12 @@ class SettRelay(object):
     processing if needed.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+
         # define lists for the entries
         self.relayDropDowns = [self.ui.relayFun0,
                                self.ui.relayFun1,

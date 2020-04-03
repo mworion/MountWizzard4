@@ -393,6 +393,30 @@ def test_extractSatelliteData_4():
         assert suc
 
 
+def test_signalExtractSatelliteData_1():
+
+    suc = app.signalExtractSatelliteData()
+    assert not suc
+
+
+def test_signalExtractSatelliteData_2():
+    widget = QWidget()
+
+    suc = app.signalExtractSatelliteData(widget=widget)
+    assert not suc
+
+
+def test_signalExtractSatelliteData_3():
+    widget = QWidget()
+
+    app.ui.listSatelliteNames.addItem('Test 1234567')
+    app.ui.listSatelliteNames.setCurrentRow(0)
+    with mock.patch.object(app,
+                           'extractSatelliteData',):
+        suc = app.signalExtractSatelliteData(widget=widget)
+        assert suc
+
+
 def test_getSatelliteDataFromDatabase_1():
     suc = app.getSatelliteDataFromDatabase()
     assert not suc

@@ -435,7 +435,7 @@ class Satellite(object):
         winObj['classObj'].signals.show.emit(self.satellite)
         return True
 
-    def signalExtractSatelliteData(self, widget):
+    def signalExtractSatelliteData(self, widget=None):
         """
 
         :param widget: widget from where the signal is send

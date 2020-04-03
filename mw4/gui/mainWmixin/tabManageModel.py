@@ -36,7 +36,12 @@ class ManageModel(object):
     processing if needed.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+
         self.runningTargetRMS = False
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPolar)

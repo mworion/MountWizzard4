@@ -34,7 +34,12 @@ class Tools(object):
     processing if needed.
     """
 
-    def __init__(self):
+    def __init__(self, app=None, ui=None, clickable=None):
+        if app:
+            self.app = app
+            self.ui = ui
+            self.clickable = clickable
+
         self.selectorsDropDowns = {'rename1': self.ui.rename1,
                                    'rename2': self.ui.rename2,
                                    'rename3': self.ui.rename3,
@@ -232,6 +237,9 @@ class Tools(object):
         """
 
         if not fileName:
+            return False
+
+        if not os.path.isfile(fileName):
             return False
 
         with fits.open(name=fileName) as fd:

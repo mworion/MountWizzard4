@@ -91,24 +91,7 @@ class MainWindow(MWidget,
         self.setupIcons()
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
-        self.deviceStat = {
-            'dome': None,
-            'mount': None,
-            'camera': None,
-            'astrometry': None,
-            'environOverall': None,
-            'sensorWeather': None,
-            'directWeather': None,
-            'onlineWeather': None,
-            'skymeter': None,
-            'cover': None,
-            'telescope': None,
-            'power': None,
-            'remote': None,
-            'relay': None,
-            'measure': None,
-        }
-
+        self.deviceStat = app.deviceStat
         self.deviceStatGui = {'dome': self.ui.domeConnected,
                               'camera': self.ui.cameraConnected,
                               'environOverall': self.ui.environConnected,

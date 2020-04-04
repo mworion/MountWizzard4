@@ -393,7 +393,6 @@ class Model(object):
         mPoint = self.imageQueue.get()
         self.collector.resetSignals()
 
-        # todo: here might be the right position to introduce the pause function
         while self.ui.pauseModel.property('pause'):
             QTest.qWait(100)
 

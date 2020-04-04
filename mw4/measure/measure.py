@@ -81,7 +81,7 @@ class MeasureData(object):
         :return: True for test purpose
         """
 
-        deviceStat = self.app.mainW.deviceStat
+        deviceStat = self.app.deviceStat
         dItems = deviceStat.items()
         self.devices = [key for key, value in dItems if deviceStat[key] is not None]
         self.setEmptyData()

@@ -112,6 +112,24 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.config = {}
         self.loadConfig()
 
+        self.deviceStat = {
+            'dome': None,
+            'mount': None,
+            'camera': None,
+            'astrometry': None,
+            'environOverall': None,
+            'sensorWeather': None,
+            'directWeather': None,
+            'onlineWeather': None,
+            'skymeter': None,
+            'cover': None,
+            'telescope': None,
+            'power': None,
+            'remote': None,
+            'relay': None,
+            'measure': None,
+        }
+
         # write basic data to message window
         profile = self.config.get('profileName', '-')
         self.messageQueue.put(('MountWizzard4 started', 1))

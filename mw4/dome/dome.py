@@ -150,11 +150,12 @@ class Dome:
         """
         return self.app.mount.calcTransformationMatrices()
 
-    def slewDome(self, altitude=0, azimuth=0):
+    def slewDome(self, altitude=0, azimuth=0, geometry=False):
         """
 
         :param altitude:
         :param azimuth:
+        :param geometry:
         :return: success
         """
 
@@ -162,9 +163,8 @@ class Dome:
             return False
 
         # todo: should we really set attributes in classes from external ?
-        isGeometry = self.app.mainW.ui.checkDomeGeometry.isChecked()
 
-        if isGeometry:
+        if geometry:
             alt, az = self.calcGeometry()
 
             # todo: correct calculation that this is not necessary
@@ -180,7 +180,7 @@ class Dome:
             alt = altitude
             az = azimuth
 
-        geoStat = 'Geometry corrected' if isGeometry else 'Equal mount'
+        geoStat = 'Geometry corrected' if geometry else 'Equal mount'
         delta = azimuth - az
         text = f'Slewing  dome:       {geoStat}, az: {az:3.1f} delta: {delta:3.1f}°'
         self.app.message.emit(text, 0)

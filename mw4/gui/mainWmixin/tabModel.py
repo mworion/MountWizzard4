@@ -450,6 +450,7 @@ class Model(object):
 
         self.app.dome.slewDome(altitude=mPoint['altitude'],
                                azimuth=mPoint['azimuth'],
+                               geometry=self.ui.checkDomeGeometry.isChecked()
                                )
         self.app.mount.obsSite.startSlewing()
         self.imageQueue.put(mPoint)

@@ -31,9 +31,6 @@ from mw4.measure.measure import MeasureData
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    class Test2:
-        deviceStat = {}
-
     class Test1:
         data = {}
 
@@ -45,27 +42,26 @@ def module_setup_teardown():
         filterwheel = Test1()
         focuser = Test1()
         power = Test1()
-        mainW = Test2()
+        deviceStat = {
+            'dome': None,
+            'mount': None,
+            'camera': None,
+            'astrometry': None,
+            'environOverall': None,
+            'sensorWeather': None,
+            'directWeather': None,
+            'onlineWeather': None,
+            'skymeter': None,
+            'cover': None,
+            'telescope': None,
+            'power': None,
+            'remote': None,
+            'relay': None,
+            'measure': None,
+        }
 
     global app
     app = MeasureData(app=Test())
-    app.deviceStat = {
-        'dome': None,
-        'mount': None,
-        'camera': None,
-        'astrometry': None,
-        'environOverall': None,
-        'sensorWeather': None,
-        'directWeather': None,
-        'onlineWeather': None,
-        'skymeter': None,
-        'cover': None,
-        'telescope': None,
-        'power': None,
-        'remote': None,
-        'relay': None,
-        'measure': None,
-    }
     yield
     del app
 

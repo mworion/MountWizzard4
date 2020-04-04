@@ -226,7 +226,8 @@ class HemisphereWindowExt(object):
                                                     az_degrees=azimuth)
         if suc:
             self.app.dome.slewDome(altitude=altitude,
-                                   azimuth=azimuth
+                                   azimuth=azimuth,
+                                   geometry=self.ui.checkDomeGeometry.isChecked()
                                    )
             suc = self.app.mount.obsSite.startSlewing()
         if not suc:
@@ -472,7 +473,8 @@ class HemisphereWindowExt(object):
         az = self.app.mount.obsSite.Az.degrees
         if suc:
             self.app.dome.slewDome(altitude=alt,
-                                   azimuth=az
+                                   azimuth=az,
+                                   geometry=self.ui.checkDomeGeometry.isChecked()
                                    )
             suc = self.app.mount.obsSite.startSlewing(slewType=f'{alignType}')
         if not suc:

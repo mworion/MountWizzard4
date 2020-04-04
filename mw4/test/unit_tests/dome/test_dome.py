@@ -105,43 +105,39 @@ def test_slewDome_1():
 
 def test_slewDome_2():
     app.data = {'AZ': 1}
-    app.isGeometry = False
     app.framework = 'indi'
-    suc = app.slewDome()
+    suc = app.slewDome(geometry=False)
     assert not suc
 
 
 def test_slewDome_3():
     app.data = {'AZ': 1}
-    app.isGeometry = True
     app.framework = 'indi'
 
     with mock.patch.object(app,
                            'calcGeometry',
                            return_value=(10, 10)):
-        suc = app.slewDome()
+        suc = app.slewDome(geometry=True)
         assert not suc
 
 
 def test_slewDome_4():
     app.data = {'AZ': 1}
-    app.isGeometry = True
     app.framework = 'indi'
 
     with mock.patch.object(app,
                            'calcGeometry',
                            return_value=(np.nan, 10)):
-        suc = app.slewDome()
+        suc = app.slewDome(geometry=True)
         assert not suc
 
 
 def test_slewDome_5():
     app.data = {'AZ': 1}
-    app.isGeometry = True
     app.framework = 'indi'
 
     with mock.patch.object(app,
                            'calcGeometry',
                            return_value=(10, np.nan)):
-        suc = app.slewDome()
+        suc = app.slewDome(geometry=True)
         assert not suc

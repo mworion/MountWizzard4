@@ -32,7 +32,6 @@ from PyQt5.QtWidgets import QPushButton
 from mountcontrol.qtmount import Mount
 
 # local import
-from mw4.gui.widget import MWidget
 from mw4.gui.mainW import MainWindow
 from mw4.environment.sensorWeather import SensorWeather
 from mw4.environment.directWeather import DirectWeather
@@ -108,7 +107,8 @@ def module_setup_teardown(qtbot):
                   'modelDir': 'mw4/test/model',
                   'configDir': 'mw4/test/config'}
         deviceStat = {'camera': True,
-                      'astrometry': True}
+                      'astrometry': True,
+                      'mount': True}
         quit = testQuit
         quitSave = testQuit
         loadConfig = testQuit

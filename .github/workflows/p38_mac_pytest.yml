@@ -57,11 +57,7 @@ jobs:
 
     - name: Running test_new
       run: |
-        pytest mw4/test/test_new --cov=mw4/ --cov-report=xml
-
-    - name: Running test_startup
-      run: |
-        pytest mw4/test/test_startup --cov-append --cov=mw4/ --cov-report=xml
+        pytest mw4/test/unit_tests --cov=mw4/ --cov-report=xml
 
     - name: Running test_old
       run: |

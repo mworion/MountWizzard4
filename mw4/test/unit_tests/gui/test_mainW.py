@@ -125,7 +125,7 @@ def module_setup_teardown(qtbot):
     yield
 
     del app
-    files = glob.glob('mw4/test/config/*.*')
+    files = glob.glob('mw4/test/config/*.cfg')
     for f in files:
         os.remove(f)
 

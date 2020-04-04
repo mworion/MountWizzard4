@@ -31,6 +31,9 @@ from mw4.measure.measure import MeasureData
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
+    class Test2:
+        deviceStat = {}
+
     class Test1:
         data = {}
 
@@ -42,6 +45,7 @@ def module_setup_teardown():
         filterwheel = Test1()
         focuser = Test1()
         power = Test1()
+        mainW = Test2()
 
     global app
     app = MeasureData(app=Test())

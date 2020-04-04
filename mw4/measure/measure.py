@@ -63,9 +63,6 @@ class MeasureData(object):
         self.data = {}
         self.devices = {}
 
-        # this property will be set from main
-        self.deviceStat = None
-
         # minimum set for driver package built in
         self.name = ''
         self.framework = None
@@ -84,8 +81,9 @@ class MeasureData(object):
         :return: True for test purpose
         """
 
-        dItems = self.deviceStat.items()
-        self.devices = [key for key, value in dItems if self.deviceStat[key] is not None]
+        deviceStat = self.app.mainW.deviceStat
+        dItems = deviceStat.items()
+        self.devices = [key for key, value in dItems if deviceStat[key] is not None]
         self.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 

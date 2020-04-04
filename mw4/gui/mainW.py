@@ -109,10 +109,6 @@ class MainWindow(MWidget,
             'measure': None,
         }
 
-        # setting device stats in measurement task
-        # todo: better place and decision if position is good
-        self.app.measure.deviceStat = self.deviceStat
-
         self.deviceStatGui = {'dome': self.ui.domeConnected,
                               'camera': self.ui.cameraConnected,
                               'environOverall': self.ui.environConnected,
@@ -248,12 +244,13 @@ class MainWindow(MWidget,
         quitSave finished up and calls the quit save function in main for saving the parameters
 
 
-        :return:    nothing
+        :return:    true for test purpose
         """
-        # remove waiting todo: better place ?
         self.saveProfile()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.app.quitSave()
+
+        return True
 
     def setupIcons(self):
         """
@@ -518,7 +515,7 @@ class MainWindow(MWidget,
         updateTime updates the time display in gui, show the actual thread count an the
         online status set
 
-        :return: success
+        :return: True for test purpose
         """
 
         self.ui.timeComputer.setText(datetime.datetime.now().strftime('%H:%M:%S'))
@@ -528,6 +525,8 @@ class MainWindow(MWidget,
             text = 'Offline Mode'
         text = f'{self.threadPool.activeThreadCount():2d} - {text}'
         self.ui.statusOnline.setTitle(text)
+
+        return True
 
     def updateAstrometryStatus(self, text):
         """
@@ -672,7 +671,7 @@ class MainWindow(MWidget,
         """
 
         :param command:
-        :return:
+        :return: True for test purpose
         """
 
         if command == 'shutdown':
@@ -684,3 +683,5 @@ class MainWindow(MWidget,
         elif command == 'boot mount':
             self.mountBoot()
             self.app.message.emit('Boot mount remotely', 2)
+
+        return True

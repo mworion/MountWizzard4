@@ -161,7 +161,10 @@ class Dome:
         if not self.data:
             return False
 
-        if self.isGeometry:
+        # todo: should we really set attributes in classes from external ?
+        isGeometry = self.app.mainW.ui.checkDomeGeometry.isChecked()
+
+        if isGeometry:
             alt, az = self.calcGeometry()
 
             # todo: correct calculation that this is not necessary
@@ -177,7 +180,7 @@ class Dome:
             alt = altitude
             az = azimuth
 
-        geoStat = 'Geometry corrected' if self.isGeometry else 'Equal mount'
+        geoStat = 'Geometry corrected' if isGeometry else 'Equal mount'
         delta = azimuth - az
         text = f'Slewing  dome:       {geoStat}, az: {az:3.1f} delta: {delta:3.1f}°'
         self.app.message.emit(text, 0)

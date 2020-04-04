@@ -252,8 +252,6 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
-        # todo: should we really set attributes in classes from external ?
-        self.app.dome.isGeometry = self.ui.checkDomeGeometry.isChecked()
 
         value = self.ui.domeRadius.value()
         self.app.mount.geometry.domeRadius = value

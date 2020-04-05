@@ -61,6 +61,10 @@ def module_setup_teardown(qtbot):
     app.clearPolar = MWidget.clearPolar
     app.deleteLater = MWidget().deleteLater
     app.polarPlot = matplot
+    app.errorPlot = matplot
+    app.M_BLUE = MWidget.M_BLUE
+    app.M_GREY = MWidget.M_GREY
+    app.M_RED = MWidget.M_RED
     qtbot.addWidget(app)
 
     yield
@@ -100,11 +104,11 @@ def test_setNameList():
 def test_showModelPolar1():
     app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     app.app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
-                                '21:06:10.79,+45*20:52.8,  12.1,329',
-                                '23:13:58.02,+38*48:18.8,  31.0,162',
-                                '17:43:41.26,+59*15:30.7,   8.4,005',
-                                ],
-                               4)
+                                    '21:06:10.79,+45*20:52.8,  12.1,329',
+                                    '23:13:58.02,+38*48:18.8,  31.0,162',
+                                    '17:43:41.26,+59*15:30.7,   8.4,005',
+                                    ],
+                                   4)
     app.ui.checkShowErrorValues.setChecked(True)
     suc = app.showModelPolar(app.app.mount.model)
     assert suc

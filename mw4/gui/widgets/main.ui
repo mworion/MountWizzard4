@@ -93,7 +93,7 @@
     </font>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string/>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -6755,7 +6755,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>215</y>
+       <y>230</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -6790,7 +6790,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>285</y>
+       <y>300</y>
        <width>366</width>
        <height>51</height>
       </rect>
@@ -6827,7 +6827,7 @@ to mount</string>
        <x>410</x>
        <y>25</y>
        <width>366</width>
-       <height>171</height>
+       <height>191</height>
       </rect>
      </property>
      <property name="title">
@@ -7386,6 +7386,30 @@ to mount</string>
        <string>Pause</string>
       </property>
      </widget>
+     <widget class="QCheckBox" name="checkDeleteModel">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>165</y>
+        <width>356</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>Show error values close to point in polar diagram.</string>
+      </property>
+      <property name="text">
+       <string>Delete model before start of model build</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_28">
      <property name="geometry">
@@ -7584,28 +7608,12 @@ to mount</string>
     <attribute name="title">
      <string>Manage Model</string>
     </attribute>
-    <widget class="QWidget" name="modelPolar" native="true">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>5</y>
-       <width>446</width>
-       <height>426</height>
-      </rect>
-     </property>
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="groupBox_55">
      <property name="geometry">
       <rect>
-       <x>475</x>
+       <x>510</x>
        <y>25</y>
-       <width>306</width>
+       <width>271</width>
        <height>141</height>
       </rect>
      </property>
@@ -7618,9 +7626,9 @@ to mount</string>
      <widget class="QPushButton" name="clearModel">
       <property name="geometry">
        <rect>
-        <x>105</x>
+        <x>95</x>
         <y>20</y>
-        <width>96</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
@@ -7634,9 +7642,9 @@ to mount</string>
      <widget class="QLabel" name="label_75">
       <property name="geometry">
        <rect>
-        <x>175</x>
+        <x>185</x>
         <y>80</y>
-        <width>76</width>
+        <width>41</width>
         <height>26</height>
        </rect>
       </property>
@@ -7646,15 +7654,15 @@ to mount</string>
        </font>
       </property>
       <property name="text">
-       <string>Actual RMS</string>
+       <string>Actual</string>
       </property>
      </widget>
      <widget class="QPushButton" name="cancelTargetRMS">
       <property name="geometry">
        <rect>
-        <x>105</x>
+        <x>95</x>
         <y>50</y>
-        <width>96</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
@@ -7671,7 +7679,7 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>255</x>
+        <x>225</x>
         <y>50</y>
         <width>41</width>
         <height>26</height>
@@ -7715,7 +7723,7 @@ to mount</string>
        <rect>
         <x>5</x>
         <y>50</y>
-        <width>96</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
@@ -7729,9 +7737,9 @@ to mount</string>
      <widget class="QPushButton" name="refreshModel">
       <property name="geometry">
        <rect>
-        <x>205</x>
+        <x>185</x>
         <y>20</y>
-        <width>91</width>
+        <width>81</width>
         <height>26</height>
        </rect>
       </property>
@@ -7745,9 +7753,9 @@ to mount</string>
      <widget class="QDoubleSpinBox" name="targetRMS">
       <property name="geometry">
        <rect>
-        <x>105</x>
+        <x>95</x>
         <y>80</y>
-        <width>56</width>
+        <width>76</width>
         <height>26</height>
        </rect>
       </property>
@@ -7768,7 +7776,7 @@ to mount</string>
        <double>100.000000000000000</double>
       </property>
       <property name="singleStep">
-       <double>0.100000000000000</double>
+       <double>1.000000000000000</double>
       </property>
       <property name="value">
        <double>99.000000000000000</double>
@@ -7777,7 +7785,7 @@ to mount</string>
      <widget class="QLabel" name="label_76">
       <property name="geometry">
        <rect>
-        <x>210</x>
+        <x>190</x>
         <y>50</y>
         <width>36</width>
         <height>26</height>
@@ -7798,7 +7806,7 @@ to mount</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>255</x>
+        <x>225</x>
         <y>80</y>
         <width>41</width>
         <height>26</height>
@@ -7858,7 +7866,7 @@ to mount</string>
      <widget class="QCheckBox" name="checkShowErrorValues">
       <property name="geometry">
        <rect>
-        <x>25</x>
+        <x>5</x>
         <y>115</y>
         <width>201</width>
         <height>20</height>
@@ -7884,7 +7892,7 @@ to mount</string>
        <rect>
         <x>5</x>
         <y>20</y>
-        <width>96</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
@@ -7899,9 +7907,9 @@ to mount</string>
     <widget class="QGroupBox" name="groupBox_56">
      <property name="geometry">
       <rect>
-       <x>475</x>
+       <x>510</x>
        <y>185</y>
-       <width>306</width>
+       <width>271</width>
        <height>241</height>
       </rect>
      </property>
@@ -7914,9 +7922,9 @@ to mount</string>
      <widget class="QPushButton" name="loadName">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>190</x>
         <y>20</y>
-        <width>81</width>
+        <width>76</width>
         <height>26</height>
        </rect>
       </property>
@@ -7932,7 +7940,7 @@ to mount</string>
        <rect>
         <x>5</x>
         <y>20</y>
-        <width>211</width>
+        <width>181</width>
         <height>216</height>
        </rect>
       </property>
@@ -7940,9 +7948,9 @@ to mount</string>
      <widget class="QPushButton" name="refreshName">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>190</x>
         <y>110</y>
-        <width>81</width>
+        <width>76</width>
         <height>26</height>
        </rect>
       </property>
@@ -7956,9 +7964,9 @@ to mount</string>
      <widget class="QPushButton" name="deleteName">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>190</x>
         <y>80</y>
-        <width>81</width>
+        <width>76</width>
         <height>26</height>
        </rect>
       </property>
@@ -7972,9 +7980,9 @@ to mount</string>
      <widget class="QPushButton" name="saveName">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>190</x>
         <y>50</y>
-        <width>81</width>
+        <width>76</width>
         <height>26</height>
        </rect>
       </property>
@@ -7984,6 +7992,61 @@ to mount</string>
       <property name="text">
        <string>Save</string>
       </property>
+     </widget>
+    </widget>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>5</y>
+       <width>496</width>
+       <height>421</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Polar Plot</string>
+      </attribute>
+      <widget class="QWidget" name="modelPolar" native="true">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>5</y>
+         <width>481</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Sorted Error</string>
+      </attribute>
+      <widget class="QWidget" name="modelError" native="true">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>5</y>
+         <width>481</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -13231,7 +13294,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

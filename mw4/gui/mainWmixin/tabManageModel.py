@@ -45,6 +45,7 @@ class ManageModel(object):
         self.runningTargetRMS = False
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPolar)
+        ms.alignDone.connect(self.showModelError)
         ms.namesDone.connect(self.setNameList)
 
         self.ui.checkShowErrorValues.stateChanged.connect(self.refreshModel)
@@ -57,6 +58,8 @@ class ManageModel(object):
         self.ui.runTargetRMS.clicked.connect(self.runTargetRMS)
         self.ui.cancelTargetRMS.clicked.connect(self.cancelTargetRMS)
         self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
+        model = self.app.mount.model
+        self.ui.targetRMS.valueChanged.connect(lambda: self.showModelError(model))
 
     def initConfig(self):
         """
@@ -188,6 +191,71 @@ class ManageModel(object):
                                fontweight='bold')
         axes.set_ylim(0, 90)
         axes.figure.canvas.draw()
+        return True
+
+    def showModelError(self, model):
+        """
+        showModelError draws a plot of the align model stars and their errors in ascending
+        order.
+
+        :return:    True if ok for testing
+        """
+
+        # check entry conditions for displaying a polar plot
+        if model is None:
+            hasNoStars = True
+        elif not hasattr(model, 'starList'):
+            hasNoStars = True
+        else:
+            hasNoStars = model.starList is None or not model.starList
+
+        figure = self.errorPlot.figure
+        figure.clf()
+        axe = figure.add_subplot(1, 1, 1, facecolor='#202020')
+
+        if hasNoStars:
+            axe.figure.canvas.draw()
+            return False
+
+        axe.set_facecolor((32/255, 32/255, 32/255, 0))
+        axe.spines['bottom'].set_color(self.M_BLUE)
+        axe.spines['top'].set_color(self.M_BLUE)
+        axe.spines['left'].set_color(self.M_BLUE)
+        axe.spines['right'].set_color(self.M_BLUE)
+        axe.grid(True, color=self.M_GREY)
+        axe.tick_params(axis='x',
+                        colors=self.M_BLUE,
+                        labelsize=12)
+        axe.tick_params(axis='y',
+                        colors=self.M_BLUE,
+                        labelsize=12)
+        axe.set_xlabel('Star',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        axe.set_ylabel('Error [RMS]',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+
+        errors = [star.errorRMS for star in model.starList]
+        errors.sort()
+        index = range(0, len(errors))
+        axe.plot(index,
+                 errors,
+                 marker='o',
+                 markersize=3,
+                 linestyle='none',
+                 color=self.M_BLUE)
+
+        value = self.ui.targetRMS.value()
+        axe.plot([0, len(index)-1],
+                 [value, value],
+                 lw=2,
+                 color=self.M_RED)
+
+        axe.figure.canvas.draw()
+
         return True
 
     def clearRefreshName(self):

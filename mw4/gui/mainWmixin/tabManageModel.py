@@ -217,7 +217,7 @@ class ManageModel(object):
             axe.figure.canvas.draw()
             return False
 
-        axe.set_facecolor((16/255, 16/255, 16/255, 0))
+        axe.set_facecolor((16 / 255, 16 / 255, 16 / 255, 0))
         axe.spines['bottom'].set_color(self.M_BLUE)
         axe.spines['top'].set_color(self.M_BLUE)
         axe.spines['left'].set_color(self.M_BLUE)
@@ -249,7 +249,7 @@ class ManageModel(object):
                  color=self.M_BLUE)
 
         value = self.ui.targetRMS.value()
-        axe.plot([0, len(index)-1],
+        axe.plot([0, len(index) - 1],
                  [value, value],
                  lw=2,
                  color=self.M_RED)

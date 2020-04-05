@@ -211,13 +211,13 @@ class ManageModel(object):
 
         figure = self.errorPlot.figure
         figure.clf()
-        axe = figure.add_subplot(1, 1, 1, facecolor='#202020')
+        axe = figure.add_subplot(1, 1, 1, facecolor='#101010')
 
         if hasNoStars:
             axe.figure.canvas.draw()
             return False
 
-        axe.set_facecolor((32/255, 32/255, 32/255, 0))
+        axe.set_facecolor((16/255, 16/255, 16/255, 0))
         axe.spines['bottom'].set_color(self.M_BLUE)
         axe.spines['top'].set_color(self.M_BLUE)
         axe.spines['left'].set_color(self.M_BLUE)

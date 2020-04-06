@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7386,7 +7386,7 @@ to mount</string>
        <string>Pause</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkDeleteModel">
+     <widget class="QCheckBox" name="checkDeleteModelFirst">
       <property name="geometry">
        <rect>
         <x>5</x>
@@ -13329,7 +13329,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>

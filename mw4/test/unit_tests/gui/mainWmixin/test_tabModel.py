@@ -103,12 +103,6 @@ def test_initConfig_1():
     assert suc
 
 
-def test_initConfig_2():
-    del app.app.config['mainW']
-    suc = app.initConfig()
-    assert suc
-
-
 def test_storeConfig_1():
     suc = app.storeConfig()
     assert suc
@@ -824,6 +818,40 @@ def test_modelBuild_4():
                            return_value=False):
         suc = app.modelBuild()
         assert not suc
+
+
+def test_modelBuild_5():
+    class Test:
+        buildP = [(1, 1)] * 10
+
+    app.app.data = Test()
+
+    app.ui.checkDeleteModelFirst.setChecked(True)
+    with mock.patch.object(app,
+                           'modelCore',
+                           return_value=False):
+        with mock.patch.object(app.app.mount.model,
+                               'clearAlign',
+                               return_value=False):
+            suc = app.modelBuild()
+            assert not suc
+
+
+def test_modelBuild_6():
+    class Test:
+        buildP = [(1, 1)] * 10
+
+    app.app.data = Test()
+
+    app.ui.checkDeleteModelFirst.setChecked(True)
+    with mock.patch.object(app,
+                           'modelCore',
+                           return_value=True):
+        with mock.patch.object(app.app.mount.model,
+                               'clearAlign',
+                               return_value=True):
+            suc = app.modelBuild()
+            assert suc
 
 
 def test_loadProgramModel_1():

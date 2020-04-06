@@ -119,7 +119,9 @@ class Model(object):
 
         :return: True for test purpose
         """
-        # config = self.app.config['mainW']
+        config = self.app.config['mainW']
+        self.ui.checkDeleteModelFirst.setChecked(config.get('checkDeleteModelFirst', False))
+
         return True
 
     def storeConfig(self):
@@ -130,7 +132,9 @@ class Model(object):
 
         :return: True for test purpose
         """
-        # config = self.app.config['mainW']
+        config = self.app.config['mainW']
+        config['checkDeleteModelFirst'] = self.ui.checkDeleteModelFirst.isChecked()
+
         return True
 
     def updateAlignGUI(self, model):
@@ -867,6 +871,14 @@ class Model(object):
         if len(self.app.data.buildP) > 99:
             self.app.message.emit('No modeling start because more than 99 points', 2)
             return False
+
+        if self.ui.checkDeleteModelFirst.isChecked():
+            suc = self.app.mount.model.clearAlign()
+            if not suc:
+                self.app.message.emit('Actual model cannot be cleared', 2)
+                return False
+            else:
+                self.app.message.emit('Actual model cleared', 0)
 
         # check if imaging in window is running and abort it if necessary
         if self.app.uiWindows['showImageW']['classObj']:

@@ -337,13 +337,6 @@ def test_deleteName_4(qtbot):
                     assert ['Model [test] cannot be deleted', 2] == blocker.args
 
 
-def test_cancelTargetRMS():
-    app.runningTargetRMS = True
-    suc = app.cancelTargetRMS()
-    assert suc
-    assert not app.runningTargetRMS
-
-
 def test_clearRefreshModel():
     app.app.mount.signals.alignDone.connect(app.clearRefreshModel)
     suc = app.clearRefreshModel()
@@ -356,67 +349,6 @@ def test_refreshModel():
                            'getAlign'):
         suc = app.clearRefreshModel()
         assert suc
-
-
-def test_clearRunTargetRMS_1():
-    app.app.mount.signals.alignDone.connect(app.clearRunTargetRMS)
-    app.app.mount.model.errorRMS = 0.1
-    suc = app.clearRunTargetRMS()
-    assert suc
-
-
-def test_clearRunTargetRMS_2():
-    app.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
-    app.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
-    app.app.mount.model.errorRMS = 100
-    app.app.mount.model.numberStars = 2
-    app.runningTargetRMS = True
-    app.app.mount.signals.alignDone.connect(app.clearRunTargetRMS)
-    with mock.patch.object(app.app.mount.model,
-                           'deletePoint',
-                           return_value=False):
-        with mock.patch.object(app.app.mount,
-                               'getAlign'):
-            suc = app.clearRunTargetRMS()
-            assert suc
-
-
-def test_clearRunTargetRMS_3():
-    app.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
-    app.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
-    app.app.mount.model.errorRMS = 100
-    app.app.mount.model.numberStars = 2
-    app.runningTargetRMS = True
-    app.app.mount.signals.alignDone.connect(app.clearRunTargetRMS)
-    with mock.patch.object(app.app.mount.model,
-                           'deletePoint',
-                           return_value=True):
-        with mock.patch.object(app.app.mount,
-                               'getAlign'):
-            suc = app.clearRunTargetRMS()
-            assert suc
-
-
-def test_clearRunTargetRMS_4():
-    app.app.mount.model.errorRMS = 100
-    app.runningTargetRMS = False
-    app.app.mount.signals.alignDone.connect(app.clearRunTargetRMS)
-    suc = app.clearRunTargetRMS()
-    assert suc
-
-
-def test_runTargetRMS():
-    with mock.patch.object(app,
-                           'clearRunTargetRMS'):
-        suc = app.runTargetRMS()
-        assert suc
-    app.app.mount.signals.alignDone.connect(app.clearRunTargetRMS)
-
-
-def test_cancelTargetRMS():
-    suc = app.cancelTargetRMS()
-    assert suc
-    assert not app.runningTargetRMS
 
 
 def test_clearModel_1(qtbot):
@@ -473,3 +405,166 @@ def test_deleteWorstPoint_2():
                                'refreshModel'):
             suc = app.deleteWorstPoint()
             assert suc
+
+
+def test_runTargetRMS_1():
+    app.runningOptimize = True
+    app.ui.optimizeOverall.setChecked(True)
+    app.ui.optimizeSingle.setChecked(False)
+    app.app.mount.signals.alignDone.connect(app.runTargetRMS)
+    app.app.mount.model.errorRMS = 0.1
+    suc = app.runTargetRMS()
+    assert suc
+
+
+def test_runTargetRMS_2():
+    app.runningOptimize = True
+    app.ui.optimizeOverall.setChecked(True)
+    app.ui.optimizeSingle.setChecked(False)
+    app.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
+    app.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    app.app.mount.model.errorRMS = 100
+    app.app.mount.model.numberStars = 2
+    app.runningTargetRMS = True
+    app.app.mount.signals.alignDone.connect(app.runTargetRMS)
+    with mock.patch.object(app.app.mount.model,
+                           'deletePoint',
+                           return_value=False):
+        with mock.patch.object(app.app.mount,
+                               'getAlign'):
+            suc = app.runTargetRMS()
+            assert suc
+
+
+def test_runTargetRMS_3():
+    app.runningOptimize = True
+    app.ui.optimizeOverall.setChecked(True)
+    app.ui.optimizeSingle.setChecked(False)
+    app.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
+    app.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    app.app.mount.model.errorRMS = 100
+    app.app.mount.model.numberStars = 2
+    app.runningTargetRMS = True
+    app.app.mount.signals.alignDone.connect(app.runTargetRMS)
+    with mock.patch.object(app.app.mount.model,
+                           'deletePoint',
+                           return_value=True):
+        with mock.patch.object(app.app.mount,
+                               'getAlign'):
+            suc = app.runTargetRMS()
+            assert suc
+
+
+def test_runTargetRMS_4():
+    app.runningOptimize = True
+    app.ui.optimizeOverall.setChecked(True)
+    app.ui.optimizeSingle.setChecked(False)
+    app.app.mount.model.errorRMS = 100
+    app.runningTargetRMS = False
+    app.app.mount.signals.alignDone.connect(app.runTargetRMS)
+    suc = app.runTargetRMS()
+    assert suc
+
+
+def test_runSingleRMS_1():
+    app.ui.targetRMS.setValue(1)
+    app.runningOptimize = True
+    app.ui.optimizeOverall.setChecked(False)
+    app.ui.optimizeSingle.setChecked(True)
+    app.app.mount.signals.alignDone.connect(app.runSingleRMS)
+    app.app.mount.model.errorRMS = 0.1
+    suc = app.runSingleRMS()
+    assert suc
+
+
+def test_runSingleRMS_2():
+    app.ui.targetRMS.setValue(1)
+    app.runningOptimize = True
+    app.ui.optimizeOverall.setChecked(False)
+    app.ui.optimizeSingle.setChecked(True)
+    app.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
+    app.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    app.app.mount.model.errorRMS = 100
+    app.app.mount.model.numberStars = 2
+    app.runningTargetRMS = True
+    app.app.mount.signals.alignDone.connect(app.runSingleRMS)
+    with mock.patch.object(app.app.mount.model,
+                           'deletePoint',
+                           return_value=False):
+        with mock.patch.object(app.app.mount,
+                               'getAlign'):
+            suc = app.runSingleRMS()
+            assert suc
+
+
+def test_runSingleRMS_3():
+    app.ui.targetRMS.setValue(1)
+    app.runningOptimize = True
+    app.ui.optimizeOverall.setChecked(False)
+    app.ui.optimizeSingle.setChecked(True)
+    app.app.mount.model.addStar('12:00:00, 180:00:00, 5, 90, 1')
+    app.app.mount.model.addStar('12:00:00, 120:00:00, 4, 90, 2')
+    app.app.mount.model.errorRMS = 100
+    app.app.mount.model.numberStars = 2
+    app.runningTargetRMS = True
+    app.app.mount.signals.alignDone.connect(app.runSingleRMS)
+    with mock.patch.object(app.app.mount.model,
+                           'deletePoint',
+                           return_value=True):
+        with mock.patch.object(app.app.mount,
+                               'getAlign'):
+            suc = app.runSingleRMS()
+            assert suc
+
+
+def test_runSingleRMS_4():
+    app.ui.targetRMS.setValue(1)
+    app.runningOptimize = True
+    app.ui.optimizeOverall.setChecked(False)
+    app.ui.optimizeSingle.setChecked(True)
+    app.app.mount.model.errorRMS = 100
+    app.runningTargetRMS = False
+    app.app.mount.signals.alignDone.connect(app.runSingleRMS)
+    suc = app.runSingleRMS()
+    assert suc
+
+
+def test_runOptimize_1():
+    app.ui.optimizeOverall.setChecked(True)
+    app.ui.optimizeSingle.setChecked(False)
+    with mock.patch.object(app,
+                           'runTargetRMS'):
+        suc = app.runOptimize()
+        assert suc
+
+
+def test_runOptimize_2():
+    app.ui.optimizeOverall.setChecked(False)
+    app.ui.optimizeSingle.setChecked(True)
+    with mock.patch.object(app,
+                           'runSingleRMS'):
+        suc = app.runOptimize()
+        assert suc
+
+
+def test_finishOptimize_1():
+    app.ui.optimizeOverall.setChecked(False)
+    app.ui.optimizeSingle.setChecked(True)
+    app.app.mount.signals.alignDone.connect(app.runSingleRMS)
+    suc = app.finishOptimize()
+    assert suc
+
+
+def test_finishOptimize_2():
+    app.ui.optimizeOverall.setChecked(True)
+    app.ui.optimizeSingle.setChecked(False)
+    app.app.mount.signals.alignDone.connect(app.runTargetRMS)
+    suc = app.finishOptimize()
+    assert suc
+
+
+def test_cancelOptimize_1():
+    suc = app.cancelOptimize()
+    assert suc
+    assert not app.runningOptimize
+

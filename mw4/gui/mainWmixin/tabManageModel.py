@@ -42,7 +42,7 @@ class ManageModel(object):
             self.ui = ui
             self.clickable = clickable
 
-        self.runningTargetRMS = False
+        self.runningOptimize = False
         ms = self.app.mount.signals
         ms.alignDone.connect(self.showModelPolar)
         ms.alignDone.connect(self.showModelError)
@@ -55,8 +55,8 @@ class ManageModel(object):
         self.ui.loadName.clicked.connect(self.loadName)
         self.ui.saveName.clicked.connect(self.saveName)
         self.ui.deleteName.clicked.connect(self.deleteName)
-        self.ui.runTargetRMS.clicked.connect(self.runTargetRMS)
-        self.ui.cancelTargetRMS.clicked.connect(self.cancelTargetRMS)
+        self.ui.runOptimize.clicked.connect(self.runOptimize)
+        self.ui.cancelOptimize.clicked.connect(self.cancelOptimize)
         self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
         model = self.app.mount.model
         self.ui.targetRMS.valueChanged.connect(lambda: self.showModelError(model))
@@ -72,6 +72,8 @@ class ManageModel(object):
         config = self.app.config['mainW']
         self.ui.checkShowErrorValues.setChecked(config.get('checkShowErrorValues', False))
         self.ui.targetRMS.setValue(config.get('targetRMS', 99))
+        self.ui.optimizeOverall.setChecked(config.get('optimizeOverall', True))
+        self.ui.optimizeSingle.setChecked(config.get('optimizeSingle', True))
         self.showModelPolar(None)
         return True
 
@@ -86,6 +88,8 @@ class ManageModel(object):
         config = self.app.config['mainW']
         config['checkShowErrorValues'] = self.ui.checkShowErrorValues.isChecked()
         config['targetRMS'] = self.ui.targetRMS.value()
+        config['optimizeOverall'] = self.ui.optimizeOverall.isChecked()
+        config['optimizeSingle'] = self.ui.optimizeSingle.isChecked()
         return True
 
     def setNameList(self, model):
@@ -384,8 +388,8 @@ class ManageModel(object):
 
         self.changeStyleDynamic(self.ui.refreshModel, 'running', 'false')
         self.ui.deleteWorstPoint.setEnabled(True)
-        self.ui.runTargetRMS.setEnabled(True)
-        self.ui.cancelTargetRMS.setEnabled(True)
+        self.ui.runOptimize.setEnabled(True)
+        self.ui.cancelOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
         self.app.mount.signals.alignDone.disconnect(self.clearRefreshModel)
         self.app.message.emit('Align model data refreshed', 0)
@@ -405,77 +409,11 @@ class ManageModel(object):
         self.changeStyleDynamic(self.ui.refreshModel, 'running', 'true')
         self.app.mount.signals.alignDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
-        self.ui.runTargetRMS.setEnabled(False)
-        self.ui.cancelTargetRMS.setEnabled(False)
+        self.ui.runOptimize.setEnabled(False)
+        self.ui.cancelOptimize.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
         self.app.mount.getAlign()
 
-        return True
-
-    def clearRunTargetRMS(self):
-        """
-        clearRunTargetRMS is the buddy function for runTargetRMS
-
-        :return: True for test purpose
-        """
-
-        mount = self.app.mount
-        if mount.model.errorRMS < self.ui.targetRMS.value():
-            self.runningTargetRMS = False
-
-        if self.runningTargetRMS and mount.model.numberStars > 1:
-            wIndex = mount.model.starList.index(max(mount.model.starList))
-            wStar = mount.model.starList[wIndex]
-            suc = mount.model.deletePoint(wStar.number)
-            if not suc:
-                self.runningTargetRMS = False
-                self.app.message.emit(f'Star [{wStar.number}] cannot be deleted', 2)
-            else:
-                text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
-                self.app.message.emit(text, 0)
-            mount.getAlign()
-        else:
-            self.changeStyleDynamic(self.ui.runTargetRMS, 'running', 'false')
-            self.ui.deleteWorstPoint.setEnabled(True)
-            self.ui.clearModel.setEnabled(True)
-            self.ui.refreshModel.setEnabled(True)
-            mount.signals.alignDone.disconnect(self.clearRunTargetRMS)
-            self.changeStyleDynamic(self.ui.cancelTargetRMS, 'cancel', 'false')
-            self.app.message.emit('Optimizing done', 0)
-        return True
-
-    def runTargetRMS(self):
-        """
-        refreshModel disables interfering functions in gui and start reloading the
-        alignment model from the mount computer. it connects a link to clearRefreshModel
-        which enables the former disabled gui buttons and removes the link to the method.
-        after it triggers the refresh of names, it finished, because behaviour is event
-        driven
-
-        :return: True for test purpose
-        """
-
-        self.app.message.emit('Start optimizing model', 0)
-        self.runningTargetRMS = True
-        self.app.mount.signals.alignDone.connect(self.clearRunTargetRMS)
-        self.ui.deleteWorstPoint.setEnabled(False)
-        self.ui.clearModel.setEnabled(False)
-        self.ui.refreshModel.setEnabled(False)
-        self.changeStyleDynamic(self.ui.runTargetRMS, 'running', 'true')
-        self.clearRunTargetRMS()
-
-        return True
-
-    def cancelTargetRMS(self):
-        """
-        cancelTargetRMS just resets the running Flag for RMS target optimization -> enables
-        the stop of optimization.
-
-        :return:
-        """
-
-        self.runningTargetRMS = False
-        self.changeStyleDynamic(self.ui.cancelTargetRMS, 'cancel', 'true')
         return True
 
     def clearModel(self):
@@ -525,3 +463,125 @@ class ManageModel(object):
             self.app.message.emit('Worst point deleted', 0)
             self.refreshModel()
             return True
+
+    def runTargetRMS(self):
+        """
+        runTargetRMS is the buddy function for runTargetRMS
+
+        :return: True for test purpose
+        """
+
+        mount = self.app.mount
+        if mount.model.errorRMS < self.ui.targetRMS.value():
+            self.runningOptimize = False
+
+        if mount.model.numberStars is None:
+            numberStars = 0
+        else:
+            numberStars = mount.model.numberStars
+
+        if self.runningOptimize and numberStars > 1:
+            wIndex = mount.model.starList.index(max(mount.model.starList))
+            wStar = mount.model.starList[wIndex]
+            suc = mount.model.deletePoint(wStar.number)
+
+            if not suc:
+                self.runningOptimize = False
+                self.app.message.emit(f'Star [{wStar.number}] cannot be deleted', 2)
+            else:
+                text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
+                self.app.message.emit(text, 0)
+            mount.getAlign()
+        else:
+            self.finishOptimize()
+
+        return True
+
+    def runSingleRMS(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        mount = self.app.mount
+        if all([star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList]):
+            self.runningOptimize = False
+
+        if mount.model.numberStars is None:
+            numberStars = 0
+        else:
+            numberStars = mount.model.numberStars
+
+        if self.runningOptimize and numberStars > 1:
+            wIndex = mount.model.starList.index(max(mount.model.starList))
+            wStar = mount.model.starList[wIndex]
+            suc = mount.model.deletePoint(wStar.number)
+
+            if not suc:
+                self.runningOptimize = False
+                self.app.message.emit(f'Star [{wStar.number}] cannot be deleted', 2)
+            else:
+                text = f'Star [{wStar.number:02d}]: RMS of [{wStar.errorRMS:04.1f}] deleted'
+                self.app.message.emit(text, 0)
+            mount.getAlign()
+        else:
+            self.finishOptimize()
+
+        return True
+
+    def runOptimize(self):
+        """
+        runOptimize dispatches the optimization method. depending which method was
+        chosen i the gui, the appropriate method is called
+
+        :return: true for test purpose
+        """
+
+        self.app.message.emit('Start optimizing model', 0)
+        self.runningOptimize = True
+        self.ui.deleteWorstPoint.setEnabled(False)
+        self.ui.clearModel.setEnabled(False)
+        self.ui.refreshModel.setEnabled(False)
+        self.changeStyleDynamic(self.ui.runOptimize, 'running', 'true')
+        self.changeStyleDynamic(self.ui.cancelOptimize, 'cancel', 'true')
+
+        if self.ui.optimizeOverall.isChecked():
+            self.app.mount.signals.alignDone.connect(self.runTargetRMS)
+            self.runTargetRMS()
+        else:
+            self.app.mount.signals.alignDone.connect(self.runSingleRMS)
+            self.runSingleRMS()
+
+        return True
+
+    def finishOptimize(self):
+        """
+
+        :return:
+        """
+
+        if self.ui.optimizeOverall.isChecked():
+            self.app.mount.signals.alignDone.disconnect(self.runTargetRMS)
+        else:
+            self.app.mount.signals.alignDone.disconnect(self.runSingleRMS)
+
+        self.changeStyleDynamic(self.ui.runOptimize, 'running', 'false')
+        self.ui.deleteWorstPoint.setEnabled(True)
+        self.ui.clearModel.setEnabled(True)
+        self.ui.refreshModel.setEnabled(True)
+        self.changeStyleDynamic(self.ui.cancelOptimize, 'cancel', 'false')
+        self.app.message.emit('Optimizing done', 0)
+
+        return True
+
+    def cancelOptimize(self):
+        """
+        cancelOptimize dispatches the optimization method. depending which method was
+        chosen i the gui, the appropriate method is called
+
+        :return: true for test purpose
+        """
+
+        self.runningOptimize = False
+
+        return True

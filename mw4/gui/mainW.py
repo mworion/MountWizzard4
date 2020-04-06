@@ -274,8 +274,8 @@ class MainWindow(MWidget,
         self.wIcon(self.ui.genBuildSpiralMin, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
         self.wIcon(self.ui.genBuildDSO, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
 
-        self.wIcon(self.ui.runTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
-        self.wIcon(self.ui.cancelTargetRMS, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
+        self.wIcon(self.ui.runOptimize, PyQt5.QtWidgets.QStyle.SP_DialogApplyButton)
+        self.wIcon(self.ui.cancelOptimize, PyQt5.QtWidgets.QStyle.SP_DialogCancelButton)
         self.wIcon(self.ui.loadName, PyQt5.QtWidgets.QStyle.SP_DirOpenIcon)
         self.wIcon(self.ui.saveName, PyQt5.QtWidgets.QStyle.SP_DialogSaveButton)
         self.wIcon(self.ui.deleteName, PyQt5.QtWidgets.QStyle.SP_TrashIcon)

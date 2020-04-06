@@ -23,6 +23,7 @@ import unittest.mock as mock
 
 # external packages
 import pytest
+from PyQt5.QtCore import QObject
 
 # local import
 from mw4 import loader
@@ -35,7 +36,7 @@ def module_setup_teardown(qtbot):
 
 
 def test_main_1(qtbot):
-    class Test:
+    class Test(QObject):
         @staticmethod
         def installEventFilter(a):
             return

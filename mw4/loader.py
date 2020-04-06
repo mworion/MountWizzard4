@@ -119,6 +119,7 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
             if tooltip == '<html><head/><body><p><br/></p></body></html>':
                 widget.setToolTip(None)
                 return True
+
             elif tooltip and not PyQt5.QtCore.Qt.mightBeRichText(tooltip):
                 # Convert this plaintext tooltip into a rich text tooltip by:
                 #
@@ -132,6 +133,7 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
 
                 # Notify the parent event handler this event has been handled.
                 return True
+
         elif event.type() == PyQt5.QtCore.QEvent.ToolTip:
             if not isinstance(widget, PyQt5.QtWidgets.QWidget):
                 self.log.error('QObject "{}" not a widget.'.format(widget))
@@ -139,6 +141,7 @@ class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
 
             # Tooltip for this widget if any *OR* the empty string otherwise.
             tooltip = widget.toolTip()
+
             if tooltip == '<html><head/><body><p><br/></p></body></html>':
                 widget.setToolTip(None)
                 return True
@@ -417,7 +420,7 @@ def main():
     app.setWindowIcon(PyQt5.QtGui.QIcon(':/icon/mw4.ico'))
 
     # adding event filter for formatting the tooltips nicely
-    app.installEventFilter(QAwesomeTooltipEventFilter())
+    app.installEventFilter(QAwesomeTooltipEventFilter(app))
 
     mainApp.MountWizzard4(mwGlob)
 

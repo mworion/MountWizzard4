@@ -142,8 +142,9 @@ class MWStyles(object):
         border-style: outset;
         border-color: #404040;
         background-color: #202020;
-        color: #C0C0C0;
+        color: rgb(32, 144, 192);
         padding: 5px;
+        max-width: 300px;
     }
     QLabel {
         background-color: transparent;

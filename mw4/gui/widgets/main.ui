@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5731,9 +5731,9 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>340</y>
+       <y>210</y>
        <width>361</width>
-       <height>86</height>
+       <height>46</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -5745,8 +5745,8 @@ to mount</string>
      <widget class="QRadioButton" name="checkSortHL">
       <property name="geometry">
        <rect>
-        <x>15</x>
-        <y>60</y>
+        <x>245</x>
+        <y>20</y>
         <width>111</width>
         <height>20</height>
        </rect>
@@ -5766,8 +5766,8 @@ to mount</string>
      <widget class="QRadioButton" name="checkSortEW">
       <property name="geometry">
        <rect>
-        <x>15</x>
-        <y>40</y>
+        <x>130</x>
+        <y>20</y>
         <width>106</width>
         <height>20</height>
        </rect>
@@ -5810,7 +5810,7 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>205</y>
+       <y>295</y>
        <width>366</width>
        <height>126</height>
       </rect>
@@ -7401,7 +7401,7 @@ to mount</string>
        </font>
       </property>
       <property name="toolTip">
-       <string>Show error values close to point in polar diagram.</string>
+       <string>Deletes the actual model before starting the next model run.</string>
       </property>
       <property name="text">
        <string>Delete model before start of model build</string>

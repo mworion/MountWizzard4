@@ -79,6 +79,8 @@ class ImageWindow(widget.MWidget):
 
         self.imageFileName = ''
         self.imageFileNameOld = ''
+        self.expTime = 1
+        self.binning = 1
         self.imageStack = None
         self.raStack = 0
         self.decStack = 0
@@ -698,8 +700,6 @@ class ImageWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        expTime = self.app.mainW.ui.expTime.value()
-        binning = self.app.mainW.ui.binning.value()
         subFrame = self.app.mainW.ui.subFrame.value()
         fastReadout = self.app.mainW.ui.checkFastDownload.isChecked()
 
@@ -710,14 +710,14 @@ class ImageWindow(widget.MWidget):
         self.imageFileNameOld = self.imageFileName
 
         self.app.camera.expose(imagePath=imagePath,
-                               expTime=expTime,
-                               binning=binning,
+                               expTime=self.expTime,
+                               binning=self.binning,
                                subFrame=subFrame,
                                fastReadout=fastReadout,
                                )
 
         self.app.message.emit(f'Exposing: [{os.path.basename(imagePath)}]', 0)
-        text = f'Duration: {expTime:3.0f}s  Bin: {binning:1.0f}  Sub: {subFrame:3.0f}%'
+        text = f'Duration:{self.expTime:3.0f}s  Bin:{self.binning:1.0f}  Sub:{subFrame:3.0f}%'
         self.app.message.emit(f'     {text}', 0)
 
         return True
@@ -752,10 +752,14 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
+        self.expTime = self.app.mainW.ui.expTime.value()
+        self.binning = self.app.mainW.ui.binning.value()
+
         self.imageStack = None
         self.deviceStat['expose'] = True
         self.ui.checkStackImages.setChecked(False)
         self.app.camera.signals.saved.connect(self.exposeImageDone)
+
         self.exposeRaw()
 
         return True
@@ -790,9 +794,13 @@ class ImageWindow(widget.MWidget):
         :return: success
         """
 
+        self.expTime = self.app.mainW.ui.expTimeN.value()
+        self.binning = self.app.mainW.ui.binningN.value()
+
         self.imageStack = None
         self.deviceStat['exposeN'] = True
         self.app.camera.signals.saved.connect(self.exposeImageNDone)
+
         self.exposeRaw()
 
         return True

@@ -53,6 +53,8 @@ def module_setup_teardown(qtbot):
     class Test1a:
         expTime = QDoubleSpinBox()
         binning = QDoubleSpinBox()
+        expTimeN = QDoubleSpinBox()
+        binningN = QDoubleSpinBox()
         subFrame = QDoubleSpinBox()
         checkFastDownload = QCheckBox()
         solveTimeout = QDoubleSpinBox()

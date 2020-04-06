@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7819,7 +7819,7 @@ to mount</string>
      <widget class="QRadioButton" name="optimizeOverall">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>115</y>
         <width>201</width>
         <height>18</height>
@@ -7838,7 +7838,7 @@ to mount</string>
      <widget class="QRadioButton" name="optimizeSingle">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>135</y>
         <width>211</width>
         <height>18</height>
@@ -12701,7 +12701,7 @@ Hint if mount will need a flip when following satellite.</string>
      <widget class="QCheckBox" name="checkIncludeSubdirs">
       <property name="geometry">
        <rect>
-        <x>15</x>
+        <x>10</x>
         <y>40</y>
         <width>171</width>
         <height>25</height>
@@ -13329,7 +13329,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -14387,7 +14387,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>55</y>
+          <y>85</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -14408,7 +14408,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>55</y>
+          <y>85</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14447,7 +14447,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>55</y>
+          <y>85</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14495,7 +14495,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>85</y>
+          <y>115</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14509,14 +14509,14 @@ Hint if mount will need a flip when following satellite.</string>
          </font>
         </property>
         <property name="text">
-         <string>ISO Setting</string>
+         <string>Gain</string>
         </property>
        </widget>
        <widget class="QDoubleSpinBox" name="isoSetting">
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>85</y>
+          <y>115</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14548,7 +14548,7 @@ Hint if mount will need a flip when following satellite.</string>
          <double>100.000000000000000</double>
         </property>
         <property name="value">
-         <double>800.000000000000000</double>
+         <double>100.000000000000000</double>
         </property>
        </widget>
        <widget class="QCheckBox" name="checkKeepImages">
@@ -14588,7 +14588,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>115</y>
+          <y>145</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14639,7 +14639,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>185</x>
-          <y>115</y>
+          <y>145</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -14660,7 +14660,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>115</y>
+          <y>145</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -14684,7 +14684,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>115</y>
+          <y>145</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14726,7 +14726,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>205</x>
-          <y>115</y>
+          <y>145</y>
           <width>66</width>
           <height>21</height>
          </rect>
@@ -14747,7 +14747,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>205</y>
+          <y>235</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14763,7 +14763,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>145</y>
+          <y>175</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14779,7 +14779,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>205</y>
+          <y>235</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14795,7 +14795,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>145</y>
+          <y>175</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -14811,7 +14811,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>205</x>
-          <y>175</y>
+          <y>205</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14832,7 +14832,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>175</y>
+          <y>205</y>
           <width>81</width>
           <height>21</height>
          </rect>
@@ -14856,7 +14856,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>175</y>
+          <y>205</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -14908,7 +14908,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>145</y>
+          <y>175</y>
           <width>91</width>
           <height>21</height>
          </rect>
@@ -14929,7 +14929,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>205</y>
+          <y>235</y>
           <width>96</width>
           <height>21</height>
          </rect>
@@ -14953,7 +14953,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>175</y>
+          <y>205</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -15005,7 +15005,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>235</y>
+          <y>265</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -15029,7 +15029,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>110</x>
-          <y>235</y>
+          <y>265</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -15083,7 +15083,7 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>200</x>
-          <y>235</y>
+          <y>265</y>
           <width>76</width>
           <height>21</height>
          </rect>
@@ -15099,13 +15099,154 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>280</x>
-          <y>235</y>
+          <y>265</y>
           <width>76</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
          <string>Out</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_302">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>55</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Exposure N</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="expTimeN">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>55</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the exposure time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>3</number>
+        </property>
+        <property name="minimum">
+         <double>0.001000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>300.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_304">
+        <property name="geometry">
+         <rect>
+          <x>185</x>
+          <y>55</y>
+          <width>16</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>s</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="binningN">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>55</y>
+          <width>76</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the binning for the camera&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>9.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_51">
+        <property name="geometry">
+         <rect>
+          <x>205</x>
+          <y>55</y>
+          <width>61</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Binning</string>
         </property>
        </widget>
       </widget>

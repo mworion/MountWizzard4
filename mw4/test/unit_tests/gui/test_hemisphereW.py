@@ -27,14 +27,13 @@ from skyfield.api import Angle
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtWidgets import QDoubleSpinBox
+from PyQt5.QtCore import QEvent
 from PyQt5.QtWidgets import QCheckBox
 from mountcontrol.qtmount import Mount
-import matplotlib
-import PyQt5
-import mountcontrol
+import matplotlib.pyplot as plt
 
 # local import
+from mw4.gui.widget import MWidget
 from mw4.gui.hemisphereW import HemisphereWindow
 from mw4.imaging.camera import Camera
 from mw4.dome.dome import Dome
@@ -114,11 +113,33 @@ def test_storeConfig_1():
 
 
 def test_resizeEvent_1():
-    pass
+    app.startup = False
+    with mock.patch.object(MWidget,
+                           'resizeEvent'):
+        app.resizeEvent(QEvent)
+
+
+def test_resizeEvent_2():
+    app.startup = True
+    with mock.patch.object(MWidget,
+                           'resizeEvent'):
+        app.resizeEvent(QEvent)
 
 
 def test_resizeTimer_1():
-    pass
+    app.resizeTimerValue = 3
+    with mock.patch.object(app,
+                           'drawHemisphere'):
+        suc = app.resizeTimer()
+        assert suc
+
+
+def test_resizeTimer_2():
+    app.resizeTimerValue = 1
+    with mock.patch.object(app,
+                           'drawHemisphere'):
+        suc = app.resizeTimer()
+        assert suc
 
 
 def test_setupAxes1(qtbot):
@@ -134,11 +155,37 @@ def test_setupAxes2(qtbot):
 
 
 def test_drawBlit_1():
-    pass
+    suc = app.drawBlit()
+    assert suc
+
+
+def test_drawBlit_2():
+    app.mutexDraw.lock()
+    suc = app.drawBlit()
+    assert not suc
+
+
+def test_drawBlit_3():
+    app.hemisphereBack = None
+    suc = app.drawBlit()
+    assert suc
 
 
 def test_drawBlitStars_1():
-    pass
+    suc = app.drawBlitStars()
+    assert suc
+
+
+def test_drawBlitStars_2():
+    app.mutexDraw.lock()
+    suc = app.drawBlitStars()
+    assert not suc
+
+
+def test_drawBlitStars_3():
+    app.hemisphereBackStars = None
+    suc = app.drawBlitStars()
+    assert suc
 
 
 def test_updateCelestialPath_1(qtbot):
@@ -239,7 +286,35 @@ def test_updateHorizonLimits_6(qtbot):
 
 
 def test_updateSettings_1():
-    pass
+    with mock.patch.object(app,
+                           'updateCelestialPath',
+                           return_value=False):
+        with mock.patch.object(app,
+                               'updateHorizonLimits',
+                               return_value=False):
+            with mock.patch.object(app,
+                                   'updateMeridian',
+                                   return_value=False):
+                with mock.patch.object(app,
+                                       'drawHemisphere'):
+                    suc = app.updateSettings()
+                    assert not suc
+
+
+def test_updateSettings_2():
+    with mock.patch.object(app,
+                           'updateCelestialPath',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'updateHorizonLimits',
+                               return_value=False):
+            with mock.patch.object(app,
+                                   'updateMeridian',
+                                   return_value=False):
+                with mock.patch.object(app,
+                                       'drawHemisphere'):
+                    suc = app.updateSettings()
+                    assert suc
 
 
 def test_updatePointerAltAz_1(qtbot):
@@ -339,35 +414,106 @@ def test_clearHemisphere(qtbot):
 
 
 def test_staticHorizon_1():
-    pass
+    app.ui.checkUseHorizon.setChecked(False)
+    app.app.data.horizonP = [(0, 0), (40, 100), (0, 360)]
+    suc = app.staticHorizon()
+    assert not suc
+
+
+def test_staticHorizon_2():
+    app.ui.checkUseHorizon.setChecked(True)
+    app.app.data.horizonP = [(0, 0), (40, 100), (0, 360)]
+    axes = plt.axes()
+    suc = app.staticHorizon(axes=axes)
+    assert suc
 
 
 def test_staticModelData_1():
-    pass
+    app.app.data.buildP = []
+    suc = app.staticModelData()
+    assert not suc
+
+
+def test_staticModelData_2():
+    app.ui.checkShowSlewPath.setChecked(False)
+    app.app.data.buildP = [(0, 0), (40, 100), (0, 360)]
+    axes = plt.axes()
+    suc = app.staticModelData(axes=axes)
+    assert suc
+
+
+def test_staticModelData_3():
+    app.ui.checkShowSlewPath.setChecked(True)
+    app.app.data.buildP = [(0, 0), (40, 100), (0, 360)]
+    axes = plt.axes()
+    suc = app.staticModelData(axes=axes)
+    assert suc
 
 
 def staticCelestialEquator_1():
-    pass
+    app.ui.checkShowCelestial.setChecked(False)
+    axes = plt.axes()
+    suc = app.staticCelestialEquator(axes=axes)
+    assert suc
 
 
 def test_staticMeridianLimits_1():
-    pass
+    app.app.mount.setting.meridianLimitSlew = None
+    app.app.mount.setting.meridianLimitTrack = None
+    app.ui.checkShowMeridian.setChecked(False)
+    axes = plt.axes()
+    suc = app.staticMeridianLimits(axes=axes)
+    assert suc
 
 
-def test_staticHorizonLimits_1():
-    pass
+def test_staticMeridianLimits_1():
+    app.app.mount.setting.meridianLimitSlew = 3
+    app.app.mount.setting.meridianLimitTrack = 5
+    app.ui.checkShowMeridian.setChecked(True)
+    axes = plt.axes()
+    suc = app.staticMeridianLimits(axes=axes)
+    assert suc
+
+
+def test_staticHorizonLimits_2():
+    app.app.mount.setting.horizonLimitHigh = None
+    app.app.mount.setting.horizonLimitLow = None
+    axes = plt.axes()
+    suc = app.staticHorizonLimits(axes=axes)
+    assert suc
+
+
+def test_staticHorizonLimits_2():
+    app.app.mount.setting.horizonLimitHigh = 90
+    app.app.mount.setting.horizonLimitLow = 10
+    axes = plt.axes()
+    suc = app.staticHorizonLimits(axes=axes)
+    assert suc
 
 
 def test_drawHemisphereStatic_1():
-    pass
+    app.mutexDraw.lock()
+    axes = plt.axes()
+    suc = app.drawHemisphereStatic(axes=axes)
+    assert not suc
+
+
+def test_drawHemisphereStatic_2():
+    axes = plt.axes()
+    suc = app.drawHemisphereStatic(axes=axes)
+    assert suc
 
 
 def test_drawHemisphereMoving_1():
-    pass
+    axes = plt.axes()
+    suc = app.drawHemisphereMoving(axes=axes)
+    assert suc
 
 
 def test_drawAlignmentStars_1():
-    pass
+    axes = plt.axes()
+    suc = app.drawAlignmentStars(axes=axes)
+    assert suc
 
 
 def test_drawHemisphere_1():

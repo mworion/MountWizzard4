@@ -284,14 +284,14 @@ def test_updateDome_2(qtbot):
     app.drawHemisphere()
     app.app.dome.data = {}
     suc = app.updateDome(None)
-    assert suc
+    assert not suc
 
 
 def test_updateDome_3(qtbot):
     app.drawHemisphere()
     app.app.dome.data = {}
     suc = app.updateDome(45)
-    assert not suc
+    assert suc
 
 
 def test_updateDome_4(qtbot):

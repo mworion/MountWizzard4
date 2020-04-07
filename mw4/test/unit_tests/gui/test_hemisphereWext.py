@@ -31,6 +31,7 @@ from PyQt5.QtWidgets import QDoubleSpinBox
 from PyQt5.QtWidgets import QCheckBox
 from mountcontrol.qtmount import Mount
 import matplotlib
+import matplotlib.pyplot as plt
 import PyQt5
 import mountcontrol
 
@@ -110,6 +111,27 @@ def test_markerAltAz():
 def test_markerStar():
     val = app.markerStar()
     assert isinstance(val, matplotlib.path.Path)
+
+
+def test_configOperationMode_1():
+    app.ui.checkShowAlignStar.setChecked(True)
+    app.configOperationMode()
+    assert app.ui.checkPolarAlignment.isEnabled()
+
+
+def test_configOperationMode_2():
+    app.ui.checkShowAlignStar.setChecked(False)
+    app.ui.checkPolarAlignment.setChecked(False)
+    app.configOperationMode()
+    assert not app.ui.checkPolarAlignment.isEnabled()
+
+
+def test_configOperationMode_3():
+    app.ui.checkShowAlignStar.setChecked(False)
+    app.ui.checkPolarAlignment.setChecked(True)
+    app.configOperationMode()
+    assert not app.ui.checkPolarAlignment.isEnabled()
+    assert app.ui.checkEditNone.isChecked()
 
 
 def test_setOperationMode_1():
@@ -341,6 +363,33 @@ def test_getIndexPointX_6():
     assert not index
 
 
+def test_showMouseCoordinates_1():
+    class Test:
+        xdata = None
+        ydata = None
+
+    suc = app.showMouseCoordinates(Test())
+    assert not suc
+
+
+def test_showMouseCoordinates_2():
+    class Test:
+        xdata = 1
+        ydata = None
+
+    suc = app.showMouseCoordinates(Test())
+    assert not suc
+
+
+def test_showMouseCoordinates_3():
+    class Test:
+        xdata = 1
+        ydata = 1
+
+    suc = app.showMouseCoordinates(Test())
+    assert suc
+
+
 def test_onMouseNormal_1():
     class Test:
         pass
@@ -421,6 +470,32 @@ def test_onMouseNormal_6():
                                    return_value=True):
                 suc = app.onMouseNormal(event=event)
                 assert not suc
+
+
+def test_onMouseNormal_7():
+    class Test:
+        pass
+    event = Test()
+    event.inaxes = True
+    event.button = 1
+    event.dblclick = True
+    event.xdata = 180
+    event.ydata = 45
+    app.app.dome.framework = 'indi'
+    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
+                           'question',
+                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
+        with mock.patch.object(mountcontrol.obsSite.Connection,
+                               'communicate',
+                               return_value=(True, '1', 1)):
+            with mock.patch.object(app.app.mount.obsSite,
+                                   'setTargetAltAz',
+                                   return_value=True):
+                with mock.patch.object(app.app.mount.obsSite,
+                                       'startSlewing',
+                                       return_value=True):
+                    suc = app.onMouseNormal(event=event)
+                    assert suc
 
 
 def test_addHorizonPoint_1():
@@ -544,6 +619,60 @@ def test_editHorizonMask_3():
     assert not suc
 
 
+def test_addBuildPoint_1():
+    suc = app.addBuildPoint()
+    assert not suc
+
+
+def test_addBuildPoint_2():
+    app.app.data.buildP = []
+
+    suc = app.addBuildPoint(data=app.app.data)
+    assert not suc
+
+
+def test_addBuildPoint_3():
+    class Test:
+        xdata = 10
+        ydata = 10
+
+    axes = plt.axes()
+    app.app.data.buildP = []
+    app.ui.checkShowSlewPath.setChecked(True)
+
+    suc = app.addBuildPoint(data=app.app.data, event=Test(), axes=axes)
+    assert suc
+
+
+def test_addBuildPoint_4():
+    class Test:
+        xdata = 10
+        ydata = 10
+
+    axes = plt.axes()
+    app.app.data.buildP = []
+    app.ui.checkShowSlewPath.setChecked(False)
+
+    suc = app.addBuildPoint(data=app.app.data, event=Test(), axes=axes)
+    assert suc
+
+
+def test_addBuildPoint_5():
+    class Test:
+        xdata = 10
+        ydata = 10
+
+    axes = plt.axes()
+    app.app.data.buildP = []
+    app.ui.checkShowSlewPath.setChecked(False)
+
+    with mock.patch.object(app.app.data,
+                           'addBuildP',
+                           return_value=False):
+        suc = app.addBuildPoint(data=app.app.data, event=Test(), axes=axes)
+        assert not suc
+
+
 def test_deleteBuildPointPoint_1():
     axes = app.hemisphereMat.figure.axes[0]
     app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
@@ -593,7 +722,7 @@ def test_editBuildPoints_1():
     suc = app.editBuildPoints(data=app.app.data, event=event, axes=axes)
     assert suc
 
-"""
+
 def test_editBuildPoints_2():
     app.app.data.buildP = [(0, 0), (10, 10), (45, 180)]
     axes = app.hemisphereMat.figure.axes[0]
@@ -615,7 +744,6 @@ def test_editBuildPoints_2():
     app.pointsBuild = Test()
     suc = app.editBuildPoints(data=app.app.data, event=event, axes=axes)
     assert suc
-"""
 
 
 def test_editBuildPoints_3():
@@ -923,3 +1051,71 @@ def test_onMouseStar_9():
                                    return_value=True):
                 suc = app.onMouseStar(event=event)
                 assert not suc
+
+
+def test_onMouseDispatcher_1():
+    class Test:
+        inaxes = True
+        button = 1
+        dblclick = False
+        xdata = 180
+        ydata = 45
+
+    event = Test()
+    app.ui.checkEditNone.setChecked(True)
+    app.ui.checkEditBuildPoints.setChecked(True)
+    app.ui.checkEditHorizonMask.setChecked(True)
+    app.ui.checkPolarAlignment.setChecked(True)
+
+    app.onMouseDispatcher(event=event)
+
+
+def test_onMouseDispatcher_2():
+    class Test:
+        inaxes = True
+        button = 1
+        dblclick = False
+        xdata = 180
+        ydata = 45
+
+    event = Test()
+    app.ui.checkEditNone.setChecked(False)
+    app.ui.checkEditBuildPoints.setChecked(True)
+    app.ui.checkEditHorizonMask.setChecked(True)
+    app.ui.checkPolarAlignment.setChecked(True)
+
+    app.onMouseDispatcher(event=event)
+
+
+def test_onMouseDispatcher_3():
+    class Test:
+        inaxes = True
+        button = 1
+        dblclick = False
+        xdata = 180
+        ydata = 45
+
+    event = Test()
+    app.ui.checkEditNone.setChecked(False)
+    app.ui.checkEditBuildPoints.setChecked(False)
+    app.ui.checkEditHorizonMask.setChecked(True)
+    app.ui.checkPolarAlignment.setChecked(True)
+
+    app.onMouseDispatcher(event=event)
+
+
+def test_onMouseDispatcher_4():
+    class Test:
+        inaxes = True
+        button = 1
+        dblclick = False
+        xdata = 180
+        ydata = 45
+
+    event = Test()
+    app.ui.checkEditNone.setChecked(False)
+    app.ui.checkEditBuildPoints.setChecked(False)
+    app.ui.checkEditHorizonMask.setChecked(False)
+    app.ui.checkPolarAlignment.setChecked(True)
+
+    app.onMouseDispatcher(event=event)

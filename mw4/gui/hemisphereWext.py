@@ -232,10 +232,10 @@ class HemisphereWindowExt(object):
                                    geometry=self.app.mainW.ui.checkDomeGeometry.isChecked()
                                    )
             suc = self.app.mount.obsSite.startSlewing()
-        if not suc:
-            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
-        else:
+        if suc:
             self.app.message.emit('Starting slew', 0)
+        else:
+            self.app.message.emit('Cannot slew to: {0}, {1}'.format(azimuth, altitude), 2)
         return suc
 
     def addHorizonPoint(self, data=None, event=None):
@@ -305,6 +305,11 @@ class HemisphereWindowExt(object):
         :param axes: link to drawing axes in matplotlib
         :return:
         """
+
+        if data is None:
+            return False
+        if event is None:
+            return False
 
         index = self.getIndexPoint(event=event, plane=data.buildP, epsilon=360)
         # if no point found, add at the end

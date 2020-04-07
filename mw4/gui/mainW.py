@@ -102,7 +102,9 @@ class MainWindow(MWidget,
 
         # polarPlot ui instance has to be defined central, not in the mixins
         self.polarPlot = self.embedMatplot(self.ui.modelPolar)
-        self.errorPlot = self.embedMatplot(self.ui.modelError)
+        self.ascendPlot = self.embedMatplot(self.ui.modelAscend)
+        self.deviationPlanePlot = self.embedMatplot(self.ui.modelDeviationPlane)
+        self.deviationPolarPlot = self.embedMatplot(self.ui.modelDeviationPolar)
 
         # connect signals for refreshing the gui
         self.app.mount.signals.pointDone.connect(self.updateStatusGUI)

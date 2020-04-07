@@ -213,7 +213,7 @@ class ManageModel(object):
         else:
             hasNoStars = model.starList is None or not model.starList
 
-        figure = self.errorPlot.figure
+        figure = self.ascendPlot.figure
         figure.clf()
         axe = figure.add_subplot(1, 1, 1, facecolor='#101010')
 

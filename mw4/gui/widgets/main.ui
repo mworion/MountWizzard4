@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -7654,7 +7654,7 @@ to mount</string>
        </font>
       </property>
       <property name="text">
-       <string>Actual RMS</string>
+       <string>Model RMS</string>
       </property>
      </widget>
      <widget class="QPushButton" name="cancelOptimize">
@@ -7787,7 +7787,7 @@ to mount</string>
        <rect>
         <x>100</x>
         <y>80</y>
-        <width>81</width>
+        <width>86</width>
         <height>26</height>
        </rect>
       </property>
@@ -7797,7 +7797,7 @@ to mount</string>
        </font>
       </property>
       <property name="text">
-       <string>Target RMS</string>
+       <string>Target (RMS)</string>
       </property>
      </widget>
      <widget class="QPushButton" name="deleteWorstPoint">
@@ -7952,11 +7952,11 @@ to mount</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Polar Plot</string>
+       <string>Hemisphere Polar</string>
       </attribute>
       <widget class="QWidget" name="modelPolar" native="true">
        <property name="enabled">
@@ -8064,9 +8064,51 @@ to mount</string>
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Sorted Error</string>
+       <string>Ascending Order</string>
       </attribute>
-      <widget class="QWidget" name="modelError" native="true">
+      <widget class="QWidget" name="modelAscend" native="true">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>5</y>
+         <width>481</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Deviation Plane</string>
+      </attribute>
+      <widget class="QWidget" name="modelDeviationPlane" native="true">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>5</y>
+         <width>481</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>Deviation Polar</string>
+      </attribute>
+      <widget class="QWidget" name="modelDeviationPolar" native="true">
        <property name="enabled">
         <bool>true</bool>
        </property>

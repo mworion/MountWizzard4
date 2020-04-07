@@ -20,12 +20,13 @@
 # standard libraries
 import logging
 import gc
+
 # external packages
 import PyQt5
 import numpy as np
-from matplotlib.artist import Artist
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget

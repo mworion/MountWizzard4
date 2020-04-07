@@ -55,13 +55,10 @@ jobs:
         python -m pip install pytest-qt
         python -m pip install pytest-cov
 
-    - name: Running test_new
+    - name: Running unit tests
       run: |
         pytest mw4/test/unit_tests --cov=mw4/ --cov-report=xml
 
-    - name: Running test_old
-      run: |
-        pytest mw4/test/test_old --cov-append --cov=mw4/ --cov-report=xml
 
     - name: Upload coverage to codecov
       if: always()

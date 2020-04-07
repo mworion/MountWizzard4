@@ -20,10 +20,12 @@
 # standard libraries
 import logging
 import bisect
+
 # external packages
 import PyQt5
 import numpy as np
 import matplotlib.path as mpath
+
 # local import
 
 

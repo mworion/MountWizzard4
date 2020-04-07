@@ -35,7 +35,6 @@ import PyQt5
 import mountcontrol
 
 # local import
-from mw4.gui.hemisphereWext import HemisphereWindowExt
 from mw4.gui.hemisphereW import HemisphereWindow
 from mw4.imaging.camera import Camera
 from mw4.dome.dome import Dome
@@ -114,15 +113,32 @@ def test_storeConfig_1():
     app.storeConfig()
 
 
+def test_resizeEvent_1():
+    pass
+
+
+def test_resizeTimer_1():
+    pass
+
+
 def test_setupAxes1(qtbot):
     app.drawHemisphere()
-    suc = app.setupAxes(app.hemisphereMat)
-    assert suc
+    val = app.setupAxes()
+    assert val is None
 
 
 def test_setupAxes2(qtbot):
     app.drawHemisphere()
-    app.setupAxes(app.hemisphereMat)
+    val = app.setupAxes(app.hemisphereMat)
+    assert val
+
+
+def test_drawBlit_1():
+    pass
+
+
+def test_drawBlitStars_1():
+    pass
 
 
 def test_updateCelestialPath_1(qtbot):
@@ -222,6 +238,10 @@ def test_updateHorizonLimits_6(qtbot):
     assert not suc
 
 
+def test_updateSettings_1():
+    pass
+
+
 def test_updatePointerAltAz_1(qtbot):
     app.drawHemisphere()
     app.app.mount.obsSite.Alt = Angle(degrees=5)
@@ -260,11 +280,18 @@ def test_updateDome_1(qtbot):
     assert suc
 
 
+def test_updateDome_2(qtbot):
+    app.drawHemisphere()
+    app.app.dome.data = {}
+    suc = app.updateDome(None)
+    assert suc
+
+
 def test_updateDome_3(qtbot):
     app.drawHemisphere()
     app.app.dome.data = {}
     suc = app.updateDome(45)
-    assert suc
+    assert not suc
 
 
 def test_updateDome_4(qtbot):
@@ -305,838 +332,42 @@ def test_updateAlignStar_5(qtbot):
     assert not suc
 
 
-def test_markerPoint():
-    val = app.markerPoint()
-    assert isinstance(val, matplotlib.path.Path)
-
-
-def test_markerAltAz():
-    val = app.markerAltAz()
-    assert isinstance(val, matplotlib.path.Path)
-
-
-def test_markerStar():
-    val = app.markerStar()
-    assert isinstance(val, matplotlib.path.Path)
-
-
 def test_clearHemisphere(qtbot):
     app.app.data.buildP = [(0, 0), (1, 0)]
     app.clearHemisphere()
     assert app.app.data.buildP == []
 
 
-def test_setOperationMode_1():
-    assert app.MODE is not None
-    assert 'normal' in app.MODE
-    assert 'build' in app.MODE
-    assert 'horizon' in app.MODE
-    assert 'star' in app.MODE
+def test_staticHorizon_1():
+    pass
 
 
-def test_setOperationMode_2():
-    class Test:
-        def set_marker(self, test):
-            pass
+def test_staticModelData_1():
+    pass
 
-        def set_color(self, test):
-            pass
 
-    app.ui.checkEditNone.setChecked(True)
-    app.horizonMarker = Test()
-    app.pointsBuild = Test()
-    suc = app.setOperationMode()
-    assert suc
+def staticCelestialEquator_1():
+    pass
 
 
-def test_setOperationMode_3():
-    class Test:
-        def set_marker(self, test):
-            pass
+def test_staticMeridianLimits_1():
+    pass
 
-        def set_color(self, test):
-            pass
 
-    app.ui.checkPolarAlignment.setChecked(True)
-    app.horizonMarker = Test()
-    app.pointsBuild = Test()
-    suc = app.setOperationMode()
-    assert suc
+def test_staticHorizonLimits_1():
+    pass
 
 
-def test_setOperationMode_4():
-    class Test:
-        def set_marker(self, test):
-            pass
+def test_drawHemisphereStatic_1():
+    pass
 
-        def set_color(self, test):
-            pass
 
-    app.ui.checkEditBuildPoints.setChecked(True)
-    app.horizonMarker = Test()
-    app.pointsBuild = Test()
-    suc = app.setOperationMode()
-    assert suc
+def test_drawHemisphereMoving_1():
+    pass
 
 
-def test_setOperationMode_5():
-    class Test:
-        def set_marker(self, test):
-            pass
-
-        def set_color(self, test):
-            pass
-
-    app.ui.checkEditHorizonMask.setChecked(True)
-    app.horizonMarker = Test()
-    app.pointsBuild = Test()
-    suc = app.setOperationMode()
-    app.ui.checkEditNone.setChecked(True)
-    assert suc
-
-
-def test_getIndexPoint_0():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    plane = []
-    epsilon = 0
-    index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
-    assert not index
-
-
-def test_getIndexPoint_1():
-    event = None
-    plane = None
-    epsilon = 0
-    index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
-    assert not index
-
-
-def test_getIndexPoint_2():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    plane = None
-    epsilon = 0
-    index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
-    assert not index
-
-
-def test_getIndexPoint_3():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    plane = [(45, 0), (45, 360)]
-    epsilon = 0
-    index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
-    assert not index
-
-
-def test_getIndexPoint_4():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    plane = [(45, 0), (45, 360)]
-    epsilon = 200
-    index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
-    assert index == 0
-
-
-def test_getIndexPoint_5():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 182
-    event.ydata = 45
-    plane = [(45, 0), (45, 360)]
-    epsilon = 200
-    index = app.getIndexPoint(event=event,
-                                          plane=plane,
-                                          epsilon=epsilon,
-                                          )
-    assert index == 1
-
-
-def test_getIndexPointX_1():
-    event = None
-    plane = None
-    index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
-    assert not index
-
-
-def test_getIndexPointX_2():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 182
-    event.ydata = 45
-    plane = None
-    index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
-    assert not index
-
-
-def test_getIndexPointX_3():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    plane = [(45, 0), (45, 360)]
-    index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
-    assert index == 0
-
-
-def test_getIndexPointX_4():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 182
-    event.ydata = 45
-    plane = [(45, 0), (45, 360)]
-    index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
-    assert index == 0
-
-
-def test_getIndexPointX_5():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 182
-    event.ydata = 45
-    plane = [(45, 0), (45, 180), (45, 360)]
-    index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
-    assert index == 1
-
-
-def test_getIndexPointX_6():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 182
-    event.ydata = 45
-    plane = [(45, 0)]
-    index = app.getIndexPointX(event=event,
-                                           plane=plane,
-                                           )
-    assert not index
-
-
-def test_onMouseNormal_1():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = False
-    suc = app.onMouseNormal(event=event)
-    assert not suc
-
-
-def test_onMouseNormal_2():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 0
-    event.dblclick = False
-    suc = app.onMouseNormal(event=event)
-    assert not suc
-
-
-def test_onMouseNormal_3():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    suc = app.onMouseNormal(event=event)
-    assert not suc
-
-
-def test_onMouseNormal_4():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 0
-    event.dblclick = True
-    suc = app.onMouseNormal(event=event)
-    assert not suc
-
-
-def test_onMouseNormal_5():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = True
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseNormal(event=event)
-        assert not suc
-
-
-def test_onMouseNormal_6():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = True
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetAltAz',
-                                   return_value=True):
-                suc = app.onMouseNormal(event=event)
-                assert not suc
-
-
-def test_addHorizonPoint_1():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.addHorizonPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_addHorizonPoint_2():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.horizonP = [(0, 0)]
-    suc = app.addHorizonPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_addHorizonPoint_3():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    suc = app.addHorizonPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_deleteHorizonPoint_1():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 10
-    event.ydata = 10
-    app.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.deleteHorizonPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_deleteHorizonPoint_2():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.horizonP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.deleteHorizonPoint(data=app.app.data, event=event)
-    assert not suc
-
-
-def test_deleteHorizonPoint_3():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.horizonP = [(0, 0)]
-    suc = app.deleteHorizonPoint(data=app.app.data, event=event)
-    assert not suc
-
-
-def test_editHorizonMask_1():
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 1
-    app.horizonMarker = Test()
-    app.horizonFill = Test()
-    suc = app.editHorizonMask(data=app.app.data, event=event)
-    assert suc
-
-
-def test_editHorizonMask_2():
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 3
-    app.horizonMarker = Test()
-    app.horizonFill = Test()
-    app.app.data.horizonP = [(0, 0), (45, 180), (0, 360)]
-
-    suc = app.editHorizonMask(data=app.app.data, event=event)
-    assert suc
-
-
-def test_editHorizonMask_3():
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 2
-    app.horizonMarker = Test()
-    app.horizonFill = Test()
-    suc = app.editHorizonMask(data=app.app.data, event=event)
-    assert not suc
-
-
-def test_deleteBuildPointPoint_1():
-    axes = app.hemisphereMat.figure.axes[0]
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 10
-    event.ydata = 10
-    app.app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.deleteBuildPoint(data=app.app.data, event=event)
-    assert suc
-
-
-def test_deleteBuildPointPoint_2():
-    class Test:
-        pass
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    app.app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    suc = app.deleteBuildPoint(data=app.app.data, event=event)
-    assert not suc
-
-
-def test_editBuildPoints_1():
-    app.app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    axes = app.hemisphereMat.figure.axes[0]
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 1
-    app.pointsBuild = Test()
-    suc = app.editBuildPoints(data=app.app.data, event=event, axes=axes)
-    assert suc
-
-"""
-def test_editBuildPoints_2():
-    app.app.data.buildP = [(0, 0), (10, 10), (45, 180)]
-    axes = app.hemisphereMat.figure.axes[0]
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(180, 45)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(45, 180)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 3
-    app.pointsBuild = Test()
-    suc = app.editBuildPoints(data=app.app.data, event=event, axes=axes)
-    assert suc
-"""
-
-
-def test_editBuildPoints_3():
-    app.app.data.buildP = [(0, 0), (10, 10), (0, 360)]
-    axes = app.hemisphereMat.figure.axes[0]
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-    app.pointsBuildAnnotate.append(axes.annotate('', xy=(0, 0)))
-
-    class Test:
-        def set_data(self, test, test1):
-            pass
-
-        def set_xy(self, test):
-            pass
-
-    event = Test()
-    event.xdata = 180
-    event.ydata = 45
-    event.button = 2
-    app.pointsBuild = Test()
-    suc = app.editBuildPoints(data=app.app.data, event=event, axes=axes)
-    assert not suc
-
-
-def test_onMouseEdit_1():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = False
-    suc = app.onMouseEdit(event=event)
-    assert not suc
-
-
-def test_onMouseEdit_2():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    suc = app.onMouseEdit(event=event)
-    assert not suc
-
-
-def test_onMouseEdit_2b():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = True
-    suc = app.onMouseEdit(event=event)
-    assert not suc
-
-
-def test_onMouseEdit_3():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(False)
-    app.ui.checkEditBuildPoints.setChecked(False)
-    with mock.patch.object(app,
-                           'editHorizonMask',
-                           return_value=True):
-        with mock.patch.object(app,
-                               'editBuildPoints',
-                               return_value=True):
-            suc = app.onMouseEdit(event=event)
-            assert not suc
-
-
-def test_onMouseEdit_4():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(True)
-    app.ui.checkEditBuildPoints.setChecked(False)
-    with mock.patch.object(app,
-                           'editHorizonMask',
-                           return_value=True):
-        with mock.patch.object(app,
-                               'editBuildPoints',
-                               return_value=True):
-            suc = app.onMouseEdit(event=event)
-            assert suc
-
-
-def test_onMouseEdit_5():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(False)
-    app.ui.checkEditBuildPoints.setChecked(True)
-    with mock.patch.object(app,
-                           'editHorizonMask',
-                           return_value=True):
-        with mock.patch.object(app,
-                               'editBuildPoints',
-                               return_value=True):
-            suc = app.onMouseEdit(event=event)
-            assert suc
-
-
-def test_onMouseEdit_6():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(True)
-    app.ui.checkEditBuildPoints.setChecked(False)
-    with mock.patch.object(app,
-                           'editHorizonMask',
-                           return_value=False):
-        with mock.patch.object(app,
-                               'editBuildPoints',
-                               return_value=True):
-            suc = app.onMouseEdit(event=event)
-            assert not suc
-
-
-def test_onMouseEdit_7():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.dblclick = False
-    app.ui.checkEditHorizonMask.setChecked(False)
-    app.ui.checkEditBuildPoints.setChecked(True)
-    with mock.patch.object(app,
-                           'editHorizonMask',
-                           return_value=True):
-        with mock.patch.object(app,
-                               'editBuildPoints',
-                               return_value=False):
-            suc = app.onMouseEdit(event=event)
-            assert not suc
-
-
-def test_onMouseStar_1():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = False
-    event.dblclick = False
-    suc = app.onMouseStar(event=event)
-    assert not suc
-
-
-def test_onMouseStar_2():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 2
-    event.dblclick = False
-    suc = app.onMouseStar(event=event)
-    assert not suc
-
-
-def test_onMouseStar_3():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = True
-    suc = app.onMouseStar(event=event)
-    assert not suc
-
-
-def test_onMouseStar_4():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.No):
-        suc = app.onMouseStar(event=event)
-        assert not suc
-
-
-def test_onMouseStar_5():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            suc = app.onMouseStar(event=event)
-            assert not suc
-
-
-def test_onMouseStar_6():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=True):
-                suc = app.onMouseStar(event=event)
-                assert not suc
-
-
-def test_onMouseStar_7():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = []
-    app.app.hipparcos.alt = []
-    app.app.hipparcos.name = []
-    suc = app.onMouseStar(event=event)
-    assert not suc
-
-
-def test_onMouseStar_8():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 1
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=False):
-                suc = app.onMouseStar(event=event)
-                assert not suc
-
-
-def test_onMouseStar_9():
-    class Test:
-        pass
-    event = Test()
-    event.inaxes = True
-    event.button = 3
-    event.dblclick = False
-    event.xdata = 180
-    event.ydata = 45
-    app.app.dome.framework = 'indi'
-    app.app.hipparcos.az = [180]
-    app.app.hipparcos.alt = [45]
-    app.app.hipparcos.name = ['test']
-    with mock.patch.object(PyQt5.QtWidgets.QMessageBox,
-                           'question',
-                           return_value=PyQt5.QtWidgets.QMessageBox.Yes):
-        with mock.patch.object(mountcontrol.obsSite.Connection,
-                               'communicate',
-                               return_value=(True, '1', 1)):
-            with mock.patch.object(app.app.mount.obsSite,
-                                   'setTargetRaDec',
-                                   return_value=True):
-                suc = app.onMouseStar(event=event)
-                assert not suc
+def test_drawAlignmentStars_1():
+    pass
 
 
 def test_drawHemisphere_1():
@@ -1149,4 +380,3 @@ def test_drawHemisphere_1():
 
     app.horizonMarker = Test()
     app.drawHemisphere()
-

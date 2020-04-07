@@ -61,7 +61,9 @@ def module_setup_teardown(qtbot):
     app.clearPolar = MWidget.clearPolar
     app.deleteLater = MWidget().deleteLater
     app.polarPlot = matplot
-    app.errorPlot = matplot
+    app.ascendPlot = matplot
+    app.deviationPlanePlot = matplot
+    app.deviationPolarPlot = matplot
     app.M_BLUE = MWidget.M_BLUE
     app.M_GREY = MWidget.M_GREY
     app.M_RED = MWidget.M_RED

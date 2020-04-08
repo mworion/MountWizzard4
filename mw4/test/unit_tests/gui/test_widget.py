@@ -109,29 +109,6 @@ def test_changeStyleDynamic_4():
     assert suc
 
 
-def test_clearPolar_1():
-    fig, axes = app.clearPolar()
-    assert fig is None
-    assert axes is None
-
-
-def test_clearPolar_2():
-    widget = 'test'
-
-    fig, axes = app.clearPolar(widget)
-    assert fig is None
-    assert axes is None
-
-
-def test_clearPolar_3():
-    ui = PyQt5.QtWidgets.QPushButton()
-    widget = app.embedMatplot(ui)
-
-    fig, axes = app.clearPolar(widget)
-    assert fig
-    assert axes
-
-
 def test_embedMatplot_1():
     ret = app.embedMatplot()
     assert ret is None

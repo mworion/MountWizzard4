@@ -51,6 +51,7 @@ class MWStyles(object):
     M_WHITE_L = '#808080'
     M_GREY = '#404040'
     M_GREY_LIGHT = '#202020'
+    M_GREY_DARK = '#101010'
     M_GREEN_H = '#00A000'
     M_GREEN = '#008000'
     M_GREEN_L = '#004000'

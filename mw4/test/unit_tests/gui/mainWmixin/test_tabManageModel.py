@@ -58,15 +58,16 @@ def module_setup_teardown(qtbot):
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
     app.openDir = MWidget.openDir
-    app.clearPolar = MWidget.clearPolar
     app.deleteLater = MWidget().deleteLater
-    app.polarPlot = matplot
-    app.ascendPlot = matplot
-    app.deviationPlanePlot = matplot
-    app.deviationPolarPlot = matplot
+    app.modelPositionPlot = matplot
+    app.errorAscendingPlot = matplot
+    app.errorDistributionPlot = matplot
     app.M_BLUE = MWidget.M_BLUE
     app.M_GREY = MWidget.M_GREY
     app.M_RED = MWidget.M_RED
+    app.M_GREY_DARK = MWidget.M_GREY_DARK
+    app.M_WHITE = MWidget.M_WHITE
+    app.embedMatplot = MWidget.embedMatplot
     qtbot.addWidget(app)
 
     yield
@@ -77,7 +78,7 @@ def module_setup_teardown(qtbot):
 def test_initConfig_1():
     app.app.config['mainW'] = {}
     with mock.patch.object(app,
-                           'showModelPolar'):
+                           'showModelPosition'):
         app.initConfig()
         assert app.ui.targetRMS.value() == 99
         assert not app.ui.checkShowErrorValues.isChecked()
@@ -103,7 +104,7 @@ def test_setNameList():
     assert 0 == app.ui.nameList.count()
 
 
-def test_showModelPolar1():
+def test_showModelPosition_1():
     app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     app.app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
                                     '21:06:10.79,+45*20:52.8,  12.1,329',
@@ -112,30 +113,94 @@ def test_showModelPolar1():
                                     ],
                                    4)
     app.ui.checkShowErrorValues.setChecked(True)
-    suc = app.showModelPolar(app.app.mount.model)
+    suc = app.showModelPosition(app.app.mount.model)
     assert suc
 
 
-def test_showModelPolar2():
+def test_showModelPosition_2():
     app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
     app.app.mount.model._starList = list()
     app.ui.checkShowErrorValues.setChecked(True)
-    suc = app.showModelPolar(app.app.mount.model)
+    suc = app.showModelPosition(app.app.mount.model)
     assert not suc
 
 
-def test_showModelPolar3():
+def test_showModelPosition_3():
     app.app.mount.obsSite.location = []
     app.app.mount.model._starList = list()
     app.ui.checkShowErrorValues.setChecked(True)
-    suc = app.showModelPolar(app.app.mount.model)
+    suc = app.showModelPosition(app.app.mount.model)
     assert not suc
 
 
-def test_showModelPolar4():
+def test_showModelPosition_4():
     app.ui.checkShowErrorValues.setChecked(True)
     app.app.mount.model._starList = list()
-    suc = app.showModelPolar(app.app.mount.model)
+    suc = app.showModelPosition(app.app.mount.model)
+    assert not suc
+
+
+def test_showErrorAscending_1():
+    app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
+    app.app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
+                                    '21:06:10.79,+45*20:52.8,  12.1,329',
+                                    '23:13:58.02,+38*48:18.8,  31.0,162',
+                                    '17:43:41.26,+59*15:30.7,   8.4,005',
+                                    ],
+                                   4)
+    suc = app.showErrorAscending(app.app.mount.model)
+    assert suc
+
+
+def test_showErrorAscending_2():
+    app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
+    app.app.mount.model._starList = list()
+    suc = app.showErrorAscending(app.app.mount.model)
+    assert not suc
+
+
+def test_showErrorAscending_3():
+    app.app.mount.obsSite.location = []
+    app.app.mount.model._starList = list()
+    suc = app.showErrorAscending(app.app.mount.model)
+    assert not suc
+
+
+def test_showErrorAscending_4():
+    app.app.mount.model._starList = list()
+    suc = app.showErrorAscending(app.app.mount.model)
+    assert not suc
+
+
+def test_showErrorDistribution_1():
+    app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
+    app.app.mount.model.parseStars(['21:52:58.95,+08*56:10.1,   5.7,201',
+                                    '21:06:10.79,+45*20:52.8,  12.1,329',
+                                    '23:13:58.02,+38*48:18.8,  31.0,162',
+                                    '17:43:41.26,+59*15:30.7,   8.4,005',
+                                    ],
+                                   4)
+    suc = app.showErrorDistribution(app.app.mount.model)
+    assert suc
+
+
+def test_showErrorDistribution_2():
+    app.app.mount.obsSite.location = ['49:00:00', '11:00:00', '580']
+    app.app.mount.model._starList = list()
+    suc = app.showErrorDistribution(app.app.mount.model)
+    assert not suc
+
+
+def test_showErrorDistribution_3():
+    app.app.mount.obsSite.location = []
+    app.app.mount.model._starList = list()
+    suc = app.showErrorDistribution(app.app.mount.model)
+    assert not suc
+
+
+def test_showErrorDistribution_4():
+    app.app.mount.model._starList = list()
+    suc = app.showErrorDistribution(app.app.mount.model)
     assert not suc
 
 
@@ -569,4 +634,27 @@ def test_cancelOptimize_1():
     suc = app.cancelOptimize()
     assert suc
     assert not app.runningOptimize
+
+
+def test_generatePolar_1():
+    fig, axe = app.generatePolar()
+    assert fig is None
+    assert axe is None
+
+
+def test_generatePolar_2():
+    widget = 'test'
+
+    fig, axe = app.generatePolar(widget)
+    assert fig is None
+    assert axe is None
+
+
+def test_generatePolar_3():
+    ui = PyQt5.QtWidgets.QPushButton()
+    widget = app.embedMatplot(ui)
+
+    fig, axe = app.generatePolar(widget)
+    assert fig
+    assert axe
 

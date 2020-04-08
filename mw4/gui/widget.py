@@ -145,57 +145,6 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return True
 
     @staticmethod
-    def clearPolar(widget=None):
-        """
-        clearPolar clears and setups the canvas widget for drawing. it sets the labels,
-        ticks and some other ui styles.
-
-        :param      widget:    matplotlib canvas widget for drawing
-        :return:    fig        figure in widget
-        :return:    axes       axes in figure
-        """
-        if not widget:
-            return None, None
-        if not hasattr(widget, 'figure'):
-            return None, None
-
-        fig = widget.figure
-        fig.clf()
-        axes = fig.add_subplot(1,
-                               1,
-                               1,
-                               polar=True,
-                               facecolor='none')
-        axes.grid(True,
-                  color='#404040',
-                  )
-        axes.set_title('Actual Mount Model',
-                       color='white',
-                       fontweight='bold',
-                       pad=15,
-                       )
-        # used constrained_layout = True instead
-        # fig.subplots_adjust(left=0.07, right=1, bottom=0.03, top=0.97)
-        axes.set_facecolor((32 / 256, 32 / 256, 32 / 256))
-        axes.tick_params(axis='x',
-                         colors='#2090C0',
-                         labelsize=12,
-                         )
-        axes.tick_params(axis='y',
-                         colors='#2090C0',
-                         labelsize=12,
-                         )
-        axes.set_theta_zero_location('N')
-        axes.set_theta_direction(-1)
-        axes.set_yticks(range(0, 90, 10))
-        yLabel = ['', '', '', '', '', '', '', '', '', '']
-        axes.set_yticklabels(yLabel,
-                             color='#2090C0',
-                             fontweight='bold')
-        axes.set_rlabel_position(45)
-        return fig, axes
-
-    @staticmethod
     def embedMatplot(widget=None, constrainedLayout=True):
         """
         IntMatplotlib provides the wrapper to use matplotlib drawings inside a pyqt5

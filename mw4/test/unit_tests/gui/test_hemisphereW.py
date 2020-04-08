@@ -423,7 +423,7 @@ def test_staticHorizon_1():
 def test_staticHorizon_2():
     app.ui.checkUseHorizon.setChecked(True)
     app.app.data.horizonP = [(0, 0), (40, 100), (0, 360)]
-    axes = plt.axes()
+    axes = plt.axes(label=1)
     suc = app.staticHorizon(axes=axes)
     assert suc
 
@@ -437,7 +437,7 @@ def test_staticModelData_1():
 def test_staticModelData_2():
     app.ui.checkShowSlewPath.setChecked(False)
     app.app.data.buildP = [(0, 0), (40, 100), (0, 360)]
-    axes = plt.axes()
+    axes = plt.axes(label=2)
     suc = app.staticModelData(axes=axes)
     assert suc
 
@@ -445,14 +445,14 @@ def test_staticModelData_2():
 def test_staticModelData_3():
     app.ui.checkShowSlewPath.setChecked(True)
     app.app.data.buildP = [(0, 0), (40, 100), (0, 360)]
-    axes = plt.axes()
+    axes = plt.axes(label=3)
     suc = app.staticModelData(axes=axes)
     assert suc
 
 
 def staticCelestialEquator_1():
     app.ui.checkShowCelestial.setChecked(False)
-    axes = plt.axes()
+    axes = plt.axes(label=4)
     suc = app.staticCelestialEquator(axes=axes)
     assert suc
 
@@ -461,7 +461,7 @@ def test_staticMeridianLimits_1():
     app.app.mount.setting.meridianLimitSlew = None
     app.app.mount.setting.meridianLimitTrack = None
     app.ui.checkShowMeridian.setChecked(False)
-    axes = plt.axes()
+    axes = plt.axes(label=5)
     suc = app.staticMeridianLimits(axes=axes)
     assert suc
 
@@ -470,7 +470,7 @@ def test_staticMeridianLimits_1():
     app.app.mount.setting.meridianLimitSlew = 3
     app.app.mount.setting.meridianLimitTrack = 5
     app.ui.checkShowMeridian.setChecked(True)
-    axes = plt.axes()
+    axes = plt.axes(label=6)
     suc = app.staticMeridianLimits(axes=axes)
     assert suc
 
@@ -478,7 +478,7 @@ def test_staticMeridianLimits_1():
 def test_staticHorizonLimits_2():
     app.app.mount.setting.horizonLimitHigh = None
     app.app.mount.setting.horizonLimitLow = None
-    axes = plt.axes()
+    axes = plt.axes(label=7)
     suc = app.staticHorizonLimits(axes=axes)
     assert suc
 
@@ -486,32 +486,32 @@ def test_staticHorizonLimits_2():
 def test_staticHorizonLimits_2():
     app.app.mount.setting.horizonLimitHigh = 90
     app.app.mount.setting.horizonLimitLow = 10
-    axes = plt.axes()
+    axes = plt.axes(label=8)
     suc = app.staticHorizonLimits(axes=axes)
     assert suc
 
 
 def test_drawHemisphereStatic_1():
     app.mutexDraw.lock()
-    axes = plt.axes()
+    axes = plt.axes(label=9)
     suc = app.drawHemisphereStatic(axes=axes)
     assert not suc
 
 
 def test_drawHemisphereStatic_2():
-    axes = plt.axes()
+    axes = plt.axes(label=10)
     suc = app.drawHemisphereStatic(axes=axes)
     assert suc
 
 
 def test_drawHemisphereMoving_1():
-    axes = plt.axes()
+    axes = plt.axes(label=11)
     suc = app.drawHemisphereMoving(axes=axes)
     assert suc
 
 
 def test_drawAlignmentStars_1():
-    axes = plt.axes()
+    axes = plt.axes(label=12)
     suc = app.drawAlignmentStars(axes=axes)
     assert suc
 

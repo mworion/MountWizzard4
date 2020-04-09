@@ -561,7 +561,7 @@ class ImageWindow(widget.MWidget):
         figure.clf()
         # figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
 
-        axe = figure.add_subplot(1, 1, 1, facecolor='#000000')
+        axe = figure.add_subplot(1, 1, 1, facecolor=self.M_BLACK)
 
         axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
         axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)

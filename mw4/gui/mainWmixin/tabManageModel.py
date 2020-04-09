@@ -136,7 +136,7 @@ class ManageModel(object):
                               polar=True,
                               facecolor=self.M_GREY_DARK)
         axe.grid(True,
-                 color='#404040',
+                 color=self.M_GREY,
                  )
         axe.set_title(title,
                       color=self.M_BLUE,

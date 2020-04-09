@@ -636,7 +636,7 @@ def test_addBuildPoint_3():
         xdata = 10
         ydata = 10
 
-    axes = plt.axes()
+    axes = plt.axes(label=1)
     app.app.data.buildP = []
     app.ui.checkShowSlewPath.setChecked(True)
 
@@ -649,7 +649,7 @@ def test_addBuildPoint_4():
         xdata = 10
         ydata = 10
 
-    axes = plt.axes()
+    axes = plt.axes(label=2)
     app.app.data.buildP = []
     app.ui.checkShowSlewPath.setChecked(False)
 
@@ -662,7 +662,7 @@ def test_addBuildPoint_5():
         xdata = 10
         ydata = 10
 
-    axes = plt.axes()
+    axes = plt.axes(label=3)
     app.app.data.buildP = []
     app.ui.checkShowSlewPath.setChecked(False)
 

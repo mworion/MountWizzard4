@@ -27,6 +27,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install qtmultimedia
+      run: |
         apt-get install qtmultimedia5-dev
 
     - name: Build widgets and resource

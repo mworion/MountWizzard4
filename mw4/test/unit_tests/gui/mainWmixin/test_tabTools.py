@@ -59,7 +59,7 @@ def module_setup_teardown(qtbot):
 
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
-    app.openDir = MWidget.openDir
+    app.openDir = MWidget().openDir
     app.deleteLater = MWidget().deleteLater
     qtbot.addWidget(app)
 

@@ -50,31 +50,33 @@ def module_setup_teardown(qtbot):
     widget = QWidget()
     ui = Ui_MainWindow()
     ui.setupUi(widget)
-    matplot = MWidget.embedMatplot(widget, False)
 
     app = ManageModel(app=Test(), ui=ui,
                       clickable=MWidget().clickable)
 
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
-    app.openDir = MWidget.openDir
+    app.openDir = MWidget().openDir
     app.deleteLater = MWidget().deleteLater
+    app.embedMatplot = MWidget().embedMatplot
+
+    matplot = MWidget().embedMatplot(widget, False)
     app.modelPositionPlot = matplot
     app.errorAscendingPlot = matplot
     app.errorDistributionPlot = matplot
-    app.M_BLUE = MWidget.M_BLUE
-    app.M_GREY = MWidget.M_GREY
-    app.M_RED = MWidget.M_RED
-    app.M_GREY_DARK = MWidget.M_GREY_DARK
-    app.M_WHITE = MWidget.M_WHITE
-    app.M_PINK = MWidget.M_PINK_H
-    app.M_GREEN = MWidget.M_GREEN
-    app.embedMatplot = MWidget.embedMatplot
+    app.M_BLUE = MWidget().M_BLUE
+    app.M_GREY = MWidget().M_GREY
+    app.M_RED = MWidget().M_RED
+    app.M_GREY_DARK = MWidget().M_GREY_DARK
+    app.M_WHITE = MWidget().M_WHITE
+    app.M_PINK_H = MWidget().M_PINK_H
+    app.M_GREEN = MWidget().M_GREEN
+
     qtbot.addWidget(app)
 
     yield
 
-    del widget, ui, Test, app
+    del widget, ui, Test, app, matplot
 
 
 def test_initConfig_1():

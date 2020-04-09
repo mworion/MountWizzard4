@@ -66,9 +66,9 @@ def module_setup_teardown(qtbot):
 
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
-    app.openDir = MWidget.openDir
-    app.openFile = MWidget.openFile
-    app.saveFile = MWidget.saveFile
+    app.openDir = MWidget().openDir
+    app.openFile = MWidget().openFile
+    app.saveFile = MWidget().saveFile
     app.deleteLater = MWidget().deleteLater
     qtbot.addWidget(app)
 

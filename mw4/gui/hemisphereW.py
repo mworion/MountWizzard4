@@ -809,7 +809,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         self.pointerAltAz, = axes.plot(180, 45,
                                        zorder=10,
-                                       color=self.M_PINK_H,
+                                       color=self.M_PINK,
                                        marker=self.markerAltAz(),
                                        markersize=25,
                                        linestyle='none',

@@ -144,11 +144,11 @@ class ManageModel(object):
                       pad=15,
                       )
         axe.tick_params(axis='x',
-                        colors=self.M_WHITE,
+                        colors=self.M_BLUE,
                         labelsize=12,
                         )
         axe.tick_params(axis='y',
-                        colors=self.M_WHITE,
+                        colors=self.M_BLUE,
                         labelsize=12,
                         )
         axe.set_theta_zero_location('N')
@@ -230,7 +230,7 @@ class ManageModel(object):
                 axe.annotate(text,
                              xy=(theta[star.number - 1],
                                  r[star.number - 1]),
-                             color=self.M_WHITE,
+                             color=self.M_BLUE,
                              fontsize=9,
                              fontweight='bold',
                              zorder=1,
@@ -243,17 +243,17 @@ class ManageModel(object):
                                 shrink=0.9,
                                 format=formatString,
                                 )
-        colorbar.set_label('Error [arcsec]', color=self.M_WHITE)
+        colorbar.set_label('Error [arcsec]', color=self.M_BLUE)
         yTicks = matplotlib.pyplot.getp(colorbar.ax.axes, 'yticklabels')
         matplotlib.pyplot.setp(yTicks,
-                               color=self.M_WHITE,
+                               color=self.M_BLUE,
                                fontweight='bold')
         yValues = self.ui.targetRMS.value()
         xMin = colorbar.ax.get_xlim()[0]
         xMax = colorbar.ax.get_xlim()[1]
         vRange = xMax - xMin
         xValues = [xMin - 0.15 * vRange, xMax + 0.2 * vRange]
-        colorbar.ax.plot(xValues, [yValues] * 2, self.M_RED, lw=3, clip_on=False)
+        colorbar.ax.plot(xValues, [yValues] * 2, self.M_PINK_H, lw=3, clip_on=False)
 
         axe.figure.canvas.draw()
         return True
@@ -287,23 +287,23 @@ class ManageModel(object):
                       fontweight='bold',
                       pad=15,
                       )
-        axe.spines['bottom'].set_color(self.M_WHITE)
-        axe.spines['top'].set_color(self.M_WHITE)
-        axe.spines['left'].set_color(self.M_WHITE)
-        axe.spines['right'].set_color(self.M_WHITE)
+        axe.spines['bottom'].set_color(self.M_BLUE)
+        axe.spines['top'].set_color(self.M_BLUE)
+        axe.spines['left'].set_color(self.M_BLUE)
+        axe.spines['right'].set_color(self.M_BLUE)
         axe.grid(True, color=self.M_GREY)
         axe.tick_params(axis='x',
-                        colors=self.M_WHITE,
+                        colors=self.M_BLUE,
                         labelsize=12)
         axe.tick_params(axis='y',
-                        colors=self.M_WHITE,
+                        colors=self.M_BLUE,
                         labelsize=12)
         axe.set_xlabel('Star',
-                       color=self.M_WHITE,
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
         axe.set_ylabel('Error per Star [RMS]',
-                       color=self.M_WHITE,
+                       color=self.M_BLUE,
                        fontweight='bold',
                        fontsize=12)
 
@@ -315,13 +315,13 @@ class ManageModel(object):
                  marker='.',
                  markersize=5,
                  linestyle='none',
-                 color=self.M_BLUE)
+                 color=self.M_GREEN)
 
         value = self.ui.targetRMS.value()
         axe.plot([0, len(index) - 1],
                  [value, value],
                  lw=3,
-                 color=self.M_RED)
+                 color=self.M_PINK_H)
 
         axe.figure.canvas.draw()
 
@@ -361,14 +361,14 @@ class ManageModel(object):
                  marker='.',
                  markersize=5,
                  linestyle='none',
-                 color=self.M_BLUE)
+                 color=self.M_GREEN)
 
         values = [self.ui.targetRMS.value()] * 73
         angles = np.arange(0, 365 / 180.0 * np.pi, 5 / 180.0 * np.pi)
         axe.plot(angles,
                  values,
                  lw=3,
-                 color=self.M_RED)
+                 color=self.M_PINK_H)
 
         axe.figure.canvas.draw()
 

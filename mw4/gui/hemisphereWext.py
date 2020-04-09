@@ -332,7 +332,7 @@ class HemisphereWindowExt(object):
         else:
             ls = ''
             lw = 0
-        color = '#FF00FF'
+        color = self.M_PINK_H
         if self.pointsBuild is None:
             newBuildP, = axes.plot(x,
                                    y,
@@ -352,7 +352,7 @@ class HemisphereWindowExt(object):
                                       xy=xy,
                                       xytext=(2, -10),
                                       textcoords='offset points',
-                                      color='#E0E0E0',
+                                      color=self.M_WHITE,
                                       zorder=10,
                                       )
         if self.pointsBuildAnnotate is None:

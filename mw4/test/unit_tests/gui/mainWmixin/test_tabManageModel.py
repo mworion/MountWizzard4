@@ -67,6 +67,7 @@ def module_setup_teardown(qtbot):
     app.M_RED = MWidget.M_RED
     app.M_GREY_DARK = MWidget.M_GREY_DARK
     app.M_WHITE = MWidget.M_WHITE
+    app.M_PINK = MWidget.M_PINK
     app.embedMatplot = MWidget.embedMatplot
     qtbot.addWidget(app)
 

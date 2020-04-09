@@ -376,9 +376,11 @@ class MainWindow(MWidget,
         """
 
         smartTabs = {
+            """
             'ManageModel': {'statID': 'mount',
                             'tab': self.ui.mainTabWidget,
                             },
+            """
             'Power': {'statID': 'power',
                       'tab': self.ui.mainTabWidget,
                       },

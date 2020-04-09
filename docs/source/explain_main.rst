@@ -260,6 +260,9 @@ make sense to keep every model. If you store models to disk, please refer to bui
 model: MW4 stored any build model to disk in parallel. So you can access the data even
 without having the model stored in the mount computer.
 
+How to use the manage model is described in :ref:`Managing Mount Models`.
+
+
 Satellite Tab
 -------------
 The mount supports satellite tracking. There is a database in the mount (which can be

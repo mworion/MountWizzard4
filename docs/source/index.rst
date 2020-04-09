@@ -12,6 +12,7 @@ MountWizzard4 is still beta!
     install_platesolvers
     install_rpi3
     explain_main
+    explain_manage_model
     explain_setting
     explain_windows
     config_mw4

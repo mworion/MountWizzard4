@@ -1,0 +1,42 @@
+Managing Mount Models
+=====================
+Managing your models is a central task especially if you image in a mobile environment. MW4
+supports this in the Manage Model Tab in the main window. All functions there are related to
+the actual mount model or the models stored in the mount. Three graphs are available for
+checking the model: "Model Positions", "Error ascending" and "Error Distribution".
+
+.. note::   All values which are show in these graphs were calculated by the mount computer
+            itself and just read out and displayed by MW4. As the 10micron algorithm of the
+            model optimizer is not know. The given hints are observations.
+
+The Model Positions graph shows in a polar plot how the model point were distributed over
+the hemisphere and how large the errors of each point is in a color scheme. If necessary you
+could check "Show error values" and numerical values will label each point.
+
+.. image:: _static/explain_manage_model_1.png
+    :align: center
+    :scale: 71%
+
+In the give example you see the western point are in general better than the eastern ones,
+so in the setup there might be differences in setup depending on the pier side.
+
+The Error Ascending graph show all model points sorted by ascending error values. You might
+see some outlayers which differ a lot from other ones or recognize an elbow type of curve
+which also might lead to some issues with you setup.
+
+.. image:: _static/explain_manage_model_2.png
+    :align: center
+    :scale: 71%
+
+The Error Distribution graph shows in a polar plot how the error values (higher values on
+outer rings) and the polar angle of the error value.
+
+.. image:: _static/explain_manage_model_3.png
+    :align: center
+    :scale: 71%
+
+In all graphs you will see the pink lines which show the value of the Target (RMS) setting
+in the "Optimize actual model" box. This helps in adjusting a cut-off value for automatic
+model point removal.
+
+

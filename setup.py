@@ -17,6 +17,7 @@
 #
 ###########################################################
 from setuptools import setup
+from pathlib import Path
 
 setup(
     name='mountwizzard4',
@@ -60,6 +61,14 @@ setup(
     author='mworion',
     author_email='michael@wuertenberger.org',
     description='tooling for a 10micron mount',
+    long_description=Path("README.rst").read_text(encoding="utf-8"),
+    long_description_content_type="text/x-rst",
+    project_urls={
+        'Documentation': 'https://mountwizzard4.readthedocs.io',
+        'Source Code': 'https://github.com/mworion/mountwizzard4',
+        'Bug Tracker': 'https://github.com/mworion/mountwizzard4/issues',
+        'Forum': 'https://www.10micron.eu/forum/',
+    },
     zip_safe=True,
     classifiers=[
         'Development Status :: 4 - Beta',

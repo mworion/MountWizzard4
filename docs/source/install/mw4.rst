@@ -1,7 +1,7 @@
 Installing Procedure
 ====================
 
-When starting with the installation of MW4, python3.7.x or 3.8.x should be successful
+When starting with the installation of MW4, python 3.6.x, 3.7.x or 3.8.x should be successful
 installed. To check, open a terminal (available on all platforms) and run the command
 
 .. code-block:: python

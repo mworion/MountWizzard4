@@ -6,4 +6,5 @@ Modeling in MW4
     :maxdepth: 2
 
     manage_model
+    remarks
 

@@ -14,8 +14,6 @@ Installation
     explain/index
     model/index
 
-    model_building_remarks
-
 
 Indices and tables
 ------------------

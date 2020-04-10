@@ -65,6 +65,6 @@ html_theme_options = {
     'logo': 'mw4.png',
     'logo_name': True,
     'fixed_sidebar': True,
-    'page_width': '1200px',
+    'page_width': '1400px',
     'sidebar_width': '300px',
 }

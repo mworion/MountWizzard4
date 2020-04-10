@@ -1,12 +1,12 @@
-Explaining Extended Windows
-===========================
+Extended Windows
+================
 MW4 has some more windows to show and use. Some of them are necessary for full functionality
 . These windows could be opened on the main window with dedicated button in the upper left
 part described here: :ref:`Layout of main window`.
 
 Message Window
 --------------
-.. image:: _static/window_message.png
+.. image:: image/window_message.png
     :align: center
     :scale: 71%
 
@@ -18,7 +18,7 @@ There is a video on youtube with some explanations: https://youtu.be/6jiCOqKgzZY
 
 Measure Window
 --------------
-.. image:: _static/window_measure.png
+.. image:: image/window_measure.png
     :align: center
     :scale: 71%
 
@@ -61,7 +61,7 @@ Hemisphere Windows
 The hemisphere window is on of the central windows for model building. It is oriented to a
 ALT/AZ view from your observation location.
 
-.. image:: _static/window_hemisphere_raw.png
+.. image:: image/window_hemisphere_raw.png
     :align: center
     :scale: 71%
 
@@ -70,7 +70,7 @@ Hemisphere Full
 It shows the horizon, the selected model points, celestial and slew paths for the mount,
 align stars (for polar and ortho alignment) and much more.
 
-.. image:: _static/window_hemisphere_full.png
+.. image:: image/window_hemisphere_full.png
     :align: center
     :scale: 71%
 
@@ -80,7 +80,7 @@ If you are in normal operation mode, clicking in the hemisphere window will open
 window to slew to the selected coordinates. The value of the coordinates of the mouse
 pointer is shows under Views / Coords.
 
-.. image:: _static/window_hemisphere_slew.png
+.. image:: image/window_hemisphere_slew.png
     :align: center
     :scale: 71%
 
@@ -91,7 +91,7 @@ hemisphere window. If Slew path is checked, the slew path between the points is 
 the picture below no "auto delete below horizon" is checked. Therefore some model points are
 below the horizon line. If checked, MW4 will remove them automatically.
 
-.. image:: _static/window_hemisphere_points.png
+.. image:: image/window_hemisphere_points.png
     :align: center
     :scale: 71%
 
@@ -101,7 +101,7 @@ Changing the operation mode to "Edit Build Points" will change the point color t
 points. Now you can add new build point with a left mouse click and remove point with a
 right mouse click. When deleting, MW4 will search for the closest point to the mouse pointer.
 
-.. image:: _static/window_hemisphere_points_edit.png
+.. image:: image/window_hemisphere_points_edit.png
     :align: center
     :scale: 71%
 
@@ -114,7 +114,7 @@ Beside the ALT/AZ view - which is the standard view for modeling - you can add a
 diagram as well. It basically shows similar information. You can't edit point or horizon
 line in the polar diagram !
 
-.. image:: _static/window_hemisphere_polar.png
+.. image:: image/window_hemisphere_polar.png
     :align: center
     :scale: 71%
 
@@ -125,7 +125,7 @@ can now edit the horizon line like the model point with adding a point with left
 and removing a point with right mouse click. If you don't need a horizon mask, simply switch
 it of by unchecking "Horizon Mask" on the top.
 
-.. image:: _static/window_hemisphere_horizon_edit.png
+.. image:: image/window_hemisphere_horizon_edit.png
     :align: center
     :scale: 71%
 
@@ -155,7 +155,7 @@ is checked. There is no alignment routine behind the scene working. It's a quick
 images and calculating mean routine. So good stacking results rely on the tracking quality
 of the mount.
 
-.. image:: _static/window_image.png
+.. image:: image/window_image.png
     :align: center
     :scale: 71%
 
@@ -171,7 +171,7 @@ distortion parameters used.
 .. hint:: Some plate solvers calculate the coordinates of the images, but no distortion
           parameters! For example astrometry.net does calculate them, whereas ASTAP does not!
 
-.. image:: _static/window_image_distortion.png
+.. image:: image/window_image_distortion.png
     :align: center
     :scale: 71%
 
@@ -181,7 +181,7 @@ The satellite window is split in four quadrants. The left side shows the the ear
 rotating, the right side the earth map and your horizon view (like the hemisphere view) with
 your horizon line (if checked). Red dots show your location.
 
-.. image:: _static/window_satellite_empty.png
+.. image:: image/window_satellite_empty.png
     :align: center
     :scale: 71%
 
@@ -192,7 +192,7 @@ the satellite track and position in all quadrants. Satellite position is cyclic 
 so you could see the satellite moving. If the satellite is visible and above horizon, you
 will see it's track in the fourth quadrant.
 
-.. image:: _static/window_satellite_noaa.png
+.. image:: image/window_satellite_noaa.png
     :align: center
     :scale: 71%
 
@@ -205,7 +205,7 @@ Satellite Visible Turned
 In the satellite windows you can change the perspective for the left quadrants showing the
 earth by clicking in the window, holding the left mouse button and shifting tilt etc.
 
-.. image:: _static/window_satellite_noaa_turned.png
+.. image:: image/window_satellite_noaa_turned.png
     :align: center
     :scale: 71%
 
@@ -214,7 +214,7 @@ Keypad Window
 The keypad window is just a copy of the original virtual keypad or the web based keypad on
 newer firmware version (starting with firmware 2.16.11).
 
-.. image:: _static/window_keypad.png
+.. image:: image/window_keypad.png
     :align: center
     :scale: 71%
 

@@ -13,7 +13,7 @@ The Model Positions graph shows in a polar plot how the model point were distrib
 the hemisphere and how large the errors of each point is in a color scheme. If necessary you
 could check "Show error values" and numerical values will label each point.
 
-.. image:: _static/explain_manage_model_1.png
+.. image:: image/explain_manage_model_1.png
     :align: center
     :scale: 71%
 
@@ -24,14 +24,14 @@ The Error Ascending graph show all model points sorted by ascending error values
 see some outlayers which differ a lot from other ones or recognize an elbow type of curve
 which also might lead to some issues with you setup.
 
-.. image:: _static/explain_manage_model_2.png
+.. image:: image/explain_manage_model_2.png
     :align: center
     :scale: 71%
 
 The Error Distribution graph shows in a polar plot how the error values (higher values on
 outer rings) and the polar angle of the error value.
 
-.. image:: _static/explain_manage_model_3.png
+.. image:: image/explain_manage_model_3.png
     :align: center
     :scale: 71%
 

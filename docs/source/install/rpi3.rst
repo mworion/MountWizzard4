@@ -1,6 +1,9 @@
 Installing MW4 on RaspberryPi 3
 ===============================
 
+Installing Python
+-----------------
+
 To get MW4 installed on RPi3 you will follow the instructions of Robert Lancaste (many
 thanks to him fore this work!) on https://github.com/rlancaste/AstroPi3 with installing
 AstroPi3 scripts. The installation procedure I describe is based on Raspbian Buster with
@@ -12,7 +15,7 @@ desktop. As this distribution already supports python 3.7 we should check this:
 
 should give you the following result:
 
-.. image:: _static/install_rpi3_rlancaste.png
+.. image:: image/install_rpi3_rlancaste.png
     :align: center
     :scale: 71%
 
@@ -22,7 +25,7 @@ Please follow the description: :ref:`Ubuntu`. After that you should get an
 python3.7
 available on your system:
 
-.. image:: _static/install_rpi3_python37.png
+.. image:: image/install_rpi3_python37.png
     :align: center
     :scale: 71%
 
@@ -98,6 +101,6 @@ and run MW4 with the command
 
 If everything went fine, you should see MW4 on RPi3:
 
-.. image:: _static/install_rpi3_running.png
+.. image:: image/install_rpi3_running.png
     :align: center
     :scale: 71%

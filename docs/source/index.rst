@@ -1,22 +1,21 @@
+===============================================
 Welcome to MountWizzard4's (MW4) documentation!
 ===============================================
 MountWizzard4 is still beta!
 
+Installation
+============
+
 .. toctree::
     :maxdepth: 2
-    :caption: Contents:
 
     overview
-    install_python
-    install_mw4
-    install_platesolvers
-    install_rpi3
-    explain_main
-    explain_manage_model
-    explain_setting
-    explain_windows
-    config_mw4
+    install/index
+    explain/index
+    model/index
+
     model_building_remarks
+
 
 Indices and tables
 ------------------

@@ -1,5 +1,5 @@
-Installing MW4
-==============
+Installing Procedure
+====================
 
 When starting with the installation of MW4, python3.7.x or 3.8.x should be successful
 installed. To check, open a terminal (available on all platforms) and run the command
@@ -49,7 +49,7 @@ For Ubuntu: https://github.com/mworion/MountWizzard4/blob/master/support/Ubuntu_
 
 Please click the link and press download from the page:
 
-.. image:: _static/install_mw4_scripts.png
+.. image:: image/install_mw4_scripts.png
     :align: center
     :scale: 71%
 
@@ -77,13 +77,13 @@ other location. Copy the scripts for your platform into this directory.
 
 the directory should than for OSx look like:
 
-.. image:: _static/install_mw4_mac_1.png
+.. image:: image/install_mw4_mac_1.png
     :align: center
     :scale: 71%
 
 In Windows10 it looks like:
 
-.. image:: _static/install_mw4_win_1.png
+.. image:: image/install_mw4_win_1.png
     :align: center
     :scale: 71%
 
@@ -91,19 +91,19 @@ In Windows10 it looks like:
     Please closely check if your working directory is writable. Otherwise MW4 could
     not work properly!
 
-.. image:: _static/install_mw4_win_1.png
+.. image:: image/install_mw4_win_1.png
     :align: center
     :scale: 71%
 
 Windows10 might as you the first time of execution the following question:
 
-.. image:: _static/install_mw4_win_a.png
+.. image:: image/install_mw4_win_a.png
     :align: center
     :scale: 71%
 
 and you could accept that by clicking "addition information" and than execute:
 
-.. image:: _static/install_mw4_win_b.png
+.. image:: image/install_mw4_win_b.png
     :align: center
     :scale: 71%
 
@@ -125,13 +125,13 @@ environment. So any other installation of python applications is not influenced 
 
 After running the install script the directory should for OSx look like:
 
-.. image:: _static/install_mw4_mac_2.png
+.. image:: image/install_mw4_mac_2.png
     :align: center
     :scale: 71%
 
 In Windows10 it looks like:
 
-.. image:: _static/install_mw4_win_2.png
+.. image:: image/install_mw4_win_2.png
     :align: center
     :scale: 71%
 
@@ -160,13 +160,13 @@ This script will start MW4 for the first time and it will create some subdirecto
 working folder. When starting, a splash screen show the progress of it's initialization.
 After first start the directory should for OSx look like:
 
-.. image:: _static/install_mw4_mac_3.png
+.. image:: image/install_mw4_mac_3.png
     :align: center
     :scale: 71%
 
 In Windows10 it looks like:
 
-.. image:: _static/install_mw4_win_3.png
+.. image:: image/install_mw4_win_3.png
     :align: center
     :scale: 71%
 
@@ -176,7 +176,7 @@ With the first run you will see a log file written and you should have a first w
 open. Please notice that there will be no visible terminal window, but a minimized power
 shell in the menu. This might take some seconds before MW4 comes up with the splash screen:
 
-.. image:: _static/install_mw4_first_run.png
+.. image:: image/install_mw4_first_run.png
     :align: center
     :scale: 71%
 

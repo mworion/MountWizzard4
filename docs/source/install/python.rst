@@ -35,7 +35,7 @@ and follow the installation procedure.
 .. warning::
     Please take care, that during the installation the checkbox "Add Python Path" is selected.
 
-.. image:: _static/install_python_win_path.png
+.. image:: image/install_python_win_path.png
     :align: center
     :scale: 71%
 

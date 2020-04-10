@@ -1,5 +1,5 @@
-Explaining MW4 Settings
-=======================
+Main Window Settings Tab
+========================
 In the main window the last tab called "Sett. / Conf." points to menu where all the settings
 for MW4 could be configured. It is like the main window split into multiple Tabs.
 
@@ -9,7 +9,7 @@ The devices tab is the central point for MW4 to define the devices, which are us
 the program. Drop down lists let you select the appropriate device source or disable it.
 Disabled devices might occur gray in the menu or are even removed (like Relay or Power)
 
-.. image:: _static/explain_sett_devices_tab.png
+.. image:: image/explain_sett_devices_tab.png
     :align: center
     :scale: 71%
 
@@ -42,7 +42,7 @@ A snoop device is only read for information, but not needed for active functions
 Some of the devices have a setup button. When selecting, a popup window will show up. You
 have to make selections for an INDI server:
 
-.. image:: _static/explain_sett_devices_popup_indi.png
+.. image:: image/explain_sett_devices_popup_indi.png
     :align: center
     :scale: 71%
 
@@ -52,7 +52,7 @@ showing indi messages in main message window to all INDI devices.
 
 MW4 supports ASCOM ALPACA as well:
 
-.. image:: _static/explain_sett_devices_popup_alpaca.png
+.. image:: image/explain_sett_devices_popup_alpaca.png
     :align: center
     :scale: 71%
 
@@ -64,7 +64,7 @@ Imaging Tab
 -----------
 The imaging tab is central setup for all things related to gather images.
 
-.. image:: _static/explain_sett_imaging_tab.png
+.. image:: image/explain_sett_imaging_tab.png
     :align: center
     :scale: 71%
 
@@ -98,7 +98,7 @@ solving an image. You should set the search radius and the solving timeout. Good
 
 Mount / Weather Tab
 -------------------
-.. image:: _static/explain_sett_mount_tab.png
+.. image:: image/explain_sett_mount_tab.png
     :align: center
     :scale: 71%
 
@@ -141,7 +141,7 @@ Dome / Cover Tab
 ----------------
 MW4 could handle a dome which is connected via INDI.
 
-.. image:: _static/explain_sett_dome_tab.png
+.. image:: image/explain_sett_dome_tab.png
     :align: center
     :scale: 71%
 
@@ -176,7 +176,7 @@ MW4 stores up to 10 different park positions for you. You could setup these posi
 text (the text will be displayed in the tools menu), and altitude and azimuth for the
 position.
 
-.. image:: _static/explain_sett_dome_tab.png
+.. image:: image/explain_sett_dome_tab.png
     :align: center
     :scale: 71%
 
@@ -185,7 +185,7 @@ position in the according fields.
 
 Audio / Misc Tab
 ----------------
-.. image:: _static/explain_sett_misc_tab.png
+.. image:: image/explain_sett_misc_tab.png
     :align: center
     :scale: 71%
 

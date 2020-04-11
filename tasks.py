@@ -64,7 +64,7 @@ def version_doc(c):
         if line.startswith('version'):
             line = f"version = '{number}'\n"
         if line.startswith('release'):
-            line = f"version = '{number}'\n"
+            line = f"release = '{number}'\n"
         textNew.append(line)
 
     # writing configuration file
@@ -133,7 +133,7 @@ def build_ib(c):
         runMW(c, 'cp dist/indibase*.tar.gz ../MountWizzard4/dist/indibase.tar.gz')
 
 
-@task(pre=[build_resource, build_widgets, build_mc, build_ib, image_res])
+@task(pre=[build_resource, build_widgets, build_mc, build_ib, image_res, version_doc])
 def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):

@@ -61,7 +61,6 @@ For a better impression of how MW4 could be installed, there are some special vi
 a installation on different platforms.
 
 .. hlist::
-
     :columns: 1
 
     * Windows10: https://youtu.be/q9WbiHhW5NU
@@ -197,5 +196,6 @@ If you plan to upgrade MW4 to a newer release, you could use on of the
     MW4_Update.command     # OSx
 
 scripts. In some circumstances this might be necessary, but for normal use MW4 has it's own
-internal updater and using the script is not necessary.
+internal updater and using the script is not necessary. The command script updates to the
+latest release, alpha or beta releases are left out.
 

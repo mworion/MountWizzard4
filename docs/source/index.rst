@@ -13,6 +13,7 @@ Documentation for MW4
 
     install/index
     explain/index
+    config/index
     modeling/index
 
 * :ref:`search`

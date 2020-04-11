@@ -6,13 +6,25 @@ MountWizzard4 is still beta!
 Installation
 ============
 
-.. toctree::
-    :maxdepth: 3
+.. only:: html
 
-    overview
-    install/index
-    explain/index
-    model/index
+    .. toctree::
+        :maxdepth: 2
+
+        overview
+        install/index
+        explain/index
+        model/index
+
+.. only:: latex
+
+    .. toctree::
+        :maxdepth: 4
+
+        overview
+        install/index
+        explain/index
+        model/index
 
 
 Indices and tables

@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'MW4'
+project = 'MountWizzard4'
 copyright = '2020, mworion'
 author = 'mworion'
 
@@ -69,6 +69,6 @@ html_theme_options = {
     'sidebar_width': '300px',
 }
 
-latex_logo = '_static‚/mw4.png'
+latex_logo = '_static/mw4.png'
 latex_show_urls = 'inline'
 

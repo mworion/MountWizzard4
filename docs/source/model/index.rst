@@ -3,7 +3,7 @@ Modeling in MW4
 ===============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     manage_model
     remarks

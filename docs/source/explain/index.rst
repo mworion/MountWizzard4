@@ -3,7 +3,7 @@ Explaining MW4
 ==============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     main
     setting

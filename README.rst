@@ -33,11 +33,7 @@ online documentation
 
 Build and code coverage status
 ------------------------------
-Actual master:
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/PyTest/badge.svg
-        :align: center
-    .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
-        :align: center
+Actual master test: |PYTEST| and coverage: |CODECOV|
 
 Actual code coverage chart:
     .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
@@ -92,3 +88,5 @@ CS Michel
     :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
+.. |PYTEST| image:: https://github.com/mworion/MountWizzard4/workflows/PyTest/badge.svg
+.. |CODECOV| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg

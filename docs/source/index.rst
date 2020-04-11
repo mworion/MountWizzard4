@@ -7,11 +7,7 @@ Installation
 ============
 
 .. toctree::
-    .. only:: latex
-        :maxdepth: 3
-
-    .. only:: html
-        :maxdepth: 2
+    :maxdepth: 3
 
     overview
     install/index

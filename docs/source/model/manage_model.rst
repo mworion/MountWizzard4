@@ -2,8 +2,18 @@ Managing Mount Models
 =====================
 Managing your models is a central task especially if you image in a mobile environment. MW4
 supports this in the Manage Model Tab in the main window. All functions there are related to
-the actual mount model or the models stored in the mount. Three graphs are available for
-checking the model: "Model Positions", "Error ascending" and "Error Distribution".
+the actual mount model or the models stored in the mount.
+
+.. versionadded:: 0.149.7
+
+Three graphs are available for checking the model:
+
+.. hlist::
+    :columns: 1
+
+    * Model Positions
+    * Error ascending
+    * Error Distribution
 
 .. note::   All values which are show in these graphs were calculated by the mount computer
             itself and just read out and displayed by MW4. As the 10micron algorithm of the
@@ -21,7 +31,7 @@ In the give example you see the western point are in general better than the eas
 so in the setup there might be differences in setup depending on the pier side.
 
 The Error Ascending graph show all model points sorted by ascending error values. You might
-see some outlayers which differ a lot from other ones or recognize an elbow type of curve
+see some outside points which differ a lot from other ones or recognize an elbow type of curve
 which also might lead to some issues with you setup.
 
 .. image:: image/explain_manage_model_2.png

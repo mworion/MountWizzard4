@@ -3,7 +3,7 @@ Installing MW4
 ==============
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     python
     mw4

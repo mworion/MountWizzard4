@@ -1,7 +1,12 @@
-===============================================
-Welcome to MountWizzard4's (MW4) documentation!
-===============================================
-MountWizzard4 is still under development!
+=============
+Documentation
+=============
+.. note:: Please note that MountWizzard4 is still under development!
+
+.. toctree::
+    :maxdepth: 1
+
+    overview
 
 Installation
 ============
@@ -9,7 +14,6 @@ Installation
 .. toctree::
     :maxdepth: 3
 
-    overview
     install/index
     explain/index
     modeling/index

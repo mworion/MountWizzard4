@@ -1,7 +1,7 @@
 ===============================================
 Welcome to MountWizzard4's (MW4) documentation!
 ===============================================
-MountWizzard4 is still beta!
+MountWizzard4 is still under development!
 
 Installation
 ============

@@ -69,5 +69,5 @@ html_theme_options = {
     'sidebar_width': '300px',
 }
 
-latex_logo = 'mw4.png'
+latex_logo = '_static‚/mw4.png'
 

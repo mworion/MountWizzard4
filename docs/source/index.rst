@@ -4,7 +4,7 @@ Documentation
 .. note:: Please note that MountWizzard4 is still under development!
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 3
 
     overview
 
@@ -12,7 +12,7 @@ Installation
 ============
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
 
     install/index
     explain/index

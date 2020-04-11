@@ -55,16 +55,18 @@ Please click the link and press download from the page:
 
 There is a video on youtube with the install process for Mac: https://youtu.be/xJxpx_SmrVc.
 
-Short video for installation:
+Short videos for installation
 -----------------------------
 For a better impression of how MW4 could be installed, there are some special videos showing
 a installation on different platforms.
 
-Windows10: https://youtu.be/q9WbiHhW5NU
+.. hlist::
 
-Mac OS Catalina: https://youtu.be/bbZ9_yLm1TU
+    :columns: 1
 
-Ubuntu 18.04: https://youtu.be/kNfLrtJtkq8
+    * Windows10: https://youtu.be/q9WbiHhW5NU
+    * Mac OS Catalina: https://youtu.be/bbZ9_yLm1TU
+    * Ubuntu 18.04: https://youtu.be/kNfLrtJtkq8
 
 
 Step 1

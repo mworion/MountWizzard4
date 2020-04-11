@@ -8,18 +8,11 @@ Documentation for MW4
 
     overview
 
-Installation
-============
-
 .. toctree::
     :maxdepth: 2
 
     install/index
     explain/index
     modeling/index
-
-
-Indices and tables
-------------------
 
 * :ref:`search`

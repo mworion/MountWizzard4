@@ -71,4 +71,5 @@ html_theme_options = {
 
 latex_logo = '_static/mw4.png'
 latex_show_urls = 'inline'
+latex_preamble = r"""\pdfimageresolution135"""
 

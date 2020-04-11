@@ -18,6 +18,11 @@ functions don't work with older firmware versions.
 
 Documentation
 -------------
+
+.. image:: https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
+    :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
 The documentation for install/use could be found online under:
 https://mountwizzard4.readthedocs.io .
 
@@ -28,9 +33,6 @@ There are some videos (more to come) on youtube in the channel:
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/, but they are also linked in the
 online documentation
 
-.. image:: https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
-    :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
 
 Build and code coverage status
 ------------------------------

@@ -9,7 +9,7 @@ Documentation for MW4
     overview
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     install/index
     explain/index

@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'MW4'
-copyright = '2019, mworion'
+copyright = '2020, mworion'
 author = 'mworion'
 
 # The full version, including alpha/beta/rc tags

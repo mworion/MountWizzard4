@@ -19,7 +19,8 @@ functions don't work with older firmware versions.
 Documentation
 -------------
 The documentation for install/use could be found online under:
-https://mountwizzard4.readthedocs.io . There is also a PDF version available for download.
+https://mountwizzard4.readthedocs.io . There is also a PDF version available for download
+here: https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/.
 There are some videos (more to come) on youtube in the channel:
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/, but they are also linked in the
 online documentation

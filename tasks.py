@@ -17,6 +17,8 @@
 #
 ###########################################################
 from invoke import task, context, Collection
+from PIL import Image
+import glob
 
 
 def runMW(c, param):
@@ -27,6 +29,47 @@ def runMW(c, param):
 def printMW(param):
     print('\n\033[95m\033[1m' + param + '\033[0m')
 
+
+@task
+def image_res(c):
+    printMW('changing image resolution for docs to 150 dpi')
+    files = glob.glob('./docs/**/*.png', recursive=True)
+    for file in files:
+        print(file)
+        im = Image.open(file)
+        im.save(file, dpi=(150, 150))
+
+
+@task
+def version_doc(c):
+    printMW('changing the version number to setup.py')
+
+    # getting version of desired package
+    with open('setup.py', 'r') as setup:
+        text = setup.readlines()
+
+    for line in text:
+        if line.strip().startswith('version'):
+            _, number, _ = line.split("'")
+
+    # reading configuration file
+    with open('./docs/source/conf.py', 'r') as conf:
+        text = conf.readlines()
+    textNew = list()
+
+    print(f'>{number}<')
+
+    # replacing the version number
+    for line in text:
+        if line.startswith('version'):
+            line = f"version = '{number}'\n"
+        if line.startswith('release'):
+            line = f"version = '{number}'\n"
+        textNew.append(line)
+
+    # writing configuration file
+    with open('./docs/source/conf.py', 'w+') as conf:
+        conf.writelines(textNew)
 
 @task
 def build_resource(c):
@@ -90,7 +133,7 @@ def build_ib(c):
         runMW(c, 'cp dist/indibase*.tar.gz ../MountWizzard4/dist/indibase.tar.gz')
 
 
-@task(pre=[build_resource, build_widgets, build_mc, build_ib])
+@task(pre=[build_resource, build_widgets, build_mc, build_ib, image_res])
 def build_mw(c):
     printMW('building dist mountwizzard4')
     with c.cd('.'):
@@ -131,13 +174,3 @@ def install_all(c):
     with c.cd('./dist'):
         runMW(c, 'pip install indibase.tar.gz')
         runMW(c, 'pip install mountcontrol.tar.gz')
-
-
-@task(pre=[])
-def image_res(c):
-    from PIL import Image
-    import glob
-    files = glob.glob('./docs/**/*.png', recursive=True)
-    for file in files:
-        im = Image.open(file)
-        im.save(file, dpi=(150, 150))

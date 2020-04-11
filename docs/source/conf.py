@@ -23,7 +23,7 @@ author = 'mworion'
 
 # The full version, including alpha/beta/rc tags
 version = '0.149.7'
-release = '0.149.7'
+version = '0.149.7'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------

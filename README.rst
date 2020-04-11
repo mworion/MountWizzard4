@@ -63,16 +63,13 @@ CS Michel
 .. |DOCS| image:: https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
     :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
-    :class: with-shadow
 
 .. |PYTEST| image:: https://github.com/mworion/MountWizzard4/workflows/PyTest/badge.svg
-    :class: with-shadow
 .. |CODECOV| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
-    :class: with-shadow
 .. |CODECOV_CHART| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
-    :class: with-shadow
     :width: 20%
+    :class: float-right
 
 .. |6U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
 .. |6W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
@@ -86,5 +83,4 @@ CS Michel
 
 .. |PYPI_VERSION| image:: https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4
-    :class: with-shadow
     :alt: MountWizzard4's PyPI Status

@@ -21,19 +21,21 @@ Documentation
 |DOCS|
 
 The documentation for install/use could be found online under:
-https://mountwizzard4.readthedocs.io .
+https://mountwizzard4.readthedocs.io.
 
 There is also a PDF version available for download
 here: https://mountwizzard4.readthedocs.io/_/downloads/en/latest/pdf/.
 
 There are some videos (more to come) on youtube in the channel:
 https://www.youtube.com/channel/UCJD-5qdLEcBTCugltqw1hXA/, but they are also linked in the
-online documentation
+online documentation.
 
 
-Build and code coverage status
-------------------------------
-|PYTEST| |CODECOV| |PYPI_VERSION|
+Version, build and code coverage status
+---------------------------------------
+|PYPI_VERSION|
+
+|PYTEST| |CODECOV|
 
 |6U| |6W| |6M|
 

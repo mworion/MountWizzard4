@@ -35,39 +35,13 @@ Build and code coverage status
 ------------------------------
 Actual master test: |PYTEST| and coverage: |CODECOV|
 
-Actual code coverage chart:
-    .. image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
-        :target: https://codecov.io/gh/mworion/MountWizzard4
-        :align: center
+Actual code coverage chart: |CODECOV_CHART|
 
-Python build for version 3.6.x:
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS/badge.svg
-        :align: center
+Python build for version 3.6.x: |6U| |6W| |6M|
+Python build for version 3.7.x: |7U| |7W| |7M|
+Python build for version 3.8.x: |8U| |8W| |8M|
 
-Python build for version 3.7.x:
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS/badge.svg
-        :align: center
-
-Python build for version 3.8.x:
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
-        :align: center
-    .. image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
-        :align: center
-
-Downloadable version from pypi.org:
-    .. image:: https://img.shields.io/pypi/v/mountwizzard4.svg
-        :target: https://pypi.python.org/pypi/mountwizzard4
-        :alt: MountWizzard4's PyPI Status
+Downloadable version from pypi.org: |PYPI_VERSION|
 
 Bug reports
 -----------
@@ -90,3 +64,19 @@ CS Michel
 
 .. |PYTEST| image:: https://github.com/mworion/MountWizzard4/workflows/PyTest/badge.svg
 .. |CODECOV| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
+.. |CODECOV_CHART| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
+    :target: https://codecov.io/gh/mworion/MountWizzard4
+
+.. |6U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
+.. |6W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
+.. |6M| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS/badge.svg
+.. |7U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
+.. |7W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows/badge.svg
+.. |7M| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS/badge.svg
+.. |8U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
+.. |8W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
+.. |8M| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
+
+.. |PYPI_VERSION| image:: https://img.shields.io/pypi/v/mountwizzard4.svg
+    :target: https://pypi.python.org/pypi/mountwizzard4
+    :alt: MountWizzard4's PyPI Status

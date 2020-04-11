@@ -131,3 +131,13 @@ def install_all(c):
     with c.cd('./dist'):
         runMW(c, 'pip install indibase.tar.gz')
         runMW(c, 'pip install mountcontrol.tar.gz')
+
+
+@task(pre=[])
+def image_res(c):
+    from PIL import Image
+    import glob
+    files = glob.glob('./docs/**/*.png', recursive=True)
+    for file in files:
+        im = Image.open(file)
+        im.save(file, dpi=(150, 150))

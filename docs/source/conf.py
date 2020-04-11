@@ -68,3 +68,6 @@ html_theme_options = {
     'page_width': '1400px',
     'sidebar_width': '300px',
 }
+
+latex_logo = 'mw4.png'
+

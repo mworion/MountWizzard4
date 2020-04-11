@@ -7,7 +7,7 @@ Layout of main window
 After starting MW4 the first time you will see the main window. It consists of 4 areas to be
 used:
 
-.. image:: image/explain_main_1.png
+.. image:: image/main_1.png
     :align: center
     :scale: 71%
 
@@ -53,7 +53,7 @@ update.
 Mount tab
 ---------
 
-.. image:: image/explain_mount_tab.png
+.. image:: image/mount_tab.png
     :align: center
     :scale: 71%
 
@@ -86,7 +86,7 @@ If you have environment sensors connected and configured, you can see the overvi
 environment tab. The tab content is dynamic. The more connections you have, the more you
 will see. The example below is the maximum MW4 can support.
 
-.. image:: image/explain_environ_tab.png
+.. image:: image/environ_tab.png
     :align: center
     :scale: 71%
 
@@ -143,7 +143,7 @@ equally over the sky. MW4 allows multiple choices to automatically select the re
 
 .. note:: The mount computer only processes max 100 points.
 
-.. image:: image/explain_model_points_tab.png
+.. image:: image/model_points_tab.png
     :align: center
     :scale: 71%
 
@@ -182,7 +182,7 @@ Model Build Tab
 Starting / Stopping, status and the progress of modeling is shown on this tab. MW4 tries to
 gives you some help to adjust the alignment easily, and the correct way.
 
-.. image:: image/explain_model_build_tab.png
+.. image:: image/model_build_tab.png
     :align: center
     :scale: 71%
 
@@ -231,7 +231,7 @@ Manage Model Tab
 Once you have made a model or you have an actual model in the mount, MW4 will download the data
 and the name list of all in the stored mount models. You then can work with this data.
 
-.. image:: image/explain_manage_model_tab.png
+.. image:: image/manage_model_tab.png
     :align: center
     :scale: 71%
 
@@ -273,7 +273,7 @@ precision very quickly, it maintains the databases outside the mount and only pr
 single satellite data from a satellite you have selected. MW4 won't touch the internal
 database.
 
-.. image:: image/explain_satellite_tab.png
+.. image:: image/satellite_tab.png
     :align: center
     :scale: 71%
 
@@ -325,7 +325,7 @@ Power Tab
 If you have a Pegasus UPB (version 1 or version 2) configured, this tab will show up. It
 enables you to review some data and uses the functionality of UPB directly from MW4.
 
-.. image:: image/explain_power_tab.png
+.. image:: image/power_tab.png
     :align: center
     :scale: 71%
 
@@ -347,7 +347,7 @@ Tools Tab
 ---------
 MW4 provides some small tools to make life a little bit easier.
 
-.. image:: image/explain_tools_tab.png
+.. image:: image/tools_tab.png
     :align: center
     :scale: 71%
 

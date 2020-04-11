@@ -15,7 +15,7 @@ desktop. As this distribution already supports python 3.7 we should check this:
 
 should give you the following result:
 
-.. image:: image/install_rpi3_rlancaste.png
+.. image:: image/rpi3_rlancaste.png
     :align: center
     :scale: 71%
 
@@ -25,7 +25,7 @@ Please follow the description: :ref:`Ubuntu`. After that you should get an
 python3.7
 available on your system:
 
-.. image:: image/install_rpi3_python37.png
+.. image:: image/rpi3_python37.png
     :align: center
     :scale: 71%
 
@@ -101,6 +101,6 @@ and run MW4 with the command
 
 If everything went fine, you should see MW4 on RPi3:
 
-.. image:: image/install_rpi3_running.png
+.. image:: image/rpi3_running.png
     :align: center
     :scale: 71%

@@ -12,7 +12,7 @@ Installation
     overview
     install/index
     explain/index
-    model/index
+    modeling/index
 
 
 Indices and tables

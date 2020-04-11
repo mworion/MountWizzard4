@@ -69,7 +69,7 @@ html_theme_options = {
     'sidebar_width': '300px',
 }
 
-latex_logo = '_static/mw4_n.png'
+latex_logo = '_static/mw4.png'
 latex_show_urls = 'inline'
 latex_preamble = r"""\pdfimageresolution135"""
 

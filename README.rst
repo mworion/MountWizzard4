@@ -38,7 +38,9 @@ Actual master test: |PYTEST| and coverage: |CODECOV|
 Actual code coverage chart: |CODECOV_CHART|
 
 Python build for version 3.6.x: |6U| |6W| |6M|
+
 Python build for version 3.7.x: |7U| |7W| |7M|
+
 Python build for version 3.8.x: |8U| |8W| |8M|
 
 Downloadable version from pypi.org: |PYPI_VERSION|

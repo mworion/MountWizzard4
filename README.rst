@@ -18,10 +18,10 @@ functions don't work with older firmware versions.
 
 Documentation
 -------------
-
-.. image:: https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
-    :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
+Docs status:
+    .. image:: https://readthedocs.org/projects/mountwizzard4/badge/?version=latest
+        :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
 
 The documentation for install/use could be found online under:
 https://mountwizzard4.readthedocs.io .

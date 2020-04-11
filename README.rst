@@ -37,13 +37,13 @@ Version, build and code coverage status
 
 |PYTEST| |CODECOV|
 
+Actual code coverage chart: |CODECOV_CHART|
+
 |6U| |6W| |6M|
 
 |7U| |7W| |7M|
 
 |8U| |8W| |8M|
-
-Actual code coverage chart: |CODECOV_CHART|
 
 Bug reports
 -----------

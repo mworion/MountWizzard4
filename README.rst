@@ -41,9 +41,7 @@ Build and code coverage status
 
 |8U| |8W| |8M|
 
-Actual code coverage chart:
-
-|CODECOV_CHART|
+Actual code coverage chart: |CODECOV_CHART|
 
 Bug reports
 -----------
@@ -69,7 +67,7 @@ CS Michel
 .. |CODECOV_CHART| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
     :width: 20%
-    :class: float-right
+    :align: top
 
 .. |6U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
 .. |6W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg

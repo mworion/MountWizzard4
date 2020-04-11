@@ -7,8 +7,7 @@ Installation
 ============
 
 .. toctree::
-    :maxdepth: 4
-    :numbered:
+    :maxdepth: 3
 
     overview
     install/index

@@ -18,7 +18,7 @@ functions don't work with older firmware versions.
 
 Documentation
 -------------
-Docs status: |DOCS|
+|DOCS|
 
 The documentation for install/use could be found online under:
 https://mountwizzard4.readthedocs.io .
@@ -33,7 +33,7 @@ online documentation
 
 Build and code coverage status
 ------------------------------
-|PYTEST| |CODECOV|
+|PYTEST| |CODECOV| |PYPI_VERSION|
 
 |6U| |6W| |6M|
 
@@ -44,8 +44,6 @@ Build and code coverage status
 Actual code coverage chart:
 
 |CODECOV_CHART|
-
-Downloadable version from pypi.org: |PYPI_VERSION|
 
 Bug reports
 -----------

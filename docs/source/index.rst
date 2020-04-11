@@ -1,10 +1,10 @@
-=============
-Documentation
-=============
+=====================
+Documentation for MW4
+=====================
 .. note:: Please note that MountWizzard4 is still under development!
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 4
 
     overview
 

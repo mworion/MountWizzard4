@@ -49,4 +49,25 @@ In all graphs you will see the pink lines which show the value of the Target (RM
 in the "Optimize actual model" box. This helps in adjusting a cut-off value for automatic
 model point removal.
 
+Optimizing the model
+====================
+I some cases you will discover that some model points and their errors are outside a
+reasonable area. In that case three different model optimization scenarios come into place.
+the first and the obvious one is to remove manually the worst point of the model (1).
 
+.. image:: image/target_rms_01.png
+    :align: center
+    :scale: 71%
+
+If you have more than a single point to remove, the second and third come into place, an
+automation process within MW4. With setting the checkbox "Optimize overall Target RMS" (3) and
+starting the optimization run (6), MW4 will delete as many point until the Model RMS (2) is
+below the selected threshold (5).
+
+.. image:: image/target_rms_02.png
+    :align: center
+    :scale: 71%
+
+Checking "Delete point above Target RMS" (4) and run (6) the optimization, MW4 will delete
+all points where their individual Error is above the selected threshold (5). Please note
+that this will lead to a different Model RMS (2).

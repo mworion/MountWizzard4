@@ -57,6 +57,8 @@ class SettImaging(object):
         config = self.app.config['mainW']
         self.ui.expTime.setValue(config.get('expTime', 1))
         self.ui.binning.setValue(config.get('binning', 1))
+        self.ui.expTimeN.setValue(config.get('expTimeN', 1))
+        self.ui.binningN.setValue(config.get('binningN', 1))
         self.ui.subFrame.setValue(config.get('subFrame', 100))
         self.ui.subFrame.setValue(config.get('subFrame', 100))
         self.ui.subFrame.setValue(config.get('subFrame', 100))
@@ -76,6 +78,8 @@ class SettImaging(object):
         config = self.app.config['mainW']
         config['expTime'] = self.ui.expTime.value()
         config['binning'] = self.ui.binning.value()
+        config['expTimeN'] = self.ui.expTimeN.value()
+        config['binningN'] = self.ui.binningN.value()
         config['subFrame'] = self.ui.subFrame.value()
         config['searchRadius'] = self.ui.searchRadius.value()
         config['solveTimeout'] = self.ui.solveTimeout.value()

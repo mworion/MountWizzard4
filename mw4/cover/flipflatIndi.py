@@ -44,7 +44,7 @@ class FlipFlatIndi(IndiClass):
     UPDATE_RATE = 1
 
     def __init__(self, app=None, signals=None, data=None):
-        super().__init__(app=app)
+        super().__init__(app=app, threadPool=app.threadPool)
 
         self.signals = signals
         self.data = data

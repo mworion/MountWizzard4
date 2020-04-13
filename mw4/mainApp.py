@@ -242,7 +242,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if not len(sys.argv) > 1:
             return
         if sys.argv[1] == 'test':
-            self.update10s.connect(self.quitSave)
+            self.update3s.connect(self.quitSave)
 
     def toggleWindow(self, windowTag=''):
         """
@@ -393,6 +393,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.measure.timerTask.stop()
         self.relay.timerTask.stop()
         self.timer0_1s.stop()
+        self.threadPool.waitForDone(3000)
         self.message.emit('MountWizzard4 manual stopped with quit', 1)
         PyQt5.QtCore.QCoreApplication.quit()
         return True
@@ -410,6 +411,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.storeConfig()
         self.saveConfig()
         self.timer0_1s.stop()
+        self.threadPool.waitForDone(3000)
         self.message.emit('MountWizzard4 manual stopped with quit/save', 1)
         PyQt5.QtCore.QCoreApplication.quit()
         return True

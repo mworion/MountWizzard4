@@ -44,12 +44,12 @@ class IndiClass(object):
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
 
-    def __init__(self, app=None, data={}):
+    def __init__(self, app=None, data={}, threadPool=None):
         super().__init__()
 
         self.app = app
 
-        self.client = qtIndiBase.Client(host=None)
+        self.client = qtIndiBase.Client(host=None, threadPool=threadPool)
         self.name = ''
         self._host = ('localhost', 7624)
         self.data = data

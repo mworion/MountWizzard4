@@ -26,21 +26,19 @@ import os
 
 # external packages
 from PyQt5.QtCore import QThreadPool
-from astropy.io import fits
-import numpy as np
 
 # local import
 from mw4.astrometry.astrometry import AstrometryASTAP, Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def app():
     class Test:
         threadPool = QThreadPool()
 
-    global app, parent
     parent = Astrometry(app=Test(), tempDir='mw4/test/temp')
     app = AstrometryASTAP(parent=parent)
+
     for file in os.listdir('mw4/test/temp'):
         fileP = os.path.join('mw4/test/temp', file)
         if 'temp' not in file:
@@ -48,17 +46,17 @@ def module_setup_teardown():
         os.remove(fileP)
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
 
-    yield
+    yield app
 
     del app, parent
 
 
-def test_runASTAP_1():
+def test_runASTAP_1(app):
     suc = app.runASTAP()
     assert not suc
 
 
-def test_runASTAP_2():
+def test_runASTAP_2(app):
     class Test1:
         @staticmethod
         def decode():
@@ -77,39 +75,55 @@ def test_runASTAP_2():
                            'Popen',
                            return_value=Test()):
         suc = app.runASTAP()
-    assert not suc
+        assert not suc
 
 
-def test_getWCSHeader_1():
+def test_runASTAP_3(app):
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           side_effect=Exception()):
+        suc = app.runASTAP()
+        assert not suc
+
+
+def test_runASTAP_4(app):
+    with mock.patch.object(subprocess,
+                           'Popen',
+                           side_effect=subprocess.TimeoutExpired):
+        suc = app.runASTAP(binPath='clear', timeout=1)
+        assert not suc
+
+
+def test_getWCSHeader_1(app):
     val = app.getWCSHeader()
     assert val is None
 
 
-def test_getWCSHeader_2():
+def test_getWCSHeader_2(app):
     shutil.copy('mw4/test/testData/tempASTAP.wcs', 'mw4/test/temp/temp.wcs')
     val = app.getWCSHeader(wcsTextFile='mw4/test/temp/temp.wcs')
     assert val
 
 
-def test_solveASTAP_1():
+def test_solveASTAP_1(app):
     suc = app.solve()
     assert not suc
 
 
-def test_solveASTAP_2():
-    parent.solverEnviron = {
+def test_solveASTAP_2(app):
+    app.parent.solverEnviron = {
         'ASTAP': {
             'programPath': '/Applications/ASTAP.app/Contents/MacOS',
             'indexPath': '/usr/local/opt/astap',
             'solver': app,
         }
     }
-    suc = app.solve(solver=parent.solverEnviron['ASTAP'])
+    suc = app.solve(solver=app.parent.solverEnviron['ASTAP'])
     assert not suc
 
 
-def test_solveASTAP_3():
-    parent.solverEnviron = {
+def test_solveASTAP_3(app):
+    app.parent.solverEnviron = {
         'ASTAP': {
             'programPath': '/Applications/ASTAP.app/Contents/MacOS',
             'indexPath': '/usr/local/opt/astap',
@@ -119,13 +133,13 @@ def test_solveASTAP_3():
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=False):
-        suc = app.solve(solver=parent.solverEnviron['ASTAP'],
+        suc = app.solve(solver=app.parent.solverEnviron['ASTAP'],
                         fitsPath='mw4/test/image/m51.fit')
         assert not suc
 
 
-def test_solveASTAP_4():
-    parent.solverEnviron = {
+def test_solveASTAP_4(app):
+    app.parent.solverEnviron = {
         'ASTAP': {
             'programPath': '/Applications/ASTAP.app/Contents/MacOS',
             'indexPath': '/usr/local/opt/astap',
@@ -135,13 +149,13 @@ def test_solveASTAP_4():
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=True):
-        suc = app.solve(solver=parent.solverEnviron['ASTAP'],
+        suc = app.solve(solver=app.parent.solverEnviron['ASTAP'],
                         fitsPath='mw4/test/image/m51.fit')
         assert not suc
 
 
-def test_solveASTAP_5():
-    parent.solverEnviron = {
+def test_solveASTAP_5(app):
+    app.parent.solverEnviron = {
         'ASTAP': {
             'programPath': '/Applications/ASTAP.app/Contents/MacOS',
             'indexPath': '/usr/local/opt/astap',
@@ -155,18 +169,18 @@ def test_solveASTAP_5():
                                'remove',
                                return_value=True):
             shutil.copy('mw4/test/testData/tempASTAP.wcs', 'mw4/test/temp/temp.wcs')
-            suc = app.solve(solver=parent.solverEnviron['ASTAP'],
+            suc = app.solve(solver=app.parent.solverEnviron['ASTAP'],
                             fitsPath='mw4/test/image/m51.fit')
             assert suc
 
 
-def test_abort_1():
+def test_abort_1(app):
     app.process = None
     suc = app.abort()
     assert not suc
 
 
-def test_abort_2():
+def test_abort_2(app):
     class Test:
         @staticmethod
         def kill():

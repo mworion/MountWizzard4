@@ -35,25 +35,22 @@ from mw4.astrometry.astrometry import Astrometry
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def app():
     class Test:
         threadPool = QThreadPool()
 
-    global app
     shutil.copy('mw4/test/testData/astrometry.cfg', 'mw4/test/temp/astrometry.cfg')
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
-
     app = Astrometry(app=Test(), tempDir='mw4/test/temp')
 
-    yield
+    yield app
 
-    del app
     files = glob.glob('mw4/test/image/*.fit*')
     for f in files:
         os.remove(f)
 
 
-def test_init_1():
+def test_init_1(app):
     home = os.environ.get('HOME')
     app.solverEnviron = {
         'KStars': {
@@ -65,28 +62,28 @@ def test_init_1():
     assert os.path.isfile('mw4/test/temp/astrometry.cfg')
 
 
-def test_setSolverEnviron_1():
+def test_setSolverEnviron_1(app):
     with mock.patch.object(platform,
                            'system',
                            return_value='Windows'):
         app.setSolverEnviron()
 
 
-def test_setSolverEnviron_2():
+def test_setSolverEnviron_2(app):
     with mock.patch.object(platform,
                            'system',
                            return_value='Linux'):
         app.setSolverEnviron()
 
 
-def test_setSolverEnviron_3():
+def test_setSolverEnviron_3(app):
     with mock.patch.object(platform,
                            'system',
                            return_value='Darwin'):
         app.setSolverEnviron()
 
 
-def test_checkAvailability_1():
+def test_checkAvailability_1(app):
     app.solverEnviron = {
         'CloudMakers': {
             'programPath': '',
@@ -98,7 +95,7 @@ def test_checkAvailability_1():
     assert val == {}
 
 
-def test_checkAvailability_3():
+def test_checkAvailability_3(app):
     app.solverEnviron = {
         'KStars': {
             'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
@@ -110,7 +107,7 @@ def test_checkAvailability_3():
     assert val == {}
 
 
-def test_checkAvailability_4():
+def test_checkAvailability_4(app):
     app.solverEnviron = {
         'CloudMakers': {
             'programPath': '/Applications/Astrometry.app/Contents/MacOS',
@@ -121,7 +118,7 @@ def test_checkAvailability_4():
     app.checkAvailability()
 
 
-def test_readFitsData_1():
+def test_readFitsData_1(app):
     os.scandir('mw4/test/image')
     file = 'mw4/test/image/m51.fit'
     ra, dec, sc, ra1, dec1 = app.readFitsData(file)
@@ -132,7 +129,7 @@ def test_readFitsData_1():
     assert dec1
 
 
-def test_calcAngleScaleFromWCS_1():
+def test_calcAngleScaleFromWCS_1(app):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -148,7 +145,7 @@ def test_calcAngleScaleFromWCS_1():
         assert np.round(angle, 3) == np.round(angleX, 3)
 
 
-def test_calcAngleScaleFromWCS_2():
+def test_calcAngleScaleFromWCS_2(app):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -157,7 +154,7 @@ def test_calcAngleScaleFromWCS_2():
     assert scale == 0
 
 
-def test_getSolutionFromWCS_1():
+def test_getSolutionFromWCS_1(app):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -177,7 +174,7 @@ def test_getSolutionFromWCS_1():
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_getSolutionFromWCS_2():
+def test_getSolutionFromWCS_2(app):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -198,7 +195,7 @@ def test_getSolutionFromWCS_2():
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_getSolutionFromWCS_3():
+def test_getSolutionFromWCS_3(app):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -221,7 +218,7 @@ def test_getSolutionFromWCS_3():
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_getSolutionFromWCS_4():
+def test_getSolutionFromWCS_4(app):
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -244,26 +241,26 @@ def test_getSolutionFromWCS_4():
     assert header['DEC'] == header['CRVAL2']
 
 
-def test_solveClear_1():
+def test_solveClear_1(app):
     app.framework = 'Test'
     suc = app.solveClear()
     assert not suc
 
 
-def test_solveClear_2():
+def test_solveClear_2(app):
     app.framework = 'CloudMakers'
     app.mutexSolve.lock()
     suc = app.solveClear()
     assert suc
 
 
-def test_solveThreading_1():
+def test_solveThreading_1(app):
     app.framework = 'Test'
     suc = app.solveThreading()
     assert not suc
 
 
-def test_solveThreading_2():
+def test_solveThreading_2(app):
     home = os.environ.get('HOME')
     app.solverEnviron = {
         'KStars': {
@@ -277,7 +274,7 @@ def test_solveThreading_2():
     assert not suc
 
 
-def test_solveThreading_3():
+def test_solveThreading_3(app):
     os.scandir('mw4/test/image')
     home = os.environ.get('HOME')
     app.solverEnviron = {
@@ -293,7 +290,7 @@ def test_solveThreading_3():
     assert suc
 
 
-def test_solveThreading_5():
+def test_solveThreading_5(app):
     app.solverEnviron = {
         'CloudMakers': {
             'programPath': '',
@@ -307,7 +304,7 @@ def test_solveThreading_5():
     assert not suc
 
 
-def test_abort_1():
+def test_abort_1(app):
     app.solverEnviron = {
         'KStars': {
             'programPath': '/Applications/Astrometry.app/Contents/MacOS',
@@ -320,7 +317,7 @@ def test_abort_1():
     assert not suc
 
 
-def test_abort_2():
+def test_abort_2(app):
 
     app.solverEnviron = {
         'KStars': {
@@ -337,11 +334,11 @@ def test_abort_2():
         assert suc
 
 
-def test_startCommunication():
+def test_startCommunication(app):
     suc = app.startCommunication()
     assert suc
 
 
-def test_stopCommunication():
+def test_stopCommunication(app):
     suc = app.stopCommunication()
     assert suc

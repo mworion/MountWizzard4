@@ -184,6 +184,25 @@ shell in the menu. This might take some seconds before MW4 comes up with the spl
 If you see the upper window, you succeed and from now on you are able to customize your
 setup of MW4 and it's features.
 
+
+DPI scaling on windows
+----------------------
+If you are running a windows machine with setting the zoom factor for you display settings
+different to 100%, you might notice inadequate font sizes etc. Unfortunately this could not
+be worked around within MW4 itself, but you could change some environment variables to omit
+this problem. The actual script already contain some setting to keep the resolution to 100%
+even if you choose to increase this value for other applications. You want to play with
+these settings to make the appearance correct:
+
+.. code-block:: python
+
+    SET QT_SCALE_FACTOR=1
+    SET QT_FONT_DPI=96
+
+If you would like to have MW4 displayed bigger than 100%, please increase the
+QT_SCALE_FACTOR to the value desired. A value of 1 means 100%, so 2 means 200%.
+
+
 Upgrade
 -------
 

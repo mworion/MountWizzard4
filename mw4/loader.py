@@ -50,6 +50,7 @@ from mw4.resource import resources
 global log
 logger = logging.getLogger()
 log = CustomLogger(logger, {})
+widgetRemote = None
 
 
 class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
@@ -375,6 +376,8 @@ def main():
 
     :return: nothing
     """
+    global widgetRemote
+
     # setting locale
     locale.setlocale(locale.LC_ALL, '')
 
@@ -422,7 +425,7 @@ def main():
     # adding event filter for formatting the tooltips nicely
     app.installEventFilter(QAwesomeTooltipEventFilter(app))
 
-    mainApp.MountWizzard4(mwGlob)
+    widgetRemote = mainApp.MountWizzard4(mwGlob)
 
     # end of splash screen
     splashW.showMessage('Finishing loading')

@@ -20,6 +20,7 @@
 # standard libraries
 import sys
 import unittest.mock as mock
+import faulthandler
 
 # external packages
 import pytest
@@ -28,10 +29,11 @@ import pytest
 from mw4 import loader
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
 
     testArgv = ['run', 'test']
+    faulthandler.enable()
 
     with mock.patch.object(sys,
                            'argv',
@@ -40,9 +42,25 @@ def module_setup_teardown():
                                'exit'):
             loader.main()
 
-    yield
+        yield
 
 
-def test_image(qtbot):
+def test_1():
+    pass
+
+
+def test_2():
+    pass
+
+
+def test_3():
+    pass
+
+
+def test_4():
+    pass
+
+
+def test_5():
     pass
 

@@ -1,1 +1,1 @@
-venv\Scripts\activate && SET QT_AUTO_SCREEN_SCALE_FACTOR=1 && SET QT_FONT_DPI=96 && venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py && deactivate
+venv\Scripts\activate && SET QT_SCALE_FACTOR=1 && SET QT_FONT_DPI=96 && venv\Scripts\python.exe venv\Lib\site-packages\mw4\loader.py && deactivate

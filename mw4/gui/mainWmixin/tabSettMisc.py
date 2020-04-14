@@ -22,7 +22,7 @@ import time
 import subprocess
 import sys
 import platform
-from pkg_resources import parse_version
+from distutils.version import StrictVersion
 
 # external packages
 import PyQt5
@@ -176,7 +176,8 @@ class SettMisc(object):
             self.log.critical(f'Cannot determine package version: {e}')
             return None
         else:
-            vPackage = reversed(list(response['releases'].keys()))
+            vPackage = list(response['releases'].keys())
+            vPackage.sort(key=StrictVersion, reverse=True)
 
             if self.ui.versionBeta.isChecked():
                 vPackage = [x for x in vPackage if 'b' in x]
@@ -211,7 +212,7 @@ class SettMisc(object):
         self.ui.versionAvailable.setText(availPackage)
         self.ui.installVersion.setEnabled(True)
 
-        if parse_version(availPackage) > parse_version(actPackage):
+        if StrictVersion(availPackage) > StrictVersion(actPackage):
             self.app.message.emit('A new version of MountWizzard is available', 1)
 
         return True

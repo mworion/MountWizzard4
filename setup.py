@@ -21,7 +21,7 @@ from pathlib import Path
 
 setup(
     name='mountwizzard4',
-    version='0.149.9',
+    version='0.150.0',
     packages=[
         'mw4',
         'mw4.astrometry',

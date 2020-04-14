@@ -537,7 +537,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
             self.pointerDome.set_visible(False)
             return False
 
-        visible = self.app.mainW.deviceStat['dome']
+        visible = self.app.deviceStat['dome']
 
         self.pointerDome.set_xy((azimuth - 15, 1))
         self.pointerDome.set_visible(visible)

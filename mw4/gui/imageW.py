@@ -312,11 +312,11 @@ class ImageWindow(widget.MWidget):
         else:
             self.ui.abortSolve.setEnabled(False)
 
-        if not self.app.mainW.deviceStat['camera']:
+        if not self.app.deviceStat['camera']:
             self.ui.expose.setEnabled(False)
             self.ui.exposeN.setEnabled(False)
 
-        if not self.app.mainW.deviceStat['astrometry']:
+        if not self.app.deviceStat['astrometry']:
             self.ui.solve.setEnabled(False)
 
         if self.deviceStat['expose']:

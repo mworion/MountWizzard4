@@ -18,18 +18,17 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import time
-from datetime import datetime
+
 # external packages
-import PyQt5
 import numpy as np
 from astropy.io import fits
+
 # local imports
-from mw4.base.loggerMW import CustomLogger
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.alpacaBase import Camera
 from mw4.base.tpool import Worker
+from mw4.base.transform import JNowToJ2000
 
 
 class CameraAlpaca(AlpacaClass):
@@ -56,12 +55,13 @@ class CameraAlpaca(AlpacaClass):
         self.data = data
         self.imagePath = ''
 
+        self.client.signals.deviceConnected.connect(self.getInitialConfig)
+
     def getInitialConfig(self):
         """
 
         :return: true for test purpose
         """
-        super().getInitialConfig()
 
         self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
@@ -196,6 +196,7 @@ class CameraAlpaca(AlpacaClass):
         header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
         header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
         header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
+        # todo fl has to be changed and automatically set !
         header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] / 570 * 206.265
         header['XBINNING'] = binning
         header['YBINNING'] = binning
@@ -203,13 +204,16 @@ class CameraAlpaca(AlpacaClass):
         header['OBSERVER'] = 'MW4'
         header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
 
-        if self.app.mainW.deviceStat['mount']:
-            header['OBJCTRA'] = self.app.mount.obsSite.raJNow.hstr()
-            dec = self.app.mount.obsSite.decJNow.dstr()
+        if self.app.deviceStat['mount']:
+            ra, dec = JNowToJ2000(self.app.mount.obsSite.ra,
+                                  self.app.mount.obsSite.dec,
+                                  self.app.mount.obsSite.timeJD)
+            header['OBJCTRA'] = ra.hstr()
+            dec = dec.dstr()
             dec = dec.replace('deg', '').replace("'", '').replace('"', '')
             header['OBJCTDEC'] = dec
-            header['RA'] = self.app.mount.obsSite.raJNow.hours
-            header['DEC'] = self.app.mount.obsSite.decJNow.degrees
+            header['RA'] = ra.hours
+            header['DEC'] = dec.degrees
             header['TELESCOP'] = self.app.mount.firmware.product
 
         hdu.writeto(self.imagePath, overwrite=True)

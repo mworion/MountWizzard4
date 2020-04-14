@@ -28,7 +28,7 @@ from astropy.io import fits
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.alpacaBase import Camera
 from mw4.base.tpool import Worker
-from mw4.base.transform import JNowToJ2000
+from mw4.base import transform
 
 
 class CameraAlpaca(AlpacaClass):
@@ -205,14 +205,12 @@ class CameraAlpaca(AlpacaClass):
         header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
 
         if self.app.deviceStat['mount']:
-            ra, dec = JNowToJ2000(self.app.mount.obsSite.raJNow,
-                                  self.app.mount.obsSite.decJNow,
-                                  self.app.mount.obsSite.timeJD)
-            header['OBJCTRA'] = ra.hstr()
-            dec = dec.dstr()
-            dec = dec.replace('deg', '').replace("'", '').replace('"', '')
-            header['OBJCTDEC'] = dec
-            header['RA'] = ra.hours
+            ra = self.app.mount.obsSite.raJNow
+            dec = self.app.mount.obsSite.decJNow
+            obsTime = self.app.mount.obsSite.timeJD
+            if ra is not None and dec is not None and obsTime is not None:
+                ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
+            header['RA'] = ra._degrees
             header['DEC'] = dec.degrees
             header['TELESCOP'] = self.app.mount.firmware.product
 

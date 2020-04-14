@@ -205,8 +205,8 @@ class CameraAlpaca(AlpacaClass):
         header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
 
         if self.app.deviceStat['mount']:
-            ra, dec = JNowToJ2000(self.app.mount.obsSite.ra,
-                                  self.app.mount.obsSite.dec,
+            ra, dec = JNowToJ2000(self.app.mount.obsSite.raJNow,
+                                  self.app.mount.obsSite.decJNow,
                                   self.app.mount.obsSite.timeJD)
             header['OBJCTRA'] = ra.hstr()
             dec = dec.dstr()

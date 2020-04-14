@@ -28,7 +28,6 @@ from queue import Queue
 
 # external packages
 import PyQt5.QtCore
-from PyQt5.QtTest import QTest
 import skyfield
 from mountcontrol import qtmount
 from importlib_metadata import version
@@ -395,10 +394,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.measure.timerTask.stop()
         self.relay.timerTask.stop()
         self.timer0_1s.stop()
-        self.threadPool.waitForDone(3000)
+        self.threadPool.waitForDone(5000)
         self.message.emit('MountWizzard4 manual stopped', 1)
-
-        QTest.qWait(300)
         PyQt5.QtCore.QCoreApplication.quit()
         return True
 

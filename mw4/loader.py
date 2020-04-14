@@ -43,14 +43,13 @@ from importlib_metadata import version
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.loggerMW import setupLogging
-from mw4 import mainApp
+from mw4.mainApp import MountWizzard4
 from mw4.gui import splash
 from mw4.resource import resources
 
 global log
 logger = logging.getLogger()
 log = CustomLogger(logger, {})
-widgetRemote = None
 
 
 class QAwesomeTooltipEventFilter(PyQt5.QtCore.QObject):
@@ -263,8 +262,6 @@ def setupWorkDirs(mwGlob):
     """
 
     mwGlob['modeldata'] = '4.0'
-    mwGlob['bundleDir'] = ''
-    mwGlob['frozen'] = False
     mwGlob['workDir'] = os.getcwd()
     mwGlob['configDir'] = mwGlob['workDir'] + '/config'
     mwGlob['dataDir'] = mwGlob['workDir'] + '/data'
@@ -318,9 +315,7 @@ def writeSystemInfo(mwGlob=None):
             log.critical(f' IP addr.         : {hostname}')
         log.critical(f' Hosts            : {hostSummary}')
 
-    log.critical(f' Environment is   : {"frozen" if mwGlob["frozen"] else "live"}')
     log.critical(f' Actual workdir   : {mwGlob["workDir"]}')
-    log.critical(f' Bundle dir       : {mwGlob["bundleDir"]}')
     log.critical(f' mountwizzard4    : {version("mountwizzard4")}')
     log.critical(f' indibase         : {version("indibase")}')
     log.critical(f' mountcontrol     : {version("mountcontrol")}')
@@ -425,7 +420,7 @@ def main():
     # adding event filter for formatting the tooltips nicely
     app.installEventFilter(QAwesomeTooltipEventFilter(app))
 
-    widgetRemote = mainApp.MountWizzard4(mwGlob)
+    MountWizzard4(mwGlob=mwGlob)
 
     # end of splash screen
     splashW.showMessage('Finishing loading')

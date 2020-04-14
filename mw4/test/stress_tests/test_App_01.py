@@ -24,13 +24,25 @@ import faulthandler
 
 # external packages
 import pytest
+import PyQt5
+from PyQt5.QtTest import QTest
 
 # local import
-from mw4 import loader
+from mw4.mainApp import MountWizzard4
+
+
+mwglob = {'dataDir': 'mw4/test/data',
+          'configDir': 'mw4/test/config',
+          'workDir': 'mw4/test',
+          'imageDir': 'mw4/test/image',
+          'tempDir': 'mw4/test/temp',
+          'modelDir': 'mw4/test/model',
+          'modelData': '4.0'
+          }
 
 
 @pytest.fixture(autouse=True, scope='function')
-def module_setup_teardown():
+def mw4():
 
     testArgv = ['run', 'test']
     faulthandler.enable()
@@ -38,29 +50,13 @@ def module_setup_teardown():
     with mock.patch.object(sys,
                            'argv',
                            testArgv):
-        with mock.patch.object(sys,
-                               'exit'):
-            loader.main()
-
-        yield
+        mw4 = MountWizzard4(mwGlob=mwglob)
+        yield mw4
 
 
-def test_1():
-    pass
+def test_1(qtbot, mw4):
 
-
-def test_2():
-    pass
-
-
-def test_3():
-    pass
-
-
-def test_4():
-    pass
-
-
-def test_5():
-    pass
-
+    qtbot.add_widget(mw4.mainW)
+    QTest.qWait(1000)
+    # qtbot.mouseClick(mw4.mainW.ui.saveConfigQuit, PyQt5.QtCore.Qt.LeftButton)
+    QTest.qWait(10000)

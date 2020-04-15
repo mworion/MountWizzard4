@@ -57,7 +57,7 @@ def test_setupWorkDirs_1(qtbot):
                                    'isdir',
                                    return_value=True):
                 val = loader.setupWorkDirs(mwGlob={})
-                assert not val['frozen']
+                assert val['modeldata'] == '4.0'
 
 
 def test_setupWorkDirs_2(qtbot):
@@ -71,14 +71,12 @@ def test_setupWorkDirs_2(qtbot):
                                    'isdir',
                                    return_value=False):
                 val = loader.setupWorkDirs(mwGlob={})
-                assert not val['frozen']
+                assert val['modeldata'] == '4.0'
 
 
 def test_writeSystemInfo_1(qtbot):
     mwGlob = dict()
     mwGlob['modeldata'] = ''
-    mwGlob['frozen'] = ''
-    mwGlob['bundleDir'] = ''
     mwGlob['workDir'] = ''
     suc = loader.writeSystemInfo(mwGlob=mwGlob)
     assert suc
@@ -87,8 +85,6 @@ def test_writeSystemInfo_1(qtbot):
 def test_writeSystemInfo_2(qtbot):
     mwGlob = dict()
     mwGlob['modeldata'] = ''
-    mwGlob['frozen'] = ''
-    mwGlob['bundleDir'] = ''
     mwGlob['workDir'] = ''
     with mock.patch.object(socket,
                            'gethostbyname_ex',

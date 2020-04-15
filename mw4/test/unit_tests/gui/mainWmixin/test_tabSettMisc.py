@@ -147,14 +147,14 @@ def test_versionPackage_2():
 
         @staticmethod
         def json():
-            return {'releases': {'test1': 1,
-                                 'test2b': 2}}
+            return {'releases': {'1.0.0': 1,
+                                 '1.1.0b1': 2}}
 
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
         val = app.versionPackage('matplotlib')
-        assert val == 'test1'
+        assert val == '1.0.0'
 
 
 def test_versionPackage_3():
@@ -163,15 +163,15 @@ def test_versionPackage_3():
 
         @staticmethod
         def json():
-            return {'releases': {'test1': 1,
-                                 'test2b': 2}}
+            return {'releases': {'1.0.0': 1,
+                                 '1.0.0b1': 2}}
 
     app.ui.versionBeta.setChecked(True)
     with mock.patch.object(requests,
                            'get',
                            return_value=Test()):
         val = app.versionPackage('matplotlib')
-        assert val == 'test2b'
+        assert val == '1.0.0b1'
 
 
 def test_showUpdates_1():

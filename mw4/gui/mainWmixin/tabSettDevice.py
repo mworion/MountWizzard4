@@ -427,10 +427,7 @@ class SettDevice(object):
                 continue
 
             self.dispatchConfigDriver(driver=driver)
-
-            suc = self.dispatchStartDriver(driver=driver)
-            if not suc:
-                self.app.message.emit(f'[{driver}] could not be started', 2)
+            self.dispatchStartDriver(driver=driver)
 
         return True
 

@@ -19,11 +19,11 @@
 ###########################################################
 # standard libraries
 import logging
-from datetime import datetime
+
 # external packages
 import PyQt5
-import numpy as np
 from indibase import qtIndiBase
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 
@@ -33,7 +33,7 @@ class IndiClass(object):
     the class indiClass inherits all information and handling of indi devices
     this class will be only referenced from other classes and not directly used
 
-        >>> indi = IndiClass(app=None, data={})
+        >>> indi = IndiClass(app=None, data=None)
     """
 
     __all__ = ['IndiClass']
@@ -44,7 +44,7 @@ class IndiClass(object):
     RETRY_DELAY = 1500
     NUMBER_RETRY = 5
 
-    def __init__(self, app=None, data={}, threadPool=None):
+    def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
 
         self.app = app
@@ -104,14 +104,14 @@ class IndiClass(object):
             return suc
         return False
 
-    @staticmethod
-    def serverDisconnected(devices):
+    def serverDisconnected(self, devices):
         """
 
         :param devices:
         :return: true for test purpose
         """
 
+        self.log.info(f'Indi server disconnected, devices: {devices}')
         return True
 
     def newDevice(self, deviceName):
@@ -127,7 +127,7 @@ class IndiClass(object):
             self.device = self.client.getDevice(deviceName)
             self.app.message.emit(f'INDI device found:   [{deviceName}]', 0)
         else:
-            self.log.warn(f'Indi device snoop: {deviceName}')
+            self.log.warning(f'Indi device snoop: {deviceName}')
 
         return True
 

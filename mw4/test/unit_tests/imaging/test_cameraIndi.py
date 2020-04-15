@@ -40,6 +40,7 @@ def module_setup_teardown():
     class Test(QObject):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
+
     global app
     app = CameraIndi(app=Test(), signals=CameraSignals(), data={})
 

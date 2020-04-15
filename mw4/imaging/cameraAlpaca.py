@@ -54,8 +54,9 @@ class CameraAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
         self.imagePath = ''
+        self.abortExpose = False
 
-        self.client.signals.deviceConnected.connect(self.getInitialConfig)
+        self.client.signals.deviceConnected.connect(self.startCommunication)
 
     def getInitialConfig(self):
         """
@@ -63,10 +64,12 @@ class CameraAlpaca(AlpacaClass):
         :return: true for test purpose
         """
 
+        super().getInitialConfig()
+
         self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
         self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
-        # self.dataEntry(self.client.canstopexposure(), 'CAN_ABORT')
+        self.dataEntry(self.client.canstopexposure(), 'CAN_ABORT')
         self.dataEntry(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
         self.dataEntry(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
@@ -153,9 +156,7 @@ class CameraAlpaca(AlpacaClass):
         width = int(width)
         height = int(height)
 
-        suc = self.sendDownloadMode(fastReadout=fastReadout)
-        if not suc:
-            self.log.info('Camera has no download quality settings')
+        self.sendDownloadMode(fastReadout=fastReadout)
 
         # set binning
         self.client.binx(BinX=binning)
@@ -172,7 +173,7 @@ class CameraAlpaca(AlpacaClass):
 
         # wait for finishing
         timeLeft = expTime
-        while not self.client.imageready():
+        while not self.client.imageready() and not self.abortExpose:
             text = f'expose {timeLeft:3.0f} s'
             time.sleep(1)
             if timeLeft >= 1:
@@ -180,12 +181,21 @@ class CameraAlpaca(AlpacaClass):
             else:
                 timeLeft = 0
             self.signals.message.emit(text)
+
+        if self.abortExpose:
+            self.signals.message.emit('')
+            return False
+
         self.signals.integrated.emit()
 
         # download image
         self.signals.message.emit('download')
         data = np.array(self.client.imagearray(), dtype=np.uint16)
         data = np.transpose(data)
+
+        if self.abortExpose:
+            self.signals.message.emit('')
+            return False
 
         # creating a fits file and saving the image
         self.signals.message.emit('saving')
@@ -215,12 +225,16 @@ class CameraAlpaca(AlpacaClass):
             header['DEC'] = dec.degrees
             header['TELESCOP'] = self.app.mount.firmware.product
 
+        if self.abortExpose:
+            self.signals.message.emit('')
+            return False
+
         hdu.writeto(self.imagePath, overwrite=True)
 
         self.signals.message.emit('')
         self.signals.saved.emit(self.imagePath)
 
-        return suc
+        return True
 
     def expose(self,
                imagePath='',
@@ -231,6 +245,7 @@ class CameraAlpaca(AlpacaClass):
                posY=0,
                width=1,
                height=1,
+               focalLength=1,
                ):
         """
 
@@ -240,6 +255,7 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
+        self.abortExpose = False
         worker = Worker(self.workerExpose,
                         imagePath=imagePath,
                         expTime=expTime,
@@ -248,9 +264,11 @@ class CameraAlpaca(AlpacaClass):
                         posX=posX,
                         posY=posY,
                         width=width,
-                        height=height)
+                        height=height,
+                        focalLength=focalLength)
         # worker.signals.result.connect(self.emitStatus)
         self.threadPool.start(worker)
+
         return True
 
     def abort(self):
@@ -263,8 +281,40 @@ class CameraAlpaca(AlpacaClass):
         if not self.deviceConnected:
             return False
 
+        self.abortExpose = True
         canAbort = self.data.get('CAN_ABORT', False)
-        if canAbort:
-            self.client.stopexposure()
+
+        if not canAbort:
+            return False
+
+        self.client.stopexposure()
+
+        return True
+
+    def sendCoolerSwitch(self, coolerOn=False):
+        """
+        sendCoolerTemp send the desired cooler temp, but does not switch on / off the cooler
+
+        :param coolerOn:
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.cooleron(CoolerOn=coolerOn)
+
+        return True
+
+    def sendCoolerTemp(self, temperature=0):
+        """
+        sendCoolerTemp send the desired cooler temp, indi does automatically start cooler
+
+        :param temperature:
+        :return: success
+        """
+        if not self.deviceConnected:
+            return False
+
+        self.client.setccdtemperature(SetCCDTemperature=temperature)
 
         return True

@@ -48,6 +48,8 @@ class SettImaging(object):
         # cyclic actions
         self.app.update1s.connect(self.updateParameters)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
+        self.ui.aperture.valueChanged.connect(self.updateParameters)
+        self.ui.focalLength.valueChanged.connect(self.updateParameters)
 
     def initConfig(self):
         """
@@ -190,8 +192,6 @@ class SettImaging(object):
 
         value = float(self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0))
         self.ui.aperture.setValue(value)
-
-        self.updateParameters()
 
         return True
 

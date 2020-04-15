@@ -96,15 +96,22 @@ def test_updateParameters_1():
 
 
 def test_updateParameters_2():
-    app.app.telescope.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] = 1
     app.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_X'] = 1
     app.app.camera.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] = 1
-    app.app.telescope.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] = 1
     app.app.camera.data['CCD_INFO.CCD_MAX_X'] = 1
     app.app.camera.data['CCD_INFO.CCD_MAX_Y'] = 1
     app.app.camera.data['CCD_COOLER.COOLER_ON'] = True
     app.app.camera.data['READOUT_QUALITY.QUALITY_LOW'] = True
+
     suc = app.updateParameters()
+    assert suc
+
+
+def test_updateTelescopeParametersToGui_1():
+    app.app.telescope.data['TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH'] = 1
+    app.app.telescope.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] = 1
+
+    suc = app.updateTelescopeParametersToGui()
     assert suc
 
 

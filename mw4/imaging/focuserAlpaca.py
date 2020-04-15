@@ -20,7 +20,6 @@
 # standard libraries
 
 # external packages
-import PyQt5
 
 # local imports
 from mw4.base.alpacaClass import AlpacaClass

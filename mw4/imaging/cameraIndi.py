@@ -118,14 +118,18 @@ class CameraIndi(IndiClass):
 
         if self.device.CCD_EXPOSURE['state'] == 'Idle':
             self.signals.message.emit('')
+
         elif self.device.CCD_EXPOSURE['state'] == 'Busy':
             if value == 0:
                 self.signals.integrated.emit()
                 self.signals.message.emit('download')
+
             else:
                 self.signals.message.emit(f'expose {value:2.0f} s')
+
         elif self.device.CCD_EXPOSURE['state'] == 'Ok':
             self.signals.message.emit('')
+
         return True
 
     def updateNumber(self, deviceName, propertyName):

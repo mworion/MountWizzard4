@@ -182,8 +182,8 @@ class IndiClass(object):
         """
 
         self.retryCounter = 0
+        self.data.clear()
         self.client.startTimers()
-
         suc = self.client.connectServer()
 
         if not suc:

@@ -182,7 +182,6 @@ class IndiClass(object):
         """
 
         self.retryCounter = 0
-        self.data = {}
         self.client.startTimers()
 
         suc = self.client.connectServer()

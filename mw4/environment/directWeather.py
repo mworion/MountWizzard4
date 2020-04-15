@@ -52,6 +52,7 @@ class DirectWeather:
             'built-in': self
         }
         self.name = ''
+        self.data = {}
 
     @staticmethod
     def startCommunication():

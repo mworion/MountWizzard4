@@ -21,7 +21,7 @@ from pathlib import Path
 
 setup(
     name='mountwizzard4',
-    version='0.150.0',
+    version='0.150.1',
     packages=[
         'mw4',
         'mw4.astrometry',
@@ -43,7 +43,7 @@ setup(
     python_requires='>=3.6.0, <3.9',
     install_requires=[
         'mountcontrol==0.160',
-        'indibase==0.131',
+        'indibase==0.132',
         'PyQt5==5.14.1; platform_machine != "armv7l"',
         'PyQtWebEngine==5.14.0; platform_machine != "armv7l"',
         'matplotlib==3.2.1',

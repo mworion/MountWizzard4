@@ -71,6 +71,7 @@ def version_doc(c):
     with open('./docs/source/conf.py', 'w+') as conf:
         conf.writelines(textNew)
 
+
 @task
 def build_resource(c):
     printMW('building resources')
@@ -86,7 +87,7 @@ def build_widgets(c):
     printMW('building widgets')
     widgetDir = './mw4/gui/widgets/'
     widgets = ['hemisphere', 'image', 'main', 'measure', 'message',
-               'satellite', 'keypad', 'devicePopup']
+               'satellite', 'keypad', 'devicePopup', 'analyse']
     for widget in widgets:
         name = widgetDir + widget
         runMW(c, f'python -m PyQt5.uic.pyuic -x {name}.ui -o {name}_ui.py')

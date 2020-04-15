@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -6792,11 +6792,11 @@ to mount</string>
        <x>410</x>
        <y>300</y>
        <width>366</width>
-       <height>51</height>
+       <height>91</height>
       </rect>
      </property>
      <property name="title">
-      <string>Build model from data file</string>
+      <string>Using model datafiles</string>
      </property>
      <property name="large" stdset="0">
       <bool>true</bool>
@@ -6818,6 +6818,25 @@ to mount</string>
       </property>
       <property name="text">
        <string>Choose model from file and program</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="analyseModelBuild">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>55</y>
+        <width>356</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Select on or more existing model data files and program them into the mount as a new mount model. Only existing models are used. It is ideal for combining multiple model runs, like adding a DSO path to an overall model.</string>
+      </property>
+      <property name="text">
+       <string>Analyse model build</string>
       </property>
      </widget>
     </widget>

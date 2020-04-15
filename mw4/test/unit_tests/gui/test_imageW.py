@@ -56,6 +56,7 @@ def module_setup_teardown(qtbot):
         expTimeN = QDoubleSpinBox()
         binningN = QDoubleSpinBox()
         subFrame = QDoubleSpinBox()
+        focalLength = QDoubleSpinBox()
         checkFastDownload = QCheckBox()
         solveTimeout = QDoubleSpinBox()
         searchRadius = QDoubleSpinBox()

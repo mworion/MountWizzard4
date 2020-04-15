@@ -61,16 +61,16 @@ class SettParkPos(object):
         # signals on gui
         self.ui.coverPark.clicked.connect(self.setCoverPark)
         self.ui.coverUnpark.clicked.connect(self.setCoverUnpark)
-        self.ui.checkDomeGeometry.clicked.connect(self.toggleUseGeometry)
-        self.ui.domeRadius.valueChanged.connect(self.toggleUseGeometry)
-        self.ui.offGEM.valueChanged.connect(self.toggleUseGeometry)
-        self.ui.domeEastOffset.valueChanged.connect(self.toggleUseGeometry)
-        self.ui.domeNorthOffset.valueChanged.connect(self.toggleUseGeometry)
-        self.ui.domeVerticalOffset.valueChanged.connect(self.toggleUseGeometry)
+        self.ui.checkDomeGeometry.clicked.connect(self.setUseGeometryInMount)
+        self.ui.domeRadius.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.offGEM.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeEastOffset.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeNorthOffset.valueChanged.connect(self.setUseGeometryInMount)
+        self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometryInMount)
 
         # signals from functions
         self.app.update1s.connect(self.updateCoverStatGui)
-        self.ui.copyFromDriver.clicked.connect(self.updateDomeGeometry)
+        self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
 
     def initConfig(self):
         """
@@ -90,7 +90,7 @@ class SettParkPos(object):
         self.ui.offGEM.setValue(config.get('offGEM', 0))
 
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
-        self.toggleUseGeometry()
+        self.setUseGeometryInMount()
 
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
@@ -245,9 +245,9 @@ class SettParkPos(object):
 
         return True
 
-    def toggleUseGeometry(self):
+    def setUseGeometryInMount(self):
         """
-        toggleUseGeometry updates the mount class with the new setting if use geometry for
+        setUseGeometryInMount updates the mount class with the new setting if use geometry for
         dome calculation should be used or not.
 
         :return: true for test purpose
@@ -265,10 +265,10 @@ class SettParkPos(object):
 
         return True
 
-    def updateDomeGeometry(self):
+    def updateDomeGeometryToGui(self):
         """
-        updateDomeGeometry takes the information gathered from the driver and programs them
-        into the mount class and gui for later use.
+        updateDomeGeometryToGui takes the information gathered from the driver and programs
+        them into the mount class and gui for later use.
 
         :return: true for test purpose
         """
@@ -288,7 +288,7 @@ class SettParkPos(object):
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
         self.ui.domeVerticalOffset.setValue(value)
 
-        self.toggleUseGeometry()
+        self.setUseGeometryInMount()
 
         return True
 

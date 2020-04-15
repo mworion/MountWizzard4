@@ -238,18 +238,18 @@ def test_saveActualPosition_4():
 
 
 def test_toggleUseGeometry_1():
-    suc = app.toggleUseGeometry()
+    suc = app.setUseGeometryInMount()
     assert suc
 
 
 def test_toggleUseGeometry_2():
     app.ui.domeRadius.setValue(0.3)
-    suc = app.toggleUseGeometry()
+    suc = app.setUseGeometryInMount()
     assert suc
 
 
 def test_updateDomeGeometry_1():
-    suc = app.updateDomeGeometry()
+    suc = app.updateDomeGeometryToGui()
     assert suc
 
 

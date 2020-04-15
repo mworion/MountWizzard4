@@ -47,6 +47,7 @@ class SettImaging(object):
 
         # cyclic actions
         self.app.update1s.connect(self.updateParameters)
+        self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
 
     def initConfig(self):
         """
@@ -60,8 +61,8 @@ class SettImaging(object):
         self.ui.expTimeN.setValue(config.get('expTimeN', 1))
         self.ui.binningN.setValue(config.get('binningN', 1))
         self.ui.subFrame.setValue(config.get('subFrame', 100))
-        self.ui.subFrame.setValue(config.get('subFrame', 100))
-        self.ui.subFrame.setValue(config.get('subFrame', 100))
+        self.ui.focalLength.setValue(config.get('focalLength', 100))
+        self.ui.aperture.setValue(config.get('aperture', 100))
         self.ui.checkFastDownload.setChecked(config.get('checkFastDownload', False))
         self.ui.checkKeepImages.setChecked(config.get('checkKeepImages', False))
         self.ui.searchRadius.setValue(config.get('searchRadius', 2))
@@ -81,6 +82,8 @@ class SettImaging(object):
         config['expTimeN'] = self.ui.expTimeN.value()
         config['binningN'] = self.ui.binningN.value()
         config['subFrame'] = self.ui.subFrame.value()
+        config['focalLength'] = self.ui.focalLength.value()
+        config['aperture'] = self.ui.aperture.value()
         config['searchRadius'] = self.ui.searchRadius.value()
         config['solveTimeout'] = self.ui.solveTimeout.value()
         config['checkFastDownload'] = self.ui.checkFastDownload.isChecked()
@@ -96,8 +99,8 @@ class SettImaging(object):
         :return: true for test purpose
         """
 
-        focalLength = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0)
-        aperture = self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0)
+        focalLength = self.ui.focalLength.value()
+        aperture = self.ui.aperture.value()
         pixelSizeX = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_X', 0)
         pixelSizeY = self.app.camera.data.get('CCD_INFO.CCD_PIXEL_SIZE_Y', 0)
         pixelX = self.app.camera.data.get('CCD_INFO.CCD_MAX_X', 0)
@@ -142,8 +145,6 @@ class SettImaging(object):
 
         self.guiSetText(self.ui.speed, '2.1f', speed)
         self.guiSetText(self.ui.filterName, 's', text)
-        self.guiSetText(self.ui.focalLength, '4.0f', focalLength)
-        self.guiSetText(self.ui.aperture, '3.0f', aperture)
         self.guiSetText(self.ui.pixelSizeX, '2.2f', pixelSizeX)
         self.guiSetText(self.ui.pixelSizeY, '2.2f', pixelSizeY)
         self.guiSetText(self.ui.pixelX, '5.0f', pixelX)
@@ -174,6 +175,23 @@ class SettImaging(object):
         else:
             self.changeStyleDynamic(self.ui.downloadFast, 'running', False)
             self.changeStyleDynamic(self.ui.downloadSlow, 'running', True)
+
+        return True
+
+    def updateTelescopeParametersToGui(self):
+        """
+        updateTelescopeParametersToGui takes the information gathered from the driver and
+        programs them into gui for later use.
+
+        :return: true for test purpose
+        """
+        value = float(self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH', 0))
+        self.ui.focalLength.setValue(value)
+
+        value = float(self.app.telescope.data.get('TELESCOPE_INFO.TELESCOPE_APERTURE', 0))
+        self.ui.aperture.setValue(value)
+
+        self.updateParameters()
 
         return True
 

@@ -59,7 +59,6 @@ def module_setup_teardown(qtbot):
         checkDomeGeometry = QCheckBox()
 
     class Test1:
-        deviceStat = {'dome': True}
         ui = Test1a()
 
     class Test(QObject):
@@ -83,6 +82,7 @@ def module_setup_teardown(qtbot):
         astrometry = Astrometry(app=Test2())
         data = DataPoint(app=Test2(), configDir='mw4/test/config')
         hipparcos = Hipparcos(app=Test2())
+        deviceStat = {'dome': True}
         mainW = Test1()
 
     with mock.patch.object(HemisphereWindow,

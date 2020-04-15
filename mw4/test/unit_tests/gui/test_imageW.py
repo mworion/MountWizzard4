@@ -61,8 +61,6 @@ def module_setup_teardown(qtbot):
         searchRadius = QDoubleSpinBox()
 
     class Test1:
-        deviceStat = {'camera': True,
-                      'astrometry': True}
         ui = Test1a()
 
     class Test(QObject):
@@ -76,6 +74,8 @@ def module_setup_teardown(qtbot):
         astrometry = Astrometry(app=Test2())
         uiWindows = {'showImageW': {}}
         mwGlob = {'imageDir': 'mw4/test/image'}
+        deviceStat = {'camera': True,
+                      'astrometry': True}
 
     with mock.patch.object(ImageWindow,
                            'show'):

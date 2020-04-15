@@ -19,11 +19,9 @@
 ###########################################################
 # standard libraries
 import logging
+import json
 
 # external packages
-import PyQt5.QtCore
-import PyQt5.QtWidgets
-import PyQt5.uic
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -78,6 +76,7 @@ class AnalyseWindow(widget.MWidget):
                                                    constrainedLayout=False)
         self.errorDistribution.parentWidget().setStyleSheet(self.BACK_BG)
 
+        self.ui.load.clicked.connect(self.loadModel)
         self.initConfig()
 
     def initConfig(self):
@@ -145,6 +144,33 @@ class AnalyseWindow(widget.MWidget):
         :return: True for test purpose
         """
         self.show()
+
+        return True
+
+    def loadModel(self):
+        """
+        loadModel selects one or more models from the files system
+
+        :return: success
+        """
+
+        folder = self.app.mwGlob['modelDir']
+        loadFilePath, fileName, ext = self.openFile(self,
+                                                    'Open model file',
+                                                    folder,
+                                                    'Model files (*.model)',
+                                                    multiple=False,
+                                                    )
+        if not loadFilePath:
+            return False
+
+        if not isinstance(loadFilePath, str):
+            return False
+
+        with open(loadFilePath, 'r') as infile:
+            modelJSON = json.load(infile)
+
+        print(modelJSON)
 
         return True
 

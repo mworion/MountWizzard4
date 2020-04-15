@@ -94,6 +94,11 @@ class CameraAlpaca(AlpacaClass):
         self.dataEntry(self.client.fastreadout(),
                        'READOUT_QUALITY.QUALITY_LOW',
                        'READOUT_QUALITY.QUALITY_HIGH')
+        self.dataEntry(self.client.cooleron(),
+                       'CCD_COOLER.COOLER_ON')
+        self.dataEntry(self.client.coolerpower(),
+                       'CCD_COOLER_POWER.CCD_COOLER_VALUE')
+
         return True
 
     def pollData(self):

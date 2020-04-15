@@ -6820,7 +6820,7 @@ to mount</string>
        <string>Choose model from file and program</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="analyseModelBuild">
+     <widget class="QPushButton" name="openAnalyseW">
       <property name="enabled">
        <bool>true</bool>
       </property>
@@ -6836,7 +6836,7 @@ to mount</string>
        <string>Select on or more existing model data files and program them into the mount as a new mount model. Only existing models are used. It is ideal for combining multiple model runs, like adding a DSO path to an overall model.</string>
       </property>
       <property name="text">
-       <string>Analyse model build</string>
+       <string>Analyse model build window</string>
       </property>
      </widget>
     </widget>

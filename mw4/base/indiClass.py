@@ -126,8 +126,8 @@ class IndiClass(object):
         if deviceName == self.name:
             self.device = self.client.getDevice(deviceName)
             self.app.message.emit(f'INDI device found:   [{deviceName}]', 0)
-        # else:
-        #     self.app.message.emit(f'INDI device snoops:     [{deviceName}]', 0)
+        else:
+            self.log.info(f'Indi device snoop: {deviceName}')
 
         return True
 
@@ -158,14 +158,16 @@ class IndiClass(object):
 
         if not self.name:
             return False
+        if self.data:
+            return True
 
         self.retryCounter += 1
+        suc = self.client.connectServer()
 
-        if not self.data:
-            self.startCommunication()
-            self.log.info(f'Indi server {self.name} connection retry: {self.retryCounter}')
-        else:
-            self.retryCounter = 0
+        if suc:
+            return True
+
+        self.log.info(f'Cannot start connection to: {self.name} retry: {self.retryCounter}')
 
         if self.retryCounter < self.NUMBER_RETRY:
             self.timerRetry.start(self.RETRY_DELAY)
@@ -179,13 +181,17 @@ class IndiClass(object):
         :return: success of reconnecting to server
         """
 
+        self.retryCounter = 0
+        self.data = {}
         self.client.startTimers()
+
         suc = self.client.connectServer()
+
         if not suc:
             self.log.info(f'Cannot start connection to: {self.name}')
         else:
-            # adding a single retry if first connect does not happen
             self.timerRetry.start(self.RETRY_DELAY)
+
         return suc
 
     def stopCommunication(self):

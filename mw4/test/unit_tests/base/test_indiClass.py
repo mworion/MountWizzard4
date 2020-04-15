@@ -129,6 +129,7 @@ def test_startRetry_3():
 
 
 def test_startCommunication_1():
+    app.data = {}
     with mock.patch.object(app.client,
                            'startTimers',
                            return_value=False):
@@ -140,6 +141,7 @@ def test_startCommunication_1():
 
 
 def test_startCommunication_2():
+    app.data = {}
     with mock.patch.object(app.client,
                            'startTimers',
                            return_value=False):
@@ -222,6 +224,7 @@ def test_updateNumber_2():
 
 
 def test_updateNumber_3():
+    app.data = {}
     app.device = Device()
     app.name = 'telescope'
     with mock.patch.object(app.device,
@@ -243,6 +246,7 @@ def test_updateText_2():
 
 
 def test_updateText_3():
+    app.data = {}
     app.device = Device()
     app.name = 'telescope'
     with mock.patch.object(app.device,
@@ -264,6 +268,7 @@ def test_updateSwitch_2():
 
 
 def test_updateSwitch_3():
+    app.data = {}
     app.device = Device()
     app.name = 'telescope'
     with mock.patch.object(app.device,
@@ -285,6 +290,7 @@ def test_updateLight_2():
 
 
 def test_updateLight_3():
+    app.data = {}
     app.device = Device()
     app.name = 'telescope'
     with mock.patch.object(app.device,

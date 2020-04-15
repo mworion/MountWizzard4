@@ -18,16 +18,13 @@
 #
 ###########################################################
 # standard libraries
-import logging
-from datetime import datetime
+
 # external packages
 import PyQt5
-import numpy as np
+
 # local imports
-from mw4.base.loggerMW import CustomLogger
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.alpacaBase import Dome
-from mw4.base.tpool import Worker
 
 
 class DomeAlpaca(AlpacaClass):
@@ -59,6 +56,7 @@ class DomeAlpaca(AlpacaClass):
         self.settlingWait = PyQt5.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
+        self.client.signals.deviceConnected.connect(self.startCommunication)
 
     @property
     def settlingTime(self):

@@ -288,8 +288,6 @@ class SettParkPos(object):
         value = float(self.app.dome.data.get('DOME_MEASUREMENTS.DM_UP_DISPLACEMENT', 0))
         self.ui.domeVerticalOffset.setValue(value)
 
-        self.setUseGeometryInMount()
-
         return True
 
     def updateCoverStatGui(self):

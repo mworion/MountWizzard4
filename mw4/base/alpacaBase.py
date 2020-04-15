@@ -1786,3 +1786,51 @@ class ObservingConditions(AlpacaBase):
 
     def timesincelastupdate(self):
         return self.get("timesincelastupdate")
+
+
+class Focuser(AlpacaBase):
+    """Focuser  specific methods."""
+
+    logger = logging.getLogger(__name__)
+
+    def averageperiod(self, AveragePeriod=None):
+        if AveragePeriod is None:
+            return self.get("position")
+        self.put("position", AveragePeriod=AveragePeriod)
+
+    def absolut(self):
+        return self.get("absolut")
+
+    def ismoving(self):
+        return self.get("ismoving")
+
+    def maxincrement(self):
+        return self.get("maxincrement")
+
+    def maxstep(self):
+        return self.get("maxstep")
+
+    def position(self):
+        return self.get("position")
+
+    def stepsize(self):
+        return self.get("stepsize")
+
+    def tempcomp(self, TempComp=None):
+        if TempComp is None:
+            return self.get("tempcomp")
+        self.put("tempcomp", TempComp=TempComp)
+
+    def tempcompavailable(self):
+        return self.get("tempcompavailable")
+
+    def temperature(self):
+        return self.get("temperature")
+
+    def halt(self):
+        self.put("halt")
+
+    def move(self, Position=None):
+        if Position is None:
+            return self.get("move")
+        self.put("move", Position=Position)

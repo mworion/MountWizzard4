@@ -66,13 +66,25 @@ class DomeAlpaca(AlpacaClass):
     def settlingTime(self, value):
         self._settlingTime = value
 
+    def getInitialConfig(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        super().getInitialConfig()
+
+        return True
+
     def waitSettlingAndEmit(self):
         """
         waitSettlingAndEmit emit the signal for slew finished
 
         :return: true for test purpose
         """
+
         self.signals.slewFinished.emit()
+
         return True
 
     def emitData(self):

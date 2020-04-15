@@ -67,6 +67,7 @@ class SettImaging(object):
         self.ui.aperture.setValue(config.get('aperture', 100))
         self.ui.checkFastDownload.setChecked(config.get('checkFastDownload', False))
         self.ui.checkKeepImages.setChecked(config.get('checkKeepImages', False))
+        self.ui.checkAutomaticTelescope.setChecked(config.get('checkAutomaticTelescope', False))
         self.ui.searchRadius.setValue(config.get('searchRadius', 2))
         self.ui.solveTimeout.setValue(config.get('solveTimeout', 30))
 
@@ -90,6 +91,7 @@ class SettImaging(object):
         config['solveTimeout'] = self.ui.solveTimeout.value()
         config['checkFastDownload'] = self.ui.checkFastDownload.isChecked()
         config['checkKeepImages'] = self.ui.checkKeepImages.isChecked()
+        config['checkAutomaticTelescope'] = self.ui.checkAutomaticTelescope.isChecked()
 
         return True
 
@@ -100,6 +102,9 @@ class SettImaging(object):
 
         :return: true for test purpose
         """
+
+        if self.ui.checkAutomaticTelescope.isChecked():
+            self.updateTelescopeParametersToGui()
 
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()

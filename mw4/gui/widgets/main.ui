@@ -16402,7 +16402,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QLabel" name="label_395">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>335</x>
           <y>20</y>
           <width>31</width>
           <height>21</height>
@@ -16423,7 +16423,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QPushButton" name="copyFromTelescopeDriver">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>250</x>
           <y>50</y>
           <width>111</width>
           <height>21</height>
@@ -16496,7 +16496,7 @@ When clicking the button, you could change the value.</string>
        <widget class="QDoubleSpinBox" name="aperture">
         <property name="geometry">
          <rect>
-          <x>280</x>
+          <x>275</x>
           <y>20</y>
           <width>56</width>
           <height>21</height>
@@ -16530,6 +16530,36 @@ When clicking the button, you could change the value.</string>
         </property>
         <property name="value">
          <double>100.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkAutomaticTelescope">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>211</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Automatic takeover from driver</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>
@@ -16957,7 +16987,7 @@ When clicking the button, you could change the value.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>201</height>
+         <height>221</height>
         </rect>
        </property>
        <property name="title">
@@ -17290,13 +17320,43 @@ When clicking the button, you could change the value.</string>
         <property name="geometry">
          <rect>
           <x>240</x>
-          <y>170</y>
+          <y>190</y>
           <width>111</width>
           <height>21</height>
          </rect>
         </property>
         <property name="text">
          <string>Data from Driver</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkAutomaticDome">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>190</y>
+          <width>211</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Automatic takeover from driver</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>
@@ -17392,7 +17452,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>235</y>
+         <y>245</y>
          <width>366</width>
          <height>56</height>
         </rect>
@@ -17489,7 +17549,7 @@ When clicking the button, you could change the value.</string>
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>310</y>
+         <y>320</y>
          <width>366</width>
          <height>56</height>
         </rect>

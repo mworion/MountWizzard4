@@ -88,8 +88,8 @@ class SettParkPos(object):
         self.ui.domeEastOffset.setValue(config.get('domeEastOffset', 0))
         self.ui.domeVerticalOffset.setValue(config.get('domeVerticalOffset', 0))
         self.ui.offGEM.setValue(config.get('offGEM', 0))
-
         self.ui.checkDomeGeometry.setChecked(config.get('checkDomeGeometry', False))
+        self.ui.checkAutomaticDome.setChecked(config.get('checkAutomaticDome', False))
         self.setUseGeometryInMount()
 
         for i, textField in enumerate(self.posTexts):
@@ -125,6 +125,7 @@ class SettParkPos(object):
         config['domeVerticalOffset'] = self.ui.domeVerticalOffset.value()
         config['offGEM'] = self.ui.offGEM.value()
         config['checkDomeGeometry'] = self.ui.checkDomeGeometry.isChecked()
+        config['checkAutomaticDome'] = self.ui.checkAutomaticDome.isChecked()
 
         for i, textField in enumerate(self.posTexts):
             keyConfig = 'posText{0:1d}'.format(i)
@@ -252,6 +253,9 @@ class SettParkPos(object):
 
         :return: true for test purpose
         """
+
+        if self.ui.checkAutomaticDome.isChecked():
+            self.updateDomeGeometryToGui()
 
         value = self.ui.domeRadius.value()
         self.app.mount.geometry.domeRadius = value

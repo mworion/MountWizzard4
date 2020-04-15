@@ -130,6 +130,7 @@ class CameraAlpaca(AlpacaClass):
                      posY=0,
                      width=1,
                      height=1,
+                     focalLength=1,
                      ):
         """
 
@@ -141,6 +142,7 @@ class CameraAlpaca(AlpacaClass):
         :param posY:
         :param width:
         :param height:
+        :param focalLength:
         :return: success
         """
 
@@ -196,8 +198,7 @@ class CameraAlpaca(AlpacaClass):
         header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
         header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
         header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
-        # todo fl has to be changed and automatically set !
-        header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] / 570 * 206.265
+        header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] / focalLength * 206.265
         header['XBINNING'] = binning
         header['YBINNING'] = binning
         header['EXPTIME'] = expTime

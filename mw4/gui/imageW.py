@@ -706,6 +706,7 @@ class ImageWindow(widget.MWidget):
         time = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
         fileName = time + '-exposure.fits'
         imagePath = self.app.mwGlob['imageDir'] + '/' + fileName
+        focalLength = self.app.mainW.ui.focalLength.value()
 
         self.imageFileNameOld = self.imageFileName
 
@@ -714,6 +715,7 @@ class ImageWindow(widget.MWidget):
                                binning=self.binning,
                                subFrame=subFrame,
                                fastReadout=fastReadout,
+                               focalLength=focalLength
                                )
 
         self.app.message.emit(f'Exposing: [{os.path.basename(imagePath)}]', 0)

@@ -229,6 +229,7 @@ class CameraIndi(IndiClass):
                posY=0,
                width=1,
                height=1,
+               focalLength=1,
                ):
         """
 
@@ -240,6 +241,7 @@ class CameraIndi(IndiClass):
         :param posY:
         :param width:
         :param height:
+        :param focalLength:
         :return: success
         """
 

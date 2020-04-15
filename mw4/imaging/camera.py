@@ -212,7 +212,8 @@ class Camera:
                expTime=3,
                binning=1,
                subFrame=100,
-               fastReadout=True):
+               fastReadout=True,
+               focalLength=1):
         """
 
         :param imagePath:
@@ -220,6 +221,7 @@ class Camera:
         :param binning:
         :param subFrame:
         :param fastReadout:
+        :param focalLength:
         :return: success
         """
 
@@ -246,7 +248,8 @@ class Camera:
                                               posX=posX,
                                               posY=posY,
                                               width=width,
-                                              height=height)
+                                              height=height,
+                                              focalLength=focalLength)
         return suc
 
     def abort(self):

@@ -405,6 +405,7 @@ class Model(object):
                                binning=mPoint['binning'],
                                subFrame=mPoint['subFrame'],
                                fastReadout=mPoint['fastReadout'],
+                               focalLength=mPoint['focalLength'],
                                )
 
         mPoint['raJNowM'] = self.app.mount.obsSite.raJNow
@@ -817,6 +818,7 @@ class Model(object):
         fastReadout = self.ui.checkFastDownload.isChecked()
         solveTimeout = self.ui.solveTimeout.value()
         searchRadius = self.ui.searchRadius.value()
+        focalLength = self.ui.focalLength.value()
         lenSequence = len(points)
 
         # preparation of signals and gui
@@ -845,6 +847,7 @@ class Model(object):
             modelSet['astrometryApp'] = astrometryApp
             modelSet['solveTimeout'] = solveTimeout
             modelSet['searchRadius'] = searchRadius
+            modelSet['focalLength'] = focalLength
             modelSet['altitude'] = point[0]
             modelSet['azimuth'] = point[1]
 

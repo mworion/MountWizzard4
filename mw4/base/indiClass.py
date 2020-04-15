@@ -188,7 +188,7 @@ class IndiClass(object):
         suc = self.client.connectServer()
 
         if not suc:
-            self.log.info(f'Cannot start connection to: {self.name}')
+            self.log.info(f'Cannot start connection to: {self.name} retry: {self.retryCounter}')
         else:
             self.timerRetry.start(self.RETRY_DELAY)
 

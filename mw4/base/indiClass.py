@@ -127,7 +127,7 @@ class IndiClass(object):
             self.device = self.client.getDevice(deviceName)
             self.app.message.emit(f'INDI device found:   [{deviceName}]', 0)
         else:
-            self.log.info(f'Indi device snoop: {deviceName}')
+            self.log.warn(f'Indi device snoop: {deviceName}')
 
         return True
 

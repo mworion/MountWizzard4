@@ -316,6 +316,7 @@ def test_modelImage_2():
               'binning': 1,
               'subFrame': 100,
               'fastReadout': False,
+              'focalLength': 1,
               }
 
     app.imageQueue.put(mPoint)

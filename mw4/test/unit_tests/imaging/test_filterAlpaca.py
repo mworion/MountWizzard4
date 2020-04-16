@@ -51,3 +51,37 @@ def test_getInitialConfig_1():
                            'get'):
         suc = app.getInitialConfig()
         assert suc
+
+
+def test_getInitialConfig_2():
+    with mock.patch.object(app.client,
+                           'names',
+                           return_value=['test', 'test1']):
+        suc = app.getInitialConfig()
+        assert suc
+        assert app.data['FILTER_NAME.FILTER_SLOT_NAME_0'] == 'test'
+        assert app.data['FILTER_NAME.FILTER_SLOT_NAME_1'] == 'test1'
+
+
+def test_workerPollData_1():
+    with mock.patch.object(AlpacaBase,
+                           'get',
+                           return_value=-1):
+        suc = app.workerPollData()
+        assert not suc
+
+
+def test_workerPollData_2():
+    with mock.patch.object(AlpacaBase,
+                           'get',
+                           return_value=1):
+        suc = app.workerPollData()
+        assert suc
+        assert app.data['FILTER_SLOT.FILTER_SLOT_VALUE'] == 1
+
+
+def test_sendFilterNumber_1():
+    with mock.patch.object(AlpacaBase,
+                           'put'):
+        suc = app.sendFilterNumber()
+        assert suc

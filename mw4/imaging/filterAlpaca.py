@@ -73,7 +73,7 @@ class FilterAlpaca(AlpacaClass):
         position = self.client.position()
 
         if position == -1:
-            return
+            return False
 
         self.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = position
 
@@ -85,6 +85,6 @@ class FilterAlpaca(AlpacaClass):
         :return: true for test purpose
         """
 
-        suc = self.client.position(Position=filterNumber)
+        self.client.position(Position=filterNumber)
 
-        return suc
+        return True

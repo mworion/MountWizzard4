@@ -51,3 +51,12 @@ def test_getInitialConfig_1():
                            'get'):
         suc = app.getInitialConfig()
         assert suc
+
+
+def test_workerPollData_1():
+    with mock.patch.object(app.client,
+                           'position',
+                           return_value=1):
+        suc = app.workerPollData()
+        assert suc
+        assert app.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] == 1

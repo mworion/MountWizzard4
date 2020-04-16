@@ -11,8 +11,8 @@ Qt as a Gui framework.
 For full operation MW4 needs actually a running:
 
 INDI server(s) (see: https://indilib.org) where your devices are connected to.
-ASCOM Alpaca server (see: https://ascom-standards.org/Developer/Alpaca.htm) abstracting your
-ASCOM devices or devices which speak native ASCOM Alpaca.
+ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm) abstracting
+your ASCOM devices or devices which speak native ASCOM Alpaca.
 
 In addition an online connection is used for some services which might be very helpful.
 

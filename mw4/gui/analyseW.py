@@ -23,6 +23,7 @@ import json
 
 # external packages
 import matplotlib.pyplot as plt
+from matplotlib import ticker
 import numpy as np
 
 # local import
@@ -67,13 +68,13 @@ class AnalyseWindow(widget.MWidget):
                                             constrainedLayout=False)
         self.scaleImage.parentWidget().setStyleSheet(self.BACK_BG)
         self.modelPositions = self.embedMatplot(self.ui.modelPositions,
-                                                constrainedLayout=False)
+                                                constrainedLayout=True)
         self.modelPositions.parentWidget().setStyleSheet(self.BACK_BG)
         self.errorAscending = self.embedMatplot(self.ui.errorAscending,
-                                                constrainedLayout=False)
+                                                constrainedLayout=True)
         self.errorAscending.parentWidget().setStyleSheet(self.BACK_BG)
         self.errorDistribution = self.embedMatplot(self.ui.errorDistribution,
-                                                   constrainedLayout=False)
+                                                   constrainedLayout=True)
         self.errorDistribution.parentWidget().setStyleSheet(self.BACK_BG)
 
         self.ui.load.clicked.connect(self.loadModel)
@@ -170,47 +171,400 @@ class AnalyseWindow(widget.MWidget):
         with open(loadFilePath, 'r') as infile:
             modelJSON = json.load(infile)
 
-        print(modelJSON)
+        self.ui.filename.setText(loadFilePath)
+        self.ui.eposure.setText(f'{modelJSON[0]["exposureTime"]}')
+        self.ui.binning.setText(f'{modelJSON[0]["binning"]}')
+        self.ui.solver.setText(modelJSON[0]['astrometryApp'])
+        self.drawAll(modelJSON)
 
         return True
 
-    def draw_raPointErrors(self):
-        pass
-
-    def draw_decPointErrors(self):
-        pass
-
-    def draw_raModelErrors(self):
-        pass
-
-    def draw_decModelErrors(self):
-        pass
-
-    def draw_scaleImage(self):
-        pass
-
-    def draw_modelPositions(self):
-        pass
-
-    def draw_errorAscending(self):
-        pass
-
-    def draw_errorDistribution(self):
-        pass
-
-    def drawAll(self):
+    def generatePolar(self, widget=None, title=''):
         """
 
+        :param widget:
+        :param title:
+        :return:
+        """
+
+        if widget is None:
+            return None, None
+        if not hasattr(widget, 'figure'):
+            return None, None
+
+        fig = widget.figure
+        fig.clf()
+        axe = fig.add_subplot(1,
+                              1,
+                              1,
+                              polar=True,
+                              facecolor=self.M_GREY_DARK)
+        axe.grid(True,
+                 color=self.M_GREY,
+                 )
+
+        if title:
+            axe.set_title(title,
+                          color=self.M_BLUE,
+                          fontweight='bold',
+                          pad=15,
+                          )
+
+        axe.tick_params(axis='x',
+                        colors=self.M_BLUE,
+                        labelsize=12,
+                        )
+        axe.tick_params(axis='y',
+                        colors=self.M_BLUE,
+                        labelsize=12,
+                        )
+        axe.set_theta_zero_location('N')
+        axe.set_rlabel_position(45)
+        axe.set_theta_direction(-1)
+        xLabel = ['0-N', '45-NE', '90-E', '135-SE', '180-S', '215-SW', '270-W', '315-NW']
+        axe.set_xticklabels(xLabel)
+
+        return axe, fig
+
+    def generateFlat(self, widget=None, title=''):
+        """
+
+        :param widget:
+        :param title:
+        :return:
+        """
+
+        if widget is None:
+            return None, None
+        if not hasattr(widget, 'figure'):
+            return None, None
+
+        figure = widget.figure
+        figure.clf()
+        axe = figure.add_subplot(1, 1, 1, facecolor=self.M_GREY_DARK)
+
+        axe.spines['bottom'].set_color(self.M_BLUE)
+        axe.spines['top'].set_color(self.M_BLUE)
+        axe.spines['left'].set_color(self.M_BLUE)
+        axe.spines['right'].set_color(self.M_BLUE)
+        axe.grid(True, color=self.M_GREY)
+        axe.tick_params(axis='x',
+                        colors=self.M_BLUE,
+                        labelsize=12)
+        axe.tick_params(axis='y',
+                        colors=self.M_BLUE,
+                        labelsize=12)
+
+        return axe, figure
+
+    def draw_raPointErrors(self, model):
+        """
+        draw_raPointErrors draws a plot of
+
+        :param model:
+        :return:    True if ok for testing
+        """
+
+        axe, fig = self.generateFlat(widget=self.raPointErrors)
+
+        axe.set_xlabel('Star',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        axe.set_ylabel('Error per Star [RMS]',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+
+        errors = model['errorRA_S']
+        index = range(0, len(errors))
+        axe.plot(index,
+                 errors,
+                 marker='.',
+                 markersize=5,
+                 linestyle='none',
+                 color=self.M_GREEN)
+
+        axe.figure.canvas.draw()
+
+        return True
+
+    def draw_decPointErrors(self, model):
+        """
+        draw_raPointErrors draws a plot of
+
+        :param model:
+        :return:    True if ok for testing
+        """
+
+        axe, fig = self.generateFlat(widget=self.decPointErrors)
+
+        axe.set_xlabel('Star',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        axe.set_ylabel('Error per Star [RMS]',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+
+        errors = model['errorDEC_S']
+        index = range(0, len(errors))
+        axe.plot(index,
+                 errors,
+                 marker='.',
+                 markersize=5,
+                 linestyle='none',
+                 color=self.M_GREEN)
+
+        axe.figure.canvas.draw()
+
+        return True
+
+    def draw_raModelErrors(self, model):
+        """
+        draw_raPointErrors draws a plot of
+
+        :param model:
+        :return:    True if ok for testing
+        """
+
+        axe, fig = self.generateFlat(widget=self.raModelErrors)
+
+        axe.set_xlabel('Star',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        axe.set_ylabel('Error per Star [RMS]',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+
+        errors = model['errorRA']
+        index = range(0, len(errors))
+        axe.plot(index,
+                 errors,
+                 marker='.',
+                 markersize=5,
+                 linestyle='none',
+                 color=self.M_GREEN)
+
+        axe.figure.canvas.draw()
+
+        return True
+
+    def draw_decModelErrors(self, model):
+        """
+        draw_raPointErrors draws a plot of
+
+        :param model:
+        :return:    True if ok for testing
+        """
+
+        axe, fig = self.generateFlat(widget=self.decModelErrors)
+
+        axe.set_xlabel('Star',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        axe.set_ylabel('Error per Star [RMS]',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+
+        errors = model['errorDEC']
+        index = range(0, len(errors))
+        axe.plot(index,
+                 errors,
+                 marker='.',
+                 markersize=5,
+                 linestyle='none',
+                 color=self.M_GREEN)
+
+        axe.figure.canvas.draw()
+
+        return True
+
+    def draw_scaleImage(self, model):
+        """
+        draw_raPointErrors draws a plot of
+
+        :param model:
+        :return:    True if ok for testing
+        """
+
+        axe, fig = self.generateFlat(widget=self.scaleImage)
+
+        axe.set_xlabel('Star',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        axe.set_ylabel('Image Scale [arcsec/pix]',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+
+        errors = model['scaleS']
+        index = range(0, len(errors))
+        axe.plot(index,
+                 errors,
+                 marker='.',
+                 markersize=5,
+                 linestyle='none',
+                 color=self.M_GREEN)
+
+        axe.figure.canvas.draw()
+
+        return True
+
+    def draw_modelPositions(self, model):
+        """
+        showModelPosition draws a polar plot of the align model stars and their errors in
+        color. the basic setup of the plot is taking place in the central widget class.
+        which is instantiated from there. important: the coordinate in model is in HA and
+        DEC  and not in RA and DEC. using skyfield is a little bit misleading, because you
+        address the hour angle as .ra.hours
+
+        :param model:
+        :return:    True if ok for testing
+        """
+
+        axe, fig = self.generatePolar(widget=self.modelPositions)
+
+        axe.set_yticks(range(0, 90, 10))
+        axe.set_ylim(0, 90)
+        yLabel = ['', '', '', '', '', '', '', '', '', '']
+        axe.set_yticklabels(yLabel)
+
+        altitude = np.asarray(model['altitude'])
+        azimuth = np.asarray(model['azimuth'])
+        error = np.asarray(model['errorRMS'])
+
+        # and plot it
+        cm = plt.cm.get_cmap('RdYlGn_r')
+        colors = np.asarray(error)
+        scaleErrorMax = max(colors)
+        scaleErrorMin = min(colors)
+        area = [100 if x >= max(colors) else 30 for x in error]
+        theta = azimuth / 180.0 * np.pi
+        r = 90 - altitude
+        scatter = axe.scatter(theta,
+                              r,
+                              c=colors,
+                              vmin=scaleErrorMin,
+                              vmax=scaleErrorMax,
+                              s=area,
+                              cmap=cm,
+                              zorder=0,
+                              )
+
+        formatString = ticker.FormatStrFormatter('%1.0f')
+        colorbar = fig.colorbar(scatter,
+                                pad=0.1,
+                                fraction=0.12,
+                                aspect=25,
+                                shrink=0.9,
+                                format=formatString,
+                                )
+        colorbar.set_label('Error [arcsec]', color=self.M_BLUE)
+        yTicks = plt.getp(colorbar.ax.axes, 'yticklabels')
+        plt.setp(yTicks,
+                 color=self.M_BLUE,
+                 fontweight='bold')
+
+        axe.figure.canvas.draw()
+        return True
+
+    def draw_errorAscending(self, model):
+        """
+        showErrorAscending draws a plot of the align model stars and their errors in ascending
+        order.
+
+        :param model:
+        :return:    True if ok for testing
+        """
+
+        axe, fig = self.generateFlat(widget=self.errorAscending)
+
+        axe.set_xlabel('Star',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+        axe.set_ylabel('Error per Star [RMS]',
+                       color=self.M_BLUE,
+                       fontweight='bold',
+                       fontsize=12)
+
+        errors = model['errorRMS']
+        errors.sort()
+        index = range(0, len(errors))
+        axe.plot(index,
+                 errors,
+                 marker='.',
+                 markersize=5,
+                 linestyle='none',
+                 color=self.M_GREEN)
+
+        axe.figure.canvas.draw()
+
+        return True
+
+    def draw_errorDistribution(self, model):
+        """
+        showErrorDistribution draws a polar plot of the align model stars and their errors in
+        color. the basic setup of the plot is taking place in the central widget class.
+        which is instantiated from there. important: the coordinate in model is in HA and
+        DEC  and not in RA and DEC. using skyfield is a little bit misleading, because you
+        address the hour angle as .ra.hours
+
+        :param model:
+        :return:    True if ok for testing
+        """
+
+        if 'errorAngle' not in model:
+            return False
+
+        axe, fig = self.generatePolar(widget=self.errorDistribution)
+
+        angles = [val / 180.0 * np.pi for val in model['errorAngle']]
+
+        errors = model['errorRMS']
+
+        axe.plot(angles,
+                 errors,
+                 marker='.',
+                 markersize=5,
+                 linestyle='none',
+                 color=self.M_GREEN)
+
+        axe.figure.canvas.draw()
+
+        return True
+
+    def drawAll(self, modelJson=None):
+        """
+
+        :param modelJson:
         :return: true for test purpose
         """
 
-        self.draw_raPointErrors()
-        self.draw_decPointErrors()
-        self.draw_raModelErrors()
-        self.draw_decModelErrors()
-        self.draw_scaleImage()
-        self.draw_modelPositions()
-        self.draw_errorAscending()
-        self.draw_errorDistribution()
+        if not modelJson:
+            return False
+
+        model = dict()
+
+        for key in modelJson[0].keys():
+            model[key] = list()
+            for index in range(0, len(modelJson)):
+                model[key].append(modelJson[index][key])
+
+        self.draw_raPointErrors(model)
+        self.draw_decPointErrors(model)
+        self.draw_raModelErrors(model)
+        self.draw_decModelErrors(model)
+        self.draw_scaleImage(model)
+        self.draw_modelPositions(model)
+        self.draw_errorAscending(model)
+        self.draw_errorDistribution(model)
 
         return True

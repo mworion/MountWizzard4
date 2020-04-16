@@ -35,7 +35,7 @@ class AlpacaClass(object):
     the class AlpacaClass inherits all information and handling of alpaca devices
     this class will be only referenced from other classes and not directly used
 
-        >>> a = AlpacaClass(app=None, data={})
+        >>> a = AlpacaClass(app=None, data=None, threadPool=None)
     """
 
     logger = logging.getLogger(__name__)
@@ -45,11 +45,11 @@ class AlpacaClass(object):
     CYCLE_DEVICE = 3000
     CYCLE_DATA = 3000
 
-    def __init__(self, app=None, data={}):
+    def __init__(self, app=None, data=None, threadPool=None):
         super().__init__()
 
         self.app = app
-        self.threadPool = app.threadPool
+        self.threadPool = threadPool
 
         self.client = AlpacaBase()
         self.data = data

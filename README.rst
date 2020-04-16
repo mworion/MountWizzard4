@@ -8,10 +8,13 @@ astronomy work and imaging runs on Windows, OSx and Linux (Ubuntu tested). As a 
 application, it should run in all environments which support python 3.6-3.8 including
 Qt as a Gui framework.
 
-For full operation MW4 needs actually running INDI Server(s) (see: https://indilib.org)
-connected to your devices. MW4 will support ASCOM Alpaca
-(see: https://ascom-standards.org/Developer/Alpaca.htm) in the next step as well. In
-addition an online connection is used for some services which might be very helpful.
+For full operation MW4 needs actually a running:
+
+INDI server(s) (see: https://indilib.org) where your devices are connected to.
+ASCOM Alpaca server (see: https://ascom-standards.org/Developer/Alpaca.htm) abstracting your
+ASCOM devices or devices which speak native ASCOM Alpaca.
+
+In addition an online connection is used for some services which might be very helpful.
 
 It is recommended to use mount firmware 2.16 (ideally 2.16.11) or later as some of the
 functions don't work with older firmware versions.

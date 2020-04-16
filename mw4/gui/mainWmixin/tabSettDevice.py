@@ -60,7 +60,7 @@ class SettDevice(object):
                 'uiDropDown': self.ui.filterDevice,
                 'uiSetup': self.ui.filterSetup,
                 'class': self.app.filter,
-                'deviceType': 'filter',
+                'deviceType': 'filterwheel',
             },
             'focuser': {
                 'uiDropDown': self.ui.focuserDevice,

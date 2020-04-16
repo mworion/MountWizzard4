@@ -47,6 +47,8 @@ class FilterAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
+        self.client.signals.deviceConnected.connect(self.startCommunication)
+
     def getInitialConfig(self):
         """
 
@@ -55,4 +57,34 @@ class FilterAlpaca(AlpacaClass):
 
         super().getInitialConfig()
 
+        names = self.client.names()
+
+        for i, name in enumerate(names):
+            self.data[f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}'] = name
+
         return True
+
+    def workerPollData(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        position = self.client.position()
+
+        if position == -1:
+            return
+
+        self.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = position
+
+        return True
+
+    def sendFilterNumber(self, filterNumber=0):
+        """
+
+        :return: true for test purpose
+        """
+
+        suc = self.client.position(Position=filterNumber)
+
+        return suc

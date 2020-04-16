@@ -118,9 +118,9 @@ class SettImaging(object):
         coolerOn = self.app.camera.data.get('CCD_COOLER.COOLER_ON', False)
         downloadFast = self.app.camera.data.get('READOUT_QUALITY.QUALITY_LOW', False)
         focus = self.app.focuser.data.get('ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION', 0)
-        filterNumber = self.app.camera.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
+        filterNumber = self.app.filter.data.get('FILTER_SLOT.FILTER_SLOT_VALUE', 1)
         key = f'FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}'
-        text = self.app.camera.data.get(key, 'not found')
+        text = self.app.filter.data.get(key, 'not found')
 
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
@@ -251,16 +251,25 @@ class SettImaging(object):
                          'Value cannot be set when not connected !')
             return False
 
-        availNames = list(data[key] for key in data if 'FILTER_SLOT_NAME_' in key)
+        isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in data
+
+        availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
         numberFilter = len(availNames)
+
+        if isAlpaca:
+            start = 0
+            end = numberFilter - 1
+        else:
+            start = 1
+            end = numberFilter
 
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getInt(self,
                                'Set filter number',
-                               f'Value (1..{numberFilter}):',
+                               f'Value ({start}..{end}):',
                                actValue,
-                               1,
-                               numberFilter,
+                               start,
+                               end,
                                1,
                                )
 
@@ -289,7 +298,7 @@ class SettImaging(object):
                          'Value cannot be set when not connected !')
             return False
 
-        availNames = list(data[key] for key in data if 'FILTER_SLOT_NAME_' in key)
+        availNames = list(data[key] for key in data if 'FILTER_NAME.FILTER_SLOT_NAME_' in key)
 
         dlg = PyQt5.QtWidgets.QInputDialog()
         value, ok = dlg.getItem(self,
@@ -302,7 +311,13 @@ class SettImaging(object):
         if not ok:
             return False
 
-        number = availNames.index(value) + 1
+        isAlpaca = 'FILTER_NAME.FILTER_SLOT_NAME_0' in data
+
+        if isAlpaca:
+            number = availNames.index(value)
+        else:
+            number = availNames.index(value) + 1
+
         self.app.filter.sendFilterNumber(filterNumber=number)
 
         return True

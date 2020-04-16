@@ -47,6 +47,8 @@ class FocuserAlpaca(AlpacaClass):
         self.signals = signals
         self.data = data
 
+        self.client.signals.deviceConnected.connect(self.startCommunication)
+
     def getInitialConfig(self):
         """
 
@@ -54,5 +56,15 @@ class FocuserAlpaca(AlpacaClass):
         """
 
         super().getInitialConfig()
+
+        return True
+
+    def workerPollData(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        self.data['ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION'] = self.client.position()
 
         return True

@@ -221,7 +221,7 @@ class AnalyseWindow(widget.MWidget):
         axe.set_theta_zero_location('N')
         axe.set_rlabel_position(45)
         axe.set_theta_direction(-1)
-        xLabel = ['0-N', '45-NE', '90-E', '135-SE', '180-S', '215-SW', '270-W', '315-NW']
+        xLabel = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
         axe.set_xticklabels(xLabel)
 
         return axe, fig
@@ -248,6 +248,14 @@ class AnalyseWindow(widget.MWidget):
         axe.spines['left'].set_color(self.M_BLUE)
         axe.spines['right'].set_color(self.M_BLUE)
         axe.grid(True, color=self.M_GREY)
+
+        if title:
+            axe.set_title(title,
+                          color=self.M_BLUE,
+                          fontweight='bold',
+                          pad=15,
+                          )
+
         axe.tick_params(axis='x',
                         colors=self.M_BLUE,
                         labelsize=12)

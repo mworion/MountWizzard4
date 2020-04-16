@@ -371,7 +371,6 @@ def main():
 
     :return: nothing
     """
-    global widgetRemote
 
     # setting locale
     locale.setlocale(locale.LC_ALL, '')
@@ -389,7 +388,6 @@ def main():
 
     # checking workdir and if the system is started from frozen app
     mwGlob = dict()
-    mwGlob['bundleDir'] = os.path.dirname(os.path.abspath(__file__))
     mwGlob = setupWorkDirs(mwGlob)
 
     # now setup the logging environment

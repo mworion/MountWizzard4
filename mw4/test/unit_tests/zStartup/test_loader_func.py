@@ -21,6 +21,7 @@
 import traceback
 import sys
 import os
+import glob
 import unittest.mock as mock
 import socket
 
@@ -33,7 +34,11 @@ from mw4 import loader
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown(qtbot):
-    pass
+    files = glob.glob('mw4/test/config/*.cfg')
+    for f in files:
+        os.remove(f)
+
+    yield
 
 
 def test_except_hook(qtbot):

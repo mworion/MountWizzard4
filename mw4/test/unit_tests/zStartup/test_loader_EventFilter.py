@@ -19,6 +19,8 @@
 ###########################################################
 # standard libraries
 import pytest
+import os
+import glob
 
 # external packages
 from PyQt5.QtCore import QEvent
@@ -33,6 +35,10 @@ def module_setup_teardown(qtbot):
     global app
 
     app = QAwesomeTooltipEventFilter()
+    files = glob.glob('mw4/test/config/*.cfg')
+    for f in files:
+        os.remove(f)
+
     yield
     del app
 

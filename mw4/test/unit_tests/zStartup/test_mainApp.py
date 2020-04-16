@@ -19,6 +19,7 @@
 ###########################################################
 # standard libraries
 import os
+import glob
 import json
 import unittest.mock as mock
 
@@ -41,6 +42,10 @@ def module_setup_teardown(qapp):
               'modelDir': 'mw4/test/model',
               'workDir': 'mw4/test',
               }
+
+    files = glob.glob('mw4/test/config/*.cfg')
+    for f in files:
+        os.remove(f)
 
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):

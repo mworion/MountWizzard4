@@ -19,6 +19,8 @@
 ###########################################################
 # standard libraries
 import unittest.mock as mock
+import glob
+import os
 
 # external packages
 import pytest
@@ -40,6 +42,11 @@ def setup_teardown(qapp):
     global app
 
     app = qapp
+
+    files = glob.glob('mw4/test/config/*.cfg')
+    for f in files:
+        os.remove(f)
+
     yield
 
 

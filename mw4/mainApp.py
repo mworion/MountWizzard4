@@ -253,7 +253,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     def toggleWindow(self, windowTag=''):
         """
-        togglePowerPort  toggles the state of the power switch
+        toggleWindow  toggles the state of the power switch
+
+
         :return: true for test purpose
         """
 
@@ -273,6 +275,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
             else:
                 winObj['classObj'].close()
+
+            self.config[win] = bool(winObj['classObj'])
 
         return True
 
@@ -342,7 +346,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         for win in self.uiWindows:
             winObj = self.uiWindows[win]
-            config[win] = bool(winObj['classObj'])
+            self.config[win] = bool(winObj['classObj'])
             if config[win]:
                 winObj['classObj'].storeConfig()
 
@@ -354,10 +358,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return: true for test purpose
         """
 
-        for win in self.uiWindows:
-            if self.config.get(win, False):
-                self.toggleWindow(windowTag=win)
-
+        for window in self.uiWindows:
+            toShow = self.config.get(window, False)
+            isVisible = self.uiWindows[window]['classObj'] is not None
+            if toShow != isVisible:
+                self.toggleWindow(windowTag=window)
         return True
 
     def sendUpdate(self):

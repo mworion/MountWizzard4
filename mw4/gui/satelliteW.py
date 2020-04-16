@@ -107,7 +107,9 @@ class SatelliteWindow(widget.MWidget):
         stream.close()
         # loading the world image from nasa as PNG as matplotlib only loads png.
         self.world = pickle.load(BytesIO(pickleData))
+
         self.initConfig()
+        self.showWindow()
 
     def initConfig(self):
         """
@@ -131,7 +133,6 @@ class SatelliteWindow(widget.MWidget):
         height = config.get('height', 600)
         width = config.get('width', 800)
         self.resize(width, height)
-        self.showWindow()
 
         return True
 

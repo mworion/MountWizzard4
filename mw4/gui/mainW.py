@@ -123,6 +123,7 @@ class MainWindow(MWidget,
 
         # initial call for writing the gui
         self.initConfig()
+        self.show()
 
         # cyclic updates
         self.app.update1s.connect(self.updateTime)
@@ -183,8 +184,6 @@ class MainWindow(MWidget,
 
         self.mwSuper('initConfig')
         self.changeStyleDynamic(self.ui.mountConnected, 'color', 'gray')
-
-        self.show()
 
         return True
 
@@ -610,6 +609,14 @@ class MainWindow(MWidget,
             self.app.message.emit('Profile: [{0}] loaded'.format(name), 0)
         else:
             self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(name), 2)
+
+        # now running through als the config
+        self.app.showWindows()
+        for window in self.app.uiWindows:
+            if self.app.uiWindows[window]['classObj']:
+                self.app.uiWindows[window]['classObj'].initConfig()
+        self.initConfig()
+
         return True
 
     def saveProfileAs(self):

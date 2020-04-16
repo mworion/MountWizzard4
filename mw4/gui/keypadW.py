@@ -64,6 +64,7 @@ class KeypadWindow(widget.MWidget):
         self.browser.page().setBackgroundColor(PyQt5.QtCore.Qt.transparent)
 
         self.initConfig()
+        self.showWindow()
 
     def initConfig(self):
         """
@@ -89,8 +90,6 @@ class KeypadWindow(widget.MWidget):
         width = config.get('width', 260)
         self.resize(width, height)
         self.host = self.app.config['mainW'].get('mountHost', '')
-
-        self.showWindow()
 
         return True
 

@@ -62,6 +62,10 @@ def module_setup_teardown(qtbot):
         update10s = pyqtSignal()
 
     @staticmethod
+    def testShowWindows():
+        return
+
+    @staticmethod
     def testSave(name=None):
         return
 
@@ -101,7 +105,7 @@ def module_setup_teardown(qtbot):
         power = PegasusUPB(app=Test1())
         astrometry = Astrometry(app=Test1())
 
-        uiWindows = {'showImageW': {}}
+        uiWindows = {'showImageW': {'classObj': None}}
         mwGlob = {'imageDir': 'mw4/test/image',
                   'dataDir': 'mw4/test/data',
                   'modelDir': 'mw4/test/model',
@@ -114,6 +118,7 @@ def module_setup_teardown(qtbot):
         loadConfig = testQuit
         saveConfig = testSave
         storeConfig = testStore
+        showWindows = testShowWindows
 
     with mock.patch.object(MainWindow,
                            'mwSuper'):
@@ -482,6 +487,13 @@ def test_updateStatusGUI_4():
     assert suc
 
 
+def test_reconfigApp_1():
+    with mock.patch.object(app,
+                           'initConfig'):
+        suc = app.reconfigApp()
+        assert suc
+
+
 def test_checkExtension_1():
     val = app.checkExtension('mw4/test/image/test.fit', 'fit')
     assert val == 'mw4/test/image/test.fit'
@@ -547,10 +559,12 @@ def test_loadProfile1(qtbot):
         with mock.patch.object(app.app,
                                'loadConfig',
                                return_value=True):
-            with qtbot.waitSignal(app.app.message) as blocker:
-                suc = app.loadProfile()
-                assert suc
-            assert ['Profile: [test] loaded', 0] == blocker.args
+            with mock.patch.object(app,
+                                   'reconfigApp'):
+                with qtbot.waitSignal(app.app.message) as blocker:
+                    suc = app.loadProfile()
+                    assert suc
+                assert ['Profile: [test] loaded', 0] == blocker.args
 
 
 def test_loadProfile2(qtbot):
@@ -560,10 +574,12 @@ def test_loadProfile2(qtbot):
         with mock.patch.object(app.app,
                                'loadConfig',
                                return_value=False):
-            with qtbot.waitSignal(app.app.message) as blocker:
-                suc = app.loadProfile()
-                assert suc
-            assert ['Profile: [test] cannot no be loaded', 2] == blocker.args
+            with mock.patch.object(app,
+                                   'reconfigApp'):
+                with qtbot.waitSignal(app.app.message) as blocker:
+                    suc = app.loadProfile()
+                    assert suc
+                assert ['Profile: [test] cannot no be loaded', 2] == blocker.args
 
 
 def test_loadProfile3(qtbot):

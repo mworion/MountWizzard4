@@ -193,8 +193,8 @@ def test_setFilterName_2():
 
 def test_setFilterName_3():
     app.app.filter.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = 1
-    app.app.filter.data['FILTER_SLOT_NAME_1'] = 'test1'
-    app.app.filter.data['FILTER_SLOT_NAME_2'] = 'test2'
+    app.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_1'] = 'test1'
+    app.app.filter.data['FILTER_NAME.FILTER_SLOT_NAME_2'] = 'test2'
     with mock.patch.object(QMessageBox,
                            'critical'):
         with mock.patch.object(QInputDialog,

@@ -35,10 +35,10 @@ from mw4.base.alpacaClass import AlpacaClass
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     class Test(QObject):
-        threadPool = QThreadPool()
         message = pyqtSignal(str, int)
+
     global app
-    app = AlpacaClass(app=Test())
+    app = AlpacaClass(app=Test(), data= {}, threadPool=QThreadPool())
 
     yield
 

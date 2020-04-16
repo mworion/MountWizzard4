@@ -574,6 +574,20 @@ class MainWindow(MWidget,
 
         return True
 
+    def reconfigApp(self):
+        """
+
+        :return:
+        """
+
+        self.app.showWindows()
+        for window in self.app.uiWindows:
+            if self.app.uiWindows[window]['classObj']:
+                self.app.uiWindows[window]['classObj'].initConfig()
+        self.initConfig()
+
+        return True
+
     @staticmethod
     def checkExtension(filePath, ext):
         """
@@ -610,12 +624,7 @@ class MainWindow(MWidget,
         else:
             self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(name), 2)
 
-        # now running through als the config
-        self.app.showWindows()
-        for window in self.app.uiWindows:
-            if self.app.uiWindows[window]['classObj']:
-                self.app.uiWindows[window]['classObj'].initConfig()
-        self.initConfig()
+        self.reconfigApp()
 
         return True
 

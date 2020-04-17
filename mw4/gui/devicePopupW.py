@@ -139,6 +139,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             if self.ui.tab.tabText(index).lower() in self.framework:
                 continue
             self.ui.tab.setTabEnabled(index, False)
+            self.ui.tab.setStyleSheet(self.getStyle())
         self.show()
 
         return True

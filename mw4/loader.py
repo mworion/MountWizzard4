@@ -376,8 +376,8 @@ def main():
     locale.setlocale(locale.LC_ALL, '')
 
     # initiating the main app
-    app = MyApp(sys.argv)
-    # app = PyQt5.QtWidgets.QApplication(sys.argv)
+    # app = MyApp(sys.argv)
+    app = PyQt5.QtWidgets.QApplication(sys.argv)
 
     # generating splash screen
     splashW = splash.SplashScreen(application=app)
@@ -418,7 +418,7 @@ def main():
     # adding event filter for formatting the tooltips nicely
     app.installEventFilter(QAwesomeTooltipEventFilter(app))
 
-    MountWizzard4(mwGlob=mwGlob)
+    MountWizzard4(mwGlob=mwGlob, application=app)
 
     # end of splash screen
     splashW.showMessage('Finishing loading')

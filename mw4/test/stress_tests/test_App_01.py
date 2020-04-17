@@ -28,7 +28,7 @@ import PyQt5
 from PyQt5.QtTest import QTest
 
 # local import
-from mw4.mainApp import MountWizzard4
+from mw4.loader import main
 
 
 mwglob = {'dataDir': 'mw4/test/data',
@@ -44,19 +44,14 @@ mwglob = {'dataDir': 'mw4/test/data',
 @pytest.fixture(autouse=True, scope='function')
 def mw4():
 
-    testArgv = ['run', 'test']
-    faulthandler.enable()
-
+    testArgv = ['run', 'test1']
     with mock.patch.object(sys,
                            'argv',
                            testArgv):
-        mw4 = MountWizzard4(mwGlob=mwglob)
-        yield mw4
+        main()
+        yield
 
 
 def test_1(qtbot, mw4):
-
-    qtbot.add_widget(mw4.mainW)
-    QTest.qWait(1000)
-    # qtbot.mouseClick(mw4.mainW.ui.saveConfigQuit, PyQt5.QtCore.Qt.LeftButton)
-    QTest.qWait(10000)
+    with mock.patch.object(PyQt5.QtWidgets.QApplication, "exit"):
+        pass

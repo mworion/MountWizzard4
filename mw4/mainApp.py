@@ -97,8 +97,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
     def __init__(self,
                  mwGlob=None,
+                 application=None
                  ):
         super().__init__()
+        self.application = application
         self.expireData = False
         self.mountUp = False
         self.mwGlob = mwGlob
@@ -399,9 +401,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.measure.timerTask.stop()
         self.relay.timerTask.stop()
         self.timer0_1s.stop()
+        self.application.aboutToQuit.emit()
         self.threadPool.waitForDone(5000)
         self.message.emit('MountWizzard4 manual stopped', 1)
-        PyQt5.QtCore.QCoreApplication.quit()
+        self.application.quit()
         return True
 
     def quitSave(self):

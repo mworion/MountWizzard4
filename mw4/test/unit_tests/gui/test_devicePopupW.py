@@ -36,7 +36,7 @@ from mw4.gui.widget import MWidget
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
-    global app, data, geometry, framework
+    global app, data, geometry, availFramework
     data = {
         'telescope':
             {
@@ -44,7 +44,7 @@ def module_setup_teardown():
                 }
             }
     geometry = [100, 100, 100, 100]
-    framework = {'indi': 'test'}
+    availFramework = ['indi', 'alpaca']
 
     yield
 
@@ -52,7 +52,7 @@ def module_setup_teardown():
 def test_storeConfig_1(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
 
@@ -67,7 +67,7 @@ def test_storeConfig_1(qtbot):
 def test_closeEvent_1(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
     app.close = MWidget().close
@@ -79,7 +79,7 @@ def test_closeEvent_1(qtbot):
 def test_copyAllIndiSettings_1(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
     qtbot.addWidget(app)
@@ -91,7 +91,7 @@ def test_copyAllIndiSettings_1(qtbot):
 def test_copyAllAlpacaSettings_1(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
     qtbot.addWidget(app)
@@ -103,7 +103,7 @@ def test_copyAllAlpacaSettings_1(qtbot):
 def test_AddDevicesWithType_1(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
     qtbot.addWidget(app)
@@ -120,7 +120,7 @@ def test_AddDevicesWithType_1(qtbot):
 def test_AddDevicesWithType_2(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
     qtbot.addWidget(app)
@@ -138,7 +138,7 @@ def test_AddDevicesWithType_2(qtbot):
 def test_AddDevicesWithType_3(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
     qtbot.addWidget(app)
@@ -157,7 +157,7 @@ def test_AddDevicesWithType_3(qtbot):
 def test_AddDevicesWithType_4(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
     qtbot.addWidget(app)
@@ -177,7 +177,7 @@ def test_AddDevicesWithType_4(qtbot):
 def test_searchDevices_1(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
     qtbot.addWidget(app)
@@ -189,7 +189,7 @@ def test_searchDevices_1(qtbot):
 def test_searchDevices_2(qtbot):
     app = DevicePopup(geometry=geometry,
                       data=data,
-                      framework=framework,
+                      availFramework=availFramework,
                       driver='telescope',
                       deviceType='telescope')
     qtbot.addWidget(app)

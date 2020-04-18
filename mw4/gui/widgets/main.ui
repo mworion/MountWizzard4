@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -15240,7 +15240,7 @@ When clicking the button, you could change the value.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Actual parameters</string>
+        <string>Imaging information readout and calculations</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -15979,7 +15979,7 @@ When clicking the button, you could change the value.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Solver</string>
+        <string>Solver settings</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -16115,7 +16115,7 @@ When clicking the button, you could change the value.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Calculations quality</string>
+        <string>Imaging quality calculations</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -16371,7 +16371,7 @@ When clicking the button, you could change the value.</string>
         </rect>
        </property>
        <property name="title">
-        <string>Telescope</string>
+        <string>Telescope information readout</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>

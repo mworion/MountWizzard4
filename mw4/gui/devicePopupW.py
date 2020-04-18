@@ -46,7 +46,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         'camera': (1 << 1),
         'guider': (1 << 2),
         'focuser': (1 << 3),
-        'filter': (1 << 4),
+        'filterwheel': (1 << 4),
         'dome': (1 << 5),
         'weather': (1 << 7),
         'skymeter': 0,
@@ -125,8 +125,9 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.alpacaProtocol.setCurrentIndex(deviceData.get('alpacaProtocol', 0))
         self.ui.alpacaHost.setText(deviceData.get('alpacaHost', 'localhost'))
         self.ui.alpacaPort.setText(deviceData.get('alpacaPort', '11111'))
-        number = int(deviceData.get('alpacaName', '"":0').split(':')[1])
-        self.ui.alpacaNumber.setValue(number)
+        device, number = deviceData.get('alpacaName', '"":0').split(':')
+        self.ui.alpacaDevice.setText(device)
+        self.ui.alpacaNumber.setValue(int(number))
         self.ui.alpacaUser.setText(deviceData.get('alpacaUser', 'user'))
         self.ui.alpacaPassword.setText(deviceData.get('alpacaPassword', 'password'))
 

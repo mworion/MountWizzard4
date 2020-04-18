@@ -319,19 +319,24 @@ class EnvironGui(object):
 
     def updateSensorWeatherGui(self):
         """
-        updateSensorWeatherGui shows the data which is received through INDI client
+        updateSensorWeatherGui shows the data which is received through client
 
         :return:    True if ok for testing
         """
 
         value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_TEMPERATURE', 0)
-        self.ui.sensorWeatherTemp.setText(f'{value:4.1f}')
+        self.guiSetText(self.ui.sensorWeatherTemp, '4.1f', value)
+
         value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_PRESSURE', 0)
-        self.ui.sensorWeatherPress.setText(f'{value:5.1f}')
+        self.guiSetText(self.ui.sensorWeatherPress, '4.1f', value)
+
         value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_DEWPOINT', 0)
-        self.ui.sensorWeatherDewPoint.setText(f'{value:4.1f}')
+        self.guiSetText(self.ui.sensorWeatherDewPoint, '4.1f', value)
+
         value = self.app.sensorWeather.data.get('WEATHER_PARAMETERS.WEATHER_HUMIDITY', 0)
-        self.ui.sensorWeatherHumidity.setText(f'{value:3.0f}')
+        self.guiSetText(self.ui.sensorWeatherHumidity, '3.0f', value)
+
+        return True
 
     def clearSkymeterGUI(self, deviceName=''):
         """
@@ -348,15 +353,18 @@ class EnvironGui(object):
 
     def updateSkymeterGUI(self):
         """
-        updateSkymeterGUI shows the data which is received through INDI client
+        updateSkymeterGUI shows the data which is received through client
 
         :return:    True if ok for testing
         """
 
         value = self.app.skymeter.data.get('SKY_QUALITY.SKY_BRIGHTNESS', 0)
-        self.ui.skymeterSQR.setText(f'{value:5.2f}')
+        self.guiSetText(self.ui.skymeterSQR, '5.2f', value)
+
         value = self.app.skymeter.data.get('SKY_QUALITY.SKY_TEMPERATURE', 0)
-        self.ui.skymeterTemp.setText(f'{value:4.1f}')
+        self.guiSetText(self.ui.skymeterTemp, '4.1f', value)
+
+        return True
 
     def getWebDataWorker(self, url=''):
         """

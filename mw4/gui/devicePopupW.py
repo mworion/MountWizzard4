@@ -64,7 +64,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                  geometry=None,
                  driver='',
                  deviceType='',
-                 framework={},
+                 availFramework={},
                  data=None):
 
         super().__init__()
@@ -75,7 +75,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.data = data
         self.driver = driver
         self.deviceType = deviceType
-        self.framework = framework
+        self.availFramework = availFramework
         self.indiClass = None
         self.indiSearchNameList = ()
         self.indiSearchType = None
@@ -137,7 +137,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.tab.setCurrentIndex(tabIndex)
 
         for index in range(0, self.ui.tab.count()):
-            if self.ui.tab.tabText(index).lower() in self.framework:
+            if self.ui.tab.tabText(index).lower() in self.availFramework:
                 continue
             self.ui.tab.setTabEnabled(index, False)
             self.ui.tab.setStyleSheet(self.getStyle())
@@ -171,6 +171,11 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.data[self.driver]['alpacaName'] = name
         self.data[self.driver]['alpacaUser'] = self.ui.alpacaUser.text()
         self.data[self.driver]['alpacaPassword'] = self.ui.alpacaPassword.text()
+
+        # setting framework
+        index = self.ui.tab.currentIndex()
+        currentFramework = self.availFramework[index]
+        self.data[self.driver]['framework'] = currentFramework
 
         # storing ok as closing
         self.returnValues['close'] = 'ok'

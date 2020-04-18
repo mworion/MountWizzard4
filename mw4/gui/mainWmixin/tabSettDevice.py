@@ -256,14 +256,14 @@ class SettDevice(object):
             # calculate geometry
             geometry = self.pos().x(), self.pos().y(), self.height(), self.width()
             # get all available frameworks
-            framework = self.drivers[driver]['class'].run.keys()
+            availFramework = list(self.drivers[driver]['class'].run.keys())
             # selecting the device type
             deviceType = self.drivers[driver]['deviceType']
 
             self.popupUi = DevicePopup(geometry=geometry,
                                        driver=driver,
                                        deviceType=deviceType,
-                                       framework=framework,
+                                       availFramework=availFramework,
                                        data=self.driversData)
             # memorizing the driver we have to update
             self.popupUi.exec_()
@@ -280,17 +280,19 @@ class SettDevice(object):
                 if not self.drivers[driver]['class'].framework == 'indi':
                     continue
                 self.dispatch(driverName=driver)
+
         elif self.popupUi.returnValues.get('copyAlpaca', False):
             for driver in self.drivers:
                 if not self.drivers[driver]['class'].framework == 'alpaca':
                     continue
                 self.dispatch(driverName=driver)
-        else:
-            # if we choose a driver and it's available, we select it from drop down
-            if self.popupUi.returnValues.get('framework', '') == 'indi':
-                index = self.findIndexValue(self.drivers[driver]['uiDropDown'], 'indi')
-                self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
-            self.dispatch(driverName=driver)
+
+        # if we choose a driver and it's available, we select it from drop down
+        selectedFramework = self.driversData[driver].get('framework', '')
+        index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
+        self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
+
+        self.dispatch(driverName=driver)
 
         return True
 

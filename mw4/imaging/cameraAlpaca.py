@@ -53,7 +53,6 @@ class CameraAlpaca(AlpacaClass):
         self.client = Camera()
         self.signals = signals
         self.data = data
-        self.imagePath = ''
         self.abortExpose = False
 
         self.client.signals.deviceConnected.connect(self.startCommunication)
@@ -154,7 +153,6 @@ class CameraAlpaca(AlpacaClass):
         :return: success
         """
 
-        self.imagePath = imagePath
         binning = int(binning)
         posX = int(posX)
         posY = int(posY)
@@ -178,66 +176,62 @@ class CameraAlpaca(AlpacaClass):
 
         # wait for finishing
         timeLeft = expTime
-        while not self.client.imageready() and not self.abortExpose:
+
+        while not self.client.imageready():
             text = f'expose {timeLeft:3.0f} s'
-            time.sleep(1)
-            if timeLeft >= 1:
-                timeLeft -= 1
+            time.sleep(0.1)
+            if timeLeft >= 0.1:
+                timeLeft -= 0.1
             else:
                 timeLeft = 0
             self.signals.message.emit(text)
-
-        if self.abortExpose:
-            self.signals.message.emit('')
-            return False
+            if self.abortExpose:
+                break
 
         self.signals.integrated.emit()
 
-        # download image
-        self.signals.message.emit('download')
-        data = np.array(self.client.imagearray(), dtype=np.uint16)
-        data = np.transpose(data)
+        if not self.abortExpose:
+            # download image
+            self.signals.message.emit('download')
+            data = np.array(self.client.imagearray(), dtype=np.uint16)
+            data = np.transpose(data)
+
+        if not self.abortExpose:
+            # creating a fits file and saving the image
+            self.signals.message.emit('saving')
+            hdu = fits.PrimaryHDU(data=data)
+            header = hdu.header
+            header['OBJECT'] = 'skymodel'
+            header['FRAME'] = 'Light'
+            header['EQUINOX'] = 2000
+            header['PIXSIZE1'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
+            header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
+            header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
+            header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
+            header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] / focalLength * 206.265
+            header['XBINNING'] = binning
+            header['YBINNING'] = binning
+            header['EXPTIME'] = expTime
+            header['OBSERVER'] = 'MW4'
+            header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
+
+            if self.app.deviceStat['mount']:
+                ra = self.app.mount.obsSite.raJNow
+                dec = self.app.mount.obsSite.decJNow
+                obsTime = self.app.mount.obsSite.timeJD
+                if ra is not None and dec is not None and obsTime is not None:
+                    ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
+                header['RA'] = ra._degrees
+                header['DEC'] = dec.degrees
+                header['TELESCOP'] = self.app.mount.firmware.product
+
+            hdu.writeto(imagePath, overwrite=True)
 
         if self.abortExpose:
-            self.signals.message.emit('')
-            return False
+            imagePath = ''
 
-        # creating a fits file and saving the image
-        self.signals.message.emit('saving')
-        hdu = fits.PrimaryHDU(data=data)
-        header = hdu.header
-        header['OBJECT'] = 'skymodel'
-        header['FRAME'] = 'Light'
-        header['EQUINOX'] = 2000
-        header['PIXSIZE1'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
-        header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
-        header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
-        header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
-        header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] / focalLength * 206.265
-        header['XBINNING'] = binning
-        header['YBINNING'] = binning
-        header['EXPTIME'] = expTime
-        header['OBSERVER'] = 'MW4'
-        header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
-
-        if self.app.deviceStat['mount']:
-            ra = self.app.mount.obsSite.raJNow
-            dec = self.app.mount.obsSite.decJNow
-            obsTime = self.app.mount.obsSite.timeJD
-            if ra is not None and dec is not None and obsTime is not None:
-                ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
-            header['RA'] = ra._degrees
-            header['DEC'] = dec.degrees
-            header['TELESCOP'] = self.app.mount.firmware.product
-
-        if self.abortExpose:
-            self.signals.message.emit('')
-            return False
-
-        hdu.writeto(self.imagePath, overwrite=True)
-
+        self.signals.saved.emit(imagePath)
         self.signals.message.emit('')
-        self.signals.saved.emit(self.imagePath)
 
         return True
 

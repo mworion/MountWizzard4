@@ -100,19 +100,6 @@ class CameraAlpaca(AlpacaClass):
 
         return True
 
-    def pollData(self):
-        """
-
-        :return: success
-        """
-
-        if not self.deviceConnected:
-            return False
-
-        worker = Worker(self.workerPollData)
-        self.threadPool.start(worker)
-        return True
-
     def sendDownloadMode(self, fastReadout=False):
         """
         setDownloadMode sets the readout speed of the camera
@@ -123,6 +110,7 @@ class CameraAlpaca(AlpacaClass):
         suc = self.data['CAN_FAST']
         if suc and fastReadout:
             self.client.fastreadout(FastReadout=True)
+
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
         self.log.info(f'camera has readout quality entry: {quality}')
 

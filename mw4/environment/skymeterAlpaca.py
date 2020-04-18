@@ -66,5 +66,5 @@ class SkymeterAlpaca(AlpacaClass):
         :return: true for test purpose
         """
         self.data['SKY_QUALITY.SKY_TEMPERATURE'] = self.client.temperature()
-        self.data['SKY_QUALITY.SKY_BRIGHTNESS'] = self.client.skybrightness()
+        self.data['SKY_QUALITY.SKY_BRIGHTNESS'] = self.client.skyquality()
         return True

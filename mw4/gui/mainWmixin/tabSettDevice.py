@@ -72,7 +72,7 @@ class SettDevice(object):
                 'uiDropDown': self.ui.sensorWeatherDevice,
                 'uiSetup': self.ui.sensorWeatherSetup,
                 'class': self.app.sensorWeather,
-                'deviceType': 'weather',
+                'deviceType': 'observingconditions',
             },
             'directWeather': {
                 'uiDropDown': self.ui.directWeatherDevice,
@@ -96,7 +96,7 @@ class SettDevice(object):
                 'uiDropDown': self.ui.skymeterDevice,
                 'uiSetup': self.ui.skymeterSetup,
                 'class': self.app.skymeter,
-                'deviceType': 'weather',
+                'deviceType': 'observingconditions',
             },
             'telescope': {
                 'uiDropDown': self.ui.telescopeDevice,

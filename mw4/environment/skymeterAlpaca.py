@@ -1,0 +1,70 @@
+############################################################
+# -*- coding: utf-8 -*-
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10micron mounts
+# GUI with PyQT5 for python
+# Python  v3.7.5
+#
+# Michael Würtenberger
+# (c) 2019
+#
+# Licence APL2.0
+#
+###########################################################
+# standard libraries
+
+# external packages
+import PyQt5
+
+# local imports
+from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.alpacaBase import ObservingConditions
+
+
+class SkymeterAlpaca(AlpacaClass):
+    """
+    the class Dome inherits all information and handling of the Dome device. there will be
+    some parameters who will define the slewing position of the dome relating to the
+    mount.dome = DomeAlpaca(app=None)
+    """
+
+    __all__ = ['SkymeterAlpaca',
+               ]
+
+    # specific timing for device
+    CYCLE_DEVICE = 3000
+    CYCLE_DATA = 1000
+
+    def __init__(self, app=None, signals=None, data=None):
+        super().__init__(app=app, data=data, threadPool=app.threadPool)
+
+        # as we have in the base class only the base client there, we will get more
+        # specialized with Dome (which is derived from the base class)
+        self.client = ObservingConditions()
+        self.signals = signals
+        self.data = data
+
+    def getInitialConfig(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        super().getInitialConfig()
+
+        return True
+
+    def workerPollData(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.data['SKY_QUALITY.SKY_TEMPERATURE'] = self.client.temperature()
+        self.data['SKY_QUALITY.SKY_BRIGHTNESS'] = self.client.skybrightness()
+        return True

@@ -24,6 +24,7 @@ import PyQt5
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.environment.skymeterIndi import SkymeterIndi
+from mw4.environment.skymeterAlpaca import SkymeterAlpaca
 
 
 class SkymeterSignals(PyQt5.QtCore.QObject):
@@ -62,16 +63,23 @@ class Skymeter:
         self.framework = None
         self.run = {
             'indi': SkymeterIndi(self.app, self.signals, self.data),
+            'alpaca': SkymeterAlpaca(self.app, self.signals, self.data),
         }
         self.name = ''
-
         self.host = ('localhost', 7624)
 
         # signalling from subclasses to main
-        self.run['indi'].client.signals.serverConnected.connect(self.signals.serverConnected)
-        self.run['indi'].client.signals.serverDisconnected.connect(self.signals.serverDisconnected)
-        self.run['indi'].client.signals.deviceConnected.connect(self.signals.deviceConnected)
-        self.run['indi'].client.signals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+        alpacaSignals = self.run['alpaca'].client.signals
+        alpacaSignals.serverConnected.connect(self.signals.serverConnected)
+        alpacaSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+        alpacaSignals.deviceConnected.connect(self.signals.deviceConnected)
+        alpacaSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
+
+        indiSignals = self.run['indi'].client.signals
+        indiSignals.serverConnected.connect(self.signals.serverConnected)
+        indiSignals.serverDisconnected.connect(self.signals.serverDisconnected)
+        indiSignals.deviceConnected.connect(self.signals.deviceConnected)
+        indiSignals.deviceDisconnected.connect(self.signals.deviceDisconnected)
 
     @property
     def host(self):

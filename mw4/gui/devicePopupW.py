@@ -48,7 +48,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         'focuser': (1 << 3),
         'filterwheel': (1 << 4),
         'dome': (1 << 5),
-        'weather': (1 << 7),
+        'observingconditions': (1 << 7),
         'skymeter': 0,
         'cover': (1 << 9) | (1 << 10),
         'power': (1 << 7) | (1 << 3)

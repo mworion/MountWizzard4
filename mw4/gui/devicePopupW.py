@@ -185,19 +185,6 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         return True
 
-    def closeEvent(self, event):
-        """
-        closeEvent collects all data necessary for the following process
-
-        :param event:
-        :return:
-        """
-        # getting last setting:
-        self.returnValues['framework'] = self.ui.tab.tabText(self.ui.tab.currentIndex()).lower()
-        super().closeEvent(event)
-
-        return
-
     def copyAllIndiSettings(self):
         """
         copyAllIndiSettings transfers all data from host, port, messages to all other

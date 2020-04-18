@@ -103,6 +103,7 @@ def module_setup_teardown(qtbot):
     app.threadPool = QThreadPool()
     app.config = dict()
     app.BACK_NORM = '#000000'
+    app.driversData = {'camera': {}}
 
     qtbot.addWidget(app)
 
@@ -160,6 +161,58 @@ def test_setupDeviceGui_2():
     assert suc
 
 
+def test_processPopupResults_1():
+    values = {'framework': 'alpaca',
+              'copyAlpaca': True}
+
+    app.app.camera.framework = 'alpaca'
+
+    with mock.patch.object(app,
+                           'dispatch'):
+        suc = app.processPopupResults(driverSelected='camera',
+                                      returnValues=values)
+    assert suc
+
+
+def test_processPopupResults_2():
+    values = {'framework': 'indi',
+              'copyIndi': True}
+
+    app.app.camera.framework = 'indi'
+
+    with mock.patch.object(app,
+                           'dispatch'):
+        suc = app.processPopupResults(driverSelected='camera',
+                                      returnValues=values)
+    assert suc
+
+
+def test_processPopupResults_3():
+    values = {'framework': 'alpaca',
+              'copyAlpaca': True}
+
+    app.app.camera.framework = 'indi'
+
+    with mock.patch.object(app,
+                           'dispatch'):
+        suc = app.processPopupResults(driverSelected='camera',
+                                      returnValues=values)
+    assert suc
+
+
+def test_processPopupResults_4():
+    values = {'framework': 'indi',
+              'copyIndi': True}
+
+    app.app.camera.framework = 'alpaca'
+
+    with mock.patch.object(app,
+                           'dispatch'):
+        suc = app.processPopupResults(driverSelected='camera',
+                                      returnValues=values)
+    assert suc
+
+
 def test_setupPopUp_1():
     class Test1:
         @staticmethod
@@ -180,11 +233,13 @@ def test_setupPopUp_1():
     app.pos = Test1
     app.height = default
     app.width = default
-    with mock.patch.object(DevicePopup,
-                           'exec_',
-                           return_value=False):
-        suc = app.setupPopUp()
-        assert not suc
+    with mock.patch.object(app,
+                           'processPopupResults'):
+        with mock.patch.object(DevicePopup,
+                               'exec_',
+                               return_value=False):
+            suc = app.setupPopUp()
+            assert not suc
 
 
 def test_dispatchStopDriver_1():

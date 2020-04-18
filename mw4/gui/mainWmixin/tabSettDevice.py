@@ -239,6 +239,34 @@ class SettDevice(object):
 
         return True
 
+    def processPopupResults(self, driverSelected=None, returnValues=None):
+        """
+
+        :return: True for test purpose
+        """
+
+        # check if copy are made. if so, than restart all drivers related
+        if returnValues.get('copyIndi', False):
+            for driver in self.drivers:
+                if not self.drivers[driver]['class'].framework == 'indi':
+                    continue
+                self.dispatch(driverName=driver)
+
+        elif returnValues.get('copyAlpaca', False):
+            for driver in self.drivers:
+                if not self.drivers[driver]['class'].framework == 'alpaca':
+                    continue
+                self.dispatch(driverName=driver)
+
+        # if we choose a framework and it's available, we select it from drop down
+        selectedFramework = self.driversData[driverSelected].get('framework', '')
+        index = self.findIndexValue(self.drivers[driverSelected]['uiDropDown'], selectedFramework)
+        self.drivers[driverSelected]['uiDropDown'].setCurrentIndex(index)
+
+        self.dispatch(driverName=driverSelected)
+
+        return True
+
     def setupPopUp(self):
         """
         setupPopUp calculates the geometry data to place the popup centered on top of the
@@ -274,25 +302,8 @@ class SettDevice(object):
                 # when ok, we have to further work
                 break
 
-        # check if copy are made. if so, than restart all drivers related
-        if self.popupUi.returnValues.get('copyIndi', False):
-            for driver in self.drivers:
-                if not self.drivers[driver]['class'].framework == 'indi':
-                    continue
-                self.dispatch(driverName=driver)
-
-        elif self.popupUi.returnValues.get('copyAlpaca', False):
-            for driver in self.drivers:
-                if not self.drivers[driver]['class'].framework == 'alpaca':
-                    continue
-                self.dispatch(driverName=driver)
-
-        # if we choose a driver and it's available, we select it from drop down
-        selectedFramework = self.driversData[driver].get('framework', '')
-        index = self.findIndexValue(self.drivers[driver]['uiDropDown'], selectedFramework)
-        self.drivers[driver]['uiDropDown'].setCurrentIndex(index)
-
-        self.dispatch(driverName=driver)
+        self.processPopupResults(driverSelected=driver,
+                                 returnValues=self.popupUi.returnValues)
 
         return True
 

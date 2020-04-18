@@ -67,67 +67,6 @@ def module_setup_teardown_func(qapp):
     yield
 
 
-def test_toggleWindow_1():
-    def Sender():
-        return app.mainW.ui.loadFrom
-
-    app.sender = Sender
-
-    app.toggleWindow()
-
-
-def test_toggleWindow_2():
-    def Sender():
-        return app.mainW.ui.openMessageW
-
-    app.sender = Sender
-    app.toggleWindow()
-    assert app.uiWindows['showMessageW']['classObj'] is not None
-
-    if app.uiWindows['showMessageW']['classObj']:
-        del app.uiWindows['showMessageW']['classObj']
-
-
-def test_toggleWindow_3():
-    def Sender():
-        return None
-
-    app.sender = Sender
-    app.toggleWindow('showMessageW')
-    assert app.uiWindows['showMessageW']['classObj'] is not None
-
-    if app.uiWindows['showMessageW']['classObj']:
-        del app.uiWindows['showMessageW']['classObj']
-
-
-def test_toggleWindow_4():
-    def Sender():
-        return None
-
-    app.sender = Sender
-    app.toggleWindow('showMessageW')
-    app.toggleWindow('showMessageW')
-
-    if app.uiWindows['showMessageW']['classObj']:
-        del app.uiWindows['showMessageW']['classObj']
-
-
-def test_deleteWindow_1():
-
-    suc = app.deleteWindowResource()
-    assert not suc
-
-
-def test_deleteWindow_2():
-
-    app.toggleWindow('showMessageW')
-    suc = app.deleteWindowResource(app.uiWindows['showMessageW']['classObj'])
-    assert suc
-
-    if app.uiWindows['showMessageW']['classObj']:
-        del app.uiWindows['showMessageW']['classObj']
-
-
 def test_initConfig_1():
     val = app.initConfig()
     assert val.longitude.degrees == 0
@@ -159,19 +98,8 @@ def test_storeConfig_2():
         return None
 
     app.sender = Sender
-    app.toggleWindow('showMessageW')
 
     suc = app.storeConfig()
-    assert suc
-
-    if app.uiWindows['showMessageW']['classObj']:
-        del app.uiWindows['showMessageW']['classObj']
-
-
-def test_showWindows_1():
-    app.config['showMessageW'] = True
-
-    suc = app.showWindows()
     assert suc
 
     if app.uiWindows['showMessageW']['classObj']:

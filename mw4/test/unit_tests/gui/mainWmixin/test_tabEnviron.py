@@ -76,6 +76,7 @@ def module_setup_teardown(qtbot):
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
+    app.guiSetText = MWidget().guiSetText
     app.deviceStat = dict()
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()
@@ -404,7 +405,7 @@ def test_updateEnvironGUI_2():
     app.app.sensorWeather.name = 'test'
     app.app.sensorWeather.data['WEATHER_PARAMETERS.WEATHER_PRESSURE'] = 10.5
     app.updateSensorWeatherGui()
-    assert app.ui.sensorWeatherPress.text() == ' 10.5'
+    assert app.ui.sensorWeatherPress.text() == '10.5'
 
 
 def test_updateEnvironGUI_3():

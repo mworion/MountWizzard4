@@ -22,6 +22,7 @@ import unittest.mock as mock
 import pytest
 import glob
 import os
+import gc
 
 # external packages
 from PyQt5.QtCore import QObject
@@ -33,6 +34,7 @@ from mountcontrol.qtmount import Mount
 
 # local import
 from mw4.gui.mainW import MainWindow
+from mw4.gui.imageW import ImageWindow
 from mw4.environment.sensorWeather import SensorWeather
 from mw4.environment.directWeather import DirectWeather
 from mw4.environment.onlineWeather import OnlineWeather
@@ -77,6 +79,10 @@ def module_setup_teardown(qtbot):
     def testQuit():
         return
 
+    @staticmethod
+    def testInitConfig():
+        return
+
     class Test(QObject):
         __version__ = 'test'
         config = {'mainW': {},
@@ -119,13 +125,16 @@ def module_setup_teardown(qtbot):
         saveConfig = testSave
         storeConfig = testStore
         showWindows = testShowWindows
+        initConfig = testInitConfig
 
     with mock.patch.object(MainWindow,
                            'mwSuper'):
         with mock.patch.object(MainWindow,
                                'show'):
-            app = MainWindow(app=Test())
-            qtbot.addWidget(app)
+            with mock.patch.object(ImageWindow,
+                                   'show'):
+                app = MainWindow(app=Test())
+                qtbot.addWidget(app)
 
     yield
 
@@ -164,6 +173,11 @@ def test_initConfig_3():
                            'mwSuper'):
         suc = app.initConfig()
         assert suc
+
+
+def test_storeConfigExtendedWindows_1():
+    suc = app.storeConfigExtendedWindows()
+    assert suc
 
 
 def test_storeConfig_1():
@@ -487,10 +501,85 @@ def test_updateStatusGUI_4():
     assert suc
 
 
-def test_reconfigApp_1():
+def test_deleteWindowResource_1():
+    suc = app.deleteWindowResource()
+    assert not suc
+
+
+def test_deleteWindowResource_2():
+    suc = app.deleteWindowResource(widget=app.ui.openImageW)
+    assert suc
+
+
+def test_deleteWindowResource_3():
+    class Test:
+        @staticmethod
+        def objectName():
+            return 'ImageDialog'
+
+    with mock.patch.object(gc,
+                           'collect'):
+        suc = app.deleteWindowResource(widget=Test())
+        assert suc
+
+
+def test_destructWindow_1():
+    suc = app.destructWindow('showImageW')
+    assert suc
+
+
+def test_buildWindow_1():
+    class Test(QObject):
+        destroyed = pyqtSignal()
+
+    app.uiWindows['showImageW']['classObj'] = Test()
+
+    suc = app.buildWindow('showImageW')
+    assert suc
+
+
+def test_toggleWindow_1():
+    suc = app.toggleWindow()
+    assert suc
+
+
+def test_toggleWindow_2():
+    def Sender():
+        return app.ui.openImageW
+
+    app.sender = Sender
+    app.uiWindows['showImageW']['classObj'] = None
+
     with mock.patch.object(app,
-                           'initConfig'):
-        suc = app.reconfigApp()
+                           'buildWindow'):
+        suc = app.toggleWindow()
+        assert suc
+
+
+def test_toggleWindow_3():
+    def Sender():
+        return app.ui.openImageW
+
+    app.sender = Sender
+    app.uiWindows['showImageW']['classObj'] = 1
+
+    with mock.patch.object(app,
+                           'destructWindow'):
+        suc = app.toggleWindow()
+        assert suc
+
+
+def test_showExtendedWindows_1():
+    with mock.patch.object(app,
+                           'buildWindow'):
+        suc = app.showExtendedWindows()
+        assert suc
+
+
+def test_closeExtendedWindows_1():
+    with mock.patch.object(app,
+                           'destructWindow'):
+        suc = app.closeExtendedWindows()
         assert suc
 
 
@@ -534,15 +623,6 @@ def test_mountShutdown2(qtbot):
         assert ['Mount cannot be shutdown', 2] == blocker.args
 
 
-def test_updateMountConnStat():
-    suc = app.updateMountConnStat(True)
-    assert suc
-    assert app.deviceStat['mount']
-    suc = app.updateMountConnStat(False)
-    assert suc
-    assert not app.deviceStat['mount']
-
-
 def test_saveProfile1(qtbot):
     with mock.patch.object(app.app,
                            'saveConfig',
@@ -560,11 +640,15 @@ def test_loadProfile1(qtbot):
                                'loadConfig',
                                return_value=True):
             with mock.patch.object(app,
-                                   'reconfigApp'):
-                with qtbot.waitSignal(app.app.message) as blocker:
-                    suc = app.loadProfile()
-                    assert suc
-                assert ['Profile: [test] loaded', 0] == blocker.args
+                                   'closeExtendedWindows'):
+                with mock.patch.object(app,
+                                       'showExtendedWindows'):
+                    with mock.patch.object(app,
+                                           'initConfig'):
+                        with qtbot.waitSignal(app.app.message) as blocker:
+                            suc = app.loadProfile()
+                            assert suc
+                        assert ['Profile: [test] loaded', 0] == blocker.args
 
 
 def test_loadProfile2(qtbot):
@@ -575,11 +659,15 @@ def test_loadProfile2(qtbot):
                                'loadConfig',
                                return_value=False):
             with mock.patch.object(app,
-                                   'reconfigApp'):
-                with qtbot.waitSignal(app.app.message) as blocker:
-                    suc = app.loadProfile()
-                    assert suc
-                assert ['Profile: [test] cannot no be loaded', 2] == blocker.args
+                                   'closeExtendedWindows'):
+                with mock.patch.object(app,
+                                       'showExtendedWindows'):
+                    with mock.patch.object(app,
+                                           'initConfig'):
+                        with qtbot.waitSignal(app.app.message) as blocker:
+                            suc = app.loadProfile()
+                            assert suc
+                        assert ['Profile: [test] cannot no be loaded', 2] == blocker.args
 
 
 def test_loadProfile3(qtbot):

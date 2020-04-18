@@ -114,14 +114,14 @@ def test_toggleWindow_4():
 
 def test_deleteWindow_1():
 
-    suc = app.deleteWindow()
+    suc = app.deleteWindowResource()
     assert not suc
 
 
 def test_deleteWindow_2():
 
     app.toggleWindow('showMessageW')
-    suc = app.deleteWindow(app.uiWindows['showMessageW']['classObj'])
+    suc = app.deleteWindowResource(app.uiWindows['showMessageW']['classObj'])
     assert suc
 
     if app.uiWindows['showMessageW']['classObj']:

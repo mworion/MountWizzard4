@@ -22,7 +22,6 @@ import logging
 import os
 import sys
 import json
-import gc
 import platform
 from queue import Queue
 
@@ -36,14 +35,6 @@ from importlib_metadata import version
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.gui.mainW import MainWindow
-from mw4.gui.messageW import MessageWindow
-from mw4.gui.hemisphereW import HemisphereWindow
-from mw4.gui.measureW import MeasureWindow
-from mw4.gui.imageW import ImageWindow
-from mw4.gui.satelliteW import SatelliteWindow
-if platform.machine() != 'armv7l':
-    # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
-    from mw4.gui.keypadW import KeypadWindow
 from mw4.powerswitch.kmRelay import KMRelay
 from mw4.modeldata.buildpoints import DataPoint
 from mw4.modeldata.hipparcos import Hipparcos
@@ -178,57 +169,10 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.remote = Remote(self)
         self.astrometry = Astrometry(self, tempDir=mwGlob['tempDir'])
 
+        self.uiWindows = {}
+
         # get the window widgets up
         self.mainW = MainWindow(self)
-
-        # link cross widget gui signals as all ui widgets have to be present
-        self.uiWindows = {
-            'showMessageW': {
-                'button': self.mainW.ui.openMessageW,
-                'classObj': None,
-                'name': 'MessageDialog',
-                'class': MessageWindow,
-            },
-            'showHemisphereW': {
-                'button': self.mainW.ui.openHemisphereW,
-                'classObj': None,
-                'name': 'HemisphereDialog',
-                'class': HemisphereWindow,
-            },
-            'showImageW': {
-                'button': self.mainW.ui.openImageW,
-                'classObj': None,
-                'name': 'ImageDialog',
-                'class': ImageWindow,
-            },
-            'showMeasureW': {
-                'button': self.mainW.ui.openMeasureW,
-                'classObj': None,
-                'name': 'MeasureDialog',
-                'class': MeasureWindow,
-            },
-            'showSatelliteW': {
-                'button': self.mainW.ui.openSatelliteW,
-                'classObj': None,
-                'name': 'SatelliteDialog',
-                'class': SatelliteWindow,
-            },
-        }
-        # todo: we can only add keypad on arm when we have compiled version
-        if platform.machine() != 'armv7l':
-            self.uiWindows['showKeypadW'] = {
-                'button': self.mainW.ui.openKeypadW,
-                'classObj': None,
-                'name': 'KeypadDialog',
-                'class': KeypadWindow,
-            }
-
-        # show all sub windows
-        self.showWindows()
-
-        # connecting buttons to window open close
-        for win in self.uiWindows:
-            self.uiWindows[win]['button'].clicked.connect(self.toggleWindow)
 
         # starting mount communication
         self.mount.startTimers()
@@ -245,55 +189,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             return
         if sys.argv[1] == 'test':
             self.update3s.connect(self.quitSave)
-
-    def toggleWindow(self, windowTag=''):
-        """
-        toggleWindow  toggles the state of the power switch
-
-
-        :return: true for test purpose
-        """
-
-        for win in self.uiWindows:
-            isSender = (self.uiWindows[win]['button'] == self.sender())
-            isWindowTag = (win == windowTag)
-
-            if not isSender and not isWindowTag:
-                continue
-
-            winObj = self.uiWindows[win]
-            if not winObj['classObj']:
-                newWindow = winObj['class'](self)
-                # make new object instance from window
-                winObj['classObj'] = newWindow
-                winObj['classObj'].destroyed.connect(self.deleteWindow)
-
-            else:
-                winObj['classObj'].close()
-
-            self.config[win] = bool(winObj['classObj'])
-
-        return True
-
-    def deleteWindow(self, widget=None):
-        """
-
-        :return: success
-        """
-
-        if not widget:
-            return False
-
-        for win in self.uiWindows:
-            winObj = self.uiWindows[win]
-
-            if winObj['name'] != widget.objectName():
-                continue
-
-            winObj['classObj'] = None
-            gc.collect()
-
-        return True
 
     def initConfig(self):
         """
@@ -339,25 +234,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             config['topoElev'] = location.elevation.m
         self.mainW.storeConfig()
 
-        for win in self.uiWindows:
-            winObj = self.uiWindows[win]
-            self.config[win] = bool(winObj['classObj'])
-            if config[win]:
-                winObj['classObj'].storeConfig()
-
-        return True
-
-    def showWindows(self):
-        """
-
-        :return: true for test purpose
-        """
-
-        for window in self.uiWindows:
-            toShow = self.config.get(window, False)
-            isVisible = self.uiWindows[window]['classObj'] is not None
-            if toShow != isVisible:
-                self.toggleWindow(windowTag=window)
         return True
 
     def sendUpdate(self):

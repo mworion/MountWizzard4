@@ -20,6 +20,8 @@
 # standard libraries
 import logging
 import datetime
+import gc
+import platform
 
 # external packages
 import PyQt5.QtCore
@@ -29,6 +31,16 @@ import PyQt5.uic
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.gui.widget import MWidget
+
+from mw4.gui.messageW import MessageWindow
+from mw4.gui.hemisphereW import HemisphereWindow
+from mw4.gui.measureW import MeasureWindow
+from mw4.gui.imageW import ImageWindow
+from mw4.gui.satelliteW import SatelliteWindow
+if platform.machine() != 'armv7l':
+    # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
+    from mw4.gui.keypadW import KeypadWindow
+
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.gui.mainWmixin.tabMount import Mount
 from mw4.gui.mainWmixin.tabEnviron import EnvironGui
@@ -82,6 +94,9 @@ class MainWindow(MWidget,
     def __init__(self, app):
         self.app = app
         self.threadPool = app.threadPool
+        self.deviceStat = app.deviceStat
+        self.uiWindows = app.uiWindows
+
         super().__init__()
 
         # load and init the gui
@@ -91,7 +106,46 @@ class MainWindow(MWidget,
         self.setupIcons()
         self.setWindowTitle(f'MountWizzard4 - v{self.app.__version__}')
 
-        self.deviceStat = app.deviceStat
+        # link cross widget gui signals as all ui widgets have to be present
+        self.uiWindows['showMessageW'] = {
+                'button': self.ui.openMessageW,
+                'classObj': None,
+                'name': 'MessageDialog',
+                'class': MessageWindow,
+        }
+        self.uiWindows['showHemisphereW'] = {
+                'button': self.ui.openHemisphereW,
+                'classObj': None,
+                'name': 'HemisphereDialog',
+                'class': HemisphereWindow,
+        }
+        self.uiWindows['showImageW'] = {
+                'button': self.ui.openImageW,
+                'classObj': None,
+                'name': 'ImageDialog',
+                'class': ImageWindow,
+        }
+        self.uiWindows['showMeasureW'] = {
+                'button': self.ui.openMeasureW,
+                'classObj': None,
+                'name': 'MeasureDialog',
+                'class': MeasureWindow,
+        }
+        self.uiWindows['showSatelliteW'] = {
+                'button': self.ui.openSatelliteW,
+                'classObj': None,
+                'name': 'SatelliteDialog',
+                'class': SatelliteWindow,
+        }
+        # todo: we can only add keypad on arm when we have compiled version
+        if platform.machine() != 'armv7l':
+            self.uiWindows['showKeypadW'] = {
+                'button': self.ui.openKeypadW,
+                'classObj': None,
+                'name': 'KeypadDialog',
+                'class': KeypadWindow,
+            }
+
         self.deviceStatGui = {'dome': self.ui.domeConnected,
                               'camera': self.ui.cameraConnected,
                               'environOverall': self.ui.environConnected,
@@ -121,9 +175,16 @@ class MainWindow(MWidget,
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
 
+        # connect switching of other windows
+        for window in self.uiWindows:
+            self.uiWindows[window]['button'].clicked.connect(self.toggleWindow)
+
         # initial call for writing the gui
         self.initConfig()
         self.show()
+
+        # show other extended windows
+        self.showExtendedWindows()
 
         # cyclic updates
         self.app.update1s.connect(self.updateTime)
@@ -187,6 +248,25 @@ class MainWindow(MWidget,
 
         return True
 
+    def storeConfigExtendedWindows(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        config = self.app.config
+
+        # storing extended windows data
+        for window in self.uiWindows:
+
+            # check if the window state and store it is open
+            config[window] = bool(self.uiWindows[window]['classObj'])
+
+            if config[window]:
+                self.uiWindows[window]['classObj'].storeConfig()
+
+        return True
+
     def storeConfig(self):
         """
         storeConfig writes the keys to the configuration dict and stores. if some
@@ -206,7 +286,10 @@ class MainWindow(MWidget,
         config['mainTabWidget'] = self.ui.mainTabWidget.currentIndex()
         config['settingsTabWidget'] = self.ui.settingsTabWidget.currentIndex()
 
+        # store the config of the mixins
         self.mwSuper('storeConfig')
+        self.storeConfigExtendedWindows()
+
         return True
 
     def closeEvent(self, closeEvent):
@@ -574,17 +657,91 @@ class MainWindow(MWidget,
 
         return True
 
-    def reconfigApp(self):
+    def deleteWindowResource(self, widget=None):
         """
 
-        :return:
+        :return: success
         """
 
-        self.app.showWindows()
-        for window in self.app.uiWindows:
-            if self.app.uiWindows[window]['classObj']:
-                self.app.uiWindows[window]['classObj'].initConfig()
-        self.initConfig()
+        if not widget:
+            return False
+
+        for window in self.uiWindows:
+            if self.uiWindows[window]['name'] != widget.objectName():
+                continue
+
+            self.uiWindows[window]['classObj'] = None
+            gc.collect()
+
+        return True
+
+    def destructWindow(self, window):
+        """
+
+        :return: true for test purpose
+        """
+
+        if 'classObj' in self.uiWindows[window]:
+            self.uiWindows[window]['classObj'].close()
+
+        return True
+
+    def buildWindow(self, window):
+        """
+
+        :return: true for test purpose
+        """
+
+        # make new object instance from window
+        self.uiWindows[window]['classObj'] = self.uiWindows[window]['class'](self.app)
+        self.uiWindows[window]['classObj'].destroyed.connect(self.deleteWindowResource)
+
+        return True
+
+    def toggleWindow(self):
+        """
+        toggleWindow
+
+
+        :return: true for test purpose
+        """
+
+        for window in self.uiWindows:
+            if self.uiWindows[window]['button'] != self.sender():
+                continue
+
+            if not self.uiWindows[window]['classObj']:
+                self.buildWindow(window)
+            else:
+                self.destructWindow(window)
+
+        return True
+
+    def showExtendedWindows(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        for window in self.uiWindows:
+            if not self.app.config.get(window, False):
+                continue
+
+            self.buildWindow(window)
+
+        return True
+
+    def closeExtendedWindows(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        for window in self.uiWindows:
+            if not self.uiWindows[window]['classObj']:
+                continue
+
+            self.destructWindow(window)
 
         return True
 
@@ -616,7 +773,12 @@ class MainWindow(MWidget,
                                                 )
         if not name:
             return False
+
+        # closing all windows to be baselined
+        self.closeExtendedWindows()
+
         suc = self.app.loadConfig(name=name)
+
         if suc:
             self.app.config['profileName'] = name
             self.ui.profile.setText(name)
@@ -624,7 +786,15 @@ class MainWindow(MWidget,
         else:
             self.app.message.emit('Profile: [{0}] cannot no be loaded'.format(name), 2)
 
-        self.reconfigApp()
+        # configure mainApp
+        topo = self.app.initConfig()
+        self.app.mount.obsSite.location = topo
+
+        # initialize the mainW configurations
+        self.initConfig()
+
+        # instantiate the extended windows where needed
+        self.showExtendedWindows()
 
         return True
 

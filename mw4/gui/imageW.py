@@ -203,8 +203,8 @@ class ImageWindow(widget.MWidget):
         :return: true for test purpose
         """
 
-        self.showCurrent()
         self.show()
+        self.showCurrent()
 
         # gui signals
         self.ui.load.clicked.connect(self.selectImage)
@@ -443,7 +443,10 @@ class ImageWindow(widget.MWidget):
             return None
 
         sizeY, sizeX = image.shape
-        factor = self.zoomLevel[self.ui.zoom.currentText()]
+
+        fallback = list(self.zoomLevel.keys())[0]
+        factor = self.zoomLevel.get(self.ui.zoom.currentText(), fallback)
+
         position = (int(sizeX / 2), int(sizeY / 2))
         size = (int(sizeY / factor), int(sizeX / factor))
 
@@ -468,7 +471,9 @@ class ImageWindow(widget.MWidget):
         if image is None:
             return None
 
-        values = self.stretchValues[self.ui.stretch.currentText()]
+        fallback = list(self.stretchValues.keys())[0]
+        values = self.stretchValues.get(self.ui.stretch.currentText(), fallback)
+
         interval = AsymmetricPercentileInterval(*values)
         vmin, vmax = interval.get_limits(image)
         # cutout the noise
@@ -491,7 +496,8 @@ class ImageWindow(widget.MWidget):
         :return: color map
         """
 
-        colorMap = self.colorMaps[self.ui.color.currentText()]
+        fallback = list(self.colorMaps.keys())[0]
+        colorMap = self.colorMaps.get(self.ui.color.currentText(), fallback)
 
         return colorMap
 

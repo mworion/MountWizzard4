@@ -213,7 +213,8 @@ class MeasureWindow(widget.MWidget):
         :return: True for test purpose
         """
 
-        self.refreshCounter = self.timeScale.get(self.ui.timeSet.currentText(), 1)
+        fallback = list(self.timeScale.keys())[0]
+        self.refreshCounter = self.timeScale.get(self.ui.timeSet.currentText(), fallback)
         self.cycleRefresh()
 
         return True

@@ -27,6 +27,7 @@ import platform
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+from PyQt5.QtTest import QTest
 
 # local import
 from mw4.base.loggerMW import CustomLogger
@@ -743,6 +744,14 @@ class MainWindow(MWidget,
 
             self.destructWindow(window)
 
+        waitDeleted = True
+        while waitDeleted:
+            for window in self.uiWindows:
+                if self.uiWindows[window]['classObj']:
+                    continue
+                waitDeleted = False
+            QTest.qWait(100)
+
         return True
 
     @staticmethod
@@ -774,7 +783,7 @@ class MainWindow(MWidget,
         if not name:
             return False
 
-        # closing all windows to be baselined
+        # closing all windows to be base lined
         self.closeExtendedWindows()
 
         suc = self.app.loadConfig(name=name)

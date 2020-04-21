@@ -69,6 +69,7 @@ class KMRelay(PyQt5.QtCore.QObject):
 
         # minimum set for driver package built in
         self.framework = None
+        self.data = {}
         self.run = {
             'built-in': self
         }

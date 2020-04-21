@@ -88,6 +88,7 @@ class Astrometry:
 
         self.app = app
         self.threadPool = app.threadPool
+        self.data = {}
 
         self.tempDir = tempDir
         self.solverASTAP = AstrometryASTAP(self)
@@ -101,7 +102,7 @@ class Astrometry:
 
         # minimum set for driver package built in
         self.name = ''
-        self.data = {}
+
         self.framework = None
         self.run = self.checkAvailability()
 

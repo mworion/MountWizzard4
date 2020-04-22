@@ -626,7 +626,7 @@ class Model(object):
             mPoint['errorRMS'] = starList[i].errorRMS
             mPoint['errorRA'] = starList[i].errorRA()
             mPoint['errorDEC'] = starList[i].errorDEC()
-            mPoint['errorAngle'] = starList[i].errorAngle
+            mPoint['errorAngle'] = starList[i].errorAngle.degrees
             mPoint['errorIndex'] = starList[i].number
 
         return True

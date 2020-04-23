@@ -19,9 +19,9 @@
 ###########################################################
 # standard libraries
 import logging
-from datetime import datetime
+
 # external packages
-import numpy as np
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.indiClass import IndiClass

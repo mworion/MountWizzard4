@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import bisect
 
 # external packages

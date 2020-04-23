@@ -16,7 +16,7 @@
 # Licence APL2.0
 #
 ###########################################################
-from invoke import task, context, Collection
+from invoke import task
 from PIL import Image
 import glob
 

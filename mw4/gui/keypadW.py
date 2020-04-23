@@ -54,7 +54,7 @@ class KeypadWindow(widget.MWidget):
 
         # getting a new browser object
         self.host = None
-        self.browser = PyQt5.QtWebEngineWidgets.QWebEngineView()
+        self.browser = QWebEngineView()
 
         # adding it to window widget
         self.ui.keypad.addWidget(self.browser)

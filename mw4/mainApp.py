@@ -22,7 +22,6 @@ import logging
 import os
 import sys
 import json
-import platform
 from queue import Queue
 
 # external packages

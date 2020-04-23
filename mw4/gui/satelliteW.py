@@ -21,15 +21,15 @@
 import logging
 import pickle
 from io import BytesIO
+
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
-# This import registers the 3D projection, but is otherwise unused.
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib.path as mpath
-import matplotlib.pyplot as plt
 import numpy as np
+
 # local import
 from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget

@@ -19,19 +19,13 @@
 ###########################################################
 # standard libraries
 import logging
-import subprocess
 import os
 import glob
 import platform
-import time
-from collections import namedtuple
 
 # external packages
 import PyQt5
-from skyfield.api import Angle
 from astropy.io import fits
-from astropy.wcs import WCS
-import astropy.wcs
 import numpy as np
 
 # local imports

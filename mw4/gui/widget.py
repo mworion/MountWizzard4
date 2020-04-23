@@ -21,7 +21,6 @@
 import logging
 import platform
 import os
-from contextlib import contextmanager
 
 # external packages
 import PyQt5.QtWidgets

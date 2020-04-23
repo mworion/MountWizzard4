@@ -19,9 +19,10 @@
 ###########################################################
 # standard libraries
 import logging
+
 # external packages
+
 # local imports
-from mw4.base.loggerMW import CustomLogger
 from mw4.base.indiClass import IndiClass
 
 

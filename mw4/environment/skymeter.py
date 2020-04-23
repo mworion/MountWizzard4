@@ -19,8 +19,10 @@
 ###########################################################
 # standard libraries
 import logging
+
 # external packages
 import PyQt5
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.environment.skymeterIndi import SkymeterIndi

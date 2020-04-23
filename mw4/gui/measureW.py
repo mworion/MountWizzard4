@@ -21,14 +21,15 @@
 import logging
 from datetime import datetime as dt
 import gc
+
 # external packages
 import PyQt5
 import numpy as np
 from matplotlib import ticker
 import matplotlib.pyplot as plt
+
 # local import
 from mw4.base.loggerMW import CustomLogger
-from mw4.base import tpool
 from mw4.gui import widget
 from mw4.gui.widgets import measure_ui
 

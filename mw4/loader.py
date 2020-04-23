@@ -47,7 +47,6 @@ from mw4.mainApp import MountWizzard4
 from mw4.gui import splash
 from mw4.resource import resources
 
-global log
 logger = logging.getLogger()
 log = CustomLogger(logger, {})
 

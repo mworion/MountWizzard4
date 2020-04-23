@@ -19,11 +19,10 @@
 ###########################################################
 # standard libraries
 import logging
-import dateutil
-import datetime
+
 # external packages
 import PyQt5.QtCore
-import requests
+
 # local imports
 from mw4.base.loggerMW import CustomLogger
 from mw4.base.tpool import Worker

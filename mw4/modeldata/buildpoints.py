@@ -78,7 +78,7 @@ class DataPoint(object):
                'genInitial',
                'loadBuildP',
                'saveBuildP',
-               'clearPoints'
+               'clearPoints',
                'deleteBelowHorizon',
                'sort',
                'loadHorizonP',

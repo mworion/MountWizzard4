@@ -22,10 +22,8 @@ import logging
 import subprocess
 import os
 import time
-from collections import namedtuple
 
 # external packages
-import numpy as np
 from astropy.io import fits
 
 # local imports

@@ -38,7 +38,7 @@ Version, build and code coverage status
 ---------------------------------------
 |PYPI_VERSION|
 
-|PYTEST| |CODECOV| |CODE_QUALITY|
+|PYTEST| |CODECOV| |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
 
 Actual code coverage chart: |CODECOV_CHART|
 
@@ -74,7 +74,8 @@ CS Michel
     :width: 20%
     :align: top
 
-.. |CODE_QUALITY| image:: https://lgtm.com/projects/g/mworion/MountWizzard4/context:python
+.. |CODE_QUALITY_ALERTS| image:: https://img.shields.io/lgtm/alerts/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18)
+.. |CODE_QUALITY:PYTHON| image:: https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18)
 
 .. |6U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
 .. |6W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg

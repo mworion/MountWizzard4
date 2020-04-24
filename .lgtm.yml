@@ -1,6 +1,6 @@
 path_classifiers:
   test:
-    - exclude /
+    - exclude: /
     - mw4
     - exclude: mw4/test
     - exclude: mw4/resource

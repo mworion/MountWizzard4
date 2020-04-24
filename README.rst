@@ -75,7 +75,7 @@ CS Michel
     :align: top
 
 .. |CODE_QUALITY_ALERTS| image:: https://img.shields.io/lgtm/alerts/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
-    :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
+    :target: https://lgtm.com/projects/g/mworion/MountWizzard4/latest/files/?sort=name&dir=ASC&mode=heatmap&showExcluded=false
 .. |CODE_QUALITY_PYTHON| image:: https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
     :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
 

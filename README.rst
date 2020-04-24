@@ -11,6 +11,7 @@ Qt as a Gui framework.
 For full operation MW4 needs actually a running:
 
 INDI server(s) (see: https://indilib.org) where your devices are connected to.
+
 ASCOM Alpaca remote server (see: https://ascom-standards.org/Developer/Alpaca.htm) abstracting
 your ASCOM devices or devices which speak native ASCOM Alpaca.
 
@@ -36,7 +37,7 @@ online documentation.
 
 Version, build and code coverage status
 ---------------------------------------
-|PYPI_VERSION|
+|PYPI_VERSION| |DownLoadsAbs| |DownLoadsMonth|
 
 |PYTEST| |CODECOV| |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
 
@@ -74,19 +75,26 @@ CS Michel
     :width: 20%
     :align: top
 
-.. |CODE_QUALITY_ALERTS| image:: https://img.shields.io/lgtm/alerts/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18)
-.. |CODE_QUALITY_PYTHON| image:: https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18)
+.. |CODE_QUALITY_ALERTS| image:: https://img.shields.io/lgtm/alerts/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
+    :target: https://lgtm.com/projects/g/mworion/MountWizzard4/latest/files/?sort=name&dir=ASC&mode=heatmap&showExcluded=false
+.. |CODE_QUALITY_PYTHON| image:: https://img.shields.io/lgtm/grade/python/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18
+    :target: https://lgtm.com/projects/g/mworion/MountWizzard4/?mode=list
 
-.. |6U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu/badge.svg
-.. |6W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows/badge.svg
-.. |6M| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS/badge.svg
-.. |7U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu/badge.svg
-.. |7W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows/badge.svg
-.. |7M| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS/badge.svg
-.. |8U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu/badge.svg
-.. |8W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows/badge.svg
-.. |8M| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS/badge.svg
+.. |6U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Ubuntu%20Package%20Build/badge.svg
+.. |6W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20Windows%20Package%20Build/badge.svg
+.. |6M| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.6%20MacOS%20Package%20Build/badge.svg
+.. |7U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Ubuntu%20Package%20Build/badge.svg
+.. |7W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20Windows%20Package%20Build/badge.svg
+.. |7M| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.7%20MacOS%20Package%20Build/badge.svg
+.. |8U| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Ubuntu%20Package%20Build/badge.svg
+.. |8W| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20Windows%20Package%20Build/badge.svg
+.. |8M| image:: https://github.com/mworion/MountWizzard4/workflows/Python3.8%20MacOS%20Package%20Build/badge.svg
 
 .. |PYPI_VERSION| image:: https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4
     :alt: MountWizzard4's PyPI Status
+    
+.. |DownLoadsAbs| image:: https://pepy.tech/badge/mountwizzard4
+    :target: https://pepy.tech/project/mountwizzard4
+.. |DownLoadsMonth| image:: https://pepy.tech/badge/mountwizzard4/month
+    :target: https://pepy.tech/project/mountwizzard4/month

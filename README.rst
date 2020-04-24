@@ -50,7 +50,7 @@ Actual code coverage chart: |CODECOV_CHART|
 
 Bug reports
 -----------
-|GitHubIssues| Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
+Please report bugs only under issues: https://github.com/mworion/MountWizzard4/issues.
 Any feedback welcome!
 
 Finally
@@ -90,6 +90,3 @@ CS Michel
 .. |PYPI_VERSION| image:: https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4
     :alt: MountWizzard4's PyPI Status
-    
-.. |GitHubIssues| image:: https://img.shields.io/badge/issue_tracking-github-blue.svg
-.. _GitHubIssues: https://github.com/mworion/MountWizzard4/issues

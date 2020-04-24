@@ -1,4 +1,4 @@
-name: Python3.8 Ubuntu
+name: Python3.8 Ubuntu Package Build
 
 on:
   push:

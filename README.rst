@@ -36,7 +36,7 @@ online documentation.
 
 Version, build and code coverage status
 ---------------------------------------
-|PYPI_VERSION|
+|PYPI_VERSION| |DownLoadsAbs| |DownLoadsMonth|
 
 |PYTEST| |CODECOV| |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
 
@@ -90,3 +90,8 @@ CS Michel
 .. |PYPI_VERSION| image:: https://img.shields.io/pypi/v/mountwizzard4.svg
     :target: https://pypi.python.org/pypi/mountwizzard4
     :alt: MountWizzard4's PyPI Status
+    
+.. |DownLoadsAbs| image:: https://pepy.tech/badge/mountwizzard4
+    :target: https://pepy.tech/project/mountwizzard4
+.. |DownLoadsMonth| image:: https://pepy.tech/badge/mountwizzard4/month
+    :target: https://pepy.tech/project/mountwizzard4/month

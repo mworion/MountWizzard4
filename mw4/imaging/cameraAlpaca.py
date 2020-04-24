@@ -196,7 +196,9 @@ class CameraAlpaca(AlpacaClass):
             header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
             header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
             header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
-            header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] / focalLength * 206.265
+
+            factor = binning / focalLength * 206.265
+            header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor
             header['XBINNING'] = binning
             header['YBINNING'] = binning
             header['EXPTIME'] = expTime

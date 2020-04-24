@@ -83,13 +83,11 @@ def test_1(qtbot, qapp):
     QTest.qWait(1000)
     qtbot.mouseClick(app.mainW.ui.saveConfig, Qt.LeftButton)
 
-    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
-    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
-    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
-    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
-    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
-
-    QTest.qWait(3000)
+    #qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
+    #qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
+    #qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
+    #qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
+    #qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
 
     qtbot.mouseClick(app.mainW.ui.saveConfig, Qt.LeftButton)
 

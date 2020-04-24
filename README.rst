@@ -68,7 +68,7 @@ CS Michel
     :target: https://mountwizzard4.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. |PYTEST| image:: https://github.com/mworion/MountWizzard4/workflows/PyTest/badge.svg
+.. |PYTEST| image:: https://github.com/mworion/MountWizzard4/workflows/PyTest%20for%20Unittest/badge.svg
 .. |CODECOV| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
 .. |CODECOV_CHART| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/sunburst.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4

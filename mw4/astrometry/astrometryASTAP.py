@@ -77,8 +77,6 @@ class AstrometryASTAP(object):
                     fitsPath,
                     '-o',
                     tempFile,
-                    '-fov',
-                    '0'
                     ]
 
         runnable += options

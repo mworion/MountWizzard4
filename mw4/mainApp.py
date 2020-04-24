@@ -225,13 +225,11 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return: success for test purpose
         """
 
-        config = self.config = {}
         location = self.mount.obsSite.location
         if location is not None:
-            config['topoLat'] = location.latitude.degrees
-            config['topoLon'] = location.longitude.degrees
-            config['topoElev'] = location.elevation.m
-        self.mainW.storeConfig()
+            self.config['topoLat'] = location.latitude.degrees
+            self.config['topoLon'] = location.longitude.degrees
+            self.config['topoElev'] = location.elevation.m
 
         return True
 
@@ -288,7 +286,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
 
         :return:    True for test purpose
         """
-        self.storeConfig()
         self.saveConfig()
         self.quit()
         return True

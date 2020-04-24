@@ -823,6 +823,7 @@ class MainWindow(MWidget,
         if not name:
             return False
 
+        self.storeConfig()
         self.app.storeConfig()
         suc = self.app.saveConfig(name=name)
         if suc:
@@ -840,6 +841,8 @@ class MainWindow(MWidget,
         :return: nothing
         """
 
+        self.app.config = {}
+        self.storeConfig()
         self.app.storeConfig()
         suc = self.app.saveConfig(name=self.ui.profile.text())
         if suc:

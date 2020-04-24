@@ -18,17 +18,18 @@
 #
 ###########################################################
 # standard libraries
-import sys
 import unittest.mock as mock
-import faulthandler
 
 # external packages
 import pytest
-import PyQt5
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QThreadPool
 from PyQt5.QtTest import QTest
 
 # local import
-from mw4.loader import main
+from mw4.mainApp import MountWizzard4
+from mw4.base.tpool import Worker
+from mw4.resource import resources
 
 
 mwglob = {'dataDir': 'mw4/test/data',
@@ -42,16 +43,57 @@ mwglob = {'dataDir': 'mw4/test/data',
 
 
 @pytest.fixture(autouse=True, scope='function')
-def mw4():
+def module_setup_teardown():
+    global tp
 
-    testArgv = ['run', 'test1']
-    with mock.patch.object(sys,
-                           'argv',
-                           testArgv):
-        main()
-        yield
+    tp = QThreadPool()
+
+    yield
+
+    tp.waitForDone(1000)
+    del tp
 
 
-def test_1(qtbot, mw4):
-    with mock.patch.object(PyQt5.QtWidgets.QApplication, "exit"):
-        pass
+def test_1(qtbot, qapp):
+    def run():
+        qapp.exec_()
+
+    app = MountWizzard4(mwGlob=mwglob, application=qapp)
+    qtbot.add_widget(app.mainW)
+
+    worker = Worker(run)
+    tp.start(worker)
+    qtbot.wait_for_window_shown(app.mainW)
+
+    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
+    qtbot.wait_for_window_shown(app.uiWindows['showMessageW']['classObj'])
+
+    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
+    qtbot.wait_for_window_shown(app.uiWindows['showImageW']['classObj'])
+
+    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
+    qtbot.wait_for_window_shown(app.uiWindows['showHemisphereW']['classObj'])
+
+    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
+    qtbot.wait_for_window_shown(app.uiWindows['showMeasureW']['classObj'])
+
+    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
+    qtbot.wait_for_window_shown(app.uiWindows['showSatelliteW']['classObj'])
+
+    QTest.qWait(1000)
+    qtbot.mouseClick(app.mainW.ui.saveConfig, Qt.LeftButton)
+
+    qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
+    qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
+    qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
+    qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
+    qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
+
+    QTest.qWait(3000)
+
+    qtbot.mouseClick(app.mainW.ui.saveConfig, Qt.LeftButton)
+
+    QTest.qWait(3000)
+
+    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+

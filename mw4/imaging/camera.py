@@ -167,13 +167,12 @@ class Camera:
 
         return True
 
-    def calcSubFrame(self, subFrame=100, binning=1):
+    def calcSubFrame(self, subFrame=100):
         """
         calcSubFrame calculates the subFrame parameters depending on the percentage of
         the reduction. the subFrame will be centered on the image area.
 
         :param subFrame: percentage 0-100 of
-        :param binning:
         :return: success
         """
 
@@ -182,8 +181,8 @@ class Camera:
         if 'CCD_INFO.CCD_MAX_Y' not in self.data:
             return False
 
-        maxX = int(self.data['CCD_INFO.CCD_MAX_X'] / binning)
-        maxY = (self.data['CCD_INFO.CCD_MAX_Y'] / binning)
+        maxX = self.data['CCD_INFO.CCD_MAX_X']
+        maxY = self.data['CCD_INFO.CCD_MAX_Y']
 
         if subFrame < 10 or subFrame > 100:
             width = maxX
@@ -238,7 +237,7 @@ class Camera:
         if not self.canBinning(binning=binning):
             return False
 
-        result = self.calcSubFrame(subFrame=subFrame, binning=binning)
+        result = self.calcSubFrame(subFrame=subFrame)
 
         if not result:
             return False

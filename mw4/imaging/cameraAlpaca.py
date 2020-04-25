@@ -67,7 +67,7 @@ class CameraAlpaca(AlpacaClass):
 
         self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
         self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
-        self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
+        # self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
         self.dataEntry(self.client.canstopexposure(), 'CAN_ABORT')
         self.dataEntry(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
         self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
@@ -90,13 +90,18 @@ class CameraAlpaca(AlpacaClass):
                        'CAMERA.STATE')
         self.dataEntry(self.client.ccdtemperature(),
                        'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.dataEntry(self.client.fastreadout(),
-                       'READOUT_QUALITY.QUALITY_LOW',
-                       'READOUT_QUALITY.QUALITY_HIGH')
         self.dataEntry(self.client.cooleron(),
                        'CCD_COOLER.COOLER_ON')
         self.dataEntry(self.client.coolerpower(),
                        'CCD_COOLER_POWER.CCD_COOLER_VALUE')
+
+        canFast = self.data.get('CAN_FAST', False)
+        if not canFast:
+            return False
+
+        self.dataEntry(self.client.fastreadout(),
+                       'READOUT_QUALITY.QUALITY_LOW',
+                       'READOUT_QUALITY.QUALITY_HIGH')
 
         return True
 
@@ -107,14 +112,18 @@ class CameraAlpaca(AlpacaClass):
         :return: success
         """
 
-        suc = self.data['CAN_FAST']
-        if suc and fastReadout:
+        canFast = self.data.get('CAN_FAST', False)
+
+        if not canFast:
+            return False
+
+        if fastReadout:
             self.client.fastreadout(FastReadout=True)
 
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
         self.log.info(f'camera has readout quality entry: {quality}')
 
-        return suc
+        return True
 
     def workerExpose(self,
                      imagePath='',
@@ -149,15 +158,15 @@ class CameraAlpaca(AlpacaClass):
 
         self.sendDownloadMode(fastReadout=fastReadout)
 
-        # set binning
-        self.client.binx(BinX=binning)
-        self.client.biny(BinY=binning)
-
         # set frame sizes
         self.client.startx(StartX=posX)
         self.client.starty(StartY=posY)
-        self.client.numx(NumX=width)
-        self.client.numy(NumY=height)
+        self.client.numx(NumX=int(width / binning))
+        self.client.numy(NumY=int(height / binning))
+
+        # set binning
+        self.client.binx(BinX=binning)
+        self.client.biny(BinY=binning)
 
         # start exposure
         self.client.startexposure(Duration=expTime, Light=True)
@@ -192,10 +201,10 @@ class CameraAlpaca(AlpacaClass):
             header['OBJECT'] = 'skymodel'
             header['FRAME'] = 'Light'
             header['EQUINOX'] = 2000
-            header['PIXSIZE1'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
-            header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
-            header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X']
-            header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y']
+            header['PIXSIZE1'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning
+            header['PIXSIZE2'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning
+            header['XPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * binning
+            header['YPIXSZ'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_Y'] * binning
 
             factor = binning / focalLength * 206.265
             header['SCALE'] = self.data['CCD_INFO.CCD_PIXEL_SIZE_X'] * factor

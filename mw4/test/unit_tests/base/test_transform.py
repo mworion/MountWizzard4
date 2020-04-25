@@ -99,16 +99,40 @@ def test_J2000T0AltAz_2():
 
 
 def test_checkIsHours_1():
+    assert not transform.checkIsHours(180)
+
+
+def test_checkIsHours_2():
+    assert not transform.checkIsHours(-180)
+
+
+def test_checkIsHours_3():
+    assert not transform.checkIsHours(12)
+
+
+def test_checkIsHours_4():
+    assert not transform.checkIsHours(0.0)
+
+
+def test_checkIsHours_5():
+    assert not transform.checkIsHours('+12*00:00.0')
+
+
+def test_checkIsHours_6():
+    assert transform.checkIsHours('12:00:00.0')
+
+
+def test_checkIsHours_7():
     suc = transform.checkIsHours(0)
     assert not suc
 
 
-def test_checkIsHours_2():
+def test_checkIsHours_8():
     suc = transform.checkIsHours('*55:67:77')
     assert not suc
 
 
-def test_checkIsHours_3():
+def test_checkIsHours_9():
     suc = transform.checkIsHours('')
     assert suc
 
@@ -347,30 +371,6 @@ def test_cartesianToPolar_3():
     theta, radius = transform.cartesianToPolar(0.707107, 0.707107)
     assert round(theta, 6) == round(np.radians(45), 6)
     assert round(radius, 6) == 1
-
-
-def test_checkIsHours_1():
-    assert not transform.checkIsHours(180)
-
-
-def test_checkIsHours_2():
-    assert not transform.checkIsHours(-180)
-
-
-def test_checkIsHours_3():
-    assert not transform.checkIsHours(12)
-
-
-def test_checkIsHours_4():
-    assert not transform.checkIsHours(0.0)
-
-
-def test_checkIsHours_5():
-    assert not transform.checkIsHours('+12*00:00.0')
-
-
-def test_checkIsHours_6():
-    assert transform.checkIsHours('12:00:00.0')
 
 
 def test_stringToDegree_1():

@@ -109,34 +109,34 @@ class MainWindow(MWidget,
 
         # link cross widget gui signals as all ui widgets have to be present
         self.uiWindows['showMessageW'] = {
-                'button': self.ui.openMessageW,
-                'classObj': None,
-                'name': 'MessageDialog',
-                'class': MessageWindow,
+            'button': self.ui.openMessageW,
+            'classObj': None,
+            'name': 'MessageDialog',
+            'class': MessageWindow,
         }
         self.uiWindows['showHemisphereW'] = {
-                'button': self.ui.openHemisphereW,
-                'classObj': None,
-                'name': 'HemisphereDialog',
-                'class': HemisphereWindow,
+            'button': self.ui.openHemisphereW,
+            'classObj': None,
+            'name': 'HemisphereDialog',
+            'class': HemisphereWindow,
         }
         self.uiWindows['showImageW'] = {
-                'button': self.ui.openImageW,
-                'classObj': None,
-                'name': 'ImageDialog',
-                'class': ImageWindow,
+            'button': self.ui.openImageW,
+            'classObj': None,
+            'name': 'ImageDialog',
+            'class': ImageWindow,
         }
         self.uiWindows['showMeasureW'] = {
-                'button': self.ui.openMeasureW,
-                'classObj': None,
-                'name': 'MeasureDialog',
-                'class': MeasureWindow,
+            'button': self.ui.openMeasureW,
+            'classObj': None,
+            'name': 'MeasureDialog',
+            'class': MeasureWindow,
         }
         self.uiWindows['showSatelliteW'] = {
-                'button': self.ui.openSatelliteW,
-                'classObj': None,
-                'name': 'SatelliteDialog',
-                'class': SatelliteWindow,
+            'button': self.ui.openSatelliteW,
+            'classObj': None,
+            'name': 'SatelliteDialog',
+            'class': SatelliteWindow,
         }
         # todo: we can only add keypad on arm when we have compiled version
         if platform.machine() != 'armv7l':

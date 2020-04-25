@@ -61,10 +61,18 @@ def test_getInitialConfig_1():
 
 
 def test_workerPollData_1():
+    app.data['CAN_FAST'] = True
     with mock.patch.object(AlpacaBase,
                            'get'):
         suc = app.workerPollData()
         assert suc
+
+
+def test_workerPollData_2():
+    with mock.patch.object(AlpacaBase,
+                           'get'):
+        suc = app.workerPollData()
+        assert not suc
 
 
 def test_pollData_1():

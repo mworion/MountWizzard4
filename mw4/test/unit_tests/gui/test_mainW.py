@@ -31,6 +31,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QPushButton
 from mountcontrol.qtmount import Mount
+from skyfield.api import Topos
 
 # local import
 from mw4.gui.mainW import MainWindow
@@ -60,8 +61,8 @@ def module_setup_teardown(qtbot):
     class Test1(QObject):
         threadPool = QThreadPool()
         mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
-        update1s = pyqtSignal()
         update10s = pyqtSignal()
+        update1s = pyqtSignal()
 
     @staticmethod
     def testShowWindows():
@@ -94,6 +95,10 @@ def module_setup_teardown(qtbot):
         threadPool = QThreadPool()
         message = pyqtSignal(str, int)
         mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount.obsSite.location = Topos(latitude_degrees=20,
+                                       longitude_degrees=10,
+                                       elevation_m=500)
+        update1s = pyqtSignal()
         camera = Camera(app=Test1())
         filter = Filter(app=Test1())
         focuser = Focuser(app=Test1())
@@ -128,13 +133,11 @@ def module_setup_teardown(qtbot):
         initConfig = testInitConfig
 
     with mock.patch.object(MainWindow,
-                           'mwSuper'):
-        with mock.patch.object(MainWindow,
+                           'show'):
+        with mock.patch.object(ImageWindow,
                                'show'):
-            with mock.patch.object(ImageWindow,
-                                   'show'):
-                app = MainWindow(app=Test())
-                qtbot.addWidget(app)
+            app = MainWindow(app=Test())
+            qtbot.addWidget(app)
 
     yield
 

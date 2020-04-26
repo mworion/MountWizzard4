@@ -147,14 +147,14 @@ class Model(object):
         """
 
         if model.numberStars is not None:
-            text = str(model.numberStars)
+            text = f'{model.numberStars:3.0f}'
         else:
             text = '-'
         self.ui.numberStars.setText(text)
         self.ui.numberStars1.setText(text)
 
         if model.terms is not None:
-            text = str(model.terms)
+            text = f'{model.terms:2.0f}'
         else:
             text = '-'
         self.ui.terms.setText(text)
@@ -883,6 +883,8 @@ class Model(object):
                 self.app.message.emit('Actual model cannot be cleared', 2)
                 return False
             else:
+                self.app.message.emit('Actual model clearing, waiting 2s', 0)
+                QTest.qWait(2000)
                 self.app.message.emit('Actual model cleared', 0)
 
         # check if imaging in window is running and abort it if necessary

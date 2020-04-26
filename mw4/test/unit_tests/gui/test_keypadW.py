@@ -38,7 +38,6 @@ def module_setup_teardown():
         config = {'mainW': {}}
 
     yield
-    del Test
 
 
 def test_initConfig_1(qtbot):

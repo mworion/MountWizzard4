@@ -110,7 +110,6 @@ def module_setup_teardown(qtbot):
     yield
 
     app.threadPool.waitForDone(1000)
-    del widget, ui, Test, Test1, app
 
 
 def test_findIndexValue_1():

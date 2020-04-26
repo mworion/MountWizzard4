@@ -95,8 +95,6 @@ def module_setup_teardown(qtbot):
 
     yield
 
-    del app
-
 
 def test_markerPoint():
     val = app.markerPoint()

@@ -86,7 +86,6 @@ def module_setup_teardown(qtbot):
 
     yield
 
-    del app
     files = glob.glob('mw4/test/image/*.fit*')
     for f in files:
         os.remove(f)

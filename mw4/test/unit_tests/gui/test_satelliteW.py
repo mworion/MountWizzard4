@@ -27,9 +27,7 @@ from PyQt5.QtCore import QThreadPool
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
-
 import matplotlib.pyplot as plt
-
 from mountcontrol.mount import Mount
 from skyfield.toposlib import Topos
 from skyfield.api import EarthSatellite
@@ -59,8 +57,6 @@ def module_setup_teardown():
                                        elevation_m=500)
 
     yield
-
-    del Test
 
 
 def test_initConfig_1(qtbot):

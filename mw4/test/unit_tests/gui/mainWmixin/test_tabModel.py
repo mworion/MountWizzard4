@@ -88,8 +88,6 @@ def module_setup_teardown(qtbot):
     yield
 
     app.threadPool.waitForDone(1000)
-    del widget, ui, Test, Test1, app
-
     files = glob.glob('mw4/test/model/m-*.model')
     for f in files:
         os.remove(f)

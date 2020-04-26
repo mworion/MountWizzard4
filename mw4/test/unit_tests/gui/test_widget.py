@@ -37,8 +37,8 @@ def module_setup_teardown(qtbot):
     global app
     app = MWidget()
     qtbot.add_widget(app)
+
     yield
-    del app
 
 
 def test_wIcon_1():

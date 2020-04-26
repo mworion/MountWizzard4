@@ -63,8 +63,6 @@ def module_setup_teardown(qtbot):
 
     yield
 
-    del widget, ui, Test, Test1, app
-
 
 def test_clearPowerGui_1(qtbot):
 

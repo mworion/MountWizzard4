@@ -73,8 +73,6 @@ def module_setup_teardown(qtbot):
 
     yield
 
-    del widget, ui, Test, Test1, app
-
 
 def test_initConfig_1():
     app.app.config['mainW'] = {}

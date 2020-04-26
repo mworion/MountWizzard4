@@ -40,7 +40,6 @@ def module_setup_teardown():
         messageQueue = Queue()
 
     yield
-    del Test
 
 
 def test_initConfig_1(qtbot):

@@ -97,8 +97,6 @@ def module_setup_teardown(qtbot):
 
     yield
 
-    del app
-
 
 def test_initConfig_1(qtbot):
     with mock.patch.object(app,

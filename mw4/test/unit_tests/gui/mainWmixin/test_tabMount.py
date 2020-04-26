@@ -71,7 +71,6 @@ def module_setup_teardown(qtbot):
     yield
 
     app.threadPool.waitForDone(1000)
-    del widget, ui, Test, app
 
 
 def test_initConfig_1():

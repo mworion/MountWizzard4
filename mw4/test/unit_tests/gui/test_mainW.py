@@ -737,7 +737,7 @@ def test_remoteCommand_2(qtbot):
                                'quitSave'):
             suc = app.remoteCommand('shutdown')
             assert suc
-            assert ['Shutdown MW remotely', 2] == blocker.args
+            assert ['Actual profile cannot not be saved', 2] == blocker.args
 
 
 def test_remoteCommand_3(qtbot):

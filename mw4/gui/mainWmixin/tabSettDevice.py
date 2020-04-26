@@ -407,7 +407,7 @@ class SettDevice(object):
         # and finally start it
         self.app.message.emit(f'Enabled:             [{driver}]', 0)
 
-        driverData = self.driversData.get(driver)
+        driverData = self.driversData.get(driver, {})
         loadConfig = driverData.get('indiLoadConfig', False)
         suc = self.drivers[driver]['class'].startCommunication(loadConfig=loadConfig)
         return suc

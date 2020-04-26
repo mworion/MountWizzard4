@@ -888,8 +888,8 @@ def test_updateAlignGui_numberStars():
     value = '50'
     app.app.mount.model.numberStars = value
     app.updateAlignGUI(app.app.mount.model)
-    assert '50' == app.ui.numberStars.text()
-    assert '50' == app.ui.numberStars1.text()
+    assert ' 50' == app.ui.numberStars.text()
+    assert ' 50' == app.ui.numberStars1.text()
     value = None
     app.app.mount.model.numberStars = value
     app.updateAlignGUI(app.app.mount.model)
@@ -936,7 +936,7 @@ def test_updateAlignGui_terms():
     value = '50'
     app.app.mount.model.terms = value
     app.updateAlignGUI(app.app.mount.model)
-    assert '50.0' == app.ui.terms.text()
+    assert '50' == app.ui.terms.text()
     value = None
     app.app.mount.model.terms = value
     app.updateAlignGUI(app.app.mount.model)

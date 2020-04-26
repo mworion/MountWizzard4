@@ -211,7 +211,7 @@ def test_connectDevice4():
 
 
 def test_loadDefaultConfig_1():
-    app.loadDefaults = False
+    app.loadIndiConfig = False
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
@@ -221,7 +221,7 @@ def test_loadDefaultConfig_1():
 
 
 def test_loadDefaultConfig_2():
-    app.loadDefaults = True
+    app.loadIndiConfig = True
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
@@ -234,7 +234,7 @@ def test_loadDefaultConfig_2():
 
 
 def test_loadDefaultConfig_3():
-    app.loadDefaults = True
+    app.loadIndiConfig = True
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',

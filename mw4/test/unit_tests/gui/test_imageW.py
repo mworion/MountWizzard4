@@ -389,7 +389,7 @@ def test_exposeImageDone_1(qtbot):
         with qtbot.waitSignal(app.signals.showImage):
             suc = app.exposeImageDone()
             assert suc
-    assert ['Exposed: []', 0] == blocker.args
+    assert ['Exposed:  []', 0] == blocker.args
 
 
 def test_exposeImageDone_2(qtbot):
@@ -399,7 +399,7 @@ def test_exposeImageDone_2(qtbot):
         with qtbot.waitSignal(app.signals.solveImage):
             suc = app.exposeImageDone()
             assert suc
-    assert ['Exposed: []', 0] == blocker.args
+    assert ['Exposed:  []', 0] == blocker.args
 
 
 def test_exposeImage_1():

@@ -678,6 +678,8 @@ class MainWindow(MWidget,
 
     def destructWindow(self, window):
         """
+        destructWindow calls actually only the internal close widow method. it only checks
+        if the instance is already present to do this.
 
         :return: true for test purpose
         """
@@ -689,11 +691,12 @@ class MainWindow(MWidget,
 
     def buildWindow(self, window):
         """
+        buildWindow makes new object instance from window class. both are stored in the
+        uiWindows dict for usage.
 
         :return: true for test purpose
         """
 
-        # make new object instance from window
         self.uiWindows[window]['classObj'] = self.uiWindows[window]['class'](self.app)
         self.uiWindows[window]['classObj'].destroyed.connect(self.deleteWindowResource)
 
@@ -701,7 +704,7 @@ class MainWindow(MWidget,
 
     def toggleWindow(self):
         """
-        toggleWindow
+        toggleWindow constructs or destruct an extended window when called.
 
 
         :return: true for test purpose
@@ -720,6 +723,8 @@ class MainWindow(MWidget,
 
     def showExtendedWindows(self):
         """
+        showExtendedWindows opens all extended windows depending on their opening status
+        stored in the configuration dict.
 
         :return: true for test purpose
         """
@@ -734,6 +739,8 @@ class MainWindow(MWidget,
 
     def closeExtendedWindows(self):
         """
+        closeExtendedWindows closes all open extended windows by calling destructWindow and
+        waits until the window class is deleted.
 
         :return: true for test purpose
         """
@@ -750,6 +757,7 @@ class MainWindow(MWidget,
                 if self.uiWindows[window]['classObj']:
                     continue
                 waitDeleted = False
+
             QTest.qWait(100)
 
         return True
@@ -757,6 +765,7 @@ class MainWindow(MWidget,
     @staticmethod
     def checkExtension(filePath, ext):
         """
+        checkExtension ensures to have an extension attached for a filename.
 
         :param filePath:
         :param ext:
@@ -769,6 +778,12 @@ class MainWindow(MWidget,
 
     def loadProfile(self):
         """
+        loadProfile interacts to get a new profile name. if a valid is received, it closes
+        all extended windows to be sure to have all setup saved, than load the new profile
+        and initializes all classes and opens the necessary extended windows with their
+        setups stored.
+
+        loadProfile does not save the actual configuration before loading another one.
 
         :return:
         """
@@ -853,13 +868,14 @@ class MainWindow(MWidget,
 
     def remoteCommand(self, command):
         """
+        remoteCommand received signals from remote class and executes them.
 
         :param command:
         :return: True for test purpose
         """
 
         if command == 'shutdown':
-            self.app.quitSave()
+            self.quitSave()
             self.app.message.emit('Shutdown MW remotely', 2)
         elif command == 'shutdown mount':
             self.mountShutdown()

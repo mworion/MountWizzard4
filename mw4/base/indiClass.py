@@ -53,7 +53,7 @@ class IndiClass(object):
         self.name = ''
         self._host = ('localhost', 7624)
         self.data = data
-        self.loadDefaults = False
+        self.loadIndiConfig = False
 
         self.retryCounter = 0
         self.device = None
@@ -77,7 +77,7 @@ class IndiClass(object):
         self.client.signals.defLight.connect(self.updateLight)
         self.client.signals.newBLOB.connect(self.updateBLOB)
         self.client.signals.defBLOB.connect(self.updateBLOB)
-        self.client.signals.deviceConnected.connect(self.loadDefaultConfig)
+        self.client.signals.deviceConnected.connect(self.loadConfig)
         self.client.signals.deviceConnected.connect(self.setUpdateConfig)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)
@@ -184,7 +184,7 @@ class IndiClass(object):
         :return: success of reconnecting to server
         """
 
-        self.loadDefaults = loadConfig
+        self.loadIndiConfig = loadConfig
         self.retryCounter = 0
         self.data.clear()
         self.client.startTimers()
@@ -228,24 +228,24 @@ class IndiClass(object):
             suc = self.client.connectDevice(deviceName=deviceName)
         return suc
 
-    def loadDefaultConfig(self, deviceName):
+    def loadConfig(self, deviceName):
         """
-        loadDefaultConfig send the command to the indi server to load the default config for
+        loadConfig send the command to the indi server to load the default config for
         the given device.
 
         :param deviceName:
         :return: success
         """
 
-        if not self.loadDefaults:
+        if not self.loadIndiConfig:
             return False
 
         # setting a object name
-        loadDefaultObject = self.device.getSwitch('LOAD')
-        loadDefaultObject['FITS_OBJECT'] = 'skymodel'
+        loadObject = self.device.getSwitch('CONFIG_PROCESS')
+        loadObject['CONFIG_LOAD'] = True
         suc = self.client.sendNewSwitch(deviceName=deviceName,
-                                        propertyName='FITS_HEADER',
-                                        elements=loadDefaultObject,
+                                        propertyName='CONFIG_PROCESS',
+                                        elements=loadObject,
                                         )
 
         return suc

@@ -221,11 +221,12 @@ class AlpacaClass(object):
 
         return True
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
         """
         startCommunication starts cycling of the polling.
 
-        :return: True for connecting to server
+        :param loadConfig:
+        :return: True for test purpose
         """
 
         worker = Worker(self.getInitialConfig)

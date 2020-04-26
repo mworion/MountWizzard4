@@ -75,9 +75,11 @@ class MeasureData(object):
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
         """
+        startCommunication starts cycling of the polling.
 
+        :param loadConfig:
         :return: True for test purpose
         """
 

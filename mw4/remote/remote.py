@@ -60,11 +60,12 @@ class Remote(PyQt5.QtCore.QObject):
         self.clientConnection = None
         self.tcpServer = None
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
         """
         startCommunication prepares the remote listening by starting a tcp server listening
         on localhost and port 3490.
 
+        :param loadConfig:
         :return: success
         """
 

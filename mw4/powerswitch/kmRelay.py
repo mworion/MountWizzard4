@@ -123,10 +123,11 @@ class KMRelay(PyQt5.QtCore.QObject):
     def password(self, value):
         self._password = value
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
         """
         startCommunication enables the cyclic timers for polling necessary relay data.
 
+        :param loadConfig:
         :return: success
         """
 

@@ -120,7 +120,7 @@ class Dome:
         if self.framework in self.run.keys():
             self.run[self.framework].settlingTime = value
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
         """
 
         """
@@ -128,7 +128,7 @@ class Dome:
         if self.framework not in self.run.keys():
             return False
 
-        suc = self.run[self.framework].startCommunication()
+        suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
         return suc
 
     def stopCommunication(self):

@@ -212,14 +212,38 @@ def test_connectDevice4():
 
 def test_loadDefaultConfig_1():
     app.loadDefaults = False
-    suc = app.loadDefaultConfig('test')
-    assert not suc
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'test': 1}):
+        suc = app.loadConfig('test')
+        assert not suc
 
 
 def test_loadDefaultConfig_2():
     app.loadDefaults = True
-    suc = app.loadDefaultConfig('test')
-    assert suc
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'test': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=False):
+            suc = app.loadConfig('test')
+            assert not suc
+
+
+def test_loadDefaultConfig_3():
+    app.loadDefaults = True
+    app.device = Device()
+    with mock.patch.object(app.device,
+                           'getSwitch',
+                           return_value={'test': 1}):
+        with mock.patch.object(app.client,
+                               'sendNewSwitch',
+                               return_value=True):
+            suc = app.loadConfig('test')
+            assert suc
 
 
 def test_setUpdateConfig():

@@ -263,9 +263,7 @@ class SettDevice(object):
         index = self.findIndexValue(self.drivers[driverSelected]['uiDropDown'], selectedFramework)
         self.drivers[driverSelected]['uiDropDown'].setCurrentIndex(index)
 
-        isLoadIndiConfig = self.data[self.driver]['indiLoadConfig']
-
-        self.dispatch(driverName=driverSelected, loadConfig=isLoadIndiConfig)
+        self.dispatch(driverName=driverSelected)
 
         return True
 
@@ -390,12 +388,11 @@ class SettDevice(object):
 
         return True
 
-    def dispatchStartDriver(self, driver=None, loadConfig=False):
+    def dispatchStartDriver(self, driver=None):
         """
         dispatchStartDriver
 
         :param driver:
-        :param loadConfig:
         :return success of start
         """
 
@@ -410,13 +407,12 @@ class SettDevice(object):
         # and finally start it
         self.app.message.emit(f'Enabled:             [{driver}]', 0)
 
-        if self.drivers[driver]['class'].framework == 'indi':
-            suc = self.drivers[driver]['class'].startCommunication(loadConfig=loadConfig)
-        else:
-            suc = self.drivers[driver]['class'].startCommunication()
+        driverData = self.driversData.get(driver)
+        loadConfig = driverData.get('indiLoadConfig', False)
+        suc = self.drivers[driver]['class'].startCommunication(loadConfig=loadConfig)
         return suc
 
-    def dispatch(self, driverName='', loadConfig=False):
+    def dispatch(self, driverName=''):
         """
         dispatch is the central method to start / stop the drivers, setting the parameters
         and managing the boot / shutdown.
@@ -431,7 +427,6 @@ class SettDevice(object):
         then starting the new ones
 
         :param driverName:
-        :param loadConfig: flag if the driver could load it's default values stored on server
         :return: true for test purpose
         """
 
@@ -449,7 +444,7 @@ class SettDevice(object):
                 continue
 
             self.dispatchConfigDriver(driver=driver)
-            self.dispatchStartDriver(driver=driver, loadConfig=loadConfig)
+            self.dispatchStartDriver(driver=driver)
 
         return True
 

@@ -402,12 +402,27 @@ class Astrometry:
         suc = solver.abort()
         return suc
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
+        """
+        startCommunication starts cycling of the polling.
+
+        :param loadConfig:
+        :return: True for test purpose
+        """
+
         self.signals.serverConnected.emit()
         self.signals.deviceConnected.emit(self.name)
+
         return True
 
     def stopCommunication(self):
+        """
+        stopCommunication stops cycling of the server.
+
+        :return: true for test purpose
+        """
+
         self.signals.serverDisconnected.emit({self.name: 0})
         self.signals.deviceDisconnected.emit(self.name)
+
         return True

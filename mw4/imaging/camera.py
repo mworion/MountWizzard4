@@ -106,7 +106,7 @@ class Camera:
         if self.framework in self.run.keys():
             self.run[self.framework].name = value
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
         """
         startCommunication enables the cyclic polling in framework driver
 
@@ -114,7 +114,7 @@ class Camera:
         """
 
         if self.framework in self.run.keys():
-            suc = self.run[self.framework].startCommunication()
+            suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
             return suc
         else:
             return False

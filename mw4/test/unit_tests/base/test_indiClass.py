@@ -210,6 +210,18 @@ def test_connectDevice4():
         assert not suc
 
 
+def test_loadDefaultConfig_1():
+    app.loadDefaults = False
+    suc = app.loadDefaultConfig('test')
+    assert not suc
+
+
+def test_loadDefaultConfig_2():
+    app.loadDefaults = True
+    suc = app.loadDefaultConfig('test')
+    assert suc
+
+
 def test_setUpdateConfig():
     app.setUpdateConfig('test')
 

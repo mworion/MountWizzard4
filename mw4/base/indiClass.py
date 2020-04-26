@@ -53,6 +53,7 @@ class IndiClass(object):
         self.name = ''
         self._host = ('localhost', 7624)
         self.data = data
+        self.loadDefaults = False
 
         self.retryCounter = 0
         self.device = None
@@ -76,6 +77,7 @@ class IndiClass(object):
         self.client.signals.defLight.connect(self.updateLight)
         self.client.signals.newBLOB.connect(self.updateBLOB)
         self.client.signals.defBLOB.connect(self.updateBLOB)
+        self.client.signals.deviceConnected.connect(self.loadDefaultConfig)
         self.client.signals.deviceConnected.connect(self.setUpdateConfig)
         self.client.signals.serverConnected.connect(self.serverConnected)
         self.client.signals.serverDisconnected.connect(self.serverDisconnected)
@@ -174,13 +176,15 @@ class IndiClass(object):
 
         return True
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
         """
         startCommunication adds a device on the watch list of the server.
 
+        :param loadConfig:
         :return: success of reconnecting to server
         """
 
+        self.loadDefaults = loadConfig
         self.retryCounter = 0
         self.data.clear()
         self.client.startTimers()
@@ -224,10 +228,32 @@ class IndiClass(object):
             suc = self.client.connectDevice(deviceName=deviceName)
         return suc
 
+    def loadDefaultConfig(self, deviceName):
+        """
+        loadDefaultConfig send the command to the indi server to load the default config for
+        the given device.
+
+        :param deviceName:
+        :return: success
+        """
+
+        if not self.loadDefaults:
+            return False
+
+        # setting a object name
+        loadDefaultObject = self.device.getSwitch('LOAD')
+        loadDefaultObject['FITS_OBJECT'] = 'skymodel'
+        suc = self.client.sendNewSwitch(deviceName=deviceName,
+                                        propertyName='FITS_HEADER',
+                                        elements=loadDefaultObject,
+                                        )
+
+        return suc
+
     def setUpdateConfig(self, deviceName):
         """
-        _setUpdateRate corrects the update rate of weather devices to get an defined
-        setting regardless, what is setup in server side.
+        setUpdateConfig does all things for initializing the devices when starting up.
+
 
         :param deviceName:
         :return: success

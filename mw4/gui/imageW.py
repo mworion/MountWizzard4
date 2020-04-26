@@ -71,6 +71,7 @@ class ImageWindow(widget.MWidget):
 
     def __init__(self, app):
         super().__init__()
+
         self.app = app
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self)

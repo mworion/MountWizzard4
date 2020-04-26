@@ -74,6 +74,7 @@ class SatelliteWindow(widget.MWidget):
 
     def __init__(self, app):
         super().__init__()
+
         self.app = app
         self.threadPool = app.threadPool
 

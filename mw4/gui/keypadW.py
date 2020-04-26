@@ -46,6 +46,7 @@ class KeypadWindow(widget.MWidget):
 
     def __init__(self, app):
         super().__init__()
+
         self.app = app
 
         self.ui = keypad_ui.Ui_KeypadDialog()

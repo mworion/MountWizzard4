@@ -46,6 +46,7 @@ class MessageWindow(widget.MWidget):
 
     def __init__(self, app):
         super().__init__()
+
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self)

@@ -51,6 +51,7 @@ class MeasureWindow(widget.MWidget):
 
     def __init__(self, app):
         super().__init__()
+
         self.app = app
 
         self.ui = measure_ui.Ui_MeasureDialog()
@@ -252,7 +253,6 @@ class MeasureWindow(widget.MWidget):
 
         for axe in figure.axes:
             axe.cla()
-            del axe
             gc.collect()
 
         figure.clf()

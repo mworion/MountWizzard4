@@ -50,6 +50,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
     def __init__(self, app):
         super().__init__()
+
         self.app = app
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self)
@@ -280,7 +281,6 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
 
         for axe in widget.figure.axes:
             axe.cla()
-            del axe
             gc.collect()
 
         widget.figure.clf()

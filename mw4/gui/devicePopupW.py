@@ -68,6 +68,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
                  data=None):
 
         super().__init__()
+
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self)
         self.initUI()

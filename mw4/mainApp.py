@@ -89,7 +89,9 @@ class MountWizzard4(PyQt5.QtCore.QObject):
                  mwGlob=None,
                  application=None
                  ):
+
         super().__init__()
+
         self.application = application
         self.expireData = False
         self.mountUp = False

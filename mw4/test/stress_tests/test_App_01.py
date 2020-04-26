@@ -51,7 +51,6 @@ def module_setup_teardown():
     yield
 
     tp.waitForDone(1000)
-    del tp
 
 
 def test_1(qtbot, qapp):

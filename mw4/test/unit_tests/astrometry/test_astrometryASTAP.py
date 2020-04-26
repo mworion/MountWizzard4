@@ -48,8 +48,6 @@ def app():
 
     yield app
 
-    del app, parent
-
 
 def test_runASTAP_1(app):
     suc = app.runASTAP()

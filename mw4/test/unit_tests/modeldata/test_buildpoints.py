@@ -55,7 +55,6 @@ def module_setup_teardown():
                      configDir='mw4/test/config',
                      )
     yield
-    del app
 
 
 def test_topoToAltAz1():

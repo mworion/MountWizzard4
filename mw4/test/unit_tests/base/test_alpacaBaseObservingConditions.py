@@ -31,8 +31,8 @@ from mw4.base.alpacaBase import ObservingConditions
 def module_setup_teardown():
     global app
     app = ObservingConditions()
+
     yield
-    del app
 
 
 def test_averageperiod_1():

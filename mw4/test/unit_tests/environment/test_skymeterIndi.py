@@ -31,7 +31,6 @@ from indibase.indiBase import Device, Client
 # local import
 from mw4.environment.skymeter import SkymeterIndi
 from mw4.environment.skymeter import SkymeterSignals
-from mw4.base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -43,8 +42,6 @@ def module_setup_teardown():
     app = SkymeterIndi(app=Test(), signals=SkymeterSignals(), data={})
 
     yield
-
-    del app
 
 
 def test_setUpdateConfig_1():

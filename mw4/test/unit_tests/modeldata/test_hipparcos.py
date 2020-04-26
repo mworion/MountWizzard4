@@ -38,8 +38,8 @@ def module_setup_teardown():
 
     global app
     app = Hipparcos(app=Test())
+
     yield
-    del app
 
 
 def test_data_available():

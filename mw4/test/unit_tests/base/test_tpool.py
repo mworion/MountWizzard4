@@ -18,8 +18,6 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
-import time
 import pytest
 
 # external packages

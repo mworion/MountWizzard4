@@ -31,8 +31,8 @@ from mw4.base.alpacaBase import FilterWheel
 def module_setup_teardown():
     global app
     app = FilterWheel()
+
     yield
-    del app
 
 
 def test_focusoffsets():

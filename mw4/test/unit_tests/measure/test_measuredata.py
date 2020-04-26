@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import unittest.mock as mock
 
 # external packages
 import numpy as np
@@ -62,8 +61,8 @@ def module_setup_teardown():
 
     global app
     app = MeasureData(app=Test())
+
     yield
-    del app
 
 
 def test_startCommunication():

@@ -46,8 +46,6 @@ def module_setup_teardown():
 
     yield
 
-    del app
-
 
 def test_setUpdateConfig_1():
     app.name = ''

@@ -40,7 +40,7 @@ def module_setup_teardown():
     yield
 
     app.threadPool.waitForDone(1000)
-    del app
+
 
 def test_properties():
     app.framework = 'indi'

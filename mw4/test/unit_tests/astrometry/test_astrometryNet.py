@@ -50,8 +50,6 @@ def module_setup_teardown():
 
     yield
 
-    del app, parent
-
 
 def test_runImage2xy_1():
     suc = app.runImage2xy()

@@ -20,9 +20,11 @@
 # standard libraries
 from unittest import mock
 import pytest
+
 # external packages
 import PyQt5
 from indibase.indiBase import Device
+
 # local import
 from mw4.base import indiClass
 
@@ -38,8 +40,8 @@ def module_setup_teardown():
     global app
     m = Signal()
     app = indiClass.IndiClass(m)
+
     yield
-    del app
 
 
 def test_name():

@@ -40,7 +40,6 @@ def module_setup_teardown(qtbot):
         os.remove(f)
 
     yield
-    del app
 
 
 def test_eventFilter_1(qtbot):

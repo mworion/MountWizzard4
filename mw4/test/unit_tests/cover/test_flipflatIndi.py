@@ -22,7 +22,6 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
@@ -31,7 +30,6 @@ from indibase.indiBase import Device, Client
 # local import
 from mw4.cover.flipflatIndi import FlipFlatIndi
 from mw4.cover.flipflat import FlipFlatSignals
-from mw4.base.indiClass import IndiClass
 
 
 @pytest.fixture(autouse=True, scope='function')
@@ -43,8 +41,6 @@ def module_setup_teardown():
     app = FlipFlatIndi(app=Test(), signals=FlipFlatSignals(), data={})
 
     yield
-
-    del app
 
 
 def test_setUpdateConfig_1():

@@ -18,8 +18,6 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
-import time
 import pytest
 import logging
 
@@ -34,8 +32,8 @@ def module_setup_teardown():
     global app
     logger = logging.getLogger(__name__)
     app = loggerMW.CustomLogger(logger, {})
+
     yield
-    del app
 
 
 def test_setupLogging():

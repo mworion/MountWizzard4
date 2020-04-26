@@ -168,6 +168,15 @@ class CameraAlpaca(AlpacaClass):
         self.client.binx(BinX=binning)
         self.client.biny(BinY=binning)
 
+        # catch the right position and time
+        isMount = self.app.deviceStat['mount']
+        if isMount:
+            ra = self.app.mount.obsSite.raJNow
+            dec = self.app.mount.obsSite.decJNow
+            obsTime = self.app.mount.obsSite.timeJD
+            if ra is not None and dec is not None and obsTime is not None:
+                ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
+
         # start exposure
         self.client.startexposure(Duration=expTime, Light=True)
 
@@ -214,12 +223,7 @@ class CameraAlpaca(AlpacaClass):
             header['OBSERVER'] = 'MW4'
             header['DATE-OBS'] = self.app.mount.obsSite.timeJD.utc_iso()
 
-            if self.app.deviceStat['mount']:
-                ra = self.app.mount.obsSite.raJNow
-                dec = self.app.mount.obsSite.decJNow
-                obsTime = self.app.mount.obsSite.timeJD
-                if ra is not None and dec is not None and obsTime is not None:
-                    ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
+            if isMount:
                 header['RA'] = ra._degrees
                 header['DEC'] = dec.degrees
                 header['TELESCOP'] = self.app.mount.firmware.product

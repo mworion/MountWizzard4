@@ -22,7 +22,6 @@ import pytest
 import unittest.mock as mock
 
 # external packages
-
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
@@ -42,8 +41,6 @@ def module_setup_teardown():
     app = TelescopeIndi(app=Test(), signals=TelescopeSignals(), data={})
 
     yield
-
-    del app
 
 
 def test_setUpdateConfig_1():

@@ -18,10 +18,7 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
-import time
-import pytest
-from collections import namedtuple
+
 # external packages
 
 # local import

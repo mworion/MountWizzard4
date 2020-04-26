@@ -43,8 +43,6 @@ def module_setup_teardown():
 
     yield
 
-    del app
-
 
 def test_getInitialConfig_1():
     with mock.patch.object(AlpacaBase,

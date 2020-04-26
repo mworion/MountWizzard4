@@ -32,8 +32,8 @@ from mw4.powerswitch.kmRelay import KMRelay
 def module_setup_teardown():
     global app
     app = KMRelay()
+
     yield
-    del app
 
 
 def test_host_0():

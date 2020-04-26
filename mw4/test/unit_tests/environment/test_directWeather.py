@@ -19,7 +19,6 @@
 ###########################################################
 # standard libraries
 import pytest
-import unittest.mock as mock
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -39,8 +38,6 @@ def module_setup_teardown():
     app = DirectWeather(app=Test())
 
     yield
-
-    del app
 
 
 def test_startCommunication_1():

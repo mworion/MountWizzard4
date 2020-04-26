@@ -20,7 +20,6 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
-import json
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -50,7 +49,6 @@ def module_setup_teardown():
     yield
 
     app.threadPool.waitForDone(1000)
-    del app
 
 
 def test_properties():

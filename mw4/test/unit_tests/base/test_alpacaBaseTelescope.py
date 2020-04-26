@@ -31,8 +31,8 @@ from mw4.base.alpacaBase import Telescope
 def module_setup_teardown():
     global app
     app = Telescope()
+
     yield
-    del app
 
 
 def test_alignmentmode():

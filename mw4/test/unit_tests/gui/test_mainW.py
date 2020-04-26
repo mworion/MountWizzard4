@@ -23,6 +23,7 @@ import pytest
 import glob
 import os
 import gc
+import shutil
 
 # external packages
 from PyQt5.QtCore import QObject
@@ -131,6 +132,8 @@ def module_setup_teardown(qtbot):
         storeConfig = testStore
         showWindows = testShowWindows
         initConfig = testInitConfig
+
+    shutil.copy2('mw4/test/testData/active.txt', 'mw4/test/data/active.txt')
 
     with mock.patch.object(MainWindow,
                            'show'):

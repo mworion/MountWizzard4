@@ -743,7 +743,7 @@ class ImageWindow(widget.MWidget):
 
         self.deviceStat['expose'] = False
         self.app.camera.signals.saved.disconnect(self.exposeImageDone)
-        self.app.message.emit(f'Exposed: [{os.path.basename(imagePath)}]', 0)
+        self.app.message.emit(f'Exposed:  [{os.path.basename(imagePath)}]', 0)
 
         if self.ui.checkAutoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)

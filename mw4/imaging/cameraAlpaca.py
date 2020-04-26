@@ -18,11 +18,11 @@
 #
 ###########################################################
 # standard libraries
-import time
 
 # external packages
 import numpy as np
 from astropy.io import fits
+from PyQt5.QtTest import QTest
 
 # local imports
 from mw4.base.alpacaClass import AlpacaClass
@@ -185,7 +185,7 @@ class CameraAlpaca(AlpacaClass):
 
         while not self.client.imageready():
             text = f'expose {timeLeft:3.0f} s'
-            time.sleep(0.1)
+            QTest.qWait(100)
             if timeLeft >= 0.1:
                 timeLeft -= 0.1
             else:

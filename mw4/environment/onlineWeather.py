@@ -107,10 +107,11 @@ class OnlineWeather(PyQt5.QtCore.QObject):
         if value:
             self.updateOpenWeatherMapData()
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
         """
         startCommunication adds a device on the watch list of the server.
 
+        :param loadConfig:
         :return: success of reconnecting to server
         """
 

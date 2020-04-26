@@ -110,6 +110,7 @@ class Camera:
         """
         startCommunication enables the cyclic polling in framework driver
 
+        :param loadConfig:
         :return: success
         """
 

@@ -103,9 +103,12 @@ class SensorWeather:
         if self.framework in self.run.keys():
             self.run[self.framework].name = value
 
-    def startCommunication(self):
+    def startCommunication(self, loadConfig=False):
         """
+        startCommunication enables the cyclic polling in framework driver
 
+        :param loadConfig:
+        :return: success
         """
 
         if self.framework not in self.run.keys():

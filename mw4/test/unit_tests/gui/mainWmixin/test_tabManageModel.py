@@ -243,8 +243,6 @@ def test_loadName_1(qtbot):
 
 def test_loadName_2(qtbot):
     class Test:
-        pass
-
         @staticmethod
         def text():
             return 'test'
@@ -262,8 +260,6 @@ def test_loadName_2(qtbot):
 
 def test_loadName_3(qtbot):
     class Test:
-        pass
-
         @staticmethod
         def text():
             return 'test'
@@ -346,8 +342,6 @@ def test_deleteName_1(qtbot):
 
 def test_deleteName_2(qtbot):
     class Test:
-        pass
-
         @staticmethod
         def text():
             return 'test'
@@ -364,8 +358,6 @@ def test_deleteName_2(qtbot):
 
 def test_deleteName_3(qtbot):
     class Test:
-        pass
-
         @staticmethod
         def text():
             return 'test'
@@ -386,8 +378,6 @@ def test_deleteName_3(qtbot):
 
 def test_deleteName_4(qtbot):
     class Test:
-        pass
-
         @staticmethod
         def text():
             return 'test'

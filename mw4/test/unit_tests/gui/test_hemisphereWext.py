@@ -27,7 +27,6 @@ from skyfield.api import Angle
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThreadPool
-from PyQt5.QtWidgets import QDoubleSpinBox
 from PyQt5.QtWidgets import QCheckBox
 from mountcontrol.qtmount import Mount
 import matplotlib

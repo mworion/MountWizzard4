@@ -464,7 +464,7 @@ def test_staticMeridianLimits_1():
     assert suc
 
 
-def test_staticMeridianLimits_1():
+def test_staticMeridianLimits_2():
     app.app.mount.setting.meridianLimitSlew = 3
     app.app.mount.setting.meridianLimitTrack = 5
     app.ui.checkShowMeridian.setChecked(True)
@@ -473,7 +473,7 @@ def test_staticMeridianLimits_1():
     assert suc
 
 
-def test_staticHorizonLimits_2():
+def test_staticHorizonLimits_1():
     app.app.mount.setting.horizonLimitHigh = None
     app.app.mount.setting.horizonLimitLow = None
     axes = plt.axes(label=7)

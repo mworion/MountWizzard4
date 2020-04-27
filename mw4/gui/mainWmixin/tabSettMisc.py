@@ -26,7 +26,8 @@ from distutils.version import StrictVersion
 
 # external packages
 import PyQt5
-if platform.machine() != 'armv7l':
+from mw4.base.platformConfig import excludedPlatforms
+if platform.machine() not in excludedPlatforms:
     import PyQt5.QtMultimedia
 import requests
 from importlib_metadata import version
@@ -448,7 +449,7 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
-        if platform.machine() == 'armv7l':
+        if platform.machine() not in excludedPlatforms:
             return False
 
         self.audioSignalsSet['Beep'] = ':/sound/beep.wav'

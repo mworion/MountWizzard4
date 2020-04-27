@@ -38,7 +38,8 @@ from mw4.gui.hemisphereW import HemisphereWindow
 from mw4.gui.measureW import MeasureWindow
 from mw4.gui.imageW import ImageWindow
 from mw4.gui.satelliteW import SatelliteWindow
-if platform.machine() != 'armv7l':
+from mw4.base.platformConfig import excludedPlatforms
+if platform.machine() not in excludedPlatforms:
     # todo: there is actually no compiled version of PyQtWebEngine, so we have to remove it
     from mw4.gui.keypadW import KeypadWindow
 
@@ -139,7 +140,7 @@ class MainWindow(MWidget,
             'class': SatelliteWindow,
         }
         # todo: we can only add keypad on arm when we have compiled version
-        if platform.machine() != 'armv7l':
+        if platform.machine() not in excludedPlatforms:
             self.uiWindows['showKeypadW'] = {
                 'button': self.ui.openKeypadW,
                 'classObj': None,

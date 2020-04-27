@@ -564,10 +564,8 @@ def test_toggleWindow_3():
     app.sender = Sender
     app.uiWindows['showImageW']['classObj'] = 1
 
-    with mock.patch.object(app,
-                           'destructWindow'):
-        suc = app.toggleWindow()
-        assert suc
+    suc = app.toggleWindow()
+    assert suc
 
 
 def test_showExtendedWindows_1():
@@ -578,10 +576,8 @@ def test_showExtendedWindows_1():
 
 
 def test_closeExtendedWindows_1():
-    with mock.patch.object(app,
-                           'destructWindow'):
-        suc = app.closeExtendedWindows()
-        assert suc
+    suc = app.closeExtendedWindows()
+    assert suc
 
 
 def test_checkExtension_1():

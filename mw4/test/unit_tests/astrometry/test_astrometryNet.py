@@ -27,7 +27,6 @@ import shutil
 # external packages
 from PyQt5.QtCore import QThreadPool
 from astropy.io import fits
-import numpy as np
 
 # local import
 from mw4.astrometry.astrometry import AstrometryNET, Astrometry

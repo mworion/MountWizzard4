@@ -145,13 +145,6 @@ def test_setupAxes_2():
     assert not suc
 
 
-def test_setupAxes_3():
-    fig = app.measureMat.figure
-    suc = False
-    # suc = app.setupAxes()
-    assert not suc
-
-
 def test_setupAxes_4():
     fig = app.measureMat.figure
     suc = app.setupAxes(figure=fig, numberPlots=1)

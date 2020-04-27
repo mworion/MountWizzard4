@@ -325,7 +325,6 @@ def test_showRises_3():
 
 
 def test_signalExtractSatelliteData_1a():
-    pass
     widget = app.ui.listSatelliteNames
     widget.addItem('test12345')
 

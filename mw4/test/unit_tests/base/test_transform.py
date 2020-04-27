@@ -231,18 +231,6 @@ def test_stringToDegree_bad6():
     assert value is None
 
 
-def test_convertToAngle_1():
-    parameter = 180
-    value = transform.convertToAngle(parameter)
-    assert value.degrees == 180
-
-
-def test_convertToAngle_2():
-    parameter = 180
-    value = transform.convertToAngle(parameter, isHours=True)
-    assert value.hours == 12
-
-
 def test_convertToDMS_1():
     parameter = Angle(degrees=60)
     value = transform.convertToDMS(parameter)
@@ -261,6 +249,18 @@ def test_convertToDMS_3():
     assert value == ''
 
 
+def test_convertToDMS_4():
+    value = Angle(degrees=90.0)
+    value = transform.convertToDMS(value)
+    assert value == '+90:00:00'
+
+
+def test_convertToDMS_5():
+    value = Angle(degrees=-90.0)
+    value = transform.convertToDMS(value)
+    assert value == '-90:00:00'
+
+
 def test_convertToHMS_1():
     parameter = Angle(hours=12)
     value = transform.convertToHMS(parameter)
@@ -277,6 +277,18 @@ def test_convertToHMS_3():
     parameter = '60'
     value = transform.convertToHMS(parameter)
     assert value == ''
+
+
+def test_convertToHMS_4():
+    value = Angle(hours=12.0)
+    value = transform.convertToHMS(value)
+    assert value == '12:00:00'
+
+
+def test_convertToHMS_5():
+    value = Angle(hours=-12.0)
+    value = transform.convertToHMS(value)
+    assert value == '12:00:00'
 
 
 def test_sphericalToCartesian_1():
@@ -424,28 +436,3 @@ def test_convertToAngle_4():
 def test_convertToAngle_4():
     value = transform.convertToAngle('+12:00:00.0')
     assert value.degrees == 12
-
-
-def test_convertToHMS_1():
-    value = Angle(hours=12.0)
-    value = transform.convertToHMS(value)
-    assert value == '12:00:00'
-
-
-def test_convertToHMS_2():
-    value = Angle(hours=-12.0)
-    value = transform.convertToHMS(value)
-    assert value == '12:00:00'
-
-
-def test_convertToDMS_1():
-    value = Angle(degrees=90.0)
-    value = transform.convertToDMS(value)
-    assert value == '+90:00:00'
-
-
-def test_convertToDMS_2():
-    value = Angle(degrees=-90.0)
-    value = transform.convertToDMS(value)
-    assert value == '-90:00:00'
-

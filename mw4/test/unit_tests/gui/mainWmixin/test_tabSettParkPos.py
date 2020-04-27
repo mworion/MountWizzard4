@@ -92,12 +92,7 @@ def test_initConfig_2():
     assert suc
 
 
-def test_storeConfig_1():
-    suc = app.storeConfig()
-    assert suc
-
-
-def test_initConfig_1():
+def test_initConfig_3():
     config = app.app.config['mainW']
     for i in range(0, 10):
         config[f'posText{i:1d}'] = str(i)
@@ -116,7 +111,8 @@ def test_initConfig_1():
 
 
 def test_storeConfig_1():
-    app.storeConfig()
+    suc = app.storeConfig()
+    assert suc
 
 
 def test_setupParkPosGui(qtbot):

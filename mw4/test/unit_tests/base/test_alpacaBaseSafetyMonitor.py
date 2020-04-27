@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-from unittest import mock
 
 # external packages
 import pytest

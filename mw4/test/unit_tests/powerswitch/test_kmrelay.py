@@ -158,6 +158,20 @@ def test_cyclePolling_3():
         assert suc
 
 
+def test_cyclePolling_4():
+    class Test:
+        pass
+    ret = Test()
+    ret.reason = 'False'
+    ret.status_code = 200
+
+    with mock.patch.object(app,
+                           'getRelay',
+                           return_value=ret):
+        suc = app.cyclePolling()
+        assert not suc
+
+
 def test_status1(qtbot):
     returnValue = """<response>
                      <relay0>0</relay0>
@@ -292,20 +306,6 @@ def test_getRelay_1(qtbot):
     suc = app.getRelay()
     app.mutexPoll.unlock()
     assert not suc
-
-
-def test_cyclePolling_1():
-    class Test:
-        pass
-    ret = Test()
-    ret.reason = 'False'
-    ret.status_code = 200
-
-    with mock.patch.object(app,
-                           'getRelay',
-                           return_value=ret):
-        suc = app.cyclePolling()
-        assert not suc
 
 
 def test_getByte_1():

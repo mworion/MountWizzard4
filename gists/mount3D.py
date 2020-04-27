@@ -18,19 +18,19 @@
 #
 ###########################################################
 # standard libraries
-import datetime
+
 # external packages
 import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
+
 # local import
-from mw4.base import transform
 from PyQt5.Qt3DCore import QEntity, QTransform
 from PyQt5.Qt3DExtras import QTorusMesh, QPhongMaterial, \
     QSphereMesh, Qt3DWindow, \
     QOrbitCameraController
 from PyQt5.QtGui import QVector3D, QQuaternion, QMatrix4x4
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, QPropertyAnimation, pyqtProperty
+from PyQt5.QtCore import pyqtSignal, QPropertyAnimation
 
 
 def fuzzyCompareDouble(p1, p2):

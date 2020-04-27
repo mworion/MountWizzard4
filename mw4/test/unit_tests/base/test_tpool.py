@@ -75,7 +75,7 @@ def test_Worker_4(qtbot):
 def test_Worker_5(qtbot):
     def testFunc():
         raise Exception('Test')
-        return 'test'
+
     a = tpool.Worker(testFunc)
 
     with qtbot.waitSignal(a.signals.error):

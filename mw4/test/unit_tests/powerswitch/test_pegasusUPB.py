@@ -75,7 +75,7 @@ def test_stopCommunication_2():
     assert suc
 
 
-def test_toggleAutoDewPort_1():
+def test_togglePowerPort_1():
     app.framework = ''
     suc = app.togglePowerPort()
     assert not suc

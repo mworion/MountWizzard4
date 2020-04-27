@@ -22,8 +22,6 @@ from unittest import mock
 
 # external packages
 import pytest
-import requests
-import requests.exceptions as req
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QObject

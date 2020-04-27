@@ -420,7 +420,7 @@ def test_stop2(qtbot):
         assert ['Cannot stop mount', 2] == blocker.args
 
 
-def test_updateSetting_slewRate():
+def test_updateSetting_slewRate_1():
     value = '5'
     app.app.mount.setting.slewRate = value
     app.updateSettingGUI(app.app.mount.setting)
@@ -431,7 +431,7 @@ def test_updateSetting_slewRate():
     assert '-' == app.ui.slewRate.text()
 
 
-def test_updateSetting_timeToFlip():
+def test_updateSetting_timeToFlip_1():
     value = '5'
     app.app.mount.setting.timeToFlip = value
     app.updateSettingGUI(app.app.mount.setting)
@@ -442,7 +442,7 @@ def test_updateSetting_timeToFlip():
     assert '-' == app.ui.timeToFlip.text()
 
 
-def test_updateSetting_timeToMeridian():
+def test_updateSetting_timeToMeridian_1():
     value = '5'
     app.app.mount.setting.timeToMeridian = value
     app.updateSettingGUI(app.app.mount.setting)

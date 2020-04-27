@@ -443,14 +443,16 @@ def test_updateSetting_timeToFlip_1():
 
 
 def test_updateSetting_timeToMeridian_1():
-    def test():
-        return 5
-    app.app.mount.setting.timeToMeridian = test
+    app.app.mount.setting.timeToFlip = 5
+    app.app.mount.setting.meridianLimitTrack = 0
+
     app.updateSettingGUI(app.app.mount.setting)
     assert app.ui.timeToMeridian.text() == '  5'
-    value = None
-    app.app.mount.setting.timeToMeridian = value
-    app.updateSettingGUI(app.app.mount.sett)
+
+    app.app.mount.setting.timeToFlip = None
+    app.app.mount.setting.meridianLimitTrack = None
+
+    app.updateSettingGUI(app.app.mount.setting)
     assert '-' == app.ui.timeToMeridian.text()
 
 

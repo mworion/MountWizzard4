@@ -443,8 +443,9 @@ def test_updateSetting_timeToFlip_1():
 
 
 def test_updateSetting_timeToMeridian_1():
-    value = '5'
-    app.app.mount.setting.timeToMeridian = value
+    def test():
+        return 5
+    app.app.mount.setting.timeToMeridian = test
     app.updateSettingGUI(app.app.mount.setting)
     assert app.ui.timeToMeridian.text() == '  5'
     value = None

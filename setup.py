@@ -11,6 +11,7 @@
 # GUI with PyQT5 for python
 #
 # Michael Würtenberger
+#
 # (c) 2019, 2020
 #
 # Licence APL2.0
@@ -21,7 +22,7 @@ from pathlib import Path
 
 setup(
     name='mountwizzard4',
-    version='0.150.9',
+    version='0.150.10',
     packages=[
         'mw4',
         'mw4.astrometry',

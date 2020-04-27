@@ -99,7 +99,6 @@ def module_setup_teardown(qtbot):
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
-        update1s = pyqtSignal()
         camera = Camera(app=Test1())
         filter = Filter(app=Test1())
         focuser = Focuser(app=Test1())

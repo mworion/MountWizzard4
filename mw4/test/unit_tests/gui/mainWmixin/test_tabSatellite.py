@@ -324,7 +324,7 @@ def test_showRises_3():
         assert suc
 
 
-def test_signalExtractSatelliteData_1():
+def test_signalExtractSatelliteData_1a():
     pass
     widget = app.ui.listSatelliteNames
     widget.addItem('test12345')

@@ -529,11 +529,6 @@ def test_deleteWindowResource_3():
         assert suc
 
 
-def test_destructWindow_1():
-    suc = app.destructWindow('showImageW')
-    assert suc
-
-
 def test_buildWindow_1():
     class Test(QObject):
         destroyed = pyqtSignal()

@@ -672,20 +672,7 @@ class MainWindow(MWidget,
                 continue
 
             self.uiWindows[window]['classObj'] = None
-            gc.collect()
-
-        return True
-
-    def destructWindow(self, window):
-        """
-        destructWindow calls actually only the internal close widow method. it only checks
-        if the instance is already present to do this.
-
-        :return: true for test purpose
-        """
-
-        if 'classObj' in self.uiWindows[window]:
-            self.uiWindows[window]['classObj'].close()
+        gc.collect()
 
         return True
 
@@ -717,7 +704,7 @@ class MainWindow(MWidget,
             if not self.uiWindows[window]['classObj']:
                 self.buildWindow(window)
             else:
-                self.destructWindow(window)
+                self.uiWindows[window]['classObj'].close()
 
         return True
 
@@ -739,7 +726,7 @@ class MainWindow(MWidget,
 
     def closeExtendedWindows(self):
         """
-        closeExtendedWindows closes all open extended windows by calling destructWindow and
+        closeExtendedWindows closes all open extended windows by calling close and
         waits until the window class is deleted.
 
         :return: true for test purpose
@@ -749,7 +736,7 @@ class MainWindow(MWidget,
             if not self.uiWindows[window]['classObj']:
                 continue
 
-            self.destructWindow(window)
+            self.uiWindows[window]['classObj'].close()
 
         waitDeleted = True
         while waitDeleted:

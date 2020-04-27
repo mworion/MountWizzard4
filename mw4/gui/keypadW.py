@@ -25,6 +25,7 @@ import PyQt5.QtCore
 import PyQt5.QtWidgets
 import PyQt5.uic
 from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5 import sip
 
 # local import
 from mw4.base.loggerMW import CustomLogger
@@ -126,7 +127,8 @@ class KeypadWindow(widget.MWidget):
         self.browser.loadFinished.disconnect(self.loadFinished)
 
         # remove big object
-        self.browser.deleteLater()
+        sip.delete(self.browser)
+        self.browser = None
 
         super().closeEvent(closeEvent)
 

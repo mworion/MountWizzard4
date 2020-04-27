@@ -22,6 +22,8 @@ import sys
 import unittest.mock as mock
 import glob
 import os
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import pytest

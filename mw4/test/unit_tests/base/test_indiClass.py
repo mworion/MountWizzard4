@@ -19,9 +19,11 @@
 ###########################################################
 # standard libraries
 from unittest import mock
-import pytest
+import faulthandler
+faulthandler.enable()
 
 # external packages
+import pytest
 import PyQt5
 from indibase.indiBase import Device
 

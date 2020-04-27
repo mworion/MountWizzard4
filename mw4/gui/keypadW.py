@@ -126,7 +126,7 @@ class KeypadWindow(widget.MWidget):
         self.browser.loadFinished.disconnect(self.loadFinished)
 
         # remove big object
-        self.browser = None
+        self.browser.deleteLater()
 
         super().closeEvent(closeEvent)
 

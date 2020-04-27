@@ -18,6 +18,8 @@
 #
 ###########################################################
 # standard libraries
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import PyQt5.QtGui

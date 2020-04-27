@@ -21,6 +21,8 @@
 from unittest import mock
 import time
 import pytest
+import faulthandler
+faulthandler.enable()
 
 # external packages
 

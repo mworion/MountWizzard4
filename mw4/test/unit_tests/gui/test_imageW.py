@@ -22,6 +22,8 @@ import pytest
 import os
 import glob
 import shutil
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import astropy

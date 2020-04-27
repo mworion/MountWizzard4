@@ -20,6 +20,8 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from skyfield.toposlib import Topos

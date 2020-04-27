@@ -19,6 +19,8 @@
 ###########################################################
 # standard libraries
 import pytest
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import numpy as np

@@ -22,6 +22,8 @@ import unittest.mock as mock
 import pytest
 import platform
 import os
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import PyQt5.QtWidgets

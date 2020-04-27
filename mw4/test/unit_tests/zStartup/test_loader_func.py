@@ -24,6 +24,8 @@ import os
 import glob
 import unittest.mock as mock
 import socket
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import pytest

@@ -19,6 +19,8 @@
 ###########################################################
 # standard libraries
 import pytest
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from skyfield.toposlib import Topos

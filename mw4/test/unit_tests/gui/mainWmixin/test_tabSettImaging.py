@@ -21,6 +21,8 @@
 import pytest
 from unittest import mock
 import logging
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from PyQt5.QtWidgets import QMessageBox

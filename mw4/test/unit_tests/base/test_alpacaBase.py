@@ -19,6 +19,8 @@
 ###########################################################
 # standard libraries
 from unittest import mock
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import pytest

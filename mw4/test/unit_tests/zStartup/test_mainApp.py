@@ -22,6 +22,8 @@ import os
 import glob
 import json
 import unittest.mock as mock
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import pytest

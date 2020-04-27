@@ -20,6 +20,8 @@
 # standard libraries
 import pytest
 from queue import Queue
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from PyQt5.QtGui import QCloseEvent

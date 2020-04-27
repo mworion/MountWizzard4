@@ -21,6 +21,8 @@
 import unittest.mock as mock
 import logging
 import pytest
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import PyQt5

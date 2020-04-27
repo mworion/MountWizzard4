@@ -25,6 +25,8 @@ import platform
 import numpy as np
 import shutil
 import glob
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from astropy.io import fits

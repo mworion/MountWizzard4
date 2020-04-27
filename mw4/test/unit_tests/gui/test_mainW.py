@@ -24,6 +24,8 @@ import glob
 import os
 import gc
 import shutil
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from PyQt5.QtCore import QObject

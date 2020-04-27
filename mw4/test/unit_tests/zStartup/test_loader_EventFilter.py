@@ -21,6 +21,8 @@
 import pytest
 import os
 import glob
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from PyQt5.QtCore import QEvent

@@ -21,6 +21,8 @@
 import pytest
 import unittest.mock as mock
 import zlib
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from astropy.io import fits

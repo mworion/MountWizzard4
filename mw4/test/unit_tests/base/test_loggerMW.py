@@ -20,6 +20,8 @@
 # standard libraries
 import pytest
 import logging
+import faulthandler
+faulthandler.enable()
 
 # external packages
 

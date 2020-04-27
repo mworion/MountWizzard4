@@ -22,6 +22,8 @@ import pytest
 from unittest import mock
 import logging
 import subprocess
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from PyQt5.QtMultimedia import QSound

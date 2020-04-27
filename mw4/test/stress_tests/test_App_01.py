@@ -24,6 +24,8 @@ import pytest
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtTest import QTest
+import faulthandler
+faulthandler.enable()
 
 # local import
 from mw4.mainApp import MountWizzard4

@@ -23,6 +23,8 @@ import os
 import json
 import binascii
 import unittest.mock as mock
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import skyfield.api

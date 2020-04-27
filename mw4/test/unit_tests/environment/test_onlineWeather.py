@@ -20,6 +20,8 @@
 # standard libraries
 import pytest
 import unittest.mock as mock
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from PyQt5.QtCore import QThreadPool
@@ -43,8 +45,20 @@ def module_setup_teardown():
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
+
     global app
-    app = OnlineWeather(app=Test())
+
+    class Test1:
+        status_code = 200
+
+        @staticmethod
+        def json():
+            return 'test'
+
+    with mock.patch.object(requests,
+                           'get',
+                           return_value=Test1()):
+        app = OnlineWeather(app=Test())
 
     yield
 

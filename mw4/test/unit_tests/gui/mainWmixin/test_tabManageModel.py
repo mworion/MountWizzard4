@@ -20,6 +20,8 @@
 # standard libraries
 import unittest.mock as mock
 import pytest
+import faulthandler
+faulthandler.enable()
 
 # external packages
 import PyQt5

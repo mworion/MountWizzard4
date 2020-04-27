@@ -23,6 +23,8 @@ import pytest
 import shutil
 import subprocess
 import os
+import faulthandler
+faulthandler.enable()
 
 # external packages
 from PyQt5.QtCore import QThreadPool

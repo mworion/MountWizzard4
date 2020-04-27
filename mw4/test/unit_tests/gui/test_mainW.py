@@ -411,7 +411,7 @@ def test_updateDeviceStats_3():
     assert suc
 
 
-def test_updateDeviceStats_3():
+def test_updateDeviceStats_4():
     app.deviceStat = {}
     app.refractionSource = 'online'
     suc = app.updateDeviceStats()

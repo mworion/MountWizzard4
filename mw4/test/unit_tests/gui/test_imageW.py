@@ -238,21 +238,16 @@ def test_colorImage_2():
 
 
 def test_setupDistorted_1():
-    image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
-    wcsObject = wcs.WCS(header)
-    fig = app.imageMat.figure
 
     axe = app.setupDistorted()
     assert not axe
 
 
 def test_setupDistorted_2():
-    image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
-    wcsObject = wcs.WCS(header)
     fig = app.imageMat.figure
 
     axe = app.setupDistorted(figure=fig)
@@ -260,7 +255,6 @@ def test_setupDistorted_2():
 
 
 def test_setupDistorted_3():
-    image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
     wcsObject = wcs.WCS(header)
@@ -276,7 +270,6 @@ def test_setupNormal_1():
     image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
-    fig = app.imageMat.figure
 
     axe = app.setupNormal()
     assert not axe

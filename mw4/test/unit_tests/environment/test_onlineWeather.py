@@ -66,17 +66,21 @@ def module_setup_teardown():
 
 
 def test_properties():
-    app.keyAPI = 'test'
-    assert app.keyAPI == 'test'
-    app.online = True
-    assert app.online
+    with mock.patch.object(app,
+                           'updateOpenWeatherMapData'):
+        app.keyAPI = 'test'
+        assert app.keyAPI == 'test'
+        app.online = True
+        assert app.online
 
 
 def test_startCommunication_1():
     app.running = False
-    suc = app.startCommunication()
-    assert suc
-    assert app.running
+    with mock.patch.object(app,
+                           'updateOpenWeatherMapData'):
+        suc = app.startCommunication()
+        assert suc
+        assert app.running
 
 
 def test_stopCommunication_1():

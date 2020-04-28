@@ -269,7 +269,6 @@ def test_setupDistorted_3():
 def test_setupNormal_1():
     app.ui.checkShowGrid.setChecked(True)
     app.ui.checkShowCrosshair.setChecked(True)
-    image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
 
@@ -280,7 +279,6 @@ def test_setupNormal_1():
 def test_setupNormal_2():
     app.ui.checkShowGrid.setChecked(True)
     app.ui.checkShowCrosshair.setChecked(True)
-    image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
     fig = app.imageMat.figure
@@ -292,7 +290,6 @@ def test_setupNormal_2():
 def test_setupNormal_3():
     app.ui.checkShowGrid.setChecked(True)
     app.ui.checkShowCrosshair.setChecked(True)
-    image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
     fig = app.imageMat.figure

@@ -210,8 +210,7 @@ def test_toggleHubUSB_3():
     app.device = Device()
     with mock.patch.object(app.device,
                            'getSwitch',
-                           return_value={'test': True,
-                                         'test': True}):
+                           return_value={'test': True}):
         suc = app.toggleHubUSB()
         assert not suc
 

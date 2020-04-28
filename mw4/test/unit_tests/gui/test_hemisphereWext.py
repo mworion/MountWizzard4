@@ -164,36 +164,6 @@ def test_setOperationMode_3():
         def set_color(self, test):
             pass
 
-    app.ui.checkPolarAlignment.setChecked(True)
-    app.horizonMarker = Test()
-    app.pointsBuild = Test()
-    suc = app.setOperationMode()
-    assert suc
-
-
-def test_setOperationMode_4():
-    class Test:
-        def set_marker(self, test):
-            pass
-
-        def set_color(self, test):
-            pass
-
-    app.ui.checkEditBuildPoints.setChecked(True)
-    app.horizonMarker = Test()
-    app.pointsBuild = Test()
-    suc = app.setOperationMode()
-    assert suc
-
-
-def test_setOperationMode_5():
-    class Test:
-        def set_marker(self, test):
-            pass
-
-        def set_color(self, test):
-            pass
-
     app.ui.checkEditHorizonMask.setChecked(True)
     app.horizonMarker = Test()
     app.pointsBuild = Test()

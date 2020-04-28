@@ -485,9 +485,6 @@ def test_updateClearOutsideImage_1():
 
 
 def test_updateClearOutsideImage_2():
-    image = QImage('mw4/test/testData/forecast.png')
-    pixmapBase = QPixmap().fromImage(image)
-
     class Test:
         content = 'test'
 

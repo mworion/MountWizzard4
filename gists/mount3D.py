@@ -26,9 +26,7 @@ import PyQt5.uic
 
 # local import
 from PyQt5.Qt3DCore import QEntity, QTransform
-from PyQt5.Qt3DExtras import QTorusMesh, QPhongMaterial, \
-    QSphereMesh, Qt3DWindow, \
-    QOrbitCameraController
+from PyQt5.Qt3DExtras import QTorusMesh, QPhongMaterial, QSphereMesh, QOrbitCameraController
 from PyQt5.QtGui import QVector3D, QQuaternion, QMatrix4x4
 from PyQt5.QtCore import pyqtSignal, QPropertyAnimation
 

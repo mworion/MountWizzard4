@@ -435,6 +435,6 @@ def test_convertToAngle_4():
     assert value.hours == 12
 
 
-def test_convertToAngle_4():
+def test_convertToAngle_5():
     value = transform.convertToAngle('+12:00:00.0')
     assert value.degrees == 12

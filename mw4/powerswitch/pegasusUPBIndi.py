@@ -99,6 +99,7 @@ class PegasusUPBIndi(IndiClass):
             if self.data.get('VERSION.UPB', 1) != 2:
                 self.data['VERSION.UPB'] = 2
                 self.signals.version.emit(2)
+                print('version 2')
 
         return True
 
@@ -117,9 +118,11 @@ class PegasusUPBIndi(IndiClass):
 
         # this combination only exists in version 1
         if 'AUTO_DEW.AUTO_DEW_ENABLED' in self.data:
-            if self.data.get('VERSION.UPB', 1) != 1:
+            if self.data.get('VERSION.UPB', 2) != 1:
+                print('version 1')
                 self.data['VERSION.UPB'] = 1
                 self.signals.version.emit(1)
+                print('version 1')
 
         return True
 

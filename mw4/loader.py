@@ -350,7 +350,6 @@ def extractDataFiles(mwGlob=None, splashW=None):
         filePath = mwGlob['dataDir'] + '/' + file
         if os.path.isfile(filePath):
             continue
-        print(os.getcwd())
         # as we cannot access data from Qt resource system, we have to convert it to
         # ByteIO first
         stream = PyQt5.QtCore.QFile(f':/data/{file}')

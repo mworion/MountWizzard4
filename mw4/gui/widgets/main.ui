@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -13369,7 +13369,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -14014,6 +14014,22 @@ Hint if mount will need a flip when following satellite.</string>
         </property>
         <property name="toolTip">
          <string>Configure the camera device. A popup will open and ask for the parameters.</string>
+        </property>
+        <property name="text">
+         <string>Setup</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="astrometrySetup">
+        <property name="geometry">
+         <rect>
+          <x>295</x>
+          <y>80</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Configure the filter device. A popup will open and ask for the parameters.</string>
         </property>
         <property name="text">
          <string>Setup</string>

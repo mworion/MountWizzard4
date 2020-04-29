@@ -114,7 +114,7 @@ class Astrometry:
                     'indexPath': home + '/Library/Application Support/Astrometry',
                     'solver': self.solverNET,
                 },
-                'KStars': {
+                'astrometry': {
                     'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
                     'indexPath': home + '/Library/Application Support/Astrometry',
                     'solver': self.solverNET,

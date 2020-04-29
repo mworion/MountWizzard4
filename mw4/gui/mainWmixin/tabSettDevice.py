@@ -118,7 +118,7 @@ class SettDevice(object):
             },
             'astrometry': {
                 'uiDropDown': self.ui.astrometryDevice,
-                'uiSetup': None,
+                'uiSetup': self.ui.astrometrySetup,
                 'class': self.app.astrometry,
                 'deviceType': 'astrometry',
             },

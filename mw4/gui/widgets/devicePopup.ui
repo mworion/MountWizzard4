@@ -761,6 +761,16 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="ascom">
+    <attribute name="title">
+     <string>ASCOM</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="astrometry">
+    <attribute name="title">
+     <string>ASTROMETRY</string>
+    </attribute>
+   </widget>
   </widget>
   <widget class="QPushButton" name="ok">
    <property name="geometry">

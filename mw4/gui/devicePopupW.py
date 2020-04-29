@@ -175,7 +175,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         # setting framework
         index = self.ui.tab.currentIndex()
-        currentFramework = self.availFramework[index]
+        currentFramework = self.ui.tab.tabText(index).lower()
         self.data[self.driver]['framework'] = currentFramework
 
         # storing ok as closing

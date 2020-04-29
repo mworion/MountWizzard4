@@ -18,4 +18,4 @@
 #
 ###########################################################
 
-excludedPlatforms = ['armv7l', 'x86_64']
+excludedPlatforms = ['armv7l']

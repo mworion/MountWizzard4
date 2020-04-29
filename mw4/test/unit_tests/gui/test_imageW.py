@@ -301,7 +301,6 @@ def test_setupNormal_3():
 def test_setupNormal_4():
     app.ui.checkShowGrid.setChecked(False)
     app.ui.checkShowCrosshair.setChecked(False)
-    image = np.zeros([100, 100], dtype=np.uint8)
     header = fits.PrimaryHDU().header
     header['naxis'] = 2
     fig = app.imageMat.figure

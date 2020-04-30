@@ -281,7 +281,7 @@ def test_saveFile_5():
     window = PyQt5.QtWidgets.QWidget()
     with mock.patch.object(app,
                            'runDialog',
-                           return_value=0):
+                           return_value=1):
         full, short, ext = app.saveFile(window=window,
                                         title='title',
                                         folder='.',
@@ -319,7 +319,7 @@ def test_openDir_4():
     window = PyQt5.QtWidgets.QWidget()
     with mock.patch.object(app,
                            'runDialog',
-                           return_value=0):
+                           return_value=1):
         full, short, ext = app.openDir(window=window,
                                        title='title',
                                        folder='.')

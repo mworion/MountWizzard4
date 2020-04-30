@@ -1,6 +1,6 @@
 path_classifiers:
   test:
-    - mw4
+    - mw4/
     - exclude: mw4/resource/
     - exclude: mw4/gui/widgets/
     - exclude: setup.py

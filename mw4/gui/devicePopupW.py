@@ -90,6 +90,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
         self.ui.indiSearch.clicked.connect(self.searchDevices)
+        self.ui.selectAstrometryIndex.clicked.connect(self.selectAstrometryIndex)
         self.ui.copyAlpaca.clicked.connect(self.copyAllAlpacaSettings)
         self.ui.copyIndi.clicked.connect(self.copyAllIndiSettings)
         self.initConfig()
@@ -107,6 +108,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.setWindowTitle(f'Setup for: {self.driver}')
 
         # populating indi data
+
         self.ui.indiHost.setText(deviceData.get('indiHost', 'localhost'))
         self.ui.indiPort.setText(deviceData.get('indiPort', '7624'))
         self.ui.indiNameList.clear()
@@ -132,6 +134,11 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.alpacaUser.setText(deviceData.get('alpacaUser', 'user'))
         self.ui.alpacaPassword.setText(deviceData.get('alpacaPassword', 'password'))
 
+        # populating astrometry
+        self.ui.astrometryIndex.setText(deviceData.get('astrometryIndex', '/usr/'))
+
+        # populating ascom
+
         # for fw in self.framework:
         tabWidget = self.ui.tab.findChild(PyQt5.QtWidgets.QWidget, selectedFramework)
         tabIndex = self.ui.tab.indexOf(tabWidget)
@@ -139,8 +146,9 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         for index in range(0, self.ui.tab.count()):
             if self.ui.tab.tabText(index).lower() in self.availFramework:
-                continue
-            self.ui.tab.setTabEnabled(index, False)
+                self.ui.tab.setTabEnabled(index, True)
+            else:
+                self.ui.tab.setTabEnabled(index, False)
             self.ui.tab.setStyleSheet(self.getStyle())
         self.show()
 
@@ -172,6 +180,11 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.data[self.driver]['alpacaName'] = name
         self.data[self.driver]['alpacaUser'] = self.ui.alpacaUser.text()
         self.data[self.driver]['alpacaPassword'] = self.ui.alpacaPassword.text()
+
+        # collecting astrometry data
+        self.data[self.driver]['astrometryIndex'] = self.ui.astrometryIndex.text()
+
+        # collecting ascom data
 
         # setting framework
         index = self.ui.tab.currentIndex()
@@ -294,5 +307,23 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         for deviceName in self.indiSearchNameList:
             self.ui.indiNameList.addItem(deviceName)
+
+        return True
+
+    def selectAstrometryIndex(self):
+        """
+
+        :return:
+        """
+
+        folder = self.ui.astrometryIndex.text()
+        saveFilePath, name, ext = self.openDir(self,
+                                               'Select Astrometry Index',
+                                               folder,
+                                               )
+        if not name:
+            return False
+
+        self.ui.astrometryIndex.setText(saveFilePath)
 
         return True

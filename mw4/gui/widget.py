@@ -265,10 +265,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         separated from method for better testing !
 
         :param dlg:
-        :return:
+        :return: result
         """
 
-        dlg.exec_()
+        return dlg.exec_()
 
     def openFile(self,
                  window=None,
@@ -311,7 +311,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         else:
             dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.ExistingFile)
 
-        self.runDialog(dlg)
+        result = self.runDialog(dlg)
+        if not result:
+            return '', '', ''
+
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
         return full, short, ext
@@ -351,7 +354,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(folder)
 
-        self.runDialog(dlg)
+        result = self.runDialog(dlg)
+        if not result:
+            return '', '', ''
+
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
         return full, short, ext
@@ -385,7 +391,10 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         dlg.setDirectory(folder)
         dlg.setFileMode(PyQt5.QtWidgets.QFileDialog.DirectoryOnly)
 
-        self.runDialog(dlg)
+        result = self.runDialog(dlg)
+        if not result:
+            return '', '', ''
+
         filePath = dlg.selectedFiles()
         full, short, ext = self.extractNames(names=filePath)
         return full, short, ext

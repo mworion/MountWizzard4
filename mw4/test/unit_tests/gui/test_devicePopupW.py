@@ -202,3 +202,33 @@ def test_searchDevices_2(qtbot):
                            return_value=True):
         suc = app.searchDevices()
         assert suc
+
+
+def test_selectAstrometryIndex_1(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      availFramework=availFramework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('', '', '')):
+        suc = app.selectAstrometryIndex()
+        assert not suc
+
+
+def test_selectAstrometryIndex_2(qtbot):
+    app = DevicePopup(geometry=geometry,
+                      data=data,
+                      availFramework=availFramework,
+                      driver='telescope',
+                      deviceType='telescope')
+    qtbot.addWidget(app)
+
+    with mock.patch.object(MWidget,
+                           'openDir',
+                           return_value=('test', 'test', 'test')):
+        suc = app.selectAstrometryIndex()
+        assert suc

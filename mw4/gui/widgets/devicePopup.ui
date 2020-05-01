@@ -821,7 +821,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Path to astrometry.net index files</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>
@@ -857,7 +857,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Copy the protocol, host address, port, user and password settings to all ALPACA devices</string>
+      <string>Select the directory of the astrometry.net index files</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -947,7 +947,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Name fo the astap solver</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::RightToLeft</enum>

@@ -90,8 +90,7 @@ def module_setup_teardown(qtbot):
     with mock.patch.object(HemisphereWindow,
                            'show'):
         app = HemisphereWindow(app=Test())
-
-    qtbot.addWidget(app)
+        qtbot.addWidget(app)
 
     yield
 

@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
 
 # external packages
 import PyQt5.QtCore
@@ -28,7 +27,6 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5 import sip
 
 # local import
-from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets import keypad_ui
 
@@ -41,9 +39,6 @@ class KeypadWindow(widget.MWidget):
 
     __all__ = ['KeypadWindow',
                ]
-
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
 
     def __init__(self, app):
         super().__init__()

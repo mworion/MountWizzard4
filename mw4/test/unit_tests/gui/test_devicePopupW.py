@@ -48,7 +48,9 @@ def module_setup_teardown():
     geometry = [100, 100, 100, 100]
     availFramework = ['indi', 'alpaca']
 
-    yield
+    with mock.patch.object(DevicePopup,
+                           'show'):
+        yield
 
 
 def test_storeConfig_1(qtbot):

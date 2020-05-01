@@ -32,6 +32,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 
 # local imports
+from mw4.base.loggerMW import CustomLogger
 from . import styles
 
 __all__ = [
@@ -55,6 +56,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
                ]
 
     logger = logging.getLogger(__name__)
+    log = CustomLogger(logger, {})
 
     def __init__(self):
         super().__init__()

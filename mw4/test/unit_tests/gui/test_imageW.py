@@ -26,7 +26,7 @@ import faulthandler
 faulthandler.enable()
 
 # external packages
-import astropy
+import astropy.visualization
 from astropy.io import fits
 from astropy import wcs
 from skyfield.api import Angle
@@ -83,10 +83,8 @@ def module_setup_teardown(qtbot):
     with mock.patch.object(ImageWindow,
                            'show'):
         app = ImageWindow(app=Test())
-
-    qtbot.addWidget(app)
-
-    yield
+        qtbot.addWidget(app)
+        yield
 
     files = glob.glob('mw4/test/image/*.fit*')
     for f in files:
@@ -112,16 +110,20 @@ def test_initConfig_3():
 
 
 def test_showWindow_1(qtbot):
-    suc = app.showWindow()
-    assert suc
+    with mock.patch.object(app,
+                           'show'):
+        suc = app.showWindow()
+        assert suc
 
 
 def test_closeEvent_1(qtbot):
-    with mock.patch.object(MWidget,
-                           'closeEvent',
-                           return_value=None):
-        app.closeEvent(None)
-    app.showWindow()
+    with mock.patch.object(app,
+                           'show'):
+        app.showWindow()
+        with mock.patch.object(MWidget,
+                               'closeEvent',
+                               return_value=None):
+            app.closeEvent(None)
 
 
 def test_setupDropDownGui():
@@ -368,7 +370,7 @@ def test_exposeRaw_1(qtbot):
     with mock.patch.object(app.app.camera,
                            'expose',
                            ):
-        with qtbot.waitSignal(app.app.message) as blocker:
+        with qtbot.waitSignal(app.app.message):
             suc = app.exposeRaw()
             assert suc
 
@@ -563,4 +565,3 @@ def test_solveCurrent(qtbot):
 def test_abortSolve_1():
     suc = app.abortSolve()
     assert not suc
-

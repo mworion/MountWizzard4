@@ -142,8 +142,7 @@ def module_setup_teardown(qtbot):
                                'show'):
             app = MainWindow(app=Test())
             qtbot.addWidget(app)
-
-    yield
+            yield
 
     files = glob.glob('mw4/test/config/*.cfg')
     for f in files:

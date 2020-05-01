@@ -24,17 +24,17 @@ import faulthandler
 faulthandler.enable()
 
 # external packages
-from skyfield.toposlib import Topos
-from skyfield.api import Angle
+import PyQt5
 from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QCheckBox
+from skyfield.toposlib import Topos
+from skyfield.api import Angle
+import mountcontrol
 from mountcontrol.qtmount import Mount
 import matplotlib
 import matplotlib.pyplot as plt
-import PyQt5
-import mountcontrol
 
 # local import
 from mw4.gui.hemisphereW import HemisphereWindow
@@ -91,10 +91,8 @@ def module_setup_teardown(qtbot):
     with mock.patch.object(HemisphereWindow,
                            'show'):
         app = HemisphereWindow(app=Test())
-
-    qtbot.addWidget(app)
-
-    yield
+        qtbot.addWidget(app)
+        yield
 
 
 def test_markerPoint():

@@ -25,15 +25,19 @@ faulthandler.enable()
 import PyQt5.QtGui
 from PyQt5.QtWidgets import QWidget
 import pytest
+import unittest.mock as mock
 
 # local import
 from mw4.gui.splash import SplashScreen
+from mw4.resource import resources
 
 
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
 
-    yield
+    with mock.patch.object(QWidget,
+                           'show'):
+        yield
 
 
 def test_icon(qtbot):

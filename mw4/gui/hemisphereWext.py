@@ -40,23 +40,25 @@ class HemisphereWindowExt(object):
     @staticmethod
     def markerPoint():
         """
-        markerPoint constructs a custom marker for presentation of modeldata points
+        markerPoint constructs a custom marker for presentation of modeldata points by
+        concatenating the circle with an internal cutout of the star
 
         :return: marker
         """
 
         circleB = mpath.Path.unit_circle()
         circleS = mpath.Path.unit_circle()
-        # concatenate the circle with an internal cutout of the star
         verts = np.concatenate([circleB.vertices, 0.5 * circleS.vertices])
         codes = np.concatenate([circleB.codes, circleS.codes])
         marker = mpath.Path(verts, codes)
+
         return marker
 
     @staticmethod
     def markerAltAz():
         """
-        markerAltAz constructs a custom marker for AltAz pointer
+        markerAltAz constructs a custom marker for AltAz pointer by
+        concatenating the circle with an internal cutout of the star
 
         :return: marker
         """
@@ -64,7 +66,6 @@ class HemisphereWindowExt(object):
         circleB = mpath.Path.unit_circle()
         circleM = mpath.Path.unit_circle()
         circleS = mpath.Path.unit_circle()
-        # concatenate the circle with an internal cutout of the star
         verts = np.concatenate([circleB.vertices,
                                 0.8 * circleM.vertices,
                                 0.3 * circleS.vertices])
@@ -72,21 +73,23 @@ class HemisphereWindowExt(object):
                                 circleM.codes,
                                 circleS.codes])
         marker = mpath.Path(verts, codes)
+
         return marker
 
     @staticmethod
     def markerStar():
         """
-        markerStar constructs a custom marker for presentation of modeldata points
+        markerStar constructs a custom marker for presentation of modeldata points by
+        concatenating the circle with an internal cutout of the star
 
         :return: marker
         """
 
         star = mpath.Path.unit_regular_star(8)
-        # concatenate the circle with an internal cutout of the star
         verts = np.concatenate([star.vertices])
         codes = np.concatenate([star.codes])
         marker = mpath.Path(verts, codes)
+
         return marker
 
     def configOperationMode(self):

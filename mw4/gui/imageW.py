@@ -18,8 +18,8 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import os
+
 # external packages
 import PyQt5.QtWidgets
 from astropy.io import fits
@@ -32,11 +32,11 @@ import matplotlib.pyplot as plt
 from skyfield.api import Angle
 import numpy as np
 import cv2
+
 # local import
-from mw4.base.loggerMW import CustomLogger
+from mw4.base import transform
 from mw4.gui import widget
 from mw4.gui.widgets import image_ui
-from mw4.base import transform
 
 
 class ImageWindowSignals(PyQt5.QtCore.QObject):
@@ -65,9 +65,6 @@ class ImageWindow(widget.MWidget):
 
     __all__ = ['ImageWindow',
                ]
-
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
 
     def __init__(self, app):
         super().__init__()

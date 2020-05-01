@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
 import gc
 
 # external packages
@@ -28,7 +27,6 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 
 # local import
-from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets import hemisphere_ui
 from mw4.gui.hemisphereWext import HemisphereWindowExt
@@ -36,15 +34,12 @@ from mw4.gui.hemisphereWext import HemisphereWindowExt
 
 class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
     """
-    the hemisphere window class handles
+    the hemisphere window class handles all interaction with model points show / edit etc.
 
     """
 
     __all__ = ['HemisphereWindow',
                ]
-
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
 
     RESIZE_FINISHED_TIMEOUT = 0.3
 

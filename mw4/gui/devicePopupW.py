@@ -18,14 +18,14 @@
 #
 ###########################################################
 # standard libraries
-import logging
+
 # external packages
 import PyQt5.QtCore
+
 # local import
-from mw4.base.loggerMW import CustomLogger
+from mw4.base.indiClass import IndiClass
 from mw4.gui import widget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
-from mw4.base.indiClass import IndiClass
 
 
 class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
@@ -36,9 +36,6 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
     __all__ = ['DevicePopup',
                ]
-
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
 
     # INDI device types
     indiTypes = {
@@ -93,7 +90,9 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.selectAstrometryIndex.clicked.connect(self.selectAstrometryIndex)
         self.ui.copyAlpaca.clicked.connect(self.copyAllAlpacaSettings)
         self.ui.copyIndi.clicked.connect(self.copyAllIndiSettings)
+
         self.initConfig()
+        self.show()
 
     def initConfig(self):
         """
@@ -150,7 +149,6 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             else:
                 self.ui.tab.setTabEnabled(index, False)
             self.ui.tab.setStyleSheet(self.getStyle())
-        self.show()
 
         return True
 

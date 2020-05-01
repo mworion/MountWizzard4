@@ -18,7 +18,6 @@
 #
 ###########################################################
 # standard libraries
-import logging
 from datetime import datetime as dt
 import gc
 
@@ -29,7 +28,6 @@ from matplotlib import ticker
 import matplotlib.pyplot as plt
 
 # local import
-from mw4.base.loggerMW import CustomLogger
 from mw4.gui import widget
 from mw4.gui.widgets import measure_ui
 
@@ -42,9 +40,6 @@ class MeasureWindow(widget.MWidget):
 
     __all__ = ['MeasureWindow',
                ]
-
-    logger = logging.getLogger(__name__)
-    log = CustomLogger(logger, {})
 
     NUMBER_POINTS = 250
     NUMBER_XTICKS = 5
@@ -161,6 +156,7 @@ class MeasureWindow(widget.MWidget):
         self.ui.measureSet2.currentIndexChanged.connect(self.setCycleRefresh)
         self.ui.measureSet3.currentIndexChanged.connect(self.setCycleRefresh)
         self.app.update1s.connect(self.cycleRefresh)
+
         return True
 
     def closeEvent(self, closeEvent):

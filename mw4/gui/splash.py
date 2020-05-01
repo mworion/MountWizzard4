@@ -20,7 +20,6 @@
 # standard libraries
 
 # external packages
-
 import PyQt5.QtCore
 from PyQt5.QtCore import Qt
 import PyQt5.QtWidgets

@@ -47,6 +47,8 @@ def module_setup_teardown():
             'dome': None,
             'mount': None,
             'camera': None,
+            'filter': None,
+            'focuser': None,
             'astrometry': None,
             'environOverall': None,
             'sensorWeather': None,
@@ -70,7 +72,6 @@ def module_setup_teardown():
 def test_startCommunication():
     suc = app.startCommunication()
     assert suc
-    app.timerTask.stop()
 
 
 def test_stopCommunication():

@@ -34,6 +34,8 @@ class SettDevice(object):
     any other window. all necessary processing for functions of that gui will be linked
     to this class. therefore window classes will have a threadPool for managing async
     processing if needed.
+
+    devices types in self.drivers are name related to ascom definitions
     """
 
     def __init__(self, app=None, ui=None, clickable=None):

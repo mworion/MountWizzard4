@@ -21,6 +21,8 @@ import pytest
 import shutil
 import subprocess
 import os
+import glob
+import platform
 import faulthandler
 faulthandler.enable()
 
@@ -47,6 +49,30 @@ def app():
     shutil.copy('mw4/test/testData/m51.fit', 'mw4/test/image/m51.fit')
 
     yield app
+
+
+def test_setSolverEnviron_1(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        app.setEnvironment()
+        assert 'ASTAP-Win' in list(app.environment.keys())
+
+
+def test_setSolverEnviron_2(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Linux'):
+        app.setEnvironment()
+        assert 'ASTAP-Linux' in list(app.environment.keys())
+
+
+def test_setSolverEnviron_3(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        app.setEnvironment()
+        assert 'ASTAP-Mac' in list(app.environment.keys())
 
 
 def test_runASTAP_1(app):
@@ -109,57 +135,30 @@ def test_solveASTAP_1(app):
 
 
 def test_solveASTAP_2(app):
-    app.parent.solverEnviron = {
-        'ASTAP': {
-            'programPath': '/Applications/ASTAP.app/Contents/MacOS',
-            'indexPath': '/usr/local/opt/astap',
-            'solver': app,
-        }
-    }
-    suc = app.solve(solver=app.parent.solverEnviron['ASTAP'])
+    suc = app.solve()
     assert not suc
 
 
 def test_solveASTAP_3(app):
-    app.parent.solverEnviron = {
-        'ASTAP': {
-            'programPath': '/Applications/ASTAP.app/Contents/MacOS',
-            'indexPath': '/usr/local/opt/astap',
-            'solver': app,
-        }
-    }
+    app.name = 'ASTAP-Mac'
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=False):
-        suc = app.solve(solver=app.parent.solverEnviron['ASTAP'],
-                        fitsPath='mw4/test/image/m51.fit')
+        suc = app.solve(fitsPath='mw4/test/image/m51.fit')
         assert not suc
 
 
 def test_solveASTAP_4(app):
-    app.parent.solverEnviron = {
-        'ASTAP': {
-            'programPath': '/Applications/ASTAP.app/Contents/MacOS',
-            'indexPath': '/usr/local/opt/astap',
-            'solver': app,
-        }
-    }
+    app.name = 'ASTAP-Mac'
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=True):
-        suc = app.solve(solver=app.parent.solverEnviron['ASTAP'],
-                        fitsPath='mw4/test/image/m51.fit')
+        suc = app.solve(fitsPath='mw4/test/image/m51.fit')
         assert not suc
 
 
 def test_solveASTAP_5(app):
-    app.parent.solverEnviron = {
-        'ASTAP': {
-            'programPath': '/Applications/ASTAP.app/Contents/MacOS',
-            'indexPath': '/usr/local/opt/astap',
-            'solver': app,
-        }
-    }
+    app.name = 'ASTAP-Mac'
     with mock.patch.object(app,
                            'runASTAP',
                            return_value=True):
@@ -167,8 +166,7 @@ def test_solveASTAP_5(app):
                                'remove',
                                return_value=True):
             shutil.copy('mw4/test/testData/tempASTAP.wcs', 'mw4/test/temp/temp.wcs')
-            suc = app.solve(solver=app.parent.solverEnviron['ASTAP'],
-                            fitsPath='mw4/test/image/m51.fit')
+            suc = app.solve(fitsPath='mw4/test/image/m51.fit')
             assert suc
 
 
@@ -187,3 +185,45 @@ def test_abort_2(app):
     app.process = Test()
     suc = app.abort()
     assert suc
+
+
+def test_checkAvailability_1(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Darwin'):
+        app.setEnvironment()
+        val = app.checkAvailability()
+        assert not val
+
+
+def test_checkAvailability_2(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Linux'):
+        app.setEnvironment()
+        val = app.checkAvailability()
+        assert not val
+
+
+def test_checkAvailability_3(app):
+    with mock.patch.object(platform,
+                           'system',
+                           return_value='Windows'):
+        app.setEnvironment()
+        val = app.checkAvailability()
+        assert not val
+
+
+def test_checkAvailability_4(app):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(glob,
+                               'glob',
+                               return_value=True):
+            with mock.patch.object(platform,
+                                   'system',
+                                   return_value='Windows'):
+                app.setEnvironment()
+                val = app.checkAvailability()
+                assert val

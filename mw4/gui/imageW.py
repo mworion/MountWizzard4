@@ -514,9 +514,10 @@ class ImageWindow(widget.MWidget):
             return False
 
         figure.clf()
-        figure.subplots_adjust(left=0.1, right=0.9, bottom=0.1, top=0.9)
+        axe = figure.add_subplot(1, 1, 1,
+                                 projection=wcsObject,
+                                 facecolor=self.M_RED)
 
-        axe = figure.add_subplot(1, 1, 1, projection=wcsObject, facecolor=None)
         axe.coords.frame.set_color(self.M_BLUE)
 
         axe0 = axe.coords[0]
@@ -561,8 +562,6 @@ class ImageWindow(widget.MWidget):
             return False
 
         figure.clf()
-        # figure.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
-
         axe = figure.add_subplot(1, 1, 1, facecolor=self.M_BLACK)
 
         axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
@@ -595,6 +594,7 @@ class ImageWindow(widget.MWidget):
 
         axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
+
         return figure, axe
 
     def stackImages(self, imageData=None, header=None):

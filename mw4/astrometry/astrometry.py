@@ -18,8 +18,6 @@
 # standard libraries
 import logging
 import os
-import glob
-import platform
 
 # external packages
 import PyQt5
@@ -93,16 +91,6 @@ class Astrometry:
         self.indexPath = ''
         self.host = ('localhost', 7624)
         self.mutexSolve = PyQt5.QtCore.QMutex()
-
-    @property
-    def host(self):
-        return self._host
-
-    @host.setter
-    def host(self, value):
-        self._host = value
-        if self.framework in self.run.keys():
-            self.run[self.framework].host = value
 
     @property
     def apiKey(self):

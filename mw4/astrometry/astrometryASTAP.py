@@ -19,6 +19,7 @@
 import logging
 import subprocess
 import os
+import glob
 import time
 import platform
 
@@ -266,3 +267,43 @@ class AstrometryASTAP(object):
             return True
         else:
             return False
+
+    def checkAvailability(self):
+        """
+        checkAvailability searches for the existence of the core runtime modules from
+        all applications. to this family belong:
+            astrometry.net namely image2xy and solve-field
+            ASTP files
+
+        :return: available solver environments
+        """
+
+        available = list()
+        for solver in self.environment:
+            suc = True
+
+            if solver == 'ASTAP-Win':
+                program = self.environment[solver]['programPath'] + '/astap.exe'
+                index = '/*.290'
+            elif solver == 'ASTAP-Mac':
+                program = self.environment[solver]['programPath'] + '/astap.exe'
+                index = '/*.290'
+            elif solver == 'ASTAP-Linux':
+                program = self.environment[solver]['programPath'] + '/astap'
+                index = '/*.290'
+
+            # checking binaries
+            if not os.path.isfile(program):
+                self.log.info(f'{program} not found')
+                suc = False
+
+            # checking indexes
+            if not glob.glob(self.environment[solver]['indexPath'] + index):
+                self.log.info('no index files found')
+                suc = False
+
+            if suc:
+                available.append(solver)
+                self.log.info(f'binary and index files available for {solver}')
+
+        return available

@@ -50,72 +50,35 @@ def app():
         os.remove(f)
 
 
+def test_properties_1(app):
+    app.framework = 'test'
+
+    app.host = ('localhost', 7624)
+    app.apiKey = 'test'
+    app.indexPath = 'test'
+    app.name = 'test'
+    assert app.host == ('localhost', 7624)
+    assert app.apiKey == 'test'
+    assert app.indexPath == 'test'
+    assert app.name == 'test'
+
+
+def test_properties_2(app):
+    app.framework = 'astap'
+
+    app.host = ('localhost', 7624)
+    app.apiKey = 'test'
+    app.indexPath = 'test'
+    app.name = 'test'
+    assert app.host == ('localhost', 7624)
+    assert app.apiKey == 'test'
+    assert app.indexPath == 'test'
+    assert app.name == 'test'
+
+
 def test_init_1(app):
-    home = os.environ.get('HOME')
-    app.solverEnviron = {
-        'KStars': {
-            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
-            'indexPath': home + '/Library/Application Support/Astrometry',
-            'solver': app.solverNET,
-        }
-    }
-    assert os.path.isfile('mw4/test/temp/astrometry.cfg')
-
-
-def test_setSolverEnviron_1(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        app.setSolverEnviron()
-
-
-def test_setSolverEnviron_2(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Linux'):
-        app.setSolverEnviron()
-
-
-def test_setSolverEnviron_3(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        app.setSolverEnviron()
-
-
-def test_checkAvailability_1(app):
-    app.solverEnviron = {
-        'CloudMakers': {
-            'programPath': '',
-            'indexPath': '',
-            'solver': app.solverNET,
-        }
-    }
-    val = app.checkAvailability()
-    assert val == {}
-
-
-def test_checkAvailability_3(app):
-    app.solverEnviron = {
-        'KStars': {
-            'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
-            'indexPath': '/usr/share/astrometry',
-            'solver': app.solverNET,
-        }
-    }
-    val = app.checkAvailability()
-    assert val == {}
-
-
-def test_checkAvailability_4(app):
-    app.solverEnviron = {
-        'CloudMakers': {
-            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
-            'indexPath': '/Users/mw/Library/Application Support/Astrometry',
-            'solver': app.solverNET,
-        }
-    }
-    app.checkAvailability()
+    assert 'astrometry' in app.run
+    assert 'astap' in app.run
 
 
 def test_readFitsData_1(app):
@@ -241,6 +204,32 @@ def test_getSolutionFromWCS_4(app):
     assert header['DEC'] == header['CRVAL2']
 
 
+def test_getSolutionFromWCS_5(app):
+    hdu = fits.HDUList()
+    hdu.append(fits.PrimaryHDU())
+    header = hdu[0].header
+    header.set('CRVAL1', 180.0)
+    header.set('CRVAL2', 60.0)
+    header.set('RA', 180.0)
+    header.set('DEC', 60.0)
+    header.set('A_', 60.0)
+    header.set('B_', 60.0)
+    header.set('AP_', 60.0)
+    header.set('BP_', 60.0)
+    header.set('CTYPE1', 'TAN')
+    header.set('CTYPE2', 'TAN')
+    solve, header = app.getSolutionFromWCS(fitsHeader=header,
+                                           wcsHeader=header,
+                                           updateFits=True)
+    assert solve['raJ2000S'].hours == 12
+    assert solve['decJ2000S'].degrees == 60
+    assert solve['angleS'] == 0
+    assert solve['scaleS'] == 0
+    assert not solve['flippedS']
+
+    assert header['RA'] == header['CRVAL1']
+
+
 def test_solveClear_1(app):
     app.framework = 'Test'
     suc = app.solveClear()
@@ -248,7 +237,7 @@ def test_solveClear_1(app):
 
 
 def test_solveClear_2(app):
-    app.framework = 'CloudMakers'
+    app.framework = 'astap'
     app.mutexSolve.lock()
     suc = app.solveClear()
     assert suc
@@ -261,73 +250,43 @@ def test_solveThreading_1(app):
 
 
 def test_solveThreading_2(app):
-    home = os.environ.get('HOME')
-    app.solverEnviron = {
-        'KStars': {
-            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
-            'indexPath': home + '/Library/Application Support/Astrometry',
-            'solver': app.solverNET,
-        }
-    }
-    app.framework = 'KStars'
+    app.framework = 'astap'
     suc = app.solveThreading()
     assert not suc
 
 
 def test_solveThreading_3(app):
     os.scandir('mw4/test/image')
-    home = os.environ.get('HOME')
-    app.solverEnviron = {
-        'KStars': {
-            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
-            'indexPath': home + '/Library/Application Support/Astrometry',
-            'solver': app.solverNET,
-        }
-    }
-    app.framework = 'KStars'
+    app.framework = 'astap'
+    file = 'mw4/test/image/m51.fit'
+    suc = app.solveThreading(fitsPath=file)
+    assert suc
+
+
+def test_solveThreading_4(app):
+    app.framework = 'astap'
     file = 'mw4/test/image/m51.fit'
     suc = app.solveThreading(fitsPath=file)
     assert suc
 
 
 def test_solveThreading_5(app):
-    app.solverEnviron = {
-        'CloudMakers': {
-            'programPath': '',
-            'indexPath': '',
-            'solver': app.solverNET,
-        }
-    }
-    app.framework = 'KStars'
-    file = 'mw4/test/image/m51.fits'
+    app.mutexSolve.lock()
+    app.framework = 'astap'
+    file = 'mw4/test/image/m51.fit'
     suc = app.solveThreading(fitsPath=file)
     assert not suc
 
 
 def test_abort_1(app):
-    app.solverEnviron = {
-        'KStars': {
-            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
-            'indexPath': '/Library/Application Support/Astrometry',
-            'solver': app.solverNET,
-        }
-    }
     app.framework = 'test'
     suc = app.abort()
     assert not suc
 
 
 def test_abort_2(app):
-
-    app.solverEnviron = {
-        'KStars': {
-            'programPath': '/Applications/Astrometry.app/Contents/MacOS',
-            'indexPath': '/Library/Application Support/Astrometry',
-            'solver': app.solverNET,
-        }
-    }
-    app.framework = 'KStars'
-    with mock.patch.object(app.solverNET,
+    app.framework = 'astap'
+    with mock.patch.object(app.run['astap'],
                            'abort',
                            return_value=True):
         suc = app.abort()

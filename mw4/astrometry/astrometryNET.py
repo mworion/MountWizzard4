@@ -19,6 +19,7 @@
 import logging
 import subprocess
 import os
+import glob
 import time
 import platform
 
@@ -82,11 +83,11 @@ class AstrometryNET(object):
 
         elif platform.system() == 'Linux':
             self.environment = {
-                'local - all': {
+                'local-all': {
                     'programPath': '/usr/bin',
                     'indexPath': '/usr/share/astrometry',
                 },
-                'local - user': {
+                'local-user': {
                     'programPath': '/usr/local/astrometry/bin',
                     'indexPath': '/usr/share/astrometry',
                 },
@@ -369,3 +370,49 @@ class AstrometryNET(object):
             return True
         else:
             return False
+
+    def checkAvailability(self):
+        """
+        checkAvailability searches for the existence of the core runtime modules from
+        all applications. to this family belong:
+            astrometry.net namely image2xy and solve-field
+            ASTP files
+
+        :return: available solver environments
+        """
+
+        available = list()
+        program = ''
+        index = ''
+
+        for solver in self.environment:
+            suc = True
+
+            if solver == 'KStars':
+                program = self.environment[solver]['programPath'] + '/astap.exe'
+                index = '/*.fits'
+            elif solver == 'CloudMakers':
+                program = self.environment[solver]['programPath'] + '/astap.exe'
+                index = '/*.fits'
+            elif solver == 'local-all':
+                program = self.environment[solver]['programPath'] + '/astap.exe'
+                index = '/*.fits'
+            elif solver == 'local-user':
+                program = self.environment[solver]['programPath'] + '/astap.exe'
+                index = '/*.fits'
+
+            # checking binaries
+            if not os.path.isfile(program):
+                self.log.info(f'{program} not found')
+                suc = False
+
+            # checking indexes
+            if not glob.glob(self.environment[solver]['indexPath'] + index):
+                self.log.info('no index files found')
+                suc = False
+
+            if suc:
+                available.append(solver)
+                self.log.info(f'binary and index files available for {solver}')
+
+        return available

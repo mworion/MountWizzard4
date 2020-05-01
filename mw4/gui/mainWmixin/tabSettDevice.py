@@ -344,7 +344,7 @@ class SettDevice(object):
         if self.drivers[driver]['class'].name:
             self.drivers[driver]['class'].stopCommunication()
             self.drivers[driver]['class'].data.clear()
-            self.app.message.emit(f'Disabled:            [{driver}]', 0)
+            self.app.message.emit(f'Disabled device:     [{driver}]', 0)
 
         # stopped driver get gets neutral color
         self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_NORM)
@@ -449,7 +449,7 @@ class SettDevice(object):
             self.deviceStat[driver] = True
 
         # and finally start it
-        self.app.message.emit(f'Enabled:             [{driver}]', 0)
+        self.app.message.emit(f'Enabled device:      [{driver}]', 0)
 
         driverData = self.driversData.get(driver, {})
         loadConfig = driverData.get('indiLoadConfig', False)

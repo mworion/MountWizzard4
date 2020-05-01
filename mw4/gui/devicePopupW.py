@@ -102,10 +102,10 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         deviceData = self.data.get(self.driver, {})
         selectedFramework = deviceData.get('framework', 'indi')
         self.indiSearchType = self.indiTypes.get(self.deviceType, 0xff)
+
         self.setWindowTitle(f'Setup for: {self.driver}')
 
         # populating indi data
-
         self.ui.indiHost.setText(deviceData.get('indiHost', 'localhost'))
         self.ui.indiPort.setText(deviceData.get('indiPort', '7624'))
         self.ui.indiNameList.clear()
@@ -132,7 +132,17 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.alpacaPassword.setText(deviceData.get('alpacaPassword', 'password'))
 
         # populating astrometry
+        nameList = deviceData.get('astrometryNameList', [])
+        if not nameList:
+            self.ui.astrometryNameList.addItem('-')
+        for i, name in enumerate(nameList):
+            self.ui.astrometryNameList.addItem(name)
+            if indiName == name:
+                self.ui.astrometryNameList.setCurrentIndex(i)
         self.ui.astrometryIndex.setText(deviceData.get('astrometryIndex', '/usr/'))
+
+        # populating astap
+        self.ui.astapName.setText(deviceData.get('astapName', 'astap'))
 
         # populating ascom
 
@@ -178,7 +188,16 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.data[self.driver]['alpacaPassword'] = self.ui.alpacaPassword.text()
 
         # collecting astrometry data
+        self.data[self.driver]['astrometryName'] = self.ui.astrometryNameList.currentText()
+        model = self.ui.astrometryNameList.model()
+        nameList = []
+        for index in range(model.rowCount()):
+            nameList.append(model.item(index).text())
+        self.data[self.driver]['astrometryNameList'] = nameList
         self.data[self.driver]['astrometryIndex'] = self.ui.astrometryIndex.text()
+
+        # collecting astap data
+        self.data[self.driver]['astapName'] = self.ui.astapName.text()
 
         # collecting ascom data
 
@@ -323,3 +342,43 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.astrometryIndex.setText(saveFilePath)
 
         return True
+
+    def checkAvailability(self):
+        """
+        checkAvailability searches for the existence of the core runtime modules from
+        all applications. to this family belong:
+            astrometry.net namely image2xy and solve-field
+            ASTP files
+
+        :return: available solver environments
+        """
+
+        available = {}
+        for solver in self.solverEnviron:
+            suc = True
+
+            if solver != 'ASTAP':
+                program = self.solverEnviron[solver]['programPath'] + '/solve-field'
+                index = '/*.fits'
+            elif solver == 'ASTAP' and platform.system() == 'Windows':
+                program = self.solverEnviron[solver]['programPath'] + '/astap.exe'
+                index = '/*.290'
+            else:
+                program = self.solverEnviron[solver]['programPath'] + '/astap'
+                index = '/*.290'
+
+            # checking binaries
+            if not os.path.isfile(program):
+                self.log.info(f'{program} not found')
+                suc = False
+
+            # checking indexes
+            if not glob.glob(self.solverEnviron[solver]['indexPath'] + index):
+                self.log.info('no index files found')
+                suc = False
+
+            if suc:
+                available[solver] = solver
+                self.log.info(f'binary and index files available for {solver}')
+
+        return available

@@ -184,6 +184,16 @@ class SettDevice(object):
 
         for driver in self.drivers:
             self.driversData[driver] = configData.get(driver, {})
+            if driver == 'astrometry':
+                environment = self.app.astrometry.run['astrometry'].environment
+                if environment:
+                    nameList = list(environment.keys())
+                    self.driversData['astrometry']['astrometryNameList'] = nameList
+
+                environment = self.app.astrometry.run['astap'].environment
+                if environment:
+                    name = list(environment.keys())[0]
+                    self.driversData[driver]['astapName'] = name
 
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
@@ -285,6 +295,7 @@ class SettDevice(object):
             geometry = self.pos().x(), self.pos().y(), self.height(), self.width()
             # get all available frameworks
             availFramework = list(self.drivers[driver]['class'].run.keys())
+
             # selecting the device type
             deviceType = self.drivers[driver]['deviceType']
 
@@ -375,10 +386,24 @@ class SettDevice(object):
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'alpaca - {name}')
 
-        elif self.drivers[driver]['deviceType'] == 'astrometry':
-            name = driver
-            astrometryFramework = self.drivers[driver]['uiDropDown'].currentText()
-            self.drivers[driver]['class'].framework = astrometryFramework
+        elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
+            pass
+
+        elif self.drivers[driver]['uiDropDown'].currentText().startswith('astrometry'):
+            name = driverData.get('astrometryName', '')
+            indexPath = driverData.get('astrometryIndex', '')
+
+            self.drivers[driver]['class'].framework = 'astrometry'
+            self.drivers[driver]['class'].indexPath = indexPath
+            index = self.drivers[driver]['uiDropDown'].currentIndex()
+            self.drivers[driver]['uiDropDown'].setItemText(index, f'astrometry - {name}')
+
+        elif self.drivers[driver]['uiDropDown'].currentText().startswith('astap'):
+            name = driverData.get('astapName', '')
+
+            self.drivers[driver]['class'].framework = 'astap'
+            index = self.drivers[driver]['uiDropDown'].currentIndex()
+            self.drivers[driver]['uiDropDown'].setItemText(index, f'astap - {name}')
 
         else:
             name = driver

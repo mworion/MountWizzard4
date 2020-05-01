@@ -20,6 +20,7 @@ import logging
 import subprocess
 import os
 import time
+import platform
 
 # external packages
 from astropy.io import fits
@@ -42,8 +43,6 @@ class AstrometryNET(object):
     """
 
     __all__ = ['AstrometryNET',
-               'solveNET',
-               'abortNET',
                ]
 
     logger = logging.getLogger(__name__)
@@ -58,6 +57,44 @@ class AstrometryNET(object):
 
         self.result = {'success': False}
         self.process = None
+        self.environment = {}
+
+        self.setEnvironment()
+
+    def setEnvironment(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        if platform.system() == 'Darwin':
+            home = os.environ.get('HOME')
+            self.environment = {
+                'CloudMakers': {
+                    'programPath': '/Applications/Astrometry.app/Contents/MacOS',
+                    'indexPath': home + '/Library/Application Support/Astrometry',
+                },
+                'KStars': {
+                    'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
+                    'indexPath': home + '/Library/Application Support/Astrometry',
+                },
+            }
+
+        elif platform.system() == 'Linux':
+            self.environment = {
+                'local - all': {
+                    'programPath': '/usr/bin',
+                    'indexPath': '/usr/share/astrometry',
+                },
+                'local - user': {
+                    'programPath': '/usr/local/astrometry/bin',
+                    'indexPath': '/usr/share/astrometry',
+                },
+            }
+
+        elif platform.system() == 'Windows':
+            self.environment = {
+            }
 
     def runImage2xy(self, binPath='', tempPath='', fitsPath='', timeout=30):
         """
@@ -216,8 +253,8 @@ class AstrometryNET(object):
         configPath = self.tempDir + '/astrometry.cfg'
         solvedPath = self.tempDir + '/temp.solved'
         wcsPath = self.tempDir + '/temp.wcs'
-        binPathImage2xy = solver['programPath'] + '/image2xy'
-        binPathSolveField = solver['programPath'] + '/solve-field'
+        binPathImage2xy = self.environment[self.name]['programPath'] + '/image2xy'
+        binPathSolveField = self.environment[self.name]['programPath'] + '/solve-field'
 
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
@@ -225,7 +262,7 @@ class AstrometryNET(object):
         cfgFile = self.tempDir + '/astrometry.cfg'
         with open(cfgFile, 'w+') as outFile:
             outFile.write('cpulimit 300\n')
-            outFile.write(f'add_path {solver["indexPath"]}\n')
+            outFile.write(f'add_path {self.indexPath}\n')
             outFile.write('autoindex\n')
 
         # using sextractor in astrometry.net and  KStars
@@ -281,7 +318,7 @@ class AstrometryNET(object):
         # split between ekos and cloudmakers as cloudmakers use an older version of
         # solve-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
-        if 'Astrometry.app' in solver['programPath']:
+        if self.name == 'CloudMakers':
             options.append('--no-fits2fits')
 
         suc = self.runSolveField(binPath=binPathSolveField,

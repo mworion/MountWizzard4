@@ -68,6 +68,7 @@ class CameraIndi(IndiClass):
         # set BLOB mode also
         self.client.setBlobMode(blobHandling='Also',
                                 deviceName=deviceName)
+
         # setting a object name
         objectName = self.device.getText('FITS_HEADER')
         objectName['FITS_OBJECT'] = 'skymodel'
@@ -75,6 +76,7 @@ class CameraIndi(IndiClass):
                                 propertyName='FITS_HEADER',
                                 elements=objectName,
                                 )
+
         # setting WCS Control off
         wcs = self.device.getSwitch('WCS_CONTROL')
         wcs['WCS_DISABLE'] = True
@@ -82,6 +84,7 @@ class CameraIndi(IndiClass):
                                   propertyName='WCS_CONTROL',
                                   elements=wcs,
                                   )
+
         # setting active device for telescope
         telescope = self.device.getText('ACTIVE_DEVICES')
         telescope['ACTIVE_TELESCOPE'] = 'LX200 10micron'
@@ -89,12 +92,15 @@ class CameraIndi(IndiClass):
                                 propertyName='ACTIVE_DEVICES',
                                 elements=telescope,
                                 )
+
         # setting polling updates in driver
         update = self.device.getNumber('POLLING_PERIOD')
+
         if 'PERIOD_MS' not in update:
             return False
         if update.get('PERIOD_MS', 0) == self.UPDATE_RATE:
             return True
+
         update['PERIOD_MS'] = self.UPDATE_RATE
         suc = self.client.sendNewNumber(deviceName=deviceName,
                                         propertyName='POLLING_PERIOD',

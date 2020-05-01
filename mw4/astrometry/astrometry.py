@@ -15,7 +15,6 @@
 # Licence APL2.0
 #
 ###########################################################
-###########################################################
 # standard libraries
 import logging
 import os
@@ -85,112 +84,65 @@ class Astrometry:
 
         self.data = {}
         self.framework = None
-
-        self.solverASTAP = AstrometryASTAP(self)
-        self.solverNET = AstrometryNET(self)
-
+        self.run = {
+            'astrometry': AstrometryNET(self),
+            'astap': AstrometryASTAP(self),
+        }
+        self.name = ''
+        self.apiKey = ''
+        self.indexPath = ''
+        self.host = ('localhost', 7624)
         self.mutexSolve = PyQt5.QtCore.QMutex()
 
-        self.solverEnviron = {}
-        self.setSolverEnviron()
+    @property
+    def host(self):
+        return self._host
 
-        # minimum set for driver package built in
-        self.name = ''
-        self.run = self.checkAvailability()
+    @host.setter
+    def host(self, value):
+        self._host = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].host = value
 
-    def setSolverEnviron(self):
-        """
+    @property
+    def apiKey(self):
+        return self._apiKey
 
-        :return: true for test purpose
-        """
+    @apiKey.setter
+    def apiKey(self, value):
+        self._apiKey = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].apiKey = value
 
-        if platform.system() == 'Darwin':
-            home = os.environ.get('HOME')
-            self.solverEnviron = {
-                'CloudMakers': {
-                    'programPath': '/Applications/Astrometry.app/Contents/MacOS',
-                    'indexPath': home + '/Library/Application Support/Astrometry',
-                    'solver': self.solverNET,
-                },
-                'astrometry': {
-                    'programPath': '/Applications/KStars.app/Contents/MacOS/astrometry/bin',
-                    'indexPath': home + '/Library/Application Support/Astrometry',
-                    'solver': self.solverNET,
-                },
-                'ASTAP': {
-                    'programPath': '/Applications/ASTAP.app/Contents/MacOS',
-                    'indexPath': '/usr/local/opt/astap',
-                    'solver': self.solverASTAP,
-                }
-            }
+    @property
+    def indexPath(self):
+        return self._indexPath
 
-        elif platform.system() == 'Linux':
-            self.solverEnviron = {
-                'astrometry.net local': {
-                    'programPath': '/usr/bin',
-                    'indexPath': '/usr/share/astrometry',
-                    'solver': self.solverNET,
-                },
-                'astrometry.net local user': {
-                    'programPath': '/usr/local/astrometry/bin',
-                    'indexPath': '/usr/share/astrometry',
-                    'solver': self.solverNET,
-                },
-                'ASTAP': {
-                    'programPath': '/opt/astap',
-                    'indexPath': '/opt/astap',
-                    'solver': self.solverASTAP,
-                },
-            }
+    @indexPath.setter
+    def indexPath(self, value):
+        self._indexPath = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].indexPath = value
 
-        elif platform.system() == 'Windows':
-            self.solverEnviron = {
-                'ASTAP': {
-                    'programPath': 'C:\\Program Files\\astap',
-                    'indexPath': 'C:\\Program Files\\astap',
-                    'solver': self.solverASTAP,
-                },
-            }
+    @property
+    def host(self):
+        return self._host
 
-    def checkAvailability(self):
-        """
-        checkAvailability searches for the existence of the core runtime modules from
-        all applications. to this family belong:
-            astrometry.net namely image2xy and solve-field
-            ASTP files
+    @host.setter
+    def host(self, value):
+        self._host = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].host = value
 
-        :return: available solver environments
-        """
+    @property
+    def name(self):
+        return self._name
 
-        available = {}
-        for solver in self.solverEnviron:
-            suc = True
-
-            if solver != 'ASTAP':
-                program = self.solverEnviron[solver]['programPath'] + '/solve-field'
-                index = '/*.fits'
-            elif solver == 'ASTAP' and platform.system() == 'Windows':
-                program = self.solverEnviron[solver]['programPath'] + '/astap.exe'
-                index = '/*.290'
-            else:
-                program = self.solverEnviron[solver]['programPath'] + '/astap'
-                index = '/*.290'
-
-            # checking binaries
-            if not os.path.isfile(program):
-                self.log.info(f'{program} not found')
-                suc = False
-
-            # checking indexes
-            if not glob.glob(self.solverEnviron[solver]['indexPath'] + index):
-                self.log.info('no index files found')
-                suc = False
-
-            if suc:
-                available[solver] = solver
-                self.log.info(f'binary and index files available for {solver}')
-
-        return available
+    @name.setter
+    def name(self, value):
+        self._name = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].name = value
 
     def readFitsData(self, fitsPath):
         """
@@ -270,8 +222,8 @@ class Astrometry:
                                             isHours=False)
 
         # todo: it would be nice, if adding, subtracting of angels are part of skyfield
-        deltaRA = abs(raJ2000._degrees - raMount._degrees) * 3600
-        deltaDEC = abs(decJ2000.degrees - decMount.degrees) * 3600
+        deltaRA = (raJ2000._degrees - raMount._degrees) * 3600
+        deltaDEC = (decJ2000.degrees - decMount.degrees) * 3600
         error = np.sqrt(np.square(deltaRA) + np.square(deltaDEC))
 
         solve = {
@@ -356,11 +308,10 @@ class Astrometry:
         :return: success
         """
 
-        if self.framework not in self.solverEnviron:
+        if self.framework not in self.run:
             return False
 
-        solverEnviron = self.solverEnviron[self.framework]
-        solver = solverEnviron['solver']
+        solver = self.run[self.framework]
 
         if not os.path.isfile(fitsPath):
             self.signals.done.emit(solver.result)
@@ -392,11 +343,10 @@ class Astrometry:
         :return:
         """
 
-        if self.framework not in self.solverEnviron:
+        if self.framework not in self.run:
             return False
 
-        solverEnviron = self.solverEnviron[self.framework]
-        solver = solverEnviron['solver']
+        solver = self.run[self.framework]
         suc = solver.abort()
         return suc
 

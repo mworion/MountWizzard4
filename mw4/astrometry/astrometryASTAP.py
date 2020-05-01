@@ -20,6 +20,7 @@ import logging
 import subprocess
 import os
 import time
+import platform
 
 # external packages
 from astropy.io import fits
@@ -56,6 +57,39 @@ class AstrometryASTAP(object):
 
         self.result = {'success': False}
         self.process = None
+        self.environment = {}
+
+        self.setEnvironment()
+
+    def setEnvironment(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        if platform.system() == 'Darwin':
+            self.environment = {
+                'ASTAP-Mac': {
+                    'programPath': '/Applications/ASTAP.app/Contents/MacOS',
+                    'indexPath': '/usr/local/opt/astap',
+                }
+            }
+
+        elif platform.system() == 'Linux':
+            self.environment = {
+                'ASTAP-Linux': {
+                    'programPath': '/opt/astap',
+                    'indexPath': '/opt/astap',
+                },
+            }
+
+        elif platform.system() == 'Windows':
+            self.environment = {
+                'ASTAP-Win': {
+                    'programPath': 'C:\\Program Files\\astap',
+                    'indexPath': 'C:\\Program Files\\astap',
+                },
+            }
 
     def runASTAP(self, binPath='', tempFile='', fitsPath='', options='', timeout=30):
         """
@@ -165,7 +199,7 @@ class AstrometryASTAP(object):
         if os.path.isfile(wcsPath):
             os.remove(wcsPath)
 
-        binPathASTAP = solver['programPath'] + '/astap'
+        binPathASTAP = self.environment[self.name]['programPath'] + '/astap'
 
         raFITS, decFITS, scaleFITS, _, _ = self.readFitsData(fitsPath=fitsPath)
 

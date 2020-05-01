@@ -276,7 +276,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         self.measure.timerTask.stop()
         self.relay.timerTask.stop()
         self.timer0_1s.stop()
-        self.application.aboutToQuit.emit()
         self.threadPool.waitForDone(5000)
         self.message.emit('MountWizzard4 manual stopped', 1)
         self.application.quit()

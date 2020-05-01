@@ -60,6 +60,8 @@ class FilterAlpaca(AlpacaClass):
         names = self.client.names()
 
         for i, name in enumerate(names):
+            if name is None:
+                continue
             self.data[f'FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}'] = name
 
         return True
@@ -72,7 +74,7 @@ class FilterAlpaca(AlpacaClass):
 
         position = self.client.position()
 
-        if position == -1:
+        if position == -1 or position is None:
             return False
 
         self.data['FILTER_SLOT.FILTER_SLOT_VALUE'] = position

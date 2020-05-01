@@ -278,11 +278,10 @@ class Astrometry:
         :return: true for test purpose
         """
 
-        if self.framework not in self.solverEnviron:
+        if self.framework not in self.run:
             return False
 
-        solverEnviron = self.solverEnviron[self.framework]
-        solver = solverEnviron['solver']
+        solver = self.run[self.framework]
 
         self.mutexSolve.unlock()
         self.signals.done.emit(solver.result)
@@ -323,7 +322,6 @@ class Astrometry:
 
         self.signals.message.emit('solving')
         worker = tpool.Worker(solver.solve,
-                              solver=solverEnviron,
                               fitsPath=fitsPath,
                               raHint=raHint,
                               decHint=decHint,

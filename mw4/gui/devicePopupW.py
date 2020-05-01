@@ -100,7 +100,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
 
         # populate data
         deviceData = self.data.get(self.driver, {})
-        selectedFramework = deviceData.get('framework', 'indi')
+        selectedFramework = deviceData.get('framework', '')
         self.indiSearchType = self.indiTypes.get(self.deviceType, 0xff)
 
         self.setWindowTitle(f'Setup for: {self.driver}')

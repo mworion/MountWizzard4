@@ -211,7 +211,7 @@ class AstrometryNET(object):
         wcsHeader = wcsHDU[0].header
         return wcsHeader
 
-    def solve(self, solver={}, fitsPath='', raHint=None, decHint=None, scaleHint=None,
+    def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
               radius=2, timeout=30, updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
@@ -228,7 +228,6 @@ class AstrometryNET(object):
         astrometry implementation from cloudmakers.eu (another nice package for MAC Astro
         software)
 
-        :param solver: which astrometry implementation to choose
         :param fitsPath:  full path to fits file
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
@@ -243,8 +242,6 @@ class AstrometryNET(object):
         self.process = None
         self.result = {'success': False}
 
-        if not solver:
-            return False
         if not os.path.isfile(fitsPath):
             self.result['message'] = 'image missing'
             return False

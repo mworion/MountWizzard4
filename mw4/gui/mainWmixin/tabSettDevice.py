@@ -137,7 +137,6 @@ class SettDevice(object):
         }
 
         self.driversData = {}
-        self.setupDeviceGui()
 
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].activated.connect(self.dispatch)
@@ -195,6 +194,8 @@ class SettDevice(object):
                     name = list(environment.keys())[0]
                     self.driversData[driver]['astapName'] = name
 
+        self.setupDeviceGui()
+
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
             self.dispatch(driverName=driver)
@@ -245,7 +246,20 @@ class SettDevice(object):
             if not hasattr(self.drivers[driver]['class'], 'run'):
                 continue
             for framework in self.drivers[driver]['class'].run.keys():
-                self.drivers[driver]['uiDropDown'].addItem(framework)
+                if framework == 'indi':
+                    name = ' - ' + self.driversData[driver].get('indiName', '')
+                elif framework == 'alpaca':
+                    name = ' - ' + self.driversData[driver].get('alpacaName', '')
+                elif framework == 'ascom':
+                    name = ' - ' + self.driversData[driver].get('ascomName', '')
+                elif framework == 'astrometry':
+                    name = ' - ' + self.driversData[driver].get('astrometryName', '')
+                elif framework == 'astap':
+                    name = ' - ' + self.driversData[driver].get('astapName', '')
+                else:
+                    name = ''
+                itemText = f'{framework}{name}'
+                self.drivers[driver]['uiDropDown'].addItem(itemText)
 
         return True
 
@@ -369,7 +383,9 @@ class SettDevice(object):
             host = (address, port)
             showMessages = driverData.get('indiMessages', False)
             framework = 'indi'
+
             self.drivers[driver]['class'].framework = framework
+            driverData['framework'] = framework
             self.drivers[driver]['class'].run[framework].showMessages = showMessages
             self.drivers[driver]['class'].host = host
             index = self.drivers[driver]['uiDropDown'].currentIndex()
@@ -382,6 +398,7 @@ class SettDevice(object):
             host = (address, port)
 
             self.drivers[driver]['class'].framework = 'alpaca'
+            driverData['framework'] = 'alpaca'
             self.drivers[driver]['class'].host = host
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'alpaca - {name}')
@@ -394,6 +411,7 @@ class SettDevice(object):
             indexPath = driverData.get('astrometryIndex', '')
 
             self.drivers[driver]['class'].framework = 'astrometry'
+            driverData['framework'] = 'astrometry'
             self.drivers[driver]['class'].indexPath = indexPath
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astrometry - {name}')
@@ -402,6 +420,7 @@ class SettDevice(object):
             name = driverData.get('astapName', '')
 
             self.drivers[driver]['class'].framework = 'astap'
+            driverData['framework'] = 'astap'
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astap - {name}')
 
@@ -425,7 +444,7 @@ class SettDevice(object):
             return False
 
         # for built-in i actually not check their presence as the should function
-        if self.drivers[driver]['uiDropDown'].currentText() == 'built-in':
+        if self.drivers[driver]['uiDropDown'].currentText().startswith('built-in'):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
 

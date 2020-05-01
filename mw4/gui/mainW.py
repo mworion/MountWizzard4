@@ -94,12 +94,13 @@ class MainWindow(MWidget,
     log = CustomLogger(logger, {})
 
     def __init__(self, app):
+        super().__init__()
+
         self.app = app
         self.threadPool = app.threadPool
         self.deviceStat = app.deviceStat
         self.uiWindows = app.uiWindows
-
-        super().__init__()
+        self.setAttribute(PyQt5.QtCore.Qt.WA_DeleteOnClose)
 
         # load and init the gui
         self.ui = Ui_MainWindow()

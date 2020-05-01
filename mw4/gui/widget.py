@@ -60,6 +60,7 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
 
     def __init__(self):
         super().__init__()
+
         self.palette = PyQt5.QtGui.QPalette()
         self.initUI()
         self.screenSizeX = PyQt5.QtWidgets.QDesktopWidget().screenGeometry().width()

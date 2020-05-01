@@ -52,8 +52,7 @@ def module_setup_teardown(qapp):
     with mock.patch.object(PyQt5.QtWidgets.QWidget,
                            'show'):
         app = MountWizzard4(mwGlob=mwGlob, application=qapp)
-
-    yield
+        yield
 
 
 @pytest.fixture(autouse=True, scope='function')

@@ -246,6 +246,8 @@ class SettDevice(object):
             if not hasattr(self.drivers[driver]['class'], 'run'):
                 continue
             for framework in self.drivers[driver]['class'].run.keys():
+                if driver not in self.driversData:
+                    self.driversData[driver] = {}
                 if framework == 'indi':
                     name = ' - ' + self.driversData[driver].get('indiName', '')
                 elif framework == 'alpaca':
@@ -404,7 +406,7 @@ class SettDevice(object):
             self.drivers[driver]['uiDropDown'].setItemText(index, f'alpaca - {name}')
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
-            pass
+            name = driverData.get('ascomName', '')
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('astrometry'):
             name = driverData.get('astrometryName', '')

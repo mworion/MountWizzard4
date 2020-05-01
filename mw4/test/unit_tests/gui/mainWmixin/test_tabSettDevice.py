@@ -102,6 +102,7 @@ def module_setup_teardown(qtbot):
     app.threadPool = QThreadPool()
     app.config = dict()
     app.BACK_NORM = '#000000'
+    app.BACK_GREEN = '#000000'
     app.driversData = {'camera': {}}
 
     qtbot.addWidget(app)
@@ -112,12 +113,14 @@ def module_setup_teardown(qtbot):
 
 
 def test_findIndexValue_1():
+    app.setupDeviceGui()
     val = app.findIndexValue(ui=app.ui.domeDevice,
                              searchString='dome')
     assert val == 0
 
 
 def test_findIndexValue_2():
+    app.setupDeviceGui()
     val = app.findIndexValue(ui=app.ui.domeDevice,
                              searchString='indi')
     assert val == 1
@@ -242,7 +245,7 @@ def test_setupPopUp_1():
 
 def test_dispatchStopDriver_1():
     suc = app.dispatchStopDriver(driver='dome')
-    assert not suc
+    assert suc
 
 
 def test_dispatchStopDriver_2():
@@ -253,6 +256,13 @@ def test_dispatchStopDriver_2():
 
 def test_dispatchStopDriver_3():
     app.drivers['dome']['class'].name = 'dome'
+    suc = app.dispatchStopDriver(driver='dome')
+    assert suc
+
+
+def test_dispatchStopDriver_4():
+    app.drivers['dome']['class'].name = 'dome'
+    app.drivers['dome']['uiDropDown'].addItem('device disabled')
     suc = app.dispatchStopDriver(driver='dome')
     assert not suc
 
@@ -291,6 +301,36 @@ def test_dispatchConfigDriver_6():
     assert suc
 
 
+def test_dispatchConfigDriver_7():
+    app.drivers['dome']['uiDropDown'].addItem('indi')
+    suc = app.dispatchConfigDriver(driver='dome')
+    assert suc
+
+
+def test_dispatchConfigDriver_8():
+    app.drivers['dome']['uiDropDown'].addItem('alpaca')
+    suc = app.dispatchConfigDriver(driver='dome')
+    assert suc
+
+
+def test_dispatchConfigDriver_9():
+    app.drivers['dome']['uiDropDown'].addItem('ascom')
+    suc = app.dispatchConfigDriver(driver='dome')
+    assert suc
+
+
+def test_dispatchConfigDriver_10():
+    app.drivers['dome']['uiDropDown'].addItem('astap')
+    suc = app.dispatchConfigDriver(driver='dome')
+    assert suc
+
+
+def test_dispatchConfigDriver_11():
+    app.drivers['dome']['uiDropDown'].addItem('astrometry')
+    suc = app.dispatchConfigDriver(driver='dome')
+    assert suc
+
+
 def test_dispatchStartDriver_1():
     suc = app.dispatchStartDriver(driver=None)
     assert not suc
@@ -303,127 +343,67 @@ def test_dispatchStartDriver_2():
     assert not suc
 
 
-def test_dispatch_1(qtbot):
-    app.ui.relayDevice.setCurrentIndex(0)
+def test_dispatchStartDriver_1(qtbot):
+    suc = app.dispatchStartDriver()
+    assert not suc
+
+
+def test_dispatchStartDriver_2(qtbot):
+    app.ui.relayDevice.addItem('built-in')
     with mock.patch.object(app.app.relay,
-                           'stopCommunication',
-                           return_value=None):
-        suc = app.dispatch()
+                           'startCommunication',
+                           return_value=False):
+        suc = app.dispatchStartDriver(driver='relay')
+        assert not suc
+
+
+def test_dispatchStartDriver_3(qtbot):
+    app.ui.relayDevice.addItem('test')
+    with mock.patch.object(app.app.relay,
+                           'startCommunication',
+                           return_value=True):
+        suc = app.dispatchStartDriver(driver='relay')
         assert suc
+
+
+def test_dispatch_1(qtbot):
+    with mock.patch.object(app,
+                           'dispatchStopDriver',
+                           return_value=True):
+        with mock.patch.object(app,
+                               'dispatchConfigDriver'):
+            with mock.patch.object(app,
+                                   'dispatchStartDriver'):
+                suc = app.dispatch(driverName='test')
+                assert suc
 
 
 def test_dispatch_2(qtbot):
-    app.ui.relayDevice.setCurrentIndex(1)
-    with mock.patch.object(app.app.relay,
-                           'startCommunication',
-                           return_value=None):
-        suc = app.dispatch()
-        assert suc
-
-
-def test_dispatch_3(qtbot):
-    app.ui.remoteDevice.setCurrentIndex(0)
-    with mock.patch.object(app.app.remote,
-                           'startCommunication',
-                           return_value=None):
-        suc = app.dispatch()
-        assert suc
-
-
-def test_dispatch_4(qtbot):
-    app.ui.remoteDevice.setCurrentIndex(1)
-    with mock.patch.object(app.app.remote,
-                           'stopCommunication',
-                           return_value=None):
-        suc = app.dispatch()
-        assert suc
-
-
-def test_dispatch_5(qtbot):
-    app.ui.measureDevice.setCurrentIndex(1)
-    with mock.patch.object(app.app.measure,
-                           'startCommunication',
-                           return_value=None):
-        suc = app.dispatch()
-        assert suc
-
-
-def test_dispatch_6(qtbot):
-    app.ui.measureDevice.setCurrentIndex(0)
-    with mock.patch.object(app.app.measure,
-                           'stopCommunication',
-                           return_value=None):
-        suc = app.dispatch()
-        assert suc
-
-
-def test_dispatch_7():
-    app.ui.sensorWeatherDevice.setCurrentIndex(0)
-    suc = app.dispatch()
-    assert suc
-
-
-def test_dispatch_8():
-    app.ui.sensorWeatherDevice.setCurrentIndex(1)
-    suc = app.dispatch()
-    assert suc
-
-
-def test_dispatch_9():
-    app.ui.skymeterDevice.setCurrentIndex(0)
-    suc = app.dispatch()
-    assert suc
-
-
-def test_dispatch_10():
-    app.ui.skymeterDevice.setCurrentIndex(1)
-    suc = app.dispatch()
-    assert suc
-
-
-def test_dispatch_11():
-    app.ui.powerDevice.setCurrentIndex(0)
-    suc = app.dispatch()
-    assert suc
-
-
-def test_dispatch_12():
-    app.ui.powerDevice.setCurrentIndex(1)
-    suc = app.dispatch()
-    assert suc
-
-
-def test_dispatch_13():
-    app.ui.astrometryDevice.setCurrentIndex(0)
-    suc = app.dispatch()
-    assert suc
-
-
-def test_dispatch_14():
-    app.ui.astrometryDevice.setCurrentIndex(1)
-    suc = app.dispatch()
-    assert suc
-
-
-def test_dispatch_15():
     def Sender():
-        return ui.cameraSetup
-    app.sender = Sender
-
-    suc = app.dispatch(driverName='dome')
-    assert suc
-
-
-def test_dispatch_16():
-    def Sender():
-        return ui.domeDevice
+        return ui.relayDevice
     app.sender = Sender
 
     with mock.patch.object(app,
                            'dispatchStopDriver',
                            return_value=True):
-        suc = app.dispatch(driverName=1)
-        assert suc
+        with mock.patch.object(app,
+                               'dispatchConfigDriver'):
+            with mock.patch.object(app,
+                                   'dispatchStartDriver'):
+                suc = app.dispatch(driverName=None)
+                assert suc
+
+
+def test_dispatch_3(qtbot):
+    with mock.patch.object(app,
+                           'dispatchStopDriver',
+                           return_value=False):
+        with mock.patch.object(app,
+                               'dispatchConfigDriver'):
+            with mock.patch.object(app,
+                                   'dispatchStartDriver'):
+                suc = app.dispatch()
+                assert suc
 
 
 def test_scanValid_1():

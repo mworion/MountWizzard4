@@ -804,7 +804,6 @@ class Model(object):
             os.mkdir(self.imageDir)
         if not os.path.isdir(self.imageDir):
             return False
-        if not self.app.astrometry.ch
 
         # now everything is prepared and we could start modeling
         self.clearQueues()
@@ -872,6 +871,10 @@ class Model(object):
 
         if len(self.app.data.buildP) > 99:
             self.app.message.emit('No modeling start because more than 99 points', 2)
+            return False
+
+        if not self.app.astrometry.checkAvailability():
+            self.app.message.emit('No valid configuration for plate solver', 2)
             return False
 
         if self.ui.checkDeleteModelFirst.isChecked():

@@ -301,10 +301,10 @@ class MainWindow(MWidget,
 
         :return:    nothing
         """
-        # remove waiting todo: better place ?
-        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
 
         super().closeEvent(closeEvent)
+        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
+        self.closeExtendedWindows()
         self.app.quit()
 
     def quitSave(self):
@@ -314,10 +314,9 @@ class MainWindow(MWidget,
 
         :return:    true for test purpose
         """
+
         self.saveProfile()
-        self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.app.saveConfig()
-        self.closeExtendedWindows()
         self.close()
 
         return True

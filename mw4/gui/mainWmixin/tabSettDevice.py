@@ -308,7 +308,7 @@ class SettDevice(object):
                 continue
 
             # calculate geometry
-            geometry = self.pos().x(), self.pos().y(), self.height(), self.width()
+            geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
             # get all available frameworks
             availFramework = list(self.drivers[driver]['class'].run.keys())
 

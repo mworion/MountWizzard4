@@ -316,7 +316,9 @@ class MainWindow(MWidget,
         """
         self.saveProfile()
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
-        self.app.quitSave()
+        self.app.saveConfig()
+        self.closeExtendedWindows()
+        self.close()
 
         return True
 

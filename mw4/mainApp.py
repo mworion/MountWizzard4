@@ -270,23 +270,13 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         self.mount.mountUp = False
-        self.mount.stopTimers()
-        self.measure.timerTask.stop()
-        self.relay.timerTask.stop()
         self.timer0_1s.stop()
+        self.measure.timerTask.stop()
+        self.mount.stopTimers()
+        self.relay.timerTask.stop()
         self.threadPool.waitForDone(5000)
         self.message.emit('MountWizzard4 manual stopped', 1)
         self.application.quit()
-        return True
-
-    def quitSave(self):
-        """
-        quit with saving persistence data
-
-        :return:    True for test purpose
-        """
-        self.saveConfig()
-        self.quit()
         return True
 
     @staticmethod

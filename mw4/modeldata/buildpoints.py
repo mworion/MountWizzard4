@@ -364,17 +364,18 @@ class DataPoint(object):
         self._buildP = [x for x in self._buildP if self.isCloseMeridian(x)]
         return True
 
-    def sort(self, eastwest=False, highlow=False):
+    def sort(self, eastwest=False, highlow=False, pierside=None):
         """
 
         :param eastwest: flag if to be sorted east - west
         :param highlow:  flag if sorted high low altitude
+        :param pierside:  start pierside sorting with this position
         :return: true for test purpose
         """
 
         if eastwest and highlow:
             return False
-        if not eastwest and not highlow:
+        if not eastwest and not highlow and pierside is None:
             return False
 
         east = [x for x in self._buildP if x[1] <= 180]
@@ -388,7 +389,11 @@ class DataPoint(object):
             east = sorted(east, key=lambda x: -x[0])
             west = sorted(west, key=lambda x: -x[0])
 
-        self._buildP = east + west
+        if pierside == 'E':
+            self._buildP = west + east
+        else:
+            self._buildP = east + west
+
         return True
 
     def loadBuildP(self, fileName=None):

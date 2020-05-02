@@ -72,6 +72,7 @@ class BuildPoints(object):
         self.ui.checkSortNothing.clicked.connect(self.updateSorting)
         self.ui.checkSortEW.clicked.connect(self.updateSorting)
         self.ui.checkSortHL.clicked.connect(self.updateSorting)
+        self.ui.checkAvoidFlip.clicked.connect(self.updateSorting)
         self.ui.checkAutoDeleteMeridian.clicked.connect(self.autoDeletePoints)
         self.ui.checkAutoDeleteHorizon.clicked.connect(self.autoDeletePoints)
 
@@ -105,7 +106,7 @@ class BuildPoints(object):
 
         self.ui.checkAutoDeleteMeridian.setChecked(config.get('checkAutoDeleteMeridian', False))
         self.ui.checkAutoDeleteHorizon.setChecked(config.get('checkAutoDeleteHorizon', False))
-        self.ui.checkStartNearest.setChecked(config.get('checkStartNearest', False))
+        self.ui.checkAvoidFlip.setChecked(config.get('checkAvoidFlip', False))
         self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
         self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
         self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
@@ -143,7 +144,7 @@ class BuildPoints(object):
         config['timeShiftDSO'] = self.ui.timeShiftDSO.value()
         config['checkAutoDeleteMeridian'] = self.ui.checkAutoDeleteMeridian.isChecked()
         config['checkAutoDeleteHorizon'] = self.ui.checkAutoDeleteHorizon.isChecked()
-        config['checkStartNearest'] = self.ui.checkStartNearest.isChecked()
+        config['checkAvoidFlip'] = self.ui.checkAvoidFlip.isChecked()
         config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
         config['checkSortEW'] = self.ui.checkSortEW.isChecked()
         config['checkSortHL'] = self.ui.checkSortHL.isChecked()
@@ -595,11 +596,23 @@ class BuildPoints(object):
 
         eastwest = self.ui.checkSortEW.isChecked()
         highlow = self.ui.checkSortHL.isChecked()
+        avoidFlip = self.ui.checkAvoidFlip.isChecked()
 
-        if not eastwest and not highlow:
+        pierside = self.app.mount.obsSite.pierside
+
+        if pierside is None:
+            avoidFlip = False
+
+        if not eastwest and not highlow and not avoidFlip:
             return False
 
-        self.app.data.sort(eastwest=eastwest, highlow=highlow)
+        if avoidFlip:
+            self.app.data.sort(eastwest=eastwest,
+                               highlow=highlow,
+                               pierside=pierside)
+        else:
+            self.app.data.sort(eastwest=eastwest, highlow=highlow)
+
         self.app.redrawHemisphere.emit()
 
         return True

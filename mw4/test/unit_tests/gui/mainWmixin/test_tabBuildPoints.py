@@ -538,6 +538,7 @@ def test_autoSortPoints_1():
 def test_autoSortPoints_2():
     app.ui.checkSortEW.setChecked(True)
     app.ui.checkSortHL.setChecked(True)
+    app.ui.checkStartNearest.setChecked(True)
     suc = app.autoSortPoints()
     assert suc
 

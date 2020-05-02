@@ -5802,10 +5802,10 @@ to mount</string>
        <string>No sorting of the model points </string>
       </property>
       <property name="text">
-       <string>No Sorting</string>
+       <string>Default</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkStartNearest">
+     <widget class="QCheckBox" name="checkAvoidFlip">
       <property name="geometry">
        <rect>
         <x>15</x>
@@ -5823,7 +5823,7 @@ to mount</string>
        <string>If checked, all model points are deleted, which are below the horizon mask.</string>
       </property>
       <property name="text">
-       <string>Start with nearest point to current position</string>
+       <string>Avoid meridian flip when starting</string>
       </property>
      </widget>
     </widget>

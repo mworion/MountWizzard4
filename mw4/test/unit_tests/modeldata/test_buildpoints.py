@@ -946,6 +946,24 @@ def test_sort_6():
     assert app.buildP == result
 
 
+def test_sort_7():
+    values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
+    result = [(50, 290), (40, 190), (30, 90), (20, 20), (10, 10)]
+    app._buildP = values
+    suc = app.sort(eastwest=False, highlow=True, pierside='E')
+    assert suc
+    assert app.buildP == result
+
+
+def test_sort_8():
+    values = [(30, 90), (50, 290), (20, 20), (10, 10), (40, 190)]
+    result = [(30, 90), (20, 20), (10, 10), (50, 290), (40, 190)]
+    app._buildP = values
+    suc = app.sort(eastwest=False, highlow=True, pierside='W')
+    assert suc
+    assert app.buildP == result
+
+
 def test_generateCelestialEquator():
     value = app.generateCelestialEquator()
     assert len(value) == 3000

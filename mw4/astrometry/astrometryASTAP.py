@@ -287,7 +287,7 @@ class AstrometryASTAP(object):
                 program = self.environment[solver]['programPath'] + '/astap.exe'
                 index = '/*.290'
             elif solver == 'ASTAP-Mac':
-                program = self.environment[solver]['programPath'] + '/astap.exe'
+                program = self.environment[solver]['programPath'] + '/astap'
                 index = '/*.290'
             elif solver == 'ASTAP-Linux':
                 program = self.environment[solver]['programPath'] + '/astap'

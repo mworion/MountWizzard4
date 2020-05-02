@@ -804,6 +804,7 @@ class Model(object):
             os.mkdir(self.imageDir)
         if not os.path.isdir(self.imageDir):
             return False
+        if not self.app.astrometry.ch
 
         # now everything is prepared and we could start modeling
         self.clearQueues()

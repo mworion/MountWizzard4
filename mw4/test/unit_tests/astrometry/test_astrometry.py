@@ -301,6 +301,21 @@ def test_abort_2(app):
         assert suc
 
 
+def test_checkAvailability_1(app):
+    app.framework = 'test'
+    val = app.checkAvailability()
+    assert not val
+
+
+def test_checkAvailability_2(app):
+    app.framework = 'astap'
+    with mock.patch.object(app.run['astap'],
+                           'checkAvailability',
+                           return_value=['ASTAP-Mac']):
+        val = app.checkAvailability()
+        assert val == ['ASTAP-Mac']
+
+
 def test_startCommunication(app):
     suc = app.startCommunication()
     assert suc

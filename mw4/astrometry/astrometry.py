@@ -300,7 +300,7 @@ class Astrometry:
         return True
 
     def solveThreading(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
-                       radius=2, timeout=30, updateFits=False):
+                       updateFits=False):
         """
         solveThreading is the wrapper for doing the solve process in a threadpool
         environment of Qt. Otherwise the HMI would be stuck all the time during solving.
@@ -353,6 +353,18 @@ class Astrometry:
         solver = self.run[self.framework]
         suc = solver.abort()
         return suc
+
+    def checkAvailability(self):
+        """
+
+        :return: list of available solutions
+        """
+
+        if self.framework not in self.run:
+            return []
+
+        val = self.run[self.framework].checkAvailability()
+        return val
 
     def startCommunication(self, loadConfig=False):
         """

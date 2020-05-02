@@ -103,6 +103,13 @@ class BuildPoints(object):
         self.ui.durationDSO.setValue(config.get('durationDSO', 5))
         self.ui.timeShiftDSO.setValue(config.get('timeShiftDSO', 0))
 
+        self.ui.checkAutoDeleteMeridian.setChecked(config.get('checkAutoDeleteMeridian', False))
+        self.ui.checkAutoDeleteHorizon.setChecked(config.get('checkAutoDeleteHorizon', False))
+        self.ui.checkStartNearest.setChecked(config.get('checkStartNearest', False))
+        self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
+        self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
+        self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
+
         # initialising the signal slot connections after the value are set, because
         # otherwise we get a first value changed signal just when populating
         # the initial data. this should not happen.
@@ -134,6 +141,12 @@ class BuildPoints(object):
         config['numberDSOPoints'] = self.ui.numberDSOPoints.value()
         config['durationDSO'] = self.ui.durationDSO.value()
         config['timeShiftDSO'] = self.ui.timeShiftDSO.value()
+        config['checkAutoDeleteMeridian'] = self.ui.checkAutoDeleteMeridian.isChecked()
+        config['checkAutoDeleteHorizon'] = self.ui.checkAutoDeleteHorizon.isChecked()
+        config['checkStartNearest'] = self.ui.checkStartNearest.isChecked()
+        config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
+        config['checkSortEW'] = self.ui.checkSortEW.isChecked()
+        config['checkSortHL'] = self.ui.checkSortHL.isChecked()
 
         return True
 

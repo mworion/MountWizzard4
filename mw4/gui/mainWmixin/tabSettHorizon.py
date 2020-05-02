@@ -48,12 +48,6 @@ class SettHorizon(object):
         """
         config = self.app.config['mainW']
         self.ui.horizonFileName.setText(config.get('horizonFileName', ''))
-        self.ui.checkAutoDeleteMeridian.setChecked(config.get('checkAutoDeleteMeridian', False))
-        self.ui.checkAutoDeleteHorizon.setChecked(config.get('checkAutoDeleteHorizon', False))
-        self.ui.checkSortNothing.setChecked(config.get('checkSortNothing', True))
-        self.ui.checkSortEW.setChecked(config.get('checkSortEW', False))
-        self.ui.checkSortHL.setChecked(config.get('checkSortHL', False))
-
         fileName = self.app.config['mainW'].get('horizonFileName')
         self.app.data.loadHorizonP(fileName=fileName)
 
@@ -69,11 +63,6 @@ class SettHorizon(object):
         """
         config = self.app.config['mainW']
         config['horizonFileName'] = self.ui.horizonFileName.text()
-        config['checkAutoDeleteMeridian'] = self.ui.checkAutoDeleteMeridian.isChecked()
-        config['checkAutoDeleteHorizon'] = self.ui.checkAutoDeleteHorizon.isChecked()
-        config['checkSortNothing'] = self.ui.checkSortNothing.isChecked()
-        config['checkSortEW'] = self.ui.checkSortEW.isChecked()
-        config['checkSortHL'] = self.ui.checkSortHL.isChecked()
 
         return True
 

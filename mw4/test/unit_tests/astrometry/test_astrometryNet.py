@@ -250,33 +250,21 @@ def test_abort_2(app):
 
 
 def test_checkAvailability_1(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Darwin'):
-        app.setEnvironment()
-        val = app.checkAvailability()
-        assert not val
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(glob,
+                               'glob',
+                               return_value=True):
+            with mock.patch.object(platform,
+                                   'system',
+                                   return_value='Darwin'):
+                app.setEnvironment()
+                val = app.checkAvailability()
+                assert val == ['CloudMakers', 'KStars']
 
 
 def test_checkAvailability_2(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Linux'):
-        app.setEnvironment()
-        val = app.checkAvailability()
-        assert not val
-
-
-def test_checkAvailability_3(app):
-    with mock.patch.object(platform,
-                           'system',
-                           return_value='Windows'):
-        app.setEnvironment()
-        val = app.checkAvailability()
-        assert not val
-
-
-def test_checkAvailability_4(app):
     with mock.patch.object(os.path,
                            'isfile',
                            return_value=True):
@@ -288,5 +276,19 @@ def test_checkAvailability_4(app):
                                    return_value='Linux'):
                 app.setEnvironment()
                 val = app.checkAvailability()
-                assert val
+                assert val == ['local-all', 'local-user']
 
+
+def test_checkAvailability_3(app):
+    with mock.patch.object(os.path,
+                           'isfile',
+                           return_value=True):
+        with mock.patch.object(glob,
+                               'glob',
+                               return_value=True):
+            with mock.patch.object(platform,
+                                   'system',
+                                   return_value='Windows'):
+                app.setEnvironment()
+                val = app.checkAvailability()
+                assert val == []

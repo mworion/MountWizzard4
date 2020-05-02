@@ -13369,7 +13369,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -14289,7 +14289,7 @@ Hint if mount will need a flip when following satellite.</string>
          <x>5</x>
          <y>15</y>
          <width>366</width>
-         <height>276</height>
+         <height>361</height>
         </rect>
        </property>
        <property name="title">
@@ -14524,7 +14524,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>230</y>
+          <y>310</y>
           <width>341</width>
           <height>21</height>
          </rect>
@@ -14551,7 +14551,7 @@ Hint if mount will need a flip when following satellite.</string>
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>250</y>
+          <y>335</y>
           <width>231</width>
           <height>21</height>
          </rect>
@@ -15985,147 +15985,11 @@ When clicking the button, you could change the value.</string>
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_30">
-       <property name="geometry">
-        <rect>
-         <x>400</x>
-         <y>325</y>
-         <width>366</width>
-         <height>56</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Solver settings</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_316">
-        <property name="geometry">
-         <rect>
-          <x>195</x>
-          <y>20</y>
-          <width>96</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Solving timeout</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_315">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>91</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Search radius</string>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="searchRadius">
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>20</y>
-          <width>51</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Set the search radius for the plate solver. </string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>1.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>180.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>5.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>25.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QDoubleSpinBox" name="solveTimeout">
-        <property name="geometry">
-         <rect>
-          <x>305</x>
-          <y>20</y>
-          <width>51</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Set the timeout for the plate solver.</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="decimals">
-         <number>0</number>
-        </property>
-        <property name="minimum">
-         <double>2.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>300.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>5.000000000000000</double>
-        </property>
-        <property name="value">
-         <double>30.000000000000000</double>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="groupBox_32">
        <property name="geometry">
         <rect>
          <x>400</x>
-         <y>195</y>
+         <y>185</y>
          <width>366</width>
          <height>96</height>
         </rect>
@@ -16380,8 +16244,8 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="groupBox_33">
        <property name="geometry">
         <rect>
-         <x>5</x>
-         <y>305</y>
+         <x>400</x>
+         <y>300</y>
          <width>366</width>
          <height>76</height>
         </rect>
@@ -23107,8 +22971,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>focuserOut</tabstop>
   <tabstop>checkFastDownload</tabstop>
   <tabstop>checkKeepImages</tabstop>
-  <tabstop>searchRadius</tabstop>
-  <tabstop>solveTimeout</tabstop>
   <tabstop>mountHost</tabstop>
   <tabstop>openWeatherMapKey</tabstop>
   <tabstop>settleTimeMount</tabstop>

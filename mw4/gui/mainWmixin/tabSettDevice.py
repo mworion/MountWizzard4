@@ -373,64 +373,69 @@ class SettDevice(object):
             return False
 
         driverData = self.driversData.get(driver, {})
+        driverClass = self.drivers[driver]['class']
 
         # without connection it is false, which leads to a red in gui
         self.deviceStat[driver] = False
 
         # now driver specific parameters will be set
         if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
+            framework = 'indi'
+
             name = driverData.get('indiName', '')
             address = driverData.get('indiHost', 'localhost')
             port = int(driverData.get('indiPort', 7624))
             host = (address, port)
             showMessages = driverData.get('indiMessages', False)
-            framework = 'indi'
-
-            self.drivers[driver]['class'].framework = framework
-            driverData['framework'] = framework
-            self.drivers[driver]['class'].run[framework].showMessages = showMessages
-            self.drivers[driver]['class'].host = host
+            driverClass.run[framework].showMessages = showMessages
+            driverClass.host = host
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'indi - {name}')
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
+            framework = 'alpaca'
+
             name = driverData.get('alpacaName', '')
             address = driverData.get('alpacaHost', 'localhost')
             port = int(driverData.get('alpacaPort', 11111))
             host = (address, port)
-
-            self.drivers[driver]['class'].framework = 'alpaca'
-            driverData['framework'] = 'alpaca'
-            self.drivers[driver]['class'].host = host
+            driverClass.host = host
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'alpaca - {name}')
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
+            framework = 'ascom'
+
             name = driverData.get('ascomName', '')
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('astrometry'):
-            name = driverData.get('astrometryName', '')
-            indexPath = driverData.get('astrometryIndex', '')
+            framework = 'astrometry'
 
-            self.drivers[driver]['class'].framework = 'astrometry'
-            driverData['framework'] = 'astrometry'
-            self.drivers[driver]['class'].indexPath = indexPath
+            name = driverData.get('astrometryName', '')
+            driverClass.timeout = driverData.get('astrometryTimeout', 30)
+            driverClass.searchRadius = driverData.get('astrometrySearchRadius', 20)
+            indexPath = driverData.get('astrometryIndex', '')
+            driverClass.indexPath = indexPath
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astrometry - {name}')
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('astap'):
-            name = driverData.get('astapName', '')
+            framework = 'astap'
 
-            self.drivers[driver]['class'].framework = 'astap'
-            driverData['framework'] = 'astap'
+            name = driverData.get('astapName', '')
+            driverClass.timeout = driverData.get('astapTimeout', 30)
+            driverClass.searchRadius = driverData.get('astapSearchRadius', 20)
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astap - {name}')
 
         else:
             name = driver
+            framework = ''
 
         # setting the new selected framework type and name, host
-        self.drivers[driver]['class'].name = name
+        driverClass.framework = framework
+        driverData['framework'] = framework
+        driverClass.name = name
 
         return True
 

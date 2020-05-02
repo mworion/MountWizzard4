@@ -57,10 +57,14 @@ def test_properties_1(app):
     app.apiKey = 'test'
     app.indexPath = 'test'
     app.name = 'test'
+    app.timeout = 30
+    app.searchRadius = 20
     assert app.host == ('localhost', 7624)
     assert app.apiKey == 'test'
     assert app.indexPath == 'test'
     assert app.name == 'test'
+    assert app.timeout == 30
+    assert app.searchRadius == 20
 
 
 def test_properties_2(app):
@@ -70,10 +74,14 @@ def test_properties_2(app):
     app.apiKey = 'test'
     app.indexPath = 'test'
     app.name = 'test'
+    app.timeout = 30
+    app.searchRadius = 20
     assert app.host == ('localhost', 7624)
     assert app.apiKey == 'test'
     assert app.indexPath == 'test'
     assert app.name == 'test'
+    assert app.timeout == 30
+    assert app.searchRadius == 20
 
 
 def test_init_1(app):

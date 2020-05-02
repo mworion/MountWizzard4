@@ -352,8 +352,6 @@ class Model(object):
             imageWObj.signals.showImage.emit(mPoint["imagePath"])
 
         self.app.astrometry.solveThreading(fitsPath=mPoint["imagePath"],
-                                           radius=mPoint["searchRadius"],
-                                           timeout=mPoint["solveTimeout"],
                                            updateFits=False,
                                            )
         self.resultQueue.put(mPoint)
@@ -816,8 +814,8 @@ class Model(object):
         binning = self.ui.binning.value()
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.checkFastDownload.isChecked()
-        solveTimeout = self.ui.solveTimeout.value()
-        searchRadius = self.ui.searchRadius.value()
+        solveTimeout = self.app.astrometry.timeout
+        searchRadius = self.ui.searchRadius
         focalLength = self.ui.focalLength.value()
         lenSequence = len(points)
 

@@ -114,7 +114,7 @@ def test_runASTAP_4(app):
     with mock.patch.object(subprocess,
                            'Popen',
                            side_effect=subprocess.TimeoutExpired):
-        suc = app.runASTAP(binPath='clear', timeout=1)
+        suc = app.runASTAP(binPath='clear')
         assert not suc
 
 

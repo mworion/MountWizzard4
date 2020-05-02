@@ -140,9 +140,13 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             if indiName == name:
                 self.ui.astrometryNameList.setCurrentIndex(i)
         self.ui.astrometryIndex.setText(deviceData.get('astrometryIndex', '/usr/'))
+        self.ui.astrometryTimeout.setValue(deviceData.get('astrometryTimeout', 30))
+        self.ui.astrometrySearchRadius.setValue(deviceData.get('astrometrySearchRadius', 20))
 
         # populating astap
         self.ui.astapName.setText(deviceData.get('astapName', 'astap'))
+        self.ui.astapTimeout.setValue(deviceData.get('astapTimeout', 30))
+        self.ui.astapSearchRadius.setValue(deviceData.get('astapSearchRadius', 20))
 
         # populating ascom
 
@@ -195,9 +199,13 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             nameList.append(model.item(index).text())
         self.data[self.driver]['astrometryNameList'] = nameList
         self.data[self.driver]['astrometryIndex'] = self.ui.astrometryIndex.text()
+        self.data[self.driver]['astrometrySearchRadius'] = self.ui.astrometrySearchRadius.value()
+        self.data[self.driver]['astrometryTimeout'] = self.ui.astrometryTimeout.value()
 
         # collecting astap data
         self.data[self.driver]['astapName'] = self.ui.astapName.text()
+        self.data[self.driver]['astapSearchRadius'] = self.ui.astapSearchRadius.value()
+        self.data[self.driver]['astapTimeout'] = self.ui.astapTimeout.value()
 
         # collecting ascom data
 

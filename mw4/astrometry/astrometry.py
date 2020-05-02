@@ -89,6 +89,8 @@ class Astrometry:
         self.name = ''
         self.apiKey = ''
         self.indexPath = ''
+        self.searchRadius = 20
+        self.timeout = 30
         self.host = ('localhost', 7624)
         self.mutexSolve = PyQt5.QtCore.QMutex()
 
@@ -131,6 +133,26 @@ class Astrometry:
         self._name = value
         if self.framework in self.run.keys():
             self.run[self.framework].name = value
+
+    @property
+    def timeout(self):
+        return self._timeout
+
+    @timeout.setter
+    def timeout(self, value):
+        self._timeout = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].timeout = value
+
+    @property
+    def searchRadius(self):
+        return self._searchRadius
+
+    @searchRadius.setter
+    def searchRadius(self, value):
+        self._searchRadius = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].searchRadius = value
 
     def readFitsData(self, fitsPath):
         """
@@ -289,8 +311,6 @@ class Astrometry:
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
         :param scaleHint:  scale to look for solve in J2000
-        :param radius:  search radius around target coordinates
-        :param timeout: as said
         :param updateFits: flag, if the results should be written to the original file
         :return: success
         """
@@ -314,8 +334,6 @@ class Astrometry:
                               raHint=raHint,
                               decHint=decHint,
                               scaleHint=scaleHint,
-                              radius=radius,
-                              timeout=timeout,
                               updateFits=updateFits,
                               )
         worker.signals.finished.connect(self.solveClear)

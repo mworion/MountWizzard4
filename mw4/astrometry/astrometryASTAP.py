@@ -58,6 +58,11 @@ class AstrometryASTAP(object):
 
         self.result = {'success': False}
         self.process = None
+        self.name = ''
+        self.indexPath = ''
+        self.apiKey = ''
+        self.timeout = 30
+        self.searchRadius = 20
         self.environment = {}
 
         self.setEnvironment()
@@ -92,7 +97,7 @@ class AstrometryASTAP(object):
                 },
             }
 
-    def runASTAP(self, binPath='', tempFile='', fitsPath='', options='', timeout=30):
+    def runASTAP(self, binPath='', tempFile='', fitsPath='', options=''):
         """
         runASTAP solves finally the xy star list and writes the WCS data in a fits
         file format
@@ -101,7 +106,6 @@ class AstrometryASTAP(object):
         :param tempFile:  full path to star file
         :param fitsPath: full path to fits file in temp dir
         :param options: additional solver options e.g. ra and dec hint
-        :param timeout:
         :return: success
         """
 
@@ -120,7 +124,7 @@ class AstrometryASTAP(object):
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE
                                             )
-            stdout, stderr = self.process.communicate(timeout=timeout)
+            stdout, stderr = self.process.communicate(timeout=self.timeout)
         except subprocess.TimeoutExpired:
             self.log.critical('Timeout expired')
             return False
@@ -166,7 +170,7 @@ class AstrometryASTAP(object):
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
-              radius=2, timeout=30, updateFits=False):
+              updateFits=False):
         """
         Solve uses the astap solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -178,8 +182,6 @@ class AstrometryASTAP(object):
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
         :param scaleHint:  scale to look for solve in J2000
-        :param radius:  search radius around target coordinates
-        :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
 
         :return: success
@@ -214,7 +216,7 @@ class AstrometryASTAP(object):
                    '-spd',
                    f'{decHint + 90}',
                    '-r',
-                   f'{radius:1.1f}',
+                   f'{self.searchRadius:1.1f}',
                    '-t',
                    '0.005',
                    '-z',
@@ -225,7 +227,6 @@ class AstrometryASTAP(object):
                             fitsPath=fitsPath,
                             tempFile=tempFile,
                             options=options,
-                            timeout=timeout,
                             )
         if not suc:
             self.result['message'] = 'astap error'

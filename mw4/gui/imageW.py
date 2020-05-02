@@ -898,11 +898,7 @@ class ImageWindow(widget.MWidget):
             return False
 
         updateFits = self.ui.checkEmbedData.isChecked()
-        solveTimeout = self.app.mainW.ui.solveTimeout.value()
-        searchRadius = self.app.mainW.ui.searchRadius.value()
         self.app.astrometry.solveThreading(fitsPath=imagePath,
-                                           radius=searchRadius,
-                                           timeout=solveTimeout,
                                            updateFits=updateFits,
                                            )
         self.deviceStat['solve'] = True

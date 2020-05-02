@@ -58,6 +58,11 @@ class AstrometryNET(object):
 
         self.result = {'success': False}
         self.process = None
+        self.name = ''
+        self.indexPath = ''
+        self.apiKey = ''
+        self.timeout = 30
+        self.searchRadius = 20
         self.environment = {}
 
         self.setEnvironment()
@@ -97,7 +102,7 @@ class AstrometryNET(object):
             self.environment = {
             }
 
-    def runImage2xy(self, binPath='', tempPath='', fitsPath='', timeout=30):
+    def runImage2xy(self, binPath='', tempPath='', fitsPath=''):
         """
         runImage2xy extracts a list of stars out of the fits image. there is a timeout of
         3 seconds set to get the process finished
@@ -105,7 +110,6 @@ class AstrometryNET(object):
         :param binPath:   full path to image2xy executable
         :param tempPath:  full path to star file
         :param fitsPath:  full path to fits file
-        :param timeout:
         :return: success
         """
 
@@ -121,7 +125,7 @@ class AstrometryNET(object):
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE,
                                             )
-            stdout, stderr = self.process.communicate(timeout=timeout)
+            stdout, stderr = self.process.communicate(timeout=self.timeout)
         except subprocess.TimeoutExpired as e:
             self.log.critical(e)
             return False
@@ -141,7 +145,7 @@ class AstrometryNET(object):
         success = (self.process.returncode == 0)
         return success
 
-    def runSolveField(self, binPath='', configPath='', tempPath='', options='', timeout=30):
+    def runSolveField(self, binPath='', configPath='', tempPath='', options=''):
         """
         runSolveField solves finally the xy star list and writes the WCS data in a fits
         file format
@@ -150,7 +154,6 @@ class AstrometryNET(object):
         :param configPath: full path to astrometry.cfg file
         :param tempPath:  full path to star file
         :param options: additional solver options e.g. ra and dec hint
-        :param timeout:
         :return: success
         """
 
@@ -163,7 +166,7 @@ class AstrometryNET(object):
                     '--sort-column', 'FLUX',
                     '--scale-units', 'app',
                     '--crpix-center',
-                    '--cpulimit', str(timeout),
+                    '--cpulimit', str(self.timeout),
                     '--config',
                     configPath,
                     tempPath,
@@ -177,7 +180,7 @@ class AstrometryNET(object):
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE,
                                             )
-            stdout, stderr = self.process.communicate(timeout=timeout)
+            stdout, stderr = self.process.communicate(timeout=self.timeout)
         except subprocess.TimeoutExpired as e:
             self.log.critical(e)
             return False
@@ -213,7 +216,7 @@ class AstrometryNET(object):
         return wcsHeader
 
     def solve(self, fitsPath='', raHint=None, decHint=None, scaleHint=None,
-              radius=2, timeout=30, updateFits=False):
+              updateFits=False):
         """
         Solve uses the astrometry.net solver capabilities. The intention is to use an
         offline solving capability, so we need a installed instance. As we go multi
@@ -233,8 +236,6 @@ class AstrometryNET(object):
         :param raHint:  ra dest to look for solve in J2000
         :param decHint:  dec dest to look for solve in J2000
         :param scaleHint:  scale to look for solve in J2000
-        :param radius:  search radius around target coordinates
-        :param timeout: time after the subprocess will be killed.
         :param updateFits:  if true update Fits image file with wcsHeader data
 
         :return: success
@@ -279,7 +280,6 @@ class AstrometryNET(object):
         suc = self.runImage2xy(binPath=binPathImage2xy,
                                tempPath=tempPath,
                                fitsPath=fitsPath,
-                               timeout=timeout,
                                )
         if not suc:
             self.log.error(f'image2xy error in [{fitsPath}]')
@@ -310,7 +310,7 @@ class AstrometryNET(object):
                    '--dec',
                    f'{dec}',
                    '--radius',
-                   f'{radius:1.1f}',
+                   f'{self.searchRadius:1.1f}',
                    ]
 
         # split between ekos and cloudmakers as cloudmakers use an older version of
@@ -323,7 +323,6 @@ class AstrometryNET(object):
                                  configPath=configPath,
                                  tempPath=tempPath,
                                  options=options,
-                                 timeout=timeout,
                                  )
         if not suc:
             self.log.error(f'solve-field error in [{fitsPath}]')

@@ -815,7 +815,7 @@ class Model(object):
         subFrame = self.ui.subFrame.value()
         fastReadout = self.ui.checkFastDownload.isChecked()
         solveTimeout = self.app.astrometry.timeout
-        searchRadius = self.ui.searchRadius
+        searchRadius = self.app.astrometry.searchRadius
         focalLength = self.ui.focalLength.value()
         lenSequence = len(points)
 

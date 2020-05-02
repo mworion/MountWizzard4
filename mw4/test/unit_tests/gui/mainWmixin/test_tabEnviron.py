@@ -63,6 +63,7 @@ def module_setup_teardown(qtbot):
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
+        planets = mount.obsSite.loader('de421_23.bsp')
         sensorWeather = SensorWeather(app=Test1())
         onlineWeather = OnlineWeather(app=Test1())
         skymeter = Skymeter(app=Test1())
@@ -574,4 +575,9 @@ def test_updateDirectWeatherGui_3():
 
     app.deviceStat['directWeather'] = True
     suc = app.updateDirectWeatherGui(setting=Test())
+    assert suc
+
+
+def test_updateMoonPhase_1():
+    suc = app.updateMoonPhase()
     assert suc

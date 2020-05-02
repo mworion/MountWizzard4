@@ -1569,7 +1569,7 @@ class Telescope(AlpacaBase):
 
         """
         if UTCDate is None:
-            return parser.parse(self.get("utcdate"))
+            return parser.parse(self.get("utcdate"), fuzzy=True)
 
         if type(UTCDate) is str:
             data = UTCDate

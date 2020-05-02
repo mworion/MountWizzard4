@@ -18,13 +18,13 @@
 # standard libraries
 import logging
 # external packages
-import PyQt5
+from PyQt5.QtCore import QObject
 from PyQt5 import QtNetwork
 # local imports
 from mw4.base.loggerMW import CustomLogger
 
 
-class Remote(PyQt5.QtCore.QObject):
+class Remote(QObject):
     """
     The class Remote inherits all information and handling of remotely controlling
     mountwizzard 4.

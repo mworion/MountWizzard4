@@ -388,16 +388,16 @@ class AstrometryNET(object):
             suc = True
 
             if solver == 'KStars':
-                program = self.environment[solver]['programPath'] + '/astap.exe'
+                program = self.environment[solver]['programPath'] + '/solve-field'
                 index = '/*.fits'
             elif solver == 'CloudMakers':
-                program = self.environment[solver]['programPath'] + '/astap.exe'
+                program = self.environment[solver]['programPath'] + '/solve-field'
                 index = '/*.fits'
             elif solver == 'local-all':
-                program = self.environment[solver]['programPath'] + '/astap.exe'
+                program = self.environment[solver]['programPath'] + '/solve-field'
                 index = '/*.fits'
             elif solver == 'local-user':
-                program = self.environment[solver]['programPath'] + '/astap.exe'
+                program = self.environment[solver]['programPath'] + '/solve-field'
                 index = '/*.fits'
 
             # checking binaries

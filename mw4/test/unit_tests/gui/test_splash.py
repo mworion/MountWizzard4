@@ -22,6 +22,7 @@ faulthandler.enable()
 # external packages
 import PyQt5.QtGui
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtGui import QPainter
 import pytest
 import unittest.mock as mock
 
@@ -55,6 +56,13 @@ def test_upcoming(qtbot):
     app.setValue(50)
     app.setValue(90)
     app.setValue(100)
+
+
+def test_drawContents(qtbot):
+    app = SplashScreen(QWidget())
+    qtbot.addWidget(app)
+
+    app._drawContents(QPainter())
 
 
 def test_finish(qtbot):

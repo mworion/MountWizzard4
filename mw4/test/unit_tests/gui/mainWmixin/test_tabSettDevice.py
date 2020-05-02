@@ -395,6 +395,10 @@ def test_dispatch_2(qtbot):
 
 
 def test_dispatch_3(qtbot):
+    def Sender():
+        return ui.relayDevice
+    app.sender = Sender
+
     with mock.patch.object(app,
                            'dispatchStopDriver',
                            return_value=False):

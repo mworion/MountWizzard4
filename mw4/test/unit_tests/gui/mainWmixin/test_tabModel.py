@@ -790,7 +790,23 @@ def test_modelBuild_2():
                            'modelCore',
                            return_value=True):
         suc = app.modelBuild()
-        assert suc
+        assert not suc
+
+
+def test_modelBuild_2a():
+    class Test:
+        buildP = [(90, 90), (90, 90), (90, 90)]
+
+    app.app.data = Test()
+
+    with mock.patch.object(app,
+                           'modelCore',
+                           return_value=True):
+        with mock.patch.object(app.app.astrometry,
+                               'checkAvailability',
+                               return_value=True):
+            suc = app.modelBuild()
+            assert suc
 
 
 def test_modelBuild_3():
@@ -802,8 +818,11 @@ def test_modelBuild_3():
     with mock.patch.object(app,
                            'modelCore',
                            return_value=True):
-        suc = app.modelBuild()
-        assert not suc
+        with mock.patch.object(app.app.astrometry,
+                               'checkAvailability',
+                               return_value=True):
+            suc = app.modelBuild()
+            assert not suc
 
 
 def test_modelBuild_4():
@@ -815,8 +834,11 @@ def test_modelBuild_4():
     with mock.patch.object(app,
                            'modelCore',
                            return_value=False):
-        suc = app.modelBuild()
-        assert not suc
+        with mock.patch.object(app.app.astrometry,
+                               'checkAvailability',
+                               return_value=True):
+            suc = app.modelBuild()
+            assert not suc
 
 
 def test_modelBuild_5():
@@ -832,8 +854,11 @@ def test_modelBuild_5():
         with mock.patch.object(app.app.mount.model,
                                'clearAlign',
                                return_value=False):
-            suc = app.modelBuild()
-            assert not suc
+            with mock.patch.object(app.app.astrometry,
+                                   'checkAvailability',
+                                   return_value=True):
+                suc = app.modelBuild()
+                assert not suc
 
 
 def test_modelBuild_6():
@@ -849,8 +874,11 @@ def test_modelBuild_6():
         with mock.patch.object(app.app.mount.model,
                                'clearAlign',
                                return_value=True):
-            suc = app.modelBuild()
-            assert suc
+            with mock.patch.object(app.app.astrometry,
+                                   'checkAvailability',
+                                   return_value=True):
+                suc = app.modelBuild()
+                assert suc
 
 
 def test_loadProgramModel_1():

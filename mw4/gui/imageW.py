@@ -516,15 +516,17 @@ class ImageWindow(widget.MWidget):
         figure.clf()
         axe = figure.add_subplot(1, 1, 1,
                                  projection=wcsObject,
-                                 facecolor=self.M_RED)
+                                 facecolor=self.M_BLACK)
 
         axe.coords.frame.set_color(self.M_BLUE)
 
         axe0 = axe.coords[0]
         axe1 = axe.coords[1]
+
         if self.ui.checkShowGrid.isChecked():
             axe0.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
             axe1.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+
         axe0.tick_params(colors=self.M_BLUE, labelsize=12)
         axe1.tick_params(colors=self.M_BLUE, labelsize=12)
         axe0.set_axislabel('Right Ascension',
@@ -562,10 +564,8 @@ class ImageWindow(widget.MWidget):
             return False
 
         figure.clf()
-        axe = figure.add_subplot(1, 1, 1, facecolor=self.M_BLACK)
-
-        axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
-        axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)
+        axe = figure.add_subplot(1, 1, 1,
+                                 facecolor=self.M_BLACK)
 
         factor = self.zoomLevel[self.ui.zoom.currentText()]
         sizeX = header.get('NAXIS1', 1) / factor
@@ -573,6 +573,16 @@ class ImageWindow(widget.MWidget):
         midX = int(sizeX / 2)
         midY = int(sizeY / 2)
         number = 10
+
+        if self.ui.checkShowCrosshair.isChecked():
+            axe.axvline(midX, color=self.M_RED)
+            axe.axhline(midY, color=self.M_RED)
+
+        if self.ui.checkShowGrid.isChecked():
+            axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
+
+        axe.tick_params(axis='x', which='major', colors=self.M_BLUE, labelsize=12)
+        axe.tick_params(axis='y', which='major', colors=self.M_BLUE, labelsize=12)
 
         valueX, _ = np.linspace(-midX, midX, num=number, retstep=True)
         textX = list((str(int(x)) for x in valueX))
@@ -585,12 +595,6 @@ class ImageWindow(widget.MWidget):
         ticksY = list((x + midY for x in valueY))
         axe.set_yticklabels(textY)
         axe.set_yticks(ticksY)
-
-        if self.ui.checkShowCrosshair.isChecked():
-            axe.axvline(midX, color=self.M_RED)
-            axe.axhline(midY, color=self.M_RED)
-        if self.ui.checkShowGrid.isChecked():
-            axe.grid(True, color=self.M_BLUE, ls='solid', alpha=0.5)
 
         axe.set_xlabel(xlabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')
         axe.set_ylabel(ylabel='Pixel', color=self.M_BLUE, fontsize=12, fontweight='bold')

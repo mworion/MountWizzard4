@@ -176,6 +176,8 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         # starting mount communication
         self.mount.startTimers()
 
+        self.application.aboutToQuit.connect(self.aboutToQuit)
+
         self.timer0_1s = PyQt5.QtCore.QTimer()
         self.timer0_1s.setSingleShot(False)
         self.timer0_1s.timeout.connect(self.sendUpdate)
@@ -262,18 +264,28 @@ class MountWizzard4(PyQt5.QtCore.QObject):
             self.update1h.emit()
         return True
 
+    def aboutToQuit(self):
+        """
+        called when the application is about to close
+
+        :return:    True for test purpose
+        """
+
+        self.timer0_1s.stop()
+        self.measure.timerTask.stop()
+        self.mount.stopTimers()
+        self.relay.timerTask.stop()
+
+        return True
+
     def quit(self):
         """
         quit without saving persistence data
 
         :return:    True for test purpose
         """
-
+        self.aboutToQuit()
         self.mount.mountUp = False
-        self.timer0_1s.stop()
-        self.measure.timerTask.stop()
-        self.mount.stopTimers()
-        self.relay.timerTask.stop()
         self.threadPool.waitForDone(5000)
         self.message.emit('MountWizzard4 manual stopped', 1)
         self.application.quit()

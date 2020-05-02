@@ -302,6 +302,7 @@ class MainWindow(MWidget,
         :return:    nothing
         """
 
+        self.app.timer0_1s.stop()
         super().closeEvent(closeEvent)
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.closeExtendedWindows()

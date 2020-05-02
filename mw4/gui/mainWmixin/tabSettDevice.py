@@ -381,8 +381,11 @@ class SettDevice(object):
         # now driver specific parameters will be set
         if self.drivers[driver]['uiDropDown'].currentText().startswith('indi'):
             framework = 'indi'
-
+            driverClass.framework = framework
+            driverData['framework'] = framework
             name = driverData.get('indiName', '')
+            driverClass.name = name
+
             address = driverData.get('indiHost', 'localhost')
             port = int(driverData.get('indiPort', 7624))
             host = (address, port)
@@ -394,8 +397,11 @@ class SettDevice(object):
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('alpaca'):
             framework = 'alpaca'
-
+            driverClass.framework = framework
+            driverData['framework'] = framework
             name = driverData.get('alpacaName', '')
+            driverClass.name = name
+
             address = driverData.get('alpacaHost', 'localhost')
             port = int(driverData.get('alpacaPort', 11111))
             host = (address, port)
@@ -405,13 +411,18 @@ class SettDevice(object):
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('ascom'):
             framework = 'ascom'
-
+            driverClass.framework = framework
+            driverData['framework'] = framework
             name = driverData.get('ascomName', '')
+            driverClass.name = name
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('astrometry'):
             framework = 'astrometry'
-
+            driverClass.framework = framework
+            driverData['framework'] = framework
             name = driverData.get('astrometryName', '')
+            driverClass.name = name
+
             driverClass.timeout = driverData.get('astrometryTimeout', 30)
             driverClass.searchRadius = driverData.get('astrometrySearchRadius', 20)
             indexPath = driverData.get('astrometryIndex', '')
@@ -421,21 +432,15 @@ class SettDevice(object):
 
         elif self.drivers[driver]['uiDropDown'].currentText().startswith('astap'):
             framework = 'astap'
-
+            driverClass.framework = framework
+            driverData['framework'] = framework
             name = driverData.get('astapName', '')
+            driverClass.name = name
+
             driverClass.timeout = driverData.get('astapTimeout', 30)
             driverClass.searchRadius = driverData.get('astapSearchRadius', 20)
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astap - {name}')
-
-        else:
-            name = driver
-            framework = ''
-
-        # setting the new selected framework type and name, host
-        driverClass.framework = framework
-        driverData['framework'] = framework
-        driverClass.name = name
 
         return True
 
@@ -461,9 +466,10 @@ class SettDevice(object):
         driverData = self.driversData.get(driver, {})
         loadConfig = driverData.get('indiLoadConfig', False)
         suc = self.drivers[driver]['class'].startCommunication(loadConfig=loadConfig)
+
         return suc
 
-    def dispatch(self, driverName=''):
+    def dispatch(self, driverName=None):
         """
         dispatch is the central method to start / stop the drivers, setting the parameters
         and managing the boot / shutdown.
@@ -481,13 +487,12 @@ class SettDevice(object):
         :return: true for test purpose
         """
 
-        for driver in self.drivers:
-            # check if the call comes from gui or direct call. a call from gui has a list of
-            # objects
-            isGui = not isinstance(driverName, str)
+        isGui = not isinstance(driverName, str)
 
+        for driver in self.drivers:
             if not isGui and (driverName != driver):
                 continue
+
             if isGui and (self.sender() != self.drivers[driver]['uiDropDown']):
                 continue
 

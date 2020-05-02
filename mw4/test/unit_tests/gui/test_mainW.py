@@ -31,6 +31,7 @@ from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import QTimer
 from mountcontrol.qtmount import Mount
 from skyfield.api import Topos
 
@@ -115,6 +116,7 @@ def module_setup_teardown(qtbot):
         measure = MeasureData(app=Test1())
         power = PegasusUPB(app=Test1())
         astrometry = Astrometry(app=Test1())
+        timer0_1s = QTimer()
 
         uiWindows = {'showImageW': {'classObj': None}}
         mwGlob = {'imageDir': 'mw4/test/image',
@@ -139,7 +141,6 @@ def module_setup_teardown(qtbot):
         with mock.patch.object(ImageWindow,
                                'show'):
             app = MainWindow(app=Test())
-            qtbot.addWidget(app)
             yield
 
     files = glob.glob('mw4/test/config/*.cfg')

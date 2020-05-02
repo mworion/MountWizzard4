@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>10</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -5731,9 +5731,9 @@ to mount</string>
      <property name="geometry">
       <rect>
        <x>410</x>
-       <y>210</y>
+       <y>200</y>
        <width>361</width>
-       <height>46</height>
+       <height>71</height>
       </rect>
      </property>
      <property name="toolTip">
@@ -5803,6 +5803,27 @@ to mount</string>
       </property>
       <property name="text">
        <string>No Sorting</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkStartNearest">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>45</y>
+        <width>336</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>If checked, all model points are deleted, which are below the horizon mask.</string>
+      </property>
+      <property name="text">
+       <string>Start with nearest point to current position</string>
       </property>
      </widget>
     </widget>

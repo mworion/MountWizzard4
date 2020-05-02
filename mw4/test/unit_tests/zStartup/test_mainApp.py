@@ -112,13 +112,6 @@ def test_quit_1():
         assert suc
 
 
-def test_quitSave_1():
-    with mock.patch.object(PyQt5.QtCore.QCoreApplication,
-                           'quit'):
-        suc = app.quitSave()
-        assert suc
-
-
 def test_defaultConfig():
     val = app.defaultConfig()
     assert val

@@ -27,6 +27,7 @@ faulthandler.enable()
 import pytest
 import PyQt5
 from PyQt5.QtCore import QObject
+from PyQt5.QtCore import pyqtSignal
 
 # local import
 from mw4 import loader
@@ -44,6 +45,9 @@ def module_setup_teardown(qtbot):
 
 def test_main_1(qtbot):
     class Test(QObject):
+
+        aboutToQuit = pyqtSignal()
+
         @staticmethod
         def installEventFilter(a):
             return

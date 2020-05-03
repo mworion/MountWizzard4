@@ -1,4 +1,4 @@
 path_classifiers:
-  - exclude: ./mw4/resource/
+  exclude: mw4/resource/
 queries:
-  - exclude: py/similar-function
+  exclude: py/similar-function

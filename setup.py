@@ -42,7 +42,6 @@ setup(
     ],
     python_requires='>=3.6.0, <3.9',
     install_requires=[
-        'cython',
         'mountcontrol==0.161',
         'indibase==0.132',
         'PyQt5==5.14.2; platform_machine != "armv7l"',

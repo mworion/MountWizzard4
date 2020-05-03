@@ -1,7 +1,12 @@
+#########################
+# Installer for OSx
+# (c) 2020 mworion
+#########################
+
 #!/bin/zsh
 
-# removing an earlier install log
-rm -f install.og > /dev/null
+# starting a new install log
+python3 --version > install.log
 
 # changing to the actual directory as working directory
 cd $(dirname "$0")
@@ -30,7 +35,11 @@ else
 fi
 
 # updating pip3
-python3 -m pip install --upgrade pip > install.log
+echo ""
+echo "----------------------------------------"
+echo "Updating pip installer"
+
+echo ""python3 -m pip install --upgrade pip >> install.log
 
 # now starting to install all things
 echo ""

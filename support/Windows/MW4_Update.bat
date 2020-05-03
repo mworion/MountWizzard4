@@ -1,1 +1,1 @@
-venv\Scripts\activate && pip install mountwizzard4 --upgrade --no-cache-dir && deactivate
+venv\Scripts\activate && pip install mountwizzard4 --upgrade --no-cache-dir >> update.log

@@ -28,20 +28,22 @@ Windows
 Depending on your Windows version please download or directly run the web installer for 3.8.2
 from:
 
-https://www.python.org/ftp/python/3.8.2/python-3.8.2-amd64-webinstall.exe
+https://www.python.org/ftp/python/3.8.2/python-3.8.2-webinstall.exe
 
 and follow the installation procedure.
 
 .. warning::
-    Please take care, that during the installation the checkbox "Add Python Path" is selected.
+    Please take care that during the installation the checkbox "Add Python Path" is selected
+    and to install for a single user if you want to use the scripts.
 
 .. image:: image/python_win_path.png
     :align: center
     :scale: 71%
 
 Depending on your preference you could install python 3.8 for a single user or for all
-users. MW4 does not need admin rights to run, so please feel free to choose the variant
-you would like to use.
+users. MW4 does not need admin rights to run, so please choose the variant for a single
+users if you want wo use the installation scripts. They depend on access rights as a normal
+user and you might run into troubles using defferent modes!
 
 Mac OSx
 -------

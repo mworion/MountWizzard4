@@ -51,5 +51,4 @@ jobs:
     - name: Install package
       shell: bash
       run: |
-        python -m pip install cython
         python -m pip install dist/mountwizzard*.tar.gz

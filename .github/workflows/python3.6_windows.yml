@@ -51,3 +51,7 @@ jobs:
       shell: bash
       run: |
         python -m pip install dist/mountwizzard*.tar.gz
+
+    - name: Check depedencies explicitly
+      run: |
+        python -m pip check mountwizzard4

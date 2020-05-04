@@ -50,8 +50,3 @@ jobs:
     - name: Install package
       run: |
         python -m pip install dist/mountwizzard*.tar.gz
-
-    - name: Test Support packages
-      run: |
-        python -m pip install indibase --no-cache-dir
-        python -m pip install mountcontrol --no-cache-dir

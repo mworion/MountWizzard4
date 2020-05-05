@@ -41,7 +41,9 @@ Version, build and code coverage status
 
 |PYTEST| |CODECOV| |CODE_QUALITY_PYTHON| |CODE_QUALITY_ALERTS|
 
-Coverage chart: |CODECOV_CHART|
+Coverage chart: 
+
+|CODECOV_CHART|
 
 |6U| |6W| |6M|
 
@@ -72,7 +74,7 @@ CS Michel
 .. |CODECOV| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graph/badge.svg
 .. |CODECOV_CHART| image:: https://codecov.io/gh/mworion/MountWizzard4/branch/master/graphs/icicle.svg
     :target: https://codecov.io/gh/mworion/MountWizzard4
-    :width: 60%
+    :width: 80%
     :align: top
 
 .. |CODE_QUALITY_ALERTS| image:: https://img.shields.io/lgtm/alerts/g/mworion/MountWizzard4.svg?logo=lgtm&logoWidth=18

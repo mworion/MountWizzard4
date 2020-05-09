@@ -216,8 +216,7 @@ class SettMisc(object):
 
         return True
 
-    @staticmethod
-    def isVenv():
+    def isVenv(self):
         """
         detects if the actual package is running in a virtual environment
 
@@ -227,7 +226,9 @@ class SettMisc(object):
         hasReal = hasattr(sys, 'real_prefix')
         hasBase = hasattr(sys, 'base_prefix')
 
-        return hasReal or hasBase and sys.base_prefix != sys.prefix
+        status = hasReal or hasBase and sys.base_prefix != sys.prefix
+        self.log.info(f'venv: [{status}], hasReal:[{hasReal}], hasBase:[{hasBase}]')
+        return status
 
     @staticmethod
     def formatPIP(line=''):

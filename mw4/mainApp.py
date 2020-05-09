@@ -426,6 +426,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         :return: True for test purpose
         """
 
+        self.log.info('Message window: [{0}]'.format(message))
         self.messageQueue.put((message, mType))
 
         return True

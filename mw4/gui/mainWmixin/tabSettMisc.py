@@ -261,7 +261,7 @@ class SettMisc(object):
 
         return line
 
-    def runInstall(self, versionPackage='', timeout=20):
+    def runInstall(self, versionPackage='', timeout=60):
         """
         runInstall enables the virtual environment and install via pip the desired
         package version
@@ -274,7 +274,6 @@ class SettMisc(object):
         runnable = ['pip',
                     'install',
                     f'mountwizzard4=={versionPackage}',
-                    '--no-cache-dir',
                     '--disable-pip-version-check',
                     ]
 
@@ -345,6 +344,10 @@ class SettMisc(object):
 
         :return: True for test purpose
         """
+        if platform.system() == 'Windows':
+            timeout = 180
+        else:
+            timeout = 60
 
         if not self.isVenv():
             self.app.message.emit('Not running in Virtual Environment', 2)
@@ -359,7 +362,8 @@ class SettMisc(object):
         self.app.message.emit('Installing selected version ... please wait', 1)
 
         worker = tpool.Worker(self.runInstall,
-                              versionPackage=versionPackage)
+                              versionPackage=versionPackage,
+                              timeout=timeout)
 
         worker.signals.result.connect(self.installFinished)
         self.threadPool.start(worker)

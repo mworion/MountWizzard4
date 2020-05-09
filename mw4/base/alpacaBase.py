@@ -1158,7 +1158,11 @@ class Telescope(AlpacaBase):
         :return:
             Telescope's effective aperture diameter (meters).
         """
-        return self.get("aperturediameter")
+        value = self.get("aperturediameter")
+        if value:
+            return value * 1000
+        else:
+            return None
 
     def athome(self):
         """Indicate whether the mount is at the home position.
@@ -1359,7 +1363,11 @@ class Telescope(AlpacaBase):
         :return:
             The telescope's focal length in meters.
         """
-        return self.get("focallength")
+        value = self.get("focallength")
+        if value:
+            return value * 1000
+        else:
+            return None
 
     def guideratedeclination(self, GuideRateDeclination=None):
         """Set or return the current Declination rate offset for telescope guiding.

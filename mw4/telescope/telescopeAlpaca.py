@@ -55,12 +55,7 @@ class TelescopeAlpaca(AlpacaClass):
 
         super().getInitialConfig()
 
-        value = self.client.aperturediameter()
-        if value is not None:
-            self.dataEntry(value * 1000, 'TELESCOPE_INFO.TELESCOPE_APERTURE')
-
-        value = self.client.focallength()
-        if value is not None:
-            self.dataEntry(value * 1000, 'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
+        self.dataEntry(self.client.aperturediameter(), 'TELESCOPE_INFO.TELESCOPE_APERTURE')
+        self.dataEntry(self.client.focallength(), 'TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH')
 
         return True

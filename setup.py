@@ -50,7 +50,7 @@ setup(
         'astropy==4.0.1.post1',
         'requests==2.23.0',
         'requests_toolbelt==0.9.1',
-        'numpy==1.18.3',
+        'numpy==1.18.4',
         'skyfield==1.20',
         'qimage2ndarray==1.8.3',
         'importlib_metadata==1.6.0',

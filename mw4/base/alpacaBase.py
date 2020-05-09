@@ -151,7 +151,7 @@ class AlpacaBase(object):
             self.log.critical(f'[{uid:10d}] timeout')
             return None
         except requests.exceptions.ConnectionError:
-            self.log.critical(f'[{uid:10d}] connection error')
+            self.log.warning(f'[{uid:10d}] connection error')
             return None
         except Exception as e:
             self.log.critical(f'[{uid:10d}] error in request: {e}')

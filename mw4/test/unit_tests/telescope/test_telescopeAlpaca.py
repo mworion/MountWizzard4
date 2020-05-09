@@ -54,10 +54,10 @@ def test_getInitialConfig_1():
 def test_getInitialConfig_2():
     with mock.patch.object(app.client,
                            'aperturediameter',
-                           return_value=0.1):
+                           return_value=100):
         with mock.patch.object(app.client,
                                'focallength',
-                               return_value=0.57):
+                               return_value=570):
             suc = app.getInitialConfig()
             assert suc
             assert app.data['TELESCOPE_INFO.TELESCOPE_APERTURE'] == 100

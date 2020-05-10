@@ -296,29 +296,12 @@ def writeSystemInfo(mwGlob=None):
     log.critical(f' PyQt5            : {PyQt5.QtCore.PYQT_VERSION_STR}')
     log.critical(f' Qt               : {PyQt5.QtCore.QT_VERSION_STR}')
     log.critical(f' Node             : {platform.node()}')
-
-    # in some environments I don't get a fully qualified host name
-    try:
-        hostSummary = socket.gethostbyname_ex(socket.gethostname())
-    except socket.herror:
-        log.warning('Could not read properly host configuration')
-    except socket.gaierror:
-        log.warning('Could not read properly host configuration')
-    except Exception as e:
-        log.warning(f'Could not read properly host configuration: {e}')
-    else:
-        hostsList = hostSummary[2]
-        host = [ip for ip in hostsList if not ip.startswith('127.')][: 1]
-        for hostname in host:
-            log.critical(f' IP addr.         : {hostname}')
-        log.critical(f' Hosts            : {hostSummary}')
-
+    log.critical(f' IP addr.         : {socket.gethostname()}')
     log.critical(f' Actual workdir   : {mwGlob["workDir"]}')
     log.critical(f' mountwizzard4    : {version("mountwizzard4")}')
     log.critical(f' indibase         : {version("indibase")}')
     log.critical(f' mountcontrol     : {version("mountcontrol")}')
     log.critical(f' sys.executable   : {sys.executable}')
-
     log.critical('----------------------------------------------------')
     log.critical('')
     return True

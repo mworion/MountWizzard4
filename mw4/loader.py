@@ -290,6 +290,7 @@ def writeSystemInfo(mwGlob=None):
     log.critical(f' Platform         : {platform.system()}')
     log.critical(f' Release          : {platform.release()}')
     log.critical(f' Machine          : {platform.machine()}')
+    log.critical(f' Python runtime   : {platform.architecture()[0]}')
     log.critical(f' CPU              : {platform.processor()}')
     log.critical(f' Python           : {platform.python_version()}')
     log.critical(f' PyQt5            : {PyQt5.QtCore.PYQT_VERSION_STR}')

@@ -16,6 +16,8 @@ python --version > install.log
 rem get version of python installation
 for /f "delims=" %%a in ('python --version') do @set T=%%a
 
+echo variable T has value of %T% >> install.log
+
 echo %T% | find "3.8" > nul
 if not errorlevel 1 SET P_VER='python3.8'
 
@@ -24,6 +26,8 @@ if not errorlevel 1 SET P_VER='python3.7'
 
 echo %T% | find "3.6" > nul
 if not errorlevel 1 SET P_VER='python3.6'
+
+echo variable P_VER has value of %P_VER% >> install.log
 
 echo %P_VER% | find "python" > nul
 if not errorlevel 1 goto :proceed32Bit
@@ -41,11 +45,13 @@ rem write python test file
 echo import platform > test.py
 echo print(platform.architecture()[0]) >> test.py
 
-for /f "delims=" %%a in ('python test.py') do @set A=%%a
+for /f "delims=" %%a in ('python test.py') do @set OS=%%a
 rem delete python test file
 del test.py
 
-echo %A% | find "32" > nul
+echo variable OS has value of %OS% >> install.log
+
+echo %OS% | find "32" > nul
 if errorlevel 1 goto :64bit
 
 echo python 32bit installed >> install.log

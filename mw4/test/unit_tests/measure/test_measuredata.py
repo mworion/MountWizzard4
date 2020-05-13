@@ -69,6 +69,12 @@ def module_setup_teardown():
     yield
 
 
+def test_properties():
+    assert not app.doWriteCSV
+    app.doWriteCSV = True
+    assert app.doWriteCSV
+
+
 def test_startCommunication():
     suc = app.startCommunication()
     assert suc
@@ -86,11 +92,6 @@ def test_setEmptyData():
 
 def test_openCSV_1():
     suc = app.openCSV()
-    assert not suc
-
-
-def test_openCSV_2():
-    suc = app.openCSV('mw4/test/temp/test.csv')
     assert suc
 
 

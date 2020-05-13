@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -13390,7 +13390,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -13684,6 +13684,33 @@ Hint if mount will need a flip when following satellite.</string>
         </property>
         <property name="text">
          <string>Setup</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="checkSaveMeasurement">
+        <property name="geometry">
+         <rect>
+          <x>305</x>
+          <y>20</y>
+          <width>50</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
+        </property>
+        <property name="text">
+         <string>save</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>

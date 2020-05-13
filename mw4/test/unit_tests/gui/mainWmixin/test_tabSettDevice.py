@@ -148,6 +148,11 @@ def test_storeConfig_2():
     assert suc
 
 
+def test_setSaveMeasure():
+    suc = app.setSaveMeasure()
+    assert suc
+
+
 def test_setupDeviceGui_1():
     suc = app.setupDeviceGui()
     assert suc

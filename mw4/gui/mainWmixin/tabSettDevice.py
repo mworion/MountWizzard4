@@ -151,6 +151,8 @@ class SettDevice(object):
             signals.deviceConnected.connect(self.deviceConnected)
             signals.deviceDisconnected.connect(self.deviceDisconnected)
 
+        self.ui.checkSaveMeasurement.clicked.connect(self.setSaveMeasure)
+
     @staticmethod
     def findIndexValue(ui, searchString):
         """
@@ -179,6 +181,8 @@ class SettDevice(object):
         """
 
         config = self.app.config.get('mainW', {})
+        self.ui.checkSaveMeasurement.setChecked(config.get('checkSaveMeasurement', False))
+
         configData = self.app.config.get('driversData', {})
 
         for driver in self.drivers:
@@ -212,6 +216,8 @@ class SettDevice(object):
         """
 
         config = self.app.config['mainW']
+        config['checkSaveMeasurement'] = self.ui.checkSaveMeasurement.isChecked()
+
         if 'driversData' not in self.app.config:
             self.app.config['driversData'] = {}
         configData = self.app.config['driversData']
@@ -223,6 +229,15 @@ class SettDevice(object):
             if driver not in self.driversData:
                 continue
             configData[driver] = self.driversData[driver]
+
+        return True
+
+    def setSaveMeasure(self):
+        """
+
+        :return: true for test purpose
+        """
+        self.app.measure.doWriteCSV = self.ui.checkSaveMeasurement.isChecked()
 
         return True
 

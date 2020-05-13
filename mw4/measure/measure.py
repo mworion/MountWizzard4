@@ -56,6 +56,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.mutexMeasure = PyQt5.QtCore.QMutex()
         self.csvFile = None
         self.csvWriter = None
+        self.doWriteCSV = False
 
         # internal calculations
         self.shorteningStart = True
@@ -77,16 +78,28 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 
-    def openCSV(self, filename=''):
+    @property
+    def doWriteCSV(self):
+        return self._doWriteCSV
+
+    @doWriteCSV.setter
+    def doWriteCSV(self, value):
+        self._doWriteCSV = value
+        if value and not self.csvFile:
+            self.openCSV()
+        elif not value and self.csvFile:
+            self.closeCSV()
+
+    def openCSV(self):
         """
 
         :return: success
         """
 
-        if not filename:
-            return False
+        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
+        csvFilename = f'{self.app.mwGlob["dataDir"]}/measure-{nameTime}.csv'
 
-        self.csvFile = open(filename, 'w+')
+        self.csvFile = open(csvFilename, 'w+')
         fieldnames = ['time',
                       'raJNow',
                       'decJNow',
@@ -147,6 +160,8 @@ class MeasureData(PyQt5.QtCore.QObject):
             return False
 
         self.csvFile.close()
+        self.csvWriter = None
+        self.csvFile = None
 
         return True
 
@@ -164,10 +179,8 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.setEmptyData()
         self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
-        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        csvFilename = f'{self.app.mwGlob["dataDir"]}/measure-{nameTime}.csv'
-
-        self.openCSV(filename=csvFilename)
+        if self.doWriteCSV:
+            self.openCSV()
 
         return True
 

@@ -50,6 +50,7 @@ class MeasureData(PyQt5.QtCore.QObject):
     MAXSIZE = 24 * 60 * 60
 
     def __init__(self, app):
+        super().__init__()
 
         self.app = app
         self.mutexMeasure = PyQt5.QtCore.QMutex()

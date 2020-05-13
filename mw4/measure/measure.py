@@ -95,6 +95,7 @@ class MeasureData(object):
         :return: True for test purpose
         """
 
+        print('stop measure')
         self.timerTask.stop()
         return True
 

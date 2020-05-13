@@ -267,6 +267,13 @@ def test_dispatchStopDriver_4():
     assert not suc
 
 
+def test_stopAllDrivers():
+    with mock.patch.object(app,
+                           'dispatchStopDriver'):
+        suc = app.stopAllDrivers()
+        assert suc
+
+
 def test_dispatchConfigDriver_1():
     suc = app.dispatchConfigDriver(driver=None)
     assert not suc

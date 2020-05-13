@@ -361,6 +361,16 @@ class SettDevice(object):
 
         return True
 
+    def stopAllDrivers(self):
+        """
+
+        :return: True for test purpose
+        """
+        for driver in self.drivers:
+            self.dispatchStopDriver(driver=driver)
+
+        return True
+
     def dispatchConfigDriver(self, driver=None):
         """
         dispatchConfigDriver
@@ -458,6 +468,7 @@ class SettDevice(object):
         # for built-in i actually not check their presence as the should function
         if self.drivers[driver]['uiDropDown'].currentText().startswith('built-in'):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
+            self.drivers[driver]['class'].name = 'built-in'
             self.deviceStat[driver] = True
 
         # and finally start it

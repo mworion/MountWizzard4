@@ -7,7 +7,7 @@ rem
 rem starting a new install log
 echo.
 echo ----------------------------------------
-echo Checking python version installed
+echo Checking installed python version
 echo ----------------------------------------
 echo.
 
@@ -57,7 +57,7 @@ if errorlevel 1 goto :64bit
 echo python 32bit installed >> install.log
 echo.
 echo ----------------------------------------
-echo python 32Bit installed ASCOM is possible
+echo python 32Bit installed
 echo ----------------------------------------
 echo.
 goto :proceedVirtualenv
@@ -67,9 +67,9 @@ goto :proceedVirtualenv
 echo python 64bit installed >> install.log
 echo.
 echo ----------------------------------------
-echo python 64Bit installed - no ASCOM !!!!!!
+echo python 64Bit installed
 echo ----------------------------------------
-echo. )
+echo.
 
 :proceedVirtualenv
 rem updating pip
@@ -83,7 +83,7 @@ python -m pip install wheel --no-cache-dir >> install.log
 python -m pip install --upgrade pip >> install.log
 
 rem check if virtualenv needs to be installed
-python -m virtualenv --version > nul
+python -m virtualenv --version >> install.log
 if not errorlevel 1 goto :proceedSetupVirtualenv
 
 echo.

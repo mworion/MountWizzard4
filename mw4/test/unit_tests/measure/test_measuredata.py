@@ -19,6 +19,7 @@
 import pytest
 import faulthandler
 faulthandler.enable()
+import csv
 
 # external packages
 import numpy as np
@@ -38,9 +39,10 @@ def module_setup_teardown():
         sensorWeather = Test1()
         onlineWeather = Test1()
         skymeter = Test1()
-        filterwheel = Test1()
+        filter = Test1()
         focuser = Test1()
         power = Test1()
+        mwGlob = {'dataDir': 'mw4/test/data'}
         deviceStat = {
             'dome': None,
             'mount': None,
@@ -79,6 +81,53 @@ def test_stopCommunication():
 
 def test_setEmptyData():
     suc = app.setEmptyData()
+    assert suc
+
+
+def test_openCSV_1():
+    suc = app.openCSV()
+    assert not suc
+
+
+def test_openCSV_2():
+    suc = app.openCSV('mw4/test/temp/test.csv')
+    assert suc
+
+
+def test_writeCSV_1():
+    suc = app.writeCSV()
+    assert not suc
+
+
+def test_writeCSV_2():
+    app.csvFile = open('mw4/test/temp/test.csv', 'w')
+    suc = app.writeCSV()
+    assert not suc
+
+
+def test_writeCSV_3():
+    app.csvFile = open('mw4/test/temp/test.csv', 'w')
+    app.csvWriter = csv.DictWriter(app.csvFile, ['test'])
+    app.data = {'test': [1, 2]}
+    suc = app.writeCSV()
+    assert suc
+
+
+def test_closeCSV_1():
+    suc = app.closeCSV()
+    assert not suc
+
+
+def test_closeCSV_2():
+    app.csvFile = open('mw4/test/temp/test.csv', 'w')
+    suc = app.closeCSV()
+    assert not suc
+
+
+def test_closeCSV_3():
+    app.csvFile = open('mw4/test/temp/test.csv', 'w')
+    app.csvWriter = csv.DictWriter(app.csvFile, ['test'])
+    suc = app.closeCSV()
     assert suc
 
 
@@ -209,6 +258,7 @@ def test_getDirectWeather():
 def test_measureTask_1():
     app.mutexMeasure.lock()
     suc = app.measureTask()
+    app.mutexMeasure.unlock()
     assert not suc
 
 

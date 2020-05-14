@@ -307,9 +307,10 @@ class SettDevice(object):
             if self.sender() != self.drivers[driver]['uiSetup']:
                 continue
 
-            # calculate geometry
+            # calculate geometry of parent window to center the popup
             geometry = self.pos().x(), self.pos().y(), self.width(), self.height()
-            # get all available frameworks
+
+            # collect all available frameworks
             availFramework = list(self.drivers[driver]['class'].run.keys())
 
             # selecting the device type
@@ -320,13 +321,12 @@ class SettDevice(object):
                                        deviceType=deviceType,
                                        availFramework=availFramework,
                                        data=self.driversData)
+
             # memorizing the driver we have to update
             self.popupUi.exec_()
             if self.popupUi.returnValues.get('close', 'cancel') == 'cancel':
-                # when cancel nothing happens
                 return False
             else:
-                # when ok, we have to further work
                 break
 
         self.processPopupResults(driverSelected=driver,

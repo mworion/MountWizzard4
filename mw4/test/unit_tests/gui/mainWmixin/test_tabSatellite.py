@@ -71,6 +71,7 @@ def module_setup_teardown(qtbot):
                     clickable=MWidget().clickable)
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
+    app.findIndexValue = MWidget().findIndexValue
     app.deleteLater = MWidget().deleteLater
     app.deviceStat = dict()
     app.log = CustomLogger(logging.getLogger(__name__), {})

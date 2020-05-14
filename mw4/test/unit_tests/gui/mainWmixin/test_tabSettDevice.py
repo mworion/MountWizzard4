@@ -97,6 +97,7 @@ def module_setup_teardown(qtbot):
     app.changeStyleDynamic = MWidget().changeStyleDynamic
     app.close = MWidget().close
     app.deleteLater = MWidget().deleteLater
+    app.findIndexValue = MWidget.findIndexValue
     app.deviceStat = dict()
     app.log = CustomLogger(logging.getLogger(__name__), {})
     app.threadPool = QThreadPool()

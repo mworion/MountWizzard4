@@ -455,11 +455,12 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         return True
 
     @staticmethod
-    def findIndexValue(ui, searchString):
+    def findIndexValue(ui, searchString, relaxed=False):
         """
 
         :param ui:
         :param searchString:
+        :param relaxed:
         :return:
         """
 
@@ -468,6 +469,11 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
             indexValue = ui.model().data(modelIndex)
             if indexValue is None:
                 continue
-            if indexValue.startswith(searchString):
-                return index
+            if relaxed:
+                if searchString in indexValue:
+                    return index
+            else:
+                if indexValue.startswith(searchString):
+                    return index
+
         return 0

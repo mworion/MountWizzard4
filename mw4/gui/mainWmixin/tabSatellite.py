@@ -326,6 +326,10 @@ class Satellite(object):
         obs = self.app.mount.obsSite
         t0 = obs.timeJD
         t1 = obs.ts.tt_jd(obs.timeJD.tt + 3)
+
+        if self.satellite.model.no_kozai == 0:
+            return False
+
         t, events = self.satellite.find_events(loc, t0, t1, altitude_degrees=minAlt)
 
         passUI = {
@@ -377,7 +381,7 @@ class Satellite(object):
         if satName not in self.satellites:
             return False
 
-        index = self.findIndexValue(self.ui.listSatelliteNames, satName)
+        index = self.findIndexValue(self.ui.listSatelliteNames, satName, relaxed=True)
         item = self.ui.listSatelliteNames.item(index)
 
         if item is None:

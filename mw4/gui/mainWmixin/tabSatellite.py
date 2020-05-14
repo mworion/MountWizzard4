@@ -328,6 +328,7 @@ class Satellite(object):
         t1 = obs.ts.tt_jd(obs.timeJD.tt + 3)
 
         if self.satellite.model.no_kozai == 0:
+            self.log.error(f'{self.satellite.name}: {self.satellite.model.no_kozai}')
             return False
 
         t, events = self.satellite.find_events(loc, t0, t1, altitude_degrees=minAlt)

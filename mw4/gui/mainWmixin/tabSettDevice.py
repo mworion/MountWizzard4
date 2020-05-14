@@ -212,15 +212,6 @@ class SettDevice(object):
 
         return True
 
-    def setSaveMeasure(self):
-        """
-
-        :return: true for test purpose
-        """
-        self.app.measure.doWriteCSV = self.ui.checkSaveMeasurement.isChecked()
-
-        return True
-
     def setupDeviceGui(self):
         """
         setupRelayGui handles the dropdown lists for all devices possible in mountwizzard.

@@ -379,6 +379,10 @@ class Satellite(object):
 
         index = self.findIndexValue(self.ui.listSatelliteNames, satName)
         item = self.ui.listSatelliteNames.item(index)
+
+        if item is None:
+            return False
+
         item.setSelected(True)
 
         # making the entry visible (and scroll the list if necessary)

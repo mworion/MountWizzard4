@@ -151,8 +151,6 @@ class SettDevice(object):
             signals.deviceConnected.connect(self.deviceConnected)
             signals.deviceDisconnected.connect(self.deviceDisconnected)
 
-        self.ui.checkSaveMeasurement.clicked.connect(self.setSaveMeasure)
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui
@@ -163,8 +161,6 @@ class SettDevice(object):
         """
 
         config = self.app.config.get('mainW', {})
-        self.ui.checkSaveMeasurement.setChecked(config.get('checkSaveMeasurement', False))
-
         configData = self.app.config.get('driversData', {})
 
         for driver in self.drivers:
@@ -201,7 +197,6 @@ class SettDevice(object):
         """
 
         config = self.app.config['mainW']
-        config['checkSaveMeasurement'] = self.ui.checkSaveMeasurement.isChecked()
 
         if 'driversData' not in self.app.config:
             self.app.config['driversData'] = {}

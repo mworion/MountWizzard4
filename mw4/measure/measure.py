@@ -70,7 +70,8 @@ class MeasureData(PyQt5.QtCore.QObject):
         self.name = ''
         self.framework = None
         self.run = {
-            'built-in': self
+            'built-in': self,
+            'built-in with CSV': self,
         }
 
         # time for measurement

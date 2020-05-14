@@ -186,7 +186,8 @@ class SettDevice(object):
 
         for driver in self.drivers:
             self.drivers[driver]['uiDropDown'].setCurrentIndex(config.get(driver, 0))
-            self.dispatch(driverName=driver)
+
+        self.dispatch(driverName='all')
 
         return True
 
@@ -489,6 +490,8 @@ class SettDevice(object):
         happens at the startup to initialize the drivers and after a popup is closed to update
         the settings for a driver.
 
+        if driver=='all' is set, dispatch will handler all drivers in a row.
+
         first dispatch will stop running drivers
         then changing the settings
         then starting the new ones
@@ -498,9 +501,10 @@ class SettDevice(object):
         """
 
         isGui = not isinstance(driverName, str)
+        isAll = not isGui and driverName == 'all'
 
         for driver in self.drivers:
-            if not isGui and (driverName != driver):
+            if not isGui and (driverName != driver) and not isAll:
                 continue
 
             if isGui and (self.sender() != self.drivers[driver]['uiDropDown']):

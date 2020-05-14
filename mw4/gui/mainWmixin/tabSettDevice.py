@@ -153,24 +153,6 @@ class SettDevice(object):
 
         self.ui.checkSaveMeasurement.clicked.connect(self.setSaveMeasure)
 
-    @staticmethod
-    def findIndexValue(ui, searchString):
-        """
-
-        :param ui:
-        :param searchString:
-        :return:
-        """
-
-        for index in range(ui.model().rowCount()):
-            modelIndex = ui.model().index(index, 0)
-            indexValue = ui.model().data(modelIndex)
-            if indexValue is None:
-                continue
-            if indexValue.startswith(searchString):
-                return index
-        return 0
-
     def initConfig(self):
         """
         initConfig read the key out of the configuration dict and stores it to the gui

@@ -112,20 +112,6 @@ def module_setup_teardown(qtbot):
     app.threadPool.waitForDone(1000)
 
 
-def test_findIndexValue_1():
-    app.setupDeviceGui()
-    val = app.findIndexValue(ui=app.ui.domeDevice,
-                             searchString='dome')
-    assert val == 0
-
-
-def test_findIndexValue_2():
-    app.setupDeviceGui()
-    val = app.findIndexValue(ui=app.ui.domeDevice,
-                             searchString='indi')
-    assert val == 1
-
-
 def test_initConfig_1():
     app.config['mainW'] = {}
     suc = app.initConfig()

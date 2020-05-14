@@ -453,3 +453,21 @@ class MWidget(PyQt5.QtWidgets.QWidget, styles.MWStyles):
         ui.setText(text)
 
         return True
+
+    @staticmethod
+    def findIndexValue(ui, searchString):
+        """
+
+        :param ui:
+        :param searchString:
+        :return:
+        """
+
+        for index in range(ui.model().rowCount()):
+            modelIndex = ui.model().index(index, 0)
+            indexValue = ui.model().data(modelIndex)
+            if indexValue is None:
+                continue
+            if indexValue.startswith(searchString):
+                return index
+        return 0

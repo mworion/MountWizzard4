@@ -25,6 +25,7 @@ faulthandler.enable()
 
 # external packages
 import PyQt5.QtWidgets
+from PyQt5.QtWidgets import QComboBox
 import PyQt5.QtTest
 import PyQt5.QtCore
 
@@ -360,3 +361,31 @@ def test_guiSetText_4():
     suc = app.guiSetText(pb, '3.0f', 100)
     assert suc
     assert pb.text() == '100'
+
+
+def test_findIndexValue_1():
+    ui = QComboBox()
+    ui.addItem('dome')
+    ui.addItem('test')
+    val = app.findIndexValue(ui=ui,
+                             searchString='dome')
+    assert val == 0
+
+
+def test_findIndexValue_2():
+    ui = QComboBox()
+    ui.addItem('dome')
+    ui.addItem('indi')
+    val = app.findIndexValue(ui=ui,
+                             searchString='indi')
+    assert val == 1
+
+
+def test_findIndexValue_3():
+    ui = QComboBox()
+    ui.addItem('dome')
+    ui.addItem('test')
+    ui.addItem('indi - test')
+    val = app.findIndexValue(ui=ui,
+                             searchString='indi')
+    assert val == 2

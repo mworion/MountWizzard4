@@ -377,17 +377,9 @@ class Satellite(object):
         if satName not in self.satellites:
             return False
 
-        # selecting the entry in the list box
-        item = None
-        for index in range(self.ui.listSatelliteNames.model().rowCount()):
-            if not self.ui.listSatelliteNames.item(index).text()[8:] == satName:
-                continue
-            item = self.ui.listSatelliteNames.item(index)
-            item.setSelected(True)
-            break
-
-        if not item:
-            return False
+        index = self.findIndexValue(self.ui.listSatelliteNames, satName)
+        item = self.ui.listSatelliteNames.item(index)
+        item.setSelected(True)
 
         # making the entry visible (and scroll the list if necessary)
         position = PyQt5.QtWidgets.QAbstractItemView.EnsureVisible

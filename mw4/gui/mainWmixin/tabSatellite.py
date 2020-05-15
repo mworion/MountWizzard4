@@ -39,6 +39,7 @@ class Satellite(object):
 
         self.satellites = dict()
         self.satellite = None
+        self.listSatelliteNamesProxy = None
         self.satellitesRawTLE = {}
 
         self.satelliteSourceURLs = {
@@ -61,6 +62,7 @@ class Satellite(object):
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
         self.ui.satelliteSource.currentIndexChanged.connect(self.loadTLEDataFromSourceURLs)
+        self.ui.filterText.textChanged.connect(self.filterSatelliteNamesList)
 
         self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
         self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
@@ -93,6 +95,25 @@ class Satellite(object):
         self.ui.satelliteSource.setView(PyQt5.QtWidgets.QListView())
         for name in self.satelliteSourceURLs.keys():
             self.ui.satelliteSource.addItem(name)
+
+        return True
+
+    def filterSatelliteNamesList(self):
+        """
+
+        :return: true for test purpose
+        """
+        listSat = self.ui.listSatelliteNames
+        filterStr = self.ui.filterText.text()
+
+        for row in range(listSat.model().rowCount()):
+            isFound = filterStr in listSat.model().index(row).data()
+            isVisible = isFound or not filterStr
+
+            if isVisible:
+                listSat.setRowHidden(row, False)
+            else:
+                listSat.setRowHidden(row, True)
 
         return True
 

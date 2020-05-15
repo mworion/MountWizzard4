@@ -93,10 +93,15 @@ def test_initConfig_1():
     assert suc
 
 
-def test_setupSatelliteSourceGui():
+def test_setupSatelliteSourceURLsDropDown():
     suc = app.setupSatelliteSourceURLsDropDown()
     assert suc
     assert len(app.ui.satelliteSource) == len(app.satelliteSourceURLs)
+
+
+def test_filterSatelliteNamesList_1():
+    suc = app.filterSatelliteNamesList()
+    assert suc
 
 
 def test_setupSatelliteGui_1():

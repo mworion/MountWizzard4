@@ -17,7 +17,6 @@
 ###########################################################
 # standard libraries
 import logging
-import csv
 
 # external packages
 import PyQt5
@@ -25,6 +24,8 @@ import numpy as np
 
 # local imports
 from mw4.base.loggerMW import CustomLogger
+from mw4.measure.measureRaw import MeasureDataRaw
+from mw4.measure.measureCSV import MeasureDataCSV
 
 
 class MeasureData(PyQt5.QtCore.QObject):
@@ -51,120 +52,32 @@ class MeasureData(PyQt5.QtCore.QObject):
 
     def __init__(self, app):
         super().__init__()
-
         self.app = app
         self.mutexMeasure = PyQt5.QtCore.QMutex()
-        self.csvFile = None
-        self.csvWriter = None
-        self.doWriteCSV = False
 
         # internal calculations
         self.shorteningStart = True
         self.raRef = None
         self.decRef = None
-
-        self.data = {}
         self.devices = {}
 
-        # minimum set for driver package built in
-        self.name = ''
-        self.framework = None
+        self.data = {}
         self.run = {
-            'built-in': self,
-            'built-in with CSV': self,
+            'built-in': MeasureDataRaw(self.app, self, self.data),
+            'built-in with CSV': MeasureDataCSV(self.app, self, self.data)
         }
-
-        # time for measurement
-        self.timerTask = PyQt5.QtCore.QTimer()
-        self.timerTask.setSingleShot(False)
-        self.timerTask.timeout.connect(self.measureTask)
+        self.framework = None
+        self.name = ''
 
     @property
-    def doWriteCSV(self):
-        return self._doWriteCSV
+    def name(self):
+        return self._name
 
-    @doWriteCSV.setter
-    def doWriteCSV(self, value):
-        self._doWriteCSV = value
-        if value and not self.csvFile:
-            self.openCSV()
-        elif not value and self.csvFile:
-            self.closeCSV()
-
-    def openCSV(self):
-        """
-
-        :return: success
-        """
-
-        nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')
-        csvFilename = f'{self.app.mwGlob["dataDir"]}/measure-{nameTime}.csv'
-
-        self.csvFile = open(csvFilename, 'w+')
-        fieldnames = ['time',
-                      'raJNow',
-                      'decJNow',
-                      'status',
-                      'sensorWeatherTemp',
-                      'sensorWeatherHum',
-                      'sensorWeatherPress',
-                      'sensorWeatherDew',
-                      'onlineWeatherTemp',
-                      'onlineWeatherHum',
-                      'onlineWeatherPress',
-                      'onlineWeatherDew',
-                      'directWeatherTemp',
-                      'directWeatherHum',
-                      'directWeatherPress',
-                      'directWeatherDew',
-                      'skyTemp',
-                      'skySQR',
-                      'filterNumber',
-                      'focusPosition',
-                      'powCurr1',
-                      'powCurr2',
-                      'powCurr3',
-                      'powCurr4',
-                      'powVolt',
-                      'powCurr',
-                      'powHum',
-                      'powTemp',
-                      'powDew']
-
-        self.csvWriter = csv.DictWriter(self.csvFile, fieldnames=fieldnames)
-        self.csvWriter.writeheader()
-
-        return True
-
-    def writeCSV(self):
-        """
-
-        :return: success for write
-        """
-        if not self.csvFile or not self.csvWriter:
-            return False
-
-        row = dict()
-        for key in self.data.keys():
-            row[key] = self.data[key][0]
-
-        self.csvWriter.writerow(row)
-
-        return True
-
-    def closeCSV(self):
-        """
-
-        :return: success for close
-        """
-        if not self.csvFile or not self.csvWriter:
-            return False
-
-        self.csvFile.close()
-        self.csvWriter = None
-        self.csvFile = None
-
-        return True
+    @name.setter
+    def name(self, value):
+        self._name = value
+        if self.framework in self.run.keys():
+            self.run[self.framework].name = value
 
     def startCommunication(self, loadConfig=False):
         """
@@ -173,27 +86,28 @@ class MeasureData(PyQt5.QtCore.QObject):
         :param loadConfig:
         :return: True for test purpose
         """
-
         deviceStat = self.app.deviceStat
         dItems = deviceStat.items()
         self.devices = [key for key, value in dItems if deviceStat[key] is not None]
-        self.setEmptyData()
-        self.timerTask.start(self.CYCLE_UPDATE_TASK)
 
-        if self.doWriteCSV:
-            self.openCSV()
+        if self.framework not in self.run.keys():
+            return False
 
-        return True
+        suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
+        return suc
 
     def stopCommunication(self):
         """
+        stopCommunication stop the devices in selected frameworks
 
-        :return: True for test purpose
+        :return: true for test purpose
         """
 
-        self.closeCSV()
-        self.timerTask.stop()
-        return True
+        if self.framework not in self.run.keys():
+            return False
+
+        suc = self.run[self.framework].stopCommunication()
+        return suc
 
     def setEmptyData(self):
         """
@@ -279,6 +193,7 @@ class MeasureData(PyQt5.QtCore.QObject):
                 self.raRef = obs.raJNow._degrees
             if self.decRef is None:
                 self.decRef = obs.decJNow.degrees
+
             # we would like to have the difference in arcsec
             raJNow = (obs.raJNow._degrees - self.raRef) * 3600
             decJNow = (obs.decJNow.degrees - self.decRef) * 3600
@@ -431,7 +346,6 @@ class MeasureData(PyQt5.QtCore.QObject):
         dat['powDew'] = np.append(dat['powDew'], powDew)
         dat['powHum'] = np.append(dat['powHum'], powHum)
 
-        self.writeCSV()
         self.mutexMeasure.unlock()
 
         return True

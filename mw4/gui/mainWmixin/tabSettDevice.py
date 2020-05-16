@@ -438,6 +438,11 @@ class SettDevice(object):
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astap - {name}')
 
+        elif self.drivers[driver]['uiDropDown'].currentText().startswith('built-in'):
+            text = self.drivers[driver]['uiDropDown'].currentText()
+            driverClass.framework = text
+            driverClass.name = text
+
         return True
 
     def dispatchStartDriver(self, driver=None):
@@ -454,7 +459,6 @@ class SettDevice(object):
         # for built-in i actually not check their presence as the should function
         if self.drivers[driver]['uiDropDown'].currentText().startswith('built-in'):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
-            self.drivers[driver]['class'].name = 'built-in'
             self.deviceStat[driver] = True
 
         # and finally start it

@@ -95,7 +95,10 @@ class PegasusUPB:
 
     def startCommunication(self, loadConfig=False):
         """
+        startCommunication starts the devices in selected frameworks
 
+        :param loadConfig:
+        :return: success
         """
 
         if self.framework not in self.run.keys():
@@ -106,7 +109,9 @@ class PegasusUPB:
 
     def stopCommunication(self):
         """
+        stopCommunication stop the devices in selected frameworks
 
+        :return: true for test purpose
         """
 
         if self.framework not in self.run.keys():

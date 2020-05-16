@@ -272,7 +272,6 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         """
 
         self.timer0_1s.stop()
-        self.measure.timerTask.stop()
         self.mount.stopTimers()
         self.relay.timerTask.stop()
 

@@ -24,7 +24,7 @@ Documentation
 -------------
 |DOCS|
 
-The documentation for install/use could be found online under:
+The documentation for install/use and changelog could be found online under:
 https://mountwizzard4.readthedocs.io.
 
 There is also a PDF version available for download

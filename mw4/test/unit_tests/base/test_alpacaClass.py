@@ -21,6 +21,7 @@ import faulthandler
 faulthandler.enable()
 
 # external packages
+import PyQt5
 import pytest
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import pyqtSignal
@@ -83,15 +84,17 @@ def test_getInitialConfig_2():
 
 
 def test_startTimer():
-    suc = app.startTimer()
-    assert suc
-    app.cycleData.stop()
-    app.cycleDevice.stop()
+    with mock.patch.object(PyQt5.QtCore.QTimer(),
+                           'start'):
+        suc = app.startTimer()
+        assert suc
 
 
 def test_stopTimer():
-    suc = app.stopTimer()
-    assert suc
+    with mock.patch.object(PyQt5.QtCore.QTimer(),
+                           'stop'):
+        suc = app.stopTimer()
+        assert suc
 
 
 def test_dataEntry_1():
@@ -188,14 +191,18 @@ def test_startPollStatus():
 
 
 def test_startCommunication():
-    suc = app.startCommunication()
-    assert suc
+    with mock.patch.object(app,
+                           'startTimer'):
+        suc = app.startCommunication()
+        assert suc
 
 
 def test_stopCommunication():
     app.deviceConnected = True
     app.serverConnected = True
-    suc = app.stopCommunication()
-    assert suc
-    assert not app.serverConnected
-    assert not app.deviceConnected
+    with mock.patch.object(app,
+                           'stopTimer'):
+        suc = app.stopCommunication()
+        assert suc
+        assert not app.serverConnected
+        assert not app.deviceConnected

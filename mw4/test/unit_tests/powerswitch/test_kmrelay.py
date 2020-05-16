@@ -63,15 +63,18 @@ def test_password():
 
 def test_startTimers_1():
     app.host = None
-    suc = app.startCommunication()
-    assert not suc
+    with mock.patch.object(app.timerTask,
+                           'start'):
+        suc = app.startCommunication()
+        assert not suc
 
 
 def test_startTimers_2():
     app.host = ('localhost', 80)
-    suc = app.startCommunication()
-    assert suc
-    app.timerTask.stop()
+    with mock.patch.object(app.timerTask,
+                           'start'):
+        suc = app.startCommunication()
+        assert suc
 
 
 def test_startTimers_3():
@@ -80,7 +83,6 @@ def test_startTimers_3():
                            'start',):
         suc = app.startCommunication()
         assert suc
-        app.timerTask.stop()
 
 
 def test_stopTimers_1():

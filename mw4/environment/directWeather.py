@@ -46,7 +46,7 @@ class DirectWeather:
         # minimum set for driver package built in
         self.framework = None
         self.run = {
-            'built-in': self
+            'internal': self
         }
         self.name = ''
         self.data = {}

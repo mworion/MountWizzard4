@@ -69,7 +69,7 @@ class KMRelay(PyQt5.QtCore.QObject):
         self.framework = None
         self.data = {}
         self.run = {
-            'built-in': self
+            'internal': self
         }
         self.name = ''
 

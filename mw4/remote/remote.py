@@ -51,7 +51,7 @@ class Remote(QObject):
         self.data = {}
         self.framework = None
         self.run = {
-            'built-in': self
+            'internal': self
         }
         self.name = ''
 

@@ -63,8 +63,8 @@ class MeasureData(PyQt5.QtCore.QObject):
 
         self.data = {}
         self.run = {
-            'built-in': MeasureDataRaw(self.app, self, self.data),
-            'built-in with CSV': MeasureDataCSV(self.app, self, self.data)
+            'internal - display only': MeasureDataRaw(self.app, self, self.data),
+            'internal - CSV store': MeasureDataCSV(self.app, self, self.data)
         }
         self.framework = None
         self.name = ''

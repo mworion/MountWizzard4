@@ -438,7 +438,7 @@ class SettDevice(object):
             index = self.drivers[driver]['uiDropDown'].currentIndex()
             self.drivers[driver]['uiDropDown'].setItemText(index, f'astap - {name}')
 
-        elif self.drivers[driver]['uiDropDown'].currentText().startswith('built-in'):
+        elif self.drivers[driver]['uiDropDown'].currentText().startswith('internal'):
             text = self.drivers[driver]['uiDropDown'].currentText()
             driverClass.framework = text
             driverClass.name = text
@@ -457,7 +457,7 @@ class SettDevice(object):
             return False
 
         # for built-in i actually not check their presence as the should function
-        if self.drivers[driver]['uiDropDown'].currentText().startswith('built-in'):
+        if self.drivers[driver]['uiDropDown'].currentText().startswith('internal'):
             self.drivers[driver]['uiDropDown'].setStyleSheet(self.BACK_GREEN)
             self.deviceStat[driver] = True
 

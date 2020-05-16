@@ -331,7 +331,7 @@ def test_dispatchStartDriver_1():
 
 
 def test_dispatchStartDriver_2():
-    app.drivers['dome']['uiDropDown'].setItemText(0, 'built-in')
+    app.drivers['dome']['uiDropDown'].setItemText(0, 'internal')
     app.BACK_GREEN = '#000000'
     suc = app.dispatchStartDriver(driver='dome')
     assert not suc
@@ -343,7 +343,7 @@ def test_dispatchStartDriver_1(qtbot):
 
 
 def test_dispatchStartDriver_2(qtbot):
-    app.ui.relayDevice.addItem('built-in')
+    app.ui.relayDevice.addItem('internal')
     with mock.patch.object(app.app.relay,
                            'startCommunication',
                            return_value=False):

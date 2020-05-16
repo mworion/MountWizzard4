@@ -29,6 +29,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtCore import QEvent
 from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QLineEdit
 from mountcontrol.qtmount import Mount
 import matplotlib.pyplot as plt
 
@@ -58,6 +59,7 @@ def module_setup_teardown(qtbot):
 
     class Test1a:
         checkDomeGeometry = QCheckBox()
+        statusDualAxisTracking = QLineEdit()
 
     class Test1:
         ui = Test1a()

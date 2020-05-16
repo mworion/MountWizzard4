@@ -180,6 +180,15 @@ class MWStyles(object):
         border-style: flat;
         border-radius: 2px;
     }
+    QLineEdit[input='true']{
+        background-color: #000000;
+        border-width: 1px;
+        border-color: rgb(16, 72, 96);
+        border-style: outset;
+    }  
+    QLineEdit:read-only{
+        background-color: #202020;
+    }  
     QLineEdit[color='green'] {
         border-width: 2px;
         border-style: outset;
@@ -195,15 +204,7 @@ class MWStyles(object):
         border-style: outset;
         border-color: red;
     }
-    QLineEdit:read-only{
-        background-color: #202020;
-    }    
-    QLineEdit[input='true']{
-        background-color: #000000;
-        border-width: 1px;
-        border-color: rgb(16, 72, 96);
-        border-style: outset;
-    }    
+    
     /* Group Box */
     QGroupBox {
         background-color: #181818;

@@ -37,7 +37,8 @@ from mw4.modeldata.buildpoints import HaDecToAltAz
 @pytest.fixture(autouse=True, scope='function')
 def module_setup_teardown():
     class Test():
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)

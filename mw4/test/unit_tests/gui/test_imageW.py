@@ -71,7 +71,8 @@ def module_setup_teardown(qtbot):
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
         mainW = Test1()
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
         camera = Camera(app=Test2())
         astrometry = Astrometry(app=Test2())
         uiWindows = {'showImageW': {}}

@@ -133,22 +133,28 @@ def test_waitSettlingTime():
 
 def test_updateNumber_1():
     app.device = None
-    suc = app.updateNumber('test', 'test')
-    assert not suc
+    with mock.patch.object(app.settlingWait,
+                           'start'):
+        suc = app.updateNumber('test', 'test')
+        assert not suc
 
 
 def test_updateNumber_2():
     app.device = Device()
     app.name = ''
-    suc = app.updateNumber('test', 'test')
-    assert not suc
+    with mock.patch.object(app.settlingWait,
+                           'start'):
+        suc = app.updateNumber('test', 'test')
+        assert not suc
 
 
 def test_updateNumber_3():
     app.device = Device()
     app.name = 'test'
-    suc = app.updateNumber('test', 'test')
-    assert suc
+    with mock.patch.object(app.settlingWait,
+                           'start'):
+        suc = app.updateNumber('test', 'test')
+        assert suc
 
 
 def test_updateNumber_4():
@@ -158,8 +164,10 @@ def test_updateNumber_4():
                            'getNumber',
                            return_value={'TEST': 1,
                                          'DOME_ABSOLUTE_POSITION': 2}):
-        suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
-        assert suc
+        with mock.patch.object(app.settlingWait,
+                               'start'):
+            suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
+            assert suc
 
 
 def test_updateNumber_5():
@@ -171,8 +179,10 @@ def test_updateNumber_5():
                            'getNumber',
                            return_value={'TEST': 1,
                                          'DOME_ABSOLUTE_POSITION': 2}):
-        suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
-        assert suc
+        with mock.patch.object(app.settlingWait,
+                               'start'):
+            suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
+            assert suc
 
 
 def test_updateNumber_6():
@@ -184,8 +194,10 @@ def test_updateNumber_6():
                            'getNumber',
                            return_value={'TEST': 1,
                                          'DOME_ABSOLUTE_POSITION': 2}):
-        suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
-        assert suc
+        with mock.patch.object(app.settlingWait,
+                               'start'):
+            suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
+            assert suc
 
 
 def test_updateNumber_7():
@@ -198,8 +210,10 @@ def test_updateNumber_7():
                            'getNumber',
                            return_value={'TEST': 1,
                                          'DOME_ABSOLUTE_POSITION': 2}):
-        suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
-        assert suc
+        with mock.patch.object(app.settlingWait,
+                               'start'):
+            suc = app.updateNumber('test', 'DOME_ABSOLUTE_POSITION')
+            assert suc
 
 
 def test_slewToAltAz_1():

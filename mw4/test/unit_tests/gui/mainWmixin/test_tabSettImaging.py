@@ -47,7 +47,8 @@ def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
 
     class Test1(QObject):
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
         update1s = pyqtSignal()
         threadPool = QThreadPool()
 

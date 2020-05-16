@@ -138,8 +138,10 @@ def test_startCommunication_1():
         with mock.patch.object(app.client,
                                'connectServer',
                                return_value=False):
-            suc = app.startCommunication()
-            assert not suc
+            with mock.patch.object(app.timerRetry,
+                                   'start'):
+                suc = app.startCommunication()
+                assert not suc
 
 
 def test_startCommunication_2():
@@ -150,8 +152,10 @@ def test_startCommunication_2():
         with mock.patch.object(app.client,
                                'connectServer',
                                return_value=True):
-            suc = app.startCommunication()
-            assert suc
+            with mock.patch.object(app.timerRetry,
+                                   'start'):
+                suc = app.startCommunication()
+                assert suc
 
 
 def test_stopCommunication_1():

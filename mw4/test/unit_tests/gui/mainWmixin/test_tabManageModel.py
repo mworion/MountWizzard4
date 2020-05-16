@@ -42,7 +42,8 @@ def module_setup_teardown(qtbot):
     class Test(QObject):
         config = {'mainW': {}}
         threadPool = QThreadPool()
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
         update1s = pyqtSignal()
         message = pyqtSignal(str, int)
         mwGlob = {'imageDir': 'mw4/test/image'}

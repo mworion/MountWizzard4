@@ -43,7 +43,8 @@ def module_setup_teardown():
 
     class Test:
         mwGlob = {'dataDir': 'mw4/test/data'}
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
 
     global app
     app = MeasureDataCSV(app=Test(), parent=Test1())

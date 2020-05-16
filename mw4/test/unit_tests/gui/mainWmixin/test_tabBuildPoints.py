@@ -42,14 +42,16 @@ def module_setup_teardown(qtbot):
     global ui, widget, Test, app
 
     class Test1(QObject):
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
 
     class Test(QObject):
         config = {'mainW': {}}
         redrawHemisphere = pyqtSignal()
         message = pyqtSignal(str, int)
         mwGlob = {'configDir': 'mw4/test/config'}
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)

@@ -50,6 +50,7 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.initUI()
         self.mutexDraw = PyQt5.QtCore.QMutex()
         self.operationMode = 'normal'
+        self.statusDAT = None
 
         self.MODE = dict(
             normal=dict(horMarker='None',
@@ -168,6 +169,10 @@ class HemisphereWindow(widget.MWidget, HemisphereWindowExt):
         self.app.update10s.disconnect(self.updateAlignStar)
         self.app.update0_1s.disconnect(self.resizeTimer)
         self.storeConfig()
+
+        # restore DAT status
+        self.ui.checkEditNone.setChecked(True)
+        self.setOperationMode()
 
         # signals for gui
         self.ui.checkShowSlewPath.clicked.disconnect(self.drawHemisphere)

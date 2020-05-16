@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -2026,7 +2026,8 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Status of dual tracking. When clicking the field, you could change the value.</string>
+       <string>Status of dual tracking. When clicking the field, you could change the value.
+If there is a yellow frame, the status is changed by MW4 due to functional reasons.</string>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>

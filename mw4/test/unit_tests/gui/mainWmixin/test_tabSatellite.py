@@ -45,7 +45,8 @@ def module_setup_teardown(qtbot):
     global ui, widget, Test, Test1, app
 
     class Test1(QObject):
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
         update10s = pyqtSignal()
         threadPool = QThreadPool()
 
@@ -55,7 +56,8 @@ def module_setup_teardown(qtbot):
         update1s = pyqtSignal()
         update3s = pyqtSignal()
         message = pyqtSignal(str, int)
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
         mwGlob = {'dataDir': 'mw4/test/data'}
         uiWindows = {'showSatelliteW': None}
         mount.obsSite.location = Topos(latitude_degrees=50,

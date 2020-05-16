@@ -51,7 +51,8 @@ def module_setup_teardown(qtbot):
         threadPool = QThreadPool()
         update1s = pyqtSignal()
 
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
         mount.obsSite.location = Topos(latitude_degrees=20,
                                        longitude_degrees=10,
                                        elevation_m=500)
@@ -75,7 +76,8 @@ def module_setup_teardown(qtbot):
         redrawHemisphere = pyqtSignal()
         message = pyqtSignal(str, int)
 
-        mount = Mount(expire=False, verbose=False, pathToData='mw4/test/data')
+        mount = Mount(host='localhost', MAC='00:00:00:00:00:00', expire=False, verbose=False,
+                      pathToData='mw4/test/data')
         mount.obsSite.Alt = Angle(degrees=45)
         mount.obsSite.Az = Angle(degrees=45)
 

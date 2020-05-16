@@ -189,7 +189,7 @@ class MountWizzard4(PyQt5.QtCore.QObject):
         if not len(sys.argv) > 1:
             return
         if sys.argv[1] == 'test':
-            self.update3s.connect(self.quitSave)
+            self.update3s.connect(self.quit)
 
     def initConfig(self):
         """

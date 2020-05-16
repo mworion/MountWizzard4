@@ -6,8 +6,7 @@ Changelog
 - moved measurement setup to device settings
 - added storing measurement data in CSV file
 - added search filter for satellites in selection list
-- dual axis tracking will be switched off during polar alignment and modeling and restored
-afterwards
+- dual axis tracking will be switched off during polar alignment and modeling
 
 0.150.14
 --------

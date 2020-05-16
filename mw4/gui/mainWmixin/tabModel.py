@@ -478,7 +478,7 @@ class Model(object):
 
         self.statusDAT = self.app.mount.setting.statusDualAxisTracking
         self.app.mount.setting.setDualAxisTracking(False)
-        self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking, 'color', 'yellow')
+        self.changeStyleDynamic(self.ui.statusDualAxisTracking, 'color', 'yellow')
 
         return True
 

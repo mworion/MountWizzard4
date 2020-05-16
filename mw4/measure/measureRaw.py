@@ -56,7 +56,6 @@ class MeasureDataRaw(PyQt5.QtCore.QObject):
         self.app = app
         self.parent = parent
         self.data = data
-        self.devices = {}
 
         # time for measurement
         self.timerTask = PyQt5.QtCore.QTimer()

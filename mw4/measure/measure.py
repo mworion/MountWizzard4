@@ -115,7 +115,7 @@ class MeasureData(PyQt5.QtCore.QObject):
         :return: True for test purpose
         """
 
-        self.data = dict()
+        self.data.clear()
 
         self.data['time'] = np.empty(shape=[0, 1], dtype='datetime64')
         self.data['raJNow'] = np.empty(shape=[0, 1])

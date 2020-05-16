@@ -57,7 +57,6 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
         self.app = app
         self.parent = parent
         self.data = data
-        self.devices = {}
         self.csvFile = None
         self.csvWriter = None
 

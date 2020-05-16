@@ -27,6 +27,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets import QLineEdit
 from skyfield.toposlib import Topos
 from skyfield.api import Angle
 import mountcontrol
@@ -59,6 +60,7 @@ def module_setup_teardown(qtbot):
 
     class Test1a:
         checkDomeGeometry = QCheckBox()
+        statusDualAxisTracking = QLineEdit()
 
     class Test1:
         deviceStat = {'dome': True}

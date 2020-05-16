@@ -50,12 +50,15 @@ class FilterAlpaca(AlpacaClass):
     def getInitialConfig(self):
         """
 
-        :return: true for test purpose
+        :return: success
         """
 
         super().getInitialConfig()
 
         names = self.client.names()
+
+        if names is None:
+            return False
 
         for i, name in enumerate(names):
             if name is None:

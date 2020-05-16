@@ -54,6 +54,14 @@ def test_getInitialConfig_1():
 def test_getInitialConfig_2():
     with mock.patch.object(app.client,
                            'names',
+                           return_value=None):
+        suc = app.getInitialConfig()
+        assert not suc
+
+
+def test_getInitialConfig_3():
+    with mock.patch.object(app.client,
+                           'names',
                            return_value=['test', 'test1']):
         suc = app.getInitialConfig()
         assert suc

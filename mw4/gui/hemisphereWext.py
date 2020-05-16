@@ -133,14 +133,10 @@ class HemisphereWindowExt(object):
         if self.operationMode == 'star':
             self.statusDAT = self.app.mount.setting.statusDualAxisTracking
             self.app.mount.setting.setDualAxisTracking(False)
-            self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking,
-                                    'color',
-                                    'yellow')
+            self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking, 'color', 'yellow')
         else:
             self.app.mount.setting.setDualAxisTracking(self.statusDAT)
-            self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking,
-                                    'color',
-                                    '')
+            self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking,  'color', '')
 
         self.drawHemisphere()
 

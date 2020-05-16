@@ -303,10 +303,10 @@ class MainWindow(MWidget,
         """
 
         self.app.timer0_1s.stop()
-        super().closeEvent(closeEvent)
         self.changeStyleDynamic(self.ui.pauseModel, 'pause', False)
         self.closeExtendedWindows()
         self.stopAllDrivers()
+        super().closeEvent(closeEvent)
         self.app.quit()
 
     def quitSave(self):

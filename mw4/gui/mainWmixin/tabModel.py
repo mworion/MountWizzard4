@@ -97,6 +97,7 @@ class Model(object):
         self.modelName = ''
         self.model = []
         self.imageDir = ''
+        self.statusDAT = None
 
         # func signals
         ms = self.app.mount.signals
@@ -466,6 +467,35 @@ class Model(object):
 
         return True
 
+    def changeStatusDAT(self):
+        """
+
+        :return: True for test purpose
+        """
+
+        if self.statusDAT is None:
+            self.statusDAT = self.app.mount.setting.statusDualAxisTracking
+
+        self.statusDAT = self.app.mount.setting.statusDualAxisTracking
+        self.app.mount.setting.setDualAxisTracking(False)
+        self.changeStyleDynamic(self.app.mainW.ui.statusDualAxisTracking, 'color', 'yellow')
+
+        return True
+
+    def restoreStatusDAT(self):
+        """
+
+        :return: true for test purpose
+        """
+
+        if self.statusDAT is None:
+            return False
+
+        self.app.mount.setting.setDualAxisTracking(self.statusDAT)
+        self.changeStyleDynamic(self.ui.statusDualAxisTracking,  'color', '')
+
+        return True
+
     def clearQueues(self):
         """
         clearQueues ensures that all used queues will be emptied.
@@ -590,6 +620,7 @@ class Model(object):
         :return: true for test purpose
         """
 
+        self.restoreStatusDAT()
         self.app.camera.abort()
         self.app.astrometry.abort()
         self.defaultSignals()
@@ -750,6 +781,7 @@ class Model(object):
         self.defaultSignals()
         self.clearQueues()
         self.defaultGUI()
+        self.restoreStatusDAT()
 
         # finally do it
         self.app.message.emit('Programming model to mount', 0)
@@ -794,6 +826,9 @@ class Model(object):
 
         if astrometryApp.startswith('No device'):
             return False
+
+        # while modeling set dual axis tracking off
+        self.changeStatusDAT()
 
         # collection locations for files and generate directories if necessary
         nameTime = self.app.mount.obsSite.timeJD.utc_strftime('%Y-%m-%d-%H-%M-%S')

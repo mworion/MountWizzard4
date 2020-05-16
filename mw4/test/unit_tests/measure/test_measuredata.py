@@ -17,9 +17,9 @@
 ###########################################################
 # standard libraries
 import pytest
+import unittest.mock as mock
 import faulthandler
 faulthandler.enable()
-import csv
 
 # external packages
 import numpy as np
@@ -69,66 +69,40 @@ def module_setup_teardown():
     yield
 
 
-def test_properties():
-    assert not app.doWriteCSV
-    app.doWriteCSV = True
-    assert app.doWriteCSV
+def test_property():
+    app.framework = 'internal - display only'
+    app.name = 'test'
+    assert app.name == 'test'
 
 
-def test_startCommunication():
+def test_startCommunication_1():
     suc = app.startCommunication()
-    assert suc
+    assert not suc
 
 
-def test_stopCommunication():
+def test_startCommunication_2():
+    app.framework = 'internal - display only'
+    with mock.patch.object(app.run[app.framework].timerTask,
+                           'start'):
+        suc = app.startCommunication()
+        assert suc
+
+
+def test_stopCommunication_1():
     suc = app.stopCommunication()
-    assert suc
+    assert not suc
+
+
+def test_stopCommunication_2():
+    app.framework = 'internal - display only'
+    with mock.patch.object(app.run[app.framework].timerTask,
+                           'stop'):
+        suc = app.stopCommunication()
+        assert suc
 
 
 def test_setEmptyData():
     suc = app.setEmptyData()
-    assert suc
-
-
-def test_openCSV_1():
-    suc = app.openCSV()
-    assert suc
-
-
-def test_writeCSV_1():
-    suc = app.writeCSV()
-    assert not suc
-
-
-def test_writeCSV_2():
-    app.csvFile = open('mw4/test/temp/test.csv', 'w')
-    suc = app.writeCSV()
-    assert not suc
-
-
-def test_writeCSV_3():
-    app.csvFile = open('mw4/test/temp/test.csv', 'w')
-    app.csvWriter = csv.DictWriter(app.csvFile, ['test'])
-    app.data = {'test': [1, 2]}
-    suc = app.writeCSV()
-    assert suc
-
-
-def test_closeCSV_1():
-    suc = app.closeCSV()
-    assert not suc
-
-
-def test_closeCSV_2():
-    app.csvFile = open('mw4/test/temp/test.csv', 'w')
-    suc = app.closeCSV()
-    assert not suc
-
-
-def test_closeCSV_3():
-    app.csvFile = open('mw4/test/temp/test.csv', 'w')
-    app.csvWriter = csv.DictWriter(app.csvFile, ['test'])
-    suc = app.closeCSV()
     assert suc
 
 
@@ -215,6 +189,19 @@ def test_calculateReference_7():
 
 def test_checkStart_1():
     suc = app.checkStart(2)
+    assert suc
+
+
+def test_checkStart_2():
+    app.shorteningStart = True
+    suc = app.checkStart(2)
+    assert suc
+
+
+def test_checkStart_3():
+    app.data = {'test': [2, 2, 2]}
+    app.shorteningStart = True
+    suc = app.checkStart(3)
     assert suc
 
 

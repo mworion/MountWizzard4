@@ -51,7 +51,7 @@ class MeasureDataCSV(PyQt5.QtCore.QObject):
     # maximum size of measurement task
     MAXSIZE = 24 * 60 * 60
 
-    def __init__(self, app, parent, data):
+    def __init__(self, app=None, parent=None, data=None):
         super().__init__()
 
         self.app = app

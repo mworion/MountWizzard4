@@ -127,7 +127,6 @@ class Camera:
         :return: success
         """
 
-        print('start communication')
         if self.framework in self.run.keys():
             suc = self.run[self.framework].startCommunication(loadConfig=loadConfig)
             return suc
@@ -141,7 +140,7 @@ class Camera:
         :return: success
 
         """
-        print('stop communication')
+
         if self.framework in self.run.keys():
             suc = self.run[self.framework].stopCommunication()
             return suc

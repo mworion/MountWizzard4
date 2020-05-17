@@ -16,11 +16,14 @@
 #
 ###########################################################
 # standard libraries
+import platform
 
 # external packages
 import PyQt5.QtCore
 # import .NET / COM Handling
-from win32com.client import Dispatch
+
+if platform.system() == 'Windows':
+    from win32com.client import Dispatch
 
 # local import
 from mw4.base.indiClass import IndiClass

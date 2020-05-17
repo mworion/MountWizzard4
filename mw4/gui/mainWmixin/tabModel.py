@@ -922,6 +922,10 @@ class Model(object):
                 QTest.qWait(2000)
                 self.app.message.emit('Actual model cleared', 0)
 
+        value = self.ui.settleTimeMount.value()
+        if value < 2:
+            self.app.message.emit(f'Mount settling time short [{value}]s', 2)
+
         # check if imaging in window is running and abort it if necessary
         if self.app.uiWindows['showImageW']['classObj']:
             self.app.uiWindows['showImageW']['classObj'].abortImage()
@@ -937,6 +941,7 @@ class Model(object):
         self.ui.cancelModel.setEnabled(True)
 
         suc = self.modelCore(points=self.app.data.buildP)
+
         if not suc:
             self.defaultGUI()
             return False

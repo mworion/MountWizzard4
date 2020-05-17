@@ -19,6 +19,8 @@
 
 # external packages
 import PyQt5.QtCore
+# import .NET / COM Handling
+from win32com.client import Dispatch
 
 # local import
 from mw4.base.indiClass import IndiClass
@@ -88,6 +90,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.selectAstrometryIndex.clicked.connect(self.selectAstrometryIndex)
         self.ui.copyAlpaca.clicked.connect(self.copyAllAlpacaSettings)
         self.ui.copyIndi.clicked.connect(self.copyAllIndiSettings)
+        self.ui.ascomSelector.clicked.connect(self.setupAscomDriver)
 
         self.initConfig()
         self.show()
@@ -149,6 +152,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.ui.astapSearchRadius.setValue(deviceData.get('astapSearchRadius', 20))
 
         # populating ascom
+        self.ui.ascomDevice.setText(deviceData.get('ascomName', ''))
 
         # for fw in self.framework:
         tabWidget = self.ui.tab.findChild(PyQt5.QtWidgets.QWidget, selectedFramework)
@@ -208,6 +212,7 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
         self.data[self.driver]['astapTimeout'] = self.ui.astapTimeout.value()
 
         # collecting ascom data
+        self.data[self.driver]['ascomName'] = self.ui.ascomDevice.text()
 
         # setting framework
         index = self.ui.tab.currentIndex()
@@ -348,5 +353,29 @@ class DevicePopup(PyQt5.QtWidgets.QDialog, widget.MWidget):
             return False
 
         self.ui.astrometryIndex.setText(saveFilePath)
+
+        return True
+
+    def setupAscomDriver(self):
+        """
+
+        :return: success
+        """
+
+        deviceName = self.ui.ascomDevice.text()
+
+        try:
+            chooser = Dispatch('ASCOM.Utilities.Chooser')
+            chooser.DeviceType = self.deviceType
+            deviceName = chooser.Choose(deviceName)
+
+        except Exception as e:
+            self.log.critical(f'Error: {e}')
+            return False
+
+        finally:
+            self.ui.ascomDevice.setText(deviceName)
+
+        print(deviceName)
 
         return True

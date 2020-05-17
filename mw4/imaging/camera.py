@@ -66,6 +66,7 @@ class Camera:
         self.run = {
             'indi': CameraIndi(self.app, self.signals, self.data),
             'alpaca': CameraAlpaca(self.app, self.signals, self.data),
+            'ascom': self,
         }
         self.name = ''
         self.host = ('localhost', 7624)

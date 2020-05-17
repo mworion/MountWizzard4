@@ -76,7 +76,7 @@ class Camera:
         if platform.system() == 'Windows':
             self.run['ascom'] = CameraAscom(self.app, self.signals, self.data)
 
-            ascomSignals = self.run['ascom'].signals
+            ascomSignals = self.run['ascom'].ascomSignals
             ascomSignals.serverConnected.connect(self.signals.serverConnected)
             ascomSignals.serverDisconnected.connect(self.signals.serverDisconnected)
             ascomSignals.deviceConnected.connect(self.signals.deviceConnected)

@@ -31,8 +31,8 @@ from mw4.base.tpool import Worker
 class AscomSignals(PyQt5.QtCore.QObject):
 
     """
-    The AlpacaSignals class offers a list of signals to be used and instantiated by
-    the Alpaca class to get signals for triggers for finished tasks to
+    The AscomSignals class offers a list of signals to be used and instantiated by
+    the Ascom class to get signals for triggers for finished tasks to
     enable a gui to update their values transferred to the caller back.
 
     This has to be done in a separate class as the signals have to be subclassed from
@@ -67,7 +67,7 @@ class AscomClass(object):
 
         self.app = app
         self.threadPool = threadPool
-        self.signals = AscomSignals()
+        self.ascomSignals = AscomSignals()
 
         self.client = None
         self.data = data
@@ -100,16 +100,17 @@ class AscomClass(object):
 
         if not self.serverConnected:
             self.serverConnected = True
-            self.client.signals.serverConnected.emit()
+            self.ascomSignals.serverConnected.emit()
 
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.client.signals.deviceConnected.emit(f'{self.name}')
+            self.ascomSignals.deviceConnected.emit(f'{self.name}')
             self.app.message.emit(f'Ascom device found:  [{self.name}]', 0)
 
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
         self.data['DRIVER_INFO.DRIVER_EXEC'] = self.client.DriverInfo
+        print('end')
 
         return True
 
@@ -171,12 +172,12 @@ class AscomClass(object):
 
         if self.deviceConnected and not suc:
             self.deviceConnected = False
-            self.signals.deviceDisconnected.emit(f'{self.name}')
+            self.ascomSignals.deviceDisconnected.emit(f'{self.name}')
             self.app.message.emit(f'Ascom device remove: [{self.name}]', 0)
 
         elif not self.deviceConnected and suc:
             self.deviceConnected = True
-            self.signals.deviceConnected.emit(f'{self.name}')
+            self.ascomSignals.deviceConnected.emit(f'{self.name}')
             self.app.message.emit(f'Ascom device found:  [{self.name}]', 0)
 
         else:
@@ -223,8 +224,8 @@ class AscomClass(object):
         :return: True for test purpose
         """
 
+        print('Dispatch')
         pythoncom.CoInitialize()
-        print('pythoncom CoInitialize')
         try:
             self.client = Dispatch(self.name)
         except Exception as e:
@@ -235,6 +236,8 @@ class AscomClass(object):
             worker = Worker(self.getInitialConfig)
             worker.signals.finished.connect(self.startTimer)
             self.threadPool.start(worker)
+        finally:
+            pass
 
         return True
 
@@ -245,15 +248,16 @@ class AscomClass(object):
         :return: true for test purpose
         """
 
+        print('stop')
         self.stopTimer()
         self.deviceConnected = False
         self.serverConnected = False
+        self.client.connected = False
         self.client = None
-        print('pythoncom CoUninitialize')
-
         pythoncom.CoUninitialize()
-        self.signals.deviceDisconnected.emit(f'{self.name}')
-        self.signals.serverDisconnected.emit({f'{self.name}': 0})
+
+        self.ascomSignals.deviceDisconnected.emit(f'{self.name}')
+        self.ascomSignals.serverDisconnected.emit({f'{self.name}': 0})
         self.app.message.emit(f'Ascom device remove: [{self.name}]', 0)
 
         return True

@@ -57,20 +57,19 @@ class CameraAscom(AscomClass):
 
         super().getInitialConfig()
 
-        """
-        self.dataEntry(self.client.cameraxsize(), 'CCD_INFO.CCD_MAX_X')
-        self.dataEntry(self.client.cameraysize(), 'CCD_INFO.CCD_MAX_Y')
-        # self.dataEntry(self.client.canfastreadout(), 'CAN_FAST')
-        self.dataEntry(self.client.canstopexposure(), 'CAN_ABORT')
-        self.dataEntry(self.client.pixelsizex(), 'CCD_INFO.CCD_PIXEL_SIZE_X')
-        self.dataEntry(self.client.pixelsizey(), 'CCD_INFO.CCD_PIXEL_SIZE_Y')
-        self.dataEntry(self.client.maxbinx(), 'CCD_BINNING.HOR_BIN_MAX')
-        self.dataEntry(self.client.maxbiny(), 'CCD_BINNING.VERT_BIN_MAX')
-        self.dataEntry(self.client.binx(), 'CCD_BINNING.HOR_BIN')
-        self.dataEntry(self.client.biny(), 'CCD_BINNING.VERT_BIN')
-        self.dataEntry(self.client.startx(), 'CCD_FRAME.X')
-        self.dataEntry(self.client.starty(), 'CCD_FRAME.Y')
-        """
+        self.dataEntry(self.client.CameraXSize, 'CCD_INFO.CCD_MAX_X')
+        self.dataEntry(self.client.CameraYSize, 'CCD_INFO.CCD_MAX_Y')
+        # self.dataEntry(self.client.CanFastReadout, 'CAN_FAST')
+        self.dataEntry(self.client.CanAbortExposure, 'CAN_ABORT')
+        self.dataEntry(self.client.PixelSizeX, 'CCD_INFO.CCD_PIXEL_SIZE_X')
+        self.dataEntry(self.client.PixelSizeY, 'CCD_INFO.CCD_PIXEL_SIZE_Y')
+        self.dataEntry(self.client.MaxBinX, 'CCD_BINNING.HOR_BIN_MAX')
+        self.dataEntry(self.client.MaxBinY, 'CCD_BINNING.VERT_BIN_MAX')
+        
+        self.dataEntry(self.client.BinX, 'CCD_BINNING.HOR_BIN')
+        self.dataEntry(self.client.BinY, 'CCD_BINNING.VERT_BIN')
+        self.dataEntry(self.client.StartX, 'CCD_FRAME.X')
+        self.dataEntry(self.client.StartY, 'CCD_FRAME.Y')
 
         return True
 
@@ -80,24 +79,22 @@ class CameraAscom(AscomClass):
         :return: true for test purpose
         """
 
-        """
-        self.dataEntry(self.client.camerastate(),
+        self.dataEntry(self.client.CameraState,
                        'CAMERA.STATE')
-        self.dataEntry(self.client.ccdtemperature(),
+        self.dataEntry(self.client.CCDTemperature,
                        'CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE')
-        self.dataEntry(self.client.cooleron(),
+        self.dataEntry(self.client.CoolerOn,
                        'CCD_COOLER.COOLER_ON')
-        self.dataEntry(self.client.coolerpower(),
+        self.dataEntry(self.client.CoolerPower,
                        'CCD_COOLER_POWER.CCD_COOLER_VALUE')
 
         canFast = self.data.get('CAN_FAST', False)
         if not canFast:
             return False
 
-        self.dataEntry(self.client.fastreadout(),
+        self.dataEntry(self.client.FastReadout,
                        'READOUT_QUALITY.QUALITY_LOW',
                        'READOUT_QUALITY.QUALITY_HIGH')
-        """
 
         return True
 
@@ -114,7 +111,7 @@ class CameraAscom(AscomClass):
             return False
 
         if fastReadout:
-            self.client.fastreadout(FastReadout=True)
+            self.client.FastReadout = True
 
         quality = 'High' if self.data.get('READOUT_QUALITY.QUALITY_HIGH', True) else 'Low'
         self.log.info(f'camera has readout quality entry: {quality}')
@@ -155,14 +152,14 @@ class CameraAscom(AscomClass):
         self.sendDownloadMode(fastReadout=fastReadout)
 
         # set frame sizes
-        self.client.startx(StartX=posX)
-        self.client.starty(StartY=posY)
-        self.client.numx(NumX=int(width / binning))
-        self.client.numy(NumY=int(height / binning))
+        self.client.StartX = posX
+        self.client.StartY = posY
+        self.client.NumX = int(width / binning)
+        self.client.NumY = int(height / binning)
 
         # set binning
-        self.client.binx(BinX=binning)
-        self.client.biny(BinY=binning)
+        self.client.BinX = binning
+        self.client.BinY = binning
 
         # catch the right position and time
         isMount = self.app.deviceStat['mount']
@@ -174,12 +171,12 @@ class CameraAscom(AscomClass):
                 ra, dec = transform.JNowToJ2000(ra, dec, obsTime)
 
         # start exposure
-        self.client.startexposure(Duration=expTime, Light=True)
+        self.client.StartExposure(expTime, True)
 
         # wait for finishing
         timeLeft = expTime
 
-        while not self.client.imageready():
+        while not self.client.ImageReady:
             text = f'expose {timeLeft:3.0f} s'
             QTest.qWait(100)
             if timeLeft >= 0.1:
@@ -195,7 +192,7 @@ class CameraAscom(AscomClass):
         if not self.abortExpose:
             # download image
             self.signals.message.emit('download')
-            data = np.array(self.client.imagearray(), dtype=np.uint16)
+            data = np.array(self.client.ImageArray, dtype=np.uint16)
             data = np.transpose(data)
 
         if not self.abortExpose:
@@ -285,7 +282,7 @@ class CameraAscom(AscomClass):
         if not canAbort:
             return False
 
-        self.client.stopexposure()
+        self.client.StopExposure()
 
         return True
 
@@ -299,7 +296,7 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.cooleron(CoolerOn=coolerOn)
+        self.client.CoolerOn = coolerOn
 
         return True
 
@@ -313,6 +310,6 @@ class CameraAscom(AscomClass):
         if not self.deviceConnected:
             return False
 
-        self.client.setccdtemperature(SetCCDTemperature=temperature)
+        self.client.SetCCDTemperature = temperature
 
         return True

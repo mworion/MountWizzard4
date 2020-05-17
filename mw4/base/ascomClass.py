@@ -94,7 +94,6 @@ class AscomClass(object):
         self.client.connected = True
         suc = self.client.connected
 
-        print('initial', suc)
         if not suc:
             return False
 
@@ -110,7 +109,6 @@ class AscomClass(object):
         self.data['DRIVER_INFO.DRIVER_NAME'] = self.client.Name
         self.data['DRIVER_INFO.DRIVER_VERSION'] = self.client.DriverVersion
         self.data['DRIVER_INFO.DRIVER_EXEC'] = self.client.DriverInfo
-        print('end')
 
         return True
 
@@ -168,7 +166,6 @@ class AscomClass(object):
         """
 
         suc = self.client.connected
-        print('poll connected: ', suc)
 
         if self.deviceConnected and not suc:
             self.deviceConnected = False
@@ -224,7 +221,6 @@ class AscomClass(object):
         :return: True for test purpose
         """
 
-        print('Dispatch')
         pythoncom.CoInitialize()
         try:
             self.client = Dispatch('ASCOM.' + self.name)
@@ -232,7 +228,6 @@ class AscomClass(object):
             self.log.critical(f'Error: [{e}]')
             return False
         else:
-            print('connect')
             worker = Worker(self.getInitialConfig)
             worker.signals.finished.connect(self.startTimer)
             self.threadPool.start(worker)
@@ -248,7 +243,6 @@ class AscomClass(object):
         :return: true for test purpose
         """
 
-        print('stop')
         self.stopTimer()
         self.deviceConnected = False
         self.serverConnected = False

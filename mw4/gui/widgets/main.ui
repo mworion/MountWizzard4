@@ -105,7 +105,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>10</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideRight</enum>
@@ -13445,7 +13445,7 @@ Hint if mount will need a flip when following satellite.</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideLeft</enum>
@@ -13497,9 +13497,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="powerDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>80</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -13567,9 +13567,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="measureDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>20</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -13610,9 +13610,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="remoteDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>50</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -13653,9 +13653,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="relayDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>110</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -13696,9 +13696,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="coverDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>140</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -13712,9 +13712,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="powerSetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>80</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -13728,9 +13728,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="coverSetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>140</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -13814,9 +13814,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="domeDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>110</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -13830,9 +13830,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="cameraDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>20</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -13846,9 +13846,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="telescopeDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>140</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -13916,9 +13916,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="astrometryDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>80</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -13959,9 +13959,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="filterDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>50</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -14002,9 +14002,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="focuserDevice">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>170</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -14018,9 +14018,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="domeSetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>110</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -14034,9 +14034,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="telescopeSetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>140</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -14050,9 +14050,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="focuserSetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>170</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -14066,9 +14066,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="filterSetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>50</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -14082,9 +14082,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="cameraSetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>20</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -14098,9 +14098,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="astrometrySetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>80</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -14157,9 +14157,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QComboBox" name="sensorWeatherDevice">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>91</x>
           <y>50</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -14194,15 +14194,15 @@ Hint if mount will need a flip when following satellite.</string>
          </font>
         </property>
         <property name="text">
-         <string>Sensor Weather</string>
+         <string>Sensor Weat.</string>
         </property>
        </widget>
        <widget class="QComboBox" name="skymeterDevice">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>91</x>
           <y>20</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -14237,15 +14237,15 @@ Hint if mount will need a flip when following satellite.</string>
          </font>
         </property>
         <property name="text">
-         <string>Online Weather</string>
+         <string>Online Weat.</string>
         </property>
        </widget>
        <widget class="QComboBox" name="onlineWeatherDevice">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>91</x>
           <y>80</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -14280,15 +14280,15 @@ Hint if mount will need a flip when following satellite.</string>
          </font>
         </property>
         <property name="text">
-         <string>Direct Weather</string>
+         <string>Direct Weat.</string>
         </property>
        </widget>
        <widget class="QComboBox" name="directWeatherDevice">
         <property name="geometry">
          <rect>
-          <x>110</x>
+          <x>91</x>
           <y>110</y>
-          <width>181</width>
+          <width>221</width>
           <height>21</height>
          </rect>
         </property>
@@ -14302,9 +14302,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="skymeterSetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>20</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
@@ -14318,9 +14318,9 @@ Hint if mount will need a flip when following satellite.</string>
        <widget class="QPushButton" name="sensorWeatherSetup">
         <property name="geometry">
          <rect>
-          <x>295</x>
+          <x>315</x>
           <y>50</y>
-          <width>66</width>
+          <width>46</width>
           <height>21</height>
          </rect>
         </property>
